@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        "CONTEXT7_API_KEY": "your-api-key-here"
+      },
+      "metadata": {
+        "description": "Context7 documentation and code examples server",
+        "capabilities": [
+          "resolve-library-id",
+          "get-library-docs",
+          "search-patterns",
+          "best-practices"
+        ],
+        "usage": "Auto-activates for library imports, framework questions, documentation requests"
+      }
+    }
+  },
+  "settings": {
+    "autoStart": true,
+    "timeout": 30000,
+    "retryAttempts": 3
+  }
+}
