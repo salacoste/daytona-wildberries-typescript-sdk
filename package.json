@@ -1,0 +1,70 @@
+{
+  "name": "daytona-wildberries-typescript-sdk",
+  "version": "0.1.0",
+  "description": "Full-featured TypeScript SDK providing type-safe access to all Wildberries marketplace API methods",
+  "keywords": [
+    "wildberries",
+    "api",
+    "sdk",
+    "typescript",
+    "marketplace",
+    "e-commerce",
+    "russia",
+    "type-safe"
+  ],
+  "author": "Wildberries API TypeScript SDK Contributors",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/wb-api-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/wb-api-sdk/issues"
+  },
+  "homepage": "https://github.com/yourusername/wb-api-sdk#readme",
+  "scripts": {
+    "build": "vite build",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src tests",
+    "lint:fix": "eslint src tests --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitest/coverage-v8": "^1.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.2",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.46.1",
+    "vite": "^5.0.12",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^1.2.2"
+  }
+}

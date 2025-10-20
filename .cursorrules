@@ -1,0 +1,32 @@
+# Wildberries API SDK - Cursor Rules
+
+## Project Context
+TypeScript SDK for Wildberries marketplace API. Code generation from 11 OpenAPI 3.0.1 specs.
+
+## Critical Rules
+
+1. **Never Modify Swagger Files**: Files in `wildberries_api_doc/*.yaml` are source of truth - READ ONLY
+2. **Type Safety**: TypeScript strict mode, no `any` types except controlled error handling
+3. **Generate, Don't Manually Code**: Types and modules generated from Swagger, manual code only in `client/`, `errors/`, `utils/`
+4. **Rate Limits**: Extract from Swagger descriptions, enforce in BaseClient
+5. **Multi-Domain**: Different base URLs per module (extract from Swagger `servers`)
+
+## Code Style
+
+- **Naming**: PascalCase (types/classes), camelCase (methods/vars), SCREAMING_SNAKE (enum values)
+- **Async/Await**: Required, no callbacks
+- **Imports**: Named imports, group by external/internal
+- **JSDoc**: Required for all public APIs with examples
+
+## Reference Files
+
+- Architecture: `pre_product.md`
+- Implementation guide: `.claude/claude.md`
+- Source specs: `wildberries_api_doc/*.yaml`
+
+## Quality Gates
+
+- TypeScript strict mode 
+- Test coverage e80% critical paths 
+- Bundle size <100KB gzipped 
+- ESLint + Prettier 

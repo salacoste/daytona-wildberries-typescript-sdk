@@ -1,0 +1,8 @@
+dist/
+node_modules/
+coverage/
+*.log
+.bmad-core/
+docs/
+wildberries_api_doc/
+package-lock.json

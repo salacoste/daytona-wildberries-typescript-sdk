@@ -1,0 +1,283 @@
+openapi: 3.0.1
+info:
+  title: Общее
+  version: general
+  description: Описание API, авторизации, лимитов запросов и ошибок. Доступ к новостям портала продавцов, информации о продавцах. Проверка подключения к API.
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Введение
+    description: ''
+  - name: Авторизация
+    description: ''
+  - name: Проверка подключения к WB API
+    description: ''
+  - name: API новостей
+    description: ''
+  - name: Информация о продавце
+    description: ''
+paths:
+  /ping:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      tags:
+        - Проверка подключения к WB API
+      security:
+        - HeaderApiKey: []
+      summary: Проверка подключения
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  TS:
+                    type: string
+                    description: Timestamp запроса
+                  Status:
+                    type: string
+                    enum:
+                      - OK
+                    description: Статус
+              example:
+                TS: '2024-08-16T11:19:05+03:00'
+                Status: OK
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/communications/v2/news:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      tags:
+        - API новостей
+      security:
+        - HeaderApiKey: []
+      summary: Получение новостей портала продавцов
+      parameters:
+        - in: query
+          name: from
+          required: false
+          schema:
+            type: string
+            format: date
+            description: Дата, от которой необходимо выдать новости
+            example: '2025-02-06'
+        - in: query
+          name: fromID
+          required: false
+          schema:
+            type: integer
+            format: uint64
+          description: ID новости, начиная с которой — включая её — нужно получить список новостей
+          example: 7369
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Новости
+                    items:
+                      type: object
+                      properties:
+                        content:
+                          type: string
+                          description: Текст новости
+                          format: plaintext
+                        date:
+                          format: date-time
+                          type: string
+                          description: Дата и время публикации новости
+                        header:
+                          type: string
+                          description: Заголовок новости
+                        id:
+                          type: integer
+                          description: ID новости
+                        types:
+                          type: array
+                          description: Теги новости
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: ID тега
+                              name:
+                                type: string
+                                description: Название тега
+              example:
+                data:
+                  - content: |
+                      Теперь в кампаниях ВБ.Медиа вы можете размещать баннеры для пользователей, которые взаимодействовали
+                      с товарами из определённой категории: покупали, искали, добавляли в корзину и избранное. Также можно
+                      выбрать период, за который хотите учитывать эти действия.Например, вы продаёте обувь. Рекламу можно
+                      показать людям, которые добавляли в корзину или избранное товары из этой категории за последние 14
+                      дней. Возможно, пользователи, которые попадают под этот критерий, уже совершили покупку. Поэтому вы
+                      можете уточнить настройки показа: добавить параметр «Не покупал товар из категории „Обувь“ в последние
+                      14 дней». Так вероятность того, что ваш баннер приведёт к покупке, будет выше.Чтобы запустить рекламу,
+                      создайте в кабинете ВБ.Медиа кампанию «По показам» и на шаге 4 включите «Поведенческие параметры».
+                      Эти параметры можно комбинировать с таргетированием по предполагаемым интересам, полу, возрасту и
+                      региону.Подробнее о том, как настроить таргетинг, — в инструкции «По показам».Запустить рекламу на
+                      Wildberries
+                    date: '2025-02-05T14:10:35+03:00'
+                    header: |
+                      Новые настройки кампаний в ВБ.Медиа: таргетируйте рекламу в зависимости от того, как аудитория
+                      использует сервисы Wildberries
+                    id: 7369
+                    types:
+                      - id: 4
+                        name: Маркетинг
+                  - content: |
+                      Добавили получение отчётов по текстам поисковых запросов в формате CSV. В описания методов «Создать
+                      отчёт» и «Получить отчёт» добавили описания и примеры моделей: • запросов — SearchReportTextReq, •
+                      успешных ответов (статус-код 200) — SearchReportTextRes.В ответ метода «Поисковые запросы по товару»
+                      добавили 8 полей и структуры price и medianPosition. Узнать больше можно в Журнале изменений.Эти методы
+                      доступны только с подпиской «Джем»
+                    date: '2025-02-06T18:14:58+03:00'
+                    header: Изменения в API «Аналитики и данных»
+                    id: 7373
+                    types:
+                      - id: 8
+                        name: API
+                      - id: 41
+                        name: Аналитика продавца
+        '400':
+          description: Неправильный запрос
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller-info:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      tags:
+        - Информация о продавце
+      security:
+        - HeaderApiKey: []
+      summary: Получение информации о продавце
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Наименование продавца
+                  sid:
+                    format: UUID
+                    type: string
+                    description: Уникальный ID продавца на Wildberries, [находящийся в публичном поле токена](./api-information#tag/Avtorizaciya/Kak-ustroen-token)
+                  tradeMark:
+                    type: string
+                    description: Торговое наименование продавца
+              example:
+                name: ИП Кружинин В. Р.
+                sid: e8923014-e233-47q8-898e-3cc86d67ea61
+                tradeMark: Flax Store
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  responses:
+    '401':
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Слишком много запросов
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
