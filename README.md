@@ -1,8 +1,8 @@
 # Wildberries API TypeScript SDK
 
-[![CI](https://github.com/yourusername/wb-api-sdk/workflows/CI/badge.svg)](https://github.com/yourusername/wb-api-sdk/actions)
+[![CI](https://github.com/salacoste/daytona-wildberries-typescript-sdk/workflows/CI/badge.svg)](https://github.com/salacoste/daytona-wildberries-typescript-sdk/actions)
 [![npm version](https://badge.fury.io/js/daytona-wildberries-typescript-sdk.svg)](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)
-[![Release](https://img.shields.io/badge/release-v1.0.0-green.svg)](https://github.com/yourusername/wb-api-sdk/releases/tag/v1.0.0)
+[![Release](https://img.shields.io/badge/release-v1.0.0-green.svg)](https://github.com/salacoste/daytona-wildberries-typescript-sdk/releases/tag/v1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Full-featured TypeScript SDK providing type-safe access to all Wildberries marketplace API methods.**
