@@ -51,74 +51,87 @@ const handlers = [
   // GET /api/v1/tariffs/box - Box storage tariffs
   http.get('https://common-api.wildberries.ru/api/v1/tariffs/box', () => {
     return HttpResponse.json({
-      dtNextBox: '2024-02-01',
-      dtTillMax: '2024-12-31',
-      warehouseList: [
-        {
-          warehouseName: 'Коледино',
-          boxDeliveryAndStorageExpr: '10 + 0.5*days',
-          boxDeliveryBase: 10,
-          boxDeliveryLiter: 0.5,
-          boxStorageBase: 5,
-          boxStorageLiter: 0.2
-        },
-        {
-          warehouseName: 'Подольск',
-          boxDeliveryAndStorageExpr: '12 + 0.6*days',
-          boxDeliveryBase: 12,
-          boxDeliveryLiter: 0.6,
-          boxStorageBase: 6,
-          boxStorageLiter: 0.25
+      response: {
+        data: {
+          dtNextBox: '2024-02-01',
+          dtTillMax: '2024-12-31',
+          warehouseList: [
+            {
+              warehouseName: 'Коледино',
+              boxDeliveryAndStorageExpr: '10 + 0.5*days',
+              boxDeliveryBase: 10,
+              boxDeliveryLiter: 0.5,
+              boxStorageBase: 5,
+              boxStorageLiter: 0.2
+            },
+            {
+              warehouseName: 'Подольск',
+              boxDeliveryAndStorageExpr: '12 + 0.6*days',
+              boxDeliveryBase: 12,
+              boxDeliveryLiter: 0.6,
+              boxStorageBase: 6,
+              boxStorageLiter: 0.25
+            }
+          ]
         }
-      ]
+      }
     });
   }),
 
   // GET /api/v1/tariffs/pallet - Pallet storage tariffs
   http.get('https://common-api.wildberries.ru/api/v1/tariffs/pallet', () => {
     return HttpResponse.json({
-      dtNextBox: '2024-02-01',
-      dtTillMax: '2024-12-31',
-      warehouseList: [
-        {
-          warehouseName: 'Коледино',
-          palletDeliveryAndStorageExpr: '500 + 50*days',
-          palletDeliveryBase: 500,
-          palletStorageBase: 100
-        },
-        {
-          warehouseName: 'Подольск',
-          palletDeliveryAndStorageExpr: '550 + 55*days',
-          palletDeliveryBase: 550,
-          palletStorageBase: 110
-        },
-        {
-          warehouseName: 'Электросталь',
-          palletDeliveryAndStorageExpr: '480 + 45*days',
-          palletDeliveryBase: 480,
-          palletStorageBase: 95
+      response: {
+        data: {
+          dtNextPallet: '2024-02-01',
+          dtTillMax: '2024-12-31',
+          warehouseList: [
+            {
+              warehouseName: 'Коледино',
+              palletDeliveryAndStorageExpr: '500 + 50*days',
+              palletDeliveryBase: 500,
+              palletStorageBase: 100
+            },
+            {
+              warehouseName: 'Подольск',
+              palletDeliveryAndStorageExpr: '550 + 55*days',
+              palletDeliveryBase: 550,
+              palletStorageBase: 110
+            },
+            {
+              warehouseName: 'Электросталь',
+              palletDeliveryAndStorageExpr: '480 + 45*days',
+              palletDeliveryBase: 480,
+              palletStorageBase: 95
+            }
+          ]
         }
-      ]
+      }
     });
   }),
 
   // GET /api/v1/tariffs/return - Return handling tariffs
   http.get('https://common-api.wildberries.ru/api/v1/tariffs/return', () => {
     return HttpResponse.json({
-      dtNextBox: '2024-02-01',
-      dtTillMax: '2024-12-31',
-      warehouseList: [
-        {
-          warehouseName: 'Коледино',
-          returnBase: 50,
-          returnLiter: 2.0
-        },
-        {
-          warehouseName: 'Подольск',
-          returnBase: 55,
-          returnLiter: 2.5
+      response: {
+        data: {
+          dtNextDeliveryDumpKgt: '2024-02-01',
+          dtNextDeliveryDumpSrg: '2024-02-01',
+          dtNextDeliveryDumpSup: '2024-02-01',
+          warehouseList: [
+            {
+              warehouseName: 'Коледино',
+              returnBase: 50,
+              returnLiter: 2.0
+            },
+            {
+              warehouseName: 'Подольск',
+              returnBase: 55,
+              returnLiter: 2.5
+            }
+          ]
         }
-      ]
+      }
     });
   })
 ];
@@ -202,9 +215,9 @@ describe('TariffsModule Integration Tests', () => {
 
       // Assert
       expect(result).toBeDefined();
-      expect(result.warehouseList).toHaveLength(2);
-      expect(result.dtNextBox).toBe('2024-02-01');
-      expect(result.dtTillMax).toBe('2024-12-31');
+      expect(result.response?.data?.warehouseList).toHaveLength(2);
+      expect(result.response?.data?.dtNextBox).toBe('2024-02-01');
+      expect(result.response?.data?.dtTillMax).toBe('2024-12-31');
     });
 
     it('should return correctly structured box tariff data', async () => {
@@ -212,8 +225,8 @@ describe('TariffsModule Integration Tests', () => {
       const result = await tariffsModule.getTariffsBox();
 
       // Assert
-      expect(result.warehouseList).toBeDefined();
-      expect(Array.isArray(result.warehouseList)).toBe(true);
+      expect(result.response?.data?.warehouseList).toBeDefined();
+      expect(Array.isArray(result.response?.data?.warehouseList)).toBe(true);
     });
 
     it('should successfully get pallet storage tariffs', async () => {
@@ -222,8 +235,8 @@ describe('TariffsModule Integration Tests', () => {
 
       // Assert
       expect(result).toBeDefined();
-      expect(result.warehouseList).toHaveLength(3);
-      expect(result.dtNextBox).toBe('2024-02-01');
+      expect(result.response?.data?.warehouseList).toHaveLength(3);
+      expect(result.response?.data?.dtNextPallet).toBe('2024-02-01');
     });
 
     it('should handle pallet tariffs for multiple warehouses', async () => {
@@ -231,7 +244,7 @@ describe('TariffsModule Integration Tests', () => {
       const result = await tariffsModule.getTariffsPallet();
 
       // Assert
-      expect(result.warehouseList).toHaveLength(3);
+      expect(result.response?.data?.warehouseList).toHaveLength(3);
     });
   });
 
@@ -242,9 +255,9 @@ describe('TariffsModule Integration Tests', () => {
 
       // Assert
       expect(result).toBeDefined();
-      expect(result.warehouseList).toHaveLength(2);
-      expect(result.dtNextBox).toBe('2024-02-01');
-      expect(result.dtTillMax).toBe('2024-12-31');
+      expect(result.response?.data?.warehouseList).toHaveLength(2);
+      expect(result.response?.data?.dtNextDeliveryDumpKgt).toBe('2024-02-01');
+      expect(result.response?.data?.dtNextDeliveryDumpSrg).toBe('2024-02-01');
     });
 
     it('should return correctly structured return tariff data', async () => {
@@ -252,8 +265,8 @@ describe('TariffsModule Integration Tests', () => {
       const result = await tariffsModule.getTariffsReturn();
 
       // Assert
-      expect(result.warehouseList).toBeDefined();
-      expect(Array.isArray(result.warehouseList)).toBe(true);
+      expect(result.response?.data?.warehouseList).toBeDefined();
+      expect(Array.isArray(result.response?.data?.warehouseList)).toBe(true);
     });
   });
 
@@ -357,9 +370,9 @@ describe('TariffsModule Integration Tests', () => {
 
       // Assert - TypeScript ensures correct types
       expect(Array.isArray(commissionResult.report)).toBe(true);
-      expect(Array.isArray(boxResult.warehouseList)).toBe(true);
-      expect(Array.isArray(palletResult.warehouseList)).toBe(true);
-      expect(Array.isArray(returnResult.warehouseList)).toBe(true);
+      expect(Array.isArray(boxResult.response?.data?.warehouseList)).toBe(true);
+      expect(Array.isArray(palletResult.response?.data?.warehouseList)).toBe(true);
+      expect(Array.isArray(returnResult.response?.data?.warehouseList)).toBe(true);
     });
 
     it('should correctly handle date string types', async () => {
@@ -367,8 +380,8 @@ describe('TariffsModule Integration Tests', () => {
       const boxResult = await tariffsModule.getTariffsBox();
 
       // Assert
-      expect(typeof boxResult.dtNextBox).toBe('string');
-      expect(typeof boxResult.dtTillMax).toBe('string');
+      expect(typeof boxResult.response?.data?.dtNextBox).toBe('string');
+      expect(typeof boxResult.response?.data?.dtTillMax).toBe('string');
     });
   });
 
@@ -380,16 +393,16 @@ describe('TariffsModule Integration Tests', () => {
 
       // 2. Get storage costs for boxes
       const boxTariffs = await tariffsModule.getTariffsBox();
-      expect(boxTariffs.warehouseList).toBeDefined();
+      expect(boxTariffs.response?.data?.warehouseList).toBeDefined();
 
       // 3. Get return costs
       const returnTariffs = await tariffsModule.getTariffsReturn();
-      expect(returnTariffs.warehouseList).toBeDefined();
+      expect(returnTariffs.response?.data?.warehouseList).toBeDefined();
 
       // 4. Verify all data is available for cost calculations
       expect(commissions.report).toHaveLength(3);
-      expect(boxTariffs.warehouseList).toHaveLength(2);
-      expect(returnTariffs.warehouseList).toHaveLength(2);
+      expect(boxTariffs.response?.data?.warehouseList).toHaveLength(2);
+      expect(returnTariffs.response?.data?.warehouseList).toHaveLength(2);
     });
 
     it('should handle warehouse comparison workflow', async () => {
@@ -398,8 +411,8 @@ describe('TariffsModule Integration Tests', () => {
       const palletTariffs = await tariffsModule.getTariffsPallet();
 
       // Verify we can compare costs across warehouses
-      expect(boxTariffs.warehouseList).toHaveLength(2);
-      expect(palletTariffs.warehouseList).toHaveLength(3);
+      expect(boxTariffs.response?.data?.warehouseList).toHaveLength(2);
+      expect(palletTariffs.response?.data?.warehouseList).toHaveLength(3);
     });
 
     it('should handle multiple tariff queries in sequence', async () => {
@@ -411,9 +424,9 @@ describe('TariffsModule Integration Tests', () => {
 
       // Verify all queries succeeded
       expect(commission.report).toBeDefined();
-      expect(box.warehouseList).toBeDefined();
-      expect(pallet.warehouseList).toBeDefined();
-      expect(returnTariff.warehouseList).toBeDefined();
+      expect(box.response?.data?.warehouseList).toBeDefined();
+      expect(pallet.response?.data?.warehouseList).toBeDefined();
+      expect(returnTariff.response?.data?.warehouseList).toBeDefined();
     });
   });
 
