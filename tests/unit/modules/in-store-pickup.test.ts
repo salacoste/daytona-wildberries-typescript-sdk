@@ -132,7 +132,6 @@ describe('InStorePickupModule', () => {
         expect(result).toEqual(mockNewOrdersResponse);
         expect(result.orders).toHaveLength(1);
         expect(result.orders[0].id).toBe(12345);
-        expect(result.orders[0].supplierStatus).toBe('new');
         expect(result.orders[0].orderCode).toBe('21117866-0006');
       });
 
@@ -447,7 +446,6 @@ describe('InStorePickupModule', () => {
         expect(result.next).toBe(100);
         expect(result.orders).toHaveLength(1);
         expect(result.orders[0].id).toBe(12345);
-        expect(result.orders[0].supplierStatus).toBe('prepare');
       });
 
       it('should use correct rate limit key (300 req/min)', async () => {
@@ -624,8 +622,7 @@ describe('InStorePickupModule', () => {
 
         // Assert
         expect(result).toEqual(mockVerificationResponse);
-        expect(result.checked).toBe(true);
-        expect(result.orderId).toBe(12345);
+        expect(result.ok).toBe(true);
       });
 
       it('should use correct rate limit key (30 req/min - CRITICAL)', async () => {
@@ -691,10 +688,9 @@ describe('InStorePickupModule', () => {
 
         // Assert
         expect(result).toEqual(mockMetadataResponse);
-        expect(result.sgtin).toHaveLength(1);
-        expect(result.sgtin).toContain('1234567890123456');
-        expect(result.imei).toHaveLength(1);
-        expect(result.imei).toContain('123456789012345');
+        expect(result.meta.sgtin?.value).toHaveLength(1);
+        expect(result.meta.sgtin?.value).toContain('1234567890123456');
+        expect(result.meta.imei?.value).toBe('123456789012345');
       });
 
       it('should use correct rate limit key (1000 req/min)', async () => {

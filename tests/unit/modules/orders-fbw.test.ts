@@ -15,7 +15,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFBWModule } from '../../../src/modules/orders-fbw';
 import { ValidationError } from '../../../src/errors/validation-error';
 import type { BaseClient } from '../../../src/client/base-client';
-import type { Good } from '../../../src/types/orders-fbw.types';
+import type { Good, ModelsHandySupplyStatus } from '../../../src/types/orders-fbw.types';
 
 describe('OrdersFBWModule', () => {
   let mockClient: { get: ReturnType<typeof vi.fn>; post: ReturnType<typeof vi.fn> };
@@ -263,7 +263,7 @@ describe('OrdersFBWModule', () => {
             type: 'createDate' as const,
           },
         ],
-        statusIDs: [2, 3, 4],
+        statusIDs: [2, 3, 4] as ModelsHandySupplyStatus[],
       };
 
       const mockSupplies = [
@@ -339,7 +339,7 @@ describe('OrdersFBWModule', () => {
     it('should throw ValidationError for invalid status ID', async () => {
       const filters = {
         dates: [],
-        statusIDs: [7], // Invalid: must be 1-6
+        statusIDs: [7] as ModelsHandySupplyStatus[], // Invalid: must be 1-6
       };
 
       await expect(ordersFBW.getSupplies(filters)).rejects.toThrow(ValidationError);

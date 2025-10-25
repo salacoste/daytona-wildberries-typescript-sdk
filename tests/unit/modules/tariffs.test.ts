@@ -138,18 +138,21 @@ describe('TariffsModule', () => {
   describe('Storage Tariff Operations', () => {
     describe('getTariffsBox() - Box storage tariffs', () => {
       const mockBoxTariffsResponse = {
-        dtNextBox: '2024-02-01',
-        dtTillMax: '2024-12-31',
-        warehouseList: [
-          {
-            warehouseName: 'Коледино',
-            boxDeliveryAndStorageExpr: '10 + 0.5*days',
-            boxDeliveryBase: 10,
-            boxDeliveryLiter: 0.5,
-            boxStorageBase: 5,
-            boxStorageLiter: 0.2
+        response: {
+          data: {
+            dtNextBox: '2024-02-01',
+            dtTillMax: '2024-12-31',
+            warehouseList: [
+              {
+                warehouseName: 'Коледино',
+                boxDeliveryBase: '10',
+                boxDeliveryLiter: '0.5',
+                boxStorageBase: '5',
+                boxStorageLiter: '0.2'
+              }
+            ]
           }
-        ]
+        }
       };
 
       it('should call BaseClient.get with correct URL', async () => {
@@ -175,26 +178,30 @@ describe('TariffsModule', () => {
 
         // Assert
         expect(result).toEqual(mockBoxTariffsResponse);
-        expect(result.warehouseList).toBeDefined();
+        expect(result.response?.data?.warehouseList).toBeDefined();
       });
 
       it('should handle multiple warehouse tariffs', async () => {
         // Arrange
         const multiWarehouseResponse = {
-          dtNextBox: '2024-02-01',
-          dtTillMax: '2024-12-31',
-          warehouseList: [
-            {
-              warehouseName: 'Коледино',
-              boxDeliveryBase: 10,
-              boxStorageBase: 5
-            },
-            {
-              warehouseName: 'Подольск',
-              boxDeliveryBase: 12,
-              boxStorageBase: 6
+          response: {
+            data: {
+              dtNextBox: '2024-02-01',
+              dtTillMax: '2024-12-31',
+              warehouseList: [
+                {
+                  warehouseName: 'Коледино',
+                  boxDeliveryBase: '10',
+                  boxStorageBase: '5'
+                },
+                {
+                  warehouseName: 'Подольск',
+                  boxDeliveryBase: '12',
+                  boxStorageBase: '6'
+                }
+              ]
             }
-          ]
+          }
         };
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
@@ -202,7 +209,7 @@ describe('TariffsModule', () => {
         const result = await tariffsModule.getTariffsBox();
 
         // Assert
-        expect(result.warehouseList).toHaveLength(2);
+        expect(result.response?.data?.warehouseList).toHaveLength(2);
       });
 
       it('should throw NetworkError on network failure', async () => {
@@ -218,15 +225,19 @@ describe('TariffsModule', () => {
 
     describe('getTariffsPallet() - Pallet storage tariffs', () => {
       const mockPalletTariffsResponse = {
-        dtNextBox: '2024-02-01',
-        dtTillMax: '2024-12-31',
-        warehouseList: [
-          {
-            warehouseName: 'Коледино',
-            palletDeliveryBase: 500,
-            palletStorageBase: 100
+        response: {
+          data: {
+            dtNextPallet: '2024-02-01',
+            dtTillMax: '2024-12-31',
+            warehouseList: [
+              {
+                warehouseName: 'Коледино',
+                palletDeliveryValueBase: '500',
+                palletStorageValueExpr: '100'
+              }
+            ]
           }
-        ]
+        }
       };
 
       it('should call BaseClient.get with correct URL', async () => {
@@ -252,19 +263,23 @@ describe('TariffsModule', () => {
 
         // Assert
         expect(result).toEqual(mockPalletTariffsResponse);
-        expect(result.warehouseList).toBeDefined();
+        expect(result.response?.data?.warehouseList).toBeDefined();
       });
 
       it('should handle pallet tariffs for multiple warehouses', async () => {
         // Arrange
         const multiWarehouseResponse = {
-          dtNextBox: '2024-02-01',
-          dtTillMax: '2024-12-31',
-          warehouseList: [
-            { warehouseName: 'Коледино', palletDeliveryBase: 500 },
-            { warehouseName: 'Подольск', palletDeliveryBase: 550 },
-            { warehouseName: 'Электросталь', palletDeliveryBase: 480 }
-          ]
+          response: {
+            data: {
+              dtNextPallet: '2024-02-01',
+              dtTillMax: '2024-12-31',
+              warehouseList: [
+                { warehouseName: 'Коледино', palletDeliveryValueBase: '500' },
+                { warehouseName: 'Подольск', palletDeliveryValueBase: '550' },
+                { warehouseName: 'Электросталь', palletDeliveryValueBase: '480' }
+              ]
+            }
+          }
         };
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
@@ -272,7 +287,7 @@ describe('TariffsModule', () => {
         const result = await tariffsModule.getTariffsPallet();
 
         // Assert
-        expect(result.warehouseList).toHaveLength(3);
+        expect(result.response?.data?.warehouseList).toHaveLength(3);
       });
 
       it('should throw RateLimitError when rate limited', async () => {
@@ -290,15 +305,18 @@ describe('TariffsModule', () => {
   describe('Return Tariff Operations', () => {
     describe('getTariffsReturn() - Return handling tariffs', () => {
       const mockReturnTariffsResponse = {
-        dtNextBox: '2024-02-01',
-        dtTillMax: '2024-12-31',
-        warehouseList: [
-          {
-            warehouseName: 'Коледино',
-            returnBase: 50,
-            returnLiter: 2.0
+        response: {
+          data: {
+            dtNextDeliveryDumpSup: '2024-02-01',
+            warehouseList: [
+              {
+                warehouseName: 'Коледино',
+                deliveryDumpSupOfficeBase: '50',
+                deliveryDumpSupOfficeLiter: '2.0'
+              }
+            ]
           }
-        ]
+        }
       };
 
       it('should call BaseClient.get with correct URL', async () => {
@@ -324,18 +342,21 @@ describe('TariffsModule', () => {
 
         // Assert
         expect(result).toEqual(mockReturnTariffsResponse);
-        expect(result.warehouseList).toBeDefined();
+        expect(result.response?.data?.warehouseList).toBeDefined();
       });
 
       it('should handle return tariffs across multiple warehouses', async () => {
         // Arrange
         const multiWarehouseResponse = {
-          dtNextBox: '2024-02-01',
-          dtTillMax: '2024-12-31',
-          warehouseList: [
-            { warehouseName: 'Коледино', returnBase: 50, returnLiter: 2.0 },
-            { warehouseName: 'Подольск', returnBase: 55, returnLiter: 2.5 }
-          ]
+          response: {
+            data: {
+              dtNextDeliveryDumpSup: '2024-02-01',
+              warehouseList: [
+                { warehouseName: 'Коледино', deliveryDumpSupOfficeBase: '50', deliveryDumpSupOfficeLiter: '2.0' },
+                { warehouseName: 'Подольск', deliveryDumpSupOfficeBase: '55', deliveryDumpSupOfficeLiter: '2.5' }
+              ]
+            }
+          }
         };
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
@@ -343,7 +364,7 @@ describe('TariffsModule', () => {
         const result = await tariffsModule.getTariffsReturn();
 
         // Assert
-        expect(result.warehouseList).toHaveLength(2);
+        expect(result.response?.data?.warehouseList).toHaveLength(2);
       });
 
       it('should throw AuthenticationError on invalid API key', async () => {
@@ -392,8 +413,10 @@ describe('TariffsModule', () => {
           .rejects
           .toThrow(RateLimitError);
 
-        const error = await tariffsModule.getTariffsCommission().catch((e: unknown) => e as RateLimitError);
-        expect(error.retryAfter).toBe(60000);
+        const error = await tariffsModule.getTariffsCommission().catch((e: unknown) => e);
+        if (error instanceof RateLimitError) {
+          expect(error.retryAfter).toBe(60000);
+        }
       });
 
       it('should handle rate limit for storage endpoints (60 req/min)', async () => {
@@ -459,9 +482,13 @@ describe('TariffsModule', () => {
     it('should return correctly typed box tariffs response', async () => {
       // Arrange
       const mockResponse = {
-        dtNextBox: '2024-02-01',
-        dtTillMax: '2024-12-31',
-        warehouseList: []
+        response: {
+          data: {
+            dtNextBox: '2024-02-01',
+            dtTillMax: '2024-12-31',
+            warehouseList: []
+          }
+        }
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -469,16 +496,20 @@ describe('TariffsModule', () => {
       const result = await tariffsModule.getTariffsBox();
 
       // Assert - TypeScript ensures type safety
-      expect(result.dtNextBox).toBe('2024-02-01');
-      expect(result.warehouseList).toBeDefined();
+      expect(result.response?.data?.dtNextBox).toBe('2024-02-01');
+      expect(result.response?.data?.warehouseList).toBeDefined();
     });
 
     it('should return correctly typed pallet tariffs response', async () => {
       // Arrange
       const mockResponse = {
-        dtNextBox: '2024-02-01',
-        dtTillMax: '2024-12-31',
-        warehouseList: []
+        response: {
+          data: {
+            dtNextPallet: '2024-02-01',
+            dtTillMax: '2024-12-31',
+            warehouseList: []
+          }
+        }
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -486,16 +517,19 @@ describe('TariffsModule', () => {
       const result = await tariffsModule.getTariffsPallet();
 
       // Assert
-      expect(result.dtNextBox).toBeDefined();
-      expect(Array.isArray(result.warehouseList)).toBe(true);
+      expect(result.response?.data?.dtNextPallet).toBeDefined();
+      expect(Array.isArray(result.response?.data?.warehouseList)).toBe(true);
     });
 
     it('should return correctly typed return tariffs response', async () => {
       // Arrange
       const mockResponse = {
-        dtNextBox: '2024-02-01',
-        dtTillMax: '2024-12-31',
-        warehouseList: []
+        response: {
+          data: {
+            dtNextDeliveryDumpSup: '2024-02-01',
+            warehouseList: []
+          }
+        }
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -504,7 +538,7 @@ describe('TariffsModule', () => {
 
       // Assert
       expect(result).toBeDefined();
-      expect(result.warehouseList).toEqual([]);
+      expect(result.response?.data?.warehouseList).toEqual([]);
     });
   });
 

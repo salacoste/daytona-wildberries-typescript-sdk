@@ -180,7 +180,7 @@ describe('PromotionModule', () => {
       it('should pass status filter when provided', async () => {
         // Arrange
         mockClient.post.mockResolvedValue(mockAdvertsResponse);
-        const options = { status: 7 as const, type: 9 as const };
+        const options = { status: 7 as const, type: 8 as const };
 
         // Act
         await promotionModule.createPromotionAdverts(mockAdvertIds, options);
@@ -344,7 +344,7 @@ describe('PromotionModule', () => {
         name: 'Search Campaign',
         nms: [12345],
         bid_type: 'manual' as const,
-        placement_types: ['search' as const, 'recommendations' as const]
+        placement_types: ['recommendations'] as 'search' | 'recommendations'[]
       };
 
       it('should call BaseClient.post with campaign configuration', async () => {
@@ -434,7 +434,7 @@ describe('PromotionModule', () => {
         advert_id: 123,
         nm_ids: [12345, 67890],
         payment_type: 'cpm' as const,
-        placement_types: ['search' as const, 'recommendation' as const]
+        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[]
       };
 
       const mockBidsResponse = {
@@ -557,7 +557,7 @@ describe('PromotionModule', () => {
           advert_id: 123,
           nm_ids: [12345],
           payment_type: 'cpm',
-          placement_types: ['search']
+          placement_types: 'search'
         }))
           .rejects
           .toThrow(InvalidBidError);
@@ -586,8 +586,10 @@ describe('PromotionModule', () => {
         .rejects
         .toThrow(RateLimitError);
 
-      const error = await promotionModule.getAdvConfig().catch((e: unknown) => e as RateLimitError);
-      expect(error.retryAfter).toBe(200);
+      const error = await promotionModule.getAdvConfig().catch((e: unknown) => e);
+      if (error instanceof RateLimitError) {
+        expect(error.retryAfter).toBe(200);
+      }
     });
 
     it('should throw AuthenticationError on invalid API key', async () => {

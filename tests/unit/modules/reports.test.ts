@@ -1055,7 +1055,7 @@ describe('ReportsModule', () => {
   describe('getAcceptanceReportStatus()', () => {
     it('should check acceptance report status', async () => {
       const mockStatus: ReportStatus = {
-        data: { taskId: 'task-123', status: 'done' },
+        data: { id: 'task-123', taskId: 'task-123', status: 'done' },
       };
       vi.mocked(mockClient).get.mockResolvedValue(mockStatus);
 
@@ -1109,7 +1109,7 @@ describe('ReportsModule', () => {
   describe('getPaidStorageReportStatus()', () => {
     it('should check paid storage report status', async () => {
       const mockStatus: ReportStatus = {
-        data: { taskId: 'task-456', status: 'processing' },
+        data: { id: 'task-456', taskId: 'task-456', status: 'processing' },
       };
       vi.mocked(mockClient).get.mockResolvedValue(mockStatus);
 

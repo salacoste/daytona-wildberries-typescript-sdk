@@ -221,7 +221,7 @@ describe('PromotionModule Integration Tests', () => {
     it('should successfully filter campaigns by status and type', async () => {
       // Arrange
       const campaignIds = [12345];
-      const options = { status: 7 as const, type: 9 as const };
+      const options = { status: 7 as const, type: 8 as const };
 
       // Act
       const result = await promotionModule.createPromotionAdverts(campaignIds, options);
@@ -268,7 +268,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 12345,
         nm_ids: [111, 222],
         payment_type: 'cpm' as const,
-        placement_types: ['search' as const, 'recommendation' as const]
+        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[]
       };
 
       // Act
@@ -286,7 +286,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 88888,
         nm_ids: [111],
         payment_type: 'cpm' as const,
-        placement_types: ['search' as const]
+        placement_types: 'search' as const
       };
 
       // Act & Assert
@@ -336,7 +336,7 @@ describe('PromotionModule Integration Tests', () => {
         name: 'Manual Bid Campaign',
         nms: [12345],
         bid_type: 'manual' as const,
-        placement_types: ['search' as const]
+        placement_types: 'search' as const
       };
 
       // Act
@@ -444,7 +444,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 12345,
         nm_ids: [111, 222],
         payment_type: 'cpm',
-        placement_types: ['search', 'recommendation']
+        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[]
       });
       expect(minBids.bids).toHaveLength(2);
 
@@ -452,8 +452,8 @@ describe('PromotionModule Integration Tests', () => {
       const campaignId = await promotionModule.createSeacatSaveAd({
         name: 'Complete Workflow Campaign',
         nms: [111, 222],
-        bid_type: 'manual',
-        placement_types: ['search']
+        bid_type: 'manual' as const,
+        placement_types: 'search' as const
       });
       expect(campaignId).toBe(12345);
 
@@ -469,7 +469,7 @@ describe('PromotionModule Integration Tests', () => {
 
       // 2. Get detailed info for specific campaigns
       const campaignIds = countSummary.adverts?.flatMap(
-        advert => advert.advert_list?.map(item => item.advertId) ?? []
+        advert => advert.advert_list?.map(item => item.advertId).filter((id): id is number => id !== undefined) ?? []
       ) ?? [];
 
       if (campaignIds.length > 0) {
