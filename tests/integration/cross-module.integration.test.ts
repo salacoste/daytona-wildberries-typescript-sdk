@@ -273,7 +273,7 @@ describe('Cross-Module Integration Tests', () => {
 
       // Check acceptance coefficients
       const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients(
-        warehouse.ID.toString()
+        warehouse.ID?.toString() ?? ''
       );
 
       expect(Array.isArray(coefficients)).toBe(true);

@@ -237,19 +237,14 @@ describe('WildberriesSDK Multi-Module Integration', () => {
         objectIDs: [],
         tagIDs: [],
         nmIDs: [12345],
-        timezone: 'Europe/Moscow',
         period: {
           begin: '2024-01-01 00:00:00',
           end: '2024-01-31 23:59:59'
         },
-        orderBy: {
-          field: 'orderCount',
-          mode: 'desc'
-        },
         page: 1
       });
-      expect(salesFunnel.data).toHaveLength(1);
-      expect(salesFunnel.data[0]?.nmID).toBe(12345);
+      expect(salesFunnel.data.cards).toHaveLength(1);
+      expect(salesFunnel.data.cards[0]?.nmID).toBe(12345);
 
       // Test Communications module
       const reviews = await sdk.communications.getReviews({
@@ -314,7 +309,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
       // Test that requests complete successfully with shared config
       const [balance, reviews] = await Promise.all([
         sdk.finances.getBalance(),
-        sdk.communications.getReviews({ take: 1, skip: 0 })
+        sdk.communications.getReviews({ isAnswered: false, take: 1, skip: 0 })
       ]);
 
       expect(balance).toBeDefined();
@@ -333,23 +328,18 @@ describe('WildberriesSDK Multi-Module Integration', () => {
           objectIDs: [],
           tagIDs: [],
           nmIDs: [12345],
-          timezone: 'Europe/Moscow',
           period: {
             begin: '2024-01-01 00:00:00',
             end: '2024-01-31 23:59:59'
           },
-          orderBy: {
-            field: 'orderCount',
-            mode: 'desc'
-          },
           page: 1
         }),
-        sdk.communications.getReviews({ take: 10, skip: 0 }),
+        sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 }),
         sdk.reports.getIncomes('2024-01-01')
       ]);
 
       expect(balance.for_withdraw).toBe(50000);
-      expect(salesFunnel.data).toHaveLength(1);
+      expect(salesFunnel.data.cards).toHaveLength(1);
       expect(reviews.data.feedbacks).toHaveLength(1);
       expect(incomes).toHaveLength(1);
     });
@@ -397,9 +387,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
         objectIDs: [],
         tagIDs: [],
         nmIDs: [],
-        timezone: 'Europe/Moscow',
         period: { begin: '2024-01-01 00:00:00', end: '2024-01-31 23:59:59' },
-        orderBy: { field: 'orderCount', mode: 'desc' },
         page: 1
       })).rejects.toThrow(AuthenticationError);
     });
@@ -416,7 +404,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
 
       const sdk = new WildberriesSDK({ apiKey: 'test-key' });
 
-      await expect(sdk.communications.getReviews({ take: 10, skip: 0 }))
+      await expect(sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 }))
         .rejects.toThrow(RateLimitError);
       // Note: Second call may timeout due to retry logic, so we catch that
       try {
@@ -444,7 +432,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
       expect(balance.for_withdraw).toBe(50000);
 
       // Error case
-      await expect(sdk.communications.getReviews({ take: 10, skip: 0 }))
+      await expect(sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 }))
         .rejects.toThrow();
     });
   });
@@ -461,18 +449,13 @@ describe('WildberriesSDK Multi-Module Integration', () => {
           objectIDs: [],
           tagIDs: [],
           nmIDs: [],
-          timezone: 'Europe/Moscow',
           period: {
             begin: '2024-01-01 00:00:00',
             end: '2024-01-31 23:59:59'
           },
-          orderBy: {
-            field: 'orderCount',
-            mode: 'desc'
-          },
           page: 1
         }),
-        sdk.communications.getReviews({ take: 100, skip: 0 }),
+        sdk.communications.getReviews({ isAnswered: false, take: 100, skip: 0 }),
         sdk.reports.getStocks('2024-01-01')
       ]);
 
@@ -484,7 +467,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
 
       // Calculate basic dashboard metrics
       const totalBalance = balance.for_withdraw || 0;
-      const totalOrders = salesFunnel.data.reduce((sum, item) => {
+      const totalOrders = salesFunnel.data.cards.reduce((sum: number, item: { statistics?: { selectedPeriod?: { ordersCount?: number } } }) => {
         return sum + (item.statistics?.selectedPeriod?.ordersCount ?? 0);
       }, 0);
       const avgRating = reviews.data.feedbacks.length > 0
@@ -513,27 +496,22 @@ describe('WildberriesSDK Multi-Module Integration', () => {
           objectIDs: [],
           tagIDs: [],
           nmIDs: [productId],
-          timezone: 'Europe/Moscow',
           period: {
             begin: '2024-01-01 00:00:00',
             end: '2024-01-31 23:59:59'
           },
-          orderBy: {
-            field: 'orderCount',
-            mode: 'desc'
-          },
           page: 1
         }),
-        sdk.communications.getReviews({ nmId: productId, take: 100, skip: 0 }),
+        sdk.communications.getReviews({ isAnswered: false, nmId: productId, take: 100, skip: 0 }),
         sdk.reports.getStocks('2024-01-01')
       ]);
 
       // Verify product data exists
-      expect(salesFunnel.data.some((item) => {
+      expect(salesFunnel.data.cards.some((item: { nmID?: number }) => {
         return item.nmID === productId;
       })).toBe(true);
       expect(reviews.data.feedbacks.some((r) => {
-        return r.nmId === productId;
+        return r.productDetails.nmId === productId;
       })).toBe(true);
       expect(stocks.some((s) => {
         return s.nmId === productId;
