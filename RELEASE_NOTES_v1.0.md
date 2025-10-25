@@ -521,7 +521,6 @@ For production deployments, monitor:
 **Development Team**:
 - **Product Owner**: Sarah (PO Agent) - Requirements validation and process stewardship
 - **Test Architect**: Quinn (QA Agent) - Quality assurance and testing strategy
-- **Development**: Claude 3.5 Sonnet (claude-sonnet-4-5-20250929)
 
 **Quality Assurance**:
 - ✅ 37 epic stories reviewed and approved
