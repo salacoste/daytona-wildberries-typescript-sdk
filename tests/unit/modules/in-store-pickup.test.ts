@@ -95,7 +95,6 @@ describe('InStorePickupModule', () => {
         orders: [
           {
             id: 12345,
-            supplierStatus: 'new' as const,
             wbStatus: 'waiting' as const,
             orderCode: '21117866-0006',
             article: 'TEST-ART-001',
@@ -393,7 +392,6 @@ describe('InStorePickupModule', () => {
         orders: [
           {
             id: 12345,
-            supplierStatus: 'prepare' as const,
             wbStatus: 'waiting' as const,
             orderCode: '21117866-0006',
             article: 'TEST-ART-001',
@@ -466,12 +464,10 @@ describe('InStorePickupModule', () => {
         orders: [
           {
             id: 12345,
-            supplierStatus: 'confirm' as const,
             wbStatus: 'waiting' as const,
           },
           {
             id: 67890,
-            supplierStatus: 'receive' as const,
             wbStatus: 'complete' as const,
           },
         ],
@@ -506,9 +502,9 @@ describe('InStorePickupModule', () => {
         expect(result).toEqual(mockStatusesResponse);
         expect(result.orders).toHaveLength(2);
         expect(result.orders[0].id).toBe(12345);
-        expect(result.orders[0].supplierStatus).toBe('confirm');
+        expect(result.orders[0].wbStatus).toBe('waiting');
         expect(result.orders[1].id).toBe(67890);
-        expect(result.orders[1].supplierStatus).toBe('receive');
+        expect(result.orders[1].wbStatus).toBe('complete');
       });
 
       it('should use correct rate limit key (300 req/min)', async () => {
@@ -588,8 +584,7 @@ describe('InStorePickupModule', () => {
 
     describe('verifyCustomerIdentity()', () => {
       const mockVerificationResponse = {
-        checked: true,
-        orderId: 12345,
+        ok: true,
       };
 
       const verificationData = {
@@ -656,10 +651,20 @@ describe('InStorePickupModule', () => {
   describe('Metadata Methods', () => {
     describe('getOrderMetadata()', () => {
       const mockMetadataResponse = {
-        sgtin: ['1234567890123456'],
-        uin: [],
-        imei: ['123456789012345'],
-        gtin: [],
+        meta: {
+          sgtin: {
+            value: ['1234567890123456'],
+          },
+          uin: {
+            value: null,
+          },
+          imei: {
+            value: '123456789012345',
+          },
+          gtin: {
+            value: null,
+          },
+        },
       };
 
       const orderId = 12345;
