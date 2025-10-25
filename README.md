@@ -11,6 +11,18 @@ Transform 11 OpenAPI specifications into a production-ready SDK with complete ty
 
 ---
 
+## 📚 Documentation
+
+**Quick Links:**
+- [FAQ](FAQ.md) - Frequently asked questions and troubleshooting
+- [Contributing](CONTRIBUTING.md) - How to contribute code, tests, and documentation
+- [Security Policy](SECURITY.md) - Vulnerability reporting and security best practices
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Community standards and guidelines
+- [Examples](examples/) - Working code examples for all modules
+- [CHANGELOG](CHANGELOG.md) - Version history and release notes
+
+---
+
 ## Features
 
 ✅ **Complete API Coverage** - All 11 Wildberries API modules (Products, Orders, Finances, Analytics, etc.)
@@ -30,7 +42,7 @@ npm install daytona-wildberries-typescript-sdk
 ```
 
 **Requirements:**
-- Node.js 18.x, 20.x, or 22.x
+- Node.js 20.x or 22.x (18.x no longer supported)
 - TypeScript 5.x (for TypeScript projects)
 
 ---
