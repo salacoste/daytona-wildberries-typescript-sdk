@@ -1,0 +1,33 @@
+schema: 1
+story: "1.8"
+story_title: "Code Generation Framework - Rate Limit Parser"
+gate: FAIL
+status_reason: "Zero test coverage for rate limit parser (717 LOC) despite critical regex parsing logic for Russian text"
+reviewer: "Quinn (Test Architect)"
+updated: "2025-10-22T02:15:00Z"
+
+waiver: { active: false }
+
+top_issues:
+  - id: "TEST-004"
+    severity: high
+    finding: "No tests for rate-limit-parser.ts (717 lines) and rate-limit-file-writer.ts (267 lines)"
+    impact: "Cannot validate Russian table parsing, regex patterns, edge cases, or defaults"
+    suggested_action: "Create comprehensive test suite (4-6 hours)"
+    estimated_effort: "4-6 hours"
+    suggested_owner: "dev"
+
+risk_summary:
+  totals: { critical: 0, high: 1, medium: 0, low: 0 }
+  highest: { risk_id: "TEST-004", score: 8.5, rationale: "Complex parsing logic untested" }
+
+quality_score: 65
+evidence: { tests_reviewed: 0, files_reviewed: 2, risks_identified: 1 }
+nfr_validation:
+  reliability: { status: FAIL, notes: "Cannot assess without tests" }
+
+recommendations:
+  immediate:
+    - action: "Create test suite for rate limit parser"
+      priority: "CRITICAL"
+      estimated_effort: "4-6 hours"

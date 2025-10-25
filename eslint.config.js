@@ -40,6 +40,12 @@ export default tseslint.config(
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/prefer-optional-chain': 'error',
+
+      // Allow numbers and booleans in template expressions (TypeScript safely converts them)
+      '@typescript-eslint/restrict-template-expressions': ['error', {
+        allowNumber: true,
+        allowBoolean: true,
+      }],
     },
   },
   {

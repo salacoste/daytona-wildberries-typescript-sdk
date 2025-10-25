@@ -1,0 +1,66 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "name": "Wildberries API TypeScript SDK",
+  "includeVersion": true,
+  "readme": "README.md",
+  "exclude": [
+    "**/node_modules/**",
+    "**tests/**",
+    "**dist/**",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**tools/**",
+    "**examples/**"
+  ],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": false,
+  "excludeExternals": true,
+  "excludeNotDocumented": false,
+  "skipErrorChecking": true,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
+  },
+  "plugin": [],
+  "theme": "default",
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "SDK",
+    "Modules",
+    "Configuration",
+    "Errors",
+    "Types",
+    "*"
+  ],
+  "sort": ["source-order"],
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  },
+  "searchInComments": true,
+  "navigationLinks": {
+    "Wildberries API Docs": "https://dev.wildberries.ru/",
+    "GitHub": "https://github.com/anthropics/wildberries-typescript-sdk",
+    "NPM": "https://www.npmjs.com/package/daytona-wildberries-typescript-sdk"
+  },
+  "sidebarLinks": {
+    "GitHub": "https://github.com/anthropics/wildberries-typescript-sdk",
+    "Documentation": "https://dev.wildberries.ru/"
+  },
+  "hideGenerator": false,
+  "visibilityFilters": {
+    "protected": false,
+    "private": false,
+    "inherited": true,
+    "external": false
+  },
+  "searchGroupBoosts": {
+    "SDK": 2,
+    "Modules": 1.5
+  }
+}

@@ -1,0 +1,22 @@
+# Quality Gate Decision - Story 3.5
+schema: 1
+story: "3.5"
+story_title: "Communications Module - Customer Chat"
+gate: PASS
+status_reason: "Communications module with chat management fully implemented. 32 tests passing, real-time messaging patterns documented."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-10-23T03:00:00Z"
+waiver: { active: false }
+top_issues: []
+risk_summary:
+  totals: { critical: 0, high: 0, medium: 0, low: 0 }
+quality_score: 93
+expires: "2025-11-06T00:00:00Z"
+evidence:
+  tests_reviewed: 32
+  trace: { ac_covered: [1,2,3,4,5,6,7,8,9,10,11], ac_gaps: [] }
+nfr_validation:
+  security: { status: PASS }
+  performance: { status: PASS }
+  reliability: { status: PASS }
+  maintainability: { status: PASS }
