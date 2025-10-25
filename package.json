@@ -1,6 +1,6 @@
 {
   "name": "daytona-wildberries-typescript-sdk",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Full-featured TypeScript SDK providing type-safe access to all Wildberries marketplace API methods",
   "keywords": [
     "wildberries",
@@ -23,6 +23,26 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./dist/esm/index.d.ts"
+    },
+    "./finances": {
+      "import": "./dist/esm/modules/finances/index.js",
+      "require": "./dist/cjs/modules/finances/index.js",
+      "types": "./dist/esm/modules/finances/index.d.ts"
+    },
+    "./analytics": {
+      "import": "./dist/esm/modules/analytics/index.js",
+      "require": "./dist/cjs/modules/analytics/index.js",
+      "types": "./dist/esm/modules/analytics/index.d.ts"
+    },
+    "./communications": {
+      "import": "./dist/esm/modules/communications/index.js",
+      "require": "./dist/cjs/modules/communications/index.js",
+      "types": "./dist/esm/modules/communications/index.d.ts"
+    },
+    "./reports": {
+      "import": "./dist/esm/modules/reports/index.js",
+      "require": "./dist/cjs/modules/reports/index.js",
+      "types": "./dist/esm/modules/reports/index.d.ts"
     }
   },
   "files": [
@@ -51,20 +71,39 @@
     "lint:fix": "eslint src tests --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch",
+    "docs:serve": "npx http-server docs/api -p 8080 -o",
+    "generate": "tsx tools/generate-sdk.ts",
+    "generate:types": "tsx tools/generate-sdk.ts --types-only",
+    "generate:general": "tsx tools/generate-sdk.ts wildberries_api_doc/01-general.yaml",
+    "example:product-workflow": "tsx examples/complete-product-workflow.ts",
+    "example:fbs-fulfillment": "tsx examples/orders-fbs-fulfillment.ts",
+    "example:fbw-fulfillment": "tsx examples/orders-fbw-fulfillment.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.8.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitest/coverage-v8": "^1.2.2",
+    "axios-mock-adapter": "^1.22.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.2",
+    "js-yaml": "^4.1.0",
+    "msw": "^2.11.5",
     "prettier": "^3.2.4",
+    "tsx": "^4.20.6",
+    "typedoc": "^0.28.14",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.46.1",
     "vite": "^5.0.12",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^1.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.6.7"
   }
 }

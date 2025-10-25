@@ -1,0 +1,414 @@
+/**
+ * Complete Product CRUD Example (Story 2.2)
+ *
+ * Demonstrates the full product lifecycle:
+ * 1. Create new product card
+ * 2. List/search products
+ * 3. Get single product
+ * 4. Update product (IMPORTANT: requires ALL fields)
+ * 5. Delete product (soft delete to trash)
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
+ */
+
+import { WildberriesSDK } from '../src/index';
+import type { CreateProductRequest, UpdateProductRequest } from '../src/types/products.types';
+
+// Initialize SDK with your API key
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY || 'your-api-key-here'
+});
+
+/**
+ * Example 1: Create a Complete Product Card
+ *
+ * Rate limit: 10 requests/min, 6 second interval
+ * Processing: Asynchronous - check error list if needed
+ */
+async function createProductExample() {
+  console.log('\n=== Example 1: Create Product ===\n');
+
+  const newProduct: CreateProductRequest = {
+    subjectID: 105,  // Category ID from getCategories endpoint
+    variants: [{
+      // Required fields
+      vendorCode: 'EXAMPLE-PROD-001',  // Your unique article ID (max 72 chars)
+
+      // Product information
+      brand: 'Example Brand',
+      title: 'Premium Cotton T-Shirt',  // Max 60 characters
+      description: `
+        High-quality cotton t-shirt perfect for everyday wear.
+        Made from 100% organic cotton with reinforced stitching.
+        Available in multiple sizes and colors.
+        Machine washable, tumble dry low.
+      `.trim(),  // 1000-5000 chars depending on category
+
+      // Dimensions and weight
+      dimensions: {
+        length: 30,          // cm
+        width: 25,           // cm
+        height: 2,           // cm
+        weightBrutto: 0.25   // kg (with packaging, max 3 decimal places)
+      },
+
+      // Sizes and barcodes
+      sizes: [
+        {
+          techSize: 'S',
+          wbSize: '44',
+          skus: ['1234567890123']  // EAN-13 barcode (or omit for auto-generation)
+        },
+        {
+          techSize: 'M',
+          wbSize: '46',
+          skus: ['1234567890124']
+        },
+        {
+          techSize: 'L',
+          wbSize: '48',
+          skus: ['1234567890125']
+        },
+        {
+          techSize: 'XL',
+          wbSize: '50',
+          skus: ['1234567890126']
+        }
+      ],
+
+      // Product characteristics from getCharacteristics
+      characteristics: [
+        { id: 1, value: ['Red'] },           // Color
+        { id: 2, value: ['Cotton'] },        // Material
+        { id: 3, value: ['Unisex'] },        // Gender
+        { id: 4, value: ['Russia'] }         // Country of origin
+      ],
+
+      // Optional: Wholesale settings
+      wholesale: {
+        enabled: true,
+        quantum: 10  // Units per wholesale package
+      }
+    }]
+  };
+
+  try {
+    const result = await sdk.products.createProduct(newProduct);
+
+    if (result.error) {
+      console.error('❌ Product creation failed:', result.errorText);
+      console.log('Check error list: /content/v2/cards/error/list');
+    } else {
+      console.log('✅ Product queued for creation (async processing)');
+      console.log('Response:', JSON.stringify(result, null, 2));
+    }
+  } catch (error) {
+    console.error('❌ Error creating product:', error);
+  }
+}
+
+/**
+ * Example 2: List Products with Filtering and Pagination
+ *
+ * Rate limit: 100 requests/min, 600ms interval
+ */
+async function listProductsExample() {
+  console.log('\n=== Example 2: List Products ===\n');
+
+  try {
+    // Get first page with filters
+    const page1 = await sdk.products.listProducts({
+      filter: {
+        withPhoto: 1,                    // Only products with photos
+        brands: ['Example Brand'],       // Filter by brand
+        textSearch: 'T-Shirt'           // Search in vendorCode/nmID/barcode
+      },
+      cursor: {
+        limit: 100                       // Max 100 per page
+      },
+      sort: {
+        ascending: false                 // Newest first
+      }
+    });
+
+    console.log(`Found ${page1.cursor?.total} total products`);
+    console.log(`Page 1: ${page1.cards?.length} products\n`);
+
+    page1.cards?.slice(0, 3).forEach(card => {
+      console.log(`- nmID: ${card.nmID}, Vendor: ${card.vendorCode}, Title: ${card.title}`);
+    });
+
+    // Get next page using cursor (if more than 100 products)
+    if (page1.cursor?.updatedAt && page1.cursor.nmID && (page1.cursor?.total ?? 0) > 100) {
+      console.log('\nFetching page 2...');
+
+      const page2 = await sdk.products.listProducts({
+        filter: {
+          withPhoto: 1,
+          brands: ['Example Brand']
+        },
+        cursor: {
+          limit: 100,
+          updatedAt: page1.cursor.updatedAt,  // From previous response
+          nmID: page1.cursor.nmID              // From previous response
+        }
+      });
+
+      console.log(`Page 2: ${page2.cards?.length} more products`);
+    }
+  } catch (error) {
+    console.error('❌ Error listing products:', error);
+  }
+}
+
+/**
+ * Example 3: Get Single Product by nmID
+ *
+ * Convenience method wrapping listProducts with textSearch
+ * Rate limit: 100 requests/min, 600ms interval
+ */
+async function getProductExample() {
+  console.log('\n=== Example 3: Get Single Product ===\n');
+
+  const nmID = 12345;  // Replace with actual Wildberries article ID
+
+  try {
+    const product = await sdk.products.getProductCard(nmID);
+
+    if (product) {
+      console.log('✅ Product found:');
+      console.log(`- nmID: ${product.nmID}`);
+      console.log(`- Vendor Code: ${product.vendorCode}`);
+      console.log(`- Brand: ${product.brand}`);
+      console.log(`- Title: ${product.title}`);
+      console.log(`- Sizes: ${product.sizes?.length || 0}`);
+      console.log(`- Created: ${product.createdAt}`);
+      console.log(`- Updated: ${product.updatedAt}`);
+    } else {
+      console.log('❌ Product not found (may be in trash or deleted)');
+    }
+  } catch (error) {
+    console.error('❌ Error getting product:', error);
+  }
+}
+
+/**
+ * Example 4: Update Product (CRITICAL: Send ALL Fields!)
+ *
+ * ⚠️ WARNING: This endpoint COMPLETELY REPLACES the product card.
+ * Missing fields will be REMOVED from the product!
+ *
+ * Correct workflow:
+ * 1. Get current product
+ * 2. Modify desired fields
+ * 3. Send ALL fields (including unchanged ones)
+ *
+ * Rate limit: 10 requests/min, 6 second interval
+ */
+async function updateProductExample() {
+  console.log('\n=== Example 4: Update Product (SAFE METHOD) ===\n');
+
+  const nmID = 12345;  // Replace with actual Wildberries article ID
+
+  try {
+    // Step 1: Get current product state
+    const current = await sdk.products.getProductCard(nmID);
+
+    if (!current || !current.nmID || !current.vendorCode) {
+      console.error('❌ Product not found or missing required fields');
+      return;
+    }
+
+    console.log('Current product title:', current.title);
+
+    // Step 2: Create update request with ALL fields
+    const updateRequest: UpdateProductRequest = {
+      // Required fields
+      nmID: current.nmID,
+      vendorCode: current.vendorCode,
+      sizes: current.sizes?.map(s => ({
+        chrtID: s.chrtID,      // Required for existing sizes
+        techSize: s.techSize,
+        wbSize: s.wbSize,
+        skus: s.skus
+      })) ?? [],
+
+      // Optional fields - MUST include even if unchanged
+      brand: current.brand,
+      title: 'UPDATED: Premium Cotton T-Shirt',  // ← Only this changed
+      description: current.description,           // ← Keep unchanged
+      dimensions: current.dimensions,             // ← Keep unchanged
+      characteristics: current.characteristics?.map(c => ({
+        id: c.id ?? 0,
+        value: c.value
+      }))                                         // ← Keep unchanged
+    };
+
+    // Step 3: Send update
+    const result = await sdk.products.updateProduct([updateRequest]);
+
+    if (result.error) {
+      console.error('❌ Update failed:', result.errorText);
+    } else {
+      console.log('✅ Product updated (async processing)');
+      console.log('New title will be: UPDATED: Premium Cotton T-Shirt');
+    }
+  } catch (error) {
+    console.error('❌ Error updating product:', error);
+  }
+}
+
+/**
+ * Example 5: Batch Update Multiple Products
+ *
+ * Update up to 3000 products in a single request
+ */
+async function batchUpdateExample() {
+  console.log('\n=== Example 5: Batch Update ===\n');
+
+  const updates: UpdateProductRequest[] = [
+    {
+      nmID: 12345,
+      vendorCode: 'PROD-001',
+      sizes: [],
+      title: 'Updated Product 1'
+    },
+    {
+      nmID: 12346,
+      vendorCode: 'PROD-002',
+      sizes: [],
+      title: 'Updated Product 2'
+    },
+    {
+      nmID: 12347,
+      vendorCode: 'PROD-003',
+      sizes: [],
+      title: 'Updated Product 3'
+    }
+  ];
+
+  try {
+    const result = await sdk.products.updateProduct(updates);
+    console.log(`✅ Batch update ${updates.length} products queued`);
+    console.log('Error:', result.error);
+  } catch (error) {
+    console.error('❌ Batch update failed:', error);
+  }
+}
+
+/**
+ * Example 6: Delete Product (Soft Delete to Trash)
+ *
+ * - Cards moved to trash, not permanently deleted
+ * - Can be recovered before auto-deletion
+ * - Auto-deleted after 30 days in trash
+ *
+ * Rate limit: 100 requests/min, 600ms interval
+ */
+async function deleteProductExample() {
+  console.log('\n=== Example 6: Delete Product (Soft Delete) ===\n');
+
+  const nmIDsToDelete = [12345];  // Max 1000 per request
+
+  try {
+    const result = await sdk.products.deleteProduct(nmIDsToDelete);
+
+    if (result.error) {
+      console.error('❌ Deletion failed:', result.errorText);
+    } else {
+      console.log('✅ Products moved to trash:');
+      console.log(`- ${nmIDsToDelete.length} products deleted`);
+      console.log('- Auto-deletion in 30 days (nightly Moscow time)');
+      console.log('- Recover using: sdk.products.createCardsRecover()');
+      console.log('- New imtID will be assigned after moving to trash');
+    }
+  } catch (error) {
+    console.error('❌ Error deleting products:', error);
+  }
+}
+
+/**
+ * Example 7: Complete Product Lifecycle
+ *
+ * Demonstrates create → verify → update → delete workflow
+ */
+async function completeLifecycleExample() {
+  console.log('\n=== Example 7: Complete Lifecycle ===\n');
+
+  try {
+    // 1. Create
+    console.log('Step 1: Creating product...');
+    const createData: CreateProductRequest = {
+      subjectID: 105,
+      variants: [{
+        vendorCode: 'LIFECYCLE-TEST-001',
+        brand: 'Test Brand',
+        title: 'Lifecycle Test Product',
+        sizes: [{ techSize: 'M', skus: ['9999999999999'] }]
+      }]
+    };
+    await sdk.products.createProduct(createData);
+    console.log('✅ Product created (async)');
+
+    // Wait for async processing (in real app, poll or check later)
+    console.log('\n⏳ Waiting for async processing...');
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    // 2. Verify
+    console.log('\nStep 2: Verifying product exists...');
+    const list = await sdk.products.listProducts({
+      filter: { textSearch: 'LIFECYCLE-TEST-001' }
+    });
+    const product = list.cards?.[0];
+
+    if (product?.nmID) {
+      console.log(`✅ Product found: nmID ${product.nmID}`);
+
+      // 3. Update
+      console.log('\nStep 3: Updating product...');
+      if (product.vendorCode) {
+        await sdk.products.updateProduct([{
+          nmID: product.nmID,
+          vendorCode: product.vendorCode,
+          sizes: product.sizes?.map(s => ({
+            chrtID: s.chrtID,
+            techSize: s.techSize,
+            skus: s.skus
+          })) ?? [],
+          title: 'UPDATED: Lifecycle Test Product'
+        }]);
+        console.log('✅ Product updated');
+      }
+
+      // 4. Delete
+      console.log('\nStep 4: Deleting product...');
+      await sdk.products.deleteProduct([product.nmID]);
+      console.log('✅ Product moved to trash');
+    }
+
+    console.log('\n✅ Lifecycle complete!');
+  } catch (error) {
+    console.error('❌ Lifecycle error:', error);
+  }
+}
+
+// Run examples
+async function main() {
+  console.log('Wildberries SDK - Products CRUD Examples');
+  console.log('=========================================');
+
+  await createProductExample();
+  await listProductsExample();
+  await getProductExample();
+  await updateProductExample();
+  await batchUpdateExample();
+  await deleteProductExample();
+  await completeLifecycleExample();
+
+  console.log('\n✅ All examples completed!');
+}
+
+// Run if executed directly
+if (require.main === module) {
+  main().catch(console.error);
+}

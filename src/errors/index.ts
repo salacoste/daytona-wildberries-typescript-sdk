@@ -12,7 +12,11 @@
  *         ├── AuthenticationError (401, 403)
  *         ├── RateLimitError (429)
  *         ├── ValidationError (400, 422)
- *         └── NetworkError (timeouts, 5xx)
+ *         │     └── InvalidBidError (bid validation failures)
+ *         ├── NetworkError (timeouts, 5xx)
+ *         ├── CampaignNotFoundError (404)
+ *         ├── BudgetExceededError (400)
+ *         └── InvalidCampaignStateError (400)
  * ```
  *
  * ## Usage Patterns
@@ -105,3 +109,19 @@ export { AuthenticationError } from './auth-error';
 export { RateLimitError } from './rate-limit-error';
 export { ValidationError } from './validation-error';
 export { NetworkError } from './network-error';
+
+// Promotion-specific errors
+export {
+  CampaignNotFoundError,
+  InvalidBidError,
+  BudgetExceededError,
+  InvalidCampaignStateError,
+} from './promotion-errors';
+
+// In-Store Pickup specific errors
+export {
+  PickupOrderNotFoundError,
+  InvalidOrderStateError,
+  CustomerVerificationError,
+  MetadataValidationError,
+} from './in-store-pickup-errors';
