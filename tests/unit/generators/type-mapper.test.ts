@@ -234,7 +234,7 @@ describe('type-mapper', () => {
     });
 
     it('should handle complex oneOf with $ref', () => {
-      const allSchemas = {
+      const allSchemas: Record<string, SchemaObject> = {
         ErrorResponse: { type: 'object' },
         SuccessResponse: { type: 'object' },
       };

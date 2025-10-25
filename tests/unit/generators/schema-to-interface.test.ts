@@ -387,7 +387,7 @@ describe('schema-to-interface', () => {
     });
 
     it('should handle schema with allOf composition', () => {
-      const allSchemas = {
+      const allSchemas: Record<string, SchemaObject> = {
         Base: { type: 'object', properties: { id: { type: 'number' } } },
         Extended: { type: 'object', properties: { name: { type: 'string' } } },
       };

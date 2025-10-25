@@ -159,7 +159,7 @@ describe('Rate Limit Parser', () => {
       let consoleSpy: ReturnType<typeof vi.spyOn>;
 
       beforeEach(() => {
-        consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
       });
 
       afterEach(() => {
@@ -420,8 +420,8 @@ describe('Rate Limit Parser', () => {
     let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
+      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
     });
 
     afterEach(() => {
@@ -514,8 +514,8 @@ describe('Rate Limit Parser', () => {
     let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
+      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
     });
 
     afterEach(() => {

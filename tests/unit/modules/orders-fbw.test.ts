@@ -339,7 +339,7 @@ describe('OrdersFBWModule', () => {
     it('should throw ValidationError for invalid status ID', async () => {
       const filters = {
         dates: [],
-        statusIDs: [7] as ModelsHandySupplyStatus[], // Invalid: must be 1-6
+        statusIDs: [7 as unknown as ModelsHandySupplyStatus], // Invalid: must be 1-6
       };
 
       await expect(ordersFBW.getSupplies(filters)).rejects.toThrow(ValidationError);
