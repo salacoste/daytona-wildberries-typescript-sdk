@@ -21,8 +21,6 @@ import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { WildberriesSDK } from '../../src';
-import type { Transaction } from '../../src/types/finances.types';
-import type { SalesItem } from '../../src/types/reports.types';
 
 // MSW Server Setup with all required endpoints
 const server = setupServer(
@@ -38,56 +36,309 @@ const server = setupServer(
   http.get('https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod', () => {
     return HttpResponse.json([
       {
-        transactionId: 1001,
-        nmId: 12345,
+        realizationreport_id: 1001,
+        date_from: '2025-10-01',
+        date_to: '2025-10-23',
+        create_dt: '2025-10-20T10:00:00Z',
+        currency_name: 'RUB',
+        suppliercontract_code: null,
+        rrd_id: 1001,
+        gi_id: 1,
+        dlv_prc: 0,
+        fix_tariff_date_from: '2025-10-01',
+        fix_tariff_date_to: '2025-10-23',
+        subject_name: 'Electronics',
+        nm_id: 12345,
+        brand_name: 'TestBrand',
+        sa_name: 'SKU001',
+        ts_name: 'M',
+        barcode: '1234567890',
+        doc_type_name: 'Продажа',
+        quantity: 1,
+        retail_price: 2000.00,
+        retail_amount: 2000.00,
+        sale_percent: 25,
+        commission_percent: 15,
+        office_name: 'Moscow Office',
+        supplier_oper_name: 'Sale',
+        order_dt: '2025-10-19T10:00:00Z',
+        sale_dt: '2025-10-20T10:00:00Z',
+        rr_dt: null,
+        shk_id: 1,
+        retail_price_withdisc_rub: 1500.00,
+        delivery_rub: 0,
+        gi_box_type_name: 'Box',
+        product_discount_for_report: 25,
+        supplier_promo: 0,
+        ppvz_kvw_prc_base_date: null,
+        ppvz_kvw_prc: 0,
+        ppvz_sales_commission: 225.00,
         ppvz_for_pay: 1500.00,
-        date: '2025-10-20T10:00:00Z',
-        saleID: 'S12345'
+        ppvz_reward: 0,
+        acquiring_fee: 22.50,
+        acquiring_percent: 1.5,
+        acquiring_bank: 'Test Bank',
+        ppvz_vw: 0,
+        ppvz_vw_nds: 0,
+        stock_id: null,
+        supplier_oper_id: 'S12345',
+        country_name: 'Russia',
+        bonus_type_name: null,
+        srid: 'S12345'
       },
       {
-        transactionId: 1002,
-        nmId: 12346,
+        realizationreport_id: 1002,
+        date_from: '2025-10-01',
+        date_to: '2025-10-23',
+        create_dt: '2025-10-21T14:30:00Z',
+        currency_name: 'RUB',
+        suppliercontract_code: null,
+        rrd_id: 1002,
+        gi_id: 2,
+        dlv_prc: 0,
+        fix_tariff_date_from: '2025-10-01',
+        fix_tariff_date_to: '2025-10-23',
+        subject_name: 'Electronics',
+        nm_id: 12346,
+        brand_name: 'TestBrand',
+        sa_name: 'SKU002',
+        ts_name: 'L',
+        barcode: '1234567891',
+        doc_type_name: 'Продажа',
+        quantity: 1,
+        retail_price: 3000.00,
+        retail_amount: 3000.00,
+        sale_percent: 17,
+        commission_percent: 15,
+        office_name: 'Moscow Office',
+        supplier_oper_name: 'Sale',
+        order_dt: '2025-10-20T14:30:00Z',
+        sale_dt: '2025-10-21T14:30:00Z',
+        rr_dt: null,
+        shk_id: 2,
+        retail_price_withdisc_rub: 2500.00,
+        delivery_rub: 0,
+        gi_box_type_name: 'Box',
+        product_discount_for_report: 17,
+        supplier_promo: 0,
+        ppvz_kvw_prc_base_date: null,
+        ppvz_kvw_prc: 0,
+        ppvz_sales_commission: 375.00,
         ppvz_for_pay: 2500.00,
-        date: '2025-10-21T14:30:00Z',
-        saleID: 'S12346'
+        ppvz_reward: 0,
+        acquiring_fee: 37.50,
+        acquiring_percent: 1.5,
+        acquiring_bank: 'Test Bank',
+        ppvz_vw: 0,
+        ppvz_vw_nds: 0,
+        stock_id: null,
+        supplier_oper_id: 'S12346',
+        country_name: 'Russia',
+        bonus_type_name: null,
+        srid: 'S12346'
       },
       {
-        transactionId: 1003,
-        nmId: 12345,
+        realizationreport_id: 1003,
+        date_from: '2025-10-01',
+        date_to: '2025-10-23',
+        create_dt: '2025-10-22T09:15:00Z',
+        currency_name: 'RUB',
+        suppliercontract_code: null,
+        rrd_id: 1003,
+        gi_id: 3,
+        dlv_prc: 0,
+        fix_tariff_date_from: '2025-10-01',
+        fix_tariff_date_to: '2025-10-23',
+        subject_name: 'Electronics',
+        nm_id: 12345,
+        brand_name: 'TestBrand',
+        sa_name: 'SKU001',
+        ts_name: 'M',
+        barcode: '1234567890',
+        doc_type_name: 'Продажа',
+        quantity: 1,
+        retail_price: 2000.00,
+        retail_amount: 2000.00,
+        sale_percent: 25,
+        commission_percent: 15,
+        office_name: 'Moscow Office',
+        supplier_oper_name: 'Sale',
+        order_dt: '2025-10-21T09:15:00Z',
+        sale_dt: '2025-10-22T09:15:00Z',
+        rr_dt: null,
+        shk_id: 3,
+        retail_price_withdisc_rub: 1500.00,
+        delivery_rub: 0,
+        gi_box_type_name: 'Box',
+        product_discount_for_report: 25,
+        supplier_promo: 0,
+        ppvz_kvw_prc_base_date: null,
+        ppvz_kvw_prc: 0,
+        ppvz_sales_commission: 225.00,
         ppvz_for_pay: 1500.00,
-        date: '2025-10-22T09:15:00Z',
-        saleID: 'S12347'
+        ppvz_reward: 0,
+        acquiring_fee: 22.50,
+        acquiring_percent: 1.5,
+        acquiring_bank: 'Test Bank',
+        ppvz_vw: 0,
+        ppvz_vw_nds: 0,
+        stock_id: null,
+        supplier_oper_id: 'S12347',
+        country_name: 'Russia',
+        bonus_type_name: null,
+        srid: 'S12347'
       }
-    ] as Transaction[]);
+    ]);
   }),
 
   // Analytics API - Sales Statistics
   http.post('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail', () => {
     return HttpResponse.json({
-      data: [
-        {
-          nmID: 12345,
-          vendorCode: 'SKU001',
-          brandName: 'TestBrand',
-          openCard: 1000,
-          addToCartCount: 200,
-          ordersCount: 150,
-          buyoutsCount: 120,
-          cancelCount: 30,
-          avgPriceRub: 1500
-        },
-        {
-          nmID: 12346,
-          vendorCode: 'SKU002',
-          brandName: 'TestBrand',
-          openCard: 800,
-          addToCartCount: 150,
-          ordersCount: 100,
-          buyoutsCount: 80,
-          cancelCount: 20,
-          avgPriceRub: 2500
-        }
-      ] as NmReportDetailedByPeriodItem[]
+      error: false,
+      errorText: '',
+      additionalErrors: null,
+      data: {
+        page: 1,
+        isNextPage: false,
+        cards: [
+          {
+            nmID: 12345,
+            vendorCode: 'SKU001',
+            brandName: 'TestBrand',
+            tags: [],
+            object: { id: 1, name: 'Electronics' },
+            statistics: {
+              selectedPeriod: {
+                begin: '2025-10-01T00:00:00Z',
+                end: '2025-10-23T23:59:59Z',
+                openCardCount: 1000,
+                addToCartCount: 200,
+                ordersCount: 150,
+                ordersSumRub: 225000,
+                buyoutsCount: 120,
+                buyoutsSumRub: 180000,
+                cancelCount: 30,
+                cancelSumRub: 45000,
+                avgPriceRub: 1500,
+                avgOrdersCountPerDay: 6.52,
+                conversions: {
+                  addToCartPercent: 20,
+                  cartToOrderPercent: 75,
+                  buyoutsPercent: 80
+                }
+              },
+              previousPeriod: {
+                begin: '2025-09-01T00:00:00Z',
+                end: '2025-09-23T23:59:59Z',
+                openCardCount: 900,
+                addToCartCount: 180,
+                ordersCount: 140,
+                ordersSumRub: 210000,
+                buyoutsCount: 110,
+                buyoutsSumRub: 165000,
+                cancelCount: 30,
+                cancelSumRub: 45000,
+                avgPriceRub: 1500,
+                avgOrdersCountPerDay: 6.08,
+                conversions: {
+                  addToCartPercent: 20,
+                  cartToOrderPercent: 77.78,
+                  buyoutsPercent: 78.57
+                }
+              },
+              periodComparison: {
+                openCardDynamics: 11.11,
+                addToCartDynamics: 11.11,
+                ordersCountDynamics: 7.14,
+                ordersSumRubDynamics: 7.14,
+                buyoutsCountDynamics: 9.09,
+                buyoutsSumRubDynamics: 9.09,
+                cancelCountDynamics: 0,
+                cancelSumRubDynamics: 0,
+                avgOrdersCountPerDayDynamics: 7.23,
+                avgPriceRubDynamics: 0,
+                conversions: {
+                  addToCartPercent: 0,
+                  cartToOrderPercent: -2.78,
+                  buyoutsPercent: 1.43
+                }
+              }
+            },
+            stocks: {
+              stocksMp: 50,
+              stocksWb: 100
+            }
+          },
+          {
+            nmID: 12346,
+            vendorCode: 'SKU002',
+            brandName: 'TestBrand',
+            tags: [],
+            object: { id: 1, name: 'Electronics' },
+            statistics: {
+              selectedPeriod: {
+                begin: '2025-10-01T00:00:00Z',
+                end: '2025-10-23T23:59:59Z',
+                openCardCount: 800,
+                addToCartCount: 150,
+                ordersCount: 100,
+                ordersSumRub: 250000,
+                buyoutsCount: 80,
+                buyoutsSumRub: 200000,
+                cancelCount: 20,
+                cancelSumRub: 50000,
+                avgPriceRub: 2500,
+                avgOrdersCountPerDay: 4.35,
+                conversions: {
+                  addToCartPercent: 18.75,
+                  cartToOrderPercent: 66.67,
+                  buyoutsPercent: 80
+                }
+              },
+              previousPeriod: {
+                begin: '2025-09-01T00:00:00Z',
+                end: '2025-09-23T23:59:59Z',
+                openCardCount: 750,
+                addToCartCount: 140,
+                ordersCount: 95,
+                ordersSumRub: 237500,
+                buyoutsCount: 75,
+                buyoutsSumRub: 187500,
+                cancelCount: 20,
+                cancelSumRub: 50000,
+                avgPriceRub: 2500,
+                avgOrdersCountPerDay: 4.13,
+                conversions: {
+                  addToCartPercent: 18.67,
+                  cartToOrderPercent: 67.86,
+                  buyoutsPercent: 78.95
+                }
+              },
+              periodComparison: {
+                openCardDynamics: 6.67,
+                addToCartDynamics: 7.14,
+                ordersCountDynamics: 5.26,
+                ordersSumRubDynamics: 5.26,
+                buyoutsCountDynamics: 6.67,
+                buyoutsSumRubDynamics: 6.67,
+                cancelCountDynamics: 0,
+                cancelSumRubDynamics: 0,
+                avgOrdersCountPerDayDynamics: 5.33,
+                avgPriceRubDynamics: 0,
+                conversions: {
+                  addToCartPercent: 0.08,
+                  cartToOrderPercent: -1.19,
+                  buyoutsPercent: 1.05
+                }
+              }
+            },
+            stocks: {
+              stocksMp: 30,
+              stocksWb: 70
+            }
+          }
+        ]
+      }
     });
   }),
 
@@ -104,30 +355,54 @@ const server = setupServer(
           feedbacks: [
             {
               id: 'R1',
-              nmId: 12345,
-              productValuation: 2,
               text: 'Poor quality product',
+              pros: '',
+              cons: 'Bad quality',
+              productValuation: 2,
               createdDate: '2025-10-22T10:00:00Z',
+              answer: null,
               state: 'none',
-              answer: null
+              productDetails: {
+                nmId: 12345,
+                imtId: 1,
+                productName: 'Test Product 1',
+                supplierArticle: 'SKU001'
+              },
+              photoLinks: null
             },
             {
               id: 'R2',
-              nmId: 12346,
-              productValuation: 1,
               text: 'Terrible experience',
+              pros: '',
+              cons: 'Very bad',
+              productValuation: 1,
               createdDate: '2025-10-21T15:00:00Z',
+              answer: null,
               state: 'none',
-              answer: null
+              productDetails: {
+                nmId: 12346,
+                imtId: 2,
+                productName: 'Test Product 2',
+                supplierArticle: 'SKU002'
+              },
+              photoLinks: null
             },
             {
               id: 'R3',
-              nmId: 12345,
-              productValuation: 5,
               text: 'Great product!',
+              pros: 'Excellent',
+              cons: '',
+              productValuation: 5,
               createdDate: '2025-10-20T12:00:00Z',
+              answer: null,
               state: 'none',
-              answer: null
+              productDetails: {
+                nmId: 12345,
+                imtId: 1,
+                productName: 'Test Product 1',
+                supplierArticle: 'SKU001'
+              },
+              photoLinks: null
             }
           ]
         }
@@ -141,12 +416,24 @@ const server = setupServer(
         feedbacks: [
           {
             id: 'R1',
-            nmId: 12345,
-            productValuation: 4,
             text: 'Good product',
+            pros: 'Nice',
+            cons: '',
+            productValuation: 4,
             createdDate: '2025-10-20T10:00:00Z',
+            answer: {
+              text: 'Thank you!',
+              state: 'none',
+              editable: false
+            },
             state: 'none',
-            answer: { text: 'Thank you!' }
+            productDetails: {
+              nmId: 12345,
+              imtId: 1,
+              productName: 'Test Product 1',
+              supplierArticle: 'SKU001'
+            },
+            photoLinks: null
           }
         ]
       }
@@ -166,19 +453,31 @@ const server = setupServer(
           questions: [
             {
               id: 'Q1',
-              nmId: 12345,
               text: 'What is the warranty?',
               createdDate: '2025-10-19T10:00:00Z',
               state: 'none',
-              answer: null
+              answer: null,
+              productDetails: {
+                nmId: 12345,
+                imtId: 1,
+                productName: 'Test Product 1',
+                supplierArticle: 'SKU001'
+              },
+              wasViewed: false
             },
             {
               id: 'Q2',
-              nmId: 12346,
               text: 'When will it be back in stock?',
               createdDate: '2025-10-15T14:00:00Z',
               state: 'none',
-              answer: null
+              answer: null,
+              productDetails: {
+                nmId: 12346,
+                imtId: 2,
+                productName: 'Test Product 2',
+                supplierArticle: 'SKU002'
+              },
+              wasViewed: false
             }
           ]
         }
@@ -198,24 +497,96 @@ const server = setupServer(
   http.get('https://statistics-api.wildberries.ru/api/v1/supplier/sales', () => {
     return HttpResponse.json([
       {
+        date: '2025-10-20T10:00:00Z',
+        lastChangeDate: '2025-10-20T10:00:00Z',
+        warehouseName: 'Moscow Warehouse',
+        warehouseType: 'Склад WB' as const,
+        countryName: 'Russia',
+        oblastOkrugName: 'Central',
+        regionName: 'Moscow',
+        supplierArticle: 'SKU001',
+        nmId: 12345,
+        barcode: '1234567890',
+        category: 'Electronics',
+        subject: 'Phone',
+        brand: 'TestBrand',
+        techSize: 'M',
+        incomeID: 1,
+        isSupply: true,
+        isRealization: false,
+        totalPrice: 2000.00,
+        discountPercent: 25,
+        spp: 0,
+        paymentSaleAmount: 0,
+        forPay: 1500.00,
+        finishedPrice: 1500.00,
+        priceWithDisc: 1500.00,
         saleID: 'S12345',
-        nmId: 12345,
-        forPay: 1500.00,
-        sale_dt: '2025-10-20T10:00:00Z'
+        sticker: 'ST001',
+        gNumber: 'G001',
+        srid: 'SR001'
       },
       {
-        saleID: 'S12346',
+        date: '2025-10-21T14:30:00Z',
+        lastChangeDate: '2025-10-21T14:30:00Z',
+        warehouseName: 'Moscow Warehouse',
+        warehouseType: 'Склад WB' as const,
+        countryName: 'Russia',
+        oblastOkrugName: 'Central',
+        regionName: 'Moscow',
+        supplierArticle: 'SKU002',
         nmId: 12346,
+        barcode: '1234567891',
+        category: 'Electronics',
+        subject: 'Tablet',
+        brand: 'TestBrand',
+        techSize: 'L',
+        incomeID: 2,
+        isSupply: true,
+        isRealization: false,
+        totalPrice: 3000.00,
+        discountPercent: 17,
+        spp: 0,
+        paymentSaleAmount: 0,
         forPay: 2500.00,
-        sale_dt: '2025-10-21T14:30:00Z'
+        finishedPrice: 2500.00,
+        priceWithDisc: 2500.00,
+        saleID: 'S12346',
+        sticker: 'ST002',
+        gNumber: 'G002',
+        srid: 'SR002'
       },
       {
-        saleID: 'S12347',
+        date: '2025-10-22T09:00:00Z',
+        lastChangeDate: '2025-10-22T09:00:00Z',
+        warehouseName: 'Moscow Warehouse',
+        warehouseType: 'Склад WB' as const,
+        countryName: 'Russia',
+        oblastOkrugName: 'Central',
+        regionName: 'Moscow',
+        supplierArticle: 'SKU001',
         nmId: 12345,
+        barcode: '1234567890',
+        category: 'Electronics',
+        subject: 'Phone',
+        brand: 'TestBrand',
+        techSize: 'M',
+        incomeID: 3,
+        isSupply: true,
+        isRealization: false,
+        totalPrice: 2000.00,
+        discountPercent: 25,
+        spp: 0,
+        paymentSaleAmount: 0,
         forPay: 1500.00,
-        sale_dt: '2025-10-22T09:00:00Z'
+        finishedPrice: 1500.00,
+        priceWithDisc: 1500.00,
+        saleID: 'S12347',
+        sticker: 'ST003',
+        gNumber: 'G003',
+        srid: 'SR003'
       }
-    ] as SalesItem[]);
+    ]);
   }),
 
   // Error scenario handlers
@@ -268,8 +639,8 @@ describe('Cross-Module Examples Integration Tests', () => {
           end: '2025-10-23'
         }
       });
-      expect(analytics.data).toHaveLength(2);
-      expect(analytics.data[0]?.nmID).toBe(12345);
+      expect(analytics.data.cards).toHaveLength(2);
+      expect(analytics.data.cards[0]?.nmID).toBe(12345);
 
       // Wait for rate limit
       await new Promise(resolve => {
@@ -301,8 +672,14 @@ describe('Cross-Module Examples Integration Tests', () => {
       });
 
       // Calculate metrics
-      const totalViews = analytics.data.reduce((sum, item) => sum + (item.openCard ?? 0), 0);
-      const totalOrders = analytics.data.reduce((sum, item) => sum + (item.ordersCount ?? 0), 0);
+      const totalViews = analytics.data.cards.reduce(
+        (sum, item) => sum + item.statistics.selectedPeriod.openCardCount,
+        0
+      );
+      const totalOrders = analytics.data.cards.reduce(
+        (sum, item) => sum + item.statistics.selectedPeriod.ordersCount,
+        0
+      );
 
       // Simulate dashboard structure
       const dashboard = {
@@ -391,17 +768,14 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateTo: '2025-10-23'
       });
       expect(transactions).toHaveLength(3);
-      expect(transactions[0]?.transactionId).toBe(1001);
+      expect(transactions[0]?.rrd_id).toBe(1001);
 
       // Wait for rate limit
       await new Promise(resolve => {
         setTimeout(resolve, 100);
       });
 
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
       expect(sales).toHaveLength(3);
       expect(sales[0]?.saleID).toBe('S12345');
     });
@@ -411,22 +785,19 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateFrom: '2025-10-01',
         dateTo: '2025-10-23'
       });
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
 
       // Match transactions to sales
       const matched: { transactionId: number; saleID: string; nmId: number }[] = [];
 
       transactions.forEach(transaction => {
         const matchingSale = sales.find(
-          sale => sale.saleID === transaction.saleID && sale.nmId === transaction.nmId
+          sale => sale.saleID === transaction.srid && sale.nmId === transaction.nm_id
         );
 
         if (matchingSale) {
           matched.push({
-            transactionId: transaction.transactionId,
+            transactionId: transaction.rrd_id,
             saleID: matchingSale.saleID,
             nmId: matchingSale.nmId
           });
@@ -444,10 +815,7 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateFrom: '2025-10-01',
         dateTo: '2025-10-23'
       });
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
 
       const totalTransactionValue = transactions.reduce(
         (sum, t) => sum + t.ppvz_for_pay,
@@ -466,17 +834,14 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateFrom: '2025-10-01',
         dateTo: '2025-10-23'
       });
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
 
       // Check timing for matched pairs
       transactions.forEach(transaction => {
-        const matchingSale = sales.find(s => s.saleID === transaction.saleID);
+        const matchingSale = sales.find(s => s.saleID === transaction.srid);
         if (matchingSale) {
-          const transactionDate = new Date(transaction.date);
-          const saleDate = new Date(matchingSale.sale_dt);
+          const transactionDate = new Date(transaction.sale_dt);
+          const saleDate = new Date(matchingSale.date);
           const timingDiff = Math.abs(transactionDate.getTime() - saleDate.getTime());
 
           // Timing should be within 72 hours (259200000 ms)
@@ -491,13 +856,57 @@ describe('Cross-Module Examples Integration Tests', () => {
         http.get('https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod', () => {
           return HttpResponse.json([
             {
-              transactionId: 1004,
-              nmId: 99999,
+              realizationreport_id: 1004,
+              date_from: '2025-10-01',
+              date_to: '2025-10-23',
+              create_dt: '2025-10-23T10:00:00Z',
+              currency_name: 'RUB',
+              suppliercontract_code: null,
+              rrd_id: 1004,
+              gi_id: 4,
+              dlv_prc: 0,
+              fix_tariff_date_from: '2025-10-01',
+              fix_tariff_date_to: '2025-10-23',
+              subject_name: 'Electronics',
+              nm_id: 99999,
+              brand_name: 'TestBrand',
+              sa_name: 'SKU999',
+              ts_name: 'XL',
+              barcode: '9999999999',
+              doc_type_name: 'Продажа',
+              quantity: 1,
+              retail_price: 3500.00,
+              retail_amount: 3500.00,
+              sale_percent: 14,
+              commission_percent: 15,
+              office_name: 'Moscow Office',
+              supplier_oper_name: 'Sale',
+              order_dt: '2025-10-22T10:00:00Z',
+              sale_dt: '2025-10-23T10:00:00Z',
+              rr_dt: null,
+              shk_id: 4,
+              retail_price_withdisc_rub: 3000.00,
+              delivery_rub: 0,
+              gi_box_type_name: 'Box',
+              product_discount_for_report: 14,
+              supplier_promo: 0,
+              ppvz_kvw_prc_base_date: null,
+              ppvz_kvw_prc: 0,
+              ppvz_sales_commission: 450.00,
               ppvz_for_pay: 3000.00,
-              date: '2025-10-23T10:00:00Z',
-              saleID: 'S99999'
+              ppvz_reward: 0,
+              acquiring_fee: 45.00,
+              acquiring_percent: 1.5,
+              acquiring_bank: 'Test Bank',
+              ppvz_vw: 0,
+              ppvz_vw_nds: 0,
+              stock_id: null,
+              supplier_oper_id: 'S99999',
+              country_name: 'Russia',
+              bonus_type_name: null,
+              srid: 'S99999'
             }
-          ] as Transaction[]);
+          ]);
         })
       );
 
@@ -505,17 +914,14 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateFrom: '2025-10-01',
         dateTo: '2025-10-23'
       });
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
 
       const unmatchedTransactions = transactions.filter(
-        t => !sales.some(s => s.saleID === t.saleID)
+        t => !sales.some(s => s.saleID === t.srid)
       );
 
       expect(unmatchedTransactions.length).toBe(1);
-      expect(unmatchedTransactions[0]?.saleID).toBe('S99999');
+      expect(unmatchedTransactions[0]?.srid).toBe('S99999');
     });
   });
 
@@ -555,9 +961,9 @@ describe('Cross-Module Examples Integration Tests', () => {
       );
 
       expect(negativeReviews.length).toBe(2);
-      expect(negativeReviews[0]?.nmId).toBe(12345);
+      expect(negativeReviews[0]?.productDetails.nmId).toBe(12345);
       expect(negativeReviews[0]?.productValuation).toBe(2);
-      expect(negativeReviews[1]?.nmId).toBe(12346);
+      expect(negativeReviews[1]?.productDetails.nmId).toBe(12346);
       expect(negativeReviews[1]?.productValuation).toBe(1);
     });
 
@@ -579,8 +985,8 @@ describe('Cross-Module Examples Integration Tests', () => {
       // Negative reviews: +10 points
       reviews.data.feedbacks.forEach(review => {
         if (review.productValuation <= 2) {
-          const currentScore = productScores.get(review.nmId) ?? 0;
-          productScores.set(review.nmId, currentScore + 10);
+          const currentScore = productScores.get(review.productDetails.nmId) ?? 0;
+          productScores.set(review.productDetails.nmId, currentScore + 10);
         }
       });
 
@@ -591,8 +997,8 @@ describe('Cross-Module Examples Integration Tests', () => {
         const daysOld = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
         const score = daysOld > 3 ? 8 : 5;
 
-        const currentScore = productScores.get(question.nmId) ?? 0;
-        productScores.set(question.nmId, currentScore + score);
+        const currentScore = productScores.get(question.productDetails.nmId) ?? 0;
+        productScores.set(question.productDetails.nmId, currentScore + score);
       });
 
       // Product 12345 should have highest urgency (negative review + old question)
@@ -613,7 +1019,7 @@ describe('Cross-Module Examples Integration Tests', () => {
 
       // Generate recommendations
       const recommendations = negativeReviews.map(review => ({
-        nmId: review.nmId,
+        nmId: review.productDetails.nmId,
         action: review.productValuation === 1 ? 'Immediate response required' : 'Respond within 24 hours',
         priority: review.productValuation === 1 ? 'CRITICAL' : 'HIGH'
       }));
@@ -670,12 +1076,9 @@ describe('Cross-Module Examples Integration Tests', () => {
           end: '2025-10-23'
         }
       });
-      expect(analytics.data.length).toBeGreaterThan(0);
+      expect(analytics.data.cards.length).toBeGreaterThan(0);
 
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
       expect(sales.length).toBeGreaterThan(0);
 
       const reviews = await sdk.communications.getReviews({
@@ -696,13 +1099,13 @@ describe('Cross-Module Examples Integration Tests', () => {
       const biRecords = transactions.map(t => ({
         timestamp: new Date().toISOString(),
         dataType: 'finance' as const,
-        productId: t.nmId,
+        productId: t.nm_id,
         metric: 'revenue',
         value: t.ppvz_for_pay,
-        date: t.date,
+        date: t.sale_dt,
         metadata: {
-          transactionId: t.transactionId,
-          saleID: t.saleID
+          transactionId: t.rrd_id,
+          saleID: t.srid
         }
       }));
 
@@ -714,10 +1117,7 @@ describe('Cross-Module Examples Integration Tests', () => {
     });
 
     it('should transform sales data into BI export format', async () => {
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
 
       // Transform to BI format
       const biRecords = sales.map(s => ({
@@ -749,8 +1149,8 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviewMetrics = new Map<number, { totalRating: number; count: number }>();
 
       reviews.data.feedbacks.forEach(review => {
-        const current = reviewMetrics.get(review.nmId) ?? { totalRating: 0, count: 0 };
-        reviewMetrics.set(review.nmId, {
+        const current = reviewMetrics.get(review.productDetails.nmId) ?? { totalRating: 0, count: 0 };
+        reviewMetrics.set(review.productDetails.nmId, {
           totalRating: current.totalRating + review.productValuation,
           count: current.count + 1
         });
@@ -779,21 +1179,18 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateFrom: '2025-10-01',
         dateTo: '2025-10-23'
       });
-      const sales = await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      const sales = await sdk.reports.getSales('2025-10-01');
 
       // Combine into unified dataset
       const biExportData = [
         ...transactions.map(t => ({
           timestamp: new Date().toISOString(),
           dataType: 'finance' as const,
-          productId: t.nmId,
+          productId: t.nm_id,
           metric: 'revenue',
           value: t.ppvz_for_pay,
-          date: t.date,
-          metadata: { transactionId: t.transactionId }
+          date: t.sale_dt,
+          metadata: { transactionId: t.rrd_id }
         })),
         ...sales.map(s => ({
           timestamp: new Date().toISOString(),
@@ -801,7 +1198,7 @@ describe('Cross-Module Examples Integration Tests', () => {
           productId: s.nmId,
           metric: 'sale_amount',
           value: s.forPay,
-          date: s.sale_dt,
+          date: s.date,
           metadata: { saleID: s.saleID }
         }))
       ];
@@ -851,10 +1248,7 @@ describe('Cross-Module Examples Integration Tests', () => {
         take: 10,
         skip: 0
       });
-      await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      await sdk.reports.getSales('2025-10-01');
 
       const elapsed = Date.now() - start;
 
@@ -955,10 +1349,7 @@ describe('Cross-Module Examples Integration Tests', () => {
         dateFrom: '2025-10-01',
         dateTo: '2025-10-23'
       });
-      await sdk.reports.getSales({
-        dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
-      });
+      await sdk.reports.getSales('2025-10-01');
 
       // Customer Engagement
       await sdk.communications.getQuestions({
