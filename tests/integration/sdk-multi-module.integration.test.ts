@@ -51,24 +51,82 @@ const server = setupServer(
   // Analytics Module Endpoints
   http.post('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail', () => {
     return HttpResponse.json({
-      data: [
-        {
-          nmID: 12345,
-          vendorCode: 'PROD-001',
-          brandName: 'Test Brand',
-          statistics: {
-            selectedPeriod: {
-              begin: '2024-01-01',
-              end: '2024-01-31',
-              openCardCount: 1000,
-              addToCartCount: 150,
-              ordersCount: 50,
-              buyoutsCount: 45,
-              cancelCount: 5
+      error: false,
+      errorText: '',
+      data: {
+        page: 1,
+        isNextPage: false,
+        cards: [
+          {
+            nmID: 12345,
+            vendorCode: 'PROD-001',
+            brandName: 'Test Brand',
+            tags: [],
+            object: { id: 1, name: 'Test Category' },
+            statistics: {
+              selectedPeriod: {
+                begin: '2024-01-01',
+                end: '2024-01-31',
+                openCardCount: 1000,
+                addToCartCount: 150,
+                ordersCount: 50,
+                ordersSumRub: 25000,
+                buyoutsCount: 45,
+                buyoutsSumRub: 22500,
+                cancelCount: 5,
+                cancelSumRub: 2500,
+                avgPriceRub: 500,
+                avgOrdersCountPerDay: 1.6,
+                conversions: {
+                  addToCartPercent: 15,
+                  cartToOrderPercent: 33.3,
+                  buyoutsPercent: 90
+                }
+              },
+              previousPeriod: {
+                begin: '2023-12-01',
+                end: '2023-12-31',
+                openCardCount: 900,
+                addToCartCount: 140,
+                ordersCount: 45,
+                ordersSumRub: 22500,
+                buyoutsCount: 40,
+                buyoutsSumRub: 20000,
+                cancelCount: 5,
+                cancelSumRub: 2500,
+                avgPriceRub: 500,
+                avgOrdersCountPerDay: 1.5,
+                conversions: {
+                  addToCartPercent: 15.6,
+                  cartToOrderPercent: 32.1,
+                  buyoutsPercent: 88.9
+                }
+              },
+              periodComparison: {
+                openCardDynamics: 11.1,
+                addToCartDynamics: 7.1,
+                ordersCountDynamics: 11.1,
+                ordersSumRubDynamics: 11.1,
+                buyoutsCountDynamics: 12.5,
+                buyoutsSumRubDynamics: 12.5,
+                cancelCountDynamics: 0,
+                cancelSumRubDynamics: 0,
+                avgOrdersCountPerDayDynamics: 6.7,
+                avgPriceRubDynamics: 0,
+                conversions: {
+                  addToCartPercent: -0.6,
+                  cartToOrderPercent: 1.2,
+                  buyoutsPercent: 1.1
+                }
+              }
+            },
+            stocks: {
+              stocksMp: 50,
+              stocksWb: 30
             }
           }
-        }
-      ]
+        ]
+      }
     });
   }),
 
@@ -112,15 +170,27 @@ const server = setupServer(
         feedbacks: [
           {
             id: 'review-123',
-            nmId: 12345,
             text: 'Great product!',
+            pros: 'High quality',
+            cons: '',
             productValuation: 5,
             createdDate: '2024-01-15T10:00:00Z',
             state: 'none',
-            answer: null
+            answer: null,
+            productDetails: {
+              nmId: 12345,
+              imtId: 67890
+            },
+            photoLinks: null,
+            video: null,
+            wasViewed: false,
+            userName: 'Test User',
+            matchingSize: 'ok'
           }
         ]
-      }
+      },
+      error: false,
+      errorText: ''
     });
   }),
 
