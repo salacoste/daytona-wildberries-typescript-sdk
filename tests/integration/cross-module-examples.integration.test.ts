@@ -23,7 +23,6 @@ import { http, HttpResponse } from 'msw';
 import { WildberriesSDK } from '../../src';
 import type { Transaction } from '../../src/types/finances.types';
 import type { SalesItem } from '../../src/types/reports.types';
-import type { NmReportDetailedByPeriodItem } from '../../src/types/analytics.types';
 
 // MSW Server Setup with all required endpoints
 const server = setupServer(
