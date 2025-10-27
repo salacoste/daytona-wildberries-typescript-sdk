@@ -1,39 +1,92 @@
 /**
- * Customer Support - Complete Example Suite
+ * Customer Support - Complete Communications Module Example
  *
- * This comprehensive example demonstrates how to use the CommunicationsModule for:
+ * This comprehensive example demonstrates complete customer communication workflows:
+ * - Customer chat messaging (real-time event polling)
+ * - Product Q&A management (answer customer questions)
+ * - Customer reviews management (respond to feedback)
  *
- * ## Chat with Customers (Examples 1-8)
- * - Retrieve all customer chats
- * - Poll for new chat events with cursor pagination
- * - Send messages to customers (text + files)
- * - Filter and process chat events by chatID and sender
- * - Real-time polling for automated responses
- * - Handle errors gracefully
+ * **Complexity**: 🟢 Beginner
+ * **Estimated Time**: 15 minutes
  *
- * ## Product Q&A Management (Examples 9-11)
- * - Get and answer customer questions about products
- * - Filter questions by product ID (nmId)
- * - Reject inappropriate questions
- * - Mark questions as viewed
- * - Manage question states (answered/rejected/pending)
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Communications module permissions enabled on your API key
+ * - Active products and orders (to receive real customer chats)
+ * - Customer questions or reviews (for Q&A and Reviews examples)
  *
- * ## Customer Reviews Management (Examples 12-15)
- * - Get and respond to customer reviews (1-5 stars)
- * - Handle reviews with photos and HLS videos
- * - Filter reviews by product and rating
- * - Edit existing responses (within 60 days)
- * - Analyze review media and customer tags
+ * **What This Example Covers:**
+ * - **Chat (Examples 1-8)**: Real-time messaging, event polling, file attachments
+ * - **Q&A (Examples 9-11)**: Answer questions, reject spam, mark as viewed
+ * - **Reviews (Examples 12-15)**: Respond to reviews, edit responses, analyze feedback
+ * - Event-based architecture with cursor pagination
+ * - Rate limit handling (10 req/10s for chat, 3 req/sec for Q&A/reviews)
+ * - Error handling for all communication scenarios
  *
- * Architecture Patterns:
- * - Chat: Event-Based with unified event stream and cursor pagination
- * - Q&A/Reviews: Filter-based with pagination (take/skip parameters)
- * - Rate Limiting: 10 req/10s for chats, 3 req/sec for Q&A/Reviews
+ * **Expected Output:**
+ * ```
+ * === Example 1: Get All Chats ===
+ * Found 5 active chat(s):
+ * Chat 1:
+ *   Customer: John Doe (ID: 12345)
+ *   Product: nmID 987654
+ *   Order: WB-ORDER-123
  *
- * @see {@link https://dev.wildberries.ru/openapi/user-communication} for API documentation
+ * === Example 2: Poll for New Events ===
+ * Processing 15 events (3 new messages, 2 file attachments, 10 system events)
+ *
+ * === Example 3: Send Message ===
+ * ✅ Message sent successfully
+ *
+ * === Example 9: Get All Questions ===
+ * Found 10 unanswered questions
+ *
+ * === Example 10: Answer Question ===
+ * ✅ Answer published
+ *
+ * === Example 12: Get All Reviews ===
+ * Found 25 reviews (Avg rating: 4.5/5)
+ *
+ * === Example 13: Respond to Review ===
+ * ✅ Response published
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/customer-support.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - communications-customer-engagement.ts - Alternative communications workflow
+ * - customer-engagement.ts - Focused on Q&A and reviews only
+ *
+ * **Architecture Patterns:**
+ * - **Chat**: Event-based with unified event stream and cursor pagination
+ * - **Q&A/Reviews**: Filter-based with pagination (take/skip parameters)
+ * - **Rate Limiting**: 10 req/10s for chats, 3 req/sec for Q&A/Reviews
+ *
+ * **Common Issues:**
+ * - "No active chats": Customers must initiate chats (requires active orders)
+ * - "No questions found": Questions depend on product visibility and customer activity
+ * - "Response rejected": Ensure responses follow content guidelines (no URLs, no profanity)
+ * - "Chat event pagination": Use cursor from previous response for continuous polling
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/user-communication} - Official Communications API documentation
  */
 
-import { WildberriesSDK, ChatEvent, ValidationError } from '../src';
+import {
+  WildberriesSDK,
+  ChatEvent,
+  ValidationError,
+  RateLimitError,
+  AuthenticationError,
+  NetworkError,
+  WBAPIError,
+} from '../src';
 
 // Initialize SDK
 const sdk = new WildberriesSDK({
@@ -77,7 +130,18 @@ async function getAllChats() {
       console.log('');
     });
   } catch (error) {
-    console.error('Error fetching chats:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Chat rate limit: 10 requests per 10 seconds');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+      console.log('   Verify API key has Communications module permissions');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('Error fetching chats:', error);
+    }
   }
 }
 
@@ -98,7 +162,7 @@ async function getAllChatEvents() {
     // Paginate through all events
     do {
       pageCount++;
-      const eventsResponse = await sdk.communications.getChatEvents(cursor);
+      const eventsResponse = await sdk.communications.getEvents(cursor);
 
       console.log(`Page ${pageCount}: ${eventsResponse.result.totalEvents} event(s)`);
 
@@ -133,7 +197,16 @@ async function getAllChatEvents() {
       console.log('');
     });
   } catch (error) {
-    console.error('Error fetching events:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('Error fetching events:', error);
+    }
   }
 }
 
@@ -156,7 +229,7 @@ async function sendMessageToCustomer() {
     }
 
     const chat = chatsResponse.result[0];
-    const replySign = sdk.communications.getReplySignFromChat(chat);
+    const replySign = chat.replySign;
 
     console.log(`Sending message to: ${chat.clientName}`);
     console.log(`Chat ID: ${chat.chatID}\n`);
@@ -171,8 +244,19 @@ async function sendMessageToCustomer() {
     console.log(`Message ID: ${messageResponse.result.chatID}`);
     console.log(`Timestamp: ${new Date(messageResponse.result.addTime).toISOString()}`);
   } catch (error) {
-    if (error instanceof ValidationError) {
-      console.error('Validation error:', error.message);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Common causes:');
+      console.log('   - Empty replySign or message');
+      console.log('   - Message exceeds 1000 characters');
+      console.log('   - No text or files provided');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
     } else {
       console.error('Error sending message:', error);
     }
@@ -199,7 +283,7 @@ async function sendMessageWithFiles() {
     }
 
     const chat = chatsResponse.result[0];
-    const replySign = sdk.communications.getReplySignFromChat(chat);
+    const replySign = chat.replySign;
 
     // Note: In a real application, you would read files from disk or receive them from a form
     // For this example, we're showing the structure
@@ -220,16 +304,26 @@ async function sendMessageWithFiles() {
 
     console.log('Note: File upload not executed in this example');
   } catch (error) {
-    console.error('Error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('Error:', error);
+    }
   }
 }
 
 /**
  * Example 5: Real-time event polling
  *
+ * NOTE: This example is commented out because pollForNewEvents() is not an SDK method.
+ * To implement event polling, use setInterval() with sdk.communications.getEvents()
+ *
  * Demonstrates how to set up real-time polling for new chat events.
  * This is useful for building automated customer support systems.
  */
+/*
 async function startRealTimePolling() {
   console.log('\n=== Example 5: Real-Time Event Polling ===\n');
   console.log('Starting event polling (will run for 30 seconds)...\n');
@@ -281,6 +375,7 @@ async function startRealTimePolling() {
     console.log(`Total events processed: ${eventCount}`);
   }, 30000);
 }
+*/
 
 /**
  * Example 6: Filter events by chatID
@@ -292,7 +387,7 @@ async function filterEventsByChat() {
 
   try {
     // Get all events
-    const eventsResponse = await sdk.communications.getChatEvents();
+    const eventsResponse = await sdk.communications.getEvents();
 
     if (eventsResponse.result.events.length === 0) {
       console.log('No events found');
@@ -303,9 +398,8 @@ async function filterEventsByChat() {
     const targetChatID = eventsResponse.result.events[0].chatID;
 
     // Filter events for this specific chat
-    const chatEvents = sdk.communications.filterEventsByChatID(
-      eventsResponse.result.events,
-      targetChatID
+    const chatEvents = eventsResponse.result.events.filter(
+      event => event.chatID === targetChatID
     );
 
     console.log(`Chat ID: ${targetChatID}`);
@@ -322,7 +416,13 @@ async function filterEventsByChat() {
       }
     });
   } catch (error) {
-    console.error('Error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('Error:', error);
+    }
   }
 }
 
@@ -336,10 +436,10 @@ async function getOnlyCustomerMessages() {
   console.log('\n=== Example 7: Get Customer Messages Only ===\n');
 
   try {
-    const eventsResponse = await sdk.communications.getChatEvents();
+    const eventsResponse = await sdk.communications.getEvents();
 
     // Filter for client messages only
-    const customerMessages = sdk.communications.getClientMessages(eventsResponse.result.events);
+    const customerMessages = eventsResponse.result.events.filter(event => event.sender === 'client');
 
     console.log(`Total events: ${eventsResponse.result.events.length}`);
     console.log(`Customer messages: ${customerMessages.length}\n`);
@@ -357,7 +457,13 @@ async function getOnlyCustomerMessages() {
       }
     });
   } catch (error) {
-    console.error('Error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('Error:', error);
+    }
   }
 }
 
@@ -457,7 +563,20 @@ async function answerProductQuestions() {
       console.log('---\n');
     }
   } catch (error) {
-    console.error('Error handling questions:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Q&A rate limit: 3 requests per second');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Answer must not be empty');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('Error handling questions:', error);
+    }
   }
 }
 
@@ -488,7 +607,14 @@ async function getQuestionsByProduct() {
       console.log(`   Status: ${q.state}\n`);
     });
   } catch (error) {
-    console.error('Error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('Error:', error);
+    }
   }
 }
 
@@ -530,7 +656,14 @@ async function rejectInappropriateQuestions() {
       }
     }
   } catch (error) {
-    console.error('Error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('Error:', error);
+    }
   }
 }
 
@@ -610,7 +743,20 @@ async function respondToCustomerReviews() {
       console.log('---\n');
     }
   } catch (error) {
-    console.error('Error handling reviews:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Reviews rate limit: 3 requests per second');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Response must not exceed character limit');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('Error handling reviews:', error);
+    }
   }
 }
 
@@ -779,7 +925,14 @@ async function analyzeReviewsWithMedia() {
         });
     }
   } catch (error) {
-    console.error('Error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('Error:', error);
+    }
   }
 }
 
@@ -827,7 +980,24 @@ async function main() {
     // Wait for polling to finish
     await new Promise((resolve) => setTimeout(resolve, 31000));
   } catch (error) {
-    console.error('\n❌ Fatal error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('\n⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Reduce request frequency to stay within limits');
+    } else if (error instanceof AuthenticationError) {
+      console.error('\n🔐 Authentication Error:', error.message);
+      console.log('   Verify WB_API_KEY environment variable');
+      console.log('   Ensure API key has Communications module permissions');
+    } else if (error instanceof ValidationError) {
+      console.error('\n❌ Validation Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('\n🌐 Network Error:', error.message);
+      console.log('   Check internet connection and API status');
+    } else if (error instanceof WBAPIError) {
+      console.error('\n⚠️ API Error:', error.statusCode, error.message);
+    } else {
+      console.error('\n❌ Fatal error:', error);
+    }
     process.exit(1);
   }
 

@@ -1,17 +1,103 @@
 /**
- * Complete Product CRUD Example (Story 2.2)
+ * Complete Product CRUD Example - Products Module Full Lifecycle
  *
- * Demonstrates the full product lifecycle:
- * 1. Create new product card
- * 2. List/search products
- * 3. Get single product
- * 4. Update product (IMPORTANT: requires ALL fields)
- * 5. Delete product (soft delete to trash)
+ * This example demonstrates complete product management operations:
+ * - Create new product cards with full specifications
+ * - List and search products with pagination and filtering
+ * - Get individual product details by nmID
+ * - Update products (critical: requires ALL fields)
+ * - Delete products (soft delete to trash with 30-day retention)
+ * - Complete product lifecycle workflow
  *
- * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
+ * **Complexity**: 🟢 Beginner
+ * **Estimated Time**: 15 minutes
+ *
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Products module permissions enabled on your API key
+ * - Understanding of Wildberries product category hierarchy (run products-categories.ts first)
+ * - Valid category subjectID for product creation (get from getCategories)
+ * - EAN-13 barcodes for product SKUs (or use auto-generation)
+ *
+ * **What This Example Covers:**
+ * - Creating products with characteristics, sizes, and barcodes
+ * - Filtering and paginating product lists
+ * - Safe product updates (fetching current state first)
+ * - Batch operations (update up to 3000 products)
+ * - Soft delete to trash (recoverable for 30 days)
+ * - Complete CRUD lifecycle demonstration
+ *
+ * **API Documentation:**
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Soderzhanie-kartochek} - Product Cards API Reference
+ * @see {@link ../docs/api/classes/ProductsModule.html} - ProductsModule Class Reference
+ * @see {@link ../docs/api/classes/ProductsModule.html#createProduct} - createProduct() Method
+ * @see {@link ../docs/api/classes/ProductsModule.html#listProducts} - listProducts() Method
+ * @see {@link ../docs/api/classes/ProductsModule.html#getProduct} - getProduct() Method
+ * @see {@link ../docs/api/classes/ProductsModule.html#updateProduct} - updateProduct() Method
+ * @see {@link ../docs/api/classes/ProductsModule.html#deleteProduct} - deleteProduct() Method
+ * @see {@link ../docs/api/interfaces/CreateProductRequest.html} - CreateProductRequest Interface
+ *
+ * **Related Examples:**
+ * - products-categories.ts - Get category/subject IDs first
+ * - products-media-pricing.ts - Add images and pricing after creation
+ * - complete-product-workflow.ts - Full end-to-end product setup
+ *
+ * **Expected Output:**
+ * ```
+ * === Example 1: Create Product ===
+ * ✅ Product queued for creation (async processing)
+ *
+ * === Example 2: List Products ===
+ * Found 150 total products
+ * Page 1: 100 products
+ * - nmID: 12345, Vendor: EXAMPLE-PROD-001, Title: Premium Cotton T-Shirt
+ *
+ * === Example 3: Get Single Product ===
+ * ✅ Product found:
+ * - nmID: 12345
+ * - Brand: Example Brand
+ * - Sizes: 4
+ *
+ * === Example 4: Update Product (SAFE METHOD) ===
+ * ✅ Product updated (async processing)
+ *
+ * === Example 6: Delete Product (Soft Delete) ===
+ * ✅ Products moved to trash:
+ * - 1 products deleted
+ * - Auto-deletion in 30 days
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/products-crud.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - products-categories.ts - Category navigation (run this first)
+ * - complete-product-workflow.ts - Full product setup including pricing and stock
+ * - products-media-pricing.ts - Product image upload and pricing
+ * - products-warehouse-stock.ts - Inventory management
+ *
+ * **Common Issues:**
+ * - "Invalid subjectID": Get valid category ID from products-categories.ts
+ * - "Product update removes fields": Always fetch current state before updating
+ * - "Barcode already exists": Use unique EAN-13 barcodes or omit for auto-generation
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products} - Official Products API documentation
  */
 
-import { WildberriesSDK } from '../src/index';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError,
+} from '../src/index';
 import type { CreateProductRequest, UpdateProductRequest } from '../src/types/products.types';
 
 // Initialize SDK with your API key
@@ -103,7 +189,34 @@ async function createProductExample() {
       console.log('Response:', JSON.stringify(result, null, 2));
     }
   } catch (error) {
-    console.error('❌ Error creating product:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   SDK automatically retries with exponential backoff');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+      console.log('   Troubleshooting:');
+      console.log('   1. Verify WB_API_KEY environment variable is set');
+      console.log('   2. Check API key is active in seller dashboard');
+      console.log('   3. Ensure API key has Products module permissions');
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Common causes:');
+      console.log('   - Invalid subjectID (get from products-categories.ts)');
+      console.log('   - Missing required product fields');
+      console.log('   - Invalid barcode format (must be EAN-13)');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+      console.log('   Troubleshooting:');
+      console.log('   1. Check internet connection');
+      console.log('   2. Verify Wildberries API status');
+      console.log('   3. Try again in a few moments');
+    } else if (error instanceof WBAPIError) {
+      console.error('⚠️ API Error:', error.statusCode, error.message);
+      console.log('   Check API documentation for error details');
+    } else {
+      console.error('❌ Unexpected error:', error);
+    }
   }
 }
 
@@ -157,7 +270,17 @@ async function listProductsExample() {
       console.log(`Page 2: ${page2.cards?.length} more products`);
     }
   } catch (error) {
-    console.error('❌ Error listing products:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+      console.log('   Check your API key has Products module permissions');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('❌ Error listing products:', error);
+    }
   }
 }
 
@@ -188,7 +311,16 @@ async function getProductExample() {
       console.log('❌ Product not found (may be in trash or deleted)');
     }
   } catch (error) {
-    console.error('❌ Error getting product:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('❌ Error getting product:', error);
+    }
   }
 }
 
@@ -254,7 +386,19 @@ async function updateProductExample() {
       console.log('New title will be: UPDATED: Premium Cotton T-Shirt');
     }
   } catch (error) {
-    console.error('❌ Error updating product:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   All fields must be provided when updating');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('❌ Error updating product:', error);
+    }
   }
 }
 
@@ -292,7 +436,15 @@ async function batchUpdateExample() {
     console.log(`✅ Batch update ${updates.length} products queued`);
     console.log('Error:', result.error);
   } catch (error) {
-    console.error('❌ Batch update failed:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Check all products have required fields');
+    } else {
+      console.error('❌ Batch update failed:', error);
+    }
   }
 }
 
@@ -319,11 +471,19 @@ async function deleteProductExample() {
       console.log('✅ Products moved to trash:');
       console.log(`- ${nmIDsToDelete.length} products deleted`);
       console.log('- Auto-deletion in 30 days (nightly Moscow time)');
-      console.log('- Recover using: sdk.products.createCardsRecover()');
       console.log('- New imtID will be assigned after moving to trash');
     }
   } catch (error) {
-    console.error('❌ Error deleting products:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('❌ Error deleting products:', error);
+    }
   }
 }
 
@@ -388,7 +548,18 @@ async function completeLifecycleExample() {
 
     console.log('\n✅ Lifecycle complete!');
   } catch (error) {
-    console.error('❌ Lifecycle error:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else {
+      console.error('❌ Lifecycle error:', error);
+    }
   }
 }
 

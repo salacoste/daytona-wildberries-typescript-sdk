@@ -8,7 +8,6 @@
 /**
  * Inbound shipment item from warehouses
  *
- * @description Contains information about goods received at WB warehouses.
  * Data is updated every 30 minutes. Maximum 100,000 rows per response.
  */
 export interface IncomesItem {
@@ -44,7 +43,6 @@ export interface IncomesItem {
 /**
  * Stock level item across WB warehouses
  *
- * @description Contains current stock quantities with breakdown by location.
  * Data is updated every 30 minutes. Maximum 60,000 rows per response.
  */
 export interface StocksItem {
@@ -90,7 +88,6 @@ export interface StocksItem {
 /**
  * Order item information
  *
- * @description Contains order details for customer orders.
  * Data is updated every 30 minutes. Maximum 80,000 rows per response.
  * Data retention: 90 days from order creation.
  * Note: 1 row = 1 order = 1 assembly task = 1 product unit
@@ -156,7 +153,6 @@ export interface OrdersItem {
 /**
  * Sales and returns item
  *
- * @description Contains sales and returns data with payment information.
  * Extends OrdersItem with payment-specific fields.
  * Data is updated every 30 minutes. Maximum 80,000 rows per response.
  * Data retention: 90 days from order creation.
@@ -224,7 +220,6 @@ export interface SalesItem {
 /**
  * Request body for excise/marked goods report
  *
- * @description Optional filters for compliance report on goods with mandatory labeling
  */
 export interface ExciseReportRequest {
   /**
@@ -249,7 +244,6 @@ export interface ExciseReportRequest {
 /**
  * Excise report data item
  *
- * @description Contains information about mandatory labeling operations
  */
 export interface ExciseReportDataItem {
   /** Customer country */
@@ -286,7 +280,6 @@ export interface ExciseReportDataItem {
 /**
  * Excise report response
  *
- * @description Response containing excise/marked goods operations
  */
 export interface ExciseReportResponse {
   /** Response data wrapper */
@@ -301,7 +294,6 @@ export interface ExciseReportResponse {
 /**
  * Parameters for warehouse remains report generation
  *
- * @description Configuration for async warehouse remains report.
  * Can combine groupBy and filter parameters in any combination.
  */
 export interface WarehouseRemainsParams {
@@ -344,7 +336,6 @@ export interface WarehouseRemainsParams {
 /**
  * Async report task response
  *
- * @description Response from report creation request
  */
 export interface ReportTaskResponse {
   /** Wrapper for response data */
@@ -359,7 +350,6 @@ export interface ReportTaskResponse {
 /**
  * Report generation status
  *
- * @description Status of async report task
  */
 export interface ReportStatus {
   /** Wrapper for status data */
@@ -392,7 +382,6 @@ export interface ReportStatus {
 /**
  * Error response format 1
  *
- * @description Standard error response with errors array of strings
  */
 export interface ResponseErrorStatistics {
   /** Array of error messages */
@@ -403,7 +392,6 @@ export interface ResponseErrorStatistics {
 /**
  * Error response format 2
  *
- * @description Alternative error response with single error string
  */
 export interface ResponseErrorStatistics2 {
   /** Error message string */
@@ -414,7 +402,6 @@ export interface ResponseErrorStatistics2 {
 /**
  * 4xx error response
  *
- * @description Detailed error response for client errors
  */
 export interface ErrorResponse4xx {
   /** Error details */

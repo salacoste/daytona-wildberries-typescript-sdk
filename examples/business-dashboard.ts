@@ -1,34 +1,99 @@
 /**
- * Business Dashboard Example
+ * Business Dashboard - Multi-Module Data Integration
  *
- * Demonstrates how to combine data from multiple SDK modules to create
- * a comprehensive business intelligence dashboard:
- * - Finances: Revenue, balance, transaction metrics
- * - Analytics: Sales performance, conversion rates, top products
- * - Communications: Customer sentiment, review ratings, feedback analysis
+ * This comprehensive example demonstrates building real-time business monitoring dashboards:
+ * - Financial metrics aggregation (balance, revenue, transactions)
+ * - Sales performance analytics (views, orders, conversion rates)
+ * - Customer sentiment analysis (review ratings, negative feedback alerts)
+ * - Multi-module data aggregation with rate limit management
+ * - Error handling with graceful degradation strategies
+ * - Performance monitoring and execution time tracking
  *
- * This example shows:
- * - Multi-module data aggregation
- * - Rate limit management across modules
- * - Error handling with graceful degradation
- * - Performance monitoring and optimization
+ * **Complexity**: 🔴 Advanced
+ * **Estimated Time**: 50 minutes
  *
- * **Use Case**: Real-time business monitoring dashboard for daily operations
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Finances, Analytics, and Communications module permissions enabled
+ * - Active seller account with transaction history
+ * - Products with sales data and customer reviews
+ * - Understanding of rate limits across multiple modules
+ * - 10-20 seconds execution time window for data aggregation
  *
- * **Expected Performance**:
- * - Execution time: 10-20 seconds (due to rate limits)
- * - Memory usage: ~100-200MB for typical datasets
- * - Network: 5-8 API calls across 3 modules
+ * **What This Example Covers:**
+ * - **Financial Metrics**: Current balance, revenue totals, transaction counts
+ * - **Performance Analytics**: Product views, order counts, conversion rates
+ * - **Top Products Analysis**: Top 5 products by order volume and revenue
+ * - **Customer Sentiment**: Average ratings, negative review alerts
+ * - **Rate Limit Management**: Sequential API calls with proper delays
+ * - **Graceful Degradation**: Fallback values when modules fail
+ * - **Performance Tracking**: Execution time monitoring per module
  *
- * **Rate Limits**:
- * - Finances: 1 request/minute
- * - Analytics: 1 request/5 seconds
- * - Communications: 1 request/minute (reviews)
+ * **Expected Output:**
+ * ```
+ * === Generating Business Dashboard ===
+ * Period: 2024-01-01T00:00:00+03:00 to 2024-01-31T23:59:59+03:00
  *
- * @packageDocumentation
+ * 📊 Fetching financial data...
+ *   ✓ Balance retrieved: 125,000.00 ₽
+ *   ⏳ Waiting 5 seconds (rate limit: 1 req/min)...
+ *   ✓ Transactions retrieved: 234 records
+ *   ⚡ Finances module: 5234ms
+ *
+ * 📈 Fetching performance analytics...
+ *   ✓ Analytics retrieved: 47 products
+ *   ✓ Metrics calculated:
+ *     - Total views: 15,234
+ *     - Total orders: 1,234
+ *     - Conversion rate: 8.10%
+ *   ⚡ Analytics module: 3456ms
+ *
+ * 💬 Fetching customer sentiment data...
+ *   ✓ Reviews retrieved: 89 records
+ *   ✓ Sentiment analysis:
+ *     - Average rating: 4.3/5
+ *     - Negative reviews: 5
+ *     - Products needing attention: 2
+ *
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 📊 BUSINESS DASHBOARD
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *
+ * 💰 FINANCIAL METRICS
+ * Current Balance:    125,000.00 ₽
+ * Revenue (Period):   456,789.00 ₽
+ * Transactions:       234
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/business-dashboard.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - analytics-dashboard.ts - Detailed sales funnel analytics
+ * - financial-reconciliation.ts - Transaction reconciliation workflows
+ * - export-to-bi.ts - BI tool data export integration
+ *
+ * **Common Issues:**
+ * - "Rate limit exceeded": Sequential calls respect limits, but parallel execution may fail
+ * - "Module timeout": Increase SDK timeout to 60s for slow responses
+ * - "Negative reviews data missing": No reviews yet or permissions issue
+ * - "Analytics data empty": Products need at least 30 days sales history
+ * - "Graceful degradation active": One module failed, dashboard shows partial data
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/} - Official Wildberries API Documentation
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type { Transaction } from '../src/types/finances.types';
 import type { ProductCardAnalytics } from '../src/types/analytics.types';
 import type { Review } from '../src/types/communications.types';
@@ -511,7 +576,25 @@ async function main() {
 
     console.log('\n✅ Dashboard generated successfully!');
   } catch (error) {
-    console.error('\n❌ Error generating dashboard:', error);
+    console.error('\n❌ Error generating dashboard:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   Multi-module dashboards require careful rate limit management`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Verify API key has permissions for all modules`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Dashboard requires stable connection for multi-module fetch`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     process.exit(1);
   }
 }

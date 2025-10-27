@@ -1,0 +1,39 @@
+name: Question
+description: Ask a question about the SDK
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're here to help! Please provide as much context as possible.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: Ask your question here
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide context about what you're trying to accomplish
+      placeholder: Describe what you're working on and why you have this question
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What I've Tried
+      description: What have you already attempted?
+      placeholder: Describe any approaches you've already tried
+
+  - type: textarea
+    id: docs
+    attributes:
+      label: Documentation References
+      description: Have you checked the documentation? Which sections?
+      placeholder: List any documentation sections you've reviewed

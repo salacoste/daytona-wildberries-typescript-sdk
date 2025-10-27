@@ -1,18 +1,96 @@
 /**
- * Reports and Analytics Examples
+ * Reports and Analytics - Comprehensive Reporting Workflows
  *
- * This file demonstrates how to use the ReportsModule for:
- * - Fetching inbound shipments with pagination
- * - Tracking stock levels and inventory
- * - Analyzing customer orders
- * - Monitoring sales and returns
- * - Generating compliance/excise reports
- * - Creating and downloading async reports
+ * This comprehensive example demonstrates complete reporting workflows for operational analytics:
+ * - Inbound shipments tracking with cursor-based pagination (up to 100K records/request)
+ * - Real-time stock level monitoring and low-stock alerts
+ * - Customer order tracking with regional and warehouse analysis
+ * - Sales revenue analysis with category performance breakdowns
+ * - Compliance/excise reports for regulated goods (alcohol, tobacco)
+ * - Async report generation (warehouse remains) with polling workflow
+ * - Multi-locale report support (Russian, English, Chinese)
  *
- * @packageDocumentation
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 20 minutes
+ *
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Reports module permissions enabled
+ * - Active seller account with transaction history
+ * - Warehouse operations data (incomes, stocks, orders, sales)
+ * - Understanding of pagination cursors (lastChangeDate)
+ * - Optional: Excise goods for compliance reporting
+ *
+ * **What This Example Covers:**
+ * - **Inbound Shipments**: Paginated fetching with 100K record batches
+ * - **Stock Monitoring**: Low-stock alerts, out-of-stock detection, transit tracking
+ * - **Order Analytics**: Regional distribution, warehouse performance, cancellation rates
+ * - **Sales Analysis**: Revenue metrics, category breakdown, discount distribution
+ * - **Excise Reporting**: Compliance reports for regulated goods by country
+ * - **Async Reports**: 3-step workflow (create → poll → download)
+ * - **Locale Support**: Generate reports in ru/en/zh for international teams
+ *
+ * **Expected Output:**
+ * ```
+ * === Fetching Inbound Shipments ===
+ *   Page 1: Fetching from 2024-01-01T00:00:00+03:00...
+ *   ✓ Received 100,000 records
+ *   Page 2: Fetching from 2024-03-15T14:32:01+03:00...
+ *   ✓ Received 45,234 records
+ *   ✓ No more records
+ *
+ * Total incomes fetched: 145,234
+ * Summary:
+ *   Total items received: 567,890
+ *   Unique warehouses: 12
+ *
+ * === Monitoring Stock Levels ===
+ * Total SKUs in stock: 3,456
+ * ⚠️  Low stock items (< 5 units): 47
+ * 🚨 Out of stock items: 12
+ * 🚚 Items in transit: 234
+ *   To customers: 456 units
+ *   From customers (returns): 89 units
+ *
+ * === Generating Warehouse Remains Report (async) ===
+ * Step 1: Creating report task...
+ * ✓ Task created: a1b2c3d4-e5f6
+ *
+ * Step 2: Polling task status...
+ *   Attempt 1: Status = queue
+ *   Attempt 5: Status = done
+ * ✓ Report ready! Download URL: https://...
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/reports-analytics.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - analytics-dashboard.ts - Sales funnel and performance analytics
+ * - business-dashboard.ts - Integrated business metrics
+ * - finances-reports-payouts.ts - Financial reporting workflows
+ *
+ * **Common Issues:**
+ * - "Pagination timeout": Use lastChangeDate cursor from last record
+ * - "Async report timeout": Large reports may take 5+ minutes
+ * - "Stock data delayed": Stock updates may have 15-minute lag
+ * - "Excise report empty": No regulated goods or wrong date range
+ * - "Locale not supported": Only ru/en/zh available for reports
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/statistics-api} - Official Reports API
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type {
   IncomesItem,
   StocksItem,
@@ -472,7 +550,25 @@ async function main() {
     console.log('='.repeat(60));
     console.log('\n✅ All examples completed successfully!');
   } catch (error) {
-    console.error('\n❌ Error:', error);
+    console.error('\n❌ Error in reports workflow:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Verify API key and reports permissions`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Check date cursors and pagination parameters`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Large reports may timeout - increase SDK timeout setting`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     process.exit(1);
   }
 }

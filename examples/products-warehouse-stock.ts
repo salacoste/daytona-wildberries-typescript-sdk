@@ -1,18 +1,85 @@
 /**
- * Inventory Management Example (Story 2.4)
+ * Warehouse and Stock Management - Complete Inventory Control
  *
- * This example demonstrates complete warehouse setup and stock management workflows:
- * - Getting available WB warehouses
- * - Creating seller warehouses bound to WB offices
- * - Managing stock levels (add, update, delete)
+ * This example demonstrates comprehensive inventory management:
+ * - Getting available Wildberries warehouses for FBS binding
+ * - Creating seller warehouses bound to WB pickup points
+ * - Managing stock levels (add, update, delete operations)
+ * - Bulk stock updates (up to 1000 SKUs per request)
  * - Error handling for warehouse restrictions and stock operations
+ * - **WARNING**: Stock deletion is irreversible!
  *
- * Prerequisites:
- * - Valid WB API key with Products API access
- * - At least one available WB office for binding
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 25 minutes
+ *
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Products module permissions enabled
+ * - Existing products with SKUs (create products first)
+ * - At least one available WB office for warehouse binding
+ * - Understanding that stock deletion cannot be undone
+ *
+ * **What This Example Covers:**
+ * - **WB Offices**: Get available Wildberries pickup points for FBS
+ * - **Warehouse Creation**: Create seller warehouses bound to WB offices
+ * - **Stock Operations**: Add, update, delete stock levels
+ * - **Bulk Updates**: Update stock for multiple SKUs in single request
+ * - **Irreversible Actions**: Critical warning about stock deletion
+ *
+ * **Expected Output:**
+ * ```
+ * === Wildberries Inventory Management Demo ===
+ *
+ * Step 1: Fetching WB warehouses for FBS binding...
+ * ✓ Found 12 WB warehouses
+ *   Selected: Москва (Коледино) (ID: 507)
+ *
+ * Step 2: Creating seller warehouse...
+ * ✓ Warehouse created with ID: 12345
+ *
+ * Step 3: Adding stock for products...
+ * ✓ Stock added for 5 SKUs
+ *   SKU 123456: 100 units
+ *   SKU 123457: 50 units
+ *
+ * Step 4: Updating stock levels...
+ * ✓ Stock updated for 5 SKUs
+ *
+ * ⚠️  WARNING: Stock deletion is irreversible
+ * Step 5: Deleting stock (use with caution)...
+ * ✓ Stock deleted for 2 SKUs
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * export WB_WAREHOUSE_ID="your_warehouse_id"  # Optional
+ * tsx examples/products-warehouse-stock.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - products-crud.ts - Create products before managing stock
+ * - complete-product-workflow.ts - Full product setup including stock
+ * - orders-fbs-fulfillment.ts - FBS order fulfillment workflow
+ *
+ * **Common Issues:**
+ * - "No WB offices available": Contact Wildberries support for FBS access
+ * - "Warehouse binding failed": Office may be at capacity
+ * - "SKU not found": Ensure product and size exist before adding stock
+ * - "Stock deletion failed": Cannot delete stock with active orders
+ * - "Bulk update partial failure": Check individual SKU errors in response
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products} - Official Products API
  */
 
-import { WildberriesSDK } from '../src/index';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src/index';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 
@@ -126,35 +193,36 @@ async function setupInventoryManagement() {
   } catch (error: unknown) {
     console.error('\n❌ Error during inventory management:');
 
-    if (error && typeof error === 'object' && 'statusCode' in error) {
-      const apiError = error as { statusCode: number; message?: string };
-
-      switch (apiError.statusCode) {
-        case 409:
-          console.error('  Conflict Error (409):');
-          console.error('  - WB office already bound to another warehouse');
-          console.error('  - Warehouse processing in progress');
-          console.error('  - DBS/FBS or cargo type restrictions');
-          console.error('  Note: 409 errors count as 5 requests toward rate limit!');
-          break;
-
-        case 404:
-          console.error('  Not Found (404):');
-          console.error('  - Warehouse does not exist');
-          console.error('  - SKUs not found in warehouse');
-          break;
-
-        case 429:
-          console.error('  Rate Limit Exceeded (429):');
-          console.error('  - Too many requests to Marketplace API');
-          console.error('  - Limit: 300 req/min, 200ms interval');
-          break;
-
-        default:
-          console.error(`  HTTP ${apiError.statusCode}: ${apiError.message ?? 'Unknown error'}`);
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   Warehouse API limit: 300 req/min (200ms interval)`);
+      console.error(`   Note: 409 conflict errors count as 5 requests!`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Verify your API key: echo $WB_API_KEY`);
+      console.error(`   Check permissions for warehouse operations.`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Common issues:`);
+      console.error(`   - Warehouse name must be ≤200 characters`);
+      console.error(`   - Stock amount must be ≤100,000`);
+      console.error(`   - Cannot update >1000 SKUs per request`);
+      console.error(`   - SKU array cannot be empty`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Check internet connection and API status.`);
+      console.error(`   Verify at: https://dev.wildberries.ru/`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+      console.error(`   See: https://dev.wildberries.ru/openapi/work-with-products`);
+      if (error.statusCode === 409) {
+        console.error(`   Conflict: Office already bound or processing in progress`);
+      } else if (error.statusCode === 404) {
+        console.error(`   Not found: Warehouse or SKUs don't exist`);
       }
     } else if (error instanceof Error) {
-      console.error(`  ${error.name}: ${error.message}`);
+      console.error(`💥 Unexpected error: ${error.message}`);
     } else {
       console.error('  Unknown error occurred');
     }
@@ -201,7 +269,11 @@ async function bulkStockManagement() {
 
   } catch (error: unknown) {
     console.error('\n❌ Error during bulk operation:');
-    if (error instanceof Error) {
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit - retry after ${error.retryAfter}ms`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error - check SKU/amount limits`);
+    } else if (error instanceof Error) {
       console.error(`  ${error.name}: ${error.message}`);
     }
     throw error;
@@ -252,7 +324,9 @@ async function demonstrateErrorHandling() {
 
   } catch (error: unknown) {
     console.error('\n❌ Unexpected error:');
-    if (error instanceof Error) {
+    if (error instanceof ValidationError) {
+      console.error(`✓ Validation errors properly caught and handled`);
+    } else if (error instanceof Error) {
       console.error(`  ${error.name}: ${error.message}`);
     }
   }
@@ -286,7 +360,9 @@ async function main() {
 
   } catch (error: unknown) {
     console.error('\n❌ Fatal error:');
-    if (error instanceof Error) {
+    if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication failed - check API key');
+    } else if (error instanceof Error) {
       console.error(`  ${error.name}: ${error.message}`);
       if (error.stack) {
         console.error('\nStack trace:');

@@ -1,27 +1,89 @@
 /**
- * Orders FBW (Fulfillment by Wildberries) Complete Supply Planning Workflow Example
+ * Complete FBW Supply Planning - Wildberries Warehouse Fulfillment
  *
- * Demonstrates complete FBW warehouse supply planning and management workflow:
- * 1. Getting available WB warehouses
- * 2. Checking acceptance coefficients for optimal delivery dates
- * 3. Validating acceptance options for specific goods
- * 4. Calculating transit tariffs for delivery planning
- * 5. Listing and filtering existing supplies
- * 6. Getting detailed supply information
- * 7. Tracking goods within supplies
- * 8. Retrieving package information for logistics
+ * This comprehensive example demonstrates FBW (Fulfillment by Wildberries) supply planning and management:
+ * - Getting available WB warehouses with addresses
+ * - Checking acceptance coefficients (next 14 days) for cost optimization
+ * - Validating acceptance options for specific goods
+ * - Calculating transit tariffs for delivery cost planning
+ * - Listing and filtering existing supplies by status and date
+ * - Getting detailed supply information with goods tracking
+ * - Retrieving package information for logistics
  *
- * @example
- * ```bash
- * # Set API key
- * export WB_API_KEY="your-wildberries-api-key"
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 30 minutes
  *
- * # Run example
- * npx tsx examples/orders-fbw-fulfillment.ts
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - OrdersFBW module permissions enabled
+ * - Products configured for FBW fulfillment
+ * - Understanding of acceptance coefficients (-1: unavailable, 0: free, >0: paid)
+ * - Supply planning strategy for cost optimization
+ *
+ * **What This Example Covers:**
+ * - **Warehouse Selection**: Get all WB warehouses with acceptance info
+ * - **Coefficient Analysis**: Find free acceptance dates (coefficient = 0)
+ * - **Acceptance Validation**: Check if goods can be accepted at warehouse
+ * - **Transit Costs**: Calculate delivery costs to WB warehouses
+ * - **Supply Management**: List, filter, and track supplies
+ * - **Goods Tracking**: Monitor individual items within supplies
+ * - **Package Logistics**: Retrieve package codes for tracking
+ * - **Status Lifecycle**: Not Planned → Planned → Accepting → Accepted → Unloaded
+ *
+ * **Expected Output:**
  * ```
+ * === FBW Warehouse Supply Planning Workflow ===
+ *
+ * Step 1: Getting available WB warehouses...
+ * Found 15 WB warehouses
+ *
+ * Warehouse: Москва (Коледино)
+ *   ID: 507
+ *   Acceptance coefficients (next 14 days):
+ *     2024-03-16: 0 (FREE)
+ *     2024-03-17: 1.5 (PAID 50%)
+ *     2024-03-18: 0 (FREE)
+ *
+ * Step 2: Validating acceptance options...
+ * ✅ All 10 goods can be accepted
+ *
+ * Step 3: Calculating transit tariffs...
+ * Transit cost: 450₽ per box
+ *
+ * Step 4: Listing existing supplies...
+ * Found 3 active supplies:
+ *   Supply 1: Planned (15 items)
+ *   Supply 2: Accepting (32 items)
+ *   Supply 3: Accepted (50 items)
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/orders-fbw-fulfillment.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - products-warehouse-stock.ts - Inventory management for FBW
+ * - tariffs-pricing-calculator.ts - Calculate FBW vs FBS costs
+ *
+ * **Common Issues:**
+ * - "No warehouses available": FBW access requires approval from WB
+ * - "Acceptance coefficient -1": Warehouse not accepting for that date
+ * - "Goods rejected": Item may not be accepted at selected warehouse
+ * - "Transit tariff unavailable": Check if transit warehouse is configured
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/fbw-api} - Official FBW API documentation
  */
 
-import { WildberriesSDK, RateLimitError, ValidationError } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type { Good as FBWGood } from '../src';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
@@ -335,13 +397,33 @@ async function completeFBWWorkflow() {
     console.log('  6. Track package codes for logistics coordination');
     console.log('');
   } catch (error) {
+    console.error('\n❌ Error occurred during FBW workflow:');
+
     if (error instanceof RateLimitError) {
-      console.error('❌ Rate limit exceeded:', error.message);
-      console.error(`   Retry after ${error.retryAfter}ms`);
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   FBW API limits vary by endpoint`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Check API key and FBW access permissions`);
+      console.error(`   FBW requires special seller approval`);
     } else if (error instanceof ValidationError) {
-      console.error('❌ Validation error:', error.message);
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Common issues:`);
+      console.error(`   - Acceptance coefficient -1 (warehouse unavailable)`);
+      console.error(`   - Invalid warehouse or supply ID`);
+      console.error(`   - Goods not eligible for selected warehouse`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Check internet connectivity`);
+      console.error(`   Verify at: https://dev.wildberries.ru/`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+      console.error(`   See: https://dev.wildberries.ru/openapi/fbw-api`);
     } else if (error instanceof Error) {
-      console.error('❌ Error:', error.message);
+      console.error(`💥 Unexpected error: ${error.message}`);
+    } else {
+      console.error('Unknown error:', error);
     }
     throw error;
   }

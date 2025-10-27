@@ -1,18 +1,92 @@
 /**
- * Analytics Dashboard Example
+ * Analytics Dashboard - Complete Sales Performance Analytics
  *
- * Demonstrates usage of the Wildberries SDK Analytics Module for:
- * - Sales funnel conversion metrics analysis
- * - Product performance tracking and comparison
- * - Search query optimization
- * - Category-level performance metrics
- * - CSV report generation
- * - Building comprehensive sales dashboards
+ * This comprehensive example demonstrates building production-ready analytics dashboards:
+ * - Sales funnel analysis with conversion metrics (views → cart → orders → purchases)
+ * - Product performance comparison across multiple SKUs
+ * - Search query optimization (high volume, low conversion opportunities)
+ * - Category performance analysis with top performers
+ * - Product history time-series data for trend analysis
+ * - Stock history and inventory velocity calculation
+ * - CSV report generation for BI tools (Excel, Tableau, Power BI)
+ * - Complete dashboard data aggregation with KPIs
  *
- * Story 3.3: Analytics Module - Sales Statistics and Performance Metrics
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 25 minutes
+ *
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Analytics module permissions enabled
+ * - Active seller account with sales history
+ * - Products with sufficient data for analysis (at least 30 days)
+ * - Understanding of conversion funnel metrics
+ * - Optional: BI tool for CSV import (Excel, Tableau, Power BI)
+ *
+ * **What This Example Covers:**
+ * - **Sales Funnel**: Conversion rates from views to purchases with growth dynamics
+ * - **Performance Comparison**: Revenue, units sold, conversion rates across products
+ * - **Search Optimization**: Identify high-volume low-conversion queries
+ * - **Category Analysis**: Top products and revenue distribution by category
+ * - **Time-Series Data**: Daily performance trends with 7-day history
+ * - **Stock Velocity**: Calculate restock dates and stockout predictions
+ * - **CSV Export**: BI-ready reports with European/standard formats
+ * - **Complete Dashboard**: Aggregated KPIs with parallel data fetching
+ *
+ * **Expected Output:**
+ * ```
+ * === Sales Funnel Analysis ===
+ * Total Products Analyzed: 47
+ *
+ * 1. Brand Name (ID: 12345)
+ *    Category: Electronics
+ *    Views: 15,234
+ *    Add to Cart: 3,456 (22.7%)
+ *    Orders: 1,234 (35.7%)
+ *    Purchases: 987 (80.0%)
+ *    Revenue: 1,234,567 RUB
+ *    Growth vs Previous Period:
+ *      Views: +15.3%
+ *      Revenue: +23.5%
+ *
+ * === Complete Analytics Dashboard ===
+ * Period: 2024-01-01 to 2024-01-31
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * KEY PERFORMANCE INDICATORS
+ *   Total Views: 234,567
+ *   Total Purchases: 12,345
+ *   Total Revenue: 15,678,900 RUB
+ *   Conversion Rate: 5.27%
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/analytics-dashboard.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - reports-analytics.ts - Stock and order reports
+ * - business-dashboard.ts - Business metrics integration
+ * - export-to-bi.ts - Advanced BI integration workflows
+ *
+ * **Common Issues:**
+ * - "No data available": Products need at least 30 days of sales history
+ * - "CSV export timeout": Large datasets may take 5+ minutes to generate
+ * - "Stock velocity calculation error": Need sufficient history for predictions
+ * - "Search query data missing": Requires organic search traffic to products
+ * - "European Excel format issues": Use delimiter=";" and encoding="utf-8-bom"
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/seller-analytics} - Official Analytics API
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 
 // Initialize SDK with API key
 const sdk = new WildberriesSDK({
@@ -616,7 +690,25 @@ async function main(): Promise<void> {
     console.log('\n' + '='.repeat(60));
     console.log('✅ All analytics examples completed successfully!');
   } catch (error) {
-    console.error('\n❌ Error running analytics examples:', error);
+    console.error('\n❌ Error running analytics examples:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   Analytics API: 5 req/min for queries, 1 req/2min for CSV exports`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Verify API key and analytics permissions`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Check date format and period ranges`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     process.exit(1);
   }
 }

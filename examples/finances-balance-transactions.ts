@@ -1,20 +1,81 @@
 /**
- * Wildberries SDK - Finances Module Example
+ * Balance and Transactions - Finances Module Complete Example
  *
- * This example demonstrates financial data operations including:
- * - Retrieving account balance
- * - Fetching transaction history with pagination
- * - Searching for specific transactions
- * - Downloading financial documents
- * - Handling large datasets
+ * This example demonstrates comprehensive financial account management:
+ * - Retrieving current account balance with withdrawal availability
+ * - Fetching transaction history with date range filtering
+ * - Searching for specific transactions by type or ID
+ * - Handling pagination for large transaction datasets
+ * - Analyzing transaction patterns and balance changes
  *
- * Prerequisites:
- * 1. Get your API key from the Wildberries seller portal: https://seller.wildberries.ru/
- * 2. Set the WB_API_KEY environment variable:
- *    export WB_API_KEY="your-api-key-here"
+ * **Complexity**: 🟢 Beginner
+ * **Estimated Time**: 10 minutes
  *
- * Run this example:
- *    npx tsx examples/finances-balance-transactions.ts
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Finances module permissions enabled on your API key
+ * - Active seller account with transaction history
+ * - Completed sales transactions (for meaningful data)
+ *
+ * **What This Example Covers:**
+ * - **Balance Retrieval**: Get current balance and withdrawal availability
+ * - **Transaction History**: Fetch transactions with date filtering (last 7 days)
+ * - **Transaction Analysis**: Breakdown by type (sales, returns, fees, payouts)
+ * - **Pagination Handling**: Process large transaction datasets efficiently
+ * - **Error Handling**: Rate limits, authentication, and API errors
+ *
+ * **Expected Output:**
+ * ```
+ * 💰 Wildberries SDK - Finances Module Example
+ *
+ * Step 1: Initializing SDK...
+ * ✅ SDK initialized successfully
+ *
+ * Step 2: Fetching account balance...
+ * ✅ Balance retrieved successfully:
+ *    Currency: RUB
+ *    Current Balance: 125,450.50 RUB
+ *    Available for Withdrawal: 100,000.00 RUB
+ *    (79.7% available for withdrawal)
+ *
+ * Step 3: Fetching recent transaction history...
+ *    Date range: 2024-03-08 to 2024-03-15
+ * ✅ Found 47 transactions
+ *
+ * Transaction Breakdown:
+ *    Sales: 32 transactions (+85,000.00 RUB)
+ *    Returns: 3 transactions (-4,500.00 RUB)
+ *    Commission Fees: 15 transactions (-8,500.00 RUB)
+ *    Storage Fees: 7 transactions (-1,200.00 RUB)
+ *
+ * Recent Transactions (Last 5):
+ *    1. Sale - Order #12345 - +2,500.00 RUB
+ *    2. Commission - 10% - -250.00 RUB
+ *    3. Sale - Order #12346 - +1,800.00 RUB
+ *    4. Storage Fee - 5 days - -75.00 RUB
+ *    5. Return - Order #12340 - -1,200.00 RUB
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/finances-balance-transactions.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - finances-reports-payouts.ts - Financial reports and payout history
+ * - financial-reconciliation.ts - Complete financial reconciliation workflow
+ * - integration-product-order-finance.ts - Multi-module financial tracking
+ *
+ * **Common Issues:**
+ * - "No transactions found": Ensure date range includes completed sales
+ * - "Balance not updated": Balance updates after order completion and payout processing
+ * - "Withdrawal amount differs": Some funds may be held for returns or pending payouts
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/financial-operations} - Official Finances API documentation
  */
 
 import {
@@ -22,6 +83,8 @@ import {
   AuthenticationError,
   RateLimitError,
   ValidationError,
+  NetworkError,
+  WBAPIError,
 } from '../src';
 
 /**
@@ -75,7 +138,12 @@ async function main() {
       console.log(`   (${percentAvailable}% available for withdrawal)\n`);
     } catch (error) {
       if (error instanceof RateLimitError) {
-        console.error('⚠️  Rate limit exceeded. Please try again later.');
+        console.error('⚠️ Rate Limit Error:', error.message);
+        console.log(`   Retry after: ${error.retryAfter}ms`);
+      } else if (error instanceof AuthenticationError) {
+        console.error('🔐 Authentication Error:', error.message);
+      } else if (error instanceof NetworkError) {
+        console.error('🌐 Network Error:', error.message);
       } else {
         console.error('❌ Failed to fetch balance:', error);
       }
@@ -121,8 +189,16 @@ async function main() {
         console.log('   No transactions found for this period\n');
       }
     } catch (error) {
-      if (error instanceof ValidationError) {
-        console.error('❌ Invalid date range:', error.message);
+      if (error instanceof RateLimitError) {
+        console.error('⚠️ Rate Limit Error:', error.message);
+        console.log(`   Retry after: ${error.retryAfter}ms`);
+      } else if (error instanceof AuthenticationError) {
+        console.error('🔐 Authentication Error:', error.message);
+      } else if (error instanceof ValidationError) {
+        console.error('❌ Validation Error:', error.message);
+        console.log('   Check date range format (YYYY-MM-DD)');
+      } else if (error instanceof NetworkError) {
+        console.error('🌐 Network Error:', error.message);
       } else {
         console.error('❌ Failed to fetch transactions:', error);
       }
@@ -187,7 +263,12 @@ async function main() {
         console.log(`   Transaction Count: ${allTransactions.length}\n`);
       }
     } catch (error) {
-      console.error('❌ Pagination failed:', error);
+      if (error instanceof RateLimitError) {
+        console.error('⚠️ Rate Limit Error:', error.message);
+        console.log(`   Retry after: ${error.retryAfter}ms`);
+      } else {
+        console.error('❌ Pagination failed:', error);
+      }
     }
 
     // ============================================================================
@@ -205,7 +286,7 @@ async function main() {
 
       console.log(`   Searching for transaction ID: ${transactionId}...`);
 
-      const transaction = await sdk.finances.getTransactionById(transactionId, {
+      const transaction = await sdk.finances.getTransactionDetail(transactionId, {
         dateFrom: searchDateFrom,
         dateTo: searchDateTo,
       });
@@ -222,7 +303,10 @@ async function main() {
       );
       console.log(`   Sale Date: ${transaction.sale_dt}\n`);
     } catch (error) {
-      if (error instanceof ValidationError) {
+      if (error instanceof RateLimitError) {
+        console.error('⚠️ Rate Limit Error:', error.message);
+        console.log(`   Retry after: ${error.retryAfter}ms`);
+      } else if (error instanceof ValidationError) {
         console.log('⚠️  Transaction not found in the specified date range\n');
       } else {
         console.error('❌ Transaction search failed:', error);
@@ -277,7 +361,12 @@ async function main() {
         // // To save: Buffer.from(download.data.document, 'base64')
       }
     } catch (error) {
-      console.error('❌ Document operations failed:', error);
+      if (error instanceof RateLimitError) {
+        console.error('⚠️ Rate Limit Error:', error.message);
+        console.log(`   Retry after: ${error.retryAfter}ms`);
+      } else {
+        console.error('❌ Document operations failed:', error);
+      }
     }
 
     // ============================================================================
@@ -300,13 +389,24 @@ async function main() {
     console.log('');
   } catch (error) {
     if (error instanceof AuthenticationError) {
-      console.error('❌ Authentication failed:', error.message);
-      console.log('\nPlease check your API key and try again.\n');
+      console.error('\n🔐 Authentication Error:', error.message);
+      console.log('   Verify WB_API_KEY environment variable');
+      console.log('   Ensure API key has Finances module permissions\n');
     } else if (error instanceof RateLimitError) {
-      console.error('❌ Rate limit exceeded:', error.message);
-      console.log(`\nPlease wait ${error.retryAfter / 1000} seconds and try again.\n`);
+      console.error('\n⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   SDK automatically retries with exponential backoff\n');
+    } else if (error instanceof ValidationError) {
+      console.error('\n❌ Validation Error:', error.message);
+      console.log('   Check request parameters and date formats\n');
+    } else if (error instanceof NetworkError) {
+      console.error('\n🌐 Network Error:', error.message);
+      console.log('   Check internet connection and API status\n');
+    } else if (error instanceof WBAPIError) {
+      console.error('\n⚠️ API Error:', error.statusCode, error.message);
+      console.log('   Check API documentation for error details\n');
     } else {
-      console.error('❌ Unexpected error:', error);
+      console.error('\n❌ Unexpected error:', error);
     }
     process.exit(1);
   }

@@ -1,29 +1,95 @@
 /**
- * Communications Module - Complete Customer Engagement Workflow
+ * Complete Customer Engagement - Communications Module Full Workflow
  *
- * This example demonstrates how to use the Communications module to manage
- * all customer interactions on Wildberries marketplace:
+ * This comprehensive example demonstrates all customer interaction management:
+ * - **Customer Chat**: Real-time messaging about orders with event polling
+ * - **Questions & Answers**: Respond to product inquiries from potential buyers
+ * - **Reviews Management**: Respond to customer feedback and ratings
  *
- * 1. **Customer Chat**: Real-time messaging with customers about orders
- * 2. **Questions & Answers**: Respond to product questions from potential customers
- * 3. **Reviews Management**: Respond to customer reviews and feedback
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 30 minutes
  *
- * ## Prerequisites
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Communications module permissions enabled on your API key
+ * - Active products and orders (to receive chats, questions, and reviews)
+ * - Published products (for questions and reviews)
  *
- * - Valid Wildberries API key with communications permissions
- * - Active products and orders (for realistic data)
+ * **What This Example Covers:**
+ * - **Part 1: Chat Management**: Fetch chats, poll events, filter by chatID, send messages
+ * - **Part 2: Q&A Management**: Get questions, answer inquiries, reject spam, mark viewed
+ * - **Part 3: Reviews Management**: Get reviews, respond to feedback, edit responses
+ * - Event-based architecture with cursor pagination (chats)
+ * - Filter-based pagination with take/skip parameters (Q&A, reviews)
+ * - Rate limit handling (10 req/10s for chat, 3 req/sec for Q&A/reviews)
  *
- * ## Usage
+ * **Expected Output:**
+ * ```
+ * === Part 1: Customer Chat Management ===
  *
- * ```bash
- * # Set your API key
- * export WB_API_KEY="your-wildberries-api-key"
+ * Step 1: Fetching all active chats...
+ * Found 3 active chat(s)
  *
- * # Run the example
- * npx tsx examples/communications-customer-engagement.ts
+ * Chat 1:
+ *   Chat ID: chat_abc123
+ *   Customer: Ivan Petrov (ID: 54321)
+ *   Product: Premium Cotton T-Shirt
+ *
+ * Step 2: Polling for new events...
+ * Processing 25 events...
+ * Found 8 new messages from customers
+ *
+ * Step 3: Sending reply...
+ * ✅ Message sent successfully
+ *
+ * === Part 2: Product Q&A Management ===
+ *
+ * Step 1: Getting all questions...
+ * Found 12 unanswered questions
+ *
+ * Question 1: "What is the material composition?"
+ *   Product: nmID 987654
+ *   Asked: 2 days ago
+ *
+ * Step 2: Answering question...
+ * ✅ Answer published
+ *
+ * === Part 3: Customer Reviews Management ===
+ *
+ * Step 1: Getting all reviews...
+ * Found 45 reviews (Average: 4.5 stars)
+ *
+ * Review 1: ⭐⭐⭐⭐⭐
+ *   "Great quality, fast shipping!"
+ *   Product: nmID 987654
+ *
+ * Step 2: Responding to review...
+ * ✅ Response published
  * ```
  *
- * @example Basic usage
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/communications-customer-engagement.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - customer-support.ts - Alternative full communications workflow
+ * - customer-engagement.ts - Focused Q&A and reviews examples
+ *
+ * **Common Issues:**
+ * - "No chats found": Chats are customer-initiated (requires active orders)
+ * - "No questions": Questions depend on product visibility and traffic
+ * - "Response rejected": Follow content guidelines (no URLs, profanity, or spam)
+ * - "Event polling incomplete": Use cursor pagination for continuous monitoring
+ * - "Rate limit exceeded": Chat API limited to 10 req/10s, Q&A/Reviews to 3 req/sec
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/user-communication} - Official Communications API documentation
+ *
+ * @example Basic chat usage
  * ```typescript
  * const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY });
  *
@@ -31,14 +97,21 @@
  * const chats = await sdk.communications.getChats();
  *
  * // Poll for new messages
- * const events = await sdk.communications.getChatEvents();
+ * const events = await sdk.communications.getEvents();
  *
  * // Reply to customer
  * await sdk.communications.sendMessage(chat.replySign, 'Thank you!');
  * ```
  */
 
-import { WildberriesSDK, ValidationError, RateLimitError } from '../src';
+import {
+  WildberriesSDK,
+  ValidationError,
+  RateLimitError,
+  AuthenticationError,
+  NetworkError,
+  WBAPIError,
+} from '../src';
 import type { Chat, ChatEvent, Sender } from '../src/types/communications.types';
 
 // Initialize SDK
@@ -101,7 +174,7 @@ async function manageChatConversations() {
 
     // Step 2: Poll for new events (messages)
     console.log('Step 2: Polling for new messages...');
-    const eventsResponse = await sdk.communications.getChatEvents();
+    const eventsResponse = await sdk.communications.getEvents();
     const { events, next, totalEvents } = eventsResponse.result;
 
     console.log(`Total events available: ${totalEvents}`);
@@ -159,16 +232,26 @@ async function manageChatConversations() {
     // Step 5: Continue pagination if more events exist
     if (next && totalEvents > events.length) {
       console.log('Step 5: Fetching more events with pagination...\n');
-      const moreEventsResponse = await sdk.communications.getChatEvents(next);
+      const moreEventsResponse = await sdk.communications.getEvents(next);
       console.log(`Fetched ${moreEventsResponse.result.events.length} more events`);
       console.log(`Next cursor: ${moreEventsResponse.result.next || 'End of stream'}\n`);
     }
 
   } catch (error) {
     if (error instanceof RateLimitError) {
-      console.error('❌ Rate limit exceeded:', error.message);
-      console.error('   Chat API limit: 10 requests per 10 seconds');
-      console.error('   Use 10-second polling intervals for production');
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Chat API limit: 10 requests per 10 seconds');
+      console.log('   Use 10-second polling intervals for production');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+      console.log('   Verify API key has Communications module permissions');
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else if (error instanceof WBAPIError) {
+      console.error('⚠️ API Error:', error.statusCode, error.message);
     } else if (error instanceof Error) {
       console.error('❌ Error managing chats:', error.message);
     }
@@ -277,8 +360,19 @@ async function manageCustomerQuestions() {
     }
 
   } catch (error) {
-    if (error instanceof ValidationError) {
-      console.error('❌ Validation error:', error.message);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Q&A rate limit: 3 requests per second');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Answer text must not be empty');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else if (error instanceof WBAPIError) {
+      console.error('⚠️ API Error:', error.statusCode, error.message);
     } else if (error instanceof Error) {
       console.error('❌ Error managing questions:', error.message);
     }
@@ -428,8 +522,19 @@ async function manageCustomerReviews() {
     }
 
   } catch (error) {
-    if (error instanceof ValidationError) {
-      console.error('❌ Validation error:', error.message);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+      console.log('   Reviews rate limit: 3 requests per second');
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Validation Error:', error.message);
+      console.log('   Response must not exceed character limit');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network Error:', error.message);
+    } else if (error instanceof WBAPIError) {
+      console.error('⚠️ API Error:', error.statusCode, error.message);
     } else if (error instanceof Error) {
       console.error('❌ Error managing reviews:', error.message);
     }
@@ -498,9 +603,24 @@ async function main() {
     console.log('');
 
   } catch (error) {
-    console.error('\n❌ Fatal error in customer engagement workflow:');
-    if (error instanceof Error) {
-      console.error(`   ${error.message}`);
+    if (error instanceof RateLimitError) {
+      console.error('\n⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('\n🔐 Authentication Error:', error.message);
+      console.log('   Verify WB_API_KEY environment variable');
+      console.log('   Ensure API key has Communications module permissions');
+    } else if (error instanceof ValidationError) {
+      console.error('\n❌ Validation Error:', error.message);
+    } else if (error instanceof NetworkError) {
+      console.error('\n🌐 Network Error:', error.message);
+      console.log('   Check internet connection and API status');
+    } else if (error instanceof WBAPIError) {
+      console.error('\n⚠️ API Error:', error.statusCode, error.message);
+    } else if (error instanceof Error) {
+      console.error('\n❌ Fatal error in customer engagement workflow:', error.message);
+    } else {
+      console.error('\n❌ Unknown error:', error);
     }
     process.exit(1);
   }

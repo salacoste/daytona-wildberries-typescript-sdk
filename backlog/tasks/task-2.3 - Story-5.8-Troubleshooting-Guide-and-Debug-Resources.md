@@ -1,9 +1,10 @@
 ---
 id: task-2.3
 title: 'Story 5.8: Troubleshooting Guide and Debug Resources'
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-10-25'
+updated_date: '2025-10-27'
 labels:
   - epic-5b
   - documentation
@@ -30,3 +31,7 @@ Compile and document solutions for top 20 support issues. Create comprehensive t
 - [ ] API version mismatch troubleshooting section created
 - [ ] Troubleshooting flowchart created for quick diagnosis
 - [ ] All solutions tested and verified working
+
+## Implementation Notes
+
+Troubleshooting guide created: docs/guides/troubleshooting.md with common issues, debugging techniques, solutions

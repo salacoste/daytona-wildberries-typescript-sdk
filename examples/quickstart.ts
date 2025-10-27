@@ -1,19 +1,72 @@
 /**
- * Wildberries SDK - Quickstart Example
+ * SDK Quickstart - Your First Wildberries API Call
  *
- * This example demonstrates basic SDK usage including:
- * - SDK initialization
- * - Making API calls
- * - Error handling
- * - TypeScript type safety
+ * This beginner-friendly example demonstrates the essentials of using the SDK:
+ * - SDK initialization with API key configuration
+ * - Making your first API call (connectivity test)
+ * - Comprehensive error handling for all error types
+ * - TypeScript type safety and IDE autocomplete
  *
- * Prerequisites:
- * 1. Get your API key from the Wildberries seller portal: https://seller.wildberries.ru/
- * 2. Set the WB_API_KEY environment variable:
- *    export WB_API_KEY="your-api-key-here"
+ * **Complexity**: 🟢 Beginner
+ * **Estimated Time**: 5 minutes
  *
- * Run this example:
- *    npx tsx examples/quickstart.ts
+ * **Prerequisites:**
+ * - Valid Wildberries API key (get from https://seller.wildberries.ru/)
+ * - Set WB_API_KEY environment variable
+ * - Node.js >= 20.0.0
+ * - SDK installed: npm install wb-api-sdk
+ *
+ * **What This Example Covers:**
+ * - Basic SDK initialization and configuration
+ * - Testing API connectivity with ping endpoint
+ * - Fetching news and seller information
+ * - Error handling for AuthenticationError, RateLimitError, NetworkError
+ * - TypeScript type safety and proper typing
+ *
+ * **Expected Output:**
+ * ```
+ * 🚀 Wildberries SDK Quickstart Example
+ *
+ * Step 1: Initializing SDK...
+ * ✅ SDK initialized successfully
+ *
+ * Step 2: Testing API connection...
+ * ✅ API connection successful!
+ *
+ * Step 3: Fetching news...
+ * ✅ Retrieved 5 news items
+ * Latest: "Новые правила работы с маркетплейсом"
+ *
+ * Step 4: Getting seller information...
+ * ✅ Seller: Example Company LLC
+ * Seller ID: 12345
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/quickstart.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - general.ts - Comprehensive General module examples
+ * - products-categories.ts - Explore product categories (recommended next step)
+ * - products-crud.ts - Product management
+ *
+ * **Common Issues:**
+ * - "WB_API_KEY not set": Ensure environment variable is exported
+ * - "Authentication failed": Verify API key is active in seller portal
+ * - "Network timeout": Check internet connection and API status
+ *
+ * **API Documentation:**
+ * @see {@link https://dev.wildberries.ru/openapi/} - Official Wildberries API Documentation
+ * @see {@link https://dev.wildberries.ru/openapi/common} - General Module API Reference
+ * @see {@link ../docs/api/classes/WildberriesSDK.html} - SDK Class Documentation
+ * @see {@link ../docs/api/classes/GeneralModule.html} - General Module Documentation
+ * @see {@link ../README.md} - SDK Quick Start Guide
  */
 
 import { WildberriesSDK, AuthenticationError, RateLimitError, NetworkError } from '../src';

@@ -21,7 +21,6 @@ import type {
 /**
  * ReportsModule - Generate and retrieve various business reports
  *
- * @description Provides methods for:
  * - Basic reports: incomes, stocks, orders, sales (with pagination)
  * - Excise reports: compliance tracking for mandatory labeling
  * - Async reports: warehouse remains with configurable grouping/filtering
@@ -46,7 +45,6 @@ export class ReportsModule {
   /**
    * Get inbound shipment data from warehouses
    *
-   * @description Retrieves inbound shipment information with 30-minute update frequency.
    * Supports pagination for large datasets (up to 100,000 rows per request).
    *
    * **Pagination Strategy**:
@@ -110,7 +108,6 @@ export class ReportsModule {
   /**
    * Get current stock levels across WB warehouses
    *
-   * @description Retrieves stock information with quantity breakdown.
    * Data is updated every 30 minutes. Maximum 60,000 rows per response.
    *
    * **Stock Quantity Fields**:
@@ -162,7 +159,6 @@ export class ReportsModule {
   /**
    * Get order information for all customer orders
    *
-   * @description Retrieves order details with 30-minute updates and 90-day retention.
    * Maximum 80,000 rows per response.
    *
    * **Important Notes**:
@@ -211,7 +207,6 @@ export class ReportsModule {
   /**
    * Get sales and returns data
    *
-   * @description Retrieves sales and returns information with payment details.
    * Data is updated every 30 minutes with 90-day retention.
    * Maximum 80,000 rows per response.
    *
@@ -272,7 +267,6 @@ export class ReportsModule {
   /**
    * Get report on goods with mandatory labeling (excise goods)
    *
-   * @description Retrieves compliance report for products requiring mandatory labeling.
    * Used for tracking labeling operations and regulatory compliance.
    *
    * **Country Codes** (ISO 3166-2):
@@ -330,7 +324,6 @@ export class ReportsModule {
   /**
    * Create async task to generate warehouse remains report
    *
-   * @description Initiates async report generation with grouping and filtering options.
    * Returns taskId for status checking and download.
    *
    * **Async Workflow**:
@@ -382,7 +375,6 @@ export class ReportsModule {
   /**
    * Check async report generation status
    *
-   * @description Checks current status of async report task.
    * Poll every 5-10 seconds until status is 'done' or 'error'.
    *
    * **Status Values**:
@@ -443,7 +435,6 @@ export class ReportsModule {
   /**
    * Download completed async report
    *
-   * @description Downloads report file as Blob when status is 'done'.
    * Report format is Excel (.xlsx) file with tabular data.
    *
    * **Prerequisites**: Task status must be 'done' before downloading
@@ -503,7 +494,6 @@ export class ReportsModule {
   /**
    * Get report on goods with mandatory labeling requirements
    *
-   * @description Retrieves list of products subject to mandatory labeling regulations.
    * Used for tracking compliance with Russian marking system (Честный ЗНАК).
    *
    * @param params - Optional query parameters for filtering
@@ -532,7 +522,6 @@ export class ReportsModule {
   /**
    * Get report on product characteristics changes
    *
-   * @description Retrieves history of changes made to product characteristics.
    * Used for tracking product data modifications and compliance.
    *
    * @param params - Optional query parameters for filtering
@@ -561,7 +550,6 @@ export class ReportsModule {
   /**
    * Get antifraud system details report
    *
-   * @description Retrieves details from the antifraud monitoring system.
    * Used for tracking fraud prevention measures and blocked operations.
    *
    * @param params - Optional query parameters for filtering
@@ -590,7 +578,6 @@ export class ReportsModule {
   /**
    * Get report on incorrect product attachments
    *
-   * @description Retrieves list of products with incorrect or missing attachments.
    * Used for identifying and fixing product data quality issues.
    *
    * @param params - Optional query parameters for filtering
@@ -621,7 +608,6 @@ export class ReportsModule {
   /**
    * Get warehouse measurements report
    *
-   * @description Retrieves warehouse measurement data for products.
    * Used for tracking dimensional weight and storage calculations.
    *
    * @param params - Optional query parameters for filtering
@@ -652,7 +638,6 @@ export class ReportsModule {
   /**
    * Create async task to generate acceptance report
    *
-   * @description Initiates async generation of paid acceptance fees report.
    * Returns taskId for status checking and download.
    *
    * **Async Workflow**:
@@ -687,7 +672,6 @@ export class ReportsModule {
   /**
    * Check acceptance report generation status
    *
-   * @description Checks current status of acceptance report async task.
    * Poll every 5-10 seconds until status is 'done' or 'error'.
    *
    * **Status Values**: new, processing, done, error, purged, canceled
@@ -715,7 +699,6 @@ export class ReportsModule {
   /**
    * Download completed acceptance report
    *
-   * @description Downloads acceptance report file as Blob when status is 'done'.
    * Report format is Excel (.xlsx) file with acceptance fee details.
    *
    * **Prerequisites**: Task status must be 'done' before downloading
@@ -745,7 +728,6 @@ export class ReportsModule {
   /**
    * Create async task to generate paid storage report
    *
-   * @description Initiates async generation of paid storage costs report.
    * Returns taskId for status checking and download.
    *
    * **Async Workflow**:
@@ -780,7 +762,6 @@ export class ReportsModule {
   /**
    * Check paid storage report generation status
    *
-   * @description Checks current status of paid storage report async task.
    * Poll every 5-10 seconds until status is 'done' or 'error'.
    *
    * **Status Values**: new, processing, done, error, purged, canceled
@@ -808,7 +789,6 @@ export class ReportsModule {
   /**
    * Download completed paid storage report
    *
-   * @description Downloads paid storage report file as Blob when status is 'done'.
    * Report format is Excel (.xlsx) file with storage cost details.
    *
    * **Prerequisites**: Task status must be 'done' before downloading
@@ -838,7 +818,6 @@ export class ReportsModule {
   /**
    * Get sales by region report
    *
-   * @description Retrieves sales data broken down by Russian regions.
    * Used for geographic sales analysis and regional performance tracking.
    *
    * @param params - Optional query parameters (date range, filters)
@@ -869,7 +848,6 @@ export class ReportsModule {
   /**
    * Get list of brands for brand share analysis
    *
-   * @description Retrieves list of available brands for brand market share reporting.
    * Used as prerequisite for getBrandShareReport().
    *
    * @returns Promise resolving to array of brand information
@@ -896,7 +874,6 @@ export class ReportsModule {
   /**
    * Get list of parent subjects (categories) for brand share analysis
    *
-   * @description Retrieves list of available product categories for brand market share reporting.
    * Used as prerequisite for getBrandShareReport().
    *
    * @returns Promise resolving to array of category information
@@ -923,7 +900,6 @@ export class ReportsModule {
   /**
    * Get brand market share report
    *
-   * @description Retrieves brand market share analysis data.
    * Shows brand performance relative to category market.
    *
    * @param params - Query parameters (brand ID, category ID, date range)
@@ -956,7 +932,6 @@ export class ReportsModule {
   /**
    * Get blocked products report
    *
-   * @description Retrieves list of products that have been blocked by the marketplace.
    * Used for identifying and resolving product listing issues.
    *
    * @param params - Optional query parameters for filtering
@@ -988,7 +963,6 @@ export class ReportsModule {
   /**
    * Get shadowed (hidden) products report
    *
-   * @description Retrieves list of products that are hidden from search/catalog.
    * Used for identifying products with visibility issues.
    *
    * @param params - Optional query parameters for filtering
@@ -1017,7 +991,6 @@ export class ReportsModule {
   /**
    * Get goods return and movement report
    *
-   * @description Retrieves detailed information on product returns and movements.
    * Used for tracking return rates, reasons, and product flow.
    *
    * @param params - Optional query parameters (date range, filters)

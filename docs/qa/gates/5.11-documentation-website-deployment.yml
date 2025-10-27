@@ -1,0 +1,16 @@
+# Quality Gate Decision: Story 5.11 - Documentation Website Deployment
+schema: 1
+story: "5.11"
+story_title: "Documentation Website Deployment"
+gate: NOT_STARTED
+status_reason: "Story not implemented."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-10-26T00:00:00Z"
+waiver: {active: false}
+top_issues:
+  - {issue: "Story not started", status: "NOT_STARTED", severity: "high", suggested_owner: "dev"}
+risk_summary: {totals: {critical: 0, high: 1, medium: 0, low: 0}}
+quality_score: 0
+evidence: {trace: {ac_covered: [], ac_gaps: []}}
+nfr_validation: {security: {status: N/A}, performance: {status: N/A}, reliability: {status: N/A}, maintainability: {status: N/A}}
+notes: "Story 5.11 NOT STARTED."

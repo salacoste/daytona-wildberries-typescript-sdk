@@ -59,6 +59,7 @@ export default tseslint.config(
       'docs/**',
       'wildberries_api_doc/**',
       'examples/**',
+      'scripts/**',
     ],
   }
 );

@@ -1,21 +1,79 @@
 /**
- * Example: Products Media and Pricing Management
+ * Media Upload and Pricing - Complete Product Enhancement Workflow
  *
- * Demonstrates how to:
- * 1. Upload product media (images and video)
- * 2. Manage media (add, replace, remove)
- * 3. Set product prices and discounts
- * 4. Monitor async pricing updates
- * 5. Verify pricing changes applied
+ * This example demonstrates adding media and pricing to products:
+ * - Uploading product images (files or URLs)
+ * - Managing media gallery (add, replace, remove)
+ * - Setting product prices with async task-based system
+ * - Monitoring pricing update status
+ * - Verifying pricing changes applied
  *
- * Prerequisites:
- * - Product already created (see products-crud.ts example)
- * - Valid API key with media and pricing permissions
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 20 minutes
  *
- * @see https://dev.wildberries.ru/openapi/work-with-products
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Products module permissions enabled
+ * - Existing product already created (run products-crud.ts first)
+ * - Product nmID for media/pricing updates
+ * - Image files or URLs for media upload
+ *
+ * **What This Example Covers:**
+ * - **Media Upload**: File upload (Buffer) and URL import
+ * - **Media Management**: Add, replace, remove product images
+ * - **Pricing Updates**: Async task-based price setting
+ * - **Status Monitoring**: Poll pricing task completion
+ * - **Error Handling**: Media validation, pricing failures
+ *
+ * **Expected Output:**
+ * ```
+ * === Step 1: Upload Media Files ===
+ * Uploading image from URL...
+ * ✅ Media uploaded successfully (ID: img_12345)
+ *
+ * === Step 2: Set Product Pricing ===
+ * Creating pricing task for 3 SKUs...
+ * ✅ Pricing task created (Task ID: task_abc123)
+ *
+ * === Step 3: Monitor Pricing Task ===
+ * Status: processing...
+ * Status: completed
+ * ✅ All prices updated successfully
+ *
+ * === Step 4: Verify Pricing ===
+ * SKU 123456: 1,999₽
+ * SKU 123457: 2,499₽
+ * SKU 123458: 2,999₽
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/products-media-pricing.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - products-crud.ts - Create products first (required)
+ * - complete-product-workflow.ts - Full product setup workflow
+ * - products-warehouse-stock.ts - Stock management
+ *
+ * **Common Issues:**
+ * - "Invalid image format": Use JPG/PNG, max 10MB per image
+ * - "nmID not found": Ensure product exists and you have permissions
+ * - "Pricing task failed": Check SKU validity and price format
+ * - "Task timeout": Pricing tasks may take 1-5 minutes to complete
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products} - Official Products API
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 
 // Initialize SDK with your API key
 const sdk = new WildberriesSDK({
@@ -172,21 +230,37 @@ async function setupProductWithMediaAndPricing() {
   } catch (error) {
     console.error('\n✗ Error in workflow:');
 
-    if (error instanceof Error) {
-      console.error(`  ${error.name}: ${error.message}`);
-
-      // Type-specific error handling
-      if ('statusCode' in error) {
-        const statusCode = (error as { statusCode: number }).statusCode;
-        console.error(`  HTTP Status: ${statusCode}`);
-
-        if (statusCode === 429) {
-          console.error('  → Rate limit exceeded. Wait before retrying.');
-        } else if (statusCode === 400 || statusCode === 422) {
-          console.error('  → Validation error. Check your data.');
-        } else if (statusCode === 401 || statusCode === 403) {
-          console.error('  → Authentication error. Check your API key.');
-        }
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   Tip: The SDK automatically retries rate-limited requests.`);
+      console.error(`        Consider spacing out bulk operations.`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Check your API key is valid and active:`);
+      console.error(`   export WB_API_KEY="your-api-key-here"`);
+      console.error(`   Verify permissions in Wildberries seller dashboard.`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Common issues:`);
+      console.error(`   - Invalid image format (use JPG/PNG, max 10MB)`);
+      console.error(`   - Price must be integer in kopecks`);
+      console.error(`   - Discount percentage must be 0-99`);
+      console.error(`   - nmID must match existing product`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Check your internet connection and try again.`);
+      console.error(`   Verify Wildberries API status at https://dev.wildberries.ru/`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+      console.error(`   See API documentation: https://dev.wildberries.ru/openapi/work-with-products`);
+      if (error.statusCode === 404) {
+        console.error(`   Product or media not found - verify nmID exists.`);
+      }
+    } else if (error instanceof Error) {
+      console.error(`💥 Unexpected error: ${error.message}`);
+      if (error.stack) {
+        console.error(`   Stack trace: ${error.stack}`);
       }
     } else {
       console.error('  Unknown error:', error);
@@ -216,7 +290,13 @@ async function getBulkPricing() {
     });
 
   } catch (error) {
-    console.error('Error fetching bulk pricing:', error);
+    if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication failed - check your API key');
+    } else if (error instanceof NetworkError) {
+      console.error('🌐 Network error - check connectivity');
+    } else {
+      console.error('Error fetching bulk pricing:', error);
+    }
   }
 }
 
@@ -250,7 +330,13 @@ async function updateBulkPricing() {
     }
 
   } catch (error) {
-    console.error('Error updating bulk pricing:', error);
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit - retry after ${error.retryAfter}ms`);
+    } else if (error instanceof ValidationError) {
+      console.error('❌ Invalid pricing data - check format');
+    } else {
+      console.error('Error updating bulk pricing:', error);
+    }
   }
 }
 

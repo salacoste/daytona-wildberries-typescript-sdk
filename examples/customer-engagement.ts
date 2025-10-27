@@ -4,6 +4,9 @@
  * Demonstrates a unified customer service workflow combining reviews and Q&A
  * for comprehensive customer engagement management and response prioritization.
  *
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 25 minutes
+ *
  * **Use Case**: Daily customer service prioritization for support teams
  *
  * **Modules Used**:
@@ -43,7 +46,14 @@
  * ```
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type {
   Review,
   Question,
@@ -409,7 +419,27 @@ async function analyzeCustomerEngagement(
 
     return report;
   } catch (error) {
-    console.error('❌ Customer engagement analysis failed:', error);
+    console.error('❌ Customer engagement analysis failed:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   Communications API: 1 req/min for reviews and Q&A`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Verify API key and communications permissions`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Check date ranges and filter parameters`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Check connectivity - workflow requires 2-3 minutes`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+      console.error(`   See: https://dev.wildberries.ru/openapi/communications`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 }

@@ -1,17 +1,91 @@
 /**
- * Example: Product Categories Navigation Workflow
+ * Product Categories Navigation - Understanding Category Hierarchy
  *
- * This example demonstrates how to navigate the Wildberries product category hierarchy:
- * 1. Get all parent categories (top-level taxonomy)
- * 2. Browse categories/subjects within a parent category
- * 3. Retrieve required and optional characteristics for product creation
+ * This example demonstrates navigating the Wildberries product taxonomy:
+ * - Fetching all parent categories (top-level like Electronics, Clothing)
+ * - Browsing subjects/subcategories within a parent category
+ * - Retrieving required and optional product characteristics for listings
+ * - Understanding the category → subject → characteristics hierarchy
  *
- * Use case: Understanding the product taxonomy before creating product listings
+ * **Complexity**: 🟢 Beginner
+ * **Estimated Time**: 10 minutes
  *
- * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki}
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Products module permissions enabled
+ * - Run this BEFORE creating products to understand taxonomy
+ *
+ * **What This Example Covers:**
+ * - **Parent Categories**: Top-level taxonomy (e.g., "Электроника", "Одежда")
+ * - **Subjects**: Specific product types within categories (e.g., "Смартфоны", "Футболки")
+ * - **Characteristics**: Required/optional attributes for product creation
+ * - Navigating the full hierarchy step-by-step
+ * - Finding the right subjectID for product creation
+ *
+ * **Expected Output:**
+ * ```
+ * 🔍 Wildberries Product Category Explorer
+ *
+ * 📂 Step 1: Fetching parent categories...
+ * ✅ Found 28 parent categories:
+ *
+ *    • Электроника (ID: 1) - Visible
+ *    • Одежда (ID: 2) - Visible
+ *    • Дом и сад (ID: 3) - Visible
+ *    ... and 25 more
+ *
+ * 📑 Step 2: Browsing subjects in 'Электроника'...
+ * ✅ Found 45 subjects:
+ *
+ *    • Смартфоны (ID: 105)
+ *    • Наушники (ID: 106)
+ *    • Планшеты (ID: 107)
+ *
+ * 📋 Step 3: Getting characteristics for 'Смартфоны' (ID: 105)...
+ * ✅ Found 12 required and 8 optional characteristics
+ *
+ * Required:
+ *    • Бренд (ID: 1) - text
+ *    • Цвет (ID: 2) - select
+ *    • Страна производства (ID: 4) - select
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/products-categories.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - products-crud.ts - Create products using subjectID from this example
+ * - complete-product-workflow.ts - Full product creation workflow
+ * - quickstart.ts - SDK basics (run this first if you're new)
+ *
+ * **Common Issues:**
+ * - "No categories found": Check Products module permissions
+ * - "Empty subjects": Some parent categories may have no active subjects
+ * - "Characteristics missing": Subject may be deprecated or hidden
+ * - "subjectID invalid": Use ID from getSubjects(), not parent category ID
+ *
+ * **API Documentation:**
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki} - Categories API Reference
+ * @see {@link ../docs/api/classes/ProductsModule.html} - ProductsModule Class Reference
+ * @see {@link ../docs/api/classes/ProductsModule.html#getParentAll} - getParentAll() Method
+ * @see {@link ../docs/api/classes/ProductsModule.html#getSubjects} - getSubjects() Method
+ * @see {@link ../docs/api/classes/ProductsModule.html#getCharacteristics} - getCharacteristics() Method
  */
 
-import { WildberriesSDK } from '../src/index';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError,
+} from '../src/index';
 
 // Initialize SDK with API key from environment
 const sdk = new WildberriesSDK({
@@ -132,9 +206,20 @@ async function exploreCategories() {
       console.log('   3. Use the correct charcType for each value (string, number, etc.)');
     }
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof RateLimitError) {
+      console.error('\n⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('\n🔐 Authentication Error:', error.message);
+      console.log('   Verify WB_API_KEY environment variable');
+      console.log('   Ensure API key has Products module permissions');
+    } else if (error instanceof NetworkError) {
+      console.error('\n🌐 Network Error:', error.message);
+      console.log('   Check internet connection and API status');
+    } else if (error instanceof WBAPIError) {
+      console.error('\n⚠️ API Error:', error.statusCode, error.message);
+    } else if (error instanceof Error) {
       console.error('\n❌ Error during category exploration:', error.message);
-      console.error('Stack trace:', error.stack);
     } else {
       console.error('\n❌ Unknown error:', error);
     }
@@ -172,7 +257,14 @@ async function searchCategories() {
       });
     }
   } catch (error) {
-    console.error('❌ Search failed:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error('🔐 Authentication Error:', error.message);
+    } else {
+      console.error('❌ Search failed:', error);
+    }
   }
 }
 
@@ -201,7 +293,12 @@ async function paginateCategories() {
     console.log(`✅ Retrieved ${results.data?.length ?? 0} categories`);
     console.log('💡 Tip: Increase offset to fetch the next page (offset = page * limit)');
   } catch (error) {
-    console.error('❌ Pagination failed:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else {
+      console.error('❌ Pagination failed:', error);
+    }
   }
 }
 
@@ -230,7 +327,12 @@ async function getLocalizedCategories() {
       }
     }
   } catch (error) {
-    console.error('❌ Localization failed:', error);
+    if (error instanceof RateLimitError) {
+      console.error('⚠️ Rate Limit Error:', error.message);
+      console.log(`   Retry after: ${error.retryAfter}ms`);
+    } else {
+      console.error('❌ Localization failed:', error);
+    }
   }
 }
 

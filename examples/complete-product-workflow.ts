@@ -1,23 +1,86 @@
 /**
- * Complete Product Lifecycle Workflow
+ * Complete Product Lifecycle - End-to-End Product Setup Workflow
  *
- * Demonstrates the full product management workflow from category selection
- * through to stock updates, combining all product module capabilities.
+ * This comprehensive example demonstrates the full product journey from category selection to stock availability:
+ * - Navigate category hierarchy to find correct subjectID
+ * - Create product card with required characteristics
+ * - Upload product images
+ * - Set pricing with async task monitoring
+ * - Configure stock levels for all sizes
  *
- * This example ties together:
- * - Story 2.1: Categories and characteristics
- * - Story 2.2: Product CRUD operations
- * - Story 2.3: Media and pricing
- * - Story 2.4: Warehouse and stock management
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 30 minutes
  *
- * Rate Limits:
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Products module permissions enabled
+ * - Understanding of category hierarchy (review products-categories.ts first)
+ * - Image files or URLs for product media
+ * - Warehouse already created (see products-warehouse-stock.ts)
+ *
+ * **What This Example Covers:**
+ * - **Part 1: Categories** (Story 2.1) - Navigate hierarchy, get characteristics
+ * - **Part 2: Product Creation** (Story 2.2) - Create product card with variants
+ * - **Part 3: Media Upload** (Story 2.3) - Add product images
+ * - **Part 4: Pricing** (Story 2.3) - Set prices with async task system
+ * - **Part 5: Stock Management** (Story 2.4) - Configure inventory levels
+ * - Complete integration demonstrating all Products module capabilities
+ *
+ * **Expected Output:**
+ * ```
+ * === Complete Product Workflow ===
+ *
+ * 📂 Step 1: Category Navigation
+ * ✅ Retrieved 28 parent categories
+ * ✅ Found 45 subjects in "Электроника"
+ * ✅ Retrieved 12 characteristics for "Смартфоны"
+ *
+ * 📦 Step 2: Product Creation
+ * ✅ Product created (ID: created)
+ * Product will be visible after moderation
+ *
+ * 🖼️ Step 3: Media Upload
+ * ✅ Uploaded 5 product images
+ *
+ * 💰 Step 4: Pricing
+ * ✅ Pricing task created (Task ID: task_123)
+ * Monitoring task status...
+ * ✅ Pricing applied (1,999₽ - 2,999₽)
+ *
+ * 📊 Step 5: Stock Management
+ * ✅ Stock configured for 4 sizes (Total: 400 units)
+ *
+ * ✅ Complete Workflow Finished!
+ * Product is ready for sale after moderation.
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/complete-product-workflow.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - products-categories.ts - Category navigation (run this first)
+ * - products-crud.ts - Individual CRUD operations
+ * - products-media-pricing.ts - Detailed media/pricing examples
+ * - products-warehouse-stock.ts - Detailed stock management
+ *
+ * **Rate Limits:**
  * - Category operations: 100 req/min (600ms intervals)
  * - Product creation: 10 req/min (6s intervals)
  * - Media upload: 10 req/min (6s intervals)
- * - Pricing updates: Async task-based
+ * - Pricing updates: Async task-based (1-5 minutes)
  * - Stock updates: 1000 req/min (60ms intervals)
  *
- * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
+ * **Common Issues:**
+ * - "Invalid subjectID": Use ID from getSubjects(), not parent category
+ * - "Missing required characteristics": Check getCharacteristics() for requirements
+ * - "Pricing task timeout": Tasks may take 5+ minutes for large product sets
+ * - "Stock update failed": Ensure warehouse exists and SKUs are valid
+ * - "Product pending moderation": Normal - products require WB approval
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/work-with-products} - Official Products API
  */
 
 import { WildberriesSDK } from '../src';
@@ -190,7 +253,7 @@ async function completeProductWorkflow() {
         const sku = sizes[0].skus[0];
 
         console.log('Updating stock levels...');
-        await sdk.products.updateStock({
+        await sdk.products.updateStockLevels({
           stocks: [{
             sku: sku,
             amount: 100

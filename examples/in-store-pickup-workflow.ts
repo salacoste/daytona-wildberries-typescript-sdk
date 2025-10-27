@@ -1,13 +1,87 @@
 /**
- * In-Store Pickup (Click & Collect) Module - Complete Workflow Examples
+ * In-Store Pickup Workflow - Complete Click & Collect Management
  *
- * This file demonstrates real-world usage patterns for the InStorePickupModule,
- * including order assembly management, customer verification, and metadata handling.
+ * This comprehensive example demonstrates complete in-store pickup (Click & Collect) workflows:
+ * - Order assembly workflow (new → confirm → prepare → receive)
+ * - Customer identity verification with passcode validation
+ * - Product metadata management (SGTIN, UIN, IMEI, GTIN codes)
+ * - Order status tracking and pagination
+ * - Order rejection and cancellation workflows
+ * - Comprehensive error handling for all pickup scenarios
  *
- * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup}
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 25 minutes
+ *
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - InStorePickup module permissions enabled
+ * - Active pickup point registered with Wildberries
+ * - Understanding of order lifecycle states
+ * - Metadata requirements for regulated products (Честный знак)
+ * - Customer verification process knowledge
+ *
+ * **What This Example Covers:**
+ * - **Complete Workflow**: 7-step order processing from new to delivery
+ * - **Identity Verification**: Customer passcode validation and security
+ * - **Metadata Management**: SGTIN/UIN/IMEI/GTIN codes for compliance
+ * - **Status Tracking**: Real-time order status monitoring with pagination
+ * - **Order Rejection**: Handling no-show customers and cancellations
+ * - **Error Handling**: 5 specialized error types with recovery strategies
+ *
+ * **Expected Output:**
+ * ```
+ * === Example 1: Complete Order Processing Workflow ===
+ *
+ * Found 5 new orders
+ * Processing order 12345 (21117866-0006)
+ *
+ * → Confirming order...
+ * ✓ Order confirmed and moved to assembly
+ *
+ * → Required metadata: sgtin, imei
+ * ✓ SGTIN codes set
+ * ✓ IMEI code set
+ *
+ * → Marking order as prepared...
+ * ✓ Order ready for pickup
+ *
+ * → Waiting for customer...
+ * → Verifying customer identity...
+ * ✓ Customer verified for order 12345
+ *
+ * → Handing over order...
+ * ✓ Order completed successfully!
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/in-store-pickup-workflow.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - orders-fbs-fulfillment.ts - FBS seller fulfillment workflow
+ * - orders-fbw-fulfillment.ts - FBW Wildberries fulfillment
+ * - customer-support.ts - Customer communication workflows
+ *
+ * **Common Issues:**
+ * - "Invalid state transition": Must follow new → confirm → prepare → receive order
+ * - "Order not found": Order may be already processed or canceled
+ * - "Customer verification failed": Check passcode matches customer app
+ * - "Metadata validation failed": SGTIN must be 29 digits, IMEI 15 digits
+ * - "409 errors count as 5 requests": Rate limit impact on conflicts
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup} - Official InStorePickup API
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type {
   PickupNewOrder,
   PickupOrderStatus,
@@ -379,7 +453,28 @@ async function errorHandlingExamples() {
       }
     }
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error('\n❌ Error in in-store pickup workflow:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   Note: 409 errors count as 5 requests!`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Verify API key and pickup point permissions`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Common issues:`);
+      console.error(`   - Invalid state transition (must follow order)`);
+      console.error(`   - SGTIN must be 29 digits`);
+      console.error(`   - IMEI must be 15 digits`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
   }
 }
 

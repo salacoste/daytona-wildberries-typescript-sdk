@@ -1,21 +1,90 @@
 /**
- * GeneralModule Usage Examples
+ * General Module - Complete API Utilities Example
  *
- * This file demonstrates how to use the GeneralModule for:
- * - Testing API connectivity with ping()
- * - Retrieving Wildberries news and announcements
- * - Getting authenticated seller information
- * - Handling various error scenarios
+ * This example demonstrates all General module capabilities:
+ * - Testing API connectivity with ping endpoint
+ * - Retrieving Wildberries marketplace news and announcements
+ * - Getting authenticated seller account information
+ * - Comprehensive error handling for various scenarios
  *
- * @example
- * Run this file with: tsx examples/general.ts
+ * **Complexity**: 🟢 Beginner
+ * **Estimated Time**: 10 minutes
+ *
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - General module permissions (enabled by default)
+ * - Active seller account
+ *
+ * **What This Example Covers:**
+ * - **Connectivity Testing**: ping() endpoint for health checks
+ * - **News Retrieval**: getNews() for marketplace announcements
+ * - **Seller Info**: getSeller() for account information
+ * - Error handling for authentication, rate limits, and network issues
+ * - Manual BaseClient initialization (advanced usage)
+ *
+ * **Expected Output:**
+ * ```
+ * 📦 Initializing Wildberries SDK General Module...
+ *
+ * 🏓 Example 1: Testing API connection with ping()
+ * ──────────────────────────────────────────────────
+ * ✅ Connection successful!
+ * Response time: 45ms
+ *
+ * 📰 Example 2: Retrieving Wildberries News
+ * ──────────────────────────────────────────────────
+ * Found 8 news items
+ *
+ * Latest News:
+ * 1. "Обновление правил работы" (2024-03-15)
+ * 2. "Новые категории товаров" (2024-03-10)
+ * 3. "Изменения в комиссии" (2024-03-05)
+ *
+ * 👤 Example 3: Getting Seller Information
+ * ──────────────────────────────────────────────────
+ * ✅ Seller Account Retrieved
+ * Company: Example LLC
+ * Seller ID: 54321
+ * Status: Active
+ * ```
+ *
+ * **API Documentation:**
+ * @see {@link https://dev.wildberries.ru/openapi/common} - General Module API Reference
+ * @see {@link ../docs/api/classes/GeneralModule.html} - GeneralModule Class Reference
+ * @see {@link ../docs/api/classes/GeneralModule.html#ping} - ping() Method Documentation
+ * @see {@link ../docs/api/classes/GeneralModule.html#getNews} - getNews() Method Documentation
+ * @see {@link ../docs/api/classes/GeneralModule.html#getSeller} - getSeller() Method Documentation
+ *
+ * **Usage:**
+ * ```bash
+ * # Set your API key
+ * export WB_API_KEY="your_api_key_here"
+ *
+ * # Run the example
+ * tsx examples/general.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - quickstart.ts - SDK quickstart (simpler introduction)
+ * - products-categories.ts - Next step: explore product categories
+ *
+ * **Common Issues:**
+ * - "Connection refused": Check API endpoint availability
+ * - "Timeout": Network connectivity or API downtime
+ * - "Empty news": No recent announcements from Wildberries
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/general-api} - Official General API documentation
  */
 
 import { GeneralModule } from '../src/modules/general';
 import { BaseClient } from '../src/client/base-client';
-import { AuthenticationError } from '../src/errors/auth-error';
-import { RateLimitError } from '../src/errors/rate-limit-error';
-import { NetworkError } from '../src/errors/network-error';
+import {
+  AuthenticationError,
+  RateLimitError,
+  NetworkError,
+  ValidationError,
+  WBAPIError,
+} from '../src';
 
 /**
  * Main function demonstrating GeneralModule usage
@@ -180,6 +249,15 @@ function handleError(operation: string, error: unknown): void {
     console.log(`   Issue: ${error.message}`);
     console.log(`   Status code: ${error.statusCode ?? 'N/A'}`);
     console.log('   Note: SDK automatically retries transient errors (5xx)\n');
+  } else if (error instanceof ValidationError) {
+    console.log('   ❌ Validation Error');
+    console.log(`   Issue: ${error.message}`);
+    console.log('   Check request parameters and data format\n');
+  } else if (error instanceof WBAPIError) {
+    console.log('   ⚠️  API Error');
+    console.log(`   Status Code: ${error.statusCode}`);
+    console.log(`   Message: ${error.message}`);
+    console.log('   Check API documentation for error details\n');
   } else if (error instanceof Error) {
     console.log('   💥 Unexpected Error');
     console.log(`   Message: ${error.message}`);

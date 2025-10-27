@@ -400,14 +400,12 @@ export interface SendMessageRequest {
   /**
    * Chat signature (required)
    * Obtain from Chat.replySign or Event.replySign (when isNewChat=true)
-   * @maxLength 255
    */
   replySign: string;
 
   /**
    * Message text (optional, max 1000 characters)
    * At least one of message or file must be provided
-   * @maxLength 1000
    */
   message?: string;
 

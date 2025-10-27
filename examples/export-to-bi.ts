@@ -1,50 +1,110 @@
 /**
- * Business Intelligence Export Example
+ * Business Intelligence Export - Multi-Module Data Export
  *
- * Demonstrates exporting comprehensive data from multiple modules for business
- * intelligence tools, data warehouses, and analytics platforms.
+ * This comprehensive example demonstrates exporting data for BI tools and analytics platforms:
+ * - Multi-module data aggregation (Finances, Analytics, Reports, Communications)
+ * - Unified BI export format (timestamped, typed, normalized records)
+ * - CSV export for Excel, Google Sheets, and spreadsheet tools
+ * - JSON export for API consumption and data warehouses
+ * - Large dataset handling with streaming and pagination
+ * - Data transformation and normalization for BI compatibility
+ * - Automated file generation with timestamps and metadata
  *
- * **Use Case**: Daily/weekly data export for BI tools (Power BI, Tableau, Looker)
+ * **Complexity**: 🔴 Advanced
+ * **Estimated Time**: 60 minutes
  *
- * **Modules Used**:
- * - Finances: Balance, transactions, financial reports
- * - Analytics: Sales statistics, stock history
- * - Reports: Incomes, stocks, orders, sales
- * - Communications: Review summary metrics
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Finances, Analytics, Reports, and Communications module permissions
+ * - Active seller account with transaction and sales history
+ * - 4-6 minutes execution time window for full data export
+ * - 200-500MB available memory for typical monthly export
+ * - BI tool for import: Power BI, Tableau, Looker, Metabase, etc.
+ * - Understanding of rate limits across all modules
  *
- * **Key Features**:
- * - Multi-module data aggregation
- * - Unified BI export format (timestamped, typed, normalized)
- * - CSV export for spreadsheet tools
- * - JSON export for API consumption
- * - Handles large datasets with streaming
- * - Data transformation and normalization
+ * **What This Example Covers:**
+ * - **Financial Data Export**: Transactions, balance, revenue metrics
+ * - **Sales Data Export**: Orders, revenue, quantity sold by product
+ * - **Review Metrics Export**: Aggregate ratings and sentiment by product
+ * - **Balance Snapshot**: Current account balance with withdrawal info
+ * - **Data Transformation**: Convert API data to unified BI format
+ * - **Multi-Format Export**: CSV (spreadsheets) and JSON (APIs)
+ * - **Automated Timestamps**: Timestamped filenames for version tracking
  *
- * **Rate Limits**:
- * - Finances: 1 request/minute
- * - Analytics: 1 request/5 seconds
- * - Reports: 1 request/minute (per endpoint)
- * - Communications: 1 request/minute
- * - Total export time: 4-6 minutes for full dataset
- *
- * **Performance Considerations**:
- * - Large datasets: Pagination required for 80K+ records
- * - Memory usage: 200-500MB for typical monthly export
- * - Processing time: 2-5 minutes depending on data volume
- * - Recommend scheduling during off-peak hours (e.g., 2 AM)
- * - Stream processing for large CSV generation
- *
- * @example
- * ```bash
- * # Set API key
- * export WB_API_KEY="your-api-key-here"
- *
- * # Run BI export
- * npx ts-node examples/export-to-bi.ts
+ * **Expected Output:**
  * ```
+ * === Business Intelligence Data Export ===
+ * Export Period: 2024-01-01 to 2024-01-31
+ * Output Directory: ./bi-exports
+ * Formats: csv, json
+ *
+ * [1/4] Exporting financial data...
+ *   ✓ Exported 12,345 transactions → 24,690 records
+ *   ⏳ Waiting 60s for rate limit...
+ *
+ * [2/4] Exporting sales data...
+ *   ✓ Exported 11,234 sales → 22,468 records
+ *   ⏳ Waiting 60s for rate limit...
+ *
+ * [3/4] Exporting customer review metrics...
+ *   ✓ Exported 1,456 reviews → 145 records
+ *   ⏳ Waiting 60s for rate limit...
+ *
+ * [4/4] Exporting balance snapshot...
+ *   ✓ Exported balance snapshot
+ *
+ * === Data Collection Complete ===
+ * Total records: 47,304
+ * Total time: 245.3s
+ *
+ * === Generating Export Files ===
+ * Generating CSV export...
+ *   ✓ Saved: ./bi-exports/wildberries_export_2024-01-31_14-30-00.csv
+ * Generating JSON export...
+ *   ✓ Saved: ./bi-exports/wildberries_export_2024-01-31_14-30-00.json
+ *
+ * === Export Statistics ===
+ * Total Records: 47,304
+ *
+ * Records by Type:
+ *   finance: 24,691 records
+ *   sales: 22,468 records
+ *   customer: 145 records
+ *
+ * Exported Files:
+ *   wildberries_export_2024-01-31_14-30-00.csv (4.23 MB)
+ *   wildberries_export_2024-01-31_14-30-00.json (8.91 MB)
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/export-to-bi.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - business-dashboard.ts - Real-time dashboard data integration
+ * - analytics-dashboard.ts - CSV export for specific analytics
+ * - financial-reconciliation.ts - Financial data validation workflows
+ *
+ * **Common Issues:**
+ * - "Memory exceeded": Reduce date range or implement streaming for large exports
+ * - "Rate limit errors": Total export takes 4-6 minutes due to sequential API calls
+ * - "CSV encoding issues": UTF-8 BOM required for Excel with special characters
+ * - "JSON file too large": Split exports by month for >100K records
+ * - "BI tool import failure": Check delimiter (comma vs semicolon) and date formats
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/} - Official Wildberries API Documentation
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type { Transaction, TransactionFilters } from '../src/types/finances.types';
 import type { SalesItem } from '../src/types/reports.types';
 import type { ReviewFilters } from '../src/types/communications.types';
@@ -505,7 +565,23 @@ async function performBIExport(
 
     return stats;
   } catch (error) {
-    console.error('❌ BI export failed:', error);
+    console.error('❌ BI export failed:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit: ${error.message} - Retry after ${error.retryAfter}ms`);
+      console.error(`   BI exports require 4-6 minutes due to rate limits`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Large exports may fail on slow connections`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 }

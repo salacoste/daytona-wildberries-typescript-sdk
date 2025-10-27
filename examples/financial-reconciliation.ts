@@ -1,45 +1,105 @@
 /**
- * Financial Reconciliation Example
+ * Financial Reconciliation - Transaction-to-Sales Matching
  *
- * Demonstrates matching financial transactions to sales data for accounting purposes.
- * This workflow combines data from the Finances and Reports modules to ensure
- * financial accuracy and identify discrepancies between reported sales and actual payments.
- *
- * **Use Case**: Monthly financial reconciliation for accounting teams
- *
- * **Modules Used**:
- * - Finances: Transaction history (ppvz_for_pay - payment to supplier)
- * - Reports: Sales data (forPay - amount to be paid to seller)
- *
- * **Key Features**:
- * - Match transactions to sales by saleID, nmId, and amount
- * - Identify timing discrepancies (payments may lag sales by hours/days)
+ * This comprehensive example demonstrates complete financial reconciliation workflows:
+ * - Match financial transactions (ppvz_for_pay) to sales data (forPay)
+ * - Identify timing discrepancies between sale and payment records
  * - Flag unmatched transactions and sales for investigation
- * - Calculate reconciliation metrics (match rate, total discrepancies)
- * - Handle large datasets with pagination (80K+ transaction records)
+ * - Calculate reconciliation metrics (match rate, variance, discrepancies)
+ * - Handle large datasets (80K+ records) with pagination
+ * - Generate comprehensive reconciliation reports for accounting
  *
- * **Rate Limits**:
- * - Finances endpoints: 1 request/minute
- * - Reports endpoints: 1 request/minute
- * - Total reconciliation time: ~2-3 minutes for data fetch + processing
+ * **Complexity**: 🔴 Advanced
+ * **Estimated Time**: 40 minutes
  *
- * **Performance Considerations**:
- * - Large datasets (80K+ rows) require pagination and cursor management
- * - Memory usage: 100-300MB for typical monthly reconciliation
- * - Processing time: 30-60 seconds for matching logic after data fetch
- * - Recommend running reconciliation during off-peak hours
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - Finances and Reports module permissions enabled
+ * - Active seller account with transaction history
+ * - Sales and financial data for reconciliation period
+ * - Understanding of WB payment timing (may lag sales by 24-72 hours)
+ * - 2-3 minutes execution time for data fetch + processing
+ * - Optional: Accounting system for report export
  *
- * @example
- * ```bash
- * # Set API key
- * export WB_API_KEY="your-api-key-here"
+ * **What This Example Covers:**
+ * - **Transaction Fetching**: Retrieve ppvz_for_pay records from Finances
+ * - **Sales Data Fetching**: Retrieve forPay records from Reports
+ * - **Smart Matching**: Match by nmId, amount (±1%), and timing proximity
+ * - **Confidence Levels**: Exact, probable, and possible match classification
+ * - **Discrepancy Detection**: Missing sales, missing transactions, amount mismatches
+ * - **Metrics Calculation**: Match rate, total variance, timing lag analysis
+ * - **Large Dataset Handling**: Pagination and memory-efficient processing
  *
- * # Run reconciliation
- * npx ts-node examples/financial-reconciliation.ts
+ * **Expected Output:**
  * ```
+ * === Financial Reconciliation Report ===
+ * Period: 2024-01-01 to 2024-01-31
+ *
+ * [1/2] Fetching financial transactions...
+ *   ✓ Fetched 12,345 transaction records
+ *   ⏳ Waiting 60s for rate limit...
+ *
+ * [2/2] Fetching sales data...
+ *   ✓ Fetched 12,298 sales records
+ *
+ * === Performing Reconciliation ===
+ * Matching logic completed in 5.3s
+ *
+ * === Reconciliation Summary ===
+ * Transaction Records: 12,345
+ * Sales Records: 12,298
+ *
+ * Matched: 12,150 (98.8%)
+ *   - Exact matches: 11,890
+ *   - Probable matches: 245
+ *   - Possible matches: 15
+ *
+ * Unmatched Sales: 148
+ * Unmatched Transactions: 195
+ *
+ * Total Transaction Value: 1,234,567.89 RUB
+ * Total Sales Revenue: 1,230,456.78 RUB
+ * Variance: 4,111.11 RUB (0.33%)
+ *
+ * Discrepancies Found: 343
+ * Total Discrepancy Amount: 15,678.90 RUB
+ * Average Sale-to-Transaction Lag: 18.5 hours
+ *
+ * === Top Discrepancies (First 5) ===
+ * 1. [missing_transaction] Sale 123456 (nmId: 78901) has no matching transaction
+ *    Amount: 2,500.00 RUB
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/financial-reconciliation.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - finances-reports-payouts.ts - Financial reports and payout tracking
+ * - reports-analytics.ts - Sales and transaction reporting
+ * - business-dashboard.ts - Multi-module financial dashboards
+ *
+ * **Common Issues:**
+ * - "Variance >5%": Large discrepancies may indicate API data sync issues
+ * - "High unmatched count": Check timing window (default 72 hours)
+ * - "Memory error with large datasets": Process in batches or increase Node.js heap
+ * - "Timing lag >72 hours": Payment delays during holidays or system issues
+ * - "Amount mismatch": Rounding differences or commission calculation errors
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/finance-api} - Official Finance API
+ * @see {@link https://dev.wildberries.ru/openapi/statistics-api} - Official Statistics API
  */
 
-import { WildberriesSDK } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import type { Transaction, TransactionFilters } from '../src/types/finances.types';
 import type { SalesItem } from '../src/types/reports.types';
 
@@ -400,7 +460,22 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
 
     return report;
   } catch (error) {
-    console.error('❌ Reconciliation failed:', error);
+    console.error('❌ Reconciliation failed:');
+
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit: ${error.message} - Retry after ${error.retryAfter}ms`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Large dataset fetches may timeout - increase timeout setting`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 }

@@ -1,0 +1,42 @@
+# Quality Gate Decision for Story 2.7
+# Orders FBW Module - Wildberries Warehouse Integration
+
+schema: 1
+story: "2.7"
+story_title: "Orders FBW Module - Wildberries Warehouse Integration"
+gate: PASS
+status_reason: "Complete FBW fulfillment with warehouse planning, acceptance coefficients, transit tariffs, supply tracking, and package management. All 14 ACs met with 38 tests."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-10-27T20:30:00Z"
+
+waiver: { active: false }
+top_issues: []
+
+risk_summary:
+  totals: { critical: 0, high: 0, medium: 0, low: 0 }
+  recommendations:
+    must_fix: []
+    monitor:
+      - "Monitor two-tier rate limiting (planning vs supply info) in production"
+
+quality_score: 95
+
+evidence:
+  tests_reviewed: 38
+  tests_passing: 912
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    ac_gaps: []
+
+nfr_validation:
+  security: { status: PASS, notes: "Authentication, validation" }
+  performance: { status: PASS, notes: "Two-tier rate limits configured" }
+  reliability: { status: PASS, notes: "Complete workflow tested" }
+  maintainability: { status: PASS, notes: "Clear documentation" }
+
+recommendations:
+  immediate: []
+  future:
+    - action: "Monitor acceptance coefficient accuracy in production"
+      refs: ["src/modules/orders-fbw/index.ts"]

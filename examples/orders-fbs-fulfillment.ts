@@ -1,26 +1,87 @@
 /**
- * Orders FBS (Fulfillment by Seller) Complete Fulfillment Workflow Example
+ * Complete FBS Fulfillment - End-to-End Seller Shipping Workflow
  *
- * Demonstrates complete FBS order processing workflow:
- * 1. Fetching new orders awaiting processing
- * 2. Creating supply for grouping orders
- * 3. Adding orders to supply (changes status new → confirm)
- * 4. Generating shipping labels for orders
- * 5. Delivering supply (changes status confirm → complete)
- * 6. Getting supply QR code for tracking
- * 7. Managing supplies and order cancellation
+ * This comprehensive example demonstrates the complete FBS order fulfillment process from order receipt to delivery:
+ * - Creating supplies to group orders for shipping
+ * - Adding orders to supply (status: new → confirm)
+ * - Generating shipping labels (PNG, SVG, ZPL formats)
+ * - Delivering supply to WB (status: confirm → complete)
+ * - Getting supply QR code for tracking
+ * - Managing supplies and handling cancellations
  *
- * @example
- * ```bash
- * # Set API key
- * export WB_API_KEY="your-wildberries-api-key"
+ * **Complexity**: 🟡 Intermediate
+ * **Estimated Time**: 25 minutes
  *
- * # Run example
- * npx tsx examples/orders-fbs-fulfillment.ts
+ * **Prerequisites:**
+ * - Valid Wildberries API key set in WB_API_KEY environment variable
+ * - OrdersFBS module permissions enabled
+ * - Active FBS orders ready for fulfillment
+ * - Understanding of supply workflow and cargo type constraints
+ * - Label printer for shipping labels (optional)
+ *
+ * **What This Example Covers:**
+ * - **Supply Creation**: Group orders for batch shipment
+ * - **Order Assignment**: Add orders to supply (cargo type must match)
+ * - **Label Generation**: PNG (580×400, 400×300), SVG, ZPL formats
+ * - **Delivery Confirmation**: Mark supply as delivered to WB
+ * - **QR Code Retrieval**: Get tracking QR (only after delivery)
+ * - **Supply Management**: List, filter, and cancel supplies
+ * - **Status Transitions**: new → confirm → complete lifecycle
+ *
+ * **Expected Output:**
  * ```
+ * === Complete FBS Order Fulfillment Workflow ===
+ *
+ * Step 1: Fetching new FBS orders...
+ * Found 5 new orders awaiting processing
+ *
+ * Step 2: Creating supply...
+ * ✅ Supply created (ID: WB-SUP-12345)
+ *
+ * Step 3: Adding orders to supply...
+ * ✅ Added 5 orders to supply
+ * Status changed: new → confirm
+ *
+ * Step 4: Generating shipping labels...
+ * ✅ Generated 5 labels
+ * Saved: order-sticker.png (580×400px)
+ * Saved: order-sticker.svg
+ *
+ * Step 5: Delivering supply...
+ * ✅ Supply delivered (Status: complete)
+ *
+ * Step 6: Getting supply QR code...
+ * ✅ QR code retrieved
+ * Saved: supply-qrcode.png
+ * ```
+ *
+ * **Usage:**
+ * ```bash
+ * export WB_API_KEY="your_api_key_here"
+ * tsx examples/orders-fbs-fulfillment.ts
+ * ```
+ *
+ * **Related Examples:**
+ * - orders-fbs-processing.ts - Order retrieval and status checking
+ * - products-warehouse-stock.ts - Inventory for order fulfillment
+ *
+ * **Common Issues:**
+ * - "Cargo type mismatch": All orders in supply must have same cargo type
+ * - "QR code not available": Only accessible after supply delivery
+ * - "Label generation failed": Check order has required delivery information
+ * - "Supply cannot be modified": Supply in 'complete' status is immutable
+ *
+ * @see {@link https://dev.wildberries.ru/openapi/fbs-api} - Official FBS API documentation
  */
 
-import { WildberriesSDK, RateLimitError, ValidationError } from '../src';
+import {
+  WildberriesSDK,
+  RateLimitError,
+  AuthenticationError,
+  ValidationError,
+  NetworkError,
+  WBAPIError
+} from '../src';
 import { writeFileSync } from 'fs';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
@@ -212,19 +273,34 @@ async function completeFBSFulfillment() {
     console.log('  - order-sticker.svg (SVG shipping label 580×400)');
     console.log('  - supply-qrcode.png (Supply QR code 580×400)');
   } catch (error) {
-    console.error('\n❌ Error:', error instanceof Error ? error.message : String(error));
+    console.error('\n❌ Error occurred during FBS fulfillment:');
 
-    if (error instanceof ValidationError) {
-      console.error('Validation error - check request parameters');
+    if (error instanceof RateLimitError) {
+      console.error(`⏱️  Rate limit exceeded: ${error.message}`);
+      console.error(`   Retry after: ${error.retryAfter}ms`);
+      console.error(`   FBS API limits vary by endpoint`);
+    } else if (error instanceof AuthenticationError) {
+      console.error(`🔐 Authentication failed: ${error.message}`);
+      console.error(`   Check API key and FBS permissions`);
+    } else if (error instanceof ValidationError) {
+      console.error(`❌ Validation error: ${error.message}`);
+      console.error(`   Common issues:`);
+      console.error(`   - Cargo type mismatch between orders`);
+      console.error(`   - Supply in wrong status for operation`);
+      console.error(`   - Invalid label format requested`);
       if (error.fieldErrors) {
-        console.error('Field errors:', error.fieldErrors);
+        console.error(`   Field errors:`, error.fieldErrors);
       }
-    } else if (error instanceof RateLimitError) {
-      console.error('Rate limit exceeded - try again later');
-      console.error(`Retry after: ${error.retryAfter}ms`);
+    } else if (error instanceof NetworkError) {
+      console.error(`🌐 Network error: ${error.message}`);
+      console.error(`   Check connectivity`);
+    } else if (error instanceof WBAPIError) {
+      console.error(`⚠️  API error (${error.statusCode}): ${error.message}`);
+      console.error(`   See: https://dev.wildberries.ru/openapi/fbs-api`);
+    } else if (error instanceof Error) {
+      console.error(`💥 Unexpected error: ${error.message}`);
     } else {
-      console.error('Unexpected error occurred');
-      console.error('Details:', error);
+      console.error('Unknown error:', error);
     }
 
     process.exit(1);

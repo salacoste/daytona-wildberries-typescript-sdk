@@ -34,6 +34,12 @@ jobs:
       - name: Run type checking
         run: npm run type-check
 
+      - name: Validate documentation links
+        run: npm run validate:links
+
+      - name: Validate documentation examples
+        run: npm run validate:examples
+
       - name: Run tests
         run: npm test
 
@@ -56,3 +62,23 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: false
+
+      - name: Generate API documentation
+        if: matrix.node-version == '20.x'
+        run: npm run docs:api
+
+      - name: Validate API documentation
+        if: matrix.node-version == '20.x'
+        run: |
+          test -d docs/api || exit 1
+          test -f docs/api/index.html || exit 1
+          test -f docs/api/assets/search.js || exit 1
+          echo "API documentation validated successfully"
+
+      - name: Upload API docs artifact
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-docs
+          path: docs/api/
+          retention-days: 30
