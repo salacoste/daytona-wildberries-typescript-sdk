@@ -16,25 +16,10 @@
       "pattern": "^https://.*\\.github.io/"
     },
     {
-      "pattern": "^docs/guides/performance.md$"
-    },
-    {
-      "pattern": "^docs/guides/security.md$"
-    },
-    {
-      "pattern": "^docs/guides/configuration.md$"
-    },
-    {
-      "pattern": "^docs/guides/testing.md$"
-    },
-    {
       "pattern": "^docs/faq.md$"
     },
     {
       "pattern": "^intermediate/error-handling.md$"
-    },
-    {
-      "pattern": "^\\./examples/error-handling.ts$"
     }
   ],
   "timeout": "10s",
