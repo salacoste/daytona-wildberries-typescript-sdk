@@ -29,6 +29,12 @@
     },
     {
       "pattern": "^docs/faq.md$"
+    },
+    {
+      "pattern": "^intermediate/error-handling.md$"
+    },
+    {
+      "pattern": "^\\./examples/error-handling.ts$"
     }
   ],
   "timeout": "10s",
