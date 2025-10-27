@@ -53,7 +53,7 @@ let brokenLinks = 0;
 markdownFiles.forEach(file => {
   console.log(`Checking links in ${file}...`);
   try {
-    const output = execSync(`npx markdown-link-check ${file}`, {
+    const output = execSync(`npx markdown-link-check "${file}"`, {
       stdio: 'pipe',
       encoding: 'utf8'
     });

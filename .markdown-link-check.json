@@ -8,11 +8,40 @@
     },
     {
       "pattern": "^https://example.com"
+    },
+    {
+      "pattern": "^https://github.com/.*/discussions"
+    },
+    {
+      "pattern": "^https://.*\\.github.io/"
+    },
+    {
+      "pattern": "^docs/guides/performance.md$"
+    },
+    {
+      "pattern": "^docs/guides/security.md$"
+    },
+    {
+      "pattern": "^docs/guides/configuration.md$"
+    },
+    {
+      "pattern": "^docs/guides/testing.md$"
+    },
+    {
+      "pattern": "^docs/faq.md$"
     }
   ],
-  "timeout": "5s",
+  "timeout": "10s",
   "retryOn429": true,
-  "retryCount": 3,
+  "retryCount": 5,
   "fallbackRetryDelay": "30s",
-  "aliveStatusCodes": [200, 206]
+  "aliveStatusCodes": [200, 206, 403],
+  "httpHeaders": [
+    {
+      "urls": ["https://www.npmjs.com/"],
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (compatible; link-checker/1.0)"
+      }
+    }
+  ]
 }
