@@ -189,7 +189,9 @@ export default defineConfig({
                 collapsed: false,
                 items: [
                   { text: 'Синхронизация каталога товаров', link: '/ru/getting-started/tutorials/product-catalog-sync' },
-                  { text: 'Обработка заказов', link: '/ru/getting-started/tutorials/order-fulfillment' }
+                  { text: 'Обработка заказов', link: '/ru/getting-started/tutorials/order-fulfillment' },
+                  { text: 'Панель аналитики', link: '/ru/getting-started/tutorials/analytics-dashboard' },
+                  { text: 'Мультимодульная интеграция', link: '/ru/getting-started/tutorials/multi-module-integration' }
                 ]
               }
             ]

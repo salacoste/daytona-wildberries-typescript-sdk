@@ -93,6 +93,43 @@ Reference for translating technical terms to maintain consistency in Russian doc
 | Filter | Фильтр | Data filtering |
 | Sort | Сортировка | Data sorting |
 
+## Производительность и аналитика / Performance & Analytics
+
+| English | Русский | Контекст / Context |
+|---------|---------|-------------------|
+| Performance | Производительность | System/app performance |
+| Optimization | Оптимизация | Code/system optimization |
+| Tuning | Настройка | Performance tuning |
+| Caching | Кеширование | Data caching |
+| Cache | Кеш | Cached data |
+| Memory | Память | RAM/memory management |
+| Memory Management | Управление памятью | Memory optimization |
+| Memory Leak | Утечка памяти | Memory leak issue |
+| Throughput | Пропускная способность | Request throughput |
+| Bottleneck | Узкое место | Performance bottleneck |
+| Latency | Задержка | Response latency |
+| Monitoring | Мониторинг | System monitoring |
+| Profiling | Профилирование | Performance profiling |
+| Benchmark | Бенчмарк / Тест производительности | Performance benchmark |
+| Metrics | Метрики | Performance metrics |
+| Analytics | Аналитика | Data analytics |
+| Dashboard | Панель / Панель управления | Analytics dashboard |
+| Report | Отчет | Analytics report |
+| Insights | Аналитика / Инсайты | Data insights |
+| Conversion | Конверсия | Sales conversion |
+| Funnel | Воронка | Conversion funnel |
+| Integration | Интеграция | System integration |
+| Workflow | Рабочий процесс / Рабочий поток | Business workflow |
+| Pipeline | Конвейер / Пайплайн | Data pipeline |
+| Orchestration | Оркестрация | Service orchestration |
+| Batch Operations | Пакетные операции | Bulk operations |
+| Parallel | Параллельный | Parallel processing |
+| Sequential | Последовательный | Sequential processing |
+| Concurrency | Конкурентность | Concurrent operations |
+| Bundle Size | Размер бандла | JavaScript bundle |
+| Load Time | Время загрузки | Page load time |
+| Response Time | Время отклика | API response time |
+
 ## Действия / Actions & Operations
 
 | English | Русский | Контекст / Context |
@@ -195,5 +232,10 @@ Reference for translating technical terms to maintain consistency in Russian doc
 ---
 
 **Дата создания:** 2024-10-27
-**Версия:** 1.0
+**Последнее обновление:** 2025-10-30
+**Версия:** 1.1
 **Статус:** Готов к рецензированию носителями языка
+
+**История изменений:**
+- **v1.1 (2025-10-30):** Добавлено 32 термина: производительность, аналитика, оптимизация, кеширование, мониторинг, профилирование, интеграция, workflow
+- **v1.0 (2024-10-27):** Первоначальная версия глоссария
