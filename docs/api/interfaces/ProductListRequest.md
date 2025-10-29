@@ -2,7 +2,7 @@
 
 # Interface: ProductListRequest
 
-Defined in: [types/products.types.ts:837](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L837)
+Defined in: [types/products.types.ts:837](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L837)
 
 Request body for listing product cards with filtering and pagination
 
@@ -35,7 +35,7 @@ const page2: ProductListRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="sort"></a> `sort?` | \{ `ascending?`: `boolean`; \} | Sort settings | [types/products.types.ts:839](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L839) |
-| `sort.ascending?` | `boolean` | Sort by updatedAt (false = descending, default) | [types/products.types.ts:841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L841) |
-| <a id="filter"></a> `filter?` | [`ProductListFilter`](ProductListFilter.md) | Filter criteria | [types/products.types.ts:844](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L844) |
-| <a id="cursor"></a> `cursor?` | [`ProductListCursor`](ProductListCursor.md) | Pagination cursor | [types/products.types.ts:846](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L846) |
+| <a id="sort"></a> `sort?` | \{ `ascending?`: `boolean`; \} | Sort settings | [types/products.types.ts:839](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L839) |
+| `sort.ascending?` | `boolean` | Sort by updatedAt (false = descending, default) | [types/products.types.ts:841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L841) |
+| <a id="filter"></a> `filter?` | [`ProductListFilter`](ProductListFilter.md) | Filter criteria | [types/products.types.ts:844](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L844) |
+| <a id="cursor"></a> `cursor?` | [`ProductListCursor`](ProductListCursor.md) | Pagination cursor | [types/products.types.ts:846](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L846) |

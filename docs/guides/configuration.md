@@ -41,6 +41,8 @@ interface SDKConfig {
 }
 ```
 
+**API Reference:** See [SDKConfig](/api/interfaces/SDKConfig) for complete configuration interface documentation with all available options.
+
 ## Basic Configuration
 
 ### Minimal Setup
@@ -283,6 +285,10 @@ class MultiTenantSDK {
 
 ## Rate Limiting Configuration
 
+The SDK provides flexible rate limiting configuration to prevent API quota exhaustion and ensure reliable operation.
+
+**API Reference:** See [RateLimitConfig](/api/interfaces/RateLimitConfig) for complete rate limiting configuration options.
+
 ### Module-Specific Limits
 
 ```typescript
@@ -323,6 +329,10 @@ const result = await sdk.products.getProductList({ limit: 100 });
 ```
 
 ## Retry Configuration
+
+Configure automatic retry behavior for failed API requests with exponential backoff support.
+
+**API Reference:** See [RetryConfig](/api/-internal-/interfaces/RetryConfig) and [RetryHandler](/api/-internal-/classes/RetryHandler) for complete retry mechanism documentation.
 
 ### Basic Retry Setup
 
@@ -587,10 +597,15 @@ HTTPS_PROXY=https://proxy.example.com:8080
 
 ## Related Documentation
 
-- [Best Practices Guide](./best-practices.md)
-- [Security Guide](./security.md)
-- [Performance Guide](./performance.md)
-- [API Reference](../api/)
+- **[API Reference](/api/)** - Complete SDK documentation
+  - [SDKConfig](/api/interfaces/SDKConfig) - Main configuration interface
+  - [RetryConfig](/api/-internal-/interfaces/RetryConfig) - Retry configuration
+  - [RateLimitConfig](/api/interfaces/RateLimitConfig) - Rate limiting configuration
+  - [WildberriesSDK](/api/classes/WildberriesSDK) - Main SDK class
+- **[Best Practices Guide](./best-practices.md)** - Production deployment patterns
+- **[Security Guide](./security.md)** - Secure configuration practices
+- **[Performance Guide](./performance.md)** - Performance optimization
+- **[Getting Started](/getting-started/quickstart)** - Initial setup guide
 
 ## Support
 

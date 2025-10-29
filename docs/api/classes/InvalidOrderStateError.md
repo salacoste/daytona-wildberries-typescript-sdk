@@ -2,7 +2,7 @@
 
 # Class: InvalidOrderStateError
 
-Defined in: [errors/in-store-pickup-errors.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/in-store-pickup-errors.ts#L98)
+Defined in: [errors/in-store-pickup-errors.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/in-store-pickup-errors.ts#L98)
 
 Error thrown when an order state transition is invalid
 
@@ -57,7 +57,7 @@ new InvalidOrderStateError(
    requestId?: string): InvalidOrderStateError;
 ```
 
-Defined in: [errors/in-store-pickup-errors.ts:107](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/in-store-pickup-errors.ts#L107)
+Defined in: [errors/in-store-pickup-errors.ts:107](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/in-store-pickup-errors.ts#L107)
 
 Creates a new InvalidOrderStateError
 
@@ -82,12 +82,12 @@ Creates a new InvalidOrderStateError
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L35) |
-| <a id="orderid"></a> `orderId` | `readonly` | `number` | ID of the order with invalid state | - | [errors/in-store-pickup-errors.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/in-store-pickup-errors.ts#L108) |
-| <a id="currentstate"></a> `currentState` | `readonly` | `string` \| `undefined` | Current state of the order (if known) | - | [errors/in-store-pickup-errors.ts:109](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/in-store-pickup-errors.ts#L109) |
-| <a id="attemptedaction"></a> `attemptedAction` | `readonly` | `string` | Action that was attempted (e.g., "prepare", "receive") | - | [errors/in-store-pickup-errors.ts:110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/in-store-pickup-errors.ts#L110) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L35) |
+| <a id="orderid"></a> `orderId` | `readonly` | `number` | ID of the order with invalid state | - | [errors/in-store-pickup-errors.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/in-store-pickup-errors.ts#L108) |
+| <a id="currentstate"></a> `currentState` | `readonly` | `string` \| `undefined` | Current state of the order (if known) | - | [errors/in-store-pickup-errors.ts:109](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/in-store-pickup-errors.ts#L109) |
+| <a id="attemptedaction"></a> `attemptedAction` | `readonly` | `string` | Action that was attempted (e.g., "prepare", "receive") | - | [errors/in-store-pickup-errors.ts:110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/in-store-pickup-errors.ts#L110) |
 
 ## Methods
 
@@ -103,7 +103,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/base-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L125)
+Defined in: [errors/base-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L125)
 
 Custom JSON serialization to preserve all error properties.
 
@@ -127,11 +127,11 @@ Object representation of the error for JSON serialization
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/base-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L126) |
-| `message` | `string` | [errors/base-error.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L127) |
-| `statusCode?` | `number` | [errors/base-error.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L128) |
-| `response?` | `unknown` | [errors/base-error.ts:129](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L129) |
-| `requestId?` | `string` | [errors/base-error.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/base-error.ts#L130) |
+| `name` | `string` | [errors/base-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L126) |
+| `message` | `string` | [errors/base-error.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L127) |
+| `statusCode?` | `number` | [errors/base-error.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L128) |
+| `response?` | `unknown` | [errors/base-error.ts:129](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L129) |
+| `requestId?` | `string` | [errors/base-error.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L130) |
 
 #### Example
 
@@ -153,7 +153,7 @@ const json = JSON.stringify(error);
 getUserMessage(): string;
 ```
 
-Defined in: [errors/in-store-pickup-errors.ts:131](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/errors/in-store-pickup-errors.ts#L131)
+Defined in: [errors/in-store-pickup-errors.ts:131](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/in-store-pickup-errors.ts#L131)
 
 Returns user-friendly error message with recovery guidance
 

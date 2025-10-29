@@ -508,6 +508,6 @@ If you have questions about contributing, please:
 
 1. Check existing [Issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 2. Review [Documentation](https://github.com/salacoste/daytona-wildberries-typescript-sdk#readme)
-3. Open a [Discussion](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
+3. Create a new [Issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues/new) with your question
 
 Thank you for contributing! 🎉

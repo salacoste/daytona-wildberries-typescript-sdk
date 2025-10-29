@@ -2,7 +2,7 @@
 
 # Interface: PricingUpdateRequest
 
-Defined in: [types/products.types.ts:1106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1106)
+Defined in: [types/products.types.ts:1106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1106)
 
 Request body for bulk pricing updates
 
@@ -28,4 +28,4 @@ const request: PricingUpdateRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`PricingUpdate`](PricingUpdate.md)[] | Array of pricing updates (max 1000) | [types/products.types.ts:1108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1108) |
+| <a id="data"></a> `data` | [`PricingUpdate`](PricingUpdate.md)[] | Array of pricing updates (max 1000) | [types/products.types.ts:1108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1108) |

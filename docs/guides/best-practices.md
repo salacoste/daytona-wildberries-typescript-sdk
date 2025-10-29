@@ -53,6 +53,8 @@ Error (JavaScript base)
       └─ NetworkError
 ```
 
+**API Reference:** See [WBAPIError](/api/classes/WBAPIError) and its subclasses: [AuthenticationError](/api/classes/AuthenticationError), [RateLimitError](/api/classes/RateLimitError), [ValidationError](/api/classes/ValidationError), [NetworkError](/api/classes/NetworkError)
+
 ### Error Handling Pattern
 
 **Recommended Pattern** for all SDK operations:
@@ -192,6 +194,8 @@ The SDK implements per-endpoint rate limiting based on Wildberries API specifica
 | Promotion | Campaign info | 5 req/sec | 200ms intervals |
 | Finances | Transactions | 60 req/min | 1s intervals |
 | Tariffs | Commission | 1 req/min | 60s intervals |
+
+**API Reference:** See [ProductsModule](/api/classes/ProductsModule), [OrdersFBSModule](/api/classes/OrdersFBSModule), [AnalyticsModule](/api/classes/AnalyticsModule), [FinancesModule](/api/classes/FinancesModule) for complete method documentation and rate limit details.
 
 ### Rate Limit Handling
 
@@ -632,7 +636,7 @@ app.get('/metrics', async (req, res) => {
 });
 ```
 
-**@see** SDK source: `src/client/base-client.ts` - HTTP client with built-in instrumentation
+**API Reference:** See [BaseClient](/api/classes/BaseClient) for complete HTTP client documentation with built-in instrumentation and rate limiting.
 
 ---
 
@@ -1286,12 +1290,16 @@ async function timedOperation<T>(
 
 ## Related Documentation
 
-- **[API Reference](../api/)** - Complete SDK method documentation
+- **[API Reference](/api/)** - Complete SDK method documentation
+  - [WildberriesSDK](/api/classes/WildberriesSDK) - Main SDK class
+  - [All Modules](/api/#sdk-modules) - Complete module reference
+  - [Error Classes](/api/#error-classes) - Error handling reference
 - **[Examples](../../examples/)** - Working code examples
   - [Tariffs Pricing Calculator](../../examples/tariffs-pricing-calculator.ts) - Error handling
   - [Promotion Campaign Automation](../../examples/promotion-campaign-automation.ts) - Rate limiting
   - [Multi-Module Integration](../../examples/integration-product-order-finance.ts) - Cross-module patterns
 - **[Getting Started](../getting-started/)** - Initial SDK setup
+- **[Configuration Guide](configuration.md)** - SDK configuration options
 - **[Performance Tuning](performance.md)** - Advanced performance optimization
 - **[Troubleshooting](troubleshooting.md)** - Common issues and solutions
 - **[FAQ](faq.md)** - Frequently asked questions

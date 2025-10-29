@@ -2,7 +2,7 @@
 
 # Interface: GetStockRequest
 
-Defined in: [types/products.types.ts:1337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1337)
+Defined in: [types/products.types.ts:1337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1337)
 
 Request to get stock levels
 
@@ -21,4 +21,4 @@ const request: GetStockRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="skus"></a> `skus` | `string`[] | Array of product barcodes (1-1000 items) | [types/products.types.ts:1339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1339) |
+| <a id="skus"></a> `skus` | `string`[] | Array of product barcodes (1-1000 items) | [types/products.types.ts:1339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1339) |

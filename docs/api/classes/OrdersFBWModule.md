@@ -2,7 +2,7 @@
 
 # Class: OrdersFBWModule
 
-Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L29)
+Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L29)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/dayton
 new OrdersFBWModule(client: BaseClient): OrdersFBWModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L30)
+Defined in: [modules/orders-fbw/index.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L30)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/orders-fbw/index.ts:30](https://github.com/salacoste/dayton
 getWarehouses(): Promise<FBWWarehouse[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L47)
+Defined in: [modules/orders-fbw/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L47)
 
 Get list of Wildberries warehouses
 
@@ -67,7 +67,7 @@ console.log(warehouses[0].name); // "Коледино"
 getAcceptanceCoefficients(warehouseIDs?: string): Promise<FBWAcceptanceCoefficient[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L76)
+Defined in: [modules/orders-fbw/index.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L76)
 
 Get acceptance coefficients for warehouses
 
@@ -114,7 +114,7 @@ const coeffs = await sdk.ordersFBW.getAcceptanceCoefficients('507,117501');
 getAcceptanceOptions(goods: FBWGood[], warehouseID?: string): Promise<FBWAcceptanceOptions>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L114)
+Defined in: [modules/orders-fbw/index.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L114)
 
 Get acceptance options for goods
 
@@ -171,7 +171,7 @@ const warehouseOptions = await sdk.ordersFBW.getAcceptanceOptions(goods, '507');
 getTransitTariffs(): Promise<FBWTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L167)
+Defined in: [modules/orders-fbw/index.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L167)
 
 Get transit tariffs
 
@@ -212,7 +212,7 @@ getSupplies(
 offset: number): Promise<FBWSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L208)
+Defined in: [modules/orders-fbw/index.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L208)
 
 Get list of supplies
 
@@ -274,7 +274,7 @@ const filteredSupplies = await sdk.ordersFBW.getSupplies({
 getSupplyDetails(ID: number, isPreorderID: boolean): Promise<FBWSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L279)
+Defined in: [modules/orders-fbw/index.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L279)
 
 Get supply details by ID
 
@@ -331,7 +331,7 @@ getSupplyGoods(
 offset: number): Promise<FBWGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L319)
+Defined in: [modules/orders-fbw/index.ts:319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L319)
 
 Get goods in supply
 
@@ -387,7 +387,7 @@ const preorderGoods = await sdk.ordersFBW.getSupplyGoods(67890, true);
 getSupplyPackage(ID: number): Promise<FBWBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/orders-fbw/index.ts#L366)
+Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/orders-fbw/index.ts#L366)
 
 Get supply package information
 

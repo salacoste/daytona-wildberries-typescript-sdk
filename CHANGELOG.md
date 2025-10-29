@@ -160,7 +160,7 @@ _To be added when v1.0.0 is released_
 
 ## Links
 
-- [GitHub Repository](https://github.com/yourusername/wb-api-sdk)
+- [GitHub Repository](https://github.com/salacoste/daytona-wildberries-typescript-sdk)
 - [npm Package](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)
-- [Documentation](https://github.com/yourusername/wb-api-sdk#readme)
-- [Issue Tracker](https://github.com/yourusername/wb-api-sdk/issues)
+- [Documentation](https://github.com/salacoste/daytona-wildberries-typescript-sdk#readme)
+- [Issue Tracker](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)

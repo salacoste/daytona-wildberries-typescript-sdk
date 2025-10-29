@@ -78,7 +78,7 @@
     "docs:validate": "typedoc --emit none",
     "docs:serve": "npx http-server docs/api -p 8080 -o",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "npm run docs:api && vitepress build docs",
+    "docs:build": "npm run docs:api && cp docs/api-templates/index.md docs/api/index.md && vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "validate:links": "node scripts/validate-links.js",
     "validate:examples": "tsx scripts/validate-doc-examples.ts",

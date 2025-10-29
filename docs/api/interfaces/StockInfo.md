@@ -2,7 +2,7 @@
 
 # Interface: StockInfo
 
-Defined in: [types/products.types.ts:1317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1317)
+Defined in: [types/products.types.ts:1317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1317)
 
 Stock information for a product
 
@@ -19,5 +19,5 @@ const stock: StockInfo = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="sku"></a> `sku` | `string` | Product barcode | [types/products.types.ts:1319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1319) |
-| <a id="amount"></a> `amount` | `number` | Current stock quantity | [types/products.types.ts:1321](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1321) |
+| <a id="sku"></a> `sku` | `string` | Product barcode | [types/products.types.ts:1319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1319) |
+| <a id="amount"></a> `amount` | `number` | Current stock quantity | [types/products.types.ts:1321](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1321) |

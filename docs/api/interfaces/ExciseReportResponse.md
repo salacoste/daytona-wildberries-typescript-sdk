@@ -2,7 +2,7 @@
 
 # Interface: ExciseReportResponse
 
-Defined in: [types/reports.types.ts:284](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/reports.types.ts#L284)
+Defined in: [types/reports.types.ts:284](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/reports.types.ts#L284)
 
 Excise report response
 
@@ -16,5 +16,5 @@ Excise report response
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="response"></a> `response` | \{ \[`key`: `string`\]: `unknown`; `data`: [`ExciseReportDataItem`](ExciseReportDataItem.md)[]; \} | Response data wrapper | [types/reports.types.ts:286](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/reports.types.ts#L286) |
-| `response.data` | [`ExciseReportDataItem`](ExciseReportDataItem.md)[] | Array of excise operations data | [types/reports.types.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/reports.types.ts#L288) |
+| <a id="response"></a> `response` | \{ \[`key`: `string`\]: `unknown`; `data`: [`ExciseReportDataItem`](ExciseReportDataItem.md)[]; \} | Response data wrapper | [types/reports.types.ts:286](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/reports.types.ts#L286) |
+| `response.data` | [`ExciseReportDataItem`](ExciseReportDataItem.md)[] | Array of excise operations data | [types/reports.types.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/reports.types.ts#L288) |

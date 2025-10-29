@@ -2,7 +2,7 @@
 
 # Interface: PricingTaskStatusResponse
 
-Defined in: [types/products.types.ts:1209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1209)
+Defined in: [types/products.types.ts:1209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1209)
 
 Pricing task status response
 
@@ -29,7 +29,7 @@ const status: PricingTaskStatusResponse = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="uploadid"></a> `uploadID` | `string` | Task ID from updatePricing() | [types/products.types.ts:1211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1211) |
-| <a id="status"></a> `status` | `"pending"` \| `"processing"` \| `"completed"` \| `"failed"` | Current task status | [types/products.types.ts:1213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1213) |
-| <a id="createdat"></a> `createdAt` | `string` | Task creation timestamp (ISO 8601) | [types/products.types.ts:1215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1215) |
-| <a id="completedat"></a> `completedAt?` | `string` | Task completion timestamp (ISO 8601, if completed) | [types/products.types.ts:1217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1217) |
+| <a id="uploadid"></a> `uploadID` | `string` | Task ID from updatePricing() | [types/products.types.ts:1211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1211) |
+| <a id="status"></a> `status` | `"pending"` \| `"processing"` \| `"completed"` \| `"failed"` | Current task status | [types/products.types.ts:1213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1213) |
+| <a id="createdat"></a> `createdAt` | `string` | Task creation timestamp (ISO 8601) | [types/products.types.ts:1215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1215) |
+| <a id="completedat"></a> `completedAt?` | `string` | Task completion timestamp (ISO 8601, if completed) | [types/products.types.ts:1217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1217) |

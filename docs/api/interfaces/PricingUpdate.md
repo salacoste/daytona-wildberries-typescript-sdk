@@ -2,7 +2,7 @@
 
 # Interface: PricingUpdate
 
-Defined in: [types/products.types.ts:1077](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1077)
+Defined in: [types/products.types.ts:1077](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1077)
 
 Pricing update for single product
 
@@ -29,6 +29,6 @@ const update: PricingUpdate = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmID` | `number` | Wildberries article ID | [types/products.types.ts:1079](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1079) |
-| <a id="price"></a> `price?` | `number` | Price in rubles (integer only!) | [types/products.types.ts:1081](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1081) |
-| <a id="discount"></a> `discount?` | `number` | Discount percentage (0-99) | [types/products.types.ts:1083](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1083) |
+| <a id="nmid"></a> `nmID` | `number` | Wildberries article ID | [types/products.types.ts:1079](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1079) |
+| <a id="price"></a> `price?` | `number` | Price in rubles (integer only!) | [types/products.types.ts:1081](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1081) |
+| <a id="discount"></a> `discount?` | `number` | Discount percentage (0-99) | [types/products.types.ts:1083](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1083) |

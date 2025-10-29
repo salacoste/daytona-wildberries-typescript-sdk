@@ -2,7 +2,7 @@
 
 # Interface: PickupOrderStatusRequest
 
-Defined in: [types/in-store-pickup.types.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/in-store-pickup.types.ts#L143)
+Defined in: [types/in-store-pickup.types.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/in-store-pickup.types.ts#L143)
 
 Request to get order statuses
 
@@ -10,4 +10,4 @@ Request to get order statuses
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs | [types/in-store-pickup.types.ts:145](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/in-store-pickup.types.ts#L145) |
+| <a id="orders"></a> `orders` | `number`[] | Array of order IDs | [types/in-store-pickup.types.ts:145](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/in-store-pickup.types.ts#L145) |

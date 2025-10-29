@@ -2,11 +2,11 @@
 
 # Interface: V0AdvertMultibid
 
-Defined in: [types/promotion.types.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/promotion.types.ts#L61)
+Defined in: [types/promotion.types.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/promotion.types.ts#L61)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/promotion.types.ts#L63) |
-| <a id="nm_bids"></a> `nm_bids` | [`V0AdvertMultiBidItem`](V0AdvertMultiBidItem.md)[] | Артикулы WB и ставки для них | [types/promotion.types.ts:65](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/promotion.types.ts#L65) |
+| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/promotion.types.ts#L63) |
+| <a id="nm_bids"></a> `nm_bids` | [`V0AdvertMultiBidItem`](V0AdvertMultiBidItem.md)[] | Артикулы WB и ставки для них | [types/promotion.types.ts:65](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/promotion.types.ts#L65) |

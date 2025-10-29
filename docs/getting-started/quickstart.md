@@ -60,6 +60,8 @@ const sdk = new WildberriesSDK({
 console.log('SDK initialized successfully!');
 ```
 
+**API Reference:** See [WildberriesSDK](/api/classes/WildberriesSDK) for complete initialization options and [SDKConfig](/api/interfaces/SDKConfig) for all configuration parameters.
+
 ---
 
 ## Step 3: Make Your First API Call (2 minutes)
@@ -109,6 +111,8 @@ Categories: [
 Success! 🎉
 ```
 
+**API Reference:** See [ProductsModule](/api/classes/ProductsModule) for all product management methods including `getParentAll()`, `createProduct()`, and `updatePricing()`.
+
 ---
 
 ## Common First-Time Issues
@@ -130,7 +134,14 @@ Now that you've made your first API call, explore:
 
 1. **[Tutorials](/getting-started/tutorials/)** - Step-by-step guides for common workflows
 2. **[API Reference](/api/)** - Complete method documentation
-3. **[Best Practices](/guides/best-practices)** - Production-ready patterns
+   - [All SDK Modules](/api/#sdk-modules) - 11 specialized modules
+   - [WildberriesSDK](/api/classes/WildberriesSDK) - Main SDK class
+   - [ProductsModule](/api/classes/ProductsModule) - Product management
+   - [OrdersFBSModule](/api/classes/OrdersFBSModule) - Order fulfillment
+   - [FinancesModule](/api/classes/FinancesModule) - Financial data
+   - [AnalyticsModule](/api/classes/AnalyticsModule) - Performance metrics
+3. **[Configuration Guide](/guides/configuration)** - Configure SDK for your environment
+4. **[Best Practices](/guides/best-practices)** - Production-ready patterns and error handling
 
 ---
 

@@ -2,7 +2,7 @@
 
 # Interface: WarehouseCreateResponse
 
-Defined in: [types/products.types.ts:1279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1279)
+Defined in: [types/products.types.ts:1279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1279)
 
 Response from warehouse creation
 
@@ -18,4 +18,4 @@ const response: WarehouseCreateResponse = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | New warehouse ID | [types/products.types.ts:1281](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L1281) |
+| <a id="id"></a> `id` | `number` | New warehouse ID | [types/products.types.ts:1281](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1281) |

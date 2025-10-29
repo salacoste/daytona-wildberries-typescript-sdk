@@ -2,7 +2,7 @@
 
 # Class: TariffsModule
 
-Defined in: [modules/tariffs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/tariffs/index.ts#L10)
+Defined in: [modules/tariffs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/tariffs/index.ts#L10)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/tariffs/index.ts:10](https://github.com/salacoste/daytona-w
 new TariffsModule(client: BaseClient): TariffsModule;
 ```
 
-Defined in: [modules/tariffs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/tariffs/index.ts#L11)
+Defined in: [modules/tariffs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/tariffs/index.ts#L11)
 
 #### Parameters
 
@@ -37,7 +37,7 @@ getTariffsCommission(): Promise<
 | CommissionUAE>;
 ```
 
-Defined in: [modules/tariffs/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/tariffs/index.ts#L27)
+Defined in: [modules/tariffs/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/tariffs/index.ts#L27)
 
 Комиссия по категориям товаров
 
@@ -85,7 +85,7 @@ console.log(result);
 getTariffsBox(): Promise<TariffsBoxResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/tariffs/index.ts#L45)
+Defined in: [modules/tariffs/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/tariffs/index.ts#L45)
 
 Тарифы для коробов
 
@@ -128,7 +128,7 @@ console.log(result);
 getTariffsPallet(): Promise<TariffsPalletResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/tariffs/index.ts#L63)
+Defined in: [modules/tariffs/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/tariffs/index.ts#L63)
 
 Тарифы для монопаллет
 
@@ -171,7 +171,7 @@ console.log(result);
 getTariffsReturn(): Promise<ReturnTariffsResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/modules/tariffs/index.ts#L81)
+Defined in: [modules/tariffs/index.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/tariffs/index.ts#L81)
 
 Тарифы на возврат
 

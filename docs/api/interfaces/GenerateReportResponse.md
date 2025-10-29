@@ -2,7 +2,7 @@
 
 # Interface: GenerateReportResponse
 
-Defined in: [types/finances.types.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/finances.types.ts#L346)
+Defined in: [types/finances.types.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L346)
 
 Generate report response
 Initial response when report generation is initiated
@@ -11,6 +11,6 @@ Initial response when report generation is initiated
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="reportid"></a> `reportId` | `string` | Unique report identifier for status tracking | [types/finances.types.ts:348](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/finances.types.ts#L348) |
-| <a id="status"></a> `status` | [`ReportStatus`](../type-aliases/ReportStatus.md) | Current status of report generation | [types/finances.types.ts:350](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/finances.types.ts#L350) |
-| <a id="createdat"></a> `createdAt?` | `string` | Timestamp when report generation started | [types/finances.types.ts:352](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/finances.types.ts#L352) |
+| <a id="reportid"></a> `reportId` | `string` | Unique report identifier for status tracking | [types/finances.types.ts:348](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L348) |
+| <a id="status"></a> `status` | [`ReportStatus`](../type-aliases/ReportStatus.md) | Current status of report generation | [types/finances.types.ts:350](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L350) |
+| <a id="createdat"></a> `createdAt?` | `string` | Timestamp when report generation started | [types/finances.types.ts:352](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L352) |

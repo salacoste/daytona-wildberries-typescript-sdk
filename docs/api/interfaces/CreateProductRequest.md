@@ -2,7 +2,7 @@
 
 # Interface: CreateProductRequest
 
-Defined in: [types/products.types.ts:719](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L719)
+Defined in: [types/products.types.ts:719](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L719)
 
 Request body for creating new product cards
 
@@ -49,5 +49,5 @@ const request: CreateProductRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="subjectid"></a> `subjectID` | `number` | Required: Category/subject ID from getCategories | [types/products.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L721) |
-| <a id="variants"></a> `variants` | [`ProductVariant`](ProductVariant.md)[] | Required: Array of product variants (max 30 per imtID) | [types/products.types.ts:723](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/34d2fe37f2bf1eed06c6ea8c3452f3ceb19d57ae/src/types/products.types.ts#L723) |
+| <a id="subjectid"></a> `subjectID` | `number` | Required: Category/subject ID from getCategories | [types/products.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L721) |
+| <a id="variants"></a> `variants` | [`ProductVariant`](ProductVariant.md)[] | Required: Array of product variants (max 30 per imtID) | [types/products.types.ts:723](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L723) |
