@@ -1,0 +1,210 @@
+/**
+ * VitePress Theme Custom Styling
+ *
+ * Customizes the default VitePress theme by overriding CSS variables.
+ * Based on Context7 VitePress theme customization patterns.
+ *
+ * @see {@link https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css} - Default CSS variables
+ */
+
+/**
+ * Colors
+ * --------------------------------------------------------------------------
+ * Brand color: Wildberries purple (#c502db)
+ * Customized for the Wildberries TypeScript SDK documentation site.
+ */
+
+:root {
+  /* Brand colors - Wildberries purple */
+  --vp-c-brand-1: #c502db;
+  --vp-c-brand-2: #d83cf0;
+  --vp-c-brand-3: #e56bf5;
+  --vp-c-brand-soft: rgba(197, 2, 219, 0.14);
+
+  /* Darker shades for hover states */
+  --vp-c-brand-dark: #a202b5;
+  --vp-c-brand-darker: #7e0290;
+  --vp-c-brand-dimm: rgba(197, 2, 219, 0.08);
+
+  /* Typography - Use system fonts for better performance */
+  --vp-font-family-base: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+                         'Helvetica Neue', sans-serif;
+  --vp-font-family-mono: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono',
+                         'Courier New', monospace;
+}
+
+/**
+ * Dark mode colors
+ * --------------------------------------------------------------------------
+ * Adjusted for better contrast in dark mode
+ */
+
+.dark {
+  --vp-c-brand-1: #d83cf0;
+  --vp-c-brand-2: #e56bf5;
+  --vp-c-brand-3: #f29bfa;
+  --vp-c-brand-soft: rgba(216, 60, 240, 0.16);
+
+  --vp-c-brand-dark: #c502db;
+  --vp-c-brand-darker: #a202b5;
+  --vp-c-brand-dimm: rgba(216, 60, 240, 0.08);
+}
+
+/**
+ * Component: Button
+ * --------------------------------------------------------------------------
+ * Customize button styles for brand consistency
+ */
+
+:root {
+  --vp-button-brand-border: var(--vp-c-brand-1);
+  --vp-button-brand-text: #fff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: var(--vp-c-brand-2);
+  --vp-button-brand-hover-text: #fff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: var(--vp-c-brand-1);
+  --vp-button-brand-active-text: #fff;
+  --vp-button-brand-active-bg: var(--vp-button-brand-bg);
+}
+
+/**
+ * Component: Home Hero
+ * --------------------------------------------------------------------------
+ * Customize homepage hero section styling
+ */
+
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    135deg,
+    #c502db 0%,
+    #d83cf0 50%,
+    #e56bf5 100%
+  );
+}
+
+/**
+ * Component: Custom Badge
+ * --------------------------------------------------------------------------
+ * Custom badge styles for documentation
+ */
+
+:root {
+  --vp-badge-info-border: transparent;
+  --vp-badge-info-text: var(--vp-c-text-2);
+  --vp-badge-info-bg: var(--vp-c-default-soft);
+
+  --vp-badge-tip-border: transparent;
+  --vp-badge-tip-text: var(--vp-c-brand-1);
+  --vp-badge-tip-bg: var(--vp-c-brand-soft);
+}
+
+/**
+ * Layout
+ * --------------------------------------------------------------------------
+ * Custom layout adjustments for better content presentation
+ */
+
+.vp-doc {
+  /* Slightly wider content area for code examples */
+  --vp-doc-max-width: 1440px;
+}
+
+/**
+ * Code Blocks
+ * --------------------------------------------------------------------------
+ * Enhance code block styling for better readability
+ */
+
+.vp-code-group .tabs {
+  border-bottom-color: var(--vp-c-brand-dimm);
+}
+
+.vp-code-group .tabs label.active {
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+/**
+ * Custom Components
+ * --------------------------------------------------------------------------
+ * Styles for custom homepage components (stats, use cases, CTA)
+ */
+
+/* Ensure smooth transitions for interactive elements */
+.stat-card,
+.use-case-card,
+.cta-button {
+  will-change: transform;
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+  .cta-button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.875rem 2rem;
+  }
+
+  .use-case-card a {
+    display: block;
+    padding: 0.5rem 0;
+  }
+}
+
+/**
+ * Accessibility
+ * --------------------------------------------------------------------------
+ * Ensure WCAG AA compliance for color contrast
+ */
+
+/* Focus visible styles for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to content link (for screen readers and keyboard users) */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--vp-c-brand-1);
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+.skip-to-content:focus {
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+/**
+ * Print Styles
+ * --------------------------------------------------------------------------
+ * Optimize for printing documentation
+ */
+
+@media print {
+  .VPNav,
+  .VPSidebar,
+  .VPFooter,
+  .vp-doc-footer-prev-next {
+    display: none !important;
+  }
+
+  .vp-doc {
+    max-width: 100%;
+  }
+
+  /* Ensure code blocks are readable when printed */
+  .vp-code-block {
+    break-inside: avoid;
+  }
+}

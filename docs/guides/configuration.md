@@ -1,3 +1,9 @@
+---
+title: Configuration Guide
+description: Configure the Wildberries SDK for different environments - basic config, rate limiting, retry logic, logging, and custom clients
+layout: doc
+---
+
 # Configuration Guide
 
 Comprehensive guide to configuring the Wildberries TypeScript SDK for different environments and use cases.

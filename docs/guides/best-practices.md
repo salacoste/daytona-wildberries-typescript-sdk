@@ -1,3 +1,9 @@
+---
+title: Production Best Practices
+description: Comprehensive guide for deploying the Wildberries SDK in production - error handling, security, testing, and monitoring
+layout: doc
+---
+
 # Production Best Practices
 
 Comprehensive guide for deploying the Wildberries SDK in production environments.

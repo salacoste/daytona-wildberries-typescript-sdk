@@ -1,3 +1,9 @@
+---
+title: Quickstart Guide
+description: Get started with the Wildberries SDK in 5 minutes - install, initialize, and make your first API call
+layout: doc
+---
+
 # Quickstart Guide
 
 Get started with the Wildberries TypeScript SDK in 5 minutes.
@@ -122,13 +128,12 @@ Success! 🎉
 
 Now that you've made your first API call, explore:
 
-1. **[Tutorials](tutorials/)** - Step-by-step guides for common workflows
-2. **[API Reference](../api/)** - Complete method documentation
-3. **[Examples](../examples/)** - Working code samples
-4. **[Best Practices](../guides/best-practices.md)** - Production-ready patterns
+1. **[Tutorials](/getting-started/tutorials/)** - Step-by-step guides for common workflows
+2. **[API Reference](/api/)** - Complete method documentation
+3. **[Best Practices](/guides/best-practices)** - Production-ready patterns
 
 ---
 
 **Congratulations! You're ready to build with the Wildberries API.** 🚀
 
-[← Back to Getting Started](index.md) | [Documentation Home](../index.md)
+[← Back to Getting Started](/getting-started/) | [Documentation Home](/)

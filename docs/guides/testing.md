@@ -1,3 +1,9 @@
+---
+title: Testing Guide
+description: Testing strategies for SDK applications - unit tests, integration tests, E2E tests, mocking, and CI/CD integration
+layout: doc
+---
+
 # Testing Guide
 
 Comprehensive guide to testing applications built with the Wildberries TypeScript SDK.

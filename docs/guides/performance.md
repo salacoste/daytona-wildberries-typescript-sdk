@@ -1,3 +1,9 @@
+---
+title: Performance Tuning Guide
+description: Optimize Wildberries SDK performance - rate limiting, caching, batch operations, connection pooling, and memory management
+layout: doc
+---
+
 # Performance Tuning Guide
 
 Comprehensive guide to optimizing performance when working with the Wildberries TypeScript SDK.

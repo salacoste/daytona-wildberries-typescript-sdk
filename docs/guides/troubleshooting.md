@@ -1,3 +1,9 @@
+---
+title: Troubleshooting Guide
+description: Quick solutions for common SDK issues - authentication, rate limits, network errors, validation, and error code reference
+layout: doc
+---
+
 # Troubleshooting Guide
 
 Quick solutions for common Wildberries SDK issues. This guide helps you diagnose and resolve problems quickly without waiting for support.

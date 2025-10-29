@@ -1,3 +1,9 @@
+---
+title: Multi-Module Integration
+description: Build complete e-commerce workflows by integrating products, orders, finances, and analytics modules together
+layout: doc
+---
+
 # Tutorial 4: Multi-Module Integration
 
 Learn how to build complete e-commerce workflows by integrating multiple SDK modules together.

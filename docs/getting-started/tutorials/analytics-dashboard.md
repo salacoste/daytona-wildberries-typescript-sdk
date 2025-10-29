@@ -1,3 +1,9 @@
+---
+title: Analytics Dashboard
+description: Track sales performance and analyze customer behavior - sales data, search queries, stock history, and CSV reports
+layout: doc
+---
+
 # Tutorial 3: Analytics Dashboard
 
 Learn how to track sales performance, analyze customer behavior, and generate data-driven insights.

@@ -1,3 +1,9 @@
+---
+title: Product Catalog Sync
+description: Learn to synchronize your product catalog with Wildberries - fetch categories, create cards, upload media, and update pricing
+layout: doc
+---
+
 # Tutorial 1: Product Catalog Sync
 
 Learn how to synchronize your product catalog with Wildberries marketplace.

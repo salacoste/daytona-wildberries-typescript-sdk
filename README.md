@@ -1,6 +1,7 @@
 # Wildberries API TypeScript SDK
 
 [![CI](https://github.com/salacoste/daytona-wildberries-typescript-sdk/workflows/CI/badge.svg)](https://github.com/salacoste/daytona-wildberries-typescript-sdk/actions)
+[![Documentation Deploy](https://github.com/salacoste/daytona-wildberries-typescript-sdk/workflows/Documentation%20Deploy/badge.svg)](https://github.com/salacoste/daytona-wildberries-typescript-sdk/actions/workflows/docs.yml)
 [![npm version](https://badge.fury.io/js/daytona-wildberries-typescript-sdk.svg)](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)
 [![Coverage](https://img.shields.io/codecov/c/github/salacoste/daytona-wildberries-typescript-sdk)](https://codecov.io/gh/salacoste/daytona-wildberries-typescript-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -9,7 +10,7 @@
 
 Transform 11 OpenAPI specifications into a production-ready SDK with complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
 
-> **Documentation Languages:** English (current) | [Русский (Russian)](docs/ru/README.md)
+> **📚 [Complete Documentation](https://salacoste.github.io/daytona-wildberries-typescript-sdk/)** | **Languages:** English | [Русский (Russian)](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/)
 
 ---
 
@@ -279,6 +280,15 @@ npm run build
 
 # Watch mode (development)
 npm run dev
+
+# Documentation Development
+npm run docs:dev      # Start VitePress dev server with hot-reload
+npm run docs:build    # Build documentation site
+npm run docs:preview  # Preview production build locally
+
+# API Reference (TypeDoc)
+npm run docs          # Generate API reference
+npm run docs:serve    # Serve API reference at http://localhost:8080
 ```
 
 **→ [Development Guide](CONTRIBUTING.md)**

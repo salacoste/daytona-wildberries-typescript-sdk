@@ -1,3 +1,9 @@
+---
+title: Performance Tuning Guide
+description: Comprehensive performance optimization guide for production deployments - rate limits, caching, monitoring, and benchmarking
+layout: doc
+---
+
 # Performance Tuning Guide
 
 Comprehensive guide to optimizing Wildberries SDK performance for production deployments.

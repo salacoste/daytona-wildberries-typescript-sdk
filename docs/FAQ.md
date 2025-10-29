@@ -1,3 +1,9 @@
+---
+title: FAQ
+description: Frequently asked questions about the Wildberries SDK - installation, authentication, API usage, error handling, and troubleshooting
+layout: doc
+---
+
 # Frequently Asked Questions (FAQ)
 
 **Quick Navigation:** [Getting Started](#getting-started) | [Authentication](#authentication--configuration) | [API Usage](#api-usage) | [Error Handling](#error-handling) | [Rate Limiting](#rate-limiting--performance) | [Advanced](#advanced-topics) | [Troubleshooting](#troubleshooting)

@@ -1,3 +1,9 @@
+---
+title: Glossary
+description: Comprehensive glossary of Wildberries marketplace terms, SDK components, API concepts, and technical terminology
+layout: doc
+---
+
 # Glossary
 
 **Quick Navigation:** [Wildberries Terms](#wildberries-marketplace-terms) | [SDK Components](#sdk-components--architecture) | [API Concepts](#api-concepts--patterns) | [Technical Terms](#technical-terms) | [Acronyms](#acronyms--abbreviations)

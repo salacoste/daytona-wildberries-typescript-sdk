@@ -1,3 +1,9 @@
+---
+title: Order Fulfillment Workflow
+description: Learn to process customer orders - fetch orders, update status, generate shipping labels with FBS and FBW models
+layout: doc
+---
+
 # Tutorial 2: Order Fulfillment Workflow
 
 Learn how to process customer orders and manage fulfillment operations.

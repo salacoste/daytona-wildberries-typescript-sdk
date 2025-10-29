@@ -1,3 +1,9 @@
+---
+title: Security Guide
+description: Security best practices for the Wildberries SDK - API key management, network security, data protection, and monitoring
+layout: doc
+---
+
 # Security Guide
 
 Comprehensive security guidelines for using the Wildberries TypeScript SDK safely and securely.

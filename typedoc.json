@@ -25,8 +25,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "plugin": ["typedoc-plugin-missing-exports"],
-  "theme": "default",
+  "plugin": ["typedoc-plugin-missing-exports", "typedoc-plugin-markdown"],
   "categorizeByGroup": true,
   "categoryOrder": [
     "SDK",
@@ -62,5 +61,16 @@
   "searchGroupBoosts": {
     "SDK": 2,
     "Modules": 1.5
-  }
+  },
+  "hidePageHeader": true,
+  "entryFileName": "modules.md",
+  "readme": "none",
+  "parametersFormat": "table",
+  "propertiesFormat": "table",
+  "enumMembersFormat": "table",
+  "typeDeclarationFormat": "table",
+  "indexFormat": "table",
+  "useCodeBlocks": true,
+  "expandObjects": true,
+  "expandParameters": true
 }
