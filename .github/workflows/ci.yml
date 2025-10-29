@@ -71,9 +71,9 @@ jobs:
         if: matrix.node-version == '20.x'
         run: |
           test -d docs/api || exit 1
-          test -f docs/api/index.md || exit 1
           test -f docs/api/modules.md || exit 1
           test -d docs/api/classes || exit 1
+          test -d docs/api/interfaces || exit 1
           echo "API documentation (Markdown) validated successfully"
 
       - name: Upload API docs artifact
