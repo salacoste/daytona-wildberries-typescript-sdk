@@ -2,7 +2,7 @@
 
 # Class: ProductsModule
 
-Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L11)
+Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L11)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-
 new ProductsModule(client: BaseClient): ProductsModule;
 ```
 
-Defined in: [modules/products/index.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L12)
+Defined in: [modules/products/index.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L12)
 
 #### Parameters
 
@@ -39,7 +39,7 @@ getParentAll(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L29)
+Defined in: [modules/products/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L29)
 
 Родительские категории товаров
 
@@ -110,7 +110,7 @@ getObjectAll(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L48)
+Defined in: [modules/products/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L48)
 
 Список предметов
 
@@ -191,7 +191,7 @@ getObjectCharc(subjectId: number, options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L68)
+Defined in: [modules/products/index.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L68)
 
 Характеристики предмета
 
@@ -264,7 +264,7 @@ getDirectoryColors(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L87)
+Defined in: [modules/products/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L87)
 
 Цвет
 
@@ -326,7 +326,7 @@ getDirectoryKinds(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L106)
+Defined in: [modules/products/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L106)
 
 Пол
 
@@ -388,7 +388,7 @@ getDirectoryCountries(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L125)
+Defined in: [modules/products/index.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L125)
 
 Страна производства
 
@@ -450,7 +450,7 @@ getDirectorySeasons(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L144)
+Defined in: [modules/products/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L144)
 
 Сезон
 
@@ -512,7 +512,7 @@ getDirectoryVat(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L163)
+Defined in: [modules/products/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L163)
 
 Ставка НДС
 
@@ -579,7 +579,7 @@ getDirectoryTnved(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L182)
+Defined in: [modules/products/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L182)
 
 ТНВЭД-код
 
@@ -644,7 +644,7 @@ getContentTags(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L200)
+Defined in: [modules/products/index.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L200)
 
 Список ярлыков
 
@@ -695,7 +695,7 @@ createContentTag(data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L219)
+Defined in: [modules/products/index.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L219)
 
 Создание ярлыка
 
@@ -749,7 +749,7 @@ updateContentTag(id: number, data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:239](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L239)
+Defined in: [modules/products/index.ts:239](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L239)
 
 Изменение ярлыка
 
@@ -801,7 +801,7 @@ console.log(result);
 deleteContentTag(id: number): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L258)
+Defined in: [modules/products/index.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L258)
 
 Удаление ярлыка
 
@@ -853,7 +853,7 @@ createNomenclatureLink(data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L277)
+Defined in: [modules/products/index.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L277)
 
 Управление ярлыками в карточке товара
 
@@ -981,7 +981,7 @@ createCardsList(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:297](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L297)
+Defined in: [modules/products/index.ts:297](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L297)
 
 Список карточек товаров
 
@@ -1104,7 +1104,7 @@ createErrorList(data: RequestPublicViewerPublicErrorsTableListV2, options?: {
 }): Promise<ResponsePublicViewerPublicErrorsTableListV2>;
 ```
 
-Defined in: [modules/products/index.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L317)
+Defined in: [modules/products/index.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L317)
 
 Список несозданных карточек товаров с ошибками
 
@@ -1177,7 +1177,7 @@ createCardsUpdate(data?: {
 }[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:336](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L336)
+Defined in: [modules/products/index.ts:336](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L336)
 
 Редактирование карточек товаров
 
@@ -1228,7 +1228,7 @@ createCardsMovenm(data?:
 | RequestMoveNmsImtDisconn): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L355)
+Defined in: [modules/products/index.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L355)
 
 Объединение и разъединение карточек товаров
 
@@ -1284,7 +1284,7 @@ createDeleteTrash(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L374)
+Defined in: [modules/products/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L374)
 
 Перенос карточек товаров в корзину
 
@@ -1346,7 +1346,7 @@ createCardsRecover(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L393)
+Defined in: [modules/products/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L393)
 
 Восстановление карточек товаров из корзины
 
@@ -1461,7 +1461,7 @@ createCardsTrash(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L413)
+Defined in: [modules/products/index.ts:413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L413)
 
 Список карточек товаров в корзине
 
@@ -1573,7 +1573,7 @@ getCardsLimits(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L431)
+Defined in: [modules/products/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L431)
 
 Лимиты карточек товаров
 
@@ -1631,7 +1631,7 @@ createContentBarcodes(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L450)
+Defined in: [modules/products/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L450)
 
 Генерация баркодов
 
@@ -1714,7 +1714,7 @@ createCardsUpload(data?: {
 }[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L469)
+Defined in: [modules/products/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L469)
 
 Создание карточек товаров
 
@@ -1791,7 +1791,7 @@ createUploadAdd(data?: {
 }): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L488)
+Defined in: [modules/products/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L488)
 
 Создание карточек товаров с присоединением
 
@@ -1847,7 +1847,7 @@ createMediaFile(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:506](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L506)
+Defined in: [modules/products/index.ts:506](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L506)
 
 Загрузить медиафайл
 
@@ -1903,7 +1903,7 @@ createMediaSave(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:525](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L525)
+Defined in: [modules/products/index.ts:525](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L525)
 
 Загрузить медиафайлы по ссылкам
 
@@ -1959,7 +1959,7 @@ console.log(result);
 createUploadTask(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L543)
+Defined in: [modules/products/index.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L543)
 
 Установить цены и скидки
 
@@ -2002,7 +2002,7 @@ console.log(result);
 createTaskSize(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:561](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L561)
+Defined in: [modules/products/index.ts:561](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L561)
 
 Установить цены для размеров
 
@@ -2045,7 +2045,7 @@ console.log(result);
 createTaskClubDiscount(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L579)
+Defined in: [modules/products/index.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L579)
 
 Установить скидки WB Клуба
 
@@ -2088,7 +2088,7 @@ console.log(result);
 getHistoryTasks(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:597](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L597)
+Defined in: [modules/products/index.ts:597](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L597)
 
 Состояние обработанной загрузки
 
@@ -2131,7 +2131,7 @@ console.log(result);
 getGoodsTask(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:615](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L615)
+Defined in: [modules/products/index.ts:615](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L615)
 
 Детализация обработанной загрузки
 
@@ -2174,7 +2174,7 @@ console.log(result);
 getBufferTasks(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:633](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L633)
+Defined in: [modules/products/index.ts:633](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L633)
 
 Состояние необработанной загрузки
 
@@ -2217,7 +2217,7 @@ console.log(result);
 getGoodsTask2(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:651](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L651)
+Defined in: [modules/products/index.ts:651](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L651)
 
 Детализация необработанной загрузки
 
@@ -2260,7 +2260,7 @@ console.log(result);
 getGoodsFilter(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:669](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L669)
+Defined in: [modules/products/index.ts:669](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L669)
 
 Получить товары с ценами
 
@@ -2303,7 +2303,7 @@ console.log(result);
 createGoodsFilter(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:687](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L687)
+Defined in: [modules/products/index.ts:687](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L687)
 
 Получить товары с ценами по артикулам
 
@@ -2346,7 +2346,7 @@ console.log(result);
 getSizeNm(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:705](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L705)
+Defined in: [modules/products/index.ts:705](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L705)
 
 Получить размеры товара с ценами
 
@@ -2389,7 +2389,7 @@ console.log(result);
 getQuarantineGoods(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:723](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L723)
+Defined in: [modules/products/index.ts:723](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L723)
 
 Получить товары в карантине
 
@@ -2439,7 +2439,7 @@ createStock(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:742](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L742)
+Defined in: [modules/products/index.ts:742](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L742)
 
 Получить остатки товаров
 
@@ -2499,7 +2499,7 @@ updateStock(data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L760)
+Defined in: [modules/products/index.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L760)
 
 Обновить остатки товаров
 
@@ -2550,7 +2550,7 @@ deleteStock(data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:778](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L778)
+Defined in: [modules/products/index.ts:778](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L778)
 
 Удалить остатки товаров
 
@@ -2599,7 +2599,7 @@ const result = await sdk.general.deleteStock({});
 offices(): Promise<Office[]>;
 ```
 
-Defined in: [modules/products/index.ts:796](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L796)
+Defined in: [modules/products/index.ts:796](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L796)
 
 Получить список складов WB
 
@@ -2642,7 +2642,7 @@ console.log(result);
 warehouses(): Promise<Warehouse[]>;
 ```
 
-Defined in: [modules/products/index.ts:814](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L814)
+Defined in: [modules/products/index.ts:814](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L814)
 
 Получить список складов продавца
 
@@ -2690,7 +2690,7 @@ createWarehouses(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:833](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L833)
+Defined in: [modules/products/index.ts:833](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L833)
 
 Создать склад продавца
 
@@ -2746,7 +2746,7 @@ updateWarehous(data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:851](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L851)
+Defined in: [modules/products/index.ts:851](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L851)
 
 Обновить склад продавца
 
@@ -2796,7 +2796,7 @@ const result = await sdk.general.updateWarehous({});
 deleteWarehous(): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:868](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L868)
+Defined in: [modules/products/index.ts:868](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L868)
 
 Удалить склад продавца
 
@@ -2843,7 +2843,7 @@ getWarehousesContact(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:886](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L886)
+Defined in: [modules/products/index.ts:886](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L886)
 
 Список контактов
 
@@ -2891,7 +2891,7 @@ console.log(result);
 updateWarehousesContact(data: StoreContactRequestBody): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:904](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L904)
+Defined in: [modules/products/index.ts:904](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L904)
 
 Обновить список контактов
 
@@ -2939,7 +2939,7 @@ const result = await sdk.general.updateWarehousesContact({});
 createProduct(data: CreateProductRequest): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:983](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L983)
+Defined in: [modules/products/index.ts:983](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L983)
 
 Create new product cards with descriptions and characteristics
 
@@ -3041,7 +3041,7 @@ if (result.error) {
 listProducts(filters?: ProductListRequest): Promise<ProductListResponse>;
 ```
 
-Defined in: [modules/products/index.ts:1048](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1048)
+Defined in: [modules/products/index.ts:1048](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1048)
 
 Get list of product cards with filtering and cursor-based pagination
 
@@ -3131,7 +3131,7 @@ const searchResult = await sdk.products.listProducts({
 updateProduct(data: UpdateProductRequest[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:1127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1127)
+Defined in: [modules/products/index.ts:1127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1127)
 
 Update existing product cards
 
@@ -3235,7 +3235,7 @@ if (product) {
 deleteProduct(nmIDs: number[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:1184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1184)
+Defined in: [modules/products/index.ts:1184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1184)
 
 Move product cards to trash (soft delete)
 
@@ -3317,7 +3317,7 @@ const trashedProducts = await sdk.products.createCardsTrash({
 getProductCard(nmID: number): Promise<ProductCard | null>;
 ```
 
-Defined in: [modules/products/index.ts:1233](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1233)
+Defined in: [modules/products/index.ts:1233](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1233)
 
 Get single product card by Wildberries article ID (nmID)
 
@@ -3389,7 +3389,7 @@ uploadMediaFile(
 photoNumber: number): Promise<MediaUploadResponse>;
 ```
 
-Defined in: [modules/products/index.ts:1292](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1292)
+Defined in: [modules/products/index.ts:1292](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1292)
 
 Upload single media file to product card
 
@@ -3468,7 +3468,7 @@ await sdk.products.uploadMediaFile(12345, videoBuffer, 1);
 uploadMediaByURLs(nmID: number, mediaURLs: string[]): Promise<MediaUploadResponse>;
 ```
 
-Defined in: [modules/products/index.ts:1365](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1365)
+Defined in: [modules/products/index.ts:1365](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1365)
 
 Upload media files to product card via URLs
 
@@ -3554,7 +3554,7 @@ await sdk.products.uploadMediaByURLs(12345, [
 getMediaList(nmID: number): Promise<string[]>;
 ```
 
-Defined in: [modules/products/index.ts:1403](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1403)
+Defined in: [modules/products/index.ts:1403](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1403)
 
 Get list of media URLs for a product
 
@@ -3612,7 +3612,7 @@ await sdk.products.uploadMediaByURLs(12345, [
 updatePricing(updates: PricingUpdate[]): Promise<PricingTaskResponse>;
 ```
 
-Defined in: [modules/products/index.ts:1468](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1468)
+Defined in: [modules/products/index.ts:1468](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1468)
 
 Set prices and discounts for products (async processing)
 
@@ -3701,7 +3701,7 @@ if (status.status === 'completed') {
 getPricing(nmIDOrIDs: number | number[]): Promise<PricingInfo[]>;
 ```
 
-Defined in: [modules/products/index.ts:1509](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1509)
+Defined in: [modules/products/index.ts:1509](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1509)
 
 Get current pricing for one or more products
 
@@ -3764,7 +3764,7 @@ bulkPricing.forEach(p => {
 getPricingTaskStatus(uploadID: string): Promise<PricingTaskStatusResponse>;
 ```
 
-Defined in: [modules/products/index.ts:1576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1576)
+Defined in: [modules/products/index.ts:1576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1576)
 
 Get status of pricing update task
 
@@ -3839,7 +3839,7 @@ if (status.status === 'completed') {
 getWBOffices(): Promise<Office[]>;
 ```
 
-Defined in: [modules/products/index.ts:1631](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1631)
+Defined in: [modules/products/index.ts:1631](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1631)
 
 Get list of Wildberries warehouses for FBS binding
 
@@ -3905,7 +3905,7 @@ const newWarehouse = await sdk.products.createWarehouse(
 getWarehouses(): Promise<Warehouse[]>;
 ```
 
-Defined in: [modules/products/index.ts:1679](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1679)
+Defined in: [modules/products/index.ts:1679](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1679)
 
 Get list of seller's warehouses
 
@@ -3973,7 +3973,7 @@ createWarehouse(name: string, officeId: number): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:1730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1730)
+Defined in: [modules/products/index.ts:1730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1730)
 
 Create seller warehouse bound to WB office
 
@@ -4055,7 +4055,7 @@ updateWarehouse(
 officeId: number): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:1782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1782)
+Defined in: [modules/products/index.ts:1782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1782)
 
 Update seller warehouse details
 
@@ -4122,7 +4122,7 @@ console.log('Warehouse updated successfully');
 deleteWarehouse(warehouseId: number): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:1813](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1813)
+Defined in: [modules/products/index.ts:1813](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1813)
 
 Delete seller warehouse
 
@@ -4178,7 +4178,7 @@ console.log('Warehouse deleted (WB office unbound for reuse)');
 getStock(warehouseId: number, skus: string[]): Promise<StockInfo[]>;
 ```
 
-Defined in: [modules/products/index.ts:1853](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1853)
+Defined in: [modules/products/index.ts:1853](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1853)
 
 Get stock levels for products at warehouse
 
@@ -4244,7 +4244,7 @@ stocks.forEach(stock => {
 updateStockLevels(warehouseId: number, updates: StockUpdate[]): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:1911](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1911)
+Defined in: [modules/products/index.ts:1911](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1911)
 
 Update stock quantities for products (user-friendly wrapper)
 
@@ -4323,7 +4323,7 @@ console.log('Stock updated for 3 products');
 deleteStockRecords(warehouseId: number, skus: string[]): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:1963](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/products/index.ts#L1963)
+Defined in: [modules/products/index.ts:1963](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/products/index.ts#L1963)
 
 Delete stock records for products (user-friendly wrapper)
 

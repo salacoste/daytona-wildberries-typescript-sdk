@@ -2,7 +2,7 @@
 
 # Class: AnalyticsModule
 
-Defined in: [modules/analytics/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L58)
+Defined in: [modules/analytics/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L58)
 
 AnalyticsModule
 
@@ -41,7 +41,7 @@ const performance = await sdk.analytics.getProductPerformance(
 new AnalyticsModule(client: BaseClient): AnalyticsModule;
 ```
 
-Defined in: [modules/analytics/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L63)
+Defined in: [modules/analytics/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L63)
 
 Creates an instance of AnalyticsModule
 
@@ -63,7 +63,7 @@ Creates an instance of AnalyticsModule
 getSalesFunnel(request: ProductStatisticsRequest): Promise<ProductStatisticsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L97)
+Defined in: [modules/analytics/index.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L97)
 
 Get sales funnel conversion metrics for products
 
@@ -126,7 +126,7 @@ funnel.data.cards.forEach(card => {
 getProductHistory(request: HistoricalStatisticsRequest): Promise<HistoricalStatisticsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L144)
+Defined in: [modules/analytics/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L144)
 
 Get daily historical statistics for product cards
 
@@ -188,7 +188,7 @@ history.data.forEach(product => {
 getProductPerformance(productIds: number[], dateRange: DateRange): Promise<ProductPerformanceResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L180)
+Defined in: [modules/analytics/index.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L180)
 
 Get performance metrics for specific products
 
@@ -247,7 +247,7 @@ const topPerformers = performance.products
 getSearchQueries(dateRange: DateRange): Promise<SearchQueriesResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L268)
+Defined in: [modules/analytics/index.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L268)
 
 Get search queries that led to product views
 
@@ -305,7 +305,7 @@ const opportunities = queries.data
 getCategoryPerformance(categoryId: string, dateRange: DateRange): Promise<CategoryPerformanceResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L316)
+Defined in: [modules/analytics/index.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L316)
 
 Get category-level performance metrics
 
@@ -362,7 +362,7 @@ console.log(`Top Products:`, category.data.topProducts.slice(0, 5));
 generateReport(request: GenerateReportRequest): Promise<GenerateReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L409)
+Defined in: [modules/analytics/index.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L409)
 
 Generate CSV/Excel report for analytics data
 
@@ -419,7 +419,7 @@ console.log(`Status: ${report.status}`);
 getReport(reportId: string): Promise<ReportInfo>;
 ```
 
-Defined in: [modules/analytics/index.ts:451](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L451)
+Defined in: [modules/analytics/index.ts:451](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L451)
 
 Get report status and download information
 
@@ -480,7 +480,7 @@ downloadReport(reportId: string): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:483](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L483)
+Defined in: [modules/analytics/index.ts:483](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L483)
 
 Download completed report (helper method)
 
@@ -523,7 +523,7 @@ console.log(`Format: ${download.format}`);
 getStockHistory(productId: string, dateRange: DateRange): Promise<StockHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:551](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L551)
+Defined in: [modules/analytics/index.ts:551](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L551)
 
 Get historical stock level changes for a product
 
@@ -601,7 +601,7 @@ exportAnalyticsCSV(
 options?: CSVFormatOptions): Promise<CSVExportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:632](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L632)
+Defined in: [modules/analytics/index.ts:632](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L632)
 
 Generate CSV export of analytics data (asynchronous)
 
@@ -681,7 +681,7 @@ console.log(`ETA: ${csvExport.estimatedCompletionTime}`);
 getCSVReportStatus(reportId: string): Promise<CSVReport>;
 ```
 
-Defined in: [modules/analytics/index.ts:725](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L725)
+Defined in: [modules/analytics/index.ts:725](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L725)
 
 Check CSV export status and get download URL
 
@@ -761,7 +761,7 @@ if (csvReport.status === 'completed') {
 downloadCSVReport(reportId: string): Promise<CSVReport>;
 ```
 
-Defined in: [modules/analytics/index.ts:773](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/modules/analytics/index.ts#L773)
+Defined in: [modules/analytics/index.ts:773](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/analytics/index.ts#L773)
 
 Get download URL for completed CSV report (helper method)
 

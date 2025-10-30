@@ -2,7 +2,7 @@
 
 # Interface: ProductStatisticsRequest
 
-Defined in: [types/analytics.types.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L182)
+Defined in: [types/analytics.types.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L182)
 
 Request for product card statistics detail report
 
@@ -10,11 +10,11 @@ Request for product card statistics detail report
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="period"></a> `period` | [`AnalyticsPeriod`](AnalyticsPeriod.md) | Selected period for analysis | [types/analytics.types.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L184) |
-| <a id="previousperiod"></a> `previousPeriod?` | [`AnalyticsPeriod`](AnalyticsPeriod.md) | Previous period for comparison (optional) | [types/analytics.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L186) |
-| <a id="brandnames"></a> `brandNames?` | `string`[] | Filter by brand names | [types/analytics.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L188) |
-| <a id="objectids"></a> `objectIDs?` | `number`[] | Filter by object/category IDs | [types/analytics.types.ts:190](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L190) |
-| <a id="tagids"></a> `tagIDs?` | `number`[] | Filter by tag IDs | [types/analytics.types.ts:192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L192) |
-| <a id="nmids"></a> `nmIDs?` | `number`[] | Filter by product article numbers (nmIDs) | [types/analytics.types.ts:194](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L194) |
-| <a id="page"></a> `page?` | `number` | Pagination: page number (starts at 1) | [types/analytics.types.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L196) |
-| <a id="pagesize"></a> `pageSize?` | `number` | Pagination: results per page | [types/analytics.types.ts:198](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/analytics.types.ts#L198) |
+| <a id="period"></a> `period` | [`AnalyticsPeriod`](AnalyticsPeriod.md) | Selected period for analysis | [types/analytics.types.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L184) |
+| <a id="previousperiod"></a> `previousPeriod?` | [`AnalyticsPeriod`](AnalyticsPeriod.md) | Previous period for comparison (optional) | [types/analytics.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L186) |
+| <a id="brandnames"></a> `brandNames?` | `string`[] | Filter by brand names | [types/analytics.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L188) |
+| <a id="objectids"></a> `objectIDs?` | `number`[] | Filter by object/category IDs | [types/analytics.types.ts:190](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L190) |
+| <a id="tagids"></a> `tagIDs?` | `number`[] | Filter by tag IDs | [types/analytics.types.ts:192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L192) |
+| <a id="nmids"></a> `nmIDs?` | `number`[] | Filter by product article numbers (nmIDs) | [types/analytics.types.ts:194](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L194) |
+| <a id="page"></a> `page?` | `number` | Pagination: page number (starts at 1) | [types/analytics.types.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L196) |
+| <a id="pagesize"></a> `pageSize?` | `number` | Pagination: results per page | [types/analytics.types.ts:198](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L198) |

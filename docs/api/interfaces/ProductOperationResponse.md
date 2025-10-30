@@ -2,7 +2,7 @@
 
 # Interface: ProductOperationResponse
 
-Defined in: [types/products.types.ts:965](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L965)
+Defined in: [types/products.types.ts:965](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L965)
 
 Response from create/update/delete operations
 
@@ -10,7 +10,7 @@ Response from create/update/delete operations
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | `Record`\<`string`, `never`\> | Operation-specific data | [types/products.types.ts:967](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L967) |
-| <a id="error"></a> `error` | `boolean` | Error flag | [types/products.types.ts:969](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L969) |
-| <a id="errortext"></a> `errorText` | `string` | Error description | [types/products.types.ts:971](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L971) |
-| <a id="additionalerrors"></a> `additionalErrors?` | `string` \| `Record`\<`string`, `string`\> | Additional error details | [types/products.types.ts:973](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L973) |
+| <a id="data"></a> `data?` | `Record`\<`string`, `never`\> | Operation-specific data | [types/products.types.ts:967](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L967) |
+| <a id="error"></a> `error` | `boolean` | Error flag | [types/products.types.ts:969](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L969) |
+| <a id="errortext"></a> `errorText` | `string` | Error description | [types/products.types.ts:971](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L971) |
+| <a id="additionalerrors"></a> `additionalErrors?` | `string` \| `Record`\<`string`, `string`\> | Additional error details | [types/products.types.ts:973](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L973) |

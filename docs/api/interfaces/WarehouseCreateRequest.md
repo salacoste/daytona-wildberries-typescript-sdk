@@ -2,7 +2,7 @@
 
 # Interface: WarehouseCreateRequest
 
-Defined in: [types/products.types.ts:1240](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1240)
+Defined in: [types/products.types.ts:1240](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1240)
 
 Request to create seller warehouse bound to WB office
 
@@ -24,5 +24,5 @@ const request: WarehouseCreateRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name` | `string` | Warehouse name (1-200 characters) | [types/products.types.ts:1242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1242) |
-| <a id="officeid"></a> `officeId` | `number` | WB office/warehouse ID (must not be bound elsewhere) | [types/products.types.ts:1244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1244) |
+| <a id="name"></a> `name` | `string` | Warehouse name (1-200 characters) | [types/products.types.ts:1242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1242) |
+| <a id="officeid"></a> `officeId` | `number` | WB office/warehouse ID (must not be bound elsewhere) | [types/products.types.ts:1244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1244) |

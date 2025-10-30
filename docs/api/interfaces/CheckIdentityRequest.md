@@ -2,7 +2,7 @@
 
 # Interface: CheckIdentityRequest
 
-Defined in: [types/in-store-pickup.types.ts:173](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/in-store-pickup.types.ts#L173)
+Defined in: [types/in-store-pickup.types.ts:173](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/in-store-pickup.types.ts#L173)
 
 Request to verify customer identity
 
@@ -10,5 +10,5 @@ Request to verify customer identity
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="ordercode"></a> `orderCode` | `string` | Customer's unique order code | [types/in-store-pickup.types.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/in-store-pickup.types.ts#L175) |
-| <a id="passcode"></a> `passcode` | `string` | Verification passcode | [types/in-store-pickup.types.ts:177](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/in-store-pickup.types.ts#L177) |
+| <a id="ordercode"></a> `orderCode` | `string` | Customer's unique order code | [types/in-store-pickup.types.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/in-store-pickup.types.ts#L175) |
+| <a id="passcode"></a> `passcode` | `string` | Verification passcode | [types/in-store-pickup.types.ts:177](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/in-store-pickup.types.ts#L177) |

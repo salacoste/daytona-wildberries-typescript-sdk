@@ -6,4 +6,4 @@
 const ordersFBSRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/orders-fbs-rate-limits.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/config/orders-fbs-rate-limits.ts#L21)
+Defined in: [config/orders-fbs-rate-limits.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/config/orders-fbs-rate-limits.ts#L21)

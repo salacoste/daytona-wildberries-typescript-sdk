@@ -2,7 +2,7 @@
 
 # Interface: GetPricingResponse
 
-Defined in: [types/products.types.ts:1183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1183)
+Defined in: [types/products.types.ts:1183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1183)
 
 Response from getPricing() method
 
@@ -23,4 +23,4 @@ const response: GetPricingResponse = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`PricingInfo`](PricingInfo.md)[] | Array of pricing information | [types/products.types.ts:1185](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/products.types.ts#L1185) |
+| <a id="data"></a> `data` | [`PricingInfo`](PricingInfo.md)[] | Array of pricing information | [types/products.types.ts:1185](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1185) |

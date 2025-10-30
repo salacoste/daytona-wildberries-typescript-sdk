@@ -2,7 +2,7 @@
 
 # Interface: PayoutFilters
 
-Defined in: [types/finances.types.ts:410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L410)
+Defined in: [types/finances.types.ts:410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L410)
 
 Payout filters for querying payout history
 Optional parameters for filtering payout list
@@ -17,9 +17,9 @@ Optional parameters for filtering payout list
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="datefrom"></a> `dateFrom?` | `string` | Start date for payout search (ISO 8601 format) | [types/finances.types.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L412) |
-| <a id="dateto"></a> `dateTo?` | `string` | End date for payout search (ISO 8601 format) | [types/finances.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L414) |
-| <a id="status"></a> `status?` | [`PayoutStatus`](../type-aliases/PayoutStatus.md) | Filter by payout status | [types/finances.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L416) |
-| <a id="bankaccount"></a> `bankAccount?` | `string` | Filter by bank account (last 4 digits or identifier) | [types/finances.types.ts:418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L418) |
-| <a id="limit"></a> `limit?` | `number` | Maximum number of results to return | [types/finances.types.ts:420](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L420) |
-| <a id="offset"></a> `offset?` | `number` | Offset for pagination | [types/finances.types.ts:422](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/types/finances.types.ts#L422) |
+| <a id="datefrom"></a> `dateFrom?` | `string` | Start date for payout search (ISO 8601 format) | [types/finances.types.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L412) |
+| <a id="dateto"></a> `dateTo?` | `string` | End date for payout search (ISO 8601 format) | [types/finances.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L414) |
+| <a id="status"></a> `status?` | [`PayoutStatus`](../type-aliases/PayoutStatus.md) | Filter by payout status | [types/finances.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L416) |
+| <a id="bankaccount"></a> `bankAccount?` | `string` | Filter by bank account (last 4 digits or identifier) | [types/finances.types.ts:418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L418) |
+| <a id="limit"></a> `limit?` | `number` | Maximum number of results to return | [types/finances.types.ts:420](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L420) |
+| <a id="offset"></a> `offset?` | `number` | Offset for pagination | [types/finances.types.ts:422](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L422) |

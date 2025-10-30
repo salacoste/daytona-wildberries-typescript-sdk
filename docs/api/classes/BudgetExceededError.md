@@ -2,7 +2,7 @@
 
 # Class: BudgetExceededError
 
-Defined in: [errors/promotion-errors.ts:233](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L233)
+Defined in: [errors/promotion-errors.ts:233](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L233)
 
 Error thrown when campaign budget is exceeded or insufficient.
 
@@ -45,7 +45,7 @@ new BudgetExceededError(
    requestId?: string): BudgetExceededError;
 ```
 
-Defined in: [errors/promotion-errors.ts:252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L252)
+Defined in: [errors/promotion-errors.ts:252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L252)
 
 Creates a BudgetExceededError
 
@@ -72,11 +72,11 @@ Creates a BudgetExceededError
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/base-error.ts#L35) |
-| <a id="availablebudget"></a> `availableBudget?` | `readonly` | `number` | Available budget amount | - | [errors/promotion-errors.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L237) |
-| <a id="requiredbudget"></a> `requiredBudget?` | `readonly` | `number` | Required budget amount for the operation | - | [errors/promotion-errors.ts:242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L242) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/base-error.ts#L35) |
+| <a id="availablebudget"></a> `availableBudget?` | `readonly` | `number` | Available budget amount | - | [errors/promotion-errors.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L237) |
+| <a id="requiredbudget"></a> `requiredBudget?` | `readonly` | `number` | Required budget amount for the operation | - | [errors/promotion-errors.ts:242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L242) |
 
 ## Methods
 
@@ -86,7 +86,7 @@ Creates a BudgetExceededError
 getUserMessage(): string;
 ```
 
-Defined in: [errors/promotion-errors.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L272)
+Defined in: [errors/promotion-errors.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L272)
 
 Returns user-friendly error message with budget details
 
@@ -116,7 +116,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/promotion-errors.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L312)
+Defined in: [errors/promotion-errors.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L312)
 
 Custom JSON serialization
 
@@ -136,13 +136,13 @@ Custom JSON serialization
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/promotion-errors.ts:313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L313) |
-| `message` | `string` | [errors/promotion-errors.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L314) |
-| `statusCode` | `number` | [errors/promotion-errors.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L315) |
-| `availableBudget?` | `number` | [errors/promotion-errors.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L316) |
-| `requiredBudget?` | `number` | [errors/promotion-errors.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L317) |
-| `response?` | `unknown` | [errors/promotion-errors.ts:318](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L318) |
-| `requestId?` | `string` | [errors/promotion-errors.ts:319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/17d124072ec8ce05556cbc693317b0cf345b0fe9/src/errors/promotion-errors.ts#L319) |
+| `name` | `string` | [errors/promotion-errors.ts:313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L313) |
+| `message` | `string` | [errors/promotion-errors.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L314) |
+| `statusCode` | `number` | [errors/promotion-errors.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L315) |
+| `availableBudget?` | `number` | [errors/promotion-errors.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L316) |
+| `requiredBudget?` | `number` | [errors/promotion-errors.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L317) |
+| `response?` | `unknown` | [errors/promotion-errors.ts:318](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L318) |
+| `requestId?` | `string` | [errors/promotion-errors.ts:319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/errors/promotion-errors.ts#L319) |
 
 #### Overrides
 
