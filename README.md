@@ -4,15 +4,28 @@
 [![Documentation Deploy](https://github.com/salacoste/daytona-wildberries-typescript-sdk/workflows/Documentation%20Deploy/badge.svg)](https://github.com/salacoste/daytona-wildberries-typescript-sdk/actions/workflows/docs.yml)
 [![npm version](https://badge.fury.io/js/daytona-wildberries-typescript-sdk.svg)](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)
 [![Coverage](https://img.shields.io/codecov/c/github/salacoste/daytona-wildberries-typescript-sdk)](https://codecov.io/gh/salacoste/daytona-wildberries-typescript-sdk)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Personal Use](https://img.shields.io/badge/License-Personal%20Use-blue.svg)](LICENSE)
 
 **Full-featured TypeScript SDK providing type-safe access to all Wildberries marketplace API methods.**
 
-Transform 11 OpenAPI specifications into a production-ready SDK with complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
+**Полнофункциональный TypeScript SDK с полной типизацией для всех методов API маркетплейса Wildberries.**
+
+---
 
 > **📚 [Complete Documentation](https://salacoste.github.io/daytona-wildberries-typescript-sdk/)** | **Languages:** English | [Русский (Russian)](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/)
 
 ---
+
+## 🌍 Language / Язык
+
+- **[English Version](#english-version)** - Full documentation in English
+- **[Русская Версия](#русская-версия)** - Полная документация на русском языке
+
+---
+
+# English Version
+
+Transform 11 OpenAPI specifications into a production-ready SDK with complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
 
 ## ✨ Features
 
@@ -21,11 +34,9 @@ Transform 11 OpenAPI specifications into a production-ready SDK with complete ty
 - **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 98% test coverage with 1,200+ tests across all modules
-- **📚 Comprehensive Documentation** - Complete API reference, tutorials, and working examples
+- **✅ Battle-Tested** - 98% test coverage with 1,584+ tests across all modules
+- **📚 Comprehensive Documentation** - Complete API reference, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
-
----
 
 ## 📦 Installation
 
@@ -35,21 +46,9 @@ npm install daytona-wildberries-typescript-sdk
 
 ### Requirements
 
-- **Node.js:** ≥ 20.0.0 (18.x no longer supported)
+- **Node.js:** ≥ 20.0.0
 - **TypeScript:** ≥ 5.0.0 (for TypeScript projects)
 - **Wildberries API Key:** [Get one here](https://seller.wildberries.ru/)
-
-### Quick Verification
-
-```bash
-# Verify installation
-npm list daytona-wildberries-typescript-sdk
-
-# Run quickstart example
-npx tsx node_modules/daytona-wildberries-typescript-sdk/examples/quickstart.ts
-```
-
----
 
 ## 🚀 Quick Start
 
@@ -76,320 +75,75 @@ console.log('New orders:', orders.length);
 // Check account balance
 const balance = await sdk.finances.getBalance();
 console.log('Balance:', balance.for_withdraw, balance.currency);
-
-// Get sales analytics
-const salesFunnel = await sdk.analytics.getSalesFunnel({
-  period: {
-    begin: '2024-01-01 00:00:00',
-    end: '2024-01-31 23:59:59'
-  }
-});
-console.log('Products analyzed:', salesFunnel.data.cards.length);
 ```
 
 **Time to First API Call:** <5 minutes 🚀
 
-**👉 [Complete 5-Minute Quickstart Guide](docs/getting-started/quickstart.md)**
-
----
+**👉 [Complete Quickstart Guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/getting-started/quickstart)**
 
 ## 📚 Documentation
 
 ### Getting Started
+- **[5-Minute Quickstart](https://salacoste.github.io/daytona-wildberries-typescript-sdk/getting-started/quickstart)** - Get up and running
+- **[Tutorials](https://salacoste.github.io/daytona-wildberries-typescript-sdk/getting-started/tutorials/)** - Step-by-step guides
+- **[API Reference](https://salacoste.github.io/daytona-wildberries-typescript-sdk/api/)** - Complete TypeDoc documentation
 
-| Resource | Description |
-|----------|-------------|
-| **[5-Minute Quickstart](docs/getting-started/quickstart.md)** | Get up and running in under 5 minutes |
-| **[Tutorial 1: Product Catalog Sync](docs/getting-started/tutorials/product-catalog-sync.md)** | Learn product management (30 min) |
-| **[Tutorial 2: Order Fulfillment](docs/getting-started/tutorials/order-fulfillment.md)** | Master order processing (45 min) |
-| **[Tutorial 3: Analytics Dashboard](docs/getting-started/tutorials/analytics-dashboard.md)** | Build analytics reports (30 min) |
-| **[Tutorial 4: Multi-Module Integration](docs/getting-started/tutorials/multi-module-integration.md)** | Connect all modules (60 min) |
-
-### Guides & Best Practices
-
-| Resource | Description |
-|----------|-------------|
-| **[Best Practices Guide](docs/guides/best-practices.md)** | Production-ready patterns and recommendations |
-| **[Performance Tuning](docs/guides/performance.md)** | Optimize for scale and efficiency |
-| **[Troubleshooting Guide](docs/guides/troubleshooting.md)** | Common issues and solutions |
-| **[Security Best Practices](docs/guides/security.md)** | Secure your integration |
-
-### Reference & Examples
-
-| Resource | Description |
-|----------|-------------|
-| **[Complete API Reference](docs/api/)** | Full TypeDoc documentation for all modules |
-| **[Code Examples](docs/examples/)** | Working examples for common use cases |
-| **[FAQ](docs/FAQ.md)** | Frequently asked questions (35+ questions) |
-| **[Glossary](docs/GLOSSARY.md)** | Wildberries terms, SDK components, and API concepts |
-
-### Project Information
-
-| Resource | Description |
-|----------|-------------|
-| **[Contributing Guide](CONTRIBUTING.md)** | How to contribute code, tests, and documentation |
-| **[Code of Conduct](CODE_OF_CONDUCT.md)** | Community standards and guidelines |
-| **[Security Policy](SECURITY.md)** | Vulnerability reporting and security practices |
-| **[Changelog](CHANGELOG.md)** | Version history and release notes |
-
-**📖 [Complete Documentation Hub](docs/index.md)**
-
----
+### Guides
+- **[Best Practices](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/best-practices)** - Production patterns
+- **[Performance Tuning](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/performance)** - Optimization guide
+- **[Security](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/security)** - Secure integration
+- **[Troubleshooting](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/troubleshooting)** - Common issues
 
 ## 🎯 Supported API Modules
 
-All 11 Wildberries API modules are fully supported:
-
-| Module | Status | Coverage | Description |
-|--------|--------|----------|-------------|
-| **General** | ✅ Complete | 100% | Ping, news, seller info, connectivity testing |
-| **Products** | ✅ Complete | 100% | Categories, CRUD, media, pricing, warehouse, stock |
-| **Orders FBS** | ✅ Complete | 100% | Seller fulfillment, order status, shipping, supplies |
-| **Orders FBW** | ✅ Complete | 100% | WB warehouse fulfillment, supply planning |
-| **Finances** | ✅ Complete | 100% | Balance, transactions, reports, payouts |
-| **Analytics** | ✅ Complete | 100% | Sales funnel, search queries, stock history, CSV reports |
-| **Reports** | ✅ Complete | 100% | Income reports, sales reports, data exports |
-| **Communications** | ✅ Complete | 100% | Customer chat, Q&A, reviews management |
-| **Promotion** | ✅ Complete | 100% | Campaigns, promo codes, advertising |
-| **Tariffs** | ✅ Complete | 100% | Commission rates, fee schedules |
-| **In-Store Pickup** | ✅ Complete | 100% | Pickup point orders and management |
-
-**Total API Coverage:** 100% (all endpoints implemented and tested)
-
----
-
-## 💡 Common Use Cases
-
-### Product Management
-Sync product catalogs, update pricing, manage inventory across warehouses.
-
-→ **[Product Catalog Tutorial](docs/getting-started/tutorials/product-catalog-sync.md)**
-
-### Order Fulfillment
-Process customer orders, manage shipping, track deliveries for FBS and FBW.
-
-→ **[Order Fulfillment Tutorial](docs/getting-started/tutorials/order-fulfillment.md)**
-
-### Analytics & Reporting
-Generate sales reports, analyze performance, export data for business intelligence.
-
-→ **[Analytics Dashboard Tutorial](docs/getting-started/tutorials/analytics-dashboard.md)**
-
-### Financial Management
-Track account balance, reconcile transactions, manage payouts and reporting.
-
-→ **[Finances Example](examples/finances-reports-payouts.ts)**
-
-### Customer Support
-Manage customer chat, answer Q&A, respond to reviews at scale.
-
-→ **[Customer Support Example](examples/customer-support.ts)**
-
-### Multi-Channel Integration
-Connect products → orders → finances → analytics for complete e-commerce automation.
-
-→ **[Multi-Module Integration Tutorial](docs/getting-started/tutorials/multi-module-integration.md)**
-
----
-
-## 🔧 Configuration
-
-### Basic Configuration
-
-```typescript
-const sdk = new WildberriesSDK({
-  apiKey: process.env.WB_API_KEY!, // Required: Your API key
-});
-```
-
-### Advanced Configuration
-
-```typescript
-const sdk = new WildberriesSDK({
-  apiKey: process.env.WB_API_KEY!,
-
-  // Custom timeouts
-  timeout: 30000, // 30 seconds (default)
-
-  // Retry configuration
-  retryConfig: {
-    maxRetries: 3,        // Max retry attempts (default: 3)
-    retryDelay: 1000,     // Initial delay in ms (default: 1000)
-    exponentialBackoff: true // Use exponential backoff (default: true)
-  },
-
-  // Rate limiting (optional overrides)
-  rateLimitConfig: {
-    requestsPerSecond: 10,  // Global limit
-    requestsPerMinute: 100  // Global limit
-  },
-
-  // Logging
-  logLevel: 'warn' // 'debug' | 'info' | 'warn' | 'error' (default: 'warn')
-});
-```
-
-**→ [Complete Configuration Guide](docs/guides/configuration.md)**
-
----
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run specific module tests
-npm test -- products
-npm test -- orders-fbs
-
-# Run integration tests
-npm run test:integration
-
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-```
-
-**Test Coverage:** 98% (1,200+ tests)
-
-**→ [Testing Guide](docs/guides/testing.md)**
-
----
-
-## 🚀 Development
-
-```bash
-# Clone repository
-git clone https://github.com/salacoste/daytona-wildberries-typescript-sdk.git
-cd daytona-wildberries-typescript-sdk
-
-# Install dependencies
-npm install
-
-# Run code generation
-npm run generate
-
-# Build
-npm run build
-
-# Watch mode (development)
-npm run dev
-
-# Documentation Development
-npm run docs:dev      # Start VitePress dev server with hot-reload
-npm run docs:build    # Build documentation site
-npm run docs:preview  # Preview production build locally
-
-# API Reference (TypeDoc)
-npm run docs          # Generate API reference
-npm run docs:serve    # Serve API reference at http://localhost:8080
-```
-
-**→ [Development Guide](CONTRIBUTING.md)**
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Whether it's:
-
-- 🐛 **Bug Reports** - Found an issue? [Open an issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
-- 💡 **Feature Requests** - Have an idea? [Start a discussion](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
-- 📖 **Documentation** - Improve our docs with PRs
-- 🧪 **Tests** - Add test coverage for edge cases
-- 🔧 **Code** - Fix bugs or add features
-
-### Quick Contribution Steps
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to your branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-**→ [Complete Contributing Guide](CONTRIBUTING.md)**
-
-### Good First Issues
-
-New to the project? Check out issues labeled [`good first issue`](https://github.com/salacoste/daytona-wildberries-typescript-sdk/labels/good%20first%20issue).
-
----
-
-## 📊 Project Status
-
-| Metric | Status |
-|--------|--------|
-| **API Coverage** | 100% (all 11 modules complete) |
-| **Test Coverage** | 98% (1,200+ tests) |
-| **TypeScript** | 100% (strict mode) |
-| **Documentation** | Complete (quickstart, tutorials, guides, API reference) |
-| **Production Ready** | ✅ Yes (v1.0.0+) |
-
-### Recent Updates
-
-- **v1.0.0** - All 11 modules complete, production ready
-- **Epic 4** - Promotion, Tariffs, In-Store Pickup modules
-- **Epic 3** - Finances, Analytics, Reports, Communications modules
-- **Epic 2** - Products, Orders FBS, Orders FBW modules
-- **Epic 1** - Core infrastructure, error handling, testing framework
-
-**→ [View Changelog](CHANGELOG.md)**
-
----
-
-## 🔗 Links
-
-- **[GitHub Repository](https://github.com/salacoste/daytona-wildberries-typescript-sdk)**
-- **[npm Package](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)**
-- **[Issue Tracker](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)**
-- **[Discussions](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)**
-- **[Official Wildberries API Docs](https://dev.wildberries.ru/)**
-- **[TypeDoc API Reference](https://salacoste.github.io/daytona-wildberries-typescript-sdk/)**
-
----
+All 11 Wildberries API modules are fully supported with 100% API coverage:
+
+| Module | Description |
+|--------|-------------|
+| **General** | Ping, news, seller info, connectivity testing |
+| **Products** | Categories, CRUD, media, pricing, warehouse, stock |
+| **Orders FBS** | Seller fulfillment, order status, shipping, supplies |
+| **Orders FBW** | WB warehouse fulfillment, supply planning |
+| **Finances** | Balance, transactions, reports, payouts |
+| **Analytics** | Sales funnel, search queries, stock history, CSV reports |
+| **Reports** | Income reports, sales reports, data exports |
+| **Communications** | Customer chat, Q&A, reviews management |
+| **Promotion** | Campaigns, promo codes, advertising |
+| **Tariffs** | Commission rates, fee schedules |
+| **In-Store Pickup** | Pickup point orders and management |
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Personal Use License** - Free for personal, educational, and non-commercial use.
 
-### Third-Party Licenses
+✅ **Permitted:**
+- Personal non-commercial use
+- Educational purposes
+- Open source projects (non-commercial)
+- Learning and skill development
 
-This SDK depends on:
-- **Axios** (MIT License) - HTTP client
-- **Development dependencies** - See [package.json](package.json) for complete list
+❌ **Not Permitted Without Commercial License:**
+- Commercial use in business environments
+- Selling or monetizing the SDK
+- Providing paid services based on the SDK
+- Use in commercial products/services
 
----
+**For commercial use, please contact for licensing.**
 
-## 🙏 Acknowledgments
+See [LICENSE](LICENSE) file for complete terms.
 
-- **Wildberries** - For providing comprehensive API documentation
-- **OpenAPI Initiative** - For the OpenAPI specification standard
-- **TypeScript Team** - For excellent type system and tooling
-- **All Contributors** - Thank you for your contributions!
+## 🤝 Contributing
 
----
+We welcome contributions! Whether it's bug reports, feature requests, documentation improvements, or code contributions.
+
+**→ [Contributing Guide](CONTRIBUTING.md)**
 
 ## 📞 Support
 
-Need help? We're here for you:
-
-- **📖 Documentation** - Check our [comprehensive docs](docs/index.md)
-- **❓ FAQ** - Read the [frequently asked questions](docs/faq.md)
-- **🐛 Bug Reports** - [Open an issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues/new?template=bug_report.md)
-- **💡 Feature Requests** - [Start a discussion](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions/new)
-- **💬 Community Chat** - [Join discussions](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
-
-### Commercial Support
-
-Need priority support, custom features, or training? [Contact us] for commercial support options.
-
----
+- **📖 Documentation:** [https://salacoste.github.io/daytona-wildberries-typescript-sdk/](https://salacoste.github.io/daytona-wildberries-typescript-sdk/)
+- **❓ FAQ:** [English](https://salacoste.github.io/daytona-wildberries-typescript-sdk/FAQ) | [Русский](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/FAQ)
+- **🐛 Bug Reports:** [Open an issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
+- **💬 Discussions:** [GitHub Discussions](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
 
 ## ⚠️ Disclaimer
 
@@ -397,6 +151,136 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 
 ---
 
+# Русская Версия
+
+Преобразуйте 11 OpenAPI спецификаций в production-готовый SDK с полной типобезопасностью, автоматическими лимитами запросов, механизмами повторных попыток и комплексной обработкой ошибок. Сократите время интеграции с недель до часов.
+
+## ✨ Возможности
+
+- **🔐 Полная Типобезопасность** - Автоматически генерируемые TypeScript типы из OpenAPI для всех 11 модулей
+- **⚡ Автоматические Лимиты Запросов** - Встроенное соблюдение лимитов для каждой конечной точки с умной очередью
+- **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев
+- **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
+- **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
+- **✅ Проверено в Бою** - 98% покрытие тестами, 1,584+ тестов для всех модулей
+- **📚 Полная Документация** - Справочник API, учебные руководства и примеры на английском и русском
+- **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
+
+## 📦 Установка
+
+```bash
+npm install daytona-wildberries-typescript-sdk
+```
+
+### Требования
+
+- **Node.js:** ≥ 20.0.0
+- **TypeScript:** ≥ 5.0.0 (для TypeScript проектов)
+- **API ключ Wildberries:** [Получить здесь](https://seller.wildberries.ru/)
+
+## 🚀 Быстрый Старт
+
+```typescript
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
+
+// Инициализация SDK с вашим API ключом
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY! // Храните безопасно в переменных окружения
+});
+
+// Проверка подключения
+const pingResponse = await sdk.general.ping();
+console.log('Подключено:', pingResponse.Status); // 'OK'
+
+// Получение категорий товаров
+const categories = await sdk.products.getParentAll();
+console.log('Категории:', categories.data?.length);
+
+// Получение новых заказов
+const orders = await sdk.ordersFBS.getNewOrders();
+console.log('Новые заказы:', orders.length);
+
+// Проверка баланса счета
+const balance = await sdk.finances.getBalance();
+console.log('Баланс:', balance.for_withdraw, balance.currency);
+```
+
+**Время до первого API вызова:** <5 минут 🚀
+
+**👉 [Полное Руководство по Быстрому Старту](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/getting-started/quickstart)**
+
+## 📚 Документация
+
+### Начало Работы
+- **[Быстрый Старт](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/getting-started/quickstart)** - Начните работу за 5 минут
+- **[Учебные Руководства](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/getting-started/tutorials/)** - Пошаговые инструкции
+- **[Справочник API](https://salacoste.github.io/daytona-wildberries-typescript-sdk/api/)** - Полная TypeDoc документация
+
+### Руководства
+- **[Лучшие Практики](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/best-practices)** - Production паттерны
+- **[Настройка Производительности](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/performance)** - Оптимизация
+- **[Безопасность](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/security)** - Безопасная интеграция
+- **[Устранение Неполадок](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/troubleshooting)** - Распространенные проблемы
+
+## 🎯 Поддерживаемые Модули API
+
+Все 11 модулей Wildberries API полностью поддерживаются со 100% покрытием API:
+
+| Модуль | Описание |
+|--------|----------|
+| **General** | Ping, новости, информация о продавце, проверка подключения |
+| **Products** | Категории, CRUD, медиа, ценообразование, склад, запасы |
+| **Orders FBS** | Выполнение продавцом, статус заказа, доставка, поставки |
+| **Orders FBW** | Выполнение складом WB, планирование поставок |
+| **Finances** | Баланс, транзакции, отчеты, выплаты |
+| **Analytics** | Воронка продаж, поисковые запросы, история запасов, CSV отчеты |
+| **Reports** | Отчеты о доходах, отчеты о продажах, экспорт данных |
+| **Communications** | Чат с клиентами, вопросы-ответы, управление отзывами |
+| **Promotion** | Кампании, промокоды, реклама |
+| **Tariffs** | Ставки комиссий, тарифные планы |
+| **In-Store Pickup** | Заказы с самовывозом и управление |
+
+## 📄 Лицензия
+
+**Лицензия для Личного Использования** - Бесплатно для личного, образовательного и некоммерческого использования.
+
+✅ **Разрешено:**
+- Личное некоммерческое использование
+- Образовательные цели
+- Open source проекты (некоммерческие)
+- Обучение и развитие навыков
+
+❌ **Запрещено Без Коммерческой Лицензии:**
+- Коммерческое использование в бизнес-среде
+- Продажа или монетизация SDK
+- Предоставление платных услуг на основе SDK
+- Использование в коммерческих продуктах/сервисах
+
+**Для коммерческого использования, пожалуйста, свяжитесь для получения лицензии.**
+
+См. файл [LICENSE](LICENSE) для полных условий.
+
+## 🤝 Участие в Проекте
+
+Мы приветствуем вклад! Будь то сообщения об ошибках, запросы функций, улучшения документации или код.
+
+**→ [Руководство по Участию](CONTRIBUTING.md)**
+
+## 📞 Поддержка
+
+- **📖 Документация:** [https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/)
+- **❓ FAQ:** [English](https://salacoste.github.io/daytona-wildberries-typescript-sdk/FAQ) | [Русский](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/FAQ)
+- **🐛 Сообщения об Ошибках:** [Открыть issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
+- **💬 Обсуждения:** [GitHub Discussions](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
+
+## ⚠️ Отказ от Ответственности
+
+Это неофициальный SDK. Не аффилирован, не поддерживается официально и не одобрен Wildberries. Используйте на свой риск. Всегда обращайтесь к [официальной документации Wildberries API](https://dev.wildberries.ru/) за авторитетной информацией.
+
+---
+
 **Made with ❤️ for the Wildberries developer community**
 
-[⬆ Back to top](#wildberries-api-typescript-sdk)
+**Сделано с ❤️ для сообщества разработчиков Wildberries**
+
+[⬆ Back to top / Наверх](#wildberries-api-typescript-sdk)

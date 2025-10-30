@@ -1,21 +1,96 @@
-MIT License
+PERSONAL USE LICENSE
 
 Copyright (c) 2025 Wildberries API TypeScript SDK Contributors
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. DEFINITIONS
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+"Personal Use" means use by an individual for personal, non-commercial purposes.
+"Commercial Use" means any use intended for or directed toward commercial advantage
+or monetary compensation, including but not limited to:
+  - Using the Software in a business, enterprise, or organization environment
+  - Selling, licensing, or otherwise monetizing the Software or derivatives
+  - Using the Software to provide services to third parties for compensation
+  - Incorporating the Software into commercial products or services
+
+2. GRANT OF LICENSE
+
+Subject to the terms and conditions of this License, the copyright holders hereby
+grant you a worldwide, royalty-free, non-exclusive license to:
+
+a) USE the Software for Personal Use only
+b) COPY and DISTRIBUTE copies of the Software for Personal Use
+c) MODIFY the Software and create derivative works for Personal Use
+d) DISTRIBUTE modified versions, provided they are also licensed under this License
+
+3. RESTRICTIONS
+
+You may NOT:
+
+a) Use the Software for Commercial Use without explicit written permission
+b) Sublicense the Software under different terms
+c) Remove or alter any copyright notices or this License
+d) Use the Software in violation of applicable laws or regulations
+
+4. EDUCATIONAL AND OPEN SOURCE USE
+
+Use of the Software is permitted for:
+- Educational purposes in academic institutions
+- Personal learning and skill development
+- Open source projects (non-commercial)
+- Research and development (non-commercial)
+- Portfolio and demonstration purposes
+
+5. ATTRIBUTION
+
+You must retain, in the source code and documentation, all copyright notices,
+this License, and any attribution notices present in the original Software.
+
+6. DISCLAIMER OF WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. THE COPYRIGHT HOLDERS SHALL NOT BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+7. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT
+OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+8. COMMERCIAL LICENSING
+
+For Commercial Use, please contact the copyright holders to obtain a commercial
+license. Commercial licensing inquiries: [Contact information to be provided]
+
+9. TERMINATION
+
+This License automatically terminates if you fail to comply with its terms. Upon
+termination, you must cease all use and destroy all copies of the Software.
+
+10. GOVERNING LAW
+
+This License shall be governed by and construed in accordance with the laws of
+the jurisdiction in which the copyright holder resides, without regard to conflict
+of law provisions.
+
+---
+
+КРАТКАЯ ВЕРСИЯ НА РУССКОМ (не является юридическим документом)
+
+Разрешено:
+✅ Личное некоммерческое использование
+✅ Изучение, модификация для личных целей
+✅ Использование в образовательных целях
+✅ Использование в open source проектах (некоммерческих)
+✅ Распространение с сохранением лицензии
+
+Запрещено:
+❌ Коммерческое использование без разрешения
+❌ Использование в коммерческих продуктах/сервисах
+❌ Продажа или монетизация SDK
+❌ Предоставление платных услуг на основе SDK
+
+Для коммерческого использования требуется отдельная лицензия.

@@ -13,7 +13,7 @@
     "type-safe"
   ],
   "author": "Wildberries API TypeScript SDK Contributors",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
