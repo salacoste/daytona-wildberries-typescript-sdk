@@ -139,9 +139,9 @@ export default defineConfig({
                 text: 'Types',
                 collapsed: true,
                 items: [
-                  { text: 'Interfaces', link: '/api/interfaces' },
-                  { text: 'Type Aliases', link: '/api/type-aliases' },
-                  { text: 'Enumerations', link: '/api/enumerations' }
+                  { text: 'Interfaces', link: '/api/modules#interfaces' },
+                  { text: 'Type Aliases', link: '/api/modules#type-aliases' },
+                  { text: 'Enumerations', link: '/api/modules#enumerations' }
                 ]
               }
             ]
@@ -240,9 +240,9 @@ export default defineConfig({
                 text: 'Типы',
                 collapsed: true,
                 items: [
-                  { text: 'Интерфейсы', link: '/api/interfaces' },
-                  { text: 'Псевдонимы типов', link: '/api/type-aliases' },
-                  { text: 'Перечисления', link: '/api/enumerations' }
+                  { text: 'Интерфейсы', link: '/api/modules#interfaces' },
+                  { text: 'Псевдонимы типов', link: '/api/modules#type-aliases' },
+                  { text: 'Перечисления', link: '/api/modules#enumerations' }
                 ]
               }
             ]
