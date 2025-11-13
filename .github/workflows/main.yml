@@ -67,7 +67,7 @@ jobs:
         run: |
           test -d dist || exit 1
           test -f dist/esm/index.js || exit 1
-          test -f dist/cjs/index.js || exit 1
+          test -f dist/cjs/index.cjs || exit 1
           test -f dist/esm/index.d.ts || exit 1
           echo "✓ Build artifacts validated successfully"
 
