@@ -15,33 +15,33 @@
   "author": "Wildberries API TypeScript SDK Contributors",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
-  "main": "./dist/cjs/index.js",
+  "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.cjs",
       "types": "./dist/esm/index.d.ts"
     },
     "./finances": {
       "import": "./dist/esm/modules/finances/index.js",
-      "require": "./dist/cjs/modules/finances/index.js",
+      "require": "./dist/cjs/modules/finances/index.cjs",
       "types": "./dist/esm/modules/finances/index.d.ts"
     },
     "./analytics": {
       "import": "./dist/esm/modules/analytics/index.js",
-      "require": "./dist/cjs/modules/analytics/index.js",
+      "require": "./dist/cjs/modules/analytics/index.cjs",
       "types": "./dist/esm/modules/analytics/index.d.ts"
     },
     "./communications": {
       "import": "./dist/esm/modules/communications/index.js",
-      "require": "./dist/cjs/modules/communications/index.js",
+      "require": "./dist/cjs/modules/communications/index.cjs",
       "types": "./dist/esm/modules/communications/index.d.ts"
     },
     "./reports": {
       "import": "./dist/esm/modules/reports/index.js",
-      "require": "./dist/cjs/modules/reports/index.js",
+      "require": "./dist/cjs/modules/reports/index.cjs",
       "types": "./dist/esm/modules/reports/index.d.ts"
     }
   },

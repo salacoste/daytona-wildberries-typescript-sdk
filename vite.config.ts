@@ -29,7 +29,10 @@ export default defineConfig({
           return 'esm/index.js';
         }
         if (format === 'cjs') {
-          return 'cjs/index.js';
+          // CRITICAL FIX: Use .cjs extension for CommonJS when package.json has "type": "module"
+          // This prevents "ReferenceError: exports is not defined" errors
+          // See: https://nodejs.org/api/packages.html#determining-module-system
+          return 'cjs/index.cjs';
         }
         return `${format}/index.js`;
       },
