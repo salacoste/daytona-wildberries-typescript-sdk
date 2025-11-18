@@ -2,7 +2,7 @@
 
 # Class: CommunicationsModule
 
-Defined in: [modules/communications/index.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L77)
+Defined in: [modules/communications/index.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L77)
 
 CommunicationsModule class
 
@@ -16,7 +16,7 @@ Provides methods for interacting with the Wildberries Chat with Customers API.
 new CommunicationsModule(client: BaseClient): CommunicationsModule;
 ```
 
-Defined in: [modules/communications/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L83)
+Defined in: [modules/communications/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L83)
 
 Creates a new CommunicationsModule instance
 
@@ -38,7 +38,7 @@ Creates a new CommunicationsModule instance
 getChats(): Promise<ChatsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L118)
+Defined in: [modules/communications/index.ts:118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L118)
 
 Get all chat conversations
 
@@ -95,7 +95,7 @@ chats.forEach(chat => {
 getChatEvents(next?: number): Promise<EventsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L182)
+Defined in: [modules/communications/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L182)
 
 Get chat events using cursor pagination
 
@@ -186,7 +186,7 @@ sendMessage(
 files?: File[] | Blob[]): Promise<MessageResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L263)
+Defined in: [modules/communications/index.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L263)
 
 Send message to customer chat
 
@@ -286,7 +286,7 @@ pollForNewEvents(intervalMs: number, callback: (events: ChatEvent[]) => void | P
 };
 ```
 
-Defined in: [modules/communications/index.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L378)
+Defined in: [modules/communications/index.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L378)
 
 Poll for new chat events (message-based updates)
 
@@ -324,7 +324,7 @@ Object with `stop()` method to cancel polling
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `stop()` | () => `void` | [modules/communications/index.ts:381](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L381) |
+| `stop()` | () => `void` | [modules/communications/index.ts:381](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L381) |
 
 #### Example
 
@@ -366,7 +366,7 @@ process.on('SIGTERM', () => {
 getQuestions(filters: QuestionFilters): Promise<QuestionsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L469)
+Defined in: [modules/communications/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L469)
 
 Get product questions with filtering
 
@@ -449,7 +449,7 @@ answerQuestion(
 reject?: boolean): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:536](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L536)
+Defined in: [modules/communications/index.ts:536](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L536)
 
 Answer or reject product question
 
@@ -536,7 +536,7 @@ if (editableQuestion) {
 markQuestionViewed(questionId: string): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:594](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L594)
+Defined in: [modules/communications/index.ts:594](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L594)
 
 Mark question as viewed without answering
 
@@ -599,7 +599,7 @@ for (const question of response.data.questions) {
 getReviews(filters: ReviewFilters): Promise<ReviewsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L680)
+Defined in: [modules/communications/index.ts:680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L680)
 
 Get product reviews with filtering
 
@@ -694,7 +694,7 @@ const productReviews = await sdk.communications.getReviews({
 respondToReview(reviewId: string, responseText: string): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:749](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L749)
+Defined in: [modules/communications/index.ts:749](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L749)
 
 Respond to customer review
 
@@ -783,7 +783,7 @@ for (const review of reviews.data.feedbacks) {
 editReviewResponse(reviewId: string, newResponseText: string): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:828](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L828)
+Defined in: [modules/communications/index.ts:828](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L828)
 
 Edit existing response to review
 
@@ -862,7 +862,7 @@ await sdk.communications.editReviewResponse(
 getReplySignFromChat(chat: Chat): string;
 ```
 
-Defined in: [modules/communications/index.ts:880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L880)
+Defined in: [modules/communications/index.ts:880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L880)
 
 Extract replySign from Chat object
 
@@ -896,7 +896,7 @@ await sdk.communications.sendMessage(replySign, 'Hello!');
 getReplySignFromEvent(event: ChatEvent): string | null;
 ```
 
-Defined in: [modules/communications/index.ts:904](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L904)
+Defined in: [modules/communications/index.ts:904](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L904)
 
 Extract replySign from ChatEvent (only for new chats)
 
@@ -935,7 +935,7 @@ for (const event of events) {
 filterEventsByChatID(events: ChatEvent[], chatID: string): ChatEvent[];
 ```
 
-Defined in: [modules/communications/index.ts:927](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L927)
+Defined in: [modules/communications/index.ts:927](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L927)
 
 Filter events by specific chat ID
 
@@ -973,7 +973,7 @@ console.log(`Chat has ${chatEvents.length} events`);
 getClientMessages(events: ChatEvent[]): ChatEvent[];
 ```
 
-Defined in: [modules/communications/index.ts:950](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/communications/index.ts#L950)
+Defined in: [modules/communications/index.ts:950](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/communications/index.ts#L950)
 
 Filter events to get only client messages
 

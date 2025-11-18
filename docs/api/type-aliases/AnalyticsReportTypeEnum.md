@@ -10,6 +10,6 @@ type AnalyticsReportTypeEnum =
   | "product_performance";
 ```
 
-Defined in: [types/analytics.types.ts:343](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/analytics.types.ts#L343)
+Defined in: [types/analytics.types.ts:343](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/analytics.types.ts#L343)
 
 Report type for CSV generation

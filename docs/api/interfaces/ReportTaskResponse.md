@@ -2,7 +2,7 @@
 
 # Interface: ReportTaskResponse
 
-Defined in: [types/reports.types.ts:340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/reports.types.ts#L340)
+Defined in: [types/reports.types.ts:340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/reports.types.ts#L340)
 
 Async report task response
 
@@ -16,5 +16,5 @@ Async report task response
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | \{ \[`key`: `string`\]: `unknown`; `taskId`: `string`; \} | Wrapper for response data | [types/reports.types.ts:342](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/reports.types.ts#L342) |
-| `data.taskId` | `string` | Task ID for status checking and download | [types/reports.types.ts:344](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/reports.types.ts#L344) |
+| <a id="data"></a> `data` | \{ \[`key`: `string`\]: `unknown`; `taskId`: `string`; \} | Wrapper for response data | [types/reports.types.ts:342](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/reports.types.ts#L342) |
+| `data.taskId` | `string` | Task ID for status checking and download | [types/reports.types.ts:344](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/reports.types.ts#L344) |

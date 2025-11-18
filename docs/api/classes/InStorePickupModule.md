@@ -2,7 +2,7 @@
 
 # Class: InStorePickupModule
 
-Defined in: [modules/in-store-pickup/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L87)
+Defined in: [modules/in-store-pickup/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L87)
 
 In-Store Pickup (Click & Collect) module
 
@@ -65,7 +65,7 @@ const metadata = await sdk.inStorePickup.getOrderMetadata(orderId);
 new InStorePickupModule(client: BaseClient): InStorePickupModule;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:88](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L88)
+Defined in: [modules/in-store-pickup/index.ts:88](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L88)
 
 #### Parameters
 
@@ -85,7 +85,7 @@ Defined in: [modules/in-store-pickup/index.ts:88](https://github.com/salacoste/d
 getNewOrders(): Promise<PickupNewOrdersResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L122)
+Defined in: [modules/in-store-pickup/index.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L122)
 
 Get all new pickup orders awaiting processing
 
@@ -135,7 +135,7 @@ response.orders.forEach(order => {
 confirmOrder(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L159)
+Defined in: [modules/in-store-pickup/index.ts:159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L159)
 
 Confirm order and start assembly process
 
@@ -198,7 +198,7 @@ try {
 prepareOrder(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L197)
+Defined in: [modules/in-store-pickup/index.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L197)
 
 Mark order as prepared and ready for customer pickup
 
@@ -261,7 +261,7 @@ try {
 receiveOrder(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L230)
+Defined in: [modules/in-store-pickup/index.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L230)
 
 Complete order handover to customer
 
@@ -319,7 +319,7 @@ console.log('Order successfully handed over to customer');
 rejectOrder(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L263)
+Defined in: [modules/in-store-pickup/index.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L263)
 
 Mark order as rejected by customer
 
@@ -377,7 +377,7 @@ console.log('Order marked as rejected by customer');
 cancelOrder(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:296](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L296)
+Defined in: [modules/in-store-pickup/index.ts:296](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L296)
 
 Cancel order (seller cancellation)
 
@@ -435,7 +435,7 @@ console.log('Order cancelled by seller');
 getOrders(params: PickupGetOrdersParams): Promise<PickupOrdersResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L351)
+Defined in: [modules/in-store-pickup/index.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L351)
 
 Get completed orders with pagination
 
@@ -501,7 +501,7 @@ console.log(`Found ${allOrders.length} completed orders`);
 getOrderStatuses(orderIds: number[]): Promise<PickupOrderStatusesResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:399](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L399)
+Defined in: [modules/in-store-pickup/index.ts:399](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L399)
 
 Get current statuses for multiple orders
 
@@ -559,7 +559,7 @@ statuses.orders.forEach(status => {
 getCustomerInfo(orderIds: number[]): Promise<PickupOrderClientInfoResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L441)
+Defined in: [modules/in-store-pickup/index.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L441)
 
 Get customer information for orders
 
@@ -614,7 +614,7 @@ customerInfo.orders.forEach(info => {
 verifyCustomerIdentity(request: CheckIdentityRequest): Promise<CheckedIdentity>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:490](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L490)
+Defined in: [modules/in-store-pickup/index.ts:490](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L490)
 
 Verify customer identity at pickup
 
@@ -684,7 +684,7 @@ try {
 getOrderMetadata(orderId: number): Promise<OrderMetadata>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:531](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L531)
+Defined in: [modules/in-store-pickup/index.ts:531](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L531)
 
 Get product metadata for order
 
@@ -740,7 +740,7 @@ if (metadata.meta.imei?.value) {
 deleteOrderMetadata(orderId: number, key: "imei" | "uin" | "gtin" | "sgtin"): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:562](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L562)
+Defined in: [modules/in-store-pickup/index.ts:562](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L562)
 
 Delete metadata for order
 
@@ -791,7 +791,7 @@ console.log('IMEI metadata deleted');
 setSGTINCode(orderId: number, sgtins: string[]): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:602](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L602)
+Defined in: [modules/in-store-pickup/index.ts:602](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L602)
 
 Set SGTIN codes (Честный знак marking)
 
@@ -853,7 +853,7 @@ console.log('SGTIN codes assigned');
 setUINCode(orderId: number, uin: string): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:637](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L637)
+Defined in: [modules/in-store-pickup/index.ts:637](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L637)
 
 Set UIN code (Unique Identification Number)
 
@@ -911,7 +911,7 @@ console.log('UIN code assigned');
 setIMEICode(orderId: number, imei: string): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:673](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L673)
+Defined in: [modules/in-store-pickup/index.ts:673](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L673)
 
 Set IMEI code (for electronics)
 
@@ -970,7 +970,7 @@ console.log('IMEI code assigned');
 setGTINCode(orderId: number, gtin: string): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:708](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/in-store-pickup/index.ts#L708)
+Defined in: [modules/in-store-pickup/index.ts:708](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/in-store-pickup/index.ts#L708)
 
 Set GTIN code (Belarus product ID)
 

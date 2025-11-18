@@ -229,7 +229,9 @@ async function listProductsExample() {
   console.log('\n=== Example 2: List Products ===\n');
 
   try {
-    // Get first page with filters
+    // Method 1: Get first page only (up to 100 products)
+    // WARNING: For large catalogs, this returns only the first page!
+    console.log('--- Method 1: First page only (manual pagination) ---');
     const page1 = await sdk.products.listProducts({
       filter: {
         withPhoto: 1,                    // Only products with photos
@@ -269,6 +271,32 @@ async function listProductsExample() {
 
       console.log(`Page 2: ${page2.cards?.length} more products`);
     }
+
+    // Method 2: Get ALL products automatically (recommended for large catalogs)
+    console.log('\n--- Method 2: Get all products (automatic pagination) ---');
+    console.log('⚠️  This may take several minutes for large catalogs (10,000+ products)');
+    
+    const allProducts = await sdk.products.getAllProducts({
+      filter: {
+        withPhoto: 1,
+        brands: ['Example Brand']
+      }
+    });
+
+    console.log(`✅ Retrieved all ${allProducts.length} products`);
+    console.log(`   First product: ${allProducts[0]?.nmID} - ${allProducts[0]?.title}`);
+    console.log(`   Last product: ${allProducts[allProducts.length - 1]?.nmID} - ${allProducts[allProducts.length - 1]?.title}`);
+
+    // Method 3: Get all products with limit (for very large catalogs)
+    console.log('\n--- Method 3: Get products with limit ---');
+    const limitedProducts = await sdk.products.getAllProducts(
+      {
+        filter: { withPhoto: 1 }
+      },
+      { maxProducts: 500 }  // Limit to first 500 products
+    );
+
+    console.log(`✅ Retrieved ${limitedProducts.length} products (limited to 500)`);
   } catch (error) {
     if (error instanceof RateLimitError) {
       console.error('⚠️ Rate Limit Error:', error.message);

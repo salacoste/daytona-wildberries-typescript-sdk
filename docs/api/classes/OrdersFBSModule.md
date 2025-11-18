@@ -2,7 +2,7 @@
 
 # Class: OrdersFBSModule
 
-Defined in: [modules/orders-fbs/index.ts:60](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L60)
+Defined in: [modules/orders-fbs/index.ts:60](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L60)
 
 Orders FBS (Fulfillment by Seller) module
 
@@ -39,7 +39,7 @@ const statuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
 new OrdersFBSModule(client: BaseClient): OrdersFBSModule;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L61)
+Defined in: [modules/orders-fbs/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L61)
 
 #### Parameters
 
@@ -59,7 +59,7 @@ Defined in: [modules/orders-fbs/index.ts:61](https://github.com/salacoste/dayton
 getNewOrders(): Promise<OrderNew[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L86)
+Defined in: [modules/orders-fbs/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L86)
 
 Get all new FBS orders awaiting processing
 
@@ -102,7 +102,7 @@ newOrders.forEach(order => {
 getOrders(filters?: OrderFilters): Promise<GetOrdersResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:141](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L141)
+Defined in: [modules/orders-fbs/index.ts:141](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L141)
 
 Get FBS orders with filters and pagination
 
@@ -176,7 +176,7 @@ console.log(`Retrieved ${allOrders.length} orders`);
 getOrderStatuses(orderIds: number[]): Promise<OrderStatus[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L209)
+Defined in: [modules/orders-fbs/index.ts:209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L209)
 
 Get current statuses for FBS orders
 
@@ -249,7 +249,7 @@ statuses.forEach(status => {
 createSupply(name: string): Promise<CreateSupplyResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L260)
+Defined in: [modules/orders-fbs/index.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L260)
 
 Create new supply for grouping FBS orders
 
@@ -306,7 +306,7 @@ console.log(`Created supply: ${supply.id}`); // WB-GI-1234567
 getSupplies(filters?: SupplyFilters): Promise<GetSuppliesResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L309)
+Defined in: [modules/orders-fbs/index.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L309)
 
 Get list of FBS supplies with pagination
 
@@ -364,7 +364,7 @@ console.log(`Retrieved ${allSupplies.length} supplies`);
 getSupply(supplyId: string): Promise<Supply>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L346)
+Defined in: [modules/orders-fbs/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L346)
 
 Get details for specific supply
 
@@ -414,7 +414,7 @@ console.log(`Created: ${supply.createdAt}`);
 addOrderToSupply(supplyId: string, orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:397](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L397)
+Defined in: [modules/orders-fbs/index.ts:397](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L397)
 
 Add order to supply (changes order status to 'confirm')
 
@@ -489,7 +489,7 @@ try {
 deliverSupply(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L432)
+Defined in: [modules/orders-fbs/index.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L432)
 
 Mark supply as delivered (changes all order statuses to 'complete')
 
@@ -547,7 +547,7 @@ console.log('Supply delivered, orders transitioned to complete status');
 deleteSupply(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:464](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L464)
+Defined in: [modules/orders-fbs/index.ts:464](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L464)
 
 Delete supply
 
@@ -602,7 +602,7 @@ console.log('Supply deleted');
 getOrderStickers(orderIds: number[], options: StickerOptions): Promise<OrderSticker[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L518)
+Defined in: [modules/orders-fbs/index.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L518)
 
 Get shipping label stickers for orders (base64-encoded)
 
@@ -673,7 +673,7 @@ console.log(`Barcode: ${stickers[0].barcode}`);
 getSupplyBarcode(supplyId: string, type: BarcodeType): Promise<SupplyBarcode>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:603](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L603)
+Defined in: [modules/orders-fbs/index.ts:603](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L603)
 
 Get supply QR code (base64-encoded)
 
@@ -744,7 +744,7 @@ console.log(`QR code encodes: ${qrCode.barcode}`);
 cancelOrder(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:638](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/orders-fbs/index.ts#L638)
+Defined in: [modules/orders-fbs/index.ts:638](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/orders-fbs/index.ts#L638)
 
 Cancel FBS order (changes status to 'cancel')
 

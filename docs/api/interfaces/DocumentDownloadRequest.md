@@ -2,7 +2,7 @@
 
 # Interface: DocumentDownloadRequest
 
-Defined in: [types/finances.types.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L226)
+Defined in: [types/finances.types.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/finances.types.ts#L226)
 
 Document download request body
 
@@ -10,4 +10,4 @@ Document download request body
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="params"></a> `params` | \{ `extension`: `string`; `serviceName`: `string`; \}[] | [types/finances.types.ts:227](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L227) |
+| <a id="params"></a> `params` | \{ `extension`: `string`; `serviceName`: `string`; \}[] | [types/finances.types.ts:227](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/finances.types.ts#L227) |

@@ -55,7 +55,8 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| List all products | `sdk.products.listProducts(filters?)` | Returns paginated product list |
+| List all products | `sdk.products.listProducts(filters?)` | Returns first page only (up to 100 products). Use `getAllProducts()` for automatic pagination |
+| Get all products | `sdk.products.getAllProducts(filters?, options?)` | Automatically paginates through all products. Use for large catalogs (10,000+ products) |
 | Create new product | `sdk.products.createProduct(data)` | Single product creation |
 | Update product | `sdk.products.updateProduct(data[])` | Accepts array of updates |
 | Delete product | `sdk.products.deleteProduct(nmIDs[])` | Permanently removes products |

@@ -2,7 +2,7 @@
 
 # Class: ReportsModule
 
-Defined in: [modules/reports/index.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L42)
+Defined in: [modules/reports/index.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L42)
 
 ReportsModule - Generate and retrieve various business reports
 
@@ -33,7 +33,7 @@ const task = await sdk.reports.createWarehouseRemainsReport({
 new ReportsModule(client: BaseClient): ReportsModule;
 ```
 
-Defined in: [modules/reports/index.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L43)
+Defined in: [modules/reports/index.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L43)
 
 #### Parameters
 
@@ -53,7 +53,7 @@ Defined in: [modules/reports/index.ts:43](https://github.com/salacoste/daytona-w
 getIncomes(dateFrom: string, flag?: number): Promise<IncomesItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:96](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L96)
+Defined in: [modules/reports/index.ts:96](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L96)
 
 Get inbound shipment data from warehouses
 
@@ -133,7 +133,7 @@ while (true) {
 getStocks(dateFrom: string): Promise<StocksItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:152](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L152)
+Defined in: [modules/reports/index.ts:152](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L152)
 
 Get current stock levels across WB warehouses
 
@@ -208,7 +208,7 @@ console.log(`In Transit: ${totalInTransit}`);
 getOrders(dateFrom: string, flag?: number): Promise<OrdersItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L195)
+Defined in: [modules/reports/index.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L195)
 
 Get order information for all customer orders
 
@@ -273,7 +273,7 @@ console.log(`Canceled: ${canceledOrders.length} / ${orders.length}`);
 getSales(dateFrom: string, flag?: number): Promise<SalesItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L255)
+Defined in: [modules/reports/index.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L255)
 
 Get sales and returns data
 
@@ -353,7 +353,7 @@ getExciseReport(
 body?: ExciseReportRequest): Promise<ExciseReportResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L309)
+Defined in: [modules/reports/index.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L309)
 
 Get report on goods with mandatory labeling (excise goods)
 
@@ -426,7 +426,7 @@ console.log(`Operations tracked: ${report.response.data.length}`);
 createWarehouseRemainsReport(params: WarehouseRemainsParams): Promise<ReportTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L366)
+Defined in: [modules/reports/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L366)
 
 Create async task to generate warehouse remains report
 
@@ -499,7 +499,7 @@ console.log(`Task created: ${task.data.taskId}`);
 checkReportStatus(taskId: string, reportType: ReportType): Promise<ReportsReportStatus>;
 ```
 
-Defined in: [modules/reports/index.ts:417](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L417)
+Defined in: [modules/reports/index.ts:417](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L417)
 
 Check async report generation status
 
@@ -569,7 +569,7 @@ do {
 downloadReport(taskId: string, reportType: ReportType): Promise<Blob>;
 ```
 
-Defined in: [modules/reports/index.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L471)
+Defined in: [modules/reports/index.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L471)
 
 Download completed async report
 
@@ -633,7 +633,7 @@ console.log('Report downloaded: warehouse_remains.xlsx');
 getGoodsLabelingReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:515](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L515)
+Defined in: [modules/reports/index.ts:515](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L515)
 
 Get report on goods with mandatory labeling requirements
 
@@ -682,7 +682,7 @@ console.log(`Products requiring labeling: ${labelingReport.length}`);
 getCharacteristicsChangeReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L543)
+Defined in: [modules/reports/index.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L543)
 
 Get report on product characteristics changes
 
@@ -731,7 +731,7 @@ console.log(`Characteristics changes: ${changes.length}`);
 getAntifraudDetailsReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:571](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L571)
+Defined in: [modules/reports/index.ts:571](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L571)
 
 Get antifraud system details report
 
@@ -780,7 +780,7 @@ console.log(`Antifraud records: ${antifraud.length}`);
 getIncorrectAttachmentsReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:599](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L599)
+Defined in: [modules/reports/index.ts:599](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L599)
 
 Get report on incorrect product attachments
 
@@ -829,7 +829,7 @@ console.log(`Products with incorrect attachments: ${incorrect.length}`);
 getWarehouseMeasurementsReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:629](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L629)
+Defined in: [modules/reports/index.ts:629](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L629)
 
 Get warehouse measurements report
 
@@ -878,7 +878,7 @@ console.log(`Measurement records: ${measurements.length}`);
 requestAcceptanceReport(params?: Record<string, unknown>): Promise<ReportTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:665](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L665)
+Defined in: [modules/reports/index.ts:665](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L665)
 
 Create async task to generate acceptance report
 
@@ -936,7 +936,7 @@ console.log(`Task created: ${task.data.taskId}`);
 getAcceptanceReportStatus(taskId: string): Promise<ReportsReportStatus>;
 ```
 
-Defined in: [modules/reports/index.ts:695](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L695)
+Defined in: [modules/reports/index.ts:695](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L695)
 
 Check acceptance report generation status
 
@@ -987,7 +987,7 @@ console.log(`Status: ${status.data.status}`);
 downloadAcceptanceReport(taskId: string): Promise<Blob>;
 ```
 
-Defined in: [modules/reports/index.ts:722](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L722)
+Defined in: [modules/reports/index.ts:722](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L722)
 
 Download completed acceptance report
 
@@ -1038,7 +1038,7 @@ const reportBlob = await sdk.reports.downloadAcceptanceReport(taskId);
 requestPaidStorageReport(params?: Record<string, unknown>): Promise<ReportTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:755](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L755)
+Defined in: [modules/reports/index.ts:755](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L755)
 
 Create async task to generate paid storage report
 
@@ -1096,7 +1096,7 @@ console.log(`Task created: ${task.data.taskId}`);
 getPaidStorageReportStatus(taskId: string): Promise<ReportsReportStatus>;
 ```
 
-Defined in: [modules/reports/index.ts:785](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L785)
+Defined in: [modules/reports/index.ts:785](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L785)
 
 Check paid storage report generation status
 
@@ -1147,7 +1147,7 @@ console.log(`Status: ${status.data.status}`);
 downloadPaidStorageReport(taskId: string): Promise<Blob>;
 ```
 
-Defined in: [modules/reports/index.ts:812](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L812)
+Defined in: [modules/reports/index.ts:812](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L812)
 
 Download completed paid storage report
 
@@ -1198,7 +1198,7 @@ const reportBlob = await sdk.reports.downloadPaidStorageReport(taskId);
 getRegionalSalesReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L841)
+Defined in: [modules/reports/index.ts:841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L841)
 
 Get sales by region report
 
@@ -1249,7 +1249,7 @@ regionalSales.forEach(region => {
 getBrandsForBrandShare(): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:867](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L867)
+Defined in: [modules/reports/index.ts:867](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L867)
 
 Get list of brands for brand share analysis
 
@@ -1292,7 +1292,7 @@ console.log(`Available brands: ${brands.length}`);
 getParentSubjectsForBrandShare(): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:893](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L893)
+Defined in: [modules/reports/index.ts:893](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L893)
 
 Get list of parent subjects (categories) for brand share analysis
 
@@ -1335,7 +1335,7 @@ console.log(`Available categories: ${categories.length}`);
 getBrandShareReport(params: Record<string, unknown>): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:925](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L925)
+Defined in: [modules/reports/index.ts:925](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L925)
 
 Get brand market share report
 
@@ -1391,7 +1391,7 @@ console.log(`Market share: ${shareReport.sharePercent}%`);
 getBlockedProductsReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:956](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L956)
+Defined in: [modules/reports/index.ts:956](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L956)
 
 Get blocked products report
 
@@ -1443,7 +1443,7 @@ blocked.forEach(product => {
 getShadowedProductsReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:984](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L984)
+Defined in: [modules/reports/index.ts:984](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L984)
 
 Get shadowed (hidden) products report
 
@@ -1492,7 +1492,7 @@ console.log(`Hidden products: ${shadowed.length}`);
 getGoodsReturnReport(params?: Record<string, unknown>): Promise<unknown[]>;
 ```
 
-Defined in: [modules/reports/index.ts:1014](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/modules/reports/index.ts#L1014)
+Defined in: [modules/reports/index.ts:1014](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/reports/index.ts#L1014)
 
 Get goods return and movement report
 

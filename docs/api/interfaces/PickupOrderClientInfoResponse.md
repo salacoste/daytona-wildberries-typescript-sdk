@@ -2,7 +2,7 @@
 
 # Interface: PickupOrderClientInfoResponse
 
-Defined in: [types/in-store-pickup.types.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/in-store-pickup.types.ts#L165)
+Defined in: [types/in-store-pickup.types.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/in-store-pickup.types.ts#L165)
 
 Response with customer information
 
@@ -10,4 +10,4 @@ Response with customer information
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | [`PickupOrderClientInfo`](PickupOrderClientInfo.md)[] | Array of customer information | [types/in-store-pickup.types.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/in-store-pickup.types.ts#L167) |
+| <a id="orders"></a> `orders` | [`PickupOrderClientInfo`](PickupOrderClientInfo.md)[] | Array of customer information | [types/in-store-pickup.types.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/in-store-pickup.types.ts#L167) |

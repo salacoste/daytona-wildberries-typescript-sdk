@@ -6,7 +6,7 @@
 type TransactionDetailResponse = Transaction;
 ```
 
-Defined in: [types/finances.types.ts:173](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/finances.types.ts#L173)
+Defined in: [types/finances.types.ts:173](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/finances.types.ts#L173)
 
 Single transaction detail response
 Returns complete details for a specific transaction

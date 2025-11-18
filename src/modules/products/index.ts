@@ -6,7 +6,7 @@
 
 import { BaseClient } from '../../client/base-client';
 import { ValidationError } from '../../errors/validation-error';
-import type { Office, RequestMoveNmsImtConn, RequestMoveNmsImtDisconn, RequestPublicViewerPublicErrorsTableListV2, ResponseCardCreate, ResponseContentError, ResponsePublicViewerPublicErrorsTableListV2, StoreContactRequestBody, Warehouse, CreateProductRequest, CreateProductResponse, ProductListRequest, ProductListResponse, UpdateProductRequest, UpdateProductResponse, DeleteProductResponse, ProductCard, MediaUploadResponse, PricingUpdate, PricingTaskResponse, PricingInfo, GetPricingResponse, PricingTaskStatusResponse, StockUpdate, StockInfo } from '../../types/products.types';
+import type { Office, RequestMoveNmsImtConn, RequestMoveNmsImtDisconn, RequestPublicViewerPublicErrorsTableListV2, ResponseCardCreate, ResponseContentError, ResponsePublicViewerPublicErrorsTableListV2, StoreContactRequestBody, Warehouse, CreateProductRequest, CreateProductResponse, ProductListRequest, ProductListResponse, ProductListCursor, UpdateProductRequest, UpdateProductResponse, DeleteProductResponse, ProductCard, MediaUploadResponse, PricingUpdate, PricingTaskResponse, PricingInfo, GetPricingResponse, PricingTaskStatusResponse, StockUpdate, StockInfo } from '../../types/products.types';
 
 export class ProductsModule {
   constructor(private client: BaseClient) {}
@@ -998,10 +998,12 @@ export class ProductsModule {
    * - Excludes products in trash (use createCardsTrash to get those)
    * - Cursor-based pagination for >100 products
    * - Max 100 products per page
+   * - **When called without parameters, returns only the first page (up to 100 products)**
+   * - For large catalogs (>100 products), use `getAllProducts()` helper method or implement pagination manually
    *
    * **Rate Limit:** 100 requests/min, 600ms interval
    *
-   * @param filters - Optional filtering and pagination parameters
+   * @param filters - Optional filtering and pagination parameters. If omitted, returns first page only (up to 100 products).
    * @returns Promise with product cards array and pagination cursor
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429) - automatically retried
@@ -1010,6 +1012,11 @@ export class ProductsModule {
    *
    * @example
    * ```typescript
+   * // Get first page (up to 100 products) - WARNING: For large catalogs, use getAllProducts()
+   * const firstPage = await sdk.products.listProducts();
+   * console.log(`First page: ${firstPage.cards?.length} products`);
+   * console.log(`Total available: ${firstPage.cursor?.total ?? 'unknown'}`);
+   *
    * // Get first page of products with photos
    * const page1 = await sdk.products.listProducts({
    *   filter: {
@@ -1046,11 +1053,129 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov}
    */
   async listProducts(filters?: ProductListRequest): Promise<ProductListResponse> {
+    // Ensure settings object is always sent, even when filters is undefined
+    // API requires settings object in request body
     return this.client.post<ProductListResponse>(
       'https://content-api.wildberries.ru/content/v2/get/cards/list',
-      { settings: filters },
+      { settings: filters || {} },
       { rateLimitKey: 'products.postContentGetCardsList' }
     );
+  }
+
+  /**
+   * Get all product cards with automatic pagination
+   *
+   * Automatically handles cursor-based pagination to retrieve all products,
+   * even for large catalogs (>100 products). This method makes multiple API
+   * calls as needed to fetch all pages.
+   *
+   * **Important Notes:**
+   * - Automatically paginates through all pages
+   * - Respects rate limits (100 req/min, 600ms interval)
+   * - For very large catalogs (10,000+ products), this may take several minutes
+   * - Consider using `listProducts()` with manual pagination for better control
+   * - Excludes products in trash (use createCardsTrash to get those)
+   *
+   * **Rate Limit:** 100 requests/min, 600ms interval (automatically handled)
+   *
+   * @param filters - Optional filtering parameters (pagination handled automatically)
+   * @param options - Optional configuration
+   * @param options.maxProducts - Maximum number of products to fetch (default: unlimited). Use to limit large catalogs.
+   * @returns Promise with all product cards array
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429) - automatically retried
+   * @throws {ValidationError} When filter parameters invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   *
+   * @example
+   * ```typescript
+   * // Get all products (automatically paginates)
+   * const allProducts = await sdk.products.getAllProducts();
+   * console.log(`Total products: ${allProducts.length}`);
+   *
+   * // Get all products with filters
+   * const productsWithPhotos = await sdk.products.getAllProducts({
+   *   filter: { withPhoto: 1 }
+   * });
+   * console.log(`Products with photos: ${productsWithPhotos.length}`);
+   *
+   * // Limit to first 500 products (useful for large catalogs)
+   * const limitedProducts = await sdk.products.getAllProducts(
+   *   { filter: { brands: ['My Brand'] } },
+   *   { maxProducts: 500 }
+   * );
+   * ```
+   *
+   * @see {@link listProducts} For manual pagination control
+   */
+  async getAllProducts(
+    filters?: Omit<ProductListRequest, 'cursor'>,
+    options?: { maxProducts?: number }
+  ): Promise<ProductCard[]> {
+    const allCards: ProductCard[] = [];
+    const maxProducts = options?.maxProducts;
+    let cursor: ProductListCursor | undefined = { limit: 100 };
+    let pageCount = 0;
+
+    // Build base request (without cursor, we'll add it per page)
+    const baseRequest: ProductListRequest = {
+      ...filters,
+      cursor,
+    };
+
+    while (true) {
+      // Check if we've reached the limit
+      if (maxProducts !== undefined && allCards.length >= maxProducts) {
+        break;
+      }
+
+      // Make request with current cursor
+      const response = await this.listProducts(baseRequest);
+
+      // Add cards from this page
+      if (response.cards && response.cards.length > 0) {
+        allCards.push(...response.cards);
+
+        // Check if we've reached the limit after adding this page
+        if (maxProducts !== undefined && allCards.length >= maxProducts) {
+          // Trim to exact limit
+          allCards.splice(maxProducts);
+          break;
+        }
+      }
+
+      // Check if there are more pages
+      const total = response.cursor?.total ?? 0;
+      const hasMore =
+        response.cursor?.updatedAt &&
+        response.cursor?.nmID &&
+        allCards.length < total;
+
+      if (!hasMore) {
+        // No more pages or we've got everything
+        break;
+      }
+
+      // Update cursor for next page
+      cursor = {
+        limit: 100,
+        updatedAt: response.cursor!.updatedAt!,
+        nmID: response.cursor!.nmID!,
+      };
+      baseRequest.cursor = cursor;
+
+      pageCount++;
+
+      // Safety check: prevent infinite loops
+      if (pageCount > 1000) {
+        // This would be 100,000+ products, something is wrong
+        throw new Error(
+          'Pagination exceeded 1000 pages. Possible infinite loop or API issue.'
+        );
+      }
+    }
+
+    return allCards;
   }
 
   /**

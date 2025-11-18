@@ -2,7 +2,7 @@
 
 # Interface: UpdateStockRequest
 
-Defined in: [types/products.types.ts:1386](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1386)
+Defined in: [types/products.types.ts:1386](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1386)
 
 Request to update stock quantities (bulk operation)
 
@@ -34,4 +34,4 @@ const request: UpdateStockRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stocks"></a> `stocks` | [`StockUpdate`](StockUpdate.md)[] | Array of stock updates (1-1000 items) | [types/products.types.ts:1388](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e489d60aa973819253de599d3b809e1bb914db5/src/types/products.types.ts#L1388) |
+| <a id="stocks"></a> `stocks` | [`StockUpdate`](StockUpdate.md)[] | Array of stock updates (1-1000 items) | [types/products.types.ts:1388](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1388) |

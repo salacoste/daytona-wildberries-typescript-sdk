@@ -575,7 +575,183 @@ describe('ProductsModule', () => {
       const result = await productsModule.listProducts();
 
       // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v2/get/cards/list',
+        { settings: {} }, // Should send empty object, not undefined
+        { rateLimitKey: 'products.postContentGetCardsList' }
+      );
       expect(result.cards).toEqual([]);
+    });
+  });
+
+  describe('getAllProducts', () => {
+    it('should fetch all products with automatic pagination', async () => {
+      // Arrange: Simulate 250 products (3 pages: 100 + 100 + 50)
+      const page1 = {
+        cards: Array.from({ length: 100 }, (_, i) => ({
+          nmID: i + 1,
+          vendorCode: `VENDOR-${i + 1}`,
+        })),
+        cursor: {
+          total: 250,
+          updatedAt: '2025-01-01T01:00:00Z',
+          nmID: 100,
+        },
+      };
+
+      const page2 = {
+        cards: Array.from({ length: 100 }, (_, i) => ({
+          nmID: i + 101,
+          vendorCode: `VENDOR-${i + 101}`,
+        })),
+        cursor: {
+          total: 250,
+          updatedAt: '2025-01-01T02:00:00Z',
+          nmID: 200,
+        },
+      };
+
+      const page3 = {
+        cards: Array.from({ length: 50 }, (_, i) => ({
+          nmID: i + 201,
+          vendorCode: `VENDOR-${i + 201}`,
+        })),
+        cursor: {
+          total: 250,
+        },
+      };
+
+      mockClient.post
+        .mockResolvedValueOnce(page1)
+        .mockResolvedValueOnce(page2)
+        .mockResolvedValueOnce(page3);
+
+      // Act
+      const result = await productsModule.getAllProducts();
+
+      // Assert
+      expect(result).toHaveLength(250);
+      expect(result[0].nmID).toBe(1);
+      expect(result[99].nmID).toBe(100);
+      expect(result[100].nmID).toBe(101);
+      expect(result[249].nmID).toBe(250);
+      expect(mockClient.post).toHaveBeenCalledTimes(3);
+    });
+
+    it('should respect maxProducts limit', async () => {
+      // Arrange
+      const page1 = {
+        cards: Array.from({ length: 100 }, (_, i) => ({
+          nmID: i + 1,
+          vendorCode: `VENDOR-${i + 1}`,
+        })),
+        cursor: {
+          total: 1000,
+          updatedAt: '2025-01-01T01:00:00Z',
+          nmID: 100,
+        },
+      };
+
+      mockClient.post.mockResolvedValue(page1);
+
+      // Act: Limit to 50 products
+      const result = await productsModule.getAllProducts(undefined, {
+        maxProducts: 50,
+      });
+
+      // Assert
+      expect(result).toHaveLength(50);
+      expect(mockClient.post).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle single page results', async () => {
+      // Arrange
+      const singlePage = {
+        cards: Array.from({ length: 50 }, (_, i) => ({
+          nmID: i + 1,
+          vendorCode: `VENDOR-${i + 1}`,
+        })),
+        cursor: {
+          total: 50,
+        },
+      };
+
+      mockClient.post.mockResolvedValue(singlePage);
+
+      // Act
+      const result = await productsModule.getAllProducts();
+
+      // Assert
+      expect(result).toHaveLength(50);
+      expect(mockClient.post).toHaveBeenCalledTimes(1);
+    });
+
+    it('should apply filters correctly', async () => {
+      // Arrange
+      const filteredPage = {
+        cards: [{ nmID: 1, vendorCode: 'VENDOR-1' }],
+        cursor: { total: 1 },
+      };
+
+      mockClient.post.mockResolvedValue(filteredPage);
+
+      // Act
+      const result = await productsModule.getAllProducts({
+        filter: { withPhoto: 1 },
+      });
+
+      // Assert
+      expect(result).toHaveLength(1);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.any(String),
+        {
+          settings: {
+            filter: { withPhoto: 1 },
+            cursor: { limit: 100 },
+          },
+        },
+        expect.any(Object)
+      );
+    });
+
+    it('should stop when all products are fetched (even with large total)', async () => {
+      // Arrange: Simulate scenario where we get all products before reaching total
+      // This tests that pagination stops correctly when we've fetched everything
+      const page1 = {
+        cards: Array.from({ length: 100 }, (_, i) => ({
+          nmID: i + 1,
+          vendorCode: `VENDOR-${i + 1}`,
+        })),
+        cursor: {
+          total: 100, // Total matches what we'll get
+          updatedAt: '2025-01-01T01:00:00Z',
+          nmID: 100,
+        },
+      };
+
+      mockClient.post.mockResolvedValue(page1);
+
+      // Act
+      const result = await productsModule.getAllProducts();
+
+      // Assert: Should stop after first page since we got all products
+      expect(result).toHaveLength(100);
+      expect(mockClient.post).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return empty array when no products found', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue({
+        cards: [],
+        cursor: { total: 0 },
+      });
+
+      // Act
+      const result = await productsModule.getAllProducts();
+
+      // Assert
+      expect(result).toEqual([]);
+      expect(mockClient.post).toHaveBeenCalledTimes(1);
     });
   });
 
