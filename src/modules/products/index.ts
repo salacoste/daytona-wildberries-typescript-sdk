@@ -1057,7 +1057,7 @@ export class ProductsModule {
     // API requires settings object in request body
     return this.client.post<ProductListResponse>(
       'https://content-api.wildberries.ru/content/v2/get/cards/list',
-      { settings: filters || {} },
+      { settings: filters ?? {} },
       { rateLimitKey: 'products.postContentGetCardsList' }
     );
   }
@@ -1123,6 +1123,8 @@ export class ProductsModule {
       cursor,
     };
 
+    // Paginate through all pages
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
       // Check if we've reached the limit
       if (maxProducts !== undefined && allCards.length >= maxProducts) {
@@ -1146,9 +1148,10 @@ export class ProductsModule {
 
       // Check if there are more pages
       const total = response.cursor?.total ?? 0;
+      const cursorData = response.cursor;
       const hasMore =
-        response.cursor?.updatedAt &&
-        response.cursor?.nmID &&
+        Boolean(cursorData?.updatedAt) &&
+        Boolean(cursorData?.nmID) &&
         allCards.length < total;
 
       if (!hasMore) {
@@ -1157,12 +1160,18 @@ export class ProductsModule {
       }
 
       // Update cursor for next page
-      cursor = {
-        limit: 100,
-        updatedAt: response.cursor!.updatedAt!,
-        nmID: response.cursor!.nmID!,
-      };
-      baseRequest.cursor = cursor;
+      // We know cursorData exists and has updatedAt/nmID from hasMore check above
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (cursorData?.updatedAt && cursorData?.nmID) {
+        cursor = {
+          limit: 100,
+          updatedAt: cursorData.updatedAt,
+          nmID: cursorData.nmID,
+        };
+        baseRequest.cursor = cursor;
+      } else {
+        break;
+      }
 
       pageCount++;
 
