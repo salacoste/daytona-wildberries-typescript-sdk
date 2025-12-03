@@ -2,7 +2,7 @@
 
 # Interface: IMEIRequest
 
-Defined in: [types/in-store-pickup.types.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/in-store-pickup.types.ts#L232)
+Defined in: [types/in-store-pickup.types.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/in-store-pickup.types.ts#L232)
 
 Request to set IMEI code
 
@@ -10,4 +10,4 @@ Request to set IMEI code
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="imei"></a> `imei` | `string` | IMEI code | [types/in-store-pickup.types.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/in-store-pickup.types.ts#L234) |
+| <a id="imei"></a> `imei` | `string` | IMEI code | [types/in-store-pickup.types.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/in-store-pickup.types.ts#L234) |

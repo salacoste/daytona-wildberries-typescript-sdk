@@ -392,7 +392,9 @@ describe('PromotionModule', () => {
   });
 
   describe('Configuration and Bid Operations', () => {
-    describe('getAdvConfig() - Configuration values', () => {
+    // Testing deprecated method - eslint warnings expected
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    describe('getAdvConfig() - Configuration values (deprecated)', () => {
       const mockConfigResponse = {
         categories: [
           { id: 1, name: 'Electronics', minBid: 50 }
@@ -407,6 +409,7 @@ describe('PromotionModule', () => {
         mockClient.get.mockResolvedValue(mockConfigResponse);
 
         // Act
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await promotionModule.getAdvConfig();
 
         // Assert
@@ -420,6 +423,7 @@ describe('PromotionModule', () => {
         mockClient.get.mockResolvedValue(mockConfigResponse);
 
         // Act
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const result = await promotionModule.getAdvConfig();
 
         // Assert
@@ -582,10 +586,12 @@ describe('PromotionModule', () => {
       mockClient.get.mockRejectedValue(rateLimitError);
 
       // Act & Assert
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       await expect(promotionModule.getAdvConfig())
         .rejects
         .toThrow(RateLimitError);
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const error = await promotionModule.getAdvConfig().catch((e: unknown) => e);
       if (error instanceof RateLimitError) {
         expect(error.retryAfter).toBe(200);

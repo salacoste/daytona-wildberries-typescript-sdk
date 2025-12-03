@@ -20,6 +20,9 @@ import { AuthenticationError } from '../../src/errors/auth-error';
 import { RateLimitError } from '../../src/errors/rate-limit-error';
 import { NetworkError } from '../../src/errors/network-error';
 
+// Test date constant for all tariff method calls
+const TEST_DATE = '2024-01-15';
+
 /**
  * MSW handlers for Tariffs API endpoints
  * These intercept HTTP requests at the network level and return mocked responses
@@ -211,7 +214,7 @@ describe('TariffsModule Integration Tests', () => {
   describe('Storage Tariff Operations', () => {
     it('should successfully get box storage tariffs', async () => {
       // Act
-      const result = await tariffsModule.getTariffsBox();
+      const result = await tariffsModule.getTariffsBox(TEST_DATE);
 
       // Assert
       expect(result).toBeDefined();
@@ -222,7 +225,7 @@ describe('TariffsModule Integration Tests', () => {
 
     it('should return correctly structured box tariff data', async () => {
       // Act
-      const result = await tariffsModule.getTariffsBox();
+      const result = await tariffsModule.getTariffsBox(TEST_DATE);
 
       // Assert
       expect(result.response?.data?.warehouseList).toBeDefined();
@@ -231,7 +234,7 @@ describe('TariffsModule Integration Tests', () => {
 
     it('should successfully get pallet storage tariffs', async () => {
       // Act
-      const result = await tariffsModule.getTariffsPallet();
+      const result = await tariffsModule.getTariffsPallet(TEST_DATE);
 
       // Assert
       expect(result).toBeDefined();
@@ -241,7 +244,7 @@ describe('TariffsModule Integration Tests', () => {
 
     it('should handle pallet tariffs for multiple warehouses', async () => {
       // Act
-      const result = await tariffsModule.getTariffsPallet();
+      const result = await tariffsModule.getTariffsPallet(TEST_DATE);
 
       // Assert
       expect(result.response?.data?.warehouseList).toHaveLength(3);
@@ -251,7 +254,7 @@ describe('TariffsModule Integration Tests', () => {
   describe('Return Tariff Operations', () => {
     it('should successfully get return handling tariffs', async () => {
       // Act
-      const result = await tariffsModule.getTariffsReturn();
+      const result = await tariffsModule.getTariffsReturn(TEST_DATE);
 
       // Assert
       expect(result).toBeDefined();
@@ -262,7 +265,7 @@ describe('TariffsModule Integration Tests', () => {
 
     it('should return correctly structured return tariff data', async () => {
       // Act
-      const result = await tariffsModule.getTariffsReturn();
+      const result = await tariffsModule.getTariffsReturn(TEST_DATE);
 
       // Assert
       expect(result.response?.data?.warehouseList).toBeDefined();
@@ -323,7 +326,7 @@ describe('TariffsModule Integration Tests', () => {
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsBox())
+      await expect(tariffsModule.getTariffsBox(TEST_DATE))
         .rejects
         .toThrow(RateLimitError);
     });
@@ -340,7 +343,7 @@ describe('TariffsModule Integration Tests', () => {
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsPallet())
+      await expect(tariffsModule.getTariffsPallet(TEST_DATE))
         .rejects
         .toThrow(NetworkError);
     });
@@ -354,7 +357,7 @@ describe('TariffsModule Integration Tests', () => {
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsReturn())
+      await expect(tariffsModule.getTariffsReturn(TEST_DATE))
         .rejects
         .toThrow(NetworkError);
     });
@@ -364,9 +367,9 @@ describe('TariffsModule Integration Tests', () => {
     it('should maintain type safety through entire request flow', async () => {
       // Act
       const commissionResult = await tariffsModule.getTariffsCommission();
-      const boxResult = await tariffsModule.getTariffsBox();
-      const palletResult = await tariffsModule.getTariffsPallet();
-      const returnResult = await tariffsModule.getTariffsReturn();
+      const boxResult = await tariffsModule.getTariffsBox(TEST_DATE);
+      const palletResult = await tariffsModule.getTariffsPallet(TEST_DATE);
+      const returnResult = await tariffsModule.getTariffsReturn(TEST_DATE);
 
       // Assert - TypeScript ensures correct types
       expect(Array.isArray(commissionResult.report)).toBe(true);
@@ -377,7 +380,7 @@ describe('TariffsModule Integration Tests', () => {
 
     it('should correctly handle date string types', async () => {
       // Act
-      const boxResult = await tariffsModule.getTariffsBox();
+      const boxResult = await tariffsModule.getTariffsBox(TEST_DATE);
 
       // Assert
       expect(typeof boxResult.response?.data?.dtNextBox).toBe('string');
@@ -392,11 +395,11 @@ describe('TariffsModule Integration Tests', () => {
       expect(commissions.report).toBeDefined();
 
       // 2. Get storage costs for boxes
-      const boxTariffs = await tariffsModule.getTariffsBox();
+      const boxTariffs = await tariffsModule.getTariffsBox(TEST_DATE);
       expect(boxTariffs.response?.data?.warehouseList).toBeDefined();
 
       // 3. Get return costs
-      const returnTariffs = await tariffsModule.getTariffsReturn();
+      const returnTariffs = await tariffsModule.getTariffsReturn(TEST_DATE);
       expect(returnTariffs.response?.data?.warehouseList).toBeDefined();
 
       // 4. Verify all data is available for cost calculations
@@ -407,8 +410,8 @@ describe('TariffsModule Integration Tests', () => {
 
     it('should handle warehouse comparison workflow', async () => {
       // Get all storage tariffs for comparison
-      const boxTariffs = await tariffsModule.getTariffsBox();
-      const palletTariffs = await tariffsModule.getTariffsPallet();
+      const boxTariffs = await tariffsModule.getTariffsBox(TEST_DATE);
+      const palletTariffs = await tariffsModule.getTariffsPallet(TEST_DATE);
 
       // Verify we can compare costs across warehouses
       expect(boxTariffs.response?.data?.warehouseList).toHaveLength(2);
@@ -418,9 +421,9 @@ describe('TariffsModule Integration Tests', () => {
     it('should handle multiple tariff queries in sequence', async () => {
       // Simulate checking all tariff types for business planning
       const commission = await tariffsModule.getTariffsCommission();
-      const box = await tariffsModule.getTariffsBox();
-      const pallet = await tariffsModule.getTariffsPallet();
-      const returnTariff = await tariffsModule.getTariffsReturn();
+      const box = await tariffsModule.getTariffsBox(TEST_DATE);
+      const pallet = await tariffsModule.getTariffsPallet(TEST_DATE);
+      const returnTariff = await tariffsModule.getTariffsReturn(TEST_DATE);
 
       // Verify all queries succeeded
       expect(commission.report).toBeDefined();
@@ -434,9 +437,9 @@ describe('TariffsModule Integration Tests', () => {
     it('should only use GET requests for all endpoints', async () => {
       // Act - Call all module methods
       await tariffsModule.getTariffsCommission();
-      await tariffsModule.getTariffsBox();
-      await tariffsModule.getTariffsPallet();
-      await tariffsModule.getTariffsReturn();
+      await tariffsModule.getTariffsBox(TEST_DATE);
+      await tariffsModule.getTariffsPallet(TEST_DATE);
+      await tariffsModule.getTariffsReturn(TEST_DATE);
 
       // Assert - All requests should be GET (verified by MSW handlers)
       // If any POST/PUT/PATCH/DELETE was used, MSW would error

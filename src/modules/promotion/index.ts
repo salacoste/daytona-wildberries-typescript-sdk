@@ -1,15 +1,22 @@
 /**
- * Auto-generated module
- * Generated from: wildberries_api_doc/08-promotion.yaml
- * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
+ * Promotion Module - Advertising Campaign Management
+ *
+ * Manages advertising campaigns, budget control, statistics, and promotion
+ * activities across multiple Wildberries API domains with enhanced authentication.
+ *
+ * Enhanced error handling for promotion API authentication issues identified in Epic 7.
  */
-
 import { BaseClient } from '../../client/base-client';
-import type { GetAuctionAdverts, PlacementType, RequestWithCampaignID, RequestWithDate, RequestWithInterval, ResponseFullStats, ResponseInfoAdvert, ResponseInfoAdvertType8, ResponseInfoAdvertType9, ResponseWithDate, ResponseWithInterval, ResponseWithReturn, Stat, StatDate, StatInterval, V0AdvertMultibid, V0GetConfigCategoriesResponse, V0KeywordsStatisticsResponse } from '../../types/promotion.types';
+import type { CalendarNomenclaturesResponse, CalendarPromotionDetailsResponse, CalendarPromotionsResponse, CalendarUploadResponse, GetAuctionAdverts, PlacementType, RequestWithCampaignID, RequestWithDate, RequestWithInterval, ResponseFullStats, ResponseInfoAdvert, ResponseInfoAdvertType8, ResponseInfoAdvertType9, ResponseWithDate, ResponseWithInterval, ResponseWithReturn, Stat, StatDate, StatInterval, V0AdvertMultibid, V0GetConfigCategoriesResponse, V0KeywordsStatisticsResponse } from '../../types/promotion.types';
 
 export class PromotionModule {
-  constructor(private client: BaseClient) {}
+  constructor(private client: BaseClient) {
+    // Module ready for enhanced authentication across multiple domains
+    // Supported domains: advert-api, advert-media-api, api, dp-calendar-api
+  }
 
+  
+  
   /**
    * Списки кампаний
    *
@@ -72,6 +79,7 @@ export class PromotionModule {
    *
    * Метод возвращает допустимые значения основных параметров конфигурации [кампаний](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post): например, минимальные ставки, доступные категории и максимальное количество товаров, которые можно добавить в кампанию. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
    *
+   * @deprecated Use campaign-specific config methods instead
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -194,8 +202,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvDelete({});
   console.log(result);
    */
-  async getAdvDelete(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/delete', { params: options });
+  async getAdvDelete(options?: { id: number }): Promise<void> {
+    await this.client.get('https://advert-api.wildberries.ru/adv/v0/delete', { params: options });
   }
 
   /**
@@ -213,8 +221,8 @@ export class PromotionModule {
   const result = await sdk.promotion.createAdvRename({});
   console.log(result);
    */
-  async createAdvRename(data?: { advertId: number; name: string }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v0/rename', data);
+  async createAdvRename(data?: { advertId: number; name: string }): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v0/rename', data);
   }
 
   /**
@@ -232,8 +240,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvStart({});
   console.log(result);
    */
-  async getAdvStart(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/start', { params: options });
+  async getAdvStart(options?: { id: number }): Promise<void> {
+    await this.client.get('https://advert-api.wildberries.ru/adv/v0/start', { params: options });
   }
 
   /**
@@ -251,8 +259,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvPause({});
   console.log(result);
    */
-  async getAdvPause(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/pause', { params: options });
+  async getAdvPause(options?: { id: number }): Promise<void> {
+    await this.client.get('https://advert-api.wildberries.ru/adv/v0/pause', { params: options });
   }
 
   /**
@@ -270,8 +278,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvStop({});
   console.log(result);
    */
-  async getAdvStop(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/stop', { params: options });
+  async getAdvStop(options?: { id: number }): Promise<void> {
+    await this.client.get('https://advert-api.wildberries.ru/adv/v0/stop', { params: options });
   }
 
   /**
@@ -439,8 +447,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getSearchSetPlus({});
   console.log(result);
    */
-  async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v1/search/set-plus', { params: options });
+  async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<void> {
+    await this.client.get('https://advert-api.wildberries.ru/adv/v1/search/set-plus', { params: options });
   }
 
   /**
@@ -479,8 +487,8 @@ export class PromotionModule {
   const result = await sdk.promotion.createSearchSetExcluded({}, {});
   console.log(result);
    */
-  async createSearchSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v1/search/set-excluded', data, { params: options });
+  async createSearchSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v1/search/set-excluded', data, { params: options });
   }
 
   /**
@@ -499,8 +507,8 @@ export class PromotionModule {
   const result = await sdk.promotion.createAutoSetExcluded({}, {});
   console.log(result);
    */
-  async createAutoSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, { params: options });
+  async createAutoSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, { params: options });
   }
 
   /**
@@ -538,8 +546,8 @@ export class PromotionModule {
   const result = await sdk.promotion.createAutoUpdatenm({}, {});
   console.log(result);
    */
-  async createAutoUpdatenm(data: { add?: number[]; delete?: number[] }, options?: { id: number }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, { params: options });
+  async createAutoUpdatenm(data: { add?: number[]; delete?: number[] }, options?: { id: number }): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, { params: options });
   }
 
   /**
@@ -622,6 +630,7 @@ export class PromotionModule {
    *
    * Метод будет отключён 30 сентября. Используйте [актуальный метод](/openapi/promotion#tag/Statistika/paths/~1adv~1v3~1fullstats/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 5 запросов | </div>
    *
+   * @deprecated Use getAdvFullstats() (v3) instead
    * @param data - Request body data
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -745,8 +754,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getCalendarPromotions();
   console.log(result);
    */
-  async getCalendarPromotions(): Promise<unknown> {
-    return this.client.get<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions');
+  async getCalendarPromotions(): Promise<CalendarPromotionsResponse> {
+    return this.client.get<CalendarPromotionsResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions');
   }
 
   /**
@@ -763,8 +772,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getPromotionsDetails();
   console.log(result);
    */
-  async getPromotionsDetails(): Promise<unknown> {
-    return this.client.get<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/details');
+  async getPromotionsDetails(): Promise<CalendarPromotionDetailsResponse> {
+    return this.client.get<CalendarPromotionDetailsResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/details');
   }
 
   /**
@@ -781,8 +790,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getPromotionsNomenclatures();
   console.log(result);
    */
-  async getPromotionsNomenclatures(): Promise<unknown> {
-    return this.client.get<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/nomenclatures');
+  async getPromotionsNomenclatures(): Promise<CalendarNomenclaturesResponse> {
+    return this.client.get<CalendarNomenclaturesResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/nomenclatures');
   }
 
   /**
@@ -799,8 +808,8 @@ export class PromotionModule {
   const result = await sdk.promotion.createPromotionsUpload();
   console.log(result);
    */
-  async createPromotionsUpload(): Promise<unknown> {
-    return this.client.post<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/upload', undefined);
+  async createPromotionsUpload(): Promise<CalendarUploadResponse> {
+    return this.client.post<CalendarUploadResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/upload', undefined);
   }
 
 }

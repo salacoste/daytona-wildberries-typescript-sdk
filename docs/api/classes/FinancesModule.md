@@ -2,7 +2,7 @@
 
 # Class: FinancesModule
 
-Defined in: [modules/finances/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L57)
+Defined in: [modules/finances/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L57)
 
 FinancesModule
 
@@ -37,7 +37,7 @@ const transactions = await sdk.finances.getTransactions({
 new FinancesModule(client: BaseClient): FinancesModule;
 ```
 
-Defined in: [modules/finances/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L58)
+Defined in: [modules/finances/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L58)
 
 #### Parameters
 
@@ -57,7 +57,7 @@ Defined in: [modules/finances/index.ts:58](https://github.com/salacoste/daytona-
 getBalance(): Promise<BalanceResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L80)
+Defined in: [modules/finances/index.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L80)
 
 Get current account balance
 
@@ -100,7 +100,7 @@ console.log(`Available to withdraw: ${balance.for_withdraw} ${balance.currency}`
 getTransactions(filters: TransactionFilters): Promise<TransactionListResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L139)
+Defined in: [modules/finances/index.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L139)
 
 Get sales report details by period
 
@@ -186,7 +186,7 @@ getTransactionById(transactionId: number, dateRange: {
 }): Promise<Transaction>;
 ```
 
-Defined in: [modules/finances/index.ts:183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L183)
+Defined in: [modules/finances/index.ts:183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L183)
 
 Get single transaction details by ID
 
@@ -242,7 +242,7 @@ console.log(`Amount: ${transaction.ppvz_for_pay} ${transaction.currency_name}`);
 getDocumentCategories(locale: "ru" | "en" | "zh"): Promise<DocumentCategoriesResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L234)
+Defined in: [modules/finances/index.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L234)
 
 Get document categories
 
@@ -291,7 +291,7 @@ categories.data.categories.forEach(cat => {
 getDocuments(filters?: DocumentListFilters): Promise<DocumentsListResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L273)
+Defined in: [modules/finances/index.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L273)
 
 Get list of documents
 
@@ -346,7 +346,7 @@ const recentDocs = await sdk.finances.getDocuments({
 downloadDocument(serviceName: string, extension: string): Promise<DocumentDownloadResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L311)
+Defined in: [modules/finances/index.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L311)
 
 Download a single document
 
@@ -408,7 +408,7 @@ downloadDocuments(documents: {
 }[]): Promise<DocumentsDownloadResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L358)
+Defined in: [modules/finances/index.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L358)
 
 Download multiple documents as archive
 
@@ -469,7 +469,7 @@ getFinancialReport(filters: {
 }): Promise<TransactionListResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:421](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L421)
+Defined in: [modules/finances/index.ts:421](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L421)
 
 Get financial report for specified date range
 
@@ -537,7 +537,7 @@ generateReport(
 format: ReportFormat): Promise<GenerateReportResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:478](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L478)
+Defined in: [modules/finances/index.ts:478](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L478)
 
 Generate financial report for specified period
 
@@ -609,7 +609,7 @@ do {
 getReport(reportId: string): Promise<Report>;
 ```
 
-Defined in: [modules/finances/index.ts:546](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L546)
+Defined in: [modules/finances/index.ts:546](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L546)
 
 Get report status and download URL
 
@@ -678,7 +678,7 @@ if (report.status === 'completed') {
 downloadReport(reportId: string): Promise<ReportDownloadResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:586](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L586)
+Defined in: [modules/finances/index.ts:586](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L586)
 
 Get download URL for completed report
 
@@ -736,7 +736,7 @@ try {
 getPayouts(filters?: PayoutFilters): Promise<PayoutListResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:664](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L664)
+Defined in: [modules/finances/index.ts:664](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L664)
 
 Get payout history with optional filtering
 
@@ -813,7 +813,7 @@ if (payouts.pagination?.hasMore) {
 getPayoutById(payoutId: string): Promise<PayoutDetailResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/finances/index.ts#L712)
+Defined in: [modules/finances/index.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/finances/index.ts#L712)
 
 Get single payout details with fee breakdown
 

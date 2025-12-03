@@ -169,13 +169,13 @@ describe('End-to-End API Flow', () => {
     it('should fetch news successfully', async () => {
       const sdk = new WildberriesSDK({ apiKey: 'test-key' });
 
-      const response = await sdk.general.news();
+      const response = await sdk.general.news({ from: '2025-01-01' });
 
       expect(response).toBeDefined();
       expect(response.data).toBeDefined();
       expect(Array.isArray(response.data)).toBe(true);
       expect(response.data).toHaveLength(1);
-      expect(response.data?.[0].header).toBe('Test News');
+      expect(response.data[0].header).toBe('Test News');
     });
 
     it('should pass query parameters correctly', async () => {

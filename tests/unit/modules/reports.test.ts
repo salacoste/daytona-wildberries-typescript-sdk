@@ -946,41 +946,46 @@ describe('ReportsModule', () => {
   // ==================== Compliance Reports Tests ====================
 
   describe('getGoodsLabelingReport()', () => {
-    it('should fetch goods labeling report', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
+
+    it('should fetch goods labeling report with required params', async () => {
       const mockData = [{ nmId: 123, labeled: true }];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getGoodsLabelingReport();
+      const result = await reports.getGoodsLabelingReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-labeling',
-        { params: undefined, rateLimitKey: 'reports.getGoodsLabelingReport' }
+        { params: validParams, rateLimitKey: 'reports.getGoodsLabelingReport' }
       );
       expect(result).toEqual(mockData);
     });
 
-    it('should fetch goods labeling report with params', async () => {
+    it('should fetch goods labeling report with additional params', async () => {
       vi.mocked(mockClient).get.mockResolvedValue([]);
+      const paramsWithFilter = { ...validParams, filter: 'test' };
 
-      await reports.getGoodsLabelingReport({ filter: 'test' });
+      await reports.getGoodsLabelingReport(paramsWithFilter);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         expect.any(String),
-        { params: { filter: 'test' }, rateLimitKey: 'reports.getGoodsLabelingReport' }
+        { params: paramsWithFilter, rateLimitKey: 'reports.getGoodsLabelingReport' }
       );
     });
   });
 
   describe('getCharacteristicsChangeReport()', () => {
-    it('should fetch characteristics change report', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
+
+    it('should fetch characteristics change report with required params', async () => {
       const mockData = [{ nmId: 123, changeType: 'update', date: '2024-01-01' }];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getCharacteristicsChangeReport();
+      const result = await reports.getCharacteristicsChangeReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/characteristics-change',
-        { params: undefined, rateLimitKey: 'reports.getCharacteristicsChangeReport' }
+        { params: validParams, rateLimitKey: 'reports.getCharacteristicsChangeReport' }
       );
       expect(result).toEqual(mockData);
     });
@@ -1002,15 +1007,17 @@ describe('ReportsModule', () => {
   });
 
   describe('getIncorrectAttachmentsReport()', () => {
-    it('should fetch incorrect attachments report', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
+
+    it('should fetch incorrect attachments report with required params', async () => {
       const mockData = [{ nmId: 123, issueType: 'missing_image' }];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getIncorrectAttachmentsReport();
+      const result = await reports.getIncorrectAttachmentsReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/incorrect-attachments',
-        { params: undefined, rateLimitKey: 'reports.getIncorrectAttachmentsReport' }
+        { params: validParams, rateLimitKey: 'reports.getIncorrectAttachmentsReport' }
       );
       expect(result).toEqual(mockData);
     });
@@ -1019,15 +1026,17 @@ describe('ReportsModule', () => {
   // ==================== Warehouse Operations Tests ====================
 
   describe('getWarehouseMeasurementsReport()', () => {
-    it('should fetch warehouse measurements report', async () => {
+    const validParams = { dateTo: '2024-01-31', tab: 'penalty' as const };
+
+    it('should fetch warehouse measurements report with required params', async () => {
       const mockData = [{ nmId: 123, volume: 100, weight: 500 }];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getWarehouseMeasurementsReport();
+      const result = await reports.getWarehouseMeasurementsReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/warehouse-measurements',
-        { params: undefined, rateLimitKey: 'reports.getWarehouseMeasurementsReport' }
+        { params: validParams, rateLimitKey: 'reports.getWarehouseMeasurementsReport' }
       );
       expect(result).toEqual(mockData);
     });
@@ -1036,17 +1045,19 @@ describe('ReportsModule', () => {
   // ==================== Acceptance Report Tests ====================
 
   describe('requestAcceptanceReport()', () => {
-    it('should create acceptance report task', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
+
+    it('should create acceptance report task with required params', async () => {
       const mockResponse: ReportTaskResponse = {
         data: { taskId: 'acceptance-task-123', status: 'new' },
       };
       vi.mocked(mockClient).get.mockResolvedValue(mockResponse);
 
-      const result = await reports.requestAcceptanceReport({});
+      const result = await reports.requestAcceptanceReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report',
-        { params: {}, rateLimitKey: 'reports.requestAcceptanceReport' }
+        { params: validParams, rateLimitKey: 'reports.requestAcceptanceReport' }
       );
       expect(result.data.taskId).toBe('acceptance-task-123');
     });
@@ -1063,7 +1074,7 @@ describe('ReportsModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/task-123/status',
-        { rateLimitKey: 'reports.checkReportStatus.acceptance' }
+        { rateLimitKey: 'reports.getAcceptanceReportStatus' }
       );
       expect(result.data.status).toBe('done');
     });
@@ -1079,7 +1090,7 @@ describe('ReportsModule', () => {
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/task-123/download',
         {
-          rateLimitKey: 'reports.downloadReport.acceptance',
+          rateLimitKey: 'reports.downloadAcceptanceReport',
           responseType: 'blob',
         }
       );
@@ -1090,17 +1101,19 @@ describe('ReportsModule', () => {
   // ==================== Paid Storage Report Tests ====================
 
   describe('requestPaidStorageReport()', () => {
-    it('should create paid storage report task', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-08' };
+
+    it('should create paid storage report task with required params', async () => {
       const mockResponse: ReportTaskResponse = {
         data: { taskId: 'storage-task-456', status: 'new' },
       };
       vi.mocked(mockClient).get.mockResolvedValue(mockResponse);
 
-      const result = await reports.requestPaidStorageReport({});
+      const result = await reports.requestPaidStorageReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/paid_storage',
-        { params: {}, rateLimitKey: 'reports.requestPaidStorageReport' }
+        { params: validParams, rateLimitKey: 'reports.requestPaidStorageReport' }
       );
       expect(result.data.taskId).toBe('storage-task-456');
     });
@@ -1117,7 +1130,7 @@ describe('ReportsModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/task-456/status',
-        { rateLimitKey: 'reports.checkReportStatus.paid_storage' }
+        { rateLimitKey: 'reports.getPaidStorageReportStatus' }
       );
       expect(result.data.status).toBe('processing');
     });
@@ -1133,7 +1146,7 @@ describe('ReportsModule', () => {
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/task-456/download',
         {
-          rateLimitKey: 'reports.downloadReport.paid_storage',
+          rateLimitKey: 'reports.downloadPaidStorageReport',
           responseType: 'blob',
         }
       );
@@ -1144,18 +1157,20 @@ describe('ReportsModule', () => {
   // ==================== Analytics Reports Tests ====================
 
   describe('getRegionalSalesReport()', () => {
-    it('should fetch regional sales report', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
+
+    it('should fetch regional sales report with required params', async () => {
       const mockData = [
         { region: 'Moscow', sales: 1000, revenue: 50000 },
         { region: 'St. Petersburg', sales: 500, revenue: 25000 },
       ];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getRegionalSalesReport();
+      const result = await reports.getRegionalSalesReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/region-sale',
-        { params: undefined, rateLimitKey: 'reports.getRegionalSalesReport' }
+        { params: validParams, rateLimitKey: 'reports.getRegionalSalesReport' }
       );
       expect(result).toEqual(mockData);
       expect(result).toHaveLength(2);
@@ -1199,7 +1214,14 @@ describe('ReportsModule', () => {
   });
 
   describe('getBrandShareReport()', () => {
-    it('should fetch brand share report', async () => {
+    const validParams = {
+      parentId: 123,
+      brand: 'TestBrand',
+      dateFrom: '2024-01-01',
+      dateTo: '2024-01-31',
+    };
+
+    it('should fetch brand share report with required params', async () => {
       const mockData = {
         brandName: 'TestBrand',
         marketShare: 15.5,
@@ -1207,15 +1229,12 @@ describe('ReportsModule', () => {
       };
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getBrandShareReport({
-        brandId: 123,
-        categoryId: 456,
-      });
+      const result = await reports.getBrandShareReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share',
         {
-          params: { brandId: 123, categoryId: 456 },
+          params: validParams,
           rateLimitKey: 'reports.getBrandShareReport',
         }
       );
@@ -1260,18 +1279,20 @@ describe('ReportsModule', () => {
   });
 
   describe('getGoodsReturnReport()', () => {
-    it('should fetch goods return report', async () => {
+    const validParams = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
+
+    it('should fetch goods return report with required params', async () => {
       const mockData = [
         { nmId: 123, returnReason: 'Size mismatch', date: '2024-01-01' },
         { nmId: 456, returnReason: 'Damaged', date: '2024-01-02' },
       ];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
-      const result = await reports.getGoodsReturnReport();
+      const result = await reports.getGoodsReturnReport(validParams);
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-return',
-        { params: undefined, rateLimitKey: 'reports.getGoodsReturnReport' }
+        { params: validParams, rateLimitKey: 'reports.getGoodsReturnReport' }
       );
       expect(result).toEqual(mockData);
       expect(result).toHaveLength(2);

@@ -750,4 +750,255 @@ describe('OrdersFBSModule', () => {
       expect(callArgs).toHaveProperty('rateLimitKey', 'ordersFBS.cancelOrder');
     });
   });
+
+  // ============================================================================
+  // Epic 7 - New Methods Tests (API Compliance) - READ/GET OPERATIONS ONLY
+  // ============================================================================
+
+  describe('getCrossBorderStickers()', () => {
+    const mockStickersResponse = {
+      stickers: [
+        { file: 'base64encodedpdf', orderId: 12345 },
+      ],
+    };
+
+    it('should call POST /api/v3/orders/stickers/cross-border', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockStickersResponse);
+
+      // Act
+      await ordersFBSModule.getCrossBorderStickers([12345, 67890]);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/v3/orders/stickers/cross-border',
+        { orders: [12345, 67890] },
+        { rateLimitKey: 'ordersFBS.getCrossBorderStickers' }
+      );
+    });
+
+    it('should return stickers array', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockStickersResponse);
+
+      // Act
+      const result = await ordersFBSModule.getCrossBorderStickers([12345]);
+
+      // Assert
+      expect(result.stickers).toBeDefined();
+      expect(result.stickers[0].orderId).toBe(12345);
+    });
+
+    it('should throw ValidationError for empty array', async () => {
+      // Act & Assert
+      await expect(ordersFBSModule.getCrossBorderStickers([]))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for array exceeding 100 items', async () => {
+      // Arrange
+      const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
+
+      // Act & Assert
+      await expect(ordersFBSModule.getCrossBorderStickers(orderIds))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  describe('getExternalStickersUrls() [DEPRECATED]', () => {
+    const mockUrlsResponse = {
+      stickers: [
+        { orderID: 12345, url: 'https://example.com/sticker', parcelID: 'WB0000000001' },
+      ],
+    };
+
+    it('should call POST /api/v3/files/orders/external-stickers (deprecated)', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockUrlsResponse);
+
+      // Act
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      await ordersFBSModule.getExternalStickersUrls([12345]);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/v3/files/orders/external-stickers',
+        { orders: [12345] },
+        { rateLimitKey: 'ordersFBS.getExternalStickersUrls' }
+      );
+    });
+
+    it('should throw ValidationError for empty array', async () => {
+      // Act & Assert
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      await expect(ordersFBSModule.getExternalStickersUrls([]))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for array exceeding 100 items', async () => {
+      // Arrange
+      const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
+
+      // Act & Assert
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      await expect(ordersFBSModule.getExternalStickersUrls(orderIds))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getOrdersStatusHistoryCrossBorder()', () => {
+    const mockHistoryResponse = {
+      orders: [
+        {
+          orderID: 12345,
+          deliveryDate: '2024-12-01T00:00:00Z',
+          statuses: [
+            { date: '2024-11-20T10:00:00Z', code: 'created' },
+          ],
+        },
+      ],
+    };
+
+    it('should call POST /api/v3/orders/status/history', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockHistoryResponse);
+
+      // Act
+      await ordersFBSModule.getOrdersStatusHistoryCrossBorder([12345]);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/v3/orders/status/history',
+        { orders: [12345] },
+        { rateLimitKey: 'ordersFBS.getOrdersStatusHistoryCrossBorder' }
+      );
+    });
+
+    it('should throw ValidationError for empty array', async () => {
+      // Act & Assert
+      await expect(ordersFBSModule.getOrdersStatusHistoryCrossBorder([]))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for array exceeding 100 items', async () => {
+      // Arrange
+      const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
+
+      // Act & Assert
+      await expect(ordersFBSModule.getOrdersStatusHistoryCrossBorder(orderIds))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getOrdersWithClientInfo()', () => {
+    const mockClientInfoResponse = {
+      orders: [
+        {
+          orderID: 12345,
+          clientName: 'Test Client',
+          phone: '+905551234567',
+          address: {
+            fullAddress: 'Istanbul, Turkey',
+            city: 'Istanbul',
+            district: 'Kadıköy',
+            street: 'Main St',
+            building: '1',
+            apartment: '1',
+            zipCode: '34700',
+          },
+        },
+      ],
+    };
+
+    it('should call POST /api/v3/orders/client (Turkey cross-border)', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockClientInfoResponse);
+
+      // Act
+      await ordersFBSModule.getOrdersWithClientInfo([12345]);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/v3/orders/client',
+        { orders: [12345] },
+        { rateLimitKey: 'ordersFBS.getOrdersWithClientInfo' }
+      );
+    });
+
+    it('should throw ValidationError for empty array', async () => {
+      // Act & Assert
+      await expect(ordersFBSModule.getOrdersWithClientInfo([]))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for array exceeding 100 items', async () => {
+      // Arrange
+      const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
+
+      // Act & Assert
+      await expect(ordersFBSModule.getOrdersWithClientInfo(orderIds))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getSupplyTrbxStickersPost()', () => {
+    const mockStickersResponse = {
+      stickers: [
+        { trbxId: 'WB-TRBX-1234567', file: 'base64encodedimage' },
+      ],
+    };
+
+    it('should call POST /api/v3/supplies/{supplyId}/trbx/stickers with type query', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockStickersResponse);
+
+      // Act
+      await ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', 'png', ['WB-TRBX-1234567']);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-1234567/trbx/stickers',
+        { trbxIds: ['WB-TRBX-1234567'] },
+        {
+          params: { type: 'png' },
+          rateLimitKey: 'ordersFBS.getSupplyTrbxStickersPost',
+        }
+      );
+    });
+
+    it('should accept valid sticker types: svg, png, zplv, zplh', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockStickersResponse);
+      const validTypes = ['svg', 'png', 'zplv', 'zplh'] as const;
+
+      // Act & Assert
+      for (const type of validTypes) {
+        await ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', type, ['WB-TRBX-1234567']);
+        expect(mockClient.post).toHaveBeenCalled();
+        mockClient.post.mockClear();
+      }
+    });
+
+    it('should throw ValidationError for empty supplyId', async () => {
+      // Act & Assert
+      await expect(ordersFBSModule.getSupplyTrbxStickersPost('', 'png', ['WB-TRBX-1234567']))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for empty trbxIds array', async () => {
+      // Act & Assert
+      await expect(ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', 'png', []))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for invalid type', async () => {
+      // Arrange
+      const invalidType = 'invalid' as 'svg' | 'png' | 'zplv' | 'zplh';
+
+      // Act & Assert
+      await expect(ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', invalidType, ['WB-TRBX-1234567']))
+        .rejects.toThrow(ValidationError);
+    });
+  });
 });

@@ -1191,4 +1191,399 @@ describe('CommunicationsModule', () => {
       });
     });
   });
+
+  // ============================================================================
+  // Task 8.5 - New Communications API Methods Tests
+  // ============================================================================
+
+  describe('Task 8.5 - New Feedbacks Questions', () => {
+    describe('getNewFeedbacksQuestions()', () => {
+      it('should call BaseClient.get with correct URL', async () => {
+        const mockResponse = {
+          data: {
+            hasNewQuestions: true,
+            hasNewFeedbacks: true,
+          },
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await communicationsModule.getNewFeedbacksQuestions();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/new-feedbacks-questions',
+          { rateLimitKey: 'communications.getNewFeedbacksQuestions' }
+        );
+      });
+
+      it('should return indicator flags for new feedbacks/questions', async () => {
+        const mockResponse = {
+          data: {
+            hasNewQuestions: false,
+            hasNewFeedbacks: true,
+          },
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getNewFeedbacksQuestions();
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+  });
+
+  describe('Task 8.5 - Feedbacks Count Methods', () => {
+    describe('getFeedbacksCountUnanswered()', () => {
+      it('should call BaseClient.get with correct URL', async () => {
+        const mockResponse = {
+          data: {
+            countUnanswered: 25,
+            countUnansweredToday: 5,
+            valuation: '4.7',
+          },
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getFeedbacksCountUnanswered();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count-unanswered',
+          { rateLimitKey: 'communications.getFeedbacksCountUnanswered' }
+        );
+        expect(result.data.countUnanswered).toBe(25);
+        expect(result.data.valuation).toBe('4.7');
+      });
+    });
+
+    describe('getFeedbacksCount()', () => {
+      it('should call BaseClient.get with query params', async () => {
+        const mockResponse = {
+          data: 724583,
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getFeedbacksCount({
+          dateFrom: 1688465092,
+          dateTo: 1699999999,
+          isAnswered: false,
+        });
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count',
+          {
+            params: {
+              dateFrom: '1688465092',
+              dateTo: '1699999999',
+              isAnswered: 'false',
+            },
+            rateLimitKey: 'communications.getFeedbacksCount',
+          }
+        );
+        expect(result.data).toBe(724583);
+      });
+
+      it('should call without params when none provided', async () => {
+        const mockResponse = { data: 100, error: false, errorText: '', additionalErrors: null };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await communicationsModule.getFeedbacksCount();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count',
+          { params: {}, rateLimitKey: 'communications.getFeedbacksCount' }
+        );
+      });
+    });
+  });
+
+  describe('Task 8.5 - Supplier Valuations', () => {
+    describe('getSupplierValuations()', () => {
+      it('should call BaseClient.get with locale header', async () => {
+        const mockResponse = {
+          data: {
+            feedbackValuations: { '1': 'Отзыв не относится к товару', '3': 'Спам' },
+            productValuations: { '1': 'Повредили при доставке' },
+          },
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getSupplierValuations('ru');
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/supplier-valuations',
+          {
+            headers: { 'X-Locale': 'ru' },
+            rateLimitKey: 'communications.getSupplierValuations',
+          }
+        );
+        expect(result.data.feedbackValuations['1']).toBe('Отзыв не относится к товару');
+      });
+
+      it('should call without locale header when not provided', async () => {
+        const mockResponse = { data: { feedbackValuations: {}, productValuations: {} }, error: false, errorText: '', additionalErrors: null };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await communicationsModule.getSupplierValuations();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/supplier-valuations',
+          { headers: {}, rateLimitKey: 'communications.getSupplierValuations' }
+        );
+      });
+    });
+  });
+
+  describe('Task 8.5 - Feedback Actions', () => {
+    describe('reportFeedbackAction()', () => {
+      it('should call BaseClient.post with complaint data', async () => {
+        mockClient.post.mockResolvedValue(undefined);
+
+        await communicationsModule.reportFeedbackAction({
+          id: 'J2FMRjUj6hwvwCElqssz',
+          supplierFeedbackValuation: 1,
+        });
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/actions',
+          { id: 'J2FMRjUj6hwvwCElqssz', supplierFeedbackValuation: 1 },
+          { rateLimitKey: 'communications.reportFeedbackAction' }
+        );
+      });
+
+      it('should throw ValidationError when feedback ID is empty', async () => {
+        await expect(
+          communicationsModule.reportFeedbackAction({ id: '' })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.reportFeedbackAction({ id: '   ' })
+        ).rejects.toThrow('Feedback ID is required');
+      });
+    });
+  });
+
+  describe('Task 8.5 - Archived Feedbacks', () => {
+    describe('getArchivedFeedbacks()', () => {
+      it('should call BaseClient.get with required params', async () => {
+        const mockResponse = {
+          data: { feedbacks: [] },
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await communicationsModule.getArchivedFeedbacks({
+          take: 100,
+          skip: 0,
+          order: 'dateDesc',
+        });
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/archive',
+          {
+            params: { take: '100', skip: '0', order: 'dateDesc' },
+            rateLimitKey: 'communications.getArchivedFeedbacks',
+          }
+        );
+      });
+
+      it('should throw ValidationError when take is less than 1', async () => {
+        await expect(
+          communicationsModule.getArchivedFeedbacks({ take: 0, skip: 0 })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.getArchivedFeedbacks({ take: 0, skip: 0 })
+        ).rejects.toThrow('take parameter must be positive');
+      });
+
+      it('should throw ValidationError when take exceeds 5000', async () => {
+        await expect(
+          communicationsModule.getArchivedFeedbacks({ take: 5001, skip: 0 })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.getArchivedFeedbacks({ take: 5001, skip: 0 })
+        ).rejects.toThrow('take cannot exceed 5000');
+      });
+
+      it('should throw ValidationError when skip is negative', async () => {
+        await expect(
+          communicationsModule.getArchivedFeedbacks({ take: 100, skip: -1 })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.getArchivedFeedbacks({ take: 100, skip: -1 })
+        ).rejects.toThrow('skip parameter cannot be negative');
+      });
+    });
+  });
+
+  describe('Task 8.5 - Chat File Download', () => {
+    describe('downloadChatFile()', () => {
+      it('should call BaseClient.get with file ID', async () => {
+        const mockBuffer = new ArrayBuffer(1024);
+        mockClient.get.mockResolvedValue(mockBuffer);
+
+        const result = await communicationsModule.downloadChatFile('file-123');
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://buyer-chat-api.wildberries.ru/api/v1/seller/download/file-123',
+          { rateLimitKey: 'communications.downloadChatFile', responseType: 'arraybuffer' }
+        );
+        expect(result).toBe(mockBuffer);
+      });
+
+      it('should throw ValidationError when file ID is empty', async () => {
+        await expect(
+          communicationsModule.downloadChatFile('')
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.downloadChatFile('   ')
+        ).rejects.toThrow('File ID is required');
+      });
+    });
+  });
+
+  describe('Task 8.5 - Customer Return Claims', () => {
+    describe('getClaims()', () => {
+      it('should call BaseClient.get with filters', async () => {
+        const mockResponse = {
+          claims: [{ id: 'claim-1', status: 0 }],
+          total: 1,
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await communicationsModule.getClaims({
+          nm_id: 196320101,
+          limit: 10,
+        });
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://returns-api.wildberries.ru/api/v1/claims',
+          {
+            params: { nm_id: '196320101', limit: '10' },
+            rateLimitKey: 'communications.getClaims',
+          }
+        );
+      });
+
+      it('should call without params when none provided', async () => {
+        const mockResponse = { claims: [], total: 0 };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await communicationsModule.getClaims();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://returns-api.wildberries.ru/api/v1/claims',
+          { params: {}, rateLimitKey: 'communications.getClaims' }
+        );
+      });
+    });
+
+    describe('respondToClaim()', () => {
+      it('should call BaseClient.patch with claim response', async () => {
+        mockClient.patch.mockResolvedValue(undefined);
+
+        await communicationsModule.respondToClaim({
+          id: 'fe3e9337-e9f9-423c-8930-946a8ebef80',
+          action: 'approve1',
+        });
+
+        expect(mockClient.patch).toHaveBeenCalledWith(
+          'https://returns-api.wildberries.ru/api/v1/claim',
+          { id: 'fe3e9337-e9f9-423c-8930-946a8ebef80', action: 'approve1' },
+          { rateLimitKey: 'communications.respondToClaim' }
+        );
+      });
+
+      it('should throw ValidationError when claim ID is empty', async () => {
+        await expect(
+          communicationsModule.respondToClaim({ id: '', action: 'approve1' })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.respondToClaim({ id: '', action: 'approve1' })
+        ).rejects.toThrow('Claim ID is required');
+      });
+
+      it('should throw ValidationError when action is empty', async () => {
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: '' })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: '   ' })
+        ).rejects.toThrow('Action is required');
+      });
+
+      it('should throw ValidationError when rejectcustom action has no comment', async () => {
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom' })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom' })
+        ).rejects.toThrow('Comment is required for rejectcustom action');
+      });
+
+      it('should throw ValidationError when comment is too short', async () => {
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: 'short' })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: 'short' })
+        ).rejects.toThrow('Comment must be at least 10 characters');
+      });
+
+      it('should throw ValidationError when comment exceeds 1000 characters', async () => {
+        const longComment = 'a'.repeat(1001);
+
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: longComment })
+        ).rejects.toThrow(ValidationError);
+
+        await expect(
+          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: longComment })
+        ).rejects.toThrow('Comment cannot exceed 1000 characters');
+      });
+
+      it('should accept rejectcustom with valid comment', async () => {
+        mockClient.patch.mockResolvedValue(undefined);
+
+        await communicationsModule.respondToClaim({
+          id: 'claim-123',
+          action: 'rejectcustom',
+          comment: 'This is a valid comment explaining the rejection reason.',
+        });
+
+        expect(mockClient.patch).toHaveBeenCalledWith(
+          'https://returns-api.wildberries.ru/api/v1/claim',
+          {
+            id: 'claim-123',
+            action: 'rejectcustom',
+            comment: 'This is a valid comment explaining the rejection reason.',
+          },
+          { rateLimitKey: 'communications.respondToClaim' }
+        );
+      });
+    });
+  });
 });

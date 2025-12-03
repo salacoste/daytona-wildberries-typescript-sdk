@@ -2,7 +2,7 @@
 
 # Interface: OrderSticker
 
-Defined in: [types/orders-fbs.types.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L380)
+Defined in: [types/orders-fbs.types.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L380)
 
 Order shipping label / sticker
 
@@ -12,8 +12,8 @@ Contains base64-encoded shipping label for a single order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-fbs.types.ts:382](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L382) |
-| <a id="parta"></a> `partA` | `string` | First part of sticker ID | [types/orders-fbs.types.ts:384](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L384) |
-| <a id="partb"></a> `partB` | `string` | Second part of sticker ID | [types/orders-fbs.types.ts:386](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L386) |
-| <a id="barcode"></a> `barcode` | `string` | Encoded barcode value | [types/orders-fbs.types.ts:388](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L388) |
-| <a id="file"></a> `file` | `string` | Base64-encoded sticker file in specified format | [types/orders-fbs.types.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L390) |
+| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-fbs.types.ts:382](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L382) |
+| <a id="parta"></a> `partA` | `string` | First part of sticker ID | [types/orders-fbs.types.ts:384](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L384) |
+| <a id="partb"></a> `partB` | `string` | Second part of sticker ID | [types/orders-fbs.types.ts:386](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L386) |
+| <a id="barcode"></a> `barcode` | `string` | Encoded barcode value | [types/orders-fbs.types.ts:388](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L388) |
+| <a id="file"></a> `file` | `string` | Base64-encoded sticker file in specified format | [types/orders-fbs.types.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L390) |

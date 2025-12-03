@@ -791,3 +791,87 @@ export interface FullStatsError {
   /** Заголовок ошибки */
   title: string;
 }
+
+// ==========================================
+// Calendar API Types (Календарь акций)
+// ==========================================
+
+/**
+ * Информация об акции в календаре
+ */
+export interface CalendarPromotion {
+  /** ID акции */
+  id: number;
+  /** Название акции */
+  name?: string;
+  /** Дата начала акции */
+  startDateTime?: string;
+  /** Дата окончания акции */
+  endDateTime?: string;
+  /** Тип акции */
+  type?: string;
+  /** Описание акции */
+  description?: string;
+}
+
+/**
+ * Детальная информация об акции с условиями ранжирования
+ */
+export interface CalendarPromotionDetails extends CalendarPromotion {
+  /** Условия участия */
+  conditions?: CalendarPromotionCondition[];
+}
+
+/**
+ * Условие участия в акции
+ */
+export interface CalendarPromotionCondition {
+  /** Тип условия */
+  condition?: 'productsInPromotion' | 'calculateProducts' | 'allProducts';
+  /** Количество товаров продавца для перехода на следующий уровень ранжирования, % */
+  participationRate?: number;
+  /** Текущий уровень поднятия в поиске, % */
+  boost?: number;
+}
+
+/**
+ * Ответ со списком акций календаря
+ */
+export interface CalendarPromotionsResponse {
+  data?: {
+    /** Список акций */
+    promotions?: CalendarPromotion[];
+  };
+}
+
+/**
+ * Ответ с детальной информацией об акциях
+ */
+export interface CalendarPromotionDetailsResponse {
+  data?: {
+    /** Список акций с деталями */
+    promotions?: CalendarPromotionDetails[];
+  };
+}
+
+/**
+ * Ответ со списком товаров для акции
+ */
+export interface CalendarNomenclaturesResponse {
+  data?: {
+    /** Список товаров */
+    nomenclatures?: PromotionsGoodsList[];
+  };
+}
+
+/**
+ * Ответ при загрузке товара в акцию
+ */
+export interface CalendarUploadResponse {
+  data?: {
+    /** Загрузка с такими данными уже существует */
+    alreadyExists?: boolean;
+    /** ID загрузки */
+    uploadID?: number;
+  };
+}

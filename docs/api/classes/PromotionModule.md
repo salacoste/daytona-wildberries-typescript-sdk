@@ -2,7 +2,7 @@
 
 # Class: PromotionModule
 
-Defined in: [modules/promotion/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L10)
+Defined in: [modules/promotion/index.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L12)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/promotion/index.ts:10](https://github.com/salacoste/daytona
 new PromotionModule(client: BaseClient): PromotionModule;
 ```
 
-Defined in: [modules/promotion/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L11)
+Defined in: [modules/promotion/index.ts:13](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L13)
 
 #### Parameters
 
@@ -43,7 +43,7 @@ getPromotionCount(): Promise<{
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L27)
+Defined in: [modules/promotion/index.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L34)
 
 Списки кампаний
 
@@ -95,8 +95,8 @@ console.log(result);
 
 ```ts
 createPromotionAdverts(data: number[], options?: {
-  status?: -1 | 4 | 7 | 8 | 9 | 11;
-  type?: 5 | 6 | 4 | 7 | 8;
+  status?: -1 | 8 | 4 | 7 | 9 | 11;
+  type?: 5 | 6 | 8 | 4 | 7;
   order?: "create" | "change" | "id";
   direction?: "asc" | "desc";
 }): Promise<
@@ -105,7 +105,7 @@ createPromotionAdverts(data: number[], options?: {
 | ResponseInfoAdvertType9[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L47)
+Defined in: [modules/promotion/index.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L54)
 
 Информация о кампаниях
 
@@ -116,9 +116,9 @@ Defined in: [modules/promotion/index.ts:47](https://github.com/salacoste/daytona
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `data` | `number`[] | Request body data |
-| `options?` | \{ `status?`: `-1` \| `4` \| `7` \| `8` \| `9` \| `11`; `type?`: `5` \| `6` \| `4` \| `7` \| `8`; `order?`: `"create"` \| `"change"` \| `"id"`; `direction?`: `"asc"` \| `"desc"`; \} | Query parameters |
-| `options.status?` | `-1` \| `4` \| `7` \| `8` \| `9` \| `11` | - |
-| `options.type?` | `5` \| `6` \| `4` \| `7` \| `8` | - |
+| `options?` | \{ `status?`: `-1` \| `8` \| `4` \| `7` \| `9` \| `11`; `type?`: `5` \| `6` \| `8` \| `4` \| `7`; `order?`: `"create"` \| `"change"` \| `"id"`; `direction?`: `"asc"` \| `"desc"`; \} | Query parameters |
+| `options.status?` | `-1` \| `8` \| `4` \| `7` \| `9` \| `11` | - |
+| `options.type?` | `5` \| `6` \| `8` \| `4` \| `7` | - |
 | `options.order?` | `"create"` \| `"change"` \| `"id"` | - |
 | `options.direction?` | `"asc"` \| `"desc"` | - |
 
@@ -166,7 +166,7 @@ getAuctionAdverts(options?: {
 }): Promise<GetAuctionAdverts>;
 ```
 
-Defined in: [modules/promotion/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L66)
+Defined in: [modules/promotion/index.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L73)
 
 Информация о кампаниях с ручной ставкой
 
@@ -212,7 +212,7 @@ console.log(result);
 
 ***
 
-### getAdvConfig()
+### ~~getAdvConfig()~~
 
 ```ts
 getAdvConfig(): Promise<{
@@ -225,7 +225,7 @@ getAdvConfig(): Promise<{
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L84)
+Defined in: [modules/promotion/index.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L92)
 
 Конфигурационные значения Продвижения
 
@@ -243,6 +243,10 @@ Defined in: [modules/promotion/index.ts:84](https://github.com/salacoste/daytona
 \}\>
 
 Успешно
+
+#### Deprecated
+
+Use campaign-specific config methods instead
 
 #### Throws
 
@@ -288,7 +292,7 @@ createBidsMin(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L103)
+Defined in: [modules/promotion/index.ts:111](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L111)
 
 Минимальные ставки для карточек товаров
 
@@ -358,7 +362,7 @@ createAdvSaveAd(data: {
 }): Promise<string>;
 ```
 
-Defined in: [modules/promotion/index.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L122)
+Defined in: [modules/promotion/index.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L130)
 
 Создать кампанию с единой ставкой
 
@@ -420,7 +424,7 @@ createSeacatSaveAd(data?: {
 }): Promise<number>;
 ```
 
-Defined in: [modules/promotion/index.ts:141](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L141)
+Defined in: [modules/promotion/index.ts:149](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L149)
 
 Создать кампанию
 
@@ -477,7 +481,7 @@ getSupplierSubjects(): Promise<{
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L159)
+Defined in: [modules/promotion/index.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L167)
 
 Предметы для кампаний
 
@@ -528,7 +532,7 @@ createSupplierNms(data?: number[]): Promise<{
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:178](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L178)
+Defined in: [modules/promotion/index.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L186)
 
 Карточки товаров для кампаний
 
@@ -580,10 +584,10 @@ console.log(result);
 ```ts
 getAdvDelete(options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L197)
+Defined in: [modules/promotion/index.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L205)
 
 Удаление кампании
 
@@ -598,7 +602,7 @@ Defined in: [modules/promotion/index.ts:197](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -633,10 +637,10 @@ console.log(result);
 createAdvRename(data?: {
   advertId: number;
   name: string;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L216)
+Defined in: [modules/promotion/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L224)
 
 Переименование кампании
 
@@ -652,7 +656,7 @@ Defined in: [modules/promotion/index.ts:216](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -686,10 +690,10 @@ console.log(result);
 ```ts
 getAdvStart(options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L235)
+Defined in: [modules/promotion/index.ts:243](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L243)
 
 Запуск кампании
 
@@ -704,7 +708,7 @@ Defined in: [modules/promotion/index.ts:235](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -738,10 +742,10 @@ console.log(result);
 ```ts
 getAdvPause(options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:254](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L254)
+Defined in: [modules/promotion/index.ts:262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L262)
 
 Пауза кампании
 
@@ -756,7 +760,7 @@ Defined in: [modules/promotion/index.ts:254](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -790,10 +794,10 @@ console.log(result);
 ```ts
 getAdvStop(options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L273)
+Defined in: [modules/promotion/index.ts:281](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L281)
 
 Завершение кампании
 
@@ -808,7 +812,7 @@ Defined in: [modules/promotion/index.ts:273](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -845,7 +849,7 @@ updateAdvBids(data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:291](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L291)
+Defined in: [modules/promotion/index.ts:299](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L299)
 
 Изменение ставок
 
@@ -902,7 +906,7 @@ updateAuctionPlacements(data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L309)
+Defined in: [modules/promotion/index.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L317)
 
 Изменение мест размещения в кампаниях с ручной ставкой
 
@@ -969,7 +973,7 @@ updateAuctionBids(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:328](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L328)
+Defined in: [modules/promotion/index.ts:336](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L336)
 
 Изменение ставок в кампаниях
 
@@ -1037,7 +1041,7 @@ getAdvBalance(): Promise<{
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L346)
+Defined in: [modules/promotion/index.ts:354](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L354)
 
 Баланс
 
@@ -1095,7 +1099,7 @@ getAdvBudget(options?: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:365](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L365)
+Defined in: [modules/promotion/index.ts:373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L373)
 
 Бюджет кампании
 
@@ -1157,7 +1161,7 @@ createBudgetDeposit(data: {
 }): Promise<ResponseWithReturn>;
 ```
 
-Defined in: [modules/promotion/index.ts:385](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L385)
+Defined in: [modules/promotion/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L393)
 
 Пополнение бюджета кампании
 
@@ -1225,7 +1229,7 @@ getAdvUpd(options?: {
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L404)
+Defined in: [modules/promotion/index.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L412)
 
 Получение истории затрат
 
@@ -1295,7 +1299,7 @@ getAdvPayments(options?: {
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:423](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L423)
+Defined in: [modules/promotion/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L431)
 
 Получение истории пополнений счёта
 
@@ -1353,10 +1357,10 @@ console.log(result);
 getSearchSetPlus(options?: {
   id: number;
   fixed?: boolean;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L442)
+Defined in: [modules/promotion/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L450)
 
 Управление активностью фиксированных фраз
 
@@ -1372,7 +1376,7 @@ Defined in: [modules/promotion/index.ts:442](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -1411,7 +1415,7 @@ createSearchSetPlus(data: {
 }): Promise<string[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L462)
+Defined in: [modules/promotion/index.ts:470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L470)
 
 Установка/удаление фиксированных фраз
 
@@ -1464,10 +1468,10 @@ createSearchSetExcluded(data: {
   excluded?: string[];
 }, options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:482](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L482)
+Defined in: [modules/promotion/index.ts:490](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L490)
 
 Установка/удаление минус-фраз в поиске
 
@@ -1484,7 +1488,7 @@ Defined in: [modules/promotion/index.ts:482](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -1520,10 +1524,10 @@ createAutoSetExcluded(data: {
   excluded?: string[];
 }, options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:502](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L502)
+Defined in: [modules/promotion/index.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L510)
 
 Установка/удаление минус-фраз для кампании с единой ставкой
 
@@ -1540,7 +1544,7 @@ Defined in: [modules/promotion/index.ts:502](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -1577,7 +1581,7 @@ getAutoGetnmtoadd(options?: {
 }): Promise<number[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L521)
+Defined in: [modules/promotion/index.ts:529](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L529)
 
 Список карточек товаров для кампании с единой ставкой
 
@@ -1629,10 +1633,10 @@ createAutoUpdatenm(data: {
   delete?: number[];
 }, options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L541)
+Defined in: [modules/promotion/index.ts:549](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L549)
 
 Изменение списка карточек товаров в кампании с единой ставкой
 
@@ -1650,7 +1654,7 @@ Defined in: [modules/promotion/index.ts:541](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -1701,7 +1705,7 @@ updateAuctionNms(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:560](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L560)
+Defined in: [modules/promotion/index.ts:568](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L568)
 
 Изменение списка карточек товаров в кампаниях
 
@@ -1766,7 +1770,7 @@ getAdvCount(): Promise<{
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:578](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L578)
+Defined in: [modules/promotion/index.ts:586](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L586)
 
 Количество медиакампаний
 
@@ -1831,7 +1835,7 @@ getAdvAdverts(options?: {
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:597](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L597)
+Defined in: [modules/promotion/index.ts:605](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L605)
 
 Список медиакампаний
 
@@ -1944,7 +1948,7 @@ getAdvAdvert(options?: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:616](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L616)
+Defined in: [modules/promotion/index.ts:624](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L624)
 
 Информация о медиакампании
 
@@ -2036,7 +2040,7 @@ console.log(result);
 
 ***
 
-### createAdvFullstats()
+### ~~createAdvFullstats()~~
 
 ```ts
 createAdvFullstats(data: 
@@ -2047,7 +2051,7 @@ createAdvFullstats(data:
 | ResponseWithInterval>;
 ```
 
-Defined in: [modules/promotion/index.ts:635](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L635)
+Defined in: [modules/promotion/index.ts:644](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L644)
 
 Статистика кампаний
 
@@ -2066,6 +2070,10 @@ Defined in: [modules/promotion/index.ts:635](https://github.com/salacoste/dayton
   \| [`ResponseWithInterval`](../type-aliases/ResponseWithInterval.md)\>
 
 Успешно
+
+#### Deprecated
+
+Use getAdvFullstats() (v3) instead
 
 #### Throws
 
@@ -2102,7 +2110,7 @@ getAdvFullstats(options?: {
 }): Promise<ResponseFullStats>;
 ```
 
-Defined in: [modules/promotion/index.ts:654](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L654)
+Defined in: [modules/promotion/index.ts:663](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L663)
 
 Статистика кампаний
 
@@ -2163,7 +2171,7 @@ getAutoStatWords(options?: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:673](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L673)
+Defined in: [modules/promotion/index.ts:682](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L682)
 
 Статистика кампании с единой ставкой по кластерам фраз
 
@@ -2249,7 +2257,7 @@ getStatWords(options?: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:692](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L692)
+Defined in: [modules/promotion/index.ts:701](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L701)
 
 Статистика кампании c ручной ставкой по ключевым фразам
 
@@ -2330,7 +2338,7 @@ getStatsKeywords(options?: {
 }): Promise<V0KeywordsStatisticsResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:711](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L711)
+Defined in: [modules/promotion/index.ts:720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L720)
 
 Статистика по ключевым фразам
 
@@ -2388,7 +2396,7 @@ createAdvStats(data:
 | Stat[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L730)
+Defined in: [modules/promotion/index.ts:739](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L739)
 
 Статистика медиакампаний
 
@@ -2437,10 +2445,10 @@ console.log(result);
 ### getCalendarPromotions()
 
 ```ts
-getCalendarPromotions(): Promise<unknown>;
+getCalendarPromotions(): Promise<CalendarPromotionsResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:748](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L748)
+Defined in: [modules/promotion/index.ts:757](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L757)
 
 Список акций
 
@@ -2448,7 +2456,7 @@ Defined in: [modules/promotion/index.ts:748](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`CalendarPromotionsResponse`](../interfaces/CalendarPromotionsResponse.md)\>
 
 Response data
 
@@ -2480,10 +2488,10 @@ console.log(result);
 ### getPromotionsDetails()
 
 ```ts
-getPromotionsDetails(): Promise<unknown>;
+getPromotionsDetails(): Promise<CalendarPromotionDetailsResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L766)
+Defined in: [modules/promotion/index.ts:775](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L775)
 
 Детальная информация об акциях
 
@@ -2491,7 +2499,7 @@ Defined in: [modules/promotion/index.ts:766](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`CalendarPromotionDetailsResponse`](../interfaces/CalendarPromotionDetailsResponse.md)\>
 
 Response data
 
@@ -2523,10 +2531,10 @@ console.log(result);
 ### getPromotionsNomenclatures()
 
 ```ts
-getPromotionsNomenclatures(): Promise<unknown>;
+getPromotionsNomenclatures(): Promise<CalendarNomenclaturesResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:784](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L784)
+Defined in: [modules/promotion/index.ts:793](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L793)
 
 Список товаров для участия в акции
 
@@ -2534,7 +2542,7 @@ Defined in: [modules/promotion/index.ts:784](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`CalendarNomenclaturesResponse`](../interfaces/CalendarNomenclaturesResponse.md)\>
 
 Response data
 
@@ -2566,10 +2574,10 @@ console.log(result);
 ### createPromotionsUpload()
 
 ```ts
-createPromotionsUpload(): Promise<unknown>;
+createPromotionsUpload(): Promise<CalendarUploadResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:802](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/modules/promotion/index.ts#L802)
+Defined in: [modules/promotion/index.ts:811](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/promotion/index.ts#L811)
 
 Добавить товар в акцию
 
@@ -2577,7 +2585,7 @@ Defined in: [modules/promotion/index.ts:802](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`CalendarUploadResponse`](../interfaces/CalendarUploadResponse.md)\>
 
 Response data
 

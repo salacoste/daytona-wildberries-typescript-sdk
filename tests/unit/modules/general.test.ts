@@ -16,6 +16,7 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
+import { ValidationError } from '../../../src/errors/validation-error';
 
 describe('GeneralModule', () => {
   // Mock BaseClient with all HTTP methods
@@ -123,18 +124,17 @@ describe('GeneralModule', () => {
       ]
     };
 
-    it('should call BaseClient.get with correct URL when no parameters provided', async () => {
-      // Arrange
-      mockClient.get.mockResolvedValue(mockNewsResponse);
+    it('should throw ValidationError when no parameters provided', async () => {
+      // Act & Assert
+      // @ts-expect-error Testing missing required parameter
+      await expect(generalModule.news()).rejects.toThrow(ValidationError);
+      // @ts-expect-error Testing missing required parameter
+      await expect(generalModule.news()).rejects.toThrow('At least one parameter (from or fromID) must be provided');
+    });
 
-      // Act
-      await generalModule.news();
-
-      // Assert
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: undefined }
-      );
+    it('should throw ValidationError when empty object provided', async () => {
+      // Act & Assert
+      await expect(generalModule.news({})).rejects.toThrow(ValidationError);
     });
 
     it('should pass from parameter correctly', async () => {
@@ -148,7 +148,7 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: options }
+        { params: options, rateLimitKey: 'general.communicationsNews' }
       );
     });
 
@@ -163,7 +163,7 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: options }
+        { params: options, rateLimitKey: 'general.communicationsNews' }
       );
     });
 
@@ -178,46 +178,59 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: options }
+        { params: options, rateLimitKey: 'general.communicationsNews' }
       );
     });
 
     it('should return typed response with news data', async () => {
       // Arrange
       mockClient.get.mockResolvedValue(mockNewsResponse);
+      const options = { from: '2024-01-01' };
 
       // Act
-      const result = await generalModule.news();
+      const result = await generalModule.news(options);
 
       // Assert
       expect(result).toEqual(mockNewsResponse);
       expect(result.data).toBeDefined();
       expect(result.data).toHaveLength(1);
-      if (result.data && result.data.length > 0) {
-        expect(result.data[0].header).toBe('Test News Header');
-      }
+      expect(result.data[0].header).toBe('Test News Header');
     });
 
     it('should handle empty news array gracefully', async () => {
       // Arrange
       const emptyResponse = { data: [] };
       mockClient.get.mockResolvedValue(emptyResponse);
+      const options = { from: '2024-01-01' };
 
       // Act
-      const result = await generalModule.news();
+      const result = await generalModule.news(options);
 
       // Assert
       expect(result.data).toEqual([]);
       expect(result.data).toHaveLength(0);
     });
 
+    it('should throw ValidationError for invalid date format', async () => {
+      // Act & Assert
+      await expect(generalModule.news({ from: '01-01-2024' })).rejects.toThrow(ValidationError);
+      await expect(generalModule.news({ from: 'invalid' })).rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError for invalid fromID', async () => {
+      // Act & Assert
+      await expect(generalModule.news({ fromID: -1 })).rejects.toThrow(ValidationError);
+      await expect(generalModule.news({ fromID: 0 })).rejects.toThrow(ValidationError);
+    });
+
     it('should propagate RateLimitError from BaseClient', async () => {
       // Arrange
       const error = new RateLimitError('Rate limit exceeded', 5000);
       mockClient.get.mockRejectedValue(error);
+      const options = { from: '2024-01-01' };
 
       // Act & Assert
-      await expect(generalModule.news()).rejects.toThrow(RateLimitError);
+      await expect(generalModule.news(options)).rejects.toThrow(RateLimitError);
     });
   });
 

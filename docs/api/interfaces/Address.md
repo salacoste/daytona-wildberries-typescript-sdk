@@ -2,7 +2,7 @@
 
 # Interface: Address
 
-Defined in: [types/orders-fbs.types.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L23)
+Defined in: [types/orders-fbs.types.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L23)
 
 Delivery address information
 
@@ -10,6 +10,6 @@ Delivery address information
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="fulladdress"></a> `fullAddress` | `string` | Full delivery address | [types/orders-fbs.types.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L25) |
-| <a id="longitude"></a> `longitude` | `number` | GPS longitude | [types/orders-fbs.types.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L27) |
-| <a id="latitude"></a> `latitude` | `number` | GPS latitude | [types/orders-fbs.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/orders-fbs.types.ts#L29) |
+| <a id="fulladdress"></a> `fullAddress` | `string` | Full delivery address | [types/orders-fbs.types.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L25) |
+| <a id="longitude"></a> `longitude` | `number` | GPS longitude | [types/orders-fbs.types.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L27) |
+| <a id="latitude"></a> `latitude` | `number` | GPS latitude | [types/orders-fbs.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/orders-fbs.types.ts#L29) |

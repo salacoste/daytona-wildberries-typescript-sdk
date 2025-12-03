@@ -34,10 +34,36 @@ export default defineConfig({
     }
   },
 
-  // Ignore dead links during build (will be fixed in Stories 6.2-6.3)
-  // Many links point to API reference (Story 6.3) or planning docs we moved
+  // Dead links to ignore (external links or intentionally missing)
+  // TODO: Phase 6 documentation update - fix remaining dead links:
+  // 1. Create missing use-case examples (pricing-updates, stock-management, shipping, returns, etc.)
+  // 2. Create tutorials/index.md files
+  // 3. Sync Russian localization with English version
   ignoreDeadLinks: [
-    (_url) => true  // Ignore all dead links temporarily
+    // External links
+    /^https?:\/\//,
+    // API reference links (TypeDoc generated, may have different structure)
+    /\/api\//,
+    // Relative links to non-existent pages (will be created in future)
+    /^\.\//,
+    // Russian version links (need localization sync)
+    /\/ru\//,
+    // Root-level docs referenced from nested folders
+    /README$/,
+    /CONTRIBUTING$/,
+    /CODE_OF_CONDUCT$/,
+    /SECURITY$/,
+    /CHANGELOG$/,
+    /LICENSE$/,
+    /architecture$/,
+    /faq$/i,
+    // Tutorial indexes (to be created)
+    /tutorials\/index/,
+    // Wildberries API doc links from TypeDoc
+    /work-with-products/,
+    /orders-fbw/,
+    /promotion/,
+    /openapi/
   ],
 
   // Exclude planning/development files from documentation build
@@ -147,6 +173,53 @@ export default defineConfig({
             ]
           },
           {
+            text: 'Examples',
+            items: [
+              { text: 'Overview', link: '/examples/' },
+              {
+                text: 'Basic',
+                collapsed: true,
+                items: [
+                  { text: 'Hello World', link: '/examples/basic/hello-world' },
+                  { text: 'Single API Call', link: '/examples/basic/single-call' }
+                ]
+              },
+              {
+                text: 'Intermediate',
+                collapsed: true,
+                items: [
+                  { text: 'Error Handling', link: '/examples/intermediate/error-handling' },
+                  { text: 'Rate Limiting', link: '/examples/intermediate/rate-limiting' },
+                  { text: 'Batch Operations', link: '/examples/intermediate/batch-operations' }
+                ]
+              },
+              {
+                text: 'Advanced',
+                collapsed: true,
+                items: [
+                  { text: 'Multi-Module Workflow', link: '/examples/advanced/multi-module' },
+                  { text: 'Custom Retry Logic', link: '/examples/advanced/custom-retry' },
+                  { text: 'Performance', link: '/examples/advanced/performance' }
+                ]
+              },
+              {
+                text: 'Use Cases',
+                collapsed: true,
+                items: [
+                  { text: 'Product Catalog', link: '/examples/use-cases/product-catalog' },
+                  { text: 'Pricing Updates', link: '/examples/use-cases/pricing-updates' },
+                  { text: 'Stock Management', link: '/examples/use-cases/stock-management' },
+                  { text: 'Order Processing', link: '/examples/use-cases/order-processing' },
+                  { text: 'Shipping Management', link: '/examples/use-cases/shipping' },
+                  { text: 'Returns Handling', link: '/examples/use-cases/returns' },
+                  { text: 'Sales Dashboard', link: '/examples/use-cases/sales-dashboard' },
+                  { text: 'Inventory Reports', link: '/examples/use-cases/inventory-reports' },
+                  { text: 'Financial Reports', link: '/examples/use-cases/financial-reports' }
+                ]
+              }
+            ]
+          },
+          {
             text: 'Reference',
             items: [
               { text: 'FAQ', link: '/FAQ' },
@@ -243,6 +316,29 @@ export default defineConfig({
                   { text: 'Интерфейсы', link: '/api/modules#interfaces' },
                   { text: 'Псевдонимы типов', link: '/api/modules#type-aliases' },
                   { text: 'Перечисления', link: '/api/modules#enumerations' }
+                ]
+              }
+            ]
+          },
+          {
+            text: 'Примеры',
+            items: [
+              { text: 'Обзор', link: '/examples/' },
+              {
+                text: 'Базовые',
+                collapsed: true,
+                items: [
+                  { text: 'Hello World', link: '/examples/basic/hello-world' },
+                  { text: 'Простой API вызов', link: '/examples/basic/single-call' }
+                ]
+              },
+              {
+                text: 'Продвинутые',
+                collapsed: true,
+                items: [
+                  { text: 'Обработка ошибок', link: '/examples/intermediate/error-handling' },
+                  { text: 'Rate Limiting', link: '/examples/intermediate/rate-limiting' },
+                  { text: 'Пакетные операции', link: '/examples/intermediate/batch-operations' }
                 ]
               }
             ]

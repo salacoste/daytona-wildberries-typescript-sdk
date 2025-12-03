@@ -2,7 +2,7 @@
 
 # Interface: MediaSaveRequest
 
-Defined in: [types/products.types.ts:1049](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1049)
+Defined in: [types/products.types.ts:1049](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1049)
 
 Request body for uploading media via URLs
 
@@ -31,5 +31,5 @@ await uploadMediaByURLs(12345, [...existing, 'https://new-photo.jpg']);
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId` | `number` | Wildberries article ID | [types/products.types.ts:1051](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1051) |
-| <a id="data"></a> `data` | `string`[] | Array of media URLs (max 30 images + 1 video) | [types/products.types.ts:1053](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1053) |
+| <a id="nmid"></a> `nmId` | `number` | Wildberries article ID | [types/products.types.ts:1051](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1051) |
+| <a id="data"></a> `data` | `string`[] | Array of media URLs (max 30 images + 1 video) | [types/products.types.ts:1053](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1053) |

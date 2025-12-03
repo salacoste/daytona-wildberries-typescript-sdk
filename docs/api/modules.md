@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v2.0.1
+# Wildberries API TypeScript SDK v2.0.2
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -113,6 +113,57 @@ Main entry point
 | [Review](interfaces/Review.md) | Customer review object |
 | [ReviewsResponse](interfaces/ReviewsResponse.md) | Response from getReviews() method |
 | [RespondToReviewRequest](interfaces/RespondToReviewRequest.md) | Request payload for responding to a review Used by both respondToReview() and editReviewResponse() methods |
+| [NewFeedbacksQuestionsResponse](interfaces/NewFeedbacksQuestionsResponse.md) | Response from getNewFeedbacksQuestions() method Returns indicators for new unviewed feedbacks and questions |
+| [QuestionsCountUnansweredResponse](interfaces/QuestionsCountUnansweredResponse.md) | Response from getQuestionsCountUnanswered() method Returns dashboard metrics for unanswered questions |
+| [QuestionDetails](interfaces/QuestionDetails.md) | Enhanced question details with additional metadata Used in getQuestionById() response |
+| [QuestionByIdResponse](interfaces/QuestionByIdResponse.md) | Response from getQuestionById() method Returns detailed information about a specific question |
+| [TemplateUsage](interfaces/TemplateUsage.md) | Template usage statistics and performance metrics |
+| [TemplateMetrics](interfaces/TemplateMetrics.md) | Template performance metrics |
+| [TemplateVariable](interfaces/TemplateVariable.md) | Template variable for dynamic content insertion |
+| [Template](interfaces/Template.md) | Response template for customer communication |
+| [TemplateData](interfaces/TemplateData.md) | Request payload for creating or updating a template |
+| [TemplateFilters](interfaces/TemplateFilters.md) | Filter criteria for retrieving templates |
+| [TemplatesResponse](interfaces/TemplatesResponse.md) | Response from getTemplates() method |
+| [TemplateOperationResponse](interfaces/TemplateOperationResponse.md) | Response from template operations (create/update/delete) |
+| [TemplateStats](interfaces/TemplateStats.md) | Template statistics summary |
+| [TemplateStatsResponse](interfaces/TemplateStatsResponse.md) | Response from getTemplateStats() method |
+| [ReturnRequest](interfaces/ReturnRequest.md) | Return request with customer data and status |
+| [ReturnTracking](interfaces/ReturnTracking.md) | Return tracking information |
+| [CommunicationsAddress](interfaces/CommunicationsAddress.md) | Address for return delivery |
+| [ReturnProduct](interfaces/ReturnProduct.md) | Return product information |
+| [ReturnImage](interfaces/ReturnImage.md) | Return image provided by customer for return |
+| [RefundInfo](interfaces/RefundInfo.md) | Refund information (when applicable) |
+| [ReturnMetrics](interfaces/ReturnMetrics.md) | Performance metrics for return processing |
+| [ReturnAnalytics](interfaces/ReturnAnalytics.md) | Analytics for return processing |
+| [ReturnRequestFilters](interfaces/ReturnRequestFilters.md) | Return request filters for getReturnRequests() |
+| [ReturnRequestsResponse](interfaces/ReturnRequestsResponse.md) | Response from getReturnRequests() |
+| [ReturnProcessOptions](interfaces/ReturnProcessOptions.md) | Options for return request processing |
+| [ReturnProcessResponse](interfaces/ReturnProcessResponse.md) | Response from processReturnRequest() |
+| [ChatMessage](interfaces/ChatMessage.md) | Chat message with enhanced details |
+| [ChatAttachment](interfaces/ChatAttachment.md) | Chat attachment |
+| [ChatDetails](interfaces/ChatDetails.md) | Enhanced chat details with comprehensive information |
+| [ChatHistory](interfaces/ChatHistory.md) | Chat history with pagination and filtering |
+| [ChatHistoryFilters](interfaces/ChatHistoryFilters.md) | Filters for chat history retrieval |
+| [ChatListFilters](interfaces/ChatListFilters.md) | Chat list filters for enhanced chat retrieval |
+| [EnhancedFeedback](interfaces/EnhancedFeedback.md) | Enhanced feedback with comprehensive analysis and metadata |
+| [EnhancedFeedbackFilters](interfaces/EnhancedFeedbackFilters.md) | Enhanced filters for feedback retrieval with advanced analytics |
+| [EnhancedFeedbacksResponse](interfaces/EnhancedFeedbacksResponse.md) | Response structure for enhanced feedback retrieval |
+| [FeedbackDetailsResponse](interfaces/FeedbackDetailsResponse.md) | Detailed feedback response for individual feedback retrieval |
+| [ReturnAnalyticsFilters](interfaces/ReturnAnalyticsFilters.md) | Filters for return analytics data |
+| [ReturnAnalyticsResponse](interfaces/ReturnAnalyticsResponse.md) | Comprehensive response structure for return analytics |
+| [FeedbacksCountUnansweredResponse](interfaces/FeedbacksCountUnansweredResponse.md) | Response from getFeedbacksCountUnanswered() method Returns metrics for unanswered feedbacks |
+| [FeedbacksCountParams](interfaces/FeedbacksCountParams.md) | Parameters for getFeedbacksCount() method |
+| [FeedbacksCountResponse](interfaces/FeedbacksCountResponse.md) | Response from getFeedbacksCount() method |
+| [SupplierValuationsResponse](interfaces/SupplierValuationsResponse.md) | Response from getSupplierValuations() method Returns complaint reasons and product issue types |
+| [FeedbackActionRequest](interfaces/FeedbackActionRequest.md) | Request for reportFeedbackAction() method Submit complaint or report product issue |
+| [ArchivedFeedbacksFilters](interfaces/ArchivedFeedbacksFilters.md) | Filters for getArchivedFeedbacks() method |
+| [ArchivedFeedbacksResponse](interfaces/ArchivedFeedbacksResponse.md) | Response from getArchivedFeedbacks() method Same structure as ReviewsResponse but with archived feedbacks |
+| [ClaimsFilters](interfaces/ClaimsFilters.md) | Filters for getClaims() method |
+| [Claim](interfaces/Claim.md) | Customer return claim object |
+| [ClaimsResponse](interfaces/ClaimsResponse.md) | Response from getClaims() method |
+| [RespondToClaimRequest](interfaces/RespondToClaimRequest.md) | Request for respondToClaim() method |
+| [ReturnByFeedbackRequest](interfaces/ReturnByFeedbackRequest.md) | Request for requestReturnByFeedback() method |
+| [ReturnByFeedbackResponse](interfaces/ReturnByFeedbackResponse.md) | Response from requestReturnByFeedback() method |
 | [BalanceResponse](interfaces/BalanceResponse.md) | Balance response from the finance API Returns current account balance information |
 | [TransactionFilters](interfaces/TransactionFilters.md) | Transaction filters for querying transaction history |
 | [Transaction](interfaces/Transaction.md) | Individual transaction/financial report item Represents a single financial transaction in the report |
@@ -173,6 +224,46 @@ Main entry point
 | [GetOrderStickersRequest](interfaces/GetOrderStickersRequest.md) | Request body for getOrderStickers endpoint |
 | [GetOrderStickersResponse](interfaces/GetOrderStickersResponse.md) | Response from getOrderStickers endpoint |
 | [SupplyBarcode](interfaces/SupplyBarcode.md) | Supply barcode / QR code |
+| [PassOffice](interfaces/PassOffice.md) | Warehouse information for pass management |
+| [Pass](interfaces/Pass.md) | Seller pass information |
+| [ReshipmentOrder](interfaces/ReshipmentOrder.md) | Reshipment order information |
+| [ReshipmentOrdersResponse](interfaces/ReshipmentOrdersResponse.md) | Response type for getReshipmentOrders endpoint |
+| [OrderMetadataResponse](interfaces/OrderMetadataResponse.md) | Response type for getOrderMetadata endpoint |
+| [OrderItemWithIdentifier](interfaces/OrderItemWithIdentifier.md) | Order item with identifier (for SGTIN, UIN, IMEI, GTIN) |
+| [OrderSgtinResponse](interfaces/OrderSgtinResponse.md) | Response type for getOrderSgtin endpoint |
+| [OrderUinResponse](interfaces/OrderUinResponse.md) | Response type for getOrderUin endpoint |
+| [OrderImeiResponse](interfaces/OrderImeiResponse.md) | Response type for getOrderImei endpoint |
+| [OrderGtinResponse](interfaces/OrderGtinResponse.md) | Response type for getOrderGtin endpoint |
+| [OrderItemWithExpiration](interfaces/OrderItemWithExpiration.md) | Order item with expiration date |
+| [OrderExpirationResponse](interfaces/OrderExpirationResponse.md) | Response type for getOrderExpiration endpoint |
+| [OrdersByClientResponse](interfaces/OrdersByClientResponse.md) | Response type for getOrdersByClient endpoint |
+| [OrderStatusChange](interfaces/OrderStatusChange.md) | Order status change record |
+| [OrderStatusHistoryResponse](interfaces/OrderStatusHistoryResponse.md) | Response type for getOrderStatusHistory endpoint |
+| [TransportBox](interfaces/TransportBox.md) | Transport box information |
+| [SupplyTrbxResponse](interfaces/SupplyTrbxResponse.md) | Response type for getSupplyTrbx endpoint |
+| [TransportBoxSticker](interfaces/TransportBoxSticker.md) | Transport box sticker information |
+| [SupplyTrbxStickersResponse](interfaces/SupplyTrbxStickersResponse.md) | Response type for getSupplyTrbxStickers endpoint |
+| [CreatePassRequest](interfaces/CreatePassRequest.md) | Request type for createPass endpoint |
+| [CreatePassResponse](interfaces/CreatePassResponse.md) | Response type for createPass endpoint |
+| [OrderInSupply](interfaces/OrderInSupply.md) | Order in supply information |
+| [SupplyOrdersResponse](interfaces/SupplyOrdersResponse.md) | Response type for getSupplyOrders endpoint |
+| [UpdatePassRequest](interfaces/UpdatePassRequest.md) | Request type for updatePass endpoint PUT /api/v3/passes/{passId} |
+| [SetOrderSGTINRequest](interfaces/SetOrderSGTINRequest.md) | Request type for setOrderSGTIN endpoint PUT /api/v3/orders/{orderId}/meta/sgtin |
+| [SetOrderUINRequest](interfaces/SetOrderUINRequest.md) | Request type for setOrderUIN endpoint PUT /api/v3/orders/{orderId}/meta/uin |
+| [SetOrderIMEIRequest](interfaces/SetOrderIMEIRequest.md) | Request type for setOrderIMEI endpoint PUT /api/v3/orders/{orderId}/meta/imei |
+| [SetOrderGTINRequest](interfaces/SetOrderGTINRequest.md) | Request type for setOrderGTIN endpoint PUT /api/v3/orders/{orderId}/meta/gtin |
+| [SetOrderExpirationRequest](interfaces/SetOrderExpirationRequest.md) | Request type for setOrderExpiration endpoint PUT /api/v3/orders/{orderId}/meta/expiration |
+| [CrossBorderSticker](interfaces/CrossBorderSticker.md) | Cross-border sticker (PDF format) Used in getCrossBorderStickers response |
+| [CrossBorderStickersResponse](interfaces/CrossBorderStickersResponse.md) | Response type for getCrossBorderStickers endpoint POST /api/v3/orders/stickers/cross-border |
+| [~~ExternalStickerLink~~](interfaces/ExternalStickerLink.md) | External sticker link (for cross-border orders) Used in getExternalStickersUrls response |
+| [~~ExternalStickersUrlsResponse~~](interfaces/ExternalStickersUrlsResponse.md) | Response type for getExternalStickersUrls endpoint POST /api/v3/files/orders/external-stickers |
+| [CrossBorderStatusHistoryEntry](interfaces/CrossBorderStatusHistoryEntry.md) | Cross-border order status history entry |
+| [CrossBorderOrderHistory](interfaces/CrossBorderOrderHistory.md) | Cross-border order with status history |
+| [CrossBorderStatusHistoryResponse](interfaces/CrossBorderStatusHistoryResponse.md) | Response type for getOrdersStatusHistoryCrossBorder endpoint POST /api/v3/orders/status/history |
+| [CrossBorderTurkeyAddress](interfaces/CrossBorderTurkeyAddress.md) | Cross-border Turkey client address |
+| [CrossBorderTurkeyOrderInfo](interfaces/CrossBorderTurkeyOrderInfo.md) | Cross-border Turkey client order info |
+| [CrossBorderTurkeyClientInfoResponse](interfaces/CrossBorderTurkeyClientInfoResponse.md) | Response type for getOrdersWithClientInfo endpoint POST /api/v3/orders/client (Turkey cross-border only) |
+| [AddSupplyTrbxResponse](interfaces/AddSupplyTrbxResponse.md) | Response type for addSupplyTrbx endpoint POST /api/v3/supplies/{supplyId}/trbx |
 | [FBWTransitTariff](interfaces/FBWTransitTariff.md) | Auto-generated TypeScript types for orders-fbw module Generated from: wildberries_api_doc/07-orders-fbw.yaml |
 | [FBWVolumeTariff](interfaces/FBWVolumeTariff.md) | - |
 | [FBWBox](interfaces/FBWBox.md) | - |
@@ -251,6 +342,14 @@ Main entry point
 | [GetStockResponse](interfaces/GetStockResponse.md) | Response from get stock operation |
 | [UpdateStockRequest](interfaces/UpdateStockRequest.md) | Request to update stock quantities (bulk operation) |
 | [DeleteStockRequest](interfaces/DeleteStockRequest.md) | Request to delete stock records (bulk operation) |
+| [TagsResponse](interfaces/TagsResponse.md) | Ответ метода getTags() |
+| [HistoryTasksResponse](interfaces/HistoryTasksResponse.md) | Ответ состояния обработанной загрузки (history/tasks) |
+| [GoodsTaskResponse](interfaces/GoodsTaskResponse.md) | Ответ детализации обработанной загрузки (history/goods/task) |
+| [BufferTasksResponse](interfaces/BufferTasksResponse.md) | Ответ состояния необработанной загрузки (buffer/tasks) |
+| [BufferGoodsTaskResponse](interfaces/BufferGoodsTaskResponse.md) | Ответ детализации необработанной загрузки (buffer/goods/task) |
+| [GoodsFilterResponse](interfaces/GoodsFilterResponse.md) | Ответ списка товаров с ценами (list/goods/filter) |
+| [SizeNmResponse](interfaces/SizeNmResponse.md) | Ответ размеров товара с ценами (list/goods/size/nm) |
+| [QuarantineGoodsResponse](interfaces/QuarantineGoodsResponse.md) | Ответ товаров в карантине (quarantine/goods) |
 | [Response400](interfaces/Response400.md) | Auto-generated TypeScript types for promotion module Generated from: wildberries_api_doc/08-promotion.yaml |
 | [StandardizedBatchError](interfaces/StandardizedBatchError.md) | - |
 | [V0GetConfigCategoriesResponse](interfaces/V0GetConfigCategoriesResponse.md) | - |
@@ -282,6 +381,13 @@ Main entry point
 | [ErrorResponse](interfaces/ErrorResponse.md) | - |
 | [FullStatsItem](interfaces/FullStatsItem.md) | Статистика по одной кампании за период, указанный в запросе. По всем артикулам WB и платформам |
 | [FullStatsError](interfaces/FullStatsError.md) | Ошибка |
+| [CalendarPromotion](interfaces/CalendarPromotion.md) | Информация об акции в календаре |
+| [CalendarPromotionDetails](interfaces/CalendarPromotionDetails.md) | Детальная информация об акции с условиями ранжирования |
+| [CalendarPromotionCondition](interfaces/CalendarPromotionCondition.md) | Условие участия в акции |
+| [CalendarPromotionsResponse](interfaces/CalendarPromotionsResponse.md) | Ответ со списком акций календаря |
+| [CalendarPromotionDetailsResponse](interfaces/CalendarPromotionDetailsResponse.md) | Ответ с детальной информацией об акциях |
+| [CalendarNomenclaturesResponse](interfaces/CalendarNomenclaturesResponse.md) | Ответ со списком товаров для акции |
+| [CalendarUploadResponse](interfaces/CalendarUploadResponse.md) | Ответ при загрузке товара в акцию |
 | [IncomesItem](interfaces/IncomesItem.md) | Inbound shipment item from warehouses |
 | [StocksItem](interfaces/StocksItem.md) | Stock level item across WB warehouses |
 | [OrdersItem](interfaces/OrdersItem.md) | Order item information |
@@ -323,6 +429,8 @@ Main entry point
 | [StockChangeReason](type-aliases/StockChangeReason.md) | Stock change reason enumeration |
 | [AnalyticsReportType](type-aliases/AnalyticsReportType.md) | Analytics report type enumeration |
 | [CSVReportStatus](type-aliases/CSVReportStatus.md) | CSV report status tracking (alias for convenience) |
+| [TemplateCategory](type-aliases/TemplateCategory.md) | Response template category for organization and filtering |
+| [ReturnStatus](type-aliases/ReturnStatus.md) | Return status for tracking return request lifecycle |
 | [TransactionType](type-aliases/TransactionType.md) | Transaction type enum Represents different types of financial transactions |
 | [ReportPeriod](type-aliases/ReportPeriod.md) | Period filter for reports |
 | [TransactionListResponse](type-aliases/TransactionListResponse.md) | Paginated list of transactions/financial report items |
@@ -335,6 +443,9 @@ Main entry point
 | [WBStatus](type-aliases/WBStatus.md) | Wildberries system-controlled order status |
 | [StickerFormat](type-aliases/StickerFormat.md) | Sticker / Label format |
 | [BarcodeType](type-aliases/BarcodeType.md) | Barcode / QR code format |
+| [PassOfficesResponse](type-aliases/PassOfficesResponse.md) | Response type for getPassOffices endpoint |
+| [PassesResponse](type-aliases/PassesResponse.md) | Response type for getPasses endpoint |
+| [OrderMetadataKey](type-aliases/OrderMetadataKey.md) | Metadata key for order metadata deletion Used with deleteOrderMetadata endpoint |
 | [FBWSupplyStatus](type-aliases/FBWSupplyStatus.md) | - |
 | [StocksWarehouseError](type-aliases/StocksWarehouseError.md) | - |
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |

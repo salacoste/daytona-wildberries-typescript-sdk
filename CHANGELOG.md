@@ -5,6 +5,115 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] - 2025-12-03
+
+### Overview
+
+**Epic 7: API Compliance Audit** - Major audit achieving 100% API coverage.
+
+| Metric | Value |
+|--------|-------|
+| YAML Endpoints | 229 |
+| SDK Methods | 254 |
+| Bugs Fixed | 13 |
+| New Methods | 23 |
+| Coverage | **100%** |
+
+### Fixed
+
+#### Communications Module
+- `getQuestionsCountUnanswered()` - URL corrected from `/count/unanswered` to `/count-unanswered` (404 error fix)
+- `getNewFeedbacksQuestions()` - URL corrected to `/api/v1/new-feedbacks-questions`
+
+#### Products Module - Parameter Signatures (12 fixes)
+- `getWarehousesContact(warehouseId)` - Added required `warehouseId` parameter
+- `updateWarehousesContact(warehouseId, data)` - Added required `warehouseId` parameter
+- `getHistoryTasks(uploadID)` - Added required `uploadID` parameter
+- `getGoodsTask(params)` - Added required parameters: `uploadID`, `limit`, `offset`
+- `getBufferTasks(uploadID)` - Added required `uploadID` parameter
+- `getGoodsTask2(params)` - Added required parameters: `uploadID`, `limit`, `offset`
+- `getGoodsFilter(params)` - Added parameters: `limit`, `offset`, `filterNmID`
+- `getSizeNm(params)` - Added required parameters: `nmID`, `limit`, `offset`
+- `getQuarantineGoods(params)` - Added parameters: `limit`, `offset`
+- `createStock(warehouseId, data)` - Added required `warehouseId` parameter
+- `updateStock(warehouseId, data)` - Added required `warehouseId` parameter
+- `deleteStock(warehouseId, data)` - Added required `warehouseId` parameter
+
+#### Products Module - Bug Fixes
+- `listProducts()` - Fixed empty results bug
+- `getAllProducts()` - Added to validator whitelist
+
+### Added
+
+#### Orders FBS Module - Cross-Border Operations (14 methods)
+- `updatePass(passId, data)` - Update delivery pass
+- `deleteOrderMetadata(orderId, key)` - Delete order metadata by key
+- `setOrderSGTIN(orderId, data)` - Set SGTIN marking code
+- `setOrderUIN(orderId, data)` - Set UIN (unique identifier)
+- `setOrderIMEI(orderId, data)` - Set IMEI
+- `setOrderGTIN(orderId, data)` - Set GTIN
+- `setOrderExpiration(orderId, data)` - Set expiration date
+- `getCrossBorderStickers(orderIds)` - Get stickers for cross-border orders
+- `getExternalStickersUrls(orderIds)` - Get external sticker URLs (**deprecated**)
+- `getOrdersStatusHistoryCrossBorder(orderIds)` - Get status history for cross-border
+- `getOrdersWithClientInfo(orderIds)` - Get orders with client info (Turkey)
+- `addSupplyTrbx(supplyId, amount)` - Add boxes (TRBX) to supply
+- `deleteSupplyTrbx(supplyId, trbxIds)` - Delete boxes from supply
+- `getSupplyTrbxStickersPost(supplyId, type, trbxIds)` - Get box stickers
+
+#### Reports Module (6 methods)
+- `getWarehouseRemainsReportStatus(taskId)` - Check warehouse remains report status
+- `downloadWarehouseRemainsReport(taskId)` - Download warehouse remains report
+- `getAcceptanceReportStatus(taskId)` - Check acceptance report status
+- `downloadAcceptanceReport(taskId)` - Download acceptance report
+- `getPaidStorageReportStatus(taskId)` - Check paid storage report status
+- `downloadPaidStorageReport(taskId)` - Download paid storage report
+
+#### Communications Module (2 methods)
+- `getNewFeedbacksQuestions()` - Get indicator for new feedbacks/questions
+- `requestReturnByFeedback(feedbackId)` - Request product return by feedback ID
+
+#### Products Module (1 method)
+- `recoverCards(nmIds)` - Recover product cards from trash
+
+### Deprecated
+
+- `getExternalStickersUrls()` - Use `getCrossBorderStickers()` instead
+
+### Tests
+
+- Added 19 new unit tests for Orders FBS READ methods
+- Added 2 new unit tests for Communications module
+- Total tests: 1,657 passing
+
+---
+
+## [2.0.1] - 2025-11-28
+
+### Fixed
+- Build validation for `.cjs` file extension
+- ESLint configuration for strict TypeScript mode
+
+---
+
+## [2.0.0] - 2025-11-25
+
+### Added
+
+#### Epic 4: Extended Modules
+- **Orders FBW Module** - FBW warehouse fulfillment (8 methods)
+- **Promotion Module** - Advertising campaigns (42 methods)
+- **Tariffs Module** - Commission rates (4 methods)
+- **In-Store Pickup Module** - Click & collect (16 methods)
+
+#### Epic 6: VitePress Documentation Site
+- VitePress with i18n support (English + Russian)
+- TypeDoc API reference generation (343 pages)
+- Getting started tutorials (4 tutorials)
+- Comprehensive guides (best practices, security, performance)
+
+---
+
 ## [Unreleased]
 
 ### Added

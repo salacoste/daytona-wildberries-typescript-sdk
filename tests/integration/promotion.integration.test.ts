@@ -253,6 +253,7 @@ describe('PromotionModule Integration Tests', () => {
   describe('Configuration and Bid Operations', () => {
     it('should successfully get configuration values', async () => {
       // Act
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const result = await promotionModule.getAdvConfig();
 
       // Assert
@@ -381,6 +382,7 @@ describe('PromotionModule Integration Tests', () => {
       );
 
       // Act & Assert
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       await expect(promotionModule.getAdvConfig())
         .rejects
         .toThrow(RateLimitError);
@@ -408,6 +410,7 @@ describe('PromotionModule Integration Tests', () => {
     it('should maintain type safety through entire request flow', async () => {
       // Act
       const countResult = await promotionModule.getPromotionCount();
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const configResult = await promotionModule.getAdvConfig();
 
       // Assert - TypeScript ensures correct types
@@ -436,6 +439,7 @@ describe('PromotionModule Integration Tests', () => {
   describe('Real-World Scenarios', () => {
     it('should handle complete campaign creation workflow', async () => {
       // 1. Get configuration to check limits
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const config = await promotionModule.getAdvConfig();
       expect(config.config).toBeDefined();
 

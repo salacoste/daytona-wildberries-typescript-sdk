@@ -34,7 +34,8 @@ Transform 11 OpenAPI specifications into a production-ready SDK with complete ty
 - **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 98% test coverage with 1,584+ tests across all modules
+- **✅ Battle-Tested** - 98% test coverage with 1,657 tests across all modules
+- **🎯 100% API Coverage** - All 229 YAML endpoints implemented (v2.0.2)
 - **📚 Comprehensive Documentation** - Complete API reference, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
 
@@ -162,7 +163,8 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев
 - **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
 - **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
-- **✅ Проверено в Бою** - 98% покрытие тестами, 1,584+ тестов для всех модулей
+- **✅ Проверено в Бою** - 98% покрытие тестами, 1,657 тестов для всех модулей
+- **🎯 100% Покрытие API** - Все 229 эндпоинтов YAML реализованы (v2.0.2)
 - **📚 Полная Документация** - Справочник API, учебные руководства и примеры на английском и русском
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 

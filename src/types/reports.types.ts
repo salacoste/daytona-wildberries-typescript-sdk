@@ -419,3 +419,251 @@ export interface ErrorResponse4xx {
  * Report type discriminator for async operations
  */
 export type ReportType = 'warehouse_remains' | 'acceptance' | 'paid_storage';
+
+// ==================== Report Parameters Types (task-4.4) ====================
+
+/**
+ * Common date range parameters for reports
+ */
+export interface DateRangeParams {
+  /** Start date in RFC3339 format (e.g., '2024-01-01' or '2024-01-01T00:00:00Z') */
+  dateFrom: string;
+  /** End date in RFC3339 format (e.g., '2024-01-31' or '2024-01-31T23:59:59Z') */
+  dateTo: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Parameters for warehouse measurements report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
+ */
+export interface WarehouseMeasurementsParams {
+  /** Start date (optional, defaults to first data date) */
+  dateFrom?: string;
+  /** End date (required) */
+  dateTo: string;
+  /** Tab type: 'penalty' | 'measurement' */
+  tab: 'penalty' | 'measurement';
+  /** Number of records to return (default: 1000) */
+  limit?: number;
+  [key: string]: unknown;
+}
+
+/**
+ * Parameters for incorrect attachments report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
+ */
+export type IncorrectAttachmentsParams = DateRangeParams;
+
+/**
+ * Parameters for goods labeling report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-tovarah-c-obyazatelnoj-markirovkoj}
+ */
+export type GoodsLabelingParams = DateRangeParams;
+
+/**
+ * Parameters for characteristics change report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
+ */
+export type CharacteristicsChangeParams = DateRangeParams;
+
+/**
+ * Parameters for paid acceptance report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka}
+ */
+export type AcceptanceReportParams = DateRangeParams;
+
+/**
+ * Parameters for paid storage report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie}
+ */
+export type PaidStorageReportParams = DateRangeParams;
+
+/**
+ * Parameters for brand share report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah}
+ */
+export interface BrandShareParams {
+  /** Parent category ID (required) */
+  parentId: number;
+  /** Brand name (required) */
+  brand: string;
+  /** Start date (optional) */
+  dateFrom?: string;
+  /** End date (optional) */
+  dateTo?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Parameters for blocked/shadowed products reports
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Skrytye-tovary}
+ */
+export interface BannedProductsParams {
+  /** Sort field */
+  sort?: string;
+  /** Sort order: 'asc' | 'desc' */
+  order?: 'asc' | 'desc';
+  [key: string]: unknown;
+}
+
+/**
+ * Parameters for goods return report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov}
+ */
+export type GoodsReturnParams = DateRangeParams;
+
+/**
+ * Parameters for regional sales report
+ * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Prodazhi-po-regionam}
+ */
+export type RegionalSalesParams = DateRangeParams;
+
+// ==================== Report Response Types (task-4.4) ====================
+
+/**
+ * Warehouse measurement/penalty item
+ */
+export interface WarehouseMeasurementItem {
+  /** WB article (nmId) */
+  nmId: number;
+  /** Seller article */
+  supplierArticle?: string;
+  /** Barcode */
+  barcode?: string;
+  /** Measurement date */
+  date: string;
+  /** Penalty amount in kopecks */
+  penalty?: number;
+  /** Width in cm */
+  width?: number;
+  /** Height in cm */
+  height?: number;
+  /** Length in cm */
+  length?: number;
+  /** Weight in grams */
+  weight?: number;
+  [key: string]: unknown;
+}
+
+/**
+ * Incorrect attachment item
+ */
+export interface IncorrectAttachmentItem {
+  /** WB article (nmId) */
+  nmId: number;
+  /** Order ID (srid) */
+  srid: string;
+  /** Penalty date */
+  date: string;
+  /** Penalty amount */
+  penalty: number;
+  /** Reason for penalty */
+  reason?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Goods labeling item
+ */
+export interface GoodsLabelingItem {
+  /** WB article (nmId) */
+  nmId: number;
+  /** Barcode */
+  barcode?: string;
+  /** Marking code */
+  markingCode?: string;
+  /** Status */
+  status?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Characteristics change item
+ */
+export interface CharacteristicsChangeItem {
+  /** WB article (nmId) */
+  nmId: number;
+  /** Change date */
+  date: string;
+  /** Changed field */
+  field?: string;
+  /** Old value */
+  oldValue?: unknown;
+  /** New value */
+  newValue?: unknown;
+  [key: string]: unknown;
+}
+
+/**
+ * Parent subject for brand share report
+ */
+export interface BrandShareParentSubject {
+  /** Subject ID */
+  id: number;
+  /** Subject name */
+  name: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Brand share report data
+ */
+export interface BrandShareData {
+  /** Date */
+  date?: string;
+  /** Brand share percentage */
+  brandShare?: number;
+  /** Total sales */
+  totalSales?: number;
+  /** Brand sales */
+  brandSales?: number;
+  [key: string]: unknown;
+}
+
+/**
+ * Blocked/shadowed product item
+ */
+export interface BannedProductItem {
+  /** WB article (nmId) */
+  nmId: number;
+  /** Seller article */
+  supplierArticle?: string;
+  /** Block/shadow reason */
+  reason?: string;
+  /** Block/shadow date */
+  date?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Goods return item
+ */
+export interface GoodsReturnItem {
+  /** WB article (nmId) */
+  nmId: number;
+  /** Order ID */
+  orderId?: string;
+  /** Return date */
+  date: string;
+  /** Return reason */
+  reason?: string;
+  /** Return status */
+  status?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Regional sales item
+ */
+export interface RegionalSalesItem {
+  /** Region name */
+  region: string;
+  /** Country */
+  country?: string;
+  /** Sales count */
+  salesCount?: number;
+  /** Revenue */
+  revenue?: number;
+  [key: string]: unknown;
+}

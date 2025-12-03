@@ -2,7 +2,7 @@
 
 # Interface: TimeSeriesDataPoint
 
-Defined in: [types/analytics.types.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/analytics.types.ts#L219)
+Defined in: [types/analytics.types.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/analytics.types.ts#L219)
 
 Time-series data point for historical analytics
 
@@ -10,6 +10,6 @@ Time-series data point for historical analytics
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="date"></a> `date` | `string` | Date for this data point (YYYY-MM-DD or timestamp) | [types/analytics.types.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/analytics.types.ts#L221) |
-| <a id="value"></a> `value?` | `number` | Primary metric value for this date | [types/analytics.types.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/analytics.types.ts#L223) |
-| <a id="metadata"></a> `metadata?` | `Record`\<`string`, `unknown`\> | Additional metadata for this data point | [types/analytics.types.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/analytics.types.ts#L225) |
+| <a id="date"></a> `date` | `string` | Date for this data point (YYYY-MM-DD or timestamp) | [types/analytics.types.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/analytics.types.ts#L221) |
+| <a id="value"></a> `value?` | `number` | Primary metric value for this date | [types/analytics.types.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/analytics.types.ts#L223) |
+| <a id="metadata"></a> `metadata?` | `Record`\<`string`, `unknown`\> | Additional metadata for this data point | [types/analytics.types.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/analytics.types.ts#L225) |

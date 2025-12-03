@@ -417,24 +417,19 @@ describe('WildberriesSDK Multi-Module Integration', () => {
     it('should handle parallel requests from mixed modules', async () => {
       const sdk = new WildberriesSDK({ apiKey: 'test-key' });
 
-      const [balance, questions, stocks, stockHistory] = await Promise.all([
+      const [balance, questions, stocks] = await Promise.all([
         sdk.finances.getBalance(),
         sdk.communications.getQuestions({
           isAnswered: false,
           take: 10,
           skip: 0
         }),
-        sdk.reports.getStocks('2024-01-01'),
-        sdk.analytics.getStockHistory('12345', {
-          from: '2024-01-01',
-          to: '2024-01-31'
-        })
+        sdk.reports.getStocks('2024-01-01')
       ]);
 
       expect(balance.for_withdraw).toBeDefined();
       expect(questions.data.questions).toHaveLength(1);
       expect(stocks).toHaveLength(1);
-      expect(stockHistory.changes).toBeDefined();
     });
   });
 

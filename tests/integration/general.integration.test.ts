@@ -121,20 +121,16 @@ describe('GeneralModule Integration Tests', () => {
       expect(typeof result.TS).toBe('string');
     });
 
-    it('should complete news() flow without parameters', async () => {
+    it('should complete news() flow with parameters', async () => {
       // Act
-      const result = await generalModule.news();
+      const result = await generalModule.news({ from: '2025-01-01' });
 
       // Assert
       expect(result.data).toBeDefined();
-      if (result.data) {
-        expect(Array.isArray(result.data)).toBe(true);
-        expect(result.data.length).toBeGreaterThan(0);
-        if (result.data.length > 0) {
-          expect(result.data[0].header).toBe('Test News Header');
-          expect(result.data[0].content).toContain('Integration test');
-        }
-      }
+      expect(Array.isArray(result.data)).toBe(true);
+      expect(result.data.length).toBeGreaterThan(0);
+      expect(result.data[0].header).toBe('Test News Header');
+      expect(result.data[0].content).toContain('Integration test');
     });
 
     it('should complete news() flow with query parameters', async () => {
@@ -146,14 +142,10 @@ describe('GeneralModule Integration Tests', () => {
 
       // Assert
       expect(result.data).toBeDefined();
-      if (result.data) {
-        expect(result.data.length).toBeGreaterThan(0);
-        if (result.data.length > 0) {
-          // Verify parameters were passed through
-          expect(result.data[0].date).toBe('2024-06-01');
-          expect(result.data[0].id).toBe(42);
-        }
-      }
+      expect(result.data.length).toBeGreaterThan(0);
+      // Verify parameters were passed through
+      expect(result.data[0].date).toBe('2024-06-01');
+      expect(result.data[0].id).toBe(42);
     });
 
     it('should complete sellerInfo() flow successfully', async () => {

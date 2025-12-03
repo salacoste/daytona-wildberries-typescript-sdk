@@ -20,6 +20,6 @@
     "outDir": "./dist",
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*", "tests/**/*", "tools/**/*", ".vitepress/**/*"],
+  "include": ["src/**/*", "tests/**/*", "tools/**/*", ".vitepress/**/*", "test-*.ts", "comparison_docs/test-*.cjs"],
   "exclude": ["node_modules", "dist"]
 }

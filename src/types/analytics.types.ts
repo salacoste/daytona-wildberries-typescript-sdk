@@ -668,3 +668,668 @@ export interface CSVReport extends ResponseError {
  * Alias for CSVReport to provide clearer naming when checking status
  */
 export type CSVReportStatus = CSVReport;
+
+// ==================== NEW TYPES for task-4.2 ====================
+
+/**
+ * Report download item from nm-report/downloads endpoint
+ */
+export interface ReportDownloadItem {
+  /** Report download ID (UUID) */
+  id: string;
+  /** Report type */
+  reportType: string;
+  /** User-defined report name */
+  userReportName?: string;
+  /** Report status */
+  status: 'new' | 'processing' | 'done' | 'error';
+  /** File URL when status is 'done' */
+  file?: string;
+  /** Creation timestamp */
+  createdAt: string;
+  /** Update timestamp */
+  updatedAt?: string;
+  /** Error message if status is 'error' */
+  error?: string;
+}
+
+/**
+ * Response from GET /api/v2/nm-report/downloads
+ */
+export interface ReportDownloadsResponse extends ResponseError {
+  /** Array of report download items */
+  data: ReportDownloadItem[];
+}
+
+/**
+ * Request for product search texts endpoint
+ */
+export interface ProductSearchTextsRequest {
+  /** Current period for analysis */
+  currentPeriod: {
+    start: string;
+    end: string;
+  };
+  /** Previous period for comparison */
+  pastPeriod?: {
+    start: string;
+    end: string;
+  };
+  /** Product article number (nmID) */
+  nmId: number;
+  /** Number of search texts to return (max 30, 100 for premium) */
+  limit?: number;
+  /** Top ordering method */
+  topOrderBy?: 'avgPosition' | 'openCard' | 'addToCart' | 'orders';
+  /** Include substituted SKUs */
+  includeSubstitutedSKUs?: boolean;
+  /** Include search texts */
+  includeSearchTexts?: boolean;
+}
+
+/**
+ * Search text item in response
+ */
+export interface SearchTextItem {
+  /** Search text/query */
+  text: string;
+  /** Average position in search */
+  avgPosition?: number;
+  /** Number of card opens */
+  openCard?: number;
+  /** Number of add to cart actions */
+  addToCart?: number;
+  /** Number of orders */
+  orders?: number;
+  /** Frequency/popularity rank */
+  frequency?: number;
+}
+
+/**
+ * Response from product search texts endpoint
+ */
+export interface ProductSearchTextsResponse extends ResponseError {
+  data: {
+    /** Product article number */
+    nmId: number;
+    /** Array of search texts */
+    texts: SearchTextItem[];
+  };
+}
+
+/**
+ * Request for product orders by search queries
+ */
+export interface ProductOrdersRequest {
+  /** Current period */
+  currentPeriod: {
+    start: string;
+    end: string;
+  };
+  /** Previous period for comparison */
+  pastPeriod?: {
+    start: string;
+    end: string;
+  };
+  /** Product article number */
+  nmId: number;
+  /** Search text to analyze */
+  text: string;
+}
+
+/**
+ * Order item by date
+ */
+export interface OrdersByDateItem {
+  /** Date */
+  date: string;
+  /** Number of orders */
+  orders: number;
+  /** Average position */
+  avgPosition?: number;
+}
+
+/**
+ * Response from product orders endpoint
+ */
+export interface ProductOrdersResponse extends ResponseError {
+  data: {
+    /** Product article number */
+    nmId: number;
+    /** Search text */
+    text: string;
+    /** Orders by date */
+    ordersByDate: OrdersByDateItem[];
+  };
+}
+
+/**
+ * Request for stocks by products
+ */
+export interface StocksProductsRequest {
+  /** Period for stock history */
+  period: {
+    start: string;
+    end: string;
+  };
+  /** Filter by product IDs */
+  nmIds?: number[];
+  /** Filter by subject ID */
+  subjectId?: number;
+  /** Filter by brand name */
+  brandName?: string;
+  /** Filter by tag ID */
+  tagId?: number;
+  /** Pagination page */
+  page?: number;
+  /** Page size */
+  limit?: number;
+}
+
+/**
+ * Stock product item
+ */
+export interface StockProductItem {
+  /** Product article number */
+  nmId: number;
+  /** Vendor code */
+  vendorCode?: string;
+  /** Brand name */
+  brandName?: string;
+  /** Subject name */
+  subjectName?: string;
+  /** Current stock quantity */
+  quantity: number;
+  /** Stock at WB warehouses */
+  quantityWb?: number;
+  /** Stock at seller warehouses (FBS) */
+  quantityFbs?: number;
+  /** In transit quantity */
+  inWayToClient?: number;
+  /** In return transit */
+  inWayFromClient?: number;
+}
+
+/**
+ * Response from stocks products endpoint
+ */
+export interface StocksProductsResponse extends ResponseError {
+  data: {
+    /** Products with stock info */
+    products: StockProductItem[];
+    /** Is there a next page */
+    isNextPage?: boolean;
+  };
+}
+
+/**
+ * Request for stocks by offices/warehouses
+ */
+export interface StocksOfficesRequest {
+  /** Period for stock history */
+  period: {
+    start: string;
+    end: string;
+  };
+  /** Filter by product IDs */
+  nmIds?: number[];
+  /** Filter by subject ID */
+  subjectId?: number;
+  /** Filter by brand name */
+  brandName?: string;
+  /** Filter by tag ID */
+  tagId?: number;
+}
+
+/**
+ * Office stock item
+ */
+export interface OfficeStockItem {
+  /** Office/warehouse ID */
+  officeId?: number;
+  /** Office/warehouse name */
+  officeName?: string;
+  /** Region name */
+  regionName: string;
+  /** Stock quantity */
+  quantity: number;
+  /** Offices list (empty for FBS aggregated data) */
+  offices: {
+    officeId: number;
+    officeName: string;
+    quantity: number;
+  }[];
+}
+
+/**
+ * Response from stocks offices endpoint
+ */
+export interface StocksOfficesResponse extends ResponseError {
+  data: {
+    /** Stock by offices/regions */
+    offices: OfficeStockItem[];
+  };
+}
+
+// ==================== NEW TYPES for task-4.10 ====================
+
+/**
+ * Request for grouped history endpoint (POST /api/v2/nm-report/grouped/history)
+ * Returns statistics by days grouped by subjects, brands, and tags.
+ * Max 7 days of data can be retrieved.
+ */
+export interface GroupedHistoryRequest {
+  /** Period for analysis */
+  period: {
+    begin: string;
+    end: string;
+  };
+  /** Object/category IDs to filter by */
+  objectIDs?: number[];
+  /** Brand names to filter by */
+  brandNames?: string[];
+  /** Tag IDs to filter by */
+  tagIDs?: number[];
+  /** Timezone (default: Europe/Moscow) */
+  timezone?: string;
+  /** Aggregation level: 'day' or 'week' (default: 'day') */
+  aggregationLevel?: 'day' | 'week';
+}
+
+/**
+ * Grouped history item with daily statistics
+ */
+export interface GroupedHistoryItem {
+  /** Object/category info */
+  object?: {
+    id: number;
+    name: string;
+  };
+  /** Brand name */
+  brandName?: string;
+  /** Tag info */
+  tag?: {
+    id: number;
+    name: string;
+  };
+  /** Daily history data */
+  history: {
+    /** Date */
+    dt: string;
+    /** Card opens count */
+    openCardCount: number;
+    /** Add to cart count */
+    addToCartCount: number;
+    /** Orders count */
+    ordersCount: number;
+    /** Orders sum in rubles */
+    ordersSumRub: number;
+    /** Buyouts count */
+    buyoutsCount: number;
+    /** Buyouts sum in rubles */
+    buyoutsSumRub: number;
+    /** Buyout percentage */
+    buyoutPercent: number;
+    /** Add to cart conversion % */
+    addToCartConversion: number;
+    /** Cart to order conversion % */
+    cartToOrderConversion: number;
+  }[];
+}
+
+/**
+ * Response from grouped history endpoint
+ */
+export interface GroupedHistoryResponse extends ResponseError {
+  data: GroupedHistoryItem[];
+}
+
+/**
+ * Request for retry report generation (POST /api/v2/nm-report/downloads/retry)
+ */
+export interface RetryReportRequest {
+  /** Download ID of the failed report (UUID) */
+  downloadId: string;
+}
+
+/**
+ * Response from retry report endpoint
+ */
+export interface RetryReportResponse {
+  /** New download ID for the retried report */
+  data: {
+    id: string;
+  };
+}
+
+/**
+ * Position cluster filter for search reports
+ */
+export type PositionCluster = 'all' | 'firstHundred' | 'secondHundred' | 'below';
+
+/**
+ * Order by configuration for search reports
+ */
+export interface SearchOrderBy {
+  /** Field to sort by */
+  field: 'avgPosition' | 'openCard' | 'addToCart' | 'openToCart' | 'orders' | 'cartToOrder' | 'visibility';
+  /** Sort mode */
+  mode: 'asc' | 'desc';
+}
+
+/**
+ * Period for search report requests
+ */
+export interface SearchReportPeriod {
+  /** Start date (YYYY-MM-DD) */
+  start: string;
+  /** End date (YYYY-MM-DD) */
+  end: string;
+}
+
+/**
+ * Request for search report table groups (POST /api/v2/search-report/table/groups)
+ */
+export interface SearchReportTableGroupsRequest {
+  /** Current period for analysis */
+  currentPeriod: SearchReportPeriod;
+  /** Past period for comparison */
+  pastPeriod?: SearchReportPeriod;
+  /** Filter by nmIds */
+  nmIds?: number[];
+  /** Filter by subject IDs */
+  subjectIds?: number[];
+  /** Filter by brand names */
+  brandNames?: string[];
+  /** Filter by tag IDs */
+  tagIds?: number[];
+  /** Position cluster filter */
+  positionCluster: PositionCluster;
+  /** Order by configuration */
+  orderBy: SearchOrderBy;
+  /** Include substituted SKUs data */
+  includeSubstitutedSKUs?: boolean;
+  /** Include search texts data */
+  includeSearchTexts?: boolean;
+  /** Number of items to return (max 1000) */
+  limit: number;
+  /** Offset for pagination */
+  offset: number;
+}
+
+/**
+ * Metric with current value and dynamics
+ */
+export interface MetricWithDynamics {
+  /** Current value */
+  current: number;
+  /** Dynamics compared to previous period (%) */
+  dynamics?: number;
+}
+
+/**
+ * Table group item in search report
+ */
+export interface SearchReportTableGroupItem {
+  /** Subject name */
+  subjectName?: string;
+  /** Subject ID */
+  subjectId?: number;
+  /** Brand name */
+  brandName?: string;
+  /** Tag name */
+  tagName?: string;
+  /** Tag ID */
+  tagId?: number;
+  /** Metrics for this group */
+  metrics: {
+    /** Average position */
+    avgPosition: MetricWithDynamics;
+    /** Card opens */
+    openCard: MetricWithDynamics;
+    /** Add to cart */
+    addToCart: MetricWithDynamics;
+    /** Conversion to cart */
+    openToCart: MetricWithDynamics;
+    /** Orders count */
+    orders: MetricWithDynamics;
+    /** Cart to order conversion */
+    cartToOrder: MetricWithDynamics;
+    /** Visibility */
+    visibility: MetricWithDynamics;
+  };
+}
+
+/**
+ * Response from search report table groups endpoint
+ */
+export interface SearchReportTableGroupsResponse extends ResponseError {
+  data: {
+    /** List of group items */
+    groups: SearchReportTableGroupItem[];
+  };
+}
+
+/**
+ * Request for search report table details (POST /api/v2/search-report/table/details)
+ */
+export interface SearchReportTableDetailsRequest {
+  /** Current period for analysis */
+  currentPeriod: SearchReportPeriod;
+  /** Past period for comparison */
+  pastPeriod?: SearchReportPeriod;
+  /** Filter by subject ID */
+  subjectId?: number;
+  /** Filter by brand name */
+  brandName?: string;
+  /** Filter by tag ID */
+  tagId?: number;
+  /** Filter by nmIds (max 50) */
+  nmIds?: number[];
+  /** Order by configuration */
+  orderBy: SearchOrderBy;
+  /** Position cluster filter */
+  positionCluster: PositionCluster;
+  /** Include substituted SKUs data */
+  includeSubstitutedSKUs?: boolean;
+  /** Include search texts data */
+  includeSearchTexts?: boolean;
+  /** Number of items to return (max 1000) */
+  limit: number;
+  /** Offset for pagination */
+  offset: number;
+}
+
+/**
+ * Product item in search report table details
+ */
+export interface SearchReportProductItem {
+  /** Wildberries article number */
+  nmId: number;
+  /** Vendor code */
+  vendorCode?: string;
+  /** Product name */
+  name?: string;
+  /** Subject name */
+  subjectName?: string;
+  /** Brand name */
+  brandName?: string;
+  /** Is advertised */
+  isAdvertised?: boolean;
+  /** Card rating */
+  rating?: number;
+  /** Feedback rating */
+  feedbackRating?: number;
+  /** Price info */
+  price?: {
+    minPrice: number;
+    maxPrice: number;
+  };
+  /** Average position */
+  avgPosition: MetricWithDynamics;
+  /** Card opens */
+  openCard: MetricWithDynamics;
+  /** Add to cart */
+  addToCart: MetricWithDynamics;
+  /** Conversion to cart */
+  openToCart: MetricWithDynamics;
+  /** Orders */
+  orders: MetricWithDynamics;
+  /** Cart to order conversion */
+  cartToOrder: MetricWithDynamics;
+  /** Visibility */
+  visibility: MetricWithDynamics;
+}
+
+/**
+ * Response from search report table details endpoint
+ */
+export interface SearchReportTableDetailsResponse extends ResponseError {
+  data: {
+    /** List of product items */
+    products: SearchReportProductItem[];
+  };
+}
+
+/**
+ * Request for stocks products groups (POST /api/v2/stocks-report/products/groups)
+ */
+export interface StocksProductsGroupsRequest {
+  /** Period for stock history */
+  period: {
+    start: string;
+    end: string;
+  };
+  /** Filter by product IDs */
+  nmIDs?: number[];
+  /** Filter by subject ID */
+  subjectID?: number;
+  /** Filter by brand name */
+  brandName?: string;
+  /** Filter by tag ID */
+  tagID?: number;
+  /** Stock type: 'wb' (Wildberries), 'mp' (Marketplace/FBS), or 'all' */
+  stockType?: 'wb' | 'mp' | 'all';
+  /** Availability filters */
+  availabilityFilters?: ('deficient' | 'balanced' | 'surplus' | 'absent')[];
+  /** Order by configuration */
+  orderBy?: {
+    field: 'avgOrders' | 'stockCount' | 'lostOrdersCount';
+    mode: 'asc' | 'desc';
+  };
+  /** Page size (limit) */
+  limit?: number;
+  /** Page offset */
+  offset?: number;
+}
+
+/**
+ * Stock group item
+ */
+export interface StocksGroupItem {
+  /** Subject ID */
+  subjectID?: number;
+  /** Subject name */
+  subjectName?: string;
+  /** Brand name */
+  brandName?: string;
+  /** Tag ID */
+  tagID?: number;
+  /** Tag name */
+  tagName?: string;
+  /** Stock quantity */
+  stockCount: number;
+  /** Stock value */
+  stockValue?: number;
+  /** Orders count */
+  ordersCount?: number;
+  /** Orders sum */
+  ordersSum?: number;
+  /** Average orders per day */
+  avgOrders?: number;
+  /** Lost orders count */
+  lostOrdersCount?: number;
+  /** Lost orders sum */
+  lostOrdersSum?: number;
+}
+
+/**
+ * Response from stocks products groups endpoint
+ */
+export interface StocksProductsGroupsResponse extends ResponseError {
+  data: {
+    /** List of stock groups */
+    groups: StocksGroupItem[];
+    /** Is there a next page */
+    isNextPage?: boolean;
+  };
+}
+
+/**
+ * Request for stocks products sizes (POST /api/v2/stocks-report/products/sizes)
+ */
+export interface StocksProductsSizesRequest {
+  /** Period for stock history */
+  period: {
+    start: string;
+    end: string;
+  };
+  /** Product article number */
+  nmID: number;
+  /** Include office/warehouse details */
+  includeOffice?: boolean;
+}
+
+/**
+ * Office stock detail
+ */
+export interface OfficeStockDetail {
+  /** Office ID */
+  officeId: number;
+  /** Office name */
+  officeName: string;
+  /** Stock quantity */
+  quantity: number;
+}
+
+/**
+ * Stock size item
+ */
+export interface StocksSizeItem {
+  /** Technical size */
+  techSize: string;
+  /** Size name */
+  sizeName?: string;
+  /** Barcode */
+  barcode?: string;
+  /** Stock quantity */
+  quantity: number;
+  /** Stock at WB warehouses */
+  quantityWb?: number;
+  /** Stock at seller warehouses (FBS) */
+  quantityFbs?: number;
+  /** In transit to client */
+  inWayToClient?: number;
+  /** In transit from client */
+  inWayFromClient?: number;
+  /** Region name */
+  regionName?: string;
+  /** Office name */
+  officeName?: string;
+  /** Office details (when includeOffice is true) */
+  offices?: OfficeStockDetail[];
+}
+
+/**
+ * Response from stocks products sizes endpoint
+ */
+export interface StocksProductsSizesResponse extends ResponseError {
+  data: {
+    /** Product article number */
+    nmID: number;
+    /** Whether product has sizes */
+    hasSizes?: boolean;
+    /** List of size items */
+    sizes: StocksSizeItem[];
+  };
+}

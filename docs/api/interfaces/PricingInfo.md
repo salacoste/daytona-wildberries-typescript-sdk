@@ -2,7 +2,7 @@
 
 # Interface: PricingInfo
 
-Defined in: [types/products.types.ts:1153](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1153)
+Defined in: [types/products.types.ts:1153](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1153)
 
 Current pricing information for a product
 
@@ -30,9 +30,9 @@ const pricing: PricingInfo = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmID` | `number` | Wildberries article ID | [types/products.types.ts:1155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1155) |
-| <a id="price"></a> `price` | `number` | Current price (before discounts) | [types/products.types.ts:1157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1157) |
-| <a id="discount"></a> `discount` | `number` | Current seller discount (%) | [types/products.types.ts:1159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1159) |
-| <a id="promocode"></a> `promoCode` | `number` | Promo code discount (%) | [types/products.types.ts:1161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1161) |
-| <a id="wbclubdiscount"></a> `wbClubDiscount` | `number` | WB Club discount (%) | [types/products.types.ts:1163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1163) |
-| <a id="currency"></a> `currency` | `string` | Currency code (usually RUB) | [types/products.types.ts:1165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1165) |
+| <a id="nmid"></a> `nmID` | `number` | Wildberries article ID | [types/products.types.ts:1155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1155) |
+| <a id="price"></a> `price` | `number` | Current price (before discounts) | [types/products.types.ts:1157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1157) |
+| <a id="discount"></a> `discount` | `number` | Current seller discount (%) | [types/products.types.ts:1159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1159) |
+| <a id="promocode"></a> `promoCode` | `number` | Promo code discount (%) | [types/products.types.ts:1161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1161) |
+| <a id="wbclubdiscount"></a> `wbClubDiscount` | `number` | WB Club discount (%) | [types/products.types.ts:1163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1163) |
+| <a id="currency"></a> `currency` | `string` | Currency code (usually RUB) | [types/products.types.ts:1165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1165) |

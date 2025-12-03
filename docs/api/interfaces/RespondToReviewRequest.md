@@ -2,7 +2,7 @@
 
 # Interface: RespondToReviewRequest
 
-Defined in: [types/communications.types.ts:1091](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/communications.types.ts#L1091)
+Defined in: [types/communications.types.ts:1091](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/communications.types.ts#L1091)
 
 Request payload for responding to a review
 Used by both respondToReview() and editReviewResponse() methods
@@ -11,5 +11,5 @@ Used by both respondToReview() and editReviewResponse() methods
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `string` | Review ID | [types/communications.types.ts:1095](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/communications.types.ts#L1095) |
-| <a id="text"></a> `text` | `string` | Response text (min 2, max 5000 characters) | [types/communications.types.ts:1100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/communications.types.ts#L1100) |
+| <a id="id"></a> `id` | `string` | Review ID | [types/communications.types.ts:1095](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/communications.types.ts#L1095) |
+| <a id="text"></a> `text` | `string` | Response text (min 2, max 5000 characters) | [types/communications.types.ts:1100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/communications.types.ts#L1100) |

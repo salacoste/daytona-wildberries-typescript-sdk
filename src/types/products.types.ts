@@ -1412,3 +1412,121 @@ export interface DeleteStockRequest {
   /** Array of barcodes to delete (1-1000 items) */
   skus: string[];
 }
+
+/**
+ * Ярлык продавца
+ */
+export interface ProductTag {
+  /** Числовой ID ярлыка */
+  id: number;
+  /** Цвет ярлыка в hex формате */
+  color: string;
+  /** Название ярлыка */
+  name: string;
+}
+
+/**
+ * Ответ метода getTags()
+ */
+export interface TagsResponse {
+  /** Массив ярлыков продавца */
+  data: ProductTag[];
+  /** Флаг ошибки */
+  error: boolean;
+  /** Описание ошибки */
+  errorText?: string;
+  /** Дополнительные ошибки */
+  additionalErrors?: string;
+}
+
+// ==========================================
+// Prices & Discounts API Response Types
+// ==========================================
+
+/**
+ * Ответ состояния обработанной загрузки (history/tasks)
+ */
+export interface HistoryTasksResponse {
+  data?: SupplierTaskMetadata;
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Текст ошибки */
+  errorText?: string;
+}
+
+/**
+ * Ответ детализации обработанной загрузки (history/goods/task)
+ */
+export interface GoodsTaskResponse {
+  data?: {
+    /** ID загрузки */
+    uploadID?: number;
+    /** Информация о товарах в загрузке */
+    historyGoods?: GoodHistory[];
+  };
+}
+
+/**
+ * Ответ состояния необработанной загрузки (buffer/tasks)
+ */
+export interface BufferTasksResponse {
+  data?: SupplierTaskMetadataBuffer;
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Текст ошибки */
+  errorText?: string;
+}
+
+/**
+ * Ответ детализации необработанной загрузки (buffer/goods/task)
+ */
+export interface BufferGoodsTaskResponse {
+  data?: {
+    /** ID загрузки */
+    uploadID?: number | null;
+    /** Информация о товарах в загрузке */
+    bufferGoods?: GoodBufferHistory[] | null;
+  };
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Текст ошибки */
+  errorText?: string;
+}
+
+/**
+ * Ответ списка товаров с ценами (list/goods/filter)
+ */
+export interface GoodsFilterResponse {
+  data?: {
+    /** Информация о товарах */
+    listGoods?: GoodsList[];
+  };
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Текст ошибки */
+  errorText?: string;
+}
+
+/**
+ * Ответ размеров товара с ценами (list/goods/size/nm)
+ */
+export interface SizeNmResponse {
+  data?: {
+    /** Размеры товара */
+    listGoods?: SizeGood[] | null;
+  };
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Текст ошибки */
+  errorText?: string;
+}
+
+/**
+ * Ответ товаров в карантине (quarantine/goods)
+ */
+export interface QuarantineGoodsResponse {
+  data?: {
+    /** Товары в карантине */
+    quarantineGoods?: QuarantineGoods[] | null;
+  };
+}

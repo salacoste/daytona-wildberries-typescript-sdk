@@ -6,7 +6,7 @@
 
 import { BaseClient } from '../../client/base-client';
 import { ValidationError } from '../../errors/validation-error';
-import type { Office, RequestMoveNmsImtConn, RequestMoveNmsImtDisconn, RequestPublicViewerPublicErrorsTableListV2, ResponseCardCreate, ResponseContentError, ResponsePublicViewerPublicErrorsTableListV2, StoreContactRequestBody, Warehouse, CreateProductRequest, CreateProductResponse, ProductListRequest, ProductListResponse, ProductListCursor, UpdateProductRequest, UpdateProductResponse, DeleteProductResponse, ProductCard, MediaUploadResponse, PricingUpdate, PricingTaskResponse, PricingInfo, GetPricingResponse, PricingTaskStatusResponse, StockUpdate, StockInfo } from '../../types/products.types';
+import type { Office, RequestMoveNmsImtConn, RequestMoveNmsImtDisconn, RequestPublicViewerPublicErrorsTableListV2, ResponseCardCreate, ResponseContentError, ResponsePublicViewerPublicErrorsTableListV2, StoreContactRequestBody, Warehouse, CreateProductRequest, CreateProductResponse, ProductListRequest, ProductListResponse, ProductListCursor, UpdateProductRequest, UpdateProductResponse, DeleteProductResponse, ProductCard, MediaUploadResponse, PricingUpdate, PricingTaskResponse, PricingInfo, GetPricingResponse, PricingTaskStatusResponse, StockUpdate, StockInfo, TagsResponse, TaskCreated, HistoryTasksResponse, GoodsTaskResponse, BufferTasksResponse, BufferGoodsTaskResponse, GoodsFilterResponse, SizeNmResponse, QuarantineGoodsResponse } from '../../types/products.types';
 
 export class ProductsModule {
   constructor(private client: BaseClient) {}
@@ -540,8 +540,8 @@ export class ProductsModule {
   const result = await sdk.general.createUploadTask();
   console.log(result);
    */
-  async createUploadTask(): Promise<unknown> {
-    return this.client.post<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task', undefined);
+  async createUploadTask(): Promise<TaskCreated> {
+    return this.client.post<TaskCreated>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task', undefined);
   }
 
   /**
@@ -558,8 +558,8 @@ export class ProductsModule {
   const result = await sdk.general.createTaskSize();
   console.log(result);
    */
-  async createTaskSize(): Promise<unknown> {
-    return this.client.post<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task/size', undefined);
+  async createTaskSize(): Promise<TaskCreated> {
+    return this.client.post<TaskCreated>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task/size', undefined);
   }
 
   /**
@@ -576,8 +576,8 @@ export class ProductsModule {
   const result = await sdk.general.createTaskClubDiscount();
   console.log(result);
    */
-  async createTaskClubDiscount(): Promise<unknown> {
-    return this.client.post<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount', undefined);
+  async createTaskClubDiscount(): Promise<TaskCreated> {
+    return this.client.post<TaskCreated>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount', undefined);
   }
 
   /**
@@ -590,12 +590,15 @@ export class ProductsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @param uploadID - ID загрузки (обязательный)
    * @example
-  const result = await sdk.general.getHistoryTasks();
+  const result = await sdk.products.getHistoryTasks(395643565);
   console.log(result);
    */
-  async getHistoryTasks(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/history/tasks');
+  async getHistoryTasks(uploadID: number): Promise<HistoryTasksResponse> {
+    return this.client.get<HistoryTasksResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/history/tasks?uploadID=${uploadID}`
+    );
   }
 
   /**
@@ -608,12 +611,22 @@ export class ProductsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @param params - Параметры запроса
+   * @param params.uploadID - ID загрузки (обязательный)
+   * @param params.limit - Количество элементов на странице (по умолчанию 1000)
+   * @param params.offset - Смещение (по умолчанию 0)
    * @example
-  const result = await sdk.general.getGoodsTask();
+  const result = await sdk.products.getGoodsTask({ uploadID: 395643565, limit: 100, offset: 0 });
   console.log(result);
    */
-  async getGoodsTask(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/history/goods/task');
+  async getGoodsTask(params: { uploadID: number; limit?: number; offset?: number }): Promise<GoodsTaskResponse> {
+    const queryParams = new URLSearchParams();
+    queryParams.append('uploadID', params.uploadID.toString());
+    if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
+    if (params.offset !== undefined) queryParams.append('offset', params.offset.toString());
+    return this.client.get<GoodsTaskResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/history/goods/task?${queryParams.toString()}`
+    );
   }
 
   /**
@@ -630,8 +643,10 @@ export class ProductsModule {
   const result = await sdk.general.getBufferTasks();
   console.log(result);
    */
-  async getBufferTasks(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/buffer/tasks');
+  async getBufferTasks(uploadID: number): Promise<BufferTasksResponse> {
+    return this.client.get<BufferTasksResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/buffer/tasks?uploadID=${uploadID}`
+    );
   }
 
   /**
@@ -648,8 +663,14 @@ export class ProductsModule {
   const result = await sdk.general.getGoodsTask();
   console.log(result);
    */
-  async getGoodsTask2(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/buffer/goods/task');
+  async getGoodsTask2(params: { uploadID: number; limit?: number; offset?: number }): Promise<BufferGoodsTaskResponse> {
+    const queryParams = new URLSearchParams();
+    queryParams.append('uploadID', params.uploadID.toString());
+    if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
+    if (params.offset !== undefined) queryParams.append('offset', params.offset.toString());
+    return this.client.get<BufferGoodsTaskResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/buffer/goods/task?${queryParams.toString()}`
+    );
   }
 
   /**
@@ -666,8 +687,15 @@ export class ProductsModule {
   const result = await sdk.general.getGoodsFilter();
   console.log(result);
    */
-  async getGoodsFilter(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter');
+  async getGoodsFilter(params?: { limit?: number; offset?: number; filterNmID?: number }): Promise<GoodsFilterResponse> {
+    const queryParams = new URLSearchParams();
+    if (params?.limit !== undefined) queryParams.append('limit', params.limit.toString());
+    if (params?.offset !== undefined) queryParams.append('offset', params.offset.toString());
+    if (params?.filterNmID !== undefined) queryParams.append('filterNmID', params.filterNmID.toString());
+    const queryString = queryParams.toString();
+    return this.client.get<GoodsFilterResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter${queryString ? '?' + queryString : ''}`
+    );
   }
 
   /**
@@ -684,8 +712,8 @@ export class ProductsModule {
   const result = await sdk.general.createGoodsFilter();
   console.log(result);
    */
-  async createGoodsFilter(): Promise<unknown> {
-    return this.client.post<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter', undefined);
+  async createGoodsFilter(): Promise<GoodsFilterResponse> {
+    return this.client.post<GoodsFilterResponse>('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter', undefined);
   }
 
   /**
@@ -702,8 +730,14 @@ export class ProductsModule {
   const result = await sdk.general.getSizeNm();
   console.log(result);
    */
-  async getSizeNm(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/size/nm');
+  async getSizeNm(params: { nmID: number; limit?: number; offset?: number }): Promise<SizeNmResponse> {
+    const queryParams = new URLSearchParams();
+    queryParams.append('nmID', params.nmID.toString());
+    if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
+    if (params.offset !== undefined) queryParams.append('offset', params.offset.toString());
+    return this.client.get<SizeNmResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/list/goods/size/nm?${queryParams.toString()}`
+    );
   }
 
   /**
@@ -720,8 +754,14 @@ export class ProductsModule {
   const result = await sdk.general.getQuarantineGoods();
   console.log(result);
    */
-  async getQuarantineGoods(): Promise<unknown> {
-    return this.client.get<unknown>('https://discounts-prices-api.wildberries.ru/api/v2/quarantine/goods');
+  async getQuarantineGoods(params?: { limit?: number; offset?: number }): Promise<QuarantineGoodsResponse> {
+    const queryParams = new URLSearchParams();
+    if (params?.limit !== undefined) queryParams.append('limit', params.limit.toString());
+    if (params?.offset !== undefined) queryParams.append('offset', params.offset.toString());
+    const queryString = queryParams.toString();
+    return this.client.get<QuarantineGoodsResponse>(
+      `https://discounts-prices-api.wildberries.ru/api/v2/quarantine/goods${queryString ? '?' + queryString : ''}`
+    );
   }
 
   /**
@@ -739,8 +779,11 @@ export class ProductsModule {
   const result = await sdk.general.createStock({});
   console.log(result);
    */
-  async createStock(data: { skus: string[] }): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
-    return this.client.post<{ stocks?: { sku?: string; amount?: number }[] }>('https://marketplace-api.wildberries.ru/api/v3/stocks/{warehouseId}', data);
+  async createStock(warehouseId: number, data: { skus: string[] }): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
+    return this.client.post<{ stocks?: { sku?: string; amount?: number }[] }>(
+      `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
+      data
+    );
   }
 
   /**
@@ -757,8 +800,11 @@ export class ProductsModule {
    * @example
   const result = await sdk.general.updateStock({});
    */
-  async updateStock(data?: { stocks: { sku?: string; amount?: number }[] }): Promise<void> {
-    return this.client.put('https://marketplace-api.wildberries.ru/api/v3/stocks/{warehouseId}', data);
+  async updateStock(warehouseId: number, data?: { stocks: { sku?: string; amount?: number }[] }): Promise<void> {
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
+      data
+    );
   }
 
   /**
@@ -775,98 +821,11 @@ export class ProductsModule {
    * @example
   const result = await sdk.general.deleteStock({});
    */
-  async deleteStock(data: { skus?: string[] }): Promise<void> {
-    return this.client.delete('https://marketplace-api.wildberries.ru/api/v3/stocks/{warehouseId}', data);
-  }
-
-  /**
-   * Получить список складов WB
-   *
-   * Метод возвращает список всех складов WB для привязки к складам продавца. Предназначен для определения складов WB, чтобы сдавать готовые заказы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
-   *
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.offices();
-  console.log(result);
-   */
-  async offices(): Promise<Office[]> {
-    return this.client.get<Office[]>('https://marketplace-api.wildberries.ru/api/v3/offices');
-  }
-
-  /**
-   * Получить список складов продавца
-   *
-   * Метод возвращает список всех складов продавца. Может использоваться для получения [остатков товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
-   *
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.warehouses();
-  console.log(result);
-   */
-  async warehouses(): Promise<Warehouse[]> {
-    return this.client.get<Warehouse[]>('https://marketplace-api.wildberries.ru/api/v3/warehouses');
-  }
-
-  /**
-   * Создать склад продавца
-   *
-   * Метод создаёт склад продавца для работы с [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). Нужно привязать к складу продавца [склад WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) для работы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
-   *
-   * @param data - Request body data
-   * @returns Создано
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.createWarehouses({});
-  console.log(result);
-   */
-  async createWarehouses(data: { name: string; officeId: number }): Promise<{ id?: number }> {
-    return this.client.post<{ id?: number }>('https://marketplace-api.wildberries.ru/api/v3/warehouses', data);
-  }
-
-  /**
-   * Обновить склад продавца
-   *
-   * Метод обновляет данные склада продавца в [списке складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). Данные о привязанном [складе WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) можно изменить один раз в сутки. <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
-   *
-   * @param data - Request body data
-   * @returns Response data
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.updateWarehous({});
-   */
-  async updateWarehous(data: { name: string; officeId: number }): Promise<void> {
-    return this.client.put('https://marketplace-api.wildberries.ru/api/v3/warehouses/{warehouseId}', data);
-  }
-
-  /**
-   * Удалить склад продавца
-   *
-   * Метод удаляет склад продавца из [списка складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
-   *
-   * @returns Response data
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.deleteWarehous();
-   */
-  async deleteWarehous(): Promise<void> {
-    return this.client.delete('https://marketplace-api.wildberries.ru/api/v3/warehouses/{warehouseId}');
+  async deleteStock(warehouseId: number, data: { skus?: string[] }): Promise<void> {
+    return this.client.delete(
+      `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
+      data
+    );
   }
 
   /**
@@ -879,12 +838,15 @@ export class ProductsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @param warehouseId - ID склада продавца
    * @example
-  const result = await sdk.general.getWarehousesContact();
+  const result = await sdk.products.getWarehousesContact(1413259);
   console.log(result);
    */
-  async getWarehousesContact(): Promise<{ contacts?: { comment?: string; phone?: string }[] }> {
-    return this.client.get<{ contacts?: { comment?: string; phone?: string }[] }>('https://marketplace-api.wildberries.ru/api/v3/dbw/warehouses/{warehouseId}/contacts');
+  async getWarehousesContact(warehouseId: number): Promise<{ contacts?: { comment?: string; phone?: string }[] }> {
+    return this.client.get<{ contacts?: { comment?: string; phone?: string }[] }>(
+      `https://marketplace-api.wildberries.ru/api/v3/dbw/warehouses/${warehouseId}/contacts`
+    );
   }
 
   /**
@@ -901,8 +863,11 @@ export class ProductsModule {
    * @example
   const result = await sdk.general.updateWarehousesContact({});
    */
-  async updateWarehousesContact(data: StoreContactRequestBody): Promise<void> {
-    return this.client.put('https://marketplace-api.wildberries.ru/api/v3/dbw/warehouses/{warehouseId}/contacts', data);
+  async updateWarehousesContact(warehouseId: number, data: StoreContactRequestBody): Promise<void> {
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/dbw/warehouses/${warehouseId}/contacts`,
+      data
+    );
   }
 
   // ============================================================================
@@ -1320,6 +1285,52 @@ export class ProductsModule {
       'https://content-api.wildberries.ru/content/v2/cards/delete/trash',
       { nmIDs },
       { rateLimitKey: 'products.postContentCardsDeleteTrash' }
+    );
+  }
+
+  /**
+   * Recover product cards from trash
+   *
+   * Restores previously deleted product cards from trash. Cards retain
+   * the same imtID they had when moved to trash.
+   *
+   * **Important Notes:**
+   * - Cards must be in trash (use deleteProduct to move them there)
+   * - Cards auto-delete 30 days after moving to trash
+   * - Recovered cards keep their original imtID
+   *
+   * **Limits:**
+   * - Max 1000 nmIDs per request
+   *
+   * **Rate Limit:** 100 requests/min, 600ms interval
+   *
+   * @param nmIDs - Array of Wildberries article IDs to recover (max 1000)
+   * @returns Promise with recover response
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429) - automatically retried
+   * @throws {ValidationError} When nmIDs array empty or invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   *
+   * @example
+   * ```typescript
+   * // Recover deleted products
+   * const toRecover = [123456789, 987654321];
+   * const result = await sdk.products.recoverCards(toRecover);
+   *
+   * if (result.error) {
+   *   console.error('Recovery failed:', result.errorText);
+   * } else {
+   *   console.log(`${toRecover.length} products recovered from trash`);
+   * }
+   * ```
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov}
+   */
+  async recoverCards(nmIDs: number[]): Promise<DeleteProductResponse> {
+    return this.client.post<DeleteProductResponse>(
+      'https://content-api.wildberries.ru/content/v2/cards/recover',
+      { nmIDs },
+      { rateLimitKey: 'products.recoverCards' }
     );
   }
 
@@ -2104,6 +2115,29 @@ export class ProductsModule {
       `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
       { skus },
       { rateLimitKey: 'products.deleteStock' }
+    );
+  }
+
+  /**
+   * Получение тегов
+   *
+   * Метод для получения тегов, которые можно использовать при создании карточки товара
+   *
+   * @returns Успешно - массив тегов с их ID, цветами и названиями {@link ProductTag}
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @example
+   * const result = await sdk.products.getTags();
+   * console.log(result.data); // Массив {@link ProductTag} объектов
+   */
+  async getTags(): Promise<TagsResponse> {
+    return this.client.get<TagsResponse>(
+      'https://content-api.wildberries.ru/content/v2/tags',
+      {
+        rateLimitKey: 'products.getTags'
+      }
     );
   }
 

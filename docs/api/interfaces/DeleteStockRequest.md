@@ -2,7 +2,7 @@
 
 # Interface: DeleteStockRequest
 
-Defined in: [types/products.types.ts:1411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1411)
+Defined in: [types/products.types.ts:1411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1411)
 
 Request to delete stock records (bulk operation)
 
@@ -28,4 +28,4 @@ const request: DeleteStockRequest = {
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="skus"></a> `skus` | `string`[] | Array of barcodes to delete (1-1000 items) | [types/products.types.ts:1413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e9a5b5746e4bd889fa580540a16016136d556bb4/src/types/products.types.ts#L1413) |
+| <a id="skus"></a> `skus` | `string`[] | Array of barcodes to delete (1-1000 items) | [types/products.types.ts:1413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/products.types.ts#L1413) |
