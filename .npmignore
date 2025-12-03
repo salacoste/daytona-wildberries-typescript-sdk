@@ -1,0 +1,39 @@
+# Source files (only dist is needed)
+src/
+tests/
+tools/
+docs/
+comparison_docs/
+backlog/
+wildberries_api_doc/
+
+# Config files
+.env*
+.claude/
+.mcp.json
+.ai/
+*.config.ts
+*.config.js
+vite.config.ts
+vitest.config.ts
+tsconfig.json
+.eslintrc*
+.prettierrc*
+
+# Development files
+README.old.md
+*.log
+*.tgz
+coverage/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Test artifacts
+test-*.cjs
+return-types.ts
