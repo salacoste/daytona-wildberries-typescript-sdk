@@ -12,11 +12,11 @@
  */
 export interface StoreContactRequestBody {
   contacts?: {
-  /** Комментарий */
-  comment?: string;
-  /** Номер телефона.<br>Поддерживаются коды стран: - `+7` — Россия, Казахстан - `+374` — Армения - `+375` — Беларусь - `+996` — Кыргызстан */
-  phone?: string;
-}[];
+    /** Комментарий */
+    comment?: string;
+    /** Номер телефона.<br>Поддерживаются коды стран: - `+7` — Россия, Казахстан - `+374` — Армения - `+375` — Беларусь - `+996` — Кыргызстан */
+    phone?: string;
+  }[];
 }
 
 export interface ResponseCardCreate {
@@ -27,11 +27,14 @@ export interface ResponseCardCreate {
   /** Описание ошибки */
   errorText?: string;
   /** Дополнительные ошибки */
-  additionalErrors?: {
-  string?: string;
-} | string | {
-  error: string;
-};
+  additionalErrors?:
+    | {
+        string?: string;
+      }
+    | string
+    | {
+        error: string;
+      };
 }
 
 export interface RequestMoveNmsImtConn {
@@ -139,11 +142,11 @@ export interface ResponseError {
 export interface RequestAlreadyExistsError {
   /** Данные ответа */
   data?: {
-  /** ID загрузки */
-  id?: number;
-  /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
-  alreadyExists?: boolean;
-};
+    /** ID загрузки */
+    id?: number;
+    /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
+    alreadyExists?: boolean;
+  };
   /** Флаг ошибки */
   error?: boolean;
   /** Текст ошибки */
@@ -162,11 +165,11 @@ export type StocksWarehouseError = {
 export interface TaskCreated {
   /** Данные ответа */
   data?: {
-  /** ID загрузки */
-  id?: number;
-  /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
-  alreadyExists?: boolean;
-};
+    /** ID загрузки */
+    id?: number;
+    /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
+    alreadyExists?: boolean;
+  };
   /** Флаг ошибки */
   error?: boolean;
   /** Текст ошибки */
@@ -175,9 +178,9 @@ export interface TaskCreated {
 
 /**
  * Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно.
- * 
+ *
  * Если новая цена со скидкой будет хотя бы в 3 раза меньше старой, она попадёт в [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и товар будет продаваться по старой цене. Ошибка об этом будет в ответах методов состояний загрузок.
- * 
+ *
  * Вы можете изменить цену или скидку с помощью API либо вывести товар из карантина в [личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine)
  */
 export type Goods = Good[];
@@ -193,7 +196,7 @@ export interface Good {
 
 /**
  * Размеры и цены для них. Максимум 1 000 размеров.
- * 
+ *
  * Для товаров с поразмерной установкой цен [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) не применяется
  */
 export type SizeGoodsBody = SizeGoodReq[];
@@ -229,17 +232,17 @@ export interface GoodsList {
   vendorCode?: string;
   /** Размер */
   sizes?: {
-  /** ID размера. В методах Контента это поле `chrtID` */
-  sizeID: number;
-  /** Цена */
-  price: number;
-  /** Цена со скидкой */
-  discountedPrice: number;
-  /** Цена со скидкой, включая скидку WB Клуба */
-  clubDiscountedPrice: number;
-  /** Размер товара */
-  techSizeName: string;
-}[];
+    /** ID размера. В методах Контента это поле `chrtID` */
+    sizeID: number;
+    /** Цена */
+    price: number;
+    /** Цена со скидкой */
+    discountedPrice: number;
+    /** Цена со скидкой, включая скидку WB Клуба */
+    clubDiscountedPrice: number;
+    /** Размер товара */
+    techSizeName: string;
+  }[];
   /** Валюта, по стандарту ISO 4217 */
   currencyIsoCode4217?: string;
   /** Скидка, % */

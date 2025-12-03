@@ -315,8 +315,12 @@ describe('WildberriesSDK', () => {
       new WildberriesSDK({ apiKey: 'test-key' });
 
       // Verify call order: BaseClient first, then modules
-      const baseClientCallOrder = (BaseClient as unknown as { mock: { invocationCallOrder: number[] } }).mock.invocationCallOrder[0];
-      const generalModuleCallOrder = (GeneralModule as unknown as { mock: { invocationCallOrder: number[] } }).mock.invocationCallOrder[0];
+      const baseClientCallOrder = (
+        BaseClient as unknown as { mock: { invocationCallOrder: number[] } }
+      ).mock.invocationCallOrder[0];
+      const generalModuleCallOrder = (
+        GeneralModule as unknown as { mock: { invocationCallOrder: number[] } }
+      ).mock.invocationCallOrder[0];
 
       expect(baseClientCallOrder).toBeLessThan(generalModuleCallOrder);
     });

@@ -42,7 +42,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       post: vi.fn(),
       put: vi.fn(),
       patch: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
 
     productsModule = new ProductsModule(mockClient as unknown as BaseClient);
@@ -61,37 +61,43 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should upload new product card with all required fields', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockCreateResponse);
-      const productData = [{
-        subjectID: 105,
-        variants: [{
-          vendorCode: 'VENDOR-001',
-          brand: 'Test Brand',
-          title: 'Test Product',
-          description: 'Product description',
-          dimensions: {
-            length: 10,
-            width: 5,
-            height: 3,
-            weightBrutto: 200
-          },
-          sizes: [{
-            techSize: 'M',
-            wbSize: 'M',
-            price: 2999,
-            skus: ['BARCODE123456']
-          }],
-          characteristics: [
-            { id: 1, value: 'Red' },
-            { id: 2, value: 'Cotton' }
-          ]
-        }]
-      }];
+      const productData = [
+        {
+          subjectID: 105,
+          variants: [
+            {
+              vendorCode: 'VENDOR-001',
+              brand: 'Test Brand',
+              title: 'Test Product',
+              description: 'Product description',
+              dimensions: {
+                length: 10,
+                width: 5,
+                height: 3,
+                weightBrutto: 200,
+              },
+              sizes: [
+                {
+                  techSize: 'M',
+                  wbSize: 'M',
+                  price: 2999,
+                  skus: ['BARCODE123456'],
+                },
+              ],
+              characteristics: [
+                { id: 1, value: 'Red' },
+                { id: 2, value: 'Cotton' },
+              ],
+            },
+          ],
+        },
+      ];
 
       // Act
       const result = await productsModule.createCardsUpload(productData);
@@ -108,14 +114,16 @@ describe('ProductsModule - Critical CRUD Operations', () => {
     it('should handle multiple variants in single card upload', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockCreateResponse);
-      const multiVariantData = [{
-        subjectID: 105,
-        variants: [
-          { vendorCode: 'VAR-001', title: 'Variant 1', sizes: [] },
-          { vendorCode: 'VAR-002', title: 'Variant 2', sizes: [] },
-          { vendorCode: 'VAR-003', title: 'Variant 3', sizes: [] }
-        ]
-      }];
+      const multiVariantData = [
+        {
+          subjectID: 105,
+          variants: [
+            { vendorCode: 'VAR-001', title: 'Variant 1', sizes: [] },
+            { vendorCode: 'VAR-002', title: 'Variant 2', sizes: [] },
+            { vendorCode: 'VAR-003', title: 'Variant 3', sizes: [] },
+          ],
+        },
+      ];
 
       // Act
       await productsModule.createCardsUpload(multiVariantData);
@@ -132,7 +140,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       const batchData = [
         { subjectID: 105, variants: [{ vendorCode: 'BATCH-001', sizes: [] }] },
         { subjectID: 106, variants: [{ vendorCode: 'BATCH-002', sizes: [] }] },
-        { subjectID: 107, variants: [{ vendorCode: 'BATCH-003', sizes: [] }] }
+        { subjectID: 107, variants: [{ vendorCode: 'BATCH-003', sizes: [] }] },
       ];
 
       // Act
@@ -148,17 +156,21 @@ describe('ProductsModule - Critical CRUD Operations', () => {
     it('should handle wholesale configuration in product upload', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockCreateResponse);
-      const wholesaleData = [{
-        subjectID: 105,
-        variants: [{
-          vendorCode: 'WHOLESALE-001',
-          wholesale: {
-            enabled: true,
-            quantum: 10
-          },
-          sizes: []
-        }]
-      }];
+      const wholesaleData = [
+        {
+          subjectID: 105,
+          variants: [
+            {
+              vendorCode: 'WHOLESALE-001',
+              wholesale: {
+                enabled: true,
+                quantum: 10,
+              },
+              sizes: [],
+            },
+          ],
+        },
+      ];
 
       // Act
       const result = await productsModule.createCardsUpload(wholesaleData);
@@ -170,26 +182,38 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
     it('should throw ValidationError when missing required subjectID', async () => {
       // Arrange
-      const error = new ValidationError('Missing required field: subjectID', { subjectID: 'Required' });
+      const error = new ValidationError('Missing required field: subjectID', {
+        subjectID: 'Required',
+      });
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsUpload([{
-        subjectID: 0,
-        variants: []
-      }])).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsUpload([
+          {
+            subjectID: 0,
+            variants: [],
+          },
+        ])
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError when missing vendorCode', async () => {
       // Arrange
-      const error = new ValidationError('Missing required field: vendorCode', { vendorCode: 'Required' });
+      const error = new ValidationError('Missing required field: vendorCode', {
+        vendorCode: 'Required',
+      });
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsUpload([{
-        subjectID: 105,
-        variants: [{ vendorCode: '', sizes: [] }]
-      }])).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsUpload([
+          {
+            subjectID: 105,
+            variants: [{ vendorCode: '', sizes: [] }],
+          },
+        ])
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate RateLimitError during product creation', async () => {
@@ -198,16 +222,22 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsUpload([{
-        subjectID: 105,
-        variants: [{ vendorCode: 'TEST', sizes: [] }]
-      }])).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createCardsUpload([
+          {
+            subjectID: 105,
+            variants: [{ vendorCode: 'TEST', sizes: [] }],
+          },
+        ])
+      ).rejects.toThrow(RateLimitError);
 
       try {
-        await productsModule.createCardsUpload([{
-          subjectID: 105,
-          variants: [{ vendorCode: 'TEST', sizes: [] }]
-        }]);
+        await productsModule.createCardsUpload([
+          {
+            subjectID: 105,
+            variants: [{ vendorCode: 'TEST', sizes: [] }],
+          },
+        ]);
       } catch (err) {
         expect(err).toBeInstanceOf(RateLimitError);
         if (err instanceof RateLimitError) {
@@ -222,10 +252,14 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsUpload([{
-        subjectID: 105,
-        variants: [{ vendorCode: 'TEST', sizes: [] }]
-      }])).rejects.toThrow(AuthenticationError);
+      await expect(
+        productsModule.createCardsUpload([
+          {
+            subjectID: 105,
+            variants: [{ vendorCode: 'TEST', sizes: [] }],
+          },
+        ])
+      ).rejects.toThrow(AuthenticationError);
     });
   });
 
@@ -238,20 +272,22 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should update product card with nmID and modified fields', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockUpdateResponse);
-      const updateData = [{
-        nmID: 12345,
-        vendorCode: 'VENDOR-001',
-        brand: 'Updated Brand',
-        title: 'Updated Title',
-        description: 'Updated Description',
-        sizes: []
-      }];
+      const updateData = [
+        {
+          nmID: 12345,
+          vendorCode: 'VENDOR-001',
+          brand: 'Updated Brand',
+          title: 'Updated Title',
+          description: 'Updated Description',
+          sizes: [],
+        },
+      ];
 
       // Act
       const result = await productsModule.createCardsUpdate(updateData);
@@ -268,17 +304,19 @@ describe('ProductsModule - Critical CRUD Operations', () => {
     it('should update product dimensions', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockUpdateResponse);
-      const updateData = [{
-        nmID: 12345,
-        vendorCode: 'VENDOR-001',
-        dimensions: {
-          length: 15,
-          width: 10,
-          height: 5,
-          weightBrutto: 300
+      const updateData = [
+        {
+          nmID: 12345,
+          vendorCode: 'VENDOR-001',
+          dimensions: {
+            length: 15,
+            width: 10,
+            height: 5,
+            weightBrutto: 300,
+          },
+          sizes: [],
         },
-        sizes: []
-      }];
+      ];
 
       // Act
       await productsModule.createCardsUpdate(updateData);
@@ -293,16 +331,18 @@ describe('ProductsModule - Critical CRUD Operations', () => {
     it('should update product characteristics', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockUpdateResponse);
-      const updateData = [{
-        nmID: 12345,
-        vendorCode: 'VENDOR-001',
-        characteristics: [
-          { id: 1, value: 'Blue' },
-          { id: 2, value: 'Polyester' },
-          { id: 3, value: 'Russia' }
-        ],
-        sizes: []
-      }];
+      const updateData = [
+        {
+          nmID: 12345,
+          vendorCode: 'VENDOR-001',
+          characteristics: [
+            { id: 1, value: 'Blue' },
+            { id: 2, value: 'Polyester' },
+            { id: 3, value: 'Russia' },
+          ],
+          sizes: [],
+        },
+      ];
 
       // Act
       await productsModule.createCardsUpdate(updateData);
@@ -321,7 +361,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
         { nmID: 12346, vendorCode: 'V2', sizes: [] },
         { nmID: 12347, vendorCode: 'V3', sizes: [] },
         { nmID: 12348, vendorCode: 'V4', sizes: [] },
-        { nmID: 12349, vendorCode: 'V5', sizes: [] }
+        { nmID: 12349, vendorCode: 'V5', sizes: [] },
       ];
 
       // Act
@@ -340,11 +380,15 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsUpdate([{
-        nmID: 0,
-        vendorCode: 'TEST',
-        sizes: []
-      }])).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsUpdate([
+          {
+            nmID: 0,
+            vendorCode: 'TEST',
+            sizes: [],
+          },
+        ])
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate RateLimitError during bulk updates', async () => {
@@ -353,11 +397,15 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsUpdate([{
-        nmID: 12345,
-        vendorCode: 'TEST',
-        sizes: []
-      }])).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createCardsUpdate([
+          {
+            nmID: 12345,
+            vendorCode: 'TEST',
+            sizes: [],
+          },
+        ])
+      ).rejects.toThrow(RateLimitError);
     });
   });
 
@@ -373,14 +421,14 @@ describe('ProductsModule - Critical CRUD Operations', () => {
           vendorCode: 'VENDOR-001',
           subjectID: 105,
           subjectName: 'Socks',
-          trashedAt: '2025-10-25T10:00:00Z'
-        }
+          trashedAt: '2025-10-25T10:00:00Z',
+        },
       ],
       cursor: {
         trashedAt: '2025-10-25T10:00:00Z',
         nmID: 12345,
-        total: 1
-      }
+        total: 1,
+      },
     };
 
     it('should list trashed products with pagination', async () => {
@@ -389,8 +437,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       const filters = {
         settings: {
           cursor: { limit: 100 },
-          filter: { textSearch: 'VENDOR-001' }
-        }
+          filter: { textSearch: 'VENDOR-001' },
+        },
       };
 
       // Act
@@ -414,9 +462,9 @@ describe('ProductsModule - Critical CRUD Operations', () => {
           cursor: {
             limit: 50,
             trashedAt: '2025-10-25T00:00:00Z',
-            nmID: 12300
-          }
-        }
+            nmID: 12300,
+          },
+        },
       };
 
       // Act
@@ -432,8 +480,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockResolvedValue(mockTrashResponse);
       const filters = {
         settings: {
-          filter: { textSearch: 'specific-vendor' }
-        }
+          filter: { textSearch: 'specific-vendor' },
+        },
       };
 
       // Act
@@ -490,7 +538,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: {}
+      additionalErrors: {},
     };
 
     it('should recover single product from trash', async () => {
@@ -531,9 +579,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsRecover({
-        nmIDs: [99999]
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsRecover({
+          nmIDs: [99999],
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError when nmIDs array is empty', async () => {
@@ -542,9 +592,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsRecover({
-        nmIDs: []
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsRecover({
+          nmIDs: [],
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate RateLimitError during recovery', async () => {
@@ -553,9 +605,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsRecover({
-        nmIDs: [12345]
-      })).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createCardsRecover({
+          nmIDs: [12345],
+        })
+      ).rejects.toThrow(RateLimitError);
     });
   });
 
@@ -568,7 +622,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: {}
+      additionalErrors: {},
     };
 
     it('should permanently delete single product from trash', async () => {
@@ -609,9 +663,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createDeleteTrash({
-        nmIDs: [99999, 99998]
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createDeleteTrash({
+          nmIDs: [99999, 99998],
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError when nmIDs array is empty', async () => {
@@ -620,9 +676,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createDeleteTrash({
-        nmIDs: []
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createDeleteTrash({
+          nmIDs: [],
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate AuthenticationError during permanent deletion', async () => {
@@ -631,9 +689,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createDeleteTrash({
-        nmIDs: [12345]
-      })).rejects.toThrow(AuthenticationError);
+      await expect(
+        productsModule.createDeleteTrash({
+          nmIDs: [12345],
+        })
+      ).rejects.toThrow(AuthenticationError);
     });
 
     it('should propagate RateLimitError during permanent deletion', async () => {
@@ -642,9 +702,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createDeleteTrash({
-        nmIDs: [12345]
-      })).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createDeleteTrash({
+          nmIDs: [12345],
+        })
+      ).rejects.toThrow(RateLimitError);
     });
   });
 
@@ -657,7 +719,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should create new content tag with name and color', async () => {
@@ -665,7 +727,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockResolvedValue(mockTagCreateResponse);
       const tagData = {
         name: 'New Collection',
-        color: '#FF5733'
+        color: '#FF5733',
       };
 
       // Act
@@ -683,7 +745,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockTagCreateResponse);
       const tagData = {
-        name: 'Summer Sale'
+        name: 'Summer Sale',
       };
 
       // Act
@@ -702,9 +764,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createContentTag({
-        name: ''
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createContentTag({
+          name: '',
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate RateLimitError during tag creation', async () => {
@@ -713,9 +777,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createContentTag({
-        name: 'Test Tag'
-      })).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createContentTag({
+          name: 'Test Tag',
+        })
+      ).rejects.toThrow(RateLimitError);
     });
   });
 
@@ -724,7 +790,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should update tag name and color', async () => {
@@ -733,7 +799,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       const tagId = 123;
       const updateData = {
         name: 'Updated Collection',
-        color: '#00FF00'
+        color: '#00FF00',
       };
 
       // Act
@@ -752,7 +818,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.patch.mockResolvedValue(mockTagUpdateResponse);
       const tagId = 456;
       const updateData = {
-        name: 'Winter Sale'
+        name: 'Winter Sale',
       };
 
       // Act
@@ -771,9 +837,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.patch.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.updateContentTag(0, {
-        name: 'Test'
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.updateContentTag(0, {
+          name: 'Test',
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate AuthenticationError during tag update', async () => {
@@ -782,9 +850,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.patch.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.updateContentTag(123, {
-        name: 'Test'
-      })).rejects.toThrow(AuthenticationError);
+      await expect(
+        productsModule.updateContentTag(123, {
+          name: 'Test',
+        })
+      ).rejects.toThrow(AuthenticationError);
     });
   });
 
@@ -793,7 +863,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should delete tag by ID', async () => {
@@ -836,14 +906,10 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
   describe('createContentBarcodes() - Generate Product Barcodes', () => {
     const mockBarcodeResponse = {
-      data: [
-        '1234567890123',
-        '1234567890124',
-        '1234567890125'
-      ],
+      data: ['1234567890123', '1234567890124', '1234567890125'],
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should generate specified number of barcodes', async () => {
@@ -869,7 +935,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
         data: ['1234567890123'],
         error: false,
         errorText: '',
-        additionalErrors: null
+        additionalErrors: null,
       };
       mockClient.post.mockResolvedValue(singleBarcodeResponse);
 
@@ -883,12 +949,15 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
     it('should generate bulk barcodes (max limit)', async () => {
       // Arrange
-      const bulkBarcodes = Array.from({ length: 100 }, (_, i) => `123456789${String(i).padStart(4, '0')}`);
+      const bulkBarcodes = Array.from(
+        { length: 100 },
+        (_, i) => `123456789${String(i).padStart(4, '0')}`
+      );
       mockClient.post.mockResolvedValue({
         data: bulkBarcodes,
         error: false,
         errorText: '',
-        additionalErrors: null
+        additionalErrors: null,
       });
 
       // Act
@@ -908,9 +977,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createContentBarcodes({
-        count: 10000
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createContentBarcodes({
+          count: 10000,
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError when count is zero or negative', async () => {
@@ -919,9 +990,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createContentBarcodes({
-        count: 0
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createContentBarcodes({
+          count: 0,
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate RateLimitError during barcode generation', async () => {
@@ -930,9 +1003,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createContentBarcodes({
-        count: 10
-      })).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createContentBarcodes({
+          count: 10,
+        })
+      ).rejects.toThrow(RateLimitError);
     });
 
     it('should propagate AuthenticationError during barcode generation', async () => {
@@ -941,9 +1016,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createContentBarcodes({
-        count: 5
-      })).rejects.toThrow(AuthenticationError);
+      await expect(
+        productsModule.createContentBarcodes({
+          count: 5,
+        })
+      ).rejects.toThrow(AuthenticationError);
     });
   });
 
@@ -956,7 +1033,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should merge products under target IMT ID', async () => {
@@ -964,7 +1041,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockResolvedValue(mockMoveResponse);
       const mergeData = {
         targetIMT: 67890,
-        nmIDs: [12345, 12346, 12347]
+        nmIDs: [12345, 12346, 12347],
       };
 
       // Act
@@ -982,7 +1059,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockMoveResponse);
       const splitData = {
-        nmIDs: [12345, 12346]
+        nmIDs: [12345, 12346],
       };
 
       // Act
@@ -1002,7 +1079,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       const maxNmIDs = Array.from({ length: 30 }, (_, i) => 10000 + i);
       const mergeData = {
         targetIMT: 67890,
-        nmIDs: maxNmIDs
+        nmIDs: maxNmIDs,
       };
 
       // Act
@@ -1016,15 +1093,19 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
     it('should throw ValidationError when exceeding 30 nmIDs limit', async () => {
       // Arrange
-      const error = new ValidationError('Maximum 30 nmIDs allowed per operation', { nmIDs: 'Max 30' });
+      const error = new ValidationError('Maximum 30 nmIDs allowed per operation', {
+        nmIDs: 'Max 30',
+      });
       mockClient.post.mockRejectedValue(error);
       const tooManyNmIDs = Array.from({ length: 31 }, (_, i) => 10000 + i);
 
       // Act & Assert
-      await expect(productsModule.createCardsMovenm({
-        targetIMT: 67890,
-        nmIDs: tooManyNmIDs
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsMovenm({
+          targetIMT: 67890,
+          nmIDs: tooManyNmIDs,
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError when nmIDs array is empty', async () => {
@@ -1033,9 +1114,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsMovenm({
-        nmIDs: []
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsMovenm({
+          nmIDs: [],
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate ValidationError for invalid target IMT', async () => {
@@ -1044,10 +1127,12 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsMovenm({
-        targetIMT: 99999,
-        nmIDs: [12345]
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createCardsMovenm({
+          targetIMT: 99999,
+          nmIDs: [12345],
+        })
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should propagate RateLimitError during merge/split operation', async () => {
@@ -1056,10 +1141,12 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsMovenm({
-        targetIMT: 67890,
-        nmIDs: [12345]
-      })).rejects.toThrow(RateLimitError);
+      await expect(
+        productsModule.createCardsMovenm({
+          targetIMT: 67890,
+          nmIDs: [12345],
+        })
+      ).rejects.toThrow(RateLimitError);
     });
 
     it('should propagate AuthenticationError during merge/split', async () => {
@@ -1068,9 +1155,11 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsMovenm({
-        nmIDs: [12345]
-      })).rejects.toThrow(AuthenticationError);
+      await expect(
+        productsModule.createCardsMovenm({
+          nmIDs: [12345],
+        })
+      ).rejects.toThrow(AuthenticationError);
     });
   });
 });

@@ -128,91 +128,91 @@ export interface ReturnTariffsResponse {
 export interface Commission {
   /** Список комиссий */
   report?: {
-  /** Комиссия по модели «Бронирование», % */
-  kgvpBooking?: number;
-  /** Комиссия по модели «Маркетплейс» (`FBS`), % */
-  kgvpMarketplace?: number;
-  /** Комиссия по модели «Самовывоз из магазина продавца» (`C&C`), % */
-  kgvpPickup?: number;
-  /** Комиссия по моделям «Витрина» (`DBS`) и «Курьер WB» (`DBW`), % */
-  kgvpSupplier?: number;
-  /** Комиссия по модели «Витрина экспресс» (`EDBS`), % */
-  kgvpSupplierExpress?: number;
-  /** Комиссия по модели «Склад WB» (`FBW`), % */
-  paidStorageKgvp?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия по модели «Бронирование», % */
+    kgvpBooking?: number;
+    /** Комиссия по модели «Маркетплейс» (`FBS`), % */
+    kgvpMarketplace?: number;
+    /** Комиссия по модели «Самовывоз из магазина продавца» (`C&C`), % */
+    kgvpPickup?: number;
+    /** Комиссия по моделям «Витрина» (`DBS`) и «Курьер WB» (`DBW`), % */
+    kgvpSupplier?: number;
+    /** Комиссия по модели «Витрина экспресс» (`EDBS`), % */
+    kgvpSupplierExpress?: number;
+    /** Комиссия по модели «Склад WB» (`FBW`), % */
+    paidStorageKgvp?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionChina {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из Китая, % */
-  kgvpChina?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из Китая, % */
+    kgvpChina?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionTurkey {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из Турции, % */
-  kgvpTurkey?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из Турции, % */
+    kgvpTurkey?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionUzbekistan {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из Узбекистана, % */
-  kgvpUzbekistan?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из Узбекистана, % */
+    kgvpUzbekistan?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionUAE {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из ОАЭ, % */
-  kgvpUAE?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из ОАЭ, % */
+    kgvpUAE?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface BadRequest {

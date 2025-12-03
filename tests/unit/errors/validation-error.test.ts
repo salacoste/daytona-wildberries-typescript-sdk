@@ -184,7 +184,13 @@ describe('ValidationError', () => {
   describe('serialization', () => {
     it('should serialize to JSON preserving properties', () => {
       const fieldErrors = { email: 'Invalid format' };
-      const error = new ValidationError('Validation failed', fieldErrors, 422, { code: 'ERR' }, 'req-123');
+      const error = new ValidationError(
+        'Validation failed',
+        fieldErrors,
+        422,
+        { code: 'ERR' },
+        'req-123'
+      );
       const json = JSON.stringify(error);
       const parsed = JSON.parse(json) as {
         message: string;
@@ -285,7 +291,8 @@ describe('ValidationError', () => {
     });
 
     it('should handle long error messages', () => {
-      const longMessage = 'This is a very long error message that describes in detail what went wrong with the validation';
+      const longMessage =
+        'This is a very long error message that describes in detail what went wrong with the validation';
       const fieldErrors = { field: longMessage };
       const error = new ValidationError(undefined, fieldErrors);
       const userMessage = error.getUserMessage();

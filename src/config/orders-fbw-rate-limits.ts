@@ -17,41 +17,41 @@ export const ordersFBWRateLimits: Record<string, RateLimitConfig> = {
   'orders-fbw.acceptanceCoefficients': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 6
+    burstLimit: 6,
   },
   'orders-fbw.postAcceptanceOptions': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 6
+    burstLimit: 6,
   },
   'orders-fbw.warehouses': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 6
+    burstLimit: 6,
   },
   'orders-fbw.transitTariffs': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 10
+    burstLimit: 10,
   },
   'orders-fbw.postSupplies': {
     requestsPerMinute: 30,
     intervalSeconds: 2,
-    burstLimit: 10
+    burstLimit: 10,
   },
   'orders-fbw.supplies': {
     requestsPerMinute: 30,
     intervalSeconds: 2,
-    burstLimit: 10
+    burstLimit: 10,
   },
   'orders-fbw.suppliesGoods': {
     requestsPerMinute: 30,
     intervalSeconds: 2,
-    burstLimit: 10
+    burstLimit: 10,
   },
   'orders-fbw.suppliesPackage': {
     requestsPerMinute: 30,
     intervalSeconds: 2,
-    burstLimit: 10
-  }
+    burstLimit: 10,
+  },
 };

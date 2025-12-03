@@ -220,7 +220,9 @@ export class CommunicationsModule {
       if (typeof next !== 'number' || next <= 0) {
         throw new ValidationError(
           'Invalid next parameter: must be a positive number (Unix timestamp with milliseconds)',
-          { next: `Invalid value: ${next}. Expected positive number (Unix timestamp with milliseconds).` }
+          {
+            next: `Invalid value: ${next}. Expected positive number (Unix timestamp with milliseconds).`,
+          }
         );
       }
     }
@@ -302,36 +304,31 @@ export class CommunicationsModule {
   ): Promise<MessageResponse> {
     // Validate replySign (required, max 255 characters)
     if (replySign.trim().length === 0) {
-      throw new ValidationError(
-        'replySign is required',
-        { replySign: 'This field is required. Obtain from Chat.replySign or Event.replySign (when isNewChat=true).' }
-      );
+      throw new ValidationError('replySign is required', {
+        replySign:
+          'This field is required. Obtain from Chat.replySign or Event.replySign (when isNewChat=true).',
+      });
     }
 
     if (replySign.length > 255) {
-      throw new ValidationError(
-        'replySign exceeds maximum length',
-        { replySign: `Maximum length is 255 characters. Received ${replySign.length} characters.` }
-      );
+      throw new ValidationError('replySign exceeds maximum length', {
+        replySign: `Maximum length is 255 characters. Received ${replySign.length} characters.`,
+      });
     }
 
     // Validate message length if provided
     if (message !== undefined && message.length > 1000) {
-      throw new ValidationError(
-        'message exceeds maximum length',
-        { message: `Maximum length is 1000 characters. Received ${message.length} characters.` }
-      );
+      throw new ValidationError('message exceeds maximum length', {
+        message: `Maximum length is 1000 characters. Received ${message.length} characters.`,
+      });
     }
 
     // Validate that at least one of message or files is provided
     if (!message && (!files || files.length === 0)) {
-      throw new ValidationError(
-        'At least one of message or files must be provided',
-        {
-          message: 'Either provide message text or file attachments.',
-          files: 'Either provide message text or file attachments.',
-        }
-      );
+      throw new ValidationError('At least one of message or files must be provided', {
+        message: 'Either provide message text or file attachments.',
+        files: 'Either provide message text or file attachments.',
+      });
     }
 
     // Build FormData for multipart/form-data request
@@ -568,11 +565,7 @@ export class CommunicationsModule {
    * }
    * ```
    */
-  async answerQuestion(
-    questionId: string,
-    answerText: string,
-    reject?: boolean
-  ): Promise<void> {
+  async answerQuestion(questionId: string, answerText: string, reject?: boolean): Promise<void> {
     if (!questionId || questionId.trim() === '') {
       throw new ValidationError('Question ID is required');
     }
@@ -996,14 +989,10 @@ export class CommunicationsModule {
       throw new ValidationError('Response text is required');
     }
     if (responseText.length < 2) {
-      throw new ValidationError(
-        'Response text must be at least 2 characters long'
-      );
+      throw new ValidationError('Response text must be at least 2 characters long');
     }
     if (responseText.length > 5000) {
-      throw new ValidationError(
-        'Response text must not exceed 5000 characters'
-      );
+      throw new ValidationError('Response text must not exceed 5000 characters');
     }
 
     const payload: RespondToReviewRequest = {
@@ -1067,10 +1056,7 @@ export class CommunicationsModule {
    * );
    * ```
    */
-  async editReviewResponse(
-    reviewId: string,
-    newResponseText: string
-  ): Promise<void> {
+  async editReviewResponse(reviewId: string, newResponseText: string): Promise<void> {
     if (!reviewId || reviewId.trim() === '') {
       throw new ValidationError('Review ID is required');
     }
@@ -1078,14 +1064,10 @@ export class CommunicationsModule {
       throw new ValidationError('Response text is required');
     }
     if (newResponseText.length < 2) {
-      throw new ValidationError(
-        'Response text must be at least 2 characters long'
-      );
+      throw new ValidationError('Response text must be at least 2 characters long');
     }
     if (newResponseText.length > 5000) {
-      throw new ValidationError(
-        'Response text must not exceed 5000 characters'
-      );
+      throw new ValidationError('Response text must not exceed 5000 characters');
     }
 
     const payload: RespondToReviewRequest = {
@@ -1198,42 +1180,41 @@ export class CommunicationsModule {
 
     // Validate filter parameters
     if (params.limit !== undefined && (params.limit < 1 || params.limit > 1000)) {
-      throw new ValidationError(
-        'Invalid limit parameter: must be between 1 and 1000',
-        { limit: `Invalid value: ${params.limit}. Expected: 1-1000` }
-      );
+      throw new ValidationError('Invalid limit parameter: must be between 1 and 1000', {
+        limit: `Invalid value: ${params.limit}. Expected: 1-1000`,
+      });
     }
 
     if (params.offset !== undefined && params.offset < 0) {
-      throw new ValidationError(
-        'Invalid offset parameter: must be non-negative',
-        { offset: `Invalid value: ${params.offset}. Expected: >= 0` }
-      );
+      throw new ValidationError('Invalid offset parameter: must be non-negative', {
+        offset: `Invalid value: ${params.offset}. Expected: >= 0`,
+      });
     }
 
     if (params.minPriority !== undefined && (params.minPriority < 1 || params.minPriority > 10)) {
-      throw new ValidationError(
-        'Invalid minPriority parameter: must be between 1 and 10',
-        { minPriority: `Invalid value: ${params.minPriority}. Expected: 1-10` }
-      );
+      throw new ValidationError('Invalid minPriority parameter: must be between 1 and 10', {
+        minPriority: `Invalid value: ${params.minPriority}. Expected: 1-10`,
+      });
     }
 
     if (params.maxPriority !== undefined && (params.maxPriority < 1 || params.maxPriority > 10)) {
-      throw new ValidationError(
-        'Invalid maxPriority parameter: must be between 1 and 10',
-        { maxPriority: `Invalid value: ${params.maxPriority}. Expected: 1-10` }
-      );
+      throw new ValidationError('Invalid maxPriority parameter: must be between 1 and 10', {
+        maxPriority: `Invalid value: ${params.maxPriority}. Expected: 1-10`,
+      });
     }
 
     // Validate min/max priority combination
-    if (params.minPriority !== undefined && params.maxPriority !== undefined &&
-        params.minPriority > params.maxPriority) {
+    if (
+      params.minPriority !== undefined &&
+      params.maxPriority !== undefined &&
+      params.minPriority > params.maxPriority
+    ) {
       throw new ValidationError(
         'Invalid priority range: minPriority cannot be greater than maxPriority',
         {
           minPriority: String(params.minPriority),
           maxPriority: String(params.maxPriority),
-          error: 'minPriority > maxPriority'
+          error: 'minPriority > maxPriority',
         }
       );
     }
@@ -1262,7 +1243,7 @@ export class CommunicationsModule {
       'https://feedbacks-api.wildberries.ru/api/v1/templates',
       {
         params: validParams,
-        rateLimitKey: 'communications.getTemplates'
+        rateLimitKey: 'communications.getTemplates',
       }
     );
   }
@@ -1369,7 +1350,7 @@ export class CommunicationsModule {
    *       required: true,
    *       maxLength: 500,
    *       description: 'Detailed information about the product'
-     *   },
+   *   },
    *     {
    *       name: 'additional_info',
    *       displayName: 'Additional Information',
@@ -1385,58 +1366,54 @@ export class CommunicationsModule {
   async createTemplate(templateData: TemplateData): Promise<TemplateOperationResponse> {
     // Validate required fields
     if (!templateData.name || templateData.name.trim() === '') {
-      throw new ValidationError(
-        'Template name is required',
-        { name: 'This field is required and cannot be empty' }
-      );
+      throw new ValidationError('Template name is required', {
+        name: 'This field is required and cannot be empty',
+      });
     }
 
     if (!templateData.content || templateData.content.trim() === '') {
-      throw new ValidationError(
-        'Template content is required',
-        { content: 'This field is required and cannot be empty' }
-      );
+      throw new ValidationError('Template content is required', {
+        content: 'This field is required and cannot be empty',
+      });
     }
 
     // Category is required by type, validate it's not empty
     if (templateData.category.trim().length === 0) {
-      throw new ValidationError(
-        'Template category is required',
-        { category: 'This field is required. Choose from: general, product_info, shipping, returns, technical, billing, complaints, feedback, promotions, custom' }
-      );
+      throw new ValidationError('Template category is required', {
+        category:
+          'This field is required. Choose from: general, product_info, shipping, returns, technical, billing, complaints, feedback, promotions, custom',
+      });
     }
 
     // Validate template name length
     if (templateData.name.length > 200) {
-      throw new ValidationError(
-        'Template name too long',
-        { name: `Maximum length is 200 characters. Received ${templateData.name.length} characters` }
-      );
+      throw new ValidationError('Template name too long', {
+        name: `Maximum length is 200 characters. Received ${templateData.name.length} characters`,
+      });
     }
 
     // Validate template content length
     if (templateData.content.length > 2000) {
-      throw new ValidationError(
-        'Template content too long',
-        { content: `Maximum length is 2000 characters. Received ${templateData.content.length} characters` }
-      );
+      throw new ValidationError('Template content too long', {
+        content: `Maximum length is 2000 characters. Received ${templateData.content.length} characters`,
+      });
     }
 
     // Validate priority if provided
-    if (templateData.priority !== undefined &&
-        (templateData.priority < 1 || templateData.priority > 10)) {
-      throw new ValidationError(
-        'Invalid template priority',
-        { priority: `Priority must be between 1 and 10. Received ${templateData.priority}` }
-      );
+    if (
+      templateData.priority !== undefined &&
+      (templateData.priority < 1 || templateData.priority > 10)
+    ) {
+      throw new ValidationError('Invalid template priority', {
+        priority: `Priority must be between 1 and 10. Received ${templateData.priority}`,
+      });
     }
 
     // Validate language if provided
     if (templateData.language && !/^[a-z]{2}(-[A-Z]{2})?$/.test(templateData.language)) {
-      throw new ValidationError(
-        'Invalid language format',
-        { language: `Language must be in format "en" or "en-US". Received "${templateData.language}"` }
-      );
+      throw new ValidationError('Invalid language format', {
+        language: `Language must be in format "en" or "en-US". Received "${templateData.language}"`,
+      });
     }
 
     // Validate variables if provided
@@ -1505,55 +1482,56 @@ export class CommunicationsModule {
    * });
    * ```
    */
-  async updateTemplate(templateId: string, templateData: TemplateData): Promise<TemplateOperationResponse> {
+  async updateTemplate(
+    templateId: string,
+    templateData: TemplateData
+  ): Promise<TemplateOperationResponse> {
     if (!templateId || templateId.trim() === '') {
-      throw new ValidationError(
-        'Template ID is required',
-        { templateId: 'This field is required and cannot be empty' }
-      );
+      throw new ValidationError('Template ID is required', {
+        templateId: 'This field is required and cannot be empty',
+      });
     }
 
     // Validate template data (same rules as create)
     if (templateData.name.trim().length === 0) {
-      throw new ValidationError(
-        'Template name cannot be empty',
-        { name: 'This field cannot be empty' }
-      );
+      throw new ValidationError('Template name cannot be empty', {
+        name: 'This field cannot be empty',
+      });
     }
     if (templateData.name.length > 200) {
-      throw new ValidationError(
-        'Template name too long',
-        { name: `Maximum length is 200 characters. Received ${templateData.name.length} characters` }
-      );
+      throw new ValidationError('Template name too long', {
+        name: `Maximum length is 200 characters. Received ${templateData.name.length} characters`,
+      });
     }
 
     if (templateData.content.trim().length === 0) {
-      throw new ValidationError(
-        'Template content cannot be empty',
-        { content: 'This field cannot be empty' }
-      );
+      throw new ValidationError('Template content cannot be empty', {
+        content: 'This field cannot be empty',
+      });
     }
     if (templateData.content.length > 2000) {
-      throw new ValidationError(
-        'Template content too long',
-        { content: `Maximum length is 2000 characters. Received ${templateData.content.length} characters` }
-      );
+      throw new ValidationError('Template content too long', {
+        content: `Maximum length is 2000 characters. Received ${templateData.content.length} characters`,
+      });
     }
 
-    if (templateData.priority !== undefined &&
-        (templateData.priority < 1 || templateData.priority > 10)) {
-      throw new ValidationError(
-        'Invalid template priority',
-        { priority: `Priority must be between 1 and 10. Received ${templateData.priority}` }
-      );
+    if (
+      templateData.priority !== undefined &&
+      (templateData.priority < 1 || templateData.priority > 10)
+    ) {
+      throw new ValidationError('Invalid template priority', {
+        priority: `Priority must be between 1 and 10. Received ${templateData.priority}`,
+      });
     }
 
-    if (templateData.language !== undefined &&
-        templateData.language && !/^[a-z]{2}(-[A-Z]{2})?$/.test(templateData.language)) {
-      throw new ValidationError(
-        'Invalid language format',
-        { language: `Language must be in format "en" or "en-US". Received "${templateData.language}"` }
-      );
+    if (
+      templateData.language !== undefined &&
+      templateData.language &&
+      !/^[a-z]{2}(-[A-Z]{2})?$/.test(templateData.language)
+    ) {
+      throw new ValidationError('Invalid language format', {
+        language: `Language must be in format "en" or "en-US". Received "${templateData.language}"`,
+      });
     }
 
     // Validate variables if provided
@@ -1648,10 +1626,9 @@ export class CommunicationsModule {
    */
   async deleteTemplate(templateId: string): Promise<TemplateOperationResponse> {
     if (!templateId || templateId.trim() === '') {
-      throw new ValidationError(
-        'Template ID is required',
-        { templateId: 'This field is required and cannot be empty' }
-      );
+      throw new ValidationError('Template ID is required', {
+        templateId: 'This field is required and cannot be empty',
+      });
     }
 
     return this.client.delete<TemplateOperationResponse>(
@@ -1761,54 +1738,54 @@ export class CommunicationsModule {
     for (const variable of variables) {
       // Check required fields
       if (!variable.name || typeof variable.name !== 'string') {
-        throw new ValidationError(
-          'Variable name is required and must be a string',
-          { variable: 'Variable name is required and must be a string' }
-        );
+        throw new ValidationError('Variable name is required and must be a string', {
+          variable: 'Variable name is required and must be a string',
+        });
       }
 
       if (!variable.displayName || typeof variable.displayName !== 'string') {
-        throw new ValidationError(
-          'Variable display name is required and must be a string',
-          { variable: 'Variable display name is required and must be a string' }
-        );
+        throw new ValidationError('Variable display name is required and must be a string', {
+          variable: 'Variable display name is required and must be a string',
+        });
       }
 
-      const validTypes: TemplateVariable['type'][] = ['text', 'number', 'date', 'boolean', 'select', 'multiline'];
+      const validTypes: TemplateVariable['type'][] = [
+        'text',
+        'number',
+        'date',
+        'boolean',
+        'select',
+        'multiline',
+      ];
       if (!validTypes.includes(variable.type)) {
-        throw new ValidationError(
-          'Invalid variable type',
-          {
-            variable: `Invalid type: ${variable.type}. Valid types: ${validTypes.join(', ')}`
-          }
-        );
+        throw new ValidationError('Invalid variable type', {
+          variable: `Invalid type: ${variable.type}. Valid types: ${validTypes.join(', ')}`,
+        });
       }
 
       // Check for duplicate variable names
       if (variableNames.has(variable.name)) {
-        throw new ValidationError(
-          'Duplicate variable name',
-          { variable: `Variable name "${variable.name}" is already used` }
-        );
+        throw new ValidationError('Duplicate variable name', {
+          variable: `Variable name "${variable.name}" is already used`,
+        });
       }
       variableNames.add(variable.name);
 
       // Validate select type has options
-      if (variable.type === 'select' && (!variable.options || !Array.isArray(variable.options) || variable.options.length === 0)) {
-        throw new ValidationError(
-          'Select type variable must have options',
-          { variable: `Variable "${variable.name}" of type select must have options array` }
-        );
+      if (
+        variable.type === 'select' &&
+        (!variable.options || !Array.isArray(variable.options) || variable.options.length === 0)
+      ) {
+        throw new ValidationError('Select type variable must have options', {
+          variable: `Variable "${variable.name}" of type select must have options array`,
+        });
       }
 
       // Validate regex pattern if provided
       if (variable.validationPattern && typeof variable.validationPattern !== 'string') {
-        throw new ValidationError(
-          'Invalid validation pattern',
-          {
-            variable: `Variable "${variable.name}" validation pattern must be a string`
-          }
-        );
+        throw new ValidationError('Invalid validation pattern', {
+          variable: `Variable "${variable.name}" validation pattern must be a string`,
+        });
       }
 
       // Test regex pattern validity
@@ -1816,25 +1793,21 @@ export class CommunicationsModule {
         try {
           new RegExp(variable.validationPattern);
         } catch {
-          throw new ValidationError(
-            'Invalid regex pattern',
-            {
-              variable: `Variable "${variable.name}" has invalid regex pattern: ${variable.validationPattern}`
-            }
-          );
+          throw new ValidationError('Invalid regex pattern', {
+            variable: `Variable "${variable.name}" has invalid regex pattern: ${variable.validationPattern}`,
+          });
         }
       }
 
       // Validate maxLength for text types
-      if ((variable.type === 'text' || variable.type === 'multiline') &&
-          variable.maxLength !== undefined &&
-          (typeof variable.maxLength !== 'number' || variable.maxLength <= 0)) {
-        throw new ValidationError(
-          'Invalid maxLength',
-          {
-            variable: `Variable "${variable.name}" maxLength must be a positive number`
-          }
-        );
+      if (
+        (variable.type === 'text' || variable.type === 'multiline') &&
+        variable.maxLength !== undefined &&
+        (typeof variable.maxLength !== 'number' || variable.maxLength <= 0)
+      ) {
+        throw new ValidationError('Invalid maxLength', {
+          variable: `Variable "${variable.name}" maxLength must be a positive number`,
+        });
       }
     }
   }
@@ -2011,10 +1984,9 @@ export class CommunicationsModule {
     const queryString = params.toString();
     const url = `https://feedbacks-api.wildberries.ru/api/v1/returns${queryString ? `?${queryString}` : ''}`;
 
-    return this.client.get<ReturnRequestsResponse>(
-      url,
-      { rateLimitKey: 'communications.getReturnRequests' }
-    );
+    return this.client.get<ReturnRequestsResponse>(url, {
+      rateLimitKey: 'communications.getReturnRequests',
+    });
   }
 
   /**
@@ -2082,21 +2054,18 @@ export class CommunicationsModule {
     const payload: Record<string, unknown> = {
       action,
       processedAt: new Date().toISOString(),
-      ...options
+      ...options,
     };
 
     // Add default notes if not provided
-    payload.notes ??= (action === 'approve'
-      ? 'Return approved by seller'
-      : 'Return rejected by seller');
+    payload.notes ??=
+      action === 'approve' ? 'Return approved by seller' : 'Return rejected by seller';
 
     const url = `https://feedbacks-api.wildberries.ru/api/v1/returns/${returnId}/process`;
 
-    return this.client.post<ReturnProcessResponse>(
-      url,
-      payload,
-      { rateLimitKey: 'communications.processReturnRequest' }
-    );
+    return this.client.post<ReturnProcessResponse>(url, payload, {
+      rateLimitKey: 'communications.processReturnRequest',
+    });
   }
 
   /**
@@ -2116,9 +2085,21 @@ export class CommunicationsModule {
     // Validate status values
     if (filters.status) {
       const validStatuses: ReturnStatus[] = [
-        'created', 'processing', 'canceled', 'delivered', 'refunded', 'closed',
-        'error', 'expired', 'rejected', 'returned', 'archived', 'draft',
-        'pending', 'in_transit', 'ready_for_pickup'
+        'created',
+        'processing',
+        'canceled',
+        'delivered',
+        'refunded',
+        'closed',
+        'error',
+        'expired',
+        'rejected',
+        'returned',
+        'archived',
+        'draft',
+        'pending',
+        'in_transit',
+        'ready_for_pickup',
       ];
 
       for (const status of filters.status) {
@@ -2246,9 +2227,21 @@ export class CommunicationsModule {
 
     // Validate status value
     const validStatuses = [
-      'created', 'processing', 'canceled', 'delivered',
-      'refunded', 'closed', 'error', 'expired', 'rejected',
-      'returned', 'archived', 'draft', 'pending', 'in_transit', 'ready_for_pickup'
+      'created',
+      'processing',
+      'canceled',
+      'delivered',
+      'refunded',
+      'closed',
+      'error',
+      'expired',
+      'rejected',
+      'returned',
+      'archived',
+      'draft',
+      'pending',
+      'in_transit',
+      'ready_for_pickup',
     ];
 
     if (!validStatuses.includes(status)) {
@@ -2265,16 +2258,14 @@ export class CommunicationsModule {
     const payload = {
       status,
       notes: notes ?? '',
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
     const url = `https://feedbacks-api.wildberries.ru/api/v1/returns/${returnId}/status`;
 
-    return this.client.put<ReturnProcessResponse>(
-      url,
-      payload,
-      { rateLimitKey: 'communications.updateReturnStatus' }
-    );
+    return this.client.put<ReturnProcessResponse>(url, payload, {
+      rateLimitKey: 'communications.updateReturnStatus',
+    });
   }
 
   /**
@@ -2383,10 +2374,9 @@ export class CommunicationsModule {
     const queryString = params.toString();
     const url = `https://feedbacks-api.wildberries.ru/api/v1/returns/analytics${queryString ? `?${queryString}` : ''}`;
 
-    return this.client.get<ReturnAnalyticsResponse>(
-      url,
-      { rateLimitKey: 'communications.getReturnAnalytics' }
-    );
+    return this.client.get<ReturnAnalyticsResponse>(url, {
+      rateLimitKey: 'communications.getReturnAnalytics',
+    });
   }
 
   /**
@@ -2415,12 +2405,24 @@ export class CommunicationsModule {
     // Validate status values
     if (filters.status) {
       const validStatuses = [
-        'created', 'processing', 'canceled', 'delivered',
-        'refunded', 'closed', 'error', 'expired', 'rejected',
-        'returned', 'archived', 'draft', 'pending', 'in_transit', 'ready_for_pickup'
+        'created',
+        'processing',
+        'canceled',
+        'delivered',
+        'refunded',
+        'closed',
+        'error',
+        'expired',
+        'rejected',
+        'returned',
+        'archived',
+        'draft',
+        'pending',
+        'in_transit',
+        'ready_for_pickup',
       ];
 
-      const invalidStatuses = filters.status.filter(status => !validStatuses.includes(status));
+      const invalidStatuses = filters.status.filter((status) => !validStatuses.includes(status));
       if (invalidStatuses.length > 0) {
         throw new ValidationError(
           `Invalid status values: ${invalidStatuses.join(', ')}. Valid statuses: ${validStatuses.join(', ')}`
@@ -2440,10 +2442,13 @@ export class CommunicationsModule {
 
     // Validate boolean fields
     const booleanFields = [
-      'includeTrends', 'includeQualityMetrics', 'includeCostAnalysis', 'includeCustomerFeedback'
+      'includeTrends',
+      'includeQualityMetrics',
+      'includeCostAnalysis',
+      'includeCustomerFeedback',
     ];
 
-    booleanFields.forEach(field => {
+    booleanFields.forEach((field) => {
       const filterKey = field as keyof ReturnAnalyticsFilters;
       if (filters[filterKey] !== undefined && typeof filters[filterKey] !== 'boolean') {
         throw new ValidationError(`${field} must be a boolean value`);
@@ -2544,10 +2549,7 @@ export class CommunicationsModule {
     const queryString = params.toString();
     const url = `https://feedbacks-api.wildberries.ru/api/v1/chat/history${queryString ? `?${queryString}` : ''}`;
 
-    return this.client.get<ChatHistory>(
-      url,
-      { rateLimitKey: 'communications.getChatHistory' }
-    );
+    return this.client.get<ChatHistory>(url, { rateLimitKey: 'communications.getChatHistory' });
   }
 
   /**
@@ -2594,10 +2596,7 @@ export class CommunicationsModule {
 
     const url = `https://feedbacks-api.wildberries.ru/api/v1/chat/${encodeURIComponent(chatId)}`;
 
-    return this.client.get<ChatDetails>(
-      url,
-      { rateLimitKey: 'communications.getChatById' }
-    );
+    return this.client.get<ChatDetails>(url, { rateLimitKey: 'communications.getChatById' });
   }
 
   /**
@@ -2898,10 +2897,9 @@ export class CommunicationsModule {
     const queryString = params.toString();
     const url = `https://feedbacks-api.wildberries.ru/api/v1/feedbacks/enhanced${queryString ? `?${queryString}` : ''}`;
 
-    return this.client.get<EnhancedFeedbacksResponse>(
-      url,
-      { rateLimitKey: 'communications.getFeedbacks' }
-    );
+    return this.client.get<EnhancedFeedbacksResponse>(url, {
+      rateLimitKey: 'communications.getFeedbacks',
+    });
   }
 
   /**
@@ -3032,10 +3030,9 @@ export class CommunicationsModule {
 
     const url = `https://feedbacks-api.wildberries.ru/api/v1/feedbacks/${encodeURIComponent(feedbackId)}/details`;
 
-    return this.client.get<FeedbackDetailsResponse>(
-      url,
-      { rateLimitKey: 'communications.getFeedbackById' }
-    );
+    return this.client.get<FeedbackDetailsResponse>(url, {
+      rateLimitKey: 'communications.getFeedbackById',
+    });
   }
 
   /**
@@ -3049,7 +3046,7 @@ export class CommunicationsModule {
   private validateEnhancedFeedbackFilters(filters: EnhancedFeedbackFilters): void {
     // Validate ratings
     if (filters.ratings) {
-      const invalidRatings = filters.ratings.filter(rating => rating < 1 || rating > 5);
+      const invalidRatings = filters.ratings.filter((rating) => rating < 1 || rating > 5);
       if (invalidRatings.length > 0) {
         throw new ValidationError(
           `Invalid ratings: ${invalidRatings.join(', ')}. Ratings must be between 1 and 5`
@@ -3060,7 +3057,9 @@ export class CommunicationsModule {
     // Validate sentiments
     if (filters.sentiments) {
       const validSentiments = ['positive', 'negative', 'neutral'];
-      const invalidSentiments = filters.sentiments.filter(sentiment => !validSentiments.includes(sentiment));
+      const invalidSentiments = filters.sentiments.filter(
+        (sentiment) => !validSentiments.includes(sentiment)
+      );
       if (invalidSentiments.length > 0) {
         throw new ValidationError(
           `Invalid sentiments: ${invalidSentiments.join(', ')}. Valid sentiments: ${validSentiments.join(', ')}`
@@ -3071,7 +3070,9 @@ export class CommunicationsModule {
     // Validate urgency levels
     if (filters.urgencyLevels) {
       const validUrgencyLevels = ['low', 'medium', 'high', 'critical'];
-      const invalidUrgencyLevels = filters.urgencyLevels.filter(level => !validUrgencyLevels.includes(level));
+      const invalidUrgencyLevels = filters.urgencyLevels.filter(
+        (level) => !validUrgencyLevels.includes(level)
+      );
       if (invalidUrgencyLevels.length > 0) {
         throw new ValidationError(
           `Invalid urgency levels: ${invalidUrgencyLevels.join(', ')}. Valid levels: ${validUrgencyLevels.join(', ')}`
@@ -3082,7 +3083,7 @@ export class CommunicationsModule {
     // Validate emotional tones
     if (filters.emotionalTones) {
       const validTones = ['angry', 'happy', 'disappointed', 'excited', 'neutral'];
-      const invalidTones = filters.emotionalTones.filter(tone => !validTones.includes(tone));
+      const invalidTones = filters.emotionalTones.filter((tone) => !validTones.includes(tone));
       if (invalidTones.length > 0) {
         throw new ValidationError(
           `Invalid emotional tones: ${invalidTones.join(', ')}. Valid tones: ${validTones.join(', ')}`
@@ -3106,56 +3107,87 @@ export class CommunicationsModule {
 
     // Validate customer registration dates
     if (filters.customerFilters) {
-      if (filters.customerFilters.registrationDateFrom &&
-          !this.isValidDate(filters.customerFilters.registrationDateFrom)) {
-        throw new ValidationError('customerFilters.registrationDateFrom must be a valid date in YYYY-MM-DD format');
+      if (
+        filters.customerFilters.registrationDateFrom &&
+        !this.isValidDate(filters.customerFilters.registrationDateFrom)
+      ) {
+        throw new ValidationError(
+          'customerFilters.registrationDateFrom must be a valid date in YYYY-MM-DD format'
+        );
       }
 
-      if (filters.customerFilters.registrationDateTo &&
-          !this.isValidDate(filters.customerFilters.registrationDateTo)) {
-        throw new ValidationError('customerFilters.registrationDateTo must be a valid date in YYYY-MM-DD format');
+      if (
+        filters.customerFilters.registrationDateTo &&
+        !this.isValidDate(filters.customerFilters.registrationDateTo)
+      ) {
+        throw new ValidationError(
+          'customerFilters.registrationDateTo must be a valid date in YYYY-MM-DD format'
+        );
       }
 
       // Validate rating ranges
-      if (filters.customerFilters.minOrders !== undefined && filters.customerFilters.minOrders < 0) {
+      if (
+        filters.customerFilters.minOrders !== undefined &&
+        filters.customerFilters.minOrders < 0
+      ) {
         throw new ValidationError('customerFilters.minOrders cannot be negative');
       }
 
-      if (filters.customerFilters.maxOrders !== undefined && filters.customerFilters.maxOrders < 0) {
+      if (
+        filters.customerFilters.maxOrders !== undefined &&
+        filters.customerFilters.maxOrders < 0
+      ) {
         throw new ValidationError('customerFilters.maxOrders cannot be negative');
       }
 
       if (filters.customerFilters.minAverageRating !== undefined) {
-        if (filters.customerFilters.minAverageRating < 1 || filters.customerFilters.minAverageRating > 5) {
+        if (
+          filters.customerFilters.minAverageRating < 1 ||
+          filters.customerFilters.minAverageRating > 5
+        ) {
           throw new ValidationError('customerFilters.minAverageRating must be between 1 and 5');
         }
       }
 
       if (filters.customerFilters.maxAverageRating !== undefined) {
-        if (filters.customerFilters.maxAverageRating < 1 || filters.customerFilters.maxAverageRating > 5) {
+        if (
+          filters.customerFilters.maxAverageRating < 1 ||
+          filters.customerFilters.maxAverageRating > 5
+        ) {
           throw new ValidationError('customerFilters.maxAverageRating must be between 1 and 5');
         }
       }
 
       // Validate rating range logic
-      if (filters.customerFilters.minAverageRating !== undefined &&
-          filters.customerFilters.maxAverageRating !== undefined &&
-          filters.customerFilters.minAverageRating > filters.customerFilters.maxAverageRating) {
-        throw new ValidationError('customerFilters.minAverageRating cannot be greater than customerFilters.maxAverageRating');
+      if (
+        filters.customerFilters.minAverageRating !== undefined &&
+        filters.customerFilters.maxAverageRating !== undefined &&
+        filters.customerFilters.minAverageRating > filters.customerFilters.maxAverageRating
+      ) {
+        throw new ValidationError(
+          'customerFilters.minAverageRating cannot be greater than customerFilters.maxAverageRating'
+        );
       }
 
       // Validate order count range logic
-      if (filters.customerFilters.minOrders !== undefined &&
-          filters.customerFilters.maxOrders !== undefined &&
-          filters.customerFilters.minOrders > filters.customerFilters.maxOrders) {
-        throw new ValidationError('customerFilters.minOrders cannot be greater than customerFilters.maxOrders');
+      if (
+        filters.customerFilters.minOrders !== undefined &&
+        filters.customerFilters.maxOrders !== undefined &&
+        filters.customerFilters.minOrders > filters.customerFilters.maxOrders
+      ) {
+        throw new ValidationError(
+          'customerFilters.minOrders cannot be greater than customerFilters.maxOrders'
+        );
       }
     }
 
     // Validate impact filters
     if (filters.impactFilters) {
       if (filters.impactFilters.minImpactScore !== undefined) {
-        if (filters.impactFilters.minImpactScore < 0 || filters.impactFilters.minImpactScore > 100) {
+        if (
+          filters.impactFilters.minImpactScore < 0 ||
+          filters.impactFilters.minImpactScore > 100
+        ) {
           throw new ValidationError('impactFilters.minImpactScore must be between 0 and 100');
         }
       }
@@ -3177,7 +3209,13 @@ export class CommunicationsModule {
     // Validate sort options
     if (filters.sortBy) {
       const validSortBy = [
-        'date', 'rating', 'sentimentScore', 'helpfulness', 'urgency', 'impactScore', 'wordCount'
+        'date',
+        'rating',
+        'sentimentScore',
+        'helpfulness',
+        'urgency',
+        'impactScore',
+        'wordCount',
       ];
       if (!validSortBy.includes(filters.sortBy)) {
         throw new ValidationError(
@@ -3205,7 +3243,7 @@ export class CommunicationsModule {
     }
 
     // Validate search text in topics
-    if (filters.topics?.some(topic => topic.length > 100)) {
+    if (filters.topics?.some((topic) => topic.length > 100)) {
       throw new ValidationError('Topic names cannot be longer than 100 characters');
     }
   }
@@ -3433,7 +3471,9 @@ export class CommunicationsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks~1archive/get}
    */
-  async getArchivedFeedbacks(filters: ArchivedFeedbacksFilters): Promise<ArchivedFeedbacksResponse> {
+  async getArchivedFeedbacks(
+    filters: ArchivedFeedbacksFilters
+  ): Promise<ArchivedFeedbacksResponse> {
     if (filters.take < 1) {
       throw new ValidationError('take parameter must be positive');
     }
@@ -3572,13 +3612,10 @@ export class CommunicationsModule {
       }
     }
 
-    return this.client.get<ClaimsResponse>(
-      'https://returns-api.wildberries.ru/api/v1/claims',
-      {
-        params: queryParams,
-        rateLimitKey: 'communications.getClaims',
-      }
-    );
+    return this.client.get<ClaimsResponse>('https://returns-api.wildberries.ru/api/v1/claims', {
+      params: queryParams,
+      rateLimitKey: 'communications.getClaims',
+    });
   }
 
   /**
@@ -3649,11 +3686,9 @@ export class CommunicationsModule {
       throw new ValidationError('Comment cannot exceed 1000 characters');
     }
 
-    await this.client.patch(
-      'https://returns-api.wildberries.ru/api/v1/claim',
-      request,
-      { rateLimitKey: 'communications.respondToClaim' }
-    );
+    await this.client.patch('https://returns-api.wildberries.ru/api/v1/claim', request, {
+      rateLimitKey: 'communications.respondToClaim',
+    });
   }
 
   /**

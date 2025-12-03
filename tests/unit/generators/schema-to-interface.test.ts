@@ -335,11 +335,7 @@ describe('schema-to-interface', () => {
 
     it('should handle complex type definitions', () => {
       const schema: SchemaObject = {
-        oneOf: [
-          { type: 'string' },
-          { type: 'number' },
-          { type: 'boolean' },
-        ],
+        oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
       };
       const result = generateTypeAlias('MixedType', schema);
       expect(result).toContain('export type MixedType = string | number | boolean;');
@@ -375,7 +371,8 @@ describe('schema-to-interface', () => {
     });
 
     it('should handle very long property descriptions', () => {
-      const longDescription = 'This is a very long description that spans multiple words and contains a lot of information about the property and its usage in the API.';
+      const longDescription =
+        'This is a very long description that spans multiple words and contains a lot of information about the property and its usage in the API.';
       const schema: SchemaObject = {
         type: 'object',
         properties: {
@@ -392,10 +389,7 @@ describe('schema-to-interface', () => {
         Extended: { type: 'object', properties: { name: { type: 'string' } } },
       };
       const schema: SchemaObject = {
-        allOf: [
-          { $ref: '#/components/schemas/Base' },
-          { $ref: '#/components/schemas/Extended' },
-        ],
+        allOf: [{ $ref: '#/components/schemas/Base' }, { $ref: '#/components/schemas/Extended' }],
       };
       const result = generateTypeScriptInterface('Combined', schema, allSchemas);
       expect(result).toContain('export type Combined =');

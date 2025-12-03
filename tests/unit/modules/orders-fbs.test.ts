@@ -373,7 +373,9 @@ describe('OrdersFBSModule', () => {
     it('should validate name length (1-128 characters)', async () => {
       // Arrange - Empty name
       await expect(ordersFBSModule.createSupply('')).rejects.toThrow(ValidationError);
-      await expect(ordersFBSModule.createSupply('')).rejects.toThrow(/Supply name must be 1-128 characters/);
+      await expect(ordersFBSModule.createSupply('')).rejects.toThrow(
+        /Supply name must be 1-128 characters/
+      );
 
       // Arrange - Name too long
       const longName = 'x'.repeat(129);
@@ -636,7 +638,11 @@ describe('OrdersFBSModule', () => {
       mockClient.post.mockResolvedValue(mockStickersResponse);
 
       // Act
-      await ordersFBSModule.getOrderStickers([12345, 67890], { type: 'svg', width: 58, height: 40 });
+      await ordersFBSModule.getOrderStickers([12345, 67890], {
+        type: 'svg',
+        width: 58,
+        height: 40,
+      });
 
       // Assert
       const callArgs = mockClient.post.mock.calls[0][2] as {
@@ -653,7 +659,11 @@ describe('OrdersFBSModule', () => {
       mockClient.post.mockResolvedValue(mockStickersResponse);
 
       // Act
-      const result = await ordersFBSModule.getOrderStickers([12345], { type: 'png', width: 58, height: 40 });
+      const result = await ordersFBSModule.getOrderStickers([12345], {
+        type: 'png',
+        width: 58,
+        height: 40,
+      });
 
       // Assert
       expect(result).toEqual(mockStickersResponse.stickers);
@@ -757,9 +767,7 @@ describe('OrdersFBSModule', () => {
 
   describe('getCrossBorderStickers()', () => {
     const mockStickersResponse = {
-      stickers: [
-        { file: 'base64encodedpdf', orderId: 12345 },
-      ],
+      stickers: [{ file: 'base64encodedpdf', orderId: 12345 }],
     };
 
     it('should call POST /api/v3/orders/stickers/cross-border', async () => {
@@ -791,8 +799,7 @@ describe('OrdersFBSModule', () => {
 
     it('should throw ValidationError for empty array', async () => {
       // Act & Assert
-      await expect(ordersFBSModule.getCrossBorderStickers([]))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getCrossBorderStickers([])).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for array exceeding 100 items', async () => {
@@ -800,17 +807,16 @@ describe('OrdersFBSModule', () => {
       const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
 
       // Act & Assert
-      await expect(ordersFBSModule.getCrossBorderStickers(orderIds))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getCrossBorderStickers(orderIds)).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   describe('getExternalStickersUrls() [DEPRECATED]', () => {
     const mockUrlsResponse = {
-      stickers: [
-        { orderID: 12345, url: 'https://example.com/sticker', parcelID: 'WB0000000001' },
-      ],
+      stickers: [{ orderID: 12345, url: 'https://example.com/sticker', parcelID: 'WB0000000001' }],
     };
 
     it('should call POST /api/v3/files/orders/external-stickers (deprecated)', async () => {
@@ -832,8 +838,7 @@ describe('OrdersFBSModule', () => {
     it('should throw ValidationError for empty array', async () => {
       // Act & Assert
       // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await expect(ordersFBSModule.getExternalStickersUrls([]))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getExternalStickersUrls([])).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for array exceeding 100 items', async () => {
@@ -842,8 +847,9 @@ describe('OrdersFBSModule', () => {
 
       // Act & Assert
       // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await expect(ordersFBSModule.getExternalStickersUrls(orderIds))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getExternalStickersUrls(orderIds)).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 
@@ -853,9 +859,7 @@ describe('OrdersFBSModule', () => {
         {
           orderID: 12345,
           deliveryDate: '2024-12-01T00:00:00Z',
-          statuses: [
-            { date: '2024-11-20T10:00:00Z', code: 'created' },
-          ],
+          statuses: [{ date: '2024-11-20T10:00:00Z', code: 'created' }],
         },
       ],
     };
@@ -877,8 +881,9 @@ describe('OrdersFBSModule', () => {
 
     it('should throw ValidationError for empty array', async () => {
       // Act & Assert
-      await expect(ordersFBSModule.getOrdersStatusHistoryCrossBorder([]))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getOrdersStatusHistoryCrossBorder([])).rejects.toThrow(
+        ValidationError
+      );
     });
 
     it('should throw ValidationError for array exceeding 100 items', async () => {
@@ -886,8 +891,9 @@ describe('OrdersFBSModule', () => {
       const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
 
       // Act & Assert
-      await expect(ordersFBSModule.getOrdersStatusHistoryCrossBorder(orderIds))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getOrdersStatusHistoryCrossBorder(orderIds)).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 
@@ -928,8 +934,7 @@ describe('OrdersFBSModule', () => {
 
     it('should throw ValidationError for empty array', async () => {
       // Act & Assert
-      await expect(ordersFBSModule.getOrdersWithClientInfo([]))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getOrdersWithClientInfo([])).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for array exceeding 100 items', async () => {
@@ -937,16 +942,15 @@ describe('OrdersFBSModule', () => {
       const orderIds = Array.from({ length: 101 }, (_, i) => 12345 + i);
 
       // Act & Assert
-      await expect(ordersFBSModule.getOrdersWithClientInfo(orderIds))
-        .rejects.toThrow(ValidationError);
+      await expect(ordersFBSModule.getOrdersWithClientInfo(orderIds)).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 
   describe('getSupplyTrbxStickersPost()', () => {
     const mockStickersResponse = {
-      stickers: [
-        { trbxId: 'WB-TRBX-1234567', file: 'base64encodedimage' },
-      ],
+      stickers: [{ trbxId: 'WB-TRBX-1234567', file: 'base64encodedimage' }],
     };
 
     it('should call POST /api/v3/supplies/{supplyId}/trbx/stickers with type query', async () => {
@@ -982,14 +986,16 @@ describe('OrdersFBSModule', () => {
 
     it('should throw ValidationError for empty supplyId', async () => {
       // Act & Assert
-      await expect(ordersFBSModule.getSupplyTrbxStickersPost('', 'png', ['WB-TRBX-1234567']))
-        .rejects.toThrow(ValidationError);
+      await expect(
+        ordersFBSModule.getSupplyTrbxStickersPost('', 'png', ['WB-TRBX-1234567'])
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for empty trbxIds array', async () => {
       // Act & Assert
-      await expect(ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', 'png', []))
-        .rejects.toThrow(ValidationError);
+      await expect(
+        ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', 'png', [])
+      ).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for invalid type', async () => {
@@ -997,8 +1003,9 @@ describe('OrdersFBSModule', () => {
       const invalidType = 'invalid' as 'svg' | 'png' | 'zplv' | 'zplh';
 
       // Act & Assert
-      await expect(ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', invalidType, ['WB-TRBX-1234567']))
-        .rejects.toThrow(ValidationError);
+      await expect(
+        ordersFBSModule.getSupplyTrbxStickersPost('WB-GI-1234567', invalidType, ['WB-TRBX-1234567'])
+      ).rejects.toThrow(ValidationError);
     });
   });
 });

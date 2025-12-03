@@ -634,16 +634,13 @@ describe('InStorePickupModule', () => {
 
       it('should handle 409 error (invalid passcode)', async () => {
         // Arrange
-        const error = new CustomerVerificationError(
-          verificationData.orderCode,
-          'Invalid passcode'
-        );
+        const error = new CustomerVerificationError(verificationData.orderCode, 'Invalid passcode');
         mockClient.post.mockRejectedValue(error);
 
         // Act & Assert
-        await expect(
-          inStorePickupModule.verifyCustomerIdentity(verificationData)
-        ).rejects.toThrow(CustomerVerificationError);
+        await expect(inStorePickupModule.verifyCustomerIdentity(verificationData)).rejects.toThrow(
+          CustomerVerificationError
+        );
       });
     });
   });
@@ -756,11 +753,7 @@ describe('InStorePickupModule', () => {
 
       it('should handle 409 error (metadata validation failure)', async () => {
         // Arrange
-        const error = new MetadataValidationError(
-          'SGTIN',
-          orderId,
-          'Order not in confirm status'
-        );
+        const error = new MetadataValidationError('SGTIN', orderId, 'Order not in confirm status');
         mockClient.put.mockRejectedValue(error);
 
         // Act & Assert
@@ -973,9 +966,7 @@ describe('InStorePickupModule', () => {
 
         stateChangeMethods.forEach((method) => {
           expect(inStorePickupModule).toHaveProperty(method);
-          expect(typeof inStorePickupModule[method as keyof InStorePickupModule]).toBe(
-            'function'
-          );
+          expect(typeof inStorePickupModule[method as keyof InStorePickupModule]).toBe('function');
         });
       });
     });
@@ -1019,19 +1010,16 @@ describe('InStorePickupModule', () => {
           orderCode: '21117866-0006',
           passcode: 'wrong',
         };
-        const error = new CustomerVerificationError(
-          verificationData.orderCode,
-          'Invalid passcode'
-        );
+        const error = new CustomerVerificationError(verificationData.orderCode, 'Invalid passcode');
         mockClient.post.mockRejectedValue(error);
 
         // Act & Assert
-        await expect(
-          inStorePickupModule.verifyCustomerIdentity(verificationData)
-        ).rejects.toThrow(CustomerVerificationError);
-        await expect(
-          inStorePickupModule.verifyCustomerIdentity(verificationData)
-        ).rejects.toThrow(/Customer verification failed for order 21117866-0006/);
+        await expect(inStorePickupModule.verifyCustomerIdentity(verificationData)).rejects.toThrow(
+          CustomerVerificationError
+        );
+        await expect(inStorePickupModule.verifyCustomerIdentity(verificationData)).rejects.toThrow(
+          /Customer verification failed for order 21117866-0006/
+        );
       });
     });
 
@@ -1040,11 +1028,7 @@ describe('InStorePickupModule', () => {
         // Arrange
         const orderId = 12345;
         const sgtins = ['1234567890123456'];
-        const error = new MetadataValidationError(
-          'SGTIN',
-          orderId,
-          'Order not in confirm status'
-        );
+        const error = new MetadataValidationError('SGTIN', orderId, 'Order not in confirm status');
         mockClient.put.mockRejectedValue(error);
 
         // Act & Assert

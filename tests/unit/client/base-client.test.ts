@@ -224,9 +224,7 @@ describe('BaseClient', () => {
         mockAxios.onGet(testUrl).reply(401, { error: 'Unauthorized' });
 
         await expect(client.get(testUrl)).rejects.toThrow(AuthenticationError);
-        await expect(client.get(testUrl)).rejects.toThrow(
-          'Authentication failed'
-        );
+        await expect(client.get(testUrl)).rejects.toThrow('Authentication failed');
       });
 
       it('should transform 403 to AuthenticationError', async () => {
@@ -258,9 +256,7 @@ describe('BaseClient', () => {
       });
 
       it('should parse Retry-After header (seconds to ms)', async () => {
-        mockAxios
-          .onGet(testUrl)
-          .reply(429, {}, { 'retry-after': '5' });
+        mockAxios.onGet(testUrl).reply(429, {}, { 'retry-after': '5' });
 
         try {
           await client.get(testUrl);
@@ -284,9 +280,7 @@ describe('BaseClient', () => {
       });
 
       it('should use default retry time for invalid header', async () => {
-        mockAxios
-          .onGet(testUrl)
-          .reply(429, {}, { 'retry-after': 'invalid' });
+        mockAxios.onGet(testUrl).reply(429, {}, { 'retry-after': 'invalid' });
 
         try {
           await client.get(testUrl);
@@ -308,9 +302,7 @@ describe('BaseClient', () => {
           },
         });
 
-        await expect(client.post(testUrl, {})).rejects.toThrow(
-          ValidationError
-        );
+        await expect(client.post(testUrl, {})).rejects.toThrow(ValidationError);
       });
 
       it('should transform 422 to ValidationError', async () => {
@@ -318,9 +310,7 @@ describe('BaseClient', () => {
           error: 'Unprocessable Entity',
         });
 
-        await expect(client.post(testUrl, {})).rejects.toThrow(
-          ValidationError
-        );
+        await expect(client.post(testUrl, {})).rejects.toThrow(ValidationError);
       });
 
       it('should extract field errors from response', async () => {

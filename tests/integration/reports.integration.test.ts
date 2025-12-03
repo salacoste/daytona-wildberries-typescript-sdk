@@ -8,11 +8,7 @@ import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { WildberriesSDK } from '../../src';
-import {
-  AuthenticationError,
-  RateLimitError,
-  ValidationError,
-} from '../../src/errors';
+import { AuthenticationError, RateLimitError, ValidationError } from '../../src/errors';
 
 // MSW server setup
 const server = setupServer(
@@ -22,10 +18,7 @@ const server = setupServer(
     const dateFrom = url.searchParams.get('dateFrom');
 
     if (!dateFrom) {
-      return HttpResponse.json(
-        { errors: ['dateFrom: field required'] },
-        { status: 400 }
-      );
+      return HttpResponse.json({ errors: ['dateFrom: field required'] }, { status: 400 });
     }
 
     // Simulate pagination: return empty on second request
@@ -182,29 +175,35 @@ const server = setupServer(
   }),
 
   // GET /api/v1/warehouse_remains/tasks/{taskId}/status - Check status
-  http.get('https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/:taskId/status', ({ params }) => {
-    return HttpResponse.json({
-      data: {
-        id: params.taskId as string,
-        status: 'done',
-        file: {
-          url: 'https://download.link/report.xlsx',
+  http.get(
+    'https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/:taskId/status',
+    ({ params }) => {
+      return HttpResponse.json({
+        data: {
+          id: params.taskId as string,
+          status: 'done',
+          file: {
+            url: 'https://download.link/report.xlsx',
+          },
         },
-      },
-    });
-  }),
+      });
+    }
+  ),
 
   // GET /api/v1/warehouse_remains/tasks/{taskId}/download - Download report
-  http.get('https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/:taskId/download', () => {
-    const blob = new Blob(['mock excel data'], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
-    return new HttpResponse(blob, {
-      headers: {
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      },
-    });
-  })
+  http.get(
+    'https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/:taskId/download',
+    () => {
+      const blob = new Blob(['mock excel data'], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      return new HttpResponse(blob, {
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+      });
+    }
+  )
 );
 
 beforeAll(() => {
@@ -236,9 +235,7 @@ describe('Reports Integration Tests', () => {
       expect(firstBatch).toHaveLength(1);
 
       // Second request with lastChangeDate returns empty array
-      const secondBatch = await sdk.reports.getIncomes(
-        firstBatch[0].lastChangeDate
-      );
+      const secondBatch = await sdk.reports.getIncomes(firstBatch[0].lastChangeDate);
       expect(secondBatch).toHaveLength(0);
     });
 
@@ -251,9 +248,7 @@ describe('Reports Integration Tests', () => {
       expect(stocks[0].inWayFromClient).toBe(0);
       expect(stocks[0].quantityFull).toBe(34);
       expect(stocks[0].quantityFull).toBe(
-        stocks[0].quantity +
-          stocks[0].inWayToClient +
-          stocks[0].inWayFromClient
+        stocks[0].quantity + stocks[0].inWayToClient + stocks[0].inWayFromClient
       );
     });
 
@@ -277,10 +272,7 @@ describe('Reports Integration Tests', () => {
 
   describe('Excise Report Workflow', () => {
     it('should fetch excise report with date range', async () => {
-      const report = await sdk.reports.getExciseReport(
-        '2024-01-01',
-        '2024-01-31'
-      );
+      const report = await sdk.reports.getExciseReport('2024-01-01', '2024-01-31');
 
       expect(report.response.data).toHaveLength(1);
       expect(report.response.data[0].name).toBe('Россия');
@@ -289,11 +281,9 @@ describe('Reports Integration Tests', () => {
     });
 
     it('should fetch excise report with country filters', async () => {
-      const report = await sdk.reports.getExciseReport(
-        '2024-01-01',
-        '2024-01-31',
-        { countries: ['RU'] }
-      );
+      const report = await sdk.reports.getExciseReport('2024-01-01', '2024-01-31', {
+        countries: ['RU'],
+      });
 
       expect(report.response.data).toBeDefined();
       expect(Array.isArray(report.response.data)).toBe(true);
@@ -312,20 +302,14 @@ describe('Reports Integration Tests', () => {
       expect(task.data.taskId).toBe('219eaecf-e532-4bd8-9f15-8036ec1b042d');
 
       // Step 2: Check status
-      const status = await sdk.reports.checkReportStatus(
-        task.data.taskId,
-        'warehouse_remains'
-      );
+      const status = await sdk.reports.checkReportStatus(task.data.taskId, 'warehouse_remains');
 
       expect(status.data.status).toBe('done');
       expect(status.data.file).toBeDefined();
       expect(status.data.file?.url).toBe('https://download.link/report.xlsx');
 
       // Step 3: Download report
-      const reportBlob = await sdk.reports.downloadReport(
-        task.data.taskId,
-        'warehouse_remains'
-      );
+      const reportBlob = await sdk.reports.downloadReport(task.data.taskId, 'warehouse_remains');
 
       // In Node.js test environment with MSW, Blob might be returned as string or Buffer
       // Just verify we got a response (could be Blob, Buffer, or string)
@@ -347,10 +331,7 @@ describe('Reports Integration Tests', () => {
     it('should handle 400 error for missing dateFrom', async () => {
       server.use(
         http.get('https://statistics-api.wildberries.ru/api/v1/supplier/incomes', () => {
-          return HttpResponse.json(
-            { errors: ['dateFrom: field required'] },
-            { status: 400 }
-          );
+          return HttpResponse.json({ errors: ['dateFrom: field required'] }, { status: 400 });
         })
       );
 
@@ -360,31 +341,21 @@ describe('Reports Integration Tests', () => {
     it('should handle 401 authentication error', async () => {
       server.use(
         http.get('https://statistics-api.wildberries.ru/api/v1/supplier/stocks', () => {
-          return HttpResponse.json(
-            { detail: 'Invalid API key' },
-            { status: 401 }
-          );
+          return HttpResponse.json({ detail: 'Invalid API key' }, { status: 401 });
         })
       );
 
-      await expect(sdk.reports.getStocks('2024-01-01')).rejects.toThrow(
-        AuthenticationError
-      );
+      await expect(sdk.reports.getStocks('2024-01-01')).rejects.toThrow(AuthenticationError);
     });
 
     it('should handle 429 rate limit error', async () => {
       server.use(
         http.get('https://statistics-api.wildberries.ru/api/v1/supplier/orders', () => {
-          return HttpResponse.json(
-            { detail: 'Rate limit exceeded' },
-            { status: 429 }
-          );
+          return HttpResponse.json({ detail: 'Rate limit exceeded' }, { status: 429 });
         })
       );
 
-      await expect(sdk.reports.getOrders('2024-01-01')).rejects.toThrow(
-        RateLimitError
-      );
+      await expect(sdk.reports.getOrders('2024-01-01')).rejects.toThrow(RateLimitError);
     });
   });
 });

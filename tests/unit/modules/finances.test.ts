@@ -146,9 +146,7 @@ describe('FinancesModule', () => {
       };
 
       // Act & Assert
-      await expect(financesModule.getTransactions(filters)).rejects.toThrow(
-        ValidationError
-      );
+      await expect(financesModule.getTransactions(filters)).rejects.toThrow(ValidationError);
       await expect(financesModule.getTransactions(filters)).rejects.toThrow(
         'Both dateFrom and dateTo are required for transaction queries'
       );
@@ -163,9 +161,7 @@ describe('FinancesModule', () => {
       };
 
       // Act & Assert
-      await expect(financesModule.getTransactions(filters)).rejects.toThrow(
-        ValidationError
-      );
+      await expect(financesModule.getTransactions(filters)).rejects.toThrow(ValidationError);
       expect(mockClient.get).not.toHaveBeenCalled();
     });
 
@@ -218,10 +214,7 @@ describe('FinancesModule', () => {
       const dateRange = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
 
       // Act
-      const result = await financesModule.getTransactionById(
-        transactionId,
-        dateRange
-      );
+      const result = await financesModule.getTransactionById(transactionId, dateRange);
 
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
@@ -241,12 +234,12 @@ describe('FinancesModule', () => {
       const dateRange = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
 
       // Act & Assert
-      await expect(
-        financesModule.getTransactionById(transactionId, dateRange)
-      ).rejects.toThrow(ValidationError);
-      await expect(
-        financesModule.getTransactionById(transactionId, dateRange)
-      ).rejects.toThrow('Transaction ID must be a positive number');
+      await expect(financesModule.getTransactionById(transactionId, dateRange)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(financesModule.getTransactionById(transactionId, dateRange)).rejects.toThrow(
+        'Transaction ID must be a positive number'
+      );
       expect(mockClient.get).not.toHaveBeenCalled();
     });
 
@@ -256,9 +249,9 @@ describe('FinancesModule', () => {
       const dateRange = { dateFrom: '2024-01-01', dateTo: '2024-01-31' };
 
       // Act & Assert
-      await expect(
-        financesModule.getTransactionById(transactionId, dateRange)
-      ).rejects.toThrow(ValidationError);
+      await expect(financesModule.getTransactionById(transactionId, dateRange)).rejects.toThrow(
+        ValidationError
+      );
       expect(mockClient.get).not.toHaveBeenCalled();
     });
 
@@ -431,20 +424,16 @@ describe('FinancesModule', () => {
 
     it('should throw ValidationError when serviceName is empty', async () => {
       // Act & Assert
-      await expect(
-        financesModule.downloadDocument('', 'pdf')
-      ).rejects.toThrow(ValidationError);
-      await expect(
-        financesModule.downloadDocument('', 'pdf')
-      ).rejects.toThrow('Service name and extension are required');
+      await expect(financesModule.downloadDocument('', 'pdf')).rejects.toThrow(ValidationError);
+      await expect(financesModule.downloadDocument('', 'pdf')).rejects.toThrow(
+        'Service name and extension are required'
+      );
       expect(mockClient.get).not.toHaveBeenCalled();
     });
 
     it('should throw ValidationError when extension is empty', async () => {
       // Act & Assert
-      await expect(
-        financesModule.downloadDocument('doc-123', '')
-      ).rejects.toThrow(ValidationError);
+      await expect(financesModule.downloadDocument('doc-123', '')).rejects.toThrow(ValidationError);
       expect(mockClient.get).not.toHaveBeenCalled();
     });
 
@@ -492,9 +481,7 @@ describe('FinancesModule', () => {
 
     it('should throw ValidationError for empty documents array', async () => {
       // Act & Assert
-      await expect(financesModule.downloadDocuments([])).rejects.toThrow(
-        ValidationError
-      );
+      await expect(financesModule.downloadDocuments([])).rejects.toThrow(ValidationError);
       await expect(financesModule.downloadDocuments([])).rejects.toThrow(
         'At least one document must be specified'
       );
@@ -509,12 +496,12 @@ describe('FinancesModule', () => {
       }));
 
       // Act & Assert
-      await expect(
-        financesModule.downloadDocuments(tooManyDocuments)
-      ).rejects.toThrow(ValidationError);
-      await expect(
-        financesModule.downloadDocuments(tooManyDocuments)
-      ).rejects.toThrow('Maximum 50 documents allowed per request');
+      await expect(financesModule.downloadDocuments(tooManyDocuments)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(financesModule.downloadDocuments(tooManyDocuments)).rejects.toThrow(
+        'Maximum 50 documents allowed per request'
+      );
       expect(mockClient.post).not.toHaveBeenCalled();
     });
 
@@ -603,7 +590,12 @@ describe('FinancesModule', () => {
     it('should accept all report types', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockReportResponse);
-      const reportTypes = ['sales_summary', 'tax_report', 'commission_breakdown', 'detailed_transactions'] as const;
+      const reportTypes = [
+        'sales_summary',
+        'tax_report',
+        'commission_breakdown',
+        'detailed_transactions',
+      ] as const;
 
       // Act & Assert
       for (const reportType of reportTypes) {
@@ -623,7 +615,11 @@ describe('FinancesModule', () => {
 
       // Act & Assert
       for (const format of formats) {
-        await financesModule.generateReport('sales_summary', { from: '2024-01-01', to: '2024-12-31' }, format);
+        await financesModule.generateReport(
+          'sales_summary',
+          { from: '2024-01-01', to: '2024-12-31' },
+          format
+        );
         expect(mockClient.post).toHaveBeenCalledWith(
           expect.any(String),
           expect.objectContaining({ format }),
@@ -806,7 +802,9 @@ describe('FinancesModule', () => {
 
       // Act & Assert
       await expect(financesModule.downloadReport('rpt_abc123')).rejects.toThrow(ValidationError);
-      await expect(financesModule.downloadReport('rpt_abc123')).rejects.toThrow('Current status: failed');
+      await expect(financesModule.downloadReport('rpt_abc123')).rejects.toThrow(
+        'Current status: failed'
+      );
     });
 
     it('should throw ValidationError if completed report has no URL', async () => {
@@ -1040,7 +1038,9 @@ describe('FinancesModule', () => {
     it('should throw ValidationError for empty payout ID', async () => {
       // Act & Assert
       await expect(financesModule.getPayoutById('')).rejects.toThrow(ValidationError);
-      await expect(financesModule.getPayoutById('   ')).rejects.toThrow('Payout ID cannot be empty');
+      await expect(financesModule.getPayoutById('   ')).rejects.toThrow(
+        'Payout ID cannot be empty'
+      );
     });
   });
 });

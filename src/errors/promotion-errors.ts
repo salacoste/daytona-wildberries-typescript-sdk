@@ -139,9 +139,7 @@ export class InvalidBidError extends ValidationError {
     response?: unknown,
     requestId?: string
   ) {
-    const fieldErrors = context?.field
-      ? { [context.field]: message }
-      : { bid: message };
+    const fieldErrors = context?.field ? { [context.field]: message } : { bid: message };
 
     super(message, fieldErrors, 400, response, requestId);
     this.name = 'InvalidBidError';
@@ -175,7 +173,7 @@ export class InvalidBidError extends ValidationError {
     if (bidInfo.length > 0) {
       const guidance = [
         '\n\nBid requirements:',
-        ...bidInfo.map(info => `  - ${info}`),
+        ...bidInfo.map((info) => `  - ${info}`),
         '\nPlease adjust your bid to meet these requirements.',
       ].join('\n');
 
@@ -285,7 +283,7 @@ export class BudgetExceededError extends WBAPIError {
     if (budgetInfo.length > 0) {
       const guidance = [
         '\n\nBudget information:',
-        ...budgetInfo.map(info => `  - ${info}`),
+        ...budgetInfo.map((info) => `  - ${info}`),
         '\nTo resolve this issue:',
         '1. Check your account balance using getAdvBalance()',
         '2. Add funds to your advertising account',
@@ -391,12 +389,7 @@ export class InvalidCampaignStateError extends WBAPIError {
     response?: unknown,
     requestId?: string
   ) {
-    super(
-      `Cannot ${attemptedAction} campaign in ${currentState} state`,
-      400,
-      response,
-      requestId
-    );
+    super(`Cannot ${attemptedAction} campaign in ${currentState} state`, 400, response, requestId);
     this.name = 'InvalidCampaignStateError';
     this.currentState = currentState;
     this.attemptedAction = attemptedAction;
@@ -411,10 +404,15 @@ export class InvalidCampaignStateError extends WBAPIError {
   getUserMessage(): string {
     const baseMessage = super.getUserMessage();
 
-    const stateGuide: string[] = ['\n\nCampaign state information:', `  - Current state: ${this.currentState}`];
+    const stateGuide: string[] = [
+      '\n\nCampaign state information:',
+      `  - Current state: ${this.currentState}`,
+    ];
 
     if (this.validStates && this.validStates.length > 0) {
-      stateGuide.push(`  - Valid states for ${this.attemptedAction}: ${this.validStates.join(', ')}`);
+      stateGuide.push(
+        `  - Valid states for ${this.attemptedAction}: ${this.validStates.join(', ')}`
+      );
     }
 
     const transitionGuide = [

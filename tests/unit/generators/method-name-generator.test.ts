@@ -94,7 +94,9 @@ describe('method-name-generator', () => {
       });
 
       it('should handle multiple path parameters', () => {
-        expect(generateMethodNameFromPath('/users/{id}/posts/{postId}', 'get')).toBe('getUsersPost');
+        expect(generateMethodNameFromPath('/users/{id}/posts/{postId}', 'get')).toBe(
+          'getUsersPost'
+        );
       });
     });
 
@@ -113,7 +115,9 @@ describe('method-name-generator', () => {
       });
 
       it('should handle PATCH with multi-segment paths', () => {
-        expect(generateMethodNameFromPath('/api/v1/product/price', 'patch')).toBe('updateProductPrice');
+        expect(generateMethodNameFromPath('/api/v1/product/price', 'patch')).toBe(
+          'updateProductPrice'
+        );
       });
 
       it('should handle DELETE with multi-segment paths', () => {

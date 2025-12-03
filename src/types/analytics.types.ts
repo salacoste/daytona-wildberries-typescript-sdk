@@ -170,10 +170,12 @@ export interface ResponseError {
   /** Error description text */
   errorText: string;
   /** Additional error details (field-level errors) */
-  additionalErrors?: {
-    field: string;
-    description: string;
-  }[] | null;
+  additionalErrors?:
+    | {
+        field: string;
+        description: string;
+      }[]
+    | null;
 }
 
 /**
@@ -341,9 +343,9 @@ export interface SearchQueriesResponse extends ResponseError {
  * Report type for CSV generation
  */
 export type ReportType =
-  | 'sales_funnel'       // Sales funnel report
-  | 'search_queries'     // Search queries report
-  | 'stock_history'      // Stock history report
+  | 'sales_funnel' // Sales funnel report
+  | 'search_queries' // Search queries report
+  | 'stock_history' // Stock history report
   | 'product_performance'; // Product performance report
 
 /**
@@ -355,10 +357,10 @@ export type ReportFormat = 'CSV' | 'JSON' | 'PDF' | 'XLSX';
  * Report status
  */
 export type ReportStatus =
-  | 'pending'      // Report generation queued
-  | 'processing'   // Report being generated
-  | 'completed'    // Report ready for download
-  | 'failed';      // Report generation failed
+  | 'pending' // Report generation queued
+  | 'processing' // Report being generated
+  | 'completed' // Report ready for download
+  | 'failed'; // Report generation failed
 
 /**
  * CSV report generation request
@@ -489,13 +491,7 @@ export interface ProductPerformanceResponse extends ResponseError {
  * - `damaged`: Damaged goods removal
  * - `lost`: Lost or stolen inventory write-offs
  */
-export type StockChangeReason =
-  | 'sale'
-  | 'return'
-  | 'adjustment'
-  | 'transfer'
-  | 'damaged'
-  | 'lost';
+export type StockChangeReason = 'sale' | 'return' | 'adjustment' | 'transfer' | 'damaged' | 'lost';
 
 /**
  * Individual stock history entry
@@ -1012,7 +1008,14 @@ export type PositionCluster = 'all' | 'firstHundred' | 'secondHundred' | 'below'
  */
 export interface SearchOrderBy {
   /** Field to sort by */
-  field: 'avgPosition' | 'openCard' | 'addToCart' | 'openToCart' | 'orders' | 'cartToOrder' | 'visibility';
+  field:
+    | 'avgPosition'
+    | 'openCard'
+    | 'addToCart'
+    | 'openToCart'
+    | 'orders'
+    | 'cartToOrder'
+    | 'visibility';
   /** Sort mode */
   mode: 'asc' | 'desc';
 }

@@ -27,8 +27,8 @@ const server = setupServer(
   // Finances API - Balance
   http.get('https://finance-api.wildberries.ru/api/v1/account/balance', () => {
     return HttpResponse.json({
-      current: 50000.50,
-      currency: 'RUB'
+      current: 50000.5,
+      currency: 'RUB',
     });
   }),
 
@@ -55,8 +55,8 @@ const server = setupServer(
         barcode: '1234567890',
         doc_type_name: 'Продажа',
         quantity: 1,
-        retail_price: 2000.00,
-        retail_amount: 2000.00,
+        retail_price: 2000.0,
+        retail_amount: 2000.0,
         sale_percent: 25,
         commission_percent: 15,
         office_name: 'Moscow Office',
@@ -65,17 +65,17 @@ const server = setupServer(
         sale_dt: '2025-10-20T10:00:00Z',
         rr_dt: null,
         shk_id: 1,
-        retail_price_withdisc_rub: 1500.00,
+        retail_price_withdisc_rub: 1500.0,
         delivery_rub: 0,
         gi_box_type_name: 'Box',
         product_discount_for_report: 25,
         supplier_promo: 0,
         ppvz_kvw_prc_base_date: null,
         ppvz_kvw_prc: 0,
-        ppvz_sales_commission: 225.00,
-        ppvz_for_pay: 1500.00,
+        ppvz_sales_commission: 225.0,
+        ppvz_for_pay: 1500.0,
         ppvz_reward: 0,
-        acquiring_fee: 22.50,
+        acquiring_fee: 22.5,
         acquiring_percent: 1.5,
         acquiring_bank: 'Test Bank',
         ppvz_vw: 0,
@@ -84,7 +84,7 @@ const server = setupServer(
         supplier_oper_id: 'S12345',
         country_name: 'Russia',
         bonus_type_name: null,
-        srid: 'S12345'
+        srid: 'S12345',
       },
       {
         realizationreport_id: 1002,
@@ -106,8 +106,8 @@ const server = setupServer(
         barcode: '1234567891',
         doc_type_name: 'Продажа',
         quantity: 1,
-        retail_price: 3000.00,
-        retail_amount: 3000.00,
+        retail_price: 3000.0,
+        retail_amount: 3000.0,
         sale_percent: 17,
         commission_percent: 15,
         office_name: 'Moscow Office',
@@ -116,17 +116,17 @@ const server = setupServer(
         sale_dt: '2025-10-21T14:30:00Z',
         rr_dt: null,
         shk_id: 2,
-        retail_price_withdisc_rub: 2500.00,
+        retail_price_withdisc_rub: 2500.0,
         delivery_rub: 0,
         gi_box_type_name: 'Box',
         product_discount_for_report: 17,
         supplier_promo: 0,
         ppvz_kvw_prc_base_date: null,
         ppvz_kvw_prc: 0,
-        ppvz_sales_commission: 375.00,
-        ppvz_for_pay: 2500.00,
+        ppvz_sales_commission: 375.0,
+        ppvz_for_pay: 2500.0,
         ppvz_reward: 0,
-        acquiring_fee: 37.50,
+        acquiring_fee: 37.5,
         acquiring_percent: 1.5,
         acquiring_bank: 'Test Bank',
         ppvz_vw: 0,
@@ -135,7 +135,7 @@ const server = setupServer(
         supplier_oper_id: 'S12346',
         country_name: 'Russia',
         bonus_type_name: null,
-        srid: 'S12346'
+        srid: 'S12346',
       },
       {
         realizationreport_id: 1003,
@@ -157,8 +157,8 @@ const server = setupServer(
         barcode: '1234567890',
         doc_type_name: 'Продажа',
         quantity: 1,
-        retail_price: 2000.00,
-        retail_amount: 2000.00,
+        retail_price: 2000.0,
+        retail_amount: 2000.0,
         sale_percent: 25,
         commission_percent: 15,
         office_name: 'Moscow Office',
@@ -167,17 +167,17 @@ const server = setupServer(
         sale_dt: '2025-10-22T09:15:00Z',
         rr_dt: null,
         shk_id: 3,
-        retail_price_withdisc_rub: 1500.00,
+        retail_price_withdisc_rub: 1500.0,
         delivery_rub: 0,
         gi_box_type_name: 'Box',
         product_discount_for_report: 25,
         supplier_promo: 0,
         ppvz_kvw_prc_base_date: null,
         ppvz_kvw_prc: 0,
-        ppvz_sales_commission: 225.00,
-        ppvz_for_pay: 1500.00,
+        ppvz_sales_commission: 225.0,
+        ppvz_for_pay: 1500.0,
         ppvz_reward: 0,
-        acquiring_fee: 22.50,
+        acquiring_fee: 22.5,
         acquiring_percent: 1.5,
         acquiring_bank: 'Test Bank',
         ppvz_vw: 0,
@@ -186,8 +186,8 @@ const server = setupServer(
         supplier_oper_id: 'S12347',
         country_name: 'Russia',
         bonus_type_name: null,
-        srid: 'S12347'
-      }
+        srid: 'S12347',
+      },
     ]);
   }),
 
@@ -224,8 +224,8 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 20,
                   cartToOrderPercent: 75,
-                  buyoutsPercent: 80
-                }
+                  buyoutsPercent: 80,
+                },
               },
               previousPeriod: {
                 begin: '2025-09-01T00:00:00Z',
@@ -243,8 +243,8 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 20,
                   cartToOrderPercent: 77.78,
-                  buyoutsPercent: 78.57
-                }
+                  buyoutsPercent: 78.57,
+                },
               },
               periodComparison: {
                 openCardDynamics: 11.11,
@@ -260,14 +260,14 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 0,
                   cartToOrderPercent: -2.78,
-                  buyoutsPercent: 1.43
-                }
-              }
+                  buyoutsPercent: 1.43,
+                },
+              },
             },
             stocks: {
               stocksMp: 50,
-              stocksWb: 100
-            }
+              stocksWb: 100,
+            },
           },
           {
             nmID: 12346,
@@ -292,8 +292,8 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 18.75,
                   cartToOrderPercent: 66.67,
-                  buyoutsPercent: 80
-                }
+                  buyoutsPercent: 80,
+                },
               },
               previousPeriod: {
                 begin: '2025-09-01T00:00:00Z',
@@ -311,8 +311,8 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 18.67,
                   cartToOrderPercent: 67.86,
-                  buyoutsPercent: 78.95
-                }
+                  buyoutsPercent: 78.95,
+                },
               },
               periodComparison: {
                 openCardDynamics: 6.67,
@@ -328,17 +328,17 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 0.08,
                   cartToOrderPercent: -1.19,
-                  buyoutsPercent: 1.05
-                }
-              }
+                  buyoutsPercent: 1.05,
+                },
+              },
             },
             stocks: {
               stocksMp: 30,
-              stocksWb: 70
-            }
-          }
-        ]
-      }
+              stocksWb: 70,
+            },
+          },
+        ],
+      },
     });
   }),
 
@@ -366,9 +366,9 @@ const server = setupServer(
                 nmId: 12345,
                 imtId: 1,
                 productName: 'Test Product 1',
-                supplierArticle: 'SKU001'
+                supplierArticle: 'SKU001',
               },
-              photoLinks: null
+              photoLinks: null,
             },
             {
               id: 'R2',
@@ -383,9 +383,9 @@ const server = setupServer(
                 nmId: 12346,
                 imtId: 2,
                 productName: 'Test Product 2',
-                supplierArticle: 'SKU002'
+                supplierArticle: 'SKU002',
               },
-              photoLinks: null
+              photoLinks: null,
             },
             {
               id: 'R3',
@@ -400,12 +400,12 @@ const server = setupServer(
                 nmId: 12345,
                 imtId: 1,
                 productName: 'Test Product 1',
-                supplierArticle: 'SKU001'
+                supplierArticle: 'SKU001',
               },
-              photoLinks: null
-            }
-          ]
-        }
+              photoLinks: null,
+            },
+          ],
+        },
       });
     }
 
@@ -424,19 +424,19 @@ const server = setupServer(
             answer: {
               text: 'Thank you!',
               state: 'none',
-              editable: false
+              editable: false,
             },
             state: 'none',
             productDetails: {
               nmId: 12345,
               imtId: 1,
               productName: 'Test Product 1',
-              supplierArticle: 'SKU001'
+              supplierArticle: 'SKU001',
             },
-            photoLinks: null
-          }
-        ]
-      }
+            photoLinks: null,
+          },
+        ],
+      },
     });
   }),
 
@@ -461,9 +461,9 @@ const server = setupServer(
                 nmId: 12345,
                 imtId: 1,
                 productName: 'Test Product 1',
-                supplierArticle: 'SKU001'
+                supplierArticle: 'SKU001',
               },
-              wasViewed: false
+              wasViewed: false,
             },
             {
               id: 'Q2',
@@ -475,12 +475,12 @@ const server = setupServer(
                 nmId: 12346,
                 imtId: 2,
                 productName: 'Test Product 2',
-                supplierArticle: 'SKU002'
+                supplierArticle: 'SKU002',
               },
-              wasViewed: false
-            }
-          ]
-        }
+              wasViewed: false,
+            },
+          ],
+        },
       });
     }
 
@@ -488,8 +488,8 @@ const server = setupServer(
       data: {
         countUnanswered: 0,
         countArchive: 20,
-        questions: []
-      }
+        questions: [],
+      },
     });
   }),
 
@@ -514,17 +514,17 @@ const server = setupServer(
         incomeID: 1,
         isSupply: true,
         isRealization: false,
-        totalPrice: 2000.00,
+        totalPrice: 2000.0,
         discountPercent: 25,
         spp: 0,
         paymentSaleAmount: 0,
-        forPay: 1500.00,
-        finishedPrice: 1500.00,
-        priceWithDisc: 1500.00,
+        forPay: 1500.0,
+        finishedPrice: 1500.0,
+        priceWithDisc: 1500.0,
         saleID: 'S12345',
         sticker: 'ST001',
         gNumber: 'G001',
-        srid: 'SR001'
+        srid: 'SR001',
       },
       {
         date: '2025-10-21T14:30:00Z',
@@ -544,17 +544,17 @@ const server = setupServer(
         incomeID: 2,
         isSupply: true,
         isRealization: false,
-        totalPrice: 3000.00,
+        totalPrice: 3000.0,
         discountPercent: 17,
         spp: 0,
         paymentSaleAmount: 0,
-        forPay: 2500.00,
-        finishedPrice: 2500.00,
-        priceWithDisc: 2500.00,
+        forPay: 2500.0,
+        finishedPrice: 2500.0,
+        priceWithDisc: 2500.0,
         saleID: 'S12346',
         sticker: 'ST002',
         gNumber: 'G002',
-        srid: 'SR002'
+        srid: 'SR002',
       },
       {
         date: '2025-10-22T09:00:00Z',
@@ -574,18 +574,18 @@ const server = setupServer(
         incomeID: 3,
         isSupply: true,
         isRealization: false,
-        totalPrice: 2000.00,
+        totalPrice: 2000.0,
         discountPercent: 25,
         spp: 0,
         paymentSaleAmount: 0,
-        forPay: 1500.00,
-        finishedPrice: 1500.00,
-        priceWithDisc: 1500.00,
+        forPay: 1500.0,
+        finishedPrice: 1500.0,
+        priceWithDisc: 1500.0,
         saleID: 'S12347',
         sticker: 'ST003',
         gNumber: 'G003',
-        srid: 'SR003'
-      }
+        srid: 'SR003',
+      },
     ]);
   }),
 
@@ -616,7 +616,7 @@ describe('Cross-Module Examples Integration Tests', () => {
 
   beforeEach(() => {
     sdk = new WildberriesSDK({
-      apiKey: 'test-api-key-cross-module-examples'
+      apiKey: 'test-api-key-cross-module-examples',
     });
   });
 
@@ -624,10 +624,10 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should fetch data from all three modules (Finances, Analytics, Communications)', async () => {
       // Fetch from Finances
       const balance = await sdk.finances.getBalance();
-      expect(balance.current).toBe(50000.50);
+      expect(balance.current).toBe(50000.5);
 
       // Wait for rate limit
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 100);
       });
 
@@ -636,14 +636,14 @@ describe('Cross-Module Examples Integration Tests', () => {
         brandNames: ['TestBrand'],
         period: {
           begin: '2025-10-01',
-          end: '2025-10-23'
-        }
+          end: '2025-10-23',
+        },
       });
       expect(analytics.data.cards).toHaveLength(2);
       expect(analytics.data.cards[0]?.nmID).toBe(12345);
 
       // Wait for rate limit
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 100);
       });
 
@@ -651,7 +651,7 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(reviews.data.feedbacks.length).toBeGreaterThan(0);
     });
@@ -662,13 +662,13 @@ describe('Cross-Module Examples Integration Tests', () => {
         brandNames: ['TestBrand'],
         period: {
           begin: '2025-10-01',
-          end: '2025-10-23'
-        }
+          end: '2025-10-23',
+        },
       });
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       // Calculate metrics
@@ -685,20 +685,20 @@ describe('Cross-Module Examples Integration Tests', () => {
       const dashboard = {
         financials: {
           currentBalance: balance.current,
-          currency: balance.currency
+          currency: balance.currency,
         },
         performance: {
           totalViews,
           totalOrders,
-          conversionRate: (totalOrders / totalViews) * 100
+          conversionRate: (totalOrders / totalViews) * 100,
         },
         customerSentiment: {
           totalReviews: reviews.data.feedbacks.length,
-          unansweredReviews: reviews.data.countUnanswered
-        }
+          unansweredReviews: reviews.data.countUnanswered,
+        },
       };
 
-      expect(dashboard.financials.currentBalance).toBe(50000.50);
+      expect(dashboard.financials.currentBalance).toBe(50000.5);
       expect(dashboard.performance.totalViews).toBe(1800); // 1000 + 800
       expect(dashboard.performance.totalOrders).toBe(250); // 150 + 100
       expect(dashboard.performance.conversionRate).toBeCloseTo(13.89, 1);
@@ -715,7 +715,7 @@ describe('Cross-Module Examples Integration Tests', () => {
 
       // Finances should still work
       const balance = await sdk.finances.getBalance();
-      expect(balance.current).toBe(50000.50);
+      expect(balance.current).toBe(50000.5);
 
       // Analytics should fail
       await expect(
@@ -723,8 +723,8 @@ describe('Cross-Module Examples Integration Tests', () => {
           brandNames: ['TestBrand'],
           period: {
             begin: '2025-10-01',
-            end: '2025-10-23'
-          }
+            end: '2025-10-23',
+          },
         })
       ).rejects.toThrow();
 
@@ -732,7 +732,7 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(reviews.data.feedbacks.length).toBeGreaterThan(0);
     });
@@ -745,13 +745,13 @@ describe('Cross-Module Examples Integration Tests', () => {
         brandNames: ['TestBrand'],
         period: {
           begin: '2025-10-01',
-          end: '2025-10-23'
-        }
+          end: '2025-10-23',
+        },
       });
       await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       const elapsed = Date.now() - start;
@@ -765,13 +765,13 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should fetch transactions and sales data', async () => {
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       expect(transactions).toHaveLength(3);
       expect(transactions[0]?.rrd_id).toBe(1001);
 
       // Wait for rate limit
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 100);
       });
 
@@ -783,23 +783,23 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should match transactions to sales by saleID and nmId', async () => {
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       const sales = await sdk.reports.getSales('2025-10-01');
 
       // Match transactions to sales
       const matched: { transactionId: number; saleID: string; nmId: number }[] = [];
 
-      transactions.forEach(transaction => {
+      transactions.forEach((transaction) => {
         const matchingSale = sales.find(
-          sale => sale.saleID === transaction.srid && sale.nmId === transaction.nm_id
+          (sale) => sale.saleID === transaction.srid && sale.nmId === transaction.nm_id
         );
 
         if (matchingSale) {
           matched.push({
             transactionId: transaction.rrd_id,
             saleID: matchingSale.saleID,
-            nmId: matchingSale.nmId
+            nmId: matchingSale.nmId,
           });
         }
       });
@@ -813,18 +813,15 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should calculate reconciliation metrics', async () => {
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       const sales = await sdk.reports.getSales('2025-10-01');
 
-      const totalTransactionValue = transactions.reduce(
-        (sum, t) => sum + t.ppvz_for_pay,
-        0
-      );
+      const totalTransactionValue = transactions.reduce((sum, t) => sum + t.ppvz_for_pay, 0);
       const totalSalesRevenue = sales.reduce((sum, s) => sum + s.forPay, 0);
 
-      expect(totalTransactionValue).toBe(5500.00); // 1500 + 2500 + 1500
-      expect(totalSalesRevenue).toBe(5500.00); // 1500 + 2500 + 1500
+      expect(totalTransactionValue).toBe(5500.0); // 1500 + 2500 + 1500
+      expect(totalSalesRevenue).toBe(5500.0); // 1500 + 2500 + 1500
       expect(transactions.length).toBe(3);
       expect(sales.length).toBe(3);
     });
@@ -832,13 +829,13 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should detect timing discrepancies between transactions and sales', async () => {
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       const sales = await sdk.reports.getSales('2025-10-01');
 
       // Check timing for matched pairs
-      transactions.forEach(transaction => {
-        const matchingSale = sales.find(s => s.saleID === transaction.srid);
+      transactions.forEach((transaction) => {
+        const matchingSale = sales.find((s) => s.saleID === transaction.srid);
         if (matchingSale) {
           const transactionDate = new Date(transaction.sale_dt);
           const saleDate = new Date(matchingSale.date);
@@ -853,71 +850,74 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should handle unmatched transactions and sales', async () => {
       // Add extra unmatched transaction
       server.use(
-        http.get('https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod', () => {
-          return HttpResponse.json([
-            {
-              realizationreport_id: 1004,
-              date_from: '2025-10-01',
-              date_to: '2025-10-23',
-              create_dt: '2025-10-23T10:00:00Z',
-              currency_name: 'RUB',
-              suppliercontract_code: null,
-              rrd_id: 1004,
-              gi_id: 4,
-              dlv_prc: 0,
-              fix_tariff_date_from: '2025-10-01',
-              fix_tariff_date_to: '2025-10-23',
-              subject_name: 'Electronics',
-              nm_id: 99999,
-              brand_name: 'TestBrand',
-              sa_name: 'SKU999',
-              ts_name: 'XL',
-              barcode: '9999999999',
-              doc_type_name: 'Продажа',
-              quantity: 1,
-              retail_price: 3500.00,
-              retail_amount: 3500.00,
-              sale_percent: 14,
-              commission_percent: 15,
-              office_name: 'Moscow Office',
-              supplier_oper_name: 'Sale',
-              order_dt: '2025-10-22T10:00:00Z',
-              sale_dt: '2025-10-23T10:00:00Z',
-              rr_dt: null,
-              shk_id: 4,
-              retail_price_withdisc_rub: 3000.00,
-              delivery_rub: 0,
-              gi_box_type_name: 'Box',
-              product_discount_for_report: 14,
-              supplier_promo: 0,
-              ppvz_kvw_prc_base_date: null,
-              ppvz_kvw_prc: 0,
-              ppvz_sales_commission: 450.00,
-              ppvz_for_pay: 3000.00,
-              ppvz_reward: 0,
-              acquiring_fee: 45.00,
-              acquiring_percent: 1.5,
-              acquiring_bank: 'Test Bank',
-              ppvz_vw: 0,
-              ppvz_vw_nds: 0,
-              stock_id: null,
-              supplier_oper_id: 'S99999',
-              country_name: 'Russia',
-              bonus_type_name: null,
-              srid: 'S99999'
-            }
-          ]);
-        })
+        http.get(
+          'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
+          () => {
+            return HttpResponse.json([
+              {
+                realizationreport_id: 1004,
+                date_from: '2025-10-01',
+                date_to: '2025-10-23',
+                create_dt: '2025-10-23T10:00:00Z',
+                currency_name: 'RUB',
+                suppliercontract_code: null,
+                rrd_id: 1004,
+                gi_id: 4,
+                dlv_prc: 0,
+                fix_tariff_date_from: '2025-10-01',
+                fix_tariff_date_to: '2025-10-23',
+                subject_name: 'Electronics',
+                nm_id: 99999,
+                brand_name: 'TestBrand',
+                sa_name: 'SKU999',
+                ts_name: 'XL',
+                barcode: '9999999999',
+                doc_type_name: 'Продажа',
+                quantity: 1,
+                retail_price: 3500.0,
+                retail_amount: 3500.0,
+                sale_percent: 14,
+                commission_percent: 15,
+                office_name: 'Moscow Office',
+                supplier_oper_name: 'Sale',
+                order_dt: '2025-10-22T10:00:00Z',
+                sale_dt: '2025-10-23T10:00:00Z',
+                rr_dt: null,
+                shk_id: 4,
+                retail_price_withdisc_rub: 3000.0,
+                delivery_rub: 0,
+                gi_box_type_name: 'Box',
+                product_discount_for_report: 14,
+                supplier_promo: 0,
+                ppvz_kvw_prc_base_date: null,
+                ppvz_kvw_prc: 0,
+                ppvz_sales_commission: 450.0,
+                ppvz_for_pay: 3000.0,
+                ppvz_reward: 0,
+                acquiring_fee: 45.0,
+                acquiring_percent: 1.5,
+                acquiring_bank: 'Test Bank',
+                ppvz_vw: 0,
+                ppvz_vw_nds: 0,
+                stock_id: null,
+                supplier_oper_id: 'S99999',
+                country_name: 'Russia',
+                bonus_type_name: null,
+                srid: 'S99999',
+              },
+            ]);
+          }
+        )
       );
 
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       const sales = await sdk.reports.getSales('2025-10-01');
 
       const unmatchedTransactions = transactions.filter(
-        t => !sales.some(s => s.saleID === t.srid)
+        (t) => !sales.some((s) => s.saleID === t.srid)
       );
 
       expect(unmatchedTransactions.length).toBe(1);
@@ -930,20 +930,20 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(reviews.data.feedbacks.length).toBe(3);
       expect(reviews.data.countUnanswered).toBe(3);
 
       // Wait for rate limit
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 100);
       });
 
       const questions = await sdk.communications.getQuestions({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(questions.data.questions.length).toBe(2);
       expect(questions.data.countUnanswered).toBe(2);
@@ -953,12 +953,10 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
-      const negativeReviews = reviews.data.feedbacks.filter(
-        r => r.productValuation <= 2
-      );
+      const negativeReviews = reviews.data.feedbacks.filter((r) => r.productValuation <= 2);
 
       expect(negativeReviews.length).toBe(2);
       expect(negativeReviews[0]?.productDetails.nmId).toBe(12345);
@@ -971,19 +969,19 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       const questions = await sdk.communications.getQuestions({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       // Calculate urgency score per product
       const productScores = new Map<number, number>();
 
       // Negative reviews: +10 points
-      reviews.data.feedbacks.forEach(review => {
+      reviews.data.feedbacks.forEach((review) => {
         if (review.productValuation <= 2) {
           const currentScore = productScores.get(review.productDetails.nmId) ?? 0;
           productScores.set(review.productDetails.nmId, currentScore + 10);
@@ -992,7 +990,7 @@ describe('Cross-Module Examples Integration Tests', () => {
 
       // Unanswered questions: +5 points (older questions +8)
       const now = new Date();
-      questions.data.questions.forEach(question => {
+      questions.data.questions.forEach((question) => {
         const createdDate = new Date(question.createdDate);
         const daysOld = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
         const score = daysOld > 3 ? 8 : 5;
@@ -1012,40 +1010,38 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
-      const negativeReviews = reviews.data.feedbacks.filter(r => r.productValuation <= 2);
+      const negativeReviews = reviews.data.feedbacks.filter((r) => r.productValuation <= 2);
 
       // Generate recommendations
-      const recommendations = negativeReviews.map(review => ({
+      const recommendations = negativeReviews.map((review) => ({
         nmId: review.productDetails.nmId,
-        action: review.productValuation === 1 ? 'Immediate response required' : 'Respond within 24 hours',
-        priority: review.productValuation === 1 ? 'CRITICAL' : 'HIGH'
+        action:
+          review.productValuation === 1 ? 'Immediate response required' : 'Respond within 24 hours',
+        priority: review.productValuation === 1 ? 'CRITICAL' : 'HIGH',
       }));
 
       expect(recommendations.length).toBe(2);
-      expect(recommendations.find(r => r.nmId === 12346)?.priority).toBe('CRITICAL');
-      expect(recommendations.find(r => r.nmId === 12345)?.priority).toBe('HIGH');
+      expect(recommendations.find((r) => r.nmId === 12346)?.priority).toBe('CRITICAL');
+      expect(recommendations.find((r) => r.nmId === 12345)?.priority).toBe('HIGH');
     });
 
     it('should calculate customer satisfaction metrics', async () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       const questions = await sdk.communications.getQuestions({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       // Calculate average rating
-      const totalRating = reviews.data.feedbacks.reduce(
-        (sum, r) => sum + r.productValuation,
-        0
-      );
+      const totalRating = reviews.data.feedbacks.reduce((sum, r) => sum + r.productValuation, 0);
       const averageRating = totalRating / reviews.data.feedbacks.length;
 
       // Calculate response rate (0% for all unanswered)
@@ -1065,7 +1061,7 @@ describe('Cross-Module Examples Integration Tests', () => {
 
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       expect(transactions.length).toBeGreaterThan(0);
 
@@ -1073,8 +1069,8 @@ describe('Cross-Module Examples Integration Tests', () => {
         brandNames: ['TestBrand'],
         period: {
           begin: '2025-10-01',
-          end: '2025-10-23'
-        }
+          end: '2025-10-23',
+        },
       });
       expect(analytics.data.cards.length).toBeGreaterThan(0);
 
@@ -1084,7 +1080,7 @@ describe('Cross-Module Examples Integration Tests', () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(reviews.data.feedbacks.length).toBeGreaterThan(0);
     });
@@ -1092,11 +1088,11 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should transform financial data into BI export format', async () => {
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
 
       // Transform to BI format
-      const biRecords = transactions.map(t => ({
+      const biRecords = transactions.map((t) => ({
         timestamp: new Date().toISOString(),
         dataType: 'finance' as const,
         productId: t.nm_id,
@@ -1105,14 +1101,14 @@ describe('Cross-Module Examples Integration Tests', () => {
         date: t.sale_dt,
         metadata: {
           transactionId: t.rrd_id,
-          saleID: t.srid
-        }
+          saleID: t.srid,
+        },
       }));
 
       expect(biRecords.length).toBe(3);
       expect(biRecords[0]?.dataType).toBe('finance');
       expect(biRecords[0]?.metric).toBe('revenue');
-      expect(biRecords[0]?.value).toBe(1500.00);
+      expect(biRecords[0]?.value).toBe(1500.0);
       expect(biRecords[0]?.productId).toBe(12345);
     });
 
@@ -1120,7 +1116,7 @@ describe('Cross-Module Examples Integration Tests', () => {
       const sales = await sdk.reports.getSales('2025-10-01');
 
       // Transform to BI format
-      const biRecords = sales.map(s => ({
+      const biRecords = sales.map((s) => ({
         timestamp: new Date().toISOString(),
         dataType: 'sales' as const,
         productId: s.nmId,
@@ -1128,31 +1124,34 @@ describe('Cross-Module Examples Integration Tests', () => {
         value: s.forPay,
         date: s.sale_dt,
         metadata: {
-          saleID: s.saleID
-        }
+          saleID: s.saleID,
+        },
       }));
 
       expect(biRecords.length).toBe(3);
       expect(biRecords[0]?.dataType).toBe('sales');
       expect(biRecords[0]?.metric).toBe('sale_amount');
-      expect(biRecords[0]?.value).toBe(1500.00);
+      expect(biRecords[0]?.value).toBe(1500.0);
     });
 
     it('should transform review metrics into BI export format', async () => {
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       // Aggregate reviews by product
       const reviewMetrics = new Map<number, { totalRating: number; count: number }>();
 
-      reviews.data.feedbacks.forEach(review => {
-        const current = reviewMetrics.get(review.productDetails.nmId) ?? { totalRating: 0, count: 0 };
+      reviews.data.feedbacks.forEach((review) => {
+        const current = reviewMetrics.get(review.productDetails.nmId) ?? {
+          totalRating: 0,
+          count: 0,
+        };
         reviewMetrics.set(review.productDetails.nmId, {
           totalRating: current.totalRating + review.productValuation,
-          count: current.count + 1
+          count: current.count + 1,
         });
       });
 
@@ -1165,8 +1164,8 @@ describe('Cross-Module Examples Integration Tests', () => {
         value: metrics.totalRating / metrics.count,
         date: new Date().toISOString(),
         metadata: {
-          reviewCount: metrics.count
-        }
+          reviewCount: metrics.count,
+        },
       }));
 
       expect(biRecords.length).toBe(2); // 2 products
@@ -1177,35 +1176,35 @@ describe('Cross-Module Examples Integration Tests', () => {
     it('should generate unified BI export dataset', async () => {
       const transactions = await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       const sales = await sdk.reports.getSales('2025-10-01');
 
       // Combine into unified dataset
       const biExportData = [
-        ...transactions.map(t => ({
+        ...transactions.map((t) => ({
           timestamp: new Date().toISOString(),
           dataType: 'finance' as const,
           productId: t.nm_id,
           metric: 'revenue',
           value: t.ppvz_for_pay,
           date: t.sale_dt,
-          metadata: { transactionId: t.rrd_id }
+          metadata: { transactionId: t.rrd_id },
         })),
-        ...sales.map(s => ({
+        ...sales.map((s) => ({
           timestamp: new Date().toISOString(),
           dataType: 'sales' as const,
           productId: s.nmId,
           metric: 'sale_amount',
           value: s.forPay,
           date: s.date,
-          metadata: { saleID: s.saleID }
-        }))
+          metadata: { saleID: s.saleID },
+        })),
       ];
 
       expect(biExportData.length).toBe(6); // 3 transactions + 3 sales
-      expect(biExportData.filter(r => r.dataType === 'finance').length).toBe(3);
-      expect(biExportData.filter(r => r.dataType === 'sales').length).toBe(3);
+      expect(biExportData.filter((r) => r.dataType === 'finance').length).toBe(3);
+      expect(biExportData.filter((r) => r.dataType === 'sales').length).toBe(3);
     });
 
     it('should handle CSV export format', () => {
@@ -1214,9 +1213,9 @@ describe('Cross-Module Examples Integration Tests', () => {
         dataType: 'finance',
         productId: 12345,
         metric: 'revenue',
-        value: 1500.00,
+        value: 1500.0,
         date: '2025-10-20T10:00:00Z',
-        metadata: { transactionId: 1001 }
+        metadata: { transactionId: 1001 },
       };
 
       // Simulate CSV row generation
@@ -1240,13 +1239,13 @@ describe('Cross-Module Examples Integration Tests', () => {
         brandNames: ['TestBrand'],
         period: {
           begin: '2025-10-01',
-          end: '2025-10-23'
-        }
+          end: '2025-10-23',
+        },
       });
       await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       await sdk.reports.getSales('2025-10-01');
 
@@ -1266,9 +1265,7 @@ describe('Cross-Module Examples Integration Tests', () => {
       // This would trigger rate limit error in real scenario
       // SDK should handle retry automatically
       // In this test, we just verify the error structure
-      await expect(
-        sdk.finances.getBalance()
-      ).resolves.toBeDefined();
+      await expect(sdk.finances.getBalance()).resolves.toBeDefined();
     });
   });
 
@@ -1303,12 +1300,12 @@ describe('Cross-Module Examples Integration Tests', () => {
 
       // Other modules should still work
       const balance = await sdk.finances.getBalance();
-      expect(balance.current).toBe(50000.50);
+      expect(balance.current).toBe(50000.5);
 
       const reviews = await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(reviews.data.feedbacks.length).toBeGreaterThan(0);
 
@@ -1318,8 +1315,8 @@ describe('Cross-Module Examples Integration Tests', () => {
           brandNames: ['TestBrand'],
           period: {
             begin: '2025-10-01',
-            end: '2025-10-23'
-          }
+            end: '2025-10-23',
+          },
         })
       ).rejects.toThrow();
     });
@@ -1335,19 +1332,19 @@ describe('Cross-Module Examples Integration Tests', () => {
         brandNames: ['TestBrand'],
         period: {
           begin: '2025-10-01',
-          end: '2025-10-23'
-        }
+          end: '2025-10-23',
+        },
       });
       await sdk.communications.getReviews({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       // Financial Reconciliation
       await sdk.finances.getTransactions({
         dateFrom: '2025-10-01',
-        dateTo: '2025-10-23'
+        dateTo: '2025-10-23',
       });
       await sdk.reports.getSales('2025-10-01');
 
@@ -1355,7 +1352,7 @@ describe('Cross-Module Examples Integration Tests', () => {
       await sdk.communications.getQuestions({
         isAnswered: false,
         take: 10,
-        skip: 0
+        skip: 0,
       });
 
       const elapsed = Date.now() - start;
@@ -1374,8 +1371,8 @@ describe('Cross-Module Examples Integration Tests', () => {
           brandNames: ['TestBrand'],
           period: {
             begin: '2025-10-01',
-            end: '2025-10-23'
-          }
+            end: '2025-10-23',
+          },
         });
       }
 

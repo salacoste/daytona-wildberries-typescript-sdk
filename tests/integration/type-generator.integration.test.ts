@@ -404,13 +404,10 @@ paths: {}
 
       // Verify with strict mode enabled
       expect(() => {
-        execSync(
-          `npx tsc --noEmit --strict --skipLibCheck ${outputTypesPath}`,
-          {
-            cwd: process.cwd(),
-            stdio: 'pipe',
-          }
-        );
+        execSync(`npx tsc --noEmit --strict --skipLibCheck ${outputTypesPath}`, {
+          cwd: process.cwd(),
+          stdio: 'pipe',
+        });
       }).not.toThrow();
     });
 

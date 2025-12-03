@@ -511,7 +511,7 @@ export {
   ordersFBSRateLimits,
   ordersFBWRateLimits,
   promotionRateLimits,
-  tariffsRateLimits
+  tariffsRateLimits,
 } from './config';
 export type { RateLimitConfig, EndpointLimits } from './client/rate-limiter';
 
@@ -612,7 +612,7 @@ export type {
   ModelsOptionsResultModel as FBWAcceptanceOptions,
   ModelsTransitTariff as FBWTransitTariff,
   ModelsVolumeTariff as FBWVolumeTariff,
-  ModelsErrorModel as FBWErrorModel
+  ModelsErrorModel as FBWErrorModel,
 } from './types/orders-fbw.types';
 
 // Promotion and Tariffs types
@@ -651,11 +651,11 @@ export {
   CampaignNotFoundError,
   InvalidBidError,
   BudgetExceededError,
-  InvalidCampaignStateError
+  InvalidCampaignStateError,
 } from './errors/promotion-errors';
 export {
   PickupOrderNotFoundError,
   InvalidOrderStateError,
   CustomerVerificationError,
-  MetadataValidationError
+  MetadataValidationError,
 } from './errors/in-store-pickup-errors';

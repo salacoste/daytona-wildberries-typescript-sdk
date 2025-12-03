@@ -25,7 +25,7 @@ describe('RateLimiter', () => {
   describe('Basic Token Consumption', () => {
     it('should allow immediate request when tokens available', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 6 },
+        test: { requestsPerMinute: 6, burstLimit: 6 },
       });
 
       const start = Date.now();
@@ -38,7 +38,7 @@ describe('RateLimiter', () => {
 
     it('should queue request when no tokens available', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 1 },
+        test: { requestsPerMinute: 6, burstLimit: 1 },
       });
 
       // First request: immediate (consumes the only token)
@@ -58,7 +58,7 @@ describe('RateLimiter', () => {
 
     it('should allow unlimited requests for unconfigured endpoints', async () => {
       const limiter = new RateLimiter({
-        'configured': { requestsPerMinute: 1 },
+        configured: { requestsPerMinute: 1 },
       });
 
       // Unconfigured endpoint should be unlimited
@@ -74,7 +74,7 @@ describe('RateLimiter', () => {
   describe('Token Refill Mechanism', () => {
     it('should refill tokens over time', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 6 },
+        test: { requestsPerMinute: 6, burstLimit: 6 },
       });
 
       // Consume all tokens
@@ -92,7 +92,7 @@ describe('RateLimiter', () => {
 
     it('should not exceed capacity when refilling', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 6 },
+        test: { requestsPerMinute: 6, burstLimit: 6 },
       });
 
       // Wait long time to ensure refill doesn't exceed capacity
@@ -105,7 +105,7 @@ describe('RateLimiter', () => {
   describe('FIFO Queue Processing', () => {
     it('should process queued requests in FIFO order', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 1 },
+        test: { requestsPerMinute: 6, burstLimit: 1 },
       });
 
       const order: number[] = [];
@@ -128,7 +128,7 @@ describe('RateLimiter', () => {
 
     it('should handle concurrent requests from multiple callers', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 10, burstLimit: 2 },
+        test: { requestsPerMinute: 10, burstLimit: 2 },
       });
 
       const results: number[] = [];
@@ -154,7 +154,7 @@ describe('RateLimiter', () => {
   describe('Rate Limit Configurations', () => {
     it('should handle strict rate limit (1 req per 10s)', async () => {
       const limiter = new RateLimiter({
-        'test': {
+        test: {
           requestsPerMinute: 6,
           intervalSeconds: 10,
           burstLimit: 1,
@@ -180,7 +180,7 @@ describe('RateLimiter', () => {
 
     it('should handle burst limits correctly', async () => {
       const limiter = new RateLimiter({
-        'test': {
+        test: {
           requestsPerMinute: 6,
           burstLimit: 10, // Can burst 10 rapid requests
         },
@@ -204,7 +204,7 @@ describe('RateLimiter', () => {
 
     it('should handle very strict limits (1 req per 2 minutes)', async () => {
       const limiter = new RateLimiter({
-        'test': {
+        test: {
           requestsPerMinute: 0.5, // 1 req per 2 minutes
           intervalSeconds: 120,
           burstLimit: 1,
@@ -241,7 +241,7 @@ describe('RateLimiter', () => {
 
     it('should reset bucket when configuration changed', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 6 },
+        test: { requestsPerMinute: 6, burstLimit: 6 },
       });
 
       // Consume some tokens
@@ -258,7 +258,7 @@ describe('RateLimiter', () => {
 
     it('should return undefined for unconfigured endpoints', () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 10 },
+        test: { requestsPerMinute: 10 },
       });
 
       expect(limiter.getConfiguration('unconfigured')).toBeUndefined();
@@ -268,7 +268,7 @@ describe('RateLimiter', () => {
   describe('Monitoring Methods', () => {
     it('should report remaining tokens accurately', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 6 },
+        test: { requestsPerMinute: 6, burstLimit: 6 },
       });
 
       expect(limiter.getRemainingTokens('test')).toBe(6);
@@ -282,7 +282,7 @@ describe('RateLimiter', () => {
 
     it('should indicate when requests can proceed', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 1 },
+        test: { requestsPerMinute: 6, burstLimit: 1 },
       });
 
       expect(limiter.canProceed('test')).toBe(true);
@@ -298,8 +298,8 @@ describe('RateLimiter', () => {
   describe('Reset Functionality', () => {
     it('should reset specific endpoint', async () => {
       const limiter = new RateLimiter({
-        'test1': { requestsPerMinute: 6 },
-        'test2': { requestsPerMinute: 10 },
+        test1: { requestsPerMinute: 6 },
+        test2: { requestsPerMinute: 10 },
       });
 
       await limiter.waitForSlot('test1');
@@ -315,8 +315,8 @@ describe('RateLimiter', () => {
 
     it('should reset all endpoints when no key provided', async () => {
       const limiter = new RateLimiter({
-        'test1': { requestsPerMinute: 6 },
-        'test2': { requestsPerMinute: 10 },
+        test1: { requestsPerMinute: 6 },
+        test2: { requestsPerMinute: 10 },
       });
 
       await limiter.waitForSlot('test1');
@@ -341,8 +341,8 @@ describe('RateLimiter', () => {
 
     it('should handle multiple endpoints independently', async () => {
       const limiter = new RateLimiter({
-        'endpoint1': { requestsPerMinute: 6, burstLimit: 1 },
-        'endpoint2': { requestsPerMinute: 10, burstLimit: 2 },
+        endpoint1: { requestsPerMinute: 6, burstLimit: 1 },
+        endpoint2: { requestsPerMinute: 10, burstLimit: 2 },
       });
 
       await limiter.waitForSlot('endpoint1');
@@ -356,12 +356,10 @@ describe('RateLimiter', () => {
 
     it('should handle rapid successive requests', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 60, burstLimit: 10 },
+        test: { requestsPerMinute: 60, burstLimit: 10 },
       });
 
-      const promises = Array.from({ length: 20 }, () =>
-        limiter.waitForSlot('test')
-      );
+      const promises = Array.from({ length: 20 }, () => limiter.waitForSlot('test'));
 
       // First 10 immediate (burst)
       await Promise.all(promises.slice(0, 10));

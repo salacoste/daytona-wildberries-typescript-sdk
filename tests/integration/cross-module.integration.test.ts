@@ -21,9 +21,9 @@ const server = setupServer(
     return HttpResponse.json({
       data: [
         { id: 1, name: 'Электроника', parentID: 0 },
-        { id: 2, name: 'Одежда', parentID: 0 }
+        { id: 2, name: 'Одежда', parentID: 0 },
       ],
-      error: false
+      error: false,
     });
   }),
 
@@ -31,16 +31,16 @@ const server = setupServer(
     return HttpResponse.json({
       data: [
         { subjectID: 105, subjectName: 'Смартфоны', parentID: 1, parentName: 'Электроника' },
-        { subjectID: 106, subjectName: 'Ноутбуки', parentID: 1, parentName: 'Электроника' }
+        { subjectID: 106, subjectName: 'Ноутбуки', parentID: 1, parentName: 'Электроника' },
       ],
-      error: false
+      error: false,
     });
   }),
 
   http.post('https://content-api.wildberries.ru/content/v2/cards/upload', () => {
     return HttpResponse.json({
       data: { id: 'PROD123', taskID: 1 },
-      error: false
+      error: false,
     });
   }),
 
@@ -56,11 +56,11 @@ const server = setupServer(
           subjectID: 105,
           subjectName: 'Смартфоны',
           sizes: [
-            { chrtID: 1001, techSize: 'ONE SIZE', wbSize: 'ONE SIZE', skus: ['1234567890123'] }
-          ]
-        }
+            { chrtID: 1001, techSize: 'ONE SIZE', wbSize: 'ONE SIZE', skus: ['1234567890123'] },
+          ],
+        },
       ],
-      cursor: { total: 1 }
+      cursor: { total: 1 },
     });
   }),
 
@@ -73,10 +73,10 @@ const server = setupServer(
           article: 'EXAMPLE-001',
           orderUid: 'ORDER-UID-123',
           cargoType: 1,
-          products: [{ nmId: 123456789 }]
-        }
+          products: [{ nmId: 123456789 }],
+        },
       ],
-      next: 0
+      next: 0,
     });
   }),
 
@@ -87,16 +87,16 @@ const server = setupServer(
           id: 12345,
           article: 'EXAMPLE-001',
           orderUid: 'ORDER-UID-123',
-          cargoType: 1
-        }
+          cargoType: 1,
+        },
       ],
-      next: 0
+      next: 0,
     });
   }),
 
   http.post('https://marketplace-api.wildberries.ru/api/v3/supplies', () => {
     return HttpResponse.json({
-      id: 'WB-GI-1234567'
+      id: 'WB-GI-1234567',
     });
   }),
 
@@ -109,7 +109,7 @@ const server = setupServer(
         address: 'Московская обл., Подольск',
         workTime: '09:00-18:00',
         acceptsQR: true,
-        isActive: true
+        isActive: true,
       },
       {
         ID: 117501,
@@ -117,8 +117,8 @@ const server = setupServer(
         address: 'Респ. Татарстан, Казань',
         workTime: '10:00-19:00',
         acceptsQR: true,
-        isActive: true
-      }
+        isActive: true,
+      },
     ]);
   }),
 
@@ -130,8 +130,8 @@ const server = setupServer(
         warehouseID: 507,
         warehouseName: 'Коледино',
         boxTypeName: 'Монопалета',
-        allowUnload: true
-      }
+        allowUnload: true,
+      },
     ]);
   })
 );
@@ -175,21 +175,23 @@ describe('Cross-Module Integration Tests', () => {
       expect(firstSubject).toBeDefined();
       const product = await sdk.products.createProduct({
         subjectID: firstSubject.subjectID,
-        variants: [{
-          vendorCode: 'EXAMPLE-001',
-          brand: 'Example Brand',
-          title: 'Example Product',
-          description: 'Test product for cross-module workflow',
-          dimensions: { length: 10, width: 10, height: 5, weightBrutto: 0.5 },
-          sizes: [{ techSize: 'ONE SIZE', wbSize: 'ONE SIZE' }],
-          characteristics: []
-        }]
+        variants: [
+          {
+            vendorCode: 'EXAMPLE-001',
+            brand: 'Example Brand',
+            title: 'Example Product',
+            description: 'Test product for cross-module workflow',
+            dimensions: { length: 10, width: 10, height: 5, weightBrutto: 0.5 },
+            sizes: [{ techSize: 'ONE SIZE', wbSize: 'ONE SIZE' }],
+            characteristics: [],
+          },
+        ],
       });
       expect(product.error).toBe(false);
 
       // Step 4: List products to verify creation (Products module)
       const productList = await sdk.products.listProducts({
-        filter: { textSearch: 'EXAMPLE-001' }
+        filter: { textSearch: 'EXAMPLE-001' },
       });
       expect(productList.cards).toBeDefined();
       const cards = productList.cards;
@@ -219,7 +221,7 @@ describe('Cross-Module Integration Tests', () => {
     it('should validate data consistency between Products and Orders modules', async () => {
       // Create product
       const productList = await sdk.products.listProducts({
-        filter: { textSearch: 'EXAMPLE-001' }
+        filter: { textSearch: 'EXAMPLE-001' },
       });
       const cards = productList.cards;
       if (!cards || cards.length === 0) {
@@ -230,14 +232,14 @@ describe('Cross-Module Integration Tests', () => {
       // Fetch orders
       const orders = await sdk.ordersFBS.getOrders({
         limit: 100,
-        next: 0
+        next: 0,
       });
 
       // Verify article/vendor code consistency
       expect(product.vendorCode).toBe('EXAMPLE-001');
 
       // Find matching order
-      const matchingOrder = orders.orders.find(o => o.article === product.vendorCode);
+      const matchingOrder = orders.orders.find((o) => o.article === product.vendorCode);
       expect(matchingOrder).toBeDefined();
       expect(matchingOrder?.article).toBe(product.vendorCode);
     });
@@ -251,7 +253,7 @@ describe('Cross-Module Integration Tests', () => {
       expect(warehouses.length).toBeGreaterThan(0);
 
       // Filter active warehouses
-      const activeWarehouses = warehouses.filter(w => w.isActive);
+      const activeWarehouses = warehouses.filter((w) => w.isActive);
       expect(activeWarehouses.length).toBeGreaterThan(0);
 
       // Verify warehouse structure
@@ -265,7 +267,7 @@ describe('Cross-Module Integration Tests', () => {
     it('should check acceptance coefficients for selected warehouse', async () => {
       // Get warehouses
       const warehouses = await sdk.ordersFBW.getWarehouses();
-      const warehouse = warehouses.find(w => w.isActive);
+      const warehouse = warehouses.find((w) => w.isActive);
       expect(warehouse).toBeDefined();
       if (!warehouse) {
         throw new Error('No active warehouse found');
@@ -314,7 +316,7 @@ describe('Cross-Module Integration Tests', () => {
       const results = await Promise.all(promises);
 
       // All requests should succeed
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.error).toBe(false);
         expect(result.data).toBeDefined();
       });
@@ -330,7 +332,7 @@ describe('Cross-Module Integration Tests', () => {
             {
               data: null,
               error: true,
-              errorText: 'Validation error: Missing required field'
+              errorText: 'Validation error: Missing required field',
             },
             { status: 400 }
           );
@@ -341,15 +343,17 @@ describe('Cross-Module Integration Tests', () => {
       try {
         await sdk.products.createProduct({
           subjectID: 105,
-          variants: [{
-            vendorCode: 'INVALID',
-            brand: '',  // Invalid: empty brand
-            title: '',  // Invalid: empty title
-            description: '',
-            dimensions: { length: 0, width: 0, height: 0, weightBrutto: 0 },
-            sizes: [],
-            characteristics: []
-          }]
+          variants: [
+            {
+              vendorCode: 'INVALID',
+              brand: '', // Invalid: empty brand
+              title: '', // Invalid: empty title
+              description: '',
+              dimensions: { length: 0, width: 0, height: 0, weightBrutto: 0 },
+              sizes: [],
+              characteristics: [],
+            },
+          ],
         });
 
         // If we get here, the test should fail

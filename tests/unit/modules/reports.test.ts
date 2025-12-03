@@ -703,10 +703,7 @@ describe('ReportsModule', () => {
 
       vi.mocked(mockClient).get.mockResolvedValue(mockStatus);
 
-      const result = await reports.checkReportStatus(
-        'task-abc123',
-        'warehouse_remains'
-      );
+      const result = await reports.checkReportStatus('task-abc123', 'warehouse_remains');
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/task-abc123/status',
@@ -967,10 +964,10 @@ describe('ReportsModule', () => {
 
       await reports.getGoodsLabelingReport(paramsWithFilter);
 
-      expect(mockClient.get).toHaveBeenCalledWith(
-        expect.any(String),
-        { params: paramsWithFilter, rateLimitKey: 'reports.getGoodsLabelingReport' }
-      );
+      expect(mockClient.get).toHaveBeenCalledWith(expect.any(String), {
+        params: paramsWithFilter,
+        rateLimitKey: 'reports.getGoodsLabelingReport',
+      });
     });
   });
 
@@ -1263,9 +1260,7 @@ describe('ReportsModule', () => {
 
   describe('getShadowedProductsReport()', () => {
     it('should fetch shadowed products report', async () => {
-      const mockData = [
-        { nmId: 789, reason: 'Low visibility score' },
-      ];
+      const mockData = [{ nmId: 789, reason: 'Low visibility score' }];
       vi.mocked(mockClient).get.mockResolvedValue(mockData);
 
       const result = await reports.getShadowedProductsReport();

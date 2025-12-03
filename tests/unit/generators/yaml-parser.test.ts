@@ -163,9 +163,7 @@ paths: {}
     });
 
     it('should throw error for unsupported OpenAPI version', () => {
-      expect(() => parseOpenAPISpec(invalidVersionPath)).toThrow(
-        /Failed to parse OpenAPI spec/
-      );
+      expect(() => parseOpenAPISpec(invalidVersionPath)).toThrow(/Failed to parse OpenAPI spec/);
     });
 
     it('should throw error for malformed YAML', () => {
@@ -482,14 +480,17 @@ components:
 
     it('should handle very large YAML files', () => {
       // Generate a spec with 100 schemas
-      const largeSchemas = Array.from({ length: 100 }, (_, i) => `    Schema${i}:
+      const largeSchemas = Array.from(
+        { length: 100 },
+        (_, i) => `    Schema${i}:
       type: object
       properties:
         id:
           type: integer
         name:
           type: string
-`).join('\n');
+`
+      ).join('\n');
 
       const largeSpec = `openapi: 3.0.1
 info:

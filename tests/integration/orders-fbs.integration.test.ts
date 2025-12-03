@@ -242,19 +242,14 @@ describe('Orders FBS Integration Tests', () => {
     it('should handle 400 error for invalid date range', async () => {
       server.use(
         http.get('https://marketplace-api.wildberries.ru/api/v3/orders', () => {
-          return HttpResponse.json(
-            { error: 'Date range exceeds 30 days' },
-            { status: 400 }
-          );
+          return HttpResponse.json({ error: 'Date range exceeds 30 days' }, { status: 400 });
         })
       );
 
       const dateFrom = Math.floor(Date.now() / 1000) - 60 * 24 * 60 * 60; // 60 days ago
       const dateTo = Math.floor(Date.now() / 1000);
 
-      await expect(
-        sdk.ordersFBS.getOrders({ dateFrom, dateTo })
-      ).rejects.toThrow();
+      await expect(sdk.ordersFBS.getOrders({ dateFrom, dateTo })).rejects.toThrow();
     });
 
     it('should handle 429 rate limit error', async () => {
@@ -373,9 +368,12 @@ describe('Orders FBS Integration Tests', () => {
         }),
 
         // 6. Deliver supply
-        http.patch('https://marketplace-api.wildberries.ru/api/v3/supplies/:supplyId/deliver', () => {
-          return new HttpResponse(null, { status: 204 });
-        }),
+        http.patch(
+          'https://marketplace-api.wildberries.ru/api/v3/supplies/:supplyId/deliver',
+          () => {
+            return new HttpResponse(null, { status: 204 });
+          }
+        ),
 
         // 7. Get supply QR code
         http.get('https://marketplace-api.wildberries.ru/api/v3/supplies/:supplyId/barcode', () => {
@@ -529,10 +527,7 @@ describe('Orders FBS Integration Tests', () => {
         http.patch(
           'https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-TYPE/orders/99999',
           () => {
-            return HttpResponse.json(
-              { error: 'Cargo type mismatch' },
-              { status: 409 }
-            );
+            return HttpResponse.json({ error: 'Cargo type mismatch' }, { status: 409 });
           }
         )
       );
@@ -542,12 +537,12 @@ describe('Orders FBS Integration Tests', () => {
 
     it('should handle 409 error when delivering supply with zero orders', async () => {
       server.use(
-        http.patch('https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-EMPTY/deliver', () => {
-          return HttpResponse.json(
-            { error: 'Supply has zero orders' },
-            { status: 409 }
-          );
-        })
+        http.patch(
+          'https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-EMPTY/deliver',
+          () => {
+            return HttpResponse.json({ error: 'Supply has zero orders' }, { status: 409 });
+          }
+        )
       );
 
       await expect(sdk.ordersFBS.deliverSupply('WB-GI-EMPTY')).rejects.toThrow();
@@ -555,12 +550,12 @@ describe('Orders FBS Integration Tests', () => {
 
     it('should handle 409 error when getting QR code for non-delivered supply', async () => {
       server.use(
-        http.get('https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-NOTDONE/barcode', () => {
-          return HttpResponse.json(
-            { error: 'Supply not delivered yet' },
-            { status: 409 }
-          );
-        })
+        http.get(
+          'https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-NOTDONE/barcode',
+          () => {
+            return HttpResponse.json({ error: 'Supply not delivered yet' }, { status: 409 });
+          }
+        )
       );
 
       await expect(sdk.ordersFBS.getSupplyBarcode('WB-GI-NOTDONE', 'png')).rejects.toThrow();
@@ -568,12 +563,12 @@ describe('Orders FBS Integration Tests', () => {
 
     it('should handle 409 error when deleting supply with orders', async () => {
       server.use(
-        http.delete('https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-HASORDERS', () => {
-          return HttpResponse.json(
-            { error: 'Supply has orders attached' },
-            { status: 409 }
-          );
-        })
+        http.delete(
+          'https://marketplace-api.wildberries.ru/api/v3/supplies/WB-GI-HASORDERS',
+          () => {
+            return HttpResponse.json({ error: 'Supply has orders attached' }, { status: 409 });
+          }
+        )
       );
 
       await expect(sdk.ordersFBS.deleteSupply('WB-GI-HASORDERS')).rejects.toThrow();
@@ -582,10 +577,7 @@ describe('Orders FBS Integration Tests', () => {
     it('should handle 409 error when canceling completed order', async () => {
       server.use(
         http.patch('https://marketplace-api.wildberries.ru/api/v3/orders/99999/cancel', () => {
-          return HttpResponse.json(
-            { error: 'Cannot cancel completed order' },
-            { status: 409 }
-          );
+          return HttpResponse.json({ error: 'Cannot cancel completed order' }, { status: 409 });
         })
       );
 

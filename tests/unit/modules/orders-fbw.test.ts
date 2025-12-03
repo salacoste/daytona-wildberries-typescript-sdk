@@ -114,7 +114,10 @@ describe('OrdersFBWModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: { warehouseIDs: '507,117501' }, rateLimitKey: 'ordersFBW.getAcceptanceCoefficients' }
+        {
+          params: { warehouseIDs: '507,117501' },
+          rateLimitKey: 'ordersFBW.getAcceptanceCoefficients',
+        }
       );
       expect(result).toEqual(mockCoefficients);
     });
@@ -178,7 +181,9 @@ describe('OrdersFBWModule', () => {
 
     it('should throw ValidationError for empty goods array', async () => {
       await expect(ordersFBW.getAcceptanceOptions([])).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getAcceptanceOptions([])).rejects.toThrow('Goods array cannot be empty');
+      await expect(ordersFBW.getAcceptanceOptions([])).rejects.toThrow(
+        'Goods array cannot be empty'
+      );
     });
 
     it('should throw ValidationError for too many goods (>5000)', async () => {
@@ -483,7 +488,9 @@ describe('OrdersFBWModule', () => {
     });
 
     it('should throw ValidationError for invalid offset', async () => {
-      await expect(ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(ValidationError);
+      await expect(ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(
+        ValidationError
+      );
       await expect(ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(
         'Offset must be >= 0'
       );

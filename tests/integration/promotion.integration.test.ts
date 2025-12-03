@@ -36,32 +36,27 @@ const handlers = [
           count: 5,
           advert_list: [
             { advertId: 12345, changeTime: '2024-01-15T10:00:00Z' },
-            { advertId: 12346, changeTime: '2024-01-16T11:00:00Z' }
-          ]
+            { advertId: 12346, changeTime: '2024-01-16T11:00:00Z' },
+          ],
         },
         {
           type: 8,
           status: 4,
           count: 3,
-          advert_list: [
-            { advertId: 12347, changeTime: '2024-01-17T09:00:00Z' }
-          ]
-        }
+          advert_list: [{ advertId: 12347, changeTime: '2024-01-17T09:00:00Z' }],
+        },
       ],
-      all: 8
+      all: 8,
     });
   }),
 
   // POST /adv/v1/promotion/adverts - Get campaign information
   http.post('https://advert-api.wildberries.ru/adv/v1/promotion/adverts', async ({ request }) => {
-    const body = await request.json() as number[];
+    const body = (await request.json()) as number[];
 
     // Simulate campaign not found
     if (body.includes(999999)) {
-      return HttpResponse.json(
-        { error: 'Campaign not found', code: 404 },
-        { status: 404 }
-      );
+      return HttpResponse.json({ error: 'Campaign not found', code: 404 }, { status: 404 });
     }
 
     return HttpResponse.json([
@@ -73,8 +68,8 @@ const handlers = [
         createTime: '2024-01-01T00:00:00Z',
         changeTime: '2024-01-15T10:00:00Z',
         startTime: '2024-01-02T00:00:00Z',
-        endTime: '2024-12-31T23:59:59Z'
-      }
+        endTime: '2024-12-31T23:59:59Z',
+      },
     ]);
   }),
 
@@ -87,9 +82,9 @@ const handlers = [
           name: 'Auction Campaign',
           type: 9,
           status: 9,
-          paymentType: 'cpm'
-        }
-      ]
+          paymentType: 'cpm',
+        },
+      ],
     });
   }),
 
@@ -98,18 +93,22 @@ const handlers = [
     return HttpResponse.json({
       categories: [
         { id: 1, name: 'Electronics', minBid: 50 },
-        { id: 2, name: 'Clothing', minBid: 30 }
+        { id: 2, name: 'Clothing', minBid: 30 },
       ],
       config: [
         { name: 'MAX_PRODUCTS', value: '1000', description: 'Maximum products per campaign' },
-        { name: 'MIN_BID', value: '10', description: 'Minimum bid amount in rubles' }
-      ]
+        { name: 'MIN_BID', value: '10', description: 'Minimum bid amount in rubles' },
+      ],
     });
   }),
 
   // POST /adv/v0/bids/min - Minimum bids
   http.post('https://advert-api.wildberries.ru/adv/v0/bids/min', async ({ request }) => {
-    const body = await request.json() as { advert_id: number; nm_ids: number[]; payment_type: string };
+    const body = (await request.json()) as {
+      advert_id: number;
+      nm_ids: number[];
+      payment_type: string;
+    };
 
     // Simulate invalid bid error
     if (body.advert_id === 88888) {
@@ -120,19 +119,19 @@ const handlers = [
     }
 
     return HttpResponse.json({
-      bids: body.nm_ids.map(nm_id => ({
+      bids: body.nm_ids.map((nm_id) => ({
         nm_id,
         bids: [
           { type: 'search', value: 50 },
-          { type: 'recommendation', value: 30 }
-        ]
-      }))
+          { type: 'recommendation', value: 30 },
+        ],
+      })),
     });
   }),
 
   // POST /adv/v1/save-ad - Create unified bid campaign
   http.post('https://advert-api.wildberries.ru/adv/v1/save-ad', async ({ request }) => {
-    const body = await request.json() as { sum?: number; name?: string };
+    const body = (await request.json()) as { sum?: number; name?: string };
 
     // Simulate budget exceeded error
     if (body.sum && body.sum > 50000) {
@@ -148,7 +147,7 @@ const handlers = [
   // POST /adv/v2/seacat/save-ad - Create manual/unified bid campaign
   http.post('https://advert-api.wildberries.ru/adv/v2/seacat/save-ad', () => {
     return HttpResponse.json(12345); // Return campaign ID
-  })
+  }),
 ];
 
 /**
@@ -184,8 +183,8 @@ describe('PromotionModule Integration Tests', () => {
       retryConfig: {
         maxRetries: 2,
         retryDelay: 100,
-        exponentialBackoff: true
-      }
+        exponentialBackoff: true,
+      },
     });
 
     // Create PromotionModule with real BaseClient
@@ -244,9 +243,7 @@ describe('PromotionModule Integration Tests', () => {
       const nonExistentId = 999999;
 
       // Act & Assert
-      await expect(promotionModule.createPromotionAdverts([nonExistentId]))
-        .rejects
-        .toThrow();
+      await expect(promotionModule.createPromotionAdverts([nonExistentId])).rejects.toThrow();
     });
   });
 
@@ -269,7 +266,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 12345,
         nm_ids: [111, 222],
         payment_type: 'cpm' as const,
-        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[]
+        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[],
       };
 
       // Act
@@ -287,13 +284,11 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 88888,
         nm_ids: [111],
         payment_type: 'cpm' as const,
-        placement_types: 'search' as const
+        placement_types: 'search' as const,
       };
 
       // Act & Assert
-      await expect(promotionModule.createBidsMin(invalidBidRequest))
-        .rejects
-        .toThrow();
+      await expect(promotionModule.createBidsMin(invalidBidRequest)).rejects.toThrow();
     });
   });
 
@@ -308,7 +303,7 @@ describe('PromotionModule Integration Tests', () => {
         btype: 1,
         on_pause: false,
         nms: [12345],
-        cpm: 50
+        cpm: 50,
       };
 
       // Act
@@ -322,13 +317,11 @@ describe('PromotionModule Integration Tests', () => {
       // Arrange - sum > 50000 triggers budget error
       const expensiveCampaign = {
         name: 'Expensive Campaign',
-        sum: 100000
+        sum: 100000,
       };
 
       // Act & Assert
-      await expect(promotionModule.createAdvSaveAd(expensiveCampaign))
-        .rejects
-        .toThrow();
+      await expect(promotionModule.createAdvSaveAd(expensiveCampaign)).rejects.toThrow();
     });
 
     it('should successfully create manual bid campaign', async () => {
@@ -337,7 +330,7 @@ describe('PromotionModule Integration Tests', () => {
         name: 'Manual Bid Campaign',
         nms: [12345],
         bid_type: 'manual' as const,
-        placement_types: 'search' as const
+        placement_types: 'search' as const,
       };
 
       // Act
@@ -354,17 +347,12 @@ describe('PromotionModule Integration Tests', () => {
       // Arrange
       server.use(
         http.get('https://advert-api.wildberries.ru/adv/v1/promotion/count', () => {
-          return HttpResponse.json(
-            { error: 'Unauthorized' },
-            { status: 401 }
-          );
+          return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 });
         })
       );
 
       // Act & Assert
-      await expect(promotionModule.getPromotionCount())
-        .rejects
-        .toThrow(AuthenticationError);
+      await expect(promotionModule.getPromotionCount()).rejects.toThrow(AuthenticationError);
     });
 
     it('should throw RateLimitError on 429 response', async () => {
@@ -375,7 +363,7 @@ describe('PromotionModule Integration Tests', () => {
             { error: 'Too Many Requests' },
             {
               status: 429,
-              headers: { 'Retry-After': '60' }
+              headers: { 'Retry-After': '60' },
             }
           );
         })
@@ -383,26 +371,19 @@ describe('PromotionModule Integration Tests', () => {
 
       // Act & Assert
       // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await expect(promotionModule.getAdvConfig())
-        .rejects
-        .toThrow(RateLimitError);
+      await expect(promotionModule.getAdvConfig()).rejects.toThrow(RateLimitError);
     });
 
     it('should throw NetworkError on 500 response', async () => {
       // Arrange
       server.use(
         http.get('https://advert-api.wildberries.ru/adv/v1/promotion/count', () => {
-          return HttpResponse.json(
-            { error: 'Internal Server Error' },
-            { status: 500 }
-          );
+          return HttpResponse.json({ error: 'Internal Server Error' }, { status: 500 });
         })
       );
 
       // Act & Assert
-      await expect(promotionModule.getPromotionCount())
-        .rejects
-        .toThrow(NetworkError);
+      await expect(promotionModule.getPromotionCount()).rejects.toThrow(NetworkError);
     });
   });
 
@@ -428,7 +409,7 @@ describe('PromotionModule Integration Tests', () => {
       // Act
       const result = await promotionModule.createPromotionAdverts([12345], {
         status: validStatus,
-        type: validType
+        type: validType,
       });
 
       // Assert
@@ -448,7 +429,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 12345,
         nm_ids: [111, 222],
         payment_type: 'cpm',
-        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[]
+        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[],
       });
       expect(minBids.bids).toHaveLength(2);
 
@@ -457,7 +438,7 @@ describe('PromotionModule Integration Tests', () => {
         name: 'Complete Workflow Campaign',
         nms: [111, 222],
         bid_type: 'manual' as const,
-        placement_types: 'search' as const
+        placement_types: 'search' as const,
       });
       expect(campaignId).toBe(12345);
 
@@ -472,9 +453,13 @@ describe('PromotionModule Integration Tests', () => {
       expect(countSummary.all).toBeGreaterThan(0);
 
       // 2. Get detailed info for specific campaigns
-      const campaignIds = countSummary.adverts?.flatMap(
-        advert => advert.advert_list?.map(item => item.advertId).filter((id): id is number => id !== undefined) ?? []
-      ) ?? [];
+      const campaignIds =
+        countSummary.adverts?.flatMap(
+          (advert) =>
+            advert.advert_list
+              ?.map((item) => item.advertId)
+              .filter((id): id is number => id !== undefined) ?? []
+        ) ?? [];
 
       if (campaignIds.length > 0) {
         const details = await promotionModule.createPromotionAdverts(campaignIds.slice(0, 2));

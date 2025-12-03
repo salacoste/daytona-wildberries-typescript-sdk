@@ -114,10 +114,9 @@ export class AnalyticsModule {
   async getSalesFunnel(request: ProductStatisticsRequest): Promise<ProductStatisticsResponse> {
     // Validate period
     if (request.period.begin >= request.period.end) {
-      throw new ValidationError(
-        'Invalid period: begin date must be before end date',
-        { period: 'Begin date must be before end date' }
-      );
+      throw new ValidationError('Invalid period: begin date must be before end date', {
+        period: 'Begin date must be before end date',
+      });
     }
 
     return this.client.post<ProductStatisticsResponse>(
@@ -158,7 +157,9 @@ export class AnalyticsModule {
    * });
    * ```
    */
-  async getProductHistory(request: HistoricalStatisticsRequest): Promise<HistoricalStatisticsResponse> {
+  async getProductHistory(
+    request: HistoricalStatisticsRequest
+  ): Promise<HistoricalStatisticsResponse> {
     return this.client.post<HistoricalStatisticsResponse>(
       'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail/history',
       request,
@@ -200,10 +201,9 @@ export class AnalyticsModule {
   ): Promise<ProductPerformanceResponse> {
     // Validate product IDs
     if (productIds.length === 0) {
-      throw new ValidationError(
-        'Product IDs array cannot be empty',
-        { productIds: 'Array cannot be empty' }
-      );
+      throw new ValidationError('Product IDs array cannot be empty', {
+        productIds: 'Array cannot be empty',
+      });
     }
 
     if (productIds.length > 50) {
@@ -215,10 +215,9 @@ export class AnalyticsModule {
 
     // Validate date range
     if (dateRange.from >= dateRange.to) {
-      throw new ValidationError(
-        'Invalid date range: from date must be before to date',
-        { dateRange: 'From date must be before to date' }
-      );
+      throw new ValidationError('Invalid date range: from date must be before to date', {
+        dateRange: 'From date must be before to date',
+      });
     }
 
     // Use getSalesFunnel with product IDs filter
@@ -233,7 +232,7 @@ export class AnalyticsModule {
     });
 
     // Transform to ProductPerformanceResponse
-    const products = response.data.cards.map(card => ({
+    const products = response.data.cards.map((card) => ({
       nmID: card.nmID,
       vendorCode: card.vendorCode,
       productName: card.brandName,
@@ -297,10 +296,9 @@ export class AnalyticsModule {
   ): Promise<SearchQueriesResponse> {
     // Validate date range
     if (dateRange.from >= dateRange.to) {
-      throw new ValidationError(
-        'Invalid date range: from date must be before to date',
-        { dateRange: 'From date must be before to date' }
-      );
+      throw new ValidationError('Invalid date range: from date must be before to date', {
+        dateRange: 'From date must be before to date',
+      });
     }
 
     // Build request body per API spec (POST with currentPeriod)
@@ -354,18 +352,16 @@ export class AnalyticsModule {
   ): Promise<CategoryPerformanceResponse> {
     // Validate category ID
     if (!categoryId || categoryId.trim() === '') {
-      throw new ValidationError(
-        'Category ID cannot be empty',
-        { categoryId: 'Category ID cannot be empty' }
-      );
+      throw new ValidationError('Category ID cannot be empty', {
+        categoryId: 'Category ID cannot be empty',
+      });
     }
 
     // Validate date range
     if (dateRange.from >= dateRange.to) {
-      throw new ValidationError(
-        'Invalid date range: from date must be before to date',
-        { dateRange: 'From date must be before to date' }
-      );
+      throw new ValidationError('Invalid date range: from date must be before to date', {
+        dateRange: 'From date must be before to date',
+      });
     }
 
     // Get products in this category
@@ -381,20 +377,23 @@ export class AnalyticsModule {
 
     // Aggregate category metrics
     const cards = response.data.cards;
-    const totalRevenue = cards.reduce((sum, card) =>
-      sum + card.statistics.selectedPeriod.buyoutsSumRub, 0
+    const totalRevenue = cards.reduce(
+      (sum, card) => sum + card.statistics.selectedPeriod.buyoutsSumRub,
+      0
     );
-    const totalUnitsSold = cards.reduce((sum, card) =>
-      sum + card.statistics.selectedPeriod.buyoutsCount, 0
+    const totalUnitsSold = cards.reduce(
+      (sum, card) => sum + card.statistics.selectedPeriod.buyoutsCount,
+      0
     );
 
     // Get top 10 products by revenue
     const topProducts = cards
-      .sort((a, b) =>
-        b.statistics.selectedPeriod.buyoutsSumRub - a.statistics.selectedPeriod.buyoutsSumRub
+      .sort(
+        (a, b) =>
+          b.statistics.selectedPeriod.buyoutsSumRub - a.statistics.selectedPeriod.buyoutsSumRub
       )
       .slice(0, 10)
-      .map(card => ({
+      .map((card) => ({
         nmID: card.nmID,
         name: card.brandName,
         revenue: card.statistics.selectedPeriod.buyoutsSumRub,
@@ -444,10 +443,9 @@ export class AnalyticsModule {
   async generateReport(request: GenerateReportRequest): Promise<GenerateReportResponse> {
     // Validate date range
     if (request.dateRange.from >= request.dateRange.to) {
-      throw new ValidationError(
-        'Invalid date range: from date must be before to date',
-        { dateRange: 'From date must be before to date' }
-      );
+      throw new ValidationError('Invalid date range: from date must be before to date', {
+        dateRange: 'From date must be before to date',
+      });
     }
 
     return this.client.post<GenerateReportResponse>(
@@ -486,10 +484,9 @@ export class AnalyticsModule {
   async getReport(reportId: string): Promise<ReportInfo> {
     // Validate report ID
     if (!reportId || reportId.trim() === '') {
-      throw new ValidationError(
-        'Report ID cannot be empty',
-        { reportId: 'Report ID cannot be empty' }
-      );
+      throw new ValidationError('Report ID cannot be empty', {
+        reportId: 'Report ID cannot be empty',
+      });
     }
 
     return this.client.get<ReportInfo>(
@@ -515,7 +512,9 @@ export class AnalyticsModule {
    * console.log(`Format: ${download.format}`);
    * ```
    */
-  async downloadReport(reportId: string): Promise<{ url: string; format: string; expiresAt?: string }> {
+  async downloadReport(
+    reportId: string
+  ): Promise<{ url: string; format: string; expiresAt?: string }> {
     const info = await this.getReport(reportId);
 
     if (info.status !== 'completed') {
@@ -526,10 +525,9 @@ export class AnalyticsModule {
     }
 
     if (!info.downloadUrl) {
-      throw new ValidationError(
-        'Report is completed but download URL is not available',
-        { downloadUrl: 'Download URL is not available' }
-      );
+      throw new ValidationError('Report is completed but download URL is not available', {
+        downloadUrl: 'Download URL is not available',
+      });
     }
 
     return {
@@ -579,7 +577,7 @@ export class AnalyticsModule {
   async getDetailedSalesReport(request: {
     period: {
       begin: string; // YYYY-MM-DD format
-      end: string;   // YYYY-MM-DD format
+      end: string; // YYYY-MM-DD format
     };
     nmIDs?: number[];
     brandNames?: string[];
@@ -634,8 +632,10 @@ export class AnalyticsModule {
       throw new ValidationError('Both begin and end dates are required in period');
     }
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(request.period.begin) ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(request.period.end)) {
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(request.period.begin) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(request.period.end)
+    ) {
       throw new ValidationError('Dates must be in YYYY-MM-DD format');
     }
 
@@ -648,17 +648,21 @@ export class AnalyticsModule {
       throw new ValidationError('Report period cannot exceed 365 days');
     }
 
-    return this.client.post('/api/v2/nm-report/detail', {
-      period: request.period,
-      nmIDs: request.nmIDs ?? [],
-      brandNames: request.brandNames ?? [],
-      objectIDs: request.objectIDs ?? [],
-      tagIDs: request.tagIDs ?? [],
-      page: request.page ?? 1,
-      limit: request.limit ?? 1000
-    }, {
-      rateLimitKey: 'analytics.nm-report-detail'
-    });
+    return this.client.post(
+      '/api/v2/nm-report/detail',
+      {
+        period: request.period,
+        nmIDs: request.nmIDs ?? [],
+        brandNames: request.brandNames ?? [],
+        objectIDs: request.objectIDs ?? [],
+        tagIDs: request.tagIDs ?? [],
+        page: request.page ?? 1,
+        limit: request.limit ?? 1000,
+      },
+      {
+        rateLimitKey: 'analytics.nm-report-detail',
+      }
+    );
   }
 
   /**
@@ -724,8 +728,10 @@ export class AnalyticsModule {
     }
 
     // Validate date format
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(request.period.begin) ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(request.period.end)) {
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(request.period.begin) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(request.period.end)
+    ) {
       throw new ValidationError('Dates must be in YYYY-MM-DD format');
     }
 
@@ -733,7 +739,7 @@ export class AnalyticsModule {
     // Simplified implementation using existing pattern
     // TODO: Implement full version after fixing type issues
     return {
-      data: request.categoryIds.map(categoryId => ({
+      data: request.categoryIds.map((categoryId) => ({
         categoryId,
         categoryName: `Category ${categoryId}`,
         totalRevenue: 0,
@@ -742,8 +748,8 @@ export class AnalyticsModule {
         conversionRate: 0,
         averageOrderValue: 0,
         topProducts: [],
-        subcategories: request.includeSubcategories ? [] : undefined
-      }))
+        subcategories: request.includeSubcategories ? [] : undefined,
+      })),
     };
   }
 
@@ -813,21 +819,23 @@ export class AnalyticsModule {
     }
 
     // Validate date format
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(request.period.begin) ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(request.period.end)) {
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(request.period.begin) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(request.period.end)
+    ) {
       throw new ValidationError('Dates must be in YYYY-MM-DD format');
     }
 
     // Get search queries data to build competitor analysis
     const searchResponse = await this.getSearchQueries({
       from: request.period.begin,
-      to: request.period.end
+      to: request.period.end,
     });
 
     // Transform and enrich search data with competitor analysis
-    const competitorAnalysis = request.searchTerms.map(term => {
+    const competitorAnalysis = request.searchTerms.map((term) => {
       // Find matching search query data from response
-      const searchData = searchResponse.data.find(q =>
+      const searchData = searchResponse.data.find((q) =>
         q.query.toLowerCase().includes(term.toLowerCase())
       );
 
@@ -841,13 +849,13 @@ export class AnalyticsModule {
           competitionLevel: 'medium' as const, // Would be calculated from search density
           topBrands: [], // Would be extracted from search results
           averagePrice: 0, // Would be calculated from market data
-          totalProducts: 0 // Would be counted from search results
-        }
+          totalProducts: 0, // Would be counted from search results
+        },
       };
     });
 
     return {
-      data: competitorAnalysis
+      data: competitorAnalysis,
     };
   }
 
@@ -925,17 +933,13 @@ export class AnalyticsModule {
   ): Promise<ProductSearchTextsResponse> {
     // Validate required fields
     if (!request.nmId) {
-      throw new ValidationError(
-        'Product nmId is required',
-        { nmId: 'nmId is required' }
-      );
+      throw new ValidationError('Product nmId is required', { nmId: 'nmId is required' });
     }
 
     if (!request.currentPeriod.start || !request.currentPeriod.end) {
-      throw new ValidationError(
-        'currentPeriod with start and end dates is required',
-        { currentPeriod: 'start and end dates are required' }
-      );
+      throw new ValidationError('currentPeriod with start and end dates is required', {
+        currentPeriod: 'start and end dates are required',
+      });
     }
 
     return this.client.post<ProductSearchTextsResponse>(
@@ -973,24 +977,17 @@ export class AnalyticsModule {
   async getProductOrders(request: ProductOrdersRequest): Promise<ProductOrdersResponse> {
     // Validate required fields
     if (!request.nmId) {
-      throw new ValidationError(
-        'Product nmId is required',
-        { nmId: 'nmId is required' }
-      );
+      throw new ValidationError('Product nmId is required', { nmId: 'nmId is required' });
     }
 
     if (!request.text) {
-      throw new ValidationError(
-        'Search text is required',
-        { text: 'text is required' }
-      );
+      throw new ValidationError('Search text is required', { text: 'text is required' });
     }
 
     if (!request.currentPeriod.start || !request.currentPeriod.end) {
-      throw new ValidationError(
-        'currentPeriod with start and end dates is required',
-        { currentPeriod: 'start and end dates are required' }
-      );
+      throw new ValidationError('currentPeriod with start and end dates is required', {
+        currentPeriod: 'start and end dates are required',
+      });
     }
 
     return this.client.post<ProductOrdersResponse>(
@@ -1029,10 +1026,9 @@ export class AnalyticsModule {
   async getStocksProducts(request: StocksProductsRequest): Promise<StocksProductsResponse> {
     // Validate required fields
     if (!request.period.start || !request.period.end) {
-      throw new ValidationError(
-        'period with start and end dates is required',
-        { period: 'start and end dates are required' }
-      );
+      throw new ValidationError('period with start and end dates is required', {
+        period: 'start and end dates are required',
+      });
     }
 
     return this.client.post<StocksProductsResponse>(
@@ -1069,10 +1065,9 @@ export class AnalyticsModule {
   async getStocksOffices(request: StocksOfficesRequest): Promise<StocksOfficesResponse> {
     // Validate required fields
     if (!request.period.start || !request.period.end) {
-      throw new ValidationError(
-        'period with start and end dates is required',
-        { period: 'start and end dates are required' }
-      );
+      throw new ValidationError('period with start and end dates is required', {
+        period: 'start and end dates are required',
+      });
     }
 
     return this.client.post<StocksOfficesResponse>(
@@ -1112,10 +1107,9 @@ export class AnalyticsModule {
   async getGroupedHistory(request: GroupedHistoryRequest): Promise<GroupedHistoryResponse> {
     // Validate required fields
     if (!request.period.begin || !request.period.end) {
-      throw new ValidationError(
-        'period with begin and end dates is required',
-        { period: 'begin and end dates are required' }
-      );
+      throw new ValidationError('period with begin and end dates is required', {
+        period: 'begin and end dates are required',
+      });
     }
 
     // Validate period length (max 7 days)
@@ -1124,10 +1118,9 @@ export class AnalyticsModule {
     const daysDiff = Math.ceil((endDate.getTime() - beginDate.getTime()) / (1000 * 60 * 60 * 24));
 
     if (daysDiff > 7) {
-      throw new ValidationError(
-        'Period cannot exceed 7 days for grouped history',
-        { period: `Period is ${daysDiff} days, maximum is 7 days` }
-      );
+      throw new ValidationError('Period cannot exceed 7 days for grouped history', {
+        period: `Period is ${daysDiff} days, maximum is 7 days`,
+      });
     }
 
     return this.client.post<GroupedHistoryResponse>(
@@ -1163,19 +1156,17 @@ export class AnalyticsModule {
   async retryReportGeneration(request: RetryReportRequest): Promise<RetryReportResponse> {
     // Validate download ID
     if (!request.downloadId || request.downloadId.trim() === '') {
-      throw new ValidationError(
-        'Download ID is required',
-        { downloadId: 'downloadId cannot be empty' }
-      );
+      throw new ValidationError('Download ID is required', {
+        downloadId: 'downloadId cannot be empty',
+      });
     }
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(request.downloadId)) {
-      throw new ValidationError(
-        'Download ID must be a valid UUID',
-        { downloadId: 'Invalid UUID format' }
-      );
+      throw new ValidationError('Download ID must be a valid UUID', {
+        downloadId: 'Invalid UUID format',
+      });
     }
 
     return this.client.post<RetryReportResponse>(
@@ -1218,17 +1209,15 @@ export class AnalyticsModule {
   ): Promise<SearchReportTableGroupsResponse> {
     // Validate required fields
     if (!request.currentPeriod.start || !request.currentPeriod.end) {
-      throw new ValidationError(
-        'currentPeriod with start and end dates is required',
-        { currentPeriod: 'start and end dates are required' }
-      );
+      throw new ValidationError('currentPeriod with start and end dates is required', {
+        currentPeriod: 'start and end dates are required',
+      });
     }
 
     if (request.limit < 1 || request.limit > 1000) {
-      throw new ValidationError(
-        'limit must be between 1 and 1000',
-        { limit: `Received: ${request.limit}` }
-      );
+      throw new ValidationError('limit must be between 1 and 1000', {
+        limit: `Received: ${request.limit}`,
+      });
     }
 
     return this.client.post<SearchReportTableGroupsResponse>(
@@ -1272,24 +1261,21 @@ export class AnalyticsModule {
   ): Promise<SearchReportTableDetailsResponse> {
     // Validate required fields
     if (!request.currentPeriod.start || !request.currentPeriod.end) {
-      throw new ValidationError(
-        'currentPeriod with start and end dates is required',
-        { currentPeriod: 'start and end dates are required' }
-      );
+      throw new ValidationError('currentPeriod with start and end dates is required', {
+        currentPeriod: 'start and end dates are required',
+      });
     }
 
     if (request.limit < 1 || request.limit > 1000) {
-      throw new ValidationError(
-        'limit must be between 1 and 1000',
-        { limit: `Received: ${request.limit}` }
-      );
+      throw new ValidationError('limit must be between 1 and 1000', {
+        limit: `Received: ${request.limit}`,
+      });
     }
 
     if (request.nmIds && request.nmIds.length > 50) {
-      throw new ValidationError(
-        'nmIds cannot exceed 50 items',
-        { nmIds: `Received: ${request.nmIds.length} items, max is 50` }
-      );
+      throw new ValidationError('nmIds cannot exceed 50 items', {
+        nmIds: `Received: ${request.nmIds.length} items, max is 50`,
+      });
     }
 
     return this.client.post<SearchReportTableDetailsResponse>(
@@ -1329,10 +1315,9 @@ export class AnalyticsModule {
   ): Promise<StocksProductsGroupsResponse> {
     // Validate required fields
     if (!request.period.start || !request.period.end) {
-      throw new ValidationError(
-        'period with start and end dates is required',
-        { period: 'start and end dates are required' }
-      );
+      throw new ValidationError('period with start and end dates is required', {
+        period: 'start and end dates are required',
+      });
     }
 
     return this.client.post<StocksProductsGroupsResponse>(
@@ -1372,17 +1357,13 @@ export class AnalyticsModule {
   ): Promise<StocksProductsSizesResponse> {
     // Validate required fields
     if (!request.period.start || !request.period.end) {
-      throw new ValidationError(
-        'period with start and end dates is required',
-        { period: 'start and end dates are required' }
-      );
+      throw new ValidationError('period with start and end dates is required', {
+        period: 'start and end dates are required',
+      });
     }
 
     if (!request.nmID) {
-      throw new ValidationError(
-        'nmID is required',
-        { nmID: 'Product article number is required' }
-      );
+      throw new ValidationError('nmID is required', { nmID: 'Product article number is required' });
     }
 
     return this.client.post<StocksProductsSizesResponse>(

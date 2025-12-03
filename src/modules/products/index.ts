@@ -6,7 +6,43 @@
 
 import { BaseClient } from '../../client/base-client';
 import { ValidationError } from '../../errors/validation-error';
-import type { Office, RequestMoveNmsImtConn, RequestMoveNmsImtDisconn, RequestPublicViewerPublicErrorsTableListV2, ResponseCardCreate, ResponseContentError, ResponsePublicViewerPublicErrorsTableListV2, StoreContactRequestBody, Warehouse, CreateProductRequest, CreateProductResponse, ProductListRequest, ProductListResponse, ProductListCursor, UpdateProductRequest, UpdateProductResponse, DeleteProductResponse, ProductCard, MediaUploadResponse, PricingUpdate, PricingTaskResponse, PricingInfo, GetPricingResponse, PricingTaskStatusResponse, StockUpdate, StockInfo, TagsResponse, TaskCreated, HistoryTasksResponse, GoodsTaskResponse, BufferTasksResponse, BufferGoodsTaskResponse, GoodsFilterResponse, SizeNmResponse, QuarantineGoodsResponse } from '../../types/products.types';
+import type {
+  Office,
+  RequestMoveNmsImtConn,
+  RequestMoveNmsImtDisconn,
+  RequestPublicViewerPublicErrorsTableListV2,
+  ResponseCardCreate,
+  ResponseContentError,
+  ResponsePublicViewerPublicErrorsTableListV2,
+  StoreContactRequestBody,
+  Warehouse,
+  CreateProductRequest,
+  CreateProductResponse,
+  ProductListRequest,
+  ProductListResponse,
+  ProductListCursor,
+  UpdateProductRequest,
+  UpdateProductResponse,
+  DeleteProductResponse,
+  ProductCard,
+  MediaUploadResponse,
+  PricingUpdate,
+  PricingTaskResponse,
+  PricingInfo,
+  GetPricingResponse,
+  PricingTaskStatusResponse,
+  StockUpdate,
+  StockInfo,
+  TagsResponse,
+  TaskCreated,
+  HistoryTasksResponse,
+  GoodsTaskResponse,
+  BufferTasksResponse,
+  BufferGoodsTaskResponse,
+  GoodsFilterResponse,
+  SizeNmResponse,
+  QuarantineGoodsResponse,
+} from '../../types/products.types';
 
 export class ProductsModule {
   constructor(private client: BaseClient) {}
@@ -26,8 +62,15 @@ export class ProductsModule {
   const result = await sdk.general.getParentAll({});
   console.log(result);
    */
-  async getParentAll(options?: { locale?: string }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/object/parent/all', { params: options });
+  async getParentAll(options?: {
+    locale?: string;
+  }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.get<{
+      data?: unknown;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/object/parent/all', { params: options });
   }
 
   /**
@@ -45,8 +88,24 @@ export class ProductsModule {
   const result = await sdk.general.getObjectAll({});
   console.log(result);
    */
-  async getObjectAll(options?: { locale?: string; name?: string; limit?: number; offset?: number; parentID?: number }): Promise<{ data?: { subjectID?: number; parentID?: number; subjectName?: string; parentName?: string }[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: { subjectID?: number; parentID?: number; subjectName?: string; parentName?: string }[]; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/object/all', { params: options });
+  async getObjectAll(options?: {
+    locale?: string;
+    name?: string;
+    limit?: number;
+    offset?: number;
+    parentID?: number;
+  }): Promise<{
+    data?: { subjectID?: number; parentID?: number; subjectName?: string; parentName?: string }[];
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: string;
+  }> {
+    return this.client.get<{
+      data?: { subjectID?: number; parentID?: number; subjectName?: string; parentName?: string }[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/object/all', { params: options });
   }
 
   /**
@@ -65,8 +124,43 @@ export class ProductsModule {
   const result = await sdk.general.getObjectCharc('subjectId-value', {});
   console.log(result);
    */
-  async getObjectCharc(subjectId: number, options?: { locale?: string }): Promise<{ data?: { charcID?: number; subjectName?: string; subjectID?: number; name?: string; required?: boolean; unitName?: string; maxCount?: number; popular?: boolean; charcType?: number }[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: { charcID?: number; subjectName?: string; subjectID?: number; name?: string; required?: boolean; unitName?: string; maxCount?: number; popular?: boolean; charcType?: number }[]; error?: boolean; errorText?: string; additionalErrors?: string }>(`https://content-api.wildberries.ru/content/v2/object/charcs/${subjectId}`, { params: options });
+  async getObjectCharc(
+    subjectId: number,
+    options?: { locale?: string }
+  ): Promise<{
+    data?: {
+      charcID?: number;
+      subjectName?: string;
+      subjectID?: number;
+      name?: string;
+      required?: boolean;
+      unitName?: string;
+      maxCount?: number;
+      popular?: boolean;
+      charcType?: number;
+    }[];
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: string;
+  }> {
+    return this.client.get<{
+      data?: {
+        charcID?: number;
+        subjectName?: string;
+        subjectID?: number;
+        name?: string;
+        required?: boolean;
+        unitName?: string;
+        maxCount?: number;
+        popular?: boolean;
+        charcType?: number;
+      }[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>(`https://content-api.wildberries.ru/content/v2/object/charcs/${subjectId}`, {
+      params: options,
+    });
   }
 
   /**
@@ -84,8 +178,15 @@ export class ProductsModule {
   const result = await sdk.general.getDirectoryColors({});
   console.log(result);
    */
-  async getDirectoryColors(options?: { locale?: string }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/directory/colors', { params: options });
+  async getDirectoryColors(options?: {
+    locale?: string;
+  }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.get<{
+      data?: unknown;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/directory/colors', { params: options });
   }
 
   /**
@@ -103,8 +204,15 @@ export class ProductsModule {
   const result = await sdk.general.getDirectoryKinds({});
   console.log(result);
    */
-  async getDirectoryKinds(options?: { locale?: string }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/directory/kinds', { params: options });
+  async getDirectoryKinds(options?: {
+    locale?: string;
+  }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.get<{
+      data?: string[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/directory/kinds', { params: options });
   }
 
   /**
@@ -122,8 +230,15 @@ export class ProductsModule {
   const result = await sdk.general.getDirectoryCountries({});
   console.log(result);
    */
-  async getDirectoryCountries(options?: { locale?: string }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/directory/countries', { params: options });
+  async getDirectoryCountries(options?: {
+    locale?: string;
+  }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.get<{
+      data?: unknown;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/directory/countries', { params: options });
   }
 
   /**
@@ -141,8 +256,15 @@ export class ProductsModule {
   const result = await sdk.general.getDirectorySeasons({});
   console.log(result);
    */
-  async getDirectorySeasons(options?: { locale?: string }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/directory/seasons', { params: options });
+  async getDirectorySeasons(options?: {
+    locale?: string;
+  }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.get<{
+      data?: string[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/directory/seasons', { params: options });
   }
 
   /**
@@ -160,8 +282,15 @@ export class ProductsModule {
   const result = await sdk.general.getDirectoryVat({});
   console.log(result);
    */
-  async getDirectoryVat(options?: { locale?: string }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/directory/vat', { params: options });
+  async getDirectoryVat(options?: {
+    locale?: string;
+  }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.get<{
+      data?: string[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/directory/vat', { params: options });
   }
 
   /**
@@ -179,8 +308,22 @@ export class ProductsModule {
   const result = await sdk.general.getDirectoryTnved({});
   console.log(result);
    */
-  async getDirectoryTnved(options?: { subjectID: number; search?: number; locale?: string }): Promise<{ data?: { tnved?: string; isKiz?: boolean }[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: { tnved?: string; isKiz?: boolean }[]; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/directory/tnved', { params: options });
+  async getDirectoryTnved(options?: {
+    subjectID: number;
+    search?: number;
+    locale?: string;
+  }): Promise<{
+    data?: { tnved?: string; isKiz?: boolean }[];
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: string;
+  }> {
+    return this.client.get<{
+      data?: { tnved?: string; isKiz?: boolean }[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/directory/tnved', { params: options });
   }
 
   /**
@@ -197,8 +340,18 @@ export class ProductsModule {
   const result = await sdk.general.getContentTags();
   console.log(result);
    */
-  async getContentTags(): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/tags');
+  async getContentTags(): Promise<{
+    data?: unknown;
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: string;
+  }> {
+    return this.client.get<{
+      data?: unknown;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/tags');
   }
 
   /**
@@ -217,7 +370,10 @@ export class ProductsModule {
   console.log(result);
    */
   async createContentTag(data: { color?: string; name?: string }): Promise<ResponseContentError> {
-    return this.client.post<ResponseContentError>('https://content-api.wildberries.ru/content/v2/tag', data);
+    return this.client.post<ResponseContentError>(
+      'https://content-api.wildberries.ru/content/v2/tag',
+      data
+    );
   }
 
   /**
@@ -236,8 +392,14 @@ export class ProductsModule {
   const result = await sdk.general.updateContentTag('id-value', {});
   console.log(result);
    */
-  async updateContentTag(id: number, data: { color?: string; name?: string }): Promise<ResponseContentError> {
-    return this.client.patch<ResponseContentError>(`https://content-api.wildberries.ru/content/v2/tag/${id}`, data);
+  async updateContentTag(
+    id: number,
+    data: { color?: string; name?: string }
+  ): Promise<ResponseContentError> {
+    return this.client.patch<ResponseContentError>(
+      `https://content-api.wildberries.ru/content/v2/tag/${id}`,
+      data
+    );
   }
 
   /**
@@ -256,7 +418,9 @@ export class ProductsModule {
   console.log(result);
    */
   async deleteContentTag(id: number): Promise<ResponseContentError> {
-    return this.client.delete<ResponseContentError>(`https://content-api.wildberries.ru/content/v2/tag/${id}`);
+    return this.client.delete<ResponseContentError>(
+      `https://content-api.wildberries.ru/content/v2/tag/${id}`
+    );
   }
 
   /**
@@ -274,8 +438,14 @@ export class ProductsModule {
   const result = await sdk.general.createNomenclatureLink({});
   console.log(result);
    */
-  async createNomenclatureLink(data: { nmID?: number; tagsIDs?: number[] }): Promise<ResponseContentError> {
-    return this.client.post<ResponseContentError>('https://content-api.wildberries.ru/content/v2/tag/nomenclature/link', data);
+  async createNomenclatureLink(data: {
+    nmID?: number;
+    tagsIDs?: number[];
+  }): Promise<ResponseContentError> {
+    return this.client.post<ResponseContentError>(
+      'https://content-api.wildberries.ru/content/v2/tag/nomenclature/link',
+      data
+    );
   }
 
   /**
@@ -294,8 +464,95 @@ export class ProductsModule {
   const result = await sdk.general.createCardsList({}, {});
   console.log(result);
    */
-  async createCardsList(data: { settings?: { sort?: { ascending?: boolean }; filter?: { withPhoto?: number; textSearch?: string; tagIDs?: number[]; allowedCategoriesOnly?: boolean; objectIDs?: number[]; brands?: string[]; imtID?: number }; cursor?: { limit?: number; updatedAt?: string; nmID?: number } } }, options?: { locale?: string }): Promise<{ cards?: { nmID?: number; imtID?: number; nmUUID?: string; subjectID?: number; subjectName?: string; vendorCode?: string; brand?: string; title?: string; description?: string; needKiz?: boolean; photos?: { big?: string; c246x328?: string; c516x688?: string; square?: string; tm?: string }[]; video?: string; wholesale?: { enabled?: boolean; quantum?: number }; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number; isValid?: boolean }; characteristics?: { id?: number; name?: string; value?: unknown }[]; sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[]; tags?: { id?: number; name?: string; color?: string }[]; createdAt?: string; updatedAt?: string }[]; cursor?: { updatedAt?: string; nmID?: number; total?: number } }> {
-    return this.client.post<{ cards?: { nmID?: number; imtID?: number; nmUUID?: string; subjectID?: number; subjectName?: string; vendorCode?: string; brand?: string; title?: string; description?: string; needKiz?: boolean; photos?: { big?: string; c246x328?: string; c516x688?: string; square?: string; tm?: string }[]; video?: string; wholesale?: { enabled?: boolean; quantum?: number }; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number; isValid?: boolean }; characteristics?: { id?: number; name?: string; value?: unknown }[]; sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[]; tags?: { id?: number; name?: string; color?: string }[]; createdAt?: string; updatedAt?: string }[]; cursor?: { updatedAt?: string; nmID?: number; total?: number } }>('https://content-api.wildberries.ru/content/v2/get/cards/list', data, { params: options });
+  async createCardsList(
+    data: {
+      settings?: {
+        sort?: { ascending?: boolean };
+        filter?: {
+          withPhoto?: number;
+          textSearch?: string;
+          tagIDs?: number[];
+          allowedCategoriesOnly?: boolean;
+          objectIDs?: number[];
+          brands?: string[];
+          imtID?: number;
+        };
+        cursor?: { limit?: number; updatedAt?: string; nmID?: number };
+      };
+    },
+    options?: { locale?: string }
+  ): Promise<{
+    cards?: {
+      nmID?: number;
+      imtID?: number;
+      nmUUID?: string;
+      subjectID?: number;
+      subjectName?: string;
+      vendorCode?: string;
+      brand?: string;
+      title?: string;
+      description?: string;
+      needKiz?: boolean;
+      photos?: {
+        big?: string;
+        c246x328?: string;
+        c516x688?: string;
+        square?: string;
+        tm?: string;
+      }[];
+      video?: string;
+      wholesale?: { enabled?: boolean; quantum?: number };
+      dimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        weightBrutto?: number;
+        isValid?: boolean;
+      };
+      characteristics?: { id?: number; name?: string; value?: unknown }[];
+      sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+      tags?: { id?: number; name?: string; color?: string }[];
+      createdAt?: string;
+      updatedAt?: string;
+    }[];
+    cursor?: { updatedAt?: string; nmID?: number; total?: number };
+  }> {
+    return this.client.post<{
+      cards?: {
+        nmID?: number;
+        imtID?: number;
+        nmUUID?: string;
+        subjectID?: number;
+        subjectName?: string;
+        vendorCode?: string;
+        brand?: string;
+        title?: string;
+        description?: string;
+        needKiz?: boolean;
+        photos?: {
+          big?: string;
+          c246x328?: string;
+          c516x688?: string;
+          square?: string;
+          tm?: string;
+        }[];
+        video?: string;
+        wholesale?: { enabled?: boolean; quantum?: number };
+        dimensions?: {
+          length?: number;
+          width?: number;
+          height?: number;
+          weightBrutto?: number;
+          isValid?: boolean;
+        };
+        characteristics?: { id?: number; name?: string; value?: unknown }[];
+        sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+        tags?: { id?: number; name?: string; color?: string }[];
+        createdAt?: string;
+        updatedAt?: string;
+      }[];
+      cursor?: { updatedAt?: string; nmID?: number; total?: number };
+    }>('https://content-api.wildberries.ru/content/v2/get/cards/list', data, { params: options });
   }
 
   /**
@@ -314,8 +571,15 @@ export class ProductsModule {
   const result = await sdk.general.createErrorList({}, {});
   console.log(result);
    */
-  async createErrorList(data: RequestPublicViewerPublicErrorsTableListV2, options?: { locale?: string }): Promise<ResponsePublicViewerPublicErrorsTableListV2> {
-    return this.client.post<ResponsePublicViewerPublicErrorsTableListV2>('https://content-api.wildberries.ru/content/v2/cards/error/list', data, { params: options });
+  async createErrorList(
+    data: RequestPublicViewerPublicErrorsTableListV2,
+    options?: { locale?: string }
+  ): Promise<ResponsePublicViewerPublicErrorsTableListV2> {
+    return this.client.post<ResponsePublicViewerPublicErrorsTableListV2>(
+      'https://content-api.wildberries.ru/content/v2/cards/error/list',
+      data,
+      { params: options }
+    );
   }
 
   /**
@@ -333,8 +597,22 @@ export class ProductsModule {
   const result = await sdk.general.createCardsUpdate({});
   console.log(result);
    */
-  async createCardsUpdate(data?: { nmID: number; vendorCode: string; brand?: string; title?: string; description?: string; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number }; characteristics?: { id: number; value: unknown }[]; sizes: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[] }[]): Promise<ResponseCardCreate> {
-    return this.client.post<ResponseCardCreate>('https://content-api.wildberries.ru/content/v2/cards/update', data);
+  async createCardsUpdate(
+    data?: {
+      nmID: number;
+      vendorCode: string;
+      brand?: string;
+      title?: string;
+      description?: string;
+      dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
+      characteristics?: { id: number; value: unknown }[];
+      sizes: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+    }[]
+  ): Promise<ResponseCardCreate> {
+    return this.client.post<ResponseCardCreate>(
+      'https://content-api.wildberries.ru/content/v2/cards/update',
+      data
+    );
   }
 
   /**
@@ -352,8 +630,13 @@ export class ProductsModule {
   const result = await sdk.general.createCardsMovenm({});
   console.log(result);
    */
-  async createCardsMovenm(data?: RequestMoveNmsImtConn | RequestMoveNmsImtDisconn): Promise<ResponseCardCreate> {
-    return this.client.post<ResponseCardCreate>('https://content-api.wildberries.ru/content/v2/cards/moveNm', data);
+  async createCardsMovenm(
+    data?: RequestMoveNmsImtConn | RequestMoveNmsImtDisconn
+  ): Promise<ResponseCardCreate> {
+    return this.client.post<ResponseCardCreate>(
+      'https://content-api.wildberries.ru/content/v2/cards/moveNm',
+      data
+    );
   }
 
   /**
@@ -371,8 +654,18 @@ export class ProductsModule {
   const result = await sdk.general.createDeleteTrash({});
   console.log(result);
    */
-  async createDeleteTrash(data: { nmIDs?: number[] }): Promise<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }> {
-    return this.client.post<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }>('https://content-api.wildberries.ru/content/v2/cards/delete/trash', data);
+  async createDeleteTrash(data: { nmIDs?: number[] }): Promise<{
+    data?: Record<string, never>;
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: Record<string, never>;
+  }> {
+    return this.client.post<{
+      data?: Record<string, never>;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: Record<string, never>;
+    }>('https://content-api.wildberries.ru/content/v2/cards/delete/trash', data);
   }
 
   /**
@@ -390,8 +683,18 @@ export class ProductsModule {
   const result = await sdk.general.createCardsRecover({});
   console.log(result);
    */
-  async createCardsRecover(data: { nmIDs?: number[] }): Promise<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }> {
-    return this.client.post<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }>('https://content-api.wildberries.ru/content/v2/cards/recover', data);
+  async createCardsRecover(data: { nmIDs?: number[] }): Promise<{
+    data?: Record<string, never>;
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: Record<string, never>;
+  }> {
+    return this.client.post<{
+      data?: Record<string, never>;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: Record<string, never>;
+    }>('https://content-api.wildberries.ru/content/v2/cards/recover', data);
   }
 
   /**
@@ -410,8 +713,73 @@ export class ProductsModule {
   const result = await sdk.general.createCardsTrash({}, {});
   console.log(result);
    */
-  async createCardsTrash(data: { settings?: { sort?: { ascending?: boolean }; cursor?: { limit?: number; trashedAt?: string; nmID?: number }; filter?: { textSearch?: string } } }, options?: { locale?: 'ru' | 'en' | 'zh' }): Promise<{ cards?: { nmID?: number; vendorCode?: string; subjectID?: number; subjectName?: string; photos?: { big?: string; c246x328?: string; c516x688?: string; square?: string; tm?: string }[]; video?: string; wholesale?: { enabled?: boolean; quantum?: number }; sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[]; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number; isValid?: boolean }; characteristics?: { id?: number; name?: string; value?: unknown }[]; createdAt?: string; trashedAt?: string }[]; cursor?: { trashedAt?: string; nmID?: number; total?: number } }> {
-    return this.client.post<{ cards?: { nmID?: number; vendorCode?: string; subjectID?: number; subjectName?: string; photos?: { big?: string; c246x328?: string; c516x688?: string; square?: string; tm?: string }[]; video?: string; wholesale?: { enabled?: boolean; quantum?: number }; sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[]; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number; isValid?: boolean }; characteristics?: { id?: number; name?: string; value?: unknown }[]; createdAt?: string; trashedAt?: string }[]; cursor?: { trashedAt?: string; nmID?: number; total?: number } }>('https://content-api.wildberries.ru/content/v2/get/cards/trash', data, { params: options });
+  async createCardsTrash(
+    data: {
+      settings?: {
+        sort?: { ascending?: boolean };
+        cursor?: { limit?: number; trashedAt?: string; nmID?: number };
+        filter?: { textSearch?: string };
+      };
+    },
+    options?: { locale?: 'ru' | 'en' | 'zh' }
+  ): Promise<{
+    cards?: {
+      nmID?: number;
+      vendorCode?: string;
+      subjectID?: number;
+      subjectName?: string;
+      photos?: {
+        big?: string;
+        c246x328?: string;
+        c516x688?: string;
+        square?: string;
+        tm?: string;
+      }[];
+      video?: string;
+      wholesale?: { enabled?: boolean; quantum?: number };
+      sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+      dimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        weightBrutto?: number;
+        isValid?: boolean;
+      };
+      characteristics?: { id?: number; name?: string; value?: unknown }[];
+      createdAt?: string;
+      trashedAt?: string;
+    }[];
+    cursor?: { trashedAt?: string; nmID?: number; total?: number };
+  }> {
+    return this.client.post<{
+      cards?: {
+        nmID?: number;
+        vendorCode?: string;
+        subjectID?: number;
+        subjectName?: string;
+        photos?: {
+          big?: string;
+          c246x328?: string;
+          c516x688?: string;
+          square?: string;
+          tm?: string;
+        }[];
+        video?: string;
+        wholesale?: { enabled?: boolean; quantum?: number };
+        sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+        dimensions?: {
+          length?: number;
+          width?: number;
+          height?: number;
+          weightBrutto?: number;
+          isValid?: boolean;
+        };
+        characteristics?: { id?: number; name?: string; value?: unknown }[];
+        createdAt?: string;
+        trashedAt?: string;
+      }[];
+      cursor?: { trashedAt?: string; nmID?: number; total?: number };
+    }>('https://content-api.wildberries.ru/content/v2/get/cards/trash', data, { params: options });
   }
 
   /**
@@ -428,8 +796,18 @@ export class ProductsModule {
   const result = await sdk.general.getCardsLimits();
   console.log(result);
    */
-  async getCardsLimits(): Promise<{ data?: { freeLimits?: number; paidLimits?: number }; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{ data?: { freeLimits?: number; paidLimits?: number }; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/cards/limits');
+  async getCardsLimits(): Promise<{
+    data?: { freeLimits?: number; paidLimits?: number };
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: string;
+  }> {
+    return this.client.get<{
+      data?: { freeLimits?: number; paidLimits?: number };
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/cards/limits');
   }
 
   /**
@@ -447,8 +825,15 @@ export class ProductsModule {
   const result = await sdk.general.createContentBarcodes({});
   console.log(result);
    */
-  async createContentBarcodes(data: { count?: number }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.post<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }>('https://content-api.wildberries.ru/content/v2/barcodes', data);
+  async createContentBarcodes(data: {
+    count?: number;
+  }): Promise<{ data?: string[]; error?: boolean; errorText?: string; additionalErrors?: string }> {
+    return this.client.post<{
+      data?: string[];
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: string;
+    }>('https://content-api.wildberries.ru/content/v2/barcodes', data);
   }
 
   /**
@@ -466,8 +851,25 @@ export class ProductsModule {
   const result = await sdk.general.createCardsUpload({});
   console.log(result);
    */
-  async createCardsUpload(data?: { subjectID: number; variants: { brand?: string; title?: string; description?: string; vendorCode: string; wholesale?: { enabled?: boolean; quantum?: number }; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number }; sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[]; characteristics?: { id: number; value: unknown }[] }[] }[]): Promise<ResponseCardCreate> {
-    return this.client.post<ResponseCardCreate>('https://content-api.wildberries.ru/content/v2/cards/upload', data);
+  async createCardsUpload(
+    data?: {
+      subjectID: number;
+      variants: {
+        brand?: string;
+        title?: string;
+        description?: string;
+        vendorCode: string;
+        wholesale?: { enabled?: boolean; quantum?: number };
+        dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
+        sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
+        characteristics?: { id: number; value: unknown }[];
+      }[];
+    }[]
+  ): Promise<ResponseCardCreate> {
+    return this.client.post<ResponseCardCreate>(
+      'https://content-api.wildberries.ru/content/v2/cards/upload',
+      data
+    );
   }
 
   /**
@@ -485,8 +887,23 @@ export class ProductsModule {
   const result = await sdk.general.createUploadAdd({});
   console.log(result);
    */
-  async createUploadAdd(data?: { imtID?: number; cardsToAdd?: { brand?: string; vendorCode: string; wholesale?: { enabled?: boolean; quantum?: number }; title?: string; description?: string; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number }; sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[]; characteristics?: { id: number; value: unknown }[] }[] }): Promise<ResponseCardCreate> {
-    return this.client.post<ResponseCardCreate>('https://content-api.wildberries.ru/content/v2/cards/upload/add', data);
+  async createUploadAdd(data?: {
+    imtID?: number;
+    cardsToAdd?: {
+      brand?: string;
+      vendorCode: string;
+      wholesale?: { enabled?: boolean; quantum?: number };
+      title?: string;
+      description?: string;
+      dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
+      sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
+      characteristics?: { id: number; value: unknown }[];
+    }[];
+  }): Promise<ResponseCardCreate> {
+    return this.client.post<ResponseCardCreate>(
+      'https://content-api.wildberries.ru/content/v2/cards/upload/add',
+      data
+    );
   }
 
   /**
@@ -503,8 +920,18 @@ export class ProductsModule {
   const result = await sdk.general.createMediaFile();
   console.log(result);
    */
-  async createMediaFile(): Promise<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }> {
-    return this.client.post<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }>('https://content-api.wildberries.ru/content/v3/media/file', undefined);
+  async createMediaFile(): Promise<{
+    data?: Record<string, never>;
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: Record<string, never>;
+  }> {
+    return this.client.post<{
+      data?: Record<string, never>;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: Record<string, never>;
+    }>('https://content-api.wildberries.ru/content/v3/media/file', undefined);
   }
 
   /**
@@ -522,8 +949,18 @@ export class ProductsModule {
   const result = await sdk.general.createMediaSave({});
   console.log(result);
    */
-  async createMediaSave(data: { nmId?: number; data?: string[] }): Promise<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }> {
-    return this.client.post<{ data?: Record<string, never>; error?: boolean; errorText?: string; additionalErrors?: Record<string, never> }>('https://content-api.wildberries.ru/content/v3/media/save', data);
+  async createMediaSave(data: { nmId?: number; data?: string[] }): Promise<{
+    data?: Record<string, never>;
+    error?: boolean;
+    errorText?: string;
+    additionalErrors?: Record<string, never>;
+  }> {
+    return this.client.post<{
+      data?: Record<string, never>;
+      error?: boolean;
+      errorText?: string;
+      additionalErrors?: Record<string, never>;
+    }>('https://content-api.wildberries.ru/content/v3/media/save', data);
   }
 
   /**
@@ -541,7 +978,10 @@ export class ProductsModule {
   console.log(result);
    */
   async createUploadTask(): Promise<TaskCreated> {
-    return this.client.post<TaskCreated>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task', undefined);
+    return this.client.post<TaskCreated>(
+      'https://discounts-prices-api.wildberries.ru/api/v2/upload/task',
+      undefined
+    );
   }
 
   /**
@@ -559,7 +999,10 @@ export class ProductsModule {
   console.log(result);
    */
   async createTaskSize(): Promise<TaskCreated> {
-    return this.client.post<TaskCreated>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task/size', undefined);
+    return this.client.post<TaskCreated>(
+      'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/size',
+      undefined
+    );
   }
 
   /**
@@ -577,7 +1020,10 @@ export class ProductsModule {
   console.log(result);
    */
   async createTaskClubDiscount(): Promise<TaskCreated> {
-    return this.client.post<TaskCreated>('https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount', undefined);
+    return this.client.post<TaskCreated>(
+      'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount',
+      undefined
+    );
   }
 
   /**
@@ -619,7 +1065,11 @@ export class ProductsModule {
   const result = await sdk.products.getGoodsTask({ uploadID: 395643565, limit: 100, offset: 0 });
   console.log(result);
    */
-  async getGoodsTask(params: { uploadID: number; limit?: number; offset?: number }): Promise<GoodsTaskResponse> {
+  async getGoodsTask(params: {
+    uploadID: number;
+    limit?: number;
+    offset?: number;
+  }): Promise<GoodsTaskResponse> {
     const queryParams = new URLSearchParams();
     queryParams.append('uploadID', params.uploadID.toString());
     if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
@@ -663,7 +1113,11 @@ export class ProductsModule {
   const result = await sdk.general.getGoodsTask();
   console.log(result);
    */
-  async getGoodsTask2(params: { uploadID: number; limit?: number; offset?: number }): Promise<BufferGoodsTaskResponse> {
+  async getGoodsTask2(params: {
+    uploadID: number;
+    limit?: number;
+    offset?: number;
+  }): Promise<BufferGoodsTaskResponse> {
     const queryParams = new URLSearchParams();
     queryParams.append('uploadID', params.uploadID.toString());
     if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
@@ -687,11 +1141,16 @@ export class ProductsModule {
   const result = await sdk.general.getGoodsFilter();
   console.log(result);
    */
-  async getGoodsFilter(params?: { limit?: number; offset?: number; filterNmID?: number }): Promise<GoodsFilterResponse> {
+  async getGoodsFilter(params?: {
+    limit?: number;
+    offset?: number;
+    filterNmID?: number;
+  }): Promise<GoodsFilterResponse> {
     const queryParams = new URLSearchParams();
     if (params?.limit !== undefined) queryParams.append('limit', params.limit.toString());
     if (params?.offset !== undefined) queryParams.append('offset', params.offset.toString());
-    if (params?.filterNmID !== undefined) queryParams.append('filterNmID', params.filterNmID.toString());
+    if (params?.filterNmID !== undefined)
+      queryParams.append('filterNmID', params.filterNmID.toString());
     const queryString = queryParams.toString();
     return this.client.get<GoodsFilterResponse>(
       `https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter${queryString ? '?' + queryString : ''}`
@@ -713,7 +1172,10 @@ export class ProductsModule {
   console.log(result);
    */
   async createGoodsFilter(): Promise<GoodsFilterResponse> {
-    return this.client.post<GoodsFilterResponse>('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter', undefined);
+    return this.client.post<GoodsFilterResponse>(
+      'https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter',
+      undefined
+    );
   }
 
   /**
@@ -730,7 +1192,11 @@ export class ProductsModule {
   const result = await sdk.general.getSizeNm();
   console.log(result);
    */
-  async getSizeNm(params: { nmID: number; limit?: number; offset?: number }): Promise<SizeNmResponse> {
+  async getSizeNm(params: {
+    nmID: number;
+    limit?: number;
+    offset?: number;
+  }): Promise<SizeNmResponse> {
     const queryParams = new URLSearchParams();
     queryParams.append('nmID', params.nmID.toString());
     if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
@@ -754,7 +1220,10 @@ export class ProductsModule {
   const result = await sdk.general.getQuarantineGoods();
   console.log(result);
    */
-  async getQuarantineGoods(params?: { limit?: number; offset?: number }): Promise<QuarantineGoodsResponse> {
+  async getQuarantineGoods(params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<QuarantineGoodsResponse> {
     const queryParams = new URLSearchParams();
     if (params?.limit !== undefined) queryParams.append('limit', params.limit.toString());
     if (params?.offset !== undefined) queryParams.append('offset', params.offset.toString());
@@ -779,7 +1248,10 @@ export class ProductsModule {
   const result = await sdk.general.createStock({});
   console.log(result);
    */
-  async createStock(warehouseId: number, data: { skus: string[] }): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
+  async createStock(
+    warehouseId: number,
+    data: { skus: string[] }
+  ): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
     return this.client.post<{ stocks?: { sku?: string; amount?: number }[] }>(
       `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
       data
@@ -800,7 +1272,10 @@ export class ProductsModule {
    * @example
   const result = await sdk.general.updateStock({});
    */
-  async updateStock(warehouseId: number, data?: { stocks: { sku?: string; amount?: number }[] }): Promise<void> {
+  async updateStock(
+    warehouseId: number,
+    data?: { stocks: { sku?: string; amount?: number }[] }
+  ): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
       data
@@ -843,7 +1318,9 @@ export class ProductsModule {
   const result = await sdk.products.getWarehousesContact(1413259);
   console.log(result);
    */
-  async getWarehousesContact(warehouseId: number): Promise<{ contacts?: { comment?: string; phone?: string }[] }> {
+  async getWarehousesContact(
+    warehouseId: number
+  ): Promise<{ contacts?: { comment?: string; phone?: string }[] }> {
     return this.client.get<{ contacts?: { comment?: string; phone?: string }[] }>(
       `https://marketplace-api.wildberries.ru/api/v3/dbw/warehouses/${warehouseId}/contacts`
     );
@@ -1115,9 +1592,7 @@ export class ProductsModule {
       const total = response.cursor?.total ?? 0;
       const cursorData = response.cursor;
       const hasMore =
-        Boolean(cursorData?.updatedAt) &&
-        Boolean(cursorData?.nmID) &&
-        allCards.length < total;
+        Boolean(cursorData?.updatedAt) && Boolean(cursorData?.nmID) && allCards.length < total;
 
       if (!hasMore) {
         // No more pages or we've got everything
@@ -1143,9 +1618,7 @@ export class ProductsModule {
       // Safety check: prevent infinite loops
       if (pageCount > 1000) {
         // This would be 100,000+ products, something is wrong
-        throw new Error(
-          'Pagination exceeded 1000 pages. Possible infinite loop or API issue.'
-        );
+        throw new Error('Pagination exceeded 1000 pages. Possible infinite loop or API issue.');
       }
     }
 
@@ -1377,11 +1850,11 @@ export class ProductsModule {
    */
   async getProductCard(nmID: number): Promise<ProductCard | null> {
     const response = await this.listProducts({
-      filter: { textSearch: nmID.toString() }
+      filter: { textSearch: nmID.toString() },
     });
 
     // Find exact match by nmID (textSearch may return multiple results)
-    return response.cards?.find(card => card.nmID === nmID) ?? null;
+    return response.cards?.find((card) => card.nmID === nmID) ?? null;
   }
 
   // ============================================================================
@@ -1434,7 +1907,11 @@ export class ProductsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Media}
    */
-  async uploadMediaFile(nmID: number, file: Buffer | Blob, photoNumber: number): Promise<MediaUploadResponse> {
+  async uploadMediaFile(
+    nmID: number,
+    file: Buffer | Blob,
+    photoNumber: number
+  ): Promise<MediaUploadResponse> {
     const formData = new FormData();
     // Convert Buffer to Blob for FormData compatibility
     const blob = (file instanceof Buffer ? new Blob([file]) : file) as Blob;
@@ -1447,9 +1924,9 @@ export class ProductsModule {
         headers: {
           'X-Nm-Id': nmID.toString(),
           'X-Photo-Number': photoNumber.toString(),
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
         },
-        rateLimitKey: 'products.uploadMediaFile'
+        rateLimitKey: 'products.uploadMediaFile',
       }
     );
   }
@@ -1547,7 +2024,7 @@ export class ProductsModule {
    */
   async getMediaList(nmID: number): Promise<string[]> {
     const product = await this.getProductCard(nmID);
-    return product?.photos?.map(p => p.big ?? '').filter(Boolean) ?? [];
+    return product?.photos?.map((p) => p.big ?? '').filter(Boolean) ?? [];
   }
 
   // ============================================================================
@@ -1666,7 +2143,7 @@ export class ProductsModule {
         'https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter',
         {
           params: { filterNmID: nmIDOrIDs },
-          rateLimitKey: 'products.getPricing'
+          rateLimitKey: 'products.getPricing',
         }
       );
       return response.data;
@@ -1723,7 +2200,7 @@ export class ProductsModule {
       'https://discounts-prices-api.wildberries.ru/api/v2/history/tasks',
       {
         params: { uploadID },
-        rateLimitKey: 'products.getPricingTaskStatus'
+        rateLimitKey: 'products.getPricingTaskStatus',
       }
     );
   }
@@ -1774,10 +2251,9 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    */
   async getWBOffices(): Promise<Office[]> {
-    return this.client.get<Office[]>(
-      'https://marketplace-api.wildberries.ru/api/v3/offices',
-      { rateLimitKey: 'products.getWBOffices' }
-    );
+    return this.client.get<Office[]>('https://marketplace-api.wildberries.ru/api/v3/offices', {
+      rateLimitKey: 'products.getWBOffices',
+    });
   }
 
   /**
@@ -2062,7 +2538,9 @@ export class ProductsModule {
     // Validate each amount
     for (const update of updates) {
       if (update.amount < 0 || update.amount > 100000) {
-        throw new ValidationError(`Stock amount must be 0-100000, got ${update.amount} for SKU ${update.sku}`);
+        throw new ValidationError(
+          `Stock amount must be 0-100000, got ${update.amount} for SKU ${update.sku}`
+        );
       }
     }
 
@@ -2133,12 +2611,8 @@ export class ProductsModule {
    * console.log(result.data); // Массив {@link ProductTag} объектов
    */
   async getTags(): Promise<TagsResponse> {
-    return this.client.get<TagsResponse>(
-      'https://content-api.wildberries.ru/content/v2/tags',
-      {
-        rateLimitKey: 'products.getTags'
-      }
-    );
+    return this.client.get<TagsResponse>('https://content-api.wildberries.ru/content/v2/tags', {
+      rateLimitKey: 'products.getTags',
+    });
   }
-
 }

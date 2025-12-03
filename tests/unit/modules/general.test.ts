@@ -37,7 +37,7 @@ describe('GeneralModule', () => {
       post: vi.fn(),
       put: vi.fn(),
       patch: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
 
     // Create fresh instance before each test
@@ -59,9 +59,7 @@ describe('GeneralModule', () => {
       await generalModule.ping();
 
       // Assert
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://common-api.wildberries.ru/ping'
-      );
+      expect(mockClient.get).toHaveBeenCalledWith('https://common-api.wildberries.ru/ping');
       expect(mockClient.get).toHaveBeenCalledTimes(1);
     });
 
@@ -119,9 +117,9 @@ describe('GeneralModule', () => {
           date: '2024-01-01',
           header: 'Test News Header',
           id: 1,
-          types: [{ id: 1, name: 'Announcement' }]
-        }
-      ]
+          types: [{ id: 1, name: 'Announcement' }],
+        },
+      ],
     };
 
     it('should throw ValidationError when no parameters provided', async () => {
@@ -129,7 +127,9 @@ describe('GeneralModule', () => {
       // @ts-expect-error Testing missing required parameter
       await expect(generalModule.news()).rejects.toThrow(ValidationError);
       // @ts-expect-error Testing missing required parameter
-      await expect(generalModule.news()).rejects.toThrow('At least one parameter (from or fromID) must be provided');
+      await expect(generalModule.news()).rejects.toThrow(
+        'At least one parameter (from or fromID) must be provided'
+      );
     });
 
     it('should throw ValidationError when empty object provided', async () => {
@@ -238,7 +238,7 @@ describe('GeneralModule', () => {
     const mockSellerResponse = {
       name: 'Test Seller',
       sid: 'seller-123',
-      tradeMark: 'TestBrand'
+      tradeMark: 'TestBrand',
     };
 
     it('should call BaseClient.get with correct URL', async () => {

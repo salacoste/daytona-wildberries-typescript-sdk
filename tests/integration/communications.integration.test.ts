@@ -300,21 +300,24 @@ const handlers = [
   }),
 
   // PATCH /api/v1/feedbacks/answer - Edit review response
-  http.patch('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer', async ({ request }) => {
-    const body = (await request.json()) as { id: string; text: string };
+  http.patch(
+    'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer',
+    async ({ request }) => {
+      const body = (await request.json()) as { id: string; text: string };
 
-    if (!body.text || body.text.length < 2 || body.text.length > 5000) {
-      return HttpResponse.json(
-        {
-          error: true,
-          errorText: 'Invalid text length',
-        },
-        { status: 400 }
-      );
+      if (!body.text || body.text.length < 2 || body.text.length > 5000) {
+        return HttpResponse.json(
+          {
+            error: true,
+            errorText: 'Invalid text length',
+          },
+          { status: 400 }
+        );
+      }
+
+      return new HttpResponse(null, { status: 204 });
     }
-
-    return new HttpResponse(null, { status: 204 });
-  }),
+  ),
 ];
 
 const server = setupServer(...handlers);
@@ -616,9 +619,7 @@ describe('CommunicationsModule Integration Tests', () => {
     });
 
     it('should throw ValidationError for empty answer text', async () => {
-      await expect(sdk.communications.answerQuestion('q123', '')).rejects.toThrow(
-        ValidationError
-      );
+      await expect(sdk.communications.answerQuestion('q123', '')).rejects.toThrow(ValidationError);
     });
   });
 

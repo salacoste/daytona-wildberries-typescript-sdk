@@ -10,7 +10,7 @@ import type {
   PingResponse,
   NewsResponse,
   NewsRequestParams,
-  SellerInfoResponse
+  SellerInfoResponse,
 } from '../../types/general.types';
 
 export class GeneralModule {
@@ -82,10 +82,9 @@ export class GeneralModule {
     // Validate fromID if provided
     if (options.fromID) {
       if (!Number.isInteger(options.fromID) || options.fromID <= 0) {
-        throw new ValidationError(
-          'Invalid "fromID" parameter. Must be a positive integer',
-          { fromID: `Required: positive integer, received: ${options.fromID}` }
-        );
+        throw new ValidationError('Invalid "fromID" parameter. Must be a positive integer', {
+          fromID: `Required: positive integer, received: ${options.fromID}`,
+        });
       }
     }
 
@@ -93,7 +92,7 @@ export class GeneralModule {
       'https://common-api.wildberries.ru/api/communications/v2/news',
       {
         params: options as Record<string, unknown>,
-        rateLimitKey: 'general.communicationsNews'
+        rateLimitKey: 'general.communicationsNews',
       }
     );
   }
@@ -111,7 +110,8 @@ export class GeneralModule {
   console.log(result);
    */
   async sellerInfo(): Promise<SellerInfoResponse> {
-    return this.client.get<SellerInfoResponse>('https://common-api.wildberries.ru/api/v1/seller-info');
+    return this.client.get<SellerInfoResponse>(
+      'https://common-api.wildberries.ru/api/v1/seller-info'
+    );
   }
-
 }

@@ -7,7 +7,30 @@
  * Enhanced error handling for promotion API authentication issues identified in Epic 7.
  */
 import { BaseClient } from '../../client/base-client';
-import type { CalendarNomenclaturesResponse, CalendarPromotionDetailsResponse, CalendarPromotionsResponse, CalendarUploadResponse, GetAuctionAdverts, PlacementType, RequestWithCampaignID, RequestWithDate, RequestWithInterval, ResponseFullStats, ResponseInfoAdvert, ResponseInfoAdvertType8, ResponseInfoAdvertType9, ResponseWithDate, ResponseWithInterval, ResponseWithReturn, Stat, StatDate, StatInterval, V0AdvertMultibid, V0GetConfigCategoriesResponse, V0KeywordsStatisticsResponse } from '../../types/promotion.types';
+import type {
+  CalendarNomenclaturesResponse,
+  CalendarPromotionDetailsResponse,
+  CalendarPromotionsResponse,
+  CalendarUploadResponse,
+  GetAuctionAdverts,
+  PlacementType,
+  RequestWithCampaignID,
+  RequestWithDate,
+  RequestWithInterval,
+  ResponseFullStats,
+  ResponseInfoAdvert,
+  ResponseInfoAdvertType8,
+  ResponseInfoAdvertType9,
+  ResponseWithDate,
+  ResponseWithInterval,
+  ResponseWithReturn,
+  Stat,
+  StatDate,
+  StatInterval,
+  V0AdvertMultibid,
+  V0GetConfigCategoriesResponse,
+  V0KeywordsStatisticsResponse,
+} from '../../types/promotion.types';
 
 export class PromotionModule {
   constructor(private client: BaseClient) {
@@ -15,8 +38,6 @@ export class PromotionModule {
     // Supported domains: advert-api, advert-media-api, api, dp-calendar-api
   }
 
-  
-  
   /**
    * Списки кампаний
    *
@@ -31,8 +52,24 @@ export class PromotionModule {
   const result = await sdk.promotion.getPromotionCount();
   console.log(result);
    */
-  async getPromotionCount(): Promise<{ adverts?: { type?: number; status?: number; count?: number; advert_list?: { advertId?: number; changeTime?: string }[] }[]; all?: number }> {
-    return this.client.get<{ adverts?: { type?: number; status?: number; count?: number; advert_list?: { advertId?: number; changeTime?: string }[] }[]; all?: number }>('https://advert-api.wildberries.ru/adv/v1/promotion/count');
+  async getPromotionCount(): Promise<{
+    adverts?: {
+      type?: number;
+      status?: number;
+      count?: number;
+      advert_list?: { advertId?: number; changeTime?: string }[];
+    }[];
+    all?: number;
+  }> {
+    return this.client.get<{
+      adverts?: {
+        type?: number;
+        status?: number;
+        count?: number;
+        advert_list?: { advertId?: number; changeTime?: string }[];
+      }[];
+      all?: number;
+    }>('https://advert-api.wildberries.ru/adv/v1/promotion/count');
   }
 
   /**
@@ -51,8 +88,18 @@ export class PromotionModule {
   const result = await sdk.promotion.createPromotionAdverts({}, {});
   console.log(result);
    */
-  async createPromotionAdverts(data: number[], options?: { status?: -1 | 4 | 7 | 8 | 9 | 11; type?: 4 | 5 | 6 | 7 | 8; order?: 'create' | 'change' | 'id'; direction?: 'desc' | 'asc' }): Promise<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]> {
-    return this.client.post<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]>('https://advert-api.wildberries.ru/adv/v1/promotion/adverts', data, { params: options });
+  async createPromotionAdverts(
+    data: number[],
+    options?: {
+      status?: -1 | 4 | 7 | 8 | 9 | 11;
+      type?: 4 | 5 | 6 | 7 | 8;
+      order?: 'create' | 'change' | 'id';
+      direction?: 'desc' | 'asc';
+    }
+  ): Promise<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]> {
+    return this.client.post<
+      ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]
+    >('https://advert-api.wildberries.ru/adv/v1/promotion/adverts', data, { params: options });
   }
 
   /**
@@ -70,8 +117,15 @@ export class PromotionModule {
   const result = await sdk.promotion.getAuctionAdverts({});
   console.log(result);
    */
-  async getAuctionAdverts(options?: { ids?: string; statuses?: '-1' | '4' | '7' | '8' | '9' | '11'; payment_type?: 'cpm' | 'cpc' }): Promise<GetAuctionAdverts> {
-    return this.client.get<GetAuctionAdverts>('https://advert-api.wildberries.ru/adv/v0/auction/adverts', { params: options });
+  async getAuctionAdverts(options?: {
+    ids?: string;
+    statuses?: '-1' | '4' | '7' | '8' | '9' | '11';
+    payment_type?: 'cpm' | 'cpc';
+  }): Promise<GetAuctionAdverts> {
+    return this.client.get<GetAuctionAdverts>(
+      'https://advert-api.wildberries.ru/adv/v0/auction/adverts',
+      { params: options }
+    );
   }
 
   /**
@@ -89,8 +143,14 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvConfig();
   console.log(result);
    */
-  async getAdvConfig(): Promise<{ categories?: V0GetConfigCategoriesResponse[]; config?: { description?: string; name?: string; value?: string }[] }> {
-    return this.client.get<{ categories?: V0GetConfigCategoriesResponse[]; config?: { description?: string; name?: string; value?: string }[] }>('https://advert-api.wildberries.ru/adv/v0/config');
+  async getAdvConfig(): Promise<{
+    categories?: V0GetConfigCategoriesResponse[];
+    config?: { description?: string; name?: string; value?: string }[];
+  }> {
+    return this.client.get<{
+      categories?: V0GetConfigCategoriesResponse[];
+      config?: { description?: string; name?: string; value?: string }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/config');
   }
 
   /**
@@ -108,8 +168,15 @@ export class PromotionModule {
   const result = await sdk.promotion.createBidsMin({});
   console.log(result);
    */
-  async createBidsMin(data: { advert_id: number; nm_ids: number[]; payment_type: 'cpm' | 'cpc'; placement_types: 'combined' | 'search' | 'recommendation'[] }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
-    return this.client.post<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }>('https://advert-api.wildberries.ru/adv/v0/bids/min', data);
+  async createBidsMin(data: {
+    advert_id: number;
+    nm_ids: number[];
+    payment_type: 'cpm' | 'cpc';
+    placement_types: 'combined' | 'search' | 'recommendation'[];
+  }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
+    return this.client.post<{
+      bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/bids/min', data);
   }
 
   /**
@@ -127,7 +194,16 @@ export class PromotionModule {
   const result = await sdk.promotion.createAdvSaveAd({});
   console.log(result);
    */
-  async createAdvSaveAd(data: { type?: number; name?: string; subjectId?: number; sum?: number; btype?: number; on_pause?: boolean; nms?: number[]; cpm?: number }): Promise<string> {
+  async createAdvSaveAd(data: {
+    type?: number;
+    name?: string;
+    subjectId?: number;
+    sum?: number;
+    btype?: number;
+    on_pause?: boolean;
+    nms?: number[];
+    cpm?: number;
+  }): Promise<string> {
     return this.client.post<string>('https://advert-api.wildberries.ru/adv/v1/save-ad', data);
   }
 
@@ -146,8 +222,16 @@ export class PromotionModule {
   const result = await sdk.promotion.createSeacatSaveAd({});
   console.log(result);
    */
-  async createSeacatSaveAd(data?: { name?: string; nms?: number[]; bid_type?: 'manual' | 'unified'; placement_types?: 'search' | 'recommendations'[] }): Promise<number> {
-    return this.client.post<number>('https://advert-api.wildberries.ru/adv/v2/seacat/save-ad', data);
+  async createSeacatSaveAd(data?: {
+    name?: string;
+    nms?: number[];
+    bid_type?: 'manual' | 'unified';
+    placement_types?: 'search' | 'recommendations'[];
+  }): Promise<number> {
+    return this.client.post<number>(
+      'https://advert-api.wildberries.ru/adv/v2/seacat/save-ad',
+      data
+    );
   }
 
   /**
@@ -165,7 +249,9 @@ export class PromotionModule {
   console.log(result);
    */
   async getSupplierSubjects(): Promise<{ id?: number; name?: string; count?: number }[]> {
-    return this.client.get<{ id?: number; name?: string; count?: number }[]>('https://advert-api.wildberries.ru/adv/v1/supplier/subjects');
+    return this.client.get<{ id?: number; name?: string; count?: number }[]>(
+      'https://advert-api.wildberries.ru/adv/v1/supplier/subjects'
+    );
   }
 
   /**
@@ -183,8 +269,13 @@ export class PromotionModule {
   const result = await sdk.promotion.createSupplierNms({});
   console.log(result);
    */
-  async createSupplierNms(data?: number[]): Promise<{ title?: string; nm?: number; subjectId?: number }[]> {
-    return this.client.post<{ title?: string; nm?: number; subjectId?: number }[]>('https://advert-api.wildberries.ru/adv/v2/supplier/nms', data);
+  async createSupplierNms(
+    data?: number[]
+  ): Promise<{ title?: string; nm?: number; subjectId?: number }[]> {
+    return this.client.post<{ title?: string; nm?: number; subjectId?: number }[]>(
+      'https://advert-api.wildberries.ru/adv/v2/supplier/nms',
+      data
+    );
   }
 
   /**
@@ -314,7 +405,9 @@ export class PromotionModule {
    * @example
   const result = await sdk.promotion.updateAuctionPlacements({});
    */
-  async updateAuctionPlacements(data: { placements: { advert_id: number; placements: { search: boolean; recommendations: boolean } }[] }): Promise<void> {
+  async updateAuctionPlacements(data: {
+    placements: { advert_id: number; placements: { search: boolean; recommendations: boolean } }[];
+  }): Promise<void> {
     return this.client.put('https://advert-api.wildberries.ru/adv/v0/auction/placements', data);
   }
 
@@ -333,8 +426,21 @@ export class PromotionModule {
   const result = await sdk.promotion.updateAuctionBids({});
   console.log(result);
    */
-  async updateAuctionBids(data: { bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: 'search' | 'recommendations' | 'combined' }[] }[] }): Promise<{ bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[] }> {
-    return this.client.patch<{ bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[] }>('https://advert-api.wildberries.ru/adv/v0/auction/bids', data);
+  async updateAuctionBids(data: {
+    bids: {
+      advert_id: number;
+      nm_bids: {
+        nm_id: number;
+        bid: number;
+        placement: 'search' | 'recommendations' | 'combined';
+      }[];
+    }[];
+  }): Promise<{
+    bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[];
+  }> {
+    return this.client.patch<{
+      bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/auction/bids', data);
   }
 
   /**
@@ -351,8 +457,18 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvBalance();
   console.log(result);
    */
-  async getAdvBalance(): Promise<{ balance?: number; net?: number; bonus?: number; cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[] }> {
-    return this.client.get<{ balance?: number; net?: number; bonus?: number; cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[] }>('https://advert-api.wildberries.ru/adv/v1/balance');
+  async getAdvBalance(): Promise<{
+    balance?: number;
+    net?: number;
+    bonus?: number;
+    cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[];
+  }> {
+    return this.client.get<{
+      balance?: number;
+      net?: number;
+      bonus?: number;
+      cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[];
+    }>('https://advert-api.wildberries.ru/adv/v1/balance');
   }
 
   /**
@@ -370,8 +486,13 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvBudget({});
   console.log(result);
    */
-  async getAdvBudget(options?: { id: number }): Promise<{ cash?: number; netting?: number; total?: number }> {
-    return this.client.get<{ cash?: number; netting?: number; total?: number }>('https://advert-api.wildberries.ru/adv/v1/budget', { params: options });
+  async getAdvBudget(options?: {
+    id: number;
+  }): Promise<{ cash?: number; netting?: number; total?: number }> {
+    return this.client.get<{ cash?: number; netting?: number; total?: number }>(
+      'https://advert-api.wildberries.ru/adv/v1/budget',
+      { params: options }
+    );
   }
 
   /**
@@ -390,8 +511,21 @@ export class PromotionModule {
   const result = await sdk.promotion.createBudgetDeposit({}, {});
   console.log(result);
    */
-  async createBudgetDeposit(data: { sum?: number; cashback_sum?: number; cashback_percent?: number; type?: number; return?: boolean }, options?: { id: number }): Promise<ResponseWithReturn> {
-    return this.client.post<ResponseWithReturn>('https://advert-api.wildberries.ru/adv/v1/budget/deposit', data, { params: options });
+  async createBudgetDeposit(
+    data: {
+      sum?: number;
+      cashback_sum?: number;
+      cashback_percent?: number;
+      type?: number;
+      return?: boolean;
+    },
+    options?: { id: number }
+  ): Promise<ResponseWithReturn> {
+    return this.client.post<ResponseWithReturn>(
+      'https://advert-api.wildberries.ru/adv/v1/budget/deposit',
+      data,
+      { params: options }
+    );
   }
 
   /**
@@ -409,8 +543,30 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvUpd({});
   console.log(result);
    */
-  async getAdvUpd(options?: { from: string; to: string }): Promise<{ updNum?: number; updTime?: string; updSum?: number; advertId?: number; campName?: string; advertType?: number; paymentType?: string; advertStatus?: number }[]> {
-    return this.client.get<{ updNum?: number; updTime?: string; updSum?: number; advertId?: number; campName?: string; advertType?: number; paymentType?: string; advertStatus?: number }[]>('https://advert-api.wildberries.ru/adv/v1/upd', { params: options });
+  async getAdvUpd(options?: { from: string; to: string }): Promise<
+    {
+      updNum?: number;
+      updTime?: string;
+      updSum?: number;
+      advertId?: number;
+      campName?: string;
+      advertType?: number;
+      paymentType?: string;
+      advertStatus?: number;
+    }[]
+  > {
+    return this.client.get<
+      {
+        updNum?: number;
+        updTime?: string;
+        updSum?: number;
+        advertId?: number;
+        campName?: string;
+        advertType?: number;
+        paymentType?: string;
+        advertStatus?: number;
+      }[]
+    >('https://advert-api.wildberries.ru/adv/v1/upd', { params: options });
   }
 
   /**
@@ -428,8 +584,26 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvPayments({});
   console.log(result);
    */
-  async getAdvPayments(options?: { from?: string; to?: string }): Promise<{ id?: number; date?: string; sum?: number; type?: number; statusId?: number; cardStatus?: string }[]> {
-    return this.client.get<{ id?: number; date?: string; sum?: number; type?: number; statusId?: number; cardStatus?: string }[]>('https://advert-api.wildberries.ru/adv/v1/payments', { params: options });
+  async getAdvPayments(options?: { from?: string; to?: string }): Promise<
+    {
+      id?: number;
+      date?: string;
+      sum?: number;
+      type?: number;
+      statusId?: number;
+      cardStatus?: string;
+    }[]
+  > {
+    return this.client.get<
+      {
+        id?: number;
+        date?: string;
+        sum?: number;
+        type?: number;
+        statusId?: number;
+        cardStatus?: string;
+      }[]
+    >('https://advert-api.wildberries.ru/adv/v1/payments', { params: options });
   }
 
   /**
@@ -448,7 +622,9 @@ export class PromotionModule {
   console.log(result);
    */
   async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<void> {
-    await this.client.get('https://advert-api.wildberries.ru/adv/v1/search/set-plus', { params: options });
+    await this.client.get('https://advert-api.wildberries.ru/adv/v1/search/set-plus', {
+      params: options,
+    });
   }
 
   /**
@@ -467,8 +643,15 @@ export class PromotionModule {
   const result = await sdk.promotion.createSearchSetPlus({}, {});
   console.log(result);
    */
-  async createSearchSetPlus(data: { pluse?: string[] }, options?: { id: number }): Promise<string[]> {
-    return this.client.post<string[]>('https://advert-api.wildberries.ru/adv/v1/search/set-plus', data, { params: options });
+  async createSearchSetPlus(
+    data: { pluse?: string[] },
+    options?: { id: number }
+  ): Promise<string[]> {
+    return this.client.post<string[]>(
+      'https://advert-api.wildberries.ru/adv/v1/search/set-plus',
+      data,
+      { params: options }
+    );
   }
 
   /**
@@ -487,8 +670,13 @@ export class PromotionModule {
   const result = await sdk.promotion.createSearchSetExcluded({}, {});
   console.log(result);
    */
-  async createSearchSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<void> {
-    await this.client.post('https://advert-api.wildberries.ru/adv/v1/search/set-excluded', data, { params: options });
+  async createSearchSetExcluded(
+    data: { excluded?: string[] },
+    options?: { id: number }
+  ): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v1/search/set-excluded', data, {
+      params: options,
+    });
   }
 
   /**
@@ -507,8 +695,13 @@ export class PromotionModule {
   const result = await sdk.promotion.createAutoSetExcluded({}, {});
   console.log(result);
    */
-  async createAutoSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<void> {
-    await this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, { params: options });
+  async createAutoSetExcluded(
+    data: { excluded?: string[] },
+    options?: { id: number }
+  ): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, {
+      params: options,
+    });
   }
 
   /**
@@ -527,7 +720,9 @@ export class PromotionModule {
   console.log(result);
    */
   async getAutoGetnmtoadd(options?: { id: number }): Promise<number[]> {
-    return this.client.get<number[]>('https://advert-api.wildberries.ru/adv/v1/auto/getnmtoadd', { params: options });
+    return this.client.get<number[]>('https://advert-api.wildberries.ru/adv/v1/auto/getnmtoadd', {
+      params: options,
+    });
   }
 
   /**
@@ -546,8 +741,13 @@ export class PromotionModule {
   const result = await sdk.promotion.createAutoUpdatenm({}, {});
   console.log(result);
    */
-  async createAutoUpdatenm(data: { add?: number[]; delete?: number[] }, options?: { id: number }): Promise<void> {
-    await this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, { params: options });
+  async createAutoUpdatenm(
+    data: { add?: number[]; delete?: number[] },
+    options?: { id: number }
+  ): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, {
+      params: options,
+    });
   }
 
   /**
@@ -565,8 +765,12 @@ export class PromotionModule {
   const result = await sdk.promotion.updateAuctionNms({});
   console.log(result);
    */
-  async updateAuctionNms(data: { nms: { advert_id: number; nms: { add?: unknown; delete?: number[] } }[] }): Promise<{ nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[] }> {
-    return this.client.patch<{ nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[] }>('https://advert-api.wildberries.ru/adv/v0/auction/nms', data);
+  async updateAuctionNms(data: {
+    nms: { advert_id: number; nms: { add?: unknown; delete?: number[] } }[];
+  }): Promise<{ nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[] }> {
+    return this.client.patch<{
+      nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/auction/nms', data);
   }
 
   /**
@@ -583,8 +787,14 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvCount();
   console.log(result);
    */
-  async getAdvCount(): Promise<{ all?: number; adverts?: { type?: number; status?: number; count?: number } }> {
-    return this.client.get<{ all?: number; adverts?: { type?: number; status?: number; count?: number } }>('https://advert-media-api.wildberries.ru/adv/v1/count');
+  async getAdvCount(): Promise<{
+    all?: number;
+    adverts?: { type?: number; status?: number; count?: number };
+  }> {
+    return this.client.get<{
+      all?: number;
+      adverts?: { type?: number; status?: number; count?: number };
+    }>('https://advert-media-api.wildberries.ru/adv/v1/count');
   }
 
   /**
@@ -602,8 +812,35 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvAdverts({});
   console.log(result);
    */
-  async getAdvAdverts(options?: { status?: number; type?: number; limit?: number; offset?: number; order?: string; direction?: string }): Promise<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; endTime?: string }[]> {
-    return this.client.get<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; endTime?: string }[]>('https://advert-media-api.wildberries.ru/adv/v1/adverts', { params: options });
+  async getAdvAdverts(options?: {
+    status?: number;
+    type?: number;
+    limit?: number;
+    offset?: number;
+    order?: string;
+    direction?: string;
+  }): Promise<
+    {
+      advertId?: number;
+      name?: string;
+      brand?: string;
+      type?: number;
+      status?: number;
+      createTime?: string;
+      endTime?: string;
+    }[]
+  > {
+    return this.client.get<
+      {
+        advertId?: number;
+        name?: string;
+        brand?: string;
+        type?: number;
+        status?: number;
+        createTime?: string;
+        endTime?: string;
+      }[]
+    >('https://advert-media-api.wildberries.ru/adv/v1/adverts', { params: options });
   }
 
   /**
@@ -621,8 +858,98 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvAdvert({});
   console.log(result);
    */
-  async getAdvAdvert(options?: { id: number }): Promise<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; extended?: { reason?: string; expenses?: number; from?: string; to?: string; updated_at?: string; price?: number; budget?: number; operation?: number; contract_id?: number }; items?: { id?: number; name?: string; status?: number; place?: number; budget?: number; daily_limit?: number; category_name?: string; cpm?: number; url?: string; advert_type?: number; created_at?: string; updated_at?: string; date_from?: string; date_to?: string; nms?: number[]; bottomText1?: string; bottomText2?: string; message?: string; additionalSettings?: number; receiversCount?: number; subject_id?: number; subject_name?: string; action_name?: string; show_hours?: { From?: number; To?: number }[]; Erid?: string }[] }> {
-    return this.client.get<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; extended?: { reason?: string; expenses?: number; from?: string; to?: string; updated_at?: string; price?: number; budget?: number; operation?: number; contract_id?: number }; items?: { id?: number; name?: string; status?: number; place?: number; budget?: number; daily_limit?: number; category_name?: string; cpm?: number; url?: string; advert_type?: number; created_at?: string; updated_at?: string; date_from?: string; date_to?: string; nms?: number[]; bottomText1?: string; bottomText2?: string; message?: string; additionalSettings?: number; receiversCount?: number; subject_id?: number; subject_name?: string; action_name?: string; show_hours?: { From?: number; To?: number }[]; Erid?: string }[] }>('https://advert-media-api.wildberries.ru/adv/v1/advert', { params: options });
+  async getAdvAdvert(options?: { id: number }): Promise<{
+    advertId?: number;
+    name?: string;
+    brand?: string;
+    type?: number;
+    status?: number;
+    createTime?: string;
+    extended?: {
+      reason?: string;
+      expenses?: number;
+      from?: string;
+      to?: string;
+      updated_at?: string;
+      price?: number;
+      budget?: number;
+      operation?: number;
+      contract_id?: number;
+    };
+    items?: {
+      id?: number;
+      name?: string;
+      status?: number;
+      place?: number;
+      budget?: number;
+      daily_limit?: number;
+      category_name?: string;
+      cpm?: number;
+      url?: string;
+      advert_type?: number;
+      created_at?: string;
+      updated_at?: string;
+      date_from?: string;
+      date_to?: string;
+      nms?: number[];
+      bottomText1?: string;
+      bottomText2?: string;
+      message?: string;
+      additionalSettings?: number;
+      receiversCount?: number;
+      subject_id?: number;
+      subject_name?: string;
+      action_name?: string;
+      show_hours?: { From?: number; To?: number }[];
+      Erid?: string;
+    }[];
+  }> {
+    return this.client.get<{
+      advertId?: number;
+      name?: string;
+      brand?: string;
+      type?: number;
+      status?: number;
+      createTime?: string;
+      extended?: {
+        reason?: string;
+        expenses?: number;
+        from?: string;
+        to?: string;
+        updated_at?: string;
+        price?: number;
+        budget?: number;
+        operation?: number;
+        contract_id?: number;
+      };
+      items?: {
+        id?: number;
+        name?: string;
+        status?: number;
+        place?: number;
+        budget?: number;
+        daily_limit?: number;
+        category_name?: string;
+        cpm?: number;
+        url?: string;
+        advert_type?: number;
+        created_at?: string;
+        updated_at?: string;
+        date_from?: string;
+        date_to?: string;
+        nms?: number[];
+        bottomText1?: string;
+        bottomText2?: string;
+        message?: string;
+        additionalSettings?: number;
+        receiversCount?: number;
+        subject_id?: number;
+        subject_name?: string;
+        action_name?: string;
+        show_hours?: { From?: number; To?: number }[];
+        Erid?: string;
+      }[];
+    }>('https://advert-media-api.wildberries.ru/adv/v1/advert', { params: options });
   }
 
   /**
@@ -641,8 +968,13 @@ export class PromotionModule {
   const result = await sdk.promotion.createAdvFullstats({});
   console.log(result);
    */
-  async createAdvFullstats(data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]): Promise<ResponseWithDate | ResponseWithInterval> {
-    return this.client.post<ResponseWithDate | ResponseWithInterval>('https://advert-api.wildberries.ru/adv/v2/fullstats', data);
+  async createAdvFullstats(
+    data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]
+  ): Promise<ResponseWithDate | ResponseWithInterval> {
+    return this.client.post<ResponseWithDate | ResponseWithInterval>(
+      'https://advert-api.wildberries.ru/adv/v2/fullstats',
+      data
+    );
   }
 
   /**
@@ -660,8 +992,15 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvFullstats({});
   console.log(result);
    */
-  async getAdvFullstats(options?: { ids: string; beginDate: string; endDate: string }): Promise<ResponseFullStats> {
-    return this.client.get<ResponseFullStats>('https://advert-api.wildberries.ru/adv/v3/fullstats', { params: options });
+  async getAdvFullstats(options?: {
+    ids: string;
+    beginDate: string;
+    endDate: string;
+  }): Promise<ResponseFullStats> {
+    return this.client.get<ResponseFullStats>(
+      'https://advert-api.wildberries.ru/adv/v3/fullstats',
+      { params: options }
+    );
   }
 
   /**
@@ -679,8 +1018,14 @@ export class PromotionModule {
   const result = await sdk.promotion.getAutoStatWords({});
   console.log(result);
    */
-  async getAutoStatWords(options?: { id: number }): Promise<{ excluded?: string[]; clusters?: { cluster?: string; count?: number; keywords?: string[] }[] }> {
-    return this.client.get<{ excluded?: string[]; clusters?: { cluster?: string; count?: number; keywords?: string[] }[] }>('https://advert-api.wildberries.ru/adv/v2/auto/stat-words', { params: options });
+  async getAutoStatWords(options?: { id: number }): Promise<{
+    excluded?: string[];
+    clusters?: { cluster?: string; count?: number; keywords?: string[] }[];
+  }> {
+    return this.client.get<{
+      excluded?: string[];
+      clusters?: { cluster?: string; count?: number; keywords?: string[] }[];
+    }>('https://advert-api.wildberries.ru/adv/v2/auto/stat-words', { params: options });
   }
 
   /**
@@ -698,8 +1043,56 @@ export class PromotionModule {
   const result = await sdk.promotion.getStatWords({});
   console.log(result);
    */
-  async getStatWords(options?: { id: number }): Promise<{ words?: { phrase?: string[]; strong?: string[]; excluded?: string[]; pluse?: string[]; keywords?: { keyword?: string; count?: number }[]; fixed?: boolean }; stat?: { advertId?: number; keyword?: string; advertName?: string; campaignName?: string; begin?: string; end?: string; views?: number; clicks?: number; frq?: number; ctr?: number; cpc?: number; duration?: number; sum?: number }[] }> {
-    return this.client.get<{ words?: { phrase?: string[]; strong?: string[]; excluded?: string[]; pluse?: string[]; keywords?: { keyword?: string; count?: number }[]; fixed?: boolean }; stat?: { advertId?: number; keyword?: string; advertName?: string; campaignName?: string; begin?: string; end?: string; views?: number; clicks?: number; frq?: number; ctr?: number; cpc?: number; duration?: number; sum?: number }[] }>('https://advert-api.wildberries.ru/adv/v1/stat/words', { params: options });
+  async getStatWords(options?: { id: number }): Promise<{
+    words?: {
+      phrase?: string[];
+      strong?: string[];
+      excluded?: string[];
+      pluse?: string[];
+      keywords?: { keyword?: string; count?: number }[];
+      fixed?: boolean;
+    };
+    stat?: {
+      advertId?: number;
+      keyword?: string;
+      advertName?: string;
+      campaignName?: string;
+      begin?: string;
+      end?: string;
+      views?: number;
+      clicks?: number;
+      frq?: number;
+      ctr?: number;
+      cpc?: number;
+      duration?: number;
+      sum?: number;
+    }[];
+  }> {
+    return this.client.get<{
+      words?: {
+        phrase?: string[];
+        strong?: string[];
+        excluded?: string[];
+        pluse?: string[];
+        keywords?: { keyword?: string; count?: number }[];
+        fixed?: boolean;
+      };
+      stat?: {
+        advertId?: number;
+        keyword?: string;
+        advertName?: string;
+        campaignName?: string;
+        begin?: string;
+        end?: string;
+        views?: number;
+        clicks?: number;
+        frq?: number;
+        ctr?: number;
+        cpc?: number;
+        duration?: number;
+        sum?: number;
+      }[];
+    }>('https://advert-api.wildberries.ru/adv/v1/stat/words', { params: options });
   }
 
   /**
@@ -717,8 +1110,15 @@ export class PromotionModule {
   const result = await sdk.promotion.getStatsKeywords({});
   console.log(result);
    */
-  async getStatsKeywords(options?: { advert_id: number; from: string; to: string }): Promise<V0KeywordsStatisticsResponse> {
-    return this.client.get<V0KeywordsStatisticsResponse>('https://api.wildberries.ru/adv/v0/stats/keywords', { params: options });
+  async getStatsKeywords(options?: {
+    advert_id: number;
+    from: string;
+    to: string;
+  }): Promise<V0KeywordsStatisticsResponse> {
+    return this.client.get<V0KeywordsStatisticsResponse>(
+      'https://api.wildberries.ru/adv/v0/stats/keywords',
+      { params: options }
+    );
   }
 
   /**
@@ -736,8 +1136,13 @@ export class PromotionModule {
   const result = await sdk.promotion.createAdvStats({});
   console.log(result);
    */
-  async createAdvStats(data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]): Promise<StatInterval | StatDate | Stat[]> {
-    return this.client.post<StatInterval | StatDate | Stat[]>('https://advert-media-api.wildberries.ru/adv/v1/stats', data);
+  async createAdvStats(
+    data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]
+  ): Promise<StatInterval | StatDate | Stat[]> {
+    return this.client.post<StatInterval | StatDate | Stat[]>(
+      'https://advert-media-api.wildberries.ru/adv/v1/stats',
+      data
+    );
   }
 
   /**
@@ -755,7 +1160,9 @@ export class PromotionModule {
   console.log(result);
    */
   async getCalendarPromotions(): Promise<CalendarPromotionsResponse> {
-    return this.client.get<CalendarPromotionsResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions');
+    return this.client.get<CalendarPromotionsResponse>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions'
+    );
   }
 
   /**
@@ -773,7 +1180,9 @@ export class PromotionModule {
   console.log(result);
    */
   async getPromotionsDetails(): Promise<CalendarPromotionDetailsResponse> {
-    return this.client.get<CalendarPromotionDetailsResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/details');
+    return this.client.get<CalendarPromotionDetailsResponse>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/details'
+    );
   }
 
   /**
@@ -791,7 +1200,9 @@ export class PromotionModule {
   console.log(result);
    */
   async getPromotionsNomenclatures(): Promise<CalendarNomenclaturesResponse> {
-    return this.client.get<CalendarNomenclaturesResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/nomenclatures');
+    return this.client.get<CalendarNomenclaturesResponse>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/nomenclatures'
+    );
   }
 
   /**
@@ -809,7 +1220,9 @@ export class PromotionModule {
   console.log(result);
    */
   async createPromotionsUpload(): Promise<CalendarUploadResponse> {
-    return this.client.post<CalendarUploadResponse>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/upload', undefined);
+    return this.client.post<CalendarUploadResponse>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/upload',
+      undefined
+    );
   }
-
 }

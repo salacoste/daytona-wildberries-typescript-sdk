@@ -33,12 +33,16 @@ const handlers = [
     return HttpResponse.json({
       data: [
         { id: 479, name: locale === 'en' ? 'Electronics' : 'Электроника', isVisible: true },
-        { id: 629, name: locale === 'en' ? 'Household chemicals' : 'Бытовая химия', isVisible: true },
-        { id: 789, name: locale === 'en' ? 'Crafts' : 'Рукоделие', isVisible: true }
+        {
+          id: 629,
+          name: locale === 'en' ? 'Household chemicals' : 'Бытовая химия',
+          isVisible: true,
+        },
+        { id: 789, name: locale === 'en' ? 'Crafts' : 'Рукоделие', isVisible: true },
       ],
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     });
   }),
 
@@ -55,11 +59,11 @@ const handlers = [
         data: [
           { subjectID: 105, parentID: 479, subjectName: 'Носки', parentName: 'Электроника' },
           { subjectID: 106, parentID: 479, subjectName: 'Кабели', parentName: 'Электроника' },
-          { subjectID: 107, parentID: 479, subjectName: 'Наушники', parentName: 'Электроника' }
+          { subjectID: 107, parentID: 479, subjectName: 'Наушники', parentName: 'Электроника' },
         ],
         error: false,
         errorText: '',
-        additionalErrors: null
+        additionalErrors: null,
       });
     }
 
@@ -68,59 +72,62 @@ const handlers = [
       data: [
         { subjectID: 105, parentID: 479, subjectName: 'Носки', parentName: 'Электроника' },
         { subjectID: 200, parentID: 629, subjectName: 'Мыло', parentName: 'Бытовая химия' },
-        { subjectID: 300, parentID: 789, subjectName: 'Нитки', parentName: 'Рукоделие' }
+        { subjectID: 300, parentID: 789, subjectName: 'Нитки', parentName: 'Рукоделие' },
       ].slice(parseInt(offset), parseInt(offset) + parseInt(limit)),
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     });
   }),
 
   // GET /content/v2/object/charcs/:subjectId - Characteristics endpoint
-  http.get('https://content-api.wildberries.ru/content/v2/object/charcs/:subjectId', ({ params }) => {
-    const subjectId = params.subjectId as string;
+  http.get(
+    'https://content-api.wildberries.ru/content/v2/object/charcs/:subjectId',
+    ({ params }) => {
+      const subjectId = params.subjectId as string;
 
-    return HttpResponse.json({
-      data: [
-        {
-          charcID: 1,
-          subjectName: 'Носки',
-          subjectID: parseInt(subjectId),
-          name: 'Бренд',
-          required: true,
-          unitName: '',
-          maxCount: 1,
-          popular: true,
-          charcType: 1
-        },
-        {
-          charcID: 2,
-          subjectName: 'Носки',
-          subjectID: parseInt(subjectId),
-          name: 'Размер',
-          required: false,
-          unitName: '',
-          maxCount: 10,
-          popular: true,
-          charcType: 1
-        },
-        {
-          charcID: 3,
-          subjectName: 'Носки',
-          subjectID: parseInt(subjectId),
-          name: 'Цвет',
-          required: true,
-          unitName: '',
-          maxCount: 5,
-          popular: true,
-          charcType: 1
-        }
-      ],
-      error: false,
-      errorText: '',
-      additionalErrors: null
-    });
-  })
+      return HttpResponse.json({
+        data: [
+          {
+            charcID: 1,
+            subjectName: 'Носки',
+            subjectID: parseInt(subjectId),
+            name: 'Бренд',
+            required: true,
+            unitName: '',
+            maxCount: 1,
+            popular: true,
+            charcType: 1,
+          },
+          {
+            charcID: 2,
+            subjectName: 'Носки',
+            subjectID: parseInt(subjectId),
+            name: 'Размер',
+            required: false,
+            unitName: '',
+            maxCount: 10,
+            popular: true,
+            charcType: 1,
+          },
+          {
+            charcID: 3,
+            subjectName: 'Носки',
+            subjectID: parseInt(subjectId),
+            name: 'Цвет',
+            required: true,
+            unitName: '',
+            maxCount: 5,
+            popular: true,
+            charcType: 1,
+          },
+        ],
+        error: false,
+        errorText: '',
+        additionalErrors: null,
+      });
+    }
+  ),
 ];
 
 /**
@@ -156,8 +163,8 @@ describe('ProductsModule Integration Tests - Categories', () => {
       retryConfig: {
         maxRetries: 3,
         retryDelay: 100,
-        exponentialBackoff: true
-      }
+        exponentialBackoff: true,
+      },
     });
 
     // Create ProductsModule with real BaseClient
@@ -290,7 +297,7 @@ describe('ProductsModule Integration Tests - Categories', () => {
         parentID: 479,
         limit: 10,
         offset: 0,
-        locale: 'ru'
+        locale: 'ru',
       });
 
       // Assert
@@ -356,8 +363,8 @@ describe('ProductsModule Integration Tests - Categories', () => {
       // Assert
       if (Array.isArray(result.data) && result.data.length > 1) {
         const characteristics = result.data as { name: string; required: boolean }[];
-        const requiredCharcs = characteristics.filter(c => c.required);
-        const optionalCharcs = characteristics.filter(c => !c.required);
+        const requiredCharcs = characteristics.filter((c) => c.required);
+        const optionalCharcs = characteristics.filter((c) => !c.required);
 
         expect(requiredCharcs.length).toBeGreaterThan(0);
         expect(optionalCharcs.length).toBeGreaterThan(0);

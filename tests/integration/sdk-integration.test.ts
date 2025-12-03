@@ -10,32 +10,28 @@ const server = setupServer(
     return HttpResponse.json({
       data: [
         { id: 1, name: 'Электроника', isVisible: true },
-        { id: 2, name: 'Одежда', isVisible: true }
-      ]
+        { id: 2, name: 'Одежда', isVisible: true },
+      ],
     });
   }),
 
   http.get('https://content-api.wildberries.ru/content/v2/object/all', () => {
     return HttpResponse.json({
-      data: [
-        { subjectID: 101, subjectName: 'Смартфоны', parentID: 1, parentName: 'Электроника' }
-      ]
+      data: [{ subjectID: 101, subjectName: 'Смартфоны', parentID: 1, parentName: 'Электроника' }],
     });
   }),
 
   http.post('https://content-api.wildberries.ru/content/v2/cards/upload', () => {
     return HttpResponse.json({
       id: 'PROD123',
-      error: null
+      error: null,
     });
   }),
 
   // Orders FBS endpoints
   http.get('https://marketplace-api.wildberries.ru/api/v3/orders/new', () => {
     return HttpResponse.json({
-      orders: [
-        { id: 12345, createdAt: '2024-10-22T10:00:00Z' }
-      ]
+      orders: [{ id: 12345, createdAt: '2024-10-22T10:00:00Z' }],
     });
   }),
 
@@ -43,16 +39,16 @@ const server = setupServer(
     return HttpResponse.json({
       orders: [
         { id: 12345, status: 'new', createdAt: '2024-10-22T10:00:00Z' },
-        { id: 12346, status: 'confirm', createdAt: '2024-10-22T11:00:00Z' }
+        { id: 12346, status: 'confirm', createdAt: '2024-10-22T11:00:00Z' },
       ],
-      total: 2
+      total: 2,
     });
   }),
 
   http.post('https://marketplace-api.wildberries.ru/api/v3/supplies', () => {
     return HttpResponse.json({
       id: 'WB-GI-123',
-      name: 'Test Supply'
+      name: 'Test Supply',
     });
   }),
 
@@ -64,15 +60,15 @@ const server = setupServer(
         name: 'Коледино',
         officeID: 1,
         cargoType: 1,
-        isActive: true
+        isActive: true,
       },
       {
         ID: 508,
         name: 'Санкт-Петербург',
         officeID: 2,
         cargoType: 1,
-        isActive: true
-      }
+        isActive: true,
+      },
     ]);
   }),
 
@@ -82,8 +78,8 @@ const server = setupServer(
         supplyID: 123,
         statusID: 2,
         statusName: 'Запланировано',
-        warehouseID: 507
-      }
+        warehouseID: 507,
+      },
     ]);
   }),
 
@@ -95,8 +91,8 @@ const server = setupServer(
         coefficient: 5,
         date: '2024-10-22',
         warehouseID: 507,
-        warehouseName: 'Коледино'
-      }
+        warehouseName: 'Коледино',
+      },
     ]);
   }),
 
@@ -104,7 +100,7 @@ const server = setupServer(
   http.get('https://common-api.wildberries.ru/ping', () => {
     return HttpResponse.json({
       Status: 'OK',
-      TS: Date.now()
+      TS: Date.now(),
     });
   })
 );
@@ -147,9 +143,9 @@ describe('SDK Integration', () => {
         retryConfig: {
           maxRetries: 5,
           retryDelay: 2000,
-          exponentialBackoff: true
+          exponentialBackoff: true,
         },
-        logLevel: 'debug'
+        logLevel: 'debug',
       });
 
       expect(sdk).toBeDefined();
@@ -170,7 +166,7 @@ describe('SDK Integration', () => {
         sdk.general.ping(),
         sdk.products.getParentAll(),
         sdk.ordersFBS.getNewOrders(),
-        sdk.ordersFBW.getWarehouses()
+        sdk.ordersFBW.getWarehouses(),
       ]);
 
       expect(ping.Status).toBe('OK');
@@ -209,7 +205,7 @@ describe('SDK Integration', () => {
       expect(firstCategory).toBeDefined();
 
       const subcategories = await sdk.products.getObjectAll({
-        parentID: firstCategory.id
+        parentID: firstCategory.id,
       });
       expect(subcategories.data).toHaveLength(1);
 
@@ -241,7 +237,7 @@ describe('SDK Integration', () => {
         sdk.products.getParentAll(),
         sdk.ordersFBS.getNewOrders(),
         sdk.ordersFBW.getWarehouses(),
-        sdk.general.ping()
+        sdk.general.ping(),
       ]);
 
       const elapsed = Date.now() - start;
@@ -264,7 +260,7 @@ describe('SDK Integration', () => {
       // 2. Get all orders with filters
       const allOrders = await sdk.ordersFBS.getOrders({
         limit: 10,
-        next: 0
+        next: 0,
       });
       expect(allOrders.orders).toHaveLength(2);
 
@@ -307,16 +303,10 @@ describe('SDK Integration', () => {
       // Override server handlers to return errors
       server.use(
         http.get('https://content-api.wildberries.ru/content/v2/object/parent/all', () => {
-          return HttpResponse.json(
-            { error: 'Invalid API key' },
-            { status: 401 }
-          );
+          return HttpResponse.json({ error: 'Invalid API key' }, { status: 401 });
         }),
         http.get('https://marketplace-api.wildberries.ru/api/v3/orders/new', () => {
-          return HttpResponse.json(
-            { error: 'Invalid API key' },
-            { status: 401 }
-          );
+          return HttpResponse.json({ error: 'Invalid API key' }, { status: 401 });
         })
       );
 
@@ -383,7 +373,7 @@ describe('SDK Integration', () => {
         sdk.products.getParentAll(),
         sdk.ordersFBS.getNewOrders(),
         sdk.ordersFBW.getWarehouses(),
-        sdk.general.ping()
+        sdk.general.ping(),
       ]);
 
       const elapsed = Date.now() - start;
@@ -412,7 +402,7 @@ describe('SDK Integration', () => {
     it('should apply timeout configuration to all modules', () => {
       const sdk = new WildberriesSDK({
         apiKey: 'test-api-key',
-        timeout: 5000
+        timeout: 5000,
       });
 
       // All modules should respect the 5-second timeout
@@ -427,8 +417,8 @@ describe('SDK Integration', () => {
         retryConfig: {
           maxRetries: 5,
           retryDelay: 1000,
-          exponentialBackoff: true
-        }
+          exponentialBackoff: true,
+        },
       });
 
       // All modules should use same retry settings
@@ -440,7 +430,7 @@ describe('SDK Integration', () => {
     it('should apply log level configuration to all modules', () => {
       const sdk = new WildberriesSDK({
         apiKey: 'test-api-key',
-        logLevel: 'debug'
+        logLevel: 'debug',
       });
 
       // All modules should use debug logging

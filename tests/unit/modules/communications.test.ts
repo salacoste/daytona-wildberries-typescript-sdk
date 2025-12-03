@@ -492,9 +492,7 @@ describe('CommunicationsModule', () => {
         errors: null,
       };
 
-      mockClient.get
-        .mockResolvedValueOnce(firstResponse)
-        .mockResolvedValueOnce(secondResponse);
+      mockClient.get.mockResolvedValueOnce(firstResponse).mockResolvedValueOnce(secondResponse);
 
       const callback = vi.fn();
       const polling = communicationsModule.pollForNewEvents(100, callback);
@@ -518,7 +516,13 @@ describe('CommunicationsModule', () => {
 
     it('should stop polling when stop() is called', async () => {
       mockClient.get.mockResolvedValue({
-        result: { next: 1698045576000, newestEventTime: null, oldestEventTime: null, totalEvents: 0, events: [] },
+        result: {
+          next: 1698045576000,
+          newestEventTime: null,
+          oldestEventTime: null,
+          totalEvents: 0,
+          events: [],
+        },
         errors: null,
       });
 
@@ -538,12 +542,16 @@ describe('CommunicationsModule', () => {
     });
 
     it('should continue polling on errors (graceful degradation)', async () => {
-      mockClient.get
-        .mockRejectedValueOnce(new Error('Network error'))
-        .mockResolvedValueOnce({
-          result: { next: 1698045576000, newestEventTime: null, oldestEventTime: null, totalEvents: 0, events: [] },
-          errors: null,
-        });
+      mockClient.get.mockRejectedValueOnce(new Error('Network error')).mockResolvedValueOnce({
+        result: {
+          next: 1698045576000,
+          newestEventTime: null,
+          oldestEventTime: null,
+          totalEvents: 0,
+          events: [],
+        },
+        errors: null,
+      });
 
       const callback = vi.fn();
       const polling = communicationsModule.pollForNewEvents(100, callback);
@@ -804,23 +812,23 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when questionId is empty', async () => {
-        await expect(
-          communicationsModule.answerQuestion('', 'Some answer')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.answerQuestion('', 'Some answer')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.answerQuestion('   ', 'Some answer')
-        ).rejects.toThrow('Question ID is required');
+        await expect(communicationsModule.answerQuestion('   ', 'Some answer')).rejects.toThrow(
+          'Question ID is required'
+        );
       });
 
       it('should throw ValidationError when answerText is empty', async () => {
-        await expect(
-          communicationsModule.answerQuestion('q123', '')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.answerQuestion('q123', '')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.answerQuestion('q123', '   ')
-        ).rejects.toThrow('Answer text is required');
+        await expect(communicationsModule.answerQuestion('q123', '   ')).rejects.toThrow(
+          'Answer text is required'
+        );
       });
     });
 
@@ -841,13 +849,11 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when questionId is empty', async () => {
-        await expect(
-          communicationsModule.markQuestionViewed('')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.markQuestionViewed('')).rejects.toThrow(ValidationError);
 
-        await expect(
-          communicationsModule.markQuestionViewed('   ')
-        ).rejects.toThrow('Question ID is required');
+        await expect(communicationsModule.markQuestionViewed('   ')).rejects.toThrow(
+          'Question ID is required'
+        );
       });
     });
   });
@@ -1068,45 +1074,45 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when reviewId is empty', async () => {
-        await expect(
-          communicationsModule.respondToReview('', 'Some response')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.respondToReview('', 'Some response')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.respondToReview('   ', 'Some response')
-        ).rejects.toThrow('Review ID is required');
+        await expect(communicationsModule.respondToReview('   ', 'Some response')).rejects.toThrow(
+          'Review ID is required'
+        );
       });
 
       it('should throw ValidationError when responseText is empty', async () => {
-        await expect(
-          communicationsModule.respondToReview('rev123', '')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.respondToReview('rev123', '')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.respondToReview('rev123', '   ')
-        ).rejects.toThrow('Response text is required');
+        await expect(communicationsModule.respondToReview('rev123', '   ')).rejects.toThrow(
+          'Response text is required'
+        );
       });
 
       it('should throw ValidationError when responseText is too short (< 2 chars)', async () => {
-        await expect(
-          communicationsModule.respondToReview('rev123', 'x')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.respondToReview('rev123', 'x')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.respondToReview('rev123', 'x')
-        ).rejects.toThrow('at least 2 characters');
+        await expect(communicationsModule.respondToReview('rev123', 'x')).rejects.toThrow(
+          'at least 2 characters'
+        );
       });
 
       it('should throw ValidationError when responseText is too long (> 5000 chars)', async () => {
         const longText = 'a'.repeat(5001);
 
-        await expect(
-          communicationsModule.respondToReview('rev123', longText)
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.respondToReview('rev123', longText)).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.respondToReview('rev123', longText)
-        ).rejects.toThrow('must not exceed 5000 characters');
+        await expect(communicationsModule.respondToReview('rev123', longText)).rejects.toThrow(
+          'must not exceed 5000 characters'
+        );
       });
 
       it('should accept responseText exactly at boundaries (2 and 5000 chars)', async () => {
@@ -1149,9 +1155,9 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when reviewId is empty', async () => {
-        await expect(
-          communicationsModule.editReviewResponse('', 'Updated text')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.editReviewResponse('', 'Updated text')).rejects.toThrow(
+          ValidationError
+        );
 
         await expect(
           communicationsModule.editReviewResponse('   ', 'Updated text')
@@ -1159,35 +1165,35 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when newResponseText is empty', async () => {
-        await expect(
-          communicationsModule.editReviewResponse('rev123', '')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.editReviewResponse('rev123', '')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.editReviewResponse('rev123', '   ')
-        ).rejects.toThrow('Response text is required');
+        await expect(communicationsModule.editReviewResponse('rev123', '   ')).rejects.toThrow(
+          'Response text is required'
+        );
       });
 
       it('should throw ValidationError when newResponseText is too short (< 2 chars)', async () => {
-        await expect(
-          communicationsModule.editReviewResponse('rev123', 'x')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.editReviewResponse('rev123', 'x')).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.editReviewResponse('rev123', 'x')
-        ).rejects.toThrow('at least 2 characters');
+        await expect(communicationsModule.editReviewResponse('rev123', 'x')).rejects.toThrow(
+          'at least 2 characters'
+        );
       });
 
       it('should throw ValidationError when newResponseText is too long (> 5000 chars)', async () => {
         const longText = 'b'.repeat(5001);
 
-        await expect(
-          communicationsModule.editReviewResponse('rev123', longText)
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.editReviewResponse('rev123', longText)).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.editReviewResponse('rev123', longText)
-        ).rejects.toThrow('must not exceed 5000 characters');
+        await expect(communicationsModule.editReviewResponse('rev123', longText)).rejects.toThrow(
+          'must not exceed 5000 characters'
+        );
       });
     });
   });
@@ -1334,7 +1340,12 @@ describe('CommunicationsModule', () => {
       });
 
       it('should call without locale header when not provided', async () => {
-        const mockResponse = { data: { feedbackValuations: {}, productValuations: {} }, error: false, errorText: '', additionalErrors: null };
+        const mockResponse = {
+          data: { feedbackValuations: {}, productValuations: {} },
+          error: false,
+          errorText: '',
+          additionalErrors: null,
+        };
         mockClient.get.mockResolvedValue(mockResponse);
 
         await communicationsModule.getSupplierValuations();
@@ -1365,13 +1376,13 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when feedback ID is empty', async () => {
-        await expect(
-          communicationsModule.reportFeedbackAction({ id: '' })
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.reportFeedbackAction({ id: '' })).rejects.toThrow(
+          ValidationError
+        );
 
-        await expect(
-          communicationsModule.reportFeedbackAction({ id: '   ' })
-        ).rejects.toThrow('Feedback ID is required');
+        await expect(communicationsModule.reportFeedbackAction({ id: '   ' })).rejects.toThrow(
+          'Feedback ID is required'
+        );
       });
     });
   });
@@ -1450,13 +1461,11 @@ describe('CommunicationsModule', () => {
       });
 
       it('should throw ValidationError when file ID is empty', async () => {
-        await expect(
-          communicationsModule.downloadChatFile('')
-        ).rejects.toThrow(ValidationError);
+        await expect(communicationsModule.downloadChatFile('')).rejects.toThrow(ValidationError);
 
-        await expect(
-          communicationsModule.downloadChatFile('   ')
-        ).rejects.toThrow('File ID is required');
+        await expect(communicationsModule.downloadChatFile('   ')).rejects.toThrow(
+          'File ID is required'
+        );
       });
     });
   });
@@ -1545,11 +1554,19 @@ describe('CommunicationsModule', () => {
 
       it('should throw ValidationError when comment is too short', async () => {
         await expect(
-          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: 'short' })
+          communicationsModule.respondToClaim({
+            id: 'claim-123',
+            action: 'rejectcustom',
+            comment: 'short',
+          })
         ).rejects.toThrow(ValidationError);
 
         await expect(
-          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: 'short' })
+          communicationsModule.respondToClaim({
+            id: 'claim-123',
+            action: 'rejectcustom',
+            comment: 'short',
+          })
         ).rejects.toThrow('Comment must be at least 10 characters');
       });
 
@@ -1557,11 +1574,19 @@ describe('CommunicationsModule', () => {
         const longComment = 'a'.repeat(1001);
 
         await expect(
-          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: longComment })
+          communicationsModule.respondToClaim({
+            id: 'claim-123',
+            action: 'rejectcustom',
+            comment: longComment,
+          })
         ).rejects.toThrow(ValidationError);
 
         await expect(
-          communicationsModule.respondToClaim({ id: 'claim-123', action: 'rejectcustom', comment: longComment })
+          communicationsModule.respondToClaim({
+            id: 'claim-123',
+            action: 'rejectcustom',
+            comment: longComment,
+          })
         ).rejects.toThrow('Comment cannot exceed 1000 characters');
       });
 

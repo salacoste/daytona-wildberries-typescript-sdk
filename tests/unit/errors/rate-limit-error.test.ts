@@ -7,7 +7,9 @@ describe('RateLimitError', () => {
     it('should create error with default message and retryAfter', () => {
       const error = new RateLimitError(undefined, 5000);
 
-      expect(error.message).toBe('Rate limit exceeded. The SDK will automatically retry this request.');
+      expect(error.message).toBe(
+        'Rate limit exceeded. The SDK will automatically retry this request.'
+      );
       expect(error.statusCode).toBe(429);
       expect(error.retryAfter).toBe(5000);
       expect(error.response).toBeUndefined();
@@ -74,7 +76,7 @@ describe('RateLimitError', () => {
       const error2 = new RateLimitError(undefined, 60000);
       const error3 = new RateLimitError(undefined, 120000);
 
-      expect(error1.retryAfter).toBe(1000);  // 1 second
+      expect(error1.retryAfter).toBe(1000); // 1 second
       expect(error2.retryAfter).toBe(60000); // 1 minute
       expect(error3.retryAfter).toBe(120000); // 2 minutes
     });

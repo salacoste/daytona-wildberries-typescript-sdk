@@ -13,10 +13,7 @@ import { WildberriesSDK } from '../../src/index';
 const mockProductCard = {
   nmID: 12345,
   vendorCode: 'TEST-001',
-  photos: [
-    { big: 'https://example.com/photo1.jpg' },
-    { big: 'https://example.com/photo2.jpg' }
-  ]
+  photos: [{ big: 'https://example.com/photo1.jpg' }, { big: 'https://example.com/photo2.jpg' }],
 };
 
 // MSW server setup with handlers for media and pricing endpoints
@@ -27,95 +24,104 @@ const server = setupServer(
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     });
   }),
 
   // Upload media by URLs
   http.post('https://content-api.wildberries.ru/content/v3/media/save', async ({ request }) => {
-    const body = await request.json() as { nmId: number; data?: string[] };
+    const body = (await request.json()) as { nmId: number; data?: string[] };
 
     // Validate that URLs were provided
     if (body.data?.length === 0 || !body.data) {
-      return HttpResponse.json({
-        data: {},
-        error: true,
-        errorText: 'No media URLs provided',
-        additionalErrors: null
-      }, { status: 400 });
+      return HttpResponse.json(
+        {
+          data: {},
+          error: true,
+          errorText: 'No media URLs provided',
+          additionalErrors: null,
+        },
+        { status: 400 }
+      );
     }
 
     return HttpResponse.json({
       data: {},
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     });
   }),
 
   // Get product card (for getMediaList)
   http.post('https://content-api.wildberries.ru/content/v2/get/cards/list', async ({ request }) => {
-    const body = await request.json() as { settings?: { filter?: { textSearch?: string } } };
+    const body = (await request.json()) as { settings?: { filter?: { textSearch?: string } } };
     const textSearch = body.settings?.filter?.textSearch;
 
     if (textSearch === '12345') {
       return HttpResponse.json({
         cards: [mockProductCard],
-        cursor: { total: 1 }
+        cursor: { total: 1 },
       });
     }
 
     return HttpResponse.json({
       cards: [],
-      cursor: { total: 0 }
+      cursor: { total: 0 },
     });
   }),
 
   // Update pricing
   http.post('https://discounts-prices-api.wildberries.ru/api/v2/upload/task', () => {
     return HttpResponse.json({
-      uploadID: 'task-abc-123'
+      uploadID: 'task-abc-123',
     });
   }),
 
   // Get pricing (GET - single product)
-  http.get('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter', ({ request }) => {
-    const url = new URL(request.url);
-    const filterNmID = url.searchParams.get('filterNmID');
+  http.get(
+    'https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter',
+    ({ request }) => {
+      const url = new URL(request.url);
+      const filterNmID = url.searchParams.get('filterNmID');
 
-    if (filterNmID === '12345') {
-      return HttpResponse.json({
-        data: [
-          {
-            nmID: 12345,
-            price: 2999,
-            discount: 15,
-            promoCode: 0,
-            wbClubDiscount: 0,
-            currency: 'RUB'
-          }
-        ]
-      });
+      if (filterNmID === '12345') {
+        return HttpResponse.json({
+          data: [
+            {
+              nmID: 12345,
+              price: 2999,
+              discount: 15,
+              promoCode: 0,
+              wbClubDiscount: 0,
+              currency: 'RUB',
+            },
+          ],
+        });
+      }
+
+      return HttpResponse.json({ data: [] });
     }
-
-    return HttpResponse.json({ data: [] });
-  }),
+  ),
 
   // Get pricing (POST - multiple products)
-  http.post('https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter', async ({ request }) => {
-    const body = await request.json() as { nmIDs: number[] };
+  http.post(
+    'https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter',
+    async ({ request }) => {
+      const body = (await request.json()) as { nmIDs: number[] };
 
-    return HttpResponse.json({
-      data: body.nmIDs.map(nmID => ({
-        nmID,
-        price: 2999,
-        discount: 15,
-        promoCode: 0,
-        wbClubDiscount: 0,
-        currency: 'RUB'
-      }))
-    });
-  }),
+      return HttpResponse.json({
+        data: body.nmIDs.map((nmID) => ({
+          nmID,
+          price: 2999,
+          discount: 15,
+          promoCode: 0,
+          wbClubDiscount: 0,
+          currency: 'RUB',
+        })),
+      });
+    }
+  ),
 
   // Get pricing task status
   http.get('https://discounts-prices-api.wildberries.ru/api/v2/history/tasks', ({ request }) => {
@@ -126,7 +132,7 @@ const server = setupServer(
       uploadID: uploadID ?? 'task-abc-123',
       status: 'completed',
       createdAt: '2025-10-22T00:00:00Z',
-      completedAt: '2025-10-22T00:01:00Z'
+      completedAt: '2025-10-22T00:01:00Z',
     });
   })
 );
@@ -162,10 +168,7 @@ describe('Products Media and Pricing Integration Tests', () => {
     it('should upload media by URLs successfully', async () => {
       // Arrange
       const nmID = 12345;
-      const mediaURLs = [
-        'https://example.com/photo1.jpg',
-        'https://example.com/photo2.jpg'
-      ];
+      const mediaURLs = ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg'];
 
       // Act
       const response = await sdk.products.uploadMediaByURLs(nmID, mediaURLs);
@@ -205,9 +208,12 @@ describe('Products Media and Pricing Integration Tests', () => {
       // Arrange
       server.use(
         http.post('https://content-api.wildberries.ru/content/v3/media/save', () => {
-          return HttpResponse.json({
-            error: 'Invalid media format'
-          }, { status: 400 });
+          return HttpResponse.json(
+            {
+              error: 'Invalid media format',
+            },
+            { status: 400 }
+          );
         })
       );
 
@@ -215,18 +221,16 @@ describe('Products Media and Pricing Integration Tests', () => {
       const invalidURLs = ['https://example.com/invalid.txt'];
 
       // Act & Assert
-      await expect(
-        sdk.products.uploadMediaByURLs(nmID, invalidURLs)
-      ).rejects.toThrow('Validation failed');
+      await expect(sdk.products.uploadMediaByURLs(nmID, invalidURLs)).rejects.toThrow(
+        'Validation failed'
+      );
     });
   });
 
   describe('Pricing Update Workflow', () => {
     it('should complete pricing update workflow', async () => {
       // 1. Update pricing (get task ID)
-      const updates = [
-        { nmID: 12345, price: 2999, discount: 15 }
-      ];
+      const updates = [{ nmID: 12345, price: 2999, discount: 15 }];
       const task = await sdk.products.updatePricing(updates);
 
       expect(task.uploadID).toBe('task-abc-123');
@@ -247,7 +251,7 @@ describe('Products Media and Pricing Integration Tests', () => {
       // Arrange
       const bulkUpdates = [
         { nmID: 12345, price: 2999, discount: 15 },
-        { nmID: 54321, price: 1499, discount: 10 }
+        { nmID: 54321, price: 1499, discount: 10 },
       ];
 
       // Act
@@ -295,7 +299,7 @@ describe('Products Media and Pricing Integration Tests', () => {
           return HttpResponse.json({
             uploadID: 'task-pending-123',
             status: 'pending',
-            createdAt: '2025-10-22T00:00:00Z'
+            createdAt: '2025-10-22T00:00:00Z',
           });
         })
       );
@@ -317,7 +321,7 @@ describe('Products Media and Pricing Integration Tests', () => {
       const mediaURLs = [
         'https://example.com/main-photo.jpg',
         'https://example.com/side-photo.jpg',
-        'https://example.com/back-photo.jpg'
+        'https://example.com/back-photo.jpg',
       ];
       const mediaResponse = await sdk.products.uploadMediaByURLs(nmID, mediaURLs);
       expect(mediaResponse.error).toBe(false);
@@ -327,9 +331,7 @@ describe('Products Media and Pricing Integration Tests', () => {
       expect(currentMedia.length).toBeGreaterThan(0);
 
       // 3. Set pricing
-      const pricingTask = await sdk.products.updatePricing([
-        { nmID, price: 2999, discount: 15 }
-      ]);
+      const pricingTask = await sdk.products.updatePricing([{ nmID, price: 2999, discount: 15 }]);
       expect(pricingTask.uploadID).toBeDefined();
 
       // 4. Check pricing task status
@@ -356,26 +358,23 @@ describe('Products Media and Pricing Integration Tests', () => {
       );
 
       // Act & Assert
-      await expect(
-        sdk.products.updatePricing([{ nmID: 12345, price: 2999 }])
-      ).rejects.toThrow('Rate limit exceeded');
+      await expect(sdk.products.updatePricing([{ nmID: 12345, price: 2999 }])).rejects.toThrow(
+        'Rate limit exceeded'
+      );
     }, 15000); // Increase timeout for retry logic
 
     it('should handle 400 validation error for invalid prices', async () => {
       // Arrange
       server.use(
         http.post('https://discounts-prices-api.wildberries.ru/api/v2/upload/task', () => {
-          return HttpResponse.json(
-            { error: 'Price must be an integer' },
-            { status: 400 }
-          );
+          return HttpResponse.json({ error: 'Price must be an integer' }, { status: 400 });
         })
       );
 
       // Act & Assert
-      await expect(
-        sdk.products.updatePricing([{ nmID: 12345, price: 29.99 }])
-      ).rejects.toThrow('Validation failed');
+      await expect(sdk.products.updatePricing([{ nmID: 12345, price: 29.99 }])).rejects.toThrow(
+        'Validation failed'
+      );
     });
   });
 });

@@ -73,10 +73,7 @@ describe('RetryHandler', () => {
       const promise = handler.executeWithRetry(operation, 'testOp');
 
       // Advance timers and await rejection in parallel to avoid unhandled rejection
-      await Promise.all([
-        vi.runAllTimersAsync(),
-        expect(promise).rejects.toThrow(finalError)
-      ]);
+      await Promise.all([vi.runAllTimersAsync(), expect(promise).rejects.toThrow(finalError)]);
 
       expect(operation).toHaveBeenCalledTimes(3); // Initial + 2 retries
     });
@@ -95,7 +92,7 @@ describe('RetryHandler', () => {
           message: 'Test error',
           statusCode: 503,
           isTimeout: false,
-        })
+        }),
       ]);
     });
   });
@@ -117,9 +114,7 @@ describe('RetryHandler', () => {
       const error = new ValidationError('Bad request', undefined, 400);
       const operation = vi.fn().mockImplementation(() => Promise.reject(error));
 
-      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(
-        ValidationError
-      );
+      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(ValidationError);
       expect(operation).toHaveBeenCalledTimes(1); // No retry
     });
 
@@ -233,9 +228,7 @@ describe('RetryHandler', () => {
       const error = new NetworkError('Not Found', false, 404);
       const operation = vi.fn().mockImplementation(() => Promise.reject(error));
 
-      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(
-        NetworkError
-      );
+      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(NetworkError);
       expect(operation).toHaveBeenCalledTimes(1); // No retry
     });
 
@@ -244,9 +237,7 @@ describe('RetryHandler', () => {
       const error = new Error('Unknown error');
       const operation = vi.fn().mockImplementation(() => Promise.reject(error));
 
-      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(
-        'Unknown error'
-      );
+      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow('Unknown error');
       expect(operation).toHaveBeenCalledTimes(1); // No retry
     });
   });
@@ -323,15 +314,14 @@ describe('RetryHandler', () => {
 
     it('should accept custom maxRetries', async () => {
       const handler = new RetryHandler({ maxRetries: 1 });
-      const operation = vi.fn().mockImplementation(() => Promise.reject(new NetworkError('Error', false, 500)));
+      const operation = vi
+        .fn()
+        .mockImplementation(() => Promise.reject(new NetworkError('Error', false, 500)));
 
       const promise = handler.executeWithRetry(operation, 'testOp');
 
       // Advance timers and await rejection in parallel to avoid unhandled rejection
-      await Promise.all([
-        vi.runAllTimersAsync(),
-        expect(promise).rejects.toThrow()
-      ]);
+      await Promise.all([vi.runAllTimersAsync(), expect(promise).rejects.toThrow()]);
 
       expect(operation).toHaveBeenCalledTimes(2); // Initial + 1 retry
     });
@@ -353,7 +343,9 @@ describe('RetryHandler', () => {
 
     it('should disable retries when maxRetries is 0', async () => {
       const handler = new RetryHandler({ maxRetries: 0 });
-      const operation = vi.fn().mockImplementation(() => Promise.reject(new NetworkError('Error', false, 500)));
+      const operation = vi
+        .fn()
+        .mockImplementation(() => Promise.reject(new NetworkError('Error', false, 500)));
 
       await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow();
       expect(operation).toHaveBeenCalledTimes(1); // No retries

@@ -29,100 +29,103 @@ import { ValidationError } from '../../src/errors/validation-error';
  */
 const handlers = [
   // POST /api/v2/nm-report/detail - Sales Funnel endpoint
-  http.post('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail', async ({ request }) => {
-    const body = await request.json() as Record<string, unknown>;
+  http.post(
+    'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail',
+    async ({ request }) => {
+      const body = (await request.json()) as Record<string, unknown>;
 
-    // Validate period
-    if (!body.period) {
-      return HttpResponse.json(
-        {
-          data: { page: 0, isNextPage: false, cards: [] },
-          error: true,
-          errorText: 'Period is required',
-        },
-        { status: 400 }
-      );
-    }
-
-    return HttpResponse.json({
-      data: {
-        page: 1,
-        isNextPage: false,
-        cards: [
+      // Validate period
+      if (!body.period) {
+        return HttpResponse.json(
           {
-            nmID: 1234567,
-            vendorCode: 'VENDOR123',
-            brandName: 'TestBrand',
-            tags: [{ id: 1, name: 'Sale' }],
-            object: { id: 447, name: 'TestCategory' },
-            statistics: {
-              selectedPeriod: {
-                begin: '2024-01-01 00:00:00',
-                end: '2024-01-31 23:59:59',
-                openCardCount: 10000,
-                addToCartCount: 1500,
-                ordersCount: 500,
-                ordersSumRub: 50000,
-                buyoutsCount: 450,
-                buyoutsSumRub: 45000,
-                cancelCount: 50,
-                cancelSumRub: 5000,
-                avgPriceRub: 100,
-                avgOrdersCountPerDay: 16.1,
-                conversions: {
-                  addToCartPercent: 15,
-                  cartToOrderPercent: 33.3,
-                  buyoutsPercent: 4.5,
-                },
-              },
-              previousPeriod: {
-                begin: '2023-12-01 00:00:00',
-                end: '2023-12-31 23:59:59',
-                openCardCount: 8000,
-                addToCartCount: 1200,
-                ordersCount: 400,
-                ordersSumRub: 40000,
-                buyoutsCount: 360,
-                buyoutsSumRub: 36000,
-                cancelCount: 40,
-                cancelSumRub: 4000,
-                avgPriceRub: 90,
-                avgOrdersCountPerDay: 12.9,
-                conversions: {
-                  addToCartPercent: 15,
-                  cartToOrderPercent: 33.3,
-                  buyoutsPercent: 4.5,
-                },
-              },
-              periodComparison: {
-                openCardDynamics: 25,
-                addToCartDynamics: 25,
-                ordersCountDynamics: 25,
-                ordersSumRubDynamics: 25,
-                buyoutsCountDynamics: 25,
-                buyoutsSumRubDynamics: 25,
-                cancelCountDynamics: 25,
-                cancelSumRubDynamics: 25,
-                avgOrdersCountPerDayDynamics: 24.8,
-                avgPriceRubDynamics: 11.1,
-                conversions: {
-                  addToCartPercent: 0,
-                  cartToOrderPercent: 0,
-                  buyoutsPercent: 0,
-                },
-              },
-            },
-            stocks: {
-              stocksMp: 100,
-              stocksWb: 50,
-            },
+            data: { page: 0, isNextPage: false, cards: [] },
+            error: true,
+            errorText: 'Period is required',
           },
-        ],
-      },
-      error: false,
-      errorText: '',
-    });
-  }),
+          { status: 400 }
+        );
+      }
+
+      return HttpResponse.json({
+        data: {
+          page: 1,
+          isNextPage: false,
+          cards: [
+            {
+              nmID: 1234567,
+              vendorCode: 'VENDOR123',
+              brandName: 'TestBrand',
+              tags: [{ id: 1, name: 'Sale' }],
+              object: { id: 447, name: 'TestCategory' },
+              statistics: {
+                selectedPeriod: {
+                  begin: '2024-01-01 00:00:00',
+                  end: '2024-01-31 23:59:59',
+                  openCardCount: 10000,
+                  addToCartCount: 1500,
+                  ordersCount: 500,
+                  ordersSumRub: 50000,
+                  buyoutsCount: 450,
+                  buyoutsSumRub: 45000,
+                  cancelCount: 50,
+                  cancelSumRub: 5000,
+                  avgPriceRub: 100,
+                  avgOrdersCountPerDay: 16.1,
+                  conversions: {
+                    addToCartPercent: 15,
+                    cartToOrderPercent: 33.3,
+                    buyoutsPercent: 4.5,
+                  },
+                },
+                previousPeriod: {
+                  begin: '2023-12-01 00:00:00',
+                  end: '2023-12-31 23:59:59',
+                  openCardCount: 8000,
+                  addToCartCount: 1200,
+                  ordersCount: 400,
+                  ordersSumRub: 40000,
+                  buyoutsCount: 360,
+                  buyoutsSumRub: 36000,
+                  cancelCount: 40,
+                  cancelSumRub: 4000,
+                  avgPriceRub: 90,
+                  avgOrdersCountPerDay: 12.9,
+                  conversions: {
+                    addToCartPercent: 15,
+                    cartToOrderPercent: 33.3,
+                    buyoutsPercent: 4.5,
+                  },
+                },
+                periodComparison: {
+                  openCardDynamics: 25,
+                  addToCartDynamics: 25,
+                  ordersCountDynamics: 25,
+                  ordersSumRubDynamics: 25,
+                  buyoutsCountDynamics: 25,
+                  buyoutsSumRubDynamics: 25,
+                  cancelCountDynamics: 25,
+                  cancelSumRubDynamics: 25,
+                  avgOrdersCountPerDayDynamics: 24.8,
+                  avgPriceRubDynamics: 11.1,
+                  conversions: {
+                    addToCartPercent: 0,
+                    cartToOrderPercent: 0,
+                    buyoutsPercent: 0,
+                  },
+                },
+              },
+              stocks: {
+                stocksMp: 100,
+                stocksWb: 50,
+              },
+            },
+          ],
+        },
+        error: false,
+        errorText: '',
+      });
+    }
+  ),
 
   // POST /api/v2/nm-report/detail/history - Product History endpoint
   http.post('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail/history', () => {
@@ -209,43 +212,46 @@ const handlers = [
   }),
 
   // GET /api/v2/nm-report/downloads/file/:reportId - Get Report endpoint
-  http.get('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads/file/:reportId', ({ params }) => {
-    const { reportId } = params;
+  http.get(
+    'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads/file/:reportId',
+    ({ params }) => {
+      const { reportId } = params;
 
-    if (reportId === 'report_completed') {
+      if (reportId === 'report_completed') {
+        return HttpResponse.json({
+          reportId: 'report_completed',
+          status: 'completed',
+          reportType: 'sales_funnel',
+          format: 'CSV',
+          downloadUrl: 'https://example.com/download/report_completed.csv',
+          expiresAt: '2024-01-02T12:00:00Z',
+          fileSize: 1024000,
+          error: false,
+          errorText: '',
+        });
+      }
+
+      if (reportId === 'report_pending') {
+        return HttpResponse.json({
+          reportId: 'report_pending',
+          status: 'processing',
+          reportType: 'sales_funnel',
+          format: 'CSV',
+          error: false,
+          errorText: '',
+        });
+      }
+
       return HttpResponse.json({
-        reportId: 'report_completed',
-        status: 'completed',
+        reportId,
+        status: 'pending',
         reportType: 'sales_funnel',
         format: 'CSV',
-        downloadUrl: 'https://example.com/download/report_completed.csv',
-        expiresAt: '2024-01-02T12:00:00Z',
-        fileSize: 1024000,
         error: false,
         errorText: '',
       });
     }
-
-    if (reportId === 'report_pending') {
-      return HttpResponse.json({
-        reportId: 'report_pending',
-        status: 'processing',
-        reportType: 'sales_funnel',
-        format: 'CSV',
-        error: false,
-        errorText: '',
-      });
-    }
-
-    return HttpResponse.json({
-      reportId,
-      status: 'pending',
-      reportType: 'sales_funnel',
-      format: 'CSV',
-      error: false,
-      errorText: '',
-    });
-  }),
+  ),
 ];
 
 // Create MSW server instance
@@ -315,10 +321,10 @@ describe('Analytics Integration Tests', () => {
   describe('Product Performance', () => {
     it('should transform funnel data to performance metrics', async () => {
       // Act
-      const result = await sdk.analytics.getProductPerformance(
-        [1234567],
-        { from: '2024-01-01', to: '2024-01-31' }
-      );
+      const result = await sdk.analytics.getProductPerformance([1234567], {
+        from: '2024-01-01',
+        to: '2024-01-31',
+      });
 
       // Assert
       expect(result.products).toHaveLength(1);
@@ -375,10 +381,10 @@ describe('Analytics Integration Tests', () => {
   describe('Category Performance', () => {
     it('should aggregate category metrics from products', async () => {
       // Act
-      const result = await sdk.analytics.getCategoryPerformance(
-        '447',
-        { from: '2024-01-01', to: '2024-01-31' }
-      );
+      const result = await sdk.analytics.getCategoryPerformance('447', {
+        from: '2024-01-01',
+        to: '2024-01-31',
+      });
 
       // Assert
       expect(result.data.categoryId).toBe('447');
@@ -435,9 +441,7 @@ describe('Analytics Integration Tests', () => {
 
     it('should throw ValidationError when downloading incomplete report', async () => {
       // Act & Assert
-      await expect(
-        sdk.analytics.downloadReport('report_pending')
-      ).rejects.toThrow(ValidationError);
+      await expect(sdk.analytics.downloadReport('report_pending')).rejects.toThrow(ValidationError);
     });
   });
 

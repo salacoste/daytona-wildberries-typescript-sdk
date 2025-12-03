@@ -24,7 +24,7 @@ import {
   CampaignNotFoundError,
   InvalidBidError,
   BudgetExceededError,
-  InvalidCampaignStateError
+  InvalidCampaignStateError,
 } from '../../../src/errors/promotion-errors';
 
 describe('PromotionModule', () => {
@@ -46,7 +46,7 @@ describe('PromotionModule', () => {
       post: vi.fn(),
       put: vi.fn(),
       patch: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
 
     // Create fresh instance before each test
@@ -66,18 +66,16 @@ describe('PromotionModule', () => {
             type: 9,
             status: 7,
             count: 5,
-            advert_list: [
-              { advertId: 123, changeTime: '2024-01-01T00:00:00Z' }
-            ]
+            advert_list: [{ advertId: 123, changeTime: '2024-01-01T00:00:00Z' }],
           },
           {
             type: 8,
             status: 4,
             count: 3,
-            advert_list: []
-          }
+            advert_list: [],
+          },
         ],
-        all: 8
+        all: 8,
       };
 
       it('should call BaseClient.get with correct URL', async () => {
@@ -127,9 +125,7 @@ describe('PromotionModule', () => {
         mockClient.get.mockRejectedValue(new AuthenticationError('Invalid API key'));
 
         // Act & Assert
-        await expect(promotionModule.getPromotionCount())
-          .rejects
-          .toThrow(AuthenticationError);
+        await expect(promotionModule.getPromotionCount()).rejects.toThrow(AuthenticationError);
       });
 
       it('should throw RateLimitError on 429', async () => {
@@ -137,9 +133,7 @@ describe('PromotionModule', () => {
         mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
 
         // Act & Assert
-        await expect(promotionModule.getPromotionCount())
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(promotionModule.getPromotionCount()).rejects.toThrow(RateLimitError);
       });
     });
 
@@ -151,15 +145,15 @@ describe('PromotionModule', () => {
           name: 'Test Campaign 1',
           type: 9,
           status: 7,
-          createTime: '2024-01-01T00:00:00Z'
+          createTime: '2024-01-01T00:00:00Z',
         },
         {
           advertId: 456,
           name: 'Test Campaign 2',
           type: 8,
           status: 4,
-          createTime: '2024-01-02T00:00:00Z'
-        }
+          createTime: '2024-01-02T00:00:00Z',
+        },
       ];
 
       it('should call BaseClient.post with IDs and no options', async () => {
@@ -210,9 +204,7 @@ describe('PromotionModule', () => {
         mockClient.post.mockRejectedValue(new ValidationError('Invalid campaign IDs', {}));
 
         // Act & Assert
-        await expect(promotionModule.createPromotionAdverts([]))
-          .rejects
-          .toThrow(ValidationError);
+        await expect(promotionModule.createPromotionAdverts([])).rejects.toThrow(ValidationError);
       });
     });
 
@@ -224,9 +216,9 @@ describe('PromotionModule', () => {
             name: 'Auction Campaign',
             type: 9,
             status: 9,
-            paymentType: 'cpm' as const
-          }
-        ]
+            paymentType: 'cpm' as const,
+          },
+        ],
       };
 
       it('should call BaseClient.get with correct URL when no filters', async () => {
@@ -281,7 +273,7 @@ describe('PromotionModule', () => {
         btype: 1,
         on_pause: false,
         nms: [12345, 67890],
-        cpm: 50
+        cpm: 50,
       };
 
       it('should call BaseClient.post with campaign data', async () => {
@@ -313,29 +305,29 @@ describe('PromotionModule', () => {
 
       it('should throw ValidationError when campaign data is invalid', async () => {
         // Arrange
-        mockClient.post.mockRejectedValue(new ValidationError('Invalid campaign parameters', {
-          field: 'subjectId',
-          message: 'Subject ID is required'
-        }));
+        mockClient.post.mockRejectedValue(
+          new ValidationError('Invalid campaign parameters', {
+            field: 'subjectId',
+            message: 'Subject ID is required',
+          })
+        );
 
         // Act & Assert
-        await expect(promotionModule.createAdvSaveAd({}))
-          .rejects
-          .toThrow(ValidationError);
+        await expect(promotionModule.createAdvSaveAd({})).rejects.toThrow(ValidationError);
       });
 
       it('should throw BudgetExceededError when budget insufficient', async () => {
         // Arrange
-        const budgetError = new BudgetExceededError(
-          'Insufficient budget for campaign creation',
-          { availableBudget: 5000, requiredBudget: 10000 }
-        );
+        const budgetError = new BudgetExceededError('Insufficient budget for campaign creation', {
+          availableBudget: 5000,
+          requiredBudget: 10000,
+        });
         mockClient.post.mockRejectedValue(budgetError);
 
         // Act & Assert
-        await expect(promotionModule.createAdvSaveAd(mockCampaignData))
-          .rejects
-          .toThrow(BudgetExceededError);
+        await expect(promotionModule.createAdvSaveAd(mockCampaignData)).rejects.toThrow(
+          BudgetExceededError
+        );
       });
     });
 
@@ -344,7 +336,7 @@ describe('PromotionModule', () => {
         name: 'Search Campaign',
         nms: [12345],
         bid_type: 'manual' as const,
-        placement_types: ['recommendations'] as 'search' | 'recommendations'[]
+        placement_types: ['recommendations'] as 'search' | 'recommendations'[],
       };
 
       it('should call BaseClient.post with campaign configuration', async () => {
@@ -396,12 +388,8 @@ describe('PromotionModule', () => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     describe('getAdvConfig() - Configuration values (deprecated)', () => {
       const mockConfigResponse = {
-        categories: [
-          { id: 1, name: 'Electronics', minBid: 50 }
-        ],
-        config: [
-          { name: 'MAX_PRODUCTS', value: '1000', description: 'Max products per campaign' }
-        ]
+        categories: [{ id: 1, name: 'Electronics', minBid: 50 }],
+        config: [{ name: 'MAX_PRODUCTS', value: '1000', description: 'Max products per campaign' }],
       };
 
       it('should call BaseClient.get with correct URL', async () => {
@@ -438,7 +426,7 @@ describe('PromotionModule', () => {
         advert_id: 123,
         nm_ids: [12345, 67890],
         payment_type: 'cpm' as const,
-        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[]
+        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[],
       };
 
       const mockBidsResponse = {
@@ -447,10 +435,10 @@ describe('PromotionModule', () => {
             nm_id: 12345,
             bids: [
               { type: 'search' as const, value: 50 },
-              { type: 'recommendation' as const, value: 30 }
-            ]
-          }
-        ]
+              { type: 'recommendation' as const, value: 30 },
+            ],
+          },
+        ],
       };
 
       it('should call BaseClient.post with bid request', async () => {
@@ -482,16 +470,13 @@ describe('PromotionModule', () => {
 
       it('should throw InvalidBidError when bid validation fails', async () => {
         // Arrange
-        const bidError = new InvalidBidError(
-          'Bid below minimum',
-          { minBid: 50, currentBid: 30 }
-        );
+        const bidError = new InvalidBidError('Bid below minimum', { minBid: 50, currentBid: 30 });
         mockClient.post.mockRejectedValue(bidError);
 
         // Act & Assert
-        await expect(promotionModule.createBidsMin(mockBidRequest))
-          .rejects
-          .toThrow(InvalidBidError);
+        await expect(promotionModule.createBidsMin(mockBidRequest)).rejects.toThrow(
+          InvalidBidError
+        );
       });
     });
   });
@@ -505,66 +490,63 @@ describe('PromotionModule', () => {
         mockClient.post.mockRejectedValue(notFoundError);
 
         // Act & Assert
-        await expect(promotionModule.createPromotionAdverts([campaignId]))
-          .rejects
-          .toThrow(CampaignNotFoundError);
+        await expect(promotionModule.createPromotionAdverts([campaignId])).rejects.toThrow(
+          CampaignNotFoundError
+        );
       });
     });
 
     describe('InvalidCampaignStateError scenarios', () => {
       it('should handle invalid state transition attempts', async () => {
         // Arrange
-        const stateError = new InvalidCampaignStateError(
-          'completed',
-          'start',
-          ['ready', 'paused']
-        );
+        const stateError = new InvalidCampaignStateError('completed', 'start', ['ready', 'paused']);
         mockClient.get.mockRejectedValue(stateError);
 
         // Act & Assert - attempting to start an already completed campaign
-        await expect(promotionModule.getPromotionCount())
-          .rejects
-          .toThrow(InvalidCampaignStateError);
+        await expect(promotionModule.getPromotionCount()).rejects.toThrow(
+          InvalidCampaignStateError
+        );
       });
     });
 
     describe('BudgetExceededError scenarios', () => {
       it('should handle budget exceeded when creating campaign', async () => {
         // Arrange
-        const budgetError = new BudgetExceededError(
-          'Campaign budget exceeds available balance',
-          { availableBudget: 5000, requiredBudget: 15000 }
-        );
+        const budgetError = new BudgetExceededError('Campaign budget exceeds available balance', {
+          availableBudget: 5000,
+          requiredBudget: 15000,
+        });
         mockClient.post.mockRejectedValue(budgetError);
 
         // Act & Assert
-        await expect(promotionModule.createAdvSaveAd({
-          sum: 15000,
-          name: 'Expensive Campaign'
-        }))
-          .rejects
-          .toThrow(BudgetExceededError);
+        await expect(
+          promotionModule.createAdvSaveAd({
+            sum: 15000,
+            name: 'Expensive Campaign',
+          })
+        ).rejects.toThrow(BudgetExceededError);
       });
     });
 
     describe('InvalidBidError scenarios', () => {
       it('should handle bid below minimum', async () => {
         // Arrange
-        const bidError = new InvalidBidError(
-          'Bid amount is below minimum',
-          { field: 'cpm', minBid: 50, currentBid: 25 }
-        );
+        const bidError = new InvalidBidError('Bid amount is below minimum', {
+          field: 'cpm',
+          minBid: 50,
+          currentBid: 25,
+        });
         mockClient.post.mockRejectedValue(bidError);
 
         // Act & Assert
-        await expect(promotionModule.createBidsMin({
-          advert_id: 123,
-          nm_ids: [12345],
-          payment_type: 'cpm',
-          placement_types: 'search'
-        }))
-          .rejects
-          .toThrow(InvalidBidError);
+        await expect(
+          promotionModule.createBidsMin({
+            advert_id: 123,
+            nm_ids: [12345],
+            payment_type: 'cpm',
+            placement_types: 'search',
+          })
+        ).rejects.toThrow(InvalidBidError);
       });
     });
   });
@@ -575,9 +557,7 @@ describe('PromotionModule', () => {
       mockClient.get.mockRejectedValue(new NetworkError('Network timeout', true));
 
       // Act & Assert
-      await expect(promotionModule.getPromotionCount())
-        .rejects
-        .toThrow(NetworkError);
+      await expect(promotionModule.getPromotionCount()).rejects.toThrow(NetworkError);
     });
 
     it('should throw RateLimitError when rate limited', async () => {
@@ -587,9 +567,7 @@ describe('PromotionModule', () => {
 
       // Act & Assert
       // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await expect(promotionModule.getAdvConfig())
-        .rejects
-        .toThrow(RateLimitError);
+      await expect(promotionModule.getAdvConfig()).rejects.toThrow(RateLimitError);
 
       // eslint-disable-next-line @typescript-eslint/no-deprecated
       const error = await promotionModule.getAdvConfig().catch((e: unknown) => e);
@@ -603,9 +581,9 @@ describe('PromotionModule', () => {
       mockClient.post.mockRejectedValue(new AuthenticationError('Invalid or expired API key'));
 
       // Act & Assert
-      await expect(promotionModule.createAdvSaveAd({ name: 'Test' }))
-        .rejects
-        .toThrow(AuthenticationError);
+      await expect(promotionModule.createAdvSaveAd({ name: 'Test' })).rejects.toThrow(
+        AuthenticationError
+      );
     });
   });
 

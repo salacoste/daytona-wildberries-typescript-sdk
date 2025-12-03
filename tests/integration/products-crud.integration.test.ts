@@ -21,7 +21,7 @@ const mockProductCard = {
   sizes: [{ chrtID: 1, techSize: 'XL', wbSize: '52', skus: ['1234567890123'] }],
   characteristics: [{ id: 1, name: 'Color', value: 'Red' }],
   createdAt: '2025-01-01T00:00:00Z',
-  updatedAt: '2025-01-01T00:00:00Z'
+  updatedAt: '2025-01-01T00:00:00Z',
 };
 
 // MSW server setup with handlers for all CRUD endpoints
@@ -31,27 +31,27 @@ const server = setupServer(
     return HttpResponse.json({
       error: false,
       errorText: '',
-      data: {}
+      data: {},
     });
   }),
 
   // List products
   http.post('https://content-api.wildberries.ru/content/v2/get/cards/list', async ({ request }) => {
-    const body = await request.json() as { settings?: { filter?: { textSearch?: string } } };
+    const body = (await request.json()) as { settings?: { filter?: { textSearch?: string } } };
     const textSearch = body.settings?.filter?.textSearch;
 
     // Return matching product if searching by nmID
     if (textSearch === '12345') {
       return HttpResponse.json({
         cards: [mockProductCard],
-        cursor: { total: 1 }
+        cursor: { total: 1 },
       });
     }
 
     // Return all products
     return HttpResponse.json({
       cards: [mockProductCard],
-      cursor: { total: 1, updatedAt: '2025-01-01T00:00:00Z', nmID: 12345 }
+      cursor: { total: 1, updatedAt: '2025-01-01T00:00:00Z', nmID: 12345 },
     });
   }),
 
@@ -60,7 +60,7 @@ const server = setupServer(
     return HttpResponse.json({
       error: false,
       errorText: '',
-      data: {}
+      data: {},
     });
   }),
 
@@ -69,7 +69,7 @@ const server = setupServer(
     return HttpResponse.json({
       error: false,
       errorText: '',
-      data: {}
+      data: {},
     });
   })
 );
@@ -92,26 +92,28 @@ describe('Products CRUD Integration Tests', () => {
       // 1. Create product
       const createData = {
         subjectID: 105,
-        variants: [{
-          vendorCode: 'TEST-001',
-          brand: 'Test Brand',
-          title: 'Test Product',
-          description: 'Test description for integration test',
-          dimensions: {
-            length: 10,
-            width: 5,
-            height: 2,
-            weightBrutto: 0.5
+        variants: [
+          {
+            vendorCode: 'TEST-001',
+            brand: 'Test Brand',
+            title: 'Test Product',
+            description: 'Test description for integration test',
+            dimensions: {
+              length: 10,
+              width: 5,
+              height: 2,
+              weightBrutto: 0.5,
+            },
+            sizes: [
+              {
+                techSize: 'XL',
+                wbSize: '52',
+                skus: ['1234567890123'],
+              },
+            ],
+            characteristics: [{ id: 1, value: ['Red'] }],
           },
-          sizes: [{
-            techSize: 'XL',
-            wbSize: '52',
-            skus: ['1234567890123']
-          }],
-          characteristics: [
-            { id: 1, value: ['Red'] }
-          ]
-        }]
+        ],
       };
 
       const createResult = await sdk.products.createProduct(createData);
@@ -131,23 +133,26 @@ describe('Products CRUD Integration Tests', () => {
 
       // 4. Update product (with all fields)
       if (product?.nmID && product.vendorCode) {
-        const updateData = [{
-          nmID: product.nmID,
-          vendorCode: product.vendorCode,
-          sizes: product.sizes?.map(s => ({
-            chrtID: s.chrtID,
-            techSize: s.techSize,
-            wbSize: s.wbSize,
-            skus: s.skus
-          })) ?? [],
-          brand: product.brand,
-          title: 'Updated Test Product',  // Changed
-          description: product.description,
-          characteristics: product.characteristics?.map(c => ({
-            id: c.id ?? 0,
-            value: c.value
-          }))
-        }];
+        const updateData = [
+          {
+            nmID: product.nmID,
+            vendorCode: product.vendorCode,
+            sizes:
+              product.sizes?.map((s) => ({
+                chrtID: s.chrtID,
+                techSize: s.techSize,
+                wbSize: s.wbSize,
+                skus: s.skus,
+              })) ?? [],
+            brand: product.brand,
+            title: 'Updated Test Product', // Changed
+            description: product.description,
+            characteristics: product.characteristics?.map((c) => ({
+              id: c.id ?? 0,
+              value: c.value,
+            })),
+          },
+        ];
 
         const updateResult = await sdk.products.updateProduct(updateData);
         expect(updateResult.error).toBe(false);
@@ -161,7 +166,7 @@ describe('Products CRUD Integration Tests', () => {
     it('should handle cursor-based pagination', async () => {
       // First page
       const page1 = await sdk.products.listProducts({
-        cursor: { limit: 100 }
+        cursor: { limit: 100 },
       });
 
       expect(page1.cards).toBeDefined();
@@ -174,8 +179,8 @@ describe('Products CRUD Integration Tests', () => {
           cursor: {
             limit: 100,
             updatedAt: page1.cursor.updatedAt,
-            nmID: page1.cursor.nmID
-          }
+            nmID: page1.cursor.nmID,
+          },
         });
 
         expect(page2.cards).toBeDefined();
@@ -184,18 +189,18 @@ describe('Products CRUD Integration Tests', () => {
 
     it('should filter products by brand', async () => {
       const result = await sdk.products.listProducts({
-        filter: { brands: ['Test Brand'] }
+        filter: { brands: ['Test Brand'] },
       });
 
       expect(result.cards).toBeDefined();
-      result.cards?.forEach(card => {
+      result.cards?.forEach((card) => {
         expect(card.brand).toBe('Test Brand');
       });
     });
 
     it('should search products by text', async () => {
       const result = await sdk.products.listProducts({
-        filter: { textSearch: 'TEST-001' }
+        filter: { textSearch: 'TEST-001' },
       });
 
       expect(result.cards).toBeDefined();
@@ -210,43 +215,55 @@ describe('Products CRUD Integration Tests', () => {
         })
       );
 
-      await expect(sdk.products.createProduct({
-        subjectID: 105,
-        variants: [{ vendorCode: 'TEST' }]
-      })).rejects.toThrow();
+      await expect(
+        sdk.products.createProduct({
+          subjectID: 105,
+          variants: [{ vendorCode: 'TEST' }],
+        })
+      ).rejects.toThrow();
     });
 
     it('should handle 429 rate limit errors', async () => {
       server.use(
         http.post('https://content-api.wildberries.ru/content/v2/cards/upload', () => {
-          return HttpResponse.json({ error: 'Rate limit exceeded' }, {
-            status: 429,
-            headers: { 'Retry-After': '60' }
-          });
+          return HttpResponse.json(
+            { error: 'Rate limit exceeded' },
+            {
+              status: 429,
+              headers: { 'Retry-After': '60' },
+            }
+          );
         })
       );
 
-      await expect(sdk.products.createProduct({
-        subjectID: 105,
-        variants: [{ vendorCode: 'TEST' }]
-      })).rejects.toThrow();
+      await expect(
+        sdk.products.createProduct({
+          subjectID: 105,
+          variants: [{ vendorCode: 'TEST' }],
+        })
+      ).rejects.toThrow();
     });
 
     it('should handle 400 validation errors', async () => {
       server.use(
         http.post('https://content-api.wildberries.ru/content/v2/cards/upload', () => {
-          return HttpResponse.json({
-            error: true,
-            errorText: 'Missing required fields',
-            additionalErrors: { vendorCode: 'Required' }
-          }, { status: 400 });
+          return HttpResponse.json(
+            {
+              error: true,
+              errorText: 'Missing required fields',
+              additionalErrors: { vendorCode: 'Required' },
+            },
+            { status: 400 }
+          );
         })
       );
 
-      await expect(sdk.products.createProduct({
-        subjectID: 105,
-        variants: []
-      })).rejects.toThrow();
+      await expect(
+        sdk.products.createProduct({
+          subjectID: 105,
+          variants: [],
+        })
+      ).rejects.toThrow();
     });
   });
 
@@ -255,7 +272,7 @@ describe('Products CRUD Integration Tests', () => {
       const updates = [
         { nmID: 12345, vendorCode: 'V1', sizes: [], title: 'Product 1' },
         { nmID: 12346, vendorCode: 'V2', sizes: [], title: 'Product 2' },
-        { nmID: 12347, vendorCode: 'V3', sizes: [], title: 'Product 3' }
+        { nmID: 12347, vendorCode: 'V3', sizes: [], title: 'Product 3' },
       ];
 
       const result = await sdk.products.updateProduct(updates);

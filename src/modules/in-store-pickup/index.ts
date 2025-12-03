@@ -559,7 +559,10 @@ export class InStorePickupModule {
    * console.log('IMEI metadata deleted');
    * ```
    */
-  async deleteOrderMetadata(orderId: number, key: 'imei' | 'uin' | 'gtin' | 'sgtin'): Promise<void> {
+  async deleteOrderMetadata(
+    orderId: number,
+    key: 'imei' | 'uin' | 'gtin' | 'sgtin'
+  ): Promise<void> {
     await this.client.delete<unknown>(
       `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta`,
       undefined,

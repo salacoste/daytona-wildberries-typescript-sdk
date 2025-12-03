@@ -40,7 +40,7 @@ describe('TariffsModule', () => {
       post: vi.fn(),
       put: vi.fn(),
       patch: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
 
     // Create fresh instance before each test
@@ -59,14 +59,14 @@ describe('TariffsModule', () => {
           {
             parentID: 479,
             parentName: 'Электроника',
-            commission: 15.5
+            commission: 15.5,
           },
           {
             parentID: 629,
             parentName: 'Бытовая химия',
-            commission: 12.0
-          }
-        ]
+            commission: 12.0,
+          },
+        ],
       };
 
       it('should call BaseClient.get with correct URL and empty params', async () => {
@@ -142,9 +142,9 @@ describe('TariffsModule', () => {
             {
               parentID: 100,
               parentName: 'Electronics China',
-              commission: 18.0
-            }
-          ]
+              commission: 18.0,
+            },
+          ],
         };
         mockClient.get.mockResolvedValue(chinaCommissionResponse);
 
@@ -160,9 +160,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new AuthenticationError('Invalid API key'));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsCommission())
-          .rejects
-          .toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(AuthenticationError);
       });
 
       it('should throw RateLimitError on 429', async () => {
@@ -170,9 +168,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 60000));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsCommission())
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(RateLimitError);
       });
     });
   });
@@ -191,11 +187,11 @@ describe('TariffsModule', () => {
                 boxDeliveryBase: '10',
                 boxDeliveryLiter: '0.5',
                 boxStorageBase: '5',
-                boxStorageLiter: '0.2'
-              }
-            ]
-          }
-        }
+                boxStorageLiter: '0.2',
+              },
+            ],
+          },
+        },
       };
 
       it('should call BaseClient.get with correct URL and date param', async () => {
@@ -236,16 +232,16 @@ describe('TariffsModule', () => {
                 {
                   warehouseName: 'Коледино',
                   boxDeliveryBase: '10',
-                  boxStorageBase: '5'
+                  boxStorageBase: '5',
                 },
                 {
                   warehouseName: 'Подольск',
                   boxDeliveryBase: '12',
-                  boxStorageBase: '6'
-                }
-              ]
-            }
-          }
+                  boxStorageBase: '6',
+                },
+              ],
+            },
+          },
         };
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
@@ -259,19 +255,13 @@ describe('TariffsModule', () => {
       it('should throw ValidationError when date is missing', async () => {
         // Act & Assert
         // @ts-expect-error Testing missing required parameter
-        await expect(tariffsModule.getTariffsBox())
-          .rejects
-          .toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsBox()).rejects.toThrow(ValidationError);
       });
 
       it('should throw ValidationError when date format is invalid', async () => {
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox('01-15-2024'))
-          .rejects
-          .toThrow(ValidationError);
-        await expect(tariffsModule.getTariffsBox('2024/01/15'))
-          .rejects
-          .toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsBox('01-15-2024')).rejects.toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsBox('2024/01/15')).rejects.toThrow(ValidationError);
       });
 
       it('should throw NetworkError on network failure', async () => {
@@ -279,9 +269,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new NetworkError('Network timeout', true));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox(testDate))
-          .rejects
-          .toThrow(NetworkError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(NetworkError);
       });
     });
 
@@ -296,11 +284,11 @@ describe('TariffsModule', () => {
               {
                 warehouseName: 'Коледино',
                 palletDeliveryValueBase: '500',
-                palletStorageValueExpr: '100'
-              }
-            ]
-          }
-        }
+                palletStorageValueExpr: '100',
+              },
+            ],
+          },
+        },
       };
 
       it('should call BaseClient.get with correct URL and date param', async () => {
@@ -340,10 +328,10 @@ describe('TariffsModule', () => {
               warehouseList: [
                 { warehouseName: 'Коледино', palletDeliveryValueBase: '500' },
                 { warehouseName: 'Подольск', palletDeliveryValueBase: '550' },
-                { warehouseName: 'Электросталь', palletDeliveryValueBase: '480' }
-              ]
-            }
-          }
+                { warehouseName: 'Электросталь', palletDeliveryValueBase: '480' },
+              ],
+            },
+          },
         };
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
@@ -357,16 +345,14 @@ describe('TariffsModule', () => {
       it('should throw ValidationError when date is missing', async () => {
         // Act & Assert
         // @ts-expect-error Testing missing required parameter
-        await expect(tariffsModule.getTariffsPallet())
-          .rejects
-          .toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsPallet()).rejects.toThrow(ValidationError);
       });
 
       it('should throw ValidationError when date format is invalid', async () => {
         // Act & Assert
-        await expect(tariffsModule.getTariffsPallet('invalid-date'))
-          .rejects
-          .toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsPallet('invalid-date')).rejects.toThrow(
+          ValidationError
+        );
       });
 
       it('should throw RateLimitError when rate limited', async () => {
@@ -374,9 +360,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new RateLimitError('Rate limit: 60 req/min', 1000));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsPallet(testDate))
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsPallet(testDate)).rejects.toThrow(RateLimitError);
       });
     });
   });
@@ -392,11 +376,11 @@ describe('TariffsModule', () => {
               {
                 warehouseName: 'Коледино',
                 deliveryDumpSupOfficeBase: '50',
-                deliveryDumpSupOfficeLiter: '2.0'
-              }
-            ]
-          }
-        }
+                deliveryDumpSupOfficeLiter: '2.0',
+              },
+            ],
+          },
+        },
       };
 
       it('should call BaseClient.get with correct URL and date param', async () => {
@@ -433,11 +417,19 @@ describe('TariffsModule', () => {
             data: {
               dtNextDeliveryDumpSup: '2024-02-01',
               warehouseList: [
-                { warehouseName: 'Коледино', deliveryDumpSupOfficeBase: '50', deliveryDumpSupOfficeLiter: '2.0' },
-                { warehouseName: 'Подольск', deliveryDumpSupOfficeBase: '55', deliveryDumpSupOfficeLiter: '2.5' }
-              ]
-            }
-          }
+                {
+                  warehouseName: 'Коледино',
+                  deliveryDumpSupOfficeBase: '50',
+                  deliveryDumpSupOfficeLiter: '2.0',
+                },
+                {
+                  warehouseName: 'Подольск',
+                  deliveryDumpSupOfficeBase: '55',
+                  deliveryDumpSupOfficeLiter: '2.5',
+                },
+              ],
+            },
+          },
         };
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
@@ -451,16 +443,12 @@ describe('TariffsModule', () => {
       it('should throw ValidationError when date is missing', async () => {
         // Act & Assert
         // @ts-expect-error Testing missing required parameter
-        await expect(tariffsModule.getTariffsReturn())
-          .rejects
-          .toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsReturn()).rejects.toThrow(ValidationError);
       });
 
       it('should throw ValidationError when date format is invalid', async () => {
         // Act & Assert
-        await expect(tariffsModule.getTariffsReturn(''))
-          .rejects
-          .toThrow(ValidationError);
+        await expect(tariffsModule.getTariffsReturn('')).rejects.toThrow(ValidationError);
       });
 
       it('should throw AuthenticationError on invalid API key', async () => {
@@ -468,9 +456,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new AuthenticationError('Invalid or expired API key'));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsReturn(testDate))
-          .rejects
-          .toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsReturn(testDate)).rejects.toThrow(AuthenticationError);
       });
     });
   });
@@ -484,9 +470,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new NetworkError('Request timeout', true));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsCommission())
-          .rejects
-          .toThrow(NetworkError);
+        await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(NetworkError);
       });
 
       it('should handle server errors for tariff endpoints', async () => {
@@ -494,9 +478,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new NetworkError('Server error 500', false));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox(testDate))
-          .rejects
-          .toThrow(NetworkError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(NetworkError);
       });
     });
 
@@ -507,9 +489,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(rateLimitError);
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsCommission())
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(RateLimitError);
 
         const error = await tariffsModule.getTariffsCommission().catch((e: unknown) => e);
         if (error instanceof RateLimitError) {
@@ -523,17 +503,11 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(rateLimitError);
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox(testDate))
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(RateLimitError);
 
-        await expect(tariffsModule.getTariffsPallet(testDate))
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsPallet(testDate)).rejects.toThrow(RateLimitError);
 
-        await expect(tariffsModule.getTariffsReturn(testDate))
-          .rejects
-          .toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsReturn(testDate)).rejects.toThrow(RateLimitError);
       });
     });
 
@@ -554,9 +528,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new AuthenticationError('API key expired'));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsCommission())
-          .rejects
-          .toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(AuthenticationError);
       });
     });
   });
@@ -567,7 +539,7 @@ describe('TariffsModule', () => {
     it('should return correctly typed commission response', async () => {
       // Arrange
       const mockResponse = {
-        report: [{ parentID: 1, parentName: 'Test', commission: 10.5 }]
+        report: [{ parentID: 1, parentName: 'Test', commission: 10.5 }],
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -586,9 +558,9 @@ describe('TariffsModule', () => {
           data: {
             dtNextBox: '2024-02-01',
             dtTillMax: '2024-12-31',
-            warehouseList: []
-          }
-        }
+            warehouseList: [],
+          },
+        },
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -607,9 +579,9 @@ describe('TariffsModule', () => {
           data: {
             dtNextPallet: '2024-02-01',
             dtTillMax: '2024-12-31',
-            warehouseList: []
-          }
-        }
+            warehouseList: [],
+          },
+        },
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -627,9 +599,9 @@ describe('TariffsModule', () => {
         response: {
           data: {
             dtNextDeliveryDumpSup: '2024-02-01',
-            warehouseList: []
-          }
-        }
+            warehouseList: [],
+          },
+        },
       };
       mockClient.get.mockResolvedValue(mockResponse);
 

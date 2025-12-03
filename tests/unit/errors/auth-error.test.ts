@@ -7,7 +7,9 @@ describe('AuthenticationError', () => {
     it('should create error with default message and statusCode 401', () => {
       const error = new AuthenticationError();
 
-      expect(error.message).toBe('Authentication failed. Please verify your API key is valid and has the required permissions.');
+      expect(error.message).toBe(
+        'Authentication failed. Please verify your API key is valid and has the required permissions.'
+      );
       expect(error.statusCode).toBe(401);
       expect(error.response).toBeUndefined();
       expect(error.requestId).toBeUndefined();
@@ -109,7 +111,12 @@ describe('AuthenticationError', () => {
 
   describe('serialization', () => {
     it('should serialize to JSON preserving properties', () => {
-      const error = new AuthenticationError('Invalid API key', 401, { detail: 'expired' }, 'req-123');
+      const error = new AuthenticationError(
+        'Invalid API key',
+        401,
+        { detail: 'expired' },
+        'req-123'
+      );
       const json = JSON.stringify(error);
       const parsed = JSON.parse(json) as {
         message: string;

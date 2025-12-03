@@ -32,7 +32,7 @@ const server = setupServer(
       for_withdraw: 50000,
       available_now: 48000,
       in_transit: 2000,
-      currency: 'RUB'
+      currency: 'RUB',
     });
   }),
 
@@ -43,8 +43,8 @@ const server = setupServer(
         date_from: '2024-01-01T00:00:00Z',
         date_to: '2024-01-31T23:59:59Z',
         supplier_oper_name: 'Sale',
-        retail_amount: 15000
-      }
+        retail_amount: 15000,
+      },
     ]);
   }),
 
@@ -80,8 +80,8 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 15,
                   cartToOrderPercent: 33.3,
-                  buyoutsPercent: 90
-                }
+                  buyoutsPercent: 90,
+                },
               },
               previousPeriod: {
                 begin: '2023-12-01',
@@ -99,8 +99,8 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: 15.6,
                   cartToOrderPercent: 32.1,
-                  buyoutsPercent: 88.9
-                }
+                  buyoutsPercent: 88.9,
+                },
               },
               periodComparison: {
                 openCardDynamics: 11.1,
@@ -116,17 +116,17 @@ const server = setupServer(
                 conversions: {
                   addToCartPercent: -0.6,
                   cartToOrderPercent: 1.2,
-                  buyoutsPercent: 1.1
-                }
-              }
+                  buyoutsPercent: 1.1,
+                },
+              },
             },
             stocks: {
               stocksMp: 50,
-              stocksWb: 30
-            }
-          }
-        ]
-      }
+              stocksWb: 30,
+            },
+          },
+        ],
+      },
     });
   }),
 
@@ -140,26 +140,29 @@ const server = setupServer(
             {
               dt: '2024-01-15',
               quantity: 100,
-              quantityFull: 100
-            }
-          ]
-        }
-      ]
+              quantityFull: 100,
+            },
+          ],
+        },
+      ],
     });
   }),
 
-  http.get('https://seller-analytics-api.wildberries.ru/api/v1/analytics/stock-history/12345', () => {
-    return HttpResponse.json({
-      productId: '12345',
-      changes: [
-        {
-          date: '2024-01-15',
-          quantity: 100,
-          reason: 'purchase'
-        }
-      ]
-    });
-  }),
+  http.get(
+    'https://seller-analytics-api.wildberries.ru/api/v1/analytics/stock-history/12345',
+    () => {
+      return HttpResponse.json({
+        productId: '12345',
+        changes: [
+          {
+            date: '2024-01-15',
+            quantity: 100,
+            reason: 'purchase',
+          },
+        ],
+      });
+    }
+  ),
 
   // Communications Module Endpoints
   http.get('https://feedbacks-api.wildberries.ru/api/v1/feedbacks', () => {
@@ -179,18 +182,18 @@ const server = setupServer(
             answer: null,
             productDetails: {
               nmId: 12345,
-              imtId: 67890
+              imtId: 67890,
             },
             photoLinks: null,
             video: null,
             wasViewed: false,
             userName: 'Test User',
-            matchingSize: 'ok'
-          }
-        ]
+            matchingSize: 'ok',
+          },
+        ],
       },
       error: false,
-      errorText: ''
+      errorText: '',
     });
   }),
 
@@ -204,13 +207,13 @@ const server = setupServer(
             text: 'What is the material?',
             productDetails: {
               nmId: 12345,
-              productName: 'Test Product'
+              productName: 'Test Product',
             },
             createdDate: '2024-01-16T12:00:00Z',
-            state: 'none'
-          }
-        ]
-      }
+            state: 'none',
+          },
+        ],
+      },
     });
   }),
 
@@ -221,9 +224,9 @@ const server = setupServer(
           chatId: 'chat-789',
           replySign: 'sign-123',
           lastMessageTimestamp: '2024-01-17T08:00:00Z',
-          unreadMessagesCount: 2
-        }
-      ]
+          unreadMessagesCount: 2,
+        },
+      ],
     });
   }),
 
@@ -243,8 +246,8 @@ const server = setupServer(
         dateClose: '2024-01-10T18:00:00Z',
         warehouseName: 'Test Warehouse',
         nmId: 12345,
-        status: 'accepted'
-      }
+        status: 'accepted',
+      },
     ]);
   }),
 
@@ -271,8 +274,8 @@ const server = setupServer(
         brand: 'Test Brand',
         SCCode: 'SC-001',
         Price: 500,
-        Discount: 10
-      }
+        Discount: 10,
+      },
     ]);
   })
 );
@@ -309,9 +312,9 @@ describe('WildberriesSDK Multi-Module Integration', () => {
         nmIDs: [12345],
         period: {
           begin: '2024-01-01 00:00:00',
-          end: '2024-01-31 23:59:59'
+          end: '2024-01-31 23:59:59',
         },
-        page: 1
+        page: 1,
       });
       expect(salesFunnel.data.cards).toHaveLength(1);
       expect(salesFunnel.data.cards[0]?.nmID).toBe(12345);
@@ -321,7 +324,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
         isAnswered: false,
         nmId: 12345,
         take: 10,
-        skip: 0
+        skip: 0,
       });
       expect(reviews.data.feedbacks).toHaveLength(1);
       expect(reviews.data.feedbacks[0].id).toBe('review-123');
@@ -353,7 +356,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
     it('should use same BaseClient instance across all modules', () => {
       const sdk = new WildberriesSDK({
         apiKey: 'test-key',
-        timeout: 5000
+        timeout: 5000,
       });
 
       // Access internal client (normally private, but we can test indirectly)
@@ -371,15 +374,15 @@ describe('WildberriesSDK Multi-Module Integration', () => {
         retryConfig: {
           maxRetries: 3,
           retryDelay: 1000,
-          exponentialBackoff: true
-        }
+          exponentialBackoff: true,
+        },
       });
 
       // All modules should respect the same configuration
       // Test that requests complete successfully with shared config
       const [balance, reviews] = await Promise.all([
         sdk.finances.getBalance(),
-        sdk.communications.getReviews({ isAnswered: false, take: 1, skip: 0 })
+        sdk.communications.getReviews({ isAnswered: false, take: 1, skip: 0 }),
       ]);
 
       expect(balance).toBeDefined();
@@ -400,12 +403,12 @@ describe('WildberriesSDK Multi-Module Integration', () => {
           nmIDs: [12345],
           period: {
             begin: '2024-01-01 00:00:00',
-            end: '2024-01-31 23:59:59'
+            end: '2024-01-31 23:59:59',
           },
-          page: 1
+          page: 1,
         }),
         sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 }),
-        sdk.reports.getIncomes('2024-01-01')
+        sdk.reports.getIncomes('2024-01-01'),
       ]);
 
       expect(balance.for_withdraw).toBe(50000);
@@ -422,9 +425,9 @@ describe('WildberriesSDK Multi-Module Integration', () => {
         sdk.communications.getQuestions({
           isAnswered: false,
           take: 10,
-          skip: 0
+          skip: 0,
         }),
-        sdk.reports.getStocks('2024-01-01')
+        sdk.reports.getStocks('2024-01-01'),
       ]);
 
       expect(balance.for_withdraw).toBeDefined();
@@ -447,14 +450,16 @@ describe('WildberriesSDK Multi-Module Integration', () => {
       const sdk = new WildberriesSDK({ apiKey: 'invalid-key' });
 
       await expect(sdk.finances.getBalance()).rejects.toThrow(AuthenticationError);
-      await expect(sdk.analytics.getSalesFunnel({
-        brandNames: [],
-        objectIDs: [],
-        tagIDs: [],
-        nmIDs: [],
-        period: { begin: '2024-01-01 00:00:00', end: '2024-01-31 23:59:59' },
-        page: 1
-      })).rejects.toThrow(AuthenticationError);
+      await expect(
+        sdk.analytics.getSalesFunnel({
+          brandNames: [],
+          objectIDs: [],
+          tagIDs: [],
+          nmIDs: [],
+          period: { begin: '2024-01-01 00:00:00', end: '2024-01-31 23:59:59' },
+          page: 1,
+        })
+      ).rejects.toThrow(AuthenticationError);
     });
 
     it('should propagate rate limit errors consistently', async () => {
@@ -469,8 +474,9 @@ describe('WildberriesSDK Multi-Module Integration', () => {
 
       const sdk = new WildberriesSDK({ apiKey: 'test-key' });
 
-      await expect(sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 }))
-        .rejects.toThrow(RateLimitError);
+      await expect(
+        sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 })
+      ).rejects.toThrow(RateLimitError);
       // Note: Second call may timeout due to retry logic, so we catch that
       try {
         await sdk.reports.getIncomes('2024-01-01');
@@ -497,8 +503,9 @@ describe('WildberriesSDK Multi-Module Integration', () => {
       expect(balance.for_withdraw).toBe(50000);
 
       // Error case
-      await expect(sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 }))
-        .rejects.toThrow();
+      await expect(
+        sdk.communications.getReviews({ isAnswered: false, take: 10, skip: 0 })
+      ).rejects.toThrow();
     });
   });
 
@@ -516,12 +523,12 @@ describe('WildberriesSDK Multi-Module Integration', () => {
           nmIDs: [],
           period: {
             begin: '2024-01-01 00:00:00',
-            end: '2024-01-31 23:59:59'
+            end: '2024-01-31 23:59:59',
           },
-          page: 1
+          page: 1,
         }),
         sdk.communications.getReviews({ isAnswered: false, take: 100, skip: 0 }),
-        sdk.reports.getStocks('2024-01-01')
+        sdk.reports.getStocks('2024-01-01'),
       ]);
 
       // Verify all data collected successfully
@@ -532,14 +539,18 @@ describe('WildberriesSDK Multi-Module Integration', () => {
 
       // Calculate basic dashboard metrics
       const totalBalance = balance.for_withdraw || 0;
-      const totalOrders = salesFunnel.data.cards.reduce((sum: number, item: { statistics?: { selectedPeriod?: { ordersCount?: number } } }) => {
-        return sum + (item.statistics?.selectedPeriod?.ordersCount ?? 0);
-      }, 0);
-      const avgRating = reviews.data.feedbacks.length > 0
-        ? reviews.data.feedbacks.reduce((sum, r) => {
-            return sum + r.productValuation;
-          }, 0) / reviews.data.feedbacks.length
-        : 0;
+      const totalOrders = salesFunnel.data.cards.reduce(
+        (sum: number, item: { statistics?: { selectedPeriod?: { ordersCount?: number } } }) => {
+          return sum + (item.statistics?.selectedPeriod?.ordersCount ?? 0);
+        },
+        0
+      );
+      const avgRating =
+        reviews.data.feedbacks.length > 0
+          ? reviews.data.feedbacks.reduce((sum, r) => {
+              return sum + r.productValuation;
+            }, 0) / reviews.data.feedbacks.length
+          : 0;
       const totalStock = stocks.reduce((sum, s) => {
         return sum + s.quantity;
       }, 0);
@@ -563,24 +574,30 @@ describe('WildberriesSDK Multi-Module Integration', () => {
           nmIDs: [productId],
           period: {
             begin: '2024-01-01 00:00:00',
-            end: '2024-01-31 23:59:59'
+            end: '2024-01-31 23:59:59',
           },
-          page: 1
+          page: 1,
         }),
         sdk.communications.getReviews({ isAnswered: false, nmId: productId, take: 100, skip: 0 }),
-        sdk.reports.getStocks('2024-01-01')
+        sdk.reports.getStocks('2024-01-01'),
       ]);
 
       // Verify product data exists
-      expect(salesFunnel.data.cards.some((item: { nmID?: number }) => {
-        return item.nmID === productId;
-      })).toBe(true);
-      expect(reviews.data.feedbacks.some((r) => {
-        return r.productDetails.nmId === productId;
-      })).toBe(true);
-      expect(stocks.some((s) => {
-        return s.nmId === productId;
-      })).toBe(true);
+      expect(
+        salesFunnel.data.cards.some((item: { nmID?: number }) => {
+          return item.nmID === productId;
+        })
+      ).toBe(true);
+      expect(
+        reviews.data.feedbacks.some((r) => {
+          return r.productDetails.nmId === productId;
+        })
+      ).toBe(true);
+      expect(
+        stocks.some((s) => {
+          return s.nmId === productId;
+        })
+      ).toBe(true);
     });
 
     it('should support financial reconciliation workflow', async () => {
@@ -590,7 +607,7 @@ describe('WildberriesSDK Multi-Module Integration', () => {
       const [balance, incomes, stocks] = await Promise.all([
         sdk.finances.getBalance(),
         sdk.reports.getIncomes('2024-01-01'),
-        sdk.reports.getStocks('2024-01-01')
+        sdk.reports.getStocks('2024-01-01'),
       ]);
 
       // Verify financial data

@@ -311,10 +311,9 @@ export class OrdersFBSModule {
   async createSupply(name: string): Promise<CreateSupplyResponse> {
     // Validate name length
     if (!name || name.length < 1 || name.length > 128) {
-      throw new ValidationError(
-        'Supply name must be 1-128 characters',
-        { name: `Name length must be 1-128, received ${name.length}` }
-      );
+      throw new ValidationError('Supply name must be 1-128 characters', {
+        name: `Name length must be 1-128, received ${name.length}`,
+      });
     }
 
     return this.client.post<CreateSupplyResponse>(
@@ -566,10 +565,7 @@ export class OrdersFBSModule {
    * console.log(`Barcode: ${stickers[0].barcode}`);
    * ```
    */
-  async getOrderStickers(
-    orderIds: number[],
-    options: StickerOptions
-  ): Promise<OrderSticker[]> {
+  async getOrderStickers(orderIds: number[], options: StickerOptions): Promise<OrderSticker[]> {
     // Validate orderIds array size
     if (orderIds.length < 1 || orderIds.length > 100) {
       throw new ValidationError(
@@ -587,12 +583,9 @@ export class OrdersFBSModule {
       (s) => s.width === options.width && s.height === options.height
     );
     if (!isValidSize) {
-      throw new ValidationError(
-        'Invalid size combination. Use 58×40 or 40×30',
-        {
-          size: `Valid combinations: 58×40 or 40×30, received ${options.width}×${options.height}`,
-        }
-      );
+      throw new ValidationError('Invalid size combination. Use 58×40 or 40×30', {
+        size: `Valid combinations: 58×40 or 40×30, received ${options.width}×${options.height}`,
+      });
     }
 
     const response = await this.client.post<GetOrderStickersResponse>(
@@ -740,7 +733,7 @@ export class OrdersFBSModule {
     return this.client.get<PassOfficesResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/passes/offices',
       {
-        rateLimitKey: 'ordersFBS.getPassOffices'
+        rateLimitKey: 'ordersFBS.getPassOffices',
       }
     );
   }
@@ -791,12 +784,9 @@ export class OrdersFBSModule {
    * @see {@link https://dev.wildberries.ru/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get}
    */
   async getPasses(): Promise<PassesResponse> {
-    return this.client.get<PassesResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/passes',
-      {
-        rateLimitKey: 'ordersFBS.getPasses'
-      }
-    );
+    return this.client.get<PassesResponse>('https://marketplace-api.wildberries.ru/api/v3/passes', {
+      rateLimitKey: 'ordersFBS.getPasses',
+    });
   }
 
   // ============================================================================
@@ -867,7 +857,7 @@ export class OrdersFBSModule {
     const response = await this.client.get<ReshipmentOrdersResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/supplies/orders/reshipment',
       {
-        rateLimitKey: 'ordersFBS.getReshipmentOrders'
+        rateLimitKey: 'ordersFBS.getReshipmentOrders',
       }
     );
 
@@ -914,16 +904,15 @@ export class OrdersFBSModule {
    */
   async getOrderMetadata(orderId: number): Promise<OrderMetadataResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     return this.client.get<OrderMetadataResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`,
       {
-        rateLimitKey: 'ordersFBS.getOrderMetadata'
+        rateLimitKey: 'ordersFBS.getOrderMetadata',
       }
     );
   }
@@ -964,16 +953,15 @@ export class OrdersFBSModule {
    */
   async getOrderSgtin(orderId: number): Promise<OrderSgtinResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     return await this.client.get<OrderSgtinResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/sgtin`,
       {
-        rateLimitKey: 'ordersFBS.getOrderSgtin'
+        rateLimitKey: 'ordersFBS.getOrderSgtin',
       }
     );
   }
@@ -1014,16 +1002,15 @@ export class OrdersFBSModule {
    */
   async getOrderUin(orderId: number): Promise<OrderUinResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     const response = await this.client.get<OrderUinResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/uin`,
       {
-        rateLimitKey: 'ordersFBS.getOrderUin'
+        rateLimitKey: 'ordersFBS.getOrderUin',
       }
     );
 
@@ -1066,16 +1053,15 @@ export class OrdersFBSModule {
    */
   async getOrderImei(orderId: number): Promise<OrderImeiResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     const response = await this.client.get<OrderImeiResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/imei`,
       {
-        rateLimitKey: 'ordersFBS.getOrderImei'
+        rateLimitKey: 'ordersFBS.getOrderImei',
       }
     );
 
@@ -1118,16 +1104,15 @@ export class OrdersFBSModule {
    */
   async getOrderGtin(orderId: number): Promise<OrderGtinResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     const response = await this.client.get<OrderGtinResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/gtin`,
       {
-        rateLimitKey: 'ordersFBS.getOrderGtin'
+        rateLimitKey: 'ordersFBS.getOrderGtin',
       }
     );
 
@@ -1176,16 +1161,15 @@ export class OrdersFBSModule {
    */
   async getOrderExpiration(orderId: number): Promise<OrderExpirationResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     const response = await this.client.get<OrderExpirationResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/expiration`,
       {
-        rateLimitKey: 'ordersFBS.getOrderExpiration'
+        rateLimitKey: 'ordersFBS.getOrderExpiration',
       }
     );
 
@@ -1235,12 +1219,14 @@ export class OrdersFBSModule {
    * });
    * ```
    */
-  async getOrdersByClient(clientData: { phone?: string; clientId?: string }): Promise<OrdersByClientResponse> {
+  async getOrdersByClient(clientData: {
+    phone?: string;
+    clientId?: string;
+  }): Promise<OrdersByClientResponse> {
     if (!clientData.phone && !clientData.clientId) {
-      throw new ValidationError(
-        'Either phone or clientId must be provided',
-        { clientData: 'Must contain either phone or clientId' }
-      );
+      throw new ValidationError('Either phone or clientId must be provided', {
+        clientData: 'Must contain either phone or clientId',
+      });
     }
 
     const params: Record<string, string> = {};
@@ -1255,7 +1241,7 @@ export class OrdersFBSModule {
       'https://marketplace-api.wildberries.ru/api/v3/orders/client',
       {
         params,
-        rateLimitKey: 'ordersFBS.getOrdersByClient'
+        rateLimitKey: 'ordersFBS.getOrdersByClient',
       }
     );
   }
@@ -1298,17 +1284,16 @@ export class OrdersFBSModule {
    */
   async getOrderStatusHistory(orderId: number): Promise<OrderStatusHistoryResponse> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     const response = await this.client.get<OrderStatusHistoryResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/orders/status/history`,
       {
         params: { orderId },
-        rateLimitKey: 'ordersFBS.getOrderStatusHistory'
+        rateLimitKey: 'ordersFBS.getOrderStatusHistory',
       }
     );
 
@@ -1353,16 +1338,13 @@ export class OrdersFBSModule {
    */
   async getSupplyTrbx(supplyId: string): Promise<SupplyTrbxResponse> {
     if (supplyId.trim() === '') {
-      throw new ValidationError(
-        'Supply ID is required',
-        { supplyId: 'Supply ID cannot be empty' }
-      );
+      throw new ValidationError('Supply ID is required', { supplyId: 'Supply ID cannot be empty' });
     }
 
     const response = await this.client.get<SupplyTrbxResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
       {
-        rateLimitKey: 'ordersFBS.getSupplyTrbx'
+        rateLimitKey: 'ordersFBS.getSupplyTrbx',
       }
     );
 
@@ -1408,16 +1390,13 @@ export class OrdersFBSModule {
    */
   async getSupplyTrbxStickers(supplyId: string): Promise<SupplyTrbxStickersResponse> {
     if (supplyId.trim() === '') {
-      throw new ValidationError(
-        'Supply ID is required',
-        { supplyId: 'Supply ID cannot be empty' }
-      );
+      throw new ValidationError('Supply ID is required', { supplyId: 'Supply ID cannot be empty' });
     }
 
     const response = await this.client.get<SupplyTrbxStickersResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx/stickers`,
       {
-        rateLimitKey: 'ordersFBS.getSupplyTrbxStickers'
+        rateLimitKey: 'ordersFBS.getSupplyTrbxStickers',
       }
     );
 
@@ -1470,17 +1449,24 @@ export class OrdersFBSModule {
   async createPass(passData: CreatePassRequest): Promise<CreatePassResponse> {
     // Validate required fields
     const requiredFields = [
-      'officeId', 'carBrand', 'carModel', 'carNumber',
-      'firstName', 'lastName', 'phone', 'passportSeries',
-      'passportNumber', 'dateStart', 'dateEnd'
+      'officeId',
+      'carBrand',
+      'carModel',
+      'carNumber',
+      'firstName',
+      'lastName',
+      'phone',
+      'passportSeries',
+      'passportNumber',
+      'dateStart',
+      'dateEnd',
     ];
 
     for (const field of requiredFields) {
       if (!passData[field as keyof CreatePassRequest]) {
-        throw new ValidationError(
-          `Missing required field: ${field}`,
-          { [field]: 'This field is required' }
-        );
+        throw new ValidationError(`Missing required field: ${field}`, {
+          [field]: 'This field is required',
+        });
       }
     }
 
@@ -1488,7 +1474,7 @@ export class OrdersFBSModule {
       'https://marketplace-api.wildberries.ru/api/v3/passes',
       passData,
       {
-        rateLimitKey: 'ordersFBS.createPass'
+        rateLimitKey: 'ordersFBS.createPass',
       }
     );
   }
@@ -1524,16 +1510,13 @@ export class OrdersFBSModule {
    */
   async deletePass(passId: string): Promise<void> {
     if (passId.trim() === '') {
-      throw new ValidationError(
-        'Pass ID is required',
-        { passId: 'Pass ID cannot be empty' }
-      );
+      throw new ValidationError('Pass ID is required', { passId: 'Pass ID cannot be empty' });
     }
 
     await this.client.delete<unknown>(
       `https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`,
       {
-        rateLimitKey: 'ordersFBS.deletePass'
+        rateLimitKey: 'ordersFBS.deletePass',
       }
     );
   }
@@ -1575,16 +1558,13 @@ export class OrdersFBSModule {
    */
   async getSupplyOrders(supplyId: string): Promise<SupplyOrdersResponse> {
     if (supplyId.trim() === '') {
-      throw new ValidationError(
-        'Supply ID is required',
-        { supplyId: 'Supply ID cannot be empty' }
-      );
+      throw new ValidationError('Supply ID is required', { supplyId: 'Supply ID cannot be empty' });
     }
 
     const response = await this.client.get<SupplyOrdersResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders`,
       {
-        rateLimitKey: 'ordersFBS.getSupplyOrders'
+        rateLimitKey: 'ordersFBS.getSupplyOrders',
       }
     );
 
@@ -1629,17 +1609,12 @@ export class OrdersFBSModule {
    */
   async updatePass(passId: string, data: UpdatePassRequest): Promise<void> {
     if (!passId || passId.trim() === '') {
-      throw new ValidationError(
-        'Pass ID is required',
-        { passId: 'Pass ID cannot be empty' }
-      );
+      throw new ValidationError('Pass ID is required', { passId: 'Pass ID cannot be empty' });
     }
 
-    await this.client.put(
-      `https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`,
-      data,
-      { rateLimitKey: 'ordersFBS.updatePass' }
-    );
+    await this.client.put(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`, data, {
+      rateLimitKey: 'ordersFBS.updatePass',
+    });
   }
 
   /**
@@ -1673,10 +1648,9 @@ export class OrdersFBSModule {
    */
   async deleteOrderMetadata(orderId: number, key: OrderMetadataKey): Promise<void> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     const validKeys: OrderMetadataKey[] = ['imei', 'uin', 'gtin', 'sgtin'];
@@ -1691,7 +1665,7 @@ export class OrdersFBSModule {
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`,
       {
         params: { key },
-        rateLimitKey: 'ordersFBS.deleteOrderMetadata'
+        rateLimitKey: 'ordersFBS.deleteOrderMetadata',
       }
     );
   }
@@ -1726,17 +1700,15 @@ export class OrdersFBSModule {
    */
   async setOrderSGTIN(orderId: number, data: SetOrderSGTINRequest): Promise<void> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     if (data.sgtins.length < 1 || data.sgtins.length > 24) {
-      throw new ValidationError(
-        'SGTIN array must contain 1-24 items',
-        { sgtins: `Array size must be 1-24, received ${data.sgtins.length}` }
-      );
+      throw new ValidationError('SGTIN array must contain 1-24 items', {
+        sgtins: `Array size must be 1-24, received ${data.sgtins.length}`,
+      });
     }
 
     await this.client.put(
@@ -1775,17 +1747,15 @@ export class OrdersFBSModule {
    */
   async setOrderUIN(orderId: number, data: SetOrderUINRequest): Promise<void> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     if (data.uin.length !== 16) {
-      throw new ValidationError(
-        'UIN must be exactly 16 characters',
-        { uin: `Must be 16 characters, received ${data.uin.length}` }
-      );
+      throw new ValidationError('UIN must be exactly 16 characters', {
+        uin: `Must be 16 characters, received ${data.uin.length}`,
+      });
     }
 
     await this.client.put(
@@ -1824,17 +1794,15 @@ export class OrdersFBSModule {
    */
   async setOrderIMEI(orderId: number, data: SetOrderIMEIRequest): Promise<void> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     if (data.imei.length !== 15) {
-      throw new ValidationError(
-        'IMEI must be exactly 15 characters',
-        { imei: `Must be 15 characters, received ${data.imei.length}` }
-      );
+      throw new ValidationError('IMEI must be exactly 15 characters', {
+        imei: `Must be 15 characters, received ${data.imei.length}`,
+      });
     }
 
     await this.client.put(
@@ -1873,17 +1841,15 @@ export class OrdersFBSModule {
    */
   async setOrderGTIN(orderId: number, data: SetOrderGTINRequest): Promise<void> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     if (data.gtin.length !== 13) {
-      throw new ValidationError(
-        'GTIN must be exactly 13 characters',
-        { gtin: `Must be 13 characters, received ${data.gtin.length}` }
-      );
+      throw new ValidationError('GTIN must be exactly 13 characters', {
+        gtin: `Must be 13 characters, received ${data.gtin.length}`,
+      });
     }
 
     await this.client.put(
@@ -1923,17 +1889,15 @@ export class OrdersFBSModule {
    */
   async setOrderExpiration(orderId: number, data: SetOrderExpirationRequest): Promise<void> {
     if (!orderId || orderId <= 0) {
-      throw new ValidationError(
-        'Order ID must be a positive integer',
-        { orderId: `Must be positive integer, received ${orderId}` }
-      );
+      throw new ValidationError('Order ID must be a positive integer', {
+        orderId: `Must be positive integer, received ${orderId}`,
+      });
     }
 
     if (!data.expiration) {
-      throw new ValidationError(
-        'Expiration date is required',
-        { expiration: 'Must provide expiration date in dd.mm.yyyy format' }
-      );
+      throw new ValidationError('Expiration date is required', {
+        expiration: 'Must provide expiration date in dd.mm.yyyy format',
+      });
     }
 
     await this.client.put(
@@ -1974,10 +1938,9 @@ export class OrdersFBSModule {
    */
   async getCrossBorderStickers(orderIds: number[]): Promise<CrossBorderStickersResponse> {
     if (orderIds.length < 1 || orderIds.length > 100) {
-      throw new ValidationError(
-        'Order IDs array must contain 1-100 items',
-        { orderIds: `Array size must be 1-100, received ${orderIds.length}` }
-      );
+      throw new ValidationError('Order IDs array must contain 1-100 items', {
+        orderIds: `Array size must be 1-100, received ${orderIds.length}`,
+      });
     }
 
     return this.client.post<CrossBorderStickersResponse>(
@@ -2016,10 +1979,9 @@ export class OrdersFBSModule {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   async getExternalStickersUrls(orderIds: number[]): Promise<ExternalStickersUrlsResponse> {
     if (orderIds.length < 1 || orderIds.length > 100) {
-      throw new ValidationError(
-        'Order IDs array must contain 1-100 items',
-        { orderIds: `Array size must be 1-100, received ${orderIds.length}` }
-      );
+      throw new ValidationError('Order IDs array must contain 1-100 items', {
+        orderIds: `Array size must be 1-100, received ${orderIds.length}`,
+      });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -2063,12 +2025,13 @@ export class OrdersFBSModule {
    * });
    * ```
    */
-  async getOrdersStatusHistoryCrossBorder(orderIds: number[]): Promise<CrossBorderStatusHistoryResponse> {
+  async getOrdersStatusHistoryCrossBorder(
+    orderIds: number[]
+  ): Promise<CrossBorderStatusHistoryResponse> {
     if (orderIds.length < 1 || orderIds.length > 100) {
-      throw new ValidationError(
-        'Order IDs array must contain 1-100 items',
-        { orderIds: `Array size must be 1-100, received ${orderIds.length}` }
-      );
+      throw new ValidationError('Order IDs array must contain 1-100 items', {
+        orderIds: `Array size must be 1-100, received ${orderIds.length}`,
+      });
     }
 
     return this.client.post<CrossBorderStatusHistoryResponse>(
@@ -2112,10 +2075,9 @@ export class OrdersFBSModule {
    */
   async getOrdersWithClientInfo(orderIds: number[]): Promise<CrossBorderTurkeyClientInfoResponse> {
     if (orderIds.length < 1 || orderIds.length > 100) {
-      throw new ValidationError(
-        'Order IDs array must contain 1-100 items',
-        { orderIds: `Array size must be 1-100, received ${orderIds.length}` }
-      );
+      throw new ValidationError('Order IDs array must contain 1-100 items', {
+        orderIds: `Array size must be 1-100, received ${orderIds.length}`,
+      });
     }
 
     return this.client.post<CrossBorderTurkeyClientInfoResponse>(
@@ -2158,17 +2120,13 @@ export class OrdersFBSModule {
    */
   async addSupplyTrbx(supplyId: string, amount: number): Promise<AddSupplyTrbxResponse> {
     if (!supplyId || supplyId.trim() === '') {
-      throw new ValidationError(
-        'Supply ID is required',
-        { supplyId: 'Supply ID cannot be empty' }
-      );
+      throw new ValidationError('Supply ID is required', { supplyId: 'Supply ID cannot be empty' });
     }
 
     if (!amount || amount < 1 || amount > 1000) {
-      throw new ValidationError(
-        'Amount must be between 1 and 1000',
-        { amount: `Must be 1-1000, received ${amount}` }
-      );
+      throw new ValidationError('Amount must be between 1 and 1000', {
+        amount: `Must be 1-1000, received ${amount}`,
+      });
     }
 
     return this.client.post<AddSupplyTrbxResponse>(
@@ -2210,24 +2168,20 @@ export class OrdersFBSModule {
    */
   async deleteSupplyTrbx(supplyId: string, trbxIds: string[]): Promise<void> {
     if (!supplyId || supplyId.trim() === '') {
-      throw new ValidationError(
-        'Supply ID is required',
-        { supplyId: 'Supply ID cannot be empty' }
-      );
+      throw new ValidationError('Supply ID is required', { supplyId: 'Supply ID cannot be empty' });
     }
 
     if (trbxIds.length === 0) {
-      throw new ValidationError(
-        'At least one box ID is required',
-        { trbxIds: 'Array cannot be empty' }
-      );
+      throw new ValidationError('At least one box ID is required', {
+        trbxIds: 'Array cannot be empty',
+      });
     }
 
     await this.client.delete(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
       {
         data: { trbxIds },
-        rateLimitKey: 'ordersFBS.deleteSupplyTrbx'
+        rateLimitKey: 'ordersFBS.deleteSupplyTrbx',
       }
     );
   }
@@ -2274,17 +2228,13 @@ export class OrdersFBSModule {
     trbxIds: string[]
   ): Promise<SupplyTrbxStickersResponse> {
     if (!supplyId || supplyId.trim() === '') {
-      throw new ValidationError(
-        'Supply ID is required',
-        { supplyId: 'Supply ID cannot be empty' }
-      );
+      throw new ValidationError('Supply ID is required', { supplyId: 'Supply ID cannot be empty' });
     }
 
     if (trbxIds.length === 0) {
-      throw new ValidationError(
-        'At least one box ID is required',
-        { trbxIds: 'Array cannot be empty' }
-      );
+      throw new ValidationError('At least one box ID is required', {
+        trbxIds: 'Array cannot be empty',
+      });
     }
 
     const validTypes: BarcodeType[] = ['svg', 'png', 'zplv', 'zplh'];
@@ -2300,7 +2250,7 @@ export class OrdersFBSModule {
       { trbxIds },
       {
         params: { type },
-        rateLimitKey: 'ordersFBS.getSupplyTrbxStickersPost'
+        rateLimitKey: 'ordersFBS.getSupplyTrbxStickersPost',
       }
     );
   }

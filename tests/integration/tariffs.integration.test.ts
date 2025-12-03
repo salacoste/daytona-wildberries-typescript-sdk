@@ -35,19 +35,19 @@ const handlers = [
         {
           parentID: 479,
           parentName: 'Электроника',
-          commission: 15.5
+          commission: 15.5,
         },
         {
           parentID: 629,
           parentName: 'Бытовая химия',
-          commission: 12.0
+          commission: 12.0,
         },
         {
           parentID: 1234,
           parentName: 'Одежда',
-          commission: 10.5
-        }
-      ]
+          commission: 10.5,
+        },
+      ],
     });
   }),
 
@@ -65,7 +65,7 @@ const handlers = [
               boxDeliveryBase: 10,
               boxDeliveryLiter: 0.5,
               boxStorageBase: 5,
-              boxStorageLiter: 0.2
+              boxStorageLiter: 0.2,
             },
             {
               warehouseName: 'Подольск',
@@ -73,11 +73,11 @@ const handlers = [
               boxDeliveryBase: 12,
               boxDeliveryLiter: 0.6,
               boxStorageBase: 6,
-              boxStorageLiter: 0.25
-            }
-          ]
-        }
-      }
+              boxStorageLiter: 0.25,
+            },
+          ],
+        },
+      },
     });
   }),
 
@@ -93,23 +93,23 @@ const handlers = [
               warehouseName: 'Коледино',
               palletDeliveryAndStorageExpr: '500 + 50*days',
               palletDeliveryBase: 500,
-              palletStorageBase: 100
+              palletStorageBase: 100,
             },
             {
               warehouseName: 'Подольск',
               palletDeliveryAndStorageExpr: '550 + 55*days',
               palletDeliveryBase: 550,
-              palletStorageBase: 110
+              palletStorageBase: 110,
             },
             {
               warehouseName: 'Электросталь',
               palletDeliveryAndStorageExpr: '480 + 45*days',
               palletDeliveryBase: 480,
-              palletStorageBase: 95
-            }
-          ]
-        }
-      }
+              palletStorageBase: 95,
+            },
+          ],
+        },
+      },
     });
   }),
 
@@ -125,18 +125,18 @@ const handlers = [
             {
               warehouseName: 'Коледино',
               returnBase: 50,
-              returnLiter: 2.0
+              returnLiter: 2.0,
             },
             {
               warehouseName: 'Подольск',
               returnBase: 55,
-              returnLiter: 2.5
-            }
-          ]
-        }
-      }
+              returnLiter: 2.5,
+            },
+          ],
+        },
+      },
     });
-  })
+  }),
 ];
 
 /**
@@ -172,8 +172,8 @@ describe('TariffsModule Integration Tests', () => {
       retryConfig: {
         maxRetries: 2,
         retryDelay: 100,
-        exponentialBackoff: true
-      }
+        exponentialBackoff: true,
+      },
     });
 
     // Create TariffsModule with real BaseClient
@@ -278,17 +278,12 @@ describe('TariffsModule Integration Tests', () => {
       // Arrange
       server.use(
         http.get('https://common-api.wildberries.ru/api/v1/tariffs/commission', () => {
-          return HttpResponse.json(
-            { error: 'Unauthorized' },
-            { status: 401 }
-          );
+          return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 });
         })
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsCommission())
-        .rejects
-        .toThrow(AuthenticationError);
+      await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(AuthenticationError);
     });
 
     it('should throw RateLimitError on 429 response for commission endpoint', async () => {
@@ -299,16 +294,14 @@ describe('TariffsModule Integration Tests', () => {
             { error: 'Rate limit: 1 request per minute' },
             {
               status: 429,
-              headers: { 'Retry-After': '60' }
+              headers: { 'Retry-After': '60' },
             }
           );
         })
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsCommission())
-        .rejects
-        .toThrow(RateLimitError);
+      await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(RateLimitError);
     });
 
     it('should throw RateLimitError on 429 response for storage endpoints', async () => {
@@ -319,33 +312,26 @@ describe('TariffsModule Integration Tests', () => {
             { error: 'Rate limit: 60 requests per minute' },
             {
               status: 429,
-              headers: { 'Retry-After': '1' }
+              headers: { 'Retry-After': '1' },
             }
           );
         })
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsBox(TEST_DATE))
-        .rejects
-        .toThrow(RateLimitError);
+      await expect(tariffsModule.getTariffsBox(TEST_DATE)).rejects.toThrow(RateLimitError);
     });
 
     it('should throw NetworkError on 500 response', async () => {
       // Arrange
       server.use(
         http.get('https://common-api.wildberries.ru/api/v1/tariffs/pallet', () => {
-          return HttpResponse.json(
-            { error: 'Internal Server Error' },
-            { status: 500 }
-          );
+          return HttpResponse.json({ error: 'Internal Server Error' }, { status: 500 });
         })
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsPallet(TEST_DATE))
-        .rejects
-        .toThrow(NetworkError);
+      await expect(tariffsModule.getTariffsPallet(TEST_DATE)).rejects.toThrow(NetworkError);
     });
 
     it('should throw NetworkError on network timeout', async () => {
@@ -357,9 +343,7 @@ describe('TariffsModule Integration Tests', () => {
       );
 
       // Act & Assert
-      await expect(tariffsModule.getTariffsReturn(TEST_DATE))
-        .rejects
-        .toThrow(NetworkError);
+      await expect(tariffsModule.getTariffsReturn(TEST_DATE)).rejects.toThrow(NetworkError);
     });
   });
 

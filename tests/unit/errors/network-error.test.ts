@@ -180,16 +180,29 @@ describe('NetworkError', () => {
       expect(error503.getUserMessage()).toContain('(Status: 503)');
       expect(error504.getUserMessage()).toContain('(Status: 504)');
 
-      expect(error502.getUserMessage()).toContain('The Wildberries API server encountered an error');
-      expect(error503.getUserMessage()).toContain('The Wildberries API server encountered an error');
-      expect(error504.getUserMessage()).toContain('The Wildberries API server encountered an error');
+      expect(error502.getUserMessage()).toContain(
+        'The Wildberries API server encountered an error'
+      );
+      expect(error503.getUserMessage()).toContain(
+        'The Wildberries API server encountered an error'
+      );
+      expect(error504.getUserMessage()).toContain(
+        'The Wildberries API server encountered an error'
+      );
     });
   });
 
   describe('serialization', () => {
     it('should serialize to JSON preserving properties', () => {
       const cause = new Error('Original error');
-      const error = new NetworkError('Network error', true, 0, cause, { detail: 'timeout' }, 'req-123');
+      const error = new NetworkError(
+        'Network error',
+        true,
+        0,
+        cause,
+        { detail: 'timeout' },
+        'req-123'
+      );
       const json = JSON.stringify(error);
       const parsed = JSON.parse(json) as {
         message: string;

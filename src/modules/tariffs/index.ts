@@ -6,7 +6,16 @@
 
 import { BaseClient } from '../../client/base-client';
 import { ValidationError } from '../../errors/validation-error';
-import type { Commission, CommissionChina, CommissionTurkey, CommissionUAE, CommissionUzbekistan, ReturnTariffsResponse, TariffsBoxResponse, TariffsPalletResponse } from '../../types/tariffs.types';
+import type {
+  Commission,
+  CommissionChina,
+  CommissionTurkey,
+  CommissionUAE,
+  CommissionUzbekistan,
+  ReturnTariffsResponse,
+  TariffsBoxResponse,
+  TariffsPalletResponse,
+} from '../../types/tariffs.types';
 
 export class TariffsModule {
   constructor(private client: BaseClient) {}
@@ -46,16 +55,20 @@ export class TariffsModule {
    */
   async getTariffsCommission(
     locale?: 'ru' | 'en' | 'zh'
-  ): Promise<Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE> {
+  ): Promise<
+    Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE
+  > {
     const params: Record<string, string> = {};
     if (locale) {
       params.locale = locale;
     }
 
-    return this.client.get<Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE>(
-      'https://common-api.wildberries.ru/api/v1/tariffs/commission',
-      { params, rateLimitKey: 'tariffs.getTariffsCommission' }
-    );
+    return this.client.get<
+      Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE
+    >('https://common-api.wildberries.ru/api/v1/tariffs/commission', {
+      params,
+      rateLimitKey: 'tariffs.getTariffsCommission',
+    });
   }
 
   /**
@@ -94,7 +107,7 @@ export class TariffsModule {
       'https://common-api.wildberries.ru/api/v1/tariffs/box',
       {
         params: { date },
-        rateLimitKey: 'tariffs.getTariffsBox'
+        rateLimitKey: 'tariffs.getTariffsBox',
       }
     );
   }
@@ -126,7 +139,7 @@ export class TariffsModule {
       'https://common-api.wildberries.ru/api/v1/tariffs/pallet',
       {
         params: { date },
-        rateLimitKey: 'tariffs.getTariffsPallet'
+        rateLimitKey: 'tariffs.getTariffsPallet',
       }
     );
   }
@@ -158,9 +171,8 @@ export class TariffsModule {
       'https://common-api.wildberries.ru/api/v1/tariffs/return',
       {
         params: { date },
-        rateLimitKey: 'tariffs.getTariffsReturn'
+        rateLimitKey: 'tariffs.getTariffsReturn',
       }
     );
   }
-
 }

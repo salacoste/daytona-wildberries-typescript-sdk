@@ -25,13 +25,13 @@ export interface BalanceResponse {
  * Represents different types of financial transactions
  */
 export type TransactionType =
-  | 'sale'           // Product sales
-  | 'refund'         // Customer refunds
-  | 'fee'            // Platform fees
-  | 'payout'         // Payouts to seller
-  | 'adjustment'     // Balance adjustments
-  | 'storage'        // Storage fees
-  | 'logistics';     // Logistics fees
+  | 'sale' // Product sales
+  | 'refund' // Customer refunds
+  | 'fee' // Platform fees
+  | 'payout' // Payouts to seller
+  | 'adjustment' // Balance adjustments
+  | 'storage' // Storage fees
+  | 'logistics'; // Logistics fees
 
 /**
  * Period filter for reports
@@ -301,19 +301,19 @@ export interface DateRange {
  * Represents different types of financial reports available
  */
 export type FinancialReportType =
-  | 'sales_summary'           // Summary of sales for period
-  | 'tax_report'              // Tax reporting data
-  | 'commission_breakdown'    // Detailed commission analysis
-  | 'detailed_transactions';  // Full transaction details
+  | 'sales_summary' // Summary of sales for period
+  | 'tax_report' // Tax reporting data
+  | 'commission_breakdown' // Detailed commission analysis
+  | 'detailed_transactions'; // Full transaction details
 
 /**
  * Report output format enumeration
  * Supported file formats for generated reports
  */
 export type ReportFormat =
-  | 'pdf'   // PDF document
-  | 'csv'   // CSV spreadsheet
-  | 'json'  // JSON data
+  | 'pdf' // PDF document
+  | 'csv' // CSV spreadsheet
+  | 'json' // JSON data
   | 'xlsx'; // Excel spreadsheet
 
 /**
@@ -321,10 +321,10 @@ export type ReportFormat =
  * Lifecycle states of a generated report
  */
 export type ReportStatus =
-  | 'pending'     // Report generation queued
-  | 'processing'  // Report being generated
-  | 'completed'   // Report ready for download
-  | 'failed';     // Report generation failed
+  | 'pending' // Report generation queued
+  | 'processing' // Report being generated
+  | 'completed' // Report ready for download
+  | 'failed'; // Report generation failed
 
 /**
  * Generate report request parameters
@@ -397,11 +397,11 @@ export interface ReportDownloadResponse {
  * Lifecycle states of a payout transaction
  */
 export type PayoutStatus =
-  | 'pending'     // Payout scheduled
-  | 'processing'  // Payout being processed
-  | 'completed'   // Payout transferred successfully
-  | 'failed'      // Payout failed
-  | 'cancelled';  // Payout cancelled
+  | 'pending' // Payout scheduled
+  | 'processing' // Payout being processed
+  | 'completed' // Payout transferred successfully
+  | 'failed' // Payout failed
+  | 'cancelled'; // Payout cancelled
 
 /**
  * Payout filters for querying payout history

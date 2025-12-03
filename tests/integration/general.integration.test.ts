@@ -29,7 +29,7 @@ const handlers = [
   http.get('https://common-api.wildberries.ru/ping', () => {
     return HttpResponse.json({
       TS: new Date().toISOString(),
-      Status: 'OK'
+      Status: 'OK',
     });
   }),
 
@@ -46,16 +46,16 @@ const handlers = [
           date: from ?? '2024-01-01',
           header: 'Test News Header',
           id: fromID ? parseInt(fromID) : 1,
-          types: [{ id: 1, name: 'Announcement' }]
+          types: [{ id: 1, name: 'Announcement' }],
         },
         {
           content: 'Second news item',
           date: '2024-01-02',
           header: 'Second News',
           id: 2,
-          types: [{ id: 2, name: 'Update' }]
-        }
-      ]
+          types: [{ id: 2, name: 'Update' }],
+        },
+      ],
     });
   }),
 
@@ -64,9 +64,9 @@ const handlers = [
     return HttpResponse.json({
       name: 'Integration Test Seller',
       sid: 'seller-integration-123',
-      tradeMark: 'TestBrandIntegration'
+      tradeMark: 'TestBrandIntegration',
     });
-  })
+  }),
 ];
 
 /**
@@ -102,8 +102,8 @@ describe('GeneralModule Integration Tests', () => {
       retryConfig: {
         maxRetries: 3,
         retryDelay: 100,
-        exponentialBackoff: true
-      }
+        exponentialBackoff: true,
+      },
     });
 
     // Create GeneralModule with real BaseClient
@@ -166,7 +166,7 @@ describe('GeneralModule Integration Tests', () => {
         http.get('https://common-api.wildberries.ru/ping', () => {
           return new HttpResponse(null, {
             status: 401,
-            statusText: 'Unauthorized'
+            statusText: 'Unauthorized',
           });
         })
       );
@@ -183,8 +183,8 @@ describe('GeneralModule Integration Tests', () => {
             status: 429,
             statusText: 'Too Many Requests',
             headers: {
-              'Retry-After': '5'
-            }
+              'Retry-After': '5',
+            },
           });
         })
       );
@@ -199,7 +199,7 @@ describe('GeneralModule Integration Tests', () => {
         http.get('https://common-api.wildberries.ru/ping', () => {
           return new HttpResponse(null, {
             status: 500,
-            statusText: 'Internal Server Error'
+            statusText: 'Internal Server Error',
           });
         })
       );
@@ -214,7 +214,7 @@ describe('GeneralModule Integration Tests', () => {
         http.get('https://common-api.wildberries.ru/api/v1/seller-info', () => {
           return new HttpResponse(null, {
             status: 503,
-            statusText: 'Service Unavailable'
+            statusText: 'Service Unavailable',
           });
         })
       );
@@ -237,13 +237,13 @@ describe('GeneralModule Integration Tests', () => {
           if (attempts < 3) {
             return new HttpResponse(null, {
               status: 503,
-              statusText: 'Service Unavailable'
+              statusText: 'Service Unavailable',
             });
           }
 
           return HttpResponse.json({
             TS: new Date().toISOString(),
-            Status: 'OK'
+            Status: 'OK',
           });
         })
       );
@@ -266,7 +266,7 @@ describe('GeneralModule Integration Tests', () => {
 
           return new HttpResponse(null, {
             status: 400,
-            statusText: 'Bad Request'
+            statusText: 'Bad Request',
           });
         })
       );
@@ -287,7 +287,7 @@ describe('GeneralModule Integration Tests', () => {
           // Always fail with 500
           return new HttpResponse(null, {
             status: 500,
-            statusText: 'Internal Server Error'
+            statusText: 'Internal Server Error',
           });
         })
       );
@@ -309,7 +309,7 @@ describe('GeneralModule Integration Tests', () => {
 
           return HttpResponse.json({
             TS: new Date().toISOString(),
-            Status: 'OK'
+            Status: 'OK',
           });
         })
       );

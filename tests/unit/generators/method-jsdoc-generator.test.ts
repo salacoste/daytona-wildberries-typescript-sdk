@@ -368,9 +368,7 @@ describe('method-jsdoc-generator', () => {
     it('should include ValidationError tag', () => {
       const tags = generateThrowsTags();
 
-      expect(tags).toContain(
-        '@throws {ValidationError} When request data is invalid (400/422)'
-      );
+      expect(tags).toContain('@throws {ValidationError} When request data is invalid (400/422)');
     });
 
     it('should include NetworkError tag', () => {

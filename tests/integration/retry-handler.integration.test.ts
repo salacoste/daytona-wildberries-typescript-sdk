@@ -182,10 +182,7 @@ describe('RetryHandler Integration Tests', () => {
       server.use(
         http.post(TEST_URL, () => {
           attempts++;
-          return HttpResponse.json(
-            { errors: { brandName: 'Required field' } },
-            { status: 400 }
-          );
+          return HttpResponse.json({ errors: { brandName: 'Required field' } }, { status: 400 });
         })
       );
 
@@ -197,9 +194,7 @@ describe('RetryHandler Integration Tests', () => {
         },
       });
 
-      await expect(client.post(TEST_URL, { title: 'Test' })).rejects.toThrow(
-        ValidationError
-      );
+      await expect(client.post(TEST_URL, { title: 'Test' })).rejects.toThrow(ValidationError);
       expect(attempts).toBe(1); // No retry
     });
 

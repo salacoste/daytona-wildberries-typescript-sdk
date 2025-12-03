@@ -42,12 +42,7 @@ export class WBAPIError extends Error {
    * @param response - API response body if available
    * @param requestId - Correlation ID for debugging
    */
-  constructor(
-    message: string,
-    statusCode?: number,
-    response?: unknown,
-    requestId?: string
-  ) {
+  constructor(message: string, statusCode?: number, response?: unknown, requestId?: string) {
     super(message);
 
     // Set error name to class name for proper identification
@@ -55,9 +50,14 @@ export class WBAPIError extends Error {
 
     // Preserve stack trace for debugging (V8 engines like Node.js)
     // Type assertion needed because captureStackTrace is V8-specific
-    const captureStackTrace = (Error as {
-      captureStackTrace?: (target: object, constructor: new (...args: unknown[]) => unknown) => void
-    }).captureStackTrace;
+    const captureStackTrace = (
+      Error as {
+        captureStackTrace?: (
+          target: object,
+          constructor: new (...args: unknown[]) => unknown
+        ) => void;
+      }
+    ).captureStackTrace;
     if (captureStackTrace) {
       captureStackTrace(this, this.constructor as new (...args: unknown[]) => unknown);
     }

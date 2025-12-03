@@ -55,7 +55,9 @@ describe('module-generator integration', () => {
       expect(module.code).toContain('constructor(private client: BaseClient)');
       expect(module.code).toContain('async ping()');
       expect(module.code).toContain('Promise<PingResponse>');
-      expect(module.code).toContain("this.client.get<PingResponse>('https://common-api.wildberries.ru/ping')");
+      expect(module.code).toContain(
+        "this.client.get<PingResponse>('https://common-api.wildberries.ru/ping')"
+      );
       expect(module.code).toContain('Health check');
       expect(module.code).toContain('@returns API is healthy');
       expect(module.code).toContain('@throws {AuthenticationError}');
@@ -206,7 +208,7 @@ describe('module-generator integration', () => {
 
       expect(module.methods).toHaveLength(1);
       expect(module.code).toContain('async deleteItem(id: string): Promise<void>');
-      expect(module.code).toContain("this.client.delete(`https://api.example.com/items/${id}`)");
+      expect(module.code).toContain('this.client.delete(`https://api.example.com/items/${id}`)');
       expect(module.code).not.toContain('delete<void>'); // void should not be used as generic argument
     });
   });
@@ -338,7 +340,7 @@ describe('module-generator integration', () => {
       const operations = parsePaths(paths);
       const module = generateModuleClass(operations, 'test', 'test.yaml');
 
-      expect(module.code).toContain("import type");
+      expect(module.code).toContain('import type');
       expect(module.code).toContain("from '../../types/test.types';");
       expect(module.typeNames.has('PingResponse')).toBe(true);
     });
@@ -497,7 +499,9 @@ describe('module-generator integration', () => {
       expect(method.code).toContain('/**');
       expect(method.code).toContain('Health check');
       expect(method.code).toContain('async ping()');
-      expect(method.code).toContain("this.client.get<PingResponse>('https://api.example.com/ping')");
+      expect(method.code).toContain(
+        "this.client.get<PingResponse>('https://api.example.com/ping')"
+      );
     });
 
     it('should generate method with all parameter types', () => {
@@ -554,8 +558,12 @@ describe('module-generator integration', () => {
 
       const method = generateMethod(operation, servers);
 
-      expect(method.code).toContain('async updateUser(id: string, data: UpdateUserRequest, options?: { expand?: string }): Promise<UserResponse>');
-      expect(method.code).toContain("this.client.put<UserResponse>(`https://api.example.com/users/${id}`, data, { params: options })");
+      expect(method.code).toContain(
+        'async updateUser(id: string, data: UpdateUserRequest, options?: { expand?: string }): Promise<UserResponse>'
+      );
+      expect(method.code).toContain(
+        'this.client.put<UserResponse>(`https://api.example.com/users/${id}`, data, { params: options })'
+      );
     });
   });
 

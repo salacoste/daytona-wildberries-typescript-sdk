@@ -384,9 +384,7 @@ export class ReportsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get}
    */
-  async createWarehouseRemainsReport(
-    params: WarehouseRemainsParams
-  ): Promise<ReportTaskResponse> {
+  async createWarehouseRemainsReport(params: WarehouseRemainsParams): Promise<ReportTaskResponse> {
     return this.client.get<ReportTaskResponse>(
       'https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains',
       { params, rateLimitKey: 'reports.createWarehouseRemainsReport' }
@@ -435,10 +433,7 @@ export class ReportsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1status/get}
    */
-  async checkReportStatus(
-    taskId: string,
-    reportType: ReportType
-  ): Promise<ReportStatus> {
+  async checkReportStatus(taskId: string, reportType: ReportType): Promise<ReportStatus> {
     const endpoints: Record<ReportType, string> = {
       warehouse_remains: 'warehouse_remains',
       acceptance: 'acceptance_report',
@@ -489,10 +484,7 @@ export class ReportsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get}
    */
-  async downloadReport(
-    taskId: string,
-    reportType: ReportType
-  ): Promise<Blob> {
+  async downloadReport(taskId: string, reportType: ReportType): Promise<Blob> {
     const endpoints: Record<ReportType, string> = {
       warehouse_remains: 'warehouse_remains',
       acceptance: 'acceptance_report',
@@ -634,7 +626,9 @@ export class ReportsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
    */
-  async getCharacteristicsChangeReport(params: CharacteristicsChangeParams): Promise<CharacteristicsChangeItem[]> {
+  async getCharacteristicsChangeReport(
+    params: CharacteristicsChangeParams
+  ): Promise<CharacteristicsChangeItem[]> {
     return this.client.get<CharacteristicsChangeItem[]>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/characteristics-change',
       { params, rateLimitKey: 'reports.getCharacteristicsChangeReport' }
@@ -695,7 +689,9 @@ export class ReportsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
    */
-  async getIncorrectAttachmentsReport(params: IncorrectAttachmentsParams): Promise<IncorrectAttachmentItem[]> {
+  async getIncorrectAttachmentsReport(
+    params: IncorrectAttachmentsParams
+  ): Promise<IncorrectAttachmentItem[]> {
     return this.client.get<IncorrectAttachmentItem[]>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/incorrect-attachments',
       { params, rateLimitKey: 'reports.getIncorrectAttachmentsReport' }
@@ -734,7 +730,9 @@ export class ReportsModule {
    *
    * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
    */
-  async getWarehouseMeasurementsReport(params: WarehouseMeasurementsParams): Promise<WarehouseMeasurementItem[]> {
+  async getWarehouseMeasurementsReport(
+    params: WarehouseMeasurementsParams
+  ): Promise<WarehouseMeasurementItem[]> {
     return this.client.get<WarehouseMeasurementItem[]>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/warehouse-measurements',
       { params, rateLimitKey: 'reports.getWarehouseMeasurementsReport' }

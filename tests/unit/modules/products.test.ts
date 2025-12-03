@@ -38,7 +38,7 @@ describe('ProductsModule', () => {
       post: vi.fn(),
       put: vi.fn(),
       patch: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
 
     // Create fresh instance before each test
@@ -54,11 +54,11 @@ describe('ProductsModule', () => {
     const mockParentCategoriesResponse = {
       data: [
         { id: 479, name: 'Электроника', isVisible: true },
-        { id: 629, name: 'Бытовая химия', isVisible: true }
+        { id: 629, name: 'Бытовая химия', isVisible: true },
       ],
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should call BaseClient.get with correct URL when no parameters provided', async () => {
@@ -142,11 +142,11 @@ describe('ProductsModule', () => {
     const mockCategoriesResponse = {
       data: [
         { subjectID: 105, parentID: 479, subjectName: 'Носки', parentName: 'Электроника' },
-        { subjectID: 106, parentID: 479, subjectName: 'Кабели', parentName: 'Электроника' }
+        { subjectID: 106, parentID: 479, subjectName: 'Кабели', parentName: 'Электроника' },
       ],
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should call BaseClient.get with correct URL when no parameters provided', async () => {
@@ -300,7 +300,7 @@ describe('ProductsModule', () => {
           unitName: '',
           maxCount: 1,
           popular: true,
-          charcType: 1
+          charcType: 1,
         },
         {
           charcID: 2,
@@ -311,12 +311,12 @@ describe('ProductsModule', () => {
           unitName: '',
           maxCount: 10,
           popular: true,
-          charcType: 1
-        }
+          charcType: 1,
+        },
       ],
       error: false,
       errorText: '',
-      additionalErrors: null
+      additionalErrors: null,
     };
 
     it('should call BaseClient.get with subjectId in URL path', async () => {
@@ -448,11 +448,13 @@ describe('ProductsModule', () => {
       // Arrange
       const request = {
         subjectID: 105,
-        variants: [{
-          vendorCode: 'VENDOR-001',
-          brand: 'My Brand',
-          title: 'Test Product'
-        }]
+        variants: [
+          {
+            vendorCode: 'VENDOR-001',
+            brand: 'My Brand',
+            title: 'Test Product',
+          },
+        ],
       };
       const response = { error: false, errorText: '', data: {} };
       mockClient.post.mockResolvedValue(response);
@@ -485,14 +487,18 @@ describe('ProductsModule', () => {
 
     it('should throw ValidationError for missing required fields', async () => {
       // Arrange
-      const error = new ValidationError('Missing required field: vendorCode', { vendorCode: 'Required' });
+      const error = new ValidationError('Missing required field: vendorCode', {
+        vendorCode: 'Required',
+      });
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createProduct({
-        subjectID: 105,
-        variants: []
-      })).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.createProduct({
+          subjectID: 105,
+          variants: [],
+        })
+      ).rejects.toThrow(ValidationError);
     });
   });
 
@@ -501,11 +507,11 @@ describe('ProductsModule', () => {
       // Arrange
       const filters = {
         filter: { withPhoto: 1 as const, brands: ['My Brand'] },
-        cursor: { limit: 100 }
+        cursor: { limit: 100 },
       };
       const response = {
         cards: [{ nmID: 12345, vendorCode: 'TEST-001' }],
-        cursor: { total: 1 }
+        cursor: { total: 1 },
       };
       mockClient.post.mockResolvedValue(response);
 
@@ -525,7 +531,7 @@ describe('ProductsModule', () => {
     it('should pass filters correctly', async () => {
       // Arrange
       const filters = {
-        filter: { textSearch: 'VENDOR-001' }
+        filter: { textSearch: 'VENDOR-001' },
       };
       mockClient.post.mockResolvedValue({ cards: [], cursor: { total: 0 } });
 
@@ -546,16 +552,16 @@ describe('ProductsModule', () => {
         cursor: {
           limit: 100,
           updatedAt: '2025-01-01T00:00:00Z',
-          nmID: 12345
-        }
+          nmID: 12345,
+        },
       };
       const response = {
         cards: [],
         cursor: {
           total: 150,
           updatedAt: '2025-01-01T01:00:00Z',
-          nmID: 12400
-        }
+          nmID: 12400,
+        },
       };
       mockClient.post.mockResolvedValue(response);
 
@@ -758,12 +764,14 @@ describe('ProductsModule', () => {
   describe('updateProduct', () => {
     it('should call BaseClient.post with UpdateProductRequest array and rate limit key', async () => {
       // Arrange
-      const updates = [{
-        nmID: 12345,
-        vendorCode: 'VENDOR-001',
-        sizes: [],
-        title: 'Updated Title'
-      }];
+      const updates = [
+        {
+          nmID: 12345,
+          vendorCode: 'VENDOR-001',
+          sizes: [],
+          title: 'Updated Title',
+        },
+      ];
       const response = { error: false, errorText: '' };
       mockClient.post.mockResolvedValue(response);
 
@@ -784,7 +792,7 @@ describe('ProductsModule', () => {
       const updates = [
         { nmID: 12345, vendorCode: 'V1', sizes: [] },
         { nmID: 12346, vendorCode: 'V2', sizes: [] },
-        { nmID: 12347, vendorCode: 'V3', sizes: [] }
+        { nmID: 12347, vendorCode: 'V3', sizes: [] },
       ];
       mockClient.post.mockResolvedValue({ error: false, errorText: '' });
 
@@ -792,11 +800,7 @@ describe('ProductsModule', () => {
       await productsModule.updateProduct(updates);
 
       // Assert
-      expect(mockClient.post).toHaveBeenCalledWith(
-        expect.any(String),
-        updates,
-        expect.any(Object)
-      );
+      expect(mockClient.post).toHaveBeenCalledWith(expect.any(String), updates, expect.any(Object));
     });
 
     it('should throw ValidationError for missing nmID', async () => {
@@ -805,11 +809,15 @@ describe('ProductsModule', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.updateProduct([{
-        nmID: 0,
-        vendorCode: 'TEST',
-        sizes: []
-      }])).rejects.toThrow(ValidationError);
+      await expect(
+        productsModule.updateProduct([
+          {
+            nmID: 0,
+            vendorCode: 'TEST',
+            sizes: [],
+          },
+        ])
+      ).rejects.toThrow(ValidationError);
     });
   });
 
@@ -865,7 +873,7 @@ describe('ProductsModule', () => {
       const nmID = 12345;
       const response = {
         cards: [{ nmID: 12345, vendorCode: 'TEST-001', title: 'Test Product' }],
-        cursor: { total: 1 }
+        cursor: { total: 1 },
       };
       mockClient.post.mockResolvedValue(response);
 
@@ -887,8 +895,8 @@ describe('ProductsModule', () => {
       mockClient.post.mockResolvedValue({
         cards: [
           { nmID: 12345, vendorCode: 'TEST-001' },
-          { nmID: 12346, vendorCode: 'TEST-002' }
-        ]
+          { nmID: 12346, vendorCode: 'TEST-002' },
+        ],
       });
 
       // Act
@@ -929,7 +937,7 @@ describe('ProductsModule', () => {
         data: {},
         error: false,
         errorText: '',
-        additionalErrors: null
+        additionalErrors: null,
       };
 
       it('should call BaseClient.post with multipart/form-data', async () => {
@@ -947,7 +955,7 @@ describe('ProductsModule', () => {
         const [url, formData, options] = mockClient.post.mock.calls[0] as [
           string,
           FormData,
-          { rateLimitKey?: string; headers?: Record<string, string> } | undefined
+          { rateLimitKey?: string; headers?: Record<string, string> } | undefined,
         ];
         expect(url).toBe('https://content-api.wildberries.ru/content/v3/media/file');
         expect(formData).toBeInstanceOf(FormData);
@@ -969,12 +977,12 @@ describe('ProductsModule', () => {
         const [, , options] = mockClient.post.mock.calls[0] as [
           string,
           FormData,
-          { rateLimitKey?: string; headers?: Record<string, string> } | undefined
+          { rateLimitKey?: string; headers?: Record<string, string> } | undefined,
         ];
         expect(options?.headers).toEqual({
           'X-Nm-Id': '98765',
           'X-Photo-Number': '3',
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
         });
       });
 
@@ -997,17 +1005,14 @@ describe('ProductsModule', () => {
         data: {},
         error: false,
         errorText: '',
-        additionalErrors: null
+        additionalErrors: null,
       };
 
       it('should send nmId and data array', async () => {
         // Arrange
         mockClient.post.mockResolvedValue(mockMediaUploadResponse);
         const nmID = 12345;
-        const mediaURLs = [
-          'https://example.com/photo1.jpg',
-          'https://example.com/photo2.jpg'
-        ];
+        const mediaURLs = ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg'];
 
         // Act
         await productsModule.uploadMediaByURLs(nmID, mediaURLs);
@@ -1033,7 +1038,7 @@ describe('ProductsModule', () => {
         expect(mockClient.post).toHaveBeenCalledTimes(1);
         const [, body] = mockClient.post.mock.calls[0] as [
           string,
-          { nmId: number; data: string[] }
+          { nmId: number; data: string[] },
         ];
         expect(body.data).toEqual(newMediaURLs);
         expect(body.nmId).toBe(nmID);
@@ -1060,8 +1065,8 @@ describe('ProductsModule', () => {
           photos: [
             { big: 'https://example.com/photo1.jpg' },
             { big: 'https://example.com/photo2.jpg' },
-            { big: 'https://example.com/photo3.jpg' }
-          ]
+            { big: 'https://example.com/photo3.jpg' },
+          ],
         };
         mockClient.post.mockResolvedValue({ cards: [mockProductCard] });
 
@@ -1072,7 +1077,7 @@ describe('ProductsModule', () => {
         expect(result).toEqual([
           'https://example.com/photo1.jpg',
           'https://example.com/photo2.jpg',
-          'https://example.com/photo3.jpg'
+          'https://example.com/photo3.jpg',
         ]);
         expect(result).toHaveLength(3);
       });
@@ -1080,7 +1085,7 @@ describe('ProductsModule', () => {
       it('should return empty array if no photos', async () => {
         // Arrange
         mockClient.post.mockResolvedValue({
-          cards: [{ nmID: 12345, vendorCode: 'TEST-001' }]
+          cards: [{ nmID: 12345, vendorCode: 'TEST-001' }],
         });
 
         // Act
@@ -1106,7 +1111,7 @@ describe('ProductsModule', () => {
   describe('Pricing Management Methods', () => {
     describe('updatePricing()', () => {
       const mockPricingTaskResponse = {
-        uploadID: 'task-abc-123'
+        uploadID: 'task-abc-123',
       };
 
       it('should send pricing data array', async () => {
@@ -1114,7 +1119,7 @@ describe('ProductsModule', () => {
         mockClient.post.mockResolvedValue(mockPricingTaskResponse);
         const updates = [
           { nmID: 12345, price: 2999, discount: 15 },
-          { nmID: 54321, price: 1499, discount: 10 }
+          { nmID: 54321, price: 1499, discount: 10 },
         ];
 
         // Act
@@ -1147,7 +1152,7 @@ describe('ProductsModule', () => {
         const bulkUpdates = Array.from({ length: 50 }, (_, i) => ({
           nmID: 10000 + i,
           price: 999 + i,
-          discount: 5
+          discount: 5,
         }));
 
         // Act
@@ -1157,7 +1162,7 @@ describe('ProductsModule', () => {
         expect(mockClient.post).toHaveBeenCalledTimes(1);
         const [, body] = mockClient.post.mock.calls[0] as [
           string,
-          { data: { nmID: number; price?: number; discount?: number }[] }
+          { data: { nmID: number; price?: number; discount?: number }[] },
         ];
         expect(body.data).toHaveLength(50);
       });
@@ -1172,9 +1177,9 @@ describe('ProductsModule', () => {
             discount: 15,
             promoCode: 0,
             wbClubDiscount: 0,
-            currency: 'RUB'
-          }
-        ]
+            currency: 'RUB',
+          },
+        ],
       };
 
       it('should use GET endpoint with single nmID', async () => {
@@ -1190,7 +1195,7 @@ describe('ProductsModule', () => {
           'https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter',
           {
             params: { filterNmID: nmID },
-            rateLimitKey: 'products.getPricing'
+            rateLimitKey: 'products.getPricing',
           }
         );
         expect(result).toEqual(mockPricingResponse.data);
@@ -1200,9 +1205,23 @@ describe('ProductsModule', () => {
         // Arrange
         const multiPricingResponse = {
           data: [
-            { nmID: 12345, price: 2999, discount: 15, promoCode: 0, wbClubDiscount: 0, currency: 'RUB' },
-            { nmID: 54321, price: 1499, discount: 10, promoCode: 0, wbClubDiscount: 0, currency: 'RUB' }
-          ]
+            {
+              nmID: 12345,
+              price: 2999,
+              discount: 15,
+              promoCode: 0,
+              wbClubDiscount: 0,
+              currency: 'RUB',
+            },
+            {
+              nmID: 54321,
+              price: 1499,
+              discount: 10,
+              promoCode: 0,
+              wbClubDiscount: 0,
+              currency: 'RUB',
+            },
+          ],
         };
         mockClient.post.mockResolvedValue(multiPricingResponse);
         const nmIDs = [12345, 54321];
@@ -1239,7 +1258,7 @@ describe('ProductsModule', () => {
         uploadID: 'task-abc-123',
         status: 'completed',
         createdAt: '2025-10-22T00:00:00Z',
-        completedAt: '2025-10-22T00:01:00Z'
+        completedAt: '2025-10-22T00:01:00Z',
       };
 
       it('should query task status', async () => {
@@ -1255,7 +1274,7 @@ describe('ProductsModule', () => {
           'https://discounts-prices-api.wildberries.ru/api/v2/history/tasks',
           {
             params: { uploadID },
-            rateLimitKey: 'products.getPricingTaskStatus'
+            rateLimitKey: 'products.getPricingTaskStatus',
           }
         );
       });
@@ -1278,7 +1297,7 @@ describe('ProductsModule', () => {
         const pendingResponse = {
           ...mockTaskStatusResponse,
           status: 'pending' as const,
-          completedAt: undefined
+          completedAt: undefined,
         };
         mockClient.get.mockResolvedValue(pendingResponse);
 
@@ -1300,7 +1319,7 @@ describe('ProductsModule', () => {
     describe('getWBOffices()', () => {
       const mockWBOffices = [
         { id: 1, name: 'Коледино', city: 'Подольск', cargoType: 1, deliveryType: 1 },
-        { id: 2, name: 'Электросталь', city: 'Электросталь', cargoType: 2, deliveryType: 1 }
+        { id: 2, name: 'Электросталь', city: 'Электросталь', cargoType: 2, deliveryType: 1 },
       ];
 
       it('should fetch WB offices for binding', async () => {
@@ -1334,8 +1353,22 @@ describe('ProductsModule', () => {
 
     describe('getWarehouses()', () => {
       const mockWarehouses = [
-        { id: 123, name: 'Склад Москва', officeId: 1, cargoType: 1, isProcessing: false, isDeleting: false },
-        { id: 456, name: 'Склад СПБ', officeId: 2, cargoType: 2, isProcessing: false, isDeleting: false }
+        {
+          id: 123,
+          name: 'Склад Москва',
+          officeId: 1,
+          cargoType: 1,
+          isProcessing: false,
+          isDeleting: false,
+        },
+        {
+          id: 456,
+          name: 'Склад СПБ',
+          officeId: 2,
+          cargoType: 2,
+          isProcessing: false,
+          isDeleting: false,
+        },
       ];
 
       it('should fetch seller warehouses', async () => {
@@ -1482,8 +1515,8 @@ describe('ProductsModule', () => {
       const mockStockResponse = {
         stocks: [
           { sku: 'BARCODE123', amount: 100 },
-          { sku: 'BARCODE456', amount: 50 }
-        ]
+          { sku: 'BARCODE456', amount: 50 },
+        ],
       };
 
       it('should fetch stock for SKUs at warehouse', async () => {
@@ -1536,7 +1569,7 @@ describe('ProductsModule', () => {
         const warehouseId = 123;
         const updates = [
           { sku: 'BARCODE123', amount: 100 },
-          { sku: 'BARCODE456', amount: 50 }
+          { sku: 'BARCODE456', amount: 50 },
         ];
 
         // Act
@@ -1557,7 +1590,7 @@ describe('ProductsModule', () => {
         );
         const tooManyUpdates = Array.from({ length: 1001 }, (_, i) => ({
           sku: `SKU${i}`,
-          amount: 1
+          amount: 1,
         }));
         await expect(productsModule.updateStockLevels(123, tooManyUpdates)).rejects.toThrow(
           'Stock updates array must contain 1-1000 items'

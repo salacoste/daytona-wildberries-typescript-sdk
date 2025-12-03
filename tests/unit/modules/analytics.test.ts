@@ -176,10 +176,10 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getSalesFunnel(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getSalesFunnel(invalidRequest))
-        .rejects.toThrow('Invalid period: begin date must be before end date');
+      await expect(analyticsModule.getSalesFunnel(invalidRequest)).rejects.toThrow(ValidationError);
+      await expect(analyticsModule.getSalesFunnel(invalidRequest)).rejects.toThrow(
+        'Invalid period: begin date must be before end date'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -363,10 +363,12 @@ describe('AnalyticsModule', () => {
 
     it('should throw ValidationError when productIds array is empty', async () => {
       // Act & Assert
-      await expect(analyticsModule.getProductPerformance([], mockDateRange))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getProductPerformance([], mockDateRange))
-        .rejects.toThrow('Product IDs array cannot be empty');
+      await expect(analyticsModule.getProductPerformance([], mockDateRange)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getProductPerformance([], mockDateRange)).rejects.toThrow(
+        'Product IDs array cannot be empty'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -376,10 +378,12 @@ describe('AnalyticsModule', () => {
       const tooManyIds = Array.from({ length: 51 }, (_, i) => i + 1);
 
       // Act & Assert
-      await expect(analyticsModule.getProductPerformance(tooManyIds, mockDateRange))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getProductPerformance(tooManyIds, mockDateRange))
-        .rejects.toThrow('Product IDs array cannot exceed 50 items');
+      await expect(
+        analyticsModule.getProductPerformance(tooManyIds, mockDateRange)
+      ).rejects.toThrow(ValidationError);
+      await expect(
+        analyticsModule.getProductPerformance(tooManyIds, mockDateRange)
+      ).rejects.toThrow('Product IDs array cannot exceed 50 items');
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -389,10 +393,12 @@ describe('AnalyticsModule', () => {
       const invalidRange = { from: '2024-01-31', to: '2024-01-01' };
 
       // Act & Assert
-      await expect(analyticsModule.getProductPerformance([12345], invalidRange))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getProductPerformance([12345], invalidRange))
-        .rejects.toThrow('Invalid date range: from date must be before to date');
+      await expect(analyticsModule.getProductPerformance([12345], invalidRange)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getProductPerformance([12345], invalidRange)).rejects.toThrow(
+        'Invalid date range: from date must be before to date'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -485,10 +491,10 @@ describe('AnalyticsModule', () => {
       const invalidRange = { from: '2024-01-31', to: '2024-01-01' };
 
       // Act & Assert
-      await expect(analyticsModule.getSearchQueries(invalidRange))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getSearchQueries(invalidRange))
-        .rejects.toThrow('Invalid date range: from date must be before to date');
+      await expect(analyticsModule.getSearchQueries(invalidRange)).rejects.toThrow(ValidationError);
+      await expect(analyticsModule.getSearchQueries(invalidRange)).rejects.toThrow(
+        'Invalid date range: from date must be before to date'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -668,10 +674,12 @@ describe('AnalyticsModule', () => {
 
     it('should throw ValidationError when categoryId is empty', async () => {
       // Act & Assert
-      await expect(analyticsModule.getCategoryPerformance('', mockDateRange))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getCategoryPerformance('', mockDateRange))
-        .rejects.toThrow('Category ID cannot be empty');
+      await expect(analyticsModule.getCategoryPerformance('', mockDateRange)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getCategoryPerformance('', mockDateRange)).rejects.toThrow(
+        'Category ID cannot be empty'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -681,10 +689,12 @@ describe('AnalyticsModule', () => {
       const invalidRange = { from: '2024-01-31', to: '2024-01-01' };
 
       // Act & Assert
-      await expect(analyticsModule.getCategoryPerformance(mockCategoryId, invalidRange))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getCategoryPerformance(mockCategoryId, invalidRange))
-        .rejects.toThrow('Invalid date range: from date must be before to date');
+      await expect(
+        analyticsModule.getCategoryPerformance(mockCategoryId, invalidRange)
+      ).rejects.toThrow(ValidationError);
+      await expect(
+        analyticsModule.getCategoryPerformance(mockCategoryId, invalidRange)
+      ).rejects.toThrow('Invalid date range: from date must be before to date');
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -742,10 +752,10 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.generateReport(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.generateReport(invalidRequest))
-        .rejects.toThrow('Invalid date range: from date must be before to date');
+      await expect(analyticsModule.generateReport(invalidRequest)).rejects.toThrow(ValidationError);
+      await expect(analyticsModule.generateReport(invalidRequest)).rejects.toThrow(
+        'Invalid date range: from date must be before to date'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -797,10 +807,8 @@ describe('AnalyticsModule', () => {
 
     it('should throw ValidationError when reportId is empty', async () => {
       // Act & Assert
-      await expect(analyticsModule.getReport(''))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getReport(''))
-        .rejects.toThrow('Report ID cannot be empty');
+      await expect(analyticsModule.getReport('')).rejects.toThrow(ValidationError);
+      await expect(analyticsModule.getReport('')).rejects.toThrow('Report ID cannot be empty');
 
       expect(mockClient.get).not.toHaveBeenCalled();
     });
@@ -845,10 +853,10 @@ describe('AnalyticsModule', () => {
       mockClient.get.mockResolvedValue(pendingReport);
 
       // Act & Assert
-      await expect(analyticsModule.downloadReport(mockReportId))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.downloadReport(mockReportId))
-        .rejects.toThrow('Report is not ready for download. Current status: pending');
+      await expect(analyticsModule.downloadReport(mockReportId)).rejects.toThrow(ValidationError);
+      await expect(analyticsModule.downloadReport(mockReportId)).rejects.toThrow(
+        'Report is not ready for download. Current status: pending'
+      );
     });
 
     it('should throw ValidationError when download URL is missing', async () => {
@@ -865,10 +873,10 @@ describe('AnalyticsModule', () => {
       mockClient.get.mockResolvedValue(reportWithoutUrl);
 
       // Act & Assert
-      await expect(analyticsModule.downloadReport(mockReportId))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.downloadReport(mockReportId))
-        .rejects.toThrow('Report is completed but download URL is not available');
+      await expect(analyticsModule.downloadReport(mockReportId)).rejects.toThrow(ValidationError);
+      await expect(analyticsModule.downloadReport(mockReportId)).rejects.toThrow(
+        'Report is completed but download URL is not available'
+      );
     });
   });
 
@@ -1022,10 +1030,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getProductSearchTexts(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getProductSearchTexts(invalidRequest))
-        .rejects.toThrow('currentPeriod with start and end dates is required');
+      await expect(analyticsModule.getProductSearchTexts(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getProductSearchTexts(invalidRequest)).rejects.toThrow(
+        'currentPeriod with start and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1041,10 +1051,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getProductSearchTexts(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getProductSearchTexts(invalidRequest))
-        .rejects.toThrow('Product nmId is required');
+      await expect(analyticsModule.getProductSearchTexts(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getProductSearchTexts(invalidRequest)).rejects.toThrow(
+        'Product nmId is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1117,10 +1129,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getProductOrders(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getProductOrders(invalidRequest))
-        .rejects.toThrow('currentPeriod with start and end dates is required');
+      await expect(analyticsModule.getProductOrders(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getProductOrders(invalidRequest)).rejects.toThrow(
+        'currentPeriod with start and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1192,10 +1206,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getStocksProducts(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getStocksProducts(invalidRequest))
-        .rejects.toThrow('period with start and end dates is required');
+      await expect(analyticsModule.getStocksProducts(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getStocksProducts(invalidRequest)).rejects.toThrow(
+        'period with start and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1271,10 +1287,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getStocksOffices(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getStocksOffices(invalidRequest))
-        .rejects.toThrow('period with start and end dates is required');
+      await expect(analyticsModule.getStocksOffices(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getStocksOffices(invalidRequest)).rejects.toThrow(
+        'period with start and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1359,10 +1377,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getGroupedHistory(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getGroupedHistory(invalidRequest))
-        .rejects.toThrow('period with begin and end dates is required');
+      await expect(analyticsModule.getGroupedHistory(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getGroupedHistory(invalidRequest)).rejects.toThrow(
+        'period with begin and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1377,10 +1397,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getGroupedHistory(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getGroupedHistory(invalidRequest))
-        .rejects.toThrow('Period cannot exceed 7 days for grouped history');
+      await expect(analyticsModule.getGroupedHistory(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getGroupedHistory(invalidRequest)).rejects.toThrow(
+        'Period cannot exceed 7 days for grouped history'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1431,10 +1453,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.retryReportGeneration(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.retryReportGeneration(invalidRequest))
-        .rejects.toThrow('Download ID is required');
+      await expect(analyticsModule.retryReportGeneration(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.retryReportGeneration(invalidRequest)).rejects.toThrow(
+        'Download ID is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1446,10 +1470,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.retryReportGeneration(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.retryReportGeneration(invalidRequest))
-        .rejects.toThrow('Download ID must be a valid UUID');
+      await expect(analyticsModule.retryReportGeneration(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.retryReportGeneration(invalidRequest)).rejects.toThrow(
+        'Download ID must be a valid UUID'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1533,8 +1559,9 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getSearchReportTableGroups(invalidRequest))
-        .rejects.toThrow(ValidationError);
+      await expect(analyticsModule.getSearchReportTableGroups(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1547,10 +1574,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getSearchReportTableGroups(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getSearchReportTableGroups(invalidRequest))
-        .rejects.toThrow('limit must be between 1 and 1000');
+      await expect(analyticsModule.getSearchReportTableGroups(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getSearchReportTableGroups(invalidRequest)).rejects.toThrow(
+        'limit must be between 1 and 1000'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1641,10 +1670,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getSearchReportTableDetails(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getSearchReportTableDetails(invalidRequest))
-        .rejects.toThrow('nmIds cannot exceed 50 items');
+      await expect(analyticsModule.getSearchReportTableDetails(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getSearchReportTableDetails(invalidRequest)).rejects.toThrow(
+        'nmIds cannot exceed 50 items'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1718,10 +1749,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getStocksProductsGroups(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getStocksProductsGroups(invalidRequest))
-        .rejects.toThrow('period with start and end dates is required');
+      await expect(analyticsModule.getStocksProductsGroups(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getStocksProductsGroups(invalidRequest)).rejects.toThrow(
+        'period with start and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1812,10 +1845,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getStocksProductsSizes(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getStocksProductsSizes(invalidRequest))
-        .rejects.toThrow('period with start and end dates is required');
+      await expect(analyticsModule.getStocksProductsSizes(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getStocksProductsSizes(invalidRequest)).rejects.toThrow(
+        'period with start and end dates is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });
@@ -1831,10 +1866,12 @@ describe('AnalyticsModule', () => {
       };
 
       // Act & Assert
-      await expect(analyticsModule.getStocksProductsSizes(invalidRequest))
-        .rejects.toThrow(ValidationError);
-      await expect(analyticsModule.getStocksProductsSizes(invalidRequest))
-        .rejects.toThrow('nmID is required');
+      await expect(analyticsModule.getStocksProductsSizes(invalidRequest)).rejects.toThrow(
+        ValidationError
+      );
+      await expect(analyticsModule.getStocksProductsSizes(invalidRequest)).rejects.toThrow(
+        'nmID is required'
+      );
 
       expect(mockClient.post).not.toHaveBeenCalled();
     });

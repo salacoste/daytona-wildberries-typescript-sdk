@@ -139,13 +139,10 @@ export class FinancesModule {
   async getTransactions(filters: TransactionFilters): Promise<TransactionListResponse> {
     // Validate required parameters
     if (!filters.dateFrom || !filters.dateTo) {
-      throw new ValidationError(
-        'Both dateFrom and dateTo are required for transaction queries',
-        {
-          dateFrom: filters.dateFrom || 'missing',
-          dateTo: filters.dateTo || 'missing',
-        }
-      );
+      throw new ValidationError('Both dateFrom and dateTo are required for transaction queries', {
+        dateFrom: filters.dateFrom || 'missing',
+        dateTo: filters.dateTo || 'missing',
+      });
     }
 
     return this.client.get<TransactionListResponse>(
@@ -418,7 +415,10 @@ export class FinancesModule {
    * });
    * ```
    */
-  async getFinancialReport(filters: { dateFrom: string; dateTo: string }): Promise<TransactionListResponse> {
+  async getFinancialReport(filters: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<TransactionListResponse> {
     // Validate required parameters
     if (!filters.dateFrom || !filters.dateTo) {
       throw new ValidationError(
@@ -587,14 +587,11 @@ export class FinancesModule {
     const report = await this.getReport(reportId);
 
     if (report.status !== 'completed') {
-      throw new ValidationError(
-        `Report not ready for download. Current status: ${report.status}`,
-        {
-          reportId,
-          status: report.status,
-          error: report.error ?? 'none',
-        }
-      );
+      throw new ValidationError(`Report not ready for download. Current status: ${report.status}`, {
+        reportId,
+        status: report.status,
+        error: report.error ?? 'none',
+      });
     }
 
     if (!report.url || !report.expiresAt) {

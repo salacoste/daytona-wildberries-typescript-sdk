@@ -298,13 +298,7 @@ describe('path-parser', () => {
       const operations = parsePaths(paths);
 
       expect(operations).toHaveLength(5);
-      expect(operations.map((op) => op.method)).toEqual([
-        'get',
-        'post',
-        'put',
-        'patch',
-        'delete',
-      ]);
+      expect(operations.map((op) => op.method)).toEqual(['get', 'post', 'put', 'patch', 'delete']);
     });
 
     it('should handle empty paths object', () => {

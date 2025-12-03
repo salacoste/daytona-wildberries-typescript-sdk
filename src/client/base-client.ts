@@ -194,11 +194,7 @@ export class BaseClient {
    * );
    * ```
    */
-  async post<T>(
-    url: string,
-    data?: unknown,
-    options?: RequestOptions
-  ): Promise<T> {
+  async post<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
     return this.retryHandler.executeWithRetry(async () => {
       // Apply rate limiting if rateLimitKey provided
       if (options?.rateLimitKey) {
@@ -250,11 +246,7 @@ export class BaseClient {
    * );
    * ```
    */
-  async put<T>(
-    url: string,
-    data?: unknown,
-    options?: RequestOptions
-  ): Promise<T> {
+  async put<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
     return this.retryHandler.executeWithRetry(async () => {
       // Apply rate limiting if rateLimitKey provided
       if (options?.rateLimitKey) {
@@ -306,11 +298,7 @@ export class BaseClient {
    * );
    * ```
    */
-  async patch<T>(
-    url: string,
-    data?: unknown,
-    options?: RequestOptions
-  ): Promise<T> {
+  async patch<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
     return this.retryHandler.executeWithRetry(async () => {
       // Apply rate limiting if rateLimitKey provided
       if (options?.rateLimitKey) {
@@ -441,20 +429,14 @@ export class BaseClient {
     // Type guard for Axios errors
     if (!axios.isAxiosError(error)) {
       this.log('error', 'Unknown error occurred', { error });
-      throw new NetworkError(
-        'Unknown error occurred',
-        false,
-        0,
-        error as Error
-      );
+      throw new NetworkError('Unknown error occurred', false, 0, error as Error);
     }
 
     const axiosError = error as AxiosError;
 
     // No response = network failure
     if (!axiosError.response) {
-      const isTimeout =
-        axiosError.code === 'ECONNABORTED' || axiosError.code === 'ETIMEDOUT';
+      const isTimeout = axiosError.code === 'ECONNABORTED' || axiosError.code === 'ETIMEDOUT';
 
       this.log('error', 'Network error', {
         code: axiosError.code,
@@ -480,10 +462,7 @@ export class BaseClient {
 
     // Transform based on status code
     if (status === 401 || status === 403) {
-      throw new AuthenticationError(
-        'Authentication failed. Please verify your API key.',
-        status
-      );
+      throw new AuthenticationError('Authentication failed. Please verify your API key.', status);
     }
 
     if (status === 429) {
@@ -498,20 +477,11 @@ export class BaseClient {
 
     if (status === 400 || status === 422) {
       const fieldErrors = this.extractFieldErrors(responseData);
-      throw new ValidationError(
-        'Validation failed',
-        fieldErrors,
-        status
-      );
+      throw new ValidationError('Validation failed', fieldErrors, status);
     }
 
     if (status >= 500) {
-      throw new NetworkError(
-        `Server error: ${status.toString()}`,
-        false,
-        status,
-        axiosError
-      );
+      throw new NetworkError(`Server error: ${status.toString()}`, false, status, axiosError);
     }
 
     // Fallback for unexpected status codes
@@ -540,9 +510,7 @@ export class BaseClient {
    *
    * @private
    */
-  private extractFieldErrors(
-    responseData: unknown
-  ): Record<string, string> | undefined {
+  private extractFieldErrors(responseData: unknown): Record<string, string> | undefined {
     // Parse API-specific error format
     if (
       responseData &&
@@ -568,11 +536,7 @@ export class BaseClient {
    *
    * @private
    */
-  private log(
-    level: 'debug' | 'info' | 'warn' | 'error',
-    message: string,
-    meta?: unknown
-  ): void {
+  private log(level: 'debug' | 'info' | 'warn' | 'error', message: string, meta?: unknown): void {
     const levels = { debug: 0, info: 1, warn: 2, error: 3 };
     const currentLevel = levels[this.logLevel];
     const messageLevel = levels[level];
@@ -644,9 +608,7 @@ export class BaseClient {
    *
    * @private
    */
-  private sanitizeHeaders(
-    headers: Record<string, string>
-  ): Record<string, string> {
+  private sanitizeHeaders(headers: Record<string, string>): Record<string, string> {
     const sanitized = { ...headers };
     if (sanitized.Authorization) {
       sanitized.Authorization = 'Bearer ***';

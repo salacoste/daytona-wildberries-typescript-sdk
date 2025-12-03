@@ -224,10 +224,7 @@ describe('Multiple SDK Instances', () => {
     const sdk1 = new WildberriesSDK({ apiKey: 'key-1' });
     const sdk2 = new WildberriesSDK({ apiKey: 'key-2' });
 
-    const [response1, response2] = await Promise.all([
-      sdk1.general.ping(),
-      sdk2.general.ping(),
-    ]);
+    const [response1, response2] = await Promise.all([sdk1.general.ping(), sdk2.general.ping()]);
 
     expect(response1.Status).toBe('OK');
     expect(response2.Status).toBe('OK');

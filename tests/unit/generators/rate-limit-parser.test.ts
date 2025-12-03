@@ -17,7 +17,7 @@ import {
   parseOperationRateLimit,
   generateRateLimitMap,
   DEFAULT_RATE_LIMIT_CONFIG,
-  type RateLimitInfo
+  type RateLimitInfo,
 } from '../../../tools/generators/rate-limit-parser.js';
 import type { ParsedOperation } from '../../../tools/generators/path-parser.js';
 
@@ -159,7 +159,9 @@ describe('Rate Limit Parser', () => {
       let consoleSpy: ReturnType<typeof vi.spyOn>;
 
       beforeEach(() => {
-        consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
+        consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<
+          typeof vi.spyOn
+        >;
       });
 
       afterEach(() => {
@@ -199,7 +201,7 @@ describe('Rate Limit Parser', () => {
         interval: '600 миллисекунд',
         intervalValue: 600,
         intervalUnit: 'миллисекунд',
-        burst: 5
+        burst: 5,
       });
     });
 
@@ -218,7 +220,7 @@ describe('Rate Limit Parser', () => {
         limit: 6,
         intervalValue: 10,
         intervalUnit: 'секунд',
-        burst: 1
+        burst: 1,
       });
     });
 
@@ -313,14 +315,14 @@ describe('Rate Limit Parser', () => {
         interval: '600 миллисекунд',
         intervalValue: 600,
         intervalUnit: 'миллисекунд',
-        burst: 5
+        burst: 5,
       };
 
       const result = generateRateLimitConfig(info);
       expect(result).toMatchObject({
         requestsPerMinute: 100,
         intervalSeconds: 0.6,
-        burstLimit: 5
+        burstLimit: 5,
       });
     });
 
@@ -333,7 +335,7 @@ describe('Rate Limit Parser', () => {
         interval: '2 секунды',
         intervalValue: 2,
         intervalUnit: 'секунды',
-        burst: 5
+        burst: 5,
       };
 
       const result = generateRateLimitConfig(info);
@@ -351,14 +353,14 @@ describe('Rate Limit Parser', () => {
         interval: '10 секунд',
         intervalValue: 10,
         intervalUnit: 'секунд',
-        burst: 1
+        burst: 1,
       };
 
       const result = generateRateLimitConfig(info);
       expect(result).toMatchObject({
         requestsPerMinute: 6,
         intervalSeconds: 10,
-        burstLimit: 1
+        burstLimit: 1,
       });
     });
 
@@ -371,7 +373,7 @@ describe('Rate Limit Parser', () => {
         interval: '8 секунд',
         intervalValue: 8,
         intervalUnit: 'секунд',
-        burst: 2
+        burst: 2,
       };
 
       const result = generateRateLimitConfig(info);
@@ -388,7 +390,7 @@ describe('Rate Limit Parser', () => {
         interval: '100 миллисекунд',
         intervalValue: 100,
         intervalUnit: 'миллисекунд',
-        burst: 50
+        burst: 50,
       };
 
       const result = generateRateLimitConfig(info);
@@ -405,7 +407,7 @@ describe('Rate Limit Parser', () => {
       expect(result).toMatchObject({
         requestsPerMinute: 10,
         intervalSeconds: 6,
-        burstLimit: 5
+        burstLimit: 5,
       });
     });
 
@@ -420,8 +422,12 @@ describe('Rate Limit Parser', () => {
     let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
-      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
+      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined) as ReturnType<
+        typeof vi.spyOn
+      >;
+      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<
+        typeof vi.spyOn
+      >;
     });
 
     afterEach(() => {
@@ -440,14 +446,14 @@ describe('Rate Limit Parser', () => {
           | --- | --- | --- | --- |
           | 1 минута | 30 запросов | 2 секунды | 10 запросов |
         `,
-        responses: { '200': { description: 'Success' } }
+        responses: { '200': { description: 'Success' } },
       };
 
       const result = parseOperationRateLimit(operation, 'general.getNews');
       expect(result).toMatchObject({
         requestsPerMinute: 30,
         intervalSeconds: 2,
-        burstLimit: 10
+        burstLimit: 10,
       });
       expect(consoleSpy).toHaveBeenCalledWith(
         'Parsed rate limit for general.getNews:',
@@ -462,7 +468,7 @@ describe('Rate Limit Parser', () => {
         path: '/ping',
         method: 'get',
         summary: 'Ping endpoint',
-        responses: { '200': { description: 'Pong' } }
+        responses: { '200': { description: 'Pong' } },
       };
 
       const result = parseOperationRateLimit(operation, 'general.ping');
@@ -478,7 +484,7 @@ describe('Rate Limit Parser', () => {
         method: 'get',
         summary: 'Ping endpoint',
         description: 'Simple ping endpoint without rate limit table',
-        responses: { '200': { description: 'Pong' } }
+        responses: { '200': { description: 'Pong' } },
       };
 
       const result = parseOperationRateLimit(operation, 'general.ping');
@@ -498,7 +504,7 @@ describe('Rate Limit Parser', () => {
           | --- | --- | --- |
           | invalid | data | format |
         `,
-        responses: { '200': { description: 'Success' } }
+        responses: { '200': { description: 'Success' } },
       };
 
       const result = parseOperationRateLimit(operation, 'module.endpoint');
@@ -514,8 +520,12 @@ describe('Rate Limit Parser', () => {
     let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
-      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<typeof vi.spyOn>;
+      consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined) as ReturnType<
+        typeof vi.spyOn
+      >;
+      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined) as ReturnType<
+        typeof vi.spyOn
+      >;
     });
 
     afterEach(() => {
@@ -530,7 +540,7 @@ describe('Rate Limit Parser', () => {
           method: 'get',
           summary: 'Ping',
           description: 'Ping endpoint',
-          responses: { '200': { description: 'Pong' } }
+          responses: { '200': { description: 'Pong' } },
         },
         {
           path: '/api/v1/news',
@@ -541,13 +551,13 @@ describe('Rate Limit Parser', () => {
             | --- | --- | --- | --- |
             | 1 минута | 30 запросов | 2 секунды | 10 запросов |
           `,
-          responses: { '200': { description: 'Success' } }
-        }
+          responses: { '200': { description: 'Success' } },
+        },
       ];
 
       const methodNames = new Map([
         ['/ping:get', 'ping'],
-        ['/api/v1/news:get', 'getNews']
+        ['/api/v1/news:get', 'getNews'],
       ]);
 
       const result = generateRateLimitMap(operations, 'general', methodNames);
@@ -558,7 +568,7 @@ describe('Rate Limit Parser', () => {
       expect(result['general.getNews']).toMatchObject({
         requestsPerMinute: 30,
         intervalSeconds: 2,
-        burstLimit: 10
+        burstLimit: 10,
       });
     });
 
@@ -568,8 +578,8 @@ describe('Rate Limit Parser', () => {
           path: '/unknown',
           method: 'get',
           summary: 'Unknown',
-          responses: { '200': { description: 'OK' } }
-        }
+          responses: { '200': { description: 'OK' } },
+        },
       ];
 
       const methodNames = new Map<string, string>();
@@ -588,13 +598,11 @@ describe('Rate Limit Parser', () => {
           path: '/products',
           method: 'post',
           summary: 'Create product',
-          responses: { '200': { description: 'Created' } }
-        }
+          responses: { '200': { description: 'Created' } },
+        },
       ];
 
-      const methodNames = new Map([
-        ['/products:post', 'createProduct']
-      ]);
+      const methodNames = new Map([['/products:post', 'createProduct']]);
 
       const result = generateRateLimitMap(operations, 'products', methodNames);
 
@@ -638,7 +646,7 @@ describe('Rate Limit Parser', () => {
         expect(config).toMatchObject({
           requestsPerMinute: 100,
           intervalSeconds: 0.6,
-          burstLimit: 5
+          burstLimit: 5,
         });
       }
     });

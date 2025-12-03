@@ -64,9 +64,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      const result = await client.get<ProductResponse>(
-        `${TEST_API_URL}/products/123`
-      );
+      const result = await client.get<ProductResponse>(`${TEST_API_URL}/products/123`);
 
       expect(result).toEqual(mockProduct);
       expect(result.id).toBe('123');
@@ -124,10 +122,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      const result = await client.put(
-        `${TEST_API_URL}/products/123`,
-        updateData
-      );
+      const result = await client.put(`${TEST_API_URL}/products/123`, updateData);
 
       expect(result).toEqual({ success: true, ...updateData });
     });
@@ -141,10 +136,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      const result = await client.patch(
-        `${TEST_API_URL}/products/123`,
-        patchData
-      );
+      const result = await client.patch(`${TEST_API_URL}/products/123`, patchData);
 
       expect(result).toEqual({ updated: true, ...patchData });
     });
@@ -225,16 +217,11 @@ describe('BaseClient Integration Tests', () => {
     it('should handle 401 as AuthenticationError', async () => {
       server.use(
         http.get(`${TEST_API_URL}/protected`, () => {
-          return new HttpResponse(
-            JSON.stringify({ error: 'Unauthorized' }),
-            { status: 401 }
-          );
+          return new HttpResponse(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
         })
       );
 
-      await expect(client.get(`${TEST_API_URL}/protected`)).rejects.toThrow(
-        AuthenticationError
-      );
+      await expect(client.get(`${TEST_API_URL}/protected`)).rejects.toThrow(AuthenticationError);
 
       try {
         await client.get(`${TEST_API_URL}/protected`);
@@ -254,23 +241,18 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      await expect(client.get(`${TEST_API_URL}/forbidden`)).rejects.toThrow(
-        AuthenticationError
-      );
+      await expect(client.get(`${TEST_API_URL}/forbidden`)).rejects.toThrow(AuthenticationError);
     });
 
     it('should handle 429 as RateLimitError with Retry-After header', async () => {
       server.use(
         http.get(`${TEST_API_URL}/rate-limited`, () => {
-          return new HttpResponse(
-            JSON.stringify({ error: 'Too Many Requests' }),
-            {
-              status: 429,
-              headers: {
-                'Retry-After': '10', // 10 seconds
-              },
-            }
-          );
+          return new HttpResponse(JSON.stringify({ error: 'Too Many Requests' }), {
+            status: 429,
+            headers: {
+              'Retry-After': '10', // 10 seconds
+            },
+          });
         })
       );
 
@@ -314,25 +296,23 @@ describe('BaseClient Integration Tests', () => {
     it('should handle 422 as ValidationError', async () => {
       server.use(
         http.post(`${TEST_API_URL}/unprocessable`, () => {
-          return new HttpResponse(
-            JSON.stringify({ error: 'Unprocessable Entity' }),
-            { status: 422 }
-          );
+          return new HttpResponse(JSON.stringify({ error: 'Unprocessable Entity' }), {
+            status: 422,
+          });
         })
       );
 
-      await expect(
-        client.post(`${TEST_API_URL}/unprocessable`, {})
-      ).rejects.toThrow(ValidationError);
+      await expect(client.post(`${TEST_API_URL}/unprocessable`, {})).rejects.toThrow(
+        ValidationError
+      );
     });
 
     it('should handle 500 as NetworkError', async () => {
       server.use(
         http.get(`${TEST_API_URL}/server-error`, () => {
-          return new HttpResponse(
-            JSON.stringify({ error: 'Internal Server Error' }),
-            { status: 500 }
-          );
+          return new HttpResponse(JSON.stringify({ error: 'Internal Server Error' }), {
+            status: 500,
+          });
         })
       );
 
@@ -353,9 +333,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      await expect(client.get(`${TEST_API_URL}/bad-gateway`)).rejects.toThrow(
-        NetworkError
-      );
+      await expect(client.get(`${TEST_API_URL}/bad-gateway`)).rejects.toThrow(NetworkError);
     });
 
     it('should handle 503 as NetworkError', async () => {
@@ -365,9 +343,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      await expect(
-        client.get(`${TEST_API_URL}/service-unavailable`)
-      ).rejects.toThrow(NetworkError);
+      await expect(client.get(`${TEST_API_URL}/service-unavailable`)).rejects.toThrow(NetworkError);
     });
   });
 
@@ -454,9 +430,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      const result = await client.get<typeof products>(
-        `${TEST_API_URL}/products`
-      );
+      const result = await client.get<typeof products>(`${TEST_API_URL}/products`);
 
       expect(Array.isArray(result)).toBe(true);
       expect(result).toHaveLength(3);
@@ -487,9 +461,7 @@ describe('BaseClient Integration Tests', () => {
         })
       );
 
-      const result = await client.get<typeof complexResponse>(
-        `${TEST_API_URL}/complex`
-      );
+      const result = await client.get<typeof complexResponse>(`${TEST_API_URL}/complex`);
 
       expect(result.data.user.name).toBe('John Doe');
       expect(result.data.user.settings.theme).toBe('dark');

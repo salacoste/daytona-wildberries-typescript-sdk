@@ -136,27 +136,30 @@ describe('Orders FBW Integration Tests', () => {
 
     it('should filter coefficients by warehouse IDs', async () => {
       server.use(
-        http.get('https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients', ({ request }) => {
-          const url = new URL(request.url);
-          const warehouseIDs = url.searchParams.get('warehouseIDs');
+        http.get(
+          'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
+          ({ request }) => {
+            const url = new URL(request.url);
+            const warehouseIDs = url.searchParams.get('warehouseIDs');
 
-          expect(warehouseIDs).toBe('507,117501');
+            expect(warehouseIDs).toBe('507,117501');
 
-          return HttpResponse.json([
-            {
-              date: '2024-01-25',
-              coefficient: 0,
-              warehouseID: 507,
-              warehouseName: 'Коледино',
-              allowUnload: true,
-              boxTypeName: 'Короба',
-              boxTypeID: 1,
-              storageCoef: 1.0,
-              deliveryCoef: 1.0,
-              isSortingCenter: false,
-            },
-          ]);
-        })
+            return HttpResponse.json([
+              {
+                date: '2024-01-25',
+                coefficient: 0,
+                warehouseID: 507,
+                warehouseName: 'Коледино',
+                allowUnload: true,
+                boxTypeName: 'Короба',
+                boxTypeID: 1,
+                storageCoef: 1.0,
+                deliveryCoef: 1.0,
+                isSortingCenter: false,
+              },
+            ]);
+          }
+        )
       );
 
       const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients('507,117501');
@@ -179,41 +182,44 @@ describe('Orders FBW Integration Tests', () => {
       ];
 
       server.use(
-        http.post('https://supplies-api.wildberries.ru/api/v1/acceptance/options', async ({ request }) => {
-          const body = await request.json();
-          expect(body).toEqual(goods);
+        http.post(
+          'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
+          async ({ request }) => {
+            const body = await request.json();
+            expect(body).toEqual(goods);
 
-          return HttpResponse.json({
-            result: [
-              {
-                barcode: '1234567891234',
-                warehouses: [
-                  {
-                    warehouseID: 507,
-                    warehouseName: 'Коледино',
-                    canBox: true,
-                    canMonopallet: false,
-                    canSupersafe: false,
-                  },
-                ],
-                isError: false,
-              },
-              {
-                barcode: '9876543210987',
-                warehouses: [
-                  {
-                    warehouseID: 117501,
-                    warehouseName: 'Санкт-Петербург',
-                    canBox: true,
-                    canMonopallet: true,
-                    canSupersafe: false,
-                  },
-                ],
-                isError: false,
-              },
-            ],
-          });
-        })
+            return HttpResponse.json({
+              result: [
+                {
+                  barcode: '1234567891234',
+                  warehouses: [
+                    {
+                      warehouseID: 507,
+                      warehouseName: 'Коледино',
+                      canBox: true,
+                      canMonopallet: false,
+                      canSupersafe: false,
+                    },
+                  ],
+                  isError: false,
+                },
+                {
+                  barcode: '9876543210987',
+                  warehouses: [
+                    {
+                      warehouseID: 117501,
+                      warehouseName: 'Санкт-Петербург',
+                      canBox: true,
+                      canMonopallet: true,
+                      canSupersafe: false,
+                    },
+                  ],
+                  isError: false,
+                },
+              ],
+            });
+          }
+        )
       );
 
       const options = await sdk.ordersFBW.getAcceptanceOptions(goods);
@@ -232,30 +238,33 @@ describe('Orders FBW Integration Tests', () => {
       const goods: Good[] = [{ barcode: '1234567891234', quantity: 10 }];
 
       server.use(
-        http.post('https://supplies-api.wildberries.ru/api/v1/acceptance/options', ({ request }) => {
-          const url = new URL(request.url);
-          const warehouseID = url.searchParams.get('warehouseID');
+        http.post(
+          'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
+          ({ request }) => {
+            const url = new URL(request.url);
+            const warehouseID = url.searchParams.get('warehouseID');
 
-          expect(warehouseID).toBe('507');
+            expect(warehouseID).toBe('507');
 
-          return HttpResponse.json({
-            result: [
-              {
-                barcode: '1234567891234',
-                warehouses: [
-                  {
-                    warehouseID: 507,
-                    warehouseName: 'Коледино',
-                    canBox: true,
-                    canMonopallet: false,
-                    canSupersafe: false,
-                  },
-                ],
-                isError: false,
-              },
-            ],
-          });
-        })
+            return HttpResponse.json({
+              result: [
+                {
+                  barcode: '1234567891234',
+                  warehouses: [
+                    {
+                      warehouseID: 507,
+                      warehouseName: 'Коледино',
+                      canBox: true,
+                      canMonopallet: false,
+                      canSupersafe: false,
+                    },
+                  ],
+                  isError: false,
+                },
+              ],
+            });
+          }
+        )
       );
 
       const options = await sdk.ordersFBW.getAcceptanceOptions(goods, '507');
@@ -273,15 +282,21 @@ describe('Orders FBW Integration Tests', () => {
       const tooManyGoods: Good[] = Array(5001)
         .fill(null)
         .map(() => ({ barcode: '1234567891234', quantity: 1 }));
-      await expect(sdk.ordersFBW.getAcceptanceOptions(tooManyGoods)).rejects.toThrow(ValidationError);
+      await expect(sdk.ordersFBW.getAcceptanceOptions(tooManyGoods)).rejects.toThrow(
+        ValidationError
+      );
 
       // Missing barcode
       const invalidGoods: Good[] = [{ barcode: '', quantity: 10 }];
-      await expect(sdk.ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(ValidationError);
+      await expect(sdk.ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(
+        ValidationError
+      );
 
       // Invalid quantity
       const badQuantity: Good[] = [{ barcode: '1234567891234', quantity: 0 }];
-      await expect(sdk.ordersFBW.getAcceptanceOptions(badQuantity)).rejects.toThrow(ValidationError);
+      await expect(sdk.ordersFBW.getAcceptanceOptions(badQuantity)).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 
@@ -566,45 +581,48 @@ describe('Orders FBW Integration Tests', () => {
   describe('Supply Goods Retrieval', () => {
     it('should retrieve goods for a supply with default pagination', async () => {
       server.use(
-        http.get('https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods', ({ request }) => {
-          const url = new URL(request.url);
-          const limit = url.searchParams.get('limit');
-          const offset = url.searchParams.get('offset');
-          const isPreorderID = url.searchParams.get('isPreorderID');
+        http.get(
+          'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods',
+          ({ request }) => {
+            const url = new URL(request.url);
+            const limit = url.searchParams.get('limit');
+            const offset = url.searchParams.get('offset');
+            const isPreorderID = url.searchParams.get('isPreorderID');
 
-          expect(limit).toBe('100');
-          expect(offset).toBe('0');
-          expect(isPreorderID).toBe('false');
+            expect(limit).toBe('100');
+            expect(offset).toBe('0');
+            expect(isPreorderID).toBe('false');
 
-          return HttpResponse.json([
-            {
-              barcode: '1234567891234',
-              vendorCode: 'PROD-001',
-              nmID: 98765,
-              needKiz: true,
-              tnved: '6204620000',
-              techsize: '42',
-              color: 'Черный',
-              quantity: 10,
-              acceptedQuantity: 9,
-              readyForSaleQuantity: 8,
-              unloadingQuantity: 1,
-            },
-            {
-              barcode: '9876543210987',
-              vendorCode: 'PROD-002',
-              nmID: 98766,
-              needKiz: false,
-              tnved: '6204620001',
-              techsize: '44',
-              color: 'Белый',
-              quantity: 5,
-              acceptedQuantity: 5,
-              readyForSaleQuantity: 5,
-              unloadingQuantity: 0,
-            },
-          ]);
-        })
+            return HttpResponse.json([
+              {
+                barcode: '1234567891234',
+                vendorCode: 'PROD-001',
+                nmID: 98765,
+                needKiz: true,
+                tnved: '6204620000',
+                techsize: '42',
+                color: 'Черный',
+                quantity: 10,
+                acceptedQuantity: 9,
+                readyForSaleQuantity: 8,
+                unloadingQuantity: 1,
+              },
+              {
+                barcode: '9876543210987',
+                vendorCode: 'PROD-002',
+                nmID: 98766,
+                needKiz: false,
+                tnved: '6204620001',
+                techsize: '44',
+                color: 'Белый',
+                quantity: 5,
+                acceptedQuantity: 5,
+                readyForSaleQuantity: 5,
+                unloadingQuantity: 0,
+              },
+            ]);
+          }
+        )
       );
 
       const goods = await sdk.ordersFBW.getSupplyGoods(12345);
@@ -621,16 +639,19 @@ describe('Orders FBW Integration Tests', () => {
 
     it('should retrieve goods with custom pagination', async () => {
       server.use(
-        http.get('https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods', ({ request }) => {
-          const url = new URL(request.url);
-          const limit = url.searchParams.get('limit');
-          const offset = url.searchParams.get('offset');
+        http.get(
+          'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods',
+          ({ request }) => {
+            const url = new URL(request.url);
+            const limit = url.searchParams.get('limit');
+            const offset = url.searchParams.get('offset');
 
-          expect(limit).toBe('50');
-          expect(offset).toBe('100');
+            expect(limit).toBe('50');
+            expect(offset).toBe('100');
 
-          return HttpResponse.json([]);
-        })
+            return HttpResponse.json([]);
+          }
+        )
       );
 
       const goods = await sdk.ordersFBW.getSupplyGoods(12345, false, 50, 100);
@@ -643,10 +664,14 @@ describe('Orders FBW Integration Tests', () => {
       await expect(sdk.ordersFBW.getSupplyGoods(0)).rejects.toThrow(ValidationError);
 
       // Invalid limit
-      await expect(sdk.ordersFBW.getSupplyGoods(12345, false, 0, 0)).rejects.toThrow(ValidationError);
+      await expect(sdk.ordersFBW.getSupplyGoods(12345, false, 0, 0)).rejects.toThrow(
+        ValidationError
+      );
 
       // Invalid offset
-      await expect(sdk.ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(ValidationError);
+      await expect(sdk.ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 

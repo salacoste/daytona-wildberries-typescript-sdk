@@ -7,12 +7,7 @@
  * @module client/retry-handler
  */
 
-import {
-  AuthenticationError,
-  ValidationError,
-  RateLimitError,
-  NetworkError,
-} from '../errors';
+import { AuthenticationError, ValidationError, RateLimitError, NetworkError } from '../errors';
 
 /**
  * Configuration options for retry behavior
@@ -214,10 +209,7 @@ export class RetryHandler {
    * );
    * ```
    */
-  async executeWithRetry<T>(
-    operation: () => Promise<T>,
-    operationName = 'operation'
-  ): Promise<T> {
+  async executeWithRetry<T>(operation: () => Promise<T>, operationName = 'operation'): Promise<T> {
     let lastError: Error | undefined;
 
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
@@ -243,11 +235,15 @@ export class RetryHandler {
         // Calculate delay for next retry
         const delay = this.calculateDelay(attempt);
 
-        this.log('debug', `Retry attempt ${String(attempt + 1)}/${String(this.config.maxRetries)}`, {
-          operationName,
-          delay,
-          error: error instanceof Error ? error.message : String(error),
-        });
+        this.log(
+          'debug',
+          `Retry attempt ${String(attempt + 1)}/${String(this.config.maxRetries)}`,
+          {
+            operationName,
+            delay,
+            error: error instanceof Error ? error.message : String(error),
+          }
+        );
 
         await this.sleep(delay);
       }
@@ -430,4 +426,3 @@ export class RetryHandler {
     logMethod(logData);
   }
 }
-

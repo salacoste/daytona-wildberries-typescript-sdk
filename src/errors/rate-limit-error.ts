@@ -62,7 +62,7 @@ export class RateLimitError extends WBAPIError {
       '\nIf rate limiting occurs frequently, consider:',
       '1. Implementing request batching to reduce API call frequency',
       '2. Caching responses when appropriate',
-      '3. Reviewing your application\'s API usage patterns',
+      "3. Reviewing your application's API usage patterns",
     ].join('\n');
 
     return baseMessage + guidance;

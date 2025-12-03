@@ -17,16 +17,16 @@ export const generalRateLimits: Record<string, RateLimitConfig> = {
   'general.ping': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
+    burstLimit: 5,
   },
   'general.communicationsNews': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
+    burstLimit: 5,
   },
   'general.sellerInfo': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
-  }
+    burstLimit: 5,
+  },
 };

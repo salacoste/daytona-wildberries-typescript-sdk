@@ -24,7 +24,7 @@ describe('RateLimiter Integration', () => {
   describe('Timing Behavior', () => {
     it('should enforce 1 request per minute timing', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 1, burstLimit: 1 },
+        test: { requestsPerMinute: 1, burstLimit: 1 },
       });
 
       const timestamps: number[] = [];
@@ -55,7 +55,7 @@ describe('RateLimiter Integration', () => {
 
     it('should enforce 10 second intervals', async () => {
       const limiter = new RateLimiter({
-        'test': {
+        test: {
           requestsPerMinute: 6,
           intervalSeconds: 10,
           burstLimit: 1,
@@ -88,7 +88,7 @@ describe('RateLimiter Integration', () => {
 
     it('should handle burst then throttle pattern', async () => {
       const limiter = new RateLimiter({
-        'test': {
+        test: {
           requestsPerMinute: 6,
           burstLimit: 5,
         },
@@ -120,7 +120,7 @@ describe('RateLimiter Integration', () => {
   describe('Concurrent Request Handling', () => {
     it('should queue concurrent requests correctly', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 6, burstLimit: 1 },
+        test: { requestsPerMinute: 6, burstLimit: 1 },
       });
 
       const order: number[] = [];
@@ -147,7 +147,7 @@ describe('RateLimiter Integration', () => {
 
     it('should handle high concurrency without losing requests', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 60, burstLimit: 10 },
+        test: { requestsPerMinute: 60, burstLimit: 10 },
       });
 
       const completedRequests: number[] = [];
@@ -218,7 +218,7 @@ describe('RateLimiter Integration', () => {
 
     it('should not rate limit requests without rateLimitKey', async () => {
       const limiter = new RateLimiter({
-        'limited': { requestsPerMinute: 1 },
+        limited: { requestsPerMinute: 1 },
       });
 
       const timestamps: number[] = [];
@@ -237,8 +237,8 @@ describe('RateLimiter Integration', () => {
   describe('Multiple Endpoint Scenarios', () => {
     it('should enforce different limits for different endpoints', async () => {
       const limiter = new RateLimiter({
-        'fast': { requestsPerMinute: 60, burstLimit: 10 },
-        'slow': { requestsPerMinute: 6, burstLimit: 1 },
+        fast: { requestsPerMinute: 60, burstLimit: 10 },
+        slow: { requestsPerMinute: 6, burstLimit: 1 },
       });
 
       const fastTimestamps: number[] = [];
@@ -265,16 +265,14 @@ describe('RateLimiter Integration', () => {
       await p1;
 
       // Slow requests should be spaced apart
-      expect(slowTimestamps[1] - slowTimestamps[0]).toBeGreaterThanOrEqual(
-        10000
-      );
+      expect(slowTimestamps[1] - slowTimestamps[0]).toBeGreaterThanOrEqual(10000);
     });
   });
 
   describe('Queue Fairness', () => {
     it('should maintain FIFO order under load', async () => {
       const limiter = new RateLimiter({
-        'test': { requestsPerMinute: 10, burstLimit: 2 },
+        test: { requestsPerMinute: 10, burstLimit: 2 },
       });
 
       const order: number[] = [];

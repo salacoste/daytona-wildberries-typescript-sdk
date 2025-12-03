@@ -11,10 +11,7 @@ const originalEmit = process.emit.bind(process);
 
 // @ts-expect-error - Overriding process.emit for warning suppression
 process.emit = function (event: string, warning: Error, ...args: unknown[]) {
-  if (
-    event === 'warning' &&
-    warning.name === 'PromiseRejectionHandledWarning'
-  ) {
+  if (event === 'warning' && warning.name === 'PromiseRejectionHandledWarning') {
     // Suppress this specific warning
     return false;
   }

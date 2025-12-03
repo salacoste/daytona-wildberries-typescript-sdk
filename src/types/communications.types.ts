@@ -1318,16 +1318,16 @@ export interface QuestionByIdResponse {
  * Response template category for organization and filtering
  */
 export type TemplateCategory =
-  | 'general'          // General responses for common questions
-  | 'product_info'     // Product-specific information responses
-  | 'shipping'         // Shipping and delivery related responses
-  | 'returns'          // Returns and refund related responses
-  | 'technical'        // Technical support responses
-  | 'billing'          // Payment and billing related responses
-  | 'complaints'       // Customer complaint handling responses
-  | 'feedback'         // Feedback and review responses
-  | 'promotions'       // Promotional and sales responses
-  | 'custom';          // Custom user-defined categories
+  | 'general' // General responses for common questions
+  | 'product_info' // Product-specific information responses
+  | 'shipping' // Shipping and delivery related responses
+  | 'returns' // Returns and refund related responses
+  | 'technical' // Technical support responses
+  | 'billing' // Payment and billing related responses
+  | 'complaints' // Customer complaint handling responses
+  | 'feedback' // Feedback and review responses
+  | 'promotions' // Promotional and sales responses
+  | 'custom'; // Custom user-defined categories
 
 /**
  * Template usage statistics and performance metrics
@@ -1869,7 +1869,7 @@ export interface TemplateStatsResponse {
    */
   error: boolean;
 
-   /**
+  /**
    * Error description text
    */
   errorText?: string;
@@ -2451,23 +2451,23 @@ export interface ReturnProcessResponse {
  * Return status for tracking return request lifecycle
  */
 export type ReturnStatus =
-  | 'created'           // Created and waiting for processing
-  | 'processing'       // Currently being processed
-  | 'canceled'         // Canceled by customer
-  | 'delivered'        // Delivered to customer
-  | 'refunded'         // Money returned to customer
-  | 'closed'           // Return completed
-  | 'error'            // Processing failed
-  | 'expired'          // Return deadline expired
-  | 'rejected'         // Return rejected by seller
-  | 'returned'         // Refund completed
-  | 'archived'         // Archived in system
-  | 'draft'            // Draft state
-  | 'pending'          // Pending processing
-  | 'in_transit'       // In transit
+  | 'created' // Created and waiting for processing
+  | 'processing' // Currently being processed
+  | 'canceled' // Canceled by customer
+  | 'delivered' // Delivered to customer
+  | 'refunded' // Money returned to customer
+  | 'closed' // Return completed
+  | 'error' // Processing failed
+  | 'expired' // Return deadline expired
+  | 'rejected' // Return rejected by seller
+  | 'returned' // Refund completed
+  | 'archived' // Archived in system
+  | 'draft' // Draft state
+  | 'pending' // Pending processing
+  | 'in_transit' // In transit
   | 'ready_for_pickup' // Ready for pickup
-  | 'awaiting_pickup'  // Awaiting at pickup point
-  | 'shipped';         // Ready for pickup
+  | 'awaiting_pickup' // Awaiting at pickup point
+  | 'shipped'; // Ready for pickup
 
 // ============ ENHANCED CHAT FUNCTIONALITY TYPES ============
 
@@ -3143,7 +3143,14 @@ export interface EnhancedFeedbackFilters {
   /**
    * Sort results by field
    */
-  sortBy?: 'date' | 'rating' | 'sentimentScore' | 'helpfulness' | 'urgency' | 'impactScore' | 'wordCount';
+  sortBy?:
+    | 'date'
+    | 'rating'
+    | 'sentimentScore'
+    | 'helpfulness'
+    | 'urgency'
+    | 'impactScore'
+    | 'wordCount';
 
   /**
    * Sort order direction

@@ -48,10 +48,7 @@ const handlers = [
 
       // Validate required parameters
       if (!dateFrom || !dateTo) {
-        return HttpResponse.json(
-          { error: 'dateFrom and dateTo are required' },
-          { status: 400 }
-        );
+        return HttpResponse.json({ error: 'dateFrom and dateTo are required' }, { status: 400 });
       }
 
       // Mock pagination: return empty array if rrdid indicates we've reached the end
@@ -168,94 +165,82 @@ const handlers = [
   ),
 
   // GET /api/v1/documents/categories - Document categories endpoint
-  http.get(
-    'https://documents-api.wildberries.ru/api/v1/documents/categories',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const locale = url.searchParams.get('locale') ?? 'en';
+  http.get('https://documents-api.wildberries.ru/api/v1/documents/categories', ({ request }) => {
+    const url = new URL(request.url);
+    const locale = url.searchParams.get('locale') ?? 'en';
 
-      return HttpResponse.json({
-        data: {
-          categories: [
-            {
-              name: 'redeem-notification',
-              title:
-                locale === 'ru'
-                  ? 'Уведомление о выкупе'
-                  : 'Redemption notification',
-            },
-            { name: 'act', title: locale === 'ru' ? 'Акт' : 'Act' },
-            {
-              name: 'invoice',
-              title: locale === 'ru' ? 'Счёт-фактура' : 'Invoice',
-            },
-          ],
-        },
-      });
-    }
-  ),
+    return HttpResponse.json({
+      data: {
+        categories: [
+          {
+            name: 'redeem-notification',
+            title: locale === 'ru' ? 'Уведомление о выкупе' : 'Redemption notification',
+          },
+          { name: 'act', title: locale === 'ru' ? 'Акт' : 'Act' },
+          {
+            name: 'invoice',
+            title: locale === 'ru' ? 'Счёт-фактура' : 'Invoice',
+          },
+        ],
+      },
+    });
+  }),
 
   // GET /api/v1/documents/list - Documents list endpoint
-  http.get(
-    'https://documents-api.wildberries.ru/api/v1/documents/list',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const category = url.searchParams.get('category');
+  http.get('https://documents-api.wildberries.ru/api/v1/documents/list', ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get('category');
 
-      let documents = [
-        {
-          serviceName: 'redeem-notification-44841941',
-          name: 'redeem-notification',
-          category: 'Уведомление о выкупе',
-          extensions: ['zip', 'pdf'],
-          creationTime: '2024-07-09T10:00:00Z',
-          viewed: false,
-        },
-        {
-          serviceName: 'act-123456',
-          name: 'act',
-          category: 'Акт',
-          extensions: ['pdf'],
-          creationTime: '2024-07-10T11:00:00Z',
-          viewed: true,
-        },
-      ];
+    let documents = [
+      {
+        serviceName: 'redeem-notification-44841941',
+        name: 'redeem-notification',
+        category: 'Уведомление о выкупе',
+        extensions: ['zip', 'pdf'],
+        creationTime: '2024-07-09T10:00:00Z',
+        viewed: false,
+      },
+      {
+        serviceName: 'act-123456',
+        name: 'act',
+        category: 'Акт',
+        extensions: ['pdf'],
+        creationTime: '2024-07-10T11:00:00Z',
+        viewed: true,
+      },
+    ];
 
-      // Filter by category if provided
-      if (category) {
-        documents = documents.filter((doc) => doc.name === category);
-      }
-
-      return HttpResponse.json({
-        data: { documents },
-      });
+    // Filter by category if provided
+    if (category) {
+      documents = documents.filter((doc) => doc.name === category);
     }
-  ),
+
+    return HttpResponse.json({
+      data: { documents },
+    });
+  }),
 
   // GET /api/v1/documents/download - Single document download endpoint
-  http.get(
-    'https://documents-api.wildberries.ru/api/v1/documents/download',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const serviceName = url.searchParams.get('serviceName');
-      const extension = url.searchParams.get('extension');
+  http.get('https://documents-api.wildberries.ru/api/v1/documents/download', ({ request }) => {
+    const url = new URL(request.url);
+    const serviceName = url.searchParams.get('serviceName');
+    const extension = url.searchParams.get('extension');
 
-      if (!serviceName || !extension) {
-        return HttpResponse.json(
-          { error: 'serviceName and extension are required' },
-          { status: 400 }
-        );
-      }
-
-      return HttpResponse.json({
-        data: {
-          fileName: `${serviceName}.${extension}`,
-          extension,
-          document: 'UEsDBBQACAgIAAAAAAA...', // Mock base64 content
-        },
-      });
+    if (!serviceName || !extension) {
+      return HttpResponse.json(
+        { error: 'serviceName and extension are required' },
+        { status: 400 }
+      );
     }
-  ),
+
+    return HttpResponse.json({
+      data: {
+        fileName: `${serviceName}.${extension}`,
+        extension,
+        document: 'UEsDBBQACAgIAAAAAAA...', // Mock base64 content
+      },
+    });
+  }),
 
   // POST /api/v1/documents/download/all - Multiple documents download endpoint
   http.post(
@@ -266,17 +251,11 @@ const handlers = [
       };
 
       if (!body.params || body.params.length === 0) {
-        return HttpResponse.json(
-          { error: 'At least one document required' },
-          { status: 400 }
-        );
+        return HttpResponse.json({ error: 'At least one document required' }, { status: 400 });
       }
 
       if (body.params.length > 50) {
-        return HttpResponse.json(
-          { error: 'Maximum 50 documents allowed' },
-          { status: 400 }
-        );
+        return HttpResponse.json({ error: 'Maximum 50 documents allowed' }, { status: 400 });
       }
 
       return HttpResponse.json({
@@ -347,32 +326,24 @@ describe('FinancesModule Integration Tests', () => {
     it('should handle 401 authentication error', async () => {
       // Arrange
       server.use(
-        http.get(
-          'https://finance-api.wildberries.ru/api/v1/account/balance',
-          () => {
-            return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 });
-          }
-        )
+        http.get('https://finance-api.wildberries.ru/api/v1/account/balance', () => {
+          return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        })
       );
 
       // Act & Assert
-      await expect(financesModule.getBalance()).rejects.toThrow(
-        AuthenticationError
-      );
+      await expect(financesModule.getBalance()).rejects.toThrow(AuthenticationError);
     });
 
     it('should handle 429 rate limit error', async () => {
       // Arrange
       server.use(
-        http.get(
-          'https://finance-api.wildberries.ru/api/v1/account/balance',
-          () => {
-            return HttpResponse.json(
-              { error: 'Too many requests' },
-              { status: 429, headers: { 'Retry-After': '60' } }
-            );
-          }
-        )
+        http.get('https://finance-api.wildberries.ru/api/v1/account/balance', () => {
+          return HttpResponse.json(
+            { error: 'Too many requests' },
+            { status: 429, headers: { 'Retry-After': '60' } }
+          );
+        })
       );
 
       // Act & Assert
@@ -524,9 +495,7 @@ describe('FinancesModule Integration Tests', () => {
 
       // Assert
       expect(response.data.documents).toHaveLength(2);
-      expect(response.data.documents[0].serviceName).toBe(
-        'redeem-notification-44841941'
-      );
+      expect(response.data.documents[0].serviceName).toBe('redeem-notification-44841941');
       expect(response.data.documents[1].viewed).toBe(true);
     });
 
@@ -558,10 +527,7 @@ describe('FinancesModule Integration Tests', () => {
   describe('downloadDocument() - Single Document Download Flow', () => {
     it('should download single document successfully', async () => {
       // Act
-      const response = await financesModule.downloadDocument(
-        'redeem-notification-44841941',
-        'pdf'
-      );
+      const response = await financesModule.downloadDocument('redeem-notification-44841941', 'pdf');
 
       // Assert
       expect(response.data.fileName).toBe('redeem-notification-44841941.pdf');
@@ -571,16 +537,12 @@ describe('FinancesModule Integration Tests', () => {
 
     it('should throw ValidationError for empty serviceName', async () => {
       // Act & Assert
-      await expect(
-        financesModule.downloadDocument('', 'pdf')
-      ).rejects.toThrow(ValidationError);
+      await expect(financesModule.downloadDocument('', 'pdf')).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for empty extension', async () => {
       // Act & Assert
-      await expect(
-        financesModule.downloadDocument('doc-123', '')
-      ).rejects.toThrow(ValidationError);
+      await expect(financesModule.downloadDocument('doc-123', '')).rejects.toThrow(ValidationError);
     });
   });
 
@@ -600,9 +562,7 @@ describe('FinancesModule Integration Tests', () => {
 
     it('should throw ValidationError for empty documents array', async () => {
       // Act & Assert
-      await expect(financesModule.downloadDocuments([])).rejects.toThrow(
-        ValidationError
-      );
+      await expect(financesModule.downloadDocuments([])).rejects.toThrow(ValidationError);
     });
 
     it('should throw ValidationError for more than 50 documents', async () => {
@@ -613,9 +573,9 @@ describe('FinancesModule Integration Tests', () => {
       }));
 
       // Act & Assert
-      await expect(
-        financesModule.downloadDocuments(tooManyDocuments)
-      ).rejects.toThrow(ValidationError);
+      await expect(financesModule.downloadDocuments(tooManyDocuments)).rejects.toThrow(
+        ValidationError
+      );
     });
 
     it('should accept exactly 50 documents', async () => {
