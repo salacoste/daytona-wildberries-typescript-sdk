@@ -1,163 +1,182 @@
 /**
- * Rate limit configuration for orders-fbs module
- * Source: wildberries_api_doc/03-orders-fbs.yaml
+ * Auto-generated rate limit configuration for orders-fbs module
+ * Generated from: wildberries_api_doc/03-orders-fbs.yaml
+ * DO NOT EDIT MANUALLY - Changes will be overwritten on regeneration
  *
- * This file contains rate limit configurations for FBS (Fulfillment by Seller) order endpoints.
+ * This file contains rate limit configurations extracted from OpenAPI operation descriptions.
  * Rate limits are enforced by the RateLimiter (Story 1.4) using the token bucket algorithm.
- *
- * **Shared Rate Limit Pool:**
- * All FBS orders, supplies, and passes methods share the same 300 req/min rate limit pool.
- * Be mindful of total request volume across all FBS operations.
- *
- * **Important:**
- * 409 errors count as 5 requests toward rate limit (for supply operations)
  *
  * @see {@link ../../src/client/rate-limiter!RateLimiter RateLimiter Documentation}
  * @module config/orders-fbs-rate-limits
+ * @generated
  */
 
 import type { RateLimitConfig } from '../client/rate-limiter';
 
-export const ordersFBSRateLimits: Record<string, RateLimitConfig> = {
-  // ============================================================================
-  // Orders FBS - Order Retrieval and Status Management (Story 2.5)
-  // ============================================================================
-  // Marketplace API limits: 300 requests/minute, 200ms interval, 20 burst
-  // Note: All FBS orders, supplies, and passes methods share this limit pool
-
-  /**
-   * GET /api/v3/orders/new - Get new FBS orders awaiting processing
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.getNewOrders': {
+export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
+  'orders-fbs.passesOffices': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  /**
-   * GET /api/v3/orders - Get FBS orders with filters and pagination
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.getOrders': {
+  'orders-fbs.passes': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  /**
-   * POST /api/v3/orders/status - Get order statuses
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.getOrderStatuses': {
+  'orders-fbs.postPasses': {
+    requestsPerMinute: 10,
+    intervalSeconds: 6,
+    burstLimit: 5
+  },
+  'orders-fbs.putPasses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  // ============================================================================
-  // Orders FBS - Supply Management (Story 2.6)
-  // ============================================================================
-  // Standard FBS limits: 300 requests/minute, 200ms interval, 20 burst
-  // Exception: addOrderToSupply has higher limit (1000 req/min)
-  // Note: 409 errors count as 5 requests for supply operations
-
-  /**
-   * POST /api/v3/supplies - Create new supply
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.createSupply': {
+  'orders-fbs.deletePasses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  /**
-   * GET /api/v3/supplies - Get supplies with pagination
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.getSupplies': {
+  'orders-fbs.ordersNew': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  /**
-   * GET /api/v3/supplies/{supplyId} - Get supply details
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.getSupply': {
+  'orders-fbs.orders': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  /**
-   * PATCH /api/v3/supplies/{supplyId}/orders/{orderId} - Add order to supply
-   * Rate limit: 1000 req/min, 60ms interval, 20 burst (HIGHER than other endpoints)
-   * Note: 409 errors count as 5 requests
-   */
-  'ordersFBS.addOrderToSupply': {
-    requestsPerMinute: 1000,
-    intervalSeconds: 0.06,
-    burstLimit: 20,
-  },
-
-  /**
-   * PATCH /api/v3/supplies/{supplyId}/deliver - Mark supply as delivered
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   * Note: 409 errors count as 5 requests
-   */
-  'ordersFBS.deliverSupply': {
+  'orders-fbs.postOrdersStatus': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  /**
-   * DELETE /api/v3/supplies/{supplyId} - Delete empty supply
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   * Note: 409 errors count as 5 requests
-   */
-  'ordersFBS.deleteSupply': {
+  'orders-fbs.suppliesOrdersReshipment': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  // ============================================================================
-  // Orders FBS - Shipping Labels and Barcodes (Story 2.6)
-  // ============================================================================
-
-  /**
-   * POST /api/v3/orders/stickers - Get order shipping label stickers
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   */
-  'ordersFBS.getOrderStickers': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /**
-   * GET /api/v3/supplies/{supplyId}/barcode - Get supply QR code
-   * Rate limit: 300 req/min, 200ms interval, 20 burst
-   * Note: 409 errors count as 5 requests
-   */
-  'ordersFBS.getSupplyBarcode': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /**
-   * PATCH /api/v3/orders/{orderId}/cancel - Cancel FBS order
-   * Rate limit: 100 req/min, 600ms interval, 20 burst (LOWER than other endpoints)
-   * Note: 409 errors count as 5 requests
-   */
-  'ordersFBS.cancelOrder': {
+  'orders-fbs.patchOrdersCancel': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,
-    burstLimit: 20,
+    burstLimit: 20
   },
+  'orders-fbs.postOrdersStickers': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.ordersMeta': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.deleteOrdersMeta': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.putOrdersMetaSgtin': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
+  'orders-fbs.putOrdersMetaUin': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
+  'orders-fbs.putOrdersMetaImei': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
+  'orders-fbs.putOrdersMetaGtin': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
+  'orders-fbs.putOrdersMetaExpiration': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
+  'orders-fbs.postOrdersStickersCrossBorder': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.postFilesOrdersExternalStickers': {
+    requestsPerMinute: 10,
+    intervalSeconds: 6,
+    burstLimit: 5
+  },
+  'orders-fbs.postOrdersStatusHistory': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.postOrdersClient': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.supplies': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.postSupplies': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.patchSuppliesOrders': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
+  'orders-fbs.deleteSupplies': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.suppliesOrders': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.patchSuppliesDeliver': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.suppliesBarcode': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.suppliesTrbx': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.postSuppliesTrbx': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.deleteSuppliesTrbx': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'orders-fbs.postSuppliesTrbxStickers': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  }
 };

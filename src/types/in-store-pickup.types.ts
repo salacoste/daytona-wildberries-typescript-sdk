@@ -1,269 +1,293 @@
 /**
- * In-Store Pickup API Types
+ * Auto-generated TypeScript types for in-store-pickup module
  * Generated from: wildberries_api_doc/06-in-store-pickup.yaml
  *
- * @module InStorePickupTypes
+ * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
+ *
+ * Generated: 2025-12-14T23:02:33.784Z
  */
 
-/**
- * New order for in-store pickup
- */
-export interface NewOrder {
-  /** Order ID */
-  id: number;
-  /** Warehouse ID where order should be assembled */
-  warehouseId: number;
-  /** Warehouse address */
-  warehouseAddress: string;
-  /** Wildberries article number */
-  nmId: number;
-  /** Seller's article */
-  article: string;
-  /** Size ID in WB system */
-  chrtId: number;
-  /** Product barcodes */
-  skus: string[];
-  /** Unique order ID */
-  rid: string;
-  /** Customer's unique order code */
-  orderCode: string;
-  /** Payment mode: prepaid, postpaid, or unknown */
-  payMode: string;
-  /** Price with discounts (excluding WB Wallet), multiplied by 100 */
-  price: number;
-  /** Final price to pay, multiplied by 100 */
-  finalPrice: number;
-  /** Converted price in seller's currency, multiplied by 100 */
-  convertedPrice: number;
-  /** Converted final price in seller's currency, multiplied by 100 */
-  convertedFinalPrice: number;
-  /** Sale price in seller's currency, multiplied by 100 */
-  salePrice: number | null;
-  /** Currency code (ISO 4217) */
-  currencyCode: number;
-  /** Seller's currency code (ISO 4217) */
-  convertedCurrencyCode: number;
-  /** Cargo type: 1 = small, 2 = oversized, 3 = large */
-  cargoType: 1 | 2 | 3;
-  /** Is this a zero-stock order */
-  isZeroOrder: boolean;
-  /** Planned delivery date */
-  ddate: string;
-  /** Order creation timestamp (RFC3339) */
-  createdAt: string;
-  /** List of required metadata types for this order */
-  requiredMeta: string[] | null;
+export interface ApiCheckedIdentity {
+  /** Принадлежит ли заказ покупателю: - `true` — принадлежит - `false` — значение не применяется. Если заказ не принадлежит покупателю, вы получите ответ со статус-кодом `409` */
+  ok?: boolean;
+}
+
+export interface Error {
+  /** Код ошибки */
+  code?: string;
+  /** Описание ошибки */
+  message?: string;
+  /** Дополнительные данные, обогащающие ошибку */
+  data?: Record<string, never>;
 }
 
 /**
- * Response with list of new orders
+ * @example
+```json
+{
+  "orderCode": "170046918-0011",
+  "passcode": "4567"
+}
+```
  */
-export interface NewOrdersResponse {
-  /** Array of new pickup orders */
-  orders: NewOrder[];
+export interface ApiCheckIdentityRequest {
+  /** Уникальный ID заказа покупателя */
+  orderCode?: string;
+  /** Код подтверждения */
+  passcode?: string;
+}
+
+export interface ApiError {
+  code?: string;
+  data?: Record<string, never>;
+  message?: string;
 }
 
 /**
- * Completed order information
+ * @example
+```json
+{
+  "gtin": [
+    "1234567890123456"
+  ]
+}
+```
  */
-export interface Order {
-  /** Order ID */
-  id: number;
-  /** Warehouse ID */
-  warehouseId: number;
-  /** Warehouse address */
-  warehouseAddress: string;
-  /** Wildberries article number */
-  nmId: number;
-  /** Seller's article */
-  article: string;
-  /** Size ID in WB system */
-  chrtId: number;
-  /** Product barcodes */
-  skus: string[];
-  /** Unique order ID */
-  rid: string;
-  /** Customer's unique order code */
-  orderCode: string;
-  /** Payment mode: prepaid, postpaid, or unknown */
-  payMode: string;
-  /** Price with discounts (excluding WB Wallet), multiplied by 100 */
-  price: number;
-  /** Final price to pay, multiplied by 100 */
-  finalPrice: number;
-  /** Converted price in seller's currency, multiplied by 100 */
-  convertedPrice: number;
-  /** Converted final price in seller's currency, multiplied by 100 */
-  convertedFinalPrice: number;
-  /** Currency code (ISO 4217) */
-  currencyCode: number;
-  /** Seller's currency code (ISO 4217) */
-  convertedCurrencyCode: number;
-  /** Cargo type: 1 = small, 2 = oversized, 3 = large */
-  cargoType: 1 | 2 | 3;
-  /** Is this a zero-stock order */
-  isZeroOrder: boolean;
-  /** Order creation timestamp (RFC3339) */
-  createdAt: string;
+export interface ApiGTINRequest {
+  /** GTIN */
+  gtin?: string;
 }
 
 /**
- * Response with list of completed orders (paginated)
+ * @example
+```json
+{
+  "imei": [
+    "123456789012345"
+  ]
+}
+```
  */
-export interface OrdersResponse {
-  /** Array of completed orders */
-  orders: Order[];
-  /** Next pagination value */
-  next: number;
+export interface ApiIMEIRequest {
+  /** IMEI */
+  imei?: string;
+}
+
+export interface ApiNewOrder {
+  /** Планируемая дата доставки */
+  ddate?: string;
+  /** Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100. Предоставляется в информационных целях */
+  salePrice?: number;
+  /** Список метаданных, доступных для сборочного задания */
+  requiredMeta?: string[];
+  /** Артикул продавца */
+  article?: string;
+  /** Уникальный ID заказа. <br> Примечание: поле `rid` — это поле `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
+  rid?: string;
+  /** Дата и время создания сборочного задания */
+  createdAt?: string;
+  /** Адрес магазина (склада продавца), на который поступило сборочное задание */
+  warehouseAddress?: string;
+  /** Уникальный ID заказа покупателя */
+  orderCode?: string;
+  /** Режим оплаты: - `prepaid` — предоплатный - `postpaid` — постоплатный - `unknown` — неизвестный */
+  payMode?: string;
+  /** Массив баркодов товара */
+  skus?: string[];
+  /** ID сборочного задания */
+  id?: number;
+  /** ID склада продавца, на который поступило сборочное задание */
+  warehouseId?: number;
+  /** Артикул WB */
+  nmId?: number;
+  /** ID размера товара в системе WB */
+  chrtId?: number;
+  /** Цена в валюте продажи с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  price?: number;
+  /** Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  finalPrice?: number;
+  /** Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  convertedPrice?: number;
+  /** Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях */
+  convertedFinalPrice?: number;
+  /** Код валюты продажи */
+  currencyCode?: number;
+  /** Код валюты страны продавца */
+  convertedCurrencyCode?: number;
+  /** Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) */
+  cargoType?: 1 | 2 | 3;
+  /** Признак заказа товара с нулевым остатком: - `false` — заказ сделан на товар с ненулевым остатком - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену */
+  isZeroOrder?: boolean;
+}
+
+export interface ApiNewOrders {
+  /** Список сборочных заданий */
+  orders?: ApiNewOrder[];
+}
+
+export interface ApiOrder {
+  /** Артикул продавца */
+  article?: string;
+  /** Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) */
+  cargoType?: 1 | 2 | 3;
+  /** ID размера товара в системе WB */
+  chrtId?: number;
+  /** Дата и время создания сборочного задания */
+  createdAt?: string;
+  /** Цена в валюте продажи с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  price?: number;
+  /** Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  finalPrice?: number;
+  /** Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  convertedPrice?: number;
+  /** Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях */
+  convertedFinalPrice?: number;
+  /** Код валюты продажи */
+  currencyCode?: number;
+  /** Код валюты страны продавца */
+  convertedCurrencyCode?: number;
+  /** ID сборочного задания */
+  id?: number;
+  /** Признак заказа товара с нулевым остатком: - `false` — заказ сделан на товар с ненулевым остатком - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену */
+  isZeroOrder?: boolean;
+  /** Артикул WB */
+  nmId?: number;
+  /** Уникальный ID заказа покупателя */
+  orderCode?: string;
+  /** Режим оплаты: - `prepaid` — предоплатный - `postpaid` — постоплатный - `unknown` — неизвестный */
+  payMode?: string;
+  /** Уникальный ID заказа. <br> Примечание: поле `rid` — это поле `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
+  rid?: string;
+  /** Массив баркодов товара */
+  skus?: string[];
+  /** Адрес магазина (склада продавца), на который поступило сборочное задание */
+  warehouseAddress?: string;
+  /** ID склада продавца, на который поступило сборочное задание */
+  warehouseId?: number;
 }
 
 /**
- * Order status information
+ * @example
+```json
+{
+  "phone": "+71111111111",
+  "firstName": "Иван",
+  "orderID": 1234567,
+  "phoneCode": 1234567
+}
+```
  */
-export interface OrderStatus {
-  /** Order ID */
-  id: number;
-  /** Seller's status: new, confirm, prepare, receive, reject, cancel, cancel_shelf_life */
-  supplierStatus: string;
-  /** WB system status: waiting, sold, canceled, canceled_by_client, declined_by_client, defect, ready_for_pickup */
-  wbStatus: string;
+export interface ApiOrderClientInfo {
+  /** Телефон для связи с покупателем. Чтобы связаться с покупателем наберите этот номер и введите добавочный код. Данный номер не является прямым номером покупателя. */
+  phone?: string;
+  /** Имя покупателя */
+  firstName?: string;
+  /** ID сборочного задания */
+  orderID?: number;
+  /** Добавочный код */
+  phoneCode?: number;
+}
+
+export interface ApiOrderClientInfoResp {
+  orders?: ApiOrderClientInfo[];
 }
 
 /**
- * Response with order statuses
+ * @example
+```json
+{
+  "supplierStatus": "confirm",
+  "wbStatus": "waiting",
+  "id": 1234567
+}
+```
  */
-export interface OrderStatusesResponse {
-  /** Array of order statuses */
-  orders: OrderStatus[];
+export interface ApiOrderStatus {
+  /** ID сборочного задания */
+  id?: number;
+  /** Статус сборочного задания, установленный продавцом */
+  supplierStatus?: string;
+  /** Статус сборочного задания в системе WB */
+  wbStatus?: string;
+}
+
+export interface ApiOrderStatuses {
+  /** Список статусов сборочных заданий */
+  orders?: ApiOrderStatus[];
+}
+
+export interface ApiOrders {
+  /** Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных */
+  next?: number;
+  /** Список сборочных заданий */
+  orders?: ApiOrder[];
+}
+
+export interface ApiOrdersMeta {
+  /** Метаданные сборочного задания */
+  meta?: ApiBaseMeta;
 }
 
 /**
- * Request to get order statuses
+ * @example
+```json
+{
+  "orders": [
+    1234567
+  ]
+}
+```
  */
-export interface OrderStatusRequest {
-  /** Array of order IDs */
-  orders: number[];
+export interface ApiOrdersRequest {
+  /** Список ID сборочных заданий */
+  orders?: number[];
 }
 
 /**
- * Customer information for an order
+ * @example
+```json
+{
+  "sgtins": [
+    "1234567890123456"
+  ]
+}
+```
  */
-export interface OrderClientInfo {
-  /** Order ID */
-  orderID: number;
-  /** Customer's first name */
-  firstName: string;
-  /** Phone number to contact customer (not direct, requires extension) */
-  phone: string;
-  /** Phone extension code */
-  phoneCode: number;
+export interface ApiSGTINsRequest {
+  /** Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки */
+  sgtins?: string[];
 }
 
 /**
- * Response with customer information
+ * @example
+```json
+{
+  "uin": [
+    "1234567890123456"
+  ]
+}
+```
  */
-export interface OrderClientInfoResponse {
-  /** Array of customer information */
-  orders: OrderClientInfo[];
+export interface ApiUINRequest {
+  /** УИН */
+  uin?: string;
 }
 
-/**
- * Request to verify customer identity
- */
-export interface CheckIdentityRequest {
-  /** Customer's unique order code */
-  orderCode: string;
-  /** Verification passcode */
-  passcode: string;
-}
-
-/**
- * Customer identity verification result
- */
-export interface CheckedIdentity {
-  /** true if order belongs to customer, false never returned (409 error instead) */
-  ok: boolean;
-}
-
-/**
- * Order metadata
- */
-export interface OrderMetadata {
-  /** Metadata object */
-  meta: {
-    /** SGTIN (Честный знак marking code) */
-    sgtin?: {
-      value: string[] | null;
-    };
-    /** UIN (Unique Identification Number) */
-    uin?: {
-      value: string | null;
-    };
-    /** IMEI code for electronics */
-    imei?: {
-      value: string | null;
-    };
-    /** GTIN code (Belarus unique product ID) */
-    gtin?: {
-      value: string | null;
-    };
-  };
-}
-
-/**
- * Request to set SGTIN codes
- */
-export interface SGTINRequest {
-  /** Array of SGTIN codes (16-135 characters each) */
-  sgtins: string[];
-}
-
-/**
- * Request to set UIN code
- */
-export interface UINRequest {
-  /** UIN code */
-  uin: string;
-}
-
-/**
- * Request to set IMEI code
- */
-export interface IMEIRequest {
-  /** IMEI code */
-  imei: string;
-}
-
-/**
- * Request to set GTIN code
- */
-export interface GTINRequest {
-  /** GTIN code */
-  gtin: string;
-}
-
-/**
- * API error response
- */
-export interface APIError {
-  /** Error code */
-  code: string;
-  /** Error message */
-  message: string;
-  /** Additional error data */
-  data?: Record<string, unknown> | null;
-}
-
-/**
- * Query parameters for getting completed orders
- */
-export interface GetOrdersParams {
-  /** Maximum number of items to return (1-1000) */
-  limit: number;
-  /** Pagination offset (0 for first request) */
-  next: number;
-  /** Period start date (Unix timestamp) */
-  dateFrom: number;
-  /** Period end date (Unix timestamp, max 30 days from dateFrom) */
-  dateTo: number;
+export interface ApiBaseMeta {
+  /** GTIN */
+  gtin?: {
+  value?: string;
+};
+  /** IMEI */
+  imei?: {
+  value?: string;
+};
+  /** Код маркировки Честного знака */
+  sgtin?: {
+  value?: string[];
+};
+  /** УИН */
+  uin?: {
+  value?: string;
+};
 }

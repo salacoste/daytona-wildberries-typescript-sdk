@@ -4,525 +4,229 @@
  *
  * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  *
- * Generated: 2025-10-23
+ * Generated: 2025-12-14T23:02:33.810Z
  */
 
-/**
- * Balance response from the finance API
- * Returns current account balance information
- */
-export interface BalanceResponse {
-  /** Currency code (e.g., 'RUB') */
-  currency: string;
-  /** Current balance amount */
-  current: number;
-  /** Amount available for withdrawal */
-  for_withdraw: number;
+export interface RequestDownload {
+  params?: {
+  /** Формат документа */
+  extension?: string;
+  /** Уникальный ID документа */
+  serviceName?: string;
+}[];
 }
 
-/**
- * Transaction type enum
- * Represents different types of financial transactions
- */
-export type TransactionType =
-  | 'sale' // Product sales
-  | 'refund' // Customer refunds
-  | 'fee' // Platform fees
-  | 'payout' // Payouts to seller
-  | 'adjustment' // Balance adjustments
-  | 'storage' // Storage fees
-  | 'logistics'; // Logistics fees
-
-/**
- * Period filter for reports
- */
-export type ReportPeriod = 'weekly' | 'daily';
-
-/**
- * Transaction filters for querying transaction history
- */
-export interface TransactionFilters {
-  /** Start date in RFC3339 format (e.g., '2024-01-01' or '2024-01-01T00:00:00') */
-  dateFrom: string;
-  /** End date in RFC3339 format */
-  dateTo: string;
-  /** Maximum number of results to return (max: 100000) */
-  limit?: number;
-  /** Unique ID for pagination - use rrd_id from last row of previous response */
-  rrdid?: number;
-  /** Report period: weekly or daily */
-  period?: ReportPeriod;
-  [key: string]: string | number | undefined;
+export interface GetCategories {
+  data?: {
+  /** Категории документов */
+  categories?: {
+  /** ID категории документа из параметра [запроса](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category` */
+  name?: string;
+  /** Название категории документа из поля [ответа](./financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category` */
+  title?: string;
+}[];
+};
 }
 
-/**
- * Individual transaction/financial report item
- * Represents a single financial transaction in the report
- */
-export interface Transaction {
-  /** Report number */
-  realizationreport_id: number;
-  /** Report period start date */
-  date_from: string;
-  /** Report period end date */
-  date_to: string;
-  /** Report creation date */
-  create_dt: string;
-  /** Currency name */
-  currency_name: string;
-  /** Supplier contract code */
-  suppliercontract_code: object | null;
-  /** Row number / transaction ID */
-  rrd_id: number;
-  /** Supply number */
-  gi_id: number;
-  /** Fixed warehouse coefficient for the supply */
-  dlv_prc: number;
-  /** Fixed tariff start date */
-  fix_tariff_date_from: string;
-  /** Fixed tariff end date */
-  fix_tariff_date_to: string;
-  /** Product subject/category name */
-  subject_name: string;
-  /** Wildberries article number */
-  nm_id: number;
-  /** Brand name */
-  brand_name: string;
-  /** Seller article number */
-  sa_name: string;
-  /** Technical size */
-  ts_name: string;
-  /** Barcode */
-  barcode: string;
-  /** Document type */
-  doc_type_name: string;
-  /** Quantity */
-  quantity: number;
-  /** Retail price */
-  retail_price: number;
-  /** Retail amount */
-  retail_amount: number;
-  /** Sale percent */
-  sale_percent: number;
-  /** Commission percent */
-  commission_percent: number;
-  /** Office name */
-  office_name: string;
-  /** Supplier operation name */
-  supplier_oper_name: string;
-  /** Order date */
-  order_dt: string;
-  /** Sale date */
-  sale_dt: string;
-  /** Return date */
-  rr_dt: string | null;
-  /** Shipping cost */
-  shk_id: number;
-  /** Retail price with discount */
-  retail_price_withdisc_rub: number;
-  /** Delivery to customer */
-  delivery_rub: number;
-  /** Delivery return */
-  gi_box_type_name: string;
-  /** Product discount percent */
-  product_discount_for_report: number;
-  /** Supplier promo code */
-  supplier_promo: number;
-  /** Product discount */
-  ppvz_kvw_prc_base_date: string | null;
-  /** Logistics cost */
-  ppvz_kvw_prc: number;
-  /** Penalty */
-  ppvz_sales_commission: number;
-  /** Payment to supplier */
-  ppvz_for_pay: number;
-  /** Supplier reward */
-  ppvz_reward: number;
-  /** Acquiring */
-  acquiring_fee: number;
-  /** Bank acquiring percent */
-  acquiring_percent: number;
-  /** Acquiring fee */
-  acquiring_bank: string;
-  /** Payment number */
-  ppvz_vw: number;
-  /** Payment number VW NDS */
-  ppvz_vw_nds: number;
-  /** Stock ID */
-  stock_id: number | null;
-  /** Operation type */
-  supplier_oper_id: string;
-  /** Country */
-  country_name: string;
-  /** Bonus for sale */
-  bonus_type_name: string | null;
-  /** Promo discount percent */
-  srid: string;
-}
-
-/**
- * Paginated list of transactions/financial report items
- */
-export type TransactionListResponse = Transaction[];
-
-/**
- * Single transaction detail response
- * Returns complete details for a specific transaction
- * Currently identical to Transaction as the API returns the same structure
- */
-export type TransactionDetailResponse = Transaction;
-
-/**
- * Document category
- */
-export interface DocumentCategory {
-  /** Category ID for API requests */
-  name: string;
-  /** Localized category title */
-  title: string;
-}
-
-/**
- * Document categories response
- */
-export interface DocumentCategoriesResponse {
-  data: {
-    /** List of document categories */
-    categories: DocumentCategory[];
-  };
-}
-
-/**
- * Document item
- */
-export interface Document {
-  /** Unique document ID */
-  serviceName: string;
-  /** Document name */
-  name: string;
-  /** Document category title */
-  category: string;
-  /** Available document formats */
-  extensions: string[];
-  /** Document creation timestamp */
-  creationTime: string;
-  /** Whether document was downloaded in seller portal */
-  viewed: boolean;
-}
-
-/**
- * Documents list response
- */
-export interface DocumentsListResponse {
-  data: {
-    /** List of documents */
-    documents: Document[];
-  };
-}
-
-/**
- * Document download request body
- */
-export interface DocumentDownloadRequest {
-  params: {
-    /** Document format */
-    extension: string;
-    /** Unique document ID */
-    serviceName: string;
-  }[];
-}
-
-/**
- * Single document download response
- */
-export interface DocumentDownloadResponse {
-  data: {
-    /** Document file name */
-    fileName: string;
-    /** Document format */
-    extension: string;
-    /** Base64-encoded document content */
-    document: string;
-  };
-}
-
-/**
- * Multiple documents download response
- */
-export interface DocumentsDownloadResponse {
-  data: {
-    /** Archive file name */
-    fileName: string;
-    /** Archive format (usually 'zip') */
-    extension: string;
-    /** Base64-encoded archive content */
-    document: string;
-  };
-}
-
-/**
- * Document list query parameters
- */
-export interface DocumentListFilters {
-  /** Language for category field: 'ru', 'en', or 'zh' */
-  locale?: 'ru' | 'en' | 'zh';
-  /** Period start date (requires endTime) */
-  beginTime?: string;
-  /** Period end date (requires beginTime) */
-  endTime?: string;
-  /** Sort by: 'date' or 'category' */
-  sort?: 'date' | 'category';
-  /** Sort order: 'asc' or 'desc' */
-  order?: 'asc' | 'desc';
-  /** Filter by category name */
+export interface GetList {
+  data?: {
+  /** Категории документов */
+  documents?: {
+  /** Уникальный ID документа */
+  serviceName?: string;
+  /** Название документа */
+  name?: string;
+  /** Название [категории документов](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля ответа `title` */
   category?: string;
-  /** Page number for pagination */
-  page?: number;
-  [key: string]: string | number | undefined;
+  /** Форматы документа */
+  extensions?: string[];
+  /** Дата и время создания документа */
+  creationTime?: string;
+  /** Выгружен ли документ в личном кабинете */
+  viewed?: boolean;
+}[];
+};
 }
 
-/**
- * Date range helper interface
- * Provides convenient date range specification
- */
-export interface DateRange {
-  /** Range start date */
-  from: Date | string;
-  /** Range end date */
-  to: Date | string;
+export interface GetDoc {
+  data?: {
+  /** Название документа */
+  fileName?: string;
+  /** Формат документа */
+  extension?: string;
+  /** Документ в кодировке base64 */
+  document?: string;
+};
 }
 
-// ============================================================================
-// Financial Reports Types (Story 3.2)
-// ============================================================================
-
-/**
- * Financial report type enumeration
- * Represents different types of financial reports available
- */
-export type FinancialReportType =
-  | 'sales_summary' // Summary of sales for period
-  | 'tax_report' // Tax reporting data
-  | 'commission_breakdown' // Detailed commission analysis
-  | 'detailed_transactions'; // Full transaction details
-
-/**
- * Report output format enumeration
- * Supported file formats for generated reports
- */
-export type ReportFormat =
-  | 'pdf' // PDF document
-  | 'csv' // CSV spreadsheet
-  | 'json' // JSON data
-  | 'xlsx'; // Excel spreadsheet
-
-/**
- * Report status enumeration
- * Lifecycle states of a generated report
- */
-export type ReportStatus =
-  | 'pending' // Report generation queued
-  | 'processing' // Report being generated
-  | 'completed' // Report ready for download
-  | 'failed'; // Report generation failed
-
-/**
- * Generate report request parameters
- * Input data for initiating report generation
- */
-export interface GenerateReportRequest {
-  /** Type of financial report to generate */
-  reportType: FinancialReportType;
-  /** Date range for report data */
-  dateRange: DateRange;
-  /** Output format (defaults to PDF if not specified) */
-  format?: ReportFormat;
+export interface GetDocs {
+  data?: {
+  /** Название документа */
+  fileName?: string;
+  /** Формат документа */
+  extension?: string;
+  /** Документ в кодировке base64 */
+  document?: string;
+};
 }
 
-/**
- * Generate report response
- * Initial response when report generation is initiated
- */
-export interface GenerateReportResponse {
-  /** Unique report identifier for status tracking */
-  reportId: string;
-  /** Current status of report generation */
-  status: ReportStatus;
-  /** Timestamp when report generation started */
-  createdAt?: string;
-}
-
-/**
- * Complete report details
- * Full information about a generated report
- */
-export interface Report {
-  /** Unique report identifier */
-  id: string;
-  /** Type of financial report */
-  type: FinancialReportType;
-  /** Current report status */
-  status: ReportStatus;
-  /** Output format of the report */
-  format: ReportFormat;
-  /** Download URL (available when status is 'completed') */
-  url: string | null;
-  /** URL expiration timestamp (ISO 8601 format) */
-  expiresAt: string | null;
-  /** Report creation timestamp (ISO 8601 format) */
-  createdAt: string;
-  /** Error message if status is 'failed' */
-  error?: string;
-}
-
-/**
- * Report download response
- * Contains download URL and metadata for completed report
- */
-export interface ReportDownloadResponse {
-  /** Pre-signed download URL */
-  url: string;
-  /** Report file format */
-  format: ReportFormat;
-  /** URL expiration timestamp */
-  expiresAt: string;
-}
-
-// ============================================================================
-// Payouts Types (Story 3.2)
-// ============================================================================
-
-/**
- * Payout status enumeration
- * Lifecycle states of a payout transaction
- */
-export type PayoutStatus =
-  | 'pending' // Payout scheduled
-  | 'processing' // Payout being processed
-  | 'completed' // Payout transferred successfully
-  | 'failed' // Payout failed
-  | 'cancelled'; // Payout cancelled
-
-/**
- * Payout filters for querying payout history
- * Optional parameters for filtering payout list
- */
-export interface PayoutFilters {
-  /** Start date for payout search (ISO 8601 format) */
-  dateFrom?: string;
-  /** End date for payout search (ISO 8601 format) */
-  dateTo?: string;
-  /** Filter by payout status */
-  status?: PayoutStatus;
-  /** Filter by bank account (last 4 digits or identifier) */
-  bankAccount?: string;
-  /** Maximum number of results to return */
-  limit?: number;
-  /** Offset for pagination */
-  offset?: number;
-  [key: string]: string | number | undefined;
-}
-
-/**
- * Bank transfer information
- * Details about bank account and transfer
- */
-export interface BankTransferInfo {
-  /** Bank name */
-  bankName: string;
-  /** Masked account number (e.g., '****1234') */
-  accountNumber: string;
-  /** Transfer execution date (ISO 8601 format) */
-  transferDate: string;
-  /** Bank identification code (BIC/SWIFT) */
-  bankCode?: string;
-}
-
-/**
- * Payout fee breakdown
- * Detailed breakdown of fees deducted from payout
- */
-export interface PayoutFeeBreakdown {
-  /** Marketplace commission amount */
-  commission: number;
-  /** Payment processing fee */
-  processingFee: number;
-  /** Total fees deducted */
-  totalFees: number;
-  /** Net amount transferred to seller */
-  netAmount: number;
-  /** Currency code (e.g., 'RUB') */
-  currency?: string;
-}
-
-/**
- * Individual payout record
- * Basic payout information in list view
- */
-export interface Payout {
-  /** Unique payout identifier */
-  id: string;
-  /** Gross payout amount before fees */
-  amount: number;
-  /** Payout date (ISO 8601 format) */
-  date: string;
-  /** Current payout status */
-  status: PayoutStatus;
-  /** Bank account information (masked) */
-  bankInfo: BankTransferInfo;
-  /** Currency code (e.g., 'RUB') */
-  currency: string;
-  /** Number of transactions included in payout */
-  transactionCount?: number;
-}
-
-/**
- * Paginated payout list response
- * Response from getPayouts() with pagination metadata
- */
-export interface PayoutListResponse {
-  /** Array of payout records */
-  data: Payout[];
-  /** Pagination metadata */
-  pagination?: {
-    /** Total number of payouts matching filters */
-    total: number;
-    /** Current page offset */
-    offset: number;
-    /** Number of results per page */
-    limit: number;
-    /** Whether more results are available */
-    hasMore: boolean;
-  };
-}
-
-/**
- * Detailed payout response
- * Complete payout information including fee breakdown
- */
-export interface PayoutDetailResponse {
-  /** Unique payout identifier */
-  id: string;
-  /** Gross payout amount before fees */
-  amount: number;
-  /** Payout date (ISO 8601 format) */
-  date: string;
-  /** Current payout status */
-  status: PayoutStatus;
-  /** Complete bank transfer information */
-  bankInfo: BankTransferInfo;
-  /** Currency code (e.g., 'RUB') */
-  currency: string;
-  /** Detailed fee breakdown */
-  feeBreakdown: PayoutFeeBreakdown;
-  /** List of transaction IDs included in payout */
-  transactionIds?: number[];
-  /** Number of transactions included */
-  transactionCount?: number;
-  /** Period covered by payout */
-  periodFrom?: string;
-  /** Period covered by payout */
-  periodTo?: string;
-  /** Additional notes or comments */
-  notes?: string;
+export interface DetailReportItem {
+  /** Номер отчёта */
+  realizationreport_id?: number;
+  /** Дата начала отчётного периода */
+  date_from?: string;
+  /** Дата конца отчётного периода */
+  date_to?: string;
+  /** Дата формирования отчёта */
+  create_dt?: string;
+  /** Валюта отчёта */
+  currency_name?: string;
+  /** Договор */
+  suppliercontract_code?: Record<string, never>;
+  /** Номер строки */
+  rrd_id?: number;
+  /** Номер поставки */
+  gi_id?: number;
+  /** Фиксированный коэффициент склада по поставке */
+  dlv_prc?: number;
+  /** Дата начала действия фиксации */
+  fix_tariff_date_from?: string;
+  /** Дата конца действия фиксации */
+  fix_tariff_date_to?: string;
+  /** Предмет */
+  subject_name?: string;
+  /** Артикул WB */
+  nm_id?: number;
+  /** Бренд */
+  brand_name?: string;
+  /** Артикул продавца */
+  sa_name?: string;
+  /** Размер */
+  ts_name?: string;
+  /** Баркод */
+  barcode?: string;
+  /** Тип документа */
+  doc_type_name?: string;
+  /** Количество */
+  quantity?: number;
+  /** Цена розничная */
+  retail_price?: number;
+  /** Вайлдберриз реализовал Товар (Пр) */
+  retail_amount?: number;
+  /** Согласованный продуктовый дисконт, % */
+  sale_percent?: number;
+  /** Размер кВВ, % */
+  commission_percent?: number;
+  /** Склад */
+  office_name?: string;
+  /** Обоснование для оплаты */
+  supplier_oper_name?: string;
+  /** Дата заказа. <br>Присылается с явным указанием часового пояса */
+  order_dt?: string;
+  /** Дата продажи. <br>Присылается с явным указанием часового пояса */
+  sale_dt?: string;
+  /** Дата операции */
+  rr_dt?: string;
+  /** Штрихкод */
+  shk_id?: number;
+  /** Цена розничная с учётом согласованной скидки */
+  retail_price_withdisc_rub?: number;
+  /** Количество доставок */
+  delivery_amount?: number;
+  /** Количество возврата */
+  return_amount?: number;
+  /** Услуги по доставке товара покупателю */
+  delivery_rub?: number;
+  /** Тип коробов */
+  gi_box_type_name?: string;
+  /** Итоговая согласованная скидка, % */
+  product_discount_for_report?: number;
+  /** Промокод, % */
+  supplier_promo?: number;
+  /** Скидка постоянного Покупателя (СПП), % */
+  ppvz_spp_prc?: number;
+  /** Размер кВВ без НДС, % базовый */
+  ppvz_kvw_prc_base?: number;
+  /** Итоговый кВВ без НДС, % */
+  ppvz_kvw_prc?: number;
+  /** Размер снижения кВВ из-за рейтинга, % */
+  sup_rating_prc_up?: number;
+  /** Размер снижения кВВ из-за акции, % */
+  is_kgvp_v2?: number;
+  /** Вознаграждение с продаж до вычета услуг поверенного, без НДС */
+  ppvz_sales_commission?: number;
+  /** К перечислению продавцу за реализованный товар */
+  ppvz_for_pay?: number;
+  /** Возмещение за выдачу и возврат товаров на ПВЗ */
+  ppvz_reward?: number;
+  /** Эквайринг/Комиссии за организацию платежей */
+  acquiring_fee?: number;
+  /** Размер комиссии за эквайринг/Комиссии за организацию платежей, % */
+  acquiring_percent?: number;
+  /** Тип платежа за Эквайринг/Комиссии за организацию платежей */
+  payment_processing?: string;
+  /** Наименование банка-эквайера */
+  acquiring_bank?: string;
+  /** Вознаграждение Вайлдберриз (ВВ), без НДС */
+  ppvz_vw?: number;
+  /** НДС с вознаграждения Вайлдберриз */
+  ppvz_vw_nds?: number;
+  /** Наименование офиса доставки */
+  ppvz_office_name?: string;
+  /** Номер офиса доставки */
+  ppvz_office_id?: number;
+  /** Номер партнёра */
+  ppvz_supplier_id?: number;
+  /** Партнёр */
+  ppvz_supplier_name?: string;
+  /** ИНН партнёра */
+  ppvz_inn?: string;
+  /** Номер таможенной декларации */
+  declaration_number?: string;
+  /** Виды логистики, штрафов и корректировок ВВ.<br> Поле будет в ответе при наличии значения */
+  bonus_type_name?: string;
+  /** Цифровое значение стикера, который клеится на товар в процессе сборки заказа по схеме "Маркетплейс" */
+  sticker_id?: string;
+  /** Страна продажи */
+  site_country?: string;
+  /** Признак услуги платной доставки */
+  srv_dbs?: boolean;
+  /** Общая сумма штрафов */
+  penalty?: number;
+  /** Корректировка Вознаграждения Вайлдберриз (ВВ) */
+  additional_payment?: number;
+  /** Возмещение издержек по перевозке/по складским операциям с товаром */
+  rebill_logistic_cost?: number;
+  /** Организатор перевозки.<br> Поле будет в ответе при наличии значения */
+  rebill_logistic_org?: string;
+  /** Хранение */
+  storage_fee?: number;
+  /** Удержания */
+  deduction?: number;
+  /** Платная приёмка */
+  acceptance?: number;
+  /** Номер сборочного задания */
+  assembly_id?: number;
+  /** Код маркировки.<br> Поле будет в ответе при наличии значения */
+  kiz?: string;
+  /** Уникальный ID заказа. Примечание для использующих API Marketplace: `srid` равен `rid` в ответах методов сборочных заданий. */
+  srid?: string;
+  /** Тип отчёта: - `1` — стандартный - `2` — для уведомления о выкупе */
+  report_type?: 1 | 2;
+  /** Признак B2B-продажи */
+  is_legal_entity?: boolean;
+  /** Номер короба для платной приёмки */
+  trbx_id?: string;
+  /** Скидка по программе софинансирования */
+  installment_cofinancing_amount?: number;
+  /** Скидка Wibes, % */
+  wibes_wb_discount_percent?: number;
+  /** Сумма, удержанная за начисленные баллы программы лояльности */
+  cashback_amount?: number;
+  /** Компенсация скидки по программе лояльности */
+  cashback_discount?: number;
+  /** Стоимость участия в программе лояльности */
+  cashback_commission_change?: number;
+  /** ID транзакции. Заказы в одной корзине покупателя будут иметь одинаковый `order_uid` */
+  order_uid?: string;
 }

@@ -1,5 +1,5 @@
 /**
- * Unit tests for OrdersFBWModule
+ * Unit tests for OrdersFbwModule
  *
  * Tests FBW (Fulfillment by Wildberries) module methods including:
  * - Warehouse information retrieval
@@ -12,14 +12,16 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { OrdersFBWModule } from '../../../src/modules/orders-fbw';
-import { ValidationError } from '../../../src/errors/validation-error';
+import { OrdersFbwModule } from '../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../src/client/base-client';
-import type { Good, ModelsHandySupplyStatus } from '../../../src/types/orders-fbw.types';
+import type {
+  ModelsGood,
+  ModelsSuppliesFiltersRequest,
+} from '../../../src/types/orders-fbw.types';
 
-describe('OrdersFBWModule', () => {
+describe('OrdersFbwModule', () => {
   let mockClient: { get: ReturnType<typeof vi.fn>; post: ReturnType<typeof vi.fn> };
-  let ordersFBW: OrdersFBWModule;
+  let ordersFbw: OrdersFbwModule;
 
   beforeEach(() => {
     mockClient = {
@@ -27,14 +29,14 @@ describe('OrdersFBWModule', () => {
       post: vi.fn(),
     };
 
-    ordersFBW = new OrdersFBWModule(mockClient as unknown as BaseClient);
+    ordersFbw = new OrdersFbwModule(mockClient as unknown as BaseClient);
   });
 
   // ============================================================================
-  // getWarehouses()
+  // warehouses()
   // ============================================================================
 
-  describe('getWarehouses', () => {
+  describe('warehouses', () => {
     it('should fetch warehouses list', async () => {
       const mockWarehouses = [
         {
@@ -50,11 +52,10 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockWarehouses);
 
-      const result = await ordersFBW.getWarehouses();
+      const result = await ordersFbw.warehouses();
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/warehouses',
-        { rateLimitKey: 'ordersFBW.getWarehouses' }
+        'https://supplies-api.wildberries.ru/api/v1/warehouses'
       );
       expect(result).toEqual(mockWarehouses);
     });
@@ -83,11 +84,11 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockCoefficients);
 
-      const result = await ordersFBW.getAcceptanceCoefficients();
+      const result = await ordersFbw.getAcceptanceCoefficients();
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: {}, rateLimitKey: 'ordersFBW.getAcceptanceCoefficients' }
+        { params: undefined }
       );
       expect(result).toEqual(mockCoefficients);
     });
@@ -110,26 +111,23 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockCoefficients);
 
-      const result = await ordersFBW.getAcceptanceCoefficients('507,117501');
+      const result = await ordersFbw.getAcceptanceCoefficients({ warehouseIDs: '507,117501' });
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        {
-          params: { warehouseIDs: '507,117501' },
-          rateLimitKey: 'ordersFBW.getAcceptanceCoefficients',
-        }
+        { params: { warehouseIDs: '507,117501' } }
       );
       expect(result).toEqual(mockCoefficients);
     });
   });
 
   // ============================================================================
-  // getAcceptanceOptions()
+  // createAcceptanceOption()
   // ============================================================================
 
-  describe('getAcceptanceOptions', () => {
+  describe('createAcceptanceOption', () => {
     it('should fetch acceptance options for goods', async () => {
-      const goods = [
+      const goods: ModelsGood[] = [
         { barcode: '1234567891234', quantity: 10 },
         { barcode: '9876543210987', quantity: 5 },
       ];
@@ -154,80 +152,37 @@ describe('OrdersFBWModule', () => {
 
       mockClient.post.mockResolvedValue(mockOptions);
 
-      const result = await ordersFBW.getAcceptanceOptions(goods);
+      const result = await ordersFbw.createAcceptanceOption(goods);
 
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: {}, rateLimitKey: 'ordersFBW.getAcceptanceOptions' }
+        { params: undefined }
       );
       expect(result).toEqual(mockOptions);
     });
 
     it('should pass warehouse ID parameter when provided', async () => {
-      const goods = [{ barcode: '1234567891234', quantity: 10 }];
+      const goods: ModelsGood[] = [{ barcode: '1234567891234', quantity: 10 }];
       const mockOptions = { result: [] };
 
       mockClient.post.mockResolvedValue(mockOptions);
 
-      await ordersFBW.getAcceptanceOptions(goods, '507');
+      await ordersFbw.createAcceptanceOption(goods, { warehouseID: '507' });
 
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: { warehouseID: '507' }, rateLimitKey: 'ordersFBW.getAcceptanceOptions' }
-      );
-    });
-
-    it('should throw ValidationError for empty goods array', async () => {
-      await expect(ordersFBW.getAcceptanceOptions([])).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getAcceptanceOptions([])).rejects.toThrow(
-        'Goods array cannot be empty'
-      );
-    });
-
-    it('should throw ValidationError for too many goods (>5000)', async () => {
-      const tooManyGoods: Good[] = Array(5001)
-        .fill(null)
-        .map(() => ({ barcode: '1234567891234', quantity: 1 }));
-
-      await expect(ordersFBW.getAcceptanceOptions(tooManyGoods)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getAcceptanceOptions(tooManyGoods)).rejects.toThrow(
-        'Maximum 5000 goods per request'
-      );
-    });
-
-    it('should throw ValidationError for missing barcode', async () => {
-      const invalidGoods: Good[] = [{ barcode: '', quantity: 10 }];
-
-      await expect(ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow('missing barcode');
-    });
-
-    it('should throw ValidationError for invalid quantity (<1)', async () => {
-      const invalidGoods = [{ barcode: '1234567891234', quantity: 0 }];
-
-      await expect(ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(
-        'quantity must be 1-999999'
-      );
-    });
-
-    it('should throw ValidationError for invalid quantity (>999999)', async () => {
-      const invalidGoods = [{ barcode: '1234567891234', quantity: 1000000 }];
-
-      await expect(ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getAcceptanceOptions(invalidGoods)).rejects.toThrow(
-        'quantity must be 1-999999'
+        { params: { warehouseID: '507' } }
       );
     });
   });
 
   // ============================================================================
-  // getTransitTariffs()
+  // transitTariffs()
   // ============================================================================
 
-  describe('getTransitTariffs', () => {
+  describe('transitTariffs', () => {
     it('should fetch transit tariffs', async () => {
       const mockTariffs = [
         {
@@ -244,31 +199,30 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockTariffs);
 
-      const result = await ordersFBW.getTransitTariffs();
+      const result = await ordersFbw.transitTariffs();
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/transit-tariffs',
-        { rateLimitKey: 'ordersFBW.getTransitTariffs' }
+        'https://supplies-api.wildberries.ru/api/v1/transit-tariffs'
       );
       expect(result).toEqual(mockTariffs);
     });
   });
 
   // ============================================================================
-  // getSupplies()
+  // createSupply() - List supplies with filters
   // ============================================================================
 
-  describe('getSupplies', () => {
+  describe('createSupply', () => {
     it('should fetch supplies with filters', async () => {
-      const filters = {
+      const filters: ModelsSuppliesFiltersRequest = {
         dates: [
           {
             from: '2024-01-01',
             till: '2024-12-31',
-            type: 'createDate' as const,
+            type: 'createDate',
           },
         ],
-        statusIDs: [2, 3, 4] as ModelsHandySupplyStatus[],
+        statusIDs: [2, 3, 4],
       };
 
       const mockSupplies = [
@@ -287,76 +241,35 @@ describe('OrdersFBWModule', () => {
 
       mockClient.post.mockResolvedValue(mockSupplies);
 
-      const result = await ordersFBW.getSupplies(filters, 100, 0);
+      const result = await ordersFbw.createSupply(filters, { limit: 100, offset: 0 });
 
       expect(mockClient.post).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies?limit=100&offset=0',
+        'https://supplies-api.wildberries.ru/api/v1/supplies',
         filters,
-        { rateLimitKey: 'ordersFBW.getSupplies' }
+        { params: { limit: 100, offset: 0 } }
       );
       expect(result).toEqual(mockSupplies);
     });
 
-    it('should use default pagination values', async () => {
-      const filters = { dates: [], statusIDs: [] };
+    it('should work without pagination options', async () => {
+      const filters: ModelsSuppliesFiltersRequest = { dates: [], statusIDs: [] };
       mockClient.post.mockResolvedValue([]);
 
-      await ordersFBW.getSupplies(filters);
+      await ordersFbw.createSupply(filters);
 
       expect(mockClient.post).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies?limit=1000&offset=0',
+        'https://supplies-api.wildberries.ru/api/v1/supplies',
         filters,
-        { rateLimitKey: 'ordersFBW.getSupplies' }
+        { params: undefined }
       );
-    });
-
-    it('should throw ValidationError for invalid limit (<1)', async () => {
-      const filters = { dates: [], statusIDs: [] };
-
-      await expect(ordersFBW.getSupplies(filters, 0, 0)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplies(filters, 0, 0)).rejects.toThrow('Limit must be 1-1000');
-    });
-
-    it('should throw ValidationError for invalid limit (>1000)', async () => {
-      const filters = { dates: [], statusIDs: [] };
-
-      await expect(ordersFBW.getSupplies(filters, 1001, 0)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplies(filters, 1001, 0)).rejects.toThrow('Limit must be 1-1000');
-    });
-
-    it('should throw ValidationError for invalid offset (<0)', async () => {
-      const filters = { dates: [], statusIDs: [] };
-
-      await expect(ordersFBW.getSupplies(filters, 100, -1)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplies(filters, 100, -1)).rejects.toThrow('Offset must be >= 0');
-    });
-
-    it('should throw ValidationError for invalid date format', async () => {
-      const filters = {
-        dates: [{ from: 'invalid-date', till: '2024-12-31', type: 'createDate' as const }],
-        statusIDs: [],
-      };
-
-      await expect(ordersFBW.getSupplies(filters)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplies(filters)).rejects.toThrow('Invalid from date format');
-    });
-
-    it('should throw ValidationError for invalid status ID', async () => {
-      const filters = {
-        dates: [],
-        statusIDs: [7 as unknown as ModelsHandySupplyStatus], // Invalid: must be 1-6
-      };
-
-      await expect(ordersFBW.getSupplies(filters)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplies(filters)).rejects.toThrow('Invalid status ID');
     });
   });
 
   // ============================================================================
-  // getSupplyDetails()
+  // getSupply() - Get single supply details by ID
   // ============================================================================
 
-  describe('getSupplyDetails', () => {
+  describe('getSupply', () => {
     it('should fetch supply details by supply ID', async () => {
       const mockDetails = {
         phone: '+79001234567',
@@ -382,11 +295,11 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockDetails);
 
-      const result = await ordersFBW.getSupplyDetails(12345, false);
+      const result = await ordersFbw.getSupply(12345);
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies/12345?isPreorderID=false',
-        { rateLimitKey: 'ordersFBW.getSupplyDetails' }
+        'https://supplies-api.wildberries.ru/api/v1/supplies/12345',
+        { params: undefined }
       );
       expect(result).toEqual(mockDetails);
     });
@@ -398,45 +311,28 @@ describe('OrdersFBWModule', () => {
         preorderID: 67890,
         createDate: '2024-01-15T10:30:00Z',
         supplyDate: '2024-01-20',
-        factDate: '2024-01-20T14:22:00Z',
-        updatedDate: '2024-01-21T08:15:00Z',
         statusID: 5,
         statusName: 'Принято',
-        warehouseID: 507,
-        warehouseName: 'Коледино',
-        boxTypeID: 1,
-        boxTypeName: 'Короба',
-        quantity: 100,
-        acceptedQuantity: 95,
-        readyForSaleQuantity: 90,
-        acceptanceCost: 1500.5,
-        storageCoefficient: 1.2,
-        deliveryCoefficient: 1.0,
       };
 
       mockClient.get.mockResolvedValue(mockDetails);
 
-      const result = await ordersFBW.getSupplyDetails(67890, true);
+      const result = await ordersFbw.getSupply(67890, { isPreorderID: true });
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies/67890?isPreorderID=true',
-        { rateLimitKey: 'ordersFBW.getSupplyDetails' }
+        'https://supplies-api.wildberries.ru/api/v1/supplies/67890',
+        { params: { isPreorderID: true } }
       );
       expect(result).toEqual(mockDetails);
-    });
-
-    it('should throw ValidationError for invalid ID (<1)', async () => {
-      await expect(ordersFBW.getSupplyDetails(0)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplyDetails(0)).rejects.toThrow('Supply/Preorder ID must be > 0');
     });
   });
 
   // ============================================================================
-  // getSupplyGoods()
+  // getSuppliesGood()
   // ============================================================================
 
-  describe('getSupplyGoods', () => {
-    it('should fetch supply goods with default pagination', async () => {
+  describe('getSuppliesGood', () => {
+    it('should fetch supply goods with default options', async () => {
       const mockGoods = [
         {
           barcode: '1234567891234',
@@ -455,11 +351,11 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockGoods);
 
-      const result = await ordersFBW.getSupplyGoods(12345);
+      const result = await ordersFbw.getSuppliesGood(12345);
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods?limit=100&offset=0&isPreorderID=false',
-        { rateLimitKey: 'ordersFBW.getSupplyGoods' }
+        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods',
+        { params: undefined }
       );
       expect(result).toEqual(mockGoods);
     });
@@ -467,41 +363,31 @@ describe('OrdersFBWModule', () => {
     it('should fetch supply goods with custom pagination', async () => {
       mockClient.get.mockResolvedValue([]);
 
-      await ordersFBW.getSupplyGoods(12345, false, 50, 100);
+      await ordersFbw.getSuppliesGood(12345, { limit: 50, offset: 100, isPreorderID: false });
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods?limit=50&offset=100&isPreorderID=false',
-        { rateLimitKey: 'ordersFBW.getSupplyGoods' }
+        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods',
+        { params: { limit: 50, offset: 100, isPreorderID: false } }
       );
     });
 
-    it('should throw ValidationError for invalid ID', async () => {
-      await expect(ordersFBW.getSupplyGoods(0)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplyGoods(0)).rejects.toThrow('Supply/Preorder ID must be > 0');
-    });
+    it('should fetch supply goods by preorder ID', async () => {
+      mockClient.get.mockResolvedValue([]);
 
-    it('should throw ValidationError for invalid limit', async () => {
-      await expect(ordersFBW.getSupplyGoods(12345, false, 0, 0)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplyGoods(12345, false, 0, 0)).rejects.toThrow(
-        'Limit must be 1-1000'
-      );
-    });
+      await ordersFbw.getSuppliesGood(67890, { isPreorderID: true });
 
-    it('should throw ValidationError for invalid offset', async () => {
-      await expect(ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(
-        ValidationError
-      );
-      await expect(ordersFBW.getSupplyGoods(12345, false, 100, -1)).rejects.toThrow(
-        'Offset must be >= 0'
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/v1/supplies/67890/goods',
+        { params: { isPreorderID: true } }
       );
     });
   });
 
   // ============================================================================
-  // getSupplyPackage()
+  // getSuppliesPackage()
   // ============================================================================
 
-  describe('getSupplyPackage', () => {
+  describe('getSuppliesPackage', () => {
     it('should fetch supply package information', async () => {
       const mockBoxes = [
         {
@@ -516,18 +402,12 @@ describe('OrdersFBWModule', () => {
 
       mockClient.get.mockResolvedValue(mockBoxes);
 
-      const result = await ordersFBW.getSupplyPackage(12345);
+      const result = await ordersFbw.getSuppliesPackage(12345);
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/package',
-        { rateLimitKey: 'ordersFBW.getSupplyPackage' }
+        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/package'
       );
       expect(result).toEqual(mockBoxes);
-    });
-
-    it('should throw ValidationError for invalid supply ID', async () => {
-      await expect(ordersFBW.getSupplyPackage(0)).rejects.toThrow(ValidationError);
-      await expect(ordersFBW.getSupplyPackage(0)).rejects.toThrow('Supply ID must be > 0');
     });
   });
 });

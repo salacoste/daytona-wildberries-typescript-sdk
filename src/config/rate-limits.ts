@@ -20,8 +20,8 @@
 
 import { generalRateLimits } from './general-rate-limits';
 import { productsRateLimits } from './products-rate-limits';
-import { ordersFBSRateLimits } from './orders-fbs-rate-limits';
-import { ordersFBWRateLimits } from './orders-fbw-rate-limits';
+import { ordersFbsRateLimits } from './orders-fbs-rate-limits';
+import { ordersFbwRateLimits } from './orders-fbw-rate-limits';
 // Import additional module rate limits here as they are generated:
 // import { financesRateLimits } from './finances-rate-limits';
 // import { analyticsRateLimits } from './analytics-rate-limits';
@@ -71,8 +71,8 @@ import { ordersFBWRateLimits } from './orders-fbw-rate-limits';
 export const ALL_RATE_LIMITS = {
   ...generalRateLimits,
   ...productsRateLimits,
-  ...ordersFBSRateLimits,
-  ...ordersFBWRateLimits,
+  ...ordersFbsRateLimits,
+  ...ordersFbwRateLimits,
   // Spread additional module rate limits here as they are generated:
   // ...financesRateLimits,
   // ...analyticsRateLimits,

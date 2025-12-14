@@ -1,0 +1,1196 @@
+{
+  "01-general.yaml": [
+    {
+      "method": "GET",
+      "path": "/ping",
+      "summary": "Проверка подключения"
+    },
+    {
+      "method": "GET",
+      "path": "/api/communications/v2/news",
+      "summary": "Получение новостей портала продавцов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller-info",
+      "summary": "Получение информации о продавце"
+    }
+  ],
+  "02-products.yaml": [
+    {
+      "method": "GET",
+      "path": "/content/v2/object/parent/all",
+      "summary": "Родительские категории товаров"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/object/all",
+      "summary": "Список предметов"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/object/charcs/{subjectId}",
+      "summary": "Характеристики предмета"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/colors",
+      "summary": "Цвет"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/kinds",
+      "summary": "Пол"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/countries",
+      "summary": "Страна производства"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/seasons",
+      "summary": "Сезон"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/vat",
+      "summary": "Ставка НДС"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/tnved",
+      "summary": "ТНВЭД-код"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/tags",
+      "summary": "Список ярлыков"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/tag",
+      "summary": "Создание ярлыка"
+    },
+    {
+      "method": "PATCH",
+      "path": "/content/v2/tag/{id}",
+      "summary": "Изменение ярлыка"
+    },
+    {
+      "method": "DELETE",
+      "path": "/content/v2/tag/{id}",
+      "summary": "Удаление ярлыка"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/tag/nomenclature/link",
+      "summary": "Управление ярлыками в карточке товара"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/get/cards/list",
+      "summary": "Список карточек товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/error/list",
+      "summary": "Список несозданных карточек товаров с ошибками"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/update",
+      "summary": "Редактирование карточек товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/moveNm",
+      "summary": "Объединение и разъединение карточек товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/delete/trash",
+      "summary": "Перенос карточек товаров в корзину"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/recover",
+      "summary": "Восстановление карточек товаров из корзины"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/get/cards/trash",
+      "summary": "Список карточек товаров в корзине"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/cards/limits",
+      "summary": "Лимиты карточек товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/barcodes",
+      "summary": "Генерация баркодов"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/upload",
+      "summary": "Создание карточек товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/upload/add",
+      "summary": "Создание карточек товаров с присоединением"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v3/media/file",
+      "summary": "Загрузить медиафайл"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v3/media/save",
+      "summary": "Загрузить медиафайлы по ссылкам"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task",
+      "summary": "Установить цены и скидки"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task/size",
+      "summary": "Установить цены для размеров"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task/club-discount",
+      "summary": "Установить скидки WB Клуба"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/history/tasks",
+      "summary": "Состояние обработанной загрузки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/history/goods/task",
+      "summary": "Детализация обработанной загрузки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/buffer/tasks",
+      "summary": "Состояние необработанной загрузки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/buffer/goods/task",
+      "summary": "Детализация необработанной загрузки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/list/goods/filter",
+      "summary": "Получить товары с ценами"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/list/goods/filter",
+      "summary": "Получить товары с ценами по артикулам"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/list/goods/size/nm",
+      "summary": "Получить размеры товара с ценами"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/quarantine/goods",
+      "summary": "Получить товары в карантине"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "summary": "Обновить остатки товаров"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "summary": "Удалить остатки товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "summary": "Получить остатки товаров"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/offices",
+      "summary": "Получить список складов WB"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/warehouses",
+      "summary": "Получить список складов продавца"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/warehouses",
+      "summary": "Создать склад продавца"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/warehouses/{warehouseId}",
+      "summary": "Обновить склад продавца"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/warehouses/{warehouseId}",
+      "summary": "Удалить склад продавца"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/dbw/warehouses/{warehouseId}/contacts",
+      "summary": "Список контактов"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/dbw/warehouses/{warehouseId}/contacts",
+      "summary": "Обновить список контактов"
+    }
+  ],
+  "03-orders-fbs.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v3/passes/offices",
+      "summary": "Получить список складов, для которых требуется пропуск"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/passes",
+      "summary": "Получить список пропусков"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/passes",
+      "summary": "Создать пропуск"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/passes/{passId}",
+      "summary": "Обновить пропуск"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/passes/{passId}",
+      "summary": "Удалить пропуск"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/new",
+      "summary": "Получить список новых сборочных заданий"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders",
+      "summary": "Получить информацию о сборочных заданиях"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/status",
+      "summary": "Получить статусы сборочных заданий"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/orders/reshipment",
+      "summary": "Получить все сборочные задания для повторной отгрузки"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/orders/{orderId}/cancel",
+      "summary": "Отменить сборочное задание"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/stickers",
+      "summary": "Получить стикеры сборочных заданий"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta",
+      "summary": "Получить метаданные сборочного задания"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/orders/{orderId}/meta",
+      "summary": "Удалить метаданные сборочного задания"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/sgtin",
+      "summary": "Закрепить за сборочным заданием код маркировки товара"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/uin",
+      "summary": "Закрепить за сборочным заданием УИН"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/imei",
+      "summary": "Закрепить за сборочным заданием IMEI"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/gtin",
+      "summary": "Закрепить за сборочным заданием GTIN"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/expiration",
+      "summary": "Закрепить за сборочным заданием срок годности товара"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/stickers/cross-border",
+      "summary": "Получить стикеры сборочных заданий кроссбордера"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/files/orders/external-stickers",
+      "summary": "Получить список ссылок на стикеры сборочных заданий, которые требуются при кроссбордере"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/status/history",
+      "summary": "История статусов для сборочных заданий кроссбордера"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/client",
+      "summary": "Заказы с информацией по клиенту"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/supplies",
+      "summary": "Создать новую поставку"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies",
+      "summary": "Получить список поставок"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/supplies/{supplyId}/orders/{orderId}",
+      "summary": "Добавить сборочное задание к поставке"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}",
+      "summary": "Получить информацию о поставке"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/supplies/{supplyId}",
+      "summary": "Удалить поставку"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/orders",
+      "summary": "Получить сборочные задания в поставке"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/supplies/{supplyId}/deliver",
+      "summary": "Передать поставку в доставку"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/barcode",
+      "summary": "Получить QR-код поставки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "summary": "Получить список коробов поставки"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "summary": "Добавить короба к поставке"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "summary": "Удалить короба из поставки"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/supplies/{supplyId}/trbx/stickers",
+      "summary": "Получить стикеры коробов поставки"
+    }
+  ],
+  "06-in-store-pickup.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v3/click-collect/orders/new",
+      "summary": "Получить список новых сборочных заданий"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/confirm",
+      "summary": "Перевести на сборку"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/prepare",
+      "summary": "Сообщить, что сборочное задание готово к выдаче"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/click-collect/orders/client",
+      "summary": "Информация о покупателе"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/click-collect/orders/client/identity",
+      "summary": "Проверить, что заказ принадлежит покупателю"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/receive",
+      "summary": "Сообщить, что заказ принят покупателем"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/reject",
+      "summary": "Сообщить, что покупатель отказался от заказа"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/click-collect/orders/status",
+      "summary": "Получить статусы сборочных заданий"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/click-collect/orders",
+      "summary": "Получить информацию о завершённых сборочных заданиях"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/cancel",
+      "summary": "Отменить сборочное задание"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta",
+      "summary": "Получить метаданные сборочного задания"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta",
+      "summary": "Удалить метаданные сборочного задания"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/sgtin",
+      "summary": "Закрепить за сборочным заданием код маркировки товара"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/uin",
+      "summary": "Закрепить за сборочным заданием УИН (уникальный идентификационный номер)"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/imei",
+      "summary": "Закрепить за сборочным заданием IMEI"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/gtin",
+      "summary": "Закрепить за сборочным заданием GTIN"
+    }
+  ],
+  "07-orders-fbw.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance/coefficients",
+      "summary": "Коэффициенты приёмки"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/acceptance/options",
+      "summary": "Опции приёмки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouses",
+      "summary": "Список складов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/transit-tariffs",
+      "summary": "Транзитные направления"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/supplies",
+      "summary": "Список поставок"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplies/{ID}",
+      "summary": "Детали поставки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplies/{ID}/goods",
+      "summary": "Товары поставки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplies/{ID}/package",
+      "summary": "Упаковка поставки"
+    }
+  ],
+  "08-promotion.yaml": [
+    {
+      "method": "GET",
+      "path": "/adv/v1/promotion/count",
+      "summary": "Списки кампаний"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/promotion/adverts",
+      "summary": "Информация о кампаниях"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/auction/adverts",
+      "summary": "Информация о кампаниях с ручной ставкой"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/config",
+      "summary": "Конфигурационные значения Продвижения"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v0/bids/min",
+      "summary": "Минимальные ставки для карточек товаров"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/save-ad",
+      "summary": "Создать кампанию с единой ставкой"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/seacat/save-ad",
+      "summary": "Создать кампанию"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/supplier/subjects",
+      "summary": "Предметы для кампаний"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/supplier/nms",
+      "summary": "Карточки товаров для кампаний"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/delete",
+      "summary": "Удаление кампании"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v0/rename",
+      "summary": "Переименование кампании"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/start",
+      "summary": "Запуск кампании"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/pause",
+      "summary": "Пауза кампании"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/stop",
+      "summary": "Завершение кампании"
+    },
+    {
+      "method": "PATCH",
+      "path": "/adv/v0/bids",
+      "summary": "Изменение ставок"
+    },
+    {
+      "method": "PUT",
+      "path": "/adv/v0/auction/placements",
+      "summary": "Изменение мест размещения в кампаниях с ручной ставкой"
+    },
+    {
+      "method": "PATCH",
+      "path": "/adv/v0/auction/bids",
+      "summary": "Изменение ставок в кампаниях"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/balance",
+      "summary": "Баланс"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/budget",
+      "summary": "Бюджет кампании"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/budget/deposit",
+      "summary": "Пополнение бюджета кампании"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/upd",
+      "summary": "Получение истории затрат"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/payments",
+      "summary": "Получение истории пополнений счёта"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/search/set-plus",
+      "summary": "Управление активностью фиксированных фраз"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/search/set-plus",
+      "summary": "Установка/удаление фиксированных фраз"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/search/set-excluded",
+      "summary": "Установка/удаление минус-фраз в поиске"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/auto/set-excluded",
+      "summary": "Установка/удаление минус-фраз для кампании с единой ставкой"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/auto/getnmtoadd",
+      "summary": "Список карточек товаров для кампании с единой ставкой"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/auto/updatenm",
+      "summary": "Изменение списка карточек товаров в кампании с единой ставкой"
+    },
+    {
+      "method": "PATCH",
+      "path": "/adv/v0/auction/nms",
+      "summary": "Изменение списка карточек товаров в кампаниях"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/count",
+      "summary": "Количество медиакампаний"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/adverts",
+      "summary": "Список медиакампаний"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/advert",
+      "summary": "Информация о медиакампании"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/fullstats",
+      "summary": "Статистика кампаний"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v3/fullstats",
+      "summary": "Статистика кампаний"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v2/auto/stat-words",
+      "summary": "Статистика кампании с единой ставкой по кластерам фраз"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/stat/words",
+      "summary": "Статистика кампании c ручной ставкой по ключевым фразам"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/stats/keywords",
+      "summary": "Статистика по ключевым фразам"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/stats",
+      "summary": "Статистика медиакампаний"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions",
+      "summary": "Список акций"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions/details",
+      "summary": "Детальная информация об акциях"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions/nomenclatures",
+      "summary": "Список товаров для участия в акции"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/calendar/promotions/upload",
+      "summary": "Добавить товар в акцию"
+    }
+  ],
+  "09-communications.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v1/new-feedbacks-questions",
+      "summary": "Непросмотренные отзывы и вопросы"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/questions/count-unanswered",
+      "summary": "Неотвеченные вопросы"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/questions/count",
+      "summary": "Количество вопросов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/questions",
+      "summary": "Список вопросов"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/questions",
+      "summary": "Работа с вопросами"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/question",
+      "summary": "Получить вопрос по ID"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks/count-unanswered",
+      "summary": "Необработанные отзывы"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks/count",
+      "summary": "Количество отзывов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks",
+      "summary": "Список отзывов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier-valuations",
+      "summary": "Получить списки причин жалоб на отзыв и проблем с товаром"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/feedbacks/actions",
+      "summary": "Пожаловаться на отзыв, сообщить о проблеме с товаром"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/feedbacks/answer",
+      "summary": "Ответить на отзыв"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/feedbacks/answer",
+      "summary": "Отредактировать ответ на отзыв"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/feedbacks/order/return",
+      "summary": "Возврат товара по ID отзыва"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedback",
+      "summary": "Получить отзыв по ID"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks/archive",
+      "summary": "Список архивных отзывов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/templates",
+      "summary": "Получить шаблоны ответов на вопросы и отзывы"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/templates",
+      "summary": "Создать шаблон"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/templates",
+      "summary": "Редактировать шаблон"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/templates",
+      "summary": "Удалить шаблон"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller/chats",
+      "summary": "Список чатов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller/events",
+      "summary": "События чатов"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/seller/message",
+      "summary": "Отправить сообщение"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller/download/{id}",
+      "summary": "Получить файл из сообщения"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/claims",
+      "summary": "Заявки покупателей на возврат"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/claim",
+      "summary": "Ответ на заявку покупателя"
+    }
+  ],
+  "10-tariffs.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/commission",
+      "summary": "Комиссия по категориям товаров"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/box",
+      "summary": "Тарифы для коробов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/pallet",
+      "summary": "Тарифы для монопаллет"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/return",
+      "summary": "Тарифы на возврат"
+    }
+  ],
+  "11-analytics.yaml": [
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/detail",
+      "summary": "Статистика карточек товаров за период"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/detail/history",
+      "summary": "Статистика карточек товаров по дням"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/grouped/history",
+      "summary": "Статистика групп карточек товаров по дням"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/downloads",
+      "summary": "Создать отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/nm-report/downloads",
+      "summary": "Получить список отчётов"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/downloads/retry",
+      "summary": "Сгенерировать отчёт повторно"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/nm-report/downloads/file/{downloadId}",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/report",
+      "summary": "Основная страница"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/table/groups",
+      "summary": "Пагинация по группам"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/table/details",
+      "summary": "Пагинация по товарам в группе"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/product/search-texts",
+      "summary": "Поисковые запросы по товару"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/product/orders",
+      "summary": "Заказы и позиции по поисковым запросам товара"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/products/groups",
+      "summary": "Данные по группам"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/products/products",
+      "summary": "Данные по товарам"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/products/sizes",
+      "summary": "Данные по размерам"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/offices",
+      "summary": "Данные по складам"
+    }
+  ],
+  "12-reports.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/incomes",
+      "summary": "Поставки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/stocks",
+      "summary": "Склады"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/orders",
+      "summary": "Заказы"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/sales",
+      "summary": "Продажи"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/analytics/excise-report",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouse_remains",
+      "summary": "Создать отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouse_remains/tasks/{task_id}/status",
+      "summary": "Проверить статус"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouse_remains/tasks/{task_id}/download",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/warehouse-measurements",
+      "summary": "Занижение габаритов упаковки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/antifraud-details",
+      "summary": "Самовыкупы"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/incorrect-attachments",
+      "summary": "Подмена товара"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/goods-labeling",
+      "summary": "Маркировка товара"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/characteristics-change",
+      "summary": "Смена характеристик"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance_report",
+      "summary": "Создать отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance_report/tasks/{task_id}/status",
+      "summary": "Проверить статус"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance_report/tasks/{task_id}/download",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/paid_storage",
+      "summary": "Создать отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/paid_storage/tasks/{task_id}/status",
+      "summary": "Проверить статус"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/paid_storage/tasks/{task_id}/download",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/region-sale",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/brand-share/brands",
+      "summary": "Бренды продавца"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/brand-share/parent-subjects",
+      "summary": "Родительские категории бренда"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/brand-share",
+      "summary": "Получить отчёт"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/banned-products/blocked",
+      "summary": "Заблокированные карточки"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/banned-products/shadowed",
+      "summary": "Скрытые из каталога"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/goods-return",
+      "summary": "Получить отчёт"
+    }
+  ],
+  "13-finances.yaml": [
+    {
+      "method": "GET",
+      "path": "/api/v1/account/balance",
+      "summary": "Получить баланс продавца"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/supplier/reportDetailByPeriod",
+      "summary": "Отчёт о продажах по реализации"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/documents/categories",
+      "summary": "Категории документов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/documents/list",
+      "summary": "Список документов"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/documents/download",
+      "summary": "Получить документ"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/documents/download/all",
+      "summary": "Получить документы"
+    }
+  ],
+  "99-supplemental.yaml": [
+    {
+      "method": "GET",
+      "path": "/content/v2/tags",
+      "summary": "Список тегов (v2)"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/advert",
+      "summary": "Информация о медиакампании (v1)"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/fullstats",
+      "summary": "Статистика кампаний (v2 POST)"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v3/fullstats",
+      "summary": "Статистика кампаний (v3)"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions",
+      "summary": "Список акций"
+    }
+  ]
+}

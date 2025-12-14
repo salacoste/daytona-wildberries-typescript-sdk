@@ -137,7 +137,7 @@ describe('PromotionModule', () => {
       });
     });
 
-    describe('createPromotionAdverts() - Get campaign information', () => {
+    describe('createPromotionAdvert() - Get campaign information', () => {
       const mockAdvertIds = [123, 456, 789];
       const mockAdvertsResponse = [
         {
@@ -161,7 +161,7 @@ describe('PromotionModule', () => {
         mockClient.post.mockResolvedValue(mockAdvertsResponse);
 
         // Act
-        await promotionModule.createPromotionAdverts(mockAdvertIds);
+        await promotionModule.createPromotionAdvert(mockAdvertIds);
 
         // Assert
         expect(mockClient.post).toHaveBeenCalledWith(
@@ -177,7 +177,7 @@ describe('PromotionModule', () => {
         const options = { status: 7 as const, type: 8 as const };
 
         // Act
-        await promotionModule.createPromotionAdverts(mockAdvertIds, options);
+        await promotionModule.createPromotionAdvert(mockAdvertIds, options);
 
         // Assert
         expect(mockClient.post).toHaveBeenCalledWith(
@@ -192,7 +192,7 @@ describe('PromotionModule', () => {
         mockClient.post.mockResolvedValue(mockAdvertsResponse);
 
         // Act
-        const result = await promotionModule.createPromotionAdverts(mockAdvertIds);
+        const result = await promotionModule.createPromotionAdvert(mockAdvertIds);
 
         // Assert
         expect(Array.isArray(result)).toBe(true);
@@ -204,7 +204,7 @@ describe('PromotionModule', () => {
         mockClient.post.mockRejectedValue(new ValidationError('Invalid campaign IDs', {}));
 
         // Act & Assert
-        await expect(promotionModule.createPromotionAdverts([])).rejects.toThrow(ValidationError);
+        await expect(promotionModule.createPromotionAdvert([])).rejects.toThrow(ValidationError);
       });
     });
 
@@ -490,7 +490,7 @@ describe('PromotionModule', () => {
         mockClient.post.mockRejectedValue(notFoundError);
 
         // Act & Assert
-        await expect(promotionModule.createPromotionAdverts([campaignId])).rejects.toThrow(
+        await expect(promotionModule.createPromotionAdvert([campaignId])).rejects.toThrow(
           CampaignNotFoundError
         );
       });
@@ -595,7 +595,7 @@ describe('PromotionModule', () => {
 
       // Act & Assert - should not throw TypeScript errors
       for (const status of validStatuses) {
-        await promotionModule.createPromotionAdverts([123], { status });
+        await promotionModule.createPromotionAdvert([123], { status });
         expect(mockClient.post).toHaveBeenCalled();
         mockClient.post.mockClear();
       }
@@ -608,7 +608,7 @@ describe('PromotionModule', () => {
 
       // Act & Assert
       for (const type of validTypes) {
-        await promotionModule.createPromotionAdverts([123], { type });
+        await promotionModule.createPromotionAdvert([123], { type });
         expect(mockClient.post).toHaveBeenCalled();
         mockClient.post.mockClear();
       }

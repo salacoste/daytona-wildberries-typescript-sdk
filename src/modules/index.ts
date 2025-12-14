@@ -15,10 +15,10 @@ export { GeneralModule } from './general';
 export { ProductsModule } from './products';
 
 // Orders FBS Module (Stories 2.5-2.6)
-export { OrdersFBSModule } from './orders-fbs';
+export { OrdersFbsModule } from './orders-fbs';
 
 // Orders FBW Module (Story 2.7)
-export { OrdersFBWModule } from './orders-fbw';
+export { OrdersFbwModule } from './orders-fbw';
 
 // Finances Module (Story 3.1-3.2)
 export { FinancesModule } from './finances';

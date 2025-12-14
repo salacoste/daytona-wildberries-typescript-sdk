@@ -10,6 +10,7 @@
  *   npm run generate -- wildberries_api_doc/*.yaml # Generate from file pattern
  */
 
+import { execSync } from 'child_process';
 import { parseOpenAPISpec, extractSchemas, getModuleName } from './generators/yaml-parser.js';
 import { generateTypeScriptInterface } from './generators/schema-to-interface.js';
 import { writeTypesToFile } from './generators/file-writer.js';
@@ -111,8 +112,8 @@ function generateModule(
   // Extract paths and parse operations
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
   const paths = spec.paths ?? {};
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const operations = parsePaths(paths);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  const operations = parsePaths(paths, spec.components);
 
   if (operations.length === 0) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
@@ -151,8 +152,8 @@ function generateRateLimits(
   // Extract paths and parse operations
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
   const paths = spec.paths ?? {};
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const operations = parsePaths(paths);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  const operations = parsePaths(paths, spec.components);
 
   if (operations.length === 0) {
     // eslint-disable-next-line no-console
@@ -218,6 +219,73 @@ function generateMethodNameFromPath(path: string, method: string): string {
 }
 
 /**
+ * Validates generated TypeScript code compiles without errors
+ *
+ * Runs TypeScript compiler in check-only mode to catch any syntax or type errors
+ * in generated code before the generator completes.
+ *
+ * @returns true if validation passes, false otherwise
+ */
+function validateGeneratedCode(): boolean {
+  process.stdout.write('\n🔍 Validating generated TypeScript (src/ only)...\n');
+
+  try {
+    // Run TypeScript compiler in check mode on src/ only (excludes tests)
+    // We use --project with a filter to only check generated source files
+    execSync('npx tsc --noEmit --skipLibCheck 2>&1 | grep -v "tests/" | grep "error" || true', {
+      cwd: process.cwd(),
+      stdio: 'pipe',
+      encoding: 'utf8',
+      shell: '/bin/bash',
+    });
+
+    // Also run a direct check to count src/ errors
+    const result = execSync(
+      'npx tsc --noEmit --skipLibCheck 2>&1 | grep "src/" | grep -v "tests/" | grep -c "error" || echo "0"',
+      {
+        cwd: process.cwd(),
+        encoding: 'utf8',
+        shell: '/bin/bash',
+      }
+    );
+
+    const errorCount = parseInt(result.trim(), 10);
+    if (errorCount === 0) {
+      process.stdout.write('✅ Generated source code compiles successfully\n');
+      return true;
+    } else {
+      process.stderr.write(`❌ Generated source code has ${errorCount} TypeScript errors\n`);
+      // Show the errors
+      const errors = execSync(
+        'npx tsc --noEmit --skipLibCheck 2>&1 | grep "src/" | grep -v "tests/" | head -20',
+        {
+          cwd: process.cwd(),
+          encoding: 'utf8',
+          shell: '/bin/bash',
+        }
+      );
+      process.stderr.write(errors);
+      return false;
+    }
+  } catch (error: unknown) {
+    process.stderr.write('❌ Validation error:\n');
+    if (error && typeof error === 'object' && 'stdout' in error) {
+      const stdout = (error as { stdout?: string }).stdout;
+      if (stdout) {
+        process.stderr.write(stdout);
+      }
+    }
+    if (error && typeof error === 'object' && 'stderr' in error) {
+      const stderr = (error as { stderr?: string }).stderr;
+      if (stderr) {
+        process.stderr.write(stderr);
+      }
+    }
+    return false;
+  }
+}
+
+/**
  * Main CLI entry point
  */
 function main(): void {
@@ -250,8 +318,17 @@ function main(): void {
   const filesCount = String(files.length);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   process.stdout.write(
-    `\n✓ Generated ${String(totalTypes)} types, ${String(totalMethods)} methods, and ${String(totalEndpoints)} rate limit configs from ${String(successCount)}/${filesCount} files\n\n`
+    `\n✓ Generated ${String(totalTypes)} types, ${String(totalMethods)} methods, and ${String(totalEndpoints)} rate limit configs from ${String(successCount)}/${filesCount} files\n`
   );
+
+  // Validate generated code compiles (Epic 8 - Output Validation)
+  const isValid = validateGeneratedCode();
+  if (!isValid) {
+    process.stderr.write('\n⚠️  Generation completed but validation failed. Please check the errors above.\n');
+    process.exit(1);
+  }
+
+  process.stdout.write('\n');
 }
 
 // Run if executed directly

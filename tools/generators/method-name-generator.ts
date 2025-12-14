@@ -122,10 +122,20 @@ export function generateMethodNameFromPath(path: string, method: string): string
     resourceName = segments.slice(-2).join('_');
   }
 
-  // Singularize if path had parameters (likely fetching single resource)
+  // Singularize if path had parameters OR if it's a state-changing operation (create/update/delete)
+  // This aligns with common conventions (createTemplate vs createTemplates)
   const hadPathParam = path.includes('{');
-  if (hadPathParam) {
-    resourceName = singularize(resourceName);
+  const isStateChange = ['post', 'put', 'patch', 'delete'].includes(method.toLowerCase());
+
+  if (hadPathParam || isStateChange) {
+    // For compound names like "order_status", singularize only the last word
+    if (resourceName.includes('_')) {
+      const parts = resourceName.split('_');
+      parts[parts.length - 1] = singularize(parts[parts.length - 1]);
+      resourceName = parts.join('_');
+    } else {
+      resourceName = singularize(resourceName);
+    }
   }
 
   // Get verb from HTTP method
@@ -196,8 +206,23 @@ export function toCamelCase(str: string): string {
  * ```
  */
 export function singularize(word: string): string {
-  // Words that don't change
-  const invariant = ['news', 'info', 'data', 'series', 'species'];
+  // Words that don't change (already singular or uncountable)
+  const invariant = [
+    'news',
+    'info',
+    'data',
+    'series',
+    'species',
+    'status', // Latin origin - singular ends in 's'
+    'focus',
+    'analysis',
+    'basis',
+    'diagnosis',
+    'synopsis',
+    'thesis',
+    'crisis',
+    'axis',
+  ];
   if (invariant.includes(word.toLowerCase())) {
     return word;
   }

@@ -10,6 +10,7 @@
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname } from 'path';
 import type { EndpointLimits } from './rate-limit-parser.js';
+import { sanitizeIdentifier } from './type-mapper.js';
 
 /**
  * Generates TypeScript code for rate limit configuration file.
@@ -79,7 +80,8 @@ import type { RateLimitConfig } from '../client/rate-limiter';
 `;
 
   // Generate export name (camelCase: generalRateLimits, productsRateLimits)
-  const exportName = `${moduleName}RateLimits`;
+  // Use sanitizeIdentifier to handle module names with hyphens (orders-fbs → ordersFbs)
+  const exportName = `${sanitizeIdentifier(moduleName)}RateLimits`;
 
   // Generate rate limit entries
   const entries: string[] = [];

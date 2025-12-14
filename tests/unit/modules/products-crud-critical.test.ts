@@ -10,7 +10,7 @@
  * - createContentTag() - Create product tags
  * - updateContentTag() - Update product tags
  * - deleteContentTag() - Delete product tags
- * - createContentBarcodes() - Generate product barcodes
+ * - createContentBarcode() - Generate product barcodes
  * - createCardsMovenm() - Merge/split product nomenclature
  *
  * These methods have HIGH RISK if broken as they affect core product lifecycle operations.
@@ -904,7 +904,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
   // HIGH PRIORITY: Barcode Generation
   // ============================================================================
 
-  describe('createContentBarcodes() - Generate Product Barcodes', () => {
+  describe('createContentBarcode() - Generate Product Barcodes', () => {
     const mockBarcodeResponse = {
       data: ['1234567890123', '1234567890124', '1234567890125'],
       error: false,
@@ -918,7 +918,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       const count = 3;
 
       // Act
-      const result = await productsModule.createContentBarcodes({ count });
+      const result = await productsModule.createContentBarcode({ count });
 
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
@@ -940,7 +940,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockResolvedValue(singleBarcodeResponse);
 
       // Act
-      const result = await productsModule.createContentBarcodes({ count: 1 });
+      const result = await productsModule.createContentBarcode({ count: 1 });
 
       // Assert
       expect(result.data).toHaveLength(1);
@@ -961,7 +961,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       });
 
       // Act
-      const result = await productsModule.createContentBarcodes({ count: 100 });
+      const result = await productsModule.createContentBarcode({ count: 100 });
 
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
@@ -978,7 +978,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
       // Act & Assert
       await expect(
-        productsModule.createContentBarcodes({
+        productsModule.createContentBarcode({
           count: 10000,
         })
       ).rejects.toThrow(ValidationError);
@@ -991,7 +991,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
       // Act & Assert
       await expect(
-        productsModule.createContentBarcodes({
+        productsModule.createContentBarcode({
           count: 0,
         })
       ).rejects.toThrow(ValidationError);
@@ -1004,7 +1004,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
       // Act & Assert
       await expect(
-        productsModule.createContentBarcodes({
+        productsModule.createContentBarcode({
           count: 10,
         })
       ).rejects.toThrow(RateLimitError);
@@ -1017,7 +1017,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
       // Act & Assert
       await expect(
-        productsModule.createContentBarcodes({
+        productsModule.createContentBarcode({
           count: 5,
         })
       ).rejects.toThrow(AuthenticationError);

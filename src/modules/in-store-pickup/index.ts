@@ -1,720 +1,311 @@
 /**
- * In-Store Pickup (Click & Collect) Module
- *
- * Manage click & collect orders where customers purchase online and pick up
- * at seller's physical location. Handles order assembly lifecycle, customer
- * verification, and product metadata management for regulated products.
- *
- * **Context7 References**:
- * - Axios interceptors and error handling: /axios/axios-docs
- * - TypeScript utility types: /microsoft/typescript
- * - Vitest testing patterns: /vitest-dev/vitest
- *
- * @module modules/in-store-pickup
+ * Auto-generated module
+ * Generated from: wildberries_api_doc/06-in-store-pickup.yaml
+ * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  */
 
-import type { BaseClient } from '../../client/base-client';
-import type {
-  NewOrdersResponse,
-  OrdersResponse,
-  OrderStatusesResponse,
-  OrderStatusRequest,
-  OrderClientInfoResponse,
-  CheckIdentityRequest,
-  CheckedIdentity,
-  OrderMetadata,
-  SGTINRequest,
-  UINRequest,
-  IMEIRequest,
-  GTINRequest,
-  GetOrdersParams,
-} from '../../types/in-store-pickup.types';
+import { BaseClient } from '../../client/base-client';
+import type { ApiCheckIdentityRequest, ApiCheckedIdentity, ApiGTINRequest, ApiIMEIRequest, ApiNewOrders, ApiOrderClientInfoResp, ApiOrderStatuses, ApiOrders, ApiOrdersMeta, ApiOrdersRequest, ApiSGTINsRequest, ApiUINRequest } from '../../types/in-store-pickup.types';
 
-/**
- * In-Store Pickup (Click & Collect) module
- *
- * Provides comprehensive methods for managing in-store pickup operations:
- * - **Order Assembly Management**: Process orders through lifecycle (new → confirm → prepare → receive/reject)
- * - **Order Queries**: List orders with filtering and get order statuses
- * - **Customer Interaction**: Search customer orders and verify customer identity at pickup
- * - **Metadata Management**: Manage product identification codes (SGTIN, UIN, IMEI, GTIN)
- *
- * **Order Lifecycle States**:
- * - `new` → `confirm` (via confirmOrder) - Start assembly
- * - `confirm` → `prepare` (via prepareOrder) - Mark ready for pickup
- * - `prepare` → `receive` (via receiveOrder) - Complete handover to customer
- * - `prepare` → `reject` (via rejectOrder) - Customer rejected/didn't pick up
- * - Any → `cancel` (via cancelOrder) - Seller cancellation
- *
- * **Rate Limit Note**: 409 responses count as 5 requests toward rate limits!
- *
- * @example Basic pickup workflow
- * ```typescript
- * const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
- *
- * // 1. Get new pickup orders
- * const newOrders = await sdk.inStorePickup.getNewOrders();
- * const order = newOrders.orders[0];
- *
- * // 2. Confirm order and start assembly
- * await sdk.inStorePickup.confirmOrder(order.id);
- *
- * // 3. Complete assembly
- * await sdk.inStorePickup.prepareOrder(order.id);
- *
- * // 4. Customer arrives - verify identity
- * const verification = await sdk.inStorePickup.verifyCustomerIdentity({
- *   orderCode: order.orderCode,
- *   passcode: '1234' // From customer's app
- * });
- *
- * // 5. Complete handover
- * await sdk.inStorePickup.receiveOrder(order.id);
- * ```
- *
- * @example Metadata management for regulated products
- * ```typescript
- * // Set SGTIN code (Честный знак marking)
- * await sdk.inStorePickup.setSGTINCode(orderId, ['1234567890123456']);
- *
- * // Set IMEI for electronics
- * await sdk.inStorePickup.setIMEICode(orderId, '123456789012345');
- *
- * // Get all metadata
- * const metadata = await sdk.inStorePickup.getOrderMetadata(orderId);
- * ```
- */
 export class InStorePickupModule {
   constructor(private client: BaseClient) {}
 
-  // ============================================================
-  // ORDER ASSEMBLY MANAGEMENT
-  // ============================================================
-
   /**
-   * Get all new pickup orders awaiting processing
+   * Получить список новых сборочных заданий
    *
-   * Returns all new assembly tasks for click & collect orders that need to be
-   * processed. Orders should be confirmed and assembled by the seller before
-   * customer pickup.
+   * Метод возвращает список всех новых [сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz), которые есть у продавца на момент запроса. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 300 requests per minute, 200ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @returns Promise resolving to array of new pickup orders
-   * @throws {RateLimitError} When rate limit exceeded
-   * @throws {NetworkError} On network failures
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get}
-   *
-   * @example
-   * ```typescript
-   * const response = await sdk.inStorePickup.getNewOrders();
-   * console.log(`Found ${response.orders.length} new pickup orders`);
-   *
-   * response.orders.forEach(order => {
-   *   console.log(`Order ${order.id}: ${order.article}`);
-   *   console.log(`Customer code: ${order.orderCode}`);
-   *   console.log(`Required metadata: ${order.requiredMeta?.join(', ') || 'None'}`);
-   * });
-   * ```
-   */
-  async getNewOrders(): Promise<NewOrdersResponse> {
-    return this.client.get<NewOrdersResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/new',
-      { rateLimitKey: 'inStorePickup.getNewOrders' }
-    );
-  }
-
-  /**
-   * Confirm order and start assembly process
-   *
-   * Transitions order from `new` to `confirm` status, indicating that assembly
-   * has started. This is required before the order can be prepared.
-   *
-   * **Rate limit**: 100 requests per minute, 600ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the assembly task to confirm
-   * @returns Promise resolving when confirmation succeeds (204 No Content)
-   * @throws {ValidationError} On invalid order ID (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {InvalidOrderStateError} When order state transition is invalid (409)
+   * @returns Успешно
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1confirm/patch}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * try {
-   *   await sdk.inStorePickup.confirmOrder(12345);
-   *   console.log('Order confirmed, assembly started');
-   * } catch (error) {
-   *   if (error.name === 'InvalidOrderStateError') {
-   *     console.error('Order is not in correct state for confirmation');
-   *   }
-   * }
-   * ```
+  const result = await sdk.general.getOrdersNew();
+  console.log(result);
    */
-  async confirmOrder(orderId: number): Promise<void> {
-    await this.client.patch<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/confirm`,
-      {},
-      { rateLimitKey: 'inStorePickup.confirmOrder' }
-    );
+  async getOrdersNew(): Promise<ApiNewOrders> {
+    return this.client.get<ApiNewOrders>('https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/new');
   }
 
   /**
-   * Mark order as prepared and ready for customer pickup
+   * Перевести на сборку
    *
-   * Transitions order from `confirm` to `prepare` status. Order is now assembled
-   * and waiting for customer to arrive for pickup.
+   * Метод переводит сборочное задание в статус `confirm` — на сборке. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 100 requests per minute, 600ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the assembly task to mark as prepared
-   * @returns Promise resolving when preparation succeeds (204 No Content)
-   * @throws {ValidationError} On invalid order ID (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {InvalidOrderStateError} When order state transition is invalid (409)
+   * @param orderId - ID сборочного задания
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1prepare/patch}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * try {
-   *   await sdk.inStorePickup.prepareOrder(12345);
-   *   console.log('Order prepared and ready for customer pickup');
-   * } catch (error) {
-   *   if (error.name === 'InvalidOrderStateError') {
-   *     console.error('Order must be confirmed before preparation');
-   *   }
-   * }
-   * ```
+  const result = await sdk.general.updateOrdersConfirm('orderId-value');
    */
-  async prepareOrder(orderId: number): Promise<void> {
-    await this.client.patch<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/prepare`,
-      {},
-      { rateLimitKey: 'inStorePickup.prepareOrder' }
-    );
+  async updateOrdersConfirm(orderId: number): Promise<void> {
+    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/confirm`, undefined);
   }
 
   /**
-   * Complete order handover to customer
+   * Сообщить, что сборочное задание готово к выдаче
    *
-   * Transitions order from `prepare` to `receive` status. This is the terminal
-   * state indicating successful order completion.
+   * Метод переводит сборочное задание в статус `prepare` — готово к выдаче. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 100 requests per minute, 600ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the assembly task to mark as received
-   * @returns Promise resolving when handover succeeds (204 No Content)
-   * @throws {ValidationError} On invalid order ID (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {InvalidOrderStateError} When order state transition is invalid (409)
+   * @param orderId - ID сборочного задания
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1receive/patch}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // After customer identity verification succeeds
-   * await sdk.inStorePickup.receiveOrder(12345);
-   * console.log('Order successfully handed over to customer');
-   * ```
+  const result = await sdk.general.updateOrdersPrepare('orderId-value');
    */
-  async receiveOrder(orderId: number): Promise<void> {
-    await this.client.patch<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/receive`,
-      {},
-      { rateLimitKey: 'inStorePickup.receiveOrder' }
-    );
+  async updateOrdersPrepare(orderId: number): Promise<void> {
+    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/prepare`, undefined);
   }
 
   /**
-   * Mark order as rejected by customer
+   * Информация о покупателе
    *
-   * Transitions order from `prepare` to `reject` status when customer refuses
-   * to pick up the order. This is a terminal state.
+   * Метод возвращает информацию о покупателе по ID сборочного задания. <br><br> Доступно только для сборочных заданий в статусах: - `confirm` — на сборке - `prepare` — готов к выдаче <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 100 requests per minute, 600ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the assembly task to mark as rejected
-   * @returns Promise resolving when rejection succeeds (204 No Content)
-   * @throws {ValidationError} On invalid order ID (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {InvalidOrderStateError} When order state transition is invalid (409)
+   * @param data - Request body data
+   * @returns Успешно
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1reject/patch}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // Customer doesn't show up or refuses order
-   * await sdk.inStorePickup.rejectOrder(12345);
-   * console.log('Order marked as rejected by customer');
-   * ```
+  const result = await sdk.general.createOrdersClient({});
+  console.log(result);
    */
-  async rejectOrder(orderId: number): Promise<void> {
-    await this.client.patch<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/reject`,
-      {},
-      { rateLimitKey: 'inStorePickup.rejectOrder' }
-    );
+  async createOrdersClient(data: ApiOrdersRequest): Promise<ApiOrderClientInfoResp> {
+    return this.client.post<ApiOrderClientInfoResp>('https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/client', data);
   }
 
   /**
-   * Cancel order (seller cancellation)
+   * Проверить, что заказ принадлежит покупателю
    *
-   * Transitions order to `cancel` status. Can be done from any state. This is
-   * a terminal state.
+   * Метод сообщает, принадлежит ли проверяемый заказ покупателю или нет по переданному коду. <br><br> Доступно, если хотя бы одно сборочное задание из заказа находится в статусе prepare - готов к выдаче. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 30 запросов | 2 секунды | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 100 requests per minute, 600ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the assembly task to cancel
-   * @returns Promise resolving when cancellation succeeds (204 No Content)
-   * @throws {ValidationError} On invalid order ID (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {InvalidOrderStateError} When order state transition is invalid (409)
+   * @param data - Request body data
+   * @returns Успешно
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1cancel/patch}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // Seller cancels order due to stock issues
-   * await sdk.inStorePickup.cancelOrder(12345);
-   * console.log('Order cancelled by seller');
-   * ```
+  const result = await sdk.general.createClientIdentity({});
+  console.log(result);
    */
-  async cancelOrder(orderId: number): Promise<void> {
-    await this.client.patch<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/cancel`,
-      {},
-      { rateLimitKey: 'inStorePickup.cancelOrder' }
-    );
-  }
-
-  // ============================================================
-  // ORDER QUERIES
-  // ============================================================
-
-  /**
-   * Get completed orders with pagination
-   *
-   * Returns completed pickup orders (after sale or cancellation) for a specified
-   * time period. Maximum 30 calendar days per request.
-   *
-   * **Rate limit**: 300 requests per minute, 200ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param params - Query parameters for filtering
-   * @param params.limit - Maximum number of items to return (1-1000)
-   * @param params.next - Pagination offset (0 for first request)
-   * @param params.dateFrom - Period start date (Unix timestamp)
-   * @param params.dateTo - Period end date (Unix timestamp, max 30 days from dateFrom)
-   * @returns Promise resolving to paginated orders response
-   * @throws {ValidationError} On invalid parameters (400)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders/get}
-   *
-   * @example Get last 7 days of completed orders
-   * ```typescript
-   * const sevenDaysAgo = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60);
-   * const now = Math.floor(Date.now() / 1000);
-   *
-   * let allOrders: Order[] = [];
-   * let next = 0;
-   *
-   * do {
-   *   const response = await sdk.inStorePickup.getOrders({
-   *     limit: 1000,
-   *     next,
-   *     dateFrom: sevenDaysAgo,
-   *     dateTo: now
-   *   });
-   *
-   *   allOrders = allOrders.concat(response.orders);
-   *   next = response.next;
-   * } while (next !== 0);
-   *
-   * console.log(`Found ${allOrders.length} completed orders`);
-   * ```
-   */
-  async getOrders(params: GetOrdersParams): Promise<OrdersResponse> {
-    const queryParams: Record<string, number> = {
-      limit: params.limit,
-      next: params.next,
-      dateFrom: params.dateFrom,
-      dateTo: params.dateTo,
-    };
-
-    return this.client.get<OrdersResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/click-collect/orders',
-      {
-        params: queryParams,
-        rateLimitKey: 'inStorePickup.getOrders',
-      }
-    );
+  async createClientIdentity(data: ApiCheckIdentityRequest): Promise<ApiCheckedIdentity> {
+    return this.client.post<ApiCheckedIdentity>('https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/client/identity', data);
   }
 
   /**
-   * Get current statuses for multiple orders
+   * Сообщить, что заказ принят покупателем
    *
-   * Returns both supplier status (seller-controlled) and WB status (system-controlled)
-   * for specified order IDs.
+   * Метод переводит сборочное задание в статус `receive` — получено покупателем. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Supplier Statuses**: new, confirm, prepare, receive, reject, cancel, cancel_shelf_life
-   * **WB Statuses**: waiting, sold, canceled, canceled_by_client, declined_by_client, defect, ready_for_pickup
-   *
-   * **Rate limit**: 300 requests per minute, 200ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderIds - Array of order IDs to check
-   * @returns Promise resolving to order statuses
-   * @throws {ValidationError} On invalid request body (400)
+   * @param orderId - ID сборочного задания
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1status/post}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * const orderIds = [12345, 12346, 12347];
-   * const statuses = await sdk.inStorePickup.getOrderStatuses(orderIds);
-   *
-   * statuses.orders.forEach(status => {
-   *   console.log(`Order ${status.id}:`);
-   *   console.log(`  Supplier: ${status.supplierStatus}`);
-   *   console.log(`  WB System: ${status.wbStatus}`);
-   * });
-   * ```
+  const result = await sdk.general.updateOrdersReceive('orderId-value');
    */
-  async getOrderStatuses(orderIds: number[]): Promise<OrderStatusesResponse> {
-    const request: OrderStatusRequest = { orders: orderIds };
-
-    return this.client.post<OrderStatusesResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/status',
-      request,
-      { rateLimitKey: 'inStorePickup.getOrderStatuses' }
-    );
-  }
-
-  // ============================================================
-  // CUSTOMER INTERACTION
-  // ============================================================
-
-  /**
-   * Get customer information for orders
-   *
-   * Returns customer contact information for specified orders. Only available
-   * for orders in `confirm` (on assembly) or `prepare` (ready for pickup) status.
-   *
-   * **Note**: Phone number is NOT direct customer number - requires extension code
-   *
-   * **Rate limit**: 300 requests per minute, 200ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderIds - Array of order IDs to get customer info for
-   * @returns Promise resolving to customer information
-   * @throws {ValidationError} On invalid request body (400)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1client/post}
-   *
-   * @example
-   * ```typescript
-   * const customerInfo = await sdk.inStorePickup.getCustomerInfo([12345]);
-   *
-   * customerInfo.orders.forEach(info => {
-   *   console.log(`Order ${info.orderID}: ${info.firstName}`);
-   *   console.log(`Contact: ${info.phone}, extension ${info.phoneCode}`);
-   * });
-   * ```
-   */
-  async getCustomerInfo(orderIds: number[]): Promise<OrderClientInfoResponse> {
-    const request: OrderStatusRequest = { orders: orderIds };
-
-    return this.client.post<OrderClientInfoResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/client',
-      request,
-      { rateLimitKey: 'inStorePickup.getCustomerInfo' }
-    );
+  async updateOrdersReceive(orderId: number): Promise<void> {
+    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/receive`, undefined);
   }
 
   /**
-   * Verify customer identity at pickup
+   * Сообщить, что покупатель отказался от заказа
    *
-   * Verifies that the order belongs to the customer by validating their passcode.
-   * Only available when at least one assembly task from the order is in `prepare` status.
+   * Метод переводит сборочное задание в статус `reject` — отказ при получении. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 30 requests per minute, 2s interval, 20 burst (MOST RESTRICTIVE!)
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param request - Identity verification request
-   * @param request.orderCode - Customer's unique order code
-   * @param request.passcode - Verification passcode from customer's app
-   * @returns Promise resolving to verification result (always { ok: true } on success)
-   * @throws {ValidationError} On invalid request body (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {CustomerVerificationError} When passcode is incorrect (409)
+   * @param orderId - ID сборочного задания
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1client~1identity/post}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * try {
-   *   const result = await sdk.inStorePickup.verifyCustomerIdentity({
-   *     orderCode: '21117866-0006',
-   *     passcode: '1234'
-   *   });
-   *
-   *   if (result.ok) {
-   *     console.log('Customer verified! Proceed with handover');
-   *     // Now call receiveOrder()
-   *   }
-   * } catch (error) {
-   *   if (error.name === 'CustomerVerificationError') {
-   *     console.error('Invalid passcode - ask customer to check their app');
-   *   }
-   * }
-   * ```
+  const result = await sdk.general.updateOrdersReject('orderId-value');
    */
-  async verifyCustomerIdentity(request: CheckIdentityRequest): Promise<CheckedIdentity> {
-    return this.client.post<CheckedIdentity>(
-      'https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/client/identity',
-      request,
-      { rateLimitKey: 'inStorePickup.verifyCustomerIdentity' }
-    );
-  }
-
-  // ============================================================
-  // METADATA MANAGEMENT
-  // ============================================================
-
-  /**
-   * Get product metadata for order
-   *
-   * Returns identification codes (SGTIN, UIN, IMEI, GTIN) associated with the order.
-   * Available metadata types are listed in the `requiredMeta` field of new orders.
-   *
-   * **Rate limit**: 300 requests per minute, 200ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the order to get metadata for
-   * @returns Promise resolving to order metadata
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get}
-   *
-   * @example
-   * ```typescript
-   * const metadata = await sdk.inStorePickup.getOrderMetadata(12345);
-   *
-   * console.log('Order metadata:');
-   * if (metadata.meta.sgtin?.value) {
-   *   console.log(`SGTIN: ${metadata.meta.sgtin.value.join(', ')}`);
-   * }
-   * if (metadata.meta.imei?.value) {
-   *   console.log(`IMEI: ${metadata.meta.imei.value}`);
-   * }
-   * ```
-   */
-  async getOrderMetadata(orderId: number): Promise<OrderMetadata> {
-    return this.client.get<OrderMetadata>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta`,
-      { rateLimitKey: 'inStorePickup.getOrderMetadata' }
-    );
+  async updateOrdersReject(orderId: number): Promise<void> {
+    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/reject`, undefined);
   }
 
   /**
-   * Delete metadata for order
+   * Получить статусы сборочных заданий
    *
-   * Removes metadata value for specified key. Valid keys: imei, uin, gtin, sgtin.
-   * Only one key can be deleted per request.
+   * Метод возвращает статусы сборочных заданий по их ID. <br><br> `supplierStatus` — статус сборочного задания. Триггер его изменения - действие самого продавца. Возможные значения `supplierStatus`: | Статус | Описание | Как перевести сборочное задание в данный статус | | ------- | --------- | --------------------------------------| | `new` | **Новое сборочное задание** | | `confirm` | **На сборке** | [Перевести сборочное задание на сборку](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1confirm/patch) | `prepare` | **Готов к выдаче** | [Сообщить, что сборочное задание готово к выдаче](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1prepare/patch) | `receive` | **Получено покупателем** | [Сообщить, что заказ принят покупателем](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1receive/patch) | `reject` | **Отказ покупателя при получении** | [Сообщить, что покупатель отказался от заказа](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1reject/patch) | `cancel` | **Отменено продавцом** | [Отменить сборочное задание](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1cancel/patch) | `cancel_shelf_life` | **Отмена по истечении срока хранения** | Переводится автоматически по возникновению события <br><br> `wbStatus` — статус системы Wildberries. Возможные значения `wbStatus`: - `waiting` - сборочное задание в работе - `sold` - заказ получен покупателем - `canceled` - отмена сборочного задания - `canceled_by_client` - покупатель отменил заказ при получении - `declined_by_client` - покупатель отменил заказ в первый чаc <br> Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку - `defect` - отмена заказа по причине брака - `ready_for_pickup` - сборочное задание готово к выдаче <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 300 requests per minute, 200ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the order to delete metadata from
-   * @param key - Metadata key to delete (imei, uin, gtin, sgtin)
-   * @returns Promise resolving when deletion succeeds (204 No Content)
-   * @throws {NotFoundError} When order doesn't exist (404)
+   * @param data - Request body data
+   * @returns Успешно
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/delete}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // Remove IMEI code
-   * await sdk.inStorePickup.deleteOrderMetadata(12345, 'imei');
-   * console.log('IMEI metadata deleted');
-   * ```
+  const result = await sdk.general.createOrdersStatu({});
+  console.log(result);
    */
-  async deleteOrderMetadata(
-    orderId: number,
-    key: 'imei' | 'uin' | 'gtin' | 'sgtin'
-  ): Promise<void> {
-    await this.client.delete<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta`,
-      undefined,
-      {
-        params: { key },
-        rateLimitKey: 'inStorePickup.deleteOrderMetadata',
-      }
-    );
+  async createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses> {
+    return this.client.post<ApiOrderStatuses>('https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/status', data);
   }
 
   /**
-   * Set SGTIN codes (Честный знак marking)
+   * Получить информацию о завершённых сборочных заданиях
    *
-   * Assigns SGTIN codes for Честный знак product marking system. Only available
-   * when order is in `confirm` status and `sgtin` is in order's `requiredMeta`.
+   * Метод возвращает информацию о завершённых сборочных заданиях после продажи или отмены заказа. Можно получить данные за заданный период, максимум 30 календарных дней одним запросом. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 1000 requests per minute, 60ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the order to set SGTIN for
-   * @param sgtins - Array of SGTIN codes (16-135 characters each)
-   * @returns Promise resolving when codes are set (204 No Content)
-   * @throws {ValidationError} On invalid codes (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {MetadataValidationError} When metadata cannot be updated (409)
+   * @param [options] - Query parameters
+   * @returns Успешно
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta~1sgtin/put}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // Scan SGTIN codes from product marking
-   * await sdk.inStorePickup.setSGTINCode(12345, [
-   *   '01047264500236891521AbCdEf1234567890',
-   *   '01047264500236892521GhIjKl0987654321'
-   * ]);
-   * console.log('SGTIN codes assigned');
-   * ```
+  const result = await sdk.general.getClickCollectOrders({});
+  console.log(result);
    */
-  async setSGTINCode(orderId: number, sgtins: string[]): Promise<void> {
-    const request: SGTINRequest = { sgtins };
-
-    await this.client.put<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/sgtin`,
-      request,
-      { rateLimitKey: 'inStorePickup.setSGTINCode' }
-    );
+  async getClickCollectOrders(options?: { limit: number; next: number; dateFrom: number; dateTo: number }): Promise<ApiOrders> {
+    return this.client.get<ApiOrders>('https://marketplace-api.wildberries.ru/api/v3/click-collect/orders', { params: options });
   }
 
   /**
-   * Set UIN code (Unique Identification Number)
+   * Отменить сборочное задание
    *
-   * Assigns UIN for the order. Only available when order is in `confirm` status
-   * and `uin` is in order's `requiredMeta`.
+   * Метод отменяет сборочное задание и переводит в статус `cancel` — отменено продавцом. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 1000 requests per minute, 60ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the order to set UIN for
-   * @param uin - UIN code
-   * @returns Promise resolving when code is set (204 No Content)
-   * @throws {ValidationError} On invalid code (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {MetadataValidationError} When metadata cannot be updated (409)
+   * @param orderId - ID сборочного задания
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta~1uin/put}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * await sdk.inStorePickup.setUINCode(12345, '1234567890123456');
-   * console.log('UIN code assigned');
-   * ```
+  const result = await sdk.general.updateOrdersCancel('orderId-value');
    */
-  async setUINCode(orderId: number, uin: string): Promise<void> {
-    const request: UINRequest = { uin };
-
-    await this.client.put<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/uin`,
-      request,
-      { rateLimitKey: 'inStorePickup.setUINCode' }
-    );
+  async updateOrdersCancel(orderId: number): Promise<void> {
+    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/cancel`, undefined);
   }
 
   /**
-   * Set IMEI code (for electronics)
+   * Получить метаданные сборочного задания
    *
-   * Assigns IMEI code for electronic devices. Only available when order is in
-   * `confirm` status and `imei` is in order's `requiredMeta`.
+   * Метод возвращает метаданные [сборочного задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get). <br><br> Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get), поле `requiredMeta`. <br><br> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 1000 requests per minute, 60ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the order to set IMEI for
-   * @param imei - IMEI code (15 digits)
-   * @returns Promise resolving when code is set (204 No Content)
-   * @throws {ValidationError} On invalid code (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {MetadataValidationError} When metadata cannot be updated (409)
+   * @param orderId - ID сборочного задания
+   * @returns Успешно
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta~1imei/put}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // Scan IMEI from device
-   * await sdk.inStorePickup.setIMEICode(12345, '123456789012345');
-   * console.log('IMEI code assigned');
-   * ```
+  const result = await sdk.general.getOrdersMeta('orderId-value');
+  console.log(result);
    */
-  async setIMEICode(orderId: number, imei: string): Promise<void> {
-    const request: IMEIRequest = { imei };
-
-    await this.client.put<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/imei`,
-      request,
-      { rateLimitKey: 'inStorePickup.setIMEICode' }
-    );
+  async getOrdersMeta(orderId: number): Promise<ApiOrdersMeta> {
+    return this.client.get<ApiOrdersMeta>(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta`);
   }
 
   /**
-   * Set GTIN code (Belarus product ID)
+   * Удалить метаданные сборочного задания
    *
-   * Assigns GTIN code (unique product ID in Belarus). Only available when order
-   * is in `confirm` status and `gtin` is in order's `requiredMeta`.
+   * Метод удаляет значение метаданных сборочного задания для переданного ключа. Возможные метаданные: `imei`, `uin`, `gtin`, `sgtin` Передается только одно значение. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
    *
-   * **Rate limit**: 1000 requests per minute, 60ms interval, 20 burst
-   * **Note**: 409 responses count as 5 requests
-   *
-   * @param orderId - ID of the order to set GTIN for
-   * @param gtin - GTIN code
-   * @returns Promise resolving when code is set (204 No Content)
-   * @throws {ValidationError} On invalid code (400)
-   * @throws {NotFoundError} When order doesn't exist (404)
-   * @throws {MetadataValidationError} When metadata cannot be updated (409)
+   * @param orderId - ID сборочного задания
+   * @param [options] - Query parameters
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   *
-   * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta~1gtin/put}
-   *
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * await sdk.inStorePickup.setGTINCode(12345, '1234567890123456');
-   * console.log('GTIN code assigned');
-   * ```
+  const result = await sdk.general.deleteOrdersMeta('orderId-value', {});
    */
-  async setGTINCode(orderId: number, gtin: string): Promise<void> {
-    const request: GTINRequest = { gtin };
-
-    await this.client.put<unknown>(
-      `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/gtin`,
-      request,
-      { rateLimitKey: 'inStorePickup.setGTINCode' }
-    );
+  async deleteOrdersMeta(orderId: number, options?: { key: string }): Promise<void> {
+    return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta`, { params: options });
   }
+
+  /**
+   * Закрепить за сборочным заданием код маркировки товара
+   *
+   * Метод закрепляет за сборочным заданием код маркировки [Честный знак](https://честныйзнак.рф). <br><br> Закрепить код маркировки можно только, если в [метаданных сборочного задания](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get) есть поле `sgtins`, а сборочное задание находится в [статусе](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1status/post) `confirm`. <br><br> Получить загруженные маркировки можно в [метаданных сборочного задания](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   *
+   * @param orderId - ID сборочного задания
+   * @param data - Request body data
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @example
+  const result = await sdk.general.updateMetaSgtin('orderId-value', {});
+   */
+  async updateMetaSgtin(orderId: number, data: ApiSGTINsRequest): Promise<void> {
+    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/sgtin`, data);
+  }
+
+  /**
+   * Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
+   *
+   * Метод обновляет УИН сборочного задания. У одного сборочного задания может быть только один УИН. Добавлять маркировку можно только для сборочных заданий в статусе `confirm` и доставка которых осуществляется силами WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   *
+   * @param orderId - ID сборочного задания
+   * @param data - Request body data
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @example
+  const result = await sdk.general.updateMetaUin('orderId-value', {});
+   */
+  async updateMetaUin(orderId: number, data: ApiUINRequest): Promise<void> {
+    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/uin`, data);
+  }
+
+  /**
+   * Закрепить за сборочным заданием IMEI
+   *
+   * Метод обновляет IMEI сборочного задания. У одного сборочного задания может быть только один IMEI. Добавлять маркировку можно только для сборочных заданий в статусе `confirm` и доставка которых осуществляется силами WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   *
+   * @param orderId - ID сборочного задания
+   * @param data - Request body data
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @example
+  const result = await sdk.general.updateMetaImei('orderId-value', {});
+   */
+  async updateMetaImei(orderId: number, data: ApiIMEIRequest): Promise<void> {
+    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/imei`, data);
+  }
+
+  /**
+   * Закрепить за сборочным заданием GTIN
+   *
+   * Метод обновляет GTIN (уникальный ID товара в Беларуси) сборочного задания. У одного сборочного задания может быть только один GTIN. Добавлять маркировку можно только для сборочных заданий в статусе `confirm` и доставка которых осуществляется силами WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   *
+   * @param orderId - ID сборочного задания
+   * @param data - Request body data
+   * @returns Response data
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @example
+  const result = await sdk.general.updateMetaGtin('orderId-value', {});
+   */
+  async updateMetaGtin(orderId: number, data: ApiGTINRequest): Promise<void> {
+    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/gtin`, data);
+  }
+
 }

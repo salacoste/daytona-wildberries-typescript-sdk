@@ -1,669 +1,479 @@
 /**
- * TypeScript type definitions for Reports API
- * Generated from wildberries_api_doc/12-reports.yaml
+ * Auto-generated TypeScript types for reports module
+ * Generated from: wildberries_api_doc/12-reports.yaml
  *
- * @module types/reports
+ * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
+ *
+ * Generated: 2025-12-14T23:02:33.807Z
  */
 
-/**
- * Inbound shipment item from warehouses
- *
- * Data is updated every 30 minutes. Maximum 100,000 rows per response.
- */
 export interface IncomesItem {
-  /** Shipment number */
-  incomeId: number;
-  /** UPD document number */
-  number: string;
-  /** Arrival date (Moscow UTC+3) */
-  date: string;
-  /** Last update date in service. Used for pagination (Moscow UTC+3) */
-  lastChangeDate: string;
-  /** Seller article */
-  supplierArticle: string;
-  /** Item size */
-  techSize: string;
-  /** Barcode */
-  barcode: string;
-  /** Quantity */
-  quantity: number;
-  /** Price from UPD document */
-  totalPrice: number;
-  /** Date accepted (closed) at WB (Moscow UTC+3) */
-  dateClose: string;
-  /** Warehouse name */
-  warehouseName: string;
-  /** WB article (nmId) */
-  nmId: number;
-  /** Current shipment status. Always "Принято" (Accepted) */
-  status: 'Принято';
-  [key: string]: unknown;
+  /** Номер поставки */
+  incomeId?: number;
+  /** Номер УПД */
+  number?: string;
+  /** Дата поступления. Если часовой пояс не указан, то берётся Московское время UTC+3. */
+  date?: string;
+  /** Дата и время обновления информации в сервисе. Это поле соответствует параметру `dateFrom` в запросе. Если часовой пояс не указан, то берётся Московское время UTC+3. */
+  lastChangeDate?: string;
+  /** Артикул продавца */
+  supplierArticle?: string;
+  /** Размер товара */
+  techSize?: string;
+  /** Баркод */
+  barcode?: string;
+  /** Количество */
+  quantity?: number;
+  /** Цена из УПД */
+  totalPrice?: number;
+  /** Дата принятия (закрытия) в WB. Если часовой пояс не указан, то берётся Московское время UTC+3 */
+  dateClose?: string;
+  /** Название склада */
+  warehouseName?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Текущий статус поставки */
+  status?: 'Принято';
 }
 
-/**
- * Stock level item across WB warehouses
- *
- * Data is updated every 30 minutes. Maximum 60,000 rows per response.
- */
 export interface StocksItem {
-  /** Last update date in service. Used for pagination (Moscow UTC+3) */
-  lastChangeDate: string;
-  /** Warehouse name */
-  warehouseName: string;
-  /** Seller article */
-  supplierArticle: string;
-  /** WB article (nmId) */
-  nmId: number;
-  /** Barcode */
-  barcode: string;
-  /** Available quantity for sale (can be added to cart) */
-  quantity: number;
-  /** Quantity in transit to customer */
-  inWayToClient: number;
-  /** Quantity in transit from customer (returns) */
-  inWayFromClient: number;
-  /** Total unsold quantity at warehouse (quantity + inWayToClient + inWayFromClient) */
-  quantityFull: number;
-  /** Category */
-  category: string;
-  /** Subject */
-  subject: string;
-  /** Brand */
-  brand: string;
-  /** Size */
-  techSize: string;
-  /** Price */
-  Price: number;
-  /** Discount */
-  Discount: number;
-  /** Supply contract (internal technical data) */
-  isSupply: boolean;
-  /** Realization contract (internal technical data) */
-  isRealization: boolean;
-  /** Contract code (internal technical data) */
-  SCCode: string;
-  [key: string]: unknown;
+  /** Дата и время обновления информации в сервисе. Это поле соответствует параметру `dateFrom` в запросе. Если часовой пояс не указан, то берётся Московское время (UTC+3) */
+  lastChangeDate?: string;
+  /** Название склада */
+  warehouseName?: string;
+  /** Артикул продавца */
+  supplierArticle?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Баркод */
+  barcode?: string;
+  /** Количество, доступное для продажи (сколько можно добавить в корзину) */
+  quantity?: number;
+  /** В пути к клиенту */
+  inWayToClient?: number;
+  /** В пути от клиента */
+  inWayFromClient?: number;
+  /** Полное (непроданное) количество, которое числится за складом (= `quantity` + в пути) */
+  quantityFull?: number;
+  /** Категория */
+  category?: string;
+  /** Предмет */
+  subject?: string;
+  /** Бренд */
+  brand?: string;
+  /** Размер */
+  techSize?: string;
+  /** Цена */
+  Price?: number;
+  /** Скидка */
+  Discount?: number;
+  /** Договор поставки (внутренние технологические данные) */
+  isSupply?: boolean;
+  /** Договор реализации (внутренние технологические данные) */
+  isRealization?: boolean;
+  /** Код контракта (внутренние технологические данные) */
+  SCCode?: string;
 }
 
-/**
- * Order item information
- *
- * Data is updated every 30 minutes. Maximum 80,000 rows per response.
- * Data retention: 90 days from order creation.
- * Note: 1 row = 1 order = 1 assembly task = 1 product unit
- */
 export interface OrdersItem {
-  /** Order date/time (Moscow UTC+3). Corresponds to dateFrom when flag=1 */
-  date: string;
-  /** Last update date in service (Moscow UTC+3). Corresponds to dateFrom when flag=0 or undefined */
-  lastChangeDate: string;
-  /** Shipment warehouse */
-  warehouseName: string;
-  /** Warehouse storage type */
-  warehouseType: 'Склад WB' | 'Склад продавца';
-  /** Country */
-  countryName: string;
-  /** District */
-  oblastOkrugName: string;
-  /** Region */
-  regionName: string;
-  /** Seller article */
-  supplierArticle: string;
-  /** WB article (nmId) */
-  nmId: number;
-  /** Barcode */
-  barcode: string;
-  /** Category */
-  category: string;
-  /** Subject */
-  subject: string;
-  /** Brand */
-  brand: string;
-  /** Item size */
-  techSize: string;
-  /** Shipment number */
-  incomeID: number;
-  /** Supply contract */
-  isSupply: boolean;
-  /** Realization contract */
-  isRealization: boolean;
-  /** Price without discounts */
-  totalPrice: number;
-  /** Seller discount, % */
-  discountPercent: number;
-  /** WB discount, % */
-  spp: number;
-  /** Price with all discounts except WB Wallet */
-  finishedPrice: number;
-  /** Price with seller discount (totalPrice * (1 - discountPercent/100)) */
-  priceWithDisc: number;
-  /** Order canceled: true - order canceled */
-  isCancel: boolean;
-  /** Cancellation date/time. "0001-01-01T00:00:00" if not canceled (Moscow UTC+3) */
-  cancelDate: string;
-  /** Sticker ID */
-  sticker: string;
-  /** Customer cart ID. Orders from same transaction have same gNumber */
-  gNumber: string;
-  /** Unique order ID. Note: srid equals rid in Marketplace API assembly tasks */
-  srid: string;
-  [key: string]: unknown;
+  /** Дата и время заказа. Это поле соответствует параметру `dateFrom` в запросе, если параметр `flag`=1. Если часовой пояс не указан, то берётся Московское время (UTC+3). */
+  date?: string;
+  /** Дата и время обновления информации в сервисе. Это поле соответствует параметру `dateFrom` в запросе, если параметр `flag`=0 или не указан. Если часовой пояс не указан, то берётся Московское время (UTC+3). */
+  lastChangeDate?: string;
+  /** Склад отгрузки */
+  warehouseName?: string;
+  /** Тип склада хранения товаров */
+  warehouseType?: 'Склад WB' | 'Склад продавца';
+  /** Страна */
+  countryName?: string;
+  /** Округ */
+  oblastOkrugName?: string;
+  /** Регион */
+  regionName?: string;
+  /** Артикул продавца */
+  supplierArticle?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Баркод */
+  barcode?: string;
+  /** Категория */
+  category?: string;
+  /** Предмет */
+  subject?: string;
+  /** Бренд */
+  brand?: string;
+  /** Размер товара */
+  techSize?: string;
+  /** Номер поставки */
+  incomeID?: number;
+  /** Договор поставки */
+  isSupply?: boolean;
+  /** Договор реализации */
+  isRealization?: boolean;
+  /** Цена без скидок */
+  totalPrice?: number;
+  /** Скидка продавца, % */
+  discountPercent?: number;
+  /** Скидка WB, % */
+  spp?: number;
+  /** Цена с учетом всех скидок, кроме суммы по WB Кошельку */
+  finishedPrice?: number;
+  /** Цена со скидкой продавца (= `totalPrice` * (1 - `discountPercent`/100)) */
+  priceWithDisc?: number;
+  /** Отмена заказа: - `true` — заказ отменен */
+  isCancel?: boolean;
+  /** Дата и время отмены заказа. Если заказ не был отменен, то "0001-01-01T00:00:00".Если часовой пояс не указан, то берётся Московское время UTC+3. */
+  cancelDate?: string;
+  /** ID стикера */
+  sticker?: string;
+  /** ID корзины покупателя. Заказы одной транзакции будут иметь одинаковый `gNumber` */
+  gNumber?: string;
+  /** Уникальный ID заказа.<br> Примечание для использующих API Маркетплейс: `srid` равен `rid` в ответах методов сборочных заданий. */
+  srid?: string;
 }
 
-/**
- * Sales and returns item
- *
- * Extends OrdersItem with payment-specific fields.
- * Data is updated every 30 minutes. Maximum 80,000 rows per response.
- * Data retention: 90 days from order creation.
- */
 export interface SalesItem {
-  /** Sale/return date (Moscow UTC+3). Corresponds to dateFrom when flag=1 */
-  date: string;
-  /** Last update date in service (Moscow UTC+3). Corresponds to dateFrom when flag=0 or undefined */
-  lastChangeDate: string;
-  /** Shipment warehouse */
-  warehouseName: string;
-  /** Warehouse storage type */
-  warehouseType: 'Склад WB' | 'Склад продавца';
-  /** Country */
-  countryName: string;
-  /** District */
-  oblastOkrugName: string;
-  /** Region */
-  regionName: string;
-  /** Seller article */
-  supplierArticle: string;
-  /** WB article (nmId) */
-  nmId: number;
-  /** Barcode */
-  barcode: string;
-  /** Category */
-  category: string;
-  /** Subject */
-  subject: string;
-  /** Brand */
-  brand: string;
-  /** Item size */
-  techSize: string;
-  /** Shipment number */
-  incomeID: number;
-  /** Supply contract */
-  isSupply: boolean;
-  /** Realization contract */
-  isRealization: boolean;
-  /** Price without discounts */
-  totalPrice: number;
-  /** Seller discount, % */
-  discountPercent: number;
-  /** WB discount, % */
-  spp: number;
-  /** Discount for WB Wallet payment, ₽. Negative value indicates return */
-  paymentSaleAmount: number;
-  /** Amount to be paid to seller */
-  forPay: number;
-  /** Actual price with all discounts (charged to customer) */
-  finishedPrice: number;
-  /** Price with seller discount used to calculate forPay (totalPrice * (1 - discountPercent/100)) */
-  priceWithDisc: number;
-  /** Unique sale/return ID. Format: S********** - sale, R********** - return */
-  saleID: string;
-  /** Sticker ID */
-  sticker: string;
-  /** Customer cart ID. Orders from same transaction have same gNumber */
-  gNumber: string;
-  /** Unique order ID. Note: srid equals rid in Marketplace API assembly tasks */
-  srid: string;
-  [key: string]: unknown;
+  /** Дата и время продажи. Это поле соответствует параметру `dateFrom` в запросе, если параметр `flag`=1. Если часовой пояс не указан, то берётся Московское время (UTC+3). */
+  date?: string;
+  /** Дата и время обновления информации в сервисе. Это поле соответствует параметру `dateFrom` в запросе, если параметр `flag`=0 или не указан. Если часовой пояс не указан, то берётся Московское время (UTC+3). */
+  lastChangeDate?: string;
+  /** Склад отгрузки */
+  warehouseName?: string;
+  /** Тип склада хранения товаров */
+  warehouseType?: 'Склад WB' | 'Склад продавца';
+  /** Страна */
+  countryName?: string;
+  /** Округ */
+  oblastOkrugName?: string;
+  /** Регион */
+  regionName?: string;
+  /** Артикул продавца */
+  supplierArticle?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Баркод */
+  barcode?: string;
+  /** Категория */
+  category?: string;
+  /** Предмет */
+  subject?: string;
+  /** Бренд */
+  brand?: string;
+  /** Размер товара */
+  techSize?: string;
+  /** Номер поставки */
+  incomeID?: number;
+  /** Договор поставки */
+  isSupply?: boolean;
+  /** Договор реализации */
+  isRealization?: boolean;
+  /** Цена без скидок */
+  totalPrice?: number;
+  /** Скидка продавца, % */
+  discountPercent?: number;
+  /** Скидка WB, % */
+  spp?: number;
+  /** Скидка за оплату WB Кошельком, ₽ */
+  paymentSaleAmount?: number;
+  /** К перечислению продавцу */
+  forPay?: number;
+  /** Фактическая цена с учетом всех скидок (к взиманию с покупателя) */
+  finishedPrice?: number;
+  /** Цена со скидкой продавца, от которой считается сумма к перечислению продавцу `forPay` (= `totalPrice` * (1 - `discountPercent`/100)) */
+  priceWithDisc?: number;
+  /** Уникальный ID продажи/возврата - `S**********` — продажа - `R**********` — возврат (на склад WB) */
+  saleID?: string;
+  /** ID стикера */
+  sticker?: string;
+  /** ID корзины покупателя. Заказы одной транзакции будут иметь одинаковый `gNumber` */
+  gNumber?: string;
+  /** Уникальный ID заказа.<br> Примечание для использующих API Маркетплейс: `srid` равен `rid` в ответах методов сборочных заданий. */
+  srid?: string;
+}
+
+export interface ResponseErrorStatistics {
+  errors?: string[];
+}
+
+export interface ResponseErrorStatistics2 {
+  errors?: string;
 }
 
 /**
- * Request body for excise/marked goods report
- *
+ * @example
+```json
+{
+  "countries": [
+    "AM",
+    "RU"
+  ]
+}
+```
  */
 export interface ExciseReportRequest {
-  /**
-   * Country codes by ISO 3166-2 standard. Leave empty to get data for all countries
-   *
-   * Supported countries:
-   * - AM: Armenia
-   * - BY: Belarus
-   * - KG: Kyrgyzstan
-   * - KZ: Kazakhstan
-   * - RU: Russia
-   * - UZ: Uzbekistan
-   */
-  countries?: ('AM' | 'BY' | 'KG' | 'KZ' | 'RU' | 'UZ')[];
-  /** Optional brand filters */
-  brands?: string[];
-  /** Optional INN (tax identification number) filters */
-  inns?: string[];
-  [key: string]: unknown;
+  /** Код стран по стандарту ISO 3166-2. Чтобы получить данные по всем странам, оставьте параметр пустым */
+  countries?: 'AM' | 'BY' | 'KG' | 'KZ' | 'RU' | 'UZ'[];
 }
 
-/**
- * Excise report data item
- *
- */
-export interface ExciseReportDataItem {
-  /** Customer country */
-  name: string;
-  /** Item price with VAT */
-  price: number;
-  /** Currency short name */
-  currency_name_short: string;
-  /** Marking code */
-  excise_short: string;
-  /** Barcode */
-  barcode: string;
-  /** WB article (nmId) */
-  nm_id: number;
-  /**
-   * Operation type:
-   * - 1: Withdrawal from circulation
-   * - 2: Return to circulation
-   */
-  operation_type_id?: number;
-  /** Fiscal document number (full payment receipt) if available */
-  fiscal_doc_number?: number;
-  /** Fiscalization date (receipt date) in format YYYY-MM-DD if available */
-  fiscal_dt?: string;
-  /** Fiscal drive number if available */
-  fiscal_drive_number?: string;
-  /** Rid */
-  rid?: number;
-  /** Srid */
-  srid?: string;
-  [key: string]: unknown;
-}
-
-/**
- * Excise report response
- *
- */
 export interface ExciseReportResponse {
-  /** Response data wrapper */
-  response: {
-    /** Array of excise operations data */
-    data: ExciseReportDataItem[];
-    [key: string]: unknown;
-  };
-  [key: string]: unknown;
+  response?: ModelsExciseReportResponse;
 }
 
-/**
- * Parameters for warehouse remains report generation
- *
- * Can combine groupBy and filter parameters in any combination.
- */
-export interface WarehouseRemainsParams {
-  /**
-   * Language for subjectName and warehouseName fields:
-   * - ru: Russian (default)
-   * - en: English
-   * - zh: Chinese (warehouseName in English)
-   */
-  locale?: 'ru' | 'en' | 'zh';
-  /** Group by brands */
-  groupByBrand?: boolean;
-  /** Group by subjects */
-  groupBySubject?: boolean;
-  /** Group by seller articles */
-  groupBySa?: boolean;
-  /** Group by WB articles (nmId). When true, response includes volume field */
-  groupByNm?: boolean;
-  /** Group by barcodes */
-  groupByBarcode?: boolean;
-  /** Group by sizes */
-  groupBySize?: boolean;
-  /**
-   * Filter by photos:
-   * - -1: Without photos
-   * - 0: No filter (default)
-   * - 1: With photos
-   */
-  filterPics?: -1 | 0 | 1;
-  /**
-   * Filter by volume:
-   * - -1: Without dimensions
-   * - 0: No filter (default)
-   * - 3: Over 3 liters
-   */
-  filterVolume?: -1 | 0 | 3;
-  [key: string]: unknown;
+export interface ModelsExciseReportResponse {
+  data?: ModelsExciseReportResponseData;
 }
 
-/**
- * Async report task response
- *
- */
-export interface ReportTaskResponse {
-  /** Wrapper for response data */
-  data: {
-    /** Task ID for status checking and download */
-    taskId: string;
-    [key: string]: unknown;
-  };
-  [key: string]: unknown;
-}
-
-/**
- * Report generation status
- *
- */
-export interface ReportStatus {
-  /** Wrapper for status data */
-  data: {
-    /** Task ID */
-    id: string;
-    /**
-     * Task status:
-     * - new: Queued
-     * - processing: Generating report
-     * - done: Report ready for download
-     * - purged: Report deleted
-     * - canceled: Task canceled
-     * - error: Generation failed (check error field)
-     */
-    status: 'new' | 'processing' | 'done' | 'purged' | 'canceled' | 'error';
-    /** Error message if status is 'error' */
-    error?: string;
-    /** Download information when status is 'done' */
-    file?: {
-      /** Download URL */
-      url?: string;
-      [key: string]: unknown;
-    };
-    [key: string]: unknown;
-  };
-  [key: string]: unknown;
-}
-
-/**
- * Error response format 1
- *
- */
-export interface ResponseErrorStatistics {
-  /** Array of error messages */
-  errors?: string[];
-  [key: string]: unknown;
-}
-
-/**
- * Error response format 2
- *
- */
-export interface ResponseErrorStatistics2 {
-  /** Error message string */
-  errors?: string;
-  [key: string]: unknown;
-}
-
-/**
- * 4xx error response
- *
- */
-export interface ErrorResponse4xx {
-  /** Error details */
-  detail: string;
-  /** WB internal service ID */
-  origin: string;
-  /** Unique request ID */
-  requestId: string;
-  /** Error title */
-  title: string;
-  [key: string]: unknown;
-}
-
-/**
- * Report type discriminator for async operations
- */
-export type ReportType = 'warehouse_remains' | 'acceptance' | 'paid_storage';
-
-// ==================== Report Parameters Types (task-4.4) ====================
-
-/**
- * Common date range parameters for reports
- */
-export interface DateRangeParams {
-  /** Start date in RFC3339 format (e.g., '2024-01-01' or '2024-01-01T00:00:00Z') */
-  dateFrom: string;
-  /** End date in RFC3339 format (e.g., '2024-01-31' or '2024-01-31T23:59:59Z') */
-  dateTo: string;
-  [key: string]: unknown;
-}
-
-/**
- * Parameters for warehouse measurements report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
- */
-export interface WarehouseMeasurementsParams {
-  /** Start date (optional, defaults to first data date) */
-  dateFrom?: string;
-  /** End date (required) */
-  dateTo: string;
-  /** Tab type: 'penalty' | 'measurement' */
-  tab: 'penalty' | 'measurement';
-  /** Number of records to return (default: 1000) */
-  limit?: number;
-  [key: string]: unknown;
-}
-
-/**
- * Parameters for incorrect attachments report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
- */
-export type IncorrectAttachmentsParams = DateRangeParams;
-
-/**
- * Parameters for goods labeling report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-tovarah-c-obyazatelnoj-markirovkoj}
- */
-export type GoodsLabelingParams = DateRangeParams;
-
-/**
- * Parameters for characteristics change report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah}
- */
-export type CharacteristicsChangeParams = DateRangeParams;
-
-/**
- * Parameters for paid acceptance report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka}
- */
-export type AcceptanceReportParams = DateRangeParams;
-
-/**
- * Parameters for paid storage report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie}
- */
-export type PaidStorageReportParams = DateRangeParams;
-
-/**
- * Parameters for brand share report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah}
- */
-export interface BrandShareParams {
-  /** Parent category ID (required) */
-  parentId: number;
-  /** Brand name (required) */
-  brand: string;
-  /** Start date (optional) */
-  dateFrom?: string;
-  /** End date (optional) */
-  dateTo?: string;
-  [key: string]: unknown;
-}
-
-/**
- * Parameters for blocked/shadowed products reports
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Skrytye-tovary}
- */
-export interface BannedProductsParams {
-  /** Sort field */
-  sort?: string;
-  /** Sort order: 'asc' | 'desc' */
-  order?: 'asc' | 'desc';
-  [key: string]: unknown;
-}
-
-/**
- * Parameters for goods return report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov}
- */
-export type GoodsReturnParams = DateRangeParams;
-
-/**
- * Parameters for regional sales report
- * @see {@link https://dev.wildberries.ru/openapi/reports#tag/Prodazhi-po-regionam}
- */
-export type RegionalSalesParams = DateRangeParams;
-
-// ==================== Report Response Types (task-4.4) ====================
-
-/**
- * Warehouse measurement/penalty item
- */
-export interface WarehouseMeasurementItem {
-  /** WB article (nmId) */
-  nmId: number;
-  /** Seller article */
-  supplierArticle?: string;
-  /** Barcode */
+export type ModelsExciseReportResponseData = {
+  /** Страна покупателя */
+  name?: string;
+  /** Цена товара, с НДС */
+  price?: number;
+  /** Валюта */
+  currency_name_short?: string;
+  /** Код маркировки */
+  excise_short?: string;
+  /** Баркод */
   barcode?: string;
-  /** Measurement date */
-  date: string;
-  /** Penalty amount in kopecks */
-  penalty?: number;
-  /** Width in cm */
+  /** Артикул WB */
+  nm_id?: number;
+  /** Тип операции, если есть: * `1` — вывод из оборота * `2` — возврат в оборот */
+  operation_type_id?: number;
+  /** Номер фискального документа (чека полного расчёта), если есть */
+  fiscal_doc_number?: number;
+  /** Дата фискализации (дата в чеке), если есть, `ГГГГ-ММ-ДД` */
+  fiscal_dt?: string;
+  /** Номер фискального накопителя, если есть */
+  fiscal_drive_number?: string;
+  /** `Rid` */
+  rid?: number;
+  /** `Srid` */
+  srid?: string;
+}[];
+
+export interface Penalty {
+  /** Данные ответа */
+  data: {
+  /** Удержания */
+  reports: {
+  /** Артикул WB */
+  nmId?: number;
+  /** ID замера */
+  dimId?: number;
+  /** Предмет */
+  subject?: string;
+  /** Разница в габаритах, % */
+  prcOver?: number;
+  /** Объём, л (фактические габариты) */
+  volume?: number;
+  /** Ширина, см (фактические габариты) */
   width?: number;
-  /** Height in cm */
-  height?: number;
-  /** Length in cm */
+  /** Длина, см (фактические габариты) */
   length?: number;
-  /** Weight in grams */
-  weight?: number;
-  [key: string]: unknown;
+  /** Высота, см (фактические габариты) */
+  height?: number;
+  /** Объём, л (габариты карточки товара) */
+  volumeSup?: number;
+  /** Ширина, см (габариты карточки товара) */
+  widthSup?: number;
+  /** Длина, см (габариты карточки товара) */
+  lengthSup?: number;
+  /** Высота, см (габариты карточки товара) */
+  heightSup?: number;
+  /** Фото замеров */
+  photoUrls?: string[];
+  /** Дата штрафа */
+  dtBonus?: string;
+  /** Статус обмера: - `false` — отменён - `true` — подтверждён */
+  isValid?: boolean;
+  /** Дата и время подтверждения или отмены обмера */
+  isValidDt?: string;
+  /** Сумма сторно */
+  reversalAmount?: number;
+  /** Сумма штрафа */
+  penaltyAmount?: number;
+}[];
+  /** Количество удержаний в отчёте */
+  totalCount: number;
+};
+}
+
+export interface Measurement {
+  /** Данные ответа */
+  data: {
+  /** Замеры */
+  reports: {
+  /** Артикул WB */
+  nmId?: number;
+  /** Предмет */
+  subject?: string;
+  /** ID замера */
+  dimId?: number;
+  /** Разница в габаритах, % */
+  prcOver?: number;
+  /** Объём, л (фактические габариты) */
+  volume?: number;
+  /** Ширина, см (фактические габариты) */
+  width?: number;
+  /** Длина, см (фактические габариты) */
+  length?: number;
+  /** Высота, см (фактические габариты) */
+  height?: number;
+  /** Объём, л (габариты карточки товара) */
+  volumeSup?: number;
+  /** Ширина, см (габариты карточки товара) */
+  widthSup?: number;
+  /** Длина, см (габариты карточки товара) */
+  lengthSup?: number;
+  /** Высота, см (габариты карточки товара) */
+  heightSup?: number;
+  /** Фото замеров */
+  photoUrls?: string[];
+  /** Дата и время */
+  dt?: string;
+  /** Дата начала замера */
+  dateStart?: string;
+  /** Дата конца замера */
+  dateEnd?: string;
+}[];
+  /** Количество замеров в отчёте */
+  totalCount: number;
+};
+}
+
+export interface Response400WHM {
+  /** Заголовок ошибки */
+  title?: string;
+  /** HTTP статус-код */
+  status?: number;
+  /** Детали ошибки */
+  detail?: string;
+  /** Уникальный ID запроса */
+  requestId?: string;
+  /** ID внутреннего сервиса WB */
+  origin?: string;
+}
+
+export interface Response403WHM {
+  /** Заголовок ошибки */
+  title?: string;
+  /** HTTP статус-код */
+  status?: number;
+  /** Детали ошибки */
+  detail?: string;
+  /** Уникальный ID запроса */
+  requestId?: string;
+  /** ID внутреннего сервиса WB */
+  origin?: string;
 }
 
 /**
- * Incorrect attachment item
+ * @example
+```json
+[
+  {
+    "date": "2023-10-01",
+    "logWarehouseCoef": 0,
+    "officeId": 507,
+    "warehouse": "Коледино",
+    "warehouseCoef": 1.7,
+    "giId": 123456,
+    "chrt_id": 1234567,
+    "size": "0",
+    "barcode": "",
+    "subject": "Маски одноразовые",
+    "brand": "1000 Каталог",
+    "vendorCode": "Артикул_продавца",
+    "nmId": 1234567,
+    "volume": 12,
+    "calcType": "короба: без габаритов",
+    "warehousePrice": 7.65,
+    "barcodesCount": 1,
+    "palletPlaceCode": 0,
+    "palletCount": 0,
+    "originalDate": "2023-10-01",
+    "loyaltyDiscount": 10,
+    "tariffFixDate": "2023-10-01",
+    "tariffLowerDate": "2023-11-01"
+  }
+]
+```
  */
-export interface IncorrectAttachmentItem {
-  /** WB article (nmId) */
-  nmId: number;
-  /** Order ID (srid) */
-  srid: string;
-  /** Penalty date */
-  date: string;
-  /** Penalty amount */
-  penalty: number;
-  /** Reason for penalty */
-  reason?: string;
-  [key: string]: unknown;
-}
-
-/**
- * Goods labeling item
- */
-export interface GoodsLabelingItem {
-  /** WB article (nmId) */
-  nmId: number;
-  /** Barcode */
+export type ResponsePaidStorage = {
+  /** Дата, за которую был расчёт или перерасчёт */
+  date?: string;
+  /** Коэффициент логистики и хранения */
+  logWarehouseCoef?: number;
+  /** ID склада */
+  officeId?: number;
+  /** Название склада */
+  warehouse?: string;
+  /** Коэффициент склада */
+  warehouseCoef?: number;
+  /** ID поставки */
+  giId?: number;
+  /** ID размера для этого артикула WB */
+  chrtId?: number;
+  /** Размер (`techSize` в карточке товара) */
+  size?: string;
+  /** Баркод */
   barcode?: string;
-  /** Marking code */
-  markingCode?: string;
-  /** Status */
+  /** Предмет */
+  subject?: string;
+  /** Бренд */
+  brand?: string;
+  /** Артикул продавца */
+  vendorCode?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Объём товара */
+  volume?: number;
+  /** Способ расчёта */
+  calcType?: string;
+  /** Сумма хранения */
+  warehousePrice?: number;
+  /** Количество единиц товара (штук), подлежащих тарифицированию за расчётные сутки */
+  barcodesCount?: number;
+  /** Код паллетоместа */
+  palletPlaceCode?: number;
+  /** Количество паллет */
+  palletCount?: number;
+  /** Если был перерасчёт, это дата первоначального расчёта. Если перерасчёта не было, совпадает с `date` */
+  originalDate?: string;
+  /** Скидка программы лояльности, ₽ */
+  loyaltyDiscount?: number;
+  /** Дата фиксации тарифа */
+  tariffFixDate?: string;
+  /** Дата понижения тарифа */
+  tariffLowerDate?: string;
+}[];
+
+export interface GetTasksResponse {
+  data?: GetTasksResponseData;
+}
+
+export interface GetTasksResponseData {
+  /** ID задания */
+  id?: string;
+  /** Статус задания: * `new` — новое * `processing` — обрабатывается * `done` — отчёт готов * `purged` — отчёт удалён * `canceled` — отклонено */
   status?: string;
-  [key: string]: unknown;
 }
 
-/**
- * Characteristics change item
- */
-export interface CharacteristicsChangeItem {
-  /** WB article (nmId) */
-  nmId: number;
-  /** Change date */
-  date: string;
-  /** Changed field */
-  field?: string;
-  /** Old value */
-  oldValue?: unknown;
-  /** New value */
-  newValue?: unknown;
-  [key: string]: unknown;
+export interface CreateTaskResponse {
+  data?: CreateTaskResponseData;
 }
 
-/**
- * Parent subject for brand share report
- */
-export interface BrandShareParentSubject {
-  /** Subject ID */
-  id: number;
-  /** Subject name */
-  name: string;
-  [key: string]: unknown;
+export interface CreateTaskResponseData {
+  /** ID задания на генерацию */
+  taskId?: string;
 }
 
-/**
- * Brand share report data
- */
-export interface BrandShareData {
-  /** Date */
-  date?: string;
-  /** Brand share percentage */
-  brandShare?: number;
-  /** Total sales */
-  totalSales?: number;
-  /** Brand sales */
-  brandSales?: number;
-  [key: string]: unknown;
-}
-
-/**
- * Blocked/shadowed product item
- */
-export interface BannedProductItem {
-  /** WB article (nmId) */
-  nmId: number;
-  /** Seller article */
-  supplierArticle?: string;
-  /** Block/shadow reason */
-  reason?: string;
-  /** Block/shadow date */
-  date?: string;
-  [key: string]: unknown;
-}
-
-/**
- * Goods return item
- */
-export interface GoodsReturnItem {
-  /** WB article (nmId) */
-  nmId: number;
-  /** Order ID */
-  orderId?: string;
-  /** Return date */
-  date: string;
-  /** Return reason */
-  reason?: string;
-  /** Return status */
-  status?: string;
-  [key: string]: unknown;
-}
-
-/**
- * Regional sales item
- */
-export interface RegionalSalesItem {
-  /** Region name */
-  region: string;
-  /** Country */
-  country?: string;
-  /** Sales count */
-  salesCount?: number;
-  /** Revenue */
-  revenue?: number;
-  [key: string]: unknown;
+export interface Response4xxResponse {
+  /** Детали ошибки */
+  detail?: string;
+  /** ID внутреннего сервиса WB */
+  origin?: string;
+  /** Уникальный ID запроса */
+  requestId?: string;
+  /** Заголовок ошибки */
+  title?: string;
 }

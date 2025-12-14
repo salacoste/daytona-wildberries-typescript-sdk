@@ -210,7 +210,7 @@ describe('PromotionModule Integration Tests', () => {
       const campaignIds = [12345, 12346];
 
       // Act
-      const result = await promotionModule.createPromotionAdverts(campaignIds);
+      const result = await promotionModule.createPromotionAdvert(campaignIds);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -223,7 +223,7 @@ describe('PromotionModule Integration Tests', () => {
       const options = { status: 7 as const, type: 8 as const };
 
       // Act
-      const result = await promotionModule.createPromotionAdverts(campaignIds, options);
+      const result = await promotionModule.createPromotionAdvert(campaignIds, options);
 
       // Assert
       expect(result).toBeDefined();
@@ -243,7 +243,7 @@ describe('PromotionModule Integration Tests', () => {
       const nonExistentId = 999999;
 
       // Act & Assert
-      await expect(promotionModule.createPromotionAdverts([nonExistentId])).rejects.toThrow();
+      await expect(promotionModule.createPromotionAdvert([nonExistentId])).rejects.toThrow();
     });
   });
 
@@ -407,7 +407,7 @@ describe('PromotionModule Integration Tests', () => {
       const validType: 4 | 5 | 6 | 7 | 8 = 8;
 
       // Act
-      const result = await promotionModule.createPromotionAdverts([12345], {
+      const result = await promotionModule.createPromotionAdvert([12345], {
         status: validStatus,
         type: validType,
       });
@@ -443,7 +443,7 @@ describe('PromotionModule Integration Tests', () => {
       expect(campaignId).toBe(12345);
 
       // 4. Verify campaign was created
-      const campaigns = await promotionModule.createPromotionAdverts([campaignId]);
+      const campaigns = await promotionModule.createPromotionAdvert([campaignId]);
       expect(campaigns).toBeDefined();
     });
 
@@ -462,7 +462,7 @@ describe('PromotionModule Integration Tests', () => {
         ) ?? [];
 
       if (campaignIds.length > 0) {
-        const details = await promotionModule.createPromotionAdverts(campaignIds.slice(0, 2));
+        const details = await promotionModule.createPromotionAdvert(campaignIds.slice(0, 2));
         expect(details).toBeDefined();
       }
     });

@@ -47,6 +47,12 @@ export interface ParameterObject {
   schema?: SchemaObject;
 }
 
+export interface ReferenceObject {
+  $ref: string;
+}
+
+export type ParameterOrRef = ParameterObject | ReferenceObject;
+
 /**
  * OpenAPI Request Body Object
  */
@@ -106,7 +112,7 @@ export interface PathItem {
   patch?: OperationObject;
   delete?: OperationObject;
   servers?: ServerObject[];
-  parameters?: ParameterObject[];
+  parameters?: ParameterOrRef[];
 }
 
 /**
@@ -117,7 +123,7 @@ export interface OperationObject {
   summary?: string;
   description?: string;
   tags?: string[];
-  parameters?: ParameterObject[];
+  parameters?: ParameterOrRef[];
   requestBody?: RequestBodyObject;
   responses: Record<string, ResponseObject>;
   externalDocs?: ExternalDocsObject;
@@ -149,7 +155,10 @@ const HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete'] as const;
  * // operations[0] = { path: '/ping', method: 'get', summary: 'Health check', ... }
  * ```
  */
-export function parsePaths(paths: Record<string, PathItem>): ParsedOperation[] {
+export function parsePaths(
+  paths: Record<string, PathItem>,
+  components?: { parameters?: Record<string, ParameterObject> }
+): ParsedOperation[] {
   const operations: ParsedOperation[] = [];
 
   for (const [path, pathItem] of Object.entries(paths)) {
@@ -171,10 +180,28 @@ export function parsePaths(paths: Record<string, PathItem>): ParsedOperation[] {
       }
 
       // Merge path-level and operation-level parameters (both are optional in OpenAPI)
-      const allParameters = [
+      const rawParameters = [
         ...(pathParameters ?? []),
         ...(operation.parameters ?? []),
       ];
+
+      // Resolve parameter references
+      const resolvedParameters: ParameterObject[] = [];
+
+      for (const param of rawParameters) {
+        if ('$ref' in param) {
+          // Handle reference
+          const refName = param.$ref.split('/').pop();
+          if (refName && components?.parameters?.[refName]) {
+            resolvedParameters.push(components.parameters[refName]);
+          } else {
+            console.warn(`⚠ Could not resolve parameter reference: ${param.$ref}`);
+          }
+        } else {
+          // Already a parameter object
+          resolvedParameters.push(param as ParameterObject);
+        }
+      }
 
       // Create parsed operation
       const parsedOperation: ParsedOperation = {
@@ -183,7 +210,7 @@ export function parsePaths(paths: Record<string, PathItem>): ParsedOperation[] {
         operationId: operation.operationId,
         summary: operation.summary,
         description: operation.description,
-        parameters: allParameters.length > 0 ? allParameters : undefined,
+        parameters: resolvedParameters.length > 0 ? resolvedParameters : undefined,
         requestBody: operation.requestBody,
         responses: operation.responses,
         servers: pathServers,

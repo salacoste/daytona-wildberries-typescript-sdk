@@ -18,6 +18,10 @@ import {
   resolveRef,
   toPascalCase,
   sanitizeWhitespace,
+  sanitizeTypeName,
+  sanitizeIdentifier,
+  toCamelCase,
+  sanitizeObjectKey,
 } from '../../../tools/generators/type-mapper.js';
 import type { SchemaObject } from '../../../tools/generators/yaml-parser.js';
 
@@ -472,6 +476,126 @@ describe('type-mapper', () => {
       expect(result).toContain('level1?:');
       expect(result).toContain('level2?:');
       expect(result).toContain('value?: string');
+    });
+  });
+
+  describe('sanitizeTypeName', () => {
+    it('should handle normal PascalCase names unchanged', () => {
+      expect(sanitizeTypeName('ProductCard')).toBe('ProductCard');
+      expect(sanitizeTypeName('OrderStatus')).toBe('OrderStatus');
+    });
+
+    it('should convert snake_case to PascalCase', () => {
+      expect(sanitizeTypeName('product_card')).toBe('ProductCard');
+      expect(sanitizeTypeName('order_status')).toBe('OrderStatus');
+    });
+
+    it('should transform HTTP status code response types', () => {
+      expect(sanitizeTypeName('400Response')).toBe('Response400');
+      expect(sanitizeTypeName('401Response')).toBe('Response401');
+      expect(sanitizeTypeName('404Response')).toBe('Response404');
+      expect(sanitizeTypeName('500Response')).toBe('Response500');
+    });
+
+    it('should transform wildcard status code response types', () => {
+      expect(sanitizeTypeName('4xxResponse')).toBe('Response4xxResponse');
+      expect(sanitizeTypeName('5xxResponse')).toBe('Response5xxResponse');
+    });
+
+    it('should prefix other numeric-starting names with Type', () => {
+      expect(sanitizeTypeName('1_0_0')).toBe('Type100');
+      expect(sanitizeTypeName('2ndVersion')).toBe('Type2ndVersion');
+    });
+
+    it('should remove invalid characters', () => {
+      expect(sanitizeTypeName('Product@Card')).toBe('Product_Card');
+      expect(sanitizeTypeName('Order#Status')).toBe('Order_Status');
+    });
+  });
+
+  describe('sanitizeIdentifier', () => {
+    it('should handle normal camelCase names unchanged', () => {
+      expect(sanitizeIdentifier('productCard')).toBe('productCard');
+      expect(sanitizeIdentifier('orderStatus')).toBe('orderStatus');
+    });
+
+    it('should convert kebab-case to camelCase', () => {
+      expect(sanitizeIdentifier('orders-fbs')).toBe('ordersFbs');
+      expect(sanitizeIdentifier('orders-fbw')).toBe('ordersFbw');
+      expect(sanitizeIdentifier('in-store-pickup')).toBe('inStorePickup');
+    });
+
+    it('should convert snake_case to camelCase', () => {
+      expect(sanitizeIdentifier('product_card')).toBe('productCard');
+      expect(sanitizeIdentifier('order_status')).toBe('orderStatus');
+    });
+
+    it('should prefix numeric-starting names with var', () => {
+      expect(sanitizeIdentifier('1_0_0')).toBe('var100');
+      expect(sanitizeIdentifier('2ndVersion')).toBe('var2ndVersion');
+    });
+
+    it('should remove invalid characters', () => {
+      expect(sanitizeIdentifier('product@card')).toBe('product_card');
+    });
+  });
+
+  describe('toCamelCase', () => {
+    it('should convert snake_case to camelCase', () => {
+      expect(toCamelCase('product_card')).toBe('productCard');
+      expect(toCamelCase('order_status')).toBe('orderStatus');
+    });
+
+    it('should convert kebab-case to camelCase', () => {
+      expect(toCamelCase('product-card')).toBe('productCard');
+      expect(toCamelCase('order-status')).toBe('orderStatus');
+    });
+
+    it('should handle PascalCase by lowercasing first letter', () => {
+      expect(toCamelCase('ProductCard')).toBe('productCard');
+      expect(toCamelCase('OrderStatus')).toBe('orderStatus');
+    });
+
+    it('should handle already camelCase', () => {
+      expect(toCamelCase('productCard')).toBe('productCard');
+      expect(toCamelCase('orderStatus')).toBe('orderStatus');
+    });
+
+    it('should handle single word', () => {
+      expect(toCamelCase('product')).toBe('product');
+      expect(toCamelCase('Product')).toBe('product');
+    });
+  });
+
+  describe('sanitizeObjectKey', () => {
+    it('should return valid identifiers unchanged', () => {
+      expect(sanitizeObjectKey('productCard')).toBe('productCard');
+      expect(sanitizeObjectKey('orderStatus')).toBe('orderStatus');
+      expect(sanitizeObjectKey('_private')).toBe('_private');
+      expect(sanitizeObjectKey('$special')).toBe('$special');
+    });
+
+    it('should quote keys with hyphens', () => {
+      expect(sanitizeObjectKey('orders-fbs')).toBe("'orders-fbs'");
+      expect(sanitizeObjectKey('in-store-pickup')).toBe("'in-store-pickup'");
+    });
+
+    it('should quote keys starting with numbers', () => {
+      expect(sanitizeObjectKey('1_0_0')).toBe("'1_0_0'");
+      expect(sanitizeObjectKey('2ndVersion')).toBe("'2ndVersion'");
+    });
+
+    it('should quote keys with brackets', () => {
+      expect(sanitizeObjectKey('filter[downloadIds]')).toBe("'filter[downloadIds]'");
+      expect(sanitizeObjectKey('data[0]')).toBe("'data[0]'");
+    });
+
+    it('should escape single quotes in keys', () => {
+      expect(sanitizeObjectKey("it's")).toBe("'it\\'s'");
+    });
+
+    it('should quote keys with spaces', () => {
+      expect(sanitizeObjectKey('product name')).toBe("'product name'");
     });
   });
 });

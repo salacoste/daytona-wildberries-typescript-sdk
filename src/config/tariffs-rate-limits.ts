@@ -17,21 +17,21 @@ export const tariffsRateLimits: Record<string, RateLimitConfig> = {
   'tariffs.tariffsCommission': {
     requestsPerMinute: 1,
     intervalSeconds: 60,
-    burstLimit: 2,
+    burstLimit: 2
   },
   'tariffs.tariffsBox': {
     requestsPerMinute: 60,
     intervalSeconds: 1,
-    burstLimit: 5,
+    burstLimit: 5
   },
   'tariffs.tariffsPallet': {
     requestsPerMinute: 60,
     intervalSeconds: 1,
-    burstLimit: 5,
+    burstLimit: 5
   },
   'tariffs.tariffsReturn': {
     requestsPerMinute: 60,
     intervalSeconds: 1,
-    burstLimit: 5,
-  },
+    burstLimit: 5
+  }
 };

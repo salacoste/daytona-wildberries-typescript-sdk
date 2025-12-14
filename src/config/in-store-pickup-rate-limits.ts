@@ -1,85 +1,97 @@
 /**
- * Rate limit configurations for In-Store Pickup API endpoints
- * Extracted from wildberries_api_doc/06-in-store-pickup.yaml
+ * Auto-generated rate limit configuration for in-store-pickup module
+ * Generated from: wildberries_api_doc/06-in-store-pickup.yaml
+ * DO NOT EDIT MANUALLY - Changes will be overwritten on regeneration
  *
- * IMPORTANT: 409 responses count as 5 requests toward rate limit
+ * This file contains rate limit configurations extracted from OpenAPI operation descriptions.
+ * Rate limits are enforced by the RateLimiter (Story 1.4) using the token bucket algorithm.
+ *
+ * @see {@link ../../src/client/rate-limiter!RateLimiter RateLimiter Documentation}
+ * @module config/in-store-pickup-rate-limits
+ * @generated
  */
 
 import type { RateLimitConfig } from '../client/rate-limiter';
 
 export const inStorePickupRateLimits: Record<string, RateLimitConfig> = {
-  // Assembly task operations - 300 req/min (1 request every 0.2s)
-  'inStorePickup.getNewOrders': {
+  'in-store-pickup.clickCollectOrdersNew': {
     requestsPerMinute: 300,
-    burstLimit: 20,
+    intervalSeconds: 0.2,
+    burstLimit: 20
   },
-  'inStorePickup.getOrders': {
+  'in-store-pickup.patchClickCollectOrdersConfirm': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 20
+  },
+  'in-store-pickup.patchClickCollectOrdersPrepare': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 20
+  },
+  'in-store-pickup.postClickCollectOrdersClient': {
     requestsPerMinute: 300,
-    burstLimit: 20,
+    intervalSeconds: 0.2,
+    burstLimit: 20
   },
-  'inStorePickup.getOrderStatuses': {
-    requestsPerMinute: 300,
-    burstLimit: 20,
-  },
-  'inStorePickup.getCustomerInfo': {
-    requestsPerMinute: 300,
-    burstLimit: 20,
-  },
-
-  // State change operations - 100 req/min (1 request every 0.6s)
-  'inStorePickup.confirmOrder': {
-    requestsPerMinute: 100,
-    burstLimit: 20,
-  },
-  'inStorePickup.prepareOrder': {
-    requestsPerMinute: 100,
-    burstLimit: 20,
-  },
-  'inStorePickup.receiveOrder': {
-    requestsPerMinute: 100,
-    burstLimit: 20,
-  },
-  'inStorePickup.rejectOrder': {
-    requestsPerMinute: 100,
-    burstLimit: 20,
-  },
-  'inStorePickup.cancelOrder': {
-    requestsPerMinute: 100,
-    burstLimit: 20,
-  },
-
-  // Identity verification - 30 req/min (most restrictive - 1 request every 2s)
-  'inStorePickup.verifyCustomerIdentity': {
+  'in-store-pickup.postClickCollectOrdersClientIdentity': {
     requestsPerMinute: 30,
     intervalSeconds: 2,
-    burstLimit: 20,
+    burstLimit: 20
   },
-
-  // Metadata get/delete - 300 req/min
-  'inStorePickup.getOrderMetadata': {
+  'in-store-pickup.patchClickCollectOrdersReceive': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 20
+  },
+  'in-store-pickup.patchClickCollectOrdersReject': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 20
+  },
+  'in-store-pickup.postClickCollectOrdersStatus': {
     requestsPerMinute: 300,
-    burstLimit: 20,
+    intervalSeconds: 0.2,
+    burstLimit: 20
   },
-  'inStorePickup.deleteOrderMetadata': {
+  'in-store-pickup.clickCollectOrders': {
     requestsPerMinute: 300,
-    burstLimit: 20,
+    intervalSeconds: 0.2,
+    burstLimit: 20
   },
-
-  // Metadata set operations - 1000 req/min (most permissive - 1 request every 0.06s)
-  'inStorePickup.setSGTINCode': {
+  'in-store-pickup.patchClickCollectOrdersCancel': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 20
+  },
+  'in-store-pickup.clickCollectOrdersMeta': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'in-store-pickup.deleteClickCollectOrdersMeta': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20
+  },
+  'in-store-pickup.putClickCollectOrdersMetaSgtin': {
     requestsPerMinute: 1000,
-    burstLimit: 20,
+    intervalSeconds: 0.06,
+    burstLimit: 20
   },
-  'inStorePickup.setUINCode': {
+  'in-store-pickup.putClickCollectOrdersMetaUin': {
     requestsPerMinute: 1000,
-    burstLimit: 20,
+    intervalSeconds: 0.06,
+    burstLimit: 20
   },
-  'inStorePickup.setIMEICode': {
+  'in-store-pickup.putClickCollectOrdersMetaImei': {
     requestsPerMinute: 1000,
-    burstLimit: 20,
+    intervalSeconds: 0.06,
+    burstLimit: 20
   },
-  'inStorePickup.setGTINCode': {
+  'in-store-pickup.putClickCollectOrdersMetaGtin': {
     requestsPerMinute: 1000,
-    burstLimit: 20,
-  },
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  }
 };

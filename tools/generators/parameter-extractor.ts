@@ -8,7 +8,7 @@
  */
 
 import type { ParsedOperation } from './path-parser.js';
-import { mapOpenAPIType } from './type-mapper.js';
+import { mapOpenAPIType, sanitizeObjectKey } from './type-mapper.js';
 import type { SchemaObject as TypeMapperSchema } from './yaml-parser.js';
 
 /**
@@ -154,8 +154,9 @@ export function extractQueryParameters(operation: ParsedOperation): MethodParame
     const optional = !param.required;
     const optionalMarker = optional ? '?' : '';
 
-    // Skip JSDoc in inline types - causes syntax errors
-    return `${param.name}${optionalMarker}: ${tsType}`;
+    // Sanitize parameter name for TypeScript (handles names like filter[downloadIds])
+    const safeName = sanitizeObjectKey(param.name);
+    return `${safeName}${optionalMarker}: ${tsType}`;
   });
 
   const optionsType = `{ ${properties.join('; ')} }`;

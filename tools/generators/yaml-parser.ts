@@ -28,6 +28,7 @@ export interface OpenAPISpec {
   paths?: Record<string, PathItem>;
   components?: {
     schemas?: Record<string, SchemaObject>;
+    parameters?: Record<string, ParameterObject>;
     securitySchemes?: Record<string, unknown>;
   };
 }

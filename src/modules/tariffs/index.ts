@@ -5,17 +5,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import { ValidationError } from '../../errors/validation-error';
-import type {
-  Commission,
-  CommissionChina,
-  CommissionTurkey,
-  CommissionUAE,
-  CommissionUzbekistan,
-  ReturnTariffsResponse,
-  TariffsBoxResponse,
-  TariffsPalletResponse,
-} from '../../types/tariffs.types';
+import type { Commission, CommissionChina, CommissionTurkey, CommissionUAE, CommissionUzbekistan, ReturnTariffsResponse, TariffsBoxResponse, TariffsPalletResponse } from '../../types/tariffs.types';
 
 export class TariffsModule {
   constructor(private client: BaseClient) {}
@@ -23,52 +13,20 @@ export class TariffsModule {
   /**
    * Комиссия по категориям товаров
    *
-   * Метод возвращает данные о [комиссии](https://seller.wildberries.ru/dynamic-product-categories/commission) WB
-   * по [родительским категориям товаров] согласно модели продаж.
+   * Метод возвращает данные о [комиссии](https://seller.wildberries.ru/dynamic-product-categories/commission) WB по [родительским категориям товаров](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1parent~1all/get) согласно модели продаж. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 2 запроса | </div>
    *
-   * **Rate Limit**: 1 request per minute (burst: 2)
-   *
-   * @param locale - Optional language for response fields (parentName, subjectName):
-   *   - 'ru' - Russian (default)
-   *   - 'en' - English
-   *   - 'zh' - Chinese
-   * @returns Promise resolving to commission data structure
+   * @param [options] - Query parameters
+   * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When locale value is invalid (400)
+   * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
-   *
    * @example
-   * ```typescript
-   * // Get commission data in Russian (default)
-   * const result = await sdk.tariffs.getTariffsCommission();
-   * console.log(result);
-   *
-   * // Get commission data in English
-   * const resultEn = await sdk.tariffs.getTariffsCommission('en');
-   * console.log(resultEn);
-   *
-   * // Get commission data in Chinese
-   * const resultZh = await sdk.tariffs.getTariffsCommission('zh');
-   * console.log(resultZh);
-   * ```
+  const result = await sdk.general.getTariffsCommission({});
+  console.log(result);
    */
-  async getTariffsCommission(
-    locale?: 'ru' | 'en' | 'zh'
-  ): Promise<
-    Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE
-  > {
-    const params: Record<string, string> = {};
-    if (locale) {
-      params.locale = locale;
-    }
-
-    return this.client.get<
-      Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE
-    >('https://common-api.wildberries.ru/api/v1/tariffs/commission', {
-      params,
-      rateLimitKey: 'tariffs.getTariffsCommission',
-    });
+  async getTariffsCommission(options?: { locale?: string }): Promise<Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE> {
+    return this.client.get<Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE>('https://common-api.wildberries.ru/api/v1/tariffs/commission', { params: options });
   }
 
   /**
@@ -76,40 +34,18 @@ export class TariffsModule {
    *
    * Для товаров, которые поставляются на склад в коробах, метод возвращает [тарифы на остаток](https://seller.wildberries.ru/dynamic-product-categories): - доставка со склада или пункта приёма до покупателя - доставка от покупателя до пункта приёма - хранение на складе WB <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
    *
-   * @param date - Date for tariff calculation in YYYY-MM-DD format (e.g., '2025-01-15')
-   * @returns Promise resolving to box tariffs data structure
-   * @throws {ValidationError} When date format is invalid or missing (HTTP 400)
+   * @param [options] - Query parameters
+   * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-   * ```typescript
-   * // Get box tariffs for specific date
-   * const tariffs = await sdk.tariffs.getTariffsBox('2025-01-15');
-   * console.log('Box tariffs:', tariffs);
-   *
-   * // Get tariffs for today
-   * const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-   * const todayTariffs = await sdk.tariffs.getTariffsBox(today);
-   * console.log('Today\'s box tariffs:', todayTariffs);
-   * ```
+  const result = await sdk.general.getTariffsBox({});
+  console.log(result);
    */
-  async getTariffsBox(date: string): Promise<TariffsBoxResponse> {
-    // Validate date format (YYYY-MM-DD)
-    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      throw new ValidationError(
-        'Invalid date format. Date must be in YYYY-MM-DD format (e.g., "2025-01-15")',
-        { date: `Required format: YYYY-MM-DD, received: ${date || 'undefined'}` }
-      );
-    }
-
-    return this.client.get<TariffsBoxResponse>(
-      'https://common-api.wildberries.ru/api/v1/tariffs/box',
-      {
-        params: { date },
-        rateLimitKey: 'tariffs.getTariffsBox',
-      }
-    );
+  async getTariffsBox(options?: { date: string }): Promise<TariffsBoxResponse> {
+    return this.client.get<TariffsBoxResponse>('https://common-api.wildberries.ru/api/v1/tariffs/box', { params: options });
   }
 
   /**
@@ -117,31 +53,18 @@ export class TariffsModule {
    *
    * Для товаров, которые поставляются на склад WB на монопаллетах, метод возвращает [стоимость](https://seller.wildberries.ru/dynamic-product-categories): - доставки со склада до покупателя - доставки от покупателя до склада - хранения на складе WB <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
    *
+   * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.tariffs.getTariffsPallet();
+  const result = await sdk.general.getTariffsPallet({});
   console.log(result);
    */
-  async getTariffsPallet(date: string): Promise<TariffsPalletResponse> {
-    // Validate date format (YYYY-MM-DD)
-    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      throw new ValidationError(
-        'Invalid date format. Date must be in YYYY-MM-DD format (e.g., "2025-01-15")',
-        { date: `Required format: YYYY-MM-DD, received: ${date || 'undefined'}` }
-      );
-    }
-
-    return this.client.get<TariffsPalletResponse>(
-      'https://common-api.wildberries.ru/api/v1/tariffs/pallet',
-      {
-        params: { date },
-        rateLimitKey: 'tariffs.getTariffsPallet',
-      }
-    );
+  async getTariffsPallet(options?: { date: string }): Promise<TariffsPalletResponse> {
+    return this.client.get<TariffsPalletResponse>('https://common-api.wildberries.ru/api/v1/tariffs/pallet', { params: options });
   }
 
   /**
@@ -149,30 +72,18 @@ export class TariffsModule {
    *
    * Метод возвращает [тарифы](https://seller.wildberries.ru/dynamic-product-categories/return-cost): - на перевозку товаров со склада WB или из пункта приёма до продавца - на обратную перевозку возвратов, которые не забрал продавец <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
    *
+   * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.tariffs.getTariffsReturn();
+  const result = await sdk.general.getTariffsReturn({});
   console.log(result);
    */
-  async getTariffsReturn(date: string): Promise<ReturnTariffsResponse> {
-    // Validate date format (YYYY-MM-DD)
-    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      throw new ValidationError(
-        'Invalid date format. Date must be in YYYY-MM-DD format (e.g., "2025-01-15")',
-        { date: `Required format: YYYY-MM-DD, received: ${date || 'undefined'}` }
-      );
-    }
-
-    return this.client.get<ReturnTariffsResponse>(
-      'https://common-api.wildberries.ru/api/v1/tariffs/return',
-      {
-        params: { date },
-        rateLimitKey: 'tariffs.getTariffsReturn',
-      }
-    );
+  async getTariffsReturn(options?: { date: string }): Promise<ReturnTariffsResponse> {
+    return this.client.get<ReturnTariffsResponse>('https://common-api.wildberries.ru/api/v1/tariffs/return', { params: options });
   }
+
 }

@@ -1,0 +1,108 @@
+{
+  "totalWarehousePrice": 1923.3653675000064,
+  "totalRows": 1383,
+  "byCalcType": {
+    "короба: товары свыше базы": {
+      "count": 638,
+      "sum": 1846.1430165000068
+    },
+    "короба: товары ниже базы": {
+      "count": 465,
+      "sum": 2009.6559999999986
+    },
+    "скидка на остаток склада": {
+      "count": 230,
+      "sum": -91.494197
+    },
+    "скидка на период поставки": {
+      "count": 50,
+      "sum": -1840.9394519999996
+    }
+  },
+  "byDate": {
+    "2025-12-01": 286.2410229999999,
+    "2025-12-02": 277.81341400000014,
+    "2025-12-03": 278.6657889999998,
+    "2025-12-04": 274.75634899999983,
+    "2025-12-05": 270.08724599999994,
+    "2025-12-06": 268.19104649999997,
+    "2025-12-07": 267.6104999999999
+  },
+  "sampleItems": [
+    {
+      "date": "2025-12-01",
+      "logWarehouseCoef": 0,
+      "officeId": 130744,
+      "warehouse": "Краснодар",
+      "warehouseCoef": 1.65,
+      "giId": 30981787,
+      "chrtId": 397871093,
+      "size": "0",
+      "barcode": "2041000936560",
+      "subject": "Жидкости для генераторов дыма",
+      "brand": "Space Chemical",
+      "vendorCode": "M61-1",
+      "nmId": 255211393,
+      "volume": 2.079,
+      "calcType": "короба: товары свыше базы",
+      "warehousePrice": 3.018708,
+      "barcodesCount": 11,
+      "palletPlaceCode": 0,
+      "palletCount": 0,
+      "originalDate": "2025-12-01",
+      "loyaltyDiscount": 0,
+      "tariffFixDate": "2025-07-21",
+      "tariffLowerDate": ""
+    },
+    {
+      "date": "2025-12-01",
+      "logWarehouseCoef": 0,
+      "officeId": 206348,
+      "warehouse": "Тула",
+      "warehouseCoef": 1.1,
+      "giId": 24890931,
+      "chrtId": 418827903,
+      "size": "L",
+      "barcode": "2041465195762",
+      "subject": "Термокомплекты",
+      "brand": "О,ДЕНЬ",
+      "vendorCode": "TER-21",
+      "nmId": 270958752,
+      "volume": 0.675,
+      "calcType": "короба: товары ниже базы",
+      "warehousePrice": 0.154,
+      "barcodesCount": 2,
+      "palletPlaceCode": 0,
+      "palletCount": 0,
+      "originalDate": "2025-12-01",
+      "loyaltyDiscount": 0,
+      "tariffFixDate": "",
+      "tariffLowerDate": ""
+    },
+    {
+      "date": "2025-12-01",
+      "logWarehouseCoef": 0,
+      "officeId": 130744,
+      "warehouse": "Краснодар",
+      "warehouseCoef": 1.65,
+      "giId": 32118720,
+      "chrtId": 370762344,
+      "size": "0",
+      "barcode": "2040240888899",
+      "subject": "Изоленты",
+      "brand": "Protape",
+      "vendorCode": "izo30white",
+      "nmId": 235269056,
+      "volume": 0.1,
+      "calcType": "короба: товары ниже базы",
+      "warehousePrice": 24.156,
+      "barcodesCount": 183,
+      "palletPlaceCode": 0,
+      "palletCount": 0,
+      "originalDate": "2025-12-01",
+      "loyaltyDiscount": 0,
+      "tariffFixDate": "2025-08-25",
+      "tariffLowerDate": ""
+    }
+  ]
+}

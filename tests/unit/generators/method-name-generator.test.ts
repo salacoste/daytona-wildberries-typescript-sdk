@@ -63,8 +63,8 @@ describe('method-name-generator', () => {
       });
 
       it('should prefix non-GET single words with HTTP verb', () => {
-        expect(generateMethodNameFromPath('/users', 'post')).toBe('createUsers');
-        expect(generateMethodNameFromPath('/products', 'delete')).toBe('deleteProducts');
+        expect(generateMethodNameFromPath('/users', 'post')).toBe('createUser');
+        expect(generateMethodNameFromPath('/products', 'delete')).toBe('deleteProduct');
       });
     });
 
@@ -131,19 +131,19 @@ describe('method-name-generator', () => {
       });
 
       it('should map POST to create', () => {
-        expect(generateMethodNameFromPath('/api/v1/users', 'post')).toBe('createUsers');
+        expect(generateMethodNameFromPath('/api/v1/users', 'post')).toBe('createUser');
       });
 
       it('should map PUT to update', () => {
-        expect(generateMethodNameFromPath('/api/v1/users', 'put')).toBe('updateUsers');
+        expect(generateMethodNameFromPath('/api/v1/users', 'put')).toBe('updateUser');
       });
 
       it('should map PATCH to update', () => {
-        expect(generateMethodNameFromPath('/api/v1/users', 'patch')).toBe('updateUsers');
+        expect(generateMethodNameFromPath('/api/v1/users', 'patch')).toBe('updateUser');
       });
 
       it('should map DELETE to delete', () => {
-        expect(generateMethodNameFromPath('/api/v1/users', 'delete')).toBe('deleteUsers');
+        expect(generateMethodNameFromPath('/api/v1/users', 'delete')).toBe('deleteUser');
       });
     });
 

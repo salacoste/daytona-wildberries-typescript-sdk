@@ -4,7 +4,7 @@
  *
  * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  *
- * Generated: 2025-10-24T15:21:04.307Z
+ * Generated: 2025-12-14T23:02:33.791Z
  */
 
 export interface Response400 {
@@ -83,37 +83,37 @@ export interface ResponseInfoAdvert {
   name?: string;
   /** Параметры кампании */
   params?: {
-    /** Название предметной группы. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний**) */
-    subjectName?: string;
-    /** Флаг активности предметной группы: - `true` — активна - `false` — неактивна */
-    active?: boolean;
-    /** Временные интервалы показа кампании */
-    intervals?: {
-      /** Время начала показов */
-      begin?: number;
-      /** Время окончания показов */
-      end?: number;
-    }[];
-    /** Текущая ставка */
-    price?: number;
-    /** ID меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
-    menuId?: number;
-    /** ID предметной группы, для которой создана кампания. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний** */
-    subjectId?: number;
-    /** ID сочетания предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
-    setId?: number;
-    /** Сочетание предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
-    setName?: string;
-    /** Название меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
-    menuName?: string;
-    /** Массив карточек товаров кампании */
-    nms?: {
-      /** Артикул WB */
-      nm?: number;
-      /** Состояние карточки товара: - `true` — активна - `false` — неактивна */
-      active?: boolean;
-    }[];
-  }[];
+  /** Название предметной группы. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний**) */
+  subjectName?: string;
+  /** Флаг активности предметной группы: - `true` — активна - `false` — неактивна */
+  active?: boolean;
+  /** Временные интервалы показа кампании */
+  intervals?: {
+  /** Время начала показов */
+  begin?: number;
+  /** Время окончания показов */
+  end?: number;
+}[];
+  /** Текущая ставка */
+  price?: number;
+  /** ID меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
+  menuId?: number;
+  /** ID предметной группы, для которой создана кампания. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний** */
+  subjectId?: number;
+  /** ID сочетания предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
+  setId?: number;
+  /** Сочетание предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
+  setName?: string;
+  /** Название меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
+  menuName?: string;
+  /** Массив карточек товаров кампании */
+  nms?: {
+  /** Артикул WB */
+  nm?: number;
+  /** Состояние карточки товара: - `true` — активна - `false` — неактивна */
+  active?: boolean;
+}[];
+}[];
   /** Дневной бюджет. Если не установлен, то `0` */
   dailyBudget?: number;
   /** ID кампании */
@@ -138,47 +138,47 @@ export interface ResponseInfoAdvertType8 {
   /** Дата последнего запуска кампании */
   startTime?: string;
   autoParams?: {
-    /** Продвигаемый предмет */
-    subject?: {
-      /** ID предмета */
-      id?: number;
-      /** Название предмета */
-      name?: string;
-    };
-    /** Внутренняя (системная) сущность (пол + предмет) */
-    sets?: {
-      /** ID set */
-      id?: number;
-      /** Название set */
-      name?: string;
-    }[];
-    menus?: {
-      /** ID меню */
-      id?: number;
-      /** Название меню */
-      name?: string;
-    }[];
-    /** Места размещения */
-    active?: {
-      /** Карточка товара - `false` — отключено - `true` — включено */
-      carousel?: boolean;
-      /** Рекомендации на главной - `false` — отключено - `true` — включено */
-      recom?: boolean;
-      /** Ручная ставка - `false` — отключено - `true` — включено */
-      booster?: boolean;
-    };
-    /** Ставки карточек товаров */
-    nmCPM?: {
-      /** Артикул WB */
-      nm?: number;
-      /** Ставка */
-      cpm?: number;
-    }[];
-    /** Артикулы WB */
-    nms?: number[];
-    /** Ставка, указанная при создании кампании.<br> Поле актуально только для кампаний, созданных через API. */
-    cpm?: number;
-  };
+  /** Продвигаемый предмет */
+  subject?: {
+  /** ID предмета */
+  id?: number;
+  /** Название предмета */
+  name?: string;
+};
+  /** Внутренняя (системная) сущность (пол + предмет) */
+  sets?: {
+  /** ID set */
+  id?: number;
+  /** Название set */
+  name?: string;
+}[];
+  menus?: {
+  /** ID меню */
+  id?: number;
+  /** Название меню */
+  name?: string;
+}[];
+  /** Места размещения */
+  active?: {
+  /** Карточка товара - `false` — отключено - `true` — включено */
+  carousel?: boolean;
+  /** Рекомендации на главной - `false` — отключено - `true` — включено */
+  recom?: boolean;
+  /** Ручная ставка - `false` — отключено - `true` — включено */
+  booster?: boolean;
+};
+  /** Ставки карточек товаров */
+  nmCPM?: {
+  /** Артикул WB */
+  nm?: number;
+  /** Ставка */
+  cpm?: number;
+}[];
+  /** Артикулы WB */
+  nms?: number[];
+  /** Ставка, указанная при создании кампании.<br> Поле актуально только для кампаний, созданных через API. */
+  cpm?: number;
+};
   /** Название кампании */
   name?: string;
   /** Не используется */
@@ -207,26 +207,26 @@ export interface ResponseInfoAdvertType9 {
   /** Название кампании */
   name?: string;
   unitedParams?: {
-    /** Продвигаемый предмет */
-    subject?: {
-      /** ID предмета */
-      id?: number;
-      /** Название предмета */
-      name?: string;
-    };
-    menus?: {
-      /** ID меню */
-      id?: number;
-      /** Название меню */
-      name?: string;
-    }[];
-    /** Артикулы WB */
-    nms?: number[];
-    /** Ставка в поиске */
-    searchCPM?: number;
-    /** Ставка в Каталоге */
-    catalogCPM?: number;
-  }[];
+  /** Продвигаемый предмет */
+  subject?: {
+  /** ID предмета */
+  id?: number;
+  /** Название предмета */
+  name?: string;
+};
+  menus?: {
+  /** ID меню */
+  id?: number;
+  /** Название меню */
+  name?: string;
+}[];
+  /** Артикулы WB */
+  nms?: number[];
+  /** Ставка в поиске */
+  searchCPM?: number;
+  /** Ставка в Каталоге */
+  catalogCPM?: number;
+}[];
   /** Не используется */
   dailyBudget?: number;
   /** ID кампании */
@@ -239,11 +239,11 @@ export interface ResponseInfoAdvertType9 {
   paymentType?: string;
   /** Ставки артикулов WB */
   auction_multibids?: {
-    /** Артикул WB */
-    nm?: number;
-    /** Ставка */
-    bid?: number;
-  }[];
+  /** Артикул WB */
+  nm?: number;
+  /** Ставка */
+  bid?: number;
+}[];
 }
 
 export interface ResponseAdvError1 {
@@ -270,17 +270,17 @@ export interface PromotionsGoodsList {
 export interface GetAuctionAdverts {
   /** Кампании */
   adverts: {
-    /** ID кампании */
-    id: number;
-    /** Настройки товаров */
-    nm_settings: AuctionAdvertNMsSettings[];
-    settings: AuctionAdvertSettings;
-    /** Статус кампании: - `-1` — удалена, процесс удаления будет завершён в течение 10 минут - `4` — готова к запуску - `7` — завершена - `8` — отменена - `9` — активна - `11` — на паузе */
-    status: -1 | 4 | 7 | 8 | 9 | 11;
-    timestamps: Timestamps;
-    /** Тип ставки: - `unified` — единая ставка - `manual` — ручная ставка */
-    bid_type: string;
-  };
+  /** ID кампании */
+  id: number;
+  /** Настройки товаров */
+  nm_settings: AuctionAdvertNMsSettings[];
+  settings: AuctionAdvertSettings;
+  /** Статус кампании: - `-1` — удалена, процесс удаления будет завершён в течение 10 минут - `4` — готова к запуску - `7` — завершена - `8` — отменена - `9` — активна - `11` — на паузе */
+  status: -1 | 4 | 7 | 8 | 9 | 11;
+  timestamps: Timestamps;
+  /** Тип ставки: - `unified` — единая ставка - `manual` — ручная ставка */
+  bid_type: string;
+};
 }
 
 export interface AuctionAdvertNMsSettings {
@@ -320,11 +320,11 @@ export interface AuctionAdvertSettings {
   name: string;
   /** Места размещения */
   placements: {
-    /** Размещение в поиске: - `false` — да - `true` — нет */
-    search: boolean;
-    /** Размещение в рекомендациях: - `false` — отключено - `true` — включено */
-    recommendations: boolean;
-  };
+  /** Размещение в поиске: - `false` — да - `true` — нет */
+  search: boolean;
+  /** Размещение в рекомендациях: - `false` — отключено - `true` — включено */
+  recommendations: boolean;
+};
 }
 
 /**
@@ -357,11 +357,11 @@ export interface Response400 {
 export interface StatInterval {
   /** Период */
   interval: {
-    /** Начало периода */
-    begin?: string;
-    /** Конец периода */
-    end?: string;
-  };
+  /** Начало периода */
+  begin?: string;
+  /** Конец периода */
+  end?: string;
+};
   /** Блок статистики */
   stats?: StatsBlok1[];
 }
@@ -427,10 +427,10 @@ export type DailyStats1 = {
   date?: string;
   /** Статистика по платформам */
   app_type_stats?: {
-    /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
-    app_type?: number;
-    stats?: Stats1;
-  }[];
+  /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
+  app_type?: number;
+  stats?: Stats1;
+}[];
 }[];
 
 export type Stats1 = {
@@ -493,10 +493,10 @@ export type DailyStats2 = {
   date?: string;
   /** Статистика по платформам */
   app_type_stats?: {
-    /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
-    app_type?: number;
-    stats?: Stats2;
-  }[];
+  /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
+  app_type?: number;
+  stats?: Stats2;
+}[];
 }[];
 
 export type Stats2 = {
@@ -531,11 +531,11 @@ export interface RequestWithInterval {
   id: number;
   /** Временной диапазон, за который необходимо выдать данные */
   interval: {
-    /** Начало запрашиваемого периода */
-    begin?: string;
-    /** Конец запрашиваемого периода */
-    end?: string;
-  };
+  /** Начало запрашиваемого периода */
+  begin?: string;
+  /** Конец запрашиваемого периода */
+  end?: string;
+};
 }
 
 /**
@@ -566,56 +566,56 @@ export type Days = {
   sum_price?: number;
   /** Блок информации о платформе */
   apps?: {
-    /** Количество просмотров */
-    views?: number;
-    /** Количество кликов */
-    clicks?: number;
-    /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
-    ctr?: number;
-    /** Средняя стоимость клика, ₽ */
-    cpc?: number;
-    /** Затраты, ₽ */
-    sum?: number;
-    /** Количество добавлений товаров в корзину */
-    atbs?: number;
-    /** Количество заказов */
-    orders?: number;
-    /** CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании */
-    cr?: number;
-    /** Количество заказанных товаров, шт. */
-    shks?: number;
-    /** Заказов на сумму, ₽ */
-    sum_price?: number;
-    /** Блок статистики по артикулам WB */
-    nm?: {
-      /** Количество просмотров */
-      views?: number;
-      /** Количество кликов */
-      clicks?: number;
-      /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
-      ctr?: number;
-      /** Средняя стоимость клика, ₽ */
-      cpc?: number;
-      /** Затраты, ₽ */
-      sum?: number;
-      /** Количество добавлений товаров в корзину */
-      atbs?: number;
-      /** Количество заказов */
-      orders?: number;
-      /** CR(conversion rate) — отношение количества заказов к общему количеству посещений кампании */
-      cr?: number;
-      /** Количество заказанных товаров, шт. */
-      shks?: number;
-      /** Заказов на сумму, ₽ */
-      sum_price?: number;
-      /** Название товара */
-      name?: string;
-      /** ID артикула WB */
-      nmId?: number;
-    }[];
-    /** Тип платформы (`1` — сайт, `32` — Android, `64` — IOS) */
-    appType?: number;
-  }[];
+  /** Количество просмотров */
+  views?: number;
+  /** Количество кликов */
+  clicks?: number;
+  /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
+  ctr?: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc?: number;
+  /** Затраты, ₽ */
+  sum?: number;
+  /** Количество добавлений товаров в корзину */
+  atbs?: number;
+  /** Количество заказов */
+  orders?: number;
+  /** CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании */
+  cr?: number;
+  /** Количество заказанных товаров, шт. */
+  shks?: number;
+  /** Заказов на сумму, ₽ */
+  sum_price?: number;
+  /** Блок статистики по артикулам WB */
+  nm?: {
+  /** Количество просмотров */
+  views?: number;
+  /** Количество кликов */
+  clicks?: number;
+  /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
+  ctr?: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc?: number;
+  /** Затраты, ₽ */
+  sum?: number;
+  /** Количество добавлений товаров в корзину */
+  atbs?: number;
+  /** Количество заказов */
+  orders?: number;
+  /** CR(conversion rate) — отношение количества заказов к общему количеству посещений кампании */
+  cr?: number;
+  /** Количество заказанных товаров, шт. */
+  shks?: number;
+  /** Заказов на сумму, ₽ */
+  sum_price?: number;
+  /** Название товара */
+  name?: string;
+  /** ID артикула WB */
+  nmId?: number;
+}[];
+  /** Тип платформы (`1` — сайт, `32` — Android, `64` — IOS) */
+  appType?: number;
+}[];
 }[];
 
 /**
@@ -636,11 +636,11 @@ export type BoosterStats = {
 export type ResponseWithInterval = {
   /** Период */
   interval?: {
-    /** Начало периода */
-    begin?: string;
-    /** Конец периода */
-    end?: string;
-  };
+  /** Начало периода */
+  begin?: string;
+  /** Конец периода */
+  end?: string;
+};
   /** Количество просмотров. <br> За все дни запрошенного диапазона, по всем артикулам WB и платформам */
   views?: number;
   /** Количество кликов.<br> За все дни запрошенного диапазона, по всем артикулам WB и платформам */
@@ -790,88 +790,4 @@ export interface FullStatsError {
   status: number;
   /** Заголовок ошибки */
   title: string;
-}
-
-// ==========================================
-// Calendar API Types (Календарь акций)
-// ==========================================
-
-/**
- * Информация об акции в календаре
- */
-export interface CalendarPromotion {
-  /** ID акции */
-  id: number;
-  /** Название акции */
-  name?: string;
-  /** Дата начала акции */
-  startDateTime?: string;
-  /** Дата окончания акции */
-  endDateTime?: string;
-  /** Тип акции */
-  type?: string;
-  /** Описание акции */
-  description?: string;
-}
-
-/**
- * Детальная информация об акции с условиями ранжирования
- */
-export interface CalendarPromotionDetails extends CalendarPromotion {
-  /** Условия участия */
-  conditions?: CalendarPromotionCondition[];
-}
-
-/**
- * Условие участия в акции
- */
-export interface CalendarPromotionCondition {
-  /** Тип условия */
-  condition?: 'productsInPromotion' | 'calculateProducts' | 'allProducts';
-  /** Количество товаров продавца для перехода на следующий уровень ранжирования, % */
-  participationRate?: number;
-  /** Текущий уровень поднятия в поиске, % */
-  boost?: number;
-}
-
-/**
- * Ответ со списком акций календаря
- */
-export interface CalendarPromotionsResponse {
-  data?: {
-    /** Список акций */
-    promotions?: CalendarPromotion[];
-  };
-}
-
-/**
- * Ответ с детальной информацией об акциях
- */
-export interface CalendarPromotionDetailsResponse {
-  data?: {
-    /** Список акций с деталями */
-    promotions?: CalendarPromotionDetails[];
-  };
-}
-
-/**
- * Ответ со списком товаров для акции
- */
-export interface CalendarNomenclaturesResponse {
-  data?: {
-    /** Список товаров */
-    nomenclatures?: PromotionsGoodsList[];
-  };
-}
-
-/**
- * Ответ при загрузке товара в акцию
- */
-export interface CalendarUploadResponse {
-  data?: {
-    /** Загрузка с такими данными уже существует */
-    alreadyExists?: boolean;
-    /** ID загрузки */
-    uploadID?: number;
-  };
 }

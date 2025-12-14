@@ -1,0 +1,1300 @@
+{
+  "analytics": [
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/detail",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/detail/history",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/report",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/downloads",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/nm-report/downloads/file/{reportId}",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/detail",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/nm-report/downloads",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/product/search-texts",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/product/orders",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/products/products",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/offices",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/grouped/history",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/nm-report/downloads/retry",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/table/groups",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/search-report/table/details",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/products/groups",
+      "file": "analytics/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/stocks-report/products/sizes",
+      "file": "analytics/index.ts"
+    }
+  ],
+  "communications": [
+    {
+      "method": "GET",
+      "path": "/api/v1/seller/chats",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller/events",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/seller/message",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/questions",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/questions",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/questions",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/new-feedbacks-questions",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/questions/count-unanswered",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/questions/{questionId}/details",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/feedbacks/answer",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/feedbacks/answer",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/templates",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/templates",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/templates/{templateId}",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/templates/{templateId}",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/templates/stats",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks/count-unanswered",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks/count",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier-valuations",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/feedbacks/actions",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/feedbacks/archive",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller/download/{encodeURIComponent(fileId)}",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/claims",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/claim",
+      "file": "communications/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/feedbacks/order/return",
+      "file": "communications/index.ts"
+    }
+  ],
+  "finances": [
+    {
+      "method": "GET",
+      "path": "/api/v1/account/balance",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/supplier/reportDetailByPeriod",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/documents/categories",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/documents/list",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/documents/download",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/documents/download/all",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/reports/generate",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/reports/{reportId}",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/payouts",
+      "file": "finances/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/payouts/{payoutId}",
+      "file": "finances/index.ts"
+    }
+  ],
+  "general": [
+    {
+      "method": "GET",
+      "path": "/ping",
+      "file": "general/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/communications/v2/news",
+      "file": "general/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/seller-info",
+      "file": "general/index.ts"
+    }
+  ],
+  "in-store-pickup": [
+    {
+      "method": "GET",
+      "path": "/api/v3/click-collect/orders/new",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/confirm",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/prepare",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/receive",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/reject",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/click-collect/orders/{orderId}/cancel",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/click-collect/orders",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/click-collect/orders/status",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/click-collect/orders/client",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/click-collect/orders/client/identity",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/sgtin",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/uin",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/imei",
+      "file": "in-store-pickup/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/click-collect/orders/{orderId}/meta/gtin",
+      "file": "in-store-pickup/index.ts"
+    }
+  ],
+  "index.ts": [],
+  "orders-fbs": [
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/new",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/status",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/supplies",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/supplies/{supplyId}/orders/{orderId}",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/supplies/{supplyId}/deliver",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/supplies/{supplyId}",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/stickers",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/barcode",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/orders/{orderId}/cancel",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/passes/offices",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/passes",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/orders/reshipment",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta/sgtin",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta/uin",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta/imei",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta/gtin",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/{orderId}/meta/expiration",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/client",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/orders/status/history",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/trbx/stickers",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/passes",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/passes/{passId}",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/supplies/{supplyId}/orders",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/passes/{passId}",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/orders/{orderId}/meta",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/sgtin",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/uin",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/imei",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/gtin",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/orders/{orderId}/meta/expiration",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/stickers/cross-border",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/files/orders/external-stickers",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/status/history",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/orders/client",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "file": "orders-fbs/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/supplies/{supplyId}/trbx/stickers",
+      "file": "orders-fbs/index.ts"
+    }
+  ],
+  "orders-fbw": [
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouses",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance/coefficients",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/acceptance/options",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/transit-tariffs",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/supplies?limit={limit}&offset={offset}",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplies/{ID}?isPreorderID={isPreorderID}",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplies/{ID}/goods?limit={limit}&offset={offset}&isPreorderID={isPreorderID}",
+      "file": "orders-fbw/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplies/{ID}/package",
+      "file": "orders-fbw/index.ts"
+    }
+  ],
+  "products": [
+    {
+      "method": "GET",
+      "path": "/content/v2/object/parent/all",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/object/all",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/object/charcs/{subjectId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/colors",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/kinds",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/countries",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/seasons",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/vat",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/directory/tnved",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/tags",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/tag",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/content/v2/tag/{id}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/content/v2/tag/{id}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/tag/nomenclature/link",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/get/cards/list",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/error/list",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/update",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/moveNm",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/get/cards/trash",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/cards/limits",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/barcodes",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/upload",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/upload/add",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task/size",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task/club-discount",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/history/tasks?uploadID={uploadID}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/history/goods/task?{queryParams.toString()}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/buffer/tasks?uploadID={uploadID}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/buffer/goods/task?{queryParams.toString()}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/list/goods/filter${queryString ? ",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/list/goods/filter",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/list/goods/size/nm?{queryParams.toString()}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/quarantine/goods${queryString ? ",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/dbw/warehouses/{warehouseId}/contacts",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/dbw/warehouses/{warehouseId}/contacts",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/upload",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/get/cards/list",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/update",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/delete/trash",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v2/cards/recover",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v3/media/file",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/content/v3/media/save",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/upload/task",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/list/goods/filter",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/list/goods/filter",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/history/tasks",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/offices",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/warehouses",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/warehouses",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/warehouses/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/warehouses/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "file": "products/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/content/v2/tags",
+      "file": "products/index.ts"
+    }
+  ],
+  "promotion": [
+    {
+      "method": "GET",
+      "path": "/adv/v1/promotion/count",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/promotion/adverts",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/auction/adverts",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/config",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v0/bids/min",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/save-ad",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/seacat/save-ad",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/supplier/subjects",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/supplier/nms",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/delete",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v0/rename",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/start",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/pause",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/stop",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/adv/v0/bids",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "PUT",
+      "path": "/adv/v0/auction/placements",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/adv/v0/auction/bids",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/balance",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/budget",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/budget/deposit",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/upd",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/payments",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/search/set-plus",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/search/set-plus",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/search/set-excluded",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/auto/set-excluded",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/auto/getnmtoadd",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/auto/updatenm",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "PATCH",
+      "path": "/adv/v0/auction/nms",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/count",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/adverts",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/advert",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v2/fullstats",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v3/fullstats",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v2/auto/stat-words",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v1/stat/words",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/adv/v0/stats/keywords",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/adv/v1/stats",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions/details",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/calendar/promotions/nomenclatures",
+      "file": "promotion/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/calendar/promotions/upload",
+      "file": "promotion/index.ts"
+    }
+  ],
+  "reports": [
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/incomes",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/stocks",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/orders",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/supplier/sales",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/analytics/excise-report",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouse_remains",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/{endpoint}/tasks/{taskId}/status",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/{endpoint}/tasks/{taskId}/download",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouse_remains/tasks/{taskId}/status",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/warehouse_remains/tasks/{taskId}/download",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/goods-labeling",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/characteristics-change",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/antifraud-details",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/incorrect-attachments",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/warehouse-measurements",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance_report",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance_report/tasks/{taskId}/status",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/acceptance_report/tasks/{taskId}/download",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/paid_storage",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/paid_storage/tasks/{taskId}/status",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/paid_storage/tasks/{taskId}/download",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/region-sale",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/brand-share/brands",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/brand-share/parent-subjects",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/brand-share",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/banned-products/blocked",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/banned-products/shadowed",
+      "file": "reports/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/analytics/goods-return",
+      "file": "reports/index.ts"
+    }
+  ],
+  "tariffs": [
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/commission",
+      "file": "tariffs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/box",
+      "file": "tariffs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/pallet",
+      "file": "tariffs/index.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tariffs/return",
+      "file": "tariffs/index.ts"
+    }
+  ]
+}

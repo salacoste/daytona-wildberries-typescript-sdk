@@ -8,8 +8,8 @@
 import { BaseClient } from './client/base-client';
 import { GeneralModule } from './modules/general';
 import { ProductsModule } from './modules/products';
-import { OrdersFBSModule } from './modules/orders-fbs';
-import { OrdersFBWModule } from './modules/orders-fbw';
+import { OrdersFbsModule } from './modules/orders-fbs';
+import { OrdersFbwModule } from './modules/orders-fbw';
 import { FinancesModule } from './modules/finances';
 import { AnalyticsModule } from './modules/analytics';
 import { CommunicationsModule } from './modules/communications';
@@ -124,7 +124,7 @@ export class WildberriesSDK {
    * - Order listing with filters and pagination
    * - Order status tracking (supplier and WB system status)
    *
-   * @see {@link OrdersFBSModule} for available methods
+   * @see {@link OrdersFbsModule} for available methods
    *
    * @example
    * ```typescript
@@ -140,7 +140,7 @@ export class WildberriesSDK {
    * const statuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
    * ```
    */
-  public readonly ordersFBS: OrdersFBSModule;
+  public readonly ordersFBS: OrdersFbsModule;
 
   /**
    * Orders FBW (Fulfillment by Wildberries) API module
@@ -151,7 +151,7 @@ export class WildberriesSDK {
    * - Supply planning and management
    * - Transit tariff calculation
    *
-   * @see {@link OrdersFBWModule} for available methods
+   * @see {@link OrdersFbwModule} for available methods
    *
    * @example
    * ```typescript
@@ -169,7 +169,7 @@ export class WildberriesSDK {
    * const details = await sdk.ordersFBW.getSupplyDetails(12345);
    * ```
    */
-  public readonly ordersFBW: OrdersFBWModule;
+  public readonly ordersFBW: OrdersFbwModule;
 
   /**
    * Finances API module
@@ -463,10 +463,10 @@ export class WildberriesSDK {
     this.products = new ProductsModule(this.client);
 
     // Initialize Orders FBS module (Stories 2.5-2.6 - implemented)
-    this.ordersFBS = new OrdersFBSModule(this.client);
+    this.ordersFBS = new OrdersFbsModule(this.client);
 
     // Initialize Orders FBW module (Story 2.7 - implemented)
-    this.ordersFBW = new OrdersFBWModule(this.client);
+    this.ordersFBW = new OrdersFbwModule(this.client);
 
     // Initialize Finances module (Stories 3.1-3.2 - implemented)
     this.finances = new FinancesModule(this.client);
@@ -508,8 +508,8 @@ export type { SDKConfig, RequestOptions } from './config/sdk-config';
 export {
   ALL_RATE_LIMITS,
   generalRateLimits,
-  ordersFBSRateLimits,
-  ordersFBWRateLimits,
+  ordersFbsRateLimits,
+  ordersFbwRateLimits,
   promotionRateLimits,
   tariffsRateLimits,
 } from './config';
@@ -521,8 +521,8 @@ export { BaseClient } from './client/base-client';
 // API Modules
 export { GeneralModule } from './modules/general';
 export { ProductsModule } from './modules/products';
-export { OrdersFBSModule } from './modules/orders-fbs';
-export { OrdersFBWModule } from './modules/orders-fbw';
+export { OrdersFbsModule } from './modules/orders-fbs';
+export { OrdersFbwModule } from './modules/orders-fbw';
 export { FinancesModule } from './modules/finances';
 export { AnalyticsModule } from './modules/analytics';
 export { CommunicationsModule } from './modules/communications';
@@ -532,114 +532,13 @@ export { TariffsModule } from './modules/tariffs';
 export { InStorePickupModule } from './modules/in-store-pickup';
 
 // Type definitions
-export * from './types/products.types';
-export * from './types/orders-fbs.types';
-export * from './types/finances.types';
-export * from './types/communications.types';
-
-// Reports types exported explicitly to avoid conflicts with finances types
-export type {
-  IncomesItem,
-  StocksItem,
-  OrdersItem,
-  SalesItem,
-  ExciseReportRequest,
-  ExciseReportDataItem,
-  ExciseReportResponse,
-  WarehouseRemainsParams,
-  ReportTaskResponse,
-  ReportStatus as ReportsReportStatus, // Renamed to avoid conflict with finances
-  ReportType,
-  ResponseErrorStatistics,
-  ResponseErrorStatistics2,
-  ErrorResponse4xx,
-} from './types/reports.types';
-
-// Analytics types exported with explicit names to avoid conflicts
-export type {
-  // Unique analytics types
-  ConversionMetrics,
-  PeriodStatistics,
-  PeriodComparisonDynamics,
-  ProductTag,
-  ProductObject,
-  CardStatistics,
-  ProductCardAnalytics,
-  ProductStatisticsRequest,
-  ProductStatisticsResponse,
-  TimeSeriesDataPoint,
-  DailyStatistics,
-  HistoricalStatisticsRequest,
-  ProductCardHistory,
-  HistoricalStatisticsResponse,
-  GroupedHistory,
-  GroupedHistoricalResponse,
-  SearchQueryMetrics,
-  SearchQueriesResponse,
-  CategoryPerformanceMetrics,
-  CategoryPerformanceResponse,
-  ProductPerformanceMetrics,
-  ProductPerformanceResponse,
-  // Stock history types (Story 3.4)
-  StockChangeReason,
-  StockHistoryEntry,
-  StockHistoryResponse,
-  // CSV export types (Story 3.4)
-  AnalyticsReportType,
-  CSVFormatOptions,
-  CSVExportRequest,
-  CSVExportResponse,
-  CSVReport,
-  CSVReportStatus,
-  // Shared types with analytics prefix for disambiguation
-  ReportType as AnalyticsReportTypeEnum,
-  Period as AnalyticsPeriod,
-} from './types/analytics.types';
-
-// FBW types exported with namespace to avoid conflicts with FBS
-export type {
-  ModelsHandySupplyStatus as FBWSupplyStatus,
-  ModelsBox as FBWBox,
-  ModelsGoodInBox as FBWGoodInBox,
-  ModelsSuppliesFiltersRequest as FBWSupplyFilters,
-  ModelsGoodInSupply as FBWGoodInSupply,
-  ModelsDateFilterRequest as FBWDateFilter,
-  ModelsSupplyDetails as FBWSupplyDetails,
-  ModelsSupply as FBWSupply,
-  ModelsAcceptanceCoefficient as FBWAcceptanceCoefficient,
-  ModelsWarehousesResultItems as FBWWarehouse,
-  ModelsGood as FBWGood,
-  ModelsOptionsResultModel as FBWAcceptanceOptions,
-  ModelsTransitTariff as FBWTransitTariff,
-  ModelsVolumeTariff as FBWVolumeTariff,
-  ModelsErrorModel as FBWErrorModel,
-} from './types/orders-fbw.types';
-
-// Promotion and Tariffs types
-export * from './types/promotion.types';
-export * from './types/tariffs.types';
-
-// In-Store Pickup types (Story 4.6) - Renamed to avoid conflicts with orders-fbs
-export type {
-  NewOrder as PickupNewOrder,
-  NewOrdersResponse as PickupNewOrdersResponse,
-  Order as PickupOrder,
-  OrdersResponse as PickupOrdersResponse,
-  OrderStatus as PickupOrderStatus,
-  OrderStatusesResponse as PickupOrderStatusesResponse,
-  OrderStatusRequest as PickupOrderStatusRequest,
-  OrderClientInfo as PickupOrderClientInfo,
-  OrderClientInfoResponse as PickupOrderClientInfoResponse,
-  CheckIdentityRequest,
-  CheckedIdentity,
-  OrderMetadata,
-  SGTINRequest,
-  UINRequest,
-  IMEIRequest,
-  GTINRequest,
-  APIError as PickupAPIError,
-  GetOrdersParams as PickupGetOrdersParams,
-} from './types/in-store-pickup.types';
+// NOTE: Types are NOT re-exported from main entry to avoid name conflicts (Error, Date, etc.)
+// Import types directly from the specific type modules:
+//   import type { ProductCard } from 'daytona-wildberries-typescript-sdk/types/products.types';
+//   import type { Order } from 'daytona-wildberries-typescript-sdk/types/orders-fbs.types';
+//
+// Or import everything from a specific module:
+//   import * as ProductTypes from 'daytona-wildberries-typescript-sdk/types/products.types';
 
 // Error classes
 export { WBAPIError } from './errors/base-error';

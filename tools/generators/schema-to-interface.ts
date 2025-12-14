@@ -5,7 +5,7 @@
  */
 
 import type { SchemaObject } from './yaml-parser.js';
-import { mapOpenAPIType, toPascalCase, sanitizeWhitespace } from './type-mapper.js';
+import { mapOpenAPIType, sanitizeTypeName, sanitizeWhitespace } from './type-mapper.js';
 import { generateJSDoc, generateExampleTag } from './jsdoc-generator.js';
 
 /**
@@ -50,7 +50,7 @@ export function generateTypeScriptInterface(
   schema: SchemaObject,
   allSchemas: Record<string, SchemaObject> = {}
 ): string {
-  const interfaceName = toPascalCase(schemaName);
+  const interfaceName = sanitizeTypeName(schemaName);
 
   // Generate JSDoc comment
   const jsdocTags: string[] = [];
@@ -161,7 +161,7 @@ export function generateTypeAlias(
   schema: SchemaObject,
   allSchemas: Record<string, SchemaObject> = {}
 ): string {
-  const typeName = toPascalCase(schemaName);
+  const typeName = sanitizeTypeName(schemaName);
   const typeDefinition = mapOpenAPIType(schema, allSchemas);
 
   const jsdoc = generateJSDoc(schema.description);

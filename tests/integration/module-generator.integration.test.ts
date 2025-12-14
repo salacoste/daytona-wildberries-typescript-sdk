@@ -273,7 +273,7 @@ describe('module-generator integration', () => {
 
       expect(module.methods).toHaveLength(2);
       expect(module.code).toContain('async users()'); // GET users
-      expect(module.code).toContain('async createUsers(data: CreateUserRequest)'); // POST users
+      expect(module.code).toContain('async createUser(data: CreateUserRequest)'); // POST users (singularized)
     });
   });
 

@@ -208,8 +208,8 @@ export function resolveRef(
 
   const schemaName = match[1];
 
-  // Convert to PascalCase (schema validation happens at type-check time)
-  return toPascalCase(schemaName);
+  // Sanitize to valid TypeScript identifier (handles names starting with numbers)
+  return sanitizeTypeName(schemaName);
 }
 
 /**
@@ -234,4 +234,130 @@ export function toPascalCase(str: string): string {
     .replace(/[-._ ](.)/g, (_, char: string) => char.toUpperCase())
     .replace(/[-._ ]/g, '') // Remove separators
     .replace(/^(.)/, (_, char: string) => char.toUpperCase());
+}
+
+/**
+ * Sanitizes schema name to valid TypeScript interface/type identifier
+ *
+ * TypeScript identifiers cannot start with numbers and can only contain
+ * alphanumeric characters and underscores.
+ *
+ * @param name - Schema name from OpenAPI spec
+ * @returns Valid TypeScript identifier
+ *
+ * @example
+ * ```typescript
+ * sanitizeTypeName('400Response') // 'Response400'
+ * sanitizeTypeName('4xxResponse') // 'Response4xx'
+ * sanitizeTypeName('user-profile') // 'UserProfile' (via toPascalCase)
+ * sanitizeTypeName('ProductCard') // 'ProductCard'
+ * ```
+ */
+export function sanitizeTypeName(name: string): string {
+  // First apply PascalCase transformation
+  let result = toPascalCase(name);
+
+  // If starts with number, handle common patterns
+  if (/^\d/.test(result)) {
+    // HTTP status code response patterns: 400Response, 4xxResponse
+    if (/^\d{3}Response$/i.test(result)) {
+      // 400Response → Response400
+      const statusCode = result.slice(0, 3);
+      return `Response${statusCode}`;
+    }
+    if (/^\dxx/i.test(result)) {
+      // 4xxResponse → Response4xx, 4xx → Response4xx
+      return `Response${result}`;
+    }
+    // Generic numeric prefix: prefix with 'Type'
+    result = `Type${result}`;
+    // Log warning about transformation
+    process.stderr.write(`⚠ Warning: Type name starting with number transformed: ${name} → ${result}\n`);
+  }
+
+  // Replace any remaining invalid characters with underscores
+  result = result.replace(/[^a-zA-Z0-9_]/g, '_');
+
+  return result;
+}
+
+/**
+ * Converts string to camelCase (for variable/function names)
+ *
+ * Handles snake_case, kebab-case, and other separators.
+ *
+ * @param str - Input string
+ * @returns camelCase string
+ *
+ * @example
+ * ```typescript
+ * toCamelCase('product_card') // 'productCard'
+ * toCamelCase('order-status') // 'orderStatus'
+ * toCamelCase('ProductCard') // 'productCard'
+ * toCamelCase('orders-fbs') // 'ordersFbs'
+ * ```
+ */
+export function toCamelCase(str: string): string {
+  return str
+    .replace(/[-._ ](.)/g, (_, char: string) => char.toUpperCase())
+    .replace(/[-._ ]/g, '') // Remove separators
+    .replace(/^(.)/, (_, char: string) => char.toLowerCase());
+}
+
+/**
+ * Sanitizes string to valid JavaScript/TypeScript identifier
+ *
+ * Identifiers cannot start with numbers and can only contain
+ * alphanumeric characters, underscores, and dollar signs.
+ *
+ * @param name - Variable or function name
+ * @returns Valid JavaScript identifier
+ *
+ * @example
+ * ```typescript
+ * sanitizeIdentifier('orders-fbs') // 'ordersFbs'
+ * sanitizeIdentifier('123test') // 'var123test'
+ * sanitizeIdentifier('my-var') // 'myVar'
+ * ```
+ */
+export function sanitizeIdentifier(name: string): string {
+  // First convert to camelCase
+  let result = toCamelCase(name);
+
+  // If starts with number, prefix with 'var'
+  if (/^\d/.test(result)) {
+    result = `var${result}`;
+    process.stderr.write(`⚠ Warning: Identifier starting with number transformed: ${name} → ${result}\n`);
+  }
+
+  // Replace any remaining invalid characters
+  result = result.replace(/[^a-zA-Z0-9_$]/g, '_');
+
+  return result;
+}
+
+/**
+ * Sanitizes object key for JavaScript/TypeScript
+ *
+ * Keys containing special characters (except letters, numbers, underscore, $)
+ * must be quoted in object literals.
+ *
+ * @param key - Object key
+ * @returns Properly formatted key (quoted if necessary)
+ *
+ * @example
+ * ```typescript
+ * sanitizeObjectKey('normalKey') // 'normalKey'
+ * sanitizeObjectKey('key-with-dash') // "'key-with-dash'"
+ * sanitizeObjectKey('key.with.dots') // "'key.with.dots'"
+ * sanitizeObjectKey('123startsWithNumber') // "'123startsWithNumber'"
+ * ```
+ */
+export function sanitizeObjectKey(key: string): string {
+  // If key is a valid identifier (starts with letter/underscore/$, contains only valid chars)
+  if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key)) {
+    return key;
+  }
+  // Otherwise quote it
+  return `'${key.replace(/'/g, "\\'")}'`;
 }

@@ -1,0 +1,83 @@
+openapi: 3.0.1
+info:
+  title: Wildberries API Supplemental
+  version: 1.0.0
+  description: |
+    Supplemental documentation for endpoints implemented in the SDK but missing from the official documentation.
+    Generated based on SDK analysis and live verification.
+paths:
+  /content/v2/tags:
+    get:
+      summary: Список тегов (v2)
+      description: Получение списка тегов продавца.
+      tags:
+        - Контент
+      responses:
+        '200':
+          description: Успешно
+  
+  /adv/v1/advert:
+    get:
+      summary: Информация о медиакампании (v1)
+      description: Получение информации о медиакампании по ID.
+      tags:
+        - Продвижение
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешно
+
+  /adv/v2/fullstats:
+    post:
+      summary: Статистика кампаний (v2 POST)
+      description: Получение полной статистики по кампаниям (POST метод).
+      tags:
+        - Продвижение
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+      responses:
+        '200':
+          description: Успешно
+
+  /adv/v3/fullstats:
+    get:
+      summary: Статистика кампаний (v3)
+      description: Получение полной статистики по кампаниям (v3).
+      tags:
+        - Продвижение
+      parameters:
+        - name: ids
+          in: query
+          schema:
+            type: string
+        - name: beginDate
+          in: query
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+
+  /api/v1/calendar/promotions:
+    get:
+      summary: Список акций
+      description: Получение списка доступных акций календаря.
+      tags:
+        - Календарь
+      responses:
+        '200':
+          description: Успешно

@@ -10,7 +10,7 @@
 import type { ParsedOperation, ServerObject } from './path-parser.js';
 import { generateMethod, type GeneratedMethod } from './module-method-generator.js';
 import { MethodNameTracker } from './method-name-generator.js';
-import { toPascalCase } from './type-mapper.js';
+import { sanitizeTypeName } from './type-mapper.js';
 
 /**
  * Generated module class with all components
@@ -73,7 +73,7 @@ export function generateModuleClass(
   sourceFileName: string,
   specServers: ServerObject[] = []
 ): GeneratedModule {
-  const className = `${toPascalCase(moduleName)}Module`;
+  const className = `${sanitizeTypeName(moduleName)}Module`;
   const tracker = new MethodNameTracker();
   const generatedMethods: GeneratedMethod[] = [];
   const typeNames = new Set<string>();
@@ -244,9 +244,40 @@ export function generateClassStructure(
 }
 
 /**
+ * Removes all inline object types from a string, handling nested braces
+ *
+ * @param str - String containing inline types
+ * @returns String with inline object types removed
+ *
+ * @example
+ * ```typescript
+ * removeInlineTypes('Promise<{ foo: string }>') // 'Promise<>'
+ * removeInlineTypes('Promise<{ nested: { deep: string }[] }>') // 'Promise<>'
+ * removeInlineTypes('Promise<NamedType>') // 'Promise<NamedType>'
+ * ```
+ */
+function removeInlineTypes(str: string): string {
+  let result = '';
+  let depth = 0;
+
+  for (const char of str) {
+    if (char === '{') {
+      depth++;
+    } else if (char === '}') {
+      depth--;
+    } else if (depth === 0) {
+      result += char;
+    }
+  }
+
+  return result;
+}
+
+/**
  * Extracts type names from TypeScript type string
  *
  * Parses return types to find interface/type references for imports.
+ * Skips inline object types (types starting with {) and only extracts named types.
  *
  * @param typeString - TypeScript type (e.g., 'Promise<PingResponse>')
  * @param typeNames - Set to add extracted type names
@@ -259,18 +290,25 @@ export function generateClassStructure(
  *
  * extractTypeNames('Promise<NewsItem[]>', types);
  * // types now contains: 'PingResponse', 'NewsItem'
+ *
+ * extractTypeNames('Promise<{ inline: string }>', types);
+ * // types remains empty (inline types are skipped)
  * ```
  */
 export function extractTypeNames(typeString: string, typeNames: Set<string>): void {
+  // First remove all inline object types (handles nested braces)
+  const withoutInline = removeInlineTypes(typeString);
+
   // Remove Promise<>, array brackets, and optional markers
-  const cleaned = typeString
+  const cleaned = withoutInline
     .replace(/Promise<|>/g, '')
     .replace(/\[\]/g, '')
-    .replace(/\?/g, '');
+    .replace(/\?/g, '')
+    .trim();
 
   // Skip primitive types and special types
   const primitives = new Set(['string', 'number', 'boolean', 'void', 'unknown', 'any', 'null', 'undefined']);
-  if (primitives.has(cleaned)) {
+  if (primitives.has(cleaned) || cleaned.length === 0) {
     return;
   }
 
@@ -278,7 +316,7 @@ export function extractTypeNames(typeString: string, typeNames: Set<string>): vo
   if (cleaned.includes('|')) {
     const types = cleaned.split('|').map((t) => t.trim());
     for (const type of types) {
-      if (!primitives.has(type) && type.length > 0) {
+      if (!primitives.has(type) && type.length > 0 && /^[A-Z][a-zA-Z0-9]*$/.test(type)) {
         typeNames.add(type);
       }
     }
@@ -289,15 +327,15 @@ export function extractTypeNames(typeString: string, typeNames: Set<string>): vo
   if (cleaned.includes('&')) {
     const types = cleaned.split('&').map((t) => t.trim());
     for (const type of types) {
-      if (!primitives.has(type) && type.length > 0) {
+      if (!primitives.has(type) && type.length > 0 && /^[A-Z][a-zA-Z0-9]*$/.test(type)) {
         typeNames.add(type);
       }
     }
     return;
   }
 
-  // Single type
-  if (cleaned.length > 0 && !cleaned.includes('{')) {
+  // Single type - only add if it's a valid PascalCase identifier (not an inline type)
+  if (/^[A-Z][a-zA-Z0-9]*$/.test(cleaned)) {
     typeNames.add(cleaned);
   }
 }
@@ -306,7 +344,7 @@ export function extractTypeNames(typeString: string, typeNames: Set<string>): vo
  * Extracts type names from method code (parameters and inline types)
  *
  * Scans method code to find all type references used in parameters and method body.
- * Handles inline object types, union types, and extracts named types for imports.
+ * Handles inline object types (including nested), union types, and extracts named types for imports.
  * Excludes types found in JSDoc comments.
  *
  * @param code - Method code
@@ -320,32 +358,51 @@ export function extractTypeNames(typeString: string, typeNames: Set<string>): vo
  *
  * extractTypeNamesFromCode('async bar(data: TypeA | TypeB)', types);
  * // types now contains: 'TypeA', 'TypeB'
+ *
+ * extractTypeNamesFromCode('async baz(): Promise<{ nested: { deep: string } }>', types);
+ * // types remains empty (inline types are skipped)
  * ```
  */
 export function extractTypeNamesFromCode(code: string, typeNames: Set<string>): void {
   // Remove JSDoc comments first to avoid extracting types from descriptions
   const codeWithoutComments = code.replace(/\/\*\*[\s\S]*?\*\//g, '');
 
-  // Remove inline object types to avoid extracting property names as types
-  // This prevents { TS?: string, Status?: string } from being treated as types
-  const codeWithoutInlineObjects = codeWithoutComments.replace(/\{[^{}]*\}/g, '{}');
-
-  // Match all PascalCase type names in type annotations
-  // This catches: TypeName, TypeName[], TypeName | OtherType, TypeName & OtherType
-  const typePattern = /\b([A-Z][a-zA-Z0-9]*)\b/g;
-
+  // Types we should never try to import (built-ins, utility types, primitives that look like types)
   const excludedTypes = new Set([
+    // TypeScript utility types
     'Promise', 'Record', 'Array', 'Partial', 'Required', 'Pick', 'Omit',
-    'Readonly', 'NonNullable', 'ReturnType', 'InstanceType', 'Parameters'
+    'Readonly', 'NonNullable', 'ReturnType', 'InstanceType', 'Parameters',
+    // Common property names that look like types
+    'OK', 'Status', 'TS', 'ID', 'Error', 'Date', 'URL', 'JSON',
+    'Erid', 'From', 'To', 'Type', 'Name', 'Data', 'Result', 'Response',
+    'Request', 'Body', 'Query', 'Params', 'Options', 'Config', 'Settings',
+    // Short uppercase words that are likely property names
+    'NM', 'WB', 'FBS', 'FBW', 'API', 'CSV', 'XML', 'HTTP', 'GET', 'POST',
   ]);
 
-  let match;
-  while ((match = typePattern.exec(codeWithoutInlineObjects)) !== null) {
-    const typeName = match[1];
+  // Match type annotations after colons and in generics
+  // Pattern 1: `: TypeName` - type annotations
+  // Pattern 2: `<TypeName>` - generic type parameters
+  // Pattern 3: `TypeName[]` - array types
+  // Pattern 4: `TypeName |` or `| TypeName` - union types
+  // Pattern 5: `TypeName &` or `& TypeName` - intersection types
+  const patterns = [
+    /:\s*([A-Z][a-zA-Z0-9]*)\b/g,           // : TypeName
+    /<([A-Z][a-zA-Z0-9]*)\b/g,              // <TypeName
+    /([A-Z][a-zA-Z0-9]*)\[\]/g,             // TypeName[]
+    /\|\s*([A-Z][a-zA-Z0-9]*)\b/g,          // | TypeName
+    /([A-Z][a-zA-Z0-9]*)\s*\|/g,            // TypeName |
+    /&\s*([A-Z][a-zA-Z0-9]*)\b/g,           // & TypeName
+    /([A-Z][a-zA-Z0-9]*)\s*&/g,             // TypeName &
+  ];
 
-    // Add if it's not an excluded utility type
-    if (typeName && !excludedTypes.has(typeName)) {
-      typeNames.add(typeName);
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(codeWithoutComments)) !== null) {
+      const typeName = match[1];
+      if (typeName && !excludedTypes.has(typeName)) {
+        typeNames.add(typeName);
+      }
     }
   }
 }

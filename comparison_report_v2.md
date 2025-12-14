@@ -1,0 +1,129 @@
+# Wildberries SDK vs API Comparison Report
+
+## Summary
+- Total API Endpoints: 234
+- Total SDK Endpoints: 194
+- Matched: 159
+- Missing in SDK: 75
+- Extra in SDK: 40
+
+## Missing Endpoints (In API but not in SDK)
+- [GET] `/ping` (Проверка подключения) - Source: 01-general.yaml
+- [GET] `/api/communications/v2/news` (Получение новостей портала продавцов) - Source: 01-general.yaml
+- [GET] `/api/v1/seller-info` (Получение информации о продавце) - Source: 01-general.yaml
+- [POST] `/content/v3/media/file` (Загрузить медиафайл) - Source: 02-products.yaml
+- [POST] `/api/v2/upload/task` (Установить цены и скидки) - Source: 02-products.yaml
+- [POST] `/api/v2/upload/task/size` (Установить цены для размеров) - Source: 02-products.yaml
+- [POST] `/api/v2/upload/task/club-discount` (Установить скидки WB Клуба) - Source: 02-products.yaml
+- [GET] `/api/v2/history/tasks` (Состояние обработанной загрузки) - Source: 02-products.yaml
+- [GET] `/api/v2/history/goods/task` (Детализация обработанной загрузки) - Source: 02-products.yaml
+- [GET] `/api/v2/buffer/tasks` (Состояние необработанной загрузки) - Source: 02-products.yaml
+- [GET] `/api/v2/buffer/goods/task` (Детализация необработанной загрузки) - Source: 02-products.yaml
+- [GET] `/api/v2/list/goods/filter` (Получить товары с ценами) - Source: 02-products.yaml
+- [POST] `/api/v2/list/goods/filter` (Получить товары с ценами по артикулам) - Source: 02-products.yaml
+- [GET] `/api/v2/list/goods/size/nm` (Получить размеры товара с ценами) - Source: 02-products.yaml
+- [GET] `/api/v2/quarantine/goods` (Получить товары в карантине) - Source: 02-products.yaml
+- [POST] `/api/v3/stocks/{warehouseId}` (Получить остатки товаров) - Source: 02-products.yaml
+- [GET] `/api/v3/dbw/warehouses/{warehouseId}/contacts` (Список контактов) - Source: 02-products.yaml
+- [PUT] `/api/v3/dbw/warehouses/{warehouseId}/contacts` (Обновить список контактов) - Source: 02-products.yaml
+- [GET] `/api/v3/passes/offices` (Получить список складов, для которых требуется пропуск) - Source: 03-orders-fbs.yaml
+- [GET] `/api/v3/passes` (Получить список пропусков) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/passes` (Создать пропуск) - Source: 03-orders-fbs.yaml
+- [PUT] `/api/v3/passes/{passId}` (Обновить пропуск) - Source: 03-orders-fbs.yaml
+- [DELETE] `/api/v3/passes/{passId}` (Удалить пропуск) - Source: 03-orders-fbs.yaml
+- [GET] `/api/v3/orders` (Получить информацию о сборочных заданиях) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/orders/status` (Получить статусы сборочных заданий) - Source: 03-orders-fbs.yaml
+- [GET] `/api/v3/supplies/orders/reshipment` (Получить все сборочные задания для повторной отгрузки) - Source: 03-orders-fbs.yaml
+- [GET] `/api/v3/orders/{orderId}/meta` (Получить метаданные сборочного задания) - Source: 03-orders-fbs.yaml
+- [PUT] `/api/v3/orders/{orderId}/meta/sgtin` (Закрепить за сборочным заданием код маркировки товара) - Source: 03-orders-fbs.yaml
+- [PUT] `/api/v3/orders/{orderId}/meta/uin` (Закрепить за сборочным заданием УИН) - Source: 03-orders-fbs.yaml
+- [PUT] `/api/v3/orders/{orderId}/meta/imei` (Закрепить за сборочным заданием IMEI) - Source: 03-orders-fbs.yaml
+- [PUT] `/api/v3/orders/{orderId}/meta/gtin` (Закрепить за сборочным заданием GTIN) - Source: 03-orders-fbs.yaml
+- [PUT] `/api/v3/orders/{orderId}/meta/expiration` (Закрепить за сборочным заданием срок годности товара) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/orders/stickers/cross-border` (Получить стикеры сборочных заданий кроссбордера) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/files/orders/external-stickers` (Получить список ссылок на стикеры сборочных заданий, которые требуются при кроссбордере) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/orders/status/history` (История статусов для сборочных заданий кроссбордера) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/orders/client` (Заказы с информацией по клиенту) - Source: 03-orders-fbs.yaml
+- [POST] `/api/v3/supplies/{supplyId}/trbx/stickers` (Получить стикеры коробов поставки) - Source: 03-orders-fbs.yaml
+- [GET] `/api/v3/click-collect/orders/new` (Получить список новых сборочных заданий) - Source: 06-in-store-pickup.yaml
+- [PATCH] `/api/v3/click-collect/orders/{orderId}/confirm` (Перевести на сборку) - Source: 06-in-store-pickup.yaml
+- [PATCH] `/api/v3/click-collect/orders/{orderId}/prepare` (Сообщить, что сборочное задание готово к выдаче) - Source: 06-in-store-pickup.yaml
+- [POST] `/api/v3/click-collect/orders/client` (Информация о покупателе) - Source: 06-in-store-pickup.yaml
+- [POST] `/api/v3/click-collect/orders/client/identity` (Проверить, что заказ принадлежит покупателю) - Source: 06-in-store-pickup.yaml
+- [PATCH] `/api/v3/click-collect/orders/{orderId}/receive` (Сообщить, что заказ принят покупателем) - Source: 06-in-store-pickup.yaml
+- [PATCH] `/api/v3/click-collect/orders/{orderId}/reject` (Сообщить, что покупатель отказался от заказа) - Source: 06-in-store-pickup.yaml
+- [POST] `/api/v3/click-collect/orders/status` (Получить статусы сборочных заданий) - Source: 06-in-store-pickup.yaml
+- [GET] `/api/v3/click-collect/orders` (Получить информацию о завершённых сборочных заданиях) - Source: 06-in-store-pickup.yaml
+- [PATCH] `/api/v3/click-collect/orders/{orderId}/cancel` (Отменить сборочное задание) - Source: 06-in-store-pickup.yaml
+- [GET] `/api/v3/click-collect/orders/{orderId}/meta` (Получить метаданные сборочного задания) - Source: 06-in-store-pickup.yaml
+- [DELETE] `/api/v3/click-collect/orders/{orderId}/meta` (Удалить метаданные сборочного задания) - Source: 06-in-store-pickup.yaml
+- [PUT] `/api/v3/click-collect/orders/{orderId}/meta/sgtin` (Закрепить за сборочным заданием код маркировки товара) - Source: 06-in-store-pickup.yaml
+- [PUT] `/api/v3/click-collect/orders/{orderId}/meta/uin` (Закрепить за сборочным заданием УИН (уникальный идентификационный номер)) - Source: 06-in-store-pickup.yaml
+- [PUT] `/api/v3/click-collect/orders/{orderId}/meta/imei` (Закрепить за сборочным заданием IMEI) - Source: 06-in-store-pickup.yaml
+- [PUT] `/api/v3/click-collect/orders/{orderId}/meta/gtin` (Закрепить за сборочным заданием GTIN) - Source: 06-in-store-pickup.yaml
+- [GET] `/api/v1/acceptance/coefficients` (Коэффициенты приёмки) - Source: 07-orders-fbw.yaml
+- [POST] `/api/v1/acceptance/options` (Опции приёмки) - Source: 07-orders-fbw.yaml
+- [GET] `/api/v1/warehouses` (Список складов) - Source: 07-orders-fbw.yaml
+- [GET] `/api/v1/transit-tariffs` (Транзитные направления) - Source: 07-orders-fbw.yaml
+- [POST] `/api/v1/supplies` (Список поставок) - Source: 07-orders-fbw.yaml
+- [GET] `/api/v1/supplies/{ID}` (Детали поставки) - Source: 07-orders-fbw.yaml
+- [GET] `/api/v1/supplies/{ID}/goods` (Товары поставки) - Source: 07-orders-fbw.yaml
+- [GET] `/api/v1/supplies/{ID}/package` (Упаковка поставки) - Source: 07-orders-fbw.yaml
+- [POST] `/adv/v1/promotion/adverts` (Информация о кампаниях) - Source: 08-promotion.yaml
+- [GET] `/adv/v0/auction/adverts` (Информация о кампаниях с ручной ставкой) - Source: 08-promotion.yaml
+- [GET] `/api/v1/new-feedbacks-questions` (Непросмотренные отзывы и вопросы) - Source: 09-communications.yaml
+- [GET] `/api/v1/questions/count` (Количество вопросов) - Source: 09-communications.yaml
+- [GET] `/api/v1/question` (Получить вопрос по ID) - Source: 09-communications.yaml
+- [GET] `/api/v1/feedbacks/count` (Количество отзывов) - Source: 09-communications.yaml
+- [GET] `/api/v1/supplier-valuations` (Получить списки причин жалоб на отзыв и проблем с товаром) - Source: 09-communications.yaml
+- [POST] `/api/v1/feedbacks/actions` (Пожаловаться на отзыв, сообщить о проблеме с товаром) - Source: 09-communications.yaml
+- [POST] `/api/v1/feedbacks/answer` (Ответить на отзыв) - Source: 09-communications.yaml
+- [PATCH] `/api/v1/feedbacks/answer` (Отредактировать ответ на отзыв) - Source: 09-communications.yaml
+- [POST] `/api/v1/feedbacks/order/return` (Возврат товара по ID отзыва) - Source: 09-communications.yaml
+- [GET] `/api/v1/feedback` (Получить отзыв по ID) - Source: 09-communications.yaml
+- [GET] `/api/v1/seller/chats` (Список чатов) - Source: 09-communications.yaml
+- [GET] `/api/v1/seller/events` (События чатов) - Source: 09-communications.yaml
+
+## Extra Endpoints (In SDK but not in API)
+- [GET] `/api/v1/feedbacks/products/rating` - Module: communications
+- [GET] `/api/v1/feedbacks/products/rating/top` - Module: communications
+- [GET] `/api/v1/feedbacks/order/return` - Module: communications
+- [PATCH] `/api/v1/feedbacks` - Module: communications
+- [PATCH] `/api/v1/feedbacks/send` - Module: communications
+- [PATCH] `/api/v1/questions/answer` - Module: communications
+- [GET] `/api/v1/chat/messages` - Module: communications
+- [GET] `/api/v1/info` - Module: general
+- [GET] `/api/v1/news` - Module: general
+- [GET] `/api/v1/dbs/orders/new` - Module: in-store-pickup
+- [GET] `/api/v1/dbs/orders/{orderId}` - Module: in-store-pickup
+- [GET] `/api/v1/dbs/orders/status` - Module: in-store-pickup
+- [PATCH] `/api/v1/dbs/orders/{orderId}/status` - Module: in-store-pickup
+- [PATCH] `/api/v1/dbs/orders/{orderId}/meta` - Module: in-store-pickup
+- [DELETE] `/api/v1/dbs/orders/{orderId}/meta` - Module: in-store-pickup
+- [GET] `/api/v3/orders/{orderId}` - Module: orders-fbs
+- [GET] `/api/v3/orders/status` - Module: orders-fbs
+- [PATCH] `/api/v3/orders/{orderId}/meta` - Module: orders-fbs
+- [GET] `/api/v3/supplies/{supplyId}/trbx/stickers` - Module: orders-fbs
+- [POST] `/api/v3/supplies/{supplyId}/trbx/{trbxId}/orders` - Module: orders-fbs
+- [DELETE] `/api/v3/supplies/{supplyId}/trbx/{trbxId}/orders/{orderId}` - Module: orders-fbs
+- [GET] `/api/v3/stocks/{warehouseId}` - Module: orders-fbs
+- [GET] `/api/v1/analytics/item-report` - Module: orders-fbw
+- [POST] `/content/v3/media/file/alink` - Module: products
+- [GET] `/content/v2/object/characteristics/list/filter` - Module: products
+- [DELETE] `/content/v2/tag/nomenclature/link` - Module: products
+- [GET] `/adv/v0/params/subject` - Module: promotion
+- [GET] `/adv/v0/params/menu` - Module: promotion
+- [GET] `/adv/v0/params/set` - Module: promotion
+- [GET] `/adv/v1/stat/intervals` - Module: promotion
+- [GET] `/adv/v0/allcpm/inputs` - Module: promotion
+- [GET] `/adv/v0/cpm` - Module: promotion
+- [POST] `/adv/v0/cpm` - Module: promotion
+- [GET] `/adv/v1/auto/stat` - Module: promotion
+- [POST] `/adv/v1/auto/updatewords` - Module: promotion
+- [GET] `/adv/v1/auto/active` - Module: promotion
+- [GET] `/adv/v1/search/stat` - Module: promotion
+- [GET] `/adv/v1/searche/stat` - Module: promotion
+- [GET] `/api/v1/{endpoint}/tasks/{taskId}/status` - Module: reports
+- [GET] `/api/v1/{endpoint}/tasks/{taskId}/download` - Module: reports
+
+

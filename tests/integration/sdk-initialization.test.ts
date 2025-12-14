@@ -175,7 +175,9 @@ describe('End-to-End API Flow', () => {
       expect(response.data).toBeDefined();
       expect(Array.isArray(response.data)).toBe(true);
       expect(response.data).toHaveLength(1);
-      expect(response.data[0].header).toBe('Test News');
+      if (response.data && response.data.length > 0) {
+        expect(response.data[0].header).toBe('Test News');
+      }
     });
 
     it('should pass query parameters correctly', async () => {
