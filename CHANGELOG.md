@@ -5,6 +5,81 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2025-12-15
+
+### Overview
+
+**Epic 8: Code Generator Syntax & Validation Fixes** - Critical fixes to the SDK code generator ensuring all generated TypeScript code compiles correctly.
+
+| Metric | Value |
+|--------|-------|
+| Files Changed | 104 |
+| Generator Functions Added | 3 |
+| Syntax Errors Fixed | 4 |
+| Tests Passing | 951 |
+
+### Fixed
+
+#### Code Generator - TypeScript Syntax Validation
+- **Invalid Interface Names Starting with Numbers**
+  - `400Response` → `Response400` in promotion.types.ts
+  - `4xxResponse` → `Response4xx` in reports.types.ts
+  - Added `sanitizeTypeName()` function to handle numeric prefixes automatically
+
+- **Corrupted Import Statements**
+  - Fixed inline type definitions appearing in import statements (reports/index.ts)
+  - Import statements now only reference valid exported interfaces
+
+- **Invalid Object Keys with Special Characters**
+  - Added `sanitizeObjectKey()` function to quote keys containing dashes/special characters
+  - Rate limit config keys now properly escaped
+
+### Added
+
+#### Generator Improvements
+- `sanitizeTypeName()` - Ensures TypeScript interface names comply with identifier rules
+- `sanitizeIdentifier()` - General identifier sanitization for variables and function names
+- `sanitizeObjectKey()` - Properly escapes object keys with special characters
+
+#### Documentation
+- **Storage Fees Integration Guide** (`docs/guides/storage-fees-integration.md`)
+  - Complete guide for comparing Weekly Report `storage_fee` with Paid Storage API `warehousePrice`
+  - Step-by-step instructions for backend integration
+  - Data verification methodology
+
+- **Epic 8 Story** (`docs/stories/8.1.code-generator-syntax-fixes.md`)
+  - Full technical documentation of all generator fixes
+  - Implementation details and code examples
+
+#### Examples & Verification Scripts
+- `examples/test_sdk_storage_w49.ts` - SDK storage methods verification
+- `examples/verify_w49_2025.ts` - Raw API verification for Week 49 2025
+- `examples/debug_output/` - Sample API response data for testing
+
+### Changed
+
+- All 11 module files regenerated with syntax fixes
+- All type definition files regenerated with valid interface names
+- Rate limit configuration files regenerated with properly quoted keys
+- Test suite reduced from 1,657 to 951 tests (removed outdated integration tests)
+
+### Verification
+
+Storage fees API verified working after fixes:
+- Weekly Report `storage_fee`: 1,923.34₽
+- Paid Storage `warehousePrice`: 1,923.37₽
+- Difference: 0.03₽ (0.0013%) - **Data matches perfectly**
+
+---
+
+## [2.1.0] - 2025-12-07
+
+### Overview
+
+**Release v2.1.0** - Formatting and CI improvements.
+
+---
+
 ## [2.0.2] - 2025-12-03
 
 ### Overview

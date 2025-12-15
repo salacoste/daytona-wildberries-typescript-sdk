@@ -130,7 +130,8 @@ export default defineConfig({
               { text: 'Security Guide', link: '/guides/security' },
               { text: 'Configuration Guide', link: '/guides/configuration' },
               { text: 'Troubleshooting', link: '/guides/troubleshooting' },
-              { text: 'Testing Guide', link: '/guides/testing' }
+              { text: 'Testing Guide', link: '/guides/testing' },
+              { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' }
             ]
           },
           {
@@ -278,7 +279,8 @@ export default defineConfig({
               { text: 'Руководство по безопасности', link: '/ru/guides/security' },
               { text: 'Руководство по настройке', link: '/ru/guides/configuration' },
               { text: 'Устранение неполадок', link: '/ru/guides/troubleshooting' },
-              { text: 'Руководство по тестированию', link: '/ru/guides/testing' }
+              { text: 'Руководство по тестированию', link: '/ru/guides/testing' },
+              { text: 'Интеграция платного хранения', link: '/guides/storage-fees-integration' }
             ]
           },
           {

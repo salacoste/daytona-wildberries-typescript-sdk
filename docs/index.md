@@ -71,7 +71,7 @@ console.log(categories);
     <div class="stat-label">Test Coverage</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">1,200+</div>
+    <div class="stat-number">950+</div>
     <div class="stat-label">Tests</div>
   </div>
   <div class="stat-card">
@@ -132,7 +132,7 @@ console.log(categories);
 
 ### 🎯 Production Ready
 
-Battle-tested with 98% test coverage and 1,200+ tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
+Battle-tested with 98% test coverage and 950+ tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
 
 ### ⚡ Time Savings
 
