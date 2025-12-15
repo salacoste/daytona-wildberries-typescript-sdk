@@ -16,11 +16,8 @@ const client = axios.create({
     validateStatus: () => true // Allow all status codes for inspection
 });
 
-describe('Wildberries API Integration Tests', () => {
-    if (!apiKey) {
-        console.warn('Skipping integration tests: WB_API_KEY not found');
-        return;
-    }
+// Use describe.skipIf to avoid empty test suite error in CI
+describe.skipIf(!apiKey)('Wildberries API Integration Tests', () => {
 
     describe('Products Module', () => {
         it('should access /content/v2/tags (SDK version)', async () => {
