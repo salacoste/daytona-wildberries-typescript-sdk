@@ -295,12 +295,12 @@ export default defineConfig({
                 text: 'Использование SDK',
                 collapsed: false,
                 items: [
-                  { text: 'Отчёт о реализации', link: '/guides/realization-report' },
-                  { text: 'Модуль отчётов', link: '/guides/reports-module' },
-                  { text: 'Комиссии и тарифы', link: '/guides/commissions-fees' },
-                  { text: 'Управление остатками', link: '/guides/stock-management' },
-                  { text: 'Возвраты и отмены', link: '/guides/returns-handling' },
-                  { text: 'Платное хранение', link: '/guides/storage-fees-integration' }
+                  { text: 'Отчёт о реализации', link: '/ru/guides/realization-report' },
+                  { text: 'Модуль отчётов', link: '/ru/guides/reports-module' },
+                  { text: 'Комиссии и тарифы', link: '/ru/guides/commissions-fees' },
+                  { text: 'Управление остатками', link: '/ru/guides/stock-management' },
+                  { text: 'Возвраты и отмены', link: '/ru/guides/returns-handling' },
+                  { text: 'Платное хранение', link: '/ru/guides/storage-fees-integration' }
                 ]
               }
             ]
