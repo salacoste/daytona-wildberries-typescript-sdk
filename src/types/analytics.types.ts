@@ -241,7 +241,9 @@ export interface TableGroupItem {
   items: TableProductItem[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TableProductItem {
+  // API returns empty object, interface reserved for future expansion
 }
 
 /**
@@ -335,7 +337,9 @@ export interface ProductSearchTextsResponse {
   items: TableSearchTextItem[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TableSearchTextItem {
+  // API returns empty object, interface reserved for future expansion
 }
 
 export interface ProductOrdersRequest {
@@ -405,6 +409,7 @@ export interface OrderByGrTe {
   mode: 'asc' | 'desc';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
 export type TextLimit = StandardTariff | AdvancedTariff;
 
 /**
