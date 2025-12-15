@@ -66,9 +66,11 @@ export default defineConfig({
         'src/types/**',
         'src/client/index.ts', // Re-export only
         'src/modules/index.ts', // Re-export only
+        'src/modules/1_0_0/**', // Auto-generated legacy module, excluded from coverage
         'src/errors/index.ts', // Re-export only
         'src/config/index.ts', // Re-export only
         'src/config/sdk-config.ts', // Type-only configuration file
+        'src/config/*-rate-limits.ts', // Auto-generated rate limits config files
       ],
     },
 
