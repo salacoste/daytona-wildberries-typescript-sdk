@@ -131,7 +131,18 @@ export default defineConfig({
               { text: 'Configuration Guide', link: '/guides/configuration' },
               { text: 'Troubleshooting', link: '/guides/troubleshooting' },
               { text: 'Testing Guide', link: '/guides/testing' },
-              { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' }
+              {
+                text: 'SDK Usage',
+                collapsed: false,
+                items: [
+                  { text: 'Realization Report', link: '/guides/realization-report' },
+                  { text: 'Reports Module', link: '/guides/reports-module' },
+                  { text: 'Commissions & Fees', link: '/guides/commissions-fees' },
+                  { text: 'Stock Management', link: '/guides/stock-management' },
+                  { text: 'Returns Handling', link: '/guides/returns-handling' },
+                  { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' }
+                ]
+              }
             ]
           },
           {
@@ -280,7 +291,18 @@ export default defineConfig({
               { text: 'Руководство по настройке', link: '/ru/guides/configuration' },
               { text: 'Устранение неполадок', link: '/ru/guides/troubleshooting' },
               { text: 'Руководство по тестированию', link: '/ru/guides/testing' },
-              { text: 'Интеграция платного хранения', link: '/guides/storage-fees-integration' }
+              {
+                text: 'Использование SDK',
+                collapsed: false,
+                items: [
+                  { text: 'Отчёт о реализации', link: '/guides/realization-report' },
+                  { text: 'Модуль отчётов', link: '/guides/reports-module' },
+                  { text: 'Комиссии и тарифы', link: '/guides/commissions-fees' },
+                  { text: 'Управление остатками', link: '/guides/stock-management' },
+                  { text: 'Возвраты и отмены', link: '/guides/returns-handling' },
+                  { text: 'Платное хранение', link: '/guides/storage-fees-integration' }
+                ]
+              }
             ]
           },
           {
