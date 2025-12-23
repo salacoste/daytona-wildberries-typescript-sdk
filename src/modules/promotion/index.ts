@@ -696,19 +696,36 @@ export class PromotionModule {
   /**
    * Статистика по ключевым фразам
    *
-   * Метод формирует статистику по ключевым фразам из поисковой строки: количество просмотров товара и затраты по одной ключевой фразе. Подходит для кампаний c единой и ручной ставкой. <br><br> Статистика формируется за каждый день, когда кампания была активна. В одном запросе можно получить данные максимум за 7 дней. <br> Данные обновляются каждый час. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
+   * Метод формирует статистику по ключевым фразам из поисковой строки: количество просмотров товара и затраты по одной ключевой фразе.
+   * Подходит для кампаний c единой и ручной ставкой (type 9).
    *
-   * @param [options] - Query parameters
-   * @returns Успешно
+   * Статистика формируется за каждый день, когда кампания была активна.
+   * В одном запросе можно получить данные максимум за 7 дней.
+   * Данные обновляются каждый час.
+   *
+   * Rate limit: 4 requests per second (250ms interval)
+   *
+   * @param options - Query parameters (all required)
+   * @param options.advert_id - ID кампании
+   * @param options.from - Начало периода (формат: YYYY-MM-DD)
+   * @param options.to - Конец периода (формат: YYYY-MM-DD, макс. 7 дней от from)
+   * @returns Статистика по ключевым фразам с разбивкой по дням
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {ValidationError} When request data is invalid (400) - e.g., date range > 7 days
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getStatsKeywords({});
-  console.log(result);
+   * const stats = await sdk.promotion.getStatsKeywords({
+   *   advert_id: 27111737,
+   *   from: '2024-12-16',
+   *   to: '2024-12-23'
+   * });
+   * stats.keywords?.forEach(day => {
+   *   console.log(`${day.date}:`);
+   *   day.stats?.forEach(s => console.log(`  ${s.keyword}: ${s.views} views, ${s.clicks} clicks`));
+   * });
    */
-  async getStatsKeywords(options?: { advert_id: number; from: string; to: string }): Promise<V0KeywordsStatisticsResponse> {
+  async getStatsKeywords(options: { advert_id: number; from: string; to: string }): Promise<V0KeywordsStatisticsResponse> {
     return this.client.get<V0KeywordsStatisticsResponse>('https://advert-api.wildberries.ru/adv/v0/stats/keywords', { params: options });
   }
 
