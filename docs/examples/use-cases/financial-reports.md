@@ -198,6 +198,100 @@ console.log(`Total Orders: ${revenue.totalOrders}`);
 console.log(`AOV: ${revenue.averageOrderValue.toLocaleString()} RUB`);
 ```
 
+## Realization Report & Fulfillment Analysis
+
+The `getReportDetailByPeriod()` method provides detailed sales realization data including the `delivery_method` field for fulfillment analysis.
+
+```typescript
+interface FulfillmentAnalysis {
+  period: { from: string; to: string };
+  byMethod: {
+    FBS: { count: number; revenue: number; percentage: number };
+    FBW: { count: number; revenue: number; percentage: number };
+    DBS: { count: number; revenue: number; percentage: number };
+  };
+  totalOrders: number;
+  totalRevenue: number;
+}
+
+async function analyzeFulfillmentMethods(days = 30): Promise<FulfillmentAnalysis> {
+  const dateFrom = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
+    .toISOString().split('T')[0];
+  const dateTo = new Date().toISOString().split('T')[0];
+
+  const report = await sdk.finances.getReportDetailByPeriod({
+    dateFrom,
+    dateTo
+  });
+
+  const stats = {
+    FBS: { count: 0, revenue: 0 },
+    FBW: { count: 0, revenue: 0 },
+    DBS: { count: 0, revenue: 0 }
+  };
+
+  let totalOrders = 0;
+  let totalRevenue = 0;
+
+  report.forEach(item => {
+    const method = item.delivery_method as 'FBS' | 'FBW' | 'DBS';
+    const revenue = item.ppvz_for_pay || 0;
+
+    if (method && stats[method]) {
+      stats[method].count++;
+      stats[method].revenue += revenue;
+    }
+
+    totalOrders++;
+    totalRevenue += revenue;
+  });
+
+  return {
+    period: { from: dateFrom, to: dateTo },
+    byMethod: {
+      FBS: {
+        ...stats.FBS,
+        percentage: totalOrders > 0 ? (stats.FBS.count / totalOrders) * 100 : 0
+      },
+      FBW: {
+        ...stats.FBW,
+        percentage: totalOrders > 0 ? (stats.FBW.count / totalOrders) * 100 : 0
+      },
+      DBS: {
+        ...stats.DBS,
+        percentage: totalOrders > 0 ? (stats.DBS.count / totalOrders) * 100 : 0
+      }
+    },
+    totalOrders,
+    totalRevenue
+  };
+}
+
+// Usage
+const analysis = await analyzeFulfillmentMethods(30);
+
+console.log('=== Fulfillment Method Analysis ===');
+console.log(`Period: ${analysis.period.from} to ${analysis.period.to}`);
+console.log('');
+console.log('By Delivery Method:');
+Object.entries(analysis.byMethod).forEach(([method, data]) => {
+  console.log(`  ${method}:`);
+  console.log(`    Orders: ${data.count} (${data.percentage.toFixed(1)}%)`);
+  console.log(`    Revenue: ${data.revenue.toLocaleString()}₽`);
+});
+console.log('');
+console.log(`Total Orders: ${analysis.totalOrders}`);
+console.log(`Total Revenue: ${analysis.totalRevenue.toLocaleString()}₽`);
+```
+
+### Delivery Method Values
+
+| Value | Description (EN) | Description (RU) |
+|-------|------------------|------------------|
+| `FBS` | Fulfillment by Seller | Продажа со склада продавца |
+| `FBW` | Fulfillment by Wildberries | Продажа со склада Wildberries |
+| `DBS` | Delivery by Seller | Доставка силами продавца |
+
 ## Payout Tracking
 
 ```typescript
