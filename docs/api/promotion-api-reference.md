@@ -18,6 +18,72 @@ sdk.promotion.methodName(params);
 
 ---
 
+## ⚠️ Critical: Campaign Types & Methods
+
+Wildberries API uses **different endpoints** for different campaign types. This is a Wildberries API limitation, not an SDK issue.
+
+### Campaign Types
+
+| Type | Description | Status | Method for Details |
+|------|-------------|--------|-------------------|
+| `4` | In catalog | **Deprecated** | `createPromotionAdvert()` |
+| `5` | In product card | **Deprecated** | `createPromotionAdvert()` |
+| `6` | In search | **Deprecated** | `createPromotionAdvert()` |
+| `7` | In recommendations | **Deprecated** | `createPromotionAdvert()` |
+| `8` | Unified bid | **Deprecated** | `createPromotionAdvert()` |
+| `9` | Unified or manual bid | **Current** | `getAuctionAdverts()` |
+
+### Methods by Campaign Type
+
+| Method | API Endpoint | Campaign Types | Purpose |
+|--------|--------------|----------------|---------|
+| `getPromotionCount()` | `GET /adv/v1/promotion/count` | **ALL** (4-9) | List all campaigns with IDs |
+| `getAuctionAdverts()` | `GET /adv/v0/auction/adverts` | **Type 9 only** | Get details for modern campaigns |
+| `createPromotionAdvert()` | `POST /adv/v1/promotion/adverts` | **Types 4-8 only** | Get details for legacy campaigns |
+
+::: warning Method Naming Confusion
+`createPromotionAdvert()` does NOT create campaigns - it **retrieves** information about legacy campaigns (types 4-8). The method name comes from the Swagger/OpenAPI specification.
+:::
+
+### Example: Get All Campaign Details
+
+```typescript
+async function getAllCampaignDetails(sdk: WildberriesSDK) {
+  // Step 1: Get list of ALL campaigns
+  const allCampaigns = await sdk.promotion.getPromotionCount();
+
+  // Step 2: Separate by type
+  const type9Ids: number[] = [];
+  const legacyIds: number[] = [];
+
+  allCampaigns.adverts?.forEach(group => {
+    group.advert_list?.forEach(advert => {
+      if (group.type === 9) {
+        type9Ids.push(advert.advertId!);
+      } else if (group.type && group.type >= 4 && group.type <= 8) {
+        legacyIds.push(advert.advertId!);
+      }
+    });
+  });
+
+  // Step 3: Get details for type 9 campaigns (modern)
+  if (type9Ids.length > 0) {
+    const type9Details = await sdk.promotion.getAuctionAdverts({
+      ids: type9Ids.slice(0, 50).join(',')
+    });
+  }
+
+  // Step 4: Get details for legacy campaigns (types 4-8)
+  if (legacyIds.length > 0) {
+    const legacyDetails = await sdk.promotion.createPromotionAdvert(
+      legacyIds.slice(0, 50)
+    );
+  }
+}
+```
+
+---
+
 ## Table of Contents
 
 1. [Campaign Listing](#campaign-listing)

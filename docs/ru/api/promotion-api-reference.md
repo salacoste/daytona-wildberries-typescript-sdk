@@ -18,6 +18,72 @@ sdk.promotion.methodName(params);
 
 ---
 
+## ⚠️ Критично: Типы кампаний и методы
+
+Wildberries API использует **разные эндпоинты** для разных типов кампаний. Это ограничение API Wildberries, а не SDK.
+
+### Типы кампаний
+
+| Тип | Описание | Статус | Метод для деталей |
+|-----|----------|--------|-------------------|
+| `4` | В каталоге | **Устарел** | `createPromotionAdvert()` |
+| `5` | В карточке товара | **Устарел** | `createPromotionAdvert()` |
+| `6` | В поиске | **Устарел** | `createPromotionAdvert()` |
+| `7` | В рекомендациях | **Устарел** | `createPromotionAdvert()` |
+| `8` | Единая ставка | **Устарел** | `createPromotionAdvert()` |
+| `9` | Единая или ручная ставка | **Текущий** | `getAuctionAdverts()` |
+
+### Методы по типам кампаний
+
+| Метод | API Эндпоинт | Типы кампаний | Назначение |
+|-------|--------------|---------------|------------|
+| `getPromotionCount()` | `GET /adv/v1/promotion/count` | **ВСЕ** (4-9) | Список всех кампаний с ID |
+| `getAuctionAdverts()` | `GET /adv/v0/auction/adverts` | **Только тип 9** | Детали современных кампаний |
+| `createPromotionAdvert()` | `POST /adv/v1/promotion/adverts` | **Только типы 4-8** | Детали устаревших кампаний |
+
+::: warning Путаница с названием метода
+`createPromotionAdvert()` НЕ создаёт кампании - он **получает** информацию об устаревших кампаниях (типы 4-8). Название метода взято из Swagger/OpenAPI спецификации.
+:::
+
+### Пример: Получение деталей всех кампаний
+
+```typescript
+async function getAllCampaignDetails(sdk: WildberriesSDK) {
+  // Шаг 1: Получить список ВСЕХ кампаний
+  const allCampaigns = await sdk.promotion.getPromotionCount();
+
+  // Шаг 2: Разделить по типам
+  const type9Ids: number[] = [];
+  const legacyIds: number[] = [];
+
+  allCampaigns.adverts?.forEach(group => {
+    group.advert_list?.forEach(advert => {
+      if (group.type === 9) {
+        type9Ids.push(advert.advertId!);
+      } else if (group.type && group.type >= 4 && group.type <= 8) {
+        legacyIds.push(advert.advertId!);
+      }
+    });
+  });
+
+  // Шаг 3: Детали кампаний типа 9 (современные)
+  if (type9Ids.length > 0) {
+    const type9Details = await sdk.promotion.getAuctionAdverts({
+      ids: type9Ids.slice(0, 50).join(',')
+    });
+  }
+
+  // Шаг 4: Детали устаревших кампаний (типы 4-8)
+  if (legacyIds.length > 0) {
+    const legacyDetails = await sdk.promotion.createPromotionAdvert(
+      legacyIds.slice(0, 50)
+    );
+  }
+}
+```
+
+---
+
 ## Содержание
 
 1. [Список кампаний](#список-кампаний)

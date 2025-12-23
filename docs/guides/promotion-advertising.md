@@ -45,10 +45,22 @@ console.log(`Total campaigns: ${campaigns.all}`);
 
 ### Campaign Types
 
-| Type | Description |
-|------|-------------|
-| `8` | Unified bid campaign (deprecated) |
-| `9` | Unified or manual bid campaign (current) |
+| Type | Description | Status |
+|------|-------------|--------|
+| `4` | In catalog | **Deprecated** |
+| `5` | In product card | **Deprecated** |
+| `6` | In search | **Deprecated** |
+| `7` | In recommendations | **Deprecated** |
+| `8` | Unified bid | **Deprecated** |
+| `9` | Unified or manual bid | **Current** |
+
+::: warning Important: Different Methods for Different Types
+Wildberries API uses **different endpoints** for different campaign types:
+- **`getAuctionAdverts()`** - for type 9 campaigns ONLY
+- **`createPromotionAdvert()`** - for types 4-8 (legacy) campaigns ONLY
+
+There is NO universal method to get details for all campaign types in one call.
+:::
 
 ### Bid Types
 
@@ -83,6 +95,8 @@ console.log(`Campaign created: ID ${campaign}`);
 
 ### Get Campaign Information
 
+#### List All Campaigns
+
 ```typescript
 // Get all campaigns grouped by type and status
 const overview = await sdk.promotion.getPromotionCount();
@@ -95,12 +109,91 @@ overview.adverts?.forEach(group => {
     console.log(`  Campaign ID: ${ad.advertId}`);
   });
 });
+```
 
+#### Get Details for Type 9 Campaigns (Modern)
+
+```typescript
 // Get auction campaigns (type 9)
 const auctionCampaigns = await sdk.promotion.getAuctionAdverts({});
 auctionCampaigns.adverts?.forEach(campaign => {
   console.log(`Campaign ${campaign.id}: status=${campaign.status}, bid_type=${campaign.bid_type}`);
 });
+
+// Filter by status or payment type
+const activeCampaigns = await sdk.promotion.getAuctionAdverts({
+  statuses: '9',        // Active only
+  payment_type: 'cpm'   // CPM campaigns
+});
+
+// Get specific campaigns by IDs
+const specificCampaigns = await sdk.promotion.getAuctionAdverts({
+  ids: '12345,67890'    // Max 50 IDs
+});
+```
+
+#### Get Details for Legacy Campaigns (Types 4-8)
+
+::: warning Method Name Confusion
+`createPromotionAdvert()` does NOT create campaigns - it RETRIEVES information about legacy campaigns.
+This naming is generated from the Swagger spec and can be confusing.
+:::
+
+```typescript
+// Get details for legacy campaigns (types 4-8)
+const legacyDetails = await sdk.promotion.createPromotionAdvert(
+  [12345, 67890],     // Array of campaign IDs (max 50)
+  {
+    status: 9,        // Filter by status (optional)
+    type: 8,          // Filter by type (optional)
+    order: 'change',  // Sort by: 'create', 'change', 'id'
+    direction: 'desc' // Sort direction: 'asc' or 'desc'
+  }
+);
+
+console.log('Legacy campaign details:', legacyDetails);
+```
+
+#### Complete Workflow: Get ALL Campaign Details
+
+```typescript
+async function getAllCampaignDetails(sdk: WildberriesSDK) {
+  // Step 1: Get list of ALL campaigns
+  const allCampaigns = await sdk.promotion.getPromotionCount();
+
+  // Step 2: Separate by type
+  const type9Ids: number[] = [];
+  const legacyIds: number[] = [];
+
+  allCampaigns.adverts?.forEach(group => {
+    group.advert_list?.forEach(advert => {
+      if (group.type === 9) {
+        type9Ids.push(advert.advertId!);
+      } else if (group.type && group.type >= 4 && group.type <= 8) {
+        legacyIds.push(advert.advertId!);
+      }
+    });
+  });
+
+  console.log(`Found ${type9Ids.length} type 9 campaigns (modern)`);
+  console.log(`Found ${legacyIds.length} legacy campaigns (types 4-8)`);
+
+  // Step 3: Get details for type 9 campaigns
+  if (type9Ids.length > 0) {
+    const type9Details = await sdk.promotion.getAuctionAdverts({
+      ids: type9Ids.slice(0, 50).join(',')  // Max 50 IDs per request
+    });
+    console.log('Type 9 campaign details:', type9Details);
+  }
+
+  // Step 4: Get details for legacy campaigns
+  if (legacyIds.length > 0) {
+    const legacyDetails = await sdk.promotion.createPromotionAdvert(
+      legacyIds.slice(0, 50)  // Max 50 IDs per request
+    );
+    console.log('Legacy campaign details:', legacyDetails);
+  }
+}
 ```
 
 ### Campaign Control Methods
@@ -523,13 +616,24 @@ try {
 
 ## Method Reference
 
+### Campaign Listing & Details
+
+::: tip Campaign Types Quick Reference
+- **Type 9** (current): Use `getAuctionAdverts()`
+- **Types 4-8** (legacy): Use `createPromotionAdvert()`
+:::
+
+| Method | API Endpoint | Campaign Types | Description |
+|--------|--------------|----------------|-------------|
+| `getPromotionCount()` | `GET /adv/v1/promotion/count` | **ALL** | List all campaigns with IDs |
+| `getAuctionAdverts()` | `GET /adv/v0/auction/adverts` | **9 only** | Get details for modern campaigns |
+| `createPromotionAdvert()` | `POST /adv/v1/promotion/adverts` | **4-8 only** | Get details for legacy campaigns |
+
 ### Campaign Management
 
 | Method | Description | Required Status |
 |--------|-------------|-----------------|
-| `getPromotionCount()` | Get campaigns overview | - |
-| `getAuctionAdverts()` | Get type 9 campaigns | - |
-| `createSeacatSaveAd()` | Create campaign | - |
+| `createSeacatSaveAd()` | Create campaign (type 9) | - |
 | `getAdvStart()` | Start campaign | 4 or 11 |
 | `getAdvPause()` | Pause campaign | 9 |
 | `getAdvStop()` | Stop/finish campaign | 4, 9, or 11 |

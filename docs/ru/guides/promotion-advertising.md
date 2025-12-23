@@ -45,10 +45,22 @@ console.log(`Всего кампаний: ${campaigns.all}`);
 
 ### Типы кампаний
 
-| Тип | Описание |
-|-----|----------|
-| `8` | Единая ставка (устарел) |
-| `9` | Единая или ручная ставка (текущий) |
+| Тип | Описание | Статус |
+|-----|----------|--------|
+| `4` | В каталоге | **Устарел** |
+| `5` | В карточке товара | **Устарел** |
+| `6` | В поиске | **Устарел** |
+| `7` | В рекомендациях | **Устарел** |
+| `8` | Единая ставка | **Устарел** |
+| `9` | Единая или ручная ставка | **Текущий** |
+
+::: warning Важно: Разные методы для разных типов
+Wildberries API использует **разные эндпоинты** для разных типов кампаний:
+- **`getAuctionAdverts()`** - ТОЛЬКО для кампаний типа 9
+- **`createPromotionAdvert()`** - ТОЛЬКО для кампаний типов 4-8 (устаревшие)
+
+Универсального метода для получения деталей всех типов кампаний в одном запросе НЕТ.
+:::
 
 ### Типы ставок
 
@@ -83,6 +95,8 @@ console.log(`Кампания создана: ID ${campaign}`);
 
 ### Получение информации о кампаниях
 
+#### Список всех кампаний
+
 ```typescript
 // Получить все кампании, сгруппированные по типу и статусу
 const overview = await sdk.promotion.getPromotionCount();
@@ -95,12 +109,91 @@ overview.adverts?.forEach(group => {
     console.log(`  ID кампании: ${ad.advertId}`);
   });
 });
+```
 
+#### Детали кампаний типа 9 (современные)
+
+```typescript
 // Получить аукционные кампании (тип 9)
 const auctionCampaigns = await sdk.promotion.getAuctionAdverts({});
 auctionCampaigns.adverts?.forEach(campaign => {
   console.log(`Кампания ${campaign.id}: статус=${campaign.status}, тип_ставки=${campaign.bid_type}`);
 });
+
+// Фильтрация по статусу или типу оплаты
+const activeCampaigns = await sdk.promotion.getAuctionAdverts({
+  statuses: '9',        // Только активные
+  payment_type: 'cpm'   // Кампании CPM
+});
+
+// Получить конкретные кампании по ID
+const specificCampaigns = await sdk.promotion.getAuctionAdverts({
+  ids: '12345,67890'    // Макс. 50 ID
+});
+```
+
+#### Детали устаревших кампаний (типы 4-8)
+
+::: warning Путаница с названием метода
+`createPromotionAdvert()` НЕ создаёт кампании - он ПОЛУЧАЕТ информацию об устаревших кампаниях.
+Название сгенерировано из Swagger-спецификации и может вводить в заблуждение.
+:::
+
+```typescript
+// Получить детали устаревших кампаний (типы 4-8)
+const legacyDetails = await sdk.promotion.createPromotionAdvert(
+  [12345, 67890],     // Массив ID кампаний (макс. 50)
+  {
+    status: 9,        // Фильтр по статусу (необязательно)
+    type: 8,          // Фильтр по типу (необязательно)
+    order: 'change',  // Сортировка: 'create', 'change', 'id'
+    direction: 'desc' // Направление: 'asc' или 'desc'
+  }
+);
+
+console.log('Детали устаревших кампаний:', legacyDetails);
+```
+
+#### Полный воркфлоу: получение ВСЕХ деталей кампаний
+
+```typescript
+async function getAllCampaignDetails(sdk: WildberriesSDK) {
+  // Шаг 1: Получить список ВСЕХ кампаний
+  const allCampaigns = await sdk.promotion.getPromotionCount();
+
+  // Шаг 2: Разделить по типам
+  const type9Ids: number[] = [];
+  const legacyIds: number[] = [];
+
+  allCampaigns.adverts?.forEach(group => {
+    group.advert_list?.forEach(advert => {
+      if (group.type === 9) {
+        type9Ids.push(advert.advertId!);
+      } else if (group.type && group.type >= 4 && group.type <= 8) {
+        legacyIds.push(advert.advertId!);
+      }
+    });
+  });
+
+  console.log(`Найдено ${type9Ids.length} кампаний типа 9 (современные)`);
+  console.log(`Найдено ${legacyIds.length} устаревших кампаний (типы 4-8)`);
+
+  // Шаг 3: Получить детали кампаний типа 9
+  if (type9Ids.length > 0) {
+    const type9Details = await sdk.promotion.getAuctionAdverts({
+      ids: type9Ids.slice(0, 50).join(',')  // Макс. 50 ID за запрос
+    });
+    console.log('Детали кампаний типа 9:', type9Details);
+  }
+
+  // Шаг 4: Получить детали устаревших кампаний
+  if (legacyIds.length > 0) {
+    const legacyDetails = await sdk.promotion.createPromotionAdvert(
+      legacyIds.slice(0, 50)  // Макс. 50 ID за запрос
+    );
+    console.log('Детали устаревших кампаний:', legacyDetails);
+  }
+}
 ```
 
 ### Методы управления кампаниями
@@ -523,13 +616,24 @@ try {
 
 ## Справочник методов
 
+### Список и детали кампаний
+
+::: tip Краткая справка по типам кампаний
+- **Тип 9** (текущий): Используйте `getAuctionAdverts()`
+- **Типы 4-8** (устаревшие): Используйте `createPromotionAdvert()`
+:::
+
+| Метод | API Эндпоинт | Типы кампаний | Описание |
+|-------|--------------|---------------|----------|
+| `getPromotionCount()` | `GET /adv/v1/promotion/count` | **ВСЕ** | Список всех кампаний с ID |
+| `getAuctionAdverts()` | `GET /adv/v0/auction/adverts` | **только 9** | Детали современных кампаний |
+| `createPromotionAdvert()` | `POST /adv/v1/promotion/adverts` | **только 4-8** | Детали устаревших кампаний |
+
 ### Управление кампаниями
 
 | Метод | Описание | Требуемый статус |
 |-------|----------|------------------|
-| `getPromotionCount()` | Обзор кампаний | - |
-| `getAuctionAdverts()` | Кампании типа 9 | - |
-| `createSeacatSaveAd()` | Создать кампанию | - |
+| `createSeacatSaveAd()` | Создать кампанию (тип 9) | - |
 | `getAdvStart()` | Запустить кампанию | 4 или 11 |
 | `getAdvPause()` | Поставить на паузу | 9 |
 | `getAdvStop()` | Остановить/завершить | 4, 9 или 11 |
