@@ -709,7 +709,7 @@ export class PromotionModule {
   console.log(result);
    */
   async getStatsKeywords(options?: { advert_id: number; from: string; to: string }): Promise<V0KeywordsStatisticsResponse> {
-    return this.client.get<V0KeywordsStatisticsResponse>('https://api.wildberries.ru/adv/v0/stats/keywords', { params: options });
+    return this.client.get<V0KeywordsStatisticsResponse>('https://advert-api.wildberries.ru/adv/v0/stats/keywords', { params: options });
   }
 
   /**

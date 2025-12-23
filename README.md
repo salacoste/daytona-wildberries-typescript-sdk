@@ -76,6 +76,14 @@ console.log('New orders:', orders.length);
 // Check account balance
 const balance = await sdk.finances.getBalance();
 console.log('Balance:', balance.for_withdraw, balance.currency);
+
+// Get advertising campaigns overview
+const campaigns = await sdk.promotion.getPromotionCount();
+console.log('Total campaigns:', campaigns.all);
+
+// Get advertising balance
+const advBalance = await sdk.promotion.getAdvBalance();
+console.log('Ad cabinet balance:', advBalance.net);
 ```
 
 **Time to First API Call:** <5 minutes 🚀
@@ -93,6 +101,7 @@ console.log('Balance:', balance.for_withdraw, balance.currency);
 - **[Best Practices](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/best-practices)** - Production patterns
 - **[Performance Tuning](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/performance)** - Optimization guide
 - **[Security](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/security)** - Secure integration
+- **[Promotion & Advertising](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/promotion-advertising)** - Campaign management
 - **[Troubleshooting](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/troubleshooting)** - Common issues
 
 ## 🎯 Supported API Modules
@@ -205,6 +214,14 @@ console.log('Новые заказы:', orders.length);
 // Проверка баланса счета
 const balance = await sdk.finances.getBalance();
 console.log('Баланс:', balance.for_withdraw, balance.currency);
+
+// Обзор рекламных кампаний
+const campaigns = await sdk.promotion.getPromotionCount();
+console.log('Всего кампаний:', campaigns.all);
+
+// Баланс рекламного кабинета
+const advBalance = await sdk.promotion.getAdvBalance();
+console.log('Баланс рекл. кабинета:', advBalance.net);
 ```
 
 **Время до первого API вызова:** <5 минут 🚀
@@ -222,6 +239,7 @@ console.log('Баланс:', balance.for_withdraw, balance.currency);
 - **[Лучшие Практики](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/best-practices)** - Production паттерны
 - **[Настройка Производительности](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/performance)** - Оптимизация
 - **[Безопасность](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/security)** - Безопасная интеграция
+- **[Реклама (Promotion)](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/promotion-advertising)** - Управление кампаниями
 - **[Устранение Неполадок](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/troubleshooting)** - Распространенные проблемы
 
 ## 🎯 Поддерживаемые Модули API

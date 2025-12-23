@@ -12,17 +12,25 @@ In-depth guides for production deployment and advanced SDK usage.
 
 - **[Best Practices](/guides/best-practices)** - Error handling, security, and testing patterns
 - **[Performance Tuning](/guides/performance)** - Optimize rate limits, caching, and memory
+- **[Security](/guides/security)** - API key management and secure integration
+- **[Testing](/guides/testing)** - Unit and integration testing strategies
 - **[Troubleshooting](/guides/troubleshooting)** - Common issues and solutions
+- **[Configuration](/guides/configuration)** - SDK configuration options
 
-## Migration Guides
+## Module Guides
 
-- **Coming soon**: v1 to v2 Migration guide
+### Advertising & Marketing
+- **[Promotion & Advertising](/guides/promotion-advertising)** - Campaign management, bids, budget, and analytics
 
-## Advanced Topics
+### Financial Operations
+- **[Commissions & Fees](/guides/commissions-fees)** - Tariffs and commission calculations
+- **[Realization Reports](/guides/realization-report)** - Sales and realization reports
+- **[Reports Module](/guides/reports-module)** - Financial reporting
 
-- Coming soon: Custom error handling
-- Coming soon: Multi-region deployment
-- Coming soon: Testing strategies
+### Inventory & Logistics
+- **[Stock Management](/guides/stock-management)** - Inventory control and tracking
+- **[Storage Fees](/guides/storage-fees-integration)** - Warehouse costs integration
+- **[Returns Handling](/guides/returns-handling)** - Returns processing
 
 ---
 
