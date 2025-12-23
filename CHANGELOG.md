@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.2] - 2025-12-23
+
+### Added
+
+#### Finances Module
+- **`delivery_method` field** added to `DetailReportItem` interface
+  - Indicates fulfillment method for each sale in realization reports
+  - Values: `FBS` (seller warehouse), `FBW` (Wildberries warehouse), `DBS` (seller delivery)
+  - Synced with WB API update for `/api/v5/supplier/reportDetailByPeriod`
+
+#### Documentation
+- **Story 8.2** - `delivery_method` field documentation (`docs/stories/8.2.finances-delivery-method-field.md`)
+- **Fulfillment Analysis Guide** - New section in `docs/examples/use-cases/financial-reports.md`
+  - Code examples for analyzing sales by delivery method
+  - TypeScript interfaces for fulfillment analytics
+
+### Changed
+
+- Updated YAML documentation (`wildberries_api_doc/13-finances.yaml`)
+- Updated TypeScript types (`src/types/finances.types.ts`)
+
+---
+
+## [2.2.1] - 2025-12-22
+
+### Fixed
+
+#### Promotion Module
+- **`getStatsKeywords()` URL correction** - Fixed endpoint path for keyword statistics
+- **Campaign types documentation** - Added comprehensive docs explaining different campaign types (4-9)
+  - Documented that `getAuctionAdverts()` works only for type 9 campaigns
+  - Documented that `createPromotionAdvert()` works only for types 4-8 (legacy)
+
+#### CI/CD & Testing
+- Fixed coverage thresholds for auto-generated modules
+- Excluded auto-generated modules from coverage requirements
+- Fixed empty test suite error in CI with `describe.skipIf`
+- Added eslint-disable for empty interfaces and duplicate union types
+
+#### Documentation
+- Corrected Russian localization paths for SDK Usage guides
+- Added promotion API test scripts
+
+---
+
 ## [2.2.0] - 2025-12-15
 
 ### Overview
