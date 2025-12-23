@@ -125,6 +125,7 @@ export default defineConfig({
             text: 'Guides',
             items: [
               { text: 'Overview', link: '/guides/' },
+              { text: 'Migration v2.2 → v2.3', link: '/guides/migration-v2.3' },
               { text: 'Best Practices', link: '/guides/best-practices' },
               { text: 'Performance Tuning', link: '/guides/performance' },
               { text: 'Security Guide', link: '/guides/security' },
@@ -285,6 +286,7 @@ export default defineConfig({
             text: 'Руководства',
             items: [
               { text: 'Обзор', link: '/ru/guides/' },
+              { text: 'Миграция v2.2 → v2.3', link: '/ru/guides/migration-v2.3' },
               { text: 'Лучшие практики', link: '/ru/guides/best-practices' },
               { text: 'Настройка производительности', link: '/ru/guides/performance' },
               { text: 'Руководство по безопасности', link: '/ru/guides/security' },

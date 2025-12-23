@@ -756,8 +756,236 @@ interface SeacatSaveAdRequest {
 }
 ```
 
+## WB Marketplace Promotions (Calendar API)
+
+::: tip Promotions ≠ Advertising Campaigns
+WB Marketplace **Promotions** are sales events organized by Wildberries (like "Black Friday", "Flash Sales").
+They are different from **Advertising Campaigns** that you create and manage.
+
+| Aspect | Promotions | Advertising Campaigns |
+|--------|------------|----------------------|
+| Creator | Wildberries | Seller |
+| API Domain | `dp-calendar-api.wildberries.ru` | `advert-api.wildberries.ru` |
+| Purpose | Marketplace-wide sales events | Paid product advertising |
+| Cost | Usually free participation | Paid per click/impression |
+:::
+
+### Get Available Promotions
+
+```typescript
+// Get promotions for a date range
+const promotions = await sdk.promotion.getCalendarPromotions({
+  startDateTime: '2024-01-01T00:00:00Z',  // Required - ISO 8601 format
+  endDateTime: '2024-12-31T23:59:59Z',    // Required - ISO 8601 format
+  allPromo: true,                          // Required - include all promotion types
+  limit: 100,                              // Optional - max results
+  offset: 0                                // Optional - pagination offset
+});
+
+promotions.data?.promotions?.forEach(promo => {
+  console.log(`Promotion: ${promo.name}`);
+  console.log(`  Type: ${promo.type}`);
+  console.log(`  Period: ${promo.startDateTime} - ${promo.endDateTime}`);
+});
+```
+
+### Get Promotion Details
+
+```typescript
+// Get detailed information about specific promotions
+const details = await sdk.promotion.getPromotionsDetails({
+  promotionIDs: '1854,1852,1851'  // Required - comma-separated IDs
+});
+
+details.data?.promotions?.forEach(promo => {
+  console.log(`${promo.name}:`);
+  console.log(`  Description: ${promo.description}`);
+  console.log(`  In promo: ${promo.inPromoActionTotal} products`);
+  console.log(`  Not in promo: ${promo.notInPromoActionTotal} products`);
+});
+```
+
+### Get Products for Promotion
+
+```typescript
+// Get products eligible for a specific promotion
+const products = await sdk.promotion.getPromotionsNomenclatures({
+  promotionID: 1854,     // Required - promotion ID
+  inAction: false,       // Required - true=already added, false=can be added
+  limit: 100,            // Optional
+  offset: 0              // Optional
+});
+
+products.data?.nomenclatures?.forEach(nm => {
+  console.log(`NM ${nm.nmID}: ${nm.vendorCode}, in promotion: ${nm.inAction}`);
+});
+```
+
+### Add Products to Promotion
+
+```typescript
+// Upload products to a promotion
+const result = await sdk.promotion.createPromotionsUpload({
+  data: {
+    promotionID: 1854,           // Required - promotion ID
+    uploadNow: true,             // Required - true=apply now, false=on promo start
+    nomenclatures: [123456, 789012]  // Required - product NM IDs to add
+  }
+});
+
+console.log(`Upload task ID: ${result.data?.uploadID}`);
+```
+
+### Calendar API Response Types
+
+```typescript
+// getCalendarPromotions response
+interface CalendarPromotionsResponse {
+  data?: {
+    promotions?: Array<{
+      id?: number;
+      name?: string;
+      type?: string;           // 'regular' | 'auto' | 'express'
+      startDateTime?: string;  // ISO 8601
+      endDateTime?: string;    // ISO 8601
+    }>;
+  };
+}
+
+// getPromotionsDetails response
+interface PromotionsDetailsResponse {
+  data?: {
+    promotions?: Array<{
+      id?: number;
+      name?: string;
+      description?: string;
+      startDateTime?: string;
+      endDateTime?: string;
+      inPromoActionLeftovers?: number;     // Products in promo with stock
+      inPromoActionTotal?: number;          // Total products in promo
+      notInPromoActionLeftovers?: number;   // Products not in promo with stock
+      notInPromoActionTotal?: number;       // Total products not in promo
+    }>;
+  };
+}
+
+// getPromotionsNomenclatures response
+interface PromotionsNomenclaturesResponse {
+  data?: {
+    nomenclatures?: Array<{
+      nmID?: number;
+      vendorCode?: string;
+      inAction?: boolean;
+    }>;
+  };
+}
+```
+
+## Complete API Reference
+
+### Campaign Lifecycle Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getAdvStart` | `(options: { id: number }) => Promise<unknown>` | Start campaign |
+| `getAdvPause` | `(options: { id: number }) => Promise<unknown>` | Pause campaign |
+| `getAdvStop` | `(options: { id: number }) => Promise<unknown>` | Stop campaign |
+| `getAdvDelete` | `(options: { id: number }) => Promise<unknown>` | Delete campaign |
+| `createAdvRename` | `(data: { advertId: number; name: string }) => Promise<unknown>` | Rename campaign |
+
+### Budget Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getAdvBalance` | `() => Promise<AdvBalanceResponse>` | Get account balance |
+| `getAdvBudget` | `(options: { id: number }) => Promise<BudgetResponse>` | Get campaign budget |
+| `createBudgetDeposit` | `(data: BudgetDepositData, options: { id: number }) => Promise<ResponseWithReturn>` | Deposit to campaign |
+| `getAdvUpd` | `(options: { from: string; to: string }) => Promise<AdvUpdRecord[]>` | Get expense history |
+
+### Keyword/Phrase Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getSearchSetPlus` | `(options: { id: number; fixed?: boolean }) => Promise<unknown>` | Get/toggle fixed phrases |
+| `createSearchSetPlu` | `(data: { pluse?: string[] }, options: { id: number }) => Promise<string[]>` | Set fixed phrases |
+| `createSearchSetExcluded` | `(data: { excluded?: string[] }, options: { id: number }) => Promise<unknown>` | Set minus-phrases (manual) |
+| `createAutoSetExcluded` | `(data: { excluded?: string[] }, options: { id: number }) => Promise<unknown>` | Set minus-phrases (unified) |
+| `getAutoGetnmtoadd` | `(options: { id: number }) => Promise<number[]>` | Get available products |
+| `createAutoUpdatenm` | `(data: { add?: number[]; delete?: number[] }, options: { id: number }) => Promise<unknown>` | Update campaign products |
+
+### Calendar API Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getCalendarPromotions` | `(options: { startDateTime: string; endDateTime: string; allPromo: boolean; limit?: number; offset?: number }) => Promise<CalendarPromotionsResponse>` | Get WB promotions |
+| `getPromotionsDetails` | `(options: { promotionIDs: string }) => Promise<PromotionsDetailsResponse>` | Get promotion details |
+| `getPromotionsNomenclatures` | `(options: { promotionID: number; inAction: boolean; limit?: number; offset?: number }) => Promise<PromotionsNomenclaturesResponse>` | Get products for promotion |
+| `createPromotionsUpload` | `(data: { data: { promotionID: number; uploadNow: boolean; nomenclatures: number[] }}) => Promise<{ data?: { uploadID?: number }}>` | Add products to promotion |
+
+## Breaking Changes (v2.2.3)
+
+::: danger Required Parameters Update
+In v2.2.3, many methods changed from **optional** to **required** parameters to match the actual WB API contract. This may cause TypeScript compilation errors in existing code.
+:::
+
+### Methods with Changed Signatures
+
+| Method | Before (v2.2.2) | After (v2.2.3) |
+|--------|-----------------|----------------|
+| `getAdvStart` | `options?: { id }` | `options: { id }` |
+| `getAdvPause` | `options?: { id }` | `options: { id }` |
+| `getAdvStop` | `options?: { id }` | `options: { id }` |
+| `getAdvDelete` | `options?: { id }` | `options: { id }` |
+| `getAdvBudget` | `options?: { id }` | `options: { id }` |
+| `getSearchSetPlus` | `options?: { id; fixed? }` | `options: { id; fixed? }` |
+| `getAutoGetnmtoadd` | `options?: { id }` | `options: { id }` |
+| `createBudgetDeposit` | `options?: { id }` | `options: { id }` |
+| `createSearchSetPlu` | `options?: { id }` | `options: { id }` |
+| `createSearchSetExcluded` | `options?: { id }` | `options: { id }` |
+| `createAutoSetExcluded` | `options?: { id }` | `options: { id }` |
+| `createAutoUpdatenm` | `options?: { id }` | `options: { id }` |
+| `getAdvUpd` | `options?: { from; to }` | `options: { from; to }` |
+| `createAdvRename` | `data?: { advertId; name }` | `data: { advertId; name }` |
+| `getCalendarPromotions` | `options?: { ... }` | `options: { startDateTime; endDateTime; allPromo; limit?; offset? }` |
+| `getPromotionsDetails` | `options?: { promotionIDs }` | `options: { promotionIDs }` |
+| `getPromotionsNomenclatures` | `options?: { ... }` | `options: { promotionID; inAction; limit?; offset? }` |
+
+### Migration Guide
+
+```typescript
+// Before (v2.2.2) - This would compile but fail at runtime
+await sdk.promotion.getAdvBudget();  // ❌ No error, but API returns 400
+
+// After (v2.2.3) - TypeScript catches the error
+await sdk.promotion.getAdvBudget();  // ❌ TypeScript error: 'options' is required
+await sdk.promotion.getAdvBudget({ id: 12345 });  // ✅ Correct
+```
+
+### Calendar API - Typed Responses
+
+Calendar API methods now return typed responses instead of `Promise<unknown>`:
+
+```typescript
+// Before (v2.2.2)
+const promotions = await sdk.promotion.getCalendarPromotions({...});
+// promotions: unknown - no autocomplete
+
+// After (v2.2.3)
+const promotions = await sdk.promotion.getCalendarPromotions({
+  startDateTime: '2024-01-01',
+  endDateTime: '2024-12-31',
+  allPromo: true
+});
+// promotions.data?.promotions?.forEach(p => p.name) - full autocomplete!
+```
+
 ### Version History
 
+- **v2.2.3** (December 2024):
+  - Made 18 method parameters required (matching WB API contract)
+  - Added typed responses for Calendar API methods
+  - Fixed JSDoc examples from `sdk.general.*` to `sdk.promotion.*`
+  - Added comprehensive Calendar API documentation
 - **v2.2.2** (December 2024): Fixed `getStatsKeywords()` parameters to be required; fixed array type definitions for `placement_types`
 - **v2.2.1** (December 2024): Fixed `getStatsKeywords()` URL and campaign types documentation
 
@@ -766,4 +994,5 @@ interface SeacatSaveAdRequest {
 - [Tariffs Module](./commissions-fees.md) - For ROI calculations
 - [Best Practices](./best-practices.md) - General SDK best practices
 - [Troubleshooting](./troubleshooting.md) - Common issues
-- [Story 8.3: Promotion Type Fixes](/docs/stories/8.3.promotion-type-fixes.md) - Technical details of fixes
+- [Story 8.3: Promotion Type Fixes](/docs/stories/8.3.promotion-type-fixes.md) - Type definition fixes
+- [Story 9.9: SDK Parameter Fixes](/docs/stories/9.9.promotion-sdk-type-fixes.md) - Required parameter fixes

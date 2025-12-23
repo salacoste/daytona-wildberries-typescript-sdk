@@ -699,8 +699,243 @@ try {
    - Удалять можно только кампании в статусе 4 (готова)
    - Используйте `getAdvStop()` для завершения других кампаний
 
+## Акции маркетплейса WB (Calendar API)
+
+::: tip Акции ≠ Рекламные кампании
+**Акции** маркетплейса WB — это распродажи, организованные Wildberries (например, "Чёрная пятница", "Экспресс-скидки").
+Они отличаются от **рекламных кампаний**, которые вы создаёте и управляете сами.
+
+| Аспект | Акции | Рекламные кампании |
+|--------|-------|-------------------|
+| Создатель | Wildberries | Продавец |
+| API домен | `dp-calendar-api.wildberries.ru` | `advert-api.wildberries.ru` |
+| Цель | Маркетплейс-распродажи | Платная реклама товаров |
+| Стоимость | Обычно бесплатное участие | Оплата за клики/показы |
+:::
+
+### Получение доступных акций
+
+```typescript
+// Получить акции за период
+const promotions = await sdk.promotion.getCalendarPromotions({
+  startDateTime: '2024-01-01T00:00:00Z',  // Обязательно - формат ISO 8601
+  endDateTime: '2024-12-31T23:59:59Z',    // Обязательно - формат ISO 8601
+  allPromo: true,                          // Обязательно - включить все типы
+  limit: 100,                              // Опционально - макс. результатов
+  offset: 0                                // Опционально - смещение пагинации
+});
+
+promotions.data?.promotions?.forEach(promo => {
+  console.log(`Акция: ${promo.name}`);
+  console.log(`  Тип: ${promo.type}`);
+  console.log(`  Период: ${promo.startDateTime} - ${promo.endDateTime}`);
+});
+```
+
+### Получение деталей акции
+
+```typescript
+// Получить подробную информацию об акциях
+const details = await sdk.promotion.getPromotionsDetails({
+  promotionIDs: '1854,1852,1851'  // Обязательно - ID через запятую
+});
+
+details.data?.promotions?.forEach(promo => {
+  console.log(`${promo.name}:`);
+  console.log(`  Описание: ${promo.description}`);
+  console.log(`  В акции: ${promo.inPromoActionTotal} товаров`);
+  console.log(`  Не в акции: ${promo.notInPromoActionTotal} товаров`);
+});
+```
+
+### Получение товаров для акции
+
+```typescript
+// Получить товары, подходящие для акции
+const products = await sdk.promotion.getPromotionsNomenclatures({
+  promotionID: 1854,     // Обязательно - ID акции
+  inAction: false,       // Обязательно - true=уже добавлены, false=можно добавить
+  limit: 100,            // Опционально
+  offset: 0              // Опционально
+});
+
+products.data?.nomenclatures?.forEach(nm => {
+  console.log(`Арт. ${nm.nmID}: ${nm.vendorCode}, в акции: ${nm.inAction}`);
+});
+```
+
+### Добавление товаров в акцию
+
+```typescript
+// Загрузить товары в акцию
+const result = await sdk.promotion.createPromotionsUpload({
+  data: {
+    promotionID: 1854,           // Обязательно - ID акции
+    uploadNow: true,             // Обязательно - true=применить сейчас, false=при старте акции
+    nomenclatures: [123456, 789012]  // Обязательно - артикулы WB для добавления
+  }
+});
+
+console.log(`ID задачи загрузки: ${result.data?.uploadID}`);
+```
+
+### Типы ответов Calendar API
+
+```typescript
+// Ответ getCalendarPromotions
+interface CalendarPromotionsResponse {
+  data?: {
+    promotions?: Array<{
+      id?: number;
+      name?: string;
+      type?: string;           // 'regular' | 'auto' | 'express'
+      startDateTime?: string;  // ISO 8601
+      endDateTime?: string;    // ISO 8601
+    }>;
+  };
+}
+
+// Ответ getPromotionsDetails
+interface PromotionsDetailsResponse {
+  data?: {
+    promotions?: Array<{
+      id?: number;
+      name?: string;
+      description?: string;
+      startDateTime?: string;
+      endDateTime?: string;
+      inPromoActionLeftovers?: number;     // Товары в акции с остатками
+      inPromoActionTotal?: number;          // Всего товаров в акции
+      notInPromoActionLeftovers?: number;   // Товары не в акции с остатками
+      notInPromoActionTotal?: number;       // Всего товаров не в акции
+    }>;
+  };
+}
+
+// Ответ getPromotionsNomenclatures
+interface PromotionsNomenclaturesResponse {
+  data?: {
+    nomenclatures?: Array<{
+      nmID?: number;
+      vendorCode?: string;
+      inAction?: boolean;
+    }>;
+  };
+}
+```
+
+## Полный справочник API
+
+### Методы жизненного цикла кампаний
+
+| Метод | Сигнатура | Описание |
+|-------|-----------|----------|
+| `getAdvStart` | `(options: { id: number }) => Promise<unknown>` | Запустить кампанию |
+| `getAdvPause` | `(options: { id: number }) => Promise<unknown>` | Поставить на паузу |
+| `getAdvStop` | `(options: { id: number }) => Promise<unknown>` | Остановить кампанию |
+| `getAdvDelete` | `(options: { id: number }) => Promise<unknown>` | Удалить кампанию |
+| `createAdvRename` | `(data: { advertId: number; name: string }) => Promise<unknown>` | Переименовать |
+
+### Методы работы с бюджетом
+
+| Метод | Сигнатура | Описание |
+|-------|-----------|----------|
+| `getAdvBalance` | `() => Promise<AdvBalanceResponse>` | Баланс аккаунта |
+| `getAdvBudget` | `(options: { id: number }) => Promise<BudgetResponse>` | Бюджет кампании |
+| `createBudgetDeposit` | `(data: BudgetDepositData, options: { id: number }) => Promise<ResponseWithReturn>` | Пополнить кампанию |
+| `getAdvUpd` | `(options: { from: string; to: string }) => Promise<AdvUpdRecord[]>` | История расходов |
+
+### Методы работы с фразами
+
+| Метод | Сигнатура | Описание |
+|-------|-----------|----------|
+| `getSearchSetPlus` | `(options: { id: number; fixed?: boolean }) => Promise<unknown>` | Получить/переключить фикс. фразы |
+| `createSearchSetPlu` | `(data: { pluse?: string[] }, options: { id: number }) => Promise<string[]>` | Установить фикс. фразы |
+| `createSearchSetExcluded` | `(data: { excluded?: string[] }, options: { id: number }) => Promise<unknown>` | Минус-фразы (ручная) |
+| `createAutoSetExcluded` | `(data: { excluded?: string[] }, options: { id: number }) => Promise<unknown>` | Минус-фразы (единая) |
+| `getAutoGetnmtoadd` | `(options: { id: number }) => Promise<number[]>` | Доступные товары |
+| `createAutoUpdatenm` | `(data: { add?: number[]; delete?: number[] }, options: { id: number }) => Promise<unknown>` | Обновить товары кампании |
+
+### Методы Calendar API
+
+| Метод | Сигнатура | Описание |
+|-------|-----------|----------|
+| `getCalendarPromotions` | `(options: { startDateTime: string; endDateTime: string; allPromo: boolean; limit?: number; offset?: number }) => Promise<CalendarPromotionsResponse>` | Получить акции WB |
+| `getPromotionsDetails` | `(options: { promotionIDs: string }) => Promise<PromotionsDetailsResponse>` | Детали акций |
+| `getPromotionsNomenclatures` | `(options: { promotionID: number; inAction: boolean; limit?: number; offset?: number }) => Promise<PromotionsNomenclaturesResponse>` | Товары для акции |
+| `createPromotionsUpload` | `(data: { data: { promotionID: number; uploadNow: boolean; nomenclatures: number[] }}) => Promise<{ data?: { uploadID?: number }}>` | Добавить товары в акцию |
+
+## Критические изменения (v2.2.3)
+
+::: danger Обновление обязательных параметров
+В v2.2.3 многие параметры методов изменились с **опциональных** на **обязательные** в соответствии с контрактом API WB. Это может вызвать ошибки компиляции TypeScript в существующем коде.
+:::
+
+### Методы с изменёнными сигнатурами
+
+| Метод | До (v2.2.2) | После (v2.2.3) |
+|-------|-------------|----------------|
+| `getAdvStart` | `options?: { id }` | `options: { id }` |
+| `getAdvPause` | `options?: { id }` | `options: { id }` |
+| `getAdvStop` | `options?: { id }` | `options: { id }` |
+| `getAdvDelete` | `options?: { id }` | `options: { id }` |
+| `getAdvBudget` | `options?: { id }` | `options: { id }` |
+| `getSearchSetPlus` | `options?: { id; fixed? }` | `options: { id; fixed? }` |
+| `getAutoGetnmtoadd` | `options?: { id }` | `options: { id }` |
+| `createBudgetDeposit` | `options?: { id }` | `options: { id }` |
+| `createSearchSetPlu` | `options?: { id }` | `options: { id }` |
+| `createSearchSetExcluded` | `options?: { id }` | `options: { id }` |
+| `createAutoSetExcluded` | `options?: { id }` | `options: { id }` |
+| `createAutoUpdatenm` | `options?: { id }` | `options: { id }` |
+| `getAdvUpd` | `options?: { from; to }` | `options: { from; to }` |
+| `createAdvRename` | `data?: { advertId; name }` | `data: { advertId; name }` |
+| `getCalendarPromotions` | `options?: { ... }` | `options: { startDateTime; endDateTime; allPromo; limit?; offset? }` |
+| `getPromotionsDetails` | `options?: { promotionIDs }` | `options: { promotionIDs }` |
+| `getPromotionsNomenclatures` | `options?: { ... }` | `options: { promotionID; inAction; limit?; offset? }` |
+
+### Руководство по миграции
+
+```typescript
+// До (v2.2.2) - Компилировалось, но падало при выполнении
+await sdk.promotion.getAdvBudget();  // ❌ Без ошибки, но API вернёт 400
+
+// После (v2.2.3) - TypeScript ловит ошибку
+await sdk.promotion.getAdvBudget();  // ❌ Ошибка TypeScript: 'options' обязателен
+await sdk.promotion.getAdvBudget({ id: 12345 });  // ✅ Правильно
+```
+
+### Calendar API - Типизированные ответы
+
+Методы Calendar API теперь возвращают типизированные ответы вместо `Promise<unknown>`:
+
+```typescript
+// До (v2.2.2)
+const promotions = await sdk.promotion.getCalendarPromotions({...});
+// promotions: unknown - нет автодополнения
+
+// После (v2.2.3)
+const promotions = await sdk.promotion.getCalendarPromotions({
+  startDateTime: '2024-01-01',
+  endDateTime: '2024-12-31',
+  allPromo: true
+});
+// promotions.data?.promotions?.forEach(p => p.name) - полное автодополнение!
+```
+
+### История версий
+
+- **v2.2.3** (Декабрь 2024):
+  - 18 параметров методов стали обязательными (соответствие контракту API WB)
+  - Добавлены типизированные ответы для методов Calendar API
+  - Исправлены примеры JSDoc с `sdk.general.*` на `sdk.promotion.*`
+  - Добавлена полная документация Calendar API
+- **v2.2.2** (Декабрь 2024): Параметры `getStatsKeywords()` стали обязательными; исправлены типы массивов для `placement_types`
+- **v2.2.1** (Декабрь 2024): Исправлен URL `getStatsKeywords()` и документация типов кампаний
+
 ## См. также
 
 - [Модуль тарифов](./commissions-fees.md) - Для расчёта ROI
 - [Лучшие практики](./best-practices.md) - Общие рекомендации по SDK
 - [Устранение неполадок](./troubleshooting.md) - Типичные проблемы
+- [Story 8.3: Исправления типов Promotion](/docs/stories/8.3.promotion-type-fixes.md) - Технические детали исправлений типов
+- [Story 9.9: Исправления параметров SDK](/docs/stories/9.9.promotion-sdk-type-fixes.md) - Исправления обязательных параметров

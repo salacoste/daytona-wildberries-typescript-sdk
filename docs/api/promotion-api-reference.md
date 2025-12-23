@@ -351,7 +351,7 @@ async createSupplierNm(data?: number[]): Promise<{
 Starts a campaign. Works for campaigns in status 4 (ready) or 11 (paused).
 
 ```typescript
-async getAdvStart(options?: { id: number }): Promise<unknown>
+async getAdvStart(options: { id: number }): Promise<unknown>  // id is REQUIRED
 ```
 
 **Rate Limit**: 5 req/sec (200ms interval)
@@ -372,7 +372,7 @@ await sdk.promotion.getAdvStart({ id: 32129132 });
 Pauses a campaign. Works only for campaigns in status 9 (active).
 
 ```typescript
-async getAdvPause(options?: { id: number }): Promise<unknown>
+async getAdvPause(options: { id: number }): Promise<unknown>  // id is REQUIRED
 ```
 
 **Rate Limit**: 5 req/sec (200ms interval)
@@ -387,7 +387,7 @@ async getAdvPause(options?: { id: number }): Promise<unknown>
 Stops/finishes a campaign. Works for campaigns in status 4, 9, or 11.
 
 ```typescript
-async getAdvStop(options?: { id: number }): Promise<unknown>
+async getAdvStop(options: { id: number }): Promise<unknown>  // id is REQUIRED
 ```
 
 **Rate Limit**: 5 req/sec (200ms interval)
@@ -402,7 +402,7 @@ async getAdvStop(options?: { id: number }): Promise<unknown>
 Deletes a campaign. Works only for campaigns in status 4 (ready).
 
 ```typescript
-async getAdvDelete(options?: { id: number }): Promise<unknown>
+async getAdvDelete(options: { id: number }): Promise<unknown>  // id is REQUIRED
 ```
 
 **Rate Limit**: 5 req/sec (200ms interval)
@@ -568,7 +568,7 @@ console.log(`Bonus: ${balance.bonus}₽`);
 Returns campaign budget information.
 
 ```typescript
-async getAdvBudget(options?: { id: number }): Promise<{
+async getAdvBudget(options: { id: number }): Promise<{  // id is REQUIRED
   cash?: number;       // From cash deposits
   netting?: number;    // From netting balance
   total?: number;      // Total budget
@@ -598,7 +598,7 @@ async createBudgetDeposit(
     type?: number;             // 0=счёт, 1=баланс, 3=бонусы
     return?: boolean;          // Return details
   },
-  options?: { id: number }     // Campaign ID
+  options: { id: number }      // Campaign ID - REQUIRED
 ): Promise<ResponseWithReturn>
 ```
 
@@ -630,9 +630,9 @@ await sdk.promotion.createBudgetDeposit(
 Returns expense history for a period.
 
 ```typescript
-async getAdvUpd(options?: {
-  from: string;   // Start date (YYYY-MM-DD)
-  to: string;     // End date (YYYY-MM-DD)
+async getAdvUpd(options: {  // REQUIRED - both from and to are required
+  from: string;   // Start date (YYYY-MM-DD) - REQUIRED
+  to: string;     // End date (YYYY-MM-DD) - REQUIRED
 }): Promise<{
   updNum?: number;
   updTime?: string;
@@ -693,9 +693,9 @@ async getAdvPayments(options?: {
 Manages fixed phrases activity for manual bid campaigns.
 
 ```typescript
-async getSearchSetPlus(options?: {
-  id: number;        // Campaign ID
-  fixed?: boolean;   // true=activate, false=deactivate
+async getSearchSetPlus(options: {  // id is REQUIRED
+  id: number;        // Campaign ID - REQUIRED
+  fixed?: boolean;   // true=activate, false=deactivate (optional)
 }): Promise<unknown>
 ```
 
@@ -713,8 +713,8 @@ Sets or removes fixed phrases for manual bid campaigns.
 
 ```typescript
 async createSearchSetPlu(
-  data: { pluse?: string[] },    // Phrases to fix
-  options?: { id: number }       // Campaign ID
+  data: { pluse?: string[] },    // Phrases to fix (optional array)
+  options: { id: number }        // Campaign ID - REQUIRED
 ): Promise<string[]>
 ```
 
@@ -747,8 +747,8 @@ Sets or removes excluded (minus) phrases for manual bid campaigns.
 
 ```typescript
 async createSearchSetExcluded(
-  data: { excluded?: string[] },
-  options?: { id: number }
+  data: { excluded?: string[] },  // Phrases to exclude (optional array)
+  options: { id: number }         // Campaign ID - REQUIRED
 ): Promise<unknown>
 ```
 
@@ -782,8 +782,8 @@ Sets or removes excluded phrases for unified bid campaigns.
 
 ```typescript
 async createAutoSetExcluded(
-  data: { excluded?: string[] },
-  options?: { id: number }
+  data: { excluded?: string[] },  // Phrases to exclude (optional array)
+  options: { id: number }         // Campaign ID - REQUIRED
 ): Promise<unknown>
 ```
 
@@ -798,7 +798,7 @@ async createAutoSetExcluded(
 Returns product cards that can be added to unified bid campaign.
 
 ```typescript
-async getAutoGetnmtoadd(options?: { id: number }): Promise<number[]>
+async getAutoGetnmtoadd(options: { id: number }): Promise<number[]>  // id is REQUIRED
 ```
 
 **Rate Limit**: 1 req/sec
@@ -815,7 +815,7 @@ async createAutoUpdatenm(
     add?: number[];
     delete?: number[];
   },
-  options?: { id: number }
+  options: { id: number }        // Campaign ID - REQUIRED
 ): Promise<unknown>
 ```
 
@@ -1113,20 +1113,48 @@ async createAdvStat(
 
 ### getCalendarPromotions()
 
-Returns list of WB promotions.
+Returns list of WB marketplace promotions (sales events).
+
+::: tip Promotions ≠ Advertising Campaigns
+WB Promotions are marketplace sales events (like "Black Friday"), not advertising campaigns.
+:::
 
 ```typescript
-async getCalendarPromotions(options?: {
-  startDateTime: string;
-  endDateTime: string;
-  allPromo: boolean;
-  limit?: number;
-  offset?: number;
-}): Promise<unknown>
+async getCalendarPromotions(options: {  // All date params are REQUIRED
+  startDateTime: string;   // ISO 8601 format - REQUIRED
+  endDateTime: string;     // ISO 8601 format - REQUIRED
+  allPromo: boolean;       // Include all promo types - REQUIRED
+  limit?: number;          // Max results (optional)
+  offset?: number;         // Pagination offset (optional)
+}): Promise<{
+  data?: {
+    promotions?: Array<{
+      id?: number;
+      name?: string;
+      type?: string;           // 'regular' | 'auto' | 'express'
+      startDateTime?: string;  // ISO 8601
+      endDateTime?: string;    // ISO 8601
+    }>;
+  };
+}>
 ```
 
 **Base URL**: `https://dp-calendar-api.wildberries.ru`
 **Rate Limit**: 10 req/6s (600ms interval)
+
+**Example**:
+```typescript
+const promotions = await sdk.promotion.getCalendarPromotions({
+  startDateTime: '2024-01-01T00:00:00Z',
+  endDateTime: '2024-12-31T23:59:59Z',
+  allPromo: true,
+  limit: 100
+});
+
+promotions.data?.promotions?.forEach(promo => {
+  console.log(`${promo.name}: ${promo.startDateTime} - ${promo.endDateTime}`);
+});
+```
 
 ---
 
@@ -1135,13 +1163,38 @@ async getCalendarPromotions(options?: {
 Returns detailed promotion information.
 
 ```typescript
-async getPromotionsDetails(options?: {
-  promotionIDs: string;   // Comma-separated promotion IDs
-}): Promise<unknown>
+async getPromotionsDetails(options: {  // promotionIDs is REQUIRED
+  promotionIDs: string;   // Comma-separated promotion IDs - REQUIRED
+}): Promise<{
+  data?: {
+    promotions?: Array<{
+      id?: number;
+      name?: string;
+      description?: string;
+      startDateTime?: string;
+      endDateTime?: string;
+      inPromoActionLeftovers?: number;     // Products in promo with stock
+      inPromoActionTotal?: number;          // Total products in promo
+      notInPromoActionLeftovers?: number;   // Products not in promo with stock
+      notInPromoActionTotal?: number;       // Total products not in promo
+    }>;
+  };
+}>
 ```
 
 **Base URL**: `https://dp-calendar-api.wildberries.ru`
 **Rate Limit**: 10 req/6s (600ms interval)
+
+**Example**:
+```typescript
+const details = await sdk.promotion.getPromotionsDetails({
+  promotionIDs: '1854,1852,1851'
+});
+
+details.data?.promotions?.forEach(promo => {
+  console.log(`${promo.name}: ${promo.inPromoActionTotal} products in promo`);
+});
+```
 
 ---
 
@@ -1150,29 +1203,74 @@ async getPromotionsDetails(options?: {
 Returns products eligible for a promotion.
 
 ```typescript
-async getPromotionsNomenclatures(options?: {
-  promotionID: number;
-  inAction: boolean;
-  limit?: number;
-  offset?: number;
-}): Promise<unknown>
+async getPromotionsNomenclatures(options: {  // promotionID and inAction are REQUIRED
+  promotionID: number;   // Promotion ID - REQUIRED
+  inAction: boolean;     // true=in promo, false=can be added - REQUIRED
+  limit?: number;        // Max results (optional)
+  offset?: number;       // Pagination offset (optional)
+}): Promise<{
+  data?: {
+    nomenclatures?: Array<{
+      nmID?: number;
+      vendorCode?: string;
+      inAction?: boolean;
+    }>;
+  };
+}>
 ```
 
 **Base URL**: `https://dp-calendar-api.wildberries.ru`
 **Rate Limit**: 10 req/6s (600ms interval)
+
+**Example**:
+```typescript
+// Get products that can be added to promotion
+const products = await sdk.promotion.getPromotionsNomenclatures({
+  promotionID: 1854,
+  inAction: false,
+  limit: 100
+});
+
+products.data?.nomenclatures?.forEach(nm => {
+  console.log(`NM ${nm.nmID}: ${nm.vendorCode}`);
+});
+```
 
 ---
 
 ### createPromotionsUpload()
 
-Creates a task to add product to a promotion.
+Creates a task to add products to a promotion.
 
 ```typescript
-async createPromotionsUpload(): Promise<unknown>
+async createPromotionsUpload(data: {  // data is REQUIRED
+  data: {
+    promotionID: number;        // Promotion ID - REQUIRED
+    uploadNow: boolean;         // true=apply now, false=on promo start - REQUIRED
+    nomenclatures: number[];    // Product NM IDs to add - REQUIRED
+  };
+}): Promise<{
+  data?: {
+    uploadID?: number;  // Task ID for tracking
+  };
+}>
 ```
 
 **Base URL**: `https://dp-calendar-api.wildberries.ru`
 **Rate Limit**: 10 req/6s (600ms interval)
+
+**Example**:
+```typescript
+const result = await sdk.promotion.createPromotionsUpload({
+  data: {
+    promotionID: 1854,
+    uploadNow: true,
+    nomenclatures: [123456, 789012, 345678]
+  }
+});
+
+console.log(`Upload task created: ${result.data?.uploadID}`);
+```
 
 ---
 
