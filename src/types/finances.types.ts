@@ -229,4 +229,12 @@ export interface DetailReportItem {
   cashback_commission_change?: number;
   /** ID транзакции. Заказы в одной корзине покупателя будут иметь одинаковый `order_uid` */
   order_uid?: string;
+  /**
+   * Способ продажи и тип товара.
+   * Возможные значения:
+   * - `FBS` — продажа со склада продавца
+   * - `FBW` — продажа со склада Wildberries
+   * - `DBS` — доставка силами продавца
+   */
+  delivery_method?: string;
 }

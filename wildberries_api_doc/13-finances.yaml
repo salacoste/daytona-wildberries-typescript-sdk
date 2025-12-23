@@ -858,6 +858,15 @@ components:
           type: string
           description: ID транзакции. Заказы в одной корзине покупателя будут иметь одинаковый `order_uid`
           example: id375f16c4bec295d9995393af803ff7b
+        delivery_method:
+          type: string
+          description: |
+            Способ продажи и тип товара.
+            Возможные значения:
+              - `FBS` — продажа со склада продавца
+              - `FBW` — продажа со склада Wildberries
+              - `DBS` — доставка силами продавца
+          example: FBS
   responses:
     '401':
       description: Не авторизован
