@@ -17,14 +17,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Documentation
 - **Story 8.2** - `delivery_method` field documentation (`docs/stories/8.2.finances-delivery-method-field.md`)
+- **Story 8.3** - Promotion module type fixes documentation (`docs/stories/8.3.promotion-type-fixes.md`)
 - **Fulfillment Analysis Guide** - New section in `docs/examples/use-cases/financial-reports.md`
-  - Code examples for analyzing sales by delivery method
-  - TypeScript interfaces for fulfillment analytics
+- **TypeScript Notes** - Added to promotion advertising guide with type usage examples
+
+### Fixed
+
+#### Promotion Module
+- **`getStatsKeywords()` parameters** - Changed from optional to required (matches WB API contract)
+  - All three parameters (`advert_id`, `from`, `to`) are now required
+  - Improved JSDoc with detailed parameter descriptions
+- **`placement_types` array type** - Fixed TypeScript union type syntax
+  - `createBidsMin()`: `'combined' | 'search' | 'recommendation'[]` → `('combined' | 'search' | 'recommendation')[]`
+  - `createSeacatSaveAd()`: `'search' | 'recommendations'[]` → `('search' | 'recommendations')[]`
+  - TypeScript operator precedence requires parentheses for array of union types
+- **Test file type definitions** - Updated to match corrected SDK types
+  - Fixed 5 locations in `tests/integration/promotion.integration.test.ts`
+  - Fixed 3 locations in `tests/unit/modules/promotion.test.ts`
 
 ### Changed
 
 - Updated YAML documentation (`wildberries_api_doc/13-finances.yaml`)
 - Updated TypeScript types (`src/types/finances.types.ts`)
+- Updated promotion advertising guide with version history and TypeScript notes
 
 ---
 

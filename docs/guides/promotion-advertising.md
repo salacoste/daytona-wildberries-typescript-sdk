@@ -699,8 +699,71 @@ try {
    - Only campaigns in status 4 (ready) can be deleted
    - Use `getAdvStop()` to finish other campaigns
 
+## TypeScript Type Notes
+
+### Required Parameters in getStatsKeywords()
+
+All parameters are **required** - this matches the WB API contract:
+
+```typescript
+// CORRECT: All parameters are required
+const stats = await sdk.promotion.getStatsKeywords({
+  advert_id: campaignId,  // Required - campaign ID
+  from: '2024-01-01',     // Required - start date
+  to: '2024-01-07'        // Required - end date (max 7 days from start)
+});
+
+// WRONG: TypeScript will show error if parameters are missing
+// const stats = await sdk.promotion.getStatsKeywords({});  // Error!
+```
+
+### Placement Types Array Syntax
+
+The `placement_types` parameter is an **array of strings**, not a union:
+
+```typescript
+// CORRECT: Array of placement types
+const request = {
+  placement_types: ['search', 'recommendation']  // ('search' | 'recommendation')[]
+};
+
+// CORRECT: Single element array
+const request2 = {
+  placement_types: ['search']
+};
+
+// WRONG: This is NOT how the type works
+// placement_types: 'search'  // Error - must be array
+```
+
+### Type Definition Reference
+
+```typescript
+// createBidsMin parameter type
+interface BidsMinRequest {
+  advert_id: number;
+  nm_ids: number[];
+  payment_type: 'cpm' | 'cpc';
+  placement_types: ('combined' | 'search' | 'recommendation')[];  // Array!
+}
+
+// createSeacatSaveAd parameter type
+interface SeacatSaveAdRequest {
+  name: string;
+  nms: number[];
+  bid_type: 'manual' | 'unified';
+  placement_types?: ('search' | 'recommendations')[];  // Optional array
+}
+```
+
+### Version History
+
+- **v2.2.2** (December 2024): Fixed `getStatsKeywords()` parameters to be required; fixed array type definitions for `placement_types`
+- **v2.2.1** (December 2024): Fixed `getStatsKeywords()` URL and campaign types documentation
+
 ## See Also
 
 - [Tariffs Module](./commissions-fees.md) - For ROI calculations
 - [Best Practices](./best-practices.md) - General SDK best practices
 - [Troubleshooting](./troubleshooting.md) - Common issues
+- [Story 8.3: Promotion Type Fixes](/docs/stories/8.3.promotion-type-fixes.md) - Technical details of fixes
