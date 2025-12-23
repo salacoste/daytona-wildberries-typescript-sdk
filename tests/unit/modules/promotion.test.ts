@@ -336,7 +336,7 @@ describe('PromotionModule', () => {
         name: 'Search Campaign',
         nms: [12345],
         bid_type: 'manual' as const,
-        placement_types: ['recommendations'] as 'search' | 'recommendations'[],
+        placement_types: ['recommendations'] as ('search' | 'recommendations')[],
       };
 
       it('should call BaseClient.post with campaign configuration', async () => {
@@ -426,7 +426,7 @@ describe('PromotionModule', () => {
         advert_id: 123,
         nm_ids: [12345, 67890],
         payment_type: 'cpm' as const,
-        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[],
+        placement_types: ['recommendation'] as ('combined' | 'search' | 'recommendation')[],
       };
 
       const mockBidsResponse = {
@@ -544,7 +544,7 @@ describe('PromotionModule', () => {
             advert_id: 123,
             nm_ids: [12345],
             payment_type: 'cpm',
-            placement_types: 'search',
+            placement_types: ['search'],
           })
         ).rejects.toThrow(InvalidBidError);
       });

@@ -266,7 +266,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 12345,
         nm_ids: [111, 222],
         payment_type: 'cpm' as const,
-        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[],
+        placement_types: ['recommendation'] as ('combined' | 'search' | 'recommendation')[],
       };
 
       // Act
@@ -284,7 +284,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 88888,
         nm_ids: [111],
         payment_type: 'cpm' as const,
-        placement_types: 'search' as const,
+        placement_types: ['search'] as ('combined' | 'search' | 'recommendation')[],
       };
 
       // Act & Assert
@@ -330,7 +330,7 @@ describe('PromotionModule Integration Tests', () => {
         name: 'Manual Bid Campaign',
         nms: [12345],
         bid_type: 'manual' as const,
-        placement_types: 'search' as const,
+        placement_types: ['search'] as ('search' | 'recommendations')[],
       };
 
       // Act
@@ -429,7 +429,7 @@ describe('PromotionModule Integration Tests', () => {
         advert_id: 12345,
         nm_ids: [111, 222],
         payment_type: 'cpm',
-        placement_types: ['recommendation'] as 'combined' | 'search' | 'recommendation'[],
+        placement_types: ['recommendation'] as ('combined' | 'search' | 'recommendation')[],
       });
       expect(minBids.bids).toHaveLength(2);
 
@@ -438,7 +438,7 @@ describe('PromotionModule Integration Tests', () => {
         name: 'Complete Workflow Campaign',
         nms: [111, 222],
         bid_type: 'manual' as const,
-        placement_types: 'search' as const,
+        placement_types: ['search'] as ('search' | 'recommendations')[],
       });
       expect(campaignId).toBe(12345);
 

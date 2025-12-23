@@ -100,7 +100,7 @@ export class PromotionModule {
   const result = await sdk.general.createBidsMin({});
   console.log(result);
    */
-  async createBidsMin(data: { advert_id: number; nm_ids: number[]; payment_type: 'cpm' | 'cpc'; placement_types: 'combined' | 'search' | 'recommendation'[] }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
+  async createBidsMin(data: { advert_id: number; nm_ids: number[]; payment_type: 'cpm' | 'cpc'; placement_types: ('combined' | 'search' | 'recommendation')[] }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
     return this.client.post<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }>('https://advert-api.wildberries.ru/adv/v0/bids/min', data);
   }
 
@@ -138,7 +138,7 @@ export class PromotionModule {
   const result = await sdk.general.createSeacatSaveAd({});
   console.log(result);
    */
-  async createSeacatSaveAd(data?: { name?: string; nms?: number[]; bid_type?: 'manual' | 'unified'; placement_types?: 'search' | 'recommendations'[] }): Promise<number> {
+  async createSeacatSaveAd(data?: { name?: string; nms?: number[]; bid_type?: 'manual' | 'unified'; placement_types?: ('search' | 'recommendations')[] }): Promise<number> {
     return this.client.post<number>('https://advert-api.wildberries.ru/adv/v2/seacat/save-ad', data);
   }
 
