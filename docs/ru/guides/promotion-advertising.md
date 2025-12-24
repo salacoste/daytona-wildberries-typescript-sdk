@@ -467,7 +467,12 @@ if (unifiedStats.excluded) {
 }
 ```
 
-### Полная статистика кампании
+### Полная статистика кампании (getAdvFullstats)
+
+::: warning Строгий лимит запросов
+У этого эндпоинта очень строгие лимиты: **3 запроса в минуту** с интервалом **20 секунд**.
+При более частых вызовах получите ошибку 429.
+:::
 
 ```typescript
 const end = new Date();
@@ -475,9 +480,9 @@ const begin = new Date();
 begin.setDate(begin.getDate() - 7);
 
 const fullStats = await sdk.promotion.getAdvFullstats({
-  ids: String(campaignId),  // Можно передать несколько: "123,456,789"
+  ids: String(campaignId),  // Можно передать несколько: "123,456,789" (макс 100)
   beginDate: begin.toISOString().split('T')[0],
-  endDate: end.toISOString().split('T')[0]
+  endDate: end.toISOString().split('T')[0]  // Макс 31 день от beginDate
 });
 
 fullStats.forEach(stat => {
@@ -488,7 +493,109 @@ fullStats.forEach(stat => {
   console.log(`  CPC: ${stat.cpc}₽`);
   console.log(`  Заказы: ${stat.orders}`);
   console.log(`  Расход: ${stat.sum}₽`);
+
+  // Детализация по дням и платформам
+  stat.days.forEach(day => {
+    console.log(`  ${day.date}:`);
+    day.apps?.forEach(app => {
+      console.log(`    Платформа ${app.appType}: ${app.clicks} кликов, ${app.orders} заказов`);
+    });
+  });
 });
+```
+
+#### Пакетный запрос (несколько кампаний)
+
+Можно запросить статистику до 100 кампаний за один вызов:
+
+```typescript
+// Получить статистику по нескольким кампаниям сразу
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: '24483511,23332267,27052565',  // ID через запятую
+  beginDate: '2025-12-16',
+  endDate: '2025-12-22'
+});
+
+// Возвращает массив с данными по каждой кампании
+stats.forEach(s => {
+  console.log(`Кампания ${s.advertId}: ${s.clicks} кликов, ${s.sum}₽ потрачено`);
+});
+```
+
+#### С обработкой rate limit
+
+```typescript
+import { RateLimitError } from 'daytona-wildberries-typescript-sdk';
+
+const RATE_LIMIT_DELAY = 21000; // 21 секунда между запросами
+
+async function getStatsForCampaigns(campaignIds: number[]) {
+  const results = [];
+
+  for (const id of campaignIds) {
+    try {
+      const stats = await sdk.promotion.getAdvFullstats({
+        ids: String(id),
+        beginDate: '2025-12-16',
+        endDate: '2025-12-22'
+      });
+      results.push(...stats);
+
+      // Ждём перед следующим запросом
+      await new Promise(r => setTimeout(r, RATE_LIMIT_DELAY));
+
+    } catch (error) {
+      if (error instanceof RateLimitError) {
+        console.log(`Превышен лимит, ждём ${error.retryAfter}мс`);
+        await new Promise(r => setTimeout(r, error.retryAfter));
+        // Повторяем для этой кампании
+        campaignIds.push(id);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  return results;
+}
+```
+
+#### Структура ответа
+
+```typescript
+interface FullStatsResponse {
+  advertId: number;      // ID кампании
+  clicks: number;        // Всего кликов
+  views: number;         // Всего показов
+  ctr: number;           // Click-through rate %
+  cpc: number;           // Цена за клик ₽
+  orders: number;        // Всего заказов
+  sum: number;           // Всего потрачено ₽
+  atbs: number;          // Добавлений в корзину
+  cr: number;            // Конверсия
+  days: Array<{
+    date: string;        // "2025-12-17T00:00:00Z"
+    clicks: number;
+    views: number;
+    orders: number;
+    sum: number;
+    apps: Array<{        // Разбивка по платформам
+      appType: number;   // 1=сайт, 32=android, 64=ios
+      clicks: number;
+      views: number;
+      orders: number;
+      sum: number;
+      nms: Array<{       // Разбивка по товарам
+        nmId: number;
+        name: string;
+        clicks: number;
+        views: number;
+        orders: number;
+        sum: number;
+      }>;
+    }>;
+  }>;
+}
 ```
 
 ## Полный пример рабочего процесса
@@ -698,6 +805,47 @@ try {
 5. **Не удаётся удалить кампанию**
    - Удалять можно только кампании в статусе 4 (готова)
    - Используйте `getAdvStop()` для завершения других кампаний
+
+6. **getAdvFullstats возвращает null/undefined или зависает**
+
+   ::: danger Частая ошибка
+   Использование optional chaining с nullish coalescing скрывает ошибки:
+   ```typescript
+   // ❌ НЕПРАВИЛЬНО - Это поглощает ошибки и возвращает null
+   const response = await (sdk.promotion as any).getAdvFullstats?.({...})
+     ?? Promise.resolve(null);
+   ```
+   :::
+
+   **Почему это не работает:**
+   - Optional chaining `?.` возвращает `undefined` если метод не существует (но он существует!)
+   - Nullish coalescing `??` перехватывает ошибки и возвращает null
+   - Ошибки rate limit (429) проглатываются
+   - Нет видимости реальных ошибок
+
+   **Решение:**
+   ```typescript
+   // ✅ ПРАВИЛЬНО - Прямой вызов с обработкой ошибок
+   try {
+     const stats = await sdk.promotion.getAdvFullstats({
+       ids: String(campaignId),
+       beginDate: '2025-12-16',
+       endDate: '2025-12-22'
+     });
+     console.log('Статистика:', stats);
+   } catch (error) {
+     if (error instanceof RateLimitError) {
+       console.log('Превышен лимит, ожидание...');
+       await new Promise(r => setTimeout(r, error.retryAfter));
+       // Повторить запрос
+     } else {
+       console.error('Ошибка:', error.message);
+       throw error;
+     }
+   }
+   ```
+
+   **Помните:** У `getAdvFullstats` очень строгий лимит: 3 запроса в минуту с интервалом 20 секунд.
 
 ## Акции маркетплейса WB (Calendar API)
 

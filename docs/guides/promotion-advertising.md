@@ -467,7 +467,12 @@ if (unifiedStats.excluded) {
 }
 ```
 
-### Full Campaign Statistics
+### Full Campaign Statistics (getAdvFullstats)
+
+::: warning Strict Rate Limit
+This endpoint has very strict rate limits: **3 requests per minute** with **20 second intervals**.
+If you call it faster, you'll get 429 errors.
+:::
 
 ```typescript
 const end = new Date();
@@ -475,9 +480,9 @@ const begin = new Date();
 begin.setDate(begin.getDate() - 7);
 
 const fullStats = await sdk.promotion.getAdvFullstats({
-  ids: String(campaignId),  // Can pass multiple: "123,456,789"
+  ids: String(campaignId),  // Can pass multiple: "123,456,789" (max 100)
   beginDate: begin.toISOString().split('T')[0],
-  endDate: end.toISOString().split('T')[0]
+  endDate: end.toISOString().split('T')[0]  // Max 31 days from beginDate
 });
 
 fullStats.forEach(stat => {
@@ -488,7 +493,109 @@ fullStats.forEach(stat => {
   console.log(`  CPC: ${stat.cpc}₽`);
   console.log(`  Orders: ${stat.orders}`);
   console.log(`  Sum: ${stat.sum}₽`);
+
+  // Detailed breakdown by day and platform
+  stat.days.forEach(day => {
+    console.log(`  ${day.date}:`);
+    day.apps?.forEach(app => {
+      console.log(`    Platform ${app.appType}: ${app.clicks} clicks, ${app.orders} orders`);
+    });
+  });
 });
+```
+
+#### Batch Request (Multiple Campaigns)
+
+You can request statistics for up to 100 campaigns in a single call:
+
+```typescript
+// Get stats for multiple campaigns at once
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: '24483511,23332267,27052565',  // Comma-separated IDs
+  beginDate: '2025-12-16',
+  endDate: '2025-12-22'
+});
+
+// Returns array with data for each campaign
+stats.forEach(s => {
+  console.log(`Campaign ${s.advertId}: ${s.clicks} clicks, ${s.sum}₽ spent`);
+});
+```
+
+#### With Rate Limit Handling
+
+```typescript
+import { RateLimitError } from 'daytona-wildberries-typescript-sdk';
+
+const RATE_LIMIT_DELAY = 21000; // 21 seconds between requests
+
+async function getStatsForCampaigns(campaignIds: number[]) {
+  const results = [];
+
+  for (const id of campaignIds) {
+    try {
+      const stats = await sdk.promotion.getAdvFullstats({
+        ids: String(id),
+        beginDate: '2025-12-16',
+        endDate: '2025-12-22'
+      });
+      results.push(...stats);
+
+      // Wait before next request to avoid rate limit
+      await new Promise(r => setTimeout(r, RATE_LIMIT_DELAY));
+
+    } catch (error) {
+      if (error instanceof RateLimitError) {
+        console.log(`Rate limited, waiting ${error.retryAfter}ms`);
+        await new Promise(r => setTimeout(r, error.retryAfter));
+        // Retry this campaign
+        campaignIds.push(id);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  return results;
+}
+```
+
+#### Response Structure
+
+```typescript
+interface FullStatsResponse {
+  advertId: number;      // Campaign ID
+  clicks: number;        // Total clicks
+  views: number;         // Total views
+  ctr: number;           // Click-through rate %
+  cpc: number;           // Cost per click ₽
+  orders: number;        // Total orders
+  sum: number;           // Total spent ₽
+  atbs: number;          // Add to basket count
+  cr: number;            // Conversion rate
+  days: Array<{
+    date: string;        // "2025-12-17T00:00:00Z"
+    clicks: number;
+    views: number;
+    orders: number;
+    sum: number;
+    apps: Array<{        // Breakdown by platform
+      appType: number;   // 1=site, 32=android, 64=ios
+      clicks: number;
+      views: number;
+      orders: number;
+      sum: number;
+      nms: Array<{       // Breakdown by product
+        nmId: number;
+        name: string;
+        clicks: number;
+        views: number;
+        orders: number;
+        sum: number;
+      }>;
+    }>;
+  }>;
+}
 ```
 
 ## Complete Workflow Example
@@ -698,6 +805,52 @@ try {
 5. **Cannot delete campaign**
    - Only campaigns in status 4 (ready) can be deleted
    - Use `getAdvStop()` to finish other campaigns
+
+6. **getAdvFullstats returns null/undefined or hangs**
+
+   ::: danger Common Mistake
+   Using optional chaining with nullish coalescing hides errors:
+   ```typescript
+   // ❌ WRONG - This swallows errors and returns null
+   const response = await (sdk.promotion as any).getAdvFullstats?.({...})
+     ?? Promise.resolve(null);
+   ```
+   :::
+
+   **Causes:**
+   - Optional chaining `?.` returns undefined if method doesn't exist
+   - Nullish coalescing `??` catches that and returns null
+   - Rate limit errors (429) are swallowed, not surfaced
+   - You never see the actual error
+
+   **Solution:**
+   ```typescript
+   // ✅ CORRECT - Proper error handling
+   try {
+     const stats = await sdk.promotion.getAdvFullstats({
+       ids: String(campaignId),
+       beginDate: '2025-12-16',
+       endDate: '2025-12-22'
+     });
+     console.log(stats);
+   } catch (error) {
+     if (error instanceof RateLimitError) {
+       // Wait and retry - endpoint allows only 3 req/min
+       await new Promise(r => setTimeout(r, 21000));
+     }
+     throw error;
+   }
+   ```
+
+   **Rate Limits for this endpoint:**
+   | Period | Limit | Interval |
+   |--------|-------|----------|
+   | 1 minute | 3 requests | 20 seconds |
+
+7. **getAdvFullstats returns empty array**
+   - Check campaign status is 7, 9, or 11 (method works only for these)
+   - Verify date range doesn't exceed 31 days
+   - Ensure campaign had activity during the requested period
 
 ## TypeScript Type Notes
 
