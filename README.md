@@ -84,6 +84,15 @@ console.log('Total campaigns:', campaigns.all);
 // Get advertising balance
 const advBalance = await sdk.promotion.getAdvBalance();
 console.log('Ad cabinet balance:', advBalance.net);
+
+// Get customer chat list with last messages (NEW in v2.3.2)
+const chats = await sdk.communications.getSellerChats();
+console.log('Active chats:', chats.result?.length);
+chats.result?.forEach(chat => {
+  if (chat.lastMessage) {
+    console.log(`${chat.clientName}: "${chat.lastMessage.text}"`);
+  }
+});
 ```
 
 **Time to First API Call:** <5 minutes 🚀
@@ -101,6 +110,7 @@ console.log('Ad cabinet balance:', advBalance.net);
 - **[Best Practices](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/best-practices)** - Production patterns
 - **[Performance Tuning](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/performance)** - Optimization guide
 - **[Security](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/security)** - Secure integration
+- **[Communications](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/communications)** - Customer chat, Q&A, and reviews
 - **[Promotion & Advertising](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/promotion-advertising)** - Campaign management
 - **[Troubleshooting](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/troubleshooting)** - Common issues
 
@@ -117,7 +127,7 @@ All 11 Wildberries API modules are fully supported with 100% API coverage:
 | **Finances** | Balance, transactions, reports, payouts |
 | **Analytics** | Sales funnel, search queries, stock history, CSV reports |
 | **Reports** | Income reports, sales reports, data exports |
-| **Communications** | Customer chat, Q&A, reviews management |
+| **Communications** | Customer chat with real-time messaging, product Q&A, reviews and ratings management, chat previews with last messages |
 | **Promotion** | Campaigns, promo codes, advertising |
 | **Tariffs** | Commission rates, fee schedules |
 | **In-Store Pickup** | Pickup point orders and management |
@@ -222,6 +232,15 @@ console.log('Всего кампаний:', campaigns.all);
 // Баланс рекламного кабинета
 const advBalance = await sdk.promotion.getAdvBalance();
 console.log('Баланс рекл. кабинета:', advBalance.net);
+
+// Список чатов с клиентами и последними сообщениями (НОВОЕ в v2.3.2)
+const chats = await sdk.communications.getSellerChats();
+console.log('Активные чаты:', chats.result?.length);
+chats.result?.forEach(chat => {
+  if (chat.lastMessage) {
+    console.log(`${chat.clientName}: "${chat.lastMessage.text}"`);
+  }
+});
 ```
 
 **Время до первого API вызова:** <5 минут 🚀
@@ -239,6 +258,7 @@ console.log('Баланс рекл. кабинета:', advBalance.net);
 - **[Лучшие Практики](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/best-practices)** - Production паттерны
 - **[Настройка Производительности](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/performance)** - Оптимизация
 - **[Безопасность](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/security)** - Безопасная интеграция
+- **[Коммуникации](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/communications)** - Чат с клиентами, вопросы-ответы и отзывы
 - **[Реклама (Promotion)](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/promotion-advertising)** - Управление кампаниями
 - **[Устранение Неполадок](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/troubleshooting)** - Распространенные проблемы
 
@@ -255,7 +275,7 @@ console.log('Баланс рекл. кабинета:', advBalance.net);
 | **Finances** | Баланс, транзакции, отчеты, выплаты |
 | **Analytics** | Воронка продаж, поисковые запросы, история запасов, CSV отчеты |
 | **Reports** | Отчеты о доходах, отчеты о продажах, экспорт данных |
-| **Communications** | Чат с клиентами, вопросы-ответы, управление отзывами |
+| **Communications** | Чат с клиентами в реальном времени, вопросы-ответы по товарам, управление отзывами и рейтингами, предпросмотр чатов с последними сообщениями |
 | **Promotion** | Кампании, промокоды, реклама |
 | **Tariffs** | Ставки комиссий, тарифные планы |
 | **In-Store Pickup** | Заказы с самовывозом и управление |
