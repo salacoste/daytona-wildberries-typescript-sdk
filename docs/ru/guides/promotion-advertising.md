@@ -598,6 +598,109 @@ interface FullStatsResponse {
 }
 ```
 
+#### Извлечение статистики по SKU (nmId)
+
+Данные `nmId` находятся во вложенной структуре `days → apps → nms`. Вот как их извлечь:
+
+```typescript
+import type {
+  FullStatsNmItem,
+  FullStatsAppItem
+} from 'daytona-wildberries-typescript-sdk';
+
+// Получаем полную статистику
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: String(campaignId),
+  beginDate: '2025-12-16',
+  endDate: '2025-12-22'
+});
+
+// Извлекаем статистику по SKU за все дни и платформы
+interface SkuStats {
+  nmId: number;
+  name: string;
+  totalClicks: number;
+  totalViews: number;
+  totalOrders: number;
+  totalSpent: number;
+}
+
+const skuMap = new Map<number, SkuStats>();
+
+for (const campaign of stats) {
+  for (const day of campaign.days) {
+    for (const app of day.apps) {
+      for (const nm of app.nms) {
+        const existing = skuMap.get(nm.nmId) || {
+          nmId: nm.nmId,
+          name: nm.name,
+          totalClicks: 0,
+          totalViews: 0,
+          totalOrders: 0,
+          totalSpent: 0
+        };
+
+        existing.totalClicks += nm.clicks;
+        existing.totalViews += nm.views;
+        existing.totalOrders += nm.orders;
+        existing.totalSpent += nm.sum;
+
+        skuMap.set(nm.nmId, existing);
+      }
+    }
+  }
+}
+
+// Выводим разбивку по SKU
+for (const [nmId, stats] of skuMap) {
+  console.log(`Артикул ${nmId} (${stats.name}):`);
+  console.log(`  Клики: ${stats.totalClicks}`);
+  console.log(`  Показы: ${stats.totalViews}`);
+  console.log(`  Заказы: ${stats.totalOrders}`);
+  console.log(`  Потрачено: ${stats.totalSpent}₽`);
+}
+```
+
+#### Статистика по платформам и SKU
+
+```typescript
+// Названия платформ для отображения
+const PLATFORMS: Record<number, string> = {
+  1: 'Сайт',
+  32: 'Android',
+  64: 'iOS'
+};
+
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: String(campaignId),
+  beginDate: '2025-12-16',
+  endDate: '2025-12-22'
+});
+
+for (const campaign of stats) {
+  console.log(`\n=== Кампания ${campaign.advertId} ===`);
+
+  for (const day of campaign.days) {
+    console.log(`\nДата: ${day.date}`);
+
+    for (const app of day.apps) {
+      console.log(`  ${PLATFORMS[app.appType] || app.appType}:`);
+
+      for (const nm of app.nms) {
+        console.log(`    Арт. ${nm.nmId}: ${nm.clicks} кликов, ${nm.orders} заказов, ${nm.sum}₽`);
+      }
+    }
+  }
+}
+```
+
+::: tip Типы TypeScript
+SDK экспортирует полностью типизированные интерфейсы для данных по SKU:
+- `FullStatsNmItem` - статистика по артикулу (nmId, name, clicks и т.д.)
+- `FullStatsAppItem` - статистика по платформе с массивом `nms`
+- `FullStatsDayItem` - статистика за день с массивом `apps`
+:::
+
 ## Полный пример рабочего процесса
 
 ```typescript

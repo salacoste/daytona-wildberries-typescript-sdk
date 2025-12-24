@@ -767,14 +767,127 @@ export interface FullStatsItem {
 }
 
 /**
+ * Статистика по артикулу WB (nmId)
+ */
+export interface FullStatsNmItem {
+  /** Артикул WB (nmId) */
+  nmId: number;
+  /** Название товара */
+  name: string;
+  /** Количество добавлений в корзину */
+  atbs: number;
+  /** Отмены, шт. */
+  canceled: number;
+  /** Количество кликов */
+  clicks: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc: number;
+  /** CR (conversion rate) */
+  cr: number;
+  /** CTR (click-through rate), % */
+  ctr: number;
+  /** Количество заказов */
+  orders: number;
+  /** Количество заказанных товаров, шт. */
+  shks: number;
+  /** Затраты, ₽ */
+  sum: number;
+  /** Сумма заказов, ₽ */
+  sum_price: number;
+  /** Количество просмотров */
+  views: number;
+}
+
+/**
+ * Статистика по платформе (сайт, Android, iOS)
+ */
+export interface FullStatsAppItem {
+  /**
+   * Тип платформы:
+   * - 1 — сайт
+   * - 32 — Android
+   * - 64 — iOS
+   */
+  appType: 1 | 32 | 64;
+  /** Статистика по артикулам WB */
+  nms: FullStatsNmItem[];
+  /** Количество добавлений в корзину */
+  atbs: number;
+  /** Отмены, шт. */
+  canceled: number;
+  /** Количество кликов */
+  clicks: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc: number;
+  /** CR (conversion rate) */
+  cr: number;
+  /** CTR (click-through rate), % */
+  ctr: number;
+  /** Количество заказов */
+  orders: number;
+  /** Количество заказанных товаров, шт. */
+  shks: number;
+  /** Затраты, ₽ */
+  sum: number;
+  /** Сумма заказов, ₽ */
+  sum_price: number;
+  /** Количество просмотров */
+  views: number;
+}
+
+/**
+ * Статистика за один день
+ */
+export interface FullStatsDayItem {
+  /** Дата в формате ISO 8601 (например, "2025-09-07") */
+  date: string;
+  /** Статистика по платформам (сайт, Android, iOS) */
+  apps: FullStatsAppItem[];
+  /** Количество добавлений в корзину */
+  atbs: number;
+  /** Отмены, шт. */
+  canceled: number;
+  /** Количество кликов */
+  clicks: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc: number;
+  /** CR (conversion rate) */
+  cr: number;
+  /** CTR (click-through rate), % */
+  ctr: number;
+  /** Количество заказов */
+  orders: number;
+  /** Количество заказанных товаров, шт. */
+  shks: number;
+  /** Затраты, ₽ */
+  sum: number;
+  /** Сумма заказов, ₽ */
+  sum_price: number;
+  /** Количество просмотров */
+  views: number;
+}
+
+/**
  * Статистка по дням
  */
-export type DaysV3 = unknown;
+export type DaysV3 = FullStatsDayItem[];
+
+/**
+ * Элемент статистики бустера
+ */
+export interface BoosterStatsItemV3 {
+  /** Средняя позиция товара */
+  avg_position: number;
+  /** Дата */
+  date: string;
+  /** Артикул WB (nmId) */
+  nm: number;
+}
 
 /**
  * Статистика по средней позиции товара (для кампаний с единой ставкой)
  */
-export type BoosterStatsV3 = unknown;
+export type BoosterStatsV3 = BoosterStatsItemV3[];
 
 /**
  * Ошибка

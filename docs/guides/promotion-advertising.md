@@ -598,6 +598,109 @@ interface FullStatsResponse {
 }
 ```
 
+#### Extracting SKU-Level Statistics
+
+The `nmId` data is nested inside `days → apps → nms`. Here's how to extract it:
+
+```typescript
+import type {
+  FullStatsNmItem,
+  FullStatsAppItem
+} from 'daytona-wildberries-typescript-sdk';
+
+// Get full statistics
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: String(campaignId),
+  beginDate: '2025-12-16',
+  endDate: '2025-12-22'
+});
+
+// Extract all SKU-level stats across all days and platforms
+interface SkuStats {
+  nmId: number;
+  name: string;
+  totalClicks: number;
+  totalViews: number;
+  totalOrders: number;
+  totalSpent: number;
+}
+
+const skuMap = new Map<number, SkuStats>();
+
+for (const campaign of stats) {
+  for (const day of campaign.days) {
+    for (const app of day.apps) {
+      for (const nm of app.nms) {
+        const existing = skuMap.get(nm.nmId) || {
+          nmId: nm.nmId,
+          name: nm.name,
+          totalClicks: 0,
+          totalViews: 0,
+          totalOrders: 0,
+          totalSpent: 0
+        };
+
+        existing.totalClicks += nm.clicks;
+        existing.totalViews += nm.views;
+        existing.totalOrders += nm.orders;
+        existing.totalSpent += nm.sum;
+
+        skuMap.set(nm.nmId, existing);
+      }
+    }
+  }
+}
+
+// Print SKU breakdown
+for (const [nmId, stats] of skuMap) {
+  console.log(`SKU ${nmId} (${stats.name}):`);
+  console.log(`  Clicks: ${stats.totalClicks}`);
+  console.log(`  Views: ${stats.totalViews}`);
+  console.log(`  Orders: ${stats.totalOrders}`);
+  console.log(`  Spent: ${stats.totalSpent}₽`);
+}
+```
+
+#### Stats by Platform and SKU
+
+```typescript
+// Platform names for display
+const PLATFORMS: Record<number, string> = {
+  1: 'Website',
+  32: 'Android',
+  64: 'iOS'
+};
+
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: String(campaignId),
+  beginDate: '2025-12-16',
+  endDate: '2025-12-22'
+});
+
+for (const campaign of stats) {
+  console.log(`\n=== Campaign ${campaign.advertId} ===`);
+
+  for (const day of campaign.days) {
+    console.log(`\nDate: ${day.date}`);
+
+    for (const app of day.apps) {
+      console.log(`  ${PLATFORMS[app.appType] || app.appType}:`);
+
+      for (const nm of app.nms) {
+        console.log(`    SKU ${nm.nmId}: ${nm.clicks} clicks, ${nm.orders} orders, ${nm.sum}₽`);
+      }
+    }
+  }
+}
+```
+
+::: tip TypeScript Types
+The SDK exports fully typed interfaces for SKU-level data:
+- `FullStatsNmItem` - SKU statistics (nmId, name, clicks, etc.)
+- `FullStatsAppItem` - Platform statistics with `nms` array
+- `FullStatsDayItem` - Daily statistics with `apps` array
+:::
+
 ## Complete Workflow Example
 
 ```typescript
