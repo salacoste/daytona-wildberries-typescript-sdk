@@ -170,6 +170,16 @@ export type ResponseFeedback = {
   childFeedbackId?: string;
 }[];
 
+/**
+ * Информация о последнем сообщении в чате
+ */
+export interface LastMessage {
+  /** Текст сообщения */
+  text?: string;
+  /** Время сообщения в формате Unix timestamp (миллисекунды) */
+  addTimestamp?: number;
+}
+
 export interface Chat {
   /** ID чата */
   chatID?: string;
@@ -180,6 +190,7 @@ export interface Chat {
   /** Имя покупателя */
   clientName?: string;
   goodCard?: GoodCard;
+  lastMessage?: LastMessage;
 }
 
 export interface ChatsResponse {

@@ -2270,6 +2270,10 @@ paths:
       description: |
         Метод возвращает список всех чатов продавца. По этим данным можно получить [события чатов](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get) или [отправить сообщение покупателю](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post).
 
+        В ответе добавлен объект `lastMessage` с информацией о последнем сообщении в чате:
+        - `text` — текст сообщения
+        - `addTimestamp` — время сообщения в формате Unix timestamp (миллисекунды)
+
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
@@ -3234,6 +3238,21 @@ components:
           example: Иван
         goodCard:
           $ref: '#/components/schemas/GoodCard'
+        lastMessage:
+          $ref: '#/components/schemas/LastMessage'
+    LastMessage:
+      type: object
+      description: Информация о последнем сообщении в чате
+      properties:
+        text:
+          type: string
+          description: Текст сообщения
+          example: Можно заказать 100 штук?
+        addTimestamp:
+          type: integer
+          format: int64
+          description: Время сообщения в формате Unix timestamp (миллисекунды)
+          example: 1766138234889
     ChatsResponse:
       type: object
       properties:
