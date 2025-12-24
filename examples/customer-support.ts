@@ -2,9 +2,11 @@
  * Customer Support - Complete Communications Module Example
  *
  * This comprehensive example demonstrates complete customer communication workflows:
- * - Customer chat messaging (real-time event polling)
+ * - Customer chat messaging (real-time event polling with last message preview)
  * - Product Q&A management (answer customer questions)
  * - Customer reviews management (respond to feedback)
+ *
+ * **NEW in v2.3.2:** Chat list now includes lastMessage field with message preview and timestamp
  *
  * **Complexity**: 🟢 Beginner
  * **Estimated Time**: 15 minutes
@@ -31,6 +33,8 @@
  *   Customer: John Doe (ID: 12345)
  *   Product: nmID 987654
  *   Order: WB-ORDER-123
+ *   Last Message: "Спасибо за быструю доставку!"
+ *   Sent: 24.12.2025, 10:17:10 (2 hours ago)
  *
  * === Example 2: Poll for New Events ===
  * Processing 15 events (3 new messages, 2 file attachments, 10 system events)
@@ -96,6 +100,28 @@ const sdk = new WildberriesSDK({
 });
 
 /**
+ * Helper function: Format time ago
+ * Converts timestamp to human-readable relative time (e.g., "2 hours ago")
+ */
+function getTimeAgo(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return 'just now';
+  if (diffMins === 1) return '1 minute ago';
+  if (diffMins < 60) return `${diffMins} minutes ago`;
+  if (diffHours === 1) return '1 hour ago';
+  if (diffHours < 24) return `${diffHours} hours ago`;
+  if (diffDays === 1) return '1 day ago';
+  if (diffDays < 7) return `${diffDays} days ago`;
+
+  return date.toLocaleDateString('ru-RU');
+}
+
+/**
  * Example 1: Get all active chats
  *
  * Retrieves all chat conversations with customers.
@@ -125,6 +151,14 @@ async function getAllChats() {
         console.log(`  Order: ${chat.goodCard.rid}`);
         console.log(`  Price: ${chat.goodCard.price} ${chat.goodCard.priceCurrency}`);
         console.log(`  Status: ${chat.goodCard.statusID}`);
+      }
+
+      // NEW: Display last message (added in v2.3.2)
+      if (chat.lastMessage) {
+        const date = new Date(chat.lastMessage.addTimestamp!);
+        const timeAgo = getTimeAgo(date);
+        console.log(`  Last Message: "${chat.lastMessage.text?.substring(0, 50)}${(chat.lastMessage.text?.length ?? 0) > 50 ? '...' : ''}"`);
+        console.log(`  Sent: ${date.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })} (${timeAgo})`);
       }
 
       console.log('');
