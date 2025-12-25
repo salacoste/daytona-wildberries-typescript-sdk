@@ -5,6 +5,82 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2025-12-25
+
+### ⚠️ CRITICAL - Wildberries API Deprecation Notice
+
+**Four Promotion API methods will be disabled on February 2, 2026**
+
+Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (custom/standard bid) campaigns. The following methods are now deprecated:
+
+- `getAutoGetnmtoadd()` - List of Product Cards
+- `createAutoUpdatenm()` - Update Product Cards
+- `getAutoStatWords()` - Statistics by Phrase Clusters
+- `createAutoSetExcluded()` - Set/Remove Minus-Phrases
+
+**Migration Time**: 30-60 minutes | **Deadline**: February 2, 2026 (6 weeks from today)
+
+### Added
+
+#### Documentation
+- **Comprehensive Migration Guide** (`docs/guides/migration-v2.4-promotion-deprecation.md`)
+  - Quick Start: 3-step migration process with time estimates
+  - 6 Common Migration Patterns with complete code examples
+  - Type 8 vs Type 9 campaign comparison table
+  - Migration checklist with recommended timeline
+  - Before/after code examples for all deprecated methods
+- **GitHub Pages Updates** - Added practical migration instructions to homepage (English + Russian)
+  - 3-step quick migration directly in warning box
+  - Link to complete migration guide in sidebar navigation
+  - Updated Promotion module documentation with migration requirements
+- **Story 9.10** - Promotion API deprecation documentation (`docs/stories/9.10.promotion-api-deprecation-documentation.md`)
+  - Complete implementation timeline and decisions
+  - Testing verification and IDE support validation
+  - Impact analysis and lessons learned
+- **README Updates** - Critical warning sections (English + Russian)
+  - Prominent deprecation notice after Features section
+  - Updated API modules table with migration link
+  - Action required notice with deadline
+
+#### CI/CD
+- **Standalone Documentation Deployment** (`.github/workflows/docs.yml`)
+  - Independent workflow for documentation deployment
+  - Triggers on `docs/**` changes and manual dispatch
+  - Bypasses main CI/CD test requirements
+  - Ensures documentation deploys even during test failures
+
+### Changed
+
+#### Promotion Module
+- **@deprecated JSDoc tags** added to all 4 deprecated methods
+  - IDE warnings with strikethrough in autocomplete
+  - Russian deprecation messages with correct February 2, 2026 date
+  - Migration suggestions in JSDoc comments
+  - Links to replacement methods for type 9 campaigns
+
+#### OpenAPI Specification
+- **Deprecation warnings** added to `wildberries_api_doc/08-promotion.yaml`
+  - All 4 endpoints marked with `deprecated: true`
+  - Detailed Russian deprecation notices with migration paths
+  - Correct February 2, 2026 shutdown date
+
+### Fixed
+
+#### Critical Date Corrections
+- **All deprecation dates corrected from 2025 to 2026** (63 occurrences)
+  - OpenAPI specification: February 2, 2025 → February 2, 2026
+  - SDK code: @deprecated messages updated
+  - All documentation: README, migration guide, architecture docs, GitHub Pages
+  - Story documentation: timeline tables and references
+
+#### Architecture Documentation
+- **Comprehensive deprecation notice section** added to `docs/architecture.md`
+  - All 4 deprecated methods documented with migration paths
+  - Version updated to 1.1 with changelog entry
+  - SDK implementation details and IDE support documentation
+
+---
+
 ## [2.2.2] - 2025-12-23
 
 ### Added
