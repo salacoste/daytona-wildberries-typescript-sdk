@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: View API Reference
       link: /api/
+    - theme: warning
+      text: ⚠️ API Deprecation Notice
+      link: /guides/migration-v2.4-promotion-deprecation
 
 features:
   - icon: 🔒
@@ -56,6 +59,25 @@ console.log(categories);
 ```
 
 **👉 [Complete 5-Minute Quickstart Guide](/getting-started/quickstart)**
+
+---
+
+## ⚠️ Critical API Update - February 2, 2025
+
+:::danger WILDBERRIES API DEPRECATION NOTICE
+**Four Promotion API methods will be disabled on February 2, 2025**
+
+Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (custom/standard bid) campaigns. The following methods will stop working:
+
+- `getAutoGetnmtoadd()` - List of Product Cards
+- `createAutoUpdatenm()` - Update Product Cards
+- `getAutoStatWords()` - Statistics by Phrase Clusters
+- `createAutoSetExcluded()` - Set/Remove Minus-Phrases
+
+**Action Required:** Migrate to type 9 campaign methods before the deadline.
+
+📖 **[Complete Migration Guide →](/guides/migration-v2.4-promotion-deprecation)**
+:::
 
 ---
 
@@ -165,7 +187,7 @@ All 11 Wildberries API modules fully supported:
 | **Analytics** | 100% | Sales funnel, search queries, CSV exports |
 | **Reports** | 100% | Income reports, sales reports, data exports |
 | **Communications** | 100% | Customer chat, Q&A, reviews management |
-| **Promotion** | 100% | Campaigns, promo codes, advertising |
+| **Promotion** | 100% | Campaigns, promo codes, advertising ⚠️ **[Migration Required](/guides/migration-v2.4-promotion-deprecation)** |
 | **Tariffs** | 100% | Commission rates, fee schedules |
 | **In-Store Pickup** | 100% | Pickup point orders and management |
 

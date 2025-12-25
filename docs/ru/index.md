@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: Справочник API
       link: /api/
+    - theme: warning
+      text: ⚠️ Уведомление об устаревании API
+      link: /guides/migration-v2.4-promotion-deprecation
 
 features:
   - icon: 🔒
@@ -56,6 +59,25 @@ console.log(categories);
 ```
 
 **👉 [Полное руководство за 5 минут](/ru/getting-started/quickstart)**
+
+---
+
+## ⚠️ Критическое Обновление API - 2 февраля 2025
+
+:::danger УВЕДОМЛЕНИЕ ОБ УСТАРЕВАНИИ WILDBERRIES API
+**Четыре метода Promotion API будут отключены 2 февраля 2025**
+
+Wildberries переходит от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9). Следующие методы перестанут работать:
+
+- `getAutoGetnmtoadd()` - Список карточек товаров
+- `createAutoUpdatenm()` - Обновление карточек товаров
+- `getAutoStatWords()` - Статистика по кластерам фраз
+- `createAutoSetExcluded()` - Установка/удаление минус-фраз
+
+**Требуется действие:** Перейдите на методы кампаний type 9 до указанного срока.
+
+📖 **[Полное Руководство по Миграции →](/guides/migration-v2.4-promotion-deprecation)**
+:::
 
 ---
 
@@ -165,7 +187,7 @@ console.log(categories);
 | **Analytics** | 100% | Воронка продаж, поисковые запросы, CSV экспорт |
 | **Reports** | 100% | Отчеты о доходах, отчеты о продажах, экспорт данных |
 | **Communications** | 100% | Чат с клиентами, вопросы и ответы, управление отзывами |
-| **Promotion** | 100% | Кампании, промо-коды, реклама |
+| **Promotion** | 100% | Кампании, промо-коды, реклама ⚠️ **[Требуется Миграция](/guides/migration-v2.4-promotion-deprecation)** |
 | **Tariffs** | 100% | Комиссионные ставки, расписание сборов |
 | **In-Store Pickup** | 100% | Заказы и управление пунктами выдачи |
 

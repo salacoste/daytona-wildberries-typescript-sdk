@@ -125,6 +125,7 @@ export default defineConfig({
             text: 'Guides',
             items: [
               { text: 'Overview', link: '/guides/' },
+              { text: '⚠️ Migration v2.4 - Promotion API Deprecation', link: '/guides/migration-v2.4-promotion-deprecation' },
               { text: 'Migration v2.2 → v2.3', link: '/guides/migration-v2.3' },
               { text: 'Best Practices', link: '/guides/best-practices' },
               { text: 'Performance Tuning', link: '/guides/performance' },
@@ -286,6 +287,7 @@ export default defineConfig({
             text: 'Руководства',
             items: [
               { text: 'Обзор', link: '/ru/guides/' },
+              { text: '⚠️ Миграция v2.4 - Устаревание Promotion API', link: '/guides/migration-v2.4-promotion-deprecation' },
               { text: 'Миграция v2.2 → v2.3', link: '/ru/guides/migration-v2.3' },
               { text: 'Лучшие практики', link: '/ru/guides/best-practices' },
               { text: 'Настройка производительности', link: '/ru/guides/performance' },
