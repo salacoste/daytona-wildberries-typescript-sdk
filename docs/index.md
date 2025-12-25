@@ -74,9 +74,30 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 - `getAutoStatWords()` - Statistics by Phrase Clusters
 - `createAutoSetExcluded()` - Set/Remove Minus-Phrases
 
-**Action Required:** Migrate to type 9 campaign methods before the deadline.
+**⏱️ Migration Time: 30-60 minutes** | **⏰ Deadline: February 2, 2026** (6 weeks from today)
 
-📖 **[Complete Migration Guide →](/guides/migration-v2.4-promotion-deprecation)**
+### Quick Migration Steps:
+
+**1. Check Your Campaigns** (2 min):
+```typescript
+const campaigns = await sdk.promotion.getPromotionCount();
+const type8 = campaigns.adverts?.filter(c => c.type === 8) || [];
+console.log(`⚠️  Type 8 campaigns to migrate: ${type8.length}`);
+```
+
+**2. Update Your Code** (10-30 min):
+```typescript
+// ❌ OLD (Type 8)
+const products = await sdk.promotion.getAutoGetnmtoadd({ id: campaignId });
+
+// ✅ NEW (Type 9)
+const campaigns = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
+const products = campaigns.adverts?.[0]?.nms || [];
+```
+
+**3. Test & Deploy** (15 min)
+
+📖 **[Complete Migration Guide with 6 Practical Examples →](/guides/migration-v2.4-promotion-deprecation)**
 :::
 
 ---

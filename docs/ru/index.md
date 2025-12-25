@@ -74,9 +74,30 @@ Wildberries переходит от кампаний с единой ставк�
 - `getAutoStatWords()` - Статистика по кластерам фраз
 - `createAutoSetExcluded()` - Установка/удаление минус-фраз
 
-**Требуется действие:** Перейдите на методы кампаний type 9 до указанного срока.
+**⏱️ Время миграции: 30-60 минут** | **⏰ Дедлайн: 2 февраля 2026** (6 недель от сегодня)
 
-📖 **[Полное Руководство по Миграции →](/guides/migration-v2.4-promotion-deprecation)**
+### Быстрая Миграция:
+
+**1. Проверьте Ваши Кампании** (2 мин):
+```typescript
+const campaigns = await sdk.promotion.getPromotionCount();
+const type8 = campaigns.adverts?.filter(c => c.type === 8) || [];
+console.log(`⚠️  Кампаний type 8 для миграции: ${type8.length}`);
+```
+
+**2. Обновите Код** (10-30 мин):
+```typescript
+// ❌ СТАРЫЙ КОД (Type 8)
+const products = await sdk.promotion.getAutoGetnmtoadd({ id: campaignId });
+
+// ✅ НОВЫЙ КОД (Type 9)
+const campaigns = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
+const products = campaigns.adverts?.[0]?.nms || [];
+```
+
+**3. Тестирование и Развертывание** (15 мин)
+
+📖 **[Полное Руководство с 6 Практическими Примерами →](/guides/migration-v2.4-promotion-deprecation)**
 :::
 
 ---

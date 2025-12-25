@@ -12,6 +12,98 @@ Wildberries is transitioning from standard bid campaigns (type 8) to campaigns w
 
 ---
 
+## Quick Start: How to Migrate in 3 Steps
+
+### Step 1: Identify Type 8 Campaigns (2 minutes)
+
+Run this script to find all type 8 campaigns in your account:
+
+```typescript
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
+
+const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
+
+async function findType8Campaigns() {
+  const campaigns = await sdk.promotion.getPromotionCount();
+
+  const type8 = campaigns.adverts?.filter(advert => advert.type === 8) || [];
+  const type9 = campaigns.adverts?.filter(advert => advert.type === 9) || [];
+
+  console.log(`\n📊 Campaign Analysis:`);
+  console.log(`✅ Type 9 campaigns (safe): ${type9.length}`);
+  console.log(`⚠️  Type 8 campaigns (need migration): ${type8.length}\n`);
+
+  if (type8.length > 0) {
+    console.log('Type 8 campaigns that need migration:');
+    type8.forEach(camp => {
+      console.log(`  - Campaign ID ${camp.advertId}: ${camp.name || 'Unnamed'}`);
+    });
+    console.log(`\n⏰ Deadline: February 2, 2026\n`);
+  } else {
+    console.log('✅ All your campaigns are already type 9. No migration needed!');
+  }
+
+  return type8;
+}
+
+// Run the check
+findType8Campaigns();
+```
+
+### Step 2: Update Your Code (10-30 minutes)
+
+Replace deprecated methods in your codebase:
+
+```bash
+# Search for deprecated methods in your project
+grep -r "getAutoGetnmtoadd\|createAutoUpdatenm\|getAutoStatWords\|createAutoSetExcluded" ./src
+```
+
+**Quick replacement guide**:
+
+| Deprecated Method | Replace With | Time Required |
+|-------------------|--------------|---------------|
+| `getAutoGetnmtoadd()` | `getAuctionAdverts()` | 2 min |
+| `createAutoUpdatenm()` | `updateAuctionNm()` | 5 min |
+| `getAutoStatWords()` | `getAdvFullstats()` | 10 min |
+| `createAutoSetExcluded()` | Type 9 campaign creation | 15 min |
+
+### Step 3: Test and Deploy (15 minutes)
+
+```typescript
+// Test your migrated code
+async function testMigration() {
+  const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
+
+  // ✅ Test: Fetch campaign info (replaces getAutoGetnmtoadd)
+  const campaigns = await sdk.promotion.getAuctionAdverts({
+    id: [your_campaign_id]
+  });
+  console.log('✅ Campaign fetch works:', campaigns.adverts?.[0]?.name);
+
+  // ✅ Test: Update products (replaces createAutoUpdatenm)
+  await sdk.promotion.updateAuctionNm({
+    nms: [{
+      advert_id: your_campaign_id,
+      nms: { add: [product_id_to_add] }
+    }]
+  });
+  console.log('✅ Product update works');
+
+  // ✅ Test: Get statistics (replaces getAutoStatWords)
+  const stats = await sdk.promotion.getAdvFullstats({
+    ids: String(your_campaign_id),
+    beginDate: '2026-01-01',
+    endDate: '2026-01-31'
+  });
+  console.log('✅ Statistics fetch works:', stats);
+}
+```
+
+**Total migration time: 30-60 minutes** for most projects.
+
+---
+
 ## Deprecated Methods
 
 ### 1. `getAutoGetnmtoadd()` - List of Product Cards
@@ -203,6 +295,239 @@ sdk.promotion.getAutoStatWords({ id: 123 });
 | **February 2, 2026** | **All 4 methods will be disabled** |
 
 **Recommendation**: Migrate **before January 31, 2025** to allow buffer time for testing.
+
+---
+
+## Common Migration Patterns
+
+### Pattern 1: Fetching Campaign Products
+
+**Scenario**: You need to get the list of products in a campaign.
+
+```typescript
+// ❌ OLD CODE (Type 8)
+async function getCampaignProducts(campaignId: number) {
+  const productIds = await sdk.promotion.getAutoGetnmtoadd({ id: campaignId });
+  return productIds;
+}
+
+// ✅ NEW CODE (Type 9)
+async function getCampaignProducts(campaignId: number) {
+  const campaigns = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
+  const campaign = campaigns.adverts?.[0];
+  return campaign?.nms || []; // Returns array of product IDs
+}
+```
+
+**Key difference**: Type 9 returns complete campaign info, including products in `nms` field.
+
+---
+
+### Pattern 2: Adding Products to Campaign
+
+**Scenario**: You need to add multiple products to an existing campaign.
+
+```typescript
+// ❌ OLD CODE (Type 8)
+async function addProductsToCampaign(campaignId: number, productIds: number[]) {
+  await sdk.promotion.createAutoUpdatenm(
+    { add: productIds },
+    { id: campaignId }
+  );
+}
+
+// ✅ NEW CODE (Type 9)
+async function addProductsToCampaign(campaignId: number, productIds: number[]) {
+  await sdk.promotion.updateAuctionNm({
+    nms: [{
+      advert_id: campaignId,
+      nms: { add: productIds }
+    }]
+  });
+}
+
+// ✅ BATCH UPDATE (Type 9) - Update multiple campaigns at once!
+async function addProductsToMultipleCampaigns(
+  updates: Array<{ campaignId: number; productIds: number[] }>
+) {
+  await sdk.promotion.updateAuctionNm({
+    nms: updates.map(u => ({
+      advert_id: u.campaignId,
+      nms: { add: u.productIds }
+    }))
+  });
+}
+```
+
+**Advantage**: Type 9 allows batch updates across multiple campaigns in one API call!
+
+---
+
+### Pattern 3: Removing Products from Campaign
+
+**Scenario**: You need to remove specific products from a campaign.
+
+```typescript
+// ❌ OLD CODE (Type 8)
+async function removeProducts(campaignId: number, productIds: number[]) {
+  await sdk.promotion.createAutoUpdatenm(
+    { delete: productIds },
+    { id: campaignId }
+  );
+}
+
+// ✅ NEW CODE (Type 9)
+async function removeProducts(campaignId: number, productIds: number[]) {
+  await sdk.promotion.updateAuctionNm({
+    nms: [{
+      advert_id: campaignId,
+      nms: { delete: productIds }
+    }]
+  });
+}
+```
+
+---
+
+### Pattern 4: Getting Campaign Statistics
+
+**Scenario**: You need to analyze campaign performance and keyword clusters.
+
+```typescript
+// ❌ OLD CODE (Type 8) - Limited statistics
+async function getCampaignStats(campaignId: number) {
+  const stats = await sdk.promotion.getAutoStatWords({ id: campaignId });
+
+  console.log('Keyword clusters:', stats.clusters);
+  console.log('Excluded phrases:', stats.excluded);
+  // ⚠️ Missing: views, clicks, orders, revenue, CTR, conversion rate
+}
+
+// ✅ NEW CODE (Type 9) - Comprehensive statistics
+async function getCampaignStats(campaignId: number) {
+  const stats = await sdk.promotion.getAdvFullstats({
+    ids: String(campaignId),
+    beginDate: '2026-01-01',
+    endDate: '2026-01-31'
+  });
+
+  // ✅ Access to MUCH MORE data:
+  console.log('Views:', stats.views);
+  console.log('Clicks:', stats.clicks);
+  console.log('Orders:', stats.orders);
+  console.log('Revenue:', stats.sum);
+  console.log('CTR:', stats.ctr);
+  console.log('Conversion Rate:', stats.cr);
+
+  // ✅ Daily breakdown by SKU
+  stats.days?.forEach(day => {
+    console.log(`Date ${day.date}:`, {
+      views: day.views,
+      clicks: day.clicks,
+      orders: day.orders
+    });
+
+    // Per-SKU statistics
+    day.apps?.forEach(sku => {
+      console.log(`  SKU ${sku.nm_id}: ${sku.views} views, ${sku.clicks} clicks`);
+    });
+  });
+}
+```
+
+**Major improvement**: `getAdvFullstats()` provides 10x more data than `getAutoStatWords()`!
+
+---
+
+### Pattern 5: Campaign Type Detection and Auto-Migration
+
+**Scenario**: You want to automatically handle both type 8 and type 9 campaigns during the transition period.
+
+```typescript
+// ✅ SMART MIGRATION WRAPPER
+async function getProducts(campaignId: number): Promise<number[]> {
+  // Step 1: Check campaign type
+  const allCampaigns = await sdk.promotion.getPromotionCount();
+  const campaign = allCampaigns.adverts?.find(c => c.advertId === campaignId);
+
+  if (!campaign) {
+    throw new Error(`Campaign ${campaignId} not found`);
+  }
+
+  // Step 2: Use appropriate method based on type
+  if (campaign.type === 8) {
+    console.warn(`⚠️  Campaign ${campaignId} is type 8 (deprecated). Please migrate to type 9!`);
+    // Still works until Feb 2, 2026, but show warning
+    return await sdk.promotion.getAutoGetnmtoadd({ id: campaignId });
+  } else if (campaign.type === 9) {
+    // Use modern type 9 method
+    const campaigns = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
+    return campaigns.adverts?.[0]?.nms || [];
+  } else {
+    throw new Error(`Unknown campaign type: ${campaign.type}`);
+  }
+}
+```
+
+**Use this pattern during transition** to gracefully handle both campaign types while encouraging migration.
+
+---
+
+### Pattern 6: Complete Campaign Management Workflow
+
+**Scenario**: Complete workflow for managing campaign products (check, add, remove, verify).
+
+```typescript
+// ✅ MODERN WORKFLOW (Type 9)
+async function manageCampaignProducts() {
+  const campaignId = 12345;
+
+  // 1. Get current campaign state
+  const campaigns = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
+  const campaign = campaigns.adverts?.[0];
+
+  console.log(`Campaign: ${campaign.name}`);
+  console.log(`Current products: ${campaign.nms?.length || 0}`);
+
+  // 2. Add new products
+  const newProducts = [111111, 222222, 333333];
+  await sdk.promotion.updateAuctionNm({
+    nms: [{
+      advert_id: campaignId,
+      nms: { add: newProducts }
+    }]
+  });
+  console.log(`✅ Added ${newProducts.length} products`);
+
+  // 3. Remove underperforming products (based on statistics)
+  const stats = await sdk.promotion.getAdvFullstats({
+    ids: String(campaignId),
+    beginDate: '2026-01-01',
+    endDate: '2026-01-31'
+  });
+
+  // Find SKUs with zero orders
+  const underperforming = stats.days?.flatMap(day =>
+    day.apps?.filter(sku => sku.orders === 0).map(sku => sku.nm_id) || []
+  ) || [];
+
+  if (underperforming.length > 0) {
+    await sdk.promotion.updateAuctionNm({
+      nms: [{
+        advert_id: campaignId,
+        nms: { delete: underperforming }
+      }]
+    });
+    console.log(`✅ Removed ${underperforming.length} underperforming products`);
+  }
+
+  // 4. Verify final state
+  const updated = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
+  console.log(`Final product count: ${updated.adverts?.[0]?.nms?.length || 0}`);
+}
+```
+
+This demonstrates the **power of type 9 campaigns**: unified API, batch operations, rich statistics!
 
 ---
 
