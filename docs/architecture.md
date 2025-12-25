@@ -39,6 +39,7 @@ For TypeScript SDK/library projects, building from scratch provides:
 
 | Date | Version | Description | Author |
 |------|---------|-------------|--------|
+| 2025-12-25 | 1.1 | Added Promotion API deprecation documentation | System |
 | 2025-10-19 | 1.0 | Initial architecture document from PRD | Winston (Architect Agent) |
 
 ---
@@ -528,7 +529,7 @@ class AuthManager {
 6. AnalyticsModule - Sales funnel, performance, CSV exports
 7. ReportsModule - Async report generation
 8. CommunicationsModule - Chat, Q&A, reviews
-9. PromotionModule - Campaigns, promo codes, advertising
+9. PromotionModule - Campaigns, promo codes, advertising ⚠️ **DEPRECATION WARNING**: 4 type 8 campaign methods deprecated (Feb 2, 2025)
 10. TariffsModule - Commission rates, fees
 11. InStorePickupModule - Pickup points, orders
 
@@ -615,6 +616,41 @@ This SDK integrates with 11 Wildberries API domains.
 - Retry logic applies uniformly (5xx, 429, network errors)
 - Error transformation maps status codes to typed errors
 - No external API client libraries required (Axios sufficient)
+
+### ⚠️ API Deprecation Notice (December 2024)
+
+**Critical Update:** Wildberries announced deprecation of 4 Promotion API methods effective **February 2, 2025**.
+
+**Deprecated Methods (Type 8 Campaigns):**
+
+1. **`GET /adv/v1/auto/getnmtoadd`** - `getAutoGetnmtoadd()`
+   - **Purpose:** List of product cards for standard bid campaigns
+   - **Migration:** Use `getAuctionAdverts()` for type 9 campaigns
+
+2. **`POST /adv/v1/auto/updatenm`** - `createAutoUpdatenm()`
+   - **Purpose:** Update product cards in standard bid campaigns
+   - **Migration:** Use `updateAuctionNm()` for type 9 campaigns
+
+3. **`GET /adv/v2/auto/stat-words`** - `getAutoStatWords()`
+   - **Purpose:** Statistics by phrase clusters for standard bid campaigns
+   - **Migration:** Use universal `getAdvFullstats()` method (supports all campaign types)
+
+4. **`POST /adv/v1/auto/set-excluded`** - `createAutoSetExcluded()`
+   - **Purpose:** Set/remove minus-phrases for standard bid campaigns
+   - **Migration:** Use type 9 campaign management methods
+   - **Note:** Deprecation date moved from January 15 to February 2, 2025
+
+**Reason:** Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (custom/standard bid) campaigns for improved flexibility and control.
+
+**SDK Implementation:**
+- All 4 methods marked with `@deprecated` JSDoc tags
+- IDE support: Methods show strikethrough in autocomplete
+- Swagger documentation updated with deprecation warnings
+- Comprehensive migration guide: `docs/guides/migration-v2.4-promotion-deprecation.md`
+
+**Developer Action Required:** Migrate to type 9 alternatives before February 2, 2025 to avoid service disruption.
+
+**Reference:** [Wildberries Release Notes #429](https://dev.wildberries.ru/en/release-notes?id=429)
 
 ---
 
