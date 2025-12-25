@@ -41,14 +41,14 @@ Transform 11 OpenAPI specifications into a production-ready SDK with complete ty
 
 ## ⚠️ Critical API Update
 
-**Wildberries API Deprecation Notice** - Four Promotion API methods will be **disabled on February 2, 2025**:
+**Wildberries API Deprecation Notice** - Four Promotion API methods will be **disabled on February 2, 2026**:
 
 - `getAutoGetnmtoadd()` - List of Product Cards (type 8 campaigns)
 - `createAutoUpdatenm()` - Update Product Cards (type 8 campaigns)
 - `getAutoStatWords()` - Statistics by Phrase Clusters (type 8 campaigns)
 - `createAutoSetExcluded()` - Set/Remove Minus-Phrases (type 8 campaigns)
 
-**Action Required:** Migrate to type 9 campaign methods before February 2, 2025.
+**Action Required:** Migrate to type 9 campaign methods before February 2, 2026.
 
 📖 **[Complete Migration Guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)**
 
@@ -143,7 +143,7 @@ All 11 Wildberries API modules are fully supported with 100% API coverage:
 | **Analytics** | Sales funnel, search queries, stock history, CSV reports |
 | **Reports** | Income reports, sales reports, data exports |
 | **Communications** | Customer chat with real-time messaging, product Q&A, reviews and ratings management, chat previews with last messages |
-| **Promotion** | Campaigns, promo codes, advertising ⚠️ **[Migration Required](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 methods deprecated (Feb 2, 2025) |
+| **Promotion** | Campaigns, promo codes, advertising ⚠️ **[Migration Required](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 methods deprecated (Feb 2, 2026) |
 | **Tariffs** | Commission rates, fee schedules |
 | **In-Store Pickup** | Pickup point orders and management |
 
@@ -204,14 +204,14 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 
 ## ⚠️ Критическое Обновление API
 
-**Уведомление об устаревании API Wildberries** - Четыре метода Promotion API будут **отключены 2 февраля 2025**:
+**Уведомление об устаревании API Wildberries** - Четыре метода Promotion API будут **отключены 2 февраля 2026**:
 
 - `getAutoGetnmtoadd()` - Список карточек товаров (кампании type 8)
 - `createAutoUpdatenm()` - Обновление карточек товаров (кампании type 8)
 - `getAutoStatWords()` - Статистика по кластерам фраз (кампании type 8)
 - `createAutoSetExcluded()` - Установка/удаление минус-фраз (кампании type 8)
 
-**Требуется действие:** Перейдите на методы кампаний type 9 до 2 февраля 2025.
+**Требуется действие:** Перейдите на методы кампаний type 9 до 2 февраля 2026.
 
 📖 **[Полное Руководство по Миграции](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)**
 
@@ -306,7 +306,7 @@ chats.result?.forEach(chat => {
 | **Analytics** | Воронка продаж, поисковые запросы, история запасов, CSV отчеты |
 | **Reports** | Отчеты о доходах, отчеты о продажах, экспорт данных |
 | **Communications** | Чат с клиентами в реальном времени, вопросы-ответы по товарам, управление отзывами и рейтингами, предпросмотр чатов с последними сообщениями |
-| **Promotion** | Кампании, промокоды, реклама ⚠️ **[Требуется Миграция](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 метода устарели (2 февраля 2025) |
+| **Promotion** | Кампании, промокоды, реклама ⚠️ **[Требуется Миграция](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 метода устарели (2 февраля 2026) |
 | **Tariffs** | Ставки комиссий, тарифные планы |
 | **In-Store Pickup** | Заказы с самовывозом и управление |
 

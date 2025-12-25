@@ -1,12 +1,12 @@
 # Migration Guide: Promotion API Deprecation (v2.4)
 
-**⚠️ CRITICAL**: Wildberries is deprecating standard bid campaign methods (type 8) on **February 2, 2025**.
+**⚠️ CRITICAL**: Wildberries is deprecating standard bid campaign methods (type 8) on **February 2, 2026**.
 
 ---
 
 ## Overview
 
-Wildberries is transitioning from standard bid campaigns (type 8) to campaigns with custom and standard bids (type 9). Four API methods will be **disabled on February 2, 2025**.
+Wildberries is transitioning from standard bid campaigns (type 8) to campaigns with custom and standard bids (type 9). Four API methods will be **disabled on February 2, 2026**.
 
 **Source**: [Wildberries Release Notes #429](https://dev.wildberries.ru/en/release-notes?id=429)
 
@@ -17,12 +17,12 @@ Wildberries is transitioning from standard bid campaigns (type 8) to campaigns w
 ### 1. `getAutoGetnmtoadd()` - List of Product Cards
 
 **Endpoint**: `GET /adv/v1/auto/getnmtoadd`
-**Deprecation Date**: February 2, 2025
+**Deprecation Date**: February 2, 2026
 **Affected**: Standard bid campaigns (type 8)
 
 **Migration Path**:
 ```typescript
-// ❌ DEPRECATED (will stop working Feb 2, 2025)
+// ❌ DEPRECATED (will stop working Feb 2, 2026)
 const cards = await sdk.promotion.getAutoGetnmtoadd({ id: campaignId });
 
 // ✅ RECOMMENDED: Use type 9 campaigns
@@ -39,12 +39,12 @@ console.log('Products:', campaign.nms);
 ### 2. `createAutoUpdatenm()` - Update Product Cards
 
 **Endpoint**: `POST /adv/v1/auto/updatenm`
-**Deprecation Date**: February 2, 2025
+**Deprecation Date**: February 2, 2026
 **Affected**: Standard bid campaigns (type 8)
 
 **Migration Path**:
 ```typescript
-// ❌ DEPRECATED (will stop working Feb 2, 2025)
+// ❌ DEPRECATED (will stop working Feb 2, 2026)
 await sdk.promotion.createAutoUpdatenm({
   add: [123456, 789012],
   delete: [345678]
@@ -67,12 +67,12 @@ await sdk.promotion.updateAuctionNm({
 ### 3. `getAutoStatWords()` - Statistics by Phrase Clusters
 
 **Endpoint**: `GET /adv/v2/auto/stat-words`
-**Deprecation Date**: February 2, 2025
+**Deprecation Date**: February 2, 2026
 **Affected**: Standard bid campaigns (type 8)
 
 **Migration Path**:
 ```typescript
-// ❌ DEPRECATED (will stop working Feb 2, 2025)
+// ❌ DEPRECATED (will stop working Feb 2, 2026)
 const stats = await sdk.promotion.getAutoStatWords({ id: campaignId });
 console.log('Clusters:', stats.clusters);
 console.log('Excluded:', stats.excluded);
@@ -99,12 +99,12 @@ console.log('Campaign stats:', fullStats);
 ### 4. `createAutoSetExcluded()` - Set/Remove Minus-Phrases
 
 **Endpoint**: `POST /adv/v1/auto/set-excluded`
-**Deprecation Date**: February 2, 2025 (moved from Jan 15)
+**Deprecation Date**: February 2, 2026 (moved from Jan 15)
 **Affected**: Standard bid campaigns (type 8)
 
 **Migration Path**:
 ```typescript
-// ❌ DEPRECATED (will stop working Feb 2, 2025)
+// ❌ DEPRECATED (will stop working Feb 2, 2026)
 await sdk.promotion.createAutoSetExcluded({
   excluded: ['Samsung', 'Xiaomi']
 }, { id: campaignId });
@@ -122,7 +122,7 @@ await sdk.promotion.createAutoSetExcluded({
 
 - **Single bid** for all products in campaign
 - **Limited control** over individual product bids
-- **Being phased out** on February 2, 2025
+- **Being phased out** on February 2, 2026
 
 ### Type 9: Custom/Standard Bid Campaigns (Current)
 
@@ -147,7 +147,7 @@ campaigns.adverts?.forEach(advert => {
 
 ## Migration Checklist
 
-### Before February 2, 2025
+### Before February 2, 2026
 
 - [ ] **Audit your code** for deprecated method usage:
   ```bash
@@ -188,7 +188,7 @@ The SDK now marks deprecated methods with `@deprecated` JSDoc tags. Your IDE wil
 // IDE shows strikethrough and warning
 sdk.promotion.getAutoStatWords({ id: 123 });
           //  ~~~~~~~~~~~~~~~~
-          //  @deprecated This method is deprecated and will be disabled on February 2, 2025.
+          //  @deprecated This method is deprecated and will be disabled on February 2, 2026.
           //  Migrate to universal statistics method getAdvFullstats()
 ```
 
@@ -200,7 +200,7 @@ sdk.promotion.getAutoStatWords({ id: 123 });
 |------|-------|
 | **December 24, 2024** | Wildberries announces deprecation |
 | **January 15, 2025** | Original deprecation date for `createAutoSetExcluded()` |
-| **February 2, 2025** | **All 4 methods will be disabled** |
+| **February 2, 2026** | **All 4 methods will be disabled** |
 
 **Recommendation**: Migrate **before January 31, 2025** to allow buffer time for testing.
 
@@ -215,7 +215,7 @@ import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 
-// ❌ All these methods will stop working Feb 2, 2025
+// ❌ All these methods will stop working Feb 2, 2026
 const campaignId = 12345;
 
 // Get products available for campaign
@@ -295,4 +295,4 @@ console.log('Full statistics:', fullStats);
 
 **Last Updated**: December 24, 2024
 **Applies to**: SDK v2.4+
-**Deadline**: February 2, 2025
+**Deadline**: February 2, 2026

@@ -62,10 +62,10 @@ console.log(categories);
 
 ---
 
-## ⚠️ Critical API Update - February 2, 2025
+## ⚠️ Critical API Update - February 2, 2026
 
 :::danger WILDBERRIES API DEPRECATION NOTICE
-**Four Promotion API methods will be disabled on February 2, 2025**
+**Four Promotion API methods will be disabled on February 2, 2026**
 
 Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (custom/standard bid) campaigns. The following methods will stop working:
 

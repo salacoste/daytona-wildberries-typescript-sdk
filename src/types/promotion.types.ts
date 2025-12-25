@@ -4,7 +4,7 @@
  *
  * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  *
- * Generated: 2025-12-25T16:22:19.850Z
+ * Generated: 2025-12-25T16:51:03.204Z
  */
 
 export interface Response400 {
