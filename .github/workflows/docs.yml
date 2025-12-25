@@ -1,0 +1,80 @@
+name: Documentation Deploy
+
+# Trigger on:
+# - Push to main branch with documentation changes
+# - Manual workflow dispatch
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-docs:
+    name: Build and Deploy Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Generate TypeDoc API documentation
+      - name: Generate API documentation
+        run: npm run docs:api
+        continue-on-error: true  # Don't fail if API docs generation fails
+
+      # 5. Build VitePress documentation
+      - name: Build VitePress documentation
+        env:
+          NODE_ENV: production
+        run: npm run docs:build
+
+      # 6. Validate documentation output
+      - name: Validate documentation output
+        run: |
+          test -d docs/.vitepress/dist || exit 1
+          test -f docs/.vitepress/dist/index.html || exit 1
+          echo "✓ Documentation build validated successfully"
+
+      # 7. Extract version for commit message
+      - name: Extract SDK version
+        id: version
+        run: echo "SDK_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      # 8. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/.vitepress/dist
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'docs: deploy v${{ env.SDK_VERSION }} - ${{ github.sha }}'
+          enable_jekyll: false
+
+      # 9. Deployment confirmation
+      - name: Deployment complete
+        run: |
+          echo "✓ Documentation deployed successfully!"
+          echo "📚 Visit: https://salacoste.github.io/daytona-wildberries-typescript-sdk/"
+          echo "📦 Version: v${{ env.SDK_VERSION }}"
+          echo "🔗 Commit: ${{ github.sha }}"
