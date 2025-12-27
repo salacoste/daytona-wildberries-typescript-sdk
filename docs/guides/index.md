@@ -19,6 +19,9 @@ In-depth guides for production deployment and advanced SDK usage.
 
 ## Module Guides
 
+### Product Management
+- **[Product Card Merging & Analytics](/guides/product-card-merging)** - Merged cards (склейки), advertising traffic distribution, and cross-variant analytics
+
 ### Advertising & Marketing
 - **[Promotion & Advertising](/guides/promotion-advertising)** - Campaign management, bids, budget, and analytics
 
