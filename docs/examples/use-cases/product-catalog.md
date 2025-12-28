@@ -6,6 +6,8 @@ Synchronize your product catalog with Wildberries.
 
 This use case demonstrates how to manage your product catalog on Wildberries, including listing products, updating information, and syncing with external systems.
 
+> **📖 For detailed guide on fetching product cards, see [Working with Product Cards Guide](/guides/working-with-product-cards)**
+
 ## Get All Products
 
 ```typescript
@@ -15,15 +17,38 @@ const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!
 });
 
-// Get all products using the helper method (handles pagination automatically)
+// Get all products with pagination
 async function getAllProducts() {
-  const products = await sdk.products.getAllProducts({
-    locale: 'ru',
-    withPhoto: 1  // Include photo URLs
-  });
+  const allCards = [];
+  let cursor: any = { limit: 100 };
 
-  console.log(`Total products: ${products.length}`);
-  return products;
+  while (true) {
+    const response = await sdk.products.createCardsList({
+      settings: {
+        filter: { withPhoto: -1 },  // All cards
+        cursor
+      }
+    }, { locale: 'ru' });
+
+    if (response.cards) {
+      allCards.push(...response.cards);
+    }
+
+    if ((response.cards?.length ?? 0) < 100 || !response.cursor?.updatedAt) {
+      break;
+    }
+
+    cursor = {
+      limit: 100,
+      updatedAt: response.cursor.updatedAt,
+      nmID: response.cursor.nmID
+    };
+
+    await new Promise(resolve => setTimeout(resolve, 650));
+  }
+
+  console.log(`Total products: ${allCards.length}`);
+  return allCards;
 }
 
 const products = await getAllProducts();
@@ -32,21 +57,19 @@ const products = await getAllProducts();
 ## Get Products with Filtering
 
 ```typescript
-// Get products with specific settings
+// Get products with specific filters
 async function getProductsFiltered() {
-  const response = await sdk.products.listProducts({
-    limit: 100,
-    offset: 0,
-    locale: 'ru',
-    withPhoto: 1
-  });
+  const response = await sdk.products.createCardsList({
+    settings: {
+      filter: {
+        withPhoto: 1,  // Only with photos
+        brands: ['MyBrand']
+      },
+      cursor: { limit: 100 }
+    }
+  }, { locale: 'ru' });
 
-  // Filter by specific criteria
-  const activeProducts = response.cards?.filter(
-    card => card.nmID && !card.trash
-  );
-
-  return activeProducts;
+  return response.cards ?? [];
 }
 ```
 
@@ -117,8 +140,8 @@ interface ExternalProduct {
 }
 
 async function syncFromExternalSystem(externalProducts: ExternalProduct[]) {
-  // 1. Get existing WB products
-  const wbProducts = await sdk.products.getAllProducts({ locale: 'ru' });
+  // 1. Get existing WB products (using getAllProducts helper from above)
+  const wbProducts = await getAllProducts();
 
   // 2. Create lookup map
   const wbProductMap = new Map(
@@ -176,11 +199,8 @@ interface CatalogExport {
 }
 
 async function exportCatalog(): Promise<CatalogExport[]> {
-  // Get all products
-  const products = await sdk.products.getAllProducts({
-    locale: 'ru',
-    withPhoto: 1
-  });
+  // Get all products (using getAllProducts helper from above)
+  const products = await getAllProducts();
 
   // Get stock levels
   const stocks = await sdk.reports.getStocks(
@@ -219,7 +239,8 @@ writeFileSync('catalog.json', JSON.stringify(catalog, null, 2));
 
 ```typescript
 async function checkProductHealth() {
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  // Get all products (using getAllProducts helper from above)
+  const products = await getAllProducts();
   const stocks = await sdk.reports.getStocks(
     new Date().toISOString().split('T')[0]
   );
@@ -263,6 +284,7 @@ async function checkProductHealth() {
 
 ## Related Materials
 
+- **[Working with Product Cards Guide](/guides/working-with-product-cards)** - Complete guide to `createCardsList()` with troubleshooting
 - [API Reference: ProductsModule](/api/classes/ProductsModule)
 - [Pricing Updates](pricing-updates.md)
 - [Stock Management](stock-management.md)

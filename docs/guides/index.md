@@ -20,6 +20,7 @@ In-depth guides for production deployment and advanced SDK usage.
 ## Module Guides
 
 ### Product Management
+- **[Working with Product Cards](/guides/working-with-product-cards)** - Complete guide to fetching, filtering, and paginating product cards
 - **[Product Card Merging & Analytics](/guides/product-card-merging)** - Merged cards (склейки), advertising traffic distribution, and cross-variant analytics
 
 ### Advertising & Marketing

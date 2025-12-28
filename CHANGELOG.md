@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+#### Documentation
+- **NEW: Working with Product Cards Guide** (`docs/guides/working-with-product-cards.md`)
+  - Complete guide to `createCardsList()` method with cursor pagination
+  - First request vs pagination requests explained with examples
+  - All filtering options documented (photos, brands, tags, categories)
+  - Common mistakes section preventing validation errors
+  - Comprehensive troubleshooting with real-world solutions
+  - Complete pagination example with rate limiting
+  - Response structure documentation with TypeScript types
+  - 8 code examples covering all use cases
+- **Troubleshooting Updates** (`docs/guides/troubleshooting.md`)
+  - New Issue 13a: `createCardsList()` validation errors (most common issue)
+  - Updated Method Reference table with correct `createCardsList()` method
+  - Quick reference links to detailed product cards guide
+- **Example Updates** (`docs/examples/use-cases/product-catalog.md`)
+  - Fixed all examples to use correct `createCardsList()` API
+  - Removed references to non-existent `getAllProducts()` helper
+  - Added proper pagination implementation in all examples
+  - Cross-reference to detailed product cards guide
+
+### Changed
+
+#### Documentation Structure
+- **Guides Index** - Added "Working with Product Cards" to Product Management section
+- **Method Reference** - Corrected product listing method name from `listProducts()`/`getAllProducts()` to `createCardsList()`
+
+### Fixed
+
+#### User Confusion Prevention
+- **Common Validation Error**: Documented that empty `updatedAt: ""` and `nmID: 0` cause validation failures
+- **Cursor Structure**: Clarified first request (only `limit`) vs pagination (with `updatedAt`/`nmID`)
+- **Settings Wrapper**: Highlighted requirement to wrap all parameters in `settings` object
+- **Limit Maximum**: Documented 1000 max limit with 100 recommended
+
+---
+
 ## [2.4.0] - 2025-12-25
 
 ### ⚠️ CRITICAL - Wildberries API Deprecation Notice

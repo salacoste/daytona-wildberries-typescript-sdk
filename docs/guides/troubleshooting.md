@@ -41,6 +41,7 @@ Quick solutions for common Wildberries SDK issues. This guide helps you diagnose
 - [Rate limit exceeded](#issue-6-429-too-many-requests)
 - [Connection timeout](#issue-11-etimedout)
 - [Validation error](#issue-13-validation-error)
+- [**createCardsList() validation errors**](#issue-13a-createcardslist-validation-errors--common-issue) ⭐ **NEW**
 - [Module not found](#issue-17-module-not-found)
 
 ---
@@ -53,10 +54,11 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 ### Products & Catalog
 
+> **📖 For detailed guide on product cards, see [Working with Product Cards](/guides/working-with-product-cards)**
+
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| List all products | `sdk.products.listProducts(filters?)` | Returns first page only (up to 100 products). Use `getAllProducts()` for automatic pagination |
-| Get all products | `sdk.products.getAllProducts(filters?, options?)` | Automatically paginates through all products. Use for large catalogs (10,000+ products) |
+| List product cards | `sdk.products.createCardsList({ settings })` | **Main method** - Returns cards with cursor pagination. See [detailed guide](/guides/working-with-product-cards) |
 | Create new product | `sdk.products.createProduct(data)` | Single product creation |
 | Update product | `sdk.products.updateProduct(data[])` | Accepts array of updates |
 | Delete product | `sdk.products.deleteProduct(nmIDs[])` | Permanently removes products |
@@ -1132,6 +1134,134 @@ Field: categoryId - Must be a valid category ID
 - Review API docs before implementation
 - Test with various input combinations
 - Use schema validation libraries
+
+---
+
+### Issue 13a: createCardsList() Validation Errors ⚠️ COMMON ISSUE
+
+> **📖 For complete troubleshooting guide, see [Working with Product Cards](/guides/working-with-product-cards#troubleshooting)**
+
+**Error Message:**
+```
+ValidationError: Validation failed
+```
+
+**Cause:** Incorrect request structure for `createCardsList()` method.
+
+**What Went Wrong:**
+
+This is **the most common mistake** with `createCardsList()`:
+
+❌ **Mistake 1: Empty cursor fields in first request**
+```typescript
+// ❌ WRONG - Causes validation error
+await sdk.products.createCardsList({
+  settings: {
+    cursor: {
+      limit: 100,
+      updatedAt: "",  // Empty string causes validation error!
+      nmID: 0         // Zero causes validation error!
+    }
+  }
+});
+```
+
+❌ **Mistake 2: Missing `settings` wrapper**
+```typescript
+// ❌ WRONG - Missing settings wrapper
+await sdk.products.createCardsList({
+  cursor: { limit: 100 },
+  filter: { withPhoto: -1 }
+});
+```
+
+❌ **Mistake 3: Limit exceeds maximum**
+```typescript
+// ❌ WRONG - Max limit is 1000
+await sdk.products.createCardsList({
+  settings: {
+    cursor: { limit: 5000 }
+  }
+});
+```
+
+**Solution:**
+
+**For FIRST request:**
+```typescript
+// ✅ CORRECT - Only include limit
+const response = await sdk.products.createCardsList({
+  settings: {
+    cursor: {
+      limit: 100  // ONLY limit, omit updatedAt and nmID
+    },
+    filter: {
+      withPhoto: -1  // -1 = all cards
+    }
+  }
+});
+```
+
+**For PAGINATION requests:**
+```typescript
+// ✅ CORRECT - Copy cursor from previous response
+const nextResponse = await sdk.products.createCardsList({
+  settings: {
+    cursor: {
+      limit: 100,
+      updatedAt: response.cursor.updatedAt,  // From previous response
+      nmID: response.cursor.nmID              // From previous response
+    },
+    filter: {
+      withPhoto: -1
+    }
+  }
+});
+```
+
+**Complete Working Example:**
+```typescript
+async function getAllCards() {
+  const allCards = [];
+  let cursor: any = { limit: 100 };  // Start with only limit
+
+  while (true) {
+    const response = await sdk.products.createCardsList({
+      settings: {
+        filter: { withPhoto: -1 },
+        cursor
+      }
+    });
+
+    if (response.cards) {
+      allCards.push(...response.cards);
+    }
+
+    // Check if more data available
+    if ((response.cards?.length ?? 0) < 100 || !response.cursor?.updatedAt) {
+      break;
+    }
+
+    // Update cursor for next request
+    cursor = {
+      limit: 100,
+      updatedAt: response.cursor.updatedAt,
+      nmID: response.cursor.nmID
+    };
+
+    await new Promise(resolve => setTimeout(resolve, 650));
+  }
+
+  return allCards;
+}
+```
+
+**How to Prevent:**
+- ✅ First request: Only `limit` in cursor
+- ✅ Pagination: Copy `updatedAt` and `nmID` from response
+- ✅ Always wrap in `settings` object
+- ✅ Use `limit: 100` (max 1000)
+- ✅ See [Complete Guide](/guides/working-with-product-cards) for all details
 
 ---
 
