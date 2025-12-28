@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.2] - 2025-12-28
+
+### Fixed
+- **`createCardsList()` Client-Side Validation**: Added automatic validation for cursor `limit` parameter
+  - Maximum limit: 100 cards per request (enforced by Wildberries API)
+  - Rejects `limit > 100` with clear error message before API call
+  - Rejects `limit <= 0` with validation error
+  - Prevents confusing `ValidationError (HTTP 400)` from API
+  - Error messages include direct link to pagination documentation
+
+### Changed
+- **Documentation Enhancement**: Updated `docs/guides/working-with-product-cards.md`
+  - Added critical warning section about 100-card limit at document start
+  - Updated all limit references from "max 1000" to "MAXIMUM: 100"
+  - Enhanced "Common Mistakes" section with limit validation errors
+  - Improved "Troubleshooting" section highlighting limit as #1 ValidationError cause
+  - Updated "Best Practices" to enforce strict limit: 100 usage
+
+### Added
+- **Pagination Example**: New comprehensive example `examples/products-pagination-correct.ts`
+  - 5 practical examples of correct pagination implementation
+  - Demonstrates fetching all cards with proper limit handling
+  - Includes filtering examples (photos, brands, text search)
+  - Shows both correct and incorrect approaches with explanations
+- **Validation Testing**: New test file `examples/test-limit-validation.ts`
+  - Validates SDK enforces 100-card maximum
+  - Tests positive and negative limit values
+  - Verifies helpful error messages
+
+### Developer Notes
+- This is a **patch release** improving user experience without breaking changes
+- Existing code with `limit <= 100` continues to work identically
+- Code with `limit > 100` now fails earlier (client-side) with better error messages
+- SDK build successful with all TypeScript types validated
+
 ## [2.4.1] - 2025-12-28
 
 ### Added

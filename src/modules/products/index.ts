@@ -294,6 +294,29 @@ export class ProductsModule {
   console.log(result);
    */
   async createCardsList(data: { settings?: { sort?: { ascending?: boolean }; filter?: { withPhoto?: number; textSearch?: string; tagIDs?: number[]; allowedCategoriesOnly?: boolean; objectIDs?: number[]; brands?: string[]; imtID?: number }; cursor?: { limit?: number; updatedAt?: string; nmID?: number } } }, options?: { locale?: string }): Promise<{ cards?: { nmID?: number; imtID?: number; nmUUID?: string; subjectID?: number; subjectName?: string; vendorCode?: string; brand?: string; title?: string; description?: string; needKiz?: boolean; photos?: { big?: string; c246x328?: string; c516x688?: string; square?: string; tm?: string }[]; video?: string; wholesale?: { enabled?: boolean; quantum?: number }; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number; isValid?: boolean }; characteristics?: { id?: number; name?: string; value?: unknown }[]; sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[]; tags?: { id?: number; name?: string; color?: string }[]; createdAt?: string; updatedAt?: string }[]; cursor?: { updatedAt?: string; nmID?: number; total?: number } }> {
+    // Validate cursor limit (maximum enforced by Wildberries API)
+    const MAXIMUM_CARDS_LIMIT = 100;
+
+    if (data.settings?.cursor?.limit) {
+      const limit = data.settings.cursor.limit;
+
+      if (limit > MAXIMUM_CARDS_LIMIT) {
+        throw new Error(
+          `Invalid cursor limit: ${limit}. ` +
+          `Maximum allowed is ${MAXIMUM_CARDS_LIMIT} cards per request. ` +
+          `Use pagination to fetch all cards. ` +
+          `See: https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/working-with-product-cards#pagination-limit-restrictions`
+        );
+      }
+
+      if (limit <= 0) {
+        throw new Error(
+          `Invalid cursor limit: ${limit}. ` +
+          `Limit must be a positive integer (recommended: ${MAXIMUM_CARDS_LIMIT}).`
+        );
+      }
+    }
+
     return this.client.post<{ cards?: { nmID?: number; imtID?: number; nmUUID?: string; subjectID?: number; subjectName?: string; vendorCode?: string; brand?: string; title?: string; description?: string; needKiz?: boolean; photos?: { big?: string; c246x328?: string; c516x688?: string; square?: string; tm?: string }[]; video?: string; wholesale?: { enabled?: boolean; quantum?: number }; dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number; isValid?: boolean }; characteristics?: { id?: number; name?: string; value?: unknown }[]; sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[]; tags?: { id?: number; name?: string; color?: string }[]; createdAt?: string; updatedAt?: string }[]; cursor?: { updatedAt?: string; nmID?: number; total?: number } }>('https://content-api.wildberries.ru/content/v2/get/cards/list', data, { params: options });
   }
 

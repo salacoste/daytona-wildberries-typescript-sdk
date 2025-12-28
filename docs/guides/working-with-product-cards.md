@@ -30,13 +30,27 @@ The `createCardsList()` method retrieves a list of your product cards from Wildb
 - **Cursor-based pagination** for fetching large datasets
 - **Advanced filtering** by photos, text search, brands, categories, tags
 - **Sorting** by update date
-- **Efficient batching** (up to 1000 cards per request, 100 recommended)
+- **Efficient batching** (maximum **100 cards per request**)
 
 **API Endpoint:** `POST /content/v2/get/cards/list`
 
 **Rate Limit:** 100 requests/minute with 600ms intervals (burst: 5 requests)
 
 **⚠️ Important:** Cards in trash are NOT returned by this method. Use `getCardsTrash()` to fetch trashed cards separately.
+
+### 🚨 CRITICAL: Pagination Limit Restrictions
+
+**MAXIMUM: 100 cards per request** - the API will reject larger values with `ValidationError (HTTP 400)`.
+
+**Verified through testing (December 2024):**
+- ✅ **`limit: 10`** - Works perfectly
+- ✅ **`limit: 100`** - **RECOMMENDED & MAXIMUM** - Official Wildberries recommendation
+- ❌ **`limit: 1000`** - **FAILS with ValidationError (HTTP 400)**
+- ❌ **`limit: 5000`** - **FAILS with ValidationError (HTTP 400)**
+
+**Why this matters:** Although undocumented in Wildberries API specification, the API enforces a strict limit of **100 cards maximum**. Any value exceeding 100 will result in request rejection.
+
+**Correct approach:** Always use `limit: 100` with proper pagination (see examples below).
 
 ---
 
@@ -89,7 +103,7 @@ console.log(`Total in account: ${response.cursor?.total ?? 0} cards`);
       imtID?: number;              // Filter by merged card ID
     };
     cursor: {
-      limit: number;                // Cards per request (max 1000, recommended 100)
+      limit: number;                // Cards per request (MAXIMUM: 100)
       updatedAt?: string;           // For pagination (ISO 8601 timestamp)
       nmID?: number;                // For pagination (Wildberries article ID)
     };
@@ -435,25 +449,38 @@ const response = await sdk.products.createCardsList({
 });
 ```
 
-### ❌ Mistake 3: Exceeding Limit Maximum
+### ❌ Mistake 3: Exceeding Limit Maximum (CRITICAL)
 
 ```typescript
-// ❌ WRONG - Limit too high
+// ❌ WRONG - Limit exceeds maximum, causes ValidationError (HTTP 400)
 const response = await sdk.products.createCardsList({
   settings: {
-    cursor: { limit: 5000 }  // Max is 1000
+    cursor: { limit: 1000 }  // ❌ FAILS - Maximum is 100!
+  }
+});
+
+// ❌ ALSO WRONG - Even higher values fail
+const response = await sdk.products.createCardsList({
+  settings: {
+    cursor: { limit: 5000 }  // ❌ FAILS - Maximum is 100!
   }
 });
 ```
 
-**✅ Solution:** Use maximum 1000, recommended 100:
+**✅ Solution:** ALWAYS use limit: 100 (maximum allowed):
 
 ```typescript
 const response = await sdk.products.createCardsList({
   settings: {
-    cursor: { limit: 100 }  // ✅ Recommended
+    cursor: { limit: 100 }  // ✅ MAXIMUM & RECOMMENDED
   }
 });
+```
+
+**Error you'll see if exceeded:**
+```
+ValidationError: Validation failed
+HTTP Status: 400
 ```
 
 ### ❌ Mistake 4: Not Handling Pagination
@@ -503,14 +530,17 @@ const response = await sdk.products.createCardsList({
    cursor: { limit: 100 }
    ```
 
-2. **Limit exceeds maximum**
+2. **Limit exceeds maximum (MOST COMMON)**
    ```typescript
-   // ❌ Problem
-   cursor: { limit: 5000 }
+   // ❌ Problem - API returns ValidationError (HTTP 400)
+   cursor: { limit: 1000 }  // ❌ Exceeds maximum!
+   cursor: { limit: 5000 }  // ❌ Exceeds maximum!
 
-   // ✅ Solution
-   cursor: { limit: 100 }  // Max 1000, recommended 100
+   // ✅ Solution - Use maximum allowed value
+   cursor: { limit: 100 }  // ✅ MAXIMUM: 100 cards
    ```
+
+   **Note:** This is the #1 cause of ValidationError. The API strictly enforces a 100-card limit despite incomplete documentation.
 
 3. **Missing settings wrapper**
    ```typescript
@@ -589,18 +619,20 @@ if (!response.cursor?.updatedAt) {
 
 ## Best Practices
 
-### 1. Use Recommended Batch Size
+### 1. ALWAYS Use Maximum Allowed Batch Size
 
 ```typescript
-// ✅ GOOD - Reasonable batch size
+// ✅ CORRECT - Maximum allowed by API
 cursor: { limit: 100 }
 
-// ⚠️ ACCEPTABLE - Larger batch for faster fetching
+// ❌ FAILS - Exceeds maximum, causes ValidationError (HTTP 400)
 cursor: { limit: 500 }
 
-// ❌ AVOID - Too large, may cause timeouts
+// ❌ FAILS - Exceeds maximum, causes ValidationError (HTTP 400)
 cursor: { limit: 1000 }
 ```
+
+**Why 100?** The Wildberries API strictly enforces a maximum of 100 cards per request. Use pagination to fetch all cards.
 
 ### 2. Implement Rate Limit Protection
 
