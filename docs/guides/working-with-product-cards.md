@@ -921,4 +921,4 @@ const next = await sdk.products.createCardsList({
 
 **Need help?** Check the [Troubleshooting Guide](/guides/troubleshooting) or [open an issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues).
 
-[← Back to Guides](/guides) | [Next: Stock Management →](/guides/stock-management)
+[← Back to Guides](/guides/) | [Next: Stock Management →](/guides/stock-management)
