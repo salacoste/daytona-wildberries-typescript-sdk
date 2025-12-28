@@ -83,6 +83,7 @@ const VALID_METHODS: Record<string, string[]> = {
     'getDirectoryTnved',
     'listProducts',
     'getAllProducts',
+    'createCardsList',
     'createProduct',
     'updateProduct',
     'deleteProduct',
