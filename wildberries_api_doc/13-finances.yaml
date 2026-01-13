@@ -867,6 +867,21 @@ components:
               - `FBW` — продажа со склада Wildberries
               - `DBS` — доставка силами продавца
           example: FBS
+        loyalty_id:
+          type: integer
+          description: |
+            Идентификатор программы лояльности продавца.
+            Добавлено в API 13 января 2026 (Release #433).
+            Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
+          example: 12345
+        loyalty_discount:
+          type: number
+          format: decimal
+          description: |
+            Скидка по программе лояльности продавца, %.
+            Добавлено в API 13 января 2026 (Release #433).
+            Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
+          example: 5.5
   responses:
     '401':
       description: Не авторизован

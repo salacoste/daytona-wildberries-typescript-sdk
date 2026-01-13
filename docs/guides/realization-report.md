@@ -412,6 +412,101 @@ dailyReport.forEach(day => {
 
 ---
 
+## 🆕 Новые поля: Программы лояльности продавца (Release #433)
+
+**Добавлено:** 13 января 2026
+**Доступно в отчетах:** Daily reports с 12 января 2026, Weekly reports с периода 12-18 января 2026
+
+Wildberries добавил поддержку программ лояльности продавцов в отчеты о реализации. Теперь вы можете отслеживать скидки, предоставленные по вашей собственной программе лояльности.
+
+### Новые поля
+
+| Поле | Тип | Описание | Пример |
+|------|-----|----------|---------|
+| `loyalty_id` | number | Идентификатор программы лояльности продавца | `12345` |
+| `loyalty_discount` | number | Скидка по программе лояльности продавца, % | `5.5` |
+
+### Сравнение с существующими полями лояльности
+
+**Программа лояльности Wildberries** (уже существующие поля):
+- `cashback_amount` — Сумма, удержанная за начисленные баллы программы лояльности **WB**
+- `cashback_discount` — Компенсация скидки по программе лояльности **WB**
+- `cashback_commission_change` — Стоимость участия в программе лояльности **WB**
+
+**Программа лояльности продавца** (новые поля):
+- `loyalty_id` — Идентификатор **вашей** программы лояльности
+- `loyalty_discount` — Процент скидки от **вашей** программы лояльности
+
+### Пример использования
+
+```typescript
+async function analyzeLoyaltyDiscounts(
+  sdk: WildberriesSDK,
+  dateFrom: string,
+  dateTo: string
+) {
+  const report = await sdk.finances.getSupplierReportdetailbyperiod({
+    dateFrom,
+    dateTo
+  });
+
+  // Фильтруем заказы с программой лояльности продавца
+  const loyaltyOrders = report.filter(item =>
+    item.loyalty_id !== undefined &&
+    item.loyalty_discount !== undefined
+  );
+
+  console.log(`Заказов с программой лояльности: ${loyaltyOrders.length}`);
+
+  // Группируем по программе лояльности
+  const loyaltyStats = new Map<number, {
+    count: number;
+    totalDiscount: number;
+    avgDiscount: number;
+  }>();
+
+  for (const item of loyaltyOrders) {
+    const id = item.loyalty_id!;
+
+    if (!loyaltyStats.has(id)) {
+      loyaltyStats.set(id, {
+        count: 0,
+        totalDiscount: 0,
+        avgDiscount: 0
+      });
+    }
+
+    const stats = loyaltyStats.get(id)!;
+    stats.count++;
+    stats.totalDiscount += item.loyalty_discount || 0;
+  }
+
+  // Рассчитываем средние значения
+  for (const [id, stats] of loyaltyStats) {
+    stats.avgDiscount = stats.totalDiscount / stats.count;
+
+    console.log(`\nПрограмма лояльности #${id}:`);
+    console.log(`  Заказов: ${stats.count}`);
+    console.log(`  Средняя скидка: ${stats.avgDiscount.toFixed(2)}%`);
+  }
+
+  return loyaltyStats;
+}
+
+// Использование
+const stats = await analyzeLoyaltyDiscounts(sdk, '2026-01-12', '2026-01-18');
+```
+
+### Важные примечания
+
+⚠️ **Опциональные поля**: `loyalty_id` и `loyalty_discount` являются опциональными и будут присутствовать только в заказах, где применялась программа лояльности продавца.
+
+📅 **Доступность данных**: Данные доступны только начиная с 12 января 2026 года. В отчетах за предыдущие периоды эти поля отсутствуют.
+
+🔗 **Дополнительная информация**: [Wildberries Release Notes #433](https://dev.wildberries.ru/en/release-notes?id=433)
+
+---
+
 ## Rate Limits и рекомендации
 
 | Аспект | Рекомендация |
