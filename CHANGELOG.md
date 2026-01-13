@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.3] - 2026-01-13
+
+### Added
+- **New Fields in Finances API**: Support for seller loyalty program discount tracking
+  - `loyalty_id` — Identifier for seller loyalty program (optional number field)
+  - `loyalty_discount` — Discount percentage from seller loyalty program (optional number field)
+  - Fields added to `DetailReportItem` interface in `getSupplierReportdetailbyperiod()` response
+  - Available in reports from January 12, 2026 (daily reports) and January 12-18 period (weekly reports)
+  - Based on Wildberries API Release #433 (January 13, 2026)
+
+### Changed
+- **Documentation Updates**: Enhanced `docs/guides/realization-report.md`
+  - Added comprehensive section "🆕 Новые поля: Программы лояльности продавца (Release #433)"
+  - Documented `loyalty_id` and `loyalty_discount` fields with descriptions and examples
+  - Added comparison table between seller loyalty and WB cashback programs
+  - Included practical TypeScript example for analyzing loyalty discounts
+  - Added timeline information and important notes about optional fields
+  - Linked to Wildberries Release Notes #433
+
+- **TypeScript Types**: Updated `src/types/finances.types.ts`
+  - Added `loyalty_id?: number` to `DetailReportItem` interface
+  - Added `loyalty_discount?: number` to `DetailReportItem` interface
+  - Comprehensive JSDoc comments with references to Release #433
+  - Full type safety for new loyalty fields
+
+- **Swagger Schema**: Updated `wildberries_api_doc/13-finances.yaml`
+  - Added `loyalty_id` field to `DetailReportItem` schema
+  - Added `loyalty_discount` field to `DetailReportItem` schema
+  - Both fields marked as optional with detailed descriptions
+
+### Added
+- **New Example**: `examples/finances-loyalty-discount-analysis.ts`
+  - Comprehensive loyalty discount analysis example
+  - Demonstrates fetching and analyzing seller loyalty program data
+  - Includes filtering, grouping, and statistical analysis
+  - Compares seller loyalty vs WB cashback programs
+  - CSV export functionality
+  - Full TypeScript types and error handling
+  - Production-ready code with proper documentation
+
+### Developer Notes
+- This is a **patch release** adding optional fields without breaking changes
+- Existing code continues to work without modifications
+- New fields are fully optional and backward compatible
+- All 951 tests passing, type-check clean, ESLint passing (0 errors)
+- No regressions in existing functionality
+
 ## [2.4.2] - 2025-12-28
 
 ### Fixed

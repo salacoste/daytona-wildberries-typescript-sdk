@@ -237,4 +237,16 @@ export interface DetailReportItem {
    * - `DBS` — доставка силами продавца
    */
   delivery_method?: string;
+  /**
+   * Идентификатор программы лояльности продавца.
+   * Добавлено в API 13 января 2026 (Release #433).
+   * Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
+   */
+  loyalty_id?: number;
+  /**
+   * Скидка по программе лояльности продавца, %.
+   * Добавлено в API 13 января 2026 (Release #433).
+   * Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
+   */
+  loyalty_discount?: number;
 }
