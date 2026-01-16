@@ -262,6 +262,11 @@ export interface Meta {
   expiration?: {
   value?: string;
 };
+
+  /** Номер грузовой таможенной декларации (ГТД) */
+  customsDeclaration?: {
+    value?: string;
+};
 }
 
 /**

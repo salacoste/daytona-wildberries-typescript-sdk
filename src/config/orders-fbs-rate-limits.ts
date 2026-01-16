@@ -104,6 +104,11 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.06,
     burstLimit: 20
   },
+  'orders-fbs.putOrdersMetaCustomsDeclaration': {
+    requestsPerMinute: 1000,
+    intervalSeconds: 0.06,
+    burstLimit: 20
+  },
   'orders-fbs.postOrdersStickersCrossBorder': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,

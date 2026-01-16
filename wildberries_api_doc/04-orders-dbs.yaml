@@ -1,0 +1,1831 @@
+openapi: 3.0.1
+info:
+  title: Заказы DBS (Delivery by Seller)
+  description: |
+    Управление сборочными заданиями и метаданными заказов DBS (Delivery by Seller).
+
+    **Важное изменение от 14.01.2026**: Добавлены новые bulk-методы для пакетной обработки заказов.
+    С 13 апреля устаревшие методы DBS будут отключены.
+  version: 1.0.0
+  x-file-name: orders-dbs
+
+servers:
+  - url: https://marketplace-api.wildberries.ru
+    description: API Server for DBS operations
+
+tags:
+  - name: Заказы DBS
+    description: Основные методы для работы с заказами DBS
+  - name: Сборочные задания DBS
+    description: Управление сборочными заданиями DBS
+  - name: Метаданные DBS
+    description: Работа с метаданными сборочных заданий DBS
+  - name: Bulk-операции DBS
+    description: Новые методы для пакетной обработки заказов (заменят устаревшие с 13.04.2026)
+
+security:
+  - HeaderApiKey: []
+
+paths:
+  /api/v3/dbs/orders/new:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Получить список новых сборочных заданий
+      description: |
+        Метод предоставляет список всех новых сборочных заданий, которые есть у продавца на момент запроса.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DBSOrderNew'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Заказы DBS
+      summary: Получить информацию о завершённых сборочных заданиях
+      description: |
+        Метод предоставляет информацию о завершённых сборочных заданиях после продажи или отмены заказа.
+        Можно получить данные за заданный период, максимум 30 календарных дней одним запросом.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          required: true
+          description: Параметр пагинации. Устанавливает предельное количество возвращаемых данных.
+        - name: next
+          in: query
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Параметр пагинации. Для получения полного списка данных должен быть равен 0 в первом запросе.
+        - name: dateFrom
+          in: query
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Дата начала периода в формате Unix timestamp
+        - name: dateTo
+          in: query
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Дата конца периода в формате Unix timestamp
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  next:
+                    type: integer
+                    format: int64
+                    description: Следующее значение для пагинации
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DBSOrder'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/client:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Заказы DBS
+      summary: Информация о покупателе
+      description: |
+        Метод предоставляет информацию о покупателе по ID сборочного задания.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orders
+              properties:
+                orders:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  description: Список заказов
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DBSClientInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  # ============================================================================
+  # НОВЫЕ BULK-МЕТОДЫ (с 14.01.2026)
+  # ============================================================================
+
+  /api/marketplace/v3/dbs/orders/status/info:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Получить статусы сборочных заданий (bulk)
+      description: |
+        **Новый метод** - пакетное получение статусов сборочных заданий.
+
+        Метод возвращает статусы сборочных заданий по их ID.
+
+        <br><br>
+        `supplierStatus` — статус сборочного задания. Триггер его изменения — действие самого продавца.
+
+        Возможные значения `supplierStatus`:
+        | Статус | Описание |
+        | --- | --- |
+        | `new` | Новое сборочное задание |
+        | `confirm` | На сборке |
+        | `deliver` | В доставке |
+        | `receive` | Получено покупателем |
+        | `reject` | Отказ покупателя при получении |
+        | `cancel` | Отменено продавцом |
+        | `canceled_by_missed_call` | Отмена по причине недозвона |
+
+        `wbStatus` — статус сборочного задания в системе WB.
+        Возможные значения: `waiting`, `sorted`, `sold`, `canceled`, `canceled_by_client`, `declined_by_client`, `defect`, `ready_for_pickup`, `canceled_by_missed_call`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ordersIds
+              properties:
+                ordersIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  maxItems: 1000
+                  description: Список ID сборочных заданий (до 1000 шт)
+                  example: [123456, 234567, 345678]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DBSOrderStatusBulk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/marketplace/v3/dbs/orders/status/cancel:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Отменить сборочные задания (bulk)
+      description: |
+        **Новый метод** - пакетная отмена сборочных заданий.
+
+        Метод переводит сборочные задания из статусов `new`, `confirm` и `deliver` в статус `cancel` — отменено продавцом.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        </div>
+
+        **Важно**: Один запрос с кодом ответа 409 учитывается как 10 запросов.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ordersIds
+              properties:
+                ordersIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  maxItems: 1000
+                  description: Список ID сборочных заданий для отмены (до 1000 шт)
+                  example: [123456, 234567]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                    description: Уникальный ID запроса
+                    example: "03615778-eb9e-4f55-b4Of-fd3ac0fad2сc"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: object
+                    description: Детали ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/marketplace/v3/dbs/orders/status/confirm:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Перевести на сборку (bulk)
+      description: |
+        **Новый метод** - пакетный перевод сборочных заданий на сборку.
+
+        Метод переводит сборочные задания из статуса `new` в статус `confirm` — на сборке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        </div>
+
+        **Важно**: Один запрос с кодом ответа 409 учитывается как 10 запросов.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ordersIds
+              properties:
+                ordersIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  maxItems: 1000
+                  description: Список ID сборочных заданий для перевода на сборку (до 1000 шт)
+                  example: [123456, 234567]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                    description: Уникальный ID запроса
+                    example: "03615778-eb9e-4f55-b4Of-fd3ac0fad2сc"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: object
+                    description: Детали ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/marketplace/v3/dbs/orders/status/deliver:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Перевести в доставку (bulk)
+      description: |
+        **Новый метод** - пакетный перевод сборочных заданий в доставку.
+
+        Метод переводит сборочные задания из статуса `confirm` в статус `deliver` — в доставке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        </div>
+
+        **Важно**: Один запрос с кодом ответа 409 учитывается как 10 запросов.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ordersIds
+              properties:
+                ordersIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  maxItems: 1000
+                  description: Список ID сборочных заданий для перевода в доставку (до 1000 шт)
+                  example: [123456, 234567]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                    description: Уникальный ID запроса
+                    example: "03615778-eb9e-4f55-b4Of-fd3ac0fad2сc"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: object
+                    description: Детали ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/marketplace/v3/dbs/orders/status/receive:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Сообщить о получении заказов (bulk)
+      description: |
+        **Новый метод** - пакетное подтверждение получения заказов покупателями.
+
+        Метод переводит сборочные задания из статуса `deliver` в статус `receive` — получено покупателем.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        </div>
+
+        **Важно**: Один запрос с кодом ответа 409 учитывается как 10 запросов.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orders
+              properties:
+                orders:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderCodeRequest'
+                  maxItems: 1000
+                  description: Список сборочных заданий с кодами подтверждения (до 1000 шт)
+                  example: [{"code": "741852", "orderId": 123456}]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                    description: Уникальный ID запроса
+                    example: "03615778-eb9e-4f55-b4Of-fd3ac0fad2сc"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: object
+                    description: Детали ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/marketplace/v3/dbs/orders/status/reject:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Сообщить об отказе от заказов (bulk)
+      description: |
+        **Новый метод** - пакетное подтверждение отказа покупателей от заказов.
+
+        Метод переводит сборочные задания из статуса `deliver` в статус `reject` — отказ покупателя при получении.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        </div>
+
+        **Важно**: Один запрос с кодом ответа 409 учитывается как 10 запросов.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orders
+              properties:
+                orders:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderCodeRequest'
+                  maxItems: 1000
+                  description: Список сборочных заданий с кодами подтверждения (до 1000 шт)
+                  example: [{"code": "741852", "orderId": 123456}]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                    description: Уникальный ID запроса
+                    example: "03615778-eb9e-4f55-b4Of-fd3ac0fad2сc"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: object
+                    description: Детали ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - requestId
+                  - results
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusSetResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  # ============================================================================
+  # УСТАРЕВШИЕ МЕТОДЫ (будут отключены 13.04.2026)
+  # ============================================================================
+
+  /api/v3/dbs/orders/status:
+    post:
+      deprecated: true
+      deprecatedDescription: Метод будет отключен 13 апреля 2026. Используйте новый bulk-метод: POST /api/marketplace/v3/dbs/orders/status/info
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Получить статусы сборочных заданий (УСТАРЕЛО)
+      description: |
+        **⚠️ УСТАРЕВШИЙ МЕТОД** - будет отключен 13.04.2026.
+        Используйте новый bulk-метод: `POST /api/marketplace/v3/dbs/orders/status/info`
+
+        Метод предоставляет статусы сборочных заданий по их ID.
+
+        `supplierStatus` — статус сборочного задания. Триггер его изменения — сам продавец.
+        Возможные значения `supplierStatus`:
+        | Статус | Описание | Как перевести сборочное задание в данный статус |
+        | --- | --- | --- |
+        | `new` | Новое сборочное задание | |
+        | `confirm` | На сборке | Перевести сборочное задание на сборку |
+        | `deliver` | В доставке | Перевести сборочное задание в доставку |
+        | `receive` | Получено покупателем | Сообщить, что сборочное задание принято покупателем |
+        | `reject` | Отказ покупателя при получении | Сообщить, что покупатель отказался от сборочного задания |
+        | `cancel` | Отменено продавцом | Отменить сборочное задание |
+        | `canceled_by_missed_call` | Отмена заказа по причине недозвона | Статус меняется автоматически |
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orders
+              properties:
+                orders:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  maxItems: 1000
+                  description: Список идентификаторов сборочных заданий
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                          description: ID сборочного задания
+                        supplierStatus:
+                          type: string
+                          enum: ['new', 'confirm', 'deliver', 'receive', 'reject', 'cancel', 'canceled_by_missed_call']
+                          description: Статус сборочного задания
+                        wbStatus:
+                          type: string
+                          description: Статус системы WB
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{orderId}/cancel:
+    patch:
+      deprecated: true
+      deprecatedDescription: Метод будет отключен 13 апреля 2026. Используйте новый bulk-метод: POST /api/marketplace/v3/dbs/orders/status/cancel
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Отменить сборочное задание (УСТАРЕЛО)
+      description: |
+        **⚠️ УСТАРЕВШИЙ МЕТОД** - будет отключен 13.04.2026.
+        Используйте новый bulk-метод: `POST /api/marketplace/v3/dbs/orders/status/cancel`
+
+        Метод отменяет сборочное задание и переводит в статус `cancel` — отменено продавцом.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      responses:
+        '204':
+          description: Отменено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{order}/confirm:
+    patch:
+      deprecated: true
+      deprecatedDescription: Метод будет отключен 13 апреля 2026. Используйте новый bulk-метод: POST /api/marketplace/v3/dbs/orders/status/confirm
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Перевести на сборку (УСТАРЕЛО)
+      description: |
+        **⚠️ УСТАРЕВШИЙ МЕТОД** - будет отключен 13.04.2026.
+        Используйте новый bulk-метод: `POST /api/marketplace/v3/dbs/orders/status/confirm`
+
+        Метод переводит сборочное задание в статус `confirm` — на сборке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: order
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Идентификатор сборочного задания
+      responses:
+        '204':
+          description: Подтверждено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{order}/deliver:
+    patch:
+      deprecated: true
+      deprecatedDescription: Метод будет отключен 13 апреля 2026. Используйте новый bulk-метод: POST /api/marketplace/v3/dbs/orders/status/deliver
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Перевести в доставку (УСТАРЕЛО)
+      description: |
+        **⚠️ УСТАРЕВШИЙ МЕТОД** - будет отключен 13.04.2026.
+        Используйте новый bulk-метод: `POST /api/marketplace/v3/dbs/orders/status/deliver`
+
+        Метод переводит сборочное задание в статус `deliver` — в доставке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: order
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Идентификатор сборочного задания
+      responses:
+        '204':
+          description: Подтверждено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{order}/receive:
+    patch:
+      deprecated: true
+      deprecatedDescription: Метод будет отключен 13 апреля 2026. Используйте новый bulk-метод: POST /api/marketplace/v3/dbs/orders/status/receive
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Сообщить, что заказ принят покупателем (УСТАРЕЛО)
+      description: |
+        **⚠️ УСТАРЕВШИЙ МЕТОД** - будет отключен 13.04.2026.
+        Используйте новый bulk-метод: `POST /api/marketplace/v3/dbs/orders/status/receive`
+
+        Метод переводит сборочное задание в статус `receive` — получено покупателем.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: order
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Идентификатор сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Код подтверждения. Отображается у покупателя на сайте и в приложении Wildberries
+      responses:
+        '204':
+          description: Подтверждено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{order}/reject:
+    patch:
+      deprecated: true
+      deprecatedDescription: Метод будет отключен 13 апреля 2026. Используйте новый bulk-метод: POST /api/marketplace/v3/dbs/orders/status/reject
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Сообщить, что покупатель отказался от заказа (УСТАРЕЛО)
+      description: |
+        **⚠️ УСТАРЕВШИЙ МЕТОД** - будет отключен 13.04.2026.
+        Используйте новый bulk-метод: `POST /api/marketplace/v3/dbs/orders/status/reject`
+
+        Метод переводит сборочное задание в статус `reject` — отказ при получении.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: order
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Идентификатор сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Код подтверждения. Отображается у покупателя на сайте и в приложении Wildberries
+      responses:
+        '204':
+          description: Подтверждено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  # ============================================================================
+  # МЕТАДАННЫЕ DBS
+  # ============================================================================
+
+  /api/v3/dbs/orders/{orderId}/meta:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Получить метаданные сборочного задания
+      description: |
+        Метод предоставляет метаданные заказа, доступные для сборочного задания.
+
+        Возможные метаданные:
+        - `imei` — IMEI
+        - `uin` — УИН
+        - `gtin` — GTIN
+        - `sgtin` — код маркировки
+        - `customsDeclaration` — номер ГТД (новое с 14.01.2026)
+
+        Если ответ вернулся с пустой структурой `meta`, значит у сборочного задания нет метаданных и добавить их нельзя.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      imei:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                      uin:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                      gtin:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                      sgtin:
+                        type: object
+                        properties:
+                          value:
+                            type: array
+                            items:
+                              type: number
+                      customsDeclaration:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Удалить метаданные сборочного задания
+      description: |
+        Метод удаляет значение метаданных сборочного задания для переданного ключа.
+
+        Возможные метаданные:
+        - `imei` — IMEI
+        - `uin` — УИН
+        - `gtin` — GTIN
+        - `sgtin` — код маркировки
+        - `customsDeclaration` — номер ГТД (новое с 14.01.2026)
+
+        Можно передать только один ключ.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории Маркетплейс:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+        - name: key
+          in: query
+          schema:
+            type: string
+            enum: ['imei', 'uin', 'gtin', 'sgtin', 'customsDeclaration']
+            description: Название метаданных для удаления. Передается только одно значение.
+      responses:
+        '204':
+          description: Удалено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Ошибка удаления метаданных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{orderId}/meta/sgtin:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Закрепить за сборочным заданием код маркировки товара
+      description: |
+        Метод позволяет закрепить за сборочным заданием код маркировки Честный знак.
+
+        Закрепить код маркировки можно только если в метаданных сборочного задания есть поле `sgtin`, а сборочное задание находится в статусе `confirm`.
+
+        Получить загруженные маркировки можно в метаданных сборочного задания.
+
+        Максимум 1 000 запросов в минуту суммарно на один аккаунт продавца:
+
+        1. Закрепить за сборочным заданием УИН
+        2. Закрепить за сборочным заданием IMEI
+        3. Закрепить за сборочным заданием GTIN
+        4. Закрепить за сборочным заданием код маркировки
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sgtins:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  maxItems: 24
+                  description: Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки.
+      responses:
+        '204':
+          description: Отправлено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка добавления маркировки
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{orderId}/meta/uin:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
+      description: |
+        Метод обновляет УИН в метаданных сборочного задания — уникальный идентификационный номер.
+
+        У одного сборочного задания может быть только один УИН.
+
+        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в статусе `confirm`.
+
+        Максимум 1 000 запросов в минуту суммарно на один аккаунт продавца:
+
+        1. Закрепить за сборочным заданием УИН
+        2. Закрепить за сборочным заданием IMEI
+        3. Закрепить за сборочным заданием GTIN
+        4. Закрепить за сборочным заданием код маркировки
+        5. Закрепить за сборочным заданием номер ГТД
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - uin
+              properties:
+                uin:
+                  type: string
+                  minLength: 16
+                  maxLength: 16
+                  description: УИН
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Ошибка обновления метаданных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{orderId}/meta/imei:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Закрепить за сборочным заданием IMEI
+      description: |
+        Метод обновляет IMEI в метаданных сборочного задания.
+
+        У одного сборочного задания может быть только один IMEI.
+
+        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в статусе `confirm`.
+
+        Максимум 1 000 запросов в минуту суммарно на один аккаунт продавца:
+
+        1. Закрепить за сборочным заданием УИН
+        2. Закрепить за сборочным заданием IMEI
+        3. Закрепить за сборочным заданием GTIN
+        4. Закрепить за сборочным заданием код маркировки
+        5. Закрепить за сборочным заданием номер ГТД
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - imei
+              properties:
+                imei:
+                  type: string
+                  minLength: 15
+                  maxLength: 15
+                  description: IMEI
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Ошибка обновления метаданных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{orderId}/meta/gtin:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Закрепить за сборочным заданием GTIN
+      description: |
+        Метод обновляет GTIN в метаданных сборочного задания — уникальный ID товара в Беларуси.
+
+        У одного сборочного задания может быть только один GTIN.
+
+        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в статусе `confirm`.
+
+        Максимум 1 000 запросов в минуту суммарно на один аккаунт продавца:
+
+        1. Закрепить за сборочным заданием УИН
+        2. Закрепить за сборочным заданием IMEI
+        3. Закрепить за сборочным заданием GTIN
+        4. Закрепить за сборочным заданием код маркировки
+        5. Закрепить за сборочным заданием номер ГТД
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - gtin
+              properties:
+                gtin:
+                  type: string
+                  minLength: 13
+                  maxLength: 13
+                  description: GTIN
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Ошибка обновления метаданных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /api/v3/dbs/orders/{orderId}/meta/customs-declaration:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные DBS
+      summary: Закрепить за сборочным заданием номер ГТД
+      description: |
+        Метод обновляет номер грузовой таможенной декларации в метаданных сборочного задания.
+
+        У одного сборочного задания может быть только один номер ГТД.
+
+        Чтобы проверить, можно ли указать номер ГТД для сборочного задания, используйте метод получения списка новых сборочных заданий:
+        - если в поле ответа `requiredMeta` есть значение `customsDeclaration` — можно указать номер ГТД
+        - если в поле ответа `requiredMeta` нет значения `customsDeclaration` — указать номер ГТД нельзя
+
+        Максимум 1 000 запросов в минуту суммарно на один аккаунт продавца:
+
+        1. Закрепить за сборочным заданием УИН
+        2. Закрепить за сборочным заданием IMEI
+        3. Закрепить за сборочным заданием GTIN
+        4. Закрепить за сборочным заданием код маркировки
+        5. Закрепить за сборочным заданием номер ГТД
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID сборочного задания
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customsDeclaration
+              properties:
+                customsDeclaration:
+                  type: string
+                  maxLength: 50
+                  description: Номер грузовой таможенной декларации
+                  example: "10129050/010120/0001234"
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Ошибка обновления метаданных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+components:
+  schemas:
+    DBSOrderNew:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            fullAddress:
+              type: string
+            longitude:
+              type: number
+              format: double
+            latitude:
+              type: number
+              format: double
+        ddate:
+          type: string
+          description: Планируемая дата доставки
+        salePrice:
+          type: number
+        dTimeFrom:
+          type: string
+        dTimeTo:
+          type: string
+        requiredMeta:
+          type: array
+          items:
+            type: string
+          description: Список метаданных, которые необходимо добавить в сборочное задание
+        deliveryType:
+          type: string
+          enum: ['dbs']
+        comment:
+          type: string
+        orderUid:
+          type: string
+        article:
+          type: string
+        colorCode:
+          type: string
+        rid:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        skus:
+          type: array
+          items:
+            type: string
+        id:
+          type: integer
+          format: int64
+        warehouseId:
+          type: integer
+        nmId:
+          type: integer
+        chrtId:
+          type: integer
+        price:
+          type: integer
+        convertedPrice:
+          type: integer
+        currencyCode:
+          type: integer
+        convertedCurrencyCode:
+          type: integer
+        cargoType:
+          type: integer
+        isZeroOrder:
+          type: boolean
+
+    DBSOrder:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            fullAddress:
+              type: string
+            longitude:
+              type: number
+              format: double
+            latitude:
+              type: number
+              format: double
+        deliveryType:
+          type: string
+        orderUid:
+          type: string
+        article:
+          type: string
+        colorCode:
+          type: string
+        rid:
+          type: string
+        createdAt:
+          type: string
+        skus:
+          type: array
+          items:
+            type: string
+        id:
+          type: integer
+          format: int64
+        warehouseId:
+          type: integer
+        nmId:
+          type: integer
+        chrtId:
+          type: integer
+        price:
+          type: integer
+        convertedPrice:
+          type: integer
+        currencyCode:
+          type: integer
+        convertedCurrencyCode:
+          type: integer
+        cargoType:
+          type: integer
+        comment:
+          type: string
+        isZeroOrder:
+          type: boolean
+
+    DBSClientInfo:
+      type: object
+      properties:
+        firstName:
+          type: string
+        fullName:
+          type: string
+        orderID:
+          type: integer
+          format: int64
+        phone:
+          type: string
+        phoneCode:
+          type: integer
+        additionalPhoneCodes:
+          type: array
+          items:
+            type: integer
+
+    DBSOrderStatusBulk:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID сборочного задания
+        supplierStatus:
+          type: string
+          enum: ['new', 'confirm', 'deliver', 'receive', 'reject', 'cancel', 'canceled_by_missed_call']
+          description: Статус сборочного задания
+        wbStatus:
+          type: string
+          description: Статус системы WB
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: integer
+                description: Код ошибки
+              detail:
+                type: string
+                description: Описание ошибки
+          description: Ошибки при обработке заказа (если есть)
+
+    StatusSetResponse:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID сборочного задания
+          example: 4299281547
+        isError:
+          type: boolean
+          description: Признак наличия ошибки
+          example: true
+        errors:
+          type: array
+          description: Массив ошибок (если есть)
+          items:
+            type: object
+            properties:
+              code:
+                type: integer
+                description: Код ошибки
+                example: 404
+              detail:
+                type: string
+                description: Описание ошибки
+                example: "NotFound"
+
+    OrderCodeRequest:
+      type: object
+      required:
+        - orderId
+        - code
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID сборочного задания
+          example: 123456
+        code:
+          type: string
+          description: Код подтверждения. Отображается у покупателя на сайте и в приложении Wildberries
+          example: "741852"
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Forbidden:
+      description: Доступ запрещён
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Не найдено
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    TooManyRequests:
+      description: Слишком много запросов
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    BadRequest:
+      description: Неправильный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

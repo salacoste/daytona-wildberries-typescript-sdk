@@ -1293,6 +1293,83 @@ paths:
                   $ref: '#/components/examples/FailedToUpdateMeta'
         '429':
           $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta/customs-declaration:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Метаданные FBS
+      summary: Закрепить за сборочным заданием номер ГТД
+      description: |
+        Метод обновляет номер грузовой таможенной декларации в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+        <br><br>
+        У одного сборочного задания может быть только один номер ГТД.
+        <br><br>
+        Чтобы проверить, можно ли указать номер ГТД для сборочного задания, используйте метод [получения списка новых сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get):
+        <br>
+        - если в поле ответа `requiredMeta` есть значение `customsDeclaration` — можно указать номер ГТД
+        <br>
+        - если в поле ответа `requiredMeta` нет значения `customsDeclaration` — указать номер ГТД нельзя
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customsDeclaration
+              properties:
+                customsDeclaration:
+                  type: string
+                  maxLength: 50
+                  description: Номер грузовой таможенной декларации
+                  example: 10129050/010120/0001234
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления метаданных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                FailedToUpdateMeta:
+                  $ref: '#/components/examples/FailedToUpdateMeta'
+        '429':
+          $ref: '#/components/responses/429'
   /api/v3/orders/stickers/cross-border:
     servers:
       - url: https://marketplace-api.wildberries.ru
