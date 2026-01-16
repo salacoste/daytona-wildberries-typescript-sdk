@@ -2,7 +2,7 @@
 
 # Class: ValidationError
 
-Defined in: [errors/validation-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L35)
+Defined in: [errors/validation-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L35)
 
 Validation error thrown when request data fails validation.
 
@@ -57,7 +57,7 @@ new ValidationError(
    requestId?: string): ValidationError;
 ```
 
-Defined in: [errors/validation-error.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L50)
+Defined in: [errors/validation-error.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L50)
 
 Creates a validation error
 
@@ -83,10 +83,10 @@ Creates a validation error
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/base-error.ts#L35) |
-| <a id="fielderrors"></a> `fieldErrors?` | `readonly` | `Record`\<`string`, `string`\> | Map of field names to their validation error messages | - | [errors/validation-error.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L39) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L35) |
+| <a id="fielderrors"></a> `fieldErrors?` | `readonly` | `Record`\<`string`, `string`\> | Map of field names to their validation error messages | - | [errors/validation-error.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L39) |
 
 ## Methods
 
@@ -96,7 +96,7 @@ Creates a validation error
 getUserMessage(): string;
 ```
 
-Defined in: [errors/validation-error.ts:67](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L67)
+Defined in: [errors/validation-error.ts:67](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L67)
 
 Returns user-friendly error message with field-level validation details
 
@@ -125,7 +125,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/validation-error.ts:100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L100)
+Defined in: [errors/validation-error.ts:100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L100)
 
 Custom JSON serialization to preserve fieldErrors property
 
@@ -146,12 +146,12 @@ Object representation including field-level error details
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/validation-error.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L101) |
-| `message` | `string` | [errors/validation-error.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L102) |
-| `statusCode` | `number` | [errors/validation-error.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L103) |
-| `fieldErrors?` | `Record`\<`string`, `string`\> | [errors/validation-error.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L104) |
-| `response?` | `unknown` | [errors/validation-error.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L105) |
-| `requestId?` | `string` | [errors/validation-error.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/errors/validation-error.ts#L106) |
+| `name` | `string` | [errors/validation-error.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L101) |
+| `message` | `string` | [errors/validation-error.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L102) |
+| `statusCode` | `number` | [errors/validation-error.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L103) |
+| `fieldErrors?` | `Record`\<`string`, `string`\> | [errors/validation-error.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L104) |
+| `response?` | `unknown` | [errors/validation-error.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L105) |
+| `requestId?` | `string` | [errors/validation-error.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/validation-error.ts#L106) |
 
 #### Overrides
 

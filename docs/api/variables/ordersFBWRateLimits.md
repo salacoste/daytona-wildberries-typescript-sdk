@@ -1,9 +1,9 @@
-[Wildberries API TypeScript SDK](../modules.md) / ordersFBWRateLimits
+[Wildberries API TypeScript SDK](../modules.md) / ordersFbwRateLimits
 
-# Variable: ordersFBWRateLimits
+# Variable: ordersFbwRateLimits
 
 ```ts
-const ordersFBWRateLimits: Record<string, RateLimitConfig>;
+const ordersFbwRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/orders-fbw-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/config/orders-fbw-rate-limits.ts#L16)
+Defined in: [config/orders-fbw-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/config/orders-fbw-rate-limits.ts#L16)

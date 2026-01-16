@@ -29,13 +29,9 @@ Complete reference for all 11 API modules covering product management, orders, f
 | **[AnalyticsModule](/api/classes/AnalyticsModule)** | Sales analytics, performance metrics, CSV reports | seller-analytics-api |
 | **[ReportsModule](/api/classes/ReportsModule)** | Async report generation and retrieval | - |
 | **[CommunicationsModule](/api/classes/CommunicationsModule)** | Customer chat, Q&A, reviews | - |
-| **[PromotionModule](/api/classes/PromotionModule)** | Campaigns, promo codes, advertising | advert-api |
+| **[PromotionModule](/api/classes/PromotionModule)** | Campaigns, promo codes, advertising | - |
 | **[TariffsModule](/api/classes/TariffsModule)** | Commission rates, tariff info, fees | - |
 | **[InStorePickupModule](/api/classes/InStorePickupModule)** | Pickup point management | - |
-
-### Detailed API References
-
-- **[Promotion API Reference](/api/promotion-api-reference)** - Complete reference for all 42 advertising methods with parameters and examples
 
 ## Configuration Interfaces
 

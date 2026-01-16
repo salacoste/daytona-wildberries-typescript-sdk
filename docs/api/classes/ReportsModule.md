@@ -2,28 +2,7 @@
 
 # Class: ReportsModule
 
-Defined in: [modules/reports/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L63)
-
-ReportsModule - Generate and retrieve various business reports
-
-- Basic reports: incomes, stocks, orders, sales (with pagination)
-- Excise reports: compliance tracking for mandatory labeling
-- Async reports: warehouse remains with configurable grouping/filtering
-
-## Example
-
-```typescript
-const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
-
-// Get recent incomes with pagination
-const incomes = await sdk.reports.getIncomes('2024-01-01');
-
-// Create async warehouse remains report
-const task = await sdk.reports.createWarehouseRemainsReport({
-  locale: 'ru',
-  groupByBrand: true
-});
-```
+Defined in: [modules/reports/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L10)
 
 ## Constructors
 
@@ -33,7 +12,7 @@ const task = await sdk.reports.createWarehouseRemainsReport({
 new ReportsModule(client: BaseClient): ReportsModule;
 ```
 
-Defined in: [modules/reports/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L64)
+Defined in: [modules/reports/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L11)
 
 #### Parameters
 
@@ -47,1630 +26,1506 @@ Defined in: [modules/reports/index.ts:64](https://github.com/salacoste/daytona-w
 
 ## Methods
 
-### getIncomes()
+### getSupplierIncomes()
 
 ```ts
-getIncomes(dateFrom: string, flag?: number): Promise<IncomesItem[]>;
+getSupplierIncomes(options?: {
+  dateFrom: string;
+}): Promise<IncomesItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:117](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L117)
+Defined in: [modules/reports/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L28)
 
-Get inbound shipment data from warehouses
+Поставки
 
-Supports pagination for large datasets (up to 100,000 rows per request).
-
-**Pagination Strategy**:
-1. Make initial request with desired dateFrom
-2. Check if response length equals 100,000 (indicates more data)
-3. Use lastChangeDate from last row as dateFrom in next request
-4. Continue until response is empty array []
-
-**Date Format**: RFC3339 in Moscow timezone (UTC+3)
-- Date only: `2019-06-20`
-- Date with time: `2019-06-20T23:59:59`
-- With milliseconds: `2019-06-20T00:00:00.12345`
+Метод возвращает количество поставок товаров для хранения на складах WB.<br>Данные обновляются раз в 30 минут. <br><br> Для одного ответа в системе установлено условное ограничение 100000 строк. Поэтому, чтобы получить все поставки, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom` используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все поставки уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `dateFrom` | `string` | RFC3339 date/datetime for last change (Moscow UTC+3) |
-| `flag?` | `number` | Optional filter mode: - 0 or undefined: All changes since dateFrom (default) - 1: Only new records |
+| `options?` | \{ `dateFrom`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`IncomesItem`](../interfaces/IncomesItem.md)[]\>
+`Promise`\<[`IncomesItem`](../-internal-/interfaces/IncomesItem.md)[]\>
 
-Promise resolving to array of IncomesItem (max 100,000 rows)
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When dateFrom format is invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Fetch all incomes with pagination
-let allIncomes: IncomesItem[] = [];
-let dateFrom = '2024-01-01';
-
-while (true) {
-  const incomes = await sdk.reports.getIncomes(dateFrom);
-  if (incomes.length === 0) break;
-
-  allIncomes = allIncomes.concat(incomes);
-  console.log(`Fetched ${incomes.length} incomes, total: ${allIncomes.length}`);
-
-  // Use lastChangeDate from last row for next request
-  dateFrom = incomes[incomes.length - 1].lastChangeDate;
-
-  // Check if we hit the 100K limit
-  if (incomes.length < 100000) break;
-}
+```ts
+const result = await sdk.general.getSupplierIncomes({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1incomes/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1incomes/get)
 
 ***
 
-### getStocks()
+### getSupplierStocks()
 
 ```ts
-getStocks(dateFrom: string): Promise<StocksItem[]>;
+getSupplierStocks(options?: {
+  dateFrom: string;
+}): Promise<StocksItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:173](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L173)
+Defined in: [modules/reports/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L47)
 
-Get current stock levels across WB warehouses
+Склады
 
-Data is updated every 30 minutes. Maximum 60,000 rows per response.
-
-**Stock Quantity Fields**:
-- `quantity`: Available stock in warehouse (can be added to cart)
-- `inWayToClient`: In transit to customer
-- `inWayFromClient`: In transit from customer (returns)
-- `quantityFull`: Total quantity (quantity + inWayToClient + inWayFromClient)
-
-**For Full Stock Snapshot**: Use early date like `2019-06-20` to get all current stock
-
-**Pagination Strategy**: Same as getIncomes(), use lastChangeDate from last row
+Метод возвращает количество остатков товаров на складах WB.<br>Данные обновляются раз в 30 минут. <br><br> Для одного ответа в системе установлено условное ограничение 60000 строк. Поэтому, чтобы получить все остатки, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom` используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все остатки уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `dateFrom` | `string` | RFC3339 date/datetime (use early date like 2019-06-20 for full snapshot) |
+| `options?` | \{ `dateFrom`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`StocksItem`](../interfaces/StocksItem.md)[]\>
+`Promise`\<[`StocksItem`](../-internal-/interfaces/StocksItem.md)[]\>
 
-Promise resolving to array of StocksItem with quantity breakdown (max 60,000 rows)
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When dateFrom format is invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get current stock snapshot
-const stocks = await sdk.reports.getStocks('2019-01-01');
-
-// Analyze stock levels
-let totalAvailable = 0;
-let totalInTransit = 0;
-
-stocks.forEach(stock => {
-  totalAvailable += stock.quantity;
-  totalInTransit += stock.inWayToClient + stock.inWayFromClient;
-});
-
-console.log(`Available: ${totalAvailable}`);
-console.log(`In Transit: ${totalInTransit}`);
+```ts
+const result = await sdk.general.getSupplierStocks({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1stocks/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1stocks/get)
 
 ***
 
-### getOrders()
+### getSupplierOrders()
 
 ```ts
-getOrders(dateFrom: string, flag?: number): Promise<OrdersItem[]>;
+getSupplierOrders(options?: {
+  dateFrom: string;
+  flag?: number;
+}): Promise<OrdersItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L216)
+Defined in: [modules/reports/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L66)
 
-Get order information for all customer orders
+Заказы
 
-Maximum 80,000 rows per response.
-
-**Important Notes**:
-- 1 row = 1 order = 1 assembly task = 1 product unit
-- Use `srid` field for unique order identification
-- `isCancel` field indicates canceled orders (with cancelDate)
-- Data retention: 90 days from order creation
-
-**Pagination Strategy**: Use lastChangeDate from last row, 80,000 row limit
+Метод возвращает информацию обо всех заказах.<br>Данные обновляются раз в 30 минут.<br><br> 1 строка = 1 заказ = 1 cборочное задание = 1 единица товара.<br>Для определения заказа рекомендуем использовать поле `srid`.<br><br> Информация о заказе хранится 90 дней с момента оформления.<br><br> Для одного ответа на запрос с `flag=0` или без `flag` в системе установлено условное ограничение 80000 строк. Поэтому, чтобы получить все заказы, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom` используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все заказы уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `dateFrom` | `string` | RFC3339 date/datetime for last change |
-| `flag?` | `number` | Optional filter mode: - 0 or undefined: All changes since dateFrom (default) - 1: Only new records |
+| `options?` | \{ `dateFrom`: `string`; `flag?`: `number`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.flag?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`OrdersItem`](../interfaces/OrdersItem.md)[]\>
+`Promise`\<[`OrdersItem`](../-internal-/interfaces/OrdersItem.md)[]\>
 
-Promise resolving to array of OrdersItem (max 80,000 rows)
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When dateFrom format is invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get recent orders and track cancellations
-const orders = await sdk.reports.getOrders('2024-01-01', 1);
-
-const canceledOrders = orders.filter(o => o.isCancel);
-console.log(`Canceled: ${canceledOrders.length} / ${orders.length}`);
+```ts
+const result = await sdk.general.getSupplierOrders({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1orders/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1orders/get)
 
 ***
 
-### getSales()
+### getSupplierSales()
 
 ```ts
-getSales(dateFrom: string, flag?: number): Promise<SalesItem[]>;
+getSupplierSales(options?: {
+  dateFrom: string;
+  flag?: number;
+}): Promise<SalesItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L276)
+Defined in: [modules/reports/index.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L85)
 
-Get sales and returns data
+Продажи
 
-Data is updated every 30 minutes with 90-day retention.
-Maximum 80,000 rows per response.
-
-**Payment Fields**:
-- `paymentSaleAmount`: Payment from sale (negative for returns)
-- `forPay`: Amount to be paid to seller
-- `saleID`: Unique sale identifier (S********** = sale, R********** = return)
-
-**Returns Detection**: Negative `paymentSaleAmount` indicates return
+Метод возвращает информацию о продажах и возвратах.<br>Данные обновляются раз в 30 минут.<br><br> 1 строка = 1 заказ = 1 cборочное задание = 1 единица товара.<br>Для определения заказа рекомендуем использовать поле `srid`.<br><br> Информация о заказе хранится 90 дней с момента оформления.<br><br> Для одного ответа на запрос с `flag=0` или без `flag` в системе установлено условное ограничение 80000 строк. Поэтому, чтобы получить все продажи и возвраты, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom `используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все продажи и возвраты уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `dateFrom` | `string` | RFC3339 date/datetime for last change |
-| `flag?` | `number` | Optional filter mode: - 0 or undefined: All changes since dateFrom (default) - 1: Only new records |
+| `options?` | \{ `dateFrom`: `string`; `flag?`: `number`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.flag?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`SalesItem`](../interfaces/SalesItem.md)[]\>
+`Promise`\<[`SalesItem`](../-internal-/interfaces/SalesItem.md)[]\>
 
-Promise resolving to array of SalesItem with payment info (max 80,000 rows)
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When dateFrom format is invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Calculate revenue and returns
-const sales = await sdk.reports.getSales('2024-01-01');
-
-let totalRevenue = 0;
-let totalReturns = 0;
-
-sales.forEach(sale => {
-  if (sale.paymentSaleAmount > 0) {
-    totalRevenue += sale.forPay;
-  } else {
-    totalReturns += Math.abs(sale.forPay);
-  }
-});
-
-console.log(`Revenue: ${totalRevenue}`);
-console.log(`Returns: ${totalReturns}`);
-console.log(`Net: ${totalRevenue - totalReturns}`);
+```ts
+const result = await sdk.general.getSupplierSales({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1sales/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-statistiki/paths/~1api~1v1~1supplier~1sales/get)
 
 ***
 
-### getExciseReport()
+### createAnalyticsExciseReport()
 
 ```ts
-getExciseReport(
-   dateFrom: string, 
-   dateTo: string, 
-body?: ExciseReportRequest): Promise<ExciseReportResponse>;
+createAnalyticsExciseReport(options?: {
+  dateFrom: string;
+  dateTo: string;
+}, data?: ExciseReportRequest): Promise<ExciseReportResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L330)
+Defined in: [modules/reports/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L105)
 
-Get report on goods with mandatory labeling (excise goods)
+Получить отчёт
 
-Used for tracking labeling operations and regulatory compliance.
-
-**Country Codes** (ISO 3166-2):
-- AM: Armenia
-- BY: Belarus
-- KG: Kyrgyzstan
-- KZ: Kazakhstan
-- RU: Russia
-- UZ: Uzbekistan
-
-**Operation Types**:
-- 1: Withdrawal from circulation
-- 2: Return to circulation
+Метод возвращает отчёт с [операциями по товарам с обязательной маркировкой](https://seller.wildberries.ru/analytics-reports/excise-report).<br><br> Данный отчёт можно сохранить в [формате таблиц](https://dev.wildberries.ru/cases/1). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 часов | 10 запросов | 30 минут | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `dateFrom` | `string` | RFC3339 date for report start |
-| `dateTo` | `string` | RFC3339 date for report end |
-| `body?` | [`ExciseReportRequest`](../interfaces/ExciseReportRequest.md) | Optional filters: countries, brands, inns |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
+| `data?` | [`ExciseReportRequest`](../-internal-/interfaces/ExciseReportRequest.md) | Request body data |
 
 #### Returns
 
-`Promise`\<[`ExciseReportResponse`](../interfaces/ExciseReportResponse.md)\>
+`Promise`\<[`ExciseReportResponse`](../-internal-/interfaces/ExciseReportResponse.md)\>
 
-Promise resolving to ExciseReportResponse with labeling operations
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (10 req/5hrs)
+When API key is invalid (401/403)
 
 #### Throws
 
-When date format or parameters invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get excise report for Russia
-const report = await sdk.reports.getExciseReport(
-  '2024-01-01',
-  '2024-01-31',
-  { countries: ['RU'] }
-);
-
-console.log(`Operations tracked: ${report.response.data.length}`);
+```ts
+const result = await sdk.general.createAnalyticsExciseReport({}, {});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-po-markirovke-tovarov/paths/~1api~1v1~1analytics~1excise-report/post](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-po-markirovke-tovarov/paths/~1api~1v1~1analytics~1excise-report/post)
 
 ***
 
-### createWarehouseRemainsReport()
+### warehouseRemains()
 
 ```ts
-createWarehouseRemainsReport(params: WarehouseRemainsParams): Promise<ReportTaskResponse>;
+warehouseRemains(options?: {
+  locale?: string;
+  groupByBrand?: boolean;
+  groupBySubject?: boolean;
+  groupBySa?: boolean;
+  groupByNm?: boolean;
+  groupByBarcode?: boolean;
+  groupBySize?: boolean;
+  filterPics?: number;
+  filterVolume?: number;
+}): Promise<CreateTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:387](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L387)
+Defined in: [modules/reports/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L124)
 
-Create async task to generate warehouse remains report
+Создать отчёт
 
-Returns taskId for status checking and download.
-
-**Async Workflow**:
-1. Create task with this method (get taskId)
-2. Poll status with checkReportStatus() every 5-10 seconds
-3. Download with downloadReport() when status is 'done'
-
-**Locale Options**:
-- ru: Russian (default)
-- en: English
-- zh: Chinese (warehouseName in English)
-
-**GroupBy Options**: groupByBrand, groupBySubject, groupBySa, groupBySize, groupByNm, groupByBarcode
-
-**Filter Options**: filterPics (-1/0/1), filterVolume (-1/0/3)
+Метод создаёт [задание на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1status/get) отчёта об [остатках на складах WB](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get).<br><br> Параметры `groupBy` и `filter` (группировки и фильтры) можно задать в любой комбинации — аналогично [версии](https://seller.wildberries.ru/analytics-reports/warehouse-remains) в личном кабинете. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 5 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`WarehouseRemainsParams`](../interfaces/WarehouseRemainsParams.md) | Report configuration with locale, groupBy options, and filters |
+| `options?` | \{ `locale?`: `string`; `groupByBrand?`: `boolean`; `groupBySubject?`: `boolean`; `groupBySa?`: `boolean`; `groupByNm?`: `boolean`; `groupByBarcode?`: `boolean`; `groupBySize?`: `boolean`; `filterPics?`: `number`; `filterVolume?`: `number`; \} | Query parameters |
+| `options.locale?` | `string` | - |
+| `options.groupByBrand?` | `boolean` | - |
+| `options.groupBySubject?` | `boolean` | - |
+| `options.groupBySa?` | `boolean` | - |
+| `options.groupByNm?` | `boolean` | - |
+| `options.groupByBarcode?` | `boolean` | - |
+| `options.groupBySize?` | `boolean` | - |
+| `options.filterPics?` | `number` | - |
+| `options.filterVolume?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`ReportTaskResponse`](../interfaces/ReportTaskResponse.md)\>
+`Promise`\<[`CreateTaskResponse`](../-internal-/interfaces/CreateTaskResponse.md)\>
 
-Promise resolving to ReportTaskResponse with taskId
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min, burst 5)
+When API key is invalid (401/403)
 
 #### Throws
 
-When parameters are invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Create report with brand and subject grouping
-const task = await sdk.reports.createWarehouseRemainsReport({
-  locale: 'ru',
-  groupByBrand: true,
-  groupBySubject: true
-});
-
-console.log(`Task created: ${task.data.taskId}`);
+```ts
+const result = await sdk.general.warehouseRemains({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse\_remains/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get)
 
 ***
 
-### checkReportStatus()
+### getTasksStatu()
 
 ```ts
-checkReportStatus(taskId: string, reportType: ReportType): Promise<ReportsReportStatus>;
+getTasksStatu(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L438)
+Defined in: [modules/reports/index.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L143)
 
-Check async report generation status
+Проверить статус
 
-Poll every 5-10 seconds until status is 'done' or 'error'.
-
-**Status Values**:
-- new: Queued
-- processing: Generating report
-- done: Ready for download
-- error: Generation failed (check error field)
-- purged: Report deleted
-- canceled: Task canceled
-
-**Polling Strategy**: Check every 5-10 seconds until 'done' or 'error'
+Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get) отчёта об [остатках на складах WB](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 5 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from createWarehouseRemainsReport() |
-| `reportType` | [`ReportType`](../type-aliases/ReportType.md) | Type of report being generated |
+| `task_id` | `string` | ID задания на генерацию |
 
 #### Returns
 
-`Promise`\<[`ReportsReportStatus`](../interfaces/ReportsReportStatus.md)\>
+`Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
 
-Promise resolving to ReportStatus with current status
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/5s, burst 5)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Poll status until done
-let status: ReportStatus;
-do {
-  await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5s
-
-  status = await sdk.reports.checkReportStatus(
-    taskId,
-    'warehouse_remains'
-  );
-
-  console.log(`Status: ${status.data.status}`);
-} while (status.data.status === 'new' || status.data.status === 'processing');
+```ts
+const result = await sdk.general.getTasksStatu('task_id-value');
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse\_remains~1tasks~1%7Btask\_id%7D~1status/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1status/get)
 
 ***
 
-### downloadReport()
+### getTasksDownload()
 
 ```ts
-downloadReport(taskId: string, reportType: ReportType): Promise<Blob>;
+getTasksDownload(task_id: string): Promise<{
+  brand?: string;
+  subjectName?: string;
+  vendorCode?: string;
+  nmId?: number;
+  barcode?: string;
+  techSize?: string;
+  volume?: number;
+  warehouses?: {
+     warehouseName?: string;
+     quantity?: number;
+  }[];
+}[]>;
 ```
 
-Defined in: [modules/reports/index.ts:492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L492)
+Defined in: [modules/reports/index.ts:162](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L162)
 
-Download completed async report
+Получить отчёт
 
-Report format is Excel (.xlsx) file with tabular data.
-
-**Prerequisites**: Task status must be 'done' before downloading
-
-**Report Format**: Excel (.xlsx) file
+Метод возвращает отчёт об [остатках на складах WB](https://seller.wildberries.ru/analytics-reports/warehouse-remains) по ID [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from createWarehouseRemainsReport() |
-| `reportType` | [`ReportType`](../type-aliases/ReportType.md) | Type of report to download |
+| `task_id` | `string` | ID задания на генерацию |
 
 #### Returns
 
-`Promise`\<`Blob`\>
+`Promise`\<\{
+  `brand?`: `string`;
+  `subjectName?`: `string`;
+  `vendorCode?`: `string`;
+  `nmId?`: `number`;
+  `barcode?`: `string`;
+  `techSize?`: `string`;
+  `volume?`: `number`;
+  `warehouses?`: \{
+     `warehouseName?`: `string`;
+     `quantity?`: `number`;
+  \}[];
+\}[]\>
 
-Promise resolving to Blob (report file data)
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Download and save report
-const reportBlob = await sdk.reports.downloadReport(
-  taskId,
-  'warehouse_remains'
-);
-
-// Save to file (Node.js)
-const fs = require('fs');
-const buffer = await reportBlob.arrayBuffer();
-fs.writeFileSync('warehouse_remains.xlsx', Buffer.from(buffer));
-
-console.log('Report downloaded: warehouse_remains.xlsx');
+```ts
+const result = await sdk.general.getTasksDownload('task_id-value');
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse\_remains~1tasks~1%7Btask\_id%7D~1download/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get)
 
 ***
 
-### getWarehouseRemainsReportStatus()
+### getAnalyticsWarehouseMeasurements()
 
 ```ts
-getWarehouseRemainsReportStatus(taskId: string): Promise<ReportsReportStatus>;
+getAnalyticsWarehouseMeasurements(options?: {
+  dateFrom?: string;
+  dateTo: string;
+  tab: "penalty" | "measurement";
+  limit: number;
+  offset?: number;
+}): Promise<
+  | Penalty
+| Measurement>;
 ```
 
-Defined in: [modules/reports/index.ts:538](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L538)
+Defined in: [modules/reports/index.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L181)
 
-Check warehouse remains report generation status
+Занижение габаритов упаковки
 
-Poll every 5-10 seconds until status is 'done' or 'error'.
-
-**Status Values**: new, processing, done, error, purged, canceled
+Метод возвращает отчёты об [удержаниях за занижение габаритов упаковки](https://seller.wildberries.ru/analytics-reports/dimensions-penalties) и [замерах склада](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/warehouse-measurements) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 5 запросов | 12 секунд | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from createWarehouseRemainsReport() |
+| `options?` | \{ `dateFrom?`: `string`; `dateTo`: `string`; `tab`: `"penalty"` \| `"measurement"`; `limit`: `number`; `offset?`: `number`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
+| `options.tab?` | `"penalty"` \| `"measurement"` | - |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`ReportsReportStatus`](../interfaces/ReportsReportStatus.md)\>
+`Promise`\<
+  \| [`Penalty`](../-internal-/interfaces/Penalty.md)
+  \| [`Measurement`](../-internal-/interfaces/Measurement.md)\>
 
-Promise resolving to ReportStatus with current status
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/5s)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const status = await sdk.reports.getWarehouseRemainsReportStatus(taskId);
-console.log(`Status: ${status.data.status}`);
+```ts
+const result = await sdk.general.getAnalyticsWarehouseMeasurements({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse\_remains~1tasks~1%7Btask\_id%7D~1status/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1status/get)
 
 ***
 
-### downloadWarehouseRemainsReport()
+### getAnalyticsAntifraudDetails()
 
 ```ts
-downloadWarehouseRemainsReport(taskId: string): Promise<Blob>;
+getAnalyticsAntifraudDetails(options?: {
+  date?: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:568](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L568)
+Defined in: [modules/reports/index.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L200)
 
-Download completed warehouse remains report
+Самовыкупы
 
-Report format is Excel (.xlsx) file with warehouse remains data.
-
-**Prerequisites**: Task status must be 'done' before downloading
+Метод возвращает отчёт об удержаниях за самовыкупы. Отчёт формируется каждую неделю по средам, до 7:00 по московскому времени, и содержит данные за одну неделю.<br><br> Удержание за самовыкуп — 30% от стоимости товаров.<br>Минимальная сумма всех удержаний — 100 000 ₽, если за неделю в ПВЗ привезли ваших товаров больше, чем на сумму 100 000 ₽.<br><br> Данные доступны с августа 2023. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 100 минут | 10 запросов | 10 минут | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from createWarehouseRemainsReport() |
+| `options?` | \{ `date?`: `string`; \} | Query parameters |
+| `options.date?` | `string` | - |
 
 #### Returns
 
-`Promise`\<`Blob`\>
+`Promise`\<`unknown`\>
 
-Promise resolving to Blob (report file data)
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const reportBlob = await sdk.reports.downloadWarehouseRemainsReport(taskId);
-// Save to file...
+```ts
+const result = await sdk.general.getAnalyticsAntifraudDetails({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse\_remains~1tasks~1%7Btask\_id%7D~1download/get](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get)
 
 ***
 
-### getGoodsLabelingReport()
+### getAnalyticsIncorrectAttachments()
 
 ```ts
-getGoodsLabelingReport(params: DateRangeParams): Promise<GoodsLabelingItem[]>;
+getAnalyticsIncorrectAttachments(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:605](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L605)
+Defined in: [modules/reports/index.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L219)
 
-Get report on goods with mandatory labeling requirements
+Подмена товара
 
-Used for tracking compliance with Russian marking system (Честный ЗНАК).
-Maximum 31 days per report. Data available since June 2023.
+Метод возвращает отчёт об удержаниях за отправку ошибочных товаров, пустых коробок или коробок без товара, но с посторонними предметами. В таких случаях удерживается 100% от стоимости заказа.<br><br> Можно получить отчёт максимум за 31 день. Данные доступны с июня 2023. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`GoodsLabelingItem`](../-internal-/interfaces/GoodsLabelingItem.md)[]\>
+`Promise`\<`unknown`\>
 
-Promise resolving to array of labeling items
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network or server error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const labelingReport = await sdk.reports.getGoodsLabelingReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-console.log(`Products requiring labeling: ${labelingReport.length}`);
+```ts
+const result = await sdk.general.getAnalyticsIncorrectAttachments({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-tovarah-c-obyazatelnoj-markirovkoj](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-tovarah-c-obyazatelnoj-markirovkoj)
 
 ***
 
-### getCharacteristicsChangeReport()
+### getAnalyticsGoodsLabeling()
 
 ```ts
-getCharacteristicsChangeReport(params: DateRangeParams): Promise<CharacteristicsChangeItem[]>;
+getAnalyticsGoodsLabeling(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:637](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L637)
+Defined in: [modules/reports/index.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L238)
 
-Get report on product characteristics changes
+Маркировка товара
 
-Used for tracking product data modifications and compliance.
-Maximum 31 days per report.
+Метод возвращает отчёт о штрафах за отсутствие обязательной маркировки товаров.<br> В отчёте представлены фотографии товаров, на которых маркировка отсутствует либо не считывается.<br><br> Можно получить данные максимум за 31 день. Данные доступны с марта 2024. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 минут | 10 запросов | 1 минута | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`CharacteristicsChangeItem`](../-internal-/interfaces/CharacteristicsChangeItem.md)[]\>
+`Promise`\<`unknown`\>
 
-Promise resolving to array of characteristic change records
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network or server error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const changes = await sdk.reports.getCharacteristicsChangeReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-console.log(`Characteristics changes: ${changes.length}`);
+```ts
+const result = await sdk.general.getAnalyticsGoodsLabeling({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah)
 
 ***
 
-### getAntifraudDetailsReport()
+### getAnalyticsCharacteristicsChange()
 
 ```ts
-getAntifraudDetailsReport(params?: Record<string, unknown>): Promise<unknown[]>;
+getAnalyticsCharacteristicsChange(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:665](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L665)
+Defined in: [modules/reports/index.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L257)
 
-Get antifraud system details report
+Смена характеристик
 
-Used for tracking fraud prevention measures and blocked operations.
+Метод возвращает отчёт об удержаниях за смену характеристик товара. Если товары после приёмки не соответствуют заявленным цветам и размерам, и на складе их перемаркировали с правильными характеристиками, по таким товарам назначается штраф.<br><br> Можно получить отчёт максимум за 31 день. Данные доступны с 28 декабря 2021. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 минут | 10 запросов | 1 минута | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params?` | `Record`\<`string`, `unknown`\> | Optional query parameters for filtering |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<`unknown`[]\>
+`Promise`\<`unknown`\>
 
-Promise resolving to antifraud details
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network or server error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const antifraud = await sdk.reports.getAntifraudDetailsReport();
-console.log(`Antifraud records: ${antifraud.length}`);
+```ts
+const result = await sdk.general.getAnalyticsCharacteristicsChange({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah)
 
 ***
 
-### getIncorrectAttachmentsReport()
+### acceptanceReport()
 
 ```ts
-getIncorrectAttachmentsReport(params: DateRangeParams): Promise<IncorrectAttachmentItem[]>;
+acceptanceReport(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<CreateTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:698](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L698)
+Defined in: [modules/reports/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L276)
 
-Get report on incorrect product attachments (penalties for wrong items)
+Создать отчёт
 
-Returns penalties for sending wrong items, empty boxes, or boxes with foreign objects.
-100% of order cost is charged in such cases.
-Maximum 31 days per report. Data available since June 2023.
+Метод создаёт [задание на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report~1tasks~1%7Btask_id%7D~1status/get) отчёта о [платной приёмке](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report~1tasks~1%7Btask_id%7D~1download/get).<br><br> Можно получить отчёт максимум за 31 день. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`IncorrectAttachmentItem`](../-internal-/interfaces/IncorrectAttachmentItem.md)[]\>
+`Promise`\<[`CreateTaskResponse`](../-internal-/interfaces/CreateTaskResponse.md)\>
 
-Promise resolving to array of incorrect attachment penalty records
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network or server error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const incorrect = await sdk.reports.getIncorrectAttachmentsReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-console.log(`Penalties for incorrect attachments: ${incorrect.length}`);
+```ts
+const result = await sdk.general.acceptanceReport({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah)
 
 ***
 
-### getWarehouseMeasurementsReport()
+### getTasksStatu2()
 
 ```ts
-getWarehouseMeasurementsReport(params: WarehouseMeasurementsParams): Promise<WarehouseMeasurementItem[]>;
+getTasksStatu2(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:737](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L737)
+Defined in: [modules/reports/index.ts:295](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L295)
 
-Get warehouse measurements report (packaging dimension penalties)
+Проверить статус
 
-Returns reports on penalties for underestimated packaging dimensions
-and warehouse measurements.
+Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report/get) отчёта о [платной приёмке](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`WarehouseMeasurementsParams`](../-internal-/interfaces/WarehouseMeasurementsParams.md) | Required parameters: - dateTo: End date (required) - tab: 'penalty' | 'measurement' (required) - dateFrom: Start date (optional, defaults to first data date) - limit: Number of records (optional, default: 1000) |
+| `task_id` | `string` | ID задания на генерацию |
 
 #### Returns
 
-`Promise`\<[`WarehouseMeasurementItem`](../-internal-/interfaces/WarehouseMeasurementItem.md)[]\>
+`Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
 
-Promise resolving to warehouse measurements/penalty data
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (5 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network or server error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const measurements = await sdk.reports.getWarehouseMeasurementsReport({
-  dateTo: '2024-01-31T23:59:59Z',
-  tab: 'penalty',
-  limit: 500
-});
-console.log(`Penalty records: ${measurements.length}`);
+```ts
+const result = await sdk.general.getTasksStatu('task_id-value');
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah](https://dev.wildberries.ru/openapi/reports#tag/Otchyoty-ob-uderzhaniyah)
 
 ***
 
-### requestAcceptanceReport()
+### getTasksDownload2()
 
 ```ts
-requestAcceptanceReport(params: DateRangeParams): Promise<ReportTaskResponse>;
+getTasksDownload2(task_id: string): Promise<{
+  count?: number;
+  giCreateDate?: string;
+  incomeId?: number;
+  nmID?: number;
+  shkCreateDate?: string;
+  subjectName?: string;
+  total?: number;
+}[]>;
 ```
 
-Defined in: [modules/reports/index.ts:777](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L777)
+Defined in: [modules/reports/index.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L314)
 
-Create async task to generate acceptance report
+Получить отчёт
 
-Returns taskId for status checking and download.
-Maximum 31 days per report.
-
-**Async Workflow**:
-1. Create task with this method (get taskId)
-2. Poll status with getAcceptanceReportStatus() every 5-10 seconds
-3. Download with downloadAcceptanceReport() when status is 'done'
+Метод возвращает отчёт о [платной приёмке](https://seller.wildberries.ru/analytics-reports/acceptance-report) по ID [задания на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
+| `task_id` | `string` | ID задания на генерацию |
 
 #### Returns
 
-`Promise`\<[`ReportTaskResponse`](../interfaces/ReportTaskResponse.md)\>
+`Promise`\<\{
+  `count?`: `number`;
+  `giCreateDate?`: `string`;
+  `incomeId?`: `number`;
+  `nmID?`: `number`;
+  `shkCreateDate?`: `string`;
+  `subjectName?`: `string`;
+  `total?`: `number`;
+\}[]\>
 
-Promise resolving to ReportTaskResponse with taskId
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit exceeded (1 req/min)
-
-#### Throws
-
-When parameters are invalid
+Успешно
 
 #### Throws
 
-When network or server error occurs
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const task = await sdk.reports.requestAcceptanceReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-console.log(`Task created: ${task.data.taskId}`);
+```ts
+const result = await sdk.general.getTasksDownload('task_id-value');
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka](https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka)
 
 ***
 
-### getAcceptanceReportStatus()
+### paidStorage()
 
 ```ts
-getAcceptanceReportStatus(taskId: string): Promise<ReportsReportStatus>;
+paidStorage(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<CreateTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:807](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L807)
+Defined in: [modules/reports/index.ts:333](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L333)
 
-Check acceptance report generation status
+Создать отчёт
 
-Poll every 5-10 seconds until status is 'done' or 'error'.
-
-**Status Values**: new, processing, done, error, purged, canceled
+Метод создаёт [задание на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage~1tasks~1%7Btask_id%7D~1status/get) отчёта о [платном хранении](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage~1tasks~1%7Btask_id%7D~1download/get).<br><br> Можно получить отчёт максимум за 8 дней. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 5 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from requestAcceptanceReport() |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`ReportsReportStatus`](../interfaces/ReportsReportStatus.md)\>
+`Promise`\<[`CreateTaskResponse`](../-internal-/interfaces/CreateTaskResponse.md)\>
 
-Promise resolving to ReportStatus with current status
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/5s)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const status = await sdk.reports.getAcceptanceReportStatus(taskId);
-console.log(`Status: ${status.data.status}`);
+```ts
+const result = await sdk.general.paidStorage({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka](https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka)
 
 ***
 
-### downloadAcceptanceReport()
+### getTasksStatu3()
 
 ```ts
-downloadAcceptanceReport(taskId: string): Promise<Blob>;
+getTasksStatu3(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:837](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L837)
+Defined in: [modules/reports/index.ts:352](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L352)
 
-Download completed acceptance report
+Проверить статус
 
-Report format is Excel (.xlsx) file with acceptance fee details.
-
-**Prerequisites**: Task status must be 'done' before downloading
+Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage/get) отчёта о [платном хранении](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 5 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from requestAcceptanceReport() |
+| `task_id` | `string` | ID задания на генерацию |
 
 #### Returns
 
-`Promise`\<`Blob`\>
+`Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
 
-Promise resolving to Blob (report file data)
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const reportBlob = await sdk.reports.downloadAcceptanceReport(taskId);
-// Save to file...
+```ts
+const result = await sdk.general.getTasksStatu('task_id-value');
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka](https://dev.wildberries.ru/openapi/reports#tag/Platnaya-priyomka)
 
 ***
 
-### requestPaidStorageReport()
+### getTasksDownload3()
 
 ```ts
-requestPaidStorageReport(params: DateRangeParams): Promise<ReportTaskResponse>;
+getTasksDownload3(task_id: string): Promise<ResponsePaidStorage>;
 ```
 
-Defined in: [modules/reports/index.ts:880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L880)
+Defined in: [modules/reports/index.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L371)
 
-Create async task to generate paid storage report
+Получить отчёт
 
-Returns taskId for status checking and download.
-Maximum 8 days per report.
-
-**Async Workflow**:
-1. Create task with this method (get taskId)
-2. Poll status with getPaidStorageReportStatus() every 5-10 seconds
-3. Download with downloadPaidStorageReport() when status is 'done'
+Метод возвращает отчёт о [платном хранении](https://seller.wildberries.ru/analytics-reports/paid-storage/storage) по ID [задания на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
+| `task_id` | `string` | ID задания на генерацию |
 
 #### Returns
 
-`Promise`\<[`ReportTaskResponse`](../interfaces/ReportTaskResponse.md)\>
+`Promise`\<[`ResponsePaidStorage`](../-internal-/type-aliases/ResponsePaidStorage.md)\>
 
-Promise resolving to ReportTaskResponse with taskId
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When parameters are invalid
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const task = await sdk.reports.requestPaidStorageReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-08'
-});
-console.log(`Task created: ${task.data.taskId}`);
+```ts
+const result = await sdk.general.getTasksDownload('task_id-value');
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie](https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie)
 
 ***
 
-### getPaidStorageReportStatus()
+### getAnalyticsRegionSale()
 
 ```ts
-getPaidStorageReportStatus(taskId: string): Promise<ReportsReportStatus>;
+getAnalyticsRegionSale(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:910](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L910)
+Defined in: [modules/reports/index.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L390)
 
-Check paid storage report generation status
+Получить отчёт
 
-Poll every 5-10 seconds until status is 'done' or 'error'.
-
-**Status Values**: new, processing, done, error, purged, canceled
+Метод возвращает отчёт с [данными продаж, сгруппированных по регионам стран](https://seller.wildberries.ru/analytics-reports/region-sale).<br><br> Можно получить отчёт максимум за 31 день. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 5 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from requestPaidStorageReport() |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`ReportsReportStatus`](../interfaces/ReportsReportStatus.md)\>
+`Promise`\<`unknown`\>
 
-Promise resolving to ReportStatus with current status
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/5s)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const status = await sdk.reports.getPaidStorageReportStatus(taskId);
-console.log(`Status: ${status.data.status}`);
+```ts
+const result = await sdk.general.getAnalyticsRegionSale({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie](https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie)
 
 ***
 
-### downloadPaidStorageReport()
+### getBrandShareBrands()
 
 ```ts
-downloadPaidStorageReport(taskId: string): Promise<Blob>;
+getBrandShareBrands(): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L940)
+Defined in: [modules/reports/index.ts:408](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L408)
 
-Download completed paid storage report
+Бренды продавца
 
-Report format is Excel (.xlsx) file with storage cost details.
+Метод возвращает список брендов продавца для отчёта о [доле бренда в продажах](https://seller.wildberries.ru/analytics-reports/brand-share). <br><br> Можно получить только бренды, которые: - Продавались за последние 90 дней. - Есть на складе WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
 
-**Prerequisites**: Task status must be 'done' before downloading
+#### Returns
+
+`Promise`\<`unknown`\>
+
+Response data
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.getBrandShareBrands();
+console.log(result);
+```
+
+***
+
+### getBrandShareParentSubjects()
+
+```ts
+getBrandShareParentSubjects(options?: {
+  locale?: string;
+  brand: string;
+  dateFrom: string;
+  dateTo: string;
+}): Promise<unknown>;
+```
+
+Defined in: [modules/reports/index.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L427)
+
+Родительские категории бренда
+
+Метод возвращает родительские категории бренда продавца для отчёта о [доле бренда в продажах](https://seller.wildberries.ru/analytics-reports/brand-share).<br><br> Можно получить отчёт максимум за 365 дней. Данные доступны с 1 ноября 2022. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 20 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `taskId` | `string` | Task ID from requestPaidStorageReport() |
+| `options?` | \{ `locale?`: `string`; `brand`: `string`; `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.locale?` | `string` | - |
+| `options.brand?` | `string` | - |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<`Blob`\>
+`Promise`\<`unknown`\>
 
-Promise resolving to Blob (report file data)
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const reportBlob = await sdk.reports.downloadPaidStorageReport(taskId);
-// Save to file...
+```ts
+const result = await sdk.general.getBrandShareParentSubjects({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie](https://dev.wildberries.ru/openapi/reports#tag/Platnoe-hranenie)
 
 ***
 
-### getRegionalSalesReport()
+### getAnalyticsBrandShare()
 
 ```ts
-getRegionalSalesReport(params: DateRangeParams): Promise<RegionalSalesItem[]>;
+getAnalyticsBrandShare(options?: {
+  parentId: number;
+  brand: string;
+  dateFrom: string;
+  dateTo: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:978](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L978)
+Defined in: [modules/reports/index.ts:446](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L446)
 
-Get sales by region report
+Получить отчёт
 
-Returns sales data grouped by regions and countries.
+Метод возвращает отчёт о [доле бренда продавца в продажах](https://seller.wildberries.ru/analytics-reports/brand-share). <br><br> Можно получить отчёт максимум за 365 дней. Данные доступны с 1 ноября 2022. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 20 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
+| `options?` | \{ `parentId`: `number`; `brand`: `string`; `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.parentId?` | `number` | - |
+| `options.brand?` | `string` | - |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`RegionalSalesItem`](../-internal-/interfaces/RegionalSalesItem.md)[]\>
+`Promise`\<`unknown`\>
 
-Promise resolving to array of regional sales data
-
-#### Throws
-
-When API key is invalid
+Response data
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network or server error occurs
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const regionalSales = await sdk.reports.getRegionalSalesReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-regionalSales.forEach(region => {
-  console.log(`${region.region}: ${region.salesCount} sales`);
-});
+```ts
+const result = await sdk.general.getAnalyticsBrandShare({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Prodazhi-po-regionam](https://dev.wildberries.ru/openapi/reports#tag/Prodazhi-po-regionam)
 
 ***
 
-### getBrandsForBrandShare()
+### getBannedProductsBlocked()
 
 ```ts
-getBrandsForBrandShare(): Promise<unknown[]>;
+getBannedProductsBlocked(options?: {
+  sort: "brand" | "nmId" | "title" | "vendorCode" | "reason";
+  order: "desc" | "asc";
+}): Promise<{
+  report?: {
+     brand?: string;
+     nmId?: number;
+     title?: string;
+     vendorCode?: string;
+     reason?: string;
+  }[];
+}>;
 ```
 
-Defined in: [modules/reports/index.ts:1004](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L1004)
+Defined in: [modules/reports/index.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L465)
 
-Get list of brands for brand share analysis
+Заблокированные карточки
 
-Used as prerequisite for getBrandShareReport().
-
-#### Returns
-
-`Promise`\<`unknown`[]\>
-
-Promise resolving to array of brand information
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit exceeded (1 req/min)
-
-#### Throws
-
-When network or server error occurs
-
-#### Example
-
-```typescript
-const brands = await sdk.reports.getBrandsForBrandShare();
-console.log(`Available brands: ${brands.length}`);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah](https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah)
-
-***
-
-### getParentSubjectsForBrandShare()
-
-```ts
-getParentSubjectsForBrandShare(): Promise<BrandShareParentSubject[]>;
-```
-
-Defined in: [modules/reports/index.ts:1030](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L1030)
-
-Get list of parent subjects (categories) for brand share analysis
-
-Used as prerequisite for getBrandShareReport() to get available category IDs.
-
-#### Returns
-
-`Promise`\<[`BrandShareParentSubject`](../-internal-/interfaces/BrandShareParentSubject.md)[]\>
-
-Promise resolving to array of category information
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit exceeded (1 req/min)
-
-#### Throws
-
-When network or server error occurs
-
-#### Example
-
-```typescript
-const categories = await sdk.reports.getParentSubjectsForBrandShare();
-console.log(`Available categories: ${categories.length}`);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah](https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah)
-
-***
-
-### getBrandShareReport()
-
-```ts
-getBrandShareReport(params: BrandShareParams): Promise<BrandShareData>;
-```
-
-Defined in: [modules/reports/index.ts:1069](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L1069)
-
-Get brand market share report
-
-Shows brand performance relative to category market.
-Maximum 365 days per report. Data available since November 1, 2022.
+Метод возвращает список [заблокированных карточек товаров продавца](https://seller.wildberries.ru/analytics-reports/banned-products) с причинами блокировки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 6 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | [`BrandShareParams`](../-internal-/interfaces/BrandShareParams.md) | Required parameters: - parentId: Parent category ID (required) - brand: Brand name (required) - dateFrom: Start date (optional) - dateTo: End date (optional) |
+| `options?` | \{ `sort`: `"brand"` \| `"nmId"` \| `"title"` \| `"vendorCode"` \| `"reason"`; `order`: `"desc"` \| `"asc"`; \} | Query parameters |
+| `options.sort?` | `"brand"` \| `"nmId"` \| `"title"` \| `"vendorCode"` \| `"reason"` | - |
+| `options.order?` | `"desc"` \| `"asc"` | - |
 
 #### Returns
 
-`Promise`\<[`BrandShareData`](../-internal-/interfaces/BrandShareData.md)\>
+`Promise`\<\{
+  `report?`: \{
+     `brand?`: `string`;
+     `nmId?`: `number`;
+     `title?`: `string`;
+     `vendorCode?`: `string`;
+     `reason?`: `string`;
+  \}[];
+\}\>
 
-Promise resolving to brand share data
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit exceeded (1 req/5s)
-
-#### Throws
-
-When required parameters missing
+Успешно
 
 #### Throws
 
-When network or server error occurs
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const shareReport = await sdk.reports.getBrandShareReport({
-  parentId: 123,
-  brand: 'MyBrand',
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-console.log(`Market share: ${shareReport.brandShare}%`);
+```ts
+const result = await sdk.general.getBannedProductsBlocked({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah](https://dev.wildberries.ru/openapi/reports#tag/Dolya-brenda-v-prodazhah)
 
 ***
 
-### getBlockedProductsReport()
+### getBannedProductsShadowed()
 
 ```ts
-getBlockedProductsReport(params?: BannedProductsParams): Promise<BannedProductItem[]>;
+getBannedProductsShadowed(options?: {
+  sort: "brand" | "nmId" | "title" | "vendorCode" | "nmRating";
+  order: "desc" | "asc";
+}): Promise<{
+  report?: {
+     brand?: string;
+     nmId?: number;
+     title?: string;
+     vendorCode?: string;
+     nmRating?: number;
+  }[];
+}>;
 ```
 
-Defined in: [modules/reports/index.ts:1105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L1105)
+Defined in: [modules/reports/index.ts:484](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L484)
 
-Get blocked products report
+Скрытые из каталога
 
-Returns list of blocked product cards with block reasons.
+Метод возвращает список [товаров продавца, скрытых из каталога](https://seller.wildberries.ru/analytics-reports/banned-products/shadowed). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 6 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params?` | [`BannedProductsParams`](../-internal-/interfaces/BannedProductsParams.md) | Optional sorting parameters: - sort: Field to sort by - order: 'asc' | 'desc' |
+| `options?` | \{ `sort`: `"brand"` \| `"nmId"` \| `"title"` \| `"vendorCode"` \| `"nmRating"`; `order`: `"desc"` \| `"asc"`; \} | Query parameters |
+| `options.sort?` | `"brand"` \| `"nmId"` \| `"title"` \| `"vendorCode"` \| `"nmRating"` | - |
+| `options.order?` | `"desc"` \| `"asc"` | - |
 
 #### Returns
 
-`Promise`\<[`BannedProductItem`](../-internal-/interfaces/BannedProductItem.md)[]\>
+`Promise`\<\{
+  `report?`: \{
+     `brand?`: `string`;
+     `nmId?`: `number`;
+     `title?`: `string`;
+     `vendorCode?`: `string`;
+     `nmRating?`: `number`;
+  \}[];
+\}\>
 
-Promise resolving to array of blocked products
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const blocked = await sdk.reports.getBlockedProductsReport({
-  sort: 'date',
-  order: 'desc'
-});
-console.log(`Blocked products: ${blocked.length}`);
-blocked.forEach(product => {
-  console.log(`Product ${product.nmId}: ${product.reason}`);
-});
+```ts
+const result = await sdk.general.getBannedProductsShadowed({});
+console.log(result);
 ```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Skrytye-tovary](https://dev.wildberries.ru/openapi/reports#tag/Skrytye-tovary)
 
 ***
 
-### getShadowedProductsReport()
+### getAnalyticsGoodsReturn()
 
 ```ts
-getShadowedProductsReport(params?: BannedProductsParams): Promise<BannedProductItem[]>;
+getAnalyticsGoodsReturn(options?: {
+  dateFrom: string;
+  dateTo: string;
+}): Promise<{
+  report?: {
+     barcode?: string;
+     brand?: string;
+     completedDt?: string;
+     dstOfficeAddress?: string;
+     dstOfficeId?: number;
+     expiredDt?: string;
+     isStatusActive?: 0 | 1;
+     nmId?: number;
+     orderDt?: string;
+     orderId?: number;
+     readyToReturnDt?: string;
+     reason?: string;
+     returnType?: string;
+     shkId?: number;
+     srid?: string;
+     status?: string;
+     stickerId?: string;
+     subjectName?: string;
+     techSize?: string;
+  }[];
+}>;
 ```
 
-Defined in: [modules/reports/index.ts:1137](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L1137)
+Defined in: [modules/reports/index.ts:503](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/reports/index.ts#L503)
 
-Get shadowed (hidden) products report
+Получить отчёт
 
-Returns list of products hidden from catalog with reasons.
+Метод возвращает отчёт о [возвратах товаров продавцу](https://seller.wildberries.ru/analytics-reports/goods-return). <br><br> Можно получить отчёт максимум за 31 день. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params?` | [`BannedProductsParams`](../-internal-/interfaces/BannedProductsParams.md) | Optional sorting parameters: - sort: Field to sort by - order: 'asc' | 'desc' |
+| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; \} | Query parameters |
+| `options.dateFrom?` | `string` | - |
+| `options.dateTo?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`BannedProductItem`](../-internal-/interfaces/BannedProductItem.md)[]\>
+`Promise`\<\{
+  `report?`: \{
+     `barcode?`: `string`;
+     `brand?`: `string`;
+     `completedDt?`: `string`;
+     `dstOfficeAddress?`: `string`;
+     `dstOfficeId?`: `number`;
+     `expiredDt?`: `string`;
+     `isStatusActive?`: `0` \| `1`;
+     `nmId?`: `number`;
+     `orderDt?`: `string`;
+     `orderId?`: `number`;
+     `readyToReturnDt?`: `string`;
+     `reason?`: `string`;
+     `returnType?`: `string`;
+     `shkId?`: `number`;
+     `srid?`: `string`;
+     `status?`: `string`;
+     `stickerId?`: `string`;
+     `subjectName?`: `string`;
+     `techSize?`: `string`;
+  \}[];
+\}\>
 
-Promise resolving to array of hidden products
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit exceeded (1 req/min)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network or server error occurs
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
-
-```typescript
-const shadowed = await sdk.reports.getShadowedProductsReport({
-  order: 'desc'
-});
-console.log(`Hidden products: ${shadowed.length}`);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Skrytye-tovary](https://dev.wildberries.ru/openapi/reports#tag/Skrytye-tovary)
-
-***
-
-### getGoodsReturnReport()
 
 ```ts
-getGoodsReturnReport(params: DateRangeParams): Promise<GoodsReturnItem[]>;
+const result = await sdk.general.getAnalyticsGoodsReturn({});
+console.log(result);
 ```
-
-Defined in: [modules/reports/index.ts:1168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/reports/index.ts#L1168)
-
-Get goods return and movement report
-
-Returns data on product returns and movements.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `params` | [`DateRangeParams`](../-internal-/interfaces/DateRangeParams.md) | Date range parameters (dateFrom, dateTo required) |
-
-#### Returns
-
-`Promise`\<[`GoodsReturnItem`](../-internal-/interfaces/GoodsReturnItem.md)[]\>
-
-Promise resolving to array of return/movement records
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit exceeded (1 req/min)
-
-#### Throws
-
-When network or server error occurs
-
-#### Example
-
-```typescript
-const returns = await sdk.reports.getGoodsReturnReport({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
-});
-console.log(`Return records: ${returns.length}`);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)

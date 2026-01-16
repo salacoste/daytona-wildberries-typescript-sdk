@@ -1,0 +1,55 @@
+[Wildberries API TypeScript SDK](../../modules.md) / [\<internal\>](../modules.md) / TableGroupField
+
+# Type Alias: TableGroupField
+
+```ts
+type TableGroupField = 
+  | "ordersCount"
+  | "ordersSum"
+  | "avgOrders"
+  | "buyoutCount"
+  | "buyoutSum"
+  | "buyoutPercent"
+  | "stockCount"
+  | "stockSum"
+  | "saleRate"
+  | "avgStockTurnover"
+  | "toClientCount"
+  | "fromClientCount"
+  | "minPrice"
+  | "maxPrice"
+  | "officeMissingTime"
+  | "lostOrdersCount"
+  | "lostOrdersSum"
+  | "lostBuyoutsCount"
+  | "lostBuyoutsSum";
+```
+
+Defined in: [types/analytics.types.ts:1189](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1189)
+
+Cортировка по полю:
+ - `ordersCount` — Заказы, шт.
+ - `ordersSum` — Заказы, сумма
+ - `avgOrders` — Среднее количество заказов в день
+ - `buyoutCount` — Выкупы, шт.
+ - `buyoutSum` — Выкупы, сумма
+ - `buyoutPercent` — Процент выкупа
+ - `stockCount` — Остатки на текущий день, шт.
+ - `stockSum` — Стоимость остатков на текущий день
+ - `saleRate` — Оборачиваемость текущих остатков
+ - `avgStockTurnover` — Оборачиваемость средних остатков
+ - `toClientCount` — В пути к клиенту, шт.
+ - `fromClientCount` — В пути от клиента, шт.
+ - `minPrice` — Минимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба)
+ - `maxPrice` — Максимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба)
+ - `officeMissingTime` — Время отсутствия товара на складе
+ - `lostOrdersCount` — Упущенные заказы, шт.
+ - `lostOrdersSum` — Упущенные заказы, сумма
+ - `lostBuyoutsCount` — Упущенные выкупы, шт.
+ - `lostBuyoutsSum` — Упущенные выкупы, сумма
+
+## Example
+
+```json
+"avgOrders"
+```

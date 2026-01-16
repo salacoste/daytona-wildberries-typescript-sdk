@@ -2,7 +2,7 @@
 
 # Class: ProductsModule
 
-Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L11)
+Defined in: [modules/products/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L10)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-
 new ProductsModule(client: BaseClient): ProductsModule;
 ```
 
-Defined in: [modules/products/index.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L12)
+Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L11)
 
 #### Parameters
 
@@ -39,7 +39,7 @@ getParentAll(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L29)
+Defined in: [modules/products/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L28)
 
 Родительские категории товаров
 
@@ -110,7 +110,7 @@ getObjectAll(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L48)
+Defined in: [modules/products/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L47)
 
 Список предметов
 
@@ -191,7 +191,7 @@ getObjectCharc(subjectId: number, options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L68)
+Defined in: [modules/products/index.ts:67](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L67)
 
 Характеристики предмета
 
@@ -264,7 +264,7 @@ getDirectoryColors(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L87)
+Defined in: [modules/products/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L86)
 
 Цвет
 
@@ -326,7 +326,7 @@ getDirectoryKinds(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L106)
+Defined in: [modules/products/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L105)
 
 Пол
 
@@ -388,7 +388,7 @@ getDirectoryCountries(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L125)
+Defined in: [modules/products/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L124)
 
 Страна производства
 
@@ -450,7 +450,7 @@ getDirectorySeasons(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L144)
+Defined in: [modules/products/index.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L143)
 
 Сезон
 
@@ -512,7 +512,7 @@ getDirectoryVat(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L163)
+Defined in: [modules/products/index.ts:162](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L162)
 
 Ставка НДС
 
@@ -579,7 +579,7 @@ getDirectoryTnved(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L182)
+Defined in: [modules/products/index.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L181)
 
 ТНВЭД-код
 
@@ -644,7 +644,7 @@ getContentTags(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L200)
+Defined in: [modules/products/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L199)
 
 Список ярлыков
 
@@ -695,7 +695,7 @@ createContentTag(data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L219)
+Defined in: [modules/products/index.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L218)
 
 Создание ярлыка
 
@@ -711,7 +711,7 @@ Defined in: [modules/products/index.ts:219](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseContentError`](../interfaces/ResponseContentError.md)\>
+`Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
 Успешно
 
@@ -749,7 +749,7 @@ updateContentTag(id: number, data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:239](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L239)
+Defined in: [modules/products/index.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L238)
 
 Изменение ярлыка
 
@@ -766,7 +766,7 @@ Defined in: [modules/products/index.ts:239](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseContentError`](../interfaces/ResponseContentError.md)\>
+`Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
 Успешно
 
@@ -801,7 +801,7 @@ console.log(result);
 deleteContentTag(id: number): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L258)
+Defined in: [modules/products/index.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L257)
 
 Удаление ярлыка
 
@@ -815,7 +815,7 @@ Defined in: [modules/products/index.ts:258](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseContentError`](../interfaces/ResponseContentError.md)\>
+`Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
 Успешно
 
@@ -853,7 +853,7 @@ createNomenclatureLink(data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L277)
+Defined in: [modules/products/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L276)
 
 Управление ярлыками в карточке товара
 
@@ -869,7 +869,7 @@ Defined in: [modules/products/index.ts:277](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseContentError`](../interfaces/ResponseContentError.md)\>
+`Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
 Успешно
 
@@ -981,7 +981,7 @@ createCardsList(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:297](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L297)
+Defined in: [modules/products/index.ts:296](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L296)
 
 Список карточек товаров
 
@@ -1104,7 +1104,7 @@ createErrorList(data: RequestPublicViewerPublicErrorsTableListV2, options?: {
 }): Promise<ResponsePublicViewerPublicErrorsTableListV2>;
 ```
 
-Defined in: [modules/products/index.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L317)
+Defined in: [modules/products/index.ts:339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L339)
 
 Список несозданных карточек товаров с ошибками
 
@@ -1114,13 +1114,13 @@ Defined in: [modules/products/index.ts:317](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | [`RequestPublicViewerPublicErrorsTableListV2`](../interfaces/RequestPublicViewerPublicErrorsTableListV2.md) | Request body data |
+| `data` | [`RequestPublicViewerPublicErrorsTableListV2`](../-internal-/interfaces/RequestPublicViewerPublicErrorsTableListV2.md) | Request body data |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
 | `options.locale?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`ResponsePublicViewerPublicErrorsTableListV2`](../interfaces/ResponsePublicViewerPublicErrorsTableListV2.md)\>
+`Promise`\<[`ResponsePublicViewerPublicErrorsTableListV2`](../-internal-/interfaces/ResponsePublicViewerPublicErrorsTableListV2.md)\>
 
 Успешно
 
@@ -1177,7 +1177,7 @@ createCardsUpdate(data?: {
 }[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:336](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L336)
+Defined in: [modules/products/index.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L358)
 
 Редактирование карточек товаров
 
@@ -1191,7 +1191,7 @@ Defined in: [modules/products/index.ts:336](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
+`Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
 Успешно
 
@@ -1228,7 +1228,7 @@ createCardsMovenm(data?:
 | RequestMoveNmsImtDisconn): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L355)
+Defined in: [modules/products/index.ts:377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L377)
 
 Объединение и разъединение карточек товаров
 
@@ -1238,11 +1238,11 @@ Defined in: [modules/products/index.ts:355](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data?` | \| [`RequestMoveNmsImtConn`](../interfaces/RequestMoveNmsImtConn.md) \| [`RequestMoveNmsImtDisconn`](../interfaces/RequestMoveNmsImtDisconn.md) | Request body data |
+| `data?` | \| [`RequestMoveNmsImtConn`](../-internal-/interfaces/RequestMoveNmsImtConn.md) \| [`RequestMoveNmsImtDisconn`](../-internal-/interfaces/RequestMoveNmsImtDisconn.md) | Request body data |
 
 #### Returns
 
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
+`Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
 Успешно
 
@@ -1284,7 +1284,7 @@ createDeleteTrash(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L374)
+Defined in: [modules/products/index.ts:396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L396)
 
 Перенос карточек товаров в корзину
 
@@ -1346,7 +1346,7 @@ createCardsRecover(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L393)
+Defined in: [modules/products/index.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L415)
 
 Восстановление карточек товаров из корзины
 
@@ -1461,7 +1461,7 @@ createCardsTrash(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L413)
+Defined in: [modules/products/index.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L435)
 
 Список карточек товаров в корзине
 
@@ -1573,7 +1573,7 @@ getCardsLimits(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L431)
+Defined in: [modules/products/index.ts:453](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L453)
 
 Лимиты карточек товаров
 
@@ -1618,10 +1618,10 @@ console.log(result);
 
 ***
 
-### createContentBarcodes()
+### createContentBarcode()
 
 ```ts
-createContentBarcodes(data: {
+createContentBarcode(data: {
   count?: number;
 }): Promise<{
   data?: string[];
@@ -1631,7 +1631,7 @@ createContentBarcodes(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L450)
+Defined in: [modules/products/index.ts:472](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L472)
 
 Генерация баркодов
 
@@ -1674,7 +1674,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createContentBarcodes({});
+const result = await sdk.general.createContentBarcode({});
 console.log(result);
 ```
 
@@ -1714,7 +1714,7 @@ createCardsUpload(data?: {
 }[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L469)
+Defined in: [modules/products/index.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L491)
 
 Создание карточек товаров
 
@@ -1728,7 +1728,7 @@ Defined in: [modules/products/index.ts:469](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
+`Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
 Успешно
 
@@ -1791,7 +1791,7 @@ createUploadAdd(data?: {
 }): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L488)
+Defined in: [modules/products/index.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L510)
 
 Создание карточек товаров с присоединением
 
@@ -1807,7 +1807,7 @@ Defined in: [modules/products/index.ts:488](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
+`Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
 Успешно
 
@@ -1847,7 +1847,7 @@ createMediaFile(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:506](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L506)
+Defined in: [modules/products/index.ts:528](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L528)
 
 Загрузить медиафайл
 
@@ -1903,7 +1903,7 @@ createMediaSave(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:525](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L525)
+Defined in: [modules/products/index.ts:547](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L547)
 
 Загрузить медиафайлы по ссылкам
 
@@ -1956,10 +1956,10 @@ console.log(result);
 ### createUploadTask()
 
 ```ts
-createUploadTask(): Promise<TaskCreated>;
+createUploadTask(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L543)
+Defined in: [modules/products/index.ts:565](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L565)
 
 Установить цены и скидки
 
@@ -1967,7 +1967,7 @@ Defined in: [modules/products/index.ts:543](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`TaskCreated`](../interfaces/TaskCreated.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -1999,10 +1999,10 @@ console.log(result);
 ### createTaskSize()
 
 ```ts
-createTaskSize(): Promise<TaskCreated>;
+createTaskSize(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:561](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L561)
+Defined in: [modules/products/index.ts:583](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L583)
 
 Установить цены для размеров
 
@@ -2010,7 +2010,7 @@ Defined in: [modules/products/index.ts:561](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`TaskCreated`](../interfaces/TaskCreated.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2042,10 +2042,10 @@ console.log(result);
 ### createTaskClubDiscount()
 
 ```ts
-createTaskClubDiscount(): Promise<TaskCreated>;
+createTaskClubDiscount(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L579)
+Defined in: [modules/products/index.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L601)
 
 Установить скидки WB Клуба
 
@@ -2053,7 +2053,7 @@ Defined in: [modules/products/index.ts:579](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`TaskCreated`](../interfaces/TaskCreated.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2085,10 +2085,12 @@ console.log(result);
 ### getHistoryTasks()
 
 ```ts
-getHistoryTasks(uploadID: number): Promise<HistoryTasksResponse>;
+getHistoryTasks(options?: {
+  uploadID: number;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:598](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L598)
+Defined in: [modules/products/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L620)
 
 Состояние обработанной загрузки
 
@@ -2098,11 +2100,12 @@ Defined in: [modules/products/index.ts:598](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `uploadID` | `number` | ID загрузки (обязательный) |
+| `options?` | \{ `uploadID`: `number`; \} | Query parameters |
+| `options.uploadID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`HistoryTasksResponse`](../interfaces/HistoryTasksResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2125,7 +2128,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.products.getHistoryTasks(395643565);
+const result = await sdk.general.getHistoryTasks({});
 console.log(result);
 ```
 
@@ -2134,14 +2137,14 @@ console.log(result);
 ### getGoodsTask()
 
 ```ts
-getGoodsTask(params: {
-  uploadID: number;
-  limit?: number;
+getGoodsTask(options?: {
+  limit: number;
   offset?: number;
-}): Promise<GoodsTaskResponse>;
+  uploadID: number;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:622](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L622)
+Defined in: [modules/products/index.ts:639](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L639)
 
 Детализация обработанной загрузки
 
@@ -2151,14 +2154,14 @@ Defined in: [modules/products/index.ts:622](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `params` | \{ `uploadID`: `number`; `limit?`: `number`; `offset?`: `number`; \} | Параметры запроса |
-| `params.uploadID` | `number` | ID загрузки (обязательный) |
-| `params.limit?` | `number` | Количество элементов на странице (по умолчанию 1000) |
-| `params.offset?` | `number` | Смещение (по умолчанию 0) |
+| `options?` | \{ `limit`: `number`; `offset?`: `number`; `uploadID`: `number`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
+| `options.uploadID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`GoodsTaskResponse`](../interfaces/GoodsTaskResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2181,7 +2184,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.products.getGoodsTask({ uploadID: 395643565, limit: 100, offset: 0 });
+const result = await sdk.general.getGoodsTask({});
 console.log(result);
 ```
 
@@ -2190,10 +2193,12 @@ console.log(result);
 ### getBufferTasks()
 
 ```ts
-getBufferTasks(uploadID: number): Promise<BufferTasksResponse>;
+getBufferTasks(options?: {
+  uploadID: number;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:646](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L646)
+Defined in: [modules/products/index.ts:658](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L658)
 
 Состояние необработанной загрузки
 
@@ -2201,13 +2206,14 @@ Defined in: [modules/products/index.ts:646](https://github.com/salacoste/daytona
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `uploadID` | `number` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `uploadID`: `number`; \} | Query parameters |
+| `options.uploadID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`BufferTasksResponse`](../interfaces/BufferTasksResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2230,7 +2236,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getBufferTasks();
+const result = await sdk.general.getBufferTasks({});
 console.log(result);
 ```
 
@@ -2239,14 +2245,14 @@ console.log(result);
 ### getGoodsTask2()
 
 ```ts
-getGoodsTask2(params: {
-  uploadID: number;
-  limit?: number;
+getGoodsTask2(options?: {
+  limit: number;
   offset?: number;
-}): Promise<BufferGoodsTaskResponse>;
+  uploadID: number;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:666](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L666)
+Defined in: [modules/products/index.ts:677](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L677)
 
 Детализация необработанной загрузки
 
@@ -2254,16 +2260,16 @@ Defined in: [modules/products/index.ts:666](https://github.com/salacoste/daytona
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params` | \{ `uploadID`: `number`; `limit?`: `number`; `offset?`: `number`; \} |
-| `params.uploadID` | `number` |
-| `params.limit?` | `number` |
-| `params.offset?` | `number` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `limit`: `number`; `offset?`: `number`; `uploadID`: `number`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
+| `options.uploadID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`BufferGoodsTaskResponse`](../interfaces/BufferGoodsTaskResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2286,7 +2292,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getGoodsTask();
+const result = await sdk.general.getGoodsTask({});
 console.log(result);
 ```
 
@@ -2295,14 +2301,14 @@ console.log(result);
 ### getGoodsFilter()
 
 ```ts
-getGoodsFilter(params?: {
-  limit?: number;
+getGoodsFilter(options?: {
+  limit: number;
   offset?: number;
   filterNmID?: number;
-}): Promise<GoodsFilterResponse>;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:690](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L690)
+Defined in: [modules/products/index.ts:696](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L696)
 
 Получить товары с ценами
 
@@ -2310,16 +2316,16 @@ Defined in: [modules/products/index.ts:690](https://github.com/salacoste/daytona
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params?` | \{ `limit?`: `number`; `offset?`: `number`; `filterNmID?`: `number`; \} |
-| `params.limit?` | `number` |
-| `params.offset?` | `number` |
-| `params.filterNmID?` | `number` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `limit`: `number`; `offset?`: `number`; `filterNmID?`: `number`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
+| `options.filterNmID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`GoodsFilterResponse`](../interfaces/GoodsFilterResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2342,7 +2348,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getGoodsFilter();
+const result = await sdk.general.getGoodsFilter({});
 console.log(result);
 ```
 
@@ -2351,10 +2357,10 @@ console.log(result);
 ### createGoodsFilter()
 
 ```ts
-createGoodsFilter(): Promise<GoodsFilterResponse>;
+createGoodsFilter(): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:715](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L715)
+Defined in: [modules/products/index.ts:714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L714)
 
 Получить товары с ценами по артикулам
 
@@ -2362,7 +2368,7 @@ Defined in: [modules/products/index.ts:715](https://github.com/salacoste/daytona
 
 #### Returns
 
-`Promise`\<[`GoodsFilterResponse`](../interfaces/GoodsFilterResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2394,14 +2400,14 @@ console.log(result);
 ### getSizeNm()
 
 ```ts
-getSizeNm(params: {
-  nmID: number;
-  limit?: number;
+getSizeNm(options?: {
+  limit: number;
   offset?: number;
-}): Promise<SizeNmResponse>;
+  nmID: number;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:733](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L733)
+Defined in: [modules/products/index.ts:733](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L733)
 
 Получить размеры товара с ценами
 
@@ -2409,16 +2415,16 @@ Defined in: [modules/products/index.ts:733](https://github.com/salacoste/daytona
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params` | \{ `nmID`: `number`; `limit?`: `number`; `offset?`: `number`; \} |
-| `params.nmID` | `number` |
-| `params.limit?` | `number` |
-| `params.offset?` | `number` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `limit`: `number`; `offset?`: `number`; `nmID`: `number`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
+| `options.nmID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`SizeNmResponse`](../interfaces/SizeNmResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2441,7 +2447,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSizeNm();
+const result = await sdk.general.getSizeNm({});
 console.log(result);
 ```
 
@@ -2450,13 +2456,13 @@ console.log(result);
 ### getQuarantineGoods()
 
 ```ts
-getQuarantineGoods(params?: {
-  limit?: number;
+getQuarantineGoods(options?: {
+  limit: number;
   offset?: number;
-}): Promise<QuarantineGoodsResponse>;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/products/index.ts:757](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L757)
+Defined in: [modules/products/index.ts:752](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L752)
 
 Получить товары в карантине
 
@@ -2464,15 +2470,15 @@ Defined in: [modules/products/index.ts:757](https://github.com/salacoste/daytona
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params?` | \{ `limit?`: `number`; `offset?`: `number`; \} |
-| `params.limit?` | `number` |
-| `params.offset?` | `number` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `limit`: `number`; `offset?`: `number`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`QuarantineGoodsResponse`](../interfaces/QuarantineGoodsResponse.md)\>
+`Promise`\<`unknown`\>
 
 Response data
 
@@ -2495,7 +2501,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getQuarantineGoods();
+const result = await sdk.general.getQuarantineGoods({});
 console.log(result);
 ```
 
@@ -2514,7 +2520,7 @@ createStock(warehouseId: number, data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L782)
+Defined in: [modules/products/index.ts:772](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L772)
 
 Получить остатки товаров
 
@@ -2524,7 +2530,7 @@ Defined in: [modules/products/index.ts:782](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `warehouseId` | `number` | - |
+| `warehouseId` | `number` | ID склада продавца |
 | `data` | \{ `skus`: `string`[]; \} | Request body data |
 | `data.skus` | `string`[] | - |
 
@@ -2558,7 +2564,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createStock({});
+const result = await sdk.general.createStock('warehouseId-value', {});
 console.log(result);
 ```
 
@@ -2575,7 +2581,7 @@ updateStock(warehouseId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:803](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L803)
+Defined in: [modules/products/index.ts:791](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L791)
 
 Обновить остатки товаров
 
@@ -2585,7 +2591,7 @@ Defined in: [modules/products/index.ts:803](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `warehouseId` | `number` | - |
+| `warehouseId` | `number` | ID склада продавца |
 | `data?` | \{ `stocks`: \{ `sku?`: `string`; `amount?`: `number`; \}[]; \} | Request body data |
 | `data.stocks?` | \{ `sku?`: `string`; `amount?`: `number`; \}[] | - |
 
@@ -2614,7 +2620,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateStock({});
+const result = await sdk.general.updateStock('warehouseId-value', {});
 ```
 
 ***
@@ -2627,7 +2633,7 @@ deleteStock(warehouseId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:824](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L824)
+Defined in: [modules/products/index.ts:810](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L810)
 
 Удалить остатки товаров
 
@@ -2637,7 +2643,7 @@ Defined in: [modules/products/index.ts:824](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `warehouseId` | `number` | - |
+| `warehouseId` | `number` | ID склада продавца |
 | `data` | \{ `skus?`: `string`[]; \} | Request body data |
 | `data.skus?` | `string`[] | - |
 
@@ -2666,7 +2672,253 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deleteStock({});
+const result = await sdk.general.deleteStock('warehouseId-value', {});
+```
+
+***
+
+### offices()
+
+```ts
+offices(): Promise<Office[]>;
+```
+
+Defined in: [modules/products/index.ts:828](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L828)
+
+Получить список складов WB
+
+Метод возвращает список всех складов WB для привязки к складам продавца. Предназначен для определения складов WB, чтобы сдавать готовые заказы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+
+#### Returns
+
+`Promise`\<[`Office`](../-internal-/interfaces/Office.md)[]\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.offices();
+console.log(result);
+```
+
+***
+
+### warehouses()
+
+```ts
+warehouses(): Promise<Warehouse[]>;
+```
+
+Defined in: [modules/products/index.ts:846](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L846)
+
+Получить список складов продавца
+
+Метод возвращает список всех складов продавца. Может использоваться для получения [остатков товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+
+#### Returns
+
+`Promise`\<[`Warehouse`](../-internal-/interfaces/Warehouse.md)[]\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.warehouses();
+console.log(result);
+```
+
+***
+
+### createWarehous()
+
+```ts
+createWarehous(data: {
+  name: string;
+  officeId: number;
+}): Promise<{
+  id?: number;
+}>;
+```
+
+Defined in: [modules/products/index.ts:865](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L865)
+
+Создать склад продавца
+
+Метод создаёт склад продавца для работы с [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). Нужно привязать к складу продавца [склад WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) для работы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | \{ `name`: `string`; `officeId`: `number`; \} | Request body data |
+| `data.name` | `string` | - |
+| `data.officeId` | `number` | - |
+
+#### Returns
+
+`Promise`\<\{
+  `id?`: `number`;
+\}\>
+
+Создано
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.createWarehous({});
+console.log(result);
+```
+
+***
+
+### updateWarehous()
+
+```ts
+updateWarehous(warehouseId: number, data: {
+  name: string;
+  officeId: number;
+}): Promise<void>;
+```
+
+Defined in: [modules/products/index.ts:884](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L884)
+
+Обновить склад продавца
+
+Метод обновляет данные склада продавца в [списке складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). Данные о привязанном [складе WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) можно изменить один раз в сутки. <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `warehouseId` | `number` | ID склада продавца |
+| `data` | \{ `name`: `string`; `officeId`: `number`; \} | Request body data |
+| `data.name` | `string` | - |
+| `data.officeId` | `number` | - |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+Response data
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.updateWarehous('warehouseId-value', {});
+```
+
+***
+
+### deleteWarehous()
+
+```ts
+deleteWarehous(warehouseId: number): Promise<void>;
+```
+
+Defined in: [modules/products/index.ts:902](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L902)
+
+Удалить склад продавца
+
+Метод удаляет склад продавца из [списка складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `warehouseId` | `number` | ID склада продавца |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+Response data
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.deleteWarehous('warehouseId-value');
 ```
 
 ***
@@ -2682,7 +2934,7 @@ getWarehousesContact(warehouseId: number): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:846](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L846)
+Defined in: [modules/products/index.ts:921](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L921)
 
 Список контактов
 
@@ -2724,7 +2976,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.products.getWarehousesContact(1413259);
+const result = await sdk.general.getWarehousesContact('warehouseId-value');
 console.log(result);
 ```
 
@@ -2736,7 +2988,7 @@ console.log(result);
 updateWarehousesContact(warehouseId: number, data: StoreContactRequestBody): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:866](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L866)
+Defined in: [modules/products/index.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/products/index.ts#L940)
 
 Обновить список контактов
 
@@ -2746,8 +2998,8 @@ Defined in: [modules/products/index.ts:866](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `warehouseId` | `number` | - |
-| `data` | [`StoreContactRequestBody`](../interfaces/StoreContactRequestBody.md) | Request body data |
+| `warehouseId` | `number` | ID склада продавца |
+| `data` | [`StoreContactRequestBody`](../-internal-/interfaces/StoreContactRequestBody.md) | Request body data |
 
 #### Returns
 
@@ -2774,1659 +3026,5 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateWarehousesContact({});
-```
-
-***
-
-### createProduct()
-
-```ts
-createProduct(data: CreateProductRequest): Promise<ResponseCardCreate>;
-```
-
-Defined in: [modules/products/index.ts:948](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L948)
-
-Create new product cards with descriptions and characteristics
-
-Creates product cards in the Wildberries marketplace catalog. This operation
-is processed **asynchronously** - a 200 OK response means the request was queued,
-not that products were created successfully.
-
-**Important Notes:**
-- Request is queued for async processing
-- Check error list endpoint if 200 OK but some cards fail: `/content/v2/cards/error/list`
-- Dimensions in centimeters, weight in kilograms
-- Barcodes auto-generated if not provided
-
-**Limits:**
-- Max 100 unified cards (imtID) per request
-- Max 30 cards per imtID
-- Max 10MB request size
-
-**Rate Limit:** 10 requests/min, 6 second interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | [`CreateProductRequest`](../interfaces/CreateProductRequest.md) | Product creation request with subjectID and variants |
-
-#### Returns
-
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
-
-Promise with creation response (check error field for failures)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When required fields missing (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
-
-const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
-
-// Create a complete product card
-const result = await sdk.products.createProduct({
-  subjectID: 105,  // Category ID from getCategories
-  variants: [{
-    vendorCode: 'VENDOR-001',  // Required: Your article ID
-    brand: 'My Brand',
-    title: 'Example Product',
-    description: 'Detailed product description (1000-5000 chars)...',
-    dimensions: {
-      length: 10,        // cm
-      width: 5,          // cm
-      height: 2,         // cm
-      weightBrutto: 0.5  // kg
-    },
-    sizes: [{
-      techSize: 'XL',
-      wbSize: '52',
-      skus: ['1234567890123']  // Barcode (auto-generated if omitted)
-    }],
-    characteristics: [
-      { id: 1, value: ['Red'] },     // From getCharacteristics
-      { id: 2, value: ['Cotton'] }
-    ]
-  }]
-});
-
-if (result.error) {
-  console.error('Creation failed:', result.errorText);
-  // Check /content/v2/cards/error/list for details
-} else {
-  console.log('Product queued for creation');
-}
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov](https://dev.wildberries.ru/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov)
-
-***
-
-### listProducts()
-
-```ts
-listProducts(filters?: ProductListRequest): Promise<ProductListResponse>;
-```
-
-Defined in: [modules/products/index.ts:1020](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1020)
-
-Get list of product cards with filtering and cursor-based pagination
-
-Returns product cards from your catalog with optional filters and pagination.
-For large catalogs (>100 products), use cursor-based pagination with updatedAt and nmID.
-
-**Important Notes:**
-- Excludes products in trash (use createCardsTrash to get those)
-- Cursor-based pagination for >100 products
-- Max 100 products per page
-- **When called without parameters, returns only the first page (up to 100 products)**
-- For large catalogs (>100 products), use `getAllProducts()` helper method or implement pagination manually
-
-**Rate Limit:** 100 requests/min, 600ms interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `filters?` | [`ProductListRequest`](../interfaces/ProductListRequest.md) | Optional filtering and pagination parameters. If omitted, returns first page only (up to 100 products). |
-
-#### Returns
-
-`Promise`\<[`ProductListResponse`](../interfaces/ProductListResponse.md)\>
-
-Promise with product cards array and pagination cursor
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When filter parameters invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get first page (up to 100 products) - WARNING: For large catalogs, use getAllProducts()
-const firstPage = await sdk.products.listProducts();
-console.log(`First page: ${firstPage.cards?.length} products`);
-console.log(`Total available: ${firstPage.cursor?.total ?? 'unknown'}`);
-
-// Get first page of products with photos
-const page1 = await sdk.products.listProducts({
-  filter: {
-    withPhoto: 1,              // Only with photos
-    brands: ['My Brand']       // Filter by brand
-  },
-  cursor: { limit: 100 }       // Max 100 per page
-});
-
-console.log(`Found ${page1.cursor?.total} products`);
-page1.cards?.forEach(card => {
-  console.log(`${card.nmID}: ${card.title}`);
-});
-
-// Get next page using cursor
-if (page1.cursor?.updatedAt && page1.cursor?.nmID) {
-  const page2 = await sdk.products.listProducts({
-    filter: { withPhoto: 1, brands: ['My Brand'] },
-    cursor: {
-      limit: 100,
-      updatedAt: page1.cursor.updatedAt,  // From previous response
-      nmID: page1.cursor.nmID             // From previous response
-    }
-  });
-  console.log(`Page 2: ${page2.cards?.length} more products`);
-}
-
-// Search by vendor code or nmID
-const searchResult = await sdk.products.listProducts({
-  filter: { textSearch: 'VENDOR-001' }
-});
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov)
-
-***
-
-### getAllProducts()
-
-```ts
-getAllProducts(filters?: Omit<ProductListRequest, "cursor">, options?: {
-  maxProducts?: number;
-}): Promise<ProductCard[]>;
-```
-
-Defined in: [modules/products/index.ts:1076](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1076)
-
-Get all product cards with automatic pagination
-
-Automatically handles cursor-based pagination to retrieve all products,
-even for large catalogs (>100 products). This method makes multiple API
-calls as needed to fetch all pages.
-
-**Important Notes:**
-- Automatically paginates through all pages
-- Respects rate limits (100 req/min, 600ms interval)
-- For very large catalogs (10,000+ products), this may take several minutes
-- Consider using `listProducts()` with manual pagination for better control
-- Excludes products in trash (use createCardsTrash to get those)
-
-**Rate Limit:** 100 requests/min, 600ms interval (automatically handled)
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `filters?` | `Omit`\<[`ProductListRequest`](../interfaces/ProductListRequest.md), `"cursor"`\> | Optional filtering parameters (pagination handled automatically) |
-| `options?` | \{ `maxProducts?`: `number`; \} | Optional configuration |
-| `options.maxProducts?` | `number` | Maximum number of products to fetch (default: unlimited). Use to limit large catalogs. |
-
-#### Returns
-
-`Promise`\<[`ProductCard`](../interfaces/ProductCard.md)[]\>
-
-Promise with all product cards array
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When filter parameters invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get all products (automatically paginates)
-const allProducts = await sdk.products.getAllProducts();
-console.log(`Total products: ${allProducts.length}`);
-
-// Get all products with filters
-const productsWithPhotos = await sdk.products.getAllProducts({
-  filter: { withPhoto: 1 }
-});
-console.log(`Products with photos: ${productsWithPhotos.length}`);
-
-// Limit to first 500 products (useful for large catalogs)
-const limitedProducts = await sdk.products.getAllProducts(
-  { filter: { brands: ['My Brand'] } },
-  { maxProducts: 500 }
-);
-```
-
-#### See
-
-[listProducts](#listproducts) For manual pagination control
-
-***
-
-### updateProduct()
-
-```ts
-updateProduct(data: UpdateProductRequest[]): Promise<ResponseCardCreate>;
-```
-
-Defined in: [modules/products/index.ts:1226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1226)
-
-Update existing product cards
-
-**CRITICAL WARNING:** This endpoint **completely replaces** the product card.
-You MUST send ALL parameters, even unchanged ones. Missing fields will be removed!
-
-**Workflow:**
-1. Get current product: `const product = await sdk.products.getProductCard(nmID)`
-2. Modify desired fields: `product.title = 'New Title'`
-3. Send ALL fields: `await sdk.products.updateProduct([product])`
-
-**Important Notes:**
-- Request processed asynchronously (check error list if needed)
-- Cannot edit: barcodes, photos, video, tags (use separate endpoints)
-- Can add: additional barcodes to existing products
-- Sizes require chrtID for existing sizes
-
-**Limits:**
-- Max 3000 cards per request
-- Max 10MB request size
-
-**Rate Limit:** 10 requests/min, 6 second interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | [`UpdateProductRequest`](../interfaces/UpdateProductRequest.md)[] | Array of update requests (each with ALL product fields) |
-
-#### Returns
-
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
-
-Promise with update response (check error field for failures)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When required fields missing (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// GOOD: Get product first, then update with all fields
-const product = await sdk.products.getProductCard(12345);
-if (product) {
-  const updateRequest: UpdateProductRequest = {
-    nmID: product.nmID!,
-    vendorCode: product.vendorCode!,
-    sizes: product.sizes?.map(s => ({
-      chrtID: s.chrtID,      // Required for existing sizes
-      techSize: s.techSize,
-      wbSize: s.wbSize,
-      skus: s.skus
-    })) || [],
-    brand: product.brand,
-    title: 'Updated Title',  // Changed field
-    description: product.description,  // Keep unchanged
-    dimensions: product.dimensions,
-    characteristics: product.characteristics?.map(c => ({
-      id: c.id!,
-      value: c.value
-    }))
-  };
-
-  const result = await sdk.products.updateProduct([updateRequest]);
-  if (result.error) {
-    console.error('Update failed:', result.errorText);
-  }
-}
-
-// BAD: Only sending changed field - other fields will be lost!
-// await sdk.products.updateProduct([{
-//   nmID: 12345,
-//   vendorCode: 'VENDOR-001',
-//   sizes: [],
-//   title: 'Updated Title'  // Other fields missing = they'll be removed!
-// }]);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov)
-
-***
-
-### deleteProduct()
-
-```ts
-deleteProduct(nmIDs: number[]): Promise<ResponseCardCreate>;
-```
-
-Defined in: [modules/products/index.ts:1283](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1283)
-
-Move product cards to trash (soft delete)
-
-Moves specified product cards to trash. This is a **soft delete** - cards are not
-permanently removed and can be recovered using the recover endpoint.
-
-**Important Notes:**
-- Soft delete - cards can be recovered before auto-deletion
-- Auto-deleted after 30 days in trash (nightly Moscow time)
-- New imtID assigned after moving to trash
-- Use createCardsRecover to restore deleted cards
-
-**Limits:**
-- Max 1000 nmIDs per request
-
-**Rate Limit:** 100 requests/min, 600ms interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmIDs` | `number`[] | Array of Wildberries article IDs to delete (max 1000) |
-
-#### Returns
-
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
-
-Promise with delete response
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When nmIDs array empty or invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Delete single product
-await sdk.products.deleteProduct([12345]);
-
-// Batch delete multiple products
-const toDelete = [12345, 12346, 12347];
-const result = await sdk.products.deleteProduct(toDelete);
-
-if (result.error) {
-  console.error('Deletion failed:', result.errorText);
-} else {
-  console.log(`${toDelete.length} products moved to trash`);
-  console.log('Auto-deletion in 30 days');
-  console.log('Recover before then using createCardsRecover()');
-}
-
-// View products in trash
-const trashedProducts = await sdk.products.createCardsTrash({
-  settings: { cursor: { limit: 100 } }
-});
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov)
-
-***
-
-### recoverCards()
-
-```ts
-recoverCards(nmIDs: number[]): Promise<ResponseCardCreate>;
-```
-
-Defined in: [modules/products/index.ts:1329](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1329)
-
-Recover product cards from trash
-
-Restores previously deleted product cards from trash. Cards retain
-the same imtID they had when moved to trash.
-
-**Important Notes:**
-- Cards must be in trash (use deleteProduct to move them there)
-- Cards auto-delete 30 days after moving to trash
-- Recovered cards keep their original imtID
-
-**Limits:**
-- Max 1000 nmIDs per request
-
-**Rate Limit:** 100 requests/min, 600ms interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmIDs` | `number`[] | Array of Wildberries article IDs to recover (max 1000) |
-
-#### Returns
-
-`Promise`\<[`ResponseCardCreate`](../interfaces/ResponseCardCreate.md)\>
-
-Promise with recover response
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When nmIDs array empty or invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Recover deleted products
-const toRecover = [123456789, 987654321];
-const result = await sdk.products.recoverCards(toRecover);
-
-if (result.error) {
-  console.error('Recovery failed:', result.errorText);
-} else {
-  console.log(`${toRecover.length} products recovered from trash`);
-}
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov)
-
-***
-
-### getProductCard()
-
-```ts
-getProductCard(nmID: number): Promise<ProductCard | null>;
-```
-
-Defined in: [modules/products/index.ts:1378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1378)
-
-Get single product card by Wildberries article ID (nmID)
-
-Convenience method to retrieve a single product card. This wraps listProducts()
-with a textSearch filter since the API doesn't provide a direct GET endpoint.
-
-**Note:** Wildberries API doesn't have a single-product GET endpoint, so this
-method searches by nmID and returns the first match.
-
-**Rate Limit:** 100 requests/min, 600ms interval (same as listProducts)
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmID` | `number` | Wildberries article ID to retrieve |
-
-#### Returns
-
-`Promise`\<[`ProductCard`](../interfaces/ProductCard.md) \| `null`\>
-
-Promise with product card or null if not found
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429) - automatically retried
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get product by nmID
-const product = await sdk.products.getProductCard(12345);
-
-if (product) {
-  console.log('Product found:', product.title);
-  console.log('Brand:', product.brand);
-  console.log('Vendor Code:', product.vendorCode);
-  console.log('Stock:', product.sizes?.length, 'sizes');
-} else {
-  console.log('Product not found (may be in trash or deleted)');
-}
-
-// Use for updates (get current state first)
-const current = await sdk.products.getProductCard(12345);
-if (current) {
-  await sdk.products.updateProduct([{
-    ...current,
-    title: 'Updated Title'
-  }]);
-}
-```
-
-***
-
-### uploadMediaFile()
-
-```ts
-uploadMediaFile(
-   nmID: number, 
-   file: Blob | Buffer<ArrayBufferLike>, 
-photoNumber: number): Promise<MediaUploadResponse>;
-```
-
-Defined in: [modules/products/index.ts:1437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1437)
-
-Upload single media file to product card
-
-Upload product images or video using multipart/form-data.
-Each request uploads ONE file.
-
-**Media Requirements:**
-- **Images**: Max 30, min 700×900px, max 32MB, min 65% quality
-- **Formats**: JPG, PNG, BMP, GIF (static only), WebP
-- **Video**: Max 1, max 50MB, formats: MOV, MP4
-
-**Photo Number Rules:**
-- Starts at 1 for first photo
-- For video, always use 1
-- To add to existing photos, use number > current photo count
-
-**Rate Limit:** 100 requests/min, 600ms interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmID` | `number` | Wildberries article ID |
-| `file` | `Blob` \| `Buffer`\<`ArrayBufferLike`\> | File data (Buffer or Blob) |
-| `photoNumber` | `number` | Photo position 1-30 (video always 1) |
-
-#### Returns
-
-`Promise`\<[`MediaUploadResponse`](../interfaces/MediaUploadResponse.md)\>
-
-Promise with upload response
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When file invalid or doesn't meet requirements (400)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-import { readFileSync } from 'fs';
-
-// Upload first product image
-const imageBuffer = readFileSync('product-photo.jpg');
-await sdk.products.uploadMediaFile(12345, imageBuffer, 1);
-
-// Upload additional image (photoNumber 2)
-const image2 = readFileSync('product-photo-2.jpg');
-await sdk.products.uploadMediaFile(12345, image2, 2);
-
-// Upload video (always photoNumber 1)
-const videoBuffer = readFileSync('product-video.mp4');
-await sdk.products.uploadMediaFile(12345, videoBuffer, 1);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Media](https://dev.wildberries.ru/openapi/work-with-products#tag/Media)
-
-***
-
-### uploadMediaByURLs()
-
-```ts
-uploadMediaByURLs(nmID: number, mediaURLs: string[]): Promise<MediaUploadResponse>;
-```
-
-Defined in: [modules/products/index.ts:1510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1510)
-
-Upload media files to product card via URLs
-
-**CRITICAL WARNING:** This method **COMPLETELY REPLACES** all existing media.
-To add new media, you MUST include both new AND old URLs in the request.
-
-**All-or-Nothing:** If ANY file fails validation, NONE of the files upload.
-
-**URL Requirements:**
-- Direct file link (not preview/HTML page)
-- No authentication required
-- Must return file content, not text
-
-**Media Requirements:**
-- Max 30 images + 1 video
-- Images: min 700×900px, max 32MB, min 65% quality (JPG/PNG/BMP/GIF/WebP)
-- Video: max 50MB (MOV/MP4)
-
-**Rate Limit:** 100 requests/min, 600ms interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmID` | `number` | Wildberries article ID |
-| `mediaURLs` | `string`[] | Array of media URLs (max 30 images + 1 video) |
-
-#### Returns
-
-`Promise`\<[`MediaUploadResponse`](../interfaces/MediaUploadResponse.md)\>
-
-Promise with upload response
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When URLs invalid or media doesn't meet requirements (400)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// BAD - Loses existing media!
-await sdk.products.uploadMediaByURLs(12345, [
-  'https://example.com/new-photo.jpg'
-]);
-
-// GOOD - Preserves existing media
-const existingMedia = await sdk.products.getMediaList(12345);
-await sdk.products.uploadMediaByURLs(12345, [
-  ...existingMedia,                    // Keep old media
-  'https://example.com/new-photo.jpg'  // Add new media
-]);
-
-// Upload complete media set
-await sdk.products.uploadMediaByURLs(12345, [
-  'https://example.com/product-main.jpg',
-  'https://example.com/product-side.jpg',
-  'https://example.com/product-back.jpg',
-  'https://example.com/product-video.mp4'
-]);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Media](https://dev.wildberries.ru/openapi/work-with-products#tag/Media)
-
-***
-
-### getMediaList()
-
-```ts
-getMediaList(nmID: number): Promise<string[]>;
-```
-
-Defined in: [modules/products/index.ts:1548](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1548)
-
-Get list of media URLs for a product
-
-Convenience method that retrieves product card and extracts media URLs.
-
-**Note:** Wildberries API doesn't have a dedicated media list endpoint,
-so this wraps getProductCard() and returns the photos array.
-
-**Rate Limit:** 100 requests/min, 600ms interval (same as getProductCard)
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmID` | `number` | Wildberries article ID |
-
-#### Returns
-
-`Promise`\<`string`[]\>
-
-Promise with array of media URLs (empty if no media)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get current media
-const mediaURLs = await sdk.products.getMediaList(12345);
-console.log(`Product has ${mediaURLs.length} media files`);
-
-// Add new media while preserving existing
-const existing = await sdk.products.getMediaList(12345);
-await sdk.products.uploadMediaByURLs(12345, [
-  ...existing,
-  'https://example.com/new-photo.jpg'
-]);
-```
-
-***
-
-### updatePricing()
-
-```ts
-updatePricing(updates: PricingUpdate[]): Promise<PricingTaskResponse>;
-```
-
-Defined in: [modules/products/index.ts:1613](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1613)
-
-Set prices and discounts for products (async processing)
-
-**CRITICAL:** This operation is **asynchronous**. A 200 OK response means the task
-was queued, NOT that prices were updated. You must poll `getPricingTaskStatus()`
-to verify when pricing changes are applied.
-
-**Pricing Constraints:**
-- Prices must be **integers only** (whole numbers, no decimals)
-- Discounts: 0-99%
-- Price and discount cannot both be empty
-
-**Quarantine Warning:**
-If new price with discount is ≥3x lower than old price, it goes to
-[quarantine](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine)
-and the old price continues until you fix it.
-
-**Limits:**
-- Max 1000 products per request
-
-**Rate Limit:** 10 requests per 6 seconds, 600ms interval
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `updates` | [`PricingUpdate`](../interfaces/PricingUpdate.md)[] | Array of pricing updates (max 1000) |
-
-#### Returns
-
-`Promise`\<[`PricingTaskResponse`](../interfaces/PricingTaskResponse.md)\>
-
-Promise with task ID for status polling
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When prices invalid (decimals) or discounts out of range (400)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Update pricing for products
-const task = await sdk.products.updatePricing([
-  { nmID: 12345, price: 2999, discount: 15 },
-  { nmID: 67890, price: 1499, discount: 10 }
-]);
-
-console.log('Pricing task created:', task.uploadID);
-
-// Poll task status until complete
-let status;
-do {
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  status = await sdk.products.getPricingTaskStatus(task.uploadID);
-  console.log('Status:', status.status);
-} while (status.status === 'processing');
-
-if (status.status === 'completed') {
-  console.log('Prices updated successfully!');
-  const pricing = await sdk.products.getPricing([12345, 67890]);
-  console.log('New pricing:', pricing);
-}
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
-
-***
-
-### getPricing()
-
-```ts
-getPricing(nmIDOrIDs: number | number[]): Promise<PricingInfo[]>;
-```
-
-Defined in: [modules/products/index.ts:1654](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1654)
-
-Get current pricing for one or more products
-
-Retrieves prices, discounts, promo codes, and WB Club discounts.
-
-**Note:** Single nmID uses GET, multiple nmIDs use POST (handled automatically).
-
-**Rate Limit:** 10 requests per 6 seconds
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `nmIDOrIDs` | `number` \| `number`[] | Single nmID or array of nmIDs |
-
-#### Returns
-
-`Promise`\<[`PricingInfo`](../interfaces/PricingInfo.md)[]\>
-
-Promise with pricing information array
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get pricing for single product
-const pricing = await sdk.products.getPricing(12345);
-console.log('Price:', pricing[0].price);
-console.log('Discount:', pricing[0].discount, '%');
-
-// Get pricing for multiple products
-const bulkPricing = await sdk.products.getPricing([12345, 67890]);
-bulkPricing.forEach(p => {
-  console.log(`Product ${p.nmID}: ${p.price} ${p.currency}`);
-  const finalPrice = p.price * (1 - p.discount / 100);
-  console.log(`  Final price: ${finalPrice.toFixed(2)}`);
-});
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
-
-***
-
-### getPricingTaskStatus()
-
-```ts
-getPricingTaskStatus(uploadID: string): Promise<PricingTaskStatusResponse>;
-```
-
-Defined in: [modules/products/index.ts:1721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1721)
-
-Get status of pricing update task
-
-Poll this endpoint after `updatePricing()` to check if prices were applied.
-
-**Status Values:**
-- `pending` - Task queued, not started
-- `processing` - Task in progress
-- `completed` - All prices updated successfully
-- `failed` - Task failed, check error details
-
-**Rate Limit:** 10 requests per 6 seconds
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `uploadID` | `string` | Task ID from updatePricing() response |
-
-#### Returns
-
-`Promise`\<[`PricingTaskStatusResponse`](../interfaces/PricingTaskStatusResponse.md)\>
-
-Promise with task status
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Start pricing update
-const task = await sdk.products.updatePricing([
-  { nmID: 12345, price: 2999, discount: 15 }
-]);
-
-// Poll until complete with exponential backoff
-let delay = 1000;
-let status;
-
-do {
-  await new Promise(resolve => setTimeout(resolve, delay));
-  status = await sdk.products.getPricingTaskStatus(task.uploadID);
-  if (status.status === 'processing') {
-    delay = Math.min(delay * 1.5, 10000);
-  }
-} while (status.status === 'processing');
-
-if (status.status === 'completed') {
-  console.log('Pricing updated!');
-}
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
-
-***
-
-### getWBOffices()
-
-```ts
-getWBOffices(): Promise<Office[]>;
-```
-
-Defined in: [modules/products/index.ts:1776](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1776)
-
-Get list of Wildberries warehouses for FBS binding
-
-Returns all WB warehouses/offices that can be bound to seller warehouses for
-FBS (Fulfillment by Seller) fulfillment. You must get a WB office ID from
-this method before creating a seller warehouse.
-
-**Use Case:**
-- Required before creating seller warehouse (need `officeId`)
-- Shows available WB warehouses for FBS model
-- Contains warehouse location, cargo type, and delivery type info
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Returns
-
-`Promise`\<[`Office`](../interfaces/Office.md)[]\>
-
-Promise with array of WB warehouses
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get available WB warehouses
-const wbOffices = await sdk.products.getWBOffices();
-
-console.log(`Found ${wbOffices.length} WB warehouses`);
-wbOffices.forEach(office => {
-  console.log(`Office ${office.id}: ${office.name}`);
-  console.log(`  Location: ${office.city}, ${office.address}`);
-  console.log(`  Cargo Type: ${office.cargoType} (1=МГТ, 2=СГТ, 3=КГТ+)`);
-  console.log(`  Delivery Type: ${office.deliveryType} (1=FBS, 2=DBS)`);
-});
-
-// Use office ID to create seller warehouse
-const newWarehouse = await sdk.products.createWarehouse(
-  'Склад Коледино',
-  wbOffices[0].id  // Bind to first available WB office
-);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
-
-***
-
-### getWarehouses()
-
-```ts
-getWarehouses(): Promise<Warehouse[]>;
-```
-
-Defined in: [modules/products/index.ts:1824](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1824)
-
-Get list of seller's warehouses
-
-Returns all seller warehouses with bindings to WB offices. Used for managing
-stock locations and FBS fulfillment.
-
-**Use Case:**
-- View all configured seller warehouses
-- Get warehouse IDs for stock management operations
-- Check warehouse bindings to WB offices
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Returns
-
-`Promise`\<[`Warehouse`](../interfaces/Warehouse.md)[]\>
-
-Promise with array of seller warehouses
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get seller's warehouse list
-const warehouses = await sdk.products.getWarehouses();
-
-console.log(`You have ${warehouses.length} warehouses`);
-warehouses.forEach(warehouse => {
-  console.log(`Warehouse ${warehouse.id}: ${warehouse.name}`);
-  console.log(`  Bound to WB Office: ${warehouse.officeId}`);
-  console.log(`  Cargo Type: ${warehouse.cargoType}`);
-  console.log(`  Processing: ${warehouse.isProcessing}`);
-  console.log(`  Deleting: ${warehouse.isDeleting}`);
-});
-
-// Use warehouse ID for stock management
-const stock = await sdk.products.getStock(
-  warehouses[0].id,
-  ['BARCODE123']
-);
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
-
-***
-
-### createWarehouse()
-
-```ts
-createWarehouse(name: string, officeId: number): Promise<{
-  id: number;
-}>;
-```
-
-Defined in: [modules/products/index.ts:1875](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1875)
-
-Create seller warehouse bound to WB office
-
-Creates a new seller warehouse and binds it to a Wildberries office for FBS
-(Fulfillment by Seller) model.
-
-**CRITICAL Constraints:**
-- Name: 1-200 characters
-- Cannot bind WB office already in use (409 error)
-- Office binding enables FBS fulfillment
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `name` | `string` | Warehouse name (1-200 characters) |
-| `officeId` | `number` | WB office/warehouse ID from getWBOffices() |
-
-#### Returns
-
-`Promise`\<\{
-  `id`: `number`;
-\}\>
-
-Promise with new warehouse ID
-
-#### Throws
-
-When name invalid or office already bound (409)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get available WB offices
-const offices = await sdk.products.getWBOffices();
-console.log(`Selected: ${offices[0].name} (ID: ${offices[0].id})`);
-
-// Create seller warehouse
-try {
-  const newWarehouse = await sdk.products.createWarehouse(
-    'Склад Коледино',
-    offices[0].id
-  );
-  console.log(`Warehouse created with ID: ${newWarehouse.id}`);
-} catch (error) {
-  if (error.statusCode === 409) {
-    console.error('Office already bound to another warehouse');
-  }
-  throw error;
-}
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
-
-***
-
-### updateWarehouse()
-
-```ts
-updateWarehouse(
-   warehouseId: number, 
-   name: string, 
-officeId: number): Promise<void>;
-```
-
-Defined in: [modules/products/index.ts:1927](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1927)
-
-Update seller warehouse details
-
-Updates warehouse name and/or WB office binding.
-
-**IMPORTANT:**
-- Office binding can only be changed once per 24 hours
-- Cannot reuse WB office already bound to another warehouse
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | Seller warehouse ID |
-| `name` | `string` | New warehouse name (1-200 chars) |
-| `officeId` | `number` | New WB office ID (can change max once/day) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise<void> - 204 on success
-
-#### Throws
-
-When warehouse not found (404) or office conflict (409)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Update warehouse name
-await sdk.products.updateWarehouse(
-  123,
-  'Склад Москва Обновлённый',
-  456  // Same or different office (max once/day)
-);
-
-console.log('Warehouse updated successfully');
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
-
-***
-
-### deleteWarehouse()
-
-```ts
-deleteWarehouse(warehouseId: number): Promise<void>;
-```
-
-Defined in: [modules/products/index.ts:1958](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1958)
-
-Delete seller warehouse
-
-Removes warehouse from seller's list and unbinds WB office for reuse.
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | Warehouse ID to delete |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise<void> - 204 on success
-
-#### Throws
-
-When warehouse doesn't exist (404)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Delete warehouse
-await sdk.products.deleteWarehouse(123);
-console.log('Warehouse deleted (WB office unbound for reuse)');
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
-
-***
-
-### getStock()
-
-```ts
-getStock(warehouseId: number, skus: string[]): Promise<StockInfo[]>;
-```
-
-Defined in: [modules/products/index.ts:1998](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L1998)
-
-Get stock levels for products at warehouse
-
-Retrieves current stock quantities for specified SKUs at a warehouse.
-
-**Constraints:**
-- Batch size: 1-1000 SKUs
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | Warehouse ID |
-| `skus` | `string`[] | Array of product barcodes (1-1000 SKUs) |
-
-#### Returns
-
-`Promise`\<[`StockInfo`](../interfaces/StockInfo.md)[]\>
-
-Promise with array of stock info
-
-#### Throws
-
-When SKU array invalid or warehouse not found
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get stock for multiple products
-const stocks = await sdk.products.getStock(
-  123,
-  ['BARCODE123', 'BARCODE456', 'BARCODE789']
-);
-
-stocks.forEach(stock => {
-  console.log(`SKU: ${stock.sku}, Stock: ${stock.amount}`);
-});
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca)
-
-***
-
-### updateStockLevels()
-
-```ts
-updateStockLevels(warehouseId: number, updates: StockUpdate[]): Promise<void>;
-```
-
-Defined in: [modules/products/index.ts:2056](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L2056)
-
-Update stock quantities for products (user-friendly wrapper)
-
-Updates stock levels for multiple SKUs at a warehouse.
-
-**CRITICAL:**
-- Parameter names NOT validated! Incorrect names = silent failure with 200 OK
-- Correct field names: `stocks` (array), `sku` (string), `amount` (number)
-
-**Constraints:**
-- Max 1000 SKUs per request
-- Amount: 0-100,000 per SKU
-
-**409 Errors (count as 5 requests!):**
-- DBS/FBS warehouse restrictions
-- Cargo type warehouse restrictions (LCL, ODC, CD+)
-- Warehouse processing in progress
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | Warehouse ID |
-| `updates` | [`StockUpdate`](../interfaces/StockUpdate.md)[] | Array of stock updates (SKU + amount, 1-1000 items) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise<void> - 204 on success
-
-#### Throws
-
-When amounts invalid (0-100,000) or warehouse not found
-
-#### Throws
-
-409 for warehouse restrictions (DBS/FBS/cargo type conflicts)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Update stock for multiple products
-await sdk.products.updateStockLevels(123, [
-  { sku: 'BARCODE123', amount: 100 },
-  { sku: 'BARCODE456', amount: 50 },
-  { sku: 'BARCODE789', amount: 200 }
-]);
-
-console.log('Stock updated for 3 products');
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca)
-
-***
-
-### deleteStockRecords()
-
-```ts
-deleteStockRecords(warehouseId: number, skus: string[]): Promise<void>;
-```
-
-Defined in: [modules/products/index.ts:2108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L2108)
-
-Delete stock records for products (user-friendly wrapper)
-
-**IRREVERSIBLE:** Deleted stock must be re-uploaded to resume sales.
-No undo functionality available.
-
-**Constraints:**
-- Batch size: 1-1000 SKUs
-
-**409 Errors (count as 5 requests!):**
-- Warehouse processing in progress
-
-**Rate Limit:** 300 requests/min, 200ms interval, 20 burst
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | Warehouse ID |
-| `skus` | `string`[] | Array of barcodes to delete (1-1000 SKUs) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise<void> - 204 on success
-
-#### Throws
-
-404 if SKUs not found in warehouse
-
-#### Throws
-
-409 if warehouse processing in progress
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// WARNING: This is irreversible!
-await sdk.products.deleteStockRecords(123, ['BARCODE789']);
-console.log('Stock deleted (IRREVERSIBLE - must re-upload to resume sales)');
-```
-
-#### See
-
-[https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca)
-
-***
-
-### getTags()
-
-```ts
-getTags(): Promise<TagsResponse>;
-```
-
-Defined in: [modules/products/index.ts:2135](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/products/index.ts#L2135)
-
-Получение тегов
-
-Метод для получения тегов, которые можно использовать при создании карточки товара
-
-#### Returns
-
-`Promise`\<[`TagsResponse`](../interfaces/TagsResponse.md)\>
-
-Успешно - массив тегов с их ID, цветами и названиями [ProductTag](../interfaces/ProductTag.md)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.products.getTags();
-console.log(result.data); // Массив {@link ProductTag} объектов
+const result = await sdk.general.updateWarehousesContact('warehouseId-value', {});
 ```

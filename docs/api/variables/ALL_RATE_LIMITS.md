@@ -8,7 +8,7 @@ const ALL_RATE_LIMITS: {
 };
 ```
 
-Defined in: [config/rate-limits.ts:71](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/config/rate-limits.ts#L71)
+Defined in: [config/rate-limits.ts:71](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/config/rate-limits.ts#L71)
 
 Aggregated rate limit configuration for all SDK modules.
 

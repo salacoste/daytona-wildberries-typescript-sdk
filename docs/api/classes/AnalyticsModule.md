@@ -2,36 +2,7 @@
 
 # Class: AnalyticsModule
 
-Defined in: [modules/analytics/index.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L75)
-
-AnalyticsModule
-
-Manages analytics and reporting operations for Wildberries sellers including:
-- Sales funnel conversion metrics (views → cart → purchases)
-- Product performance tracking and comparison
-- Search query analysis and optimization
-- Category-level performance metrics
-- Time-series data for trend analysis
-- CSV report generation
-
-## Example
-
-```typescript
-const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
-
-// Get sales funnel metrics
-const funnel = await sdk.analytics.getSalesFunnel({
-  from: '2024-01-01',
-  to: '2024-01-31'
-});
-console.log(`Conversion Rate: ${funnel.data.cards[0].statistics.selectedPeriod.conversions.buyoutsPercent}%`);
-
-// Compare product performance
-const performance = await sdk.analytics.getProductPerformance(
-  ['12345', '67890'],
-  { from: '2024-01-01', to: '2024-01-31' }
-);
-```
+Defined in: [modules/analytics/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L10)
 
 ## Constructors
 
@@ -41,15 +12,13 @@ const performance = await sdk.analytics.getProductPerformance(
 new AnalyticsModule(client: BaseClient): AnalyticsModule;
 ```
 
-Defined in: [modules/analytics/index.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L80)
-
-Creates an instance of AnalyticsModule
+Defined in: [modules/analytics/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L11)
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `client` | [`BaseClient`](BaseClient.md) | BaseClient instance for making HTTP requests |
+| Parameter | Type |
+| ------ | ------ |
+| `client` | [`BaseClient`](BaseClient.md) |
 
 #### Returns
 
@@ -57,1468 +26,829 @@ Creates an instance of AnalyticsModule
 
 ## Methods
 
-### getSalesFunnel()
+### createNmReportDetail()
 
 ```ts
-getSalesFunnel(request: ProductStatisticsRequest): Promise<ProductStatisticsResponse>;
+createNmReportDetail(data: NmReportDetailRequest): Promise<NmReportDetailResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L114)
+Defined in: [modules/analytics/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L28)
 
-Get sales funnel conversion metrics for products
+Статистика карточек товаров за период
 
-Retrieves detailed statistics about product performance including views,
-add-to-cart actions, orders, and purchases with conversion rates at each stage.
-Compares selected period with previous period to track trends.
+Метод формирует отчёт о товарах, сравнивая ключевые показатели — например, добавления в корзину, заказы и переходы в карточку товара — за текущий период с аналогичным прошлым.<br><br> Параметры `brandNames`,`objectIDs`, `tagIDs`, `nmIDs` могут быть пустыми `[]`, тогда в ответе возвращаются все карточки продавца.<br><br> Если выбрано несколько параметров, в ответе будут карточки, в которых есть одновременно все эти параметры. Если карточки не подходят по параметрам запроса, вернётся пустой ответ `[]`.<br><br> Можно получить отчёт максимум за последние 365 дней.<br><br> В данных предыдущего периода: * Данные в `previousPeriod` указаны за такой же период, что и в `selectedPeriod`. * Если дата начала `previousPeriod` раньше, чем год назад от текущей даты, она будет приведена к виду: `previousPeriod.begin = текущая дата — 365 дней.` <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `request` | [`ProductStatisticsRequest`](../interfaces/ProductStatisticsRequest.md) | Product statistics request with filters and period |
+| `data` | [`NmReportDetailRequest`](../-internal-/interfaces/NmReportDetailRequest.md) | Parameter |
 
 #### Returns
 
-`Promise`\<[`ProductStatisticsResponse`](../interfaces/ProductStatisticsResponse.md)\>
+`Promise`\<[`NmReportDetailResponse`](../-internal-/interfaces/NmReportDetailResponse.md)\>
 
-Promise resolving to product statistics with funnel metrics
-
-#### Throws
-
-When date range is invalid
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded (3 requests/minute)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get sales funnel for last 30 days
-const funnel = await sdk.analytics.getSalesFunnel({
-  period: {
-    begin: '2024-01-01 00:00:00',
-    end: '2024-01-31 23:59:59'
-  },
-  page: 1,
-  pageSize: 100
-});
-
-funnel.data.cards.forEach(card => {
-  const stats = card.statistics.selectedPeriod;
-  console.log(`${card.brandName}: ${stats.conversions.buyoutsPercent}% conversion`);
-});
+```ts
+const result = await sdk.general.createNmReportDetail({});
+console.log(result);
 ```
 
 ***
 
-### getProductHistory()
+### createDetailHistory()
 
 ```ts
-getProductHistory(request: HistoricalStatisticsRequest): Promise<HistoricalStatisticsResponse>;
+createDetailHistory(data: NmReportDetailHistoryRequest): Promise<NmReportDetailHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L161)
+Defined in: [modules/analytics/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L47)
 
-Get daily historical statistics for product cards
+Статистика карточек товаров по дням
 
-Returns time-series data showing product performance by day.
-Maximum 7 days of data can be retrieved per request.
+Метод возвращает статистику карточек товаров по дням. Можно получить данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br> Можно получить данные максимум за последнюю неделю. <div class="description_important"> Чтобы получать <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">отчёты за период до года</a>, подпишитесь на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `request` | [`HistoricalStatisticsRequest`](../interfaces/HistoricalStatisticsRequest.md) | Historical statistics request with date range and filters |
+| `data` | [`NmReportDetailHistoryRequest`](../-internal-/interfaces/NmReportDetailHistoryRequest.md) | Parameter |
 
 #### Returns
 
-`Promise`\<[`HistoricalStatisticsResponse`](../interfaces/HistoricalStatisticsResponse.md)\>
+`Promise`\<[`NmReportDetailHistoryResponse`](../-internal-/interfaces/NmReportDetailHistoryResponse.md)\>
 
-Promise resolving to daily product statistics
-
-#### Throws
-
-When date range exceeds 7 days
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded (3 requests/minute)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get daily statistics for specific products
-const history = await sdk.analytics.getProductHistory({
-  period: {
-    begin: '2024-01-01 00:00:00',
-    end: '2024-01-07 23:59:59'
-  },
-  nmIDs: [12345, 67890]
-});
-
-history.data.forEach(product => {
-  product.history.forEach(day => {
-    console.log(`${day.date}: ${day.ordersCount} orders`);
-  });
-});
+```ts
+const result = await sdk.general.createDetailHistory({});
+console.log(result);
 ```
 
 ***
 
-### getProductPerformance()
+### createGroupedHistory()
 
 ```ts
-getProductPerformance(productIds: number[], dateRange: DateRange): Promise<ProductPerformanceResponse>;
+createGroupedHistory(data: NmReportGroupedHistoryRequest): Promise<NmReportGroupedHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L197)
+Defined in: [modules/analytics/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L66)
 
-Get performance metrics for specific products
+Статистика групп карточек товаров по дням
 
-Analyzes performance of individual products with revenue, units sold,
-conversion rates, and return rates. Useful for product comparison.
+Метод возвращает статистику карточек товаров по дням. Карточки товаров сгруппированы по предметам, брендам и ярлыкам. Можно получить данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br> Параметры `brandNames`, `objectIDs`, `tagIDs` могут быть пустыми `[]`, тогда группировка происходит по всем карточкам продавца.<br><br> Произведение количества предметов, брендов, ярлыков в запросе может быть не больше 16.<br><br> Можно получить данные максимум за последнюю неделю. <div class="description_important"> Чтобы получать <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">отчёты за период до года</a>, подпишитесь на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `productIds` | `number`[] | Array of product article numbers (nmIDs) to analyze |
-| `dateRange` | [`DateRange`](../-internal-/interfaces/DateRange.md) | Date range for performance data |
+| `data` | [`NmReportGroupedHistoryRequest`](../-internal-/interfaces/NmReportGroupedHistoryRequest.md) | Parameter |
 
 #### Returns
 
-`Promise`\<[`ProductPerformanceResponse`](../interfaces/ProductPerformanceResponse.md)\>
+`Promise`\<[`NmReportGroupedHistoryResponse`](../-internal-/interfaces/NmReportGroupedHistoryResponse.md)\>
 
-Promise resolving to product performance metrics
-
-#### Throws
-
-When productIds is empty or exceeds limit (max 50)
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Compare performance of multiple products
-const performance = await sdk.analytics.getProductPerformance(
-  [12345, 67890, 11111],
-  { from: '2024-01-01', to: '2024-01-31' }
-);
-
-// Sort by revenue
-const topPerformers = performance.products
-  .sort((a, b) => b.revenue - a.revenue)
-  .slice(0, 5);
+```ts
+const result = await sdk.general.createGroupedHistory({});
+console.log(result);
 ```
 
 ***
 
-### getSearchQueries()
+### getNmReportDownloads()
 
 ```ts
-getSearchQueries(dateRange: DateRange, options?: {
-  nmIds?: number[];
-  subjectIds?: number[];
-  brandNames?: string[];
-  tagIds?: number[];
-}): Promise<SearchQueriesResponse>;
+getNmReportDownloads(options?: {
+  filter[downloadIds]?: string[];
+}): Promise<NmReportGetReportsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:289](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L289)
+Defined in: [modules/analytics/index.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L85)
 
-Get search queries that led to product views
+Получить список отчётов
 
-Retrieves search query analytics data for the main report page including
-positions, visibility, and transitions to product cards.
-
-Rate limit: 3 requests per minute with 20 second intervals
+Метод возвращает список отчётов с расширенной аналитикой продавца. Ответ содержит ID [созданных отчётов](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post) и статусы генерации. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `dateRange` | [`DateRange`](../-internal-/interfaces/DateRange.md) | Date range for search query data (start/end dates in YYYY-MM-DD format) |
-| `options?` | \{ `nmIds?`: `number`[]; `subjectIds?`: `number`[]; `brandNames?`: `string`[]; `tagIds?`: `number`[]; \} | Optional filters and parameters |
-| `options.nmIds?` | `number`[] | - |
-| `options.subjectIds?` | `number`[] | - |
-| `options.brandNames?` | `string`[] | - |
-| `options.tagIds?` | `number`[] | - |
+| `options?` | \{ `filter[downloadIds]?`: `string`[]; \} | Query parameters |
+| `options.filter[downloadIds]?` | `string`[] | - |
 
 #### Returns
 
-`Promise`\<[`SearchQueriesResponse`](../interfaces/SearchQueriesResponse.md)\>
+`Promise`\<[`NmReportGetReportsResponse`](../-internal-/interfaces/NmReportGetReportsResponse.md)\>
 
-Promise resolving to search query metrics
-
-#### Throws
-
-When date range is invalid
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded (3 requests/minute)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get search queries for a date range
-const queries = await sdk.analytics.getSearchQueries({
-  from: '2024-01-01',
-  to: '2024-01-31'
-});
-
-// Get queries with filters
-const filtered = await sdk.analytics.getSearchQueries(
-  { from: '2024-01-01', to: '2024-01-31' },
-  { nmIds: [12345, 67890], brandNames: ['MyBrand'] }
-);
+```ts
+const result = await sdk.general.getNmReportDownloads({});
+console.log(result);
 ```
 
 ***
 
-### getCategoryPerformance()
+### createNmReportDownload()
 
 ```ts
-getCategoryPerformance(categoryId: string, dateRange: DateRange): Promise<CategoryPerformanceResponse>;
+createNmReportDownload(data?: 
+  | SalesFunnelProductReq
+  | SalesFunnelGroupReq
+  | SearchReportGroupReq
+  | SearchReportProductReq
+  | SearchReportTextReq
+| StocksReportReq): Promise<NmReportCreateReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L351)
+Defined in: [modules/analytics/index.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L104)
 
-Get category-level performance metrics
+Создать отчёт
 
-Analyzes performance at category level including revenue, units sold,
-product count, and top performers within the category.
+Метод создаёт задание на генерацию отчёта с расширенной аналитикой продавца.<br><br> Вы можете создать CSV-версии отчётов по [воронке продаж](/openapi/analytics#tag/Voronka-prodazh) или [параметрам поиска](/openapi/analytics#tag/Poiskovye-zaprosy) с группировкой по: * артикулам WB * предметам, брендам и ярлыкам В отчётах по воронке продаж можно группировать данные по дням, неделям или месяцам.<br><br> Также можете создать CSV-версии отчётов по [текстам поисковых запросов](/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1product~1search-texts/post) и [истории остатков](/openapi/analytics#tag/Istoriya-ostatkov).<br><br> Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.<br><br> Если не удалось [получить отчёт](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads~1file~1%7BdownloadId%7D/get), можно создать [повторное задание на генерацию](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads~1retry/post). Также можно [получить список и проверить статусы](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/get) отчётов. <div class="description_important"> Отчёт по <a href="https://seller.wildberries.ru/content-analytics/history-remains">истории остатков</a> — модель <code>StocksReportReq</code> — можно создать без подписки <a href="https://seller.wildberries.ru/monetization/jam">Джем</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `categoryId` | `string` | Category identifier (object ID) |
-| `dateRange` | [`DateRange`](../-internal-/interfaces/DateRange.md) | Date range for category analysis |
+| `data?` | \| [`SalesFunnelProductReq`](../-internal-/interfaces/SalesFunnelProductReq.md) \| [`SalesFunnelGroupReq`](../-internal-/interfaces/SalesFunnelGroupReq.md) \| [`SearchReportGroupReq`](../-internal-/interfaces/SearchReportGroupReq.md) \| [`SearchReportProductReq`](../-internal-/interfaces/SearchReportProductReq.md) \| [`SearchReportTextReq`](../-internal-/interfaces/SearchReportTextReq.md) \| [`StocksReportReq`](../-internal-/interfaces/StocksReportReq.md) | Request body data |
 
 #### Returns
 
-`Promise`\<[`CategoryPerformanceResponse`](../interfaces/CategoryPerformanceResponse.md)\>
+`Promise`\<[`NmReportCreateReportResponse`](../-internal-/interfaces/NmReportCreateReportResponse.md)\>
 
-Promise resolving to category performance metrics
-
-#### Throws
-
-When categoryId is invalid or date range is invalid
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Analyze category performance
-const category = await sdk.analytics.getCategoryPerformance(
-  '447',  // Category ID
-  { from: '2024-01-01', to: '2024-01-31' }
-);
-
-console.log(`Category Revenue: ${category.data.revenue} RUB`);
-console.log(`Top Products:`, category.data.topProducts.slice(0, 5));
+```ts
+const result = await sdk.general.createNmReportDownload({});
+console.log(result);
 ```
 
 ***
 
-### generateReport()
+### createDownloadsRetry()
 
 ```ts
-generateReport(request: GenerateReportRequest): Promise<GenerateReportResponse>;
+createDownloadsRetry(data: NmReportRetryReportRequest): Promise<NmReportRetryReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L444)
+Defined in: [modules/analytics/index.ts:123](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L123)
 
-Generate CSV/Excel report for analytics data
+Сгенерировать отчёт повторно
 
-Creates an asynchronous report generation task. Use getReport() to
-check status and retrieve download URL when complete.
+Метод создает повторное [задание на генерацию](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post) отчёта с расширенной аналитикой продавца. Необходимо, если при генерации отчёта вы [получили статус](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/get) `FAILED`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `request` | [`GenerateReportRequest`](../-internal-/interfaces/GenerateReportRequest.md) | Report generation request with type, format, and filters |
+| `data` | [`NmReportRetryReportRequest`](../-internal-/interfaces/NmReportRetryReportRequest.md) | Request body data |
 
 #### Returns
 
-`Promise`\<[`GenerateReportResponse`](../-internal-/interfaces/GenerateReportResponse.md)\>
+`Promise`\<[`NmReportRetryReportResponse`](../-internal-/interfaces/NmReportRetryReportResponse.md)\>
 
-Promise resolving to report generation response with reportId
-
-#### Throws
-
-When request parameters are invalid
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded (2 requests/minute)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Generate sales funnel CSV report
-const report = await sdk.analytics.generateReport({
-  reportType: 'sales_funnel',
-  dateRange: { from: '2024-01-01', to: '2024-01-31' },
-  format: 'CSV'
-});
-
-console.log(`Report ID: ${report.reportId}`);
-console.log(`Status: ${report.status}`);
+```ts
+const result = await sdk.general.createDownloadsRetry({});
+console.log(result);
 ```
 
 ***
 
-### getReport()
+### getDownloadsFile()
 
 ```ts
-getReport(reportId: string): Promise<ReportInfo>;
+getDownloadsFile(downloadId: string): Promise<unknown>;
 ```
 
-Defined in: [modules/analytics/index.ts:486](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L486)
+Defined in: [modules/analytics/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L142)
 
-Get report status and download information
+Получить отчёт
 
-Checks the status of a previously generated report and provides
-download URL when the report is ready.
+Метод возвращает отчёт с расширенной аналитикой продавца по ID [задания на генерацию](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post). <br><br> Можно получить отчёт, который сгенерирован за последние 48 часов.<br>Отчёт будет загружен внутри архива ZIP в формате CSV. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `reportId` | `string` | Report identifier from generateReport() |
+| `downloadId` | `string` | ID отчёта |
 
 #### Returns
 
-`Promise`\<[`ReportInfo`](../-internal-/interfaces/ReportInfo.md)\>
+`Promise`\<`unknown`\>
 
-Promise resolving to report info with status and download URL
-
-#### Throws
-
-When reportId is invalid
+Успешно
 
 #### Throws
 
-When API key is invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit is exceeded (10 requests/minute)
+When rate limit exceeded (429)
 
 #### Throws
 
-When network request fails
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Check report status
-const info = await sdk.analytics.getReport(reportId);
-
-if (info.status === 'completed') {
-  console.log(`Download: ${info.downloadUrl}`);
-  console.log(`Expires: ${info.expiresAt}`);
-} else {
-  console.log(`Status: ${info.status}`);
-}
+```ts
+const result = await sdk.general.getDownloadsFile('downloadId-value');
+console.log(result);
 ```
 
 ***
 
-### downloadReport()
+### createSearchReportReport()
 
 ```ts
-downloadReport(reportId: string): Promise<{
-  url: string;
-  format: string;
-  expiresAt?: string;
+createSearchReportReport(data: MainRequest): Promise<CommonResponseProperties & {
+  data: MainResponse;
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L518)
+Defined in: [modules/analytics/index.ts:161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L161)
 
-Download completed report (helper method)
+Основная страница
 
-Convenience method that checks report status and returns download URL
-only when the report is completed.
+Метод формирует набор данных для основной страницы отчёта по поисковым запросам с: - общей информацией - позициями товаров - данными по видимости и переходам в карточку - данными для таблицы по группам Для получения дополнительных данных в таблице используйте отдельный запрос для: - [пагинации по группам](/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1table~1groups/post) - [получения по товарам в группе](/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1table~1details/post) Дополнительный параметр выбора списка товаров в таблице: - `positionCluster` — средняя позиция в поиске Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `reportId` | `string` | Report identifier from generateReport() |
+| `data` | [`MainRequest`](../-internal-/interfaces/MainRequest.md) | Request body data |
+
+#### Returns
+
+`Promise`\<[`CommonResponseProperties`](../-internal-/interfaces/CommonResponseProperties.md) & \{
+  `data`: [`MainResponse`](../-internal-/interfaces/MainResponse.md);
+\}\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.createSearchReportReport({});
+console.log(result);
+```
+
+***
+
+### createTableGroup()
+
+```ts
+createTableGroup(data: TableGroupRequest): Promise<CommonResponseProperties & {
+  data: TableGroupResponse;
+}>;
+```
+
+Defined in: [modules/analytics/index.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L180)
+
+Пагинация по группам
+
+Метод формирует дополнительные данные к [основному отчёту](/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1report/post) с пагинацией по группам. Пагинация возможна только при наличии фильтра по бренду, предмету или ярлыку.<br><br> Дополнительный параметр выбора списка товаров в таблице: - `positionCluster` — средняя позиция в поиске Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`TableGroupRequest`](../-internal-/interfaces/TableGroupRequest.md) | Request body data |
+
+#### Returns
+
+`Promise`\<[`CommonResponseProperties`](../-internal-/interfaces/CommonResponseProperties.md) & \{
+  `data`: [`TableGroupResponse`](../-internal-/interfaces/TableGroupResponse.md);
+\}\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.createTableGroup({});
+console.log(result);
+```
+
+***
+
+### createTableDetail()
+
+```ts
+createTableDetail(data: TableDetailsRequest): Promise<CommonResponseProperties & {
+  data: TableDetailsResponse;
+}>;
+```
+
+Defined in: [modules/analytics/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L199)
+
+Пагинация по товарам в группе
+
+Метод формирует дополнительные данные к [основному отчёту](/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1report/post) с пагинацией по товарам в группе. Пагинация возможна вне зависимости от наличия фильтров.<br><br> Фильтры для пагинации по товарам в группе или без фильтров: - кортеж `subjectId`,`brandName`,`tagId` — фильтр для группы - `nmIds` — фильтр по карточке товара Дополнительный параметр выбора списка товаров: - `positionCluster` — средняя позиция в поиске Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`TableDetailsRequest`](../-internal-/interfaces/TableDetailsRequest.md) | Request body data |
+
+#### Returns
+
+`Promise`\<[`CommonResponseProperties`](../-internal-/interfaces/CommonResponseProperties.md) & \{
+  `data`: [`TableDetailsResponse`](../-internal-/interfaces/TableDetailsResponse.md);
+\}\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.createTableDetail({});
+console.log(result);
+```
+
+***
+
+### createProductSearchText()
+
+```ts
+createProductSearchText(data: ProductSearchTextsRequest): Promise<CommonResponseProperties & {
+  data: ProductSearchTextsResponse;
+}>;
+```
+
+Defined in: [modules/analytics/index.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L218)
+
+Поисковые запросы по товару
+
+Метод формирует топ поисковых запросов по товару. Параметры выбора поисковых запросов: - `limit` — количество запросов, максимум 30 (для тарифа [Продвинутый](https://seller.wildberries.ru/monetization/tariffs) — 100) - `topOrderBy` — способ выбора топа запросов Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`ProductSearchTextsRequest`](../-internal-/interfaces/ProductSearchTextsRequest.md) | Request body data |
+
+#### Returns
+
+`Promise`\<[`CommonResponseProperties`](../-internal-/interfaces/CommonResponseProperties.md) & \{
+  `data`: [`ProductSearchTextsResponse`](../-internal-/interfaces/ProductSearchTextsResponse.md);
+\}\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.createProductSearchText({});
+console.log(result);
+```
+
+***
+
+### createProductOrder()
+
+```ts
+createProductOrder(data: ProductOrdersRequest): Promise<CommonResponseProperties & {
+  data: ProductOrdersResponse;
+}>;
+```
+
+Defined in: [modules/analytics/index.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L237)
+
+Заказы и позиции по поисковым запросам товара
+
+Метод формирует данные для таблицы по количеству заказов и позиций в поиске по запросам покупателя. Данные указаны в рамках периода для [запрошенного товара](/openapi/analytics#tag/Poiskovye-zaprosy/paths/~1api~1v2~1search-report~1product~1search-texts/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`ProductOrdersRequest`](../-internal-/interfaces/ProductOrdersRequest.md) | Request body data |
+
+#### Returns
+
+`Promise`\<[`CommonResponseProperties`](../-internal-/interfaces/CommonResponseProperties.md) & \{
+  `data`: [`ProductOrdersResponse`](../-internal-/interfaces/ProductOrdersResponse.md);
+\}\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.createProductOrder({});
+console.log(result);
+```
+
+***
+
+### createProductsGroup()
+
+```ts
+createProductsGroup(data: TableGroupRequestSt): Promise<{
+  data: TableGroupResponseSt;
+}>;
+```
+
+Defined in: [modules/analytics/index.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L256)
+
+Данные по группам
+
+Метод формирует набор данных об остатках по группам товаров. <br><br> Группа товаров описывается кортежем `subjectID, brandName, tagID`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`TableGroupRequestSt`](../-internal-/type-aliases/TableGroupRequestSt.md) | Request body data |
 
 #### Returns
 
 `Promise`\<\{
-  `url`: `string`;
-  `format`: `string`;
-  `expiresAt?`: `string`;
+  `data`: [`TableGroupResponseSt`](../-internal-/interfaces/TableGroupResponseSt.md);
 \}\>
 
-Promise resolving to download information
+Успешно
 
 #### Throws
 
-When report is not completed
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const download = await sdk.analytics.downloadReport(reportId);
-console.log(`Download URL: ${download.url}`);
-console.log(`Format: ${download.format}`);
+```ts
+const result = await sdk.general.createProductsGroup({});
+console.log(result);
 ```
 
 ***
 
-### getDetailedSalesReport()
+### createProductsProduct()
 
 ```ts
-getDetailedSalesReport(request: {
-  period: {
-     begin: string;
-     end: string;
-  };
-  nmIDs?: number[];
-  brandNames?: string[];
-  objectIDs?: number[];
-  tagIDs?: number[];
-  page?: number;
-  limit?: number;
-}): Promise<{
-  data: {
-     page: number;
-     isNextPage: boolean;
-     cards: {
-        nmID: number;
-        sellerArticle: string;
-        brandName: string;
-        subjectName: string;
-        statistics: {
-           selectedPeriod: {
-              ordersCount: number;
-              buyoutsCount: number;
-              revenue: number;
-              averageBill: number;
-              conversions: {
-                 addToCartPercent: number;
-                 buyoutsPercent: number;
-                 ordersPercent: number;
-              };
-              viewsCount: number;
-              cartAddsCount: number;
-              returnsCount: number;
-           };
-           previousPeriod?: {
-              ordersCount: number;
-              buyoutsCount: number;
-              revenue: number;
-              averageBill: number;
-              conversions: {
-                 addToCartPercent: number;
-                 buyoutsPercent: number;
-                 ordersPercent: number;
-              };
-              viewsCount: number;
-              cartAddsCount: number;
-              returnsCount: number;
-           };
-        };
-     }[];
-  };
+createProductsProduct(data: TableProductRequest): Promise<{
+  data: TableProductResponse;
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L579)
+Defined in: [modules/analytics/index.ts:275](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L275)
 
-Get detailed sales report for products with comprehensive metrics
+Данные по товарам
 
-Provides detailed sales analytics including views, cart additions, orders,
-conversions, and revenue metrics for specified products and time period.
+Метод формирует набор данных об остатках по товарам. <br><br> Можно получить данные как по отдельным товарам, так и в рамках всего отчёта — если в запросе отсутствуют фильтры: `nmIDs`, `subjectID`, `brandName`, `tagID`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `request` | \{ `period`: \{ `begin`: `string`; `end`: `string`; \}; `nmIDs?`: `number`[]; `brandNames?`: `string`[]; `objectIDs?`: `number`[]; `tagIDs?`: `number`[]; `page?`: `number`; `limit?`: `number`; \} | Detailed sales report parameters |
-| `request.period` | \{ `begin`: `string`; `end`: `string`; \} | - |
-| `request.period.begin` | `string` | - |
-| `request.period.end` | `string` | - |
-| `request.nmIDs?` | `number`[] | - |
-| `request.brandNames?` | `string`[] | - |
-| `request.objectIDs?` | `number`[] | - |
-| `request.tagIDs?` | `number`[] | - |
-| `request.page?` | `number` | - |
-| `request.limit?` | `number` | - |
+| `data` | [`TableProductRequest`](../-internal-/type-aliases/TableProductRequest.md) | Request body data |
 
 #### Returns
 
 `Promise`\<\{
-  `data`: \{
-     `page`: `number`;
-     `isNextPage`: `boolean`;
-     `cards`: \{
-        `nmID`: `number`;
-        `sellerArticle`: `string`;
-        `brandName`: `string`;
-        `subjectName`: `string`;
-        `statistics`: \{
-           `selectedPeriod`: \{
-              `ordersCount`: `number`;
-              `buyoutsCount`: `number`;
-              `revenue`: `number`;
-              `averageBill`: `number`;
-              `conversions`: \{
-                 `addToCartPercent`: `number`;
-                 `buyoutsPercent`: `number`;
-                 `ordersPercent`: `number`;
-              \};
-              `viewsCount`: `number`;
-              `cartAddsCount`: `number`;
-              `returnsCount`: `number`;
-           \};
-           `previousPeriod?`: \{
-              `ordersCount`: `number`;
-              `buyoutsCount`: `number`;
-              `revenue`: `number`;
-              `averageBill`: `number`;
-              `conversions`: \{
-                 `addToCartPercent`: `number`;
-                 `buyoutsPercent`: `number`;
-                 `ordersPercent`: `number`;
-              \};
-              `viewsCount`: `number`;
-              `cartAddsCount`: `number`;
-              `returnsCount`: `number`;
-           \};
-        \};
-     \}[];
-  \};
+  `data`: [`TableProductResponse`](../-internal-/interfaces/TableProductResponse.md);
 \}\>
 
-Comprehensive sales analytics data
+Успешно
 
 #### Throws
 
-When request parameters are invalid
+When API key is invalid (401/403)
 
 #### Throws
 
-When rate limit exceeded (3 req/min)
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const report = await sdk.analytics.getDetailedSalesReport({
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  },
-  nmIDs: [1234567, 8910112]
-});
-console.log(`Total revenue: ${report.data.cards.reduce((sum, card) => sum + card.revenue, 0)}`);
+```ts
+const result = await sdk.general.createProductsProduct({});
+console.log(result);
 ```
 
 ***
 
-### getCategoryAnalytics()
+### createProductsSize()
 
 ```ts
-getCategoryAnalytics(request: {
-  categoryIds: number[];
-  period: {
-     begin: string;
-     end: string;
-  };
-  includeSubcategories?: boolean;
-  sortBy?: "revenue" | "orders" | "views" | "conversion";
-  limit?: number;
-}): {
-  data: {
-     categoryId: number;
-     categoryName: string;
-     totalRevenue: number;
-     totalOrders: number;
-     totalViews: number;
-     conversionRate: number;
-     averageOrderValue: number;
-     topProducts: {
-        nmID: number;
-        brandName: string;
-        subjectName: string;
-        revenue: number;
-        orders: number;
-        views: number;
-     }[];
-     subcategories?: {
-        categoryId: number;
-        categoryName: string;
-        revenue: number;
-        orders: number;
-     }[];
-  }[];
-};
-```
-
-Defined in: [modules/analytics/index.ts:684](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L684)
-
-Get comprehensive category analytics and performance metrics
-
-Provides category-level analytics including sales trends, top products,
-conversion rates, and market share insights for specific categories.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | \{ `categoryIds`: `number`[]; `period`: \{ `begin`: `string`; `end`: `string`; \}; `includeSubcategories?`: `boolean`; `sortBy?`: `"revenue"` \| `"orders"` \| `"views"` \| `"conversion"`; `limit?`: `number`; \} | Category analytics parameters |
-| `request.categoryIds` | `number`[] | - |
-| `request.period` | \{ `begin`: `string`; `end`: `string`; \} | - |
-| `request.period.begin` | `string` | - |
-| `request.period.end` | `string` | - |
-| `request.includeSubcategories?` | `boolean` | - |
-| `request.sortBy?` | `"revenue"` \| `"orders"` \| `"views"` \| `"conversion"` | - |
-| `request.limit?` | `number` | - |
-
-#### Returns
-
-```ts
-{
-  data: {
-     categoryId: number;
-     categoryName: string;
-     totalRevenue: number;
-     totalOrders: number;
-     totalViews: number;
-     conversionRate: number;
-     averageOrderValue: number;
-     topProducts: {
-        nmID: number;
-        brandName: string;
-        subjectName: string;
-        revenue: number;
-        orders: number;
-        views: number;
-     }[];
-     subcategories?: {
-        categoryId: number;
-        categoryName: string;
-        revenue: number;
-        orders: number;
-     }[];
-  }[];
-}
-```
-
-Category performance analytics data
-
-| Name | Type | Defined in |
-| ------ | ------ | ------ |
-| `data` | \{ `categoryId`: `number`; `categoryName`: `string`; `totalRevenue`: `number`; `totalOrders`: `number`; `totalViews`: `number`; `conversionRate`: `number`; `averageOrderValue`: `number`; `topProducts`: \{ `nmID`: `number`; `brandName`: `string`; `subjectName`: `string`; `revenue`: `number`; `orders`: `number`; `views`: `number`; \}[]; `subcategories?`: \{ `categoryId`: `number`; `categoryName`: `string`; `revenue`: `number`; `orders`: `number`; \}[]; \}[] | [modules/analytics/index.ts:694](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L694) |
-
-#### Throws
-
-When request parameters are invalid
-
-#### Example
-
-```typescript
-const categoryData = await sdk.analytics.getCategoryAnalytics({
-  categoryIds: [2541, 1234],
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  }
-});
-```
-
-***
-
-### getCompetitorAnalysis()
-
-```ts
-getCompetitorAnalysis(request: {
-  searchTerms: string[];
-  period: {
-     begin: string;
-     end: string;
-  };
-  includeMyProducts?: boolean;
-  limit?: number;
-}): Promise<{
-  data: {
-     searchTerm: string;
-     totalSearches: number;
-     averagePosition: number;
-     topCompetitors: {
-        brandName: string;
-        productCount: number;
-        averagePosition: number;
-        totalClicks: number;
-        clickThroughRate: number;
-     }[];
-     myProducts?: {
-        nmID: number;
-        subjectName: string;
-        position: number;
-        clicks: number;
-        impressions: number;
-        clickThroughRate: number;
-     }[];
-     marketInsights: {
-        competitionLevel: "low" | "medium" | "high";
-        topBrands: string[];
-        averagePrice: number;
-        totalProducts: number;
-     };
-  }[];
+createProductsSize(data: CommonSizeFilters): Promise<{
+  data: TableSizeResponse;
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:771](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L771)
+Defined in: [modules/analytics/index.ts:294](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L294)
 
-Get competitor analysis and market insights
+Данные по размерам
 
-Provides competitive intelligence including search performance,
-market position analysis, and competitor product comparisons.
+Метод формирует набор данных об остатках по размерам товара. <br><br> Возможны случаи: 1. Товар имеет размеры и `"includeOffice":true`, тогда в ответе будут данные об остатках по каждому из размеров с вложенной детализацией по складам. 2. Товар имеет размеры и `"includeOffice":false`, тогда в ответе будут данные об остатках по каждому из размеров без вложенной детализации по складам. 3. Товар не имеет размера и `"includeOffice":true`, тогда в ответе будет детализация по складам. Без данных об остатках по каждому из размеров. 4. Товар не имеет размера и `"includeOffice":false`, тогда тело ответа будет пустым.<br></br> Товар не имеет размера, если у него единственный размер с `"techSize":"0"`. В ответах метода получения данных по [товарам](/openapi/analytics#tag/Istoriya-ostatkov/paths/~1api~1v2~1stocks-report~1products~1products/post) у таких товаров `"hasSizes":false`.<br></br> Данные по складам Маркетплейс (FBS) приходят в агрегированном виде — по всем сразу, без детализации по конкретным складам — эти записи будут с `"regionName":"Маркетплейс"` и `"officeName":""`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `request` | \{ `searchTerms`: `string`[]; `period`: \{ `begin`: `string`; `end`: `string`; \}; `includeMyProducts?`: `boolean`; `limit?`: `number`; \} | Competitor analysis parameters |
-| `request.searchTerms` | `string`[] | - |
-| `request.period` | \{ `begin`: `string`; `end`: `string`; \} | - |
-| `request.period.begin` | `string` | - |
-| `request.period.end` | `string` | - |
-| `request.includeMyProducts?` | `boolean` | - |
-| `request.limit?` | `number` | - |
+| `data` | [`CommonSizeFilters`](../-internal-/interfaces/CommonSizeFilters.md) | Request body data |
 
 #### Returns
 
 `Promise`\<\{
-  `data`: \{
-     `searchTerm`: `string`;
-     `totalSearches`: `number`;
-     `averagePosition`: `number`;
-     `topCompetitors`: \{
-        `brandName`: `string`;
-        `productCount`: `number`;
-        `averagePosition`: `number`;
-        `totalClicks`: `number`;
-        `clickThroughRate`: `number`;
-     \}[];
-     `myProducts?`: \{
-        `nmID`: `number`;
-        `subjectName`: `string`;
-        `position`: `number`;
-        `clicks`: `number`;
-        `impressions`: `number`;
-        `clickThroughRate`: `number`;
-     \}[];
-     `marketInsights`: \{
-        `competitionLevel`: `"low"` \| `"medium"` \| `"high"`;
-        `topBrands`: `string`[];
-        `averagePrice`: `number`;
-        `totalProducts`: `number`;
-     \};
-  \}[];
+  `data`: [`TableSizeResponse`](../-internal-/interfaces/TableSizeResponse.md);
 \}\>
 
-Competitor and market analysis data
+Успешно
 
 #### Throws
 
-When request parameters are invalid
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const competitorData = await sdk.analytics.getCompetitorAnalysis({
-  searchTerms: ['беспроводные наушники', 'bluetooth headphones'],
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  },
-  includeMyProducts: true
-});
+```ts
+const result = await sdk.general.createProductsSize({});
+console.log(result);
 ```
 
 ***
 
-### getReportDownloads()
+### createStocksReportOffice()
 
 ```ts
-getReportDownloads(downloadIds?: string[]): Promise<ReportDownloadsResponse>;
+createStocksReportOffice(data: CommonShippingOfficeFilters): Promise<{
+  data: TableShippingOfficeResponse;
+}>;
 ```
 
-Defined in: [modules/analytics/index.ts:882](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L882)
+Defined in: [modules/analytics/index.ts:313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/analytics/index.ts#L313)
 
-List generated reports and their statuses
+Данные по складам
 
-Retrieves a list of all generated analytics reports with their current status
-and download URLs when available.
-
-Rate limit: 3 requests per minute with 20 second intervals
+Метод формирует набор данных об остатках по складам. <br><br> Данные по складам Маркетплейс (FBS) приходят в агрегированном виде — по всем сразу, без детализации по конкретным складам — эти записи будут с `"regionName":"Маркетплейс"` и `"offices":[]`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `downloadIds?` | `string`[] | Optional array of specific report IDs to filter by |
+| `data` | [`CommonShippingOfficeFilters`](../-internal-/interfaces/CommonShippingOfficeFilters.md) | Request body data |
 
 #### Returns
 
-`Promise`\<[`ReportDownloadsResponse`](../-internal-/interfaces/ReportDownloadsResponse.md)\>
+`Promise`\<\{
+  `data`: [`TableShippingOfficeResponse`](../-internal-/interfaces/TableShippingOfficeResponse.md);
+\}\>
 
-Promise resolving to list of report downloads
-
-#### Throws
-
-When API key is invalid
+Успешно
 
 #### Throws
 
-When rate limit is exceeded (3 requests/minute)
+When API key is invalid (401/403)
 
 #### Throws
 
-When network request fails
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
-
-```typescript
-// Get all reports
-const reports = await sdk.analytics.getReportDownloads();
-console.log('Reports:', reports.data.length);
-
-// Get specific reports
-const specific = await sdk.analytics.getReportDownloads([
-  '06eae887-9d9f-491f-b16a-bb1766fcb8d2'
-]);
-```
-
-***
-
-### getProductSearchTexts()
 
 ```ts
-getProductSearchTexts(request: ProductSearchTextsRequest): Promise<ProductSearchTextsResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:923](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L923)
-
-Get top search queries for a specific product
-
-Returns the most popular search queries that lead to a specific product,
-with metrics like position, card opens, cart additions, and orders.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`ProductSearchTextsRequest`](../-internal-/interfaces/ProductSearchTextsRequest.md) | Product search texts request parameters |
-
-#### Returns
-
-`Promise`\<[`ProductSearchTextsResponse`](../-internal-/interfaces/ProductSearchTextsResponse.md)\>
-
-Promise resolving to search texts for the product
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const searchTexts = await sdk.analytics.getProductSearchTexts({
-  currentPeriod: { start: '2024-01-01', end: '2024-01-31' },
-  nmId: 12345678,
-  limit: 30,
-  topOrderBy: 'orders'
-});
-console.log('Top queries:', searchTexts.data.texts);
-```
-
-***
-
-### getProductOrders()
-
-```ts
-getProductOrders(request: ProductOrdersRequest): Promise<ProductOrdersResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:973](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L973)
-
-Get orders and positions by search queries for a product
-
-Returns order data and search positions for a specific product
-filtered by a particular search query text.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`ProductOrdersRequest`](../-internal-/interfaces/ProductOrdersRequest.md) | Product orders request parameters |
-
-#### Returns
-
-`Promise`\<[`ProductOrdersResponse`](../-internal-/interfaces/ProductOrdersResponse.md)\>
-
-Promise resolving to orders by date for the search query
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const orders = await sdk.analytics.getProductOrders({
-  currentPeriod: { start: '2024-01-01', end: '2024-01-31' },
-  nmId: 12345678,
-  text: 'кондиционер для волос'
-});
-console.log('Orders by date:', orders.data.ordersByDate);
-```
-
-***
-
-### getStocksProducts()
-
-```ts
-getStocksProducts(request: StocksProductsRequest): Promise<StocksProductsResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1029](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1029)
-
-Get stock history data by products
-
-Returns stock level data for products with filtering options.
-Can retrieve data for specific products or all products.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`StocksProductsRequest`](../-internal-/interfaces/StocksProductsRequest.md) | Stock products request parameters |
-
-#### Returns
-
-`Promise`\<[`StocksProductsResponse`](../-internal-/interfaces/StocksProductsResponse.md)\>
-
-Promise resolving to stock data by products
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const stocks = await sdk.analytics.getStocksProducts({
-  period: { start: '2024-01-01', end: '2024-01-31' },
-  nmIds: [12345678, 87654321],
-  page: 1,
-  limit: 100
-});
-console.log('Product stocks:', stocks.data.products);
-```
-
-***
-
-### getStocksOffices()
-
-```ts
-getStocksOffices(request: StocksOfficesRequest): Promise<StocksOfficesResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1069](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1069)
-
-Get stock history data by warehouses/offices
-
-Returns stock level data grouped by warehouses and regions.
-FBS (Marketplace) data comes aggregated without warehouse details.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`StocksOfficesRequest`](../-internal-/interfaces/StocksOfficesRequest.md) | Stock offices request parameters |
-
-#### Returns
-
-`Promise`\<[`StocksOfficesResponse`](../-internal-/interfaces/StocksOfficesResponse.md)\>
-
-Promise resolving to stock data by offices/warehouses
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const stocks = await sdk.analytics.getStocksOffices({
-  period: { start: '2024-01-01', end: '2024-01-31' },
-  nmIds: [12345678]
-});
-console.log('Stock by offices:', stocks.data.offices);
-```
-
-***
-
-### getGroupedHistory()
-
-```ts
-getGroupedHistory(request: GroupedHistoryRequest): Promise<GroupedHistoryResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1112)
-
-Get grouped history statistics by days
-
-Returns statistics for product cards grouped by subjects, brands, and tags.
-Data is aggregated by day or week. Maximum 7 days of data can be retrieved.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`GroupedHistoryRequest`](../-internal-/interfaces/GroupedHistoryRequest.md) | Grouped history request parameters |
-
-#### Returns
-
-`Promise`\<[`GroupedHistoryResponse`](../-internal-/interfaces/GroupedHistoryResponse.md)\>
-
-Promise resolving to grouped history data
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const history = await sdk.analytics.getGroupedHistory({
-  period: { begin: '2024-01-01', end: '2024-01-07' },
-  brandNames: ['MyBrand'],
-  aggregationLevel: 'day'
-});
-console.log('Grouped history:', history.data);
-```
-
-***
-
-### retryReportGeneration()
-
-```ts
-retryReportGeneration(request: RetryReportRequest): Promise<RetryReportResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1163)
-
-Retry failed report generation
-
-Creates a new report generation task for a previously failed report.
-Use this when a report generation returned FAILED status.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`RetryReportRequest`](../-internal-/interfaces/RetryReportRequest.md) | Retry report request with download ID |
-
-#### Returns
-
-`Promise`\<[`RetryReportResponse`](../-internal-/interfaces/RetryReportResponse.md)\>
-
-Promise resolving to new report ID
-
-#### Throws
-
-When download ID is invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const result = await sdk.analytics.retryReportGeneration({
-  downloadId: '06eae887-9d9f-491f-b16a-bb1766fcb8d2'
-});
-console.log('New report ID:', result.data.id);
-```
-
-***
-
-### getSearchReportTableGroups()
-
-```ts
-getSearchReportTableGroups(request: SearchReportTableGroupsRequest): Promise<SearchReportTableGroupsResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1216)
-
-Get search report data with pagination by groups
-
-Returns additional data for search report with pagination by groups
-(subjects, brands, tags). Pagination is only possible with brand,
-subject, or tag filter.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`SearchReportTableGroupsRequest`](../-internal-/interfaces/SearchReportTableGroupsRequest.md) | Search report table groups request parameters |
-
-#### Returns
-
-`Promise`\<[`SearchReportTableGroupsResponse`](../-internal-/interfaces/SearchReportTableGroupsResponse.md)\>
-
-Promise resolving to grouped search report data
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const groups = await sdk.analytics.getSearchReportTableGroups({
-  currentPeriod: { start: '2024-01-01', end: '2024-01-31' },
-  positionCluster: 'all',
-  orderBy: { field: 'avgPosition', mode: 'asc' },
-  limit: 100,
-  offset: 0
-});
-console.log('Search groups:', groups.data.groups);
-```
-
-***
-
-### getSearchReportTableDetails()
-
-```ts
-getSearchReportTableDetails(request: SearchReportTableDetailsRequest): Promise<SearchReportTableDetailsResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1270)
-
-Get search report data with pagination by products in group
-
-Returns additional data for search report with pagination by products
-within a group. Pagination is possible regardless of filters.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`SearchReportTableDetailsRequest`](../-internal-/interfaces/SearchReportTableDetailsRequest.md) | Search report table details request parameters |
-
-#### Returns
-
-`Promise`\<[`SearchReportTableDetailsResponse`](../-internal-/interfaces/SearchReportTableDetailsResponse.md)\>
-
-Promise resolving to product-level search report data
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const products = await sdk.analytics.getSearchReportTableDetails({
-  currentPeriod: { start: '2024-01-01', end: '2024-01-31' },
-  subjectId: 123,
-  brandName: 'MyBrand',
-  positionCluster: 'firstHundred',
-  orderBy: { field: 'orders', mode: 'desc' },
-  limit: 50,
-  offset: 0
-});
-console.log('Products:', products.data.products);
-```
-
-***
-
-### getStocksProductsGroups()
-
-```ts
-getStocksProductsGroups(request: StocksProductsGroupsRequest): Promise<StocksProductsGroupsResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1327)
-
-Get stock data by product groups
-
-Returns stock data grouped by subjects, brands, and tags.
-Groups are described by the tuple (subjectID, brandName, tagID).
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`StocksProductsGroupsRequest`](../-internal-/interfaces/StocksProductsGroupsRequest.md) | Stocks products groups request parameters |
-
-#### Returns
-
-`Promise`\<[`StocksProductsGroupsResponse`](../-internal-/interfaces/StocksProductsGroupsResponse.md)\>
-
-Promise resolving to grouped stock data
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const stockGroups = await sdk.analytics.getStocksProductsGroups({
-  period: { start: '2024-01-01', end: '2024-01-31' },
-  stockType: 'all',
-  orderBy: { field: 'stockCount', mode: 'desc' }
-});
-console.log('Stock groups:', stockGroups.data.groups);
-```
-
-***
-
-### getStocksProductsSizes()
-
-```ts
-getStocksProductsSizes(request: StocksProductsSizesRequest): Promise<StocksProductsSizesResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:1370](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/analytics/index.ts#L1370)
-
-Get stock data by product sizes
-
-Returns stock data by sizes for a specific product.
-Can include warehouse details when includeOffice is true.
-
-Rate limit: 3 requests per minute with 20 second intervals
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `request` | [`StocksProductsSizesRequest`](../-internal-/interfaces/StocksProductsSizesRequest.md) | Stocks products sizes request parameters |
-
-#### Returns
-
-`Promise`\<[`StocksProductsSizesResponse`](../-internal-/interfaces/StocksProductsSizesResponse.md)\>
-
-Promise resolving to size-level stock data
-
-#### Throws
-
-When request parameters are invalid
-
-#### Throws
-
-When API key is invalid
-
-#### Throws
-
-When rate limit is exceeded (3 requests/minute)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const stockSizes = await sdk.analytics.getStocksProductsSizes({
-  period: { start: '2024-01-01', end: '2024-01-31' },
-  nmID: 12345678,
-  includeOffice: true
-});
-console.log('Stock by sizes:', stockSizes.data.sizes);
+const result = await sdk.general.createStocksReportOffice({});
+console.log(result);
 ```

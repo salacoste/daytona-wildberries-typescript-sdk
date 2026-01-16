@@ -6,6 +6,16 @@
 type PositionCluster = "all" | "firstHundred" | "secondHundred" | "below";
 ```
 
-Defined in: [types/analytics.types.ts:1008](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/types/analytics.types.ts#L1008)
+Defined in: [types/analytics.types.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L390)
 
-Position cluster filter for search reports
+Товары с какой средней позицией в поиске показывать в отчёте:
+ - `all` — все
+ - `firstHundred` — от 1 до 100
+ - `secondHundred` — от 101 до 200
+ - `below` — от 201 и ниже
+
+## Example
+
+```json
+"all"
+```

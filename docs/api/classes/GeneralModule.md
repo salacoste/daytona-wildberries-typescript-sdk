@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/general/index.ts#L16)
+Defined in: [modules/general/index.ts:9](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L9)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/general/index.ts#L17)
+Defined in: [modules/general/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L10)
 
 #### Parameters
 
@@ -29,16 +29,22 @@ Defined in: [modules/general/index.ts:17](https://github.com/salacoste/daytona-w
 ### ping()
 
 ```ts
-ping(): Promise<PingResponse>;
+ping(): Promise<{
+  TS?: string;
+  Status?: "OK";
+}>;
 ```
 
-Defined in: [modules/general/index.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/general/index.ts#L31)
+Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L24)
 
 Проверка подключения
 
 #### Returns
 
-`Promise`\<[`PingResponse`](../-internal-/interfaces/PingResponse.md)\>
+`Promise`\<\{
+  `TS?`: `string`;
+  `Status?`: `"OK"`;
+\}\>
 
 Успешно
 
@@ -70,10 +76,24 @@ console.log(result);
 ### news()
 
 ```ts
-news(options: NewsRequestParams): Promise<NewsResponse>;
+news(options?: {
+  from?: string;
+  fromID?: number;
+}): Promise<{
+  data?: {
+     content?: string;
+     date?: string;
+     header?: string;
+     id?: number;
+     types?: {
+        id?: number;
+        name?: string;
+     }[];
+  }[];
+}>;
 ```
 
-Defined in: [modules/general/index.ts:53](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/general/index.ts#L53)
+Defined in: [modules/general/index.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L41)
 
 Получение новостей портала продавцов
 
@@ -81,11 +101,24 @@ Defined in: [modules/general/index.ts:53](https://github.com/salacoste/daytona-w
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | [`NewsRequestParams`](../-internal-/interfaces/NewsRequestParams.md) | Query parameters (at least one required) |
+| `options?` | \{ `from?`: `string`; `fromID?`: `number`; \} | Query parameters |
+| `options.from?` | `string` | - |
+| `options.fromID?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`NewsResponse`](../-internal-/interfaces/NewsResponse.md)\>
+`Promise`\<\{
+  `data?`: \{
+     `content?`: `string`;
+     `date?`: `string`;
+     `header?`: `string`;
+     `id?`: `number`;
+     `types?`: \{
+        `id?`: `number`;
+        `name?`: `string`;
+     \}[];
+  \}[];
+\}\>
 
 Успешно
 
@@ -99,7 +132,7 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422) or no parameters provided
+When request data is invalid (400/422)
 
 #### Throws
 
@@ -108,11 +141,8 @@ When network request fails or times out
 #### Example
 
 ```ts
-// Get news from specific date
-const result = await sdk.general.news({ from: '2025-01-01' });
-
-// Get news from specific ID
-const result = await sdk.general.news({ fromID: 7369 });
+const result = await sdk.general.news({});
+console.log(result);
 ```
 
 ***
@@ -120,16 +150,24 @@ const result = await sdk.general.news({ fromID: 7369 });
 ### sellerInfo()
 
 ```ts
-sellerInfo(): Promise<SellerInfoResponse>;
+sellerInfo(): Promise<{
+  name?: string;
+  sid?: string;
+  tradeMark?: string;
+}>;
 ```
 
-Defined in: [modules/general/index.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/general/index.ts#L113)
+Defined in: [modules/general/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L57)
 
 Получение информации о продавце
 
 #### Returns
 
-`Promise`\<[`SellerInfoResponse`](../-internal-/interfaces/SellerInfoResponse.md)\>
+`Promise`\<\{
+  `name?`: `string`;
+  `sid?`: `string`;
+  `tradeMark?`: `string`;
+\}\>
 
 Успешно
 

@@ -1,18 +1,18 @@
-[Wildberries API TypeScript SDK](../modules.md) / OrdersFBWModule
+[Wildberries API TypeScript SDK](../modules.md) / OrdersFbwModule
 
-# Class: OrdersFBWModule
+# Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L29)
+Defined in: [modules/orders-fbw/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L10)
 
 ## Constructors
 
 ### Constructor
 
 ```ts
-new OrdersFBWModule(client: BaseClient): OrdersFBWModule;
+new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L30)
+Defined in: [modules/orders-fbw/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L11)
 
 #### Parameters
 
@@ -22,408 +22,409 @@ Defined in: [modules/orders-fbw/index.ts:30](https://github.com/salacoste/dayton
 
 #### Returns
 
-`OrdersFBWModule`
+`OrdersFbwModule`
 
 ## Methods
-
-### getWarehouses()
-
-```ts
-getWarehouses(): Promise<FBWWarehouse[]>;
-```
-
-Defined in: [modules/orders-fbw/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L47)
-
-Get list of Wildberries warehouses
-
-Rate limit: 6 requests per minute (10 second intervals)
-
-#### Returns
-
-`Promise`\<[`FBWWarehouse`](../interfaces/FBWWarehouse.md)[]\>
-
-List of warehouses with details (ID, name, address, work time, capabilities)
-
-#### Throws
-
-When rate limit exceeded
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const warehouses = await sdk.ordersFBW.getWarehouses();
-console.log(warehouses[0].name); // "Коледино"
-```
-
-***
 
 ### getAcceptanceCoefficients()
 
 ```ts
-getAcceptanceCoefficients(warehouseIDs?: string): Promise<FBWAcceptanceCoefficient[]>;
+getAcceptanceCoefficients(options?: {
+  warehouseIDs?: string;
+}): Promise<ModelsAcceptanceCoefficient[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L76)
+Defined in: [modules/orders-fbw/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L28)
 
-Get acceptance coefficients for warehouses
+Коэффициенты приёмки
 
-Returns acceptance coefficients for specific warehouses for the next 14 days.
-Acceptance is only available when: coefficient = 0 or 1 AND allowUnload = true
-
-Rate limit: 6 requests per minute (10 second intervals)
+Метод возвращает коэффициенты приёмки для конкретных складов на ближайшие 14 дней. <div class="description_important"> Приёмка для поставки доступна только при сочетании: <br> <code>coefficient</code> — <code>0</code> или <code>1</code> <br> и <code>allowUnload</code> — <code>true</code> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 6 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `warehouseIDs?` | `string` | Optional comma-separated warehouse IDs (e.g., "507,117501") |
+| `options?` | \{ `warehouseIDs?`: `string`; \} | Query parameters |
+| `options.warehouseIDs?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`FBWAcceptanceCoefficient`](../interfaces/FBWAcceptanceCoefficient.md)[]\>
+`Promise`\<[`ModelsAcceptanceCoefficient`](../-internal-/interfaces/ModelsAcceptanceCoefficient.md)[]\>
 
-List of acceptance coefficients with warehouse details and pricing
-
-#### Throws
-
-When rate limit exceeded
+Успешно
 
 #### Throws
 
-When network request fails
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// All warehouses
-const allCoeffs = await sdk.ordersFBW.getAcceptanceCoefficients();
-
-// Specific warehouses
-const coeffs = await sdk.ordersFBW.getAcceptanceCoefficients('507,117501');
+```ts
+const result = await sdk.general.getAcceptanceCoefficients({});
+console.log(result);
 ```
 
 ***
 
-### getAcceptanceOptions()
+### createAcceptanceOption()
 
 ```ts
-getAcceptanceOptions(goods: FBWGood[], warehouseID?: string): Promise<FBWAcceptanceOptions>;
+createAcceptanceOption(data: ModelsGood[], options?: {
+  warehouseID?: string;
+}): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L114)
+Defined in: [modules/orders-fbw/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L48)
 
-Get acceptance options for goods
+Опции приёмки
 
-Returns information about which warehouses and package types are available for supply.
-List of warehouses is determined by barcode and quantity.
-
-Rate limit: 6 requests per minute (10 second intervals)
+Метод возвращает информацию о том, какие склады и типы упаковки доступны для поставки. Список складов определяется по баркоду и количеству товара. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 6 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `goods` | [`FBWGood`](../interfaces/FBWGood.md)[] | Array of goods with barcodes and quantities (1-5000 items) |
-| `warehouseID?` | `string` | Optional warehouse ID to filter results |
+| `data` | [`ModelsGood`](../-internal-/interfaces/ModelsGood.md)[] | Request body data |
+| `options?` | \{ `warehouseID?`: `string`; \} | Query parameters |
+| `options.warehouseID?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`FBWAcceptanceOptions`](../interfaces/FBWAcceptanceOptions.md)\>
+`Promise`\<[`ModelsOptionsResultModel`](../-internal-/interfaces/ModelsOptionsResultModel.md)\>
 
-Acceptance options including available warehouses and packaging types
-
-#### Throws
-
-When goods array is empty, too large, or contains invalid data
+Успешно
 
 #### Throws
 
-When rate limit exceeded
+When API key is invalid (401/403)
 
 #### Throws
 
-When network request fails
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const goods = [
-  { barcode: '1234567891234', quantity: 10 },
-  { barcode: '9876543210987', quantity: 5 }
-];
-
-const options = await sdk.ordersFBW.getAcceptanceOptions(goods);
-console.log(options.result[0].warehouses); // Available warehouses
-
-// Filter by warehouse
-const warehouseOptions = await sdk.ordersFBW.getAcceptanceOptions(goods, '507');
+```ts
+const result = await sdk.general.createAcceptanceOption({}, {});
+console.log(result);
 ```
 
 ***
 
-### getTransitTariffs()
+### warehouses()
 
 ```ts
-getTransitTariffs(): Promise<FBWTransitTariff[]>;
+warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L167)
+Defined in: [modules/orders-fbw/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L66)
 
-Get transit tariffs
+Список складов
 
-Returns information about available transit directions and their pricing.
-
-Rate limit: 6 requests per minute (10 second intervals, burst: 10)
+Метод возвращает список складов WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 6 запросов | </div>
 
 #### Returns
 
-`Promise`\<[`FBWTransitTariff`](../interfaces/FBWTransitTariff.md)[]\>
+`Promise`\<[`ModelsWarehousesResultItems`](../-internal-/interfaces/ModelsWarehousesResultItems.md)[]\>
 
-List of transit tariffs with pricing for boxes and pallets
-
-#### Throws
-
-When rate limit exceeded
+Успешно
 
 #### Throws
 
-When network request fails
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const tariffs = await sdk.ordersFBW.getTransitTariffs();
-console.log(tariffs[0].transitWarehouseName); // "Москва (транзит)"
-console.log(tariffs[0].palletTariff); // 1200.0
+```ts
+const result = await sdk.general.warehouses();
+console.log(result);
 ```
 
 ***
 
-### getSupplies()
+### transitTariffs()
 
 ```ts
-getSupplies(
-   filters: FBWSupplyFilters, 
-   limit: number, 
-offset: number): Promise<FBWSupply[]>;
+transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L208)
+Defined in: [modules/orders-fbw/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L84)
 
-Get list of supplies
+Транзитные направления
 
-Returns list of supplies with optional filters. Default: last 1000 supplies.
-
-Rate limit: 30 requests per minute (2 second intervals)
-
-#### Parameters
-
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `filters` | [`FBWSupplyFilters`](../interfaces/FBWSupplyFilters.md) | `undefined` | Date and status filters |
-| `limit` | `number` | `1000` | Number of supplies to return (1-1000, default: 1000) |
-| `offset` | `number` | `0` | Number of supplies to skip (>= 0, default: 0) |
+Метод возвращает информацию о доступных транзитных направлениях. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 10 запросов | </div>
 
 #### Returns
 
-`Promise`\<[`FBWSupply`](../interfaces/FBWSupply.md)[]\>
+`Promise`\<[`ModelsTransitTariff`](../-internal-/interfaces/ModelsTransitTariff.md)[]\>
 
-List of supplies matching filters
-
-#### Throws
-
-When limit/offset are invalid or filters contain invalid data
+Успешно
 
 #### Throws
 
-When rate limit exceeded
+When API key is invalid (401/403)
 
 #### Throws
 
-When network request fails
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-// Get all supplies
-const allSupplies = await sdk.ordersFBW.getSupplies({
-  dates: [],
-  statusIDs: []
-});
-
-// Filter by date and status
-const filteredSupplies = await sdk.ordersFBW.getSupplies({
-  dates: [{
-    from: '2024-01-01',
-    till: '2024-12-31',
-    type: 'createDate'
-  }],
-  statusIDs: [2, 3, 4] // Planned, Allowed, In Acceptance
-}, 100, 0);
+```ts
+const result = await sdk.general.transitTariffs();
+console.log(result);
 ```
 
 ***
 
-### getSupplyDetails()
+### createSupply()
 
 ```ts
-getSupplyDetails(ID: number, isPreorderID: boolean): Promise<FBWSupplyDetails>;
+createSupply(data: ModelsSuppliesFiltersRequest, options?: {
+  limit?: number;
+  offset?: number;
+}): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L279)
+Defined in: [modules/orders-fbw/index.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L104)
 
-Get supply details by ID
+Список поставок
 
-Returns detailed information about a specific supply or preorder.
-
-Rate limit: 30 requests per minute (2 second intervals)
-
-#### Parameters
-
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `ID` | `number` | `undefined` | Supply ID or Preorder ID |
-| `isPreorderID` | `boolean` | `false` | Whether ID is a preorder ID (default: false) |
-
-#### Returns
-
-`Promise`\<[`FBWSupplyDetails`](../interfaces/FBWSupplyDetails.md)\>
-
-Detailed supply information including quantities, costs, and coefficients
-
-#### Throws
-
-When ID is invalid
-
-#### Throws
-
-When rate limit exceeded
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-// Get supply details
-const supply = await sdk.ordersFBW.getSupplyDetails(12345);
-console.log(supply.statusName); // "Принято"
-console.log(supply.warehouseName); // "Коледино"
-
-// Get preorder details
-const preorder = await sdk.ordersFBW.getSupplyDetails(67890, true);
-```
-
-***
-
-### getSupplyGoods()
-
-```ts
-getSupplyGoods(
-   ID: number, 
-   isPreorderID: boolean, 
-   limit: number, 
-offset: number): Promise<FBWGoodInSupply[]>;
-```
-
-Defined in: [modules/orders-fbw/index.ts:319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L319)
-
-Get goods in supply
-
-Returns information about goods in a supply with pagination.
-
-Rate limit: 30 requests per minute (2 second intervals)
-
-#### Parameters
-
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `ID` | `number` | `undefined` | Supply ID or Preorder ID |
-| `isPreorderID` | `boolean` | `false` | Whether ID is a preorder ID (default: false) |
-| `limit` | `number` | `100` | Number of goods to return (1-1000, default: 100) |
-| `offset` | `number` | `0` | Number of goods to skip (>= 0, default: 0) |
-
-#### Returns
-
-`Promise`\<[`FBWGoodInSupply`](../interfaces/FBWGoodInSupply.md)[]\>
-
-List of goods with barcodes, quantities, and acceptance status
-
-#### Throws
-
-When ID, limit, or offset are invalid
-
-#### Throws
-
-When rate limit exceeded
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-// Get first 100 goods
-const goods = await sdk.ordersFBW.getSupplyGoods(12345);
-
-// Get next 100 goods
-const moreGoods = await sdk.ordersFBW.getSupplyGoods(12345, false, 100, 100);
-
-// Get goods from preorder
-const preorderGoods = await sdk.ordersFBW.getSupplyGoods(67890, true);
-```
-
-***
-
-### getSupplyPackage()
-
-```ts
-getSupplyPackage(ID: number): Promise<FBWBox[]>;
-```
-
-Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/orders-fbw/index.ts#L366)
-
-Get supply package information
-
-Returns information about packaging for a supply.
-
-Rate limit: 30 requests per minute (2 second intervals)
+Метод возвращает список поставок, по умолчанию — последние 1000 поставок. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 30 запросов | 2 секунды | 10 запросов | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `ID` | `number` | Supply ID |
+| `data` | [`ModelsSuppliesFiltersRequest`](../-internal-/interfaces/ModelsSuppliesFiltersRequest.md) | Request body data |
+| `options?` | \{ `limit?`: `number`; `offset?`: `number`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
 
 #### Returns
 
-`Promise`\<[`FBWBox`](../interfaces/FBWBox.md)[]\>
+`Promise`\<[`ModelsSupply`](../-internal-/interfaces/ModelsSupply.md)[]\>
 
-List of boxes with package codes and contained goods
-
-#### Throws
-
-When ID is invalid
+Успешно
 
 #### Throws
 
-When rate limit exceeded
+When API key is invalid (401/403)
 
 #### Throws
 
-When network request fails
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
 
 #### Example
 
-```typescript
-const packages = await sdk.ordersFBW.getSupplyPackage(12345);
-console.log(packages[0].packageCode); // "WB-PKG-12345"
-console.log(packages[0].quantity); // 15
-console.log(packages[0].barcodes); // [{ barcode: '...', quantity: 10 }, ...]
+```ts
+const result = await sdk.general.createSupply({}, {});
+console.log(result);
+```
+
+***
+
+### getSupply()
+
+```ts
+getSupply(ID: number, options?: {
+  isPreorderID?: boolean;
+}): Promise<ModelsSupplyDetails>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L124)
+
+Детали поставки
+
+Метод возвращает детали поставки по ID. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 30 запросов | 2 секунды | 10 запросов | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `ID` | `number` | ID поставки или заказа |
+| `options?` | \{ `isPreorderID?`: `boolean`; \} | Query parameters |
+| `options.isPreorderID?` | `boolean` | - |
+
+#### Returns
+
+`Promise`\<[`ModelsSupplyDetails`](../-internal-/interfaces/ModelsSupplyDetails.md)\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.getSupply('ID-value', {});
+console.log(result);
+```
+
+***
+
+### getSuppliesGood()
+
+```ts
+getSuppliesGood(ID: number, options?: {
+  limit?: number;
+  offset?: number;
+  isPreorderID?: boolean;
+}): Promise<ModelsGoodInSupply[]>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L144)
+
+Товары поставки
+
+Метод возвращает информацию о товарах в поставке. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 30 запросов | 2 секунды | 10 запросов | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `ID` | `number` | ID поставки или заказа |
+| `options?` | \{ `limit?`: `number`; `offset?`: `number`; `isPreorderID?`: `boolean`; \} | Query parameters |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
+| `options.isPreorderID?` | `boolean` | - |
+
+#### Returns
+
+`Promise`\<[`ModelsGoodInSupply`](../-internal-/interfaces/ModelsGoodInSupply.md)[]\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.getSuppliesGood('ID-value', {});
+console.log(result);
+```
+
+***
+
+### getSuppliesPackage()
+
+```ts
+getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbw/index.ts#L163)
+
+Упаковка поставки
+
+Метод возвращает информацию об упаковке поставки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 30 запросов | 2 секунды | 10 запросов | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `ID` | `number` | ID поставки |
+
+#### Returns
+
+`Promise`\<[`ModelsBox`](../-internal-/interfaces/ModelsBox.md)[]\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.getSuppliesPackage('ID-value');
+console.log(result);
 ```

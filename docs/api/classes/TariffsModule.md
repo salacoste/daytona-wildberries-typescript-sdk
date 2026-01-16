@@ -2,7 +2,7 @@
 
 # Class: TariffsModule
 
-Defined in: [modules/tariffs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/tariffs/index.ts#L11)
+Defined in: [modules/tariffs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/tariffs/index.ts#L10)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/tariffs/index.ts:11](https://github.com/salacoste/daytona-w
 new TariffsModule(client: BaseClient): TariffsModule;
 ```
 
-Defined in: [modules/tariffs/index.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/tariffs/index.ts#L12)
+Defined in: [modules/tariffs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/tariffs/index.ts#L11)
 
 #### Parameters
 
@@ -29,7 +29,9 @@ Defined in: [modules/tariffs/index.ts:12](https://github.com/salacoste/daytona-w
 ### getTariffsCommission()
 
 ```ts
-getTariffsCommission(locale?: "ru" | "en" | "zh"): Promise<
+getTariffsCommission(options?: {
+  locale?: string;
+}): Promise<
   | Commission
   | CommissionChina
   | CommissionTurkey
@@ -37,31 +39,29 @@ getTariffsCommission(locale?: "ru" | "en" | "zh"): Promise<
 | CommissionUAE>;
 ```
 
-Defined in: [modules/tariffs/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/tariffs/index.ts#L47)
+Defined in: [modules/tariffs/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/tariffs/index.ts#L28)
 
 Комиссия по категориям товаров
 
-Метод возвращает данные о [комиссии](https://seller.wildberries.ru/dynamic-product-categories/commission) WB
-по [родительским категориям товаров] согласно модели продаж.
-
-**Rate Limit**: 1 request per minute (burst: 2)
+Метод возвращает данные о [комиссии](https://seller.wildberries.ru/dynamic-product-categories/commission) WB по [родительским категориям товаров](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1parent~1all/get) согласно модели продаж. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 2 запроса | </div>
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `locale?` | `"ru"` \| `"en"` \| `"zh"` | Optional language for response fields (parentName, subjectName): - 'ru' - Russian (default) - 'en' - English - 'zh' - Chinese |
+| `options?` | \{ `locale?`: `string`; \} | Query parameters |
+| `options.locale?` | `string` | - |
 
 #### Returns
 
 `Promise`\<
-  \| [`Commission`](../interfaces/Commission.md)
-  \| [`CommissionChina`](../interfaces/CommissionChina.md)
-  \| [`CommissionTurkey`](../interfaces/CommissionTurkey.md)
-  \| [`CommissionUzbekistan`](../interfaces/CommissionUzbekistan.md)
-  \| [`CommissionUAE`](../interfaces/CommissionUAE.md)\>
+  \| [`Commission`](../-internal-/interfaces/Commission.md)
+  \| [`CommissionChina`](../-internal-/interfaces/CommissionChina.md)
+  \| [`CommissionTurkey`](../-internal-/interfaces/CommissionTurkey.md)
+  \| [`CommissionUzbekistan`](../-internal-/interfaces/CommissionUzbekistan.md)
+  \| [`CommissionUAE`](../-internal-/interfaces/CommissionUAE.md)\>
 
-Promise resolving to commission data structure
+Успешно
 
 #### Throws
 
@@ -73,7 +73,7 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When locale value is invalid (400)
+When request data is invalid (400/422)
 
 #### Throws
 
@@ -81,18 +81,9 @@ When network request fails or times out
 
 #### Example
 
-```typescript
-// Get commission data in Russian (default)
-const result = await sdk.tariffs.getTariffsCommission();
+```ts
+const result = await sdk.general.getTariffsCommission({});
 console.log(result);
-
-// Get commission data in English
-const resultEn = await sdk.tariffs.getTariffsCommission('en');
-console.log(resultEn);
-
-// Get commission data in Chinese
-const resultZh = await sdk.tariffs.getTariffsCommission('zh');
-console.log(resultZh);
 ```
 
 ***
@@ -100,10 +91,12 @@ console.log(resultZh);
 ### getTariffsBox()
 
 ```ts
-getTariffsBox(date: string): Promise<TariffsBoxResponse>;
+getTariffsBox(options?: {
+  date: string;
+}): Promise<TariffsBoxResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/tariffs/index.ts#L84)
+Defined in: [modules/tariffs/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/tariffs/index.ts#L47)
 
 Тарифы для коробов
 
@@ -113,66 +106,12 @@ Defined in: [modules/tariffs/index.ts:84](https://github.com/salacoste/daytona-w
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `date` | `string` | Date for tariff calculation in YYYY-MM-DD format (e.g., '2025-01-15') |
+| `options?` | \{ `date`: `string`; \} | Query parameters |
+| `options.date?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`TariffsBoxResponse`](../interfaces/TariffsBoxResponse.md)\>
-
-Promise resolving to box tariffs data structure
-
-#### Throws
-
-When date format is invalid or missing (HTTP 400)
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```typescript
-// Get box tariffs for specific date
-const tariffs = await sdk.tariffs.getTariffsBox('2025-01-15');
-console.log('Box tariffs:', tariffs);
-
-// Get tariffs for today
-const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-const todayTariffs = await sdk.tariffs.getTariffsBox(today);
-console.log('Today\'s box tariffs:', todayTariffs);
-```
-
-***
-
-### getTariffsPallet()
-
-```ts
-getTariffsPallet(date: string): Promise<TariffsPalletResponse>;
-```
-
-Defined in: [modules/tariffs/index.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/tariffs/index.ts#L116)
-
-Тарифы для монопаллет
-
-Для товаров, которые поставляются на склад WB на монопаллетах, метод возвращает [стоимость](https://seller.wildberries.ru/dynamic-product-categories): - доставки со склада до покупателя - доставки от покупателя до склада - хранения на складе WB <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `date` | `string` |
-
-#### Returns
-
-`Promise`\<[`TariffsPalletResponse`](../interfaces/TariffsPalletResponse.md)\>
+`Promise`\<[`TariffsBoxResponse`](../-internal-/interfaces/TariffsBoxResponse.md)\>
 
 Успешно
 
@@ -195,7 +134,59 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.tariffs.getTariffsPallet();
+const result = await sdk.general.getTariffsBox({});
+console.log(result);
+```
+
+***
+
+### getTariffsPallet()
+
+```ts
+getTariffsPallet(options?: {
+  date: string;
+}): Promise<TariffsPalletResponse>;
+```
+
+Defined in: [modules/tariffs/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/tariffs/index.ts#L66)
+
+Тарифы для монопаллет
+
+Для товаров, которые поставляются на склад WB на монопаллетах, метод возвращает [стоимость](https://seller.wildberries.ru/dynamic-product-categories): - доставки со склада до покупателя - доставки от покупателя до склада - хранения на складе WB <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `date`: `string`; \} | Query parameters |
+| `options.date?` | `string` | - |
+
+#### Returns
+
+`Promise`\<[`TariffsPalletResponse`](../-internal-/interfaces/TariffsPalletResponse.md)\>
+
+Успешно
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```ts
+const result = await sdk.general.getTariffsPallet({});
 console.log(result);
 ```
 
@@ -204,10 +195,12 @@ console.log(result);
 ### getTariffsReturn()
 
 ```ts
-getTariffsReturn(date: string): Promise<ReturnTariffsResponse>;
+getTariffsReturn(options?: {
+  date: string;
+}): Promise<ReturnTariffsResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/784d5eafeca072e72c3a26b140b006a3b641c991/src/modules/tariffs/index.ts#L148)
+Defined in: [modules/tariffs/index.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/tariffs/index.ts#L85)
 
 Тарифы на возврат
 
@@ -215,13 +208,14 @@ Defined in: [modules/tariffs/index.ts:148](https://github.com/salacoste/daytona-
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `date` | `string` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `date`: `string`; \} | Query parameters |
+| `options.date?` | `string` | - |
 
 #### Returns
 
-`Promise`\<[`ReturnTariffsResponse`](../interfaces/ReturnTariffsResponse.md)\>
+`Promise`\<[`ReturnTariffsResponse`](../-internal-/interfaces/ReturnTariffsResponse.md)\>
 
 Успешно
 
@@ -244,6 +238,6 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.tariffs.getTariffsReturn();
+const result = await sdk.general.getTariffsReturn({});
 console.log(result);
 ```
