@@ -31,7 +31,7 @@
 Перед началом убедитесь, что у вас есть:
 - ✅ Установленный Node.js ≥ 20.0.0
 - ✅ API ключ Wildberries с доступом к заказам
-- ✅ Установленный SDK (`npm install wb-api-sdk`)
+- ✅ Установленный SDK (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Пройденное [Руководство по быстрому старту](../quickstart.md)
 - ✅ Базовое понимание рабочих процессов выполнения заказов
 
@@ -113,7 +113,7 @@
 Создайте файл `order-fulfillment.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -385,7 +385,7 @@ async function generateShippingLabel(orderId: string) {
 Вот полный рабочий процесс выполнения заказов:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY

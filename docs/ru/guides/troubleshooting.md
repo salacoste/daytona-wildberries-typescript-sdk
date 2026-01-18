@@ -49,153 +49,164 @@ layout: doc
 
 Таблица быстрого поиска для распространенных операций и их фактических методов SDK. Копируйте эти точные имена методов, чтобы избежать ошибок `TypeError: method is not a function`.
 
-**✅ Проверено на**: SDK v0.1.0 | **Последнее обновление**: 2024-10-27 | **Валидация**: Все методы проверены на соответствие фактической реализации
+**✅ Проверено на**: SDK v2.5.0 | **Последнее обновление**: 2026-01-18 | **Валидация**: Все методы проверены на соответствие фактической реализации
 
 ### Товары и каталог
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Список всех товаров | `sdk.products.listProducts(filters?)` | Возвращает пагинированный список товаров |
-| Создать новый товар | `sdk.products.createProduct(data)` | Создание одного товара |
-| Обновить товар | `sdk.products.updateProduct(data[])` | Принимает массив обновлений |
-| Удалить товар | `sdk.products.deleteProduct(nmIDs[])` | Безвозвратно удаляет товары |
-| Получить детали товара | `sdk.products.getProductCard(nmID)` | Возвращает полную карточку товара |
+| Список карточек товаров | `sdk.products.createCardsList({ settings })` | **Основной метод** - Возвращает карточки с курсорной пагинацией |
+| Создать новый товар | `sdk.products.createCardsUpload(data[])` | Принимает массив карточек товаров |
+| Обновить товар | `sdk.products.createCardsUpdate(data[])` | Принимает массив обновлений |
+| Удалить в корзину | `sdk.products.createDeleteTrash({ nmIDs })` | Перемещает товары в корзину |
+| Восстановить из корзины | `sdk.products.createCardsRecover({ nmIDs })` | Восстанавливает товары из корзины |
 | Получить родительские категории | `sdk.products.getParentAll({ locale? })` | Категории верхнего уровня как "Электроника" |
 | Получить подкатегории | `sdk.products.getObjectAll({ parentID })` | Категории внутри родительской |
 | Получить атрибуты категории | `sdk.products.getObjectCharc(subjectId)` | Обязательные/опциональные поля |
-| Загрузить изображения товара | `sdk.products.uploadMediaFile(nmID, file, photoNumber)` | Загрузка одного изображения |
-| Обновить цены | `sdk.products.updatePricing(updates[])` | Массовое обновление цен |
-| Получить информацию о ценах | `sdk.products.getPricing(nmID)` | Текущие цены |
-| Обновить уровни запасов | `sdk.products.updateStockLevels(warehouseId, updates[])` | Обновление инвентаризации |
-| Получить информацию о запасах | `sdk.products.getStock(warehouseId, skus[])` | Текущие уровни запасов |
+| Загрузить медиафайл | `sdk.products.createMediaFile()` | Инициировать загрузку медиа |
+| Сохранить медиа | `sdk.products.createMediaSave({ nmId, data })` | Сохранить загруженные медиа |
+| Получить остатки | `sdk.products.createStock(warehouseId, { skus })` | Получить остатки по SKU |
+| Обновить остатки | `sdk.products.updateStock(warehouseId, { stocks })` | Обновить уровни остатков |
+| Удалить остатки | `sdk.products.deleteStock(warehouseId, { skus })` | Удалить записи остатков |
+| Получить склады | `sdk.products.warehouses()` | Список складов продавца |
+| Получить офисы | `sdk.products.offices()` | Список доступных офисов |
+| Получить лимиты карточек | `sdk.products.getCardsLimits()` | Проверить лимиты создания карточек |
+| Сгенерировать штрихкоды | `sdk.products.createContentBarcode({ count })` | Сгенерировать новые штрихкоды |
 
 ### Заказы (FBS - Выполнение продавцом)
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить новые заказы | `sdk.ordersFBS.getNewOrders()` | Заказы, ожидающие обработки |
-| Список всех заказов | `sdk.ordersFBS.getOrders(filters?)` | Пагинация с фильтрами по дате |
-| Получить статусы заказов | `sdk.ordersFBS.getOrderStatuses(orderIds[])` | Пакетная проверка статуса |
-| Создать поставку | `sdk.ordersFBS.createSupply(name)` | Начать новую отгрузку |
-| Получить поставки | `sdk.ordersFBS.getSupplies(filters?)` | Список всех поставок |
-| Добавить заказ в поставку | `sdk.ordersFBS.addOrderToSupply(supplyId, orderId)` | Группировка заказов |
-| Получить этикетки доставки | `sdk.ordersFBS.getOrderStickers({ orderIds[], type, width, height })` | Печать этикеток |
-| Доставить поставку | `sdk.ordersFBS.deliverSupply(supplyId)` | Отметить как отгруженную |
-| Отменить заказ | `sdk.ordersFBS.cancelOrder(orderId)` | Отмена до отгрузки |
-
-### Заказы (FBW - Выполнение Wildberries)
-
-| Операция | Фактический метод SDK | Примечания |
-|----------|----------------------|------------|
-| Получить склады | `sdk.ordersFBW.getWarehouses()` | Доступные склады WB |
-| Проверить коэффициенты приемки | `sdk.ordersFBW.getAcceptanceCoefficients()` | Следующие 14 дней |
-| Получить варианты приемки | `sdk.ordersFBW.getAcceptanceOptions(goods[])` | Рекомендации по складам |
-| Получить детали поставки | `sdk.ordersFBW.getSupplyDetails(supplyId)` | Информация о поставке FBW |
+| Получить новые заказы | `sdk.ordersFBS.getOrdersNew()` | Заказы, ожидающие обработки |
+| Список всех заказов | `sdk.ordersFBS.orders({ limit, next, dateFrom?, dateTo? })` | Пагинация с фильтрами по дате |
+| Получить статусы заказов | `sdk.ordersFBS.createOrdersStatu({ orders: number[] })` | Пакетная проверка статуса |
+| Создать поставку | `sdk.ordersFBS.createSupply({ name })` | Начать новую отгрузку |
+| Получить поставки | `sdk.ordersFBS.supplies({ limit, next })` | Список всех поставок |
+| Добавить заказ в поставку | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | Добавить заказ в поставку |
+| Получить этикетки заказов | `sdk.ordersFBS.createOrdersSticker({ type, width, height }, { orders })` | Печать этикеток |
+| Доставить поставку | `sdk.ordersFBS.updateSuppliesDeliver(supplyId)` | Отметить как отгруженную |
+| Отменить заказ | `sdk.ordersFBS.updateOrdersCancel(orderId)` | Отмена до отгрузки |
+| Получить поставку | `sdk.ordersFBS.getSupply(supplyId)` | Получить детали поставки |
+| Удалить поставку | `sdk.ordersFBS.deleteSupply(supplyId)` | Удалить поставку |
+| Получить заказы поставки | `sdk.ordersFBS.getSuppliesOrder(supplyId)` | Заказы в поставке |
+| Получить штрихкод поставки | `sdk.ordersFBS.getSuppliesBarcode(supplyId, { type })` | Штрихкод поставки |
+| Получить пропуска | `sdk.ordersFBS.passes()` | Список пропусков |
+| Создать пропуск | `sdk.ordersFBS.createPass(data)` | Создать пропуск для доставки |
+| Получить заказы на переотправку | `sdk.ordersFBS.getOrdersReshipment()` | Заказы для переотправки |
 
 ### Финансы
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить баланс счета | `sdk.finances.getBalance()` | Текущий баланс |
-| Получить транзакции | `sdk.finances.getTransactions(filters)` | История транзакций |
-| Получить детали транзакции | `sdk.finances.getTransactionDetail(id)` | Одна транзакция |
-| Список финансовых документов | `sdk.finances.getDocuments(filters?)` | Счета, отчеты |
-| Скачать документ | `sdk.finances.downloadDocument(request)` | Получить PDF/Excel |
-| Получить выплаты | `sdk.finances.getPayouts(filters)` | История выплат |
-| Получить детали выплаты | `sdk.finances.getPayoutDetail(id)` | Информация об одной выплате |
+| Получить баланс счета | `sdk.finances.getAccountBalance()` | Текущий баланс |
+| Получить отчет по периоду | `sdk.finances.getSupplierReportdetailbyperiod({ dateFrom, dateTo, limit?, rrdid?, period? })` | Детальный отчет |
+| Получить категории документов | `sdk.finances.getDocumentsCategories({ locale? })` | Список категорий документов |
+| Список документов | `sdk.finances.getDocumentsList({ locale?, beginTime?, endTime?, ... })` | Счета, отчеты |
+| Скачать документ | `sdk.finances.getDocumentsDownload({ serviceName, extension })` | Получить PDF/Excel |
+| Скачать все документы | `sdk.finances.createDownloadAll(data)` | Массовое скачивание |
 
 ### Аналитика
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить воронку продаж | `sdk.analytics.getSalesFunnel(period)` | Метрики конверсии |
-| Получить производительность товара | `sdk.analytics.getProductPerformance(nmIDs[], period)` | Анализ нескольких товаров |
-| Получить статистику товара | `sdk.analytics.getProductStatistics(request)` | Детальные метрики |
-| Получить исторические данные | `sdk.analytics.getHistoricalStatistics(request)` | Данные временных рядов |
-| Получить поисковые запросы | `sdk.analytics.getSearchQueries(period)` | Аналитика поиска |
-| Получить производительность категории | `sdk.analytics.getCategoryPerformance(period)` | Данные на уровне категории |
-| Получить историю запасов | `sdk.analytics.getStockHistory(nmID, period)` | Изменения запасов во времени |
-| Сгенерировать CSV отчет | `sdk.analytics.generateCSVReport(request)` | Асинхронная генерация отчета |
-| Получить статус CSV отчета | `sdk.analytics.getCSVReportStatus(reportId)` | Проверить завершение |
-| Скачать CSV отчет | `sdk.analytics.downloadCSVReport(reportId)` | Получить готовый отчет |
+| Получить детальный отчет по товару | `sdk.analytics.createNmReportDetail(data)` | Детальные метрики товара |
+| Получить историю деталей | `sdk.analytics.createDetailHistory(data)` | Исторические данные деталей |
+| Получить сгруппированную историю | `sdk.analytics.createGroupedHistory(data)` | Сгруппированные исторические данные |
+| Получить загрузки отчетов | `sdk.analytics.getNmReportDownloads({ filter? })` | Список доступных отчетов |
+| Создать загрузку отчета | `sdk.analytics.createNmReportDownload(data)` | Асинхронная генерация отчета |
+| Повторить загрузку отчета | `sdk.analytics.createDownloadsRetry(data)` | Повторить неудачную загрузку |
+| Получить файл загрузки | `sdk.analytics.getDownloadsFile(downloadId)` | Получить готовый отчет |
+| Отчет по поиску | `sdk.analytics.createSearchReportReport(data)` | Аналитика поиска |
+| Создать табличную группу | `sdk.analytics.createTableGroup(data)` | Сгруппированные табличные данные |
+| Создать табличные детали | `sdk.analytics.createTableDetail(data)` | Детальные табличные данные |
+| Поисковые тексты товара | `sdk.analytics.createProductSearchText(data)` | Поисковые запросы товара |
+| Заказы товара | `sdk.analytics.createProductOrder(data)` | Аналитика заказов товара |
 
 ### Отчеты
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить входящие отгрузки | `sdk.reports.getIncomes(dateFrom)` | Товары, полученные WB |
-| Получить уровни запасов | `sdk.reports.getStocks(dateFrom)` | Текущая инвентаризация |
-| Получить отчет по заказам | `sdk.reports.getOrders(dateFrom)` | Все заказы |
-| Получить отчет по продажам | `sdk.reports.getSales(dateFrom)` | Завершенные продажи |
-| Создать отчет по остаткам | `sdk.reports.createWarehouseRemainsReport(params)` | Асинхронная генерация |
-| Проверить статус отчета | `sdk.reports.checkReportStatus(taskId, reportType)` | Опрос завершения |
-| Скачать отчет | `sdk.reports.downloadReport(taskId, reportType)` | Получить готовый отчет |
+| Получить входящие отгрузки | `sdk.reports.getSupplierIncomes({ dateFrom })` | Товары, полученные WB |
+| Получить уровни остатков | `sdk.reports.getSupplierStocks({ dateFrom })` | Текущая инвентаризация |
+| Получить отчет по заказам | `sdk.reports.getSupplierOrders({ dateFrom, flag? })` | Все заказы |
+| Получить отчет по продажам | `sdk.reports.getSupplierSales({ dateFrom, flag? })` | Завершенные продажи |
+| Создать отчет по остаткам | `sdk.reports.warehouseRemains({ locale?, groupByBrand?, ... })` | Асинхронная генерация |
+| Проверить статус отчета | `sdk.reports.getTasksStatu(taskId)` | Опрос завершения |
+| Скачать отчет | `sdk.reports.getTasksDownload(taskId)` | Получить готовый отчет |
+| Отчет платного хранения | `sdk.reports.paidStorage({ dateFrom, dateTo })` | Создать отчет платного хранения |
+| Проверить статус платного хранения | `sdk.reports.getTasksStatu3(taskId)` | Проверить отчет платного хранения |
+| Скачать платное хранение | `sdk.reports.getTasksDownload3(taskId)` | Скачать отчет платного хранения |
+| Отчет приемки | `sdk.reports.acceptanceReport({ dateFrom, dateTo })` | Отчет приемки |
+| Региональные продажи | `sdk.reports.getAnalyticsRegionSale({ dateFrom, dateTo })` | Региональные продажи |
 
 ### Коммуникации
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить все чаты | `sdk.communications.getChats()` | Беседы с клиентами |
-| Получить события чата | `sdk.communications.getEvents(replySign)` | Сообщения в чате |
-| Отправить сообщение | `sdk.communications.sendMessage(replySign, text, attachments?)` | Ответить клиенту |
-| Получить вопросы | `sdk.communications.getQuestions(filters)` | Вопросы и ответы о товаре |
-| Ответить на вопрос | `sdk.communications.answerQuestion(questionId, answer)` | Ответить на вопрос |
-| Получить отзывы | `sdk.communications.getReviews(filters)` | Отзывы клиентов |
-| Ответить на отзыв | `sdk.communications.respondToReview(reviewId, response)` | Ответить на отзыв |
+| Получить чаты продавца | `sdk.communications.getSellerChats()` | Беседы с клиентами |
+| Получить события чата | `sdk.communications.getSellerEvents({ next? })` | Сообщения в чате |
+| Отправить сообщение | `sdk.communications.createSellerMessage()` | Ответить клиенту |
+| Получить вопросы | `sdk.communications.questions({ isAnswered, take, skip, ... })` | Список вопросов и ответов |
+| Получить один вопрос | `sdk.communications.question({ id })` | Детали одного вопроса |
+| Обновить вопрос | `sdk.communications.updateQuestion(data)` | Ответить/просмотреть вопрос |
+| Получить отзывы | `sdk.communications.feedbacks({ isAnswered, take, skip, ... })` | Отзывы клиентов |
+| Создать ответ на отзыв | `sdk.communications.createFeedbacksAnswer({ id, text })` | Ответить на отзыв |
+| Обновить ответ на отзыв | `sdk.communications.updateFeedbacksAnswer({ id, text })` | Редактировать ответ |
+| Получить оценки отзывов | `sdk.communications.supplierValuations()` | Категории рейтинга |
+| Получить количество вопросов | `sdk.communications.getQuestionsCount({ dateFrom?, dateTo?, isAnswered? })` | Статистика вопросов |
+| Получить неотвеченные | `sdk.communications.getQuestionsCountUnanswered()` | Неотвеченные вопросы |
+| Проверить новые отзывы/вопросы | `sdk.communications.newFeedbacksQuestions()` | Проверить наличие новых |
+| Шаблоны | `sdk.communications.templates({ templateType })` | Получить шаблоны ответов |
+| Создать шаблон | `sdk.communications.createTemplate({ name, templateType, text })` | Новый шаблон |
 
 ### Промо-акции
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить количество кампаний | `sdk.promotion.getPromotionCount()` | Сводка активных кампаний |
-| Создать кампанию | `sdk.promotion.createSeacatSaveAd(data)` | Новая рекламная кампания |
-| Получить информацию о кампании | `sdk.promotion.getPromotionInfo(campaignId)` | Детали кампании |
-| Приостановить кампанию | `sdk.promotion.pauseCampaign(campaignId)` | Остановить кампанию |
-| Возобновить кампанию | `sdk.promotion.resumeCampaign(campaignId)` | Перезапустить кампанию |
-| Обновить ставки | `sdk.promotion.updateBids(campaignId, bids[])` | Изменить аукционные ставки |
+| Получить количество акций | `sdk.promotion.getPromotionCount()` | Сводка активных кампаний |
+| Создать рекламную кампанию | `sdk.promotion.createPromotionAdvert(data)` | Новая рекламная кампания |
+| Получить аукционные объявления | `sdk.promotion.getAuctionAdverts({ type? })` | Аукционные кампании |
+| Получить баланс рекламы | `sdk.promotion.getAdvBalance()` | Рекламный баланс |
+| Получить бюджет рекламы | `sdk.promotion.getAdvBudget(advertId)` | Бюджет кампании |
+| Пополнить бюджет | `sdk.promotion.createAdvBudgetDeposit(advertId, data)` | Добавить средства в кампанию |
+| Приостановить рекламу | `sdk.promotion.getAdvAdvertStoppar(advertId)` | Приостановить кампанию |
+| Запустить рекламу | `sdk.promotion.getAdvAdvertStart(advertId)` | Возобновить кампанию |
+| Получить полную статистику | `sdk.promotion.createFullstat(data)` | Полная статистика |
+| Получить статистику по предметам | `sdk.promotion.createFullstatBySubjects(data)` | Статистика по предметам |
+| Получить слова кампании | `sdk.promotion.getAdvWords(advertId)` | Ключевые слова кампании |
+| Обновить слова кампании | `sdk.promotion.createAdvWords(advertId, data)` | Установить ключевые слова |
 
 ### Тарифы
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить ставки комиссии | `sdk.tariffs.getTariffsCommission()` | Комиссии по категориям |
-| Получить тарифы на коробки | `sdk.tariffs.getTariffsBox()` | Плата за хранение коробок |
-| Получить тарифы на паллеты | `sdk.tariffs.getTariffsPallet()` | Плата за хранение паллет |
-| Получить тарифы на возвраты | `sdk.tariffs.getTariffsReturn()` | Плата за обработку возвратов |
-
-### Самовывоз из магазина
-
-| Операция | Фактический метод SDK | Примечания |
-|----------|----------------------|------------|
-| Получить новые заказы самовывоза | `sdk.inStorePickup.getNewOrders()` | Заказы, ожидающие самовывоза |
-| Подтвердить заказ | `sdk.inStorePickup.confirmOrder(orderId)` | Начать сборку |
-| Подготовить заказ | `sdk.inStorePickup.prepareOrder(orderId)` | Отметить как готовый |
-| Проверить клиента | `sdk.inStorePickup.verifyCustomerIdentity(request)` | Проверить код |
-| Выдать заказ | `sdk.inStorePickup.receiveOrder(orderId)` | Завершить передачу |
-| Отклонить заказ | `sdk.inStorePickup.rejectOrder(orderId, reason)` | Отменить самовывоз |
+| Получить ставки комиссии | `sdk.tariffs.getTariffsCommission({ locale? })` | Комиссии по категориям |
+| Получить тарифы на коробки | `sdk.tariffs.getTariffsBox({ date })` | Плата за хранение коробок |
+| Получить тарифы на паллеты | `sdk.tariffs.getTariffsPallet({ date })` | Плата за хранение паллет |
+| Получить тарифы на возвраты | `sdk.tariffs.getTariffsReturn({ date })` | Плата за обработку возвратов |
 
 ### Общее
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
 | Тестировать соединение | `sdk.general.ping()` | Проверить подключение API |
-| Получить новости | `sdk.general.news(filters?)` | Обновления портала продавца |
+| Получить новости | `sdk.general.news({ from?, fromID? })` | Обновления портала продавца |
 | Получить информацию о продавце | `sdk.general.sellerInfo()` | Информация об аккаунте |
 
 ### Распространенные паттерны
 
 ```typescript
 // ✅ ПРАВИЛЬНО - Используйте фактические имена методов
-const products = await sdk.products.listProducts({ limit: 100 });
-const orders = await sdk.ordersFBS.getOrders({ dateFrom: timestamp });
-const balance = await sdk.finances.getBalance();
-const funnel = await sdk.analytics.getSalesFunnel({ from: '2024-01-01', to: '2024-01-31' });
+const cards = await sdk.products.createCardsList({ settings: { cursor: { limit: 100 } } });
+const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
+const balance = await sdk.finances.getAccountBalance();
+const report = await sdk.analytics.createNmReportDetail({ ... });
 
-// ❌ НЕПРАВИЛЬНО - Упрощенные имена, которые не существуют
-const products = await sdk.products.list();           // TypeError: list is not a function
-const orders = await sdk.orders.list();               // TypeError: Cannot read property 'list' of undefined
-const categories = await sdk.products.getCategories(); // TypeError: getCategories is not a function
-const created = await sdk.products.create(data);      // TypeError: create is not a function
+// ❌ НЕПРАВИЛЬНО - Эти методы НЕ существуют
+const products = await sdk.products.listProducts();     // TypeError: listProducts is not a function
+const orders = await sdk.ordersFBS.getOrders();         // TypeError: getOrders is not a function
+const balance = await sdk.finances.getBalance();        // TypeError: getBalance is not a function
+const created = await sdk.products.createProduct(data); // TypeError: createProduct is not a function
 ```
 
 ---

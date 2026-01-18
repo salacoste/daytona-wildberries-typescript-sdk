@@ -40,7 +40,7 @@ import {
   RateLimitError,      // 429 ошибки
   ValidationError,     // 400/422 ошибки
   NetworkError         // Сетевые сбои
-} from 'wb-api-sdk';
+} from 'daytona-wildberries-typescript-sdk';
 ```
 
 **Иерархия ошибок:**
@@ -807,7 +807,7 @@ async function rotateAPIKey() {
 
 ```typescript
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { WildberriesSDK, RateLimitError } from 'wb-api-sdk';
+import { WildberriesSDK, RateLimitError } from 'daytona-wildberries-typescript-sdk';
 import { ProductService } from './product-service';
 
 describe('ProductService', () => {
@@ -862,7 +862,7 @@ describe('ProductService', () => {
 ```typescript
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 // Настройка MSW сервера
 const server = setupServer(
@@ -917,7 +917,7 @@ describe('Интеграция Products', () => {
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 describe('Жизненный цикл товара E2E', () => {
   // Используйте тестовый API ключ или выделенную тестовую среду

@@ -108,7 +108,7 @@ SDK вносит минимальные накладные расходы (<10ms
 - Проверку лимитов запросов
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 import { performance } from 'perf_hooks';
 
 const sdk = new WildberriesSDK({
@@ -1561,7 +1561,7 @@ HTTP пулинг соединений снижает задержку, пере
 ```typescript
 import http from 'http';
 import https from 'https';
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 // Создание кастомных агентов с оптимизированными настройками
 const httpAgent = new http.Agent({

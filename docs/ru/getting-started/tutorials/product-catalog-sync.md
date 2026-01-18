@@ -31,7 +31,7 @@
 Перед началом убедитесь, что у вас есть:
 - ✅ Установленный Node.js ≥ 20.0.0
 - ✅ API ключ Wildberries (аккаунт продавца)
-- ✅ Установленный SDK (`npm install wb-api-sdk`)
+- ✅ Установленный SDK (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Базовые знания TypeScript
 - ✅ Пройденное [Руководство по быстрому старту](../quickstart.md)
 
@@ -68,7 +68,7 @@ Wildberries использует иерархическую систему ка�
 Создайте файл `product-sync.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -399,7 +399,7 @@ async function bulkUpdatePrices(products: Array<{id: string, price: number}>) {
 Вот полный рабочий код, объединяющий все шаги:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 import { readFileSync } from 'fs';
 
 const sdk = new WildberriesSDK({

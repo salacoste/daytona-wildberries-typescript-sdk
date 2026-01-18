@@ -37,7 +37,7 @@ layout: doc
 Перед началом убедитесь, что у вас есть:
 - ✅ Node.js ≥ 20.0.0 установлен
 - ✅ API ключ Wildberries с полным доступом
-- ✅ SDK установлен (`npm install wb-api-sdk`)
+- ✅ SDK установлен (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Завершены все предыдущие учебные руководства (1-3)
 - ✅ Понимание async/await и Promise
 
@@ -108,7 +108,7 @@ layout: doc
 Создайте файл `multi-module-integration.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -522,7 +522,7 @@ async function verifyFinancialTransactions(orderId: string) {
 Вот полный рабочий процесс, объединяющий все шаги:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY

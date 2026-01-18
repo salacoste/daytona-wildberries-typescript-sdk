@@ -37,7 +37,7 @@ layout: doc
 Перед началом убедитесь, что у вас есть:
 - ✅ Node.js ≥ 20.0.0 установлен
 - ✅ API ключ Wildberries с доступом к аналитике
-- ✅ SDK установлен (`npm install wb-api-sdk`)
+- ✅ SDK установлен (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Завершено [Руководство по быстрому старту](/ru/getting-started/quickstart.md)
 - ✅ Существующие товары и данные о продажах
 
@@ -92,7 +92,7 @@ layout: doc
 Создайте файл `analytics-dashboard.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -543,7 +543,7 @@ async function generateCSVReport() {
 Вот комплексная панель аналитики, объединяющая все метрики:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY

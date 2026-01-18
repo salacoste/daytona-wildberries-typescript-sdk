@@ -26,13 +26,13 @@
 Установите SDK через npm:
 
 ```bash
-npm install wb-api-sdk
+npm install daytona-wildberries-typescript-sdk
 ```
 
 Проверьте установку:
 
 ```bash
-npm list wb-api-sdk
+npm list daytona-wildberries-typescript-sdk
 ```
 
 ---
@@ -42,7 +42,7 @@ npm list wb-api-sdk
 Создайте новый файл `index.ts` и инициализируйте SDK:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 // Инициализация с вашим API ключом
 const sdk = new WildberriesSDK({
@@ -59,7 +59,7 @@ console.log('SDK инициализирован успешно!');
 Давайте получим категории товаров:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY // Используйте переменную окружения
