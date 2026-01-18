@@ -1,0 +1,72 @@
+openapi: 3.0.1
+info:
+  title: 09-communications - Возвраты покупателями
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://returns-api.wildberries.ru
+tags:
+  - name: Возвраты покупателями
+    description: Возвраты покупателями endpoints
+paths:
+  /api/v1/claims:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Возвраты покупателями
+      summary: Заявки покупателей на возврат
+      description: |
+        Метод возвращает заявки покупателей на возврат товаров за последние 14 дней. Вы можете [отвечать на эти заявки](/openapi/user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claim/patch).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 20 запросов | 3 секунды | 10 запросов |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/is_archive'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/nm_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetClaimsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/Error400GetClaims'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/claim:
+    patch:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Возвраты покупателями
+      summary: Ответ на заявку покупателя
+      description: |
+        Метод отправляет ответ на [заявку](/openapi/user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) покупателя на возврат товаров.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 20 запросов | 3 секунды | 10 запросов |
+        </div>
+      requestBody:
+        $ref: '#/components/requestBodies/PatchClaimReq'
+      responses:
+        '200':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/Error400PatchClaim'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components: {}

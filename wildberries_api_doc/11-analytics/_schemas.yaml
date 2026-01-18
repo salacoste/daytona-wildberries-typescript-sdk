@@ -1,0 +1,25 @@
+components:
+  schemas:
+    FloatGraphByPeriodItem:
+      type: object
+      description: Среднее количество заказов за месяц
+      properties:
+        start:
+          type: string
+          format: date
+          description: Начало месяца
+          example: '2025-01-01'
+        end:
+          type: string
+          format: date
+          description: Конец месяца
+          example: '2025-01-31'
+        value:
+          type: number
+          format: float64
+          description: Среднее количество заказов
+          example: 25.55
+      required:
+        - start
+        - end
+        - value

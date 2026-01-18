@@ -1,0 +1,76 @@
+openapi: 3.0.1
+info:
+  title: 12-reports - Продажи по регионам
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+tags:
+  - name: Продажи по регионам
+    description: Продажи по регионам endpoints
+paths:
+  /api/v1/analytics/region-sale:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Продажи по регионам
+      summary: Получить отчёт
+      description: |
+        Метод возвращает отчёт с [данными продаж, сгруппированных по регионам стран](https://seller.wildberries.ru/analytics-reports/region-sale).<br><br>
+
+        Можно получить отчёт максимум за 31 день.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 1 запрос | 10 секунд | 5 запросов |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessRegionSaleResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    4xxResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        title:
+          type: string
+          description: Заголовок ошибки

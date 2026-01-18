@@ -1,0 +1,659 @@
+openapi: 3.0.1
+info:
+  title: 08-promotion - Создание кампаний
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://advert-api.wildberries.ru
+tags:
+  - name: Создание кампаний
+    description: Создание кампаний endpoints
+paths:
+  /adv/v0/config:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Конфигурационные значения Продвижения
+      deprecated: true
+      description: |
+        Метод возвращает допустимые значения основных параметров конфигурации [кампаний](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post): например, минимальные ставки, доступные категории и максимальное количество товаров, которые можно добавить в кампанию.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 1 запрос | 1 минута | 1 запрос |
+        </div>
+      tags:
+        - Создание кампаний
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    description: Список категорий товаров (предметов) с минимально допустимыми ставками
+                    items:
+                      $ref: '#/components/schemas/V0GetConfigCategoriesResponse'
+                  config:
+                    type: array
+                    description: Список основных параметров конфигурации с допустимыми значениями
+                    items:
+                      type: object
+                      properties:
+                        description:
+                          type: string
+                          description: Описание параметра
+                        name:
+                          type: string
+                          description: Название параметра
+                        value:
+                          type: string
+                          description: Значение
+              example:
+                categories:
+                  - id: 760
+                    name: Автомобильные товары
+                    cpm_min: 112
+                config:
+                  - description: Минимальный бюджет кампании
+                    name: budget_min
+                    value: '1000'
+                  - description: Максимальный период в днях, за который можно получить статистику
+                    name: api_fullstat_day_depth
+                    value: '31'
+                  - description: Минимальная ставка CPM для кампаний с ручной ставкой
+                    name: cpm_min_booster
+                    value: '100'
+                  - description: Минимальная ставка CPM для кампаний с единой ставкой
+                    name: cpm_min_search_catalog
+                    value: '150'
+                  - description: Максимальное количество товаров для кампаний с ручной ставкой
+                    name: max_nm_count
+                    value: '50'
+                  - description: Максимальное количество товаров для кампаний с единой ставкой
+                    name: max_auto_nms
+                    value: '100'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v0/bids/min:
+    post:
+      tags:
+        - Создание кампаний
+      summary: Минимальные ставки для карточек товаров
+      description: |
+        Метод возвращает минимальные ставки для карточек товаров по типу оплаты и местам размещения.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 20 запросов | 3 секунды | 5 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - advert_id
+                - nm_ids
+                - payment_type
+                - placement_types
+              properties:
+                advert_id:
+                  type: integer
+                  format: int64
+                  description: ID кампании
+                nm_ids:
+                  type: array
+                  minLength: 1
+                  maxLength: 100
+                  items:
+                    type: integer
+                    format: int64
+                  description: Список артикулов WB
+                payment_type:
+                  type: string
+                  enum:
+                    - cpm
+                    - cpc
+                  description: |
+                    Тип оплаты:
+                          - `cpm` — за показы
+                          - `cpc` — за клик
+                placement_types:
+                  description: |
+                    Места размещения:
+                      - `search` — поиск
+                      - `recommendation` — рекомендации
+                      - `combined` — поиск и рекомендации
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - combined
+                      - search
+                      - recommendation
+            example:
+              advert_id: 98765432
+              nm_ids:
+                - 12345678
+                - 87654321
+              payment_type: cpm
+              placement_types:
+                - combined
+                - search
+                - recommendation
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - bids
+                properties:
+                  bids:
+                    type: array
+                    description: Список карточек товаров со ставками
+                    items:
+                      type: object
+                      required:
+                        - nm_id
+                        - bids
+                      properties:
+                        bids:
+                          type: array
+                          description: Список ставок по местам размещения
+                          items:
+                            type: object
+                            required:
+                              - type
+                              - value
+                            properties:
+                              type:
+                                $ref: '#/components/schemas/PlacementType'
+                              value:
+                                type: integer
+                                description: Минимальная ставка
+                        nm_id:
+                          type: integer
+                          format: int64
+                          description: Артикул WB
+              example:
+                bids:
+                  - bids:
+                      - type: combined
+                        value: 155
+                      - type: search
+                        value: 250
+                      - type: recommendation
+                        value: 250
+                    nm_id: 12345678
+                  - bids:
+                      - type: combined
+                        value: 155
+                      - type: search
+                        value: 250
+                      - type: recommendation
+                        value: 250
+                    nm_id: 87654321
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardizedBatchError'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/save-ad:
+    post:
+      deprecated: true
+      security:
+        - HeaderApiKey: []
+      summary: Создать кампанию с единой ставкой
+      description: |
+        Метод создаёт кампанию [с единой ставкой](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) для продвижения товаров в:
+          - каталоге
+          - поиске
+          - карточках товаров
+          - рекомендациях на главной странице WB
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 20 секунд | 1 запрос | 20 секунд | 5 запросов |
+        </div>
+      tags:
+        - Создание кампаний
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  description: |
+                    Тип кампании с единой ставкой:
+                    - `8`
+                  type: integer
+                  example: 8
+                name:
+                  description: Название кампании (max. 128 символов)
+                  type: string
+                  example: Парашюты
+                subjectId:
+                  description: |
+                    ID предмета, для которого создается кампания.<br>
+                    Существующие у продавца ID можно получить методом из раздела "Контент / Просмотр" — "Список НМ", поле ответа — `subjectID`.
+                  type: integer
+                  example: 270
+                sum:
+                  description: Сумма пополнения
+                  type: integer
+                  example: 500
+                btype:
+                  description: |
+                    Tип списания:
+                    - `0` — Счёт
+                    - `1` — Баланс
+                    - `3` — Бонусы
+                  type: integer
+                  example: 1
+                on_pause:
+                  description: |
+                    Кампания после создания:
+                      - `true` — будет на паузе. Запуск кампании будет доступен через 3 минуты после создания кампании.
+                      - `false` — будет сразу запущена
+                  type: boolean
+                  example: true
+                nms:
+                  description: |
+                    Массив артикулов WB. <br>
+                    Максимум 100 артикулов.
+                  type: array
+                  items:
+                    type: integer
+                cpm:
+                  description: |
+                    Ставка. <br>
+                    Если будет указана ставка меньше допустимого размера, то автоматически установится ставка минимально допустимого размера.
+                  type: integer
+            example:
+              type: 8
+              name: Парашюты
+              subjectId: 270
+              sum: 500
+              btype: 1
+              on_pause: true
+              nms:
+                - 9178363
+                - 9178364
+              cpm: 10
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                description: ID созданной кампании
+                type: string
+              example: '9008917'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                IncorrectId:
+                  summary: ''
+                  description: ''
+                  value:
+                    error: Некорректный ID предмета
+                BaseBudget500:
+                  value:
+                    error: базовый бюджет должен быть больше 500р
+                InvalidWriteOffType:
+                  value:
+                    error: Некорректный тип списания
+                DepositAmount50:
+                  value:
+                    error: Сумма пополнения должна быть кратна 50р
+                InsufficientFundsInAccount:
+                  value:
+                    error: недостаточно средств на счете
+                IncorrectCompanyName:
+                  value:
+                    error: Некорректное название кампании
+                NoProductsSelectedCategory:
+                  value:
+                    error: Товары выбранной категории не в наличии
+                PlacementIsNotPossible:
+                  value:
+                    error: размещение невозможно
+        '401':
+          $ref: '#/components/responses/401'
+        '422':
+          description: Ошибка обработки параметров запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                ReceivingRecommendationsOnMainPage:
+                  value:
+                    error: Ошибка получения размещения в рекомендациях на главной
+                NotGetSupplierBalance:
+                  value:
+                    error: Не удалось получить баланс поставщика
+                CreatingSinglePlacement:
+                  value:
+                    error: Ошибка создания единственного размещения
+                ReceivingInProductCard:
+                  value:
+                    error: Ошибка получения размещения в карточке товара
+                GettingCpmCalculation:
+                  value:
+                    error: Ошибка получения расчета ставок
+                SavingPlacementInCard:
+                  value:
+                    error: Ошибка сохранения размещения в карточке
+                SavingPlacementInRecommend:
+                  value:
+                    error: Ошибка сохранения размещения в рекомендациях
+                FailedPutCampaignInCache:
+                  value:
+                    error: не удалось положить кампанию в кеш
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v2/seacat/save-ad:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Создать кампанию
+      description: |
+        Метод создаёт кампанию:
+          - с ручной ставкой для продвижения товаров в поиске и/или рекомендациях
+          - с единой ставкой для продвижения товаров одновременно в поиске и рекомендациях
+
+        Тип всех созданных этим методом кампаний — `9`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 5 запросов | 12 секунд | 5 запросов |
+        </div>
+      tags:
+        - Создание кампаний
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Название кампании
+                  type: string
+                nms:
+                  type: array
+                  description: |
+                    Карточки товаров для кампании. Доступные карточки товаров можно получить с помощью метода [Карточки товаров для кампаний](./promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1supplier~1nms/post). Максимум 50 товаров (`nm`)
+                  items:
+                    type: integer
+                    description: Артикул WB (`nmId`)
+                bid_type:
+                  type: string
+                  default: manual
+                  enum:
+                    - manual
+                    - unified
+                  description: |
+                    Тип ставки:
+                      - `manual` — ручная
+                      - `unified` — единая
+                placement_types:
+                  type: array
+                  default: search
+                  description: |
+                    Места размещения:
+                      - `search` — в поиске
+                      - `recommendations` — в рекомендациях
+
+                    Укажите только для кампании с ручной ставкой
+                  items:
+                    type: string
+                    enum:
+                      - search
+                      - recommendations
+            example:
+              name: Телефоны
+              nms:
+                - 146168367
+                - 200425104
+              bid_type: manual
+              placement_types:
+                - search
+                - recommendations
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: ID кампании
+                example: 1234567
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Нет доступных категорий для рк. Создайте новую кампанию для попадания в текущие категории
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/supplier/subjects:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Предметы для кампаний
+      description: |
+        Метод возвращает список [предметов](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get), которые можно добавить в рекламную [кампанию](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 12 секунд | 1 запрос | 12 секунд | 5 запросов |
+        </div>
+      tags:
+        - Создание кампаний
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: true
+                x-nullable: true
+                items:
+                  type: object
+                  properties:
+                    id:
+                      description: ID предмета
+                      type: integer
+                    name:
+                      description: Предмет
+                      type: string
+                    count:
+                      description: Количество Артикулов WB (`nmId`) с таким предметом.
+                      type: integer
+              examples:
+                Array:
+                  value:
+                    - name: 3D очки
+                      id: 2560
+                      count: 1899
+                'null':
+                  value: null
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Не найдено
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v2/supplier/nms:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Карточки товаров для кампаний
+      description: |
+        Метод возвращает список [карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post), которые можно добавить в рекламную [кампанию](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post). Для получения карточек необходимы ID [предметов](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v1~1supplier~1subjects/get), также доступных для добавления в кампанию.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 5 запросов | 12 секунд | 5 запросов |
+        </div>
+      tags:
+        - Создание кампаний
+      requestBody:
+        description: ID предметов, для которых нужно получить карточки товаров
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+            example:
+              - 123
+              - 456
+              - 765
+              - 321
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Карточки товаров для кампаний
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      description: Название товара
+                      example: Плед
+                    nm:
+                      type: integer
+                      description: Артикул WB
+                      example: 146168367
+                    subjectId:
+                      type: integer
+                      description: ID предмета
+                      example: 765
+        '400':
+          description: Неправильный запрос
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Ошибка обработки тела запроса
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    V0GetConfigCategoriesResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID категории товара
+        name:
+          type: string
+          description: Название категории товара
+        cpm_min:
+          type: integer
+          description: Минимально допустимая ставка
+      required:
+        - id
+        - name
+        - cpm_min
+      example:
+        id: 760
+        name: Автомобильные товары
+        cpm_min: 112
+    PlacementType:
+      type: string
+      enum:
+        - combined
+        - search
+        - recommendation
+      description: |
+        Места размещения:
+          - `search` — поиск
+          - `recommendation` — рекомендации
+          - `combined` — поиск и рекомендации
+    StandardizedBatchError:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+          example: some nms are not belong to advert
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+          example: camp-api-public-cache
+        request_id:
+          description: Уникальный ID запроса
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        status:
+          type: integer
+          description: HTTP статус-код
+          example: 400
+        title:
+          type: string
+          description: Заголовок ошибки
+          example: Invalid Params
+      required:
+        - title
+        - detail
+        - request_id
+        - origin
+        - status

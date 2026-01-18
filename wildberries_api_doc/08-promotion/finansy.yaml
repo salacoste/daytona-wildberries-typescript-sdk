@@ -1,0 +1,479 @@
+openapi: 3.0.1
+info:
+  title: 08-promotion - Финансы
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://advert-api.wildberries.ru
+tags:
+  - name: Финансы
+    description: Финансы endpoints
+paths:
+  /adv/v1/balance:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Баланс
+      description: |
+        Метод возвращает информацию о:
+          - счёте кабинета Продвижения WB. Его пополняет продавец.
+          - балансе — максимальной сумме для оплаты камапнии по взаиморасчету: удержании средств из будущих продаж. Баланс пополнить нельзя, он рассчитывается автоматически на основе отчётов по продвижению.
+          - бонусных начислениях WB.
+
+        Информацию о бюджете кампаний можно получить в [отдельном методе](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+        </div>
+      tags:
+        - Финансы
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    description: Счёт, ₽
+                    type: integer
+                  net:
+                    description: Баланс, ₽
+                    type: integer
+                  bonus:
+                    description: Бонусы, ₽
+                    type: integer
+                  cashbacks:
+                    description: Промо-бонусы
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sum:
+                          type: integer
+                          description: Промо-бонусы, ₽
+                        percent:
+                          type: integer
+                          description: Процент от суммы пополнения бюджета кампании, который можно оплатить промо-бонусами за один раз
+                        expiration_date:
+                          type: string
+                          format: ISO 8601
+                          description: Дата окончания действия промо-бонусов
+              example:
+                balance: 11083
+                net: 0
+                bonus: 15187
+                cashbacks:
+                  - sum: 10672
+                    percent: 50
+                    expiration_date: '2026-04-17T10:46:02.176174Z'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                IncorrectSupplierIdAdv:
+                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/budget:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Бюджет кампании
+      description: |
+        Метод возвращает информацию о бюджете [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) — максимальной сумме затрат на кампанию. Бюджет кампании можно [пополнить](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса |
+        </div>
+      tags:
+        - Финансы
+      parameters:
+        - name: id
+          in: query
+          description: ID кампании
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cash:
+                    description: Поле не используется. Значение всегда 0.
+                    type: integer
+                  netting:
+                    description: Поле не используется. Значение всегда 0.
+                    type: integer
+                  total:
+                    description: Бюджет кампании, ₽
+                    type: integer
+              example:
+                cash: 0
+                netting: 0
+                total: 500
+        '400':
+          description: Неправильный запрос
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                CampaignNotBelongSeller:
+                  $ref: '#/components/examples/CampaignNotBelongSeller'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/budget/deposit:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Пополнение бюджета кампании
+      description: |
+        Метод пополняет [бюджет](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget/get) кампании в статусе `11` — на паузе. <br>
+        Чтобы запустить кампанию после пополнения бюджета, используйте метод [Запуск кампании](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1start/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+        </div>
+      tags:
+        - Финансы
+      parameters:
+        - name: id
+          in: query
+          description: ID кампании
+          schema:
+            type: integer
+            example: 1234567
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sum:
+                  description: Общая сумма пополнения бюджета
+                  type: integer
+                  example: 5000
+                cashback_sum:
+                  description: |
+                    Сумма пополнения бюджета промо-бонусами.
+                    <br>
+                    Пополнить можно только определённый процент от общей суммы, указанный в поле `percent` ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get).
+                    <br>
+                    Оставшаяся часть общей суммы спишется с указанного источника пополнения.
+                    Пополнить можно только определённый процент от общей суммы, указанный в поле `percent` ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get).
+                    <br>
+                    Оставшаяся часть общей суммы спишется с указанного источника пополнения.
+                    <br>
+                    Списать промо-бонусы можно только для источников пополнения:
+                      - `0` — счёт
+                      - `1` — баланс
+                  type: integer
+                  example: 1000
+                cashback_percent:
+                  description: |
+                    Процент от суммы пополнения, который можно пополнить промо-бонусами. Нужно указать значение поля percent из ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get)
+                    <br>
+                    Если вы указали `cashback_sum`, параметр `cashback_percent` становится обязательным
+                  example: 50
+                  type: integer
+                type:
+                  description: |
+                    Тип источника пополнения:
+                    - `0` — Счёт
+                    - `1` — Баланс
+                    - `3` — Бонусы
+                  type: integer
+                  example: 1
+                return:
+                  type: boolean
+                  description: Флаг возврата ответа (`true` — в ответе вернется обновлённый размер бюджета кампании, `false` или не указать параметр вообще — не вернётся.)
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ResponseWithReturn'
+              examples:
+                ResponseWithReturn:
+                  $ref: '#/components/examples/ResponseWithReturn'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                DepositAmountMultiple50:
+                  description: Сумма пополнения должна быть кратна 50 руб
+                  value:
+                    error: Сумма пополнения должна быть кратна 50 руб
+                MinimumDepositAmountIs500:
+                  description: Минимальная сумма пополнения 1000 рублей
+                  value:
+                    error: Минимальная сумма пополнения 1000 рублей
+                IncorrectType:
+                  description: Неверный тип источника списания для пополнения промо-бонусами
+                  value:
+                    error: 'Invalid Params: cashback can not be used with such type'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/upd:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Получение истории затрат
+      description: |
+        Метод формирует список фактических затрат на рекламные кампании за заданный период.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+        </div>
+      tags:
+        - Финансы
+      parameters:
+        - name: from
+          in: query
+          description: Начало интервала
+          schema:
+            type: string
+            format: date
+            example: '2023-07-31'
+          required: true
+        - name: to
+          in: query
+          description: |
+            Конец интервала. <br>
+            (Минимальный интервал 1 день, максимальный 31)
+          schema:
+            type: string
+            format: date
+            example: '2023-08-02'
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    updNum:
+                      description: Номер выставленного документа
+                      type: integer
+                    updTime:
+                      nullable: true
+                      description: Время списания
+                      type: string
+                      format: time-date
+                    updSum:
+                      description: Выставленная сумма
+                      type: integer
+                    advertId:
+                      description: ID кампании
+                      type: integer
+                    campName:
+                      description: Название кампании
+                      type: string
+                    advertType:
+                      description: Тип кампании
+                      type: integer
+                    paymentType:
+                      description: |
+                        Источник списания:
+                         - `Баланс`
+                         - `Бонусы`
+                         - `Счёт`
+                         - `Кэшбэк`
+                      type: string
+                    advertStatus:
+                      description: |
+                        Статус кампании:
+                        - `-1` — удалена, процесс удаления будет завершён в течение 10 минут
+                        - `4` — готова к запуску
+                        - `7` — завершена
+                        - `8` — отменена
+                        - `9` — активна
+                        - `11` — на паузе
+                      type: integer
+              example:
+                - updNum: 0
+                  updTime: '2023-07-31T12:12:54.060536+03:00'
+                  updSum: 24
+                  advertId: 3355881
+                  campName: лук лучок
+                  advertType: 6
+                  paymentType: Баланс
+                  advertStatus: 9
+                - updNum: 0
+                  updTime: null
+                  updSum: 107
+                  advertId: 3366882
+                  campName: золотая луковица
+                  advertType: 8
+                  paymentType: Счет
+                  advertStatus: 11
+        '400':
+          description: Неправильный запрос
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                IncorrectSupplierIdAdv:
+                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/payments:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Получение истории пополнений счёта
+      description: |
+        Метод возвращает историю пополнений счёта **WB Продвижение** за заданный период.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+        </div>
+      tags:
+        - Финансы
+      parameters:
+        - name: from
+          in: query
+          description: Начало интервала
+          schema:
+            type: string
+            format: date
+            example: '2023-07-31'
+        - name: to
+          in: query
+          description: |
+            Конец интервала. <br>
+            (Минимальный интервал 1 день, максимальный 31)
+          schema:
+            type: string
+            format: date
+            example: '2023-08-02'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      description: ID платежа
+                      type: integer
+                    date:
+                      description: Дата платежа
+                      type: string
+                      format: time-date
+                    sum:
+                      description: Сумма платежа
+                      type: integer
+                    type:
+                      description: |
+                        Тип источника списания:
+                        - `0` — Счёт
+                        - `1` — Баланс
+                        - `3` — Картой
+                      type: integer
+                    statusId:
+                      description: |
+                        Статус:
+                        - `0` — ошибка
+                        - `1` — обработано
+                      type: integer
+                    cardStatus:
+                      description: |
+                        Статус операции(при оплате картой):
+                        - `success` — успех
+                        - `fail` — неуспех
+                        - `pending` — в ожидании ответа
+                        - `unknown` — неизвестно
+                      type: string
+              example:
+                - id: 1036666
+                  date: '2022-02-04T09:06:47.985843Z'
+                  sum: 600
+                  type: 0
+                  statusId: 1
+                  cardStatus: ''
+                - id: 55261296
+                  date: '2023-04-13T10:07:42'
+                  sum: 1500
+                  type: 3
+                  statusId: 1
+                  cardStatus: succeeded
+        '204':
+          description: История пополнений счета не найдена
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                IncorrectSupplierIdAdv:
+                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    ResponseWithReturn:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Размер обновлённого бюджета

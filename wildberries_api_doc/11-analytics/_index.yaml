@@ -1,0 +1,32 @@
+_module: 11-analytics
+_description: |
+  <div class="description_important">
+    Узнать больше об аналитике и данных можно в <a href="https://seller.wildberries.ru/instructions/ru/ru/subcategory/seller-analytics">справочном центре</a>
+  </div>
+
+  В разделе описаны методы получения:
+    1. [Воронки продаж](/openapi/analytics#tag/Voronka-prodazh)
+    2. [Поисковых запросов](/openapi/analytics#tag/Poiskovye-zaprosy)
+    3. [Истории остатков](/openapi/analytics#tag/Istoriya-ostatkov)
+    4. [Аналитики продавца в формате CSV](/openapi/analytics#tag/Analitika-prodavca-CSV)
+_original_file: 11-analytics.yaml
+_base_url: N/A
+_shards:
+  - file: voronka-prodazh.yaml
+    domain: Воронка продаж
+    endpoints: 3
+    description: Sales Funnel
+  - file: poiskovye-zaprosy.yaml
+    domain: Поисковые запросы
+    endpoints: 5
+    description: Search Queries
+  - file: istoriya-ostatkov.yaml
+    domain: История остатков
+    endpoints: 4
+    description: Stock History
+  - file: analitika-prodavtsa-csv.yaml
+    domain: Аналитика продавца CSV
+    endpoints: 4
+    description: Seller Analytics CSV
+_shared_schemas: _schemas.yaml
+_total_endpoints: 16

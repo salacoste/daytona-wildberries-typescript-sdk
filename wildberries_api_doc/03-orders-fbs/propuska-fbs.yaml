@@ -1,0 +1,388 @@
+openapi: 3.0.1
+info:
+  title: 03-orders-fbs - Пропуска FBS
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://marketplace-api.wildberries.ru
+tags:
+  - name: Пропуска FBS
+    description: Пропуска FBS endpoints
+paths:
+  /api/v3/passes/offices:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Пропуска FBS
+      summary: Получить список складов, для которых требуется пропуск
+      description: |
+        Метод возвращает список складов для привязки к [пропуску продавца](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get).
+
+        <div class="description_important">
+          Данные, которые возвращает метод, могут меняться. Рекомендуем периодически синхронизировать список
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Список складов
+                items:
+                  $ref: '#/components/schemas/PassOffice'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/passes:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Пропуска FBS
+      summary: Получить список пропусков
+      description: |
+        Метод возвращает список всех [созданных](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/post) пропусков продавца.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Список пропусков продавца
+                items:
+                  $ref: '#/components/schemas/Pass'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Пропуска FBS
+      summary: Создать пропуск
+      description: |
+        Метод создаёт [пропуск продавца](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get) с привязкой к складу WB.
+
+        Пропуск действует 48 часов со времени создания.
+
+        <div class="description_limit">
+          Максимум 1 запрос в 10 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">минут</a> на один аккаунт продавца
+        </div>
+      requestBody:
+        required: true
+        description: Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  description: Имя водителя
+                  example: Александр
+                lastName:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  description: Фамилия водителя
+                  example: Петров
+                carModel:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 100
+                  description: Марка машины
+                  example: Lamborghini
+                carNumber:
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  maxLength: 9
+                  description: Номер машины
+                  example: A456BC123
+                officeId:
+                  type: integer
+                  format: int64
+                  nullable: false
+                  minimum: 1
+                  description: ID склада
+                  example: 15
+              required:
+                - firstName
+                - lastName
+                - carModel
+                - carNumber
+                - officeId
+      responses:
+        '201':
+          description: Создано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    nullable: false
+                    description: ID пропуска продавца
+                    example: 2
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/passes/{passId}:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Пропуска FBS
+      summary: Обновить пропуск
+      description: |
+        Метод обновляет данные [пропуска продавца](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get). В том числе, можно обновить данные привязанного склада WB.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Pass'
+      requestBody:
+        required: true
+        description: Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  description: Имя водителя
+                  example: Александр
+                lastName:
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  description: Фамилия водителя
+                  example: Петров
+                carModel:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 100
+                  description: Марка машины
+                  example: Lamborghini
+                carNumber:
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  maxLength: 9
+                  description: Номер машины
+                  example: A456BC123
+                officeId:
+                  type: integer
+                  format: int64
+                  nullable: false
+                  minimum: 1
+                  description: ID склада
+                  example: 15
+              required:
+                - firstName
+                - lastName
+                - carModel
+                - carNumber
+                - officeId
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                WarehouseNameInvalid:
+                  $ref: '#/components/examples/WarehouseNameInvalid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Пропуска FBS
+      summary: Удалить пропуск
+      description: |
+        Метод удаляет пропуск продавца [из списка](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Pass'
+      responses:
+        '204':
+          description: Удалено
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    PassOffice:
+      type: object
+      description: Данные о складе, для которого требуется пропуск
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Название
+          example: Коледино
+        address:
+          type: string
+          nullable: false
+          description: Адрес
+          example: г. Подольск, д. Коледино, ул. Троицкая
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID
+          example: 1
+    Pass:
+      type: object
+      description: Данные о пропуске продавца
+      properties:
+        firstName:
+          type: string
+          nullable: false
+          description: Имя водителя
+          example: Александр
+        dateEnd:
+          type: string
+          nullable: false
+          description: Дата окончания действия пропуска
+          example: '2022-07-31 17:53:13+00:00'
+        lastName:
+          type: string
+          nullable: false
+          description: Фамилия водителя
+          example: Петров
+        carModel:
+          type: string
+          nullable: false
+          description: Марка машины
+          example: Lamborghini
+        carNumber:
+          type: string
+          nullable: false
+          description: Номер машины
+          example: A456BC123
+        officeName:
+          type: string
+          nullable: false
+          description: Название склада
+          example: Коледино
+        officeAddress:
+          type: string
+          nullable: false
+          description: Адрес склада
+          example: г. Подольск, д. Коледино, ул. Троицкая
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада
+          example: 15
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID пропуска
+          example: 1
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          nullable: false
+        message:
+          type: string
+          description: Описание ошибки
+          nullable: false
+        data:
+          type: object
+          description: Дополнительные данные, обогащающие ошибку
+          nullable: true

@@ -1,0 +1,635 @@
+openapi: 3.0.1
+info:
+  title: 03-orders-fbs - Сборочные задания FBS (Part 5/5)
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://marketplace-api.wildberries.ru
+tags:
+  - name: Сборочные задания FBS
+    description: Сборочные задания FBS endpoints
+paths:
+  /api/v3/orders/status/history:
+    post:
+      servers:
+        - url: https://marketplace-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания FBS
+      summary: История статусов для сборочных заданий кроссбордера
+      description: |
+        Метод возвращает историю [статусов](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) кроссбордера.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  description: ID сборочных заданий
+                  type: array
+                  items:
+                    type: integer
+                  maxItems: 100
+                  minItems: 1
+                  example:
+                    - 123456789
+                    - 987654321
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    description: Список сборочных заданий
+                    items:
+                      type: object
+                      properties:
+                        deliveryDate:
+                          type: string
+                          description: Планируемая дата доставки, [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339)
+                        statuses:
+                          description: Статусы
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              date:
+                                type: string
+                                description: Дата присвоения статуса
+                                example: null
+                              code:
+                                type: string
+                                description: |
+                                  Статус-код сборочного задания/заказа:
+                                    - `accepted_by_carrier` — Товар принят перевозчиком
+                                    - `assembling` — Отправлен на сборку
+                                    - `assembled` — Собран на складе
+                                    - `sorted` — Отсортирован
+                                    - `replaced_at_warehouse` — Замена на складе
+                                    - `prepared_for_shipment` — Подготовлен к отгрузке
+                                    - `in_search` — На поиске
+                                    - `arrived_at_dct` — Поступил в распределительный центр-транзит
+                                    - `arrived_at_sct` — Поступил в сортировочный центр-транзит
+                                    - `arrived_at_dc` — Поступил в распределительный центр
+                                    - `arrived_at_sc` — Поступил в сортировочный центр
+                                    - `prepared_for_shipment_at_sc` — Подготовлен к отгрузке в сортировочном центре
+                                    - `shipped_at_sc` — Отгружено сортировочным центром
+                                    - `shipped_at_dct` — Отгружен распределительным центром — транзит
+                                    - `shipped_at_dc` — Отгружен распределительным центром
+                                    - `delivered_at_sc` — Доставлен в сортировочный/распределительный центр (СЦ/РЦ)
+                                    - `on_way_to_sc` — В пути в сортировочный центр
+                                    - `on_way_to_dc` — В пути в распределительный центр
+                                    - `on_way_to_pp` — В пути на пункт выдачи
+                                    - `arrived_at_pp` — Прибыл на пункт выдачи
+                                    - `accepted_at_pp` — Приёмка в пункте выдачи
+                                    - `ready_for_pick_up` — Готов к выдаче
+                                    - `arrived_at_pp` — Поступил на пункт выдачи заказов (ПВЗ)
+                                    - `received_by_client` — Получен клиентом
+                                    - `delivered_at_parcel_locker` — Доставлен в постамат
+                                    - `canceled_by_client` — Покупатель отменил заказ при получении
+                                    - `cancel_after_expiration` — Отмена по сроку хранения
+                                    - `at_courier` — Передан курьеру
+                                    - `moved_to_return_box` — Перемещен в возвратную коробку
+                                    - `accepted_for_return` — Принят к возврату на ПВЗ
+                                    - `created` — Оформлен
+                                    - `canceled_by_seller` — Отменен продавцом
+                                    - `dispatched_by_seller` — Отгружено по данным продавца
+                                    - `delivered` — Заказ выдан
+                                    - `on_way` — В пути
+                                    - `arrived_at_wb_wh` — Поступил на склад WB
+                                    - `dispatched_from_wh` — Отправлен со склада
+                                    - `customs_clearance` — Таможенное оформление
+                                    - `customs_clearance_completed` — Выпущен таможней
+                                    - `departed_from_origin_country` — Отправлен из страны продавца
+                                    - `arrived_in_destination_country` — Прибытие в страну назначения
+                                    - `on_way_to_wb_sc` — Отправлен до сортировочного центра (СЦ) WB
+                                    - `accepted_at_wb_sc` — Принят СЦ WB
+                                    - `canceled` — Отмена
+                                    - `failed_to_reach_client` — Не дозвонились до клиента
+                                example: SORTED
+                        orderID:
+                          description: ID сборочного задания
+                          type: integer
+                          example: 123456789
+        '400':
+          description: Неправильный запрос
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/orders/client:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Заказы с информацией по клиенту
+      tags:
+        - Сборочные задания FBS
+      description: |
+        Метод позволяет получать информацию о покупателе по ID сборочного задания.
+
+        Только для кроссбордера из **Турции**.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersRequestAPI'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrossborderTurkeyClientInfoResp'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401-2'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429-2'
+components:
+  schemas:
+    OrderNew:
+      type: object
+      properties:
+        address:
+          type: object
+          nullable: true
+          description: Точный адрес покупателя для доставки, если применимо. Из-за особенностей адреса некоторые поля могут быть пустыми
+          properties:
+            fullAddress:
+              description: Адрес доставки
+              type: string
+              example: Челябинская область, г. Челябинск, 51-я улица Арабкира, д. 10А, кв. 42
+            longitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Долгота
+              example: 44.519068
+            latitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Широта
+              example: 40.20192
+        ddate:
+          type: string
+          description: |
+            Планируемая дата доставки.<br>
+            Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`.
+          nullable: false
+          example: 17.05.2024
+        salePrice:
+          description: |
+            Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100. Предоставляется в информационных целях
+          type: integer
+          nullable: true
+          example: 504600
+        requiredMeta:
+          description: |
+            Список метаданных, которые необходимо добавить в сборочное задание.  <br> На данный момент обязательными к добавлению являются UIN и IMEI при их наличии в перечне
+          type: array
+          nullable: true
+          items:
+            type: string
+          example:
+            - uin
+        deliveryType:
+          type: string
+          nullable: false
+          description: |
+            Тип доставки:
+            - `fbs` — доставка на склад Wildberries (FBS)
+          enum:
+            - fbs
+        comment:
+          description: Комментарий покупателя
+          type: string
+          nullable: false
+          maxLength: 300
+          example: Упакуйте в плёнку, пожалуйста
+        scanPrice:
+          description: Цена приёмки в копейках. Отображается после фактической приёмки заказа. Для данного метода всегда будет возвращаться `null`. Предоставляется в информационных целях
+          type: number
+          format: uint32
+          nullable: true
+          example: null
+        orderUid:
+          type: string
+          description: ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid`
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Артикул продавца
+          example: one-ring-7548
+        colorCode:
+          description: Код цвета (только для колеруемых товаров)
+          type: string
+          nullable: false
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: `rid` — это `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Дата создания сборочного задания (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        offices:
+          type: array
+          nullable: true
+          description: Список офисов, куда следует привезти товар
+          items:
+            type: string
+            example: Калуга
+        skus:
+          type: array
+          nullable: false
+          description: Список баркодов
+          items:
+            type: string
+            example: '6665956397512'
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID сборочного задания
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID склада продавца, на который поступило сборочное задание
+          example: 658434
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада WB, к которому привязан склад продавца
+          example: 123
+        nmId:
+          type: integer
+          nullable: false
+          description: Артикул WB
+          example: 123456789
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID размера товара в системе WB
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях
+          example: 1014
+        finalPrice:
+          description: Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          type: integer
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях
+          example: 28322
+        convertedFinalPrice:
+          description: Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
+          type: integer
+          example: 1014
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты продажи
+          format: ISO 4217
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты страны продавца
+          format: ISO 4217
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 1
+            - 2
+            - 3
+        isZeroOrder:
+          type: boolean
+          description: |
+            Признак заказа товара с нулевым остатком:
+              - `false` — заказ сделан на товар с ненулевым остатком
+              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
+          example: false
+        options:
+          type: object
+          description: Опции заказа
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Признак B2B-продажи:
+                  - `false` — не B2B-продажа
+                  - `true` — B2B-продажа
+    Next:
+      type: integer
+      format: int64
+      nullable: false
+      description: Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных
+      example: 13833711
+    Order:
+      type: object
+      properties:
+        address:
+          type: object
+          nullable: true
+          description: Точный адрес покупателя для доставки, если применимо. Из-за особенностей адреса некоторые поля могут быть пустыми
+          properties:
+            fullAddress:
+              description: Адрес доставки
+              type: string
+              example: Челябинская область, г. Челябинск, 51-я улица Арабкира, д. 10А, кв. 42
+            longitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Долгота
+              example: 44.519068
+            latitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Широта
+              example: 40.20192
+        scanPrice:
+          type: number
+          format: uint32
+          description: Цена приёмки в копейках. Отображается после фактической приёмки заказа
+          example: 1500
+        deliveryType:
+          type: string
+          nullable: false
+          description: |
+            Тип доставки:
+            - `fbs` — доставка на склад Wildberries (FBS)
+          enum:
+            - fbs
+        supplyId:
+          type: string
+          description: ID поставки. Возвращается, если заказ закреплён за поставкой
+          example: WB-GI-92937123
+        orderUid:
+          type: string
+          description: ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid`
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Артикул продавца
+          example: one-ring-7548
+        colorCode:
+          type: string
+          nullable: false
+          description: Код цвета (только для колеруемых товаров)
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: `rid` — это `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Дата создания сборочного задания (RFC3339)
+          example: '2022-05-04T07:56:29Z'
+        offices:
+          type: array
+          nullable: true
+          description: Список офисов, куда следует привезти товар
+          items:
+            type: string
+            example: Калуга
+        skus:
+          type: array
+          nullable: false
+          description: Список баркодов
+          items:
+            type: string
+            example: '6665956397512'
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID сборочного задания
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID склада продавца, на который поступило сборочное задание
+          example: 658434
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада WB, к которому привязан склад продавца
+          example: 123
+        nmId:
+          type: integer
+          nullable: false
+          description: Артикул WB
+          example: 12345678
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID размера товара в системе WB
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях
+          example: 28322
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты продажи
+          format: ISO 4217
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты страны продавца
+          format: ISO 4217
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 1
+            - 2
+            - 3
+        comment:
+          description: Комментарий покупателя
+          type: string
+          nullable: false
+          maxLength: 300
+          example: Упакуйте в плёнку, пожалуйста
+        isZeroOrder:
+          type: boolean
+          description: |
+            Признак заказа товара с нулевым остатком:
+              - `false` — заказ сделан на товар с ненулевым остатком
+              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
+          example: false
+        options:
+          type: object
+          description: Опции заказа
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Признак B2B-продажи:
+                  - `false` — не B2B-продажа
+                  - `true` — B2B-продажа
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          nullable: false
+        message:
+          type: string
+          description: Описание ошибки
+          nullable: false
+        data:
+          type: object
+          description: Дополнительные данные, обогащающие ошибку
+          nullable: true
+    OrdersRequestAPI:
+      properties:
+        orders:
+          description: Список заказов
+          items:
+            type: integer
+          type: array
+      type: object
+      example:
+        orders:
+          - 987654321
+          - 123456789
+    CrossborderTurkeyClientInfoResp:
+      properties:
+        orders:
+          description: Информация по клиенту для кроссбордер-заказа из Турции
+          items:
+            $ref: '#/components/schemas/CrossborderTurkeyClientInfo'
+          type: array
+      type: object
+    CrossborderTurkeyClientInfo:
+      properties:
+        firstName:
+          type: string
+          description: Имя клиента
+          example: Иван
+        fullName:
+          type: string
+          description: Фамилия, Имя, Отчество
+          example: Андреев Иван Васильевич
+        lastName:
+          type: string
+          description: Фамилия клиента
+          example: Андреев
+        middleName:
+          type: string
+          description: Отчество клиента
+          example: Васильевич
+        orderID:
+          type: integer
+          description: Номер заказа
+          example: 134567
+        phone:
+          type: string
+          description: Телефон для связи с клиентом
+          example: 79871234567
+        phoneCode:
+          type: string
+          description: Не используется
+          example: 0

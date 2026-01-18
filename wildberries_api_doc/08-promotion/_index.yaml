@@ -1,0 +1,52 @@
+_module: 08-promotion
+_description: |
+  <div class="description_important">
+      Узнать больше о маркетинге и продвижении можно в <a href="https://seller.wildberries.ru/instructions/category/59d92bd3-6ea0-40f2-b762-ca8835d7d42e?goBackOption=prevRoute&categoryId=479385c6-de01-4b4d-ad4e-ed941e65582e">справочном центре</a>
+  </div>
+
+  Методы маркетинга и продвижения позволяют:
+    1. Получать информацию о кампаниях [продвижения](/openapi/promotion#tag/Kampanii) и [медиакампаниях](/openapi/promotion#tag/Media).
+    2. [Создавать](/openapi/promotion#tag/Sozdanie-kampanij) и [управлять](/openapi/promotion#tag/Upravlenie-kampaniyami) кампаниями.
+    3. Настраивать [параметры](/openapi/promotion#tag/Parametry-kampanij) кампаний — кластеры фраз, продвигаемые товары и так далее.
+    4. Управлять [финансами](/openapi/promotion#tag/Finansy) кампаний.
+    5. Выгружать [статистику](/openapi/promotion#tag/Statistika) кампаний продвижения и медиакампаний.
+    6. Работать с [календарём акций](/openapi/promotion#tag/Kalendar-akcij).
+
+  Данные синхронизируются с базой раз в 3 минуты. Статусы кампаний меняются раз в минуту. Ставки кампаний меняются раз в 30 секунд.
+_original_file: 08-promotion.yaml
+_base_url: N/A
+_shards:
+  - file: kampanii.yaml
+    domain: Кампании
+    endpoints: 3
+    description: Campaigns
+  - file: sozdanie-kampaniy.yaml
+    domain: Создание кампаний
+    endpoints: 6
+    description: Campaign Creation
+  - file: upravlenie-kampaniyami.yaml
+    domain: Управление кампаниями
+    endpoints: 8
+    description: Campaign Management
+  - file: parametry-kampaniy.yaml
+    domain: Параметры кампаний
+    endpoints: 7
+    description: Campaign Parameters
+  - file: finansy.yaml
+    domain: Финансы
+    endpoints: 5
+    description: Finances
+  - file: media.yaml
+    domain: Медиа
+    endpoints: 3
+    description: Media
+  - file: statistika.yaml
+    domain: Статистика
+    endpoints: 6
+    description: Statistics
+  - file: kalendar-aktsiy.yaml
+    domain: Календарь акций
+    endpoints: 4
+    description: Promotion Calendar
+_shared_schemas: _schemas.yaml
+_total_endpoints: 42

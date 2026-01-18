@@ -1,0 +1,987 @@
+openapi: 3.0.1
+info:
+  title: 11-analytics - Аналитика продавца CSV (Part 1/2) (Endpoint 2/2)
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+tags:
+  - name: Аналитика продавца CSV
+    description: Аналитика продавца CSV endpoints
+paths:
+  /api/v2/nm-report/downloads:
+    get:
+      tags:
+        - Аналитика продавца CSV
+      security:
+        - HeaderApiKey: []
+      summary: Получить список отчётов
+      description: |
+        Метод возвращает список отчётов с расширенной аналитикой продавца. Ответ содержит ID [созданных отчётов](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post) и статусы генерации.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 3 запроса | 20 секунд | 3 запроса |
+        </div>
+      parameters:
+        - in: query
+          name: filter[downloadIds]
+          description: ID отчёта
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NmReportGetReportsResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                required:
+                  - title
+                  - detail
+                  - requestId
+                  - origin
+              examples:
+                errorExample:
+                  value:
+                    title: Invalid request body
+                    detail: download id was not found
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              examples:
+                errorExample:
+                  value:
+                    title: Authorization error
+                    detail: Authorization error
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    SalesFunnelProductReq:
+      type: object
+      required:
+        - id
+        - reportType
+        - params
+      properties:
+        id:
+          description: ID отчёта в UUID-формате. Генерируется продавцом самостоятельно
+          type: string
+          format: uuid
+        reportType:
+          description: Тип отчёта — `DETAIL_HISTORY_REPORT`
+          type: string
+        userReportName:
+          type: string
+          description: Название отчёта. Если не указано, сформируется автоматически
+        params:
+          description: Параметры отчёта
+          type: object
+          required:
+            - startDate
+            - endDate
+          properties:
+            nmIDs:
+              type: array
+              minItems: 0
+              maxItems: 1000
+              description: |
+                Артикулы WB, по которым составить отчёт. Оставьте пустым, чтобы получить отчёт обо всех товарах
+              items:
+                type: integer
+                format: int64
+            subjectIds:
+              example:
+                - 64
+                - 334
+              type: array
+              description: Список ID предметов для фильтрации
+              items:
+                type: integer
+                format: int32
+            brandNames:
+              example:
+                - nike
+                - adidas
+              type: array
+              description: Список брендов для фильтрации
+              items:
+                type: string
+            tagIds:
+              example:
+                - 32
+                - 53
+              description: Список ID ярлыков для фильтрации
+              type: array
+              items:
+                type: integer
+                format: int64
+            startDate:
+              type: string
+              description: Начало периода
+              format: date
+            endDate:
+              type: string
+              description: Конец периода
+              format: date
+            timezone:
+              type: string
+              description: |
+                Временная зона, по умолчанию Europe/Moscow
+            aggregationLevel:
+              type: string
+              description: |
+                Как сгруппировать данные (по умолчанию по дням):
+
+                  * `day` — по дням
+                  * `week` — по неделям
+                  * `month` — по месяцам
+              enum:
+                - day
+                - week
+                - month
+            skipDeletedNm:
+              description: Скрыть удалённые карточки товаров
+              type: boolean
+    SalesFunnelGroupReq:
+      type: object
+      required:
+        - id
+        - reportType
+        - params
+      properties:
+        id:
+          description: ID отчёта в UUID-формате. Генерируется продавцом самостоятельно
+          type: string
+          format: uuid
+        reportType:
+          description: Тип отчёта — `GROUPED_HISTORY_REPORT`
+          type: string
+        userReportName:
+          type: string
+          description: Название отчёта. Если не указано, сформируется автоматически
+        params:
+          description: Параметры отчёта
+          type: object
+          required:
+            - startDate
+            - endDate
+          properties:
+            subjectIds:
+              example:
+                - 64
+                - 334
+              type: array
+              description: Список ID предметов для фильтрации
+              items:
+                type: integer
+                format: int32
+            brandNames:
+              example:
+                - nike
+                - adidas
+              type: array
+              description: Список брендов для фильтрации
+              items:
+                type: string
+            tagIds:
+              example:
+                - 32
+                - 53
+              description: Список ID ярлыков для фильтрации
+              type: array
+              items:
+                type: integer
+                format: int64
+            startDate:
+              type: string
+              description: Начало периода
+              format: date
+            endDate:
+              type: string
+              description: Конец периода
+              format: date
+            timezone:
+              type: string
+              description: |
+                Временная зона, по умолчанию Europe/Moscow
+            aggregationLevel:
+              type: string
+              description: |
+                Как сгруппировать данные (по умолчанию по дням):
+
+                  * `day` — по дням
+                  * `week` — по неделям
+                  * `month` — по месяцам
+            skipDeletedNm:
+              description: Скрыть удалённые `nmID`
+              type: boolean
+    SearchReportGroupReq:
+      type: object
+      required:
+        - id
+        - reportType
+        - params
+      properties:
+        id:
+          description: ID отчёта в UUID-формате. Генерируется продавцом самостоятельно
+          type: string
+          format: uuid
+        reportType:
+          description: Тип отчёта — `SEARCH_QUERIES_PREMIUM_REPORT_GROUP`
+          type: string
+        userReportName:
+          type: string
+          description: Название отчёта. Если не указано, сформируется автоматически
+        params:
+          description: Параметры отчёта
+          type: object
+          required:
+            - currentPeriod
+            - subjectIds
+            - orderBy
+            - positionCluster
+          properties:
+            currentPeriod:
+              $ref: '#/components/schemas/Period'
+            pastPeriod:
+              $ref: '#/components/schemas/pastPeriod'
+            nmIds:
+              type: array
+              minItems: 0
+              maxItems: 1000
+              description: |
+                Артикулы WB, по которым составить отчёт. Оставьте пустым, чтобы получить отчёт обо всех товарах
+              items:
+                type: integer
+                format: int64
+            subjectIds:
+              example:
+                - 64
+                - 334
+              type: array
+              description: Список ID предметов для фильтрации. Оставьте пустым, чтобы получить отчёт по всем предметам
+              items:
+                type: integer
+                format: int32
+            brandNames:
+              example:
+                - nike
+                - adidas
+              type: array
+              description: Список брендов для фильтрации
+              items:
+                type: string
+            tagIds:
+              example:
+                - 32
+                - 53
+              description: Список ID ярлыков для фильтрации
+              type: array
+              items:
+                type: integer
+                format: int64
+            orderBy:
+              $ref: '#/components/schemas/OrderByGrTe'
+            positionCluster:
+              $ref: '#/components/schemas/PositionCluster'
+            includeSubstitutedSKUs:
+              type: boolean
+              default: true
+              example: true
+              description: Показать данные по прямым запросам с [подменным артикулом](https://seller.wildberries.ru/help-center/article/A-524)
+            includeSearchTexts:
+              type: boolean
+              default: true
+              example: false
+              description: Показать данные по поисковым запросам без учёта подменного артикула
+    Period:
+      type: object
+      description: Текущий период
+      required:
+        - start
+        - end
+      properties:
+        start:
+          type: string
+          description: Дата начала периода. Не позднее `end`. Не ранее 365 суток от сегодня
+          format: date
+          example: '2024-02-10'
+        end:
+          type: string
+          description: Дата окончания периода. Не ранее 365 суток от сегодня
+          format: date
+          example: '2024-02-10'
+    pastPeriod:
+      type: object
+      description: Прошлый период для сравнения. Количество дней — меньше или равно `currentPeriod`
+      required:
+        - start
+        - end
+      properties:
+        start:
+          type: string
+          description: Дата начала периода. Не позднее `end`. Не ранее 365 суток от сегодня
+          format: date
+          example: '2024-02-08'
+        end:
+          type: string
+          description: Дата окончания периода. Не позднее даты перед датой начала `currentPeriod`. Не ранее 365 суток от сегодня
+          format: date
+          example: '2024-02-08'
+    OrderByGrTe:
+      type: object
+      description: Параметры сортировки
+      properties:
+        field:
+          description: |
+            Поле для сортировки:
+              - `avgPosition` — по средней позиции
+              - `addToCart` — по добавлениям в корзину
+              - `openCard` — по открытию карточки (переход на страницу товара)
+              - `orders` — по количеству заказов
+              - `cartToOrder` — по конверсии в заказ из поиска
+              - `openToCart` — по конверсии в корзину из поиска
+              - `visibility` — по видимости товара
+          example: avgPosition
+          type: string
+          enum:
+            - avgPosition
+            - openCard
+            - addToCart
+            - openToCart
+            - orders
+            - cartToOrder
+            - visibility
+        mode:
+          type: string
+          example: asc
+          description: |
+            Порядок сортировки:
+              - `asc` — по возрастанию
+              - `desc` — по убыванию
+          enum:
+            - asc
+            - desc
+      required:
+        - field
+        - mode
+    PositionCluster:
+      example: all
+      description: |
+        Товары с какой средней позицией в поиске показывать в отчёте:
+          - `all` — все
+          - `firstHundred` — от 1 до 100
+          - `secondHundred` — от 101 до 200
+          - `below` — от 201 и ниже
+      type: string
+      enum:
+        - all
+        - firstHundred
+        - secondHundred
+        - below
+    SearchReportProductReq:
+      type: object
+      required:
+        - id
+        - reportType
+        - params
+      properties:
+        id:
+          description: ID отчёта в UUID-формате. Генерируется продавцом самостоятельно
+          type: string
+          format: uuid
+        reportType:
+          description: Тип отчёта — `SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT`
+          type: string
+        userReportName:
+          type: string
+          description: Название отчёта. Если не указано, сформируется автоматически
+        params:
+          description: Параметры отчёта
+          type: object
+          required:
+            - currentPeriod
+            - orderBy
+            - positionCluster
+          properties:
+            currentPeriod:
+              $ref: '#/components/schemas/Period'
+            pastPeriod:
+              $ref: '#/components/schemas/pastPeriod'
+            subjectId:
+              example: 132
+              description: ID предмета. Используйте значение `0`, чтобы получить отчёт по всем предметам
+              type: integer
+              format: int32
+            brandName:
+              example: Abikas
+              description: Бренд
+              type: string
+            tagId:
+              example: 3
+              description: ID ярлыка. Чтобы получить отчёт по всем ярлыкам, укажите значение 0
+              type: integer
+              format: int64
+            nmIds:
+              type: array
+              minItems: 0
+              maxItems: 1000
+              description: |
+                Артикулы WB, по которым составить отчёт. Оставьте пустым, чтобы получить отчёт обо всех товарах
+              items:
+                type: integer
+                format: int64
+            positionCluster:
+              $ref: '#/components/schemas/PositionCluster'
+            orderBy:
+              $ref: '#/components/schemas/OrderBy'
+            includeSubstitutedSKUs:
+              type: boolean
+              default: true
+              example: true
+              description: Показать данные по прямым запросам с [подменным артикулом](https://seller.wildberries.ru/help-center/article/A-524)
+            includeSearchTexts:
+              type: boolean
+              default: true
+              example: false
+              description: Показать данные по поисковым запросам без учёта подменного артикула
+    OrderBy:
+      type: object
+      description: Параметры сортировки
+      properties:
+        field:
+          description: |
+            Поле для сортировки:
+              - `avgPosition` — по средней позиции
+              - `addToCart` — по добавлениям в корзину
+              - `openCard` — по открытию карточки (переход на страницу товара)
+              - `orders` — по количеству заказов
+              - `cartToOrder` — по конверсии в заказ из поиска
+              - `openToCart` — по конверсии в корзину из поиска
+              - `visibility` — по видимости товара
+              - `minPrice` — по минимальной цене
+              - `maxPrice` — по максимальной цене
+          example: avgPosition
+          type: string
+          enum:
+            - avgPosition
+            - openCard
+            - addToCart
+            - openToCart
+            - orders
+            - cartToOrder
+            - visibility
+            - minPrice
+            - maxPrice
+        mode:
+          type: string
+          example: asc
+          description: |
+            Порядок сортировки:
+              - `asc` — по возрастанию
+              - `desc` — по убыванию
+          enum:
+            - asc
+            - desc
+      required:
+        - field
+        - mode
+    SearchReportTextReq:
+      type: object
+      required:
+        - id
+        - reportType
+        - params
+      properties:
+        id:
+          description: ID отчёта в UUID-формате. Генерируется продавцом самостоятельно
+          type: string
+          format: uuid
+        reportType:
+          description: Тип отчёта — `SEARCH_QUERIES_PREMIUM_REPORT_TEXT`
+          type: string
+        userReportName:
+          type: string
+          description: Название отчёта. Если не указано, сформируется автоматически
+        params:
+          description: Параметры отчёта
+          type: object
+          required:
+            - currentPeriod
+            - limit
+            - topOrderBy
+            - orderBy
+          properties:
+            currentPeriod:
+              $ref: '#/components/schemas/Period'
+            pastPeriod:
+              $ref: '#/components/schemas/pastPeriod'
+            nmIds:
+              type: array
+              minItems: 0
+              maxItems: 1000
+              description: |
+                Артикулы WB, по которым составить отчёт. Оставьте пустым, чтобы получить отчёт по всем товарам
+            subjectIds:
+              example:
+                - 64
+                - 334
+              type: array
+              description: Список ID предметов для фильтрации
+              items:
+                type: integer
+                format: int32
+            brandNames:
+              example:
+                - nike
+                - adidas
+              type: array
+              description: Список брендов для фильтрации
+              items:
+                type: string
+            tagIds:
+              example:
+                - 32
+                - 53
+              description: Список ID ярлыков для фильтрации
+              type: array
+              items:
+                type: integer
+                format: int64
+            topOrderBy:
+              example: openToCart
+              description: |
+                Фильтрация по поисковым запросам, по которым больше всего:
+                  - `openCard` — перешли в карточку
+                  - `addToCart` — добавили в корзину
+                  - `openToCart` — конверсия в корзину
+                  - `orders` — заказали товаров
+                  - `cartToOrder` — конверсия в заказ
+              type: string
+              enum:
+                - openCard
+                - addToCart
+                - openToCart
+                - orders
+                - cartToOrder
+            orderBy:
+              $ref: '#/components/schemas/OrderByGrTe'
+            includeSubstitutedSKUs:
+              type: boolean
+              default: true
+              example: true
+              description: Показать данные по прямым запросам с [подменным артикулом](https://seller.wildberries.ru/help-center/article/A-524)
+            includeSearchTexts:
+              type: boolean
+              default: true
+              example: false
+              description: Показать данные по поисковым запросам без учёта подменного артикула
+            limit:
+              $ref: '#/components/schemas/TextLimit'
+    TextLimit:
+      oneOf:
+        - $ref: '#/components/schemas/StandardTariff'
+        - $ref: '#/components/schemas/AdvancedTariff'
+    StandardTariff:
+      type: integer
+      format: uint64
+      example: 20
+      minimum: 1
+      maximum: 30
+      description: Количество поисковых запросов по товару для [стандартного](https://seller.wildberries.ru/monetization/tariffs) тарифа
+    AdvancedTariff:
+      type: integer
+      format: uint64
+      example: 50
+      minimum: 1
+      maximum: 100
+      description: Количество поисковых запросов по товару для [продвинутого](https://seller.wildberries.ru/monetization/tariffs) тарифа
+    StocksReportReq:
+      type: object
+      required:
+        - id
+        - reportType
+        - params
+      properties:
+        id:
+          description: ID отчёта в UUID-формате. Генерируется продавцом самостоятельно
+          type: string
+          format: uuid
+        reportType:
+          description: Тип отчёта — `STOCK_HISTORY_REPORT_CSV`
+          type: string
+        userReportName:
+          type: string
+          description: Название отчёта. Если не указано, сформируется автоматически
+        params:
+          description: Параметры отчёта
+          allOf:
+            - $ref: '#/components/schemas/CommonReportFilters'
+    CommonReportFilters:
+      description: Общие фильтры по отчёту
+      type: object
+      properties:
+        nmIDs:
+          type: array
+          description: Список артикулов WB для фильтрации
+          example:
+            - 111222333
+            - 444555666
+          items:
+            type: integer
+            format: int64
+        subjectIDs:
+          type: array
+          description: Список ID предметов для фильтрации
+          example:
+            - 123
+            - 456
+          items:
+            type: integer
+            format: int32
+        brandNames:
+          type: array
+          description: Список брендов для фильтрации
+          example:
+            - Эрк
+            - Дент
+          items:
+            type: string
+        tagIDs:
+          type: array
+          description: Список ID ярлыков для фильтрации
+          example:
+            - 3
+            - 4
+            - 5
+          items:
+            type: integer
+            format: int64
+        currentPeriod:
+          $ref: '#/components/schemas/PeriodSt'
+        stockType:
+          $ref: '#/components/schemas/StockType'
+        skipDeletedNm:
+          type: boolean
+          description: Скрыть удалённые товары
+          example: true
+        availabilityFilters:
+          $ref: '#/components/schemas/availabilityFilters'
+        orderBy:
+          $ref: '#/components/schemas/TableOrderBy'
+      required:
+        - availabilityFilters
+        - currentPeriod
+        - stockType
+        - skipDeletedNm
+        - orderBy
+    PeriodSt:
+      type: object
+      description: Период
+      required:
+        - start
+        - end
+      properties:
+        start:
+          type: string
+          description: Дата начала периода. Не позднее `end`. Не ранее 3 месяцев от текущей даты
+          format: date
+          example: '2024-02-10'
+        end:
+          type: string
+          description: Дата окончания периода. Не ранее 3 месяцев от текущей даты
+          format: date
+          example: '2024-02-10'
+    StockType:
+      type: string
+      description: |
+        Тип складов хранения товаров:
+          - `""` — все
+          - `wb` — Склады WB
+          - `mp` — Склады Маркетплейс (FBS)
+      example: mp
+      enum:
+        - ''
+        - wb
+        - mp
+    availabilityFilters:
+      type: array
+      description: |
+        Доступность товара:
+          - `deficient` — Дефицит
+          - `actual` — Актуальный
+          - `balanced` — Баланс
+          - `nonActual` — Неактуальный
+          - `nonLiquid` — Неликвид
+          - `invalidData` — Не рассчитано
+      example:
+        - deficient
+        - balanced
+      items:
+        type: string
+        enum:
+          - deficient
+          - actual
+          - balanced
+          - nonActual
+          - nonLiquid
+          - invalidData
+    TableOrderBy:
+      type: object
+      description: Вид сортировки данных
+      properties:
+        field:
+          $ref: '#/components/schemas/TableGroupField'
+        mode:
+          $ref: '#/components/schemas/OrderByMode'
+      required:
+        - field
+        - mode
+    TableGroupField:
+      type: string
+      description: |
+        Cортировка по полю:
+          - `ordersCount` — Заказы, шт.
+          - `ordersSum` — Заказы, сумма
+          - `avgOrders` — Среднее количество заказов в день
+          - `buyoutCount` — Выкупы, шт.
+          - `buyoutSum` — Выкупы, сумма
+          - `buyoutPercent` — Процент выкупа
+          - `stockCount` — Остатки на текущий день, шт.
+          - `stockSum` — Стоимость остатков на текущий день
+          - `saleRate` — Оборачиваемость текущих остатков
+          - `avgStockTurnover` — Оборачиваемость средних остатков
+          - `toClientCount` — В пути к клиенту, шт.
+          - `fromClientCount` — В пути от клиента, шт.
+          - `minPrice` — Минимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба)
+          - `maxPrice` — Максимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба)
+          - `officeMissingTime` — Время отсутствия товара на складе
+          - `lostOrdersCount` — Упущенные заказы, шт.
+          - `lostOrdersSum` — Упущенные заказы, сумма
+          - `lostBuyoutsCount` — Упущенные выкупы, шт.
+          - `lostBuyoutsSum` — Упущенные выкупы, сумма
+      enum:
+        - ordersCount
+        - ordersSum
+        - avgOrders
+        - buyoutCount
+        - buyoutSum
+        - buyoutPercent
+        - stockCount
+        - stockSum
+        - saleRate
+        - avgStockTurnover
+        - toClientCount
+        - fromClientCount
+        - minPrice
+        - maxPrice
+        - officeMissingTime
+        - lostOrdersCount
+        - lostOrdersSum
+        - lostBuyoutsCount
+        - lostBuyoutsSum
+      example: avgOrders
+    OrderByMode:
+      type: string
+      description: |
+        Порядок сортировки:
+        - asc — по возрастанию
+        - desc — по убыванию
+      enum:
+        - asc
+        - desc
+      example: asc
+    NmReportCreateReportResponse:
+      type: object
+      properties:
+        data:
+          type: string
+          description: Уведомление, что началась генерация отчёта
+          example: Created
+      required:
+        - data
+    response429Download:
+      description: Слишком много запросов
+      type: object
+      properties:
+        title:
+          type: string
+          description: Заголовок ошибки
+        detail:
+          type: string
+          description: Детали ошибки
+        code:
+          type: string
+          description: Внутренний код ошибки
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        status:
+          type: number
+          description: HTTP статус-код
+        statusText:
+          type: string
+          description: Расшифровка HTTP статус-кода
+        timestamp:
+          type: string
+          format: RFC3339
+          description: Дата и время запроса
+      example:
+        title: too many requests
+        detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+        code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+        requestId: 9d3c02cc698f8b041c661a7c28bed293
+        origin: s2s-api-auth-stat
+        status: 429
+        statusText: Too Many Requests
+        timestamp: '2024-09-30T06:52:38Z'
+    response429DownloadDaily:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Заголовок ошибки
+        detail:
+          type: string
+          description: Детали ошибки
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+      required:
+        - title
+        - detail
+        - requestId
+        - origin
+      example:
+        title: Too many requests
+        detail: The daily response limit has been exceeded. The maximum number is 20.
+        requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d393
+        origin: analytics-open-api
+    NmReportGetReportsResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - status
+              - name
+              - size
+              - startDate
+              - endDate
+              - createdAt
+            properties:
+              id:
+                description: ID отчёта
+                type: string
+                format: uuid
+                example: 06eae887-9d9f-491f-b16a-bb1766fcb8d2
+              createdAt:
+                type: string
+                description: Дата и время завершения генерации
+                format: date-time
+                example: '2024-06-26 20:05:32'
+              status:
+                type: string
+                description: |
+                  Статус отчёта:
+
+                  * `WAITING` — в очереди на обработку
+                  * `PROCESSING` — генерируется
+                  * `SUCCESS —` готов
+                  * `RETRY` — ожидает повторной обработки
+                  * `FAILED` — не получилось сгенерировать, сгенерируйте повторно
+                example: SUCCESS
+              name:
+                description: Название отчёта
+                type: string
+                example: Card report
+              size:
+                description: Размер отчёта, Б
+                type: integer
+                example: 123
+              startDate:
+                description: Начало периода
+                type: string
+                format: date
+                example: '2024-06-21'
+              endDate:
+                description: Конец периода
+                type: string
+                format: date
+                example: '2024-06-23'
+    NmReportRetryReportRequest:
+      properties:
+        downloadId:
+          type: string
+          description: ID отчёта
+          format: uuid
+          example: 06eea887-9d9f-491f-b16a-bb1766fcb8d2
+    NmReportRetryReportResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: string
+          description: Уведомление, что началась повторная генерация отчёта
+          example: Retry

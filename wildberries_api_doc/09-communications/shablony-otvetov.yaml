@@ -1,0 +1,312 @@
+openapi: 3.0.1
+info:
+  title: 09-communications - Шаблоны ответов
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://feedbacks-api.wildberries.ru
+tags:
+  - name: Шаблоны ответов
+    description: Шаблоны ответов endpoints
+paths:
+  /api/v1/templates:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Получить шаблоны ответов на вопросы и отзывы
+      description: |
+        Метод возвращает список шаблонов ответов на [вопросы](/openapi/user-communication#tag/Voprosy) и [отзывы](/openapi/user-communication#tag/Otzyvy) покупателей.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов |
+
+        </div>
+      tags:
+        - Шаблоны ответов
+      parameters:
+        - name: templateType
+          in: query
+          schema:
+            type: integer
+            example: 1
+          description: |
+            `1` - шаблоны для отзывов<br>
+            `2` - шаблоны для вопросов
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ResponseTemplate'
+              examples:
+                Response200:
+                  $ref: '#/components/examples/Response200'
+                IncorrectTemplateType:
+                  $ref: '#/components/examples/IncorrectTemplateType'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Создать шаблон
+      description: |
+        Метод добавляет [шаблон](/openapi/user-communication#tag/Shablony-otvetov/paths/~1api~1v1~1templates/get) ответа на [вопрос](/openapi/user-communication#tag/Voprosy) или [отзыв](/openapi/user-communication#tag/Otzyvy) покупателя.<br><br>
+
+        Можно создать максимум 20 шаблонов: 10 для отзывов и 10 для вопросов. В тексте шаблона можно использовать любые символы.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов |
+
+        </div>
+      tags:
+        - Шаблоны ответов
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - templateType
+                - text
+              properties:
+                name:
+                  type: string
+                  description: Название шаблона, от 1 до 100 символов
+                templateType:
+                  type: integer
+                  description: |
+                    Тип шаблона <br>
+                    `1` - шаблон для отзывов <br>
+                    `2` - шаблон для вопросов
+                text:
+                  type: string
+                  description: Текст шаблона (от 2 до 1000 символов)
+              example:
+                name: name
+                templateType: 1
+                text: text
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostTemplate'
+              examples:
+                PostTemplateOK:
+                  $ref: '#/components/examples/PostTemplateOK'
+                TemplateLimitExceeded:
+                  $ref: '#/components/examples/TemplateLimitExceeded'
+                InvalidTemplateNameLen:
+                  $ref: '#/components/examples/InvalidTemplateNameLen'
+                InvalidCommentLenTemplate:
+                  $ref: '#/components/examples/InvalidCommentLenTemplate'
+                InvalidRequest:
+                  $ref: '#/components/examples/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+    patch:
+      security:
+        - HeaderApiKey: []
+      summary: Редактировать шаблон
+      description: |
+        Метод редактирует [шаблон](/openapi/user-communication#tag/Shablony-otvetov/paths/~1api~1v1~1templates/get) ответа на [вопрос](/openapi/user-communication#tag/Voprosy) или [отзыв](/openapi/user-communication#tag/Otzyvy) покупателя.<br><br>
+
+        В тексте шаблона можно использовать любые символы.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов |
+
+        </div>
+      tags:
+        - Шаблоны ответов
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - templateID
+                - text
+              properties:
+                name:
+                  type: string
+                  description: Название шаблона, от 1 до 100 символов
+                templateID:
+                  type: string
+                  description: ID шаблона
+                text:
+                  type: string
+                  description: Текст шаблона (от 2 до 1000 символов)
+              example:
+                name: newname
+                templateID: 1234fhbf34ew2
+                text: newtext
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchDelResp'
+              examples:
+                PatchDelRespOK:
+                  $ref: '#/components/examples/PatchDelRespOK'
+                EditTemplateError:
+                  $ref: '#/components/examples/EditTemplateError'
+                InvalidRequest:
+                  $ref: '#/components/examples/InvalidRequest'
+                InvalidTemplateNameLen:
+                  $ref: '#/components/examples/InvalidTemplateNameLen'
+                InvalidCommentLenTemplate:
+                  $ref: '#/components/examples/InvalidCommentLenTemplate'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      summary: Удалить шаблон
+      description: |
+        Метод редактирует [шаблон](/openapi/user-communication#tag/Shablony-otvetov/paths/~1api~1v1~1templates/get) ответа на [вопрос](/openapi/user-communication#tag/Voprosy) или [отзыв](/openapi/user-communication#tag/Otzyvy) покупателя.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов |
+
+        </div>
+      tags:
+        - Шаблоны ответов
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - templateID
+              properties:
+                templateID:
+                  type: string
+                  description: ID шаблона (max. 1)
+            example:
+              templateID: 1234fhbf34ew2
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PatchDelResp'
+              examples:
+                PatchDelRespOK:
+                  $ref: '#/components/examples/PatchDelRespOK'
+                InvalidRequest:
+                  $ref: '#/components/examples/InvalidRequest'
+                ErrorDeleteBD:
+                  $ref: '#/components/examples/ErrorDeleteBD'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    ResponseTemplate:
+      description: Успешно
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          properties:
+            templates:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID шаблона
+                  name:
+                    type: string
+                    description: Название шаблона
+                  text:
+                    type: string
+                    description: Текст шаблона
+        error:
+          type: boolean
+          description: Есть ли ошибка
+        errorText:
+          type: string
+          description: Описание ошибки
+        additionalErrors:
+          description: Дополнительные ошибки
+          nullable: true
+          type: array
+          items:
+            type: string
+    PostTemplate:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          properties:
+            id:
+              description: ID шаблона
+              type: string
+        error:
+          type: boolean
+          description: Есть ли ошибка
+        errorText:
+          type: string
+          description: Описание ошибки
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: array
+          items:
+            type: string
+    PatchDelResp:
+      type: object
+      properties:
+        data:
+          type: boolean
+          nullable: true
+        error:
+          type: boolean
+          description: Есть ли ошибка
+        errorText:
+          type: string
+          description: Описание ошибки
+        additionalErrors:
+          description: Дополнительные ошибки
+          nullable: true
+          type: array
+          items:
+            type: string

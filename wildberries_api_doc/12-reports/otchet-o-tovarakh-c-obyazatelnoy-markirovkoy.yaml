@@ -1,0 +1,164 @@
+openapi: 3.0.1
+info:
+  title: 12-reports - Отчёт о товарах c обязательной маркировкой
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+tags:
+  - name: Отчёт о товарах c обязательной маркировкой
+    description: Отчёт о товарах c обязательной маркировкой endpoints
+paths:
+  /api/v1/analytics/excise-report:
+    post:
+      tags:
+        - Отчёт о товарах c обязательной маркировкой
+      summary: Получить отчёт
+      description: |
+        Метод возвращает отчёт с [операциями по товарам с обязательной маркировкой](https://seller.wildberries.ru/analytics-reports/excise-report).<br><br>
+
+        Данный отчёт можно сохранить в [формате таблиц](https://dev.wildberries.ru/cases/1).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 5 часов | 10 запросов | 30 минут | 10 запросов |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExciseReportRequest'
+        required: false
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExciseReportResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'request body has an error: doesn''t match schema #/components/schemas/ExciseReportRequest: Error at "/countries/0": value is not one of the allowed values ["AM","BY","KG","KZ","RU","UZ"]'
+                origin: tariffs
+                requestId: 8bbd7db59522d09926dd059892dbeff0
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    ExciseReportRequest:
+      type: object
+      properties:
+        countries:
+          type: array
+          description: |
+            Код стран по стандарту ISO 3166-2. Чтобы получить данные по всем странам, оставьте параметр пустым
+          items:
+            type: string
+            enum:
+              - AM
+              - BY
+              - KG
+              - KZ
+              - RU
+              - UZ
+      example:
+        countries:
+          - AM
+          - RU
+    ExciseReportResponse:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/models.ExciseReportResponse'
+    models.ExciseReportResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/models.ExciseReportResponseData'
+    models.ExciseReportResponseData:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Страна покупателя
+            example: Россия
+          price:
+            type: number
+            description: Цена товара, с НДС
+            example: 100
+          currency_name_short:
+            type: string
+            description: Валюта
+            example: руб
+          excise_short:
+            type: string
+            description: Код маркировки
+            example: 0102900254680370215_Re/=lSbNiGD
+          barcode:
+            type: string
+            description: Баркод
+            example: 2038893425820
+          nm_id:
+            type: integer
+            description: Артикул WB
+            example: 169085355
+          operation_type_id:
+            type: integer
+            description: |
+              Тип операции, если есть:
+
+                * `1` — вывод из оборота
+                * `2` — возврат в оборот
+            example: 1
+          fiscal_doc_number:
+            type: integer
+            description: Номер фискального документа (чека полного расчёта), если есть
+            example: 12345678
+          fiscal_dt:
+            type: string
+            description: Дата фискализации (дата в чеке), если есть, `ГГГГ-ММ-ДД`
+            example: '2024-01-01'
+          fiscal_drive_number:
+            type: string
+            description: Номер фискального накопителя, если есть
+          rid:
+            type: integer
+            description: |
+              `Rid`
+            example: 606217433440
+          srid:
+            type: string
+            description: |
+              `Srid`
+            example: 7513432034713632943.1.0
+    4xxResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        title:
+          type: string
+          description: Заголовок ошибки

@@ -1,0 +1,244 @@
+openapi: 3.0.1
+info:
+  title: 12-reports - Скрытые товары
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+tags:
+  - name: Скрытые товары
+    description: Скрытые товары endpoints
+paths:
+  /api/v1/analytics/banned-products/blocked:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Скрытые товары
+      summary: Заблокированные карточки
+      description: |
+        Метод возвращает список [заблокированных карточек товаров продавца](https://seller.wildberries.ru/analytics-reports/banned-products) с причинами блокировки.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 1 запрос | 10 секунд | 6 запросов |
+        </div>
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            description: |
+              Сортировка
+              - `brand` — по бренду
+              - `nmId` — по артикулу WB
+              - `title` — по наименованию товара
+              - `vendorCode` — по артикулу продавца
+              - `reason` — по причине блокировки
+            enum:
+              - brand
+              - nmId
+              - title
+              - vendorCode
+              - reason
+            example: nmId
+          required: true
+        - in: query
+          name: order
+          schema:
+            type: string
+            description: |
+              Порядок выдачи
+              - `desc` — от наибольшего числового значения к наименьшему, от последнего по алфавиту значения к первому
+              - `asc` — от наименьшего числового значения к наибольшему, от первого по алфавиту значения к последнему
+            enum:
+              - desc
+              - asc
+            example: asc
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    description: Отчёт
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        brand:
+                          type: string
+                          example: Тест22
+                          description: Бренд
+                        nmId:
+                          type: integer
+                          example: 82722944
+                          description: Артикул WB
+                        title:
+                          type: string
+                          example: Гуминовые кислоты - биоактивный противовирусный комплекс на
+                          description: Наименование товара
+                        vendorCode:
+                          type: string
+                          example: пкdeир76
+                          description: Артикул продавца
+                        reason:
+                          type: string
+                          example: Контактные данные Продавца и ссылки на иные сайты/группы/сообщества на фотографиях Товара
+                          description: Причина блокировки
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  status:
+                    type: number
+                    description: HTTP статус-код
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              example:
+                title: bad request
+                status: 400
+                detail: missing sort
+                requestId: 94b52fca-8403-49fb-85dd-95dfb73160ad
+                origin: banreportsvc-api
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/banned-products/shadowed:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Скрытые товары
+      summary: Скрытые из каталога
+      description: |
+        Метод возвращает список [товаров продавца, скрытых из каталога](https://seller.wildberries.ru/analytics-reports/banned-products/shadowed).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 1 запрос | 10 секунд | 6 запросов |
+        </div>
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            description: |
+              Сортировка
+              - `brand` — по бренду
+              - `nmId` — по артикулу WB
+              - `title` — по наименованию товара
+              - `vendorCode` — по артикулу продавца
+              - `nmRating` — по рейтингу товара
+            enum:
+              - brand
+              - nmId
+              - title
+              - vendorCode
+              - nmRating
+            example: title
+          required: true
+        - in: query
+          name: order
+          schema:
+            type: string
+            description: |
+              Порядок выдачи
+              - `desc` — от наибольшего числового значения к наименьшему, от последнего по алфавиту значения к первому
+              - `asc` — от наименьшего числового значения к наибольшему, от первого по алфавиту значения к последнему
+            enum:
+              - desc
+              - asc
+            example: desc
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    description: Отчёт
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        brand:
+                          type: string
+                          example: Трикотаж
+                          description: Бренд
+                        nmId:
+                          type: integer
+                          example: 166658151
+                          description: Артикул WB
+                        title:
+                          type: string
+                          example: ВАЗ
+                          description: Наименование товара
+                        vendorCode:
+                          type: string
+                          example: DP02/черный
+                          description: Артикул продавца
+                        nmRating:
+                          type: number
+                          example: 3.1
+                          description: Рейтинг товара
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  status:
+                    type: number
+                    description: HTTP статус-код
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              example:
+                title: bad request
+                status: 400
+                detail: missing order
+                requestId: 064f6c9e-924e-4e13-b551-0b89e3077938
+                origin: banreportsvc-api
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components: {}

@@ -1,0 +1,662 @@
+openapi: 3.0.1
+info:
+  title: 02-products - Цены и скидки
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://discounts-prices-api.wildberries.ru
+tags:
+  - name: Цены и скидки
+    description: Цены и скидки endpoints
+paths:
+  /api/v2/upload/task:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Установить цены и скидки
+      description: |
+        Метод устанавливает цены и скидки для товаров.
+        <br><br>
+        Чтобы установить цены для размеров товара, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post).
+
+        <div class="description_important">
+          Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      requestBody:
+        $ref: '#/components/requestBodies/SupplierTaskRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessTaskResponse'
+        '208':
+          $ref: '#/components/responses/Responses208'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                UploadLimitExceeded:
+                  $ref: '#/components/examples/UploadLimitExceeded'
+                DuplicateItemNos:
+                  $ref: '#/components/examples/DuplicateItemNos'
+                TheSpecifiedPricesAndDiscountsAreAlreadySet:
+                  $ref: '#/components/examples/TheSpecifiedPricesAndDiscountsAreAlreadySet'
+                InvalidDataFormat:
+                  $ref: '#/components/examples/InvalidDataFormat'
+                PriceShouldBeAWholeNumber:
+                  $ref: '#/components/examples/PriceShouldBeAWholeNumber'
+                InvalidPriceValue:
+                  $ref: '#/components/examples/InvalidPriceValue'
+                InvalidDiscountValue:
+                  $ref: '#/components/examples/InvalidDiscountValue'
+                InvalidItemNo:
+                  $ref: '#/components/examples/InvalidItemNo'
+                PriceAndDiscountNotSpecified:
+                  $ref: '#/components/examples/PriceAndDiscountNotSpecified'
+                EmptyData:
+                  $ref: '#/components/examples/EmptyData'
+                AllItemNosAreSpecifiedIncorrectlyOrPricesAndDiscounts:
+                  $ref: '#/components/examples/AllItemNosAreSpecifiedIncorrectlyOrPricesAndDiscounts'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '422':
+          description: Неожидаемый результат
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                UnexpectedResult:
+                  $ref: '#/components/examples/UnexpectedResult'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/upload/task/size:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Установить цены для размеров
+      description: |
+        Метод устанавливает цены отдельно для размеров товаров.
+
+        Работает только для товаров из категорий, где можно устанавливать цены отдельно для разных размеров. Для [таких товаров](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) `"editableSizePrice":true`.
+
+        Чтобы установить цены и скидки для самих товаров, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post).
+
+        <div class="description_important">
+          Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      requestBody:
+        $ref: '#/components/requestBodies/SupplierTaskRequestSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessTaskResponse'
+        '208':
+          $ref: '#/components/responses/Responses208'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                UploadLimitExceeded:
+                  $ref: '#/components/examples/UploadLimitExceeded'
+                DuplicateItemNos:
+                  $ref: '#/components/examples/DuplicateItemNos'
+                DuplicateSizeIDs:
+                  $ref: '#/components/examples/DuplicateSizeIDs'
+                TheSpecifiedPricesAreAlreadySet:
+                  $ref: '#/components/examples/TheSpecifiedPricesAreAlreadySet'
+                InvalidDataFormat:
+                  $ref: '#/components/examples/InvalidDataFormat'
+                PriceShouldBeAWholeNumber:
+                  $ref: '#/components/examples/PriceShouldBeAWholeNumber'
+                InvalidPriceValue:
+                  $ref: '#/components/examples/InvalidPriceValue'
+                InvalidItemNo:
+                  $ref: '#/components/examples/InvalidItemNo'
+                InvalidSize:
+                  $ref: '#/components/examples/InvalidSize'
+                PriceNotSpecified:
+                  $ref: '#/components/examples/PriceNotSpecified'
+                EmptyData:
+                  $ref: '#/components/examples/EmptyData'
+                AllItemNosAreSpecifiedIncorrectlyOrPrices:
+                  $ref: '#/components/examples/AllItemNosAreSpecifiedIncorrectlyOrPrices'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '422':
+          description: Неожидаемый результат
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                UnexpectedResult:
+                  $ref: '#/components/examples/UnexpectedResult'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/upload/task/club-discount:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Установить скидки WB Клуба
+      description: |
+        Устанавливает скидки для товаров в рамках подписки [WB Клуб](https://seller.wildberries.ru/help-center/article/A-337).
+
+        <div class="description_important">
+          Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      requestBody:
+        $ref: '#/components/requestBodies/SupplierTaskRequestClubDisc'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessTaskResponse'
+        '208':
+          $ref: '#/components/responses/Responses208'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                CheckTheWBClubDiscount:
+                  $ref: '#/components/examples/CheckTheWBClubDiscount'
+                DiscountsAreTheSameAsThoseAlreadySet:
+                  $ref: '#/components/examples/DiscountsAreTheSameAsThoseAlreadySet'
+                AllItemNosAreSpecifiedIncorrectlyOrDiscounts:
+                  $ref: '#/components/examples/AllItemNosAreSpecifiedIncorrectlyOrDiscounts'
+                InvalidDiscountValue:
+                  $ref: '#/components/examples/InvalidDiscountValue'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '422':
+          description: Неожидаемый результат
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                UnexpectedResult:
+                  $ref: '#/components/examples/UnexpectedResult'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/history/tasks:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Состояние обработанной загрузки
+      description: |
+        Метод возвращает информацию об обработанной загрузке цен и скидок.
+
+        <div class="description_important">
+          Обработанная загрузка — это загрузка цен и скидок для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post">товаров</a>, цен для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post">размеров товаров</a> и скидок <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post">WB Клуба</a>.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/uploadID'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseTaskHistory'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/history/goods/task:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Детализация обработанной загрузки
+      description: |
+        Метод возвращает информацию о товарах и об ошибках в товарах в обработанной загрузке.
+
+        <div class="description_important">
+          Обработанная загрузка — это загрузка цен и скидок для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post">товаров</a>, цен для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post">размеров товаров</a> и скидок <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post">WB Клуба</a>.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/uploadID'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseGoodHistories'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/buffer/tasks:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Состояние необработанной загрузки
+      description: |
+        Метод возвращает информацию про загрузку скидок в обработке.
+
+        <div class="description_important">
+          Необработанная загрузка — это загрузка скидок в <a href="/openapi/promotion#tag/Kalendar-akcij">календаре акций</a>. Такие скидки применятся к товарам только в момент старта акции.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/uploadID'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseTaskBuffer'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/buffer/goods/task:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Детализация необработанной загрузки
+      description: |
+        Метод возвращает информацию о товарах и ошибках в товарах из загрузки в обработке.
+
+        <div class="description_important">
+          Необработанная загрузка — это загрузка скидок в <a href="/openapi/promotion#tag/Kalendar-akcij">календаре акций</a>. Такие скидки применятся к товарам только в момент старта акции.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/uploadID'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseGoodBufferHistories'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/list/goods/filter:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Получить товары с ценами
+      description: |
+        Метод возвращает информацию о товарах: цены, валюту, общие скидки и скидки [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post).
+        <br><br>
+        В одном запросе можно указать только один артикул.
+        <br><br>
+        Чтобы получить информацию обо всех товарах продавца, не указывая артикулы, установите `limit=1000`, в параметре `offset` установите смещение по количеству записей. Количество нужно рассчитать по формуле: `offset` плюс `limit` из предыдущего запроса. Повторяйте запрос, пока вы не получите ответ с пустым массивом.<br><br>
+        Используйте отдельные методы, чтобы получить информацию:
+          - о [нескольких товарах по артикулам](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/post)
+          - о [размерах товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/filterNmID'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseGoodsLists'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                SortError:
+                  $ref: '#/components/examples/SortError'
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Получить товары с ценами по артикулам
+      description: |
+        Метод возвращает информацию о товарах по их артикулам: цены, валюту, общие скидки и скидки [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post).
+        <br><br>
+        В одном запросе можно указать более одного артикула.
+        <br><br>
+        Используйте отдельные методы, чтобы получить информацию:
+          - обо [всех товарах продавца, не указывая артикулы](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get)
+          - о [размерах товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      requestBody:
+        $ref: '#/components/requestBodies/FilterPost'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseGoodsLists'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/list/goods/size/nm:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Получить размеры товара с ценами
+      description: |
+        Метод возвращает информацию обо всех размерах одного товара: цены, валюту, общие скидки и скидки для [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post).
+        <br><br>
+        Работает только для товаров из категорий, где можно устанавливать цены отдельно для разных размеров. Для таких товаров `"editableSizePrice":true`.
+        <br><br>
+        Чтобы получить информацию о самом товаре, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/nmID'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseSizeLists'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v2/quarantine/goods:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Цены и скидки
+      summary: Получить товары в карантине
+      description: "Метод возвращает информацию о товарах в карантине.\n<br><br>\nЕсли новая цена товара со скидкой будет минимум в\_3 раза меньше старой, товар попадёт в\_[карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и будет продаваться по\_старой цене. Ошибка об\_этом будет в\_ответах методов [состояний загрузок](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get).\n<br><br>\nВы можете изменить цену или скидку с помощью API либо вывести товар из\_карантина в\_[личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine).\n<br><br>\nДля товаров с [поразмерной установкой цен](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post) карантин не применяется.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |\n\n</div>\n"
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseQuarantineGoods'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                InvalidRequestParameters:
+                  $ref: '#/components/examples/InvalidRequestParameters'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                AccessDenied:
+                  $ref: '#/components/examples/Result403'
+        '422':
+          description: Неожидаемый результат
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+              examples:
+                UnexpectedResult:
+                  $ref: '#/components/examples/UnexpectedResult'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    ResponseError:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          type: boolean
+          description: Флаг ошибки
+        errorText:
+          type: string
+          description: Текст ошибки

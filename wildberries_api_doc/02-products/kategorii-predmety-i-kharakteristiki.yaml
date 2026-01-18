@@ -1,0 +1,887 @@
+openapi: 3.0.1
+info:
+  title: 02-products - Категории, предметы и характеристики
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://content-api.wildberries.ru
+tags:
+  - name: Категории, предметы и характеристики
+    description: Категории, предметы и характеристики endpoints
+paths:
+  /content/v2/object/parent/all:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Родительские категории товаров
+      description: |
+        Метод возвращает названия и ID всех родительских категорий для [создания карточек товаров](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov): например, `Электроника`, `Бытовая химия`, `Рукоделие`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          description: "Язык поля ответа `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          description: Название категории
+                          type: string
+                          example: Электроника
+                        id:
+                          description: ID родительской категории
+                          type: integer
+                          example: 479
+                        isVisible:
+                          description: Виден на сайте
+                          type: boolean
+                          example: true
+                  error:
+                    description: Флаг наличия ошибки
+                    type: boolean
+                    example: false
+                  errorText:
+                    description: Описание ошибки
+                    type: string
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: string
+                    example: ''
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/object/all:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Список предметов
+      description: |
+        Метод возвращает список названий [родительских категорий предметов](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1parent~1all/get) и их предметов с ID. Например, у категории `Игрушки` будут предметы `Калейдоскопы`, `Куклы`, `Мячики`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          schema:
+            type: string
+            example: en
+          description: "Язык полей ответа:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+        - name: name
+          in: query
+          schema:
+            type: string
+            example: Носки
+          description: Поиск по названию предмета (Носки), поиск работает по подстроке, искать можно на любом из поддерживаемых языков
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 1000
+            default: 30
+            description: Количество предметов, максимум 1000
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            example: 5000
+            default: 0
+            description: Сколько элементов пропустить. Например, для значения `10` ответ начнется с 11 элемента
+        - name: parentID
+          in: query
+          schema:
+            type: integer
+            example: 1000
+          description: ID родительской категории предмета
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Предметы
+                    items:
+                      type: object
+                      properties:
+                        subjectID:
+                          type: integer
+                          description: ID предмета
+                        parentID:
+                          type: integer
+                          description: ID родительской категории
+                        subjectName:
+                          type: string
+                          description: Название предмета
+                        parentName:
+                          type: string
+                          description: Название родительской категории
+                  error:
+                    type: boolean
+                    description: Флаг наличия ошибки
+                  errorText:
+                    type: string
+                    description: Текст ошибки
+                  additionalErrors:
+                    nullable: true
+                    description: Дополнительные ошибки
+                    type: string
+              example:
+                data:
+                  - subjectID: 2560
+                    parentID: 479
+                    subjectName: 3D очки
+                    parentName: Электроника
+                  - subjectID: 1152
+                    parentID: 858
+                    subjectName: 3D-принтеры
+                    parentName: Оргтехника
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/object/charcs/{subjectId}:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Характеристики предмета
+      description: |
+        Метод возвращает параметры характеристик предмета: названия, типы данных, единицы измерения и так далее. В запросе необходимо указать ID [предмета](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get).
+
+        <div class="description_important">
+          Для получения значений характеристик <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1colors/get">Цвет</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1kinds/get">Пол</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1countries/get">Страна производства</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1seasons/get">Сезон</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1vat/get">Ставка НДС</a> и <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1tnved/get">ТНВЭД-код</a> используйте отдельные методы
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          description: ID предмета
+          schema:
+            type: integer
+            example: 105
+        - name: locale
+          in: query
+          description: "Язык полей ответа `subjectName` и `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Данные
+                    items:
+                      type: object
+                      properties:
+                        charcID:
+                          type: integer
+                          description: ID характеристики
+                        subjectName:
+                          type: string
+                          description: Название предмета
+                        subjectID:
+                          type: integer
+                          description: ID предмета
+                        name:
+                          type: string
+                          description: Название характеристики
+                        required:
+                          type: boolean
+                          description: |
+                            - `true` - характеристику необходимо обязательно указать в карточке товара
+                            - `false` - характеристику необязательно указывать
+                        unitName:
+                          type: string
+                          description: Единица измерения
+                        maxCount:
+                          type: integer
+                          description: |
+                            Максимальное количество значений, которое можно присвоить характеристике при [создании](./work-with-products#tag/Sozdanie-kartochek-tovarov) или [редактировании](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров.
+                            <br>
+                            Используется только для характеристик с `"charcType":1`— массив строк.
+                            <br>
+                            Характеристикам с `"charcType":4`— число, можно присвоить только одно значение.
+                            <br><br>
+                            Если `"maxCount":0`, количество значений не ограничено
+                        popular:
+                          description: Характеристика популярна у пользователей (true - да, false - нет)
+                          type: boolean
+                        charcType:
+                          type: integer
+                          description: |
+                            Тип данных характеристики, который необходимо использовать при [создании](./work-with-products#tag/Sozdanie-kartochek-tovarov) или [редактировании](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров:
+                              -  `1` — массив строк
+                              -  `4` — число
+                              -  `0` — характеристика не используется
+                  error:
+                    type: boolean
+                    description: Флаг наличия ошибки
+                  errorText:
+                    type: string
+                    description: Текст ошибки
+                  additionalErrors:
+                    type: string
+                    description: Дополнительные ошибки
+                    nullable: true
+                example:
+                  data:
+                    - charcID: 54337
+                      subjectName: Кроссовки
+                      subjectID: 105
+                      name: Размер
+                      required: false
+                      unitName: см
+                      maxCount: 0
+                      popular: false
+                      charcType: 4
+                  error: false
+                  errorText: ''
+                  additionalErrors: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/directory/colors:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Цвет
+      description: |
+        Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Цвет`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          description: "Язык полей ответа `subjectName` и `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          description: Наименование цвета
+                          type: string
+                          example: персиковый мелок
+                        parentName:
+                          description: Наименование родительского цвета
+                          type: string
+                          example: оранжевый
+                  error:
+                    description: Флаг ошибки
+                    type: boolean
+                    example: false
+                  errorText:
+                    description: Описание ошибки
+                    type: string
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: string
+                    example: ''
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/directory/kinds:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Пол
+      description: |
+        Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Пол`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          description: "Язык полей ответа `subjectName` и `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Массив значений для хар-ки Пол
+                    type: array
+                    items:
+                      type: string
+                      example: Мужской
+                  error:
+                    description: Флаг ошибки
+                    type: boolean
+                    example: false
+                  errorText:
+                    description: Описание ошибки
+                    type: string
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: string
+                    example: ''
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/directory/countries:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Страна производства
+      description: |
+        Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Страна производства`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          description: "Язык полей ответа `subjectName` и `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          description: Значение характеристики Страны
+                          type: string
+                          example: Китай
+                        fullName:
+                          description: Полное название страны
+                          type: string
+                          example: Китайская Народная Республика
+                  error:
+                    description: Флаг ошибки
+                    type: boolean
+                    example: false
+                  errorText:
+                    description: Описание ошибки
+                    type: string
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: string
+                    example: ''
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/directory/seasons:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Сезон
+      description: |
+        Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Сезон`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          description: "Язык полей ответа `subjectName` и `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Массив значений для хар-ки Сезон
+                    type: array
+                    items:
+                      type: string
+                      example: демисезон
+                  error:
+                    description: Флаг ошибки
+                    type: boolean
+                    example: false
+                  errorText:
+                    description: Описание ошибки
+                    type: string
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: string
+                    example: ''
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/directory/vat:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Ставка НДС
+      description: |
+        Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Ставка НДС`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: locale
+          in: query
+          description: "Язык полей ответа `subjectName` и `name`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: ru
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  error:
+                    type: boolean
+                    description: Флаг наличия ошибки
+                  errorText:
+                    type: string
+                    description: Текст ошибки
+                  additionalErrors:
+                    nullable: true
+                    type: string
+                    description: Дополнительные ошибки
+              example:
+                data:
+                  - '0'
+                  - '10'
+                  - '20'
+                  - Без НДС
+                  - '13'
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/directory/tnved:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: ТНВЭД-код
+      description: |
+        Метод возвращает список ТНВЭД-кодов по ID [предмета](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get) и фрагменту ТНВЭД-кода.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: subjectID
+          in: query
+          required: true
+          description: ID предмета
+          schema:
+            type: integer
+            example: 105
+        - name: search
+          in: query
+          description: Поиск по ТНВЭД-коду. Работает только в паре с `subjectID`
+          schema:
+            type: integer
+            example: 6106903000
+        - name: locale
+          in: query
+          description: "Язык полей ответа:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+          schema:
+            type: string
+            example: en
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Данные
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        tnved:
+                          type: string
+                          description: ТНВЭД-код
+                        isKiz:
+                          type: boolean
+                          description: |
+                            - `true` - код маркировки требуется
+                            - `false` - код маркировки не требуется
+                  error:
+                    type: boolean
+                    description: Флаг наличия ошибки
+                    example: false
+                  errorText:
+                    type: string
+                    description: Текст ошибки
+                  additionalErrors:
+                    nullable: true
+                    type: string
+                    description: Дополнительные ошибки
+              example:
+                data:
+                  - tnved: '6106903000'
+                    isKiz: true
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    responseBodyContentError400:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: object
+    responseBodyContentError403:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: string
+      example:
+        data: null
+        error: true
+        errorText: Доступ запрещен
+        additionalErrors: Доступ запрещен

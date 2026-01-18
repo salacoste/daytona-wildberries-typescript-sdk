@@ -1,0 +1,493 @@
+openapi: 3.0.1
+info:
+  title: 08-promotion - Медиа
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://advert-media-api.wildberries.ru
+tags:
+  - name: Медиа
+    description: Медиа endpoints
+paths:
+  /adv/v1/count:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Количество медиакампаний
+      description: |
+        Метод возвращает количество [медиакампаний](/openapi/promotion#tag/Media/paths/~1adv~1v1~1advert/get) продавца с группировкой по статусам.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов |
+        </div>
+      tags:
+        - Медиа
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  all:
+                    description: Общее количество медиакампаний всех статусов и типов
+                    type: integer
+                  adverts:
+                    type: object
+                    properties:
+                      type:
+                        description: |
+                          Тип медиакампании:
+                          - `1` — размещение по дням
+                          - `2` — размещение по просмотрам
+                        type: integer
+                      status:
+                        description: |
+                          Статус медиакампании:
+                            - `1` — черновик
+                            - `2` — модерация
+                            - `3` — отклонена (с возможностью вернуть на модерацию)
+                            - `4` — готова к запуску
+                            - `5` — запланирована
+                            - `6` — на показах
+                            - `7` — завершена
+                            - `8` — отменена
+                            - `9` — приостановлена продавцом
+                            - `10` — пауза по дневному лимиту
+                            - `11` — пауза
+                        type: integer
+                      count:
+                        description: Количество медиакампаний
+                        type: integer
+              example:
+                all: 6
+                adverts:
+                  type: 2
+                  status: 7
+                  count: 2
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/adverts:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Список медиакампаний
+      description: |
+        Метод возвращает список всех [медиакампаний](/openapi/promotion#tag/Media/paths/~1adv~1v1~1advert/get) продавца по их типам и статусам.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов |
+        </div>
+      tags:
+        - Медиа
+      parameters:
+        - name: status
+          in: query
+          description: |
+            Статус медиакампании:
+              - `1` — черновик
+              - `2` — модерация
+              - `3` — отклонена (с возможностью вернуть на модерацию)
+              - `4` — готова к запуску
+              - `5` — запланирована
+              - `6` — на показах
+              - `7` — завершена
+              - `8` — отменена
+              - `9` — приостановлена продавцом
+              - `10` — пауза по дневному лимиту
+              - `11` — пауза
+          schema:
+            type: integer
+            example: 1
+        - name: type
+          in: query
+          description: |
+            Тип медиакампании:
+            - `1` — размещение по дням
+            - `2` — размещение по просмотрам
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: Количество кампаний в ответе
+          schema:
+            type: integer
+            example: 1
+        - name: offset
+          in: query
+          description: Смещение относительно первой медиакампании
+          schema:
+            type: integer
+            example: 1
+        - name: order
+          in: query
+          description: |
+            Порядок вывода ответа:
+            - `create` — по времени создания медиакампании
+            - `id` — по ID медиакампании
+          schema:
+            type: string
+            example: id
+        - name: direction
+          in: query
+          description: |
+            Порядок сортировки:
+            - `desc` — от большего к меньшему
+            - `asc` — от меньшего к большему
+          schema:
+            type: string
+            example: desc
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    advertId:
+                      description: ID медиакампании
+                      type: integer
+                    name:
+                      description: Название медиакампании
+                      type: string
+                    brand:
+                      description: Название бренда
+                      type: string
+                    type:
+                      description: |
+                        Тип медиакампании:
+                        - `1` — размещение по дням
+                        - `2` — размещение по просмотрам
+                      type: integer
+                    status:
+                      description: |
+                        Статус медиакампании:
+                          - `1` — черновик
+                          - `2` — модерация
+                          - `3` — отклонена (с возможностью вернуть на модерацию)
+                          - `4` — готова к запуску
+                          - `5` — запланирована
+                          - `6` — на показах
+                          - `7` — завершена
+                          - `8` — отменена
+                          - `9` — приостановлена продавцом
+                          - `10` — пауза по дневному лимиту
+                          - `11` — пауза
+                      type: integer
+                    createTime:
+                      description: Время создания медиакампании
+                      type: string
+                      format: date-time
+                    endTime:
+                      description: Время завершения медиакампании
+                      type: string
+                      format: date-time
+              example:
+                - advertId: 123456
+                  name: тост
+                  brand: goosb
+                  type: 2
+                  status: 8
+                  createTime: '2023-03-25T20:35:57.116943+03:00'
+                - advertId: 54321
+                  name: тест
+                  brand: bobr
+                  type: 1
+                  status: 7
+                  createTime: '2023-07-24T16:48:20.935599+03:00'
+                  endTime: '2023-07-25T20:35:50.104978Z'
+        '204':
+          description: Медиакампании не найдены
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /adv/v1/advert:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Информация о медиакампании
+      description: |
+        Метод возвращает информацию о кампании [WB Медиа](https://cmp.wildberries.ru/cmpf/list). Вместо карточек товаров в медиакампаниях продвигаются рекламные баннеры продавца на сайте и в приложении WB.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов |
+        </div>
+      tags:
+        - Медиа
+      parameters:
+        - name: id
+          in: query
+          description: ID медиакампании
+          schema:
+            type: integer
+            example: 23569
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  advertId:
+                    description: ID медиакампании
+                    type: integer
+                  name:
+                    description: Название медиакампании
+                    type: string
+                  brand:
+                    description: Название бренда
+                    type: string
+                  type:
+                    description: |
+                      Тип медиакампании:
+                      - `1` — размещение по дням
+                      - `2` — размещение по просмотрам
+                    type: integer
+                  status:
+                    description: |
+                      Статус медиакампании:
+                        - `1` — черновик
+                        - `2` — модерация
+                        - `3` — отклонена (с возможностью вернуть на модерацию)
+                        - `4` — готова к запуску
+                        - `5` — запланирована
+                        - `6` — на показах
+                        - `7` — завершена
+                        - `8` — отменена
+                        - `9` — приостановлена продавцом
+                        - `10` — пауза по дневному лимиту
+                        - `11` — пауза
+                    type: integer
+                  createTime:
+                    description: Время создания медиакампании
+                    type: string
+                    format: date-time
+                  extended:
+                    type: object
+                    properties:
+                      reason:
+                        description: Комментарий модератора
+                        nullable: true
+                        type: string
+                      expenses:
+                        description: Затраты
+                        type: integer
+                      from:
+                        description: Дата и время начала показа медиакампании
+                        type: string
+                        format: date-time
+                      to:
+                        description: Дата и время окончания показа медиакампании
+                        type: string
+                        format: date-time
+                      updated_at:
+                        description: Дата и время изменения кампании
+                        type: string
+                        format: date-time
+                      price:
+                        description: Стоимость размещения по дням для типа `1`
+                        type: integer
+                      budget:
+                        description: Остаток бюджета для типа `2`
+                        type: integer
+                      operation:
+                        description: |
+                          Источник списания:
+                            - `1` — баланс
+                            - `2` — счёт
+                        type: integer
+                      contract_id:
+                        description: ID контракта, для продавцов на контракте
+                        type: integer
+                  items:
+                    description: |
+                      Информация о баннере.
+                      <br>
+                      Наличие в ответе тех или иных полей зависит от конфигурации медиакампании.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: ID баннера
+                          type: integer
+                        name:
+                          description: Бренд
+                          type: string
+                        status:
+                          description: Статус (такой же как у медиакампании)
+                          type: integer
+                        place:
+                          description: Позиция на странице размещения
+                          type: integer
+                        budget:
+                          description: Бюджет
+                          type: integer
+                        daily_limit:
+                          description: Дневной лимит (для баннеров по показам)
+                          type: integer
+                        category_name:
+                          description: Название категории размещения
+                          type: string
+                        cpm:
+                          description: Ставка
+                          type: integer
+                        url:
+                          description: URL страницы, на которую попадает пользователь при клике по баннеру
+                          type: string
+                        advert_type:
+                          description: |
+                            Тип продвижения:
+                            - `1` — баннер
+                            - `2` — всплывающее меню
+                            - `3` — почтовая рассылка
+                            - `4` — социальные сети
+                            - `5` — push-уведомления в мобильном приложении
+                          type: integer
+                        created_at:
+                          description: Дата создания баннера
+                          format: date-time
+                          type: string
+                        updated_at:
+                          description: Дата и время обновления баннера
+                          format: date-time
+                          type: string
+                        date_from:
+                          description: Дата начала работы баннера
+                          format: date-time
+                          type: string
+                        date_to:
+                          description: Дата завершения работы баннера
+                          format: date-time
+                          type: string
+                        nms:
+                          description: Подборка артикулов WB
+                          type: array
+                          items:
+                            type: integer
+                        bottomText1:
+                          description: Текст под плашкой баннера
+                          type: string
+                        bottomText2:
+                          description: 2-я строка с текстом под плашкой баннера
+                          type: string
+                        message:
+                          description: Текст push-уведомления или рассылки
+                          type: string
+                        additionalSettings:
+                          description: |
+                            Дополнительные настройки.
+
+                            Формат почтовой рассылки:
+                            - `1` — общий
+                            - `2` — частичный
+                            - `3` — уникальный
+
+
+                            Социальная сеть:
+                            - `1` — VKontakte
+                            - `2` — OK (Одноклассники)
+                          type: integer
+                        receiversCount:
+                          description: Кол-во получателей push-уведомлений
+                          type: integer
+                        subject_id:
+                          description: ID родительской категории товара
+                          type: integer
+                        subject_name:
+                          description: Название родительской категории товара
+                          type: string
+                        action_name:
+                          description: Название акции
+                          type: string
+                        show_hours:
+                          description: Часы показа
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              From:
+                                description: Начало показа
+                                type: integer
+                              To:
+                                description: Конец показа
+                                type: integer
+                        Erid:
+                          description: Уникальный ID медиакампании для работы с ОРД
+                          type: string
+                example:
+                  advertId: 23569
+                  name: Реклама денег принеси
+                  brand: Plank
+                  type: 2
+                  status: 11
+                  createTime: '2023-07-19T11:13:41.195138+03:00'
+                  extended:
+                    reason: Для возобновления показов пополните бюджет медиакампании
+                    expenses: 10000
+                    from: '2023-07-19T12:05:35.847348Z'
+                    to: '2123-07-20T08:14:13.079176+03:00'
+                    updated_at: '2023-07-21T13:25:31.129766+03:00'
+                    price: 0
+                    budget: 0
+                    operation: 1
+                    contract_id: 0
+                  items:
+                    - id: 68080
+                      name: Унисон
+                      status: 7
+                      place: 2
+                      budget: 650000
+                      daily_limit: 500
+                      category_name: Главная
+                      cpm: 351
+                      url: https://www.wildberries.ru/promotions/ssylka-na-akciyou
+                      advert_type: 1
+                      created_at: '2023-11-01T15:40:46.86165+03:00'
+                      updated_at: '2023-11-08T23:44:33.248229+03:00'
+                      date_from: '2023-11-01T16:05:22.286002Z'
+                      date_to: '2023-11-09T17:27:32.745869+03:00'
+                      nms:
+                        - 123456
+                        - 11111111
+                      bottomText1: string
+                      bottomText2: string
+                      message: string
+                      additionalSettings: 1
+                      receiversCount: 1
+                      subject_id: 6945
+                      subject_name: Бельё
+                      action_name: Распродажа! Создай себе домашний уют!
+                      show_hours:
+                        - From: 7
+                          To: 8
+                      Erid: string
+        '204':
+          description: Медиакампания не найдена
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components: {}

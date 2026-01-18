@@ -1,0 +1,455 @@
+openapi: 3.0.1
+info:
+  title: 02-products - Ярлыки
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://content-api.wildberries.ru
+tags:
+  - name: Ярлыки
+    description: Ярлыки endpoints
+paths:
+  /content/v2/tags:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Список ярлыков
+      description: |
+        Метод возвращает список и характеристики всех ярлыков продавца для группировки и фильтрации товаров.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Ярлыки
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    properties:
+                      id:
+                        description: Числовой ID ярлыка
+                        type: integer
+                      color:
+                        description: Цвет ярлыка
+                        type: string
+                      name:
+                        description: Имя ярлыка
+                        type: string
+                  error:
+                    description: Флаг ошибки
+                    type: boolean
+                    example: false
+                  errorText:
+                    description: Описание ошибки
+                    type: string
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: string
+                    example: ''
+              example:
+                data:
+                  - id: 1
+                    color: D1CFD7
+                    name: Sale
+                error: false
+                errorText: ''
+                additionalErrors: ''
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/tag:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Создание ярлыка
+      description: |
+        Метод добавляет один ярлык продавца. Можно создать максимум 15 ярлыков для одного продавца. Максимальная длина ярлыка — 15 символов.
+        <br>Созданный ярлык можно получить в общем [списке](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Ярлыки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                color:
+                  description: |
+                    Цвет ярлыка.
+
+                    Доступные цвета:
+                      - `D1CFD7` — серый
+                      - `FEE0E0` — красный
+                      - `ECDAFF` — фиолетовый
+                      - `E4EAFF` — синий
+                      - `DEF1DD` — зеленый
+                      - `FFECC7` — желтый
+                  type: string
+                  example: D1CFD7
+                name:
+                  description: Имя ярлыка
+                  type: string
+                  example: Sale
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContentError'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+              examples:
+                responseBodyContentError400:
+                  $ref: '#/components/examples/responseBodyContentError400'
+                responseBody400LenName:
+                  $ref: '#/components/examples/responseBody400LenName'
+                responseBodyLimitTag:
+                  $ref: '#/components/examples/responseBodyLimitTag'
+                responseBodyNameNotExist:
+                  $ref: '#/components/examples/responseBodyNameNotExist'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/tag/{id}:
+    patch:
+      security:
+        - HeaderApiKey: []
+      summary: Изменение ярлыка
+      description: |
+        Метод заменяет данные ярлыка: имя и цвет.
+        <br>Новые данные можно получить в общем [списке](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Ярлыки
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+            example: 1
+          description: Числовой ID ярлыка
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                color:
+                  description: Цвет ярлыка
+                  type: string
+                  example: D1CFD7
+                name:
+                  description: Имя ярлыка
+                  type: string
+                  example: Sale
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContentError'
+              examples:
+                responseNotFound200:
+                  $ref: '#/components/examples/responseNotFound200'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/responseBodyContentError400'
+              examples:
+                responseBodyContentError400:
+                  $ref: '#/components/examples/responseBodyContentError400'
+                responseBody400LenName:
+                  $ref: '#/components/examples/responseBody400LenName'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      summary: Удаление ярлыка
+      description: |
+        Метод удаляет ярлык из [списка ярлыков](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get) продавца.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Ярлыки
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+            example: 1
+          description: Числовой ID ярлыка
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContentError'
+              examples:
+                responseNotFound200Del:
+                  $ref: '#/components/examples/responseNotFound200Del'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+              examples:
+                responseBodyContentError400:
+                  $ref: '#/components/examples/responseBodyContentError400'
+                responseBodyTagNotExist:
+                  $ref: '#/components/examples/responseBodyTagNotExist'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /content/v2/tag/nomenclature/link:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Управление ярлыками в карточке товара
+      description: |
+        Метод добавляет или снимает ярлык с карточки товара. К карточке можно добавить максимум 15 ярлыков.<br>
+        При удалении ярлыка из карточки товара он не удаляется из [списка ярлыков](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get) продавца.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Ярлыки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nmID:
+                  description: Артикул WB
+                  type: integer
+                tagsIDs:
+                  description: |
+                    Массив числовых ID ярлыков.<br>
+                    Что бы снять ярлыки с карточки товара, необходимо передать пустой массив.<br>
+                    Чтобы добавить ярлыки к уже имеющимся в карточке товара, необходимо в запросе передать новые ярлыки и ярлыки, которые уже есть в карточке товара.
+                  type: array
+                  items:
+                    type: integer
+                    description: Числовой ID ярлыка.
+            example:
+              nmID: 179891389
+              tagsIDs:
+                - 123456
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContentError'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContentError'
+              examples:
+                IncorrectRequestNm:
+                  $ref: '#/components/examples/IncorrectRequestNm'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    responseBodyContentError403:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: string
+      example:
+        data: null
+        error: true
+        errorText: Доступ запрещен
+        additionalErrors: Доступ запрещен
+    responseContentError:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          description: Дополнительные ошибки
+          type: string
+          nullable: true
+      example:
+        data: null
+        error: false
+        errorText: ''
+        additionalErrors: null
+    responseBodyContentError400:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: object

@@ -1,0 +1,366 @@
+openapi: 3.0.1
+info:
+  title: 12-reports - Отчёт об остатках на складах
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+tags:
+  - name: Отчёт об остатках на складах
+    description: Отчёт об остатках на складах endpoints
+paths:
+  /api/v1/warehouse_remains:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Отчёт об остатках на складах
+      summary: Создать отчёт
+      description: |
+        Метод создаёт [задание на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1status/get) отчёта об [остатках на складах WB](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get).<br><br>
+
+        Параметры `groupBy` и `filter` (группировки и фильтры) можно задать в любой комбинации — аналогично [версии](https://seller.wildberries.ru/analytics-reports/warehouse-remains) в личном кабинете.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 1 запрос | 1 минута | 5 запросов |
+        </div>
+      parameters:
+        - in: query
+          name: locale
+          schema:
+            type: string
+            example: ru
+            default: ru
+          description: |
+            Язык полей ответа `subjectName` и `warehouseName`:
+              - `ru` — русский
+              - `en` — английский
+              - `zh` — китайский. Значения `warehouseName` на английском
+        - name: groupByBrand
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Разбивка по брендам
+        - name: groupBySubject
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Разбивка по предметам
+        - name: groupBySa
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Разбивка по артикулам продавца
+        - name: groupByNm
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Разбивка по артикулам WB. Если `groupByNm=true`, в ответе будет поле `volume`
+        - name: groupByBarcode
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Разбивка по баркодам
+        - name: groupBySize
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Разбивка по размерам
+        - name: filterPics
+          in: query
+          schema:
+            type: integer
+            example: 1
+            default: 0
+          description: |
+            Фильтр по фото:
+              - `-1` — без фото
+              - `0` — не применять фильтр
+              - `1` — с фото
+        - name: filterVolume
+          in: query
+          schema:
+            type: integer
+            example: 3
+            default: 0
+          description: |
+            Фильтр по объёму:
+              - `-1` — без габаритов
+              - `0` — не применять фильтр
+              - `3` — свыше трёх литров
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTaskResponse'
+              examples:
+                CreateResponseData:
+                  $ref: '#/components/examples/CreateResponseData'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'parameter "groupByNm" in query has an error: empty value is not allowed'
+                origin: api-statistics
+                requestId: 6a6c2fba81f08e58670a7dab835ff0d7
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/warehouse_remains/tasks/{task_id}/status:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Отчёт об остатках на складах
+      summary: Проверить статус
+      description: |
+        Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get) отчёта об [остатках на складах WB](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 5 секунд | 1 запрос | 5 секунд | 5 запросов |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            ID задания на генерацию
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTasksResponse'
+              examples:
+                GetTasksResponseData:
+                  $ref: '#/components/examples/GetTasksResponseData'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''2f071556-ae39-492f-fd8cf1eb0d25'' text as *uuid.UUID: invalid UUID length: 31'
+                origin: api-statistics
+                requestId: 52dd27a91a1a643feae7201b206462df
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Не найдено
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/warehouse_remains/tasks/{task_id}/download:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Отчёт об остатках на складах
+      summary: Получить отчёт
+      description: |
+        Метод возвращает отчёт об [остатках на складах WB](https://seller.wildberries.ru/analytics-reports/warehouse-remains) по ID [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 1 запрос | 1 минута | 1 запрос |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            ID задания на генерацию
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    brand:
+                      type: string
+                      example: Wonderful
+                      description: Бренд
+                    subjectName:
+                      type: string
+                      example: Фотоальбомы
+                      description: Название предмета
+                    vendorCode:
+                      type: string
+                      example: 41058/прозрачный
+                      description: Артикул продавца
+                    nmId:
+                      type: integer
+                      example: 183804172
+                      description: Артикул WB
+                    barcode:
+                      type: string
+                      example: '2037031652319'
+                      description: Баркод
+                    techSize:
+                      type: string
+                      example: '0'
+                      description: Размер
+                    volume:
+                      type: number
+                      example: 1.33
+                      description: Объём, л
+                    warehouses:
+                      type: array
+                      description: Остатки на складах и товары в пути. Будут в ответе только при ненулевом `quantity`
+                      items:
+                        type: object
+                        properties:
+                          warehouseName:
+                            type: string
+                            example: Невинномысск
+                            description: Название склада
+                          quantity:
+                            type: integer
+                            example: 134
+                            description: |
+                              Количество, шт.
+              example:
+                - brand: Wonderful
+                  subjectName: Фотоальбомы
+                  vendorCode: 41058/прозрачный
+                  nmId: 183804172
+                  barcode: '2037031652319'
+                  techSize: '0'
+                  volume: 1.33
+                  warehouses:
+                    - warehouseName: В пути до получателей
+                      quantity: 14
+                    - warehouseName: В пути возвраты на склад WB
+                      quantity: 4
+                    - warehouseName: Всего находится на складах
+                      quantity: 267
+                    - warehouseName: Невинномысск
+                      quantity: 134
+                    - warehouseName: Коледино
+                      quantity: 133
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''7b8875---9f03-46f1-af21-b9b4b22fe821'' text as *uuid.UUID: invalid UUID format'
+                origin: api-statistics
+                requestId: 44bac63ab29c46cb2d49392e6604c1a0
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Не найдено
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    CreateTaskResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateTaskResponseData'
+    CreateTaskResponseData:
+      type: object
+      properties:
+        taskId:
+          type: string
+          description: ID задания на генерацию
+    4xxResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        title:
+          type: string
+          description: Заголовок ошибки
+    GetTasksResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GetTasksResponseData'
+    GetTasksResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID задания
+        status:
+          type: string
+          description: |
+            Статус задания:
+
+              * `new` — новое
+              * `processing` —  обрабатывается
+              * `done` — отчёт готов
+              * `purged` — отчёт удалён
+              * `canceled` — отклонено

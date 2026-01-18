@@ -1,0 +1,590 @@
+openapi: 3.0.1
+info:
+  title: 02-products - Склады продавца
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://marketplace-api.wildberries.ru
+tags:
+  - name: Склады продавца
+    description: Склады продавца endpoints
+paths:
+  /api/v3/offices:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Получить список складов WB
+      description: |
+        Метод возвращает список всех складов WB для привязки к складам продавца. Предназначен для определения складов WB, чтобы сдавать готовые заказы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Список складов WB
+                items:
+                  $ref: '#/components/schemas/Office'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/warehouses:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Получить список складов продавца
+      description: |
+        Метод возвращает список всех складов продавца. Может использоваться для получения [остатков товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                nullable: false
+                description: Список складов продавца
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Создать склад продавца
+      description: |
+        Метод создаёт склад продавца для работы с [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). Нужно привязать к складу продавца [склад WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) для работы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller).
+
+        <div class="description_important">
+          Нельзя привязывать склад WB, который уже используется
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 200
+                  description: Имя склада продавца
+                  example: Склад Коледино
+                officeId:
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  description: ID склада WB
+                  example: 15
+              required:
+                - name
+                - officeId
+      responses:
+        '201':
+          description: Создано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    nullable: false
+                    description: ID склада продавца
+                    example: 2
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                WarehouseNameInvalid:
+                  $ref: '#/components/examples/WarehouseNameInvalid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка создания нового склада
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/warehouses/{warehouseId}:
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Обновить склад продавца
+      description: |
+        Метод обновляет данные склада продавца в [списке складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). Данные о привязанном [складе WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) можно изменить один раз в сутки.
+
+        <div class="description_important">
+          Нельзя привязывать склад WB, который уже используется
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Warehouse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 200
+                  description: Имя склада продавца
+                  example: Склад Коледино
+                officeId:
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  description: ID склада WB
+                  example: 15
+              required:
+                - name
+                - officeId
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                WarehouseNameInvalid:
+                  $ref: '#/components/examples/WarehouseNameInvalid'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Ошибка обновления склада
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Удалить склад продавца
+      description: |
+        Метод удаляет склад продавца из [списка складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Warehouse'
+      responses:
+        '204':
+          description: Удалено
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/dbw/warehouses/{warehouseId}/contacts:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Список контактов
+      description: |
+        Метод возвращает список контактов, привязанных к [складу продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get).
+        <br>
+        Только для складов с типом доставки `3` — доставка курьером WB (DBW).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для следующих методов DBW:
+        <ul>
+            <li>получение и обновление списка контактов</li>
+            <li>получение и удаление метаданных</li>
+            <li>методы сборочных заданий</li>
+        </ul> 
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/Warehouse'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                description: Список контактов склада продавца
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        comment:
+                          type: string
+                          nullable: false
+                          description: Комментарий
+                          example: Иванов Иван Иванович. Звонить с 10 до 21 часа.
+                          maxLength: 1000
+                        phone:
+                          type: string
+                          nullable: false
+                          description: Номер телефона
+                          example: '+79998887766'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+    put:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Склады продавца
+      summary: Обновить список контактов
+      parameters:
+        - $ref: '#/components/parameters/Warehouse'
+      description: |
+        Метод обновляет список контактов [склада продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get).
+
+        <div class="description_important">
+          Список контактов перезаписывается при обновлении. Поэтому в запросе нужно передать <strong>все</strong> параметры списка контактов, в том числе те, которые вы не собираетесь обновлять.
+        </div>
+
+        Только для складов с типом доставки `3` — курьером WB (DBW).
+        <br><br>
+        К складу можно добавить максимум 5 контактов. Чтобы удалить контакты, отправьте пустой массив `contacts`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для следующих методов DBW:
+        <ul>
+            <li>получение и обновление списка контактов</li>
+            <li>получение и удаление метаданных</li>
+            <li>методы сборочных заданий</li>
+        </ul> 
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreContactRequestBody'
+      responses:
+        '204':
+          description: Обновлено
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+                UploadDataLimitDbw:
+                  $ref: '#/components/examples/UploadDataLimitDbw'
+                IncorrectRequest:
+                  $ref: '#/components/examples/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    Office:
+      type: object
+      description: Данные о складе WB
+      properties:
+        address:
+          type: string
+          nullable: false
+          description: Адрес
+          example: ул. Троицкая, Подольск, Московская обл.
+        name:
+          type: string
+          nullable: false
+          description: Название
+          example: Коледино
+        city:
+          type: string
+          nullable: false
+          description: Город
+          example: Москва
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID
+          example: 15
+        longitude:
+          type: number
+          format: float64
+          nullable: false
+          description: Долгота
+          example: 55.386871
+        latitude:
+          type: number
+          format: float64
+          nullable: false
+          description: Широта
+          example: 37.588898
+        cargoType:
+          description: |
+            Тип товара, который принимает склад:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        deliveryType:
+          type: integer
+          description: |
+            Тип доставки, который принимает склад:
+              - `1` — доставка на склад WB (FBS)
+              - `2` — доставка силами продавца (DBS)
+              - `3` — доставка курьером WB (DBW)
+              - `5` — самовывоз (C&C)
+              - `6` — экспресс-доставка силами продавца (ЕDBS)
+          enum:
+            - 1
+            - 2
+            - 3
+            - 5
+            - 6
+          example: 1
+        federalDistrict:
+          type: string
+          nullable: true
+          example: Центральный
+          description: Федеральный округ склада WB. Если `null`, склад находится за пределами РФ или федеральный округ не указан
+        selected:
+          type: boolean
+          nullable: false
+          description: Признак того, что склад уже выбран продавцом
+    Warehouse:
+      type: object
+      description: Данные о складе продавца
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Название склада продавца
+          example: ул. Троицкая, Подольск, Московская обл.
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада WB
+          example: 15
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада продавца
+          example: 1
+        cargoType:
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        deliveryType:
+          type: integer
+          description: |
+            Тип доставки, который принимает склад:
+              - `1` — доставка на склад WB (FBS)
+              - `2` — доставка силами продавца (DBS)
+              - `3` — доставка курьером WB (DBW)
+              - `5` — самовывоз (C&C)
+              - `6` — экспресс-доставка силами продавца (ЕDBS)
+          enum:
+            - 1
+            - 2
+            - 3
+            - 5
+            - 6
+          example: 1
+        isDeleting:
+          type: boolean
+          nullable: false
+          description: |
+            Склад удаляется:
+              - `false` — нет
+              - `true` — да
+
+            После удаления склад пропадёт из списка
+          example: false
+        isProcessing:
+          type: boolean
+          nullable: false
+          description: |
+            Данные склада обновляются:
+              - `false` — нет
+              - `true` — да, обновление и удаление остатков недоступно
+
+            Обновление данных может занимать несколько минут
+          example: true
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          nullable: false
+        message:
+          type: string
+          description: Описание ошибки
+          nullable: false
+        data:
+          type: object
+          description: Дополнительные данные ошибки
+          nullable: true
+    StoreContactRequestBody:
+      type: object
+      description: Контакты склада продавца
+      properties:
+        contacts:
+          type: array
+          maxItems: 5
+          items:
+            type: object
+            properties:
+              comment:
+                type: string
+                nullable: false
+                description: Комментарий
+                example: Иванов Иван Иванович. Звонить с 10 до 21 часа.
+                maxLength: 1000
+              phone:
+                type: string
+                nullable: false
+                description: |
+                  Номер телефона.<br>Поддерживаются коды стран:
+                    - `+7` — Россия, Казахстан
+                    - `+374` — Армения
+                    - `+375` — Беларусь
+                    - `+996` — Кыргызстан
+                example: '+79998887766'

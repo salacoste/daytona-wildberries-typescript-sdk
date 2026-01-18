@@ -1,0 +1,61 @@
+_module: 12-reports
+_description: |
+  <div class="description_important">
+    Узнать больше об отчётах можно в <a href="https://seller.wildberries.ru/instructions/subcategory/5f2162c5-069b-416d-a4e1-48da2a76e6b0">справочном центре</a>
+  </div>
+
+  С помощью этих методов вы можете получить [основные отчёты](/openapi/reports#tag/Osnovnye-otchyoty) и отчёты о:
+    1. [Остатках на складах](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah)
+    2. [Товарах с обязательной маркировкой](/openapi/reports#tag/Otchyot-o-tovarah-c-obyazatelnoj-markirovkoj)
+    3. [Удержаниях](/openapi/reports#tag/Otchyoty-ob-uderzhaniyah)
+    4. [Платной приёмке](/openapi/reports#tag/Platnaya-priyomka)
+    5. [Платном хранении](/openapi/reports#tag/Platnoe-hranenie)
+    6. [Продажах по регионам](/openapi/reports#tag/Prodazhi-po-regionam)
+    7. [Доле бренда в продажах](/openapi/reports#tag/Dolya-brenda-v-prodazhah)
+    8. [Скрытых товарах](/openapi/reports#tag/Skrytye-tovary)
+    9. [Возвратах и перемещении товаров](/openapi/reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+_original_file: 12-reports.yaml
+_base_url: N/A
+_shards:
+  - file: osnovnye-otchety.yaml
+    domain: Основные отчёты
+    endpoints: 4
+    description: Main Reports
+  - file: otchet-ob-ostatkakh-na-skladakh.yaml
+    domain: Отчёт об остатках на складах
+    endpoints: 3
+    description: Warehouse Stock Reports
+  - file: otchet-o-tovarakh-c-obyazatelnoy-markirovkoy.yaml
+    domain: Отчёт о товарах c обязательной маркировкой
+    endpoints: 1
+    description: Marked Goods Reports
+  - file: otchety-ob-uderzhaniyakh.yaml
+    domain: Отчёты об удержаниях
+    endpoints: 5
+    description: Deduction Reports
+  - file: platnaya-priemka.yaml
+    domain: Платная приёмка
+    endpoints: 3
+    description: Paid Receiving
+  - file: platnoe-khranenie.yaml
+    domain: Платное хранение
+    endpoints: 3
+    description: Paid Storage
+  - file: prodazhi-po-regionam.yaml
+    domain: Продажи по регионам
+    endpoints: 1
+    description: Regional Sales
+  - file: dolya-brenda-v-prodazhakh.yaml
+    domain: Доля бренда в продажах
+    endpoints: 3
+    description: Brand Share
+  - file: skrytye-tovary.yaml
+    domain: Скрытые товары
+    endpoints: 2
+    description: Hidden Items
+  - file: otchet-o-vozvratakh-i-peremeshchenii-tovarov.yaml
+    domain: Отчёт о возвратах и перемещении товаров
+    endpoints: 1
+    description: Returns and Movement Reports
+_shared_schemas: _schemas.yaml
+_total_endpoints: 26

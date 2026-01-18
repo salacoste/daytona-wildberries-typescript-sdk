@@ -1,0 +1,572 @@
+openapi: 3.0.1
+info:
+  title: 02-products - Карточки товаров (Part 4/4)
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://content-api.wildberries.ru
+tags:
+  - name: Карточки товаров
+    description: Карточки товаров endpoints
+paths:
+  /content/v2/get/cards/trash:
+    post:
+      security:
+        - HeaderApiKey: []
+      summary: Список карточек товаров в корзине
+      description: |
+        <div class="description_auth">
+          Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong>
+        </div>
+
+        Метод возвращает список карточек товаров в корзине.<br><br>
+
+        Чтобы получить **больше 100** карточек товаров, воспользуйтесь пагинацией:
+
+          1. Сделайте первый запрос: <br>
+              <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935">
+                {
+                  "settings": {
+                    "cursor": {
+                      "limit": 100
+                    },
+                    "filter": {
+                      "withPhoto": -1
+                    }
+                  }
+                }</pre>
+          2. Пройдите в конец полученного списка карточек товаров.
+          3. Скопируйте из `cursor` две строки:
+              - `"trashedAt": "***"`
+              - `"nmID": ***`
+          4. Вставьте скопированные строки в параметр запроса `cursor`.
+          5. Повторите запрос.
+          6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки.
+
+          <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      tags:
+        - Карточки товаров
+      parameters:
+        - name: locale
+          in: query
+          schema:
+            type: string
+            enum:
+              - ru
+              - en
+              - zh
+          description: "Язык полей ответа `name`, `value` и `object`:\n  - `ru` — русский\n  - `en` — английский\n  - `zh` — китайский\n\nНе\_используется в\_песочнице\n"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+                  description: Настройки
+                  properties:
+                    sort:
+                      description: Параметр сортировки
+                      type: object
+                      properties:
+                        ascending:
+                          type: boolean
+                          default: false
+                          description: Сортировать по `trashedAt` (`false` - по убыванию, `true` - по возрастанию)
+                    cursor:
+                      description: Пагинатор
+                      type: object
+                      properties:
+                        limit:
+                          type: integer
+                          description: Сколько карточек товаров выдать в ответе
+                        trashedAt:
+                          type: string
+                          description: Дата и время помещения в корзину
+                        nmID:
+                          type: integer
+                          description: Артикул WB, с которого надо запрашивать следующий список карточек товаров
+                    filter:
+                      description: Параметры фильтрации
+                      type: object
+                      properties:
+                        textSearch:
+                          type: string
+                          description: Поиск по артикулу продавца, артикулу WB, баркоду
+            example:
+              settings:
+                sort:
+                  ascending: false
+                filter:
+                  textSearch: '4603743187500888'
+                cursor:
+                  trashedAt: '2023-12-06T11:17:00.96577Z'
+                  nmID: 370870300
+                  limit: 11
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cards:
+                    description: Массив карточек товаров
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nmID:
+                          type: integer
+                          description: Артикул WB
+                        vendorCode:
+                          type: string
+                          description: Артикул продавца
+                        subjectID:
+                          type: integer
+                          description: ID предмета
+                        subjectName:
+                          type: string
+                          description: Название предмета
+                        photos:
+                          type: array
+                          description: Массив фото
+                          items:
+                            type: object
+                            properties:
+                              big:
+                                description: URL фото `900x1200`
+                                type: string
+                              c246x328:
+                                description: URL фото `248x328`
+                                type: string
+                              c516x688:
+                                description: URL фото `516x688`
+                                type: string
+                              square:
+                                description: URL фото `600x600`
+                                type: string
+                              tm:
+                                description: URL фото `75x100`
+                                type: string
+                        video:
+                          type: string
+                          description: URL видео
+                        wholesale:
+                          type: object
+                          description: Оптовая продажа
+                          properties:
+                            enabled:
+                              type: boolean
+                              description: Предназначена ли карточка товара для оптовой продажи
+                            quantum:
+                              type: number
+                              format: uint64
+                              description: Количество единиц товара в упаковке
+                        sizes:
+                          type: array
+                          description: Массив размеров
+                          items:
+                            type: object
+                            properties:
+                              chrtID:
+                                type: integer
+                                description: ID размера
+                              techSize:
+                                type: string
+                                description: Размер товара
+                              wbSize:
+                                type: string
+                                description: Российский размер товара
+                              skus:
+                                type: array
+                                description: Массив баркодов
+                                items:
+                                  type: string
+                                  example: 12345Ejf5
+                        dimensions:
+                          type: object
+                          description: Габариты и вес товара c упаковкой, см и кг
+                          properties:
+                            length:
+                              type: integer
+                              description: Длина, см
+                            width:
+                              type: integer
+                              description: Ширина, см
+                            height:
+                              type: integer
+                              description: Высота, см
+                            weightBrutto:
+                              type: number
+                              description: Вес, кг<br>Количество знаков после запятой <=3
+                            isValid:
+                              type: boolean
+                              description: |
+                                Потенциальная некорректность габаритов товара:
+
+                                - `true` — не выявлена. `"isValid":true` не гарантирует, что размеры указаны корректно. В отдельных случаях (например, при создании новой категории товаров) `"isValid":true` будет возвращаться при любых значениях, кроме нулевых.
+
+                                - `false` — указанные габариты значительно отличаются от средних по категории (предмету). Рекомендуется перепроверить, правильно ли указаны размеры товара в упаковке в `сантиметрах`. Функциональность карточки товара, в том числе начисление логистики и хранения, при этом ограничена не будет. Логистика и хранение продолжают начисляться — по текущим габаритам. Также `"isValid":false` возвращается при отсутствии значений или нулевом значении любой стороны.
+                        characteristics:
+                          nullable: true
+                          type: array
+                          description: Характеристики
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: ID характеристики
+                              name:
+                                type: string
+                                description: Название характеристики
+                              value:
+                                description: Значение характеристики. Тип значения зависит от типа характеристики
+                        createdAt:
+                          type: string
+                          description: Date and time the card was created
+                        trashedAt:
+                          type: string
+                          description: Дата и время помещения в корзину
+                  cursor:
+                    type: object
+                    description: Пагинатор
+                    properties:
+                      trashedAt:
+                        type: string
+                        description: Дата и время, с которых надо запрашивать следующий список карточек товаров
+                      nmID:
+                        type: integer
+                        description: Артикул WB, с которого надо запрашивать следующий список карточек товаров
+                      total:
+                        type: integer
+                        description: Количество возвращённых карточек товаров
+              example:
+                cards:
+                  - nmID: 1234567
+                    vendorCode: wb5xsy5ftj
+                    subjectID: 1436
+                    subjectName: Ведра хозяйственные
+                    photos:
+                      - big: https://basket-10.wbbasket.ru/vol1592/part159206/159206280/images/big/1.webp
+                        c246x328: https://basket-10.wbbasket.ru/vol1592/part159206/159206280/images/c246x328/1.webp
+                        c516x688: https://basket-10.wbbasket.ru/vol1592/part159206/159206280/images/c516x688/1.webp
+                        square: https://basket-10.wbbasket.ru/vol1592/part159206/159206280/images/square/1.webp
+                        tm: https://basket-10.wbbasket.ru/vol1592/part159206/159206280/images/tm/1.webp
+                    video: https://videonme-basket-12.wbbasket.ru/vol137/part22557/225577433/hls/1440p/index.m3u8
+                    wholesale:
+                      enabled: true
+                      quantum: 114
+                    sizes:
+                      - chrtID: 111111111
+                        techSize: '0'
+                        skus:
+                          - xxxxxxxxxxxx
+                    dimensions:
+                      length: 35
+                      width: 40
+                      height: 15
+                      weightBrutto: 2.9
+                      isValid: false
+                    createdAt: '2023-12-05T14:55:09.323462Z'
+                    trashedAt: '2023-12-06T10:57:42.193028Z'
+                cursor:
+                  trashedAt: '2023-12-06T10:57:42.193028Z'
+                  nmID: 194128521
+                  total: 1
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+            plain/text:
+              example: Request body can not be decoded
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    responseBodyContentError400:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: object
+    responseBodyContentError403:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: string
+      example:
+        data: null
+        error: true
+        errorText: Доступ запрещен
+        additionalErrors: Доступ запрещен
+    requestPublicViewerPublicErrorsTableListV2:
+      type: object
+      properties:
+        cursor:
+          $ref: '#/components/schemas/swagger.PublicErrorsCursorInput'
+        order:
+          $ref: '#/components/schemas/swagger.PublicErrorsOrderV2'
+    swagger.PublicErrorsCursorInput:
+      type: object
+      description: Пагинатор
+      properties:
+        limit:
+          type: number
+          format: int
+          description: Количество пакетов в ответе
+          maximum: 100
+          default: 100
+        updatedAt:
+          type: string
+          format: date-time
+          description: Дата и время формирования последнего пакета в ответе на предыдущий запрос
+        batchUUID:
+          type: string
+          format: UUID
+          description: ID последнего пакета в ответе на предыдущий запрос
+    swagger.PublicErrorsOrderV2:
+      type: object
+      description: Порядок выдачи пакетов
+      properties:
+        ascending:
+          type: boolean
+          description: |
+            - `false` — сортировка по убыванию
+            - `true` — сортировка по возрастанию
+          default: true
+    responsePublicViewerPublicErrorsTableListV2:
+      type: object
+      required:
+        - data
+        - error
+        - errorText
+        - additionalErrors
+      properties:
+        data:
+          $ref: '#/components/schemas/models.ErrorTableListPublicRespV2'
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Описание ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: object
+    models.ErrorTableListPublicRespV2:
+      type: object
+      description: Данные ответа
+      required:
+        - items
+        - cursor
+      properties:
+        items:
+          type: array
+          description: Пакеты данных
+          items:
+            $ref: '#/components/schemas/models.ErrorTableListPublicRespV2Item'
+        cursor:
+          $ref: '#/components/schemas/viewer_contract.PublicErrorsCursorOutput'
+    models.ErrorTableListPublicRespV2Item:
+      type: object
+      required:
+        - batchUUID
+        - subjects
+        - brands
+        - vendorCodes
+        - errors
+      properties:
+        batchUUID:
+          type: string
+          format: UUID
+          description: ID пакета
+        subjects:
+          type: object
+          description: Предметы. Разбивка по `vendorCodes`
+          additionalProperties:
+            $ref: '#/components/schemas/models.ErrorSubject'
+        brands:
+          type: object
+          description: Бренды. Разбивка по `vendorCodes`
+          additionalProperties:
+            $ref: '#/components/schemas/models.ErrorBrand'
+        vendorCodes:
+          type: array
+          description: Артикулы продавца
+          items:
+            type: string
+        errors:
+          type: object
+          description: Ошибки. Разбивка по `vendorCodes`
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    models.ErrorSubject:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: number
+          format: uint64
+          description: ID предмета
+        name:
+          type: string
+          description: Название предмета
+    models.ErrorBrand:
+      type: object
+      properties:
+        id:
+          type: number
+          format: uint64
+          description: ID бренда
+        name:
+          type: string
+          description: Бренд
+    viewer_contract.PublicErrorsCursorOutput:
+      type: object
+      required:
+        - next
+        - updatedAt
+        - batchUUID
+      description: Пагинатор
+      properties:
+        next:
+          type: boolean
+          description: |
+            Есть ли ещё черновики:
+              - `false` — нет
+              - `true` — да
+        updatedAt:
+          type: string
+          format: date-time
+          description: Дата и время формирования последнего пакета в ответе
+        batchUUID:
+          type: string
+          format: UUID
+          description: ID последнего пакета в ответе
+    responseCardCreate:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          example: null
+          description: Данные ответа
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Описание ошибки
+          type: string
+        additionalErrors:
+          description: Дополнительные ошибки
+          oneOf:
+            - type: object
+              nullable: true
+              properties:
+                string:
+                  type: string
+              additionalProperties: false
+            - type: string
+              nullable: true
+            - type: object
+              properties:
+                error:
+                  type: string
+              required:
+                - error
+    requestMoveNmsImtConn:
+      type: object
+      required:
+        - targetIMT
+        - nmIDs
+      properties:
+        targetIMT:
+          description: Существующий у продавца `imtID`, под которым необходимо объединить карточки товаров
+          type: integer
+          example: 123
+        nmIDs:
+          description: '`nmID`, которые необходимо объединить (максимум 30)'
+          type: array
+          items:
+            type: integer
+          example:
+            - 837459235
+            - 828572090
+    requestMoveNmsImtDisconn:
+      type: object
+      required:
+        - nmIDs
+      properties:
+        nmIDs:
+          description: '`nmID`, которые необходимо разъединить (max 30)'
+          type: array
+          items:
+            type: integer
+          example:
+            - 837459235
+            - 828572090
+      additionalProperties: false
+    responseIncorrectDate:
+      type: object
+      properties:
+        error:
+          type: string
+      additionalProperties: false

@@ -1,0 +1,81 @@
+components:
+  schemas:
+    PromotionsGoodsList:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 162579635
+          description: Артикул WB
+        inAction:
+          type: boolean
+          example: true
+          description: |
+            Участвует в акции:
+              - `true` — да
+              - `false` — нет
+        price:
+          type: number
+          format: float
+          example: 1500
+          description: Текущая розничная цена
+        currencyCode:
+          type: string
+          example: RUB
+          description: Валюта в формате ISO 4217
+        planPrice:
+          type: number
+          format: float
+          example: 1000
+          description: Плановая цена (цена во время акции)
+        discount:
+          type: integer
+          example: 15
+          description: Текущая скидка
+        planDiscount:
+          type: integer
+          example: 34
+          description: Рекомендуемая скидка для участия в акции
+    Stats1:
+      type: array
+      items:
+        type: object
+        properties:
+          views:
+            description: Количество просмотров
+            type: integer
+          clicks:
+            description: Количество кликов
+            type: integer
+          atbs:
+            description: Количество добавлений товаров в корзину
+            type: integer
+          ctr:
+            description: |
+              CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках медиакампании
+            type: number
+    Stats2:
+      type: array
+      items:
+        type: object
+        properties:
+          views:
+            description: Количество просмотров
+            type: integer
+          clicks:
+            description: Количество кликов
+            type: integer
+          atbs:
+            description: Количество добавлений товаров в корзину
+            type: integer
+          orders:
+            description: Количество заказов
+            type: integer
+          cr:
+            description: |
+              CR(conversion rate) — отношение количества заказов к общему количеству посещений медиакампании
+            type: number
+          ctr:
+            description: |
+              CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках медиакампании
+            type: number

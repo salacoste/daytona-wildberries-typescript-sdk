@@ -1,0 +1,642 @@
+openapi: 3.0.1
+info:
+  title: 09-communications - Чат с покупателями
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://buyer-chat-api.wildberries.ru
+tags:
+  - name: Чат с покупателями
+    description: Чат с покупателями endpoints
+paths:
+  /api/v1/seller/chats:
+    get:
+      security:
+        - HeaderApiKey: []
+      summary: Список чатов
+      description: |
+        Метод возвращает список всех чатов продавца. По этим данным можно получить [события чатов](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get) или [отправить сообщение покупателю](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post).
+
+        В ответе добавлен объект `lastMessage` с информацией о последнем сообщении в чате:
+        - `text` — текст сообщения
+        - `addTimestamp` — время сообщения в формате Unix timestamp (миллисекунды)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 10 запросов | 1 секунда | 10 запросов |
+        </div>
+      tags:
+        - Чат с покупателями
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/events:
+    get:
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      summary: События чатов
+      description: |
+        Метод возвращает список событий всех [чатов с покупателями](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1chats/get).
+
+        Чтобы получить все события:
+          1. Сделайте первый запрос без параметра `next`.
+          2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 10 запросов | 1 секунда | 10 запросов |
+        </div>
+      tags:
+        - Чат с покупателями
+      parameters:
+        - name: next
+          in: query
+          description: |
+            Пагинатор. С какого момента получить следующий пакет данных.<br>Формат Unix timestamp **с миллисекундами**
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResponse'
+              example:
+                result:
+                  next: 1698045576000
+                  newestEventTime: '2023-10-23T07:19:36Z'
+                  oldestEventTime: '2023-10-23T05:02:20Z'
+                  totalEvents: 4
+                  events:
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: 55adee45-11f0-33b6-a847-6ccc7c78b2ec
+                      eventType: message
+                      isNewChat: true
+                      message:
+                        attachments:
+                          goodCard:
+                            date: '2023-10-18T11:46:01.528526Z'
+                            needRefund: false
+                            nmID: 12345678
+                            price: 500
+                            priceCurrency: RUB
+                            rid: 2fb52cd9e25e52538a5f05994e688ae5
+                            size: '0'
+                            statusID: 11
+                          files:
+                            - contentType: application/pdf
+                              date: '2023-10-23T08:02:19.594Z'
+                              downloadID: ecaeb056-a4ee-45b4-ae45-666811755d38
+                              name: Чек.pdf
+                              url: https://chat-basket-01.wbbasket.ru/vol0/part3265/fb25c9e9-cae8-52db-b68e-736c1896a3f5/pdf/0380e781-281e-41b5-8ae1-ce281f15a4a7.pdf
+                              size: 1046143
+                          images:
+                            - date: '2023-10-23T08:02:20.717Z'
+                              downloadID: fd6be4e3-5447-41d7-a1e6-b2d3e06c3b05
+                              url: https://chat-basket-01.wbbasket.ru/vol0/part2345/fb89c9e9-cae8-52db-b68e-736c1466a3f5/jpg/0823ff24-821e-40e9-8cdf-0a2b5fd86a32.jpg
+                        text: Здравствуйте! У меня вопрос по товару "Альбом, бренд Эконом, артикул 13480414, товар получен 18.10.2023"
+                      source: rusite
+                      addTimestamp: 1698037340000
+                      addTime: '2023-10-23T05:02:20Z'
+                      replySign: 1:1e265a58-a120-b178-008c-60af2460207c:66f136e919a8207e136757754f253189bfb9ae1ad9da9170c9d5c478626663908888c370216525bef51c0ca8d77952e05c9c17f9b63ab00374c5555b42efc07d
+                      sender: client
+                      clientID: '186132'
+                      clientName: Алёна
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: cef95d3c-0345-4dc9-b6df-4c8c57a176a9
+                      eventType: message
+                      message:
+                        text: Здравствуйте! Пришёл не тот цвет. Можно вернуть и заказать другой товар?
+                      source: rusite
+                      addTimestamp: 1698037387000
+                      addTime: '2023-10-23T05:03:07Z'
+                      sender: client
+                      clientID: '186132'
+                      clientName: Алёна
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: fd22e5bf-64fd-43f7-b3a0-ad29uu027f97
+                      eventType: message
+                      message:
+                        text: Здравствуйте. Да, сейчас оформим возврат.
+                      source: seller-public-api
+                      addTimestamp: 1698038124000
+                      addTime: '2023-10-23T05:15:24Z'
+                      sender: seller
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: cef95d3c-0345-4dc9-b6df-4c8c75a176a7
+                      eventType: message
+                      addTimestamp: 1698045576000
+                      addTime: '2023-10-23T07:19:36Z'
+                      sender: seller
+                errors: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: HTTP статус-код
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  error:
+                    type: string
+                    description: Текст ошибки
+              examples:
+                IncorrectNextParameter:
+                  description: Тип значения или его величина некорректны
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid number
+                    requestId: 62f59a4ce21064f20b1bbc28c85f38d8
+                    error: Invalid number
+                IncorrectNextParameter1:
+                  description: Недопустимое значение 0
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid value for "next"
+                    requestId: 62f59a4ce21064f20b1bbc28c85f38d8
+                    error: Invalid value for "next"
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/message:
+    post:
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      summary: Отправить сообщение
+      description: |
+        Метод отправляет сообщения в [чат с покупателем](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1chats/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 10 запросов | 1 секунда | 10 запросов |
+        </div>
+      tags:
+        - Чат с покупателями
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - replySign
+              type: object
+              properties:
+                replySign:
+                  maxLength: 255
+                  type: string
+                  description: |
+                    Подпись чата. Можно получить из [информации по чату](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1chats/get) или [данных события](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get), если в событии есть поле `"isNewChat": true`.
+                message:
+                  maxLength: 1000
+                  type: string
+                  description: Текст сообщения. Максимум 1000 символов.
+                file:
+                  type: array
+                  description: |
+                    Файлы, формат JPEG, PDF или PNG, максимальный размер — 5 Мб каждый. Максимальный суммарный размер файлов — 30 Мб.
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                result:
+                  addTime: 1712848270018
+                  chatID: 1:641b623c-5c0e-295b-db03-3d5b4d484c32
+                errors: []
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: HTTP статус-код
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  error:
+                    type: string
+                    description: Текст ошибки
+              examples:
+                InvalidSignature:
+                  description: Подпись некорректна
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid signature
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: Invalid signature
+                InvalidFileSize:
+                  description: Размер файла превышает допустимый
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: 'A24FA09844E: attachment too big. Max size: 5MiB'
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: 'A24FA09844E: attachment too big. Max size: 5MiB'
+                UnsupportedFilesType:
+                  description: Тип файла не поддерживается
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: '4A9F2544E29: "video_2023-07-25_10-54-09.mp4" has unsupported mime type'
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: '4A9F2544E29: "video_2023-07-25_10-54-09.mp4" has unsupported mime type'
+                InvalidMessage:
+                  description: Значение параметра message некорректно
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid value for "message"
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: Invalid value for "message"
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/download/{id}:
+    get:
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Чат с покупателями
+      summary: Получить файл из сообщения
+      description: |
+        Метод возвращает файл или изображение из сообщения по его ID.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 секунд | 10 запросов | 1 секунда | 10 запросов |
+        </div>
+      parameters:
+        - name: id
+          in: path
+          description: ID файла, см. значение поля `downloadID` в методе [События чатов](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: HTTP статус-код
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  error:
+                    type: string
+                    description: Текст ошибки
+              examples:
+                IncorrectNextParameter:
+                  description: Недействительный ID файла
+                  value:
+                    status: 400
+                    title: invalid fileID
+                    origin: proxy-chats
+                    detail: invalid fileID
+                    requestId: 62f59a4ce21064f20b1bbc28c85f38d8
+                    error: invalid fileID
+components:
+  schemas:
+    ChatsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chat'
+        errors:
+          description: Ошибки, если есть
+          nullable: true
+          type: array
+          example: null
+          items:
+            type: string
+    Chat:
+      type: object
+      properties:
+        chatID:
+          type: string
+          description: ID чата
+          example: 1:4019cd7d-cca8-4e90-8b11-f78afbea42e3
+        replySign:
+          type: string
+          description: |
+            Подпись чата. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post)
+          example: 1:4019cd7d-cca8-4e90-8b11-f78afbea42e3:54828159:bc3a4c04079f5956cff170b25e73523aa1208b5c0bd7aea1e520a64ae3e212b1ebae6712661f3afd27520fa785fa3042254e8a3100ce00644322054ae7cfcd0e
+        clientID:
+          type: string
+          description: ID покупателя
+          example: 123456
+        clientName:
+          type: string
+          description: Имя покупателя
+          example: Иван
+        goodCard:
+          $ref: '#/components/schemas/GoodCard'
+        lastMessage:
+          $ref: '#/components/schemas/LastMessage'
+    GoodCard:
+      type: object
+      description: Информация о заказе
+      properties:
+        date:
+          type: string
+          description: Дата заказа
+        needRefund:
+          deprecated: true
+          type: boolean
+          description: |
+            **Поле будет удалено 24 октября**.<br>
+            Используйте отдельный метод для получения [заявок покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get).
+            <br><br>
+
+            Запрошен ли возврат товара:
+            - `false` — не запрошен
+            - `true` — запрошен
+        nmID:
+          type: integer
+          description: Артикул WB
+        price:
+          type: integer
+          description: Фактическая цена с учетом всех скидок. Взимается с покупателя
+        priceCurrency:
+          type: string
+          description: Валюта
+        rid:
+          type: string
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: `rid` — это `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+        size:
+          type: string
+          description: Размер товара, соответствует `wbSize` в [карточке товара](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post)
+        statusID:
+          type: integer
+          description: |
+            Статус товара:
+            - `0` — Товар активный
+            - `1` — Товар оформлен
+            - `2` — Товар собирается
+            - `3` — Товар в пути
+            - `4` — Товар ожидает в ПВЗ
+            - `5` — Товар у курьера
+            - `10` — Товар в архиве
+            - `11` — Товар выкуплен
+            - `12` — Товар отменён
+            - `13` — Оформлен возврат
+            - `14` — Товар отменён (нет на складе)
+    LastMessage:
+      type: object
+      description: Информация о последнем сообщении в чате
+      properties:
+        text:
+          type: string
+          description: Текст сообщения
+          example: Можно заказать 100 штук?
+        addTimestamp:
+          type: integer
+          format: int64
+          description: Время сообщения в формате Unix timestamp (миллисекунды)
+          example: 1766138234889
+    EventsResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/EventsResult'
+        errors:
+          description: Ошибки, если есть
+          nullable: true
+          type: array
+          items:
+            type: string
+    EventsResult:
+      type: object
+      properties:
+        next:
+          type: integer
+          description: Пагинатор. Значение поля необходимо указать в запросе для получения следующего пакета данных.
+          format: Unix timestamp
+        newestEventTime:
+          description: Время новейшего события в ответе
+          type: string
+          format: RFC 3339
+        oldestEventTime:
+          description: Время старейшего события в ответе
+          type: string
+          format: RFC 3339
+        totalEvents:
+          type: integer
+          description: Количество событий
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    Event:
+      type: object
+      properties:
+        chatID:
+          type: string
+          description: ID чата
+        eventID:
+          type: string
+          description: ID события
+        eventType:
+          $ref: '#/components/schemas/EventType'
+        isNewChat:
+          type: boolean
+          description: |
+            Признак нового чата:
+            - `false` — чат не новый
+            - `true` — чат новый
+        message:
+          type: object
+          description: Данные сообщения
+          properties:
+            attachments:
+              $ref: '#/components/schemas/EventAttachments'
+            text:
+              type: string
+              description: Текст сообщения
+        source:
+          type: string
+          description: |
+            Источник отправки сообщения:
+            - `seller-portal` — портал продавцов
+            - `seller-public-api` — API Чата с покупателями
+            - `rusite` — портал покупателей
+            - `global` — портал `global.wildberries.ru`
+            - `ios` —  мобильная операционная система от **Apple**
+            - `android` — операционная система **Android** от **Google**
+        addTimestamp:
+          type: integer
+          description: Время появления события на сервере. Формат Unix timestamp
+        addTime:
+          type: string
+          description: Время появления события на сервере в UTC
+        replySign:
+          type: string
+          description: |
+            Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post)
+        sender:
+          $ref: '#/components/schemas/Sender'
+        clientID:
+          type: string
+          description: ID покупателя
+        clientName:
+          type: string
+          description: Имя покупателя
+    EventType:
+      type: string
+      description: |
+        Тип события:
+        - `message` — сообщение
+        - `refund` — возврат (устаревший)
+      enum:
+        - message
+    EventAttachments:
+      type: object
+      description: Вложения
+      properties:
+        goodCard:
+          $ref: '#/components/schemas/GoodCard'
+        files:
+          type: array
+          description: Файлы
+          items:
+            $ref: '#/components/schemas/File'
+        images:
+          type: array
+          description: Изображения
+          items:
+            $ref: '#/components/schemas/Image'
+    Sender:
+      type: string
+      description: |
+        Отправитель:
+        - `client` — покупатель
+        - `seller` — продавец
+        - `wb` — Wildberries
+      enum:
+        - client
+        - seller
+        - wb
+    MessageResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          description: Ошибки загрузки файлов, если есть
+          items:
+            type: string
+        result:
+          type: object
+          properties:
+            addTime:
+              type: integer
+              description: Время загрузки
+            chatID:
+              type: string
+              description: ID чата

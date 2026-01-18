@@ -1,0 +1,191 @@
+openapi: 3.0.1
+info:
+  title: 12-reports - Отчёт о возвратах и перемещении товаров
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+tags:
+  - name: Отчёт о возвратах и перемещении товаров
+    description: Отчёт о возвратах и перемещении товаров endpoints
+paths:
+  /api/v1/analytics/goods-return:
+    get:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Отчёт о возвратах и перемещении товаров
+      summary: Получить отчёт
+      description: |
+        Метод возвращает отчёт о [возвратах товаров продавцу](https://seller.wildberries.ru/analytics-reports/goods-return). <br><br>
+
+        Можно получить отчёт максимум за 31 день.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 1 запрос | 1 минута | 10 запросов |
+        </div>
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2024-08-13'
+          description: Дата начала отчётного периода
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2024-08-27'
+          description: Дата окончания отчётного периода
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    description: Отчёт
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        barcode:
+                          type: string
+                          example: '1680063403480'
+                          description: Баркод
+                        brand:
+                          type: string
+                          example: dub
+                          description: Бренд
+                        completedDt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: '2025-03-31T11:33:53'
+                          description: Дата и время выдачи возврата продавцу
+                        dstOfficeAddress:
+                          type: string
+                          example: Жуковский Улица Маяковского 19
+                          description: Адрес ПВЗ выдачи возврата
+                        dstOfficeId:
+                          type: integer
+                          example: 310105
+                          description: ID ПВЗ выдачи возврата
+                        expiredDt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: '2025-03-31T11:33:53'
+                          description: Дата и время истечения срока хранения возврата
+                        isStatusActive:
+                          type: integer
+                          example: 0
+                          description: |
+                            Тип статуса возврата:
+
+                              * `0` — архивный
+                              * `1` — активный
+                          enum:
+                            - 0
+                            - 1
+                        nmId:
+                          type: integer
+                          example: 12862181
+                          description: Артикул WB
+                        orderDt:
+                          type: string
+                          format: date
+                          example: '2024-08-26'
+                          description: Дата заказа на возврат
+                        orderId:
+                          type: integer
+                          example: 2034240826
+                          description: Номер сборочного задания
+                        readyToReturnDt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: '2025-01-31T08:33:50'
+                          description: Дата и время готовности возврата к выдаче
+                        reason:
+                          type: string
+                          example: Цвет
+                          description: Причина возврата
+                        returnType:
+                          type: string
+                          example: Возврат заблокированного товара
+                          description: Тип возврата
+                        shkId:
+                          type: integer
+                          example: 23411783472
+                          description: Штрихкод
+                        srid:
+                          type: string
+                          example: ad3817664d3046c5a8d55054d8be96d6
+                          description: Уникальный ID заказа на возврат
+                        status:
+                          type: string
+                          example: В пути в пвз
+                          description: Статус возврата
+                        stickerId:
+                          type: string
+                          example: '33811984302'
+                          description: Стикер заказа на возврат
+                        subjectName:
+                          type: string
+                          example: Багажные бирки
+                          description: Предмет
+                        techSize:
+                          type: string
+                          example: '0'
+                          description: Размер
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    4xxResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        title:
+          type: string
+          description: Заголовок ошибки

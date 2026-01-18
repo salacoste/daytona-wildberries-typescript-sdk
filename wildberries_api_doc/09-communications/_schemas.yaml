@@ -1,0 +1,37 @@
+components:
+  schemas:
+    File:
+      type: object
+      properties:
+        contentType:
+          type: string
+          description: Тип файла
+        date:
+          type: string
+          description: Дата загрузки файла
+        downloadID:
+          description: ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
+          type: string
+        name:
+          type: string
+          description: Название файла
+        url:
+          type: string
+          description: URL для получения файла
+          nullable: false
+        size:
+          type: integer
+          description: Размер файла в байтах
+    Image:
+      type: object
+      description: Изображение
+      properties:
+        date:
+          type: string
+          description: Дата загрузки изображения
+        downloadID:
+          description: ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
+          type: string
+        url:
+          type: string
+          description: URL для получения изображения
