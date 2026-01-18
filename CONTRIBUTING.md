@@ -6,6 +6,7 @@ First off, thank you for considering contributing to the Wildberries API TypeScr
 
 - [Code of Conduct](#code-of-conduct)
 - [How Can I Contribute?](#how-can-i-contribute)
+  - [Updating Project Status](#updating-project-status)
 - [Development Setup](#development-setup)
 - [Coding Standards](#coding-standards)
 - [Testing Requirements](#testing-requirements)
@@ -72,6 +73,63 @@ npm run validate:links
 ```
 
 This script checks all markdown files for broken links (both internal and external). Fix any broken links before submitting your PR.
+
+### 📊 Updating Project Status
+
+**IMPORTANT:** When working on epics or stories, you **MUST update** the project status documentation.
+
+**Project Status Summary (`PROJECT_STATUS_SUMMARY.md`)**
+
+This file contains the comprehensive status of all epics, stories, and implementation progress. It is automatically generated but requires manual updates when:
+
+- ✅ **Completing** an epic or story
+- 📝 **Creating** a new epic or story
+- 🔄 **Changing** the status of an epic (Draft → In Progress → Completed)
+- 🧪 **Adding** or **removing** tests
+- 📦 **Implementing** new modules or endpoints
+
+**When to Update:**
+
+1. **Before marking a story as DONE** — Update the epic status and completion percentage
+2. **After creating a new epic** — Add it to the summary with initial status
+3. **When module implementation changes** — Update the module implementation status table
+4. **After running test suites** — Update test coverage metrics
+
+**How to Update:**
+
+```bash
+# The summary is located at:
+docs/PROJECT_STATUS_SUMMARY.md
+
+# Key sections to update:
+# - Epic Status Details (for each epic)
+# - Module Implementation Status table
+# - Test Suite Status section
+# - Build & Performance Metrics
+# - Next Steps & Priorities
+```
+
+**Best Practices:**
+
+- 📖 **Keep percentages accurate** — Update completion % when stories finish
+- 🔄 **Update status badges** — Change 📝 Draft → 🔄 In Progress → ✅ Completed
+- 📊 **Sync with epic files** — Ensure PROJECT_STATUS_SUMMARY matches epic file statuses
+- 📅 **Add timestamp** — Update "Last Updated" date when making changes
+
+**Example Status Update:**
+
+```markdown
+## Epic 10: Web API Module
+
+**Status:** 🔄 IN PROGRESS (was 📝 DRAFT)
+**Completion:** 25% (was 0%)
+
+**Changes:**
+- ✅ Story 10.1: Web API Foundation completed
+- 🔄 Story 10.2: Gem Subscription Check in progress
+```
+
+> **⚠️ REQUIRED:** All pull requests that change epic/story status MUST include updates to `PROJECT_STATUS_SUMMARY.md`. PRs missing this update will be flagged for review.
 
 ### 🛠️ Code Contributions
 

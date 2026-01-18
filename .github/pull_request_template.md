@@ -9,6 +9,24 @@
 Fixes #
 Relates to #
 
+## 📊 Project Status Update
+
+<!-- ⚠️ REQUIRED for epic/story changes -->
+
+**Does this PR affect any epic or story status?**
+
+- [ ] Yes - I have updated `docs/PROJECT_STATUS_SUMMARY.md`
+- [ ] No - This PR does not affect epic/story status
+
+**If yes, please specify what changed:**
+
+- **Epic/Story ID:** (e.g., Epic 10, Story 10.1)
+- **Previous Status:** (e.g., 📝 Draft)
+- **New Status:** (e.g., 🔄 In Progress)
+- **Changes Made:** (brief description of what was updated in PROJECT_STATUS_SUMMARY.md)
+
+> **Note:** All PRs that modify epic/story status, complete stories, or create new epics MUST include corresponding updates to `docs/PROJECT_STATUS_SUMMARY.md`. See [CONTRIBUTING.md](CONTRIBUTING.md#updating-project-status) for details.
+
 ## Type of Change
 
 <!-- Mark relevant items with [x] -->
