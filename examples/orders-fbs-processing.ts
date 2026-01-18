@@ -84,7 +84,8 @@ async function processFBSOrders() {
   try {
     // Step 1: Get all new orders
     console.log('Step 1: Fetching new FBS orders...');
-    const newOrders = await sdk.ordersFBS.getNewOrders();
+    const newOrdersResponse = await sdk.ordersFBS.getOrdersNew();
+    const newOrders = newOrdersResponse.orders ?? [];
     console.log(`Found ${newOrders.length} new orders awaiting processing\n`);
 
     if (newOrders.length > 0) {
@@ -107,18 +108,18 @@ async function processFBSOrders() {
     let pageCount = 0;
 
     do {
-      const response = await sdk.ordersFBS.getOrders({
+      const response = await sdk.ordersFBS.orders({
         dateFrom: sevenDaysAgo,
         dateTo: now,
         limit: 100,
         next: nextCursor,
       });
 
-      allOrders.push(...response.orders);
-      nextCursor = response.next;
+      allOrders.push(...(response.orders ?? []));
+      nextCursor = response.next ?? 0;
       pageCount++;
 
-      console.log(`  Page ${pageCount}: ${response.orders.length} orders`);
+      console.log(`  Page ${pageCount}: ${(response.orders ?? []).length} orders`);
     } while (nextCursor > 0);
 
     console.log(`Total orders retrieved: ${allOrders.length}\n`);
@@ -129,7 +130,8 @@ async function processFBSOrders() {
 
       // Get statuses for first 5 orders
       const orderIds = allOrders.slice(0, Math.min(5, allOrders.length)).map((o) => o.id);
-      const statuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
+      const statusResponse = await sdk.ordersFBS.createOrdersStatu({ orders: orderIds });
+      const statuses = statusResponse.orders ?? [];
 
       console.log(`Checked ${statuses.length} order statuses:\n`);
 
@@ -144,7 +146,8 @@ async function processFBSOrders() {
     console.log('\nStep 4: Order status breakdown...');
     if (allOrders.length > 0) {
       const orderIds = allOrders.map((o) => o.id);
-      const statuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
+      const statusResponse2 = await sdk.ordersFBS.createOrdersStatu({ orders: orderIds });
+      const statuses = statusResponse2.orders ?? [];
 
       const statusBreakdown = statuses.reduce(
         (acc, status) => {

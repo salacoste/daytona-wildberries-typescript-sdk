@@ -21,7 +21,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getPassesOffices();
+  const result = await sdk.ordersFBS.getPassesOffices();
   console.log(result);
    */
   async getPassesOffices(): Promise<PassOffice[]> {
@@ -39,7 +39,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.passes();
+  const result = await sdk.ordersFBS.passes();
   console.log(result);
    */
   async passes(): Promise<Pass[]> {
@@ -58,7 +58,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createPass({});
+  const result = await sdk.ordersFBS.createPass({});
   console.log(result);
    */
   async createPass(data: { firstName: string; lastName: string; carModel: string; carNumber: string; officeId: number }): Promise<{ id?: number }> {
@@ -78,7 +78,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updatePass('passId-value', {});
+  const result = await sdk.ordersFBS.updatePass('passId-value', {});
    */
   async updatePass(passId: number, data: { firstName: string; lastName: string; carModel: string; carNumber: string; officeId: number }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`, data);
@@ -96,7 +96,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.deletePass('passId-value');
+  const result = await sdk.ordersFBS.deletePass('passId-value');
    */
   async deletePass(passId: number): Promise<void> {
     return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`);
@@ -113,7 +113,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getOrdersNew();
+  const result = await sdk.ordersFBS.getOrdersNew();
   console.log(result);
    */
   async getOrdersNew(): Promise<{ orders?: OrderNew[] }> {
@@ -132,7 +132,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.orders({});
+  const result = await sdk.ordersFBS.orders({});
   console.log(result);
    */
   async orders(options?: { limit: number; next: number; dateFrom?: number; dateTo?: number }): Promise<{ next?: Next; orders?: Order[] }> {
@@ -151,7 +151,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createOrdersStatu({});
+  const result = await sdk.ordersFBS.createOrdersStatu({});
   console.log(result);
    */
   async createOrdersStatu(data?: { orders: number[] }): Promise<{ orders?: { id?: number; supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel'; wbStatus?: 'waiting' | 'sorted' | 'sold' | 'canceled' | 'canceled_by_client' | 'declined_by_client' | 'defect' | 'ready_for_pickup' | 'postponed_delivery' }[] }> {
@@ -169,7 +169,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getOrdersReshipment();
+  const result = await sdk.ordersFBS.getOrdersReshipment();
   console.log(result);
    */
   async getOrdersReshipment(): Promise<{ orders?: { supplyID?: unknown; orderID?: unknown }[] }> {
@@ -188,7 +188,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateOrdersCancel('orderId-value');
+  const result = await sdk.ordersFBS.updateOrdersCancel('orderId-value');
    */
   async updateOrdersCancel(orderId: number): Promise<void> {
     return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/cancel`, undefined);
@@ -207,7 +207,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createOrdersSticker({}, {});
+  const result = await sdk.ordersFBS.createOrdersSticker({}, {});
   console.log(result);
    */
   async createOrdersSticker(options?: { type: 'svg' | 'zplv' | 'zplh' | 'png'; width: 58 | 40; height: 40 | 30 }, data?: { orders?: number[] }): Promise<{ stickers?: { orderId?: number; partA?: string; partB?: string; barcode?: string; file?: string }[] }> {
@@ -226,7 +226,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getOrdersMeta('orderId-value');
+  const result = await sdk.ordersFBS.getOrdersMeta('orderId-value');
   console.log(result);
    */
   async getOrdersMeta(orderId: number): Promise<{ meta?: Meta }> {
@@ -246,7 +246,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.deleteOrdersMeta('orderId-value', {});
+  const result = await sdk.ordersFBS.deleteOrdersMeta('orderId-value', {});
    */
   async deleteOrdersMeta(orderId: number, options?: { key?: string }): Promise<void> {
     return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`, { params: options });
@@ -265,7 +265,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateMetaSgtin('orderId-value', {});
+  const result = await sdk.ordersFBS.updateMetaSgtin('orderId-value', {});
    */
   async updateMetaSgtin(orderId: number, data?: { sgtins?: string[] }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/sgtin`, data);
@@ -284,7 +284,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateMetaUin('orderId-value', {});
+  const result = await sdk.ordersFBS.updateMetaUin('orderId-value', {});
    */
   async updateMetaUin(orderId: number, data?: { uin: string }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/uin`, data);
@@ -303,7 +303,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateMetaImei('orderId-value', {});
+  const result = await sdk.ordersFBS.updateMetaImei('orderId-value', {});
    */
   async updateMetaImei(orderId: number, data?: { imei: string }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/imei`, data);
@@ -322,7 +322,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateMetaGtin('orderId-value', {});
+  const result = await sdk.ordersFBS.updateMetaGtin('orderId-value', {});
    */
   async updateMetaGtin(orderId: number, data?: { gtin: string }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/gtin`, data);
@@ -341,7 +341,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateMetaExpiration('orderId-value', {});
+  const result = await sdk.ordersFBS.updateMetaExpiration('orderId-value', {});
    */
   async updateMetaExpiration(orderId: number, data?: { expiration?: string }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/expiration`, data);
@@ -369,7 +369,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.setCustomsDeclaration(123456, { customsDeclaration: '10129050/010120/0001234' });
+  const result = await sdk.ordersFBS.setCustomsDeclaration(123456, { customsDeclaration: '10129050/010120/0001234' });
    */
   async setCustomsDeclaration(orderId: number, data: { customsDeclaration: string }): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/customs-declaration`, data, { rateLimitKey: 'orders-fbs.putOrdersMetaCustomsDeclaration' });
@@ -387,7 +387,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createStickersCrossBorder({});
+  const result = await sdk.ordersFBS.createStickersCrossBorder({});
   console.log(result);
    */
   async createStickersCrossBorder(data?: { orders?: number[] }): Promise<{ stickers?: { file?: string; orderId?: number }[] }> {
@@ -406,7 +406,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createOrdersExternalSticker({});
+  const result = await sdk.ordersFBS.createOrdersExternalSticker({});
   console.log(result);
    */
   async createOrdersExternalSticker(data?: { orders?: number[] }): Promise<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }> {
@@ -425,7 +425,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createStatusHistory({});
+  const result = await sdk.ordersFBS.createStatusHistory({});
   console.log(result);
    */
   async createStatusHistory(data?: { orders?: number[] }): Promise<{ orders?: { deliveryDate?: string; statuses?: { date?: string; code?: string }[]; orderID?: number }[] }> {
@@ -444,7 +444,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createOrdersClient({});
+  const result = await sdk.ordersFBS.createOrdersClient({});
   console.log(result);
    */
   async createOrdersClient(data: OrdersRequestAPI): Promise<CrossborderTurkeyClientInfoResp> {
@@ -463,7 +463,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.supplies({});
+  const result = await sdk.ordersFBS.supplies({});
   console.log(result);
    */
   async supplies(options?: { limit: number; next: number }): Promise<{ next?: Next; supplies?: Supply[] }> {
@@ -482,7 +482,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSupply({});
+  const result = await sdk.ordersFBS.createSupply({});
   console.log(result);
    */
   async createSupply(data: { name?: string }): Promise<{ id?: string }> {
@@ -502,7 +502,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateSuppliesOrder('supplyId-value', 'orderId-value');
+  const result = await sdk.ordersFBS.updateSuppliesOrder('supplyId-value', 'orderId-value');
    */
   async updateSuppliesOrder(supplyId: string, orderId: number): Promise<void> {
     return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders/${orderId}`, undefined);
@@ -520,7 +520,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupply('supplyId-value');
+  const result = await sdk.ordersFBS.getSupply('supplyId-value');
   console.log(result);
    */
   async getSupply(supplyId: string): Promise<Supply> {
@@ -539,7 +539,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.deleteSupply('supplyId-value');
+  const result = await sdk.ordersFBS.deleteSupply('supplyId-value');
    */
   async deleteSupply(supplyId: string): Promise<void> {
     return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}`);
@@ -557,7 +557,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSuppliesOrder('supplyId-value');
+  const result = await sdk.ordersFBS.getSuppliesOrder('supplyId-value');
   console.log(result);
    */
   async getSuppliesOrder(supplyId: string): Promise<{ orders?: SupplyOrder[] }> {
@@ -576,7 +576,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateSuppliesDeliver('supplyId-value');
+  const result = await sdk.ordersFBS.updateSuppliesDeliver('supplyId-value');
    */
   async updateSuppliesDeliver(supplyId: string): Promise<void> {
     return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/deliver`, undefined);
@@ -595,7 +595,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSuppliesBarcode('supplyId-value', {});
+  const result = await sdk.ordersFBS.getSuppliesBarcode('supplyId-value', {});
   console.log(result);
    */
   async getSuppliesBarcode(supplyId: string, options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' }): Promise<{ barcode?: string; file?: string }> {
@@ -614,7 +614,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSuppliesTrbx('supplyId-value');
+  const result = await sdk.ordersFBS.getSuppliesTrbx('supplyId-value');
   console.log(result);
    */
   async getSuppliesTrbx(supplyId: string): Promise<{ trbxes?: SupplyTrbx[] }> {
@@ -634,7 +634,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSuppliesTrbx('supplyId-value', {});
+  const result = await sdk.ordersFBS.createSuppliesTrbx('supplyId-value', {});
   console.log(result);
    */
   async createSuppliesTrbx(supplyId: string, data?: { amount: number }): Promise<{ trbxIds?: string[] }> {
@@ -654,7 +654,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.deleteSuppliesTrbx('supplyId-value', {});
+  const result = await sdk.ordersFBS.deleteSuppliesTrbx('supplyId-value', {});
    */
   async deleteSuppliesTrbx(supplyId: string, data?: { trbxIds: string[] }): Promise<void> {
     return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`, data);
@@ -674,7 +674,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createTrbxSticker('supplyId-value', {}, {});
+  const result = await sdk.ordersFBS.createTrbxSticker('supplyId-value', {}, {});
   console.log(result);
    */
   async createTrbxSticker(supplyId: string, options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' }, data?: { trbxIds: string[] }): Promise<{ stickers?: TrbxStickers[] }> {

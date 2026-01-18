@@ -123,9 +123,9 @@ async function main() {
     const sellerInfo = await sdk.general.sellerInfo();
 
     console.log('✅ Seller info retrieved:');
-    console.log(`   Supplier ID: ${sellerInfo.supplierID}`);
+    console.log(`   Seller ID: ${sellerInfo.sid}`);
     console.log(`   Name: ${sellerInfo.name}`);
-    console.log(`   INN: ${sellerInfo.inn}\n`);
+    console.log(`   Trade Mark: ${sellerInfo.tradeMark ?? 'N/A'}\n`);
 
     // ============================================================================
     // Step 4: Get latest news (with optional parameters)
