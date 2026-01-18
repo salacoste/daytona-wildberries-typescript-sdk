@@ -50,7 +50,7 @@ Quick solutions for common Wildberries SDK issues. This guide helps you diagnose
 
 Quick lookup table for common operations and their actual SDK methods. Copy these exact method names to avoid `TypeError: method is not a function` errors.
 
-**✅ Verified Against**: SDK v0.1.0 | **Last Updated**: 2024-10-27 | **Validation**: All methods cross-checked against actual implementation
+**✅ Verified Against**: SDK v2.5.0 | **Last Updated**: 2026-01-18 | **Validation**: All methods cross-checked against actual implementation
 
 ### Products & Catalog
 
@@ -58,147 +58,158 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| List product cards | `sdk.products.createCardsList({ settings })` | **Main method** - Returns cards with cursor pagination. See [detailed guide](/guides/working-with-product-cards) |
-| Create new product | `sdk.products.createProduct(data)` | Single product creation |
-| Update product | `sdk.products.updateProduct(data[])` | Accepts array of updates |
-| Delete product | `sdk.products.deleteProduct(nmIDs[])` | Permanently removes products |
-| Get product details | `sdk.products.getProductCard(nmID)` | Returns full product card |
+| List product cards | `sdk.products.createCardsList({ settings })` | **Main method** - Returns cards with cursor pagination |
+| Create new product | `sdk.products.createCardsUpload(data[])` | Accepts array of product cards |
+| Update product | `sdk.products.createCardsUpdate(data[])` | Accepts array of updates |
+| Delete to trash | `sdk.products.createDeleteTrash({ nmIDs })` | Moves products to trash |
+| Recover from trash | `sdk.products.createCardsRecover({ nmIDs })` | Restores products from trash |
 | Get parent categories | `sdk.products.getParentAll({ locale? })` | Top-level categories like "Electronics" |
 | Get subcategories | `sdk.products.getObjectAll({ parentID })` | Categories within parent |
 | Get category attributes | `sdk.products.getObjectCharc(subjectId)` | Required/optional fields |
-| Upload product images | `sdk.products.uploadMediaFile(nmID, file, photoNumber)` | Single image upload |
-| Update pricing | `sdk.products.updatePricing(updates[])` | Bulk price updates |
-| Get pricing info | `sdk.products.getPricing(nmID)` | Current prices |
-| Update stock levels | `sdk.products.updateStockLevels(warehouseId, updates[])` | Inventory updates |
-| Get stock info | `sdk.products.getStock(warehouseId, skus[])` | Current stock levels |
+| Upload media file | `sdk.products.createMediaFile()` | Initiate media upload |
+| Save media | `sdk.products.createMediaSave({ nmId, data })` | Save uploaded media |
+| Get stock | `sdk.products.createStock(warehouseId, { skus })` | Get stock for SKUs |
+| Update stock | `sdk.products.updateStock(warehouseId, { stocks })` | Update stock levels |
+| Delete stock | `sdk.products.deleteStock(warehouseId, { skus })` | Remove stock entries |
+| Get warehouses | `sdk.products.warehouses()` | List seller warehouses |
+| Get offices | `sdk.products.offices()` | List available offices |
+| Get cards limits | `sdk.products.getCardsLimits()` | Check card creation limits |
+| Generate barcodes | `sdk.products.createContentBarcode({ count })` | Generate new barcodes |
 
 ### Orders (FBS - Fulfillment by Seller)
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get new orders | `sdk.ordersFBS.getNewOrders()` | Orders awaiting processing |
-| List all orders | `sdk.ordersFBS.getOrders(filters?)` | Paginated with date filters |
-| Get order statuses | `sdk.ordersFBS.getOrderStatuses(orderIds[])` | Batch status check |
-| Create supply | `sdk.ordersFBS.createSupply(name)` | Start new shipment |
-| Get supplies | `sdk.ordersFBS.getSupplies(filters?)` | List all supplies |
-| Add order to supply | `sdk.ordersFBS.addOrderToSupply(supplyId, orderId)` | Group orders |
-| Get shipping stickers | `sdk.ordersFBS.getOrderStickers({ orderIds[], type, width, height })` | Print labels |
-| Deliver supply | `sdk.ordersFBS.deliverSupply(supplyId)` | Mark as shipped |
-| Cancel order | `sdk.ordersFBS.cancelOrder(orderId)` | Cancel before shipment |
-
-### Orders (FBW - Fulfillment by Wildberries)
-
-| Operation | Actual SDK Method | Notes |
-|-----------|-------------------|-------|
-| Get warehouses | `sdk.ordersFBW.getWarehouses()` | Available WB warehouses |
-| Check acceptance coefficients | `sdk.ordersFBW.getAcceptanceCoefficients()` | Next 14 days |
-| Get acceptance options | `sdk.ordersFBW.getAcceptanceOptions(goods[])` | Warehouse recommendations |
-| Get supply details | `sdk.ordersFBW.getSupplyDetails(supplyId)` | FBW supply info |
+| Get new orders | `sdk.ordersFBS.getOrdersNew()` | Orders awaiting processing |
+| List all orders | `sdk.ordersFBS.orders({ limit, next, dateFrom?, dateTo? })` | Paginated with date filters |
+| Get order statuses | `sdk.ordersFBS.createOrdersStatu({ orders: number[] })` | Batch status check |
+| Create supply | `sdk.ordersFBS.createSupply({ name })` | Start new shipment |
+| Get supplies | `sdk.ordersFBS.supplies({ limit, next })` | List all supplies |
+| Add order to supply | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | Add order to supply |
+| Get order stickers | `sdk.ordersFBS.createOrdersSticker({ type, width, height }, { orders })` | Print labels |
+| Deliver supply | `sdk.ordersFBS.updateSuppliesDeliver(supplyId)` | Mark as shipped |
+| Cancel order | `sdk.ordersFBS.updateOrdersCancel(orderId)` | Cancel before shipment |
+| Get supply | `sdk.ordersFBS.getSupply(supplyId)` | Get supply details |
+| Delete supply | `sdk.ordersFBS.deleteSupply(supplyId)` | Delete supply |
+| Get supply orders | `sdk.ordersFBS.getSuppliesOrder(supplyId)` | Orders in a supply |
+| Get supply barcode | `sdk.ordersFBS.getSuppliesBarcode(supplyId, { type })` | Supply barcode |
+| Get passes | `sdk.ordersFBS.passes()` | List passes |
+| Create pass | `sdk.ordersFBS.createPass(data)` | Create delivery pass |
+| Get reshipment orders | `sdk.ordersFBS.getOrdersReshipment()` | Orders for reshipment |
 
 ### Finances
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get account balance | `sdk.finances.getBalance()` | Current balance |
-| Get transactions | `sdk.finances.getTransactions(filters)` | Transaction history |
-| Get transaction details | `sdk.finances.getTransactionDetail(id)` | Single transaction |
-| List financial documents | `sdk.finances.getDocuments(filters?)` | Invoices, reports |
-| Download document | `sdk.finances.downloadDocument(request)` | Get PDF/Excel |
-| Get payouts | `sdk.finances.getPayouts(filters)` | Payout history |
-| Get payout details | `sdk.finances.getPayoutDetail(id)` | Single payout info |
+| Get account balance | `sdk.finances.getAccountBalance()` | Current balance |
+| Get report by period | `sdk.finances.getSupplierReportdetailbyperiod({ dateFrom, dateTo, limit?, rrdid?, period? })` | Detailed report |
+| Get document categories | `sdk.finances.getDocumentsCategories({ locale? })` | List document categories |
+| List documents | `sdk.finances.getDocumentsList({ locale?, beginTime?, endTime?, ... })` | Invoices, reports |
+| Download document | `sdk.finances.getDocumentsDownload({ serviceName, extension })` | Get PDF/Excel |
+| Download all docs | `sdk.finances.createDownloadAll(data)` | Bulk download |
 
 ### Analytics
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get sales funnel | `sdk.analytics.getSalesFunnel(period)` | Conversion metrics |
-| Get product performance | `sdk.analytics.getProductPerformance(nmIDs[], period)` | Multi-product analysis |
-| Get product statistics | `sdk.analytics.getProductStatistics(request)` | Detailed metrics |
-| Get historical data | `sdk.analytics.getHistoricalStatistics(request)` | Time-series data |
-| Get search queries | `sdk.analytics.getSearchQueries(period)` | Search analytics |
-| Get category performance | `sdk.analytics.getCategoryPerformance(period)` | Category-level data |
-| Get stock history | `sdk.analytics.getStockHistory(nmID, period)` | Stock changes over time |
-| Generate CSV report | `sdk.analytics.generateCSVReport(request)` | Async report generation |
-| Get CSV report status | `sdk.analytics.getCSVReportStatus(reportId)` | Check completion |
-| Download CSV report | `sdk.analytics.downloadCSVReport(reportId)` | Get finished report |
+| Get product detail report | `sdk.analytics.createNmReportDetail(data)` | Detailed product metrics |
+| Get detail history | `sdk.analytics.createDetailHistory(data)` | Historical detail data |
+| Get grouped history | `sdk.analytics.createGroupedHistory(data)` | Grouped historical data |
+| Get report downloads | `sdk.analytics.getNmReportDownloads({ filter? })` | List available reports |
+| Create report download | `sdk.analytics.createNmReportDownload(data)` | Async report generation |
+| Retry report download | `sdk.analytics.createDownloadsRetry(data)` | Retry failed download |
+| Get download file | `sdk.analytics.getDownloadsFile(downloadId)` | Get completed report |
+| Search report | `sdk.analytics.createSearchReportReport(data)` | Search analytics |
+| Create table group | `sdk.analytics.createTableGroup(data)` | Grouped table data |
+| Create table detail | `sdk.analytics.createTableDetail(data)` | Detailed table data |
+| Product search texts | `sdk.analytics.createProductSearchText(data)` | Product search queries |
+| Product orders | `sdk.analytics.createProductOrder(data)` | Product order analytics |
 
 ### Reports
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get inbound shipments | `sdk.reports.getIncomes(dateFrom)` | Goods received by WB |
-| Get stock levels | `sdk.reports.getStocks(dateFrom)` | Current inventory |
-| Get orders report | `sdk.reports.getOrders(dateFrom)` | All orders |
-| Get sales report | `sdk.reports.getSales(dateFrom)` | Completed sales |
-| Create warehouse report | `sdk.reports.createWarehouseRemainsReport(params)` | Async generation |
-| Check report status | `sdk.reports.checkReportStatus(taskId, reportType)` | Poll for completion |
-| Download report | `sdk.reports.downloadReport(taskId, reportType)` | Get completed report |
+| Get inbound shipments | `sdk.reports.getSupplierIncomes({ dateFrom })` | Goods received by WB |
+| Get stock levels | `sdk.reports.getSupplierStocks({ dateFrom })` | Current inventory |
+| Get orders report | `sdk.reports.getSupplierOrders({ dateFrom, flag? })` | All orders |
+| Get sales report | `sdk.reports.getSupplierSales({ dateFrom, flag? })` | Completed sales |
+| Create warehouse report | `sdk.reports.warehouseRemains({ locale?, groupByBrand?, ... })` | Async generation |
+| Check report status | `sdk.reports.getTasksStatu(taskId)` | Poll for completion |
+| Download report | `sdk.reports.getTasksDownload(taskId)` | Get completed report |
+| Paid storage report | `sdk.reports.paidStorage({ dateFrom, dateTo })` | Create paid storage report |
+| Check paid storage status | `sdk.reports.getTasksStatu3(taskId)` | Check paid storage report |
+| Download paid storage | `sdk.reports.getTasksDownload3(taskId)` | Download paid storage report |
+| Acceptance report | `sdk.reports.acceptanceReport({ dateFrom, dateTo })` | Acceptance report |
+| Region sale | `sdk.reports.getAnalyticsRegionSale({ dateFrom, dateTo })` | Regional sales |
 
 ### Communications
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get all chats | `sdk.communications.getChats()` | Customer conversations |
-| Get chat events | `sdk.communications.getEvents(replySign)` | Messages in chat |
-| Send message | `sdk.communications.sendMessage(replySign, text, attachments?)` | Reply to customer |
-| Get questions | `sdk.communications.getQuestions(filters)` | Product Q&A |
-| Answer question | `sdk.communications.answerQuestion(questionId, answer)` | Respond to Q&A |
-| Get reviews | `sdk.communications.getReviews(filters)` | Customer reviews |
-| Respond to review | `sdk.communications.respondToReview(reviewId, response)` | Reply to review |
+| Get seller chats | `sdk.communications.getSellerChats()` | Customer conversations |
+| Get chat events | `sdk.communications.getSellerEvents({ next? })` | Messages in chat |
+| Send message | `sdk.communications.createSellerMessage()` | Reply to customer |
+| Get questions | `sdk.communications.questions({ isAnswered, take, skip, ... })` | Product Q&A list |
+| Get single question | `sdk.communications.question({ id })` | Single question details |
+| Update question | `sdk.communications.updateQuestion(data)` | Answer/view question |
+| Get feedbacks | `sdk.communications.feedbacks({ isAnswered, take, skip, ... })` | Customer reviews |
+| Create feedback answer | `sdk.communications.createFeedbacksAnswer({ id, text })` | Reply to review |
+| Update feedback answer | `sdk.communications.updateFeedbacksAnswer({ id, text })` | Edit reply |
+| Get feedback valuations | `sdk.communications.supplierValuations()` | Rating categories |
+| Get questions count | `sdk.communications.getQuestionsCount({ dateFrom?, dateTo?, isAnswered? })` | Question statistics |
+| Get unanswered count | `sdk.communications.getQuestionsCountUnanswered()` | Unanswered questions |
+| Check new feedback/questions | `sdk.communications.newFeedbacksQuestions()` | Check for new items |
+| Templates | `sdk.communications.templates({ templateType })` | Get response templates |
+| Create template | `sdk.communications.createTemplate({ name, templateType, text })` | New template |
 
 ### Promotion
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get campaign count | `sdk.promotion.getPromotionCount()` | Active campaigns summary |
-| Create campaign | `sdk.promotion.createSeacatSaveAd(data)` | New ad campaign |
-| Get campaign info | `sdk.promotion.getPromotionInfo(campaignId)` | Campaign details |
-| Pause campaign | `sdk.promotion.pauseCampaign(campaignId)` | Stop campaign |
-| Resume campaign | `sdk.promotion.resumeCampaign(campaignId)` | Restart campaign |
-| Update bids | `sdk.promotion.updateBids(campaignId, bids[])` | Modify auction bids |
+| Get promotion count | `sdk.promotion.getPromotionCount()` | Active campaigns summary |
+| Create ad campaign | `sdk.promotion.createPromotionAdvert(data)` | New ad campaign |
+| Get auction adverts | `sdk.promotion.getAuctionAdverts({ type? })` | Auction campaigns |
+| Get adv balance | `sdk.promotion.getAdvBalance()` | Advertising balance |
+| Get adv budget | `sdk.promotion.getAdvBudget(advertId)` | Campaign budget |
+| Deposit budget | `sdk.promotion.createAdvBudgetDeposit(advertId, data)` | Add funds to campaign |
+| Pause advert | `sdk.promotion.getAdvAdvertStoppar(advertId)` | Pause campaign |
+| Start advert | `sdk.promotion.getAdvAdvertStart(advertId)` | Resume campaign |
+| Get full stats | `sdk.promotion.createFullstat(data)` | Full statistics |
+| Get full stats by subject | `sdk.promotion.createFullstatBySubjects(data)` | Stats by subject |
+| Get campaign words | `sdk.promotion.getAdvWords(advertId)` | Campaign keywords |
+| Update campaign words | `sdk.promotion.createAdvWords(advertId, data)` | Set keywords |
 
 ### Tariffs
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get commission rates | `sdk.tariffs.getTariffsCommission()` | Category commissions |
-| Get box tariffs | `sdk.tariffs.getTariffsBox()` | Box storage fees |
-| Get pallet tariffs | `sdk.tariffs.getTariffsPallet()` | Pallet storage fees |
-| Get return tariffs | `sdk.tariffs.getTariffsReturn()` | Return handling fees |
-
-### In-Store Pickup
-
-| Operation | Actual SDK Method | Notes |
-|-----------|-------------------|-------|
-| Get new pickup orders | `sdk.inStorePickup.getNewOrders()` | Orders awaiting pickup |
-| Confirm order | `sdk.inStorePickup.confirmOrder(orderId)` | Start assembly |
-| Prepare order | `sdk.inStorePickup.prepareOrder(orderId)` | Mark ready |
-| Verify customer | `sdk.inStorePickup.verifyCustomerIdentity(request)` | Check passcode |
-| Receive order | `sdk.inStorePickup.receiveOrder(orderId)` | Complete handover |
-| Reject order | `sdk.inStorePickup.rejectOrder(orderId, reason)` | Cancel pickup |
+| Get commission rates | `sdk.tariffs.getTariffsCommission({ locale? })` | Category commissions |
+| Get box tariffs | `sdk.tariffs.getTariffsBox({ date })` | Box storage fees |
+| Get pallet tariffs | `sdk.tariffs.getTariffsPallet({ date })` | Pallet storage fees |
+| Get return tariffs | `sdk.tariffs.getTariffsReturn({ date })` | Return handling fees |
 
 ### General
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
 | Test connection | `sdk.general.ping()` | Verify API connectivity |
-| Get news | `sdk.general.news(filters?)` | Seller portal updates |
+| Get news | `sdk.general.news({ from?, fromID? })` | Seller portal updates |
 | Get seller info | `sdk.general.sellerInfo()` | Account information |
 
 ### Common Patterns
 
 ```typescript
 // ✅ CORRECT - Use actual method names
-const products = await sdk.products.listProducts({ limit: 100 });
-const orders = await sdk.ordersFBS.getOrders({ dateFrom: timestamp });
-const balance = await sdk.finances.getBalance();
-const funnel = await sdk.analytics.getSalesFunnel({ from: '2024-01-01', to: '2024-01-31' });
+const cards = await sdk.products.createCardsList({ settings: { cursor: { limit: 100 } } });
+const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
+const balance = await sdk.finances.getAccountBalance();
+const report = await sdk.analytics.createNmReportDetail({ ... });
 
-// ❌ WRONG - Simplified names that don't exist
-const products = await sdk.products.list();           // TypeError: list is not a function
-const orders = await sdk.orders.list();               // TypeError: Cannot read property 'list' of undefined
-const categories = await sdk.products.getCategories(); // TypeError: getCategories is not a function
-const created = await sdk.products.create(data);      // TypeError: create is not a function
+// ❌ WRONG - These methods DO NOT exist
+const products = await sdk.products.listProducts();     // TypeError: listProducts is not a function
+const orders = await sdk.ordersFBS.getOrders();         // TypeError: getOrders is not a function
+const balance = await sdk.finances.getBalance();        // TypeError: getBalance is not a function
+const created = await sdk.products.createProduct(data); // TypeError: createProduct is not a function
 ```
 
 ---

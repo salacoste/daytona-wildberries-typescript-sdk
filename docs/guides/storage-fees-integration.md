@@ -5,7 +5,7 @@
 ## Quick Start
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY });
 
@@ -70,7 +70,7 @@ interface PaidStorageItem {
 ### Функция получения данных
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 interface StorageFeesResult {
   items: PaidStorageItem[];
@@ -349,7 +349,7 @@ function compareStorageData(
 ## Полный пример использования
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 async function main() {
   const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });

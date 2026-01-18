@@ -39,7 +39,7 @@ By the end of this tutorial, you'll be able to:
 Before you begin, ensure you have:
 - ✅ Node.js ≥ 20.0.0 installed
 - ✅ Wildberries API key with order access
-- ✅ SDK installed (`npm install wb-api-sdk`)
+- ✅ SDK installed (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Completed [Quickstart Guide](../quickstart.md)
 - ✅ Basic understanding of order fulfillment workflows
 
@@ -121,7 +121,7 @@ You can filter orders by:
 Create a file `order-fulfillment.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -506,7 +506,7 @@ async function batchCreateLabels(orderIds: string[]) {
 Here's the full order fulfillment workflow:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY

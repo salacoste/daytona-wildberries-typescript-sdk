@@ -34,13 +34,13 @@ Get started with the Wildberries TypeScript SDK in 5 minutes.
 Install the SDK via npm:
 
 ```bash
-npm install wb-api-sdk
+npm install daytona-wildberries-typescript-sdk
 ```
 
 Verify installation:
 
 ```bash
-npm list wb-api-sdk
+npm list daytona-wildberries-typescript-sdk
 ```
 
 ---
@@ -50,7 +50,7 @@ npm list wb-api-sdk
 Create a new file `index.ts` and initialize the SDK:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 // Initialize with your API key
 const sdk = new WildberriesSDK({
@@ -69,7 +69,7 @@ console.log('SDK initialized successfully!');
 Let's fetch product categories:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY // Use environment variable

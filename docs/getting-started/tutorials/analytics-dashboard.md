@@ -37,7 +37,7 @@ By the end of this tutorial, you'll be able to:
 Before you begin, ensure you have:
 - ✅ Node.js ≥ 20.0.0 installed
 - ✅ Wildberries API key with analytics access
-- ✅ SDK installed (`npm install wb-api-sdk`)
+- ✅ SDK installed (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Completed [Quickstart Guide](../quickstart.md)
 - ✅ Some existing products and sales data
 
@@ -92,7 +92,7 @@ Conversion Rate: 4% (40/1000)
 Create a file `analytics-dashboard.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -543,7 +543,7 @@ Downloading report...
 Here's a comprehensive analytics dashboard combining all metrics:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY

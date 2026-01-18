@@ -85,11 +85,11 @@ const categories = await sdk.products.getParentAll();
 console.log('Categories:', categories.data?.length);
 
 // Get new orders
-const orders = await sdk.ordersFBS.getNewOrders();
-console.log('New orders:', orders.length);
+const orders = await sdk.ordersFBS.getOrdersNew();
+console.log('New orders:', orders.orders?.length);
 
 // Check account balance
-const balance = await sdk.finances.getBalance();
+const balance = await sdk.finances.getAccountBalance();
 console.log('Balance:', balance.for_withdraw, balance.currency);
 
 // Get advertising campaigns overview
@@ -248,11 +248,11 @@ const categories = await sdk.products.getParentAll();
 console.log('Категории:', categories.data?.length);
 
 // Получение новых заказов
-const orders = await sdk.ordersFBS.getNewOrders();
-console.log('Новые заказы:', orders.length);
+const orders = await sdk.ordersFBS.getOrdersNew();
+console.log('Новые заказы:', orders.orders?.length);
 
 // Проверка баланса счета
-const balance = await sdk.finances.getBalance();
+const balance = await sdk.finances.getAccountBalance();
 console.log('Баланс:', balance.for_withdraw, balance.currency);
 
 // Обзор рекламных кампаний

@@ -39,7 +39,7 @@ By the end of this tutorial, you'll be able to:
 Before you begin, ensure you have:
 - ✅ Node.js ≥ 20.0.0 installed
 - ✅ Wildberries API key (seller account)
-- ✅ SDK installed (`npm install wb-api-sdk`)
+- ✅ SDK installed (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Basic TypeScript knowledge
 - ✅ Completed [Quickstart Guide](../quickstart.md)
 
@@ -76,7 +76,7 @@ Wildberries uses a hierarchical category system:
 Create a file `product-sync.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -407,7 +407,7 @@ async function bulkUpdatePrices(products: Array<{id: string, price: number}>) {
 Here's the full working code combining all steps:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 import { readFileSync } from 'fs';
 
 const sdk = new WildberriesSDK({

@@ -108,7 +108,7 @@ The SDK introduces minimal overhead (<10ms) for:
 - Rate limit checking
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 import { performance } from 'perf_hooks';
 
 const sdk = new WildberriesSDK({
@@ -1561,7 +1561,7 @@ HTTP connection pooling reduces latency by reusing TCP connections instead of cr
 ```typescript
 import http from 'http';
 import https from 'https';
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 // Create custom agents with optimized settings
 const httpAgent = new http.Agent({

@@ -37,7 +37,7 @@ By the end of this tutorial, you'll be able to:
 Before you begin, ensure you have:
 - ✅ Node.js ≥ 20.0.0 installed
 - ✅ Wildberries API key with full access
-- ✅ SDK installed (`npm install wb-api-sdk`)
+- ✅ SDK installed (`npm install daytona-wildberries-typescript-sdk`)
 - ✅ Completed all previous tutorials (1-3)
 - ✅ Understanding of async/await and Promises
 
@@ -108,7 +108,7 @@ Let's start by creating a product and setting up inventory tracking.
 Create a file `multi-module-integration.ts`:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -543,7 +543,7 @@ Generating financial report...
 Here's the full workflow combining all steps:
 
 ```typescript
-import { WildberriesSDK } from 'wb-api-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
