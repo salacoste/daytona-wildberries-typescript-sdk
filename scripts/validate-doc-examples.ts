@@ -105,9 +105,18 @@ const VALID_METHODS: Record<string, string[]> = {
   ],
 
   ordersFBS: [
-    'getNewOrders',
+    'getPassesOffices',
+    'passes',
+    'createPass',
+    'updatePass',
+    'deletePass',
+    'getOrdersNew',
+    'orders',
+    'createOrdersStatu',
     'getOrders',
     'getOrderStatuses',
+    'getAssemblyTasks',
+    'getAssemblyTask',
     'createSupply',
     'getSupplies',
     'getSupply',
@@ -127,11 +136,16 @@ const VALID_METHODS: Record<string, string[]> = {
   ],
 
   finances: [
+    'getAccountBalance',
     'getBalance',
     'getTransactions',
     'getTransactionDetail',
+    'getSupplierReportdetailbyperiod',
     'getDocumentCategories',
+    'getDocumentsCategories',
+    'getDocumentsList',
     'getDocuments',
+    'getDocumentsDownload',
     'downloadDocument',
     'downloadDocuments',
     'getPayouts',
@@ -140,6 +154,16 @@ const VALID_METHODS: Record<string, string[]> = {
 
   analytics: [
     'getSalesFunnel',
+    'createNmReportDetail',
+    'createDetailHistory',
+    'createGroupedHistory',
+    'getNmReportDownloads',
+    'createNmReportDownload',
+    'createDownloadsRetry',
+    'getSearchReport',
+    'createSearchReportReport',
+    'getStocksReport',
+    'getStocksReportOffice',
     'getProductPerformance',
     'getProductStatistics',
     'getHistoricalStatistics',
@@ -305,9 +329,23 @@ function validateResponseStructure(
     return { errors, warnings };
   }
 
-  // Skip blocks with explicit "WRONG" or "CORRECT" markers showing comparison
-  if (code.includes('✅ CORRECT') && code.includes('❌ WRONG')) {
-    return { errors, warnings };
+  // For blocks with "✅ CORRECT" and "❌ WRONG" markers, we need special handling
+  // These blocks show both correct and incorrect examples for educational purposes
+  // We should only skip validation for lines that are explicitly marked as WRONG
+  const hasCorrectWrongMarkers = code.includes('✅ CORRECT') && code.includes('❌ WRONG');
+
+  if (hasCorrectWrongMarkers) {
+    // Split by the markers and only validate the CORRECT section
+    const lines = code.split('\n');
+    const correctSectionStart = lines.findIndex(line => line.includes('✅ CORRECT'));
+    const wrongSectionStart = lines.findIndex(line => line.includes('❌ WRONG'));
+
+    // If we can clearly separate the sections, only validate the correct part
+    if (correctSectionStart >= 0 && wrongSectionStart >= 0 && correctSectionStart < wrongSectionStart) {
+      // Extract only the CORRECT section for validation
+      const correctSection = lines.slice(correctSectionStart, wrongSectionStart).join('\n');
+      code = correctSection;
+    }
   }
 
   // Pattern 1: Await validation - SDK calls should be awaited
