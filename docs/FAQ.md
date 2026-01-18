@@ -207,7 +207,7 @@ console.log(result.nmId); // New product ID
 ### 13. How do I fetch new orders (FBS)?
 
 ```typescript
-const orders = await sdk.ordersFBS.getNewOrders();
+const orders = await sdk.ordersFBS.getOrdersNew();
 
 for (const order of orders.orders) {
   console.log(`Order ${order.orderId}: ${order.status}`);
@@ -525,7 +525,7 @@ export const handler = async (event) => {
     timeout: 25000 // Lambda timeout - 5s buffer
   });
 
-  const orders = await sdk.ordersFBS.getNewOrders();
+  const orders = await sdk.ordersFBS.getOrdersNew();
   return { statusCode: 200, body: JSON.stringify(orders) };
 };
 ```

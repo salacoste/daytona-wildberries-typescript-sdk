@@ -47,7 +47,7 @@ async function fetchAllData() {
   ] = await Promise.all([
     sdk.products.getParentAll(),
     sdk.finances.getBalance(),
-    sdk.ordersFBS.getNewOrders(),
+    sdk.ordersFBS.getOrdersNew(),
     sdk.tariffs.getTariffsCommission()
   ]);
 

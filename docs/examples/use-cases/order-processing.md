@@ -15,8 +15,8 @@ const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!
 });
 
-async function getNewOrders() {
-  const response = await sdk.ordersFBS.getNewOrders();
+async function getOrdersNew() {
+  const response = await sdk.ordersFBS.getOrdersNew();
 
   console.log(`New orders: ${response.orders?.length ?? 0}`);
 
@@ -31,7 +31,7 @@ async function getNewOrders() {
   return response.orders ?? [];
 }
 
-const orders = await getNewOrders();
+const orders = await getOrdersNew();
 ```
 
 ## Get Orders with Filters
@@ -142,7 +142,7 @@ async function processNewOrders(): Promise<ProcessedOrder[]> {
   const results: ProcessedOrder[] = [];
 
   // 1. Get new orders
-  const { orders } = await sdk.ordersFBS.getNewOrders();
+  const { orders } = await sdk.ordersFBS.getOrdersNew();
 
   if (!orders?.length) {
     console.log('No new orders to process');

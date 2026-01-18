@@ -208,7 +208,7 @@ console.log(result.nmId); // ID нового товара
 ### 13. Как получить новые заказы (FBS)?
 
 ```typescript
-const orders = await sdk.ordersFBS.getNewOrders();
+const orders = await sdk.ordersFBS.getOrdersNew();
 
 for (const order of orders.orders) {
   console.log(`Заказ ${order.orderId}: ${order.status}`);
@@ -526,7 +526,7 @@ export const handler = async (event) => {
     timeout: 25000 // Таймаут Lambda - 5с буфер
   });
 
-  const orders = await sdk.ordersFBS.getNewOrders();
+  const orders = await sdk.ordersFBS.getOrdersNew();
   return { statusCode: 200, body: JSON.stringify(orders) };
 };
 ```

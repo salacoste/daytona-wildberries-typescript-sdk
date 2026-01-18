@@ -320,7 +320,7 @@ async function withFallback<T>(
 
 // Usage: Try real-time data, fall back to cached
 const orders = await withFallback(
-  () => sdk.ordersFBS.getNewOrders(),
+  () => sdk.ordersFBS.getOrdersNew(),
   () => getCachedOrders() // Your caching implementation
 );
 ```

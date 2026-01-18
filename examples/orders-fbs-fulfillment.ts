@@ -94,7 +94,7 @@ async function completeFBSFulfillment() {
     // Step 1: Get new orders awaiting processing
     // ============================================================================
     console.log('Step 1: Fetching new FBS orders...');
-    const newOrders = await sdk.ordersFBS.getNewOrders();
+    const newOrders = await sdk.ordersFBS.getOrdersNew();
     console.log(`Found ${newOrders.length} new orders awaiting processing\n`);
 
     if (newOrders.length === 0) {

@@ -290,7 +290,7 @@ async function main() {
 
     console.log('📍 Step 2.1: Checking for new orders...\n');
 
-    const newOrders = await sdk.ordersFBS.getNewOrders();
+    const newOrders = await sdk.ordersFBS.getOrdersNew();
 
     console.log(`✅ Found ${newOrders.length} new orders awaiting processing`);
 

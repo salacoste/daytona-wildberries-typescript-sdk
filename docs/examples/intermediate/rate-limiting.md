@@ -36,7 +36,7 @@ async function fetchMultipleEndpoints() {
   const [categories, balance, orders] = await Promise.all([
     sdk.products.getParentAll(),
     sdk.finances.getBalance(),
-    sdk.ordersFBS.getNewOrders()
+    sdk.ordersFBS.getOrdersNew()
   ]);
 
   return { categories, balance, orders };

@@ -413,7 +413,7 @@ TypeScript интерфейсы, автоматически сгенериров
 ```typescript
 const sdk = new WildberriesSDK({ apiKey });
 sdk.products.getProductList();
-sdk.ordersFBS.getNewOrders();
+sdk.ordersFBS.getOrdersNew();
 ```
 
 **Расположение:** `src/index.ts`

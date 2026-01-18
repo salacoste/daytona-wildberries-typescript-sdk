@@ -31,7 +31,7 @@ try {
     console.log('Current status:', statuses.orders[0].supplierStatus);
 
     // Check required metadata
-    const newOrders = await sdk.inStorePickup.getNewOrders();
+    const newOrders = await sdk.inStorePickup.getOrdersNew();
     const order = newOrders.orders.find(o => o.id === 12345);
     console.log('Required metadata:', order?.requiredMeta);
   }

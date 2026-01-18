@@ -413,7 +413,7 @@ Main SDK class serving as entry point and module aggregator. Exposes all 11 API 
 ```typescript
 const sdk = new WildberriesSDK({ apiKey });
 sdk.products.getProductList();
-sdk.ordersFBS.getNewOrders();
+sdk.ordersFBS.getOrdersNew();
 ```
 
 **Location:** `src/index.ts`

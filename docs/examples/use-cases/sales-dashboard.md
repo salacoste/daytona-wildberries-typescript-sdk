@@ -48,7 +48,7 @@ async function getDashboardOverview(): Promise<DashboardOverview> {
     reviewsData
   ] = await Promise.all([
     sdk.finances.getBalance(),
-    sdk.ordersFBS.getNewOrders(),
+    sdk.ordersFBS.getOrdersNew(),
     sdk.ordersFBS.getOrders({ dateFrom: todayTimestamp }),
     sdk.products.getAllProducts({ locale: 'ru' }),
     sdk.communications.getQuestionsCountUnanswered(),

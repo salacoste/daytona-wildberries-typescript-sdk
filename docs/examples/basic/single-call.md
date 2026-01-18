@@ -73,8 +73,8 @@ Total balance: 150000.00 RUB
 ### Get New Orders (FBS)
 
 ```typescript
-async function getNewOrders() {
-  const orders = await sdk.ordersFBS.getNewOrders();
+async function getOrdersNew() {
+  const orders = await sdk.ordersFBS.getOrdersNew();
 
   console.log('New orders count:', orders.orders?.length ?? 0);
 
@@ -88,7 +88,7 @@ async function getNewOrders() {
   return orders;
 }
 
-getNewOrders();
+getOrdersNew();
 ```
 
 ### Get Commission Tariffs

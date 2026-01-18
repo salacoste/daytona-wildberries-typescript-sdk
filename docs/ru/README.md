@@ -69,7 +69,7 @@ const categories = await sdk.products.getParentAll();
 console.log('Категории:', categories.data?.length);
 
 // Получение новых заказов
-const orders = await sdk.ordersFBS.getNewOrders();
+const orders = await sdk.ordersFBS.getOrdersNew();
 console.log('Новые заказы:', orders.length);
 
 // Проверка баланса аккаунта

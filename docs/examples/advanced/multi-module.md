@@ -31,7 +31,7 @@ async function getOrderDashboard(): Promise<OrderDashboard> {
     questionsResponse,
     reviewsResponse
   ] = await Promise.all([
-    sdk.ordersFBS.getNewOrders(),
+    sdk.ordersFBS.getOrdersNew(),
     sdk.finances.getBalance(),
     sdk.communications.getQuestionsCountUnanswered(),
     sdk.communications.getReviewsCount({ isAnswered: false })
@@ -65,7 +65,7 @@ async function processNewOrders(): Promise<OrderFulfillmentResult[]> {
   const results: OrderFulfillmentResult[] = [];
 
   // 1. Get new orders
-  const { orders } = await sdk.ordersFBS.getNewOrders();
+  const { orders } = await sdk.ordersFBS.getOrdersNew();
 
   if (!orders?.length) {
     console.log('No new orders to process');

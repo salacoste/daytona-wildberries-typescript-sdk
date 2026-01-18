@@ -2452,9 +2452,9 @@ async function main() {
   );
 
   // Бенчмарк модуля Orders
-  results.getNewOrders = await benchmarkLatency(
-    'OrdersFBS.getNewOrders()',
-    () => sdk.ordersFBS.getNewOrders(),
+  results.getOrdersNew = await benchmarkLatency(
+    'OrdersFBS.getOrdersNew()',
+    () => sdk.ordersFBS.getOrdersNew(),
     50
   );
 

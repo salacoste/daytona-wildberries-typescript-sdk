@@ -108,7 +108,7 @@ async function completeOrderWorkflow() {
 
   try {
     // Step 1: Get new orders awaiting assembly
-    const newOrders = await sdk.inStorePickup.getNewOrders();
+    const newOrders = await sdk.inStorePickup.getOrdersNew();
     console.log(`Found ${newOrders.orders.length} new orders`);
 
     if (newOrders.orders.length === 0) {
@@ -430,7 +430,7 @@ async function errorHandlingExamples() {
         console.log(`  Recovery: ${error.getUserMessage()}`);
 
         // Check order status and required metadata
-        const newOrders = await sdk.inStorePickup.getNewOrders();
+        const newOrders = await sdk.inStorePickup.getOrdersNew();
         const order = newOrders.orders.find((o) => o.id === 12345);
         if (order) {
           console.log(`\n→ Required metadata: ${order.requiredMeta}`);
@@ -443,7 +443,7 @@ async function errorHandlingExamples() {
     try {
       // Making too many requests
       for (let i = 0; i < 100; i++) {
-        await sdk.inStorePickup.getNewOrders();
+        await sdk.inStorePickup.getOrdersNew();
       }
     } catch (error) {
       if (error instanceof RateLimitError) {
