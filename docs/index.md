@@ -203,7 +203,7 @@ All 11 Wildberries API modules fully supported:
 | **General** | 100% | Ping, connectivity testing, seller info |
 | **Products** | 100% | Catalog CRUD, pricing, media, inventory |
 | **Orders FBS** | 100% | Seller fulfillment, order status, supplies |
-| **Orders FBW** | 100% | WB warehouse fulfillment, supply planning |
+| **Orders FBW** | 100% | WB warehouse fulfillment, supply planning, acceptance coefficients, cost calculator |
 | **Finances** | 100% | Balance, transactions, reports, payouts |
 | **Analytics** | 100% | Sales funnel, search queries, CSV exports |
 | **Reports** | 100% | Income reports, sales reports, data exports |

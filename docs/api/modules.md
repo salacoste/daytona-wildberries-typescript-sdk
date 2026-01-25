@@ -54,6 +54,13 @@ Main entry point
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
 
+## Functions
+
+| Function | Description |
+| ------ | ------ |
+| [calculateSupplyCost](functions/utilities.md#calculatesupplycost) | Calculate supply costs including acceptance, storage, and logistics |
+| [compareTariffs](functions/utilities.md#comparetariffs) | Compare inventory vs supply tariffs for cost optimization |
+
 ## Variables
 
 | Variable | Description |

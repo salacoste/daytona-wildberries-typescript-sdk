@@ -35,6 +35,11 @@ In-depth guides for production deployment and advanced SDK usage.
 - **[Stock Management](/guides/stock-management)** - Inventory control and tracking
 - **[Storage Fees](/guides/storage-fees-integration)** - Warehouse costs integration
 - **[Returns Handling](/guides/returns-handling)** - Returns processing
+- **[Supplies Planning](/guides/supplies-planning)** - Planning supplies to WB warehouses, acceptance coefficients, and FBW vs FBS strategy
+
+### Tariffs & Costs
+- **[Tariffs Overview](/guides/tariffs-overview)** - Understanding inventory vs supply tariffs
+- **[Supplies & Tariffs (EN)](/guides/supplies-tariffs)** - Supply acceptance coefficients, cost calculations, and tariff comparisons
 
 ---
 

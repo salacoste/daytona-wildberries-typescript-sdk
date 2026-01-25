@@ -39,6 +39,7 @@ For TypeScript SDK/library projects, building from scratch provides:
 
 | Date | Version | Description | Author |
 |------|---------|-------------|--------|
+| 2026-01-25 | 1.2 | Added SuppliesModule and extended Tariffs architecture documentation | System |
 | 2025-12-25 | 1.1 | Added Promotion API deprecation documentation | System |
 | 2025-10-19 | 1.0 | Initial architecture document from PRD | Winston (Architect Agent) |
 
@@ -71,7 +72,7 @@ The Wildberries API TypeScript SDK employs a **layered library architecture** wi
    - Enum types for API values (OrderStatus, ReportType, etc.)
    - Generic utility types for pagination, filters, date ranges
 
-3. **API Module Layer** (11 modules)
+3. **API Module Layer** (12 modules)
    - Each module delegates to BaseClient
    - Typed methods generated from OpenAPI `paths`
    - Module-specific rate limit configuration
@@ -135,6 +136,7 @@ graph TB
         SDK --> PROM[PromotionModule]
         SDK --> TAR[TariffsModule]
         SDK --> ISP[InStorePickupModule]
+        SDK --> SUP[SuppliesModule]
     end
 
     subgraph "Core Infrastructure Layer"
@@ -159,6 +161,7 @@ graph TB
         API_ANALYTICS[seller-analytics-api.wildberries.ru]
         API_FINANCE[finance-api.wildberries.ru]
         API_STATS[statistics-api.wildberries.ru]
+        API_SUPPLIES[supplies-api.wildberries.ru]
     end
 
     DEV --> SDK
@@ -173,6 +176,7 @@ graph TB
     PROM --> BC
     TAR --> BC
     ISP --> BC
+    SUP --> BC
 
     BC --> RL
     BC --> RH
@@ -185,6 +189,7 @@ graph TB
     BC --> API_ANALYTICS
     BC --> API_FINANCE
     BC --> API_STATS
+    BC --> API_SUPPLIES
 
     SWAGGER --> GEN_TOOL
     GEN_TOOL --> TYPE_GEN
@@ -442,10 +447,11 @@ class WildberriesSDK {
   readonly promotion: PromotionModule
   readonly tariffs: TariffsModule
   readonly inStorePickup: InStorePickupModule
+  readonly supplies: SuppliesModule
 }
 ```
 
-**Dependencies:** BaseClient, all 11 modules, AuthManager
+**Dependencies:** BaseClient, all 12 modules, AuthManager
 **Technology Stack:** TypeScript 5.3.3 class with dependency injection
 **Location:** `src/index.ts`
 
@@ -532,8 +538,102 @@ class AuthManager {
 9. PromotionModule - Campaigns, promo codes, advertising ⚠️ **DEPRECATION WARNING**: 4 type 8 campaign methods deprecated (Feb 2, 2026)
 10. TariffsModule - Commission rates, fees
 11. InStorePickupModule - Pickup points, orders
+12. SuppliesModule - Acceptance coefficients, transit tariffs, warehouses
 
 **Location:** `src/modules/[module]/`
+
+### Tariffs Module - Extended Architecture
+
+The SDK provides access to tariff data from **two distinct API domains**, each serving different business purposes:
+
+#### Two Sources of Tariffs
+
+##### 1. TariffsModule (Storage Tariffs)
+**Domain:** `common-api.wildberries.ru`
+**Purpose:** Fees for product storage and return operations
+
+| Method | Description |
+|--------|-------------|
+| `getTariffsBox(date)` | Storage tariffs for boxes (per unit/day) |
+| `getTariffsPallet(date)` | Storage tariffs for pallets (per unit/day) |
+| `getTariffsReturn(date)` | Return processing tariffs |
+| `getTariffsCommission()` | Commission rates by category |
+
+**Use Cases:**
+- Calculate expected storage costs for inventory planning
+- Compare commission rates across product categories
+- Budget for return processing fees
+
+##### 2. SuppliesModule (Supply Tariffs)
+**Domain:** `supplies-api.wildberries.ru`
+**Purpose:** Fees and coefficients for product delivery to WB warehouses
+
+| Method | Description |
+|--------|-------------|
+| `getAcceptanceCoefficients(warehouseIDs?)` | Acceptance coefficients forecast (14 days) |
+| `getAcceptanceOptions(goods, warehouseID?)` | Available acceptance options for goods |
+| `getTransitTariffs()` | Transit (cross-dock) delivery tariffs |
+| `getWarehouses()` | List of WB warehouses with acceptance info |
+
+**Use Cases:**
+- Plan supply deliveries based on acceptance forecasts
+- Optimize delivery timing using coefficient predictions
+- Calculate cross-dock shipping costs
+
+#### Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      WildberriesSDK                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌───────────────────────────┐   ┌───────────────────────────┐ │
+│  │      TariffsModule        │   │      SuppliesModule       │ │
+│  │   (Storage Tariffs)       │   │    (Supply Tariffs)       │ │
+│  │                           │   │                           │ │
+│  │  • getTariffsBox()        │   │  • getAcceptanceCoeffs()  │ │
+│  │  • getTariffsPallet()     │   │  • getAcceptanceOptions() │ │
+│  │  • getTariffsReturn()     │   │  • getTransitTariffs()    │ │
+│  │  • getTariffsCommission() │   │  • getWarehouses()        │ │
+│  └─────────────┬─────────────┘   └─────────────┬─────────────┘ │
+│                │                               │               │
+│                ▼                               ▼               │
+│  ┌───────────────────────────┐   ┌───────────────────────────┐ │
+│  │  common-api.wildberries.ru│   │ supplies-api.wildberries.ru│ │
+│  │  (Tariffs & Settings)     │   │ (Supplies & Logistics)    │ │
+│  └───────────────────────────┘   └───────────────────────────┘ │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Business Logic Separation
+
+The separation into two modules reflects the WB API design philosophy:
+
+| Aspect | TariffsModule | SuppliesModule |
+|--------|---------------|----------------|
+| **Focus** | Ongoing storage costs | One-time supply costs |
+| **Time Frame** | Point-in-time rates | 14-day forecasts |
+| **Granularity** | Category-level | Warehouse-level |
+| **Update Frequency** | Daily | Hourly |
+| **Primary Users** | Finance teams | Logistics teams |
+
+#### Integration Example
+
+```typescript
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
+
+const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
+
+// Storage costs (TariffsModule)
+const storageTariffs = await sdk.tariffs.getTariffsBox('2024-01-15');
+const commissions = await sdk.tariffs.getTariffsCommission();
+
+// Supply planning (SuppliesModule)
+const coefficients = await sdk.supplies.getAcceptanceCoefficients();
+const warehouses = await sdk.supplies.getWarehouses();
+const transitCosts = await sdk.supplies.getTransitTariffs();
+```
 
 ### Component 17: Error Classes
 
@@ -560,7 +660,7 @@ class AuthManager {
 
 ## External APIs
 
-This SDK integrates with 11 Wildberries API domains.
+This SDK integrates with 12 Wildberries API domains.
 
 ### Common Integration Patterns
 
@@ -599,9 +699,25 @@ This SDK integrates with 11 Wildberries API domains.
 **Rate Limits:** 5 req/min for queries, 1 req/2min for CSV exports
 **Key Endpoints:** Sales funnel, product performance, search queries, CSV exports
 
+### Wildberries Supplies API
+
+**Purpose:** Supply management, acceptance coefficients, transit tariffs, warehouse operations
+**Base URL:** `https://supplies-api.wildberries.ru`
+**Rate Limits:** 10 req/min for coefficient queries, 5 req/min for options
+**Key Endpoints:**
+- `GET /api/v1/acceptance/coefficients` - Acceptance coefficients (14-day forecast)
+- `POST /api/v1/acceptance/options` - Available acceptance options for goods
+- `GET /api/v1/tariffs/transit` - Transit (cross-dock) delivery tariffs
+- `GET /api/v1/warehouses` - List of WB warehouses with acceptance info
+
+**Relationship to Tariffs API:**
+The Supplies API complements the Common API tariffs endpoints by providing supply-side cost data:
+- Common API (`/api/v1/tariffs/*`) → Storage tariffs (boxes, pallets, returns)
+- Supplies API (`/api/v1/acceptance/*`, `/api/v1/tariffs/transit`) → Supply delivery tariffs
+
 ### Additional APIs
 
-- **Common API:** General utilities (ping, news, seller info)
+- **Common API:** General utilities (ping, news, seller info), storage tariffs
 - **Statistics API:** Extended financial/operational statistics
 - **Communications API:** Chat, Q&A, reviews
 - **Promotion API:** Marketing campaigns and advertising

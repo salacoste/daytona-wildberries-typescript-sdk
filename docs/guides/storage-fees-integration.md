@@ -436,3 +436,80 @@ main().catch(console.error);
 4. **Категория отсутствует в API** — только `subject` (Предмет). Если нужна категория, потребуется маппинг через справочник категорий.
 
 5. **Время обработки** — задание Paid Storage обычно выполняется за 5-30 секунд.
+
+---
+
+## Источники данных о хранении
+
+Wildberries предоставляет несколько API для работы с данными о хранении. Выбор зависит от задачи:
+
+### API тарифов на остаток (common-api)
+
+```
+GET https://common-api.wildberries.ru/api/v1/tariffs/box
+```
+
+**Возвращает:** `boxStorageBase`, `boxStorageLiter`, `boxStorageCoefExpr`
+
+**Назначение:** Расчёт текущих затрат на хранение существующих товаров на складах WB.
+
+**Пример использования:**
+```typescript
+const tariffs = await sdk.tariffs.getBoxTariffs();
+// Используйте для расчёта: стоимость = объём × boxStorageLiter × коэффициент
+```
+
+### API тарифов на поставку (supplies-api)
+
+```
+GET https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients
+```
+
+**Возвращает:** `storageCoef`, `storageBaseLiter`, `storageAdditionalLiter`
+
+**Назначение:** Прогнозирование затрат на хранение **НОВЫХ** поставок.
+
+**Особенность:** Данные доступны на 14 дней вперёд — можно планировать поставки с учётом будущих тарифов.
+
+**Пример использования:**
+```typescript
+const coefficients = await sdk.supplies.getAcceptanceCoefficients({
+  warehouseId: 123456
+});
+// Используйте storageCoef для расчёта будущих затрат на хранение новой поставки
+```
+
+### Какой API выбрать?
+
+| Сценарий | API | Эндпоинт |
+|----------|-----|----------|
+| Расчёт текущих затрат на хранение | common-api | `/api/v1/tariffs/box` |
+| Планирование новой поставки | supplies-api | `/api/v1/acceptance/coefficients` |
+| Сверка с финансами (детализация) | statistics-api | `/api/v1/paid_storage` |
+| Сверка с финансами (агрегат) | statistics-api | `/api/v1/supplier/reportDetailByPeriod` |
+
+### Связь между источниками
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ХРАНЕНИЕ: ИСТОЧНИКИ ДАННЫХ                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ПЛАНИРОВАНИЕ          ТЕКУЩИЕ ТАРИФЫ        ФАКТИЧЕСКИЕ СУММЫ  │
+│  ─────────────         ──────────────        ─────────────────  │
+│  supplies-api    →     common-api      →     statistics-api     │
+│  (на 14 дней)          (актуальные)          (за период)        │
+│                                                                  │
+│  storageCoef           boxStorageLiter       warehousePrice     │
+│  storageBaseLiter      boxStorageBase        storage_fee        │
+│                        boxStorageCoefExpr                       │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## См. также
+
+- [Обзор тарифов Wildberries](./tariffs-overview.md) — полный обзор всех тарифных API
+- [Wildberries API Documentation](https://dev.wildberries.ru/) — официальная документация
