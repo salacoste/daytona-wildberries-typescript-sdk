@@ -558,3 +558,16 @@ export {
   CustomerVerificationError,
   MetadataValidationError,
 } from './errors/in-store-pickup-errors';
+
+// Utility functions
+export {
+  calculateSupplyCost,
+  compareTariffs,
+  type SupplyCostInput,
+  type SupplyCostResult,
+  type CompareTariffsInput,
+  type TariffComparison,
+  type TariffData,
+  type TariffDifference,
+  type TariffRecommendation,
+} from './utils';

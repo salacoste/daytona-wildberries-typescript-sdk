@@ -20,6 +20,8 @@ build/
 # VitePress build output and cache
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+.claude/sessions/
+.claude/state/
 
 # Environment variables and secrets
 .env
