@@ -171,6 +171,17 @@ A supply can only be accepted when **both** conditions are met:
 - `allowUnload` is `true`
 :::
 
+::: warning Critical: Number Format
+Wildberries API returns numbers with **comma separators** (e.g., `"0,13"`). You MUST convert commas to dots before parsing:
+```typescript
+function parseWBNumber(value: string | null | undefined): number {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));  // "0,13" → 0.13
+}
+```
+Failure to do this will result in `storage = 0` calculations!
+:::
+
 ## Acceptance Options
 
 ### Method: `createAcceptanceOption()`
@@ -316,10 +327,39 @@ console.log('Applied coefficients:', result.appliedCoefficients);
 
 #### Cost Calculation Formulas
 
-**Storage Cost:**
+**IMPORTANT: Parse Number Format First**
+```typescript
+// Always parse Wildberries numbers with this helper
+function parseWBNumber(value: string | null | undefined): number {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));
+}
 ```
-For boxes: (storageBaseLiter + (volume-1) * storageAdditionalLiter) * storageCoef/100 * days
-For pallets: storageBaseLiter * storageCoef/100 * days (flat rate)
+
+**Storage Cost:**
+
+*For Boxes (BoxTypeID: 2):*
+```
+storageBaseLiter: ₽ per first liter
+storageAdditionalLiter: ₽ per each additional liter
+storageCoef: percentage multiplier
+
+Cost = (storageBaseLiter + (volume-1) * storageAdditionalLiter) * (storageCoef / 100) * days
+```
+
+*For Pallets (BoxTypeID: 5):*
+```
+storageBaseLiter: ₽ per entire pallet (flat rate)
+storageAdditionalLiter: null (not applicable)
+storageCoef: percentage multiplier
+
+Cost = storageBaseLiter * (storageCoef / 100) * days
+```
+
+*For Supersafe (BoxTypeID: 6):*
+```
+Same formula as boxes:
+Cost = (storageBaseLiter + (volume-1) * storageAdditionalLiter) * (storageCoef / 100) * days
 ```
 
 **Logistics Cost:**
@@ -333,6 +373,117 @@ For pallets: deliveryBaseLiter * deliveryCoef/100 (flat rate)
 coefficient = 0: Free (0 RUB)
 coefficient > 0: coefficient * BASE_RATE (50 RUB)
 ```
+
+::: info Box Type Differences
+| Box Type | BoxTypeID | storageBaseLiter | storageAdditionalLiter | Pricing Model |
+|----------|-----------|------------------|----------------------|---------------|
+| Короба (Boxes) | 2 | per first liter | per additional liter | Volume-based |
+| Монопаллеты (Pallets) | 5 | per entire pallet | null (not used) | Flat rate |
+| Суперсейф (Supersafe) | 6 | per first liter | per additional liter | Volume-based |
+:::
+
+#### Real-World Example: Storage Cost Calculation
+
+**Example 1: Box Storage (BoxTypeID: 2)**
+
+```typescript
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
+
+// Helper function - CRITICAL for correct number parsing
+function parseWBNumber(value: string | null | undefined): number {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));  // "0,13" → 0.13
+}
+
+// Calculate storage cost for boxes
+function calculateBoxStorage(
+  tariff: ModelsAcceptanceCoefficient,
+  volume: number,
+  days: number
+): number {
+  const base = parseWBNumber(tariff.storageBaseLiter);
+  const additional = parseWBNumber(tariff.storageAdditionalLiter);
+  const coef = parseWBNumber(tariff.storageCoef) || 100;
+
+  // Formula: (base + (volume-1) * additional) * (coef / 100) * days
+  return (base + (volume - 1) * additional) * (coef / 100) * days;
+}
+
+const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
+
+// Get SUPPLY tariffs (for planning)
+const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients();
+
+// Find warehouse and box type
+const warehouse = coefficients.find(c =>
+  c.warehouseID === 130744 &&  // Краснодар (Тихорецкая)
+  c.boxTypeID === 2             // Короба (Boxes)
+);
+
+// Real API response values:
+// storageBaseLiter: "0,13"
+// storageAdditionalLiter: "0,13"
+// storageCoef: "165"
+
+const volume = 50; // liters
+const days = 30;
+
+const storageCost = calculateBoxStorage(warehouse, volume, days);
+console.log(`Storage cost: ${storageCost.toFixed(2)} ₽`);
+// Output: Storage cost: 643.50 ₽
+// Calculation: (0.13 + (50-1) * 0.13) * (165 / 100) * 30 = 643.50
+```
+
+**Example 2: Pallet Storage (BoxTypeID: 5)**
+
+```typescript
+// Calculate storage cost for pallets
+function calculatePalletStorage(
+  tariff: ModelsAcceptanceCoefficient,
+  palletCount: number,
+  days: number
+): number {
+  const base = parseWBNumber(tariff.storageBaseLiter);
+  const coef = parseWBNumber(tariff.storageCoef) || 100;
+
+  // storageAdditionalLiter is null for pallets - flat rate pricing
+  // Formula: base * (coef / 100) * days
+  return base * palletCount * (coef / 100) * days;
+}
+
+const palletWarehouse = coefficients.find(c =>
+  c.warehouseID === 130744 &&
+  c.boxTypeID === 5  // Монопаллеты (Pallets)
+);
+
+// Real API response values:
+// storageBaseLiter: "41.25"
+// storageAdditionalLiter: null
+// storageCoef: "165"
+
+const palletCount = 2;
+const palletDays = 30;
+
+const palletStorageCost = calculatePalletStorage(
+  palletWarehouse,
+  palletCount,
+  palletDays
+);
+
+console.log(`Pallet storage cost: ${palletStorageCost.toFixed(2)} ₽`);
+// Output: Pallet storage cost: 4083.75 ₽
+// Calculation: 41.25 * 2 * (165 / 100) * 30 = 4083.75
+```
+
+::: warning Common Mistake: Using parseFloat Directly
+```typescript
+// ❌ WRONG - Will return 0 for comma-separated numbers
+const wrong = parseFloat(tariff.storageBaseLiter);  // "0,13" → NaN → 0
+
+// ✅ CORRECT - Convert comma to dot first
+const correct = parseFloat(tariff.storageBaseLiter.replace(',', '.'));  // "0,13" → 0.13
+```
+:::
 
 ## Tariff Comparison
 

@@ -181,14 +181,123 @@ for (const wh of sortedByCoef.slice(0, 5)) {
 
 | Характеристика | Тарифы на остаток | Тарифы на поставку |
 |----------------|-------------------|-------------------|
-| **API домен** | `common-api.wildberries.ru` | `supplies-api.wildberries.ru` |
+| **API домен** | `common-api.wildberries.ru` | `marketplace-api.wildberries.ru` |
+| **Модуль SDK** | `sdk.tariffs` | `sdk.ordersFBW` |
 | **Назначение** | Расчёт затрат текущих товаров | Планирование новых поставок |
 | **Временной горизонт** | Текущие/исторические данные | Прогноз до 14 дней |
-| **Ключевые методы** | `getTariffsBox`, `getTariffsPallet`, `getTariffsReturn` | `getAcceptanceCoefficients`, `getTransitTariffs` |
+| **Ключевые методы** | `getTariffsBox`, `getTariffsPallet`, `getTariffsReturn` | `getAcceptanceCoefficients`, `createAcceptanceOption` |
+| **Данные о хранении** | ✅ Да (boxStorageBase, boxStorageLiter) | ✅ Да (storageBaseLiter, storageAdditionalLiter) |
 | **Коэффициенты** | Фактические (на дату) | Прогнозные |
 | **Применение** | Unit-экономика, P&L | Выбор склада, планирование |
-| **Детализация** | По складам и регионам | По складам + прогноз по датам |
-| **Rate Limit** | 60 запросов/мин | Зависит от эндпоинта |
+| **Детализация** | По складам и регионам | По складам + прогноз по датам + типам упаковки |
+| **Rate Limit** | 60 запросов/мин | 6 запросов/мин |
+| **Формат чисел** | С точкой (`"0.13"`) | **С запятой (`"0,13"`)** ⚠️ |
+
+::: warning Критически важно: Формат чисел
+API тарифов на поставку возвращает числа с **запятой** в качестве десятичного разделителя (например, `"0,13"`), а API тарифов на остаток использует **точку** (`"0.13"`).
+
+```typescript
+// Для SUPPLY API (tariffs on supply)
+function parseWBNumber(value: string | null | undefined): number {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));  // "0,13" → 0.13
+}
+
+// Для INVENTORY API (tariffs on inventory)
+// parseFloat работает напрямую, так как формат "0.13"
+const value = parseFloat(tariff.boxStorageBase || '0');
+```
+:::
+
+## Данные о хранении в обоих API
+
+### Тарифы на остаток (Inventory Tariffs)
+
+**API Endpoint:** `/api/v1/tariffs/box`
+
+**Поля хранения:**
+```typescript
+interface InventoryStorageTariffs {
+  boxStorageBase: string;      // Базовая ставка (1 литр/день)
+  boxStorageLiter: string;     // Доп. литр/день
+  boxStorageCoefExpr: string;  // Коэффициент хранения (%)
+}
+```
+
+**Назначение:** Расчёт стоимости хранения товаров, **уже находящихся** на складе.
+
+**Пример:**
+```typescript
+const tariffs = await sdk.tariffs.getTariffsBox({ date: '2026-01-27' });
+const warehouse = tariffs.response?.data?.warehouseList?.[0];
+
+// Формат: "0.1" (с точкой)
+const boxStorageBase = parseFloat(warehouse.boxStorageBase || '0');
+const boxStorageLiter = parseFloat(warehouse.boxStorageLiter || '0');
+const boxStorageCoef = parseFloat(warehouse.boxStorageCoefExpr || '100');
+
+// Расчёт хранения для 50 литров на 30 дней
+const dailyCost = (boxStorageBase + (volume - 1) * boxStorageLiter) * (boxStorageCoef / 100);
+const totalStorage = dailyCost * days;
+```
+
+### Тарифы на поставку (Supply/Acceptance Tariffs)
+
+**API Endpoint:** `/api/v1/acceptance/coefficients`
+
+**Поля хранения:**
+```typescript
+interface SupplyStorageTariffs {
+  storageBaseLiter: string;         // Базовая ставка (1 литр или весь паллет)
+  storageAdditionalLiter: string;   // Доп. литр (null для паллетов)
+  storageCoef: string;              // Коэффициент хранения (%)
+  boxTypeID: number;                // 2=Короба, 5=Монопаллеты, 6=Суперсейф
+}
+```
+
+**Назначение:** Прогнозирование стоимости хранения для **планируемых поставок**.
+
+**Пример:**
+```typescript
+const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients();
+const warehouse = coefficients.find(c =>
+  c.warehouseID === 130744 &&
+  c.boxTypeID === 2  // Короба
+);
+
+// Формат: "0,13" (с запятой) - нужно конвертировать!
+const storageBaseLiter = parseWBNumber(warehouse.storageBaseLiter);
+const storageAdditionalLiter = parseWBNumber(warehouse.storageAdditionalLiter);
+const storageCoef = parseWBNumber(warehouse.storageCoef) || 100;
+
+// Расчёт хранения для 50 литров на 30 дней
+const dailyCost = (storageBaseLiter + (volume - 1) * storageAdditionalLiter) * (storageCoef / 100);
+const totalStorage = dailyCost * days;
+```
+
+### Когда использовать какой API для хранения
+
+| Сценарий | API | Метод |
+|----------|-----|-------|
+| Unit-экономика существующих товаров | INVENTORY | `getTariffsBox()` |
+| Анализ рентабельности текущих остатков | INVENTORY | `getTariffsBox()` |
+| P&L отчёт за прошлый период | INVENTORY | `getTariffsBox()` |
+| Планирование новой поставки | SUPPLY | `getAcceptanceCoefficients()` |
+| Сравнение складов для поставки | SUPPLY | `getAcceptanceCoefficients()` |
+| Прогноз затрат на хранение новой поставки | SUPPLY | `getAcceptanceCoefficients()` |
+
+::: info FBW vs FBS модели
+
+**FBS (Fulfilled by Seller):**
+- Вы храните товары на своих складах
+- Используйте `tariffs.getTariffsBox()` для расчёта затрат на логистику
+
+**FBW (Fulfilled by Wildberries):**
+- Wildberries хранит товары на своих складах
+- Используйте BOTH APIs:
+  - `tariffs.getTariffsBox()` - для текущих затрат
+  - `ordersFBW.getAcceptanceCoefficients()` - для планирования поставок
+:::
 
 ---
 

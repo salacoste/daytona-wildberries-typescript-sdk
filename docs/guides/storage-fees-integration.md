@@ -460,10 +460,10 @@ const tariffs = response.response?.data?.warehouseList ?? [];
 // Используйте для расчёта: стоимость = объём × boxStorageLiter × коэффициент
 ```
 
-### API тарифов на поставку (supplies-api)
+### API тарифов на поставку (marketplace-api)
 
 ```
-GET https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients
+GET https://marketplace-api.wildberries.ru/api/v1/acceptance/coefficients
 ```
 
 **Возвращает:** `storageCoef`, `storageBaseLiter`, `storageAdditionalLiter`
@@ -474,20 +474,37 @@ GET https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients
 
 **Пример использования:**
 ```typescript
-const coefficients = await sdk.supplies.getAcceptanceCoefficients({
-  warehouseId: 123456
+const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients({
+  warehouseIDs: '130744'
 });
 // Используйте storageCoef для расчёта будущих затрат на хранение новой поставки
 ```
 
+::: warning Критически важно: Парсинг чисел с запятой
+API тарифов на поставку возвращает числа с **запятой** в качестве десятичного разделителя (например, `"0,13"`). Неправильный парсинг приведёт к тому, что `storage = 0`.
+
+```typescript
+// ❌ НЕПРАВИЛЬНО - вернёт 0
+const wrong = parseFloat(tariff.storageBaseLiter);  // "0,13" → NaN → 0
+
+// ✅ ПРАВИЛЬНО - конвертируем запятую в точку
+function parseWBNumber(value: string | null | undefined): number {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));  // "0,13" → 0.13
+}
+
+const correct = parseWBNumber(tariff.storageBaseLiter);  // 0.13
+```
+:::
+
 ### Какой API выбрать?
 
-| Сценарий | API | Эндпоинт |
-|----------|-----|----------|
-| Расчёт текущих затрат на хранение | common-api | `/api/v1/tariffs/box` |
-| Планирование новой поставки | supplies-api | `/api/v1/acceptance/coefficients` |
-| Сверка с финансами (детализация) | statistics-api | `/api/v1/paid_storage` |
-| Сверка с финансами (агрегат) | statistics-api | `/api/v1/supplier/reportDetailByPeriod` |
+| Сценарий | API | Эндпоинт | Модуль SDK |
+|----------|-----|----------|-----------|
+| Расчёт текущих затрат на хранение | common-api | `/api/v1/tariffs/box` | `sdk.tariffs` |
+| Планирование новой поставки | marketplace-api | `/api/v1/acceptance/coefficients` | `sdk.ordersFBW` |
+| Сверка с финансами (детализация) | statistics-api | `/api/v1/paid_storage` | `sdk.reports` |
+| Сверка с финансами (агрегат) | statistics-api | `/api/v1/supplier/reportDetailByPeriod` | `sdk.finances` |
 
 ### Связь между источниками
 
@@ -498,19 +515,190 @@ const coefficients = await sdk.supplies.getAcceptanceCoefficients({
 │                                                                  │
 │  ПЛАНИРОВАНИЕ          ТЕКУЩИЕ ТАРИФЫ        ФАКТИЧЕСКИЕ СУММЫ  │
 │  ─────────────         ──────────────        ─────────────────  │
-│  supplies-api    →     common-api      →     statistics-api     │
+│  marketplace-api →     common-api      →     statistics-api     │
 │  (на 14 дней)          (актуальные)          (за период)        │
 │                                                                  │
 │  storageCoef           boxStorageLiter       warehousePrice     │
 │  storageBaseLiter      boxStorageBase        storage_fee        │
-│                        boxStorageCoefExpr                       │
+│  storageAdditionalLiter                    boxStorageCoefExpr  │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
+## Расчёт стоимости хранения
+
+### Типы упаковки и формулы расчёта
+
+Wildberries использует разные формулы расчёта хранения в зависимости от типа упаковки:
+
+#### Короба (Boxes, BoxTypeID: 2)
+
+**Формула:**
+```typescript
+// Для коробов: оплачивается каждый литр объёма
+function calculateBoxStorage(
+  storageBaseLiter: string,
+  storageAdditionalLiter: string,
+  storageCoef: string,
+  volume: number,
+  days: number
+): number {
+  const base = parseWBNumber(storageBaseLiter);      // ₽ за первый литр
+  const additional = parseWBNumber(storageAdditionalLiter);  // ₽ за доп. литр
+  const coef = parseWBNumber(storageCoef) || 100;    // коэффициент %
+
+  // (base + (volume-1) * additional) * (coef / 100) * days
+  return (base + (volume - 1) * additional) * (coef / 100) * days;
+}
+```
+
+**Пример:**
+```typescript
+// Краснодар (Тихорецкая), warehouseID: 130744
+const storageBaseLiter = "0,13";      // ₽ за первый литр
+const storageAdditionalLiter = "0,13"; // ₽ за каждый доп. литр
+const storageCoef = "165";            // 165%
+const volume = 50;                    // литров
+const days = 30;                      // дней хранения
+
+const cost = calculateBoxStorage(
+  storageBaseLiter,
+  storageAdditionalLiter,
+  storageCoef,
+  volume,
+  days
+);
+// Результат: 643.50 ₽
+// Расчёт: (0.13 + (50-1) * 0.13) * (165 / 100) * 30 = 643.50
+```
+
+#### Монопаллеты (Pallets, BoxTypeID: 5)
+
+**Формула:**
+```typescript
+// Для паллет: фиксированная ставка за весь паллет
+function calculatePalletStorage(
+  storageBaseLiter: string,
+  storageCoef: string,
+  palletCount: number,
+  days: number
+): number {
+  const base = parseWBNumber(storageBaseLiter);  // ₽ за весь паллет
+  const coef = parseWBNumber(storageCoef) || 100; // коэффициент %
+
+  // storageAdditionalLiter = null для паллетов
+  // base * palletCount * (coef / 100) * days
+  return base * palletCount * (coef / 100) * days;
+}
+```
+
+**Пример:**
+```typescript
+// Краснодар (Тихорецкая), warehouseID: 130744
+const storageBaseLiter = "41.25";  // ₽ за весь паллет (flat rate)
+const storageCoef = "165";          // 165%
+const palletCount = 2;              // количество паллет
+const days = 30;                    // дней хранения
+
+const cost = calculatePalletStorage(
+  storageBaseLiter,
+  storageCoef,
+  palletCount,
+  days
+);
+// Результат: 4083.75 ₽
+// Расчёт: 41.25 * 2 * (165 / 100) * 30 = 4083.75
+```
+
+#### Суперсейф (Supersafe, BoxTypeID: 6)
+
+Использует ту же формулу, что и для коробов (покупостой объём).
+
+---
+
+## Поиск и устранение неисправностей
+
+### Проблема: storage = 0 в расчётах
+
+**Симптомы:**
+- Расчёт стоимости хранения возвращает 0
+- Все остальные параметры верны
+- API возвращает данные, но они не учитываются
+
+**Причина:**
+Неправильный парсинг чисел с запятой из API тарифов на поставку.
+
+**Решение:**
+```typescript
+// Используйте эту функцию для всех чисел из SUPPLY API
+function parseWBNumber(value: string | null | undefined): number {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));
+}
+
+// Примените ко всем числовым полям
+const storageCost = parseWBNumber(tariff.storageBaseLiter);
+const storageCoef = parseWBNumber(tariff.storageCoef);
+```
+
+**Отладка:**
+```typescript
+// Добавьте логирование для проверки значений
+console.log('Raw API values:', {
+  storageBaseLiter: tariff.storageBaseLiter,
+  storageAdditionalLiter: tariff.storageAdditionalLiter,
+  storageCoef: tariff.storageCoef,
+});
+
+console.log('Parsed values:', {
+  storageBaseLiter: parseWBNumber(tariff.storageBaseLiter),
+  storageAdditionalLiter: parseWBNumber(tariff.storageAdditionalLiter),
+  storageCoef: parseWBNumber(tariff.storageCoef),
+});
+```
+
+### Проблема: Неверный расчёт для паллет
+
+**Симптомы:**
+- Слишком высокая стоимость хранения паллет
+- Расчёт учитывает объём вместо фиксированной ставки
+
+**Причина:**
+Использование формулы для коробов вместо формулы для паллет.
+
+**Решение:**
+```typescript
+// Проверяйте тип упаковки перед расчётом
+if (tariff.boxTypeID === 5) {
+  // Паллеты - фиксированная ставка
+  return calculatePalletStorage(...);
+} else if (tariff.boxTypeID === 2 || tariff.boxTypeID === 6) {
+  // Короба или Суперсейф - объёмная ставка
+  return calculateBoxStorage(...);
+} else {
+  throw new Error(`Unknown box type: ${tariff.boxTypeID}`);
+}
+```
+
+### Проблема: Разница между API тарифов на остаток и на поставку
+
+**Симптомы:**
+- Разные значения хранения в двух API
+- Невозможно свести данные
+
+**Объяснение:**
+Это нормальное поведение. API тарифов на остаток показывает **фактические** тарифы для товаров, уже находящихся на складе. API тарифов на поставку показывает **прогнозные** тарифы для планирования новых поставок.
+
+**Рекомендация:**
+- Используйте INVENTORY API для расчёта затрат на существующие товары
+- Используйте SUPPLY API для планирования новых поставок
+
+---
+
 ## См. также
 
 - [Обзор тарифов Wildberries](./tariffs-overview.md) — полный обзор всех тарифных API
+- [Supplies & Tariffs Guide](./supplies-tariffs.md) — подробное руководство по тарифам на поставку
 - [Wildberries API Documentation](https://dev.wildberries.ru/) — официальная документация
