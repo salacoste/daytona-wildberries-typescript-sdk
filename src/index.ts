@@ -156,17 +156,17 @@ export class WildberriesSDK {
    * @example
    * ```typescript
    * // Get available warehouses
-   * const warehouses = await sdk.ordersFBW.getWarehouses();
+   * const warehouses = await sdk.ordersFBW.warehouses();
    *
    * // Check acceptance coefficients for next 14 days
    * const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients();
    *
    * // Get acceptance options for goods
    * const goods = [{ barcode: '1234567891234', quantity: 10 }];
-   * const options = await sdk.ordersFBW.getAcceptanceOptions(goods);
+   * const options = await sdk.ordersFBW.createAcceptanceOption(goods);
    *
    * // Get supply details
-   * const details = await sdk.ordersFBW.getSupplyDetails(12345);
+   * const details = await sdk.ordersFBW.getSupply(12345);
    * ```
    */
   public readonly ordersFBW: OrdersFbwModule;

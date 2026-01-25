@@ -137,7 +137,7 @@ Now that you've made your first API call, explore:
    - [All SDK Modules](/api/#sdk-modules) - 11 specialized modules
    - [WildberriesSDK](/api/classes/WildberriesSDK) - Main SDK class
    - [ProductsModule](/api/classes/ProductsModule) - Product management
-   - [OrdersFBSModule](/api/classes/OrdersFBSModule) - Order fulfillment
+   - [OrdersFbsModule](/api/classes/OrdersFbsModule) - Order fulfillment
    - [FinancesModule](/api/classes/FinancesModule) - Financial data
    - [AnalyticsModule](/api/classes/AnalyticsModule) - Performance metrics
 3. **[Configuration Guide](/guides/configuration)** - Configure SDK for your environment

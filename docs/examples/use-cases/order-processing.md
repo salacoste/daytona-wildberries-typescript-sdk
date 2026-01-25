@@ -285,7 +285,7 @@ console.log(`  Average Order: ${analytics.averageOrderValue.toFixed(2)} RUB`);
 
 ## Related Materials
 
-- [API Reference: OrdersFBSModule](/api/classes/OrdersFBSModule)
+- [API Reference: OrdersFbsModule](/api/classes/OrdersFbsModule)
 - [Shipping Management](shipping.md)
 - [Returns Handling](returns.md)
 

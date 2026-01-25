@@ -90,7 +90,7 @@ Order fulfillment model where **seller** handles storage, packaging, and shippin
 - Shipping to customer or pickup point
 - Handling returns and customer service
 
-**Related:** [OrdersFBS Module](api/classes/OrdersFBSModule.html), [FBS Order Fulfillment Example](../examples/README.md#order-fulfillment-fbs)
+**Related:** [OrdersFBS Module](api/classes/OrdersFbsModule.html), [FBS Order Fulfillment Example](../examples/README.md#order-fulfillment-fbs)
 
 ---
 
@@ -103,7 +103,7 @@ Order fulfillment model where **Wildberries** handles storage, packaging, and sh
 
 **Benefits:** Faster delivery, Prime eligibility, reduced seller logistics burden
 
-**Related:** [OrdersFBW Module](api/classes/OrdersFBWModule.html)
+**Related:** [OrdersFBW Module](api/classes/OrdersFbwModule.html)
 
 ---
 

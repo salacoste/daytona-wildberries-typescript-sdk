@@ -1437,7 +1437,7 @@ async function warmCache() {
   // Предварительная загрузка тарифов
   await smartCache.get(
     'tariffs:box',
-    () => sdk.tariffs.getBoxTariffs(),
+    () => sdk.tariffs.getTariffsBox({ date: new Date().toISOString().split('T')[0] }),
     604800 // 7 дней
   );
 

@@ -455,7 +455,8 @@ GET https://common-api.wildberries.ru/api/v1/tariffs/box
 
 **Пример использования:**
 ```typescript
-const tariffs = await sdk.tariffs.getBoxTariffs();
+const response = await sdk.tariffs.getTariffsBox({ date: '2025-01-25' });
+const tariffs = response.response?.data?.warehouseList ?? [];
 // Используйте для расчёта: стоимость = объём × boxStorageLiter × коэффициент
 ```
 

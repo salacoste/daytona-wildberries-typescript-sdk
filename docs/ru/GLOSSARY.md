@@ -90,7 +90,7 @@ layout: doc
 - Отправка покупателю или в пункт выдачи
 - Обработка возвратов и обслуживание клиентов
 
-**Связанные:** [Модуль OrdersFBS](/api/classes/OrdersFBSModule.html), [Пример выполнения заказов FBS](../examples/README.md#order-fulfillment-fbs)
+**Связанные:** [Модуль OrdersFBS](/api/classes/OrdersFbsModule.html), [Пример выполнения заказов FBS](../examples/README.md#order-fulfillment-fbs)
 
 ---
 
@@ -103,7 +103,7 @@ layout: doc
 
 **Преимущества:** Быстрая доставка, соответствие требованиям Prime, снижение логистической нагрузки на продавца
 
-**Связанные:** [Модуль OrdersFBW](/api/classes/OrdersFBWModule.html)
+**Связанные:** [Модуль OrdersFBW](/api/classes/OrdersFbwModule.html)
 
 ---
 
@@ -125,7 +125,7 @@ layout: doc
 - **Заказы FBS:** Выполняются продавцом
 - **Заказы FBW:** Выполняются Wildberries
 
-**Связанные:** [Модуль Order](/api/classes/OrdersFBSModule.html), [Рабочий процесс заказов](/ru/guides/best-practices.md#order-workflow)
+**Связанные:** [Модуль Order](/api/classes/OrdersFbsModule.html), [Рабочий процесс заказов](/ru/guides/best-practices.md#order-workflow)
 
 ---
 
@@ -250,7 +250,7 @@ layout: doc
 
 **Процесс:** Создание поставки → Добавление товаров → Генерация этикеток → Отправка на склад → WB принимает и хранит
 
-**Связанные:** [Модуль OrdersFBW - Поставки](/api/classes/OrdersFBWModule.html)
+**Связанные:** [Модуль OrdersFBW - Поставки](/api/classes/OrdersFbwModule.html)
 
 ---
 

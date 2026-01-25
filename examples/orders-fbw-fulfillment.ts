@@ -82,9 +82,9 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src';
-import type { Good as FBWGood } from '../src';
+import type { ModelsGood } from '../src/types/orders-fbw.types';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 
@@ -132,7 +132,7 @@ async function completeFBWWorkflow() {
     // Step 1: Get available WB warehouses
     // ============================================================================
     console.log('Step 1: Fetching available Wildberries warehouses...');
-    const warehouses = await sdk.ordersFBW.getWarehouses();
+    const warehouses = await sdk.ordersFBW.warehouses();
     console.log(`Found ${warehouses.length} available warehouses\n`);
 
     if (warehouses.length === 0) {
@@ -176,7 +176,9 @@ async function completeFBWWorkflow() {
     const warehouseCoefData = warehouseCoefs.get(targetWarehouse.ID) || [];
 
     if (warehouseCoefData.length > 0) {
-      console.log(`Acceptance coefficients for ${targetWarehouse.name} (ID: ${targetWarehouse.ID}):`);
+      console.log(
+        `Acceptance coefficients for ${targetWarehouse.name} (ID: ${targetWarehouse.ID}):`
+      );
 
       const freeDates = warehouseCoefData.filter((c) => c.coefficient === 0);
       const paidDates = warehouseCoefData.filter((c) => c.coefficient > 0);
@@ -204,7 +206,7 @@ async function completeFBWWorkflow() {
     console.log('(Validates which warehouses accept your specific products)\n');
 
     // Example goods (replace with real barcodes from your products)
-    const goods: FBWGood[] = [
+    const goods: ModelsGood[] = [
       { barcode: '1234567891234', quantity: 10 },
       { barcode: '9876543210987', quantity: 5 },
     ];
@@ -216,17 +218,19 @@ async function completeFBWWorkflow() {
     console.log('');
 
     try {
-      const acceptanceOptions = await sdk.ordersFBW.getAcceptanceOptions(goods);
+      const acceptanceOptions = await sdk.ordersFBW.createAcceptanceOption(goods);
 
       console.log('Acceptance options:');
-      acceptanceOptions.result.forEach((item) => {
+      acceptanceOptions.result?.forEach((item) => {
         console.log(`\n  Barcode: ${item.barcode}`);
         if (item.isError) {
-          console.log(`    ❌ Error: ${item.error?.detail || item.error?.title || 'Unknown error'}`);
+          console.log(
+            `    ❌ Error: ${item.error?.detail || item.error?.title || 'Unknown error'}`
+          );
         } else {
-          console.log(`    ✅ Accepted at ${item.warehouses.length} warehouse(s):`);
-          item.warehouses.forEach((wh) => {
-            console.log(`       ${wh.warehouseName} (ID: ${wh.warehouseID})`);
+          console.log(`    ✅ Accepted at ${item.warehouses?.length ?? 0} warehouse(s):`);
+          item.warehouses?.forEach((wh) => {
+            console.log(`       Warehouse ID: ${wh.warehouseID}`);
             console.log(`         Can box: ${wh.canBox ? 'Yes' : 'No'}`);
             console.log(`         Can monopallet: ${wh.canMonopallet ? 'Yes' : 'No'}`);
             console.log(`         Can supersafe: ${wh.canSupersafe ? 'Yes' : 'No'}`);
@@ -249,13 +253,15 @@ async function completeFBWWorkflow() {
     console.log('Step 4: Getting transit tariffs...');
     console.log('(Transit warehouse delivery pricing)\n');
 
-    const tariffs = await sdk.ordersFBW.getTransitTariffs();
+    const tariffs = await sdk.ordersFBW.transitTariffs();
     console.log(`Retrieved ${tariffs.length} transit tariff routes\n`);
 
     if (tariffs.length > 0) {
       console.log('Sample transit routes:');
       tariffs.slice(0, 3).forEach((tariff) => {
-        console.log(`\n  Route: ${tariff.transitWarehouseName} → ${tariff.destinationWarehouseName}`);
+        console.log(
+          `\n  Route: ${tariff.transitWarehouseName} → ${tariff.destinationWarehouseName}`
+        );
         console.log(`  Active from: ${tariff.activeFrom}`);
         console.log(`  Pallet tariff: ${tariff.palletTariff} RUB`);
         console.log('  Box tariff tiers:');
@@ -286,7 +292,7 @@ async function completeFBWWorkflow() {
       statusIDs: [], // All statuses
     };
 
-    const supplies = await sdk.ordersFBW.getSupplies(filters, 100, 0);
+    const supplies = await sdk.ordersFBW.createSupply(filters, { limit: 100, offset: 0 });
     console.log(`Found ${supplies.length} supplies in last 30 days\n`);
 
     if (supplies.length > 0) {
@@ -311,18 +317,24 @@ async function completeFBWWorkflow() {
         const firstSupply = supplies[0];
         console.log('Step 6: Getting detailed supply information...\n');
 
-        const supplyDetails = await sdk.ordersFBW.getSupplyDetails(firstSupply.supplyID, false);
+        const supplyDetails = await sdk.ordersFBW.getSupply(firstSupply.supplyID, {
+          isPreorderID: false,
+        });
 
-        console.log(`Supply ${supplyDetails.supplyID} details:`);
-        console.log(`  Status: ${getSupplyStatusName(supplyDetails.statusID)} (${supplyDetails.statusName})`);
-        console.log(`  Warehouse: ${supplyDetails.warehouseName} (ID: ${supplyDetails.warehouseID})`);
-        console.log(`  Box Type: ${getBoxTypeName(supplyDetails.boxTypeID)}`);
+        console.log(`Supply ${firstSupply.supplyID} details:`);
+        console.log(
+          `  Status: ${getSupplyStatusName(supplyDetails.statusID ?? 0)} (${supplyDetails.statusName})`
+        );
+        console.log(
+          `  Warehouse: ${supplyDetails.warehouseName} (ID: ${supplyDetails.warehouseID})`
+        );
+        console.log(`  Box Type: ${getBoxTypeName(supplyDetails.boxTypeID ?? 0)}`);
         console.log(`  Quantity planned: ${supplyDetails.quantity}`);
         console.log(`  Quantity accepted: ${supplyDetails.acceptedQuantity}`);
         console.log(`  Ready for sale: ${supplyDetails.readyForSaleQuantity}`);
         console.log(`  Acceptance cost: ${supplyDetails.acceptanceCost} RUB`);
-        console.log(`  Storage coefficient: ${supplyDetails.storageCoefficient}x`);
-        console.log(`  Delivery coefficient: ${supplyDetails.deliveryCoefficient}x`);
+        console.log(`  Storage coefficient: ${supplyDetails.storageCoef}`);
+        console.log(`  Delivery coefficient: ${supplyDetails.deliveryCoef}`);
         console.log('');
 
         // ============================================================================
@@ -330,7 +342,11 @@ async function completeFBWWorkflow() {
         // ============================================================================
         console.log('Step 7: Getting goods within supply...\n');
 
-        const supplyGoods = await sdk.ordersFBW.getSupplyGoods(firstSupply.supplyID, false, 100, 0);
+        const supplyGoods = await sdk.ordersFBW.getSuppliesGood(firstSupply.supplyID, {
+          isPreorderID: false,
+          limit: 100,
+          offset: 0,
+        });
         console.log(`Supply contains ${supplyGoods.length} SKUs\n`);
 
         if (supplyGoods.length > 0) {
@@ -356,7 +372,7 @@ async function completeFBWWorkflow() {
         // ============================================================================
         console.log('Step 8: Getting package information...\n');
 
-        const packages = await sdk.ordersFBW.getSupplyPackage(firstSupply.supplyID);
+        const packages = await sdk.ordersFBW.getSuppliesPackage(firstSupply.supplyID);
         console.log(`Supply packaged into ${packages.length} box(es)\n`);
 
         if (packages.length > 0) {

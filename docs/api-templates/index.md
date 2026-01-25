@@ -23,8 +23,8 @@ Complete reference for all 11 API modules covering product management, orders, f
 |--------|-------------|------------|
 | **[GeneralModule](/api/classes/GeneralModule)** | Ping, news, seller information | common-api |
 | **[ProductsModule](/api/classes/ProductsModule)** | Product catalog, categories, pricing, stock | content-api |
-| **[OrdersFBSModule](/api/classes/OrdersFBSModule)** | Seller warehouse fulfillment orders | marketplace-api |
-| **[OrdersFBWModule](/api/classes/OrdersFBWModule)** | Wildberries warehouse fulfillment | marketplace-api |
+| **[OrdersFbsModule](/api/classes/OrdersFbsModule)** | Seller warehouse fulfillment orders | marketplace-api |
+| **[OrdersFbwModule](/api/classes/OrdersFbwModule)** | Wildberries warehouse fulfillment | marketplace-api |
 | **[FinancesModule](/api/classes/FinancesModule)** | Balance, transactions, financial reports | finance-api, statistics-api |
 | **[AnalyticsModule](/api/classes/AnalyticsModule)** | Sales analytics, performance metrics, CSV reports | seller-analytics-api |
 | **[ReportsModule](/api/classes/ReportsModule)** | Async report generation and retrieval | - |

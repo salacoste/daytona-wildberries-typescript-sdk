@@ -1819,9 +1819,10 @@ for (const nmID of [111, 222, 333]) {
 
 ## Related Resources
 
-- **[Products Module Guide](./products-module.md)** - Complete product management reference
+- **[Working with Product Cards](./working-with-product-cards.md)** - Complete guide to fetching, filtering, and paginating product cards
 - **[Promotion & Advertising Guide](./promotion-advertising.md)** - Advertising campaign management
-- **[Analytics Module Guide](./analytics-module.md)** - Performance tracking and reporting
+- **[API Reference: ProductsModule](/api/classes/ProductsModule)** - Products API documentation
+- **[API Reference: AnalyticsModule](/api/classes/AnalyticsModule)** - Analytics API documentation
 - **[Best Practices](./best-practices.md)** - General SDK usage best practices
 - **[API Reference](../api/)** - Complete TypeDoc documentation
 

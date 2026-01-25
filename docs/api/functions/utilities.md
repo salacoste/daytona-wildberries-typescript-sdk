@@ -101,7 +101,10 @@ const comparison = await compareTariffs(
     warehouseName: 'Коледино',
     date: '2025-01-25'
   },
-  () => sdk.tariffs.getBoxTariffs(),
+  async () => {
+    const response = await sdk.tariffs.getTariffsBox({ date: '2025-01-25' });
+    return response.response?.data?.warehouseList ?? [];
+  },
   () => sdk.ordersFBW.getAcceptanceCoefficients()
 );
 

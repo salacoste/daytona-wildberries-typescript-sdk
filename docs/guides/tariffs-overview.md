@@ -435,7 +435,7 @@ for (const item of comparison) {
 - [Storage Fees Integration](./storage-fees-integration.md) - Платное хранение
 - [Realization Report](./realization-report.md) - Отчёт о реализации
 - [API Reference: TariffsModule](/api/classes/TariffsModule)
-- [API Reference: SuppliesModule](/api/classes/SuppliesModule)
+- [API Reference: OrdersFbwModule](/api/classes/OrdersFbwModule) - Supply operations
 
 ---
 

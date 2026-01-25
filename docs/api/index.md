@@ -10,10 +10,10 @@ Complete TypeScript API reference for the Wildberries SDK. Browse all modules, c
 
 ## SDK Core
 
-- **[WildberriesSDK](/api/classes/WildberriesSDK)** - Main SDK class aggregating all 11 modules
-- **[BaseClient](/api/-internal-/classes/BaseClient)** - HTTP client with retry and timeout handling
-- **[RateLimiter](/api/-internal-/classes/RateLimiter)** - Per-endpoint rate limit enforcement
-- **[RetryHandler](/api/-internal-/classes/RetryHandler)** - Exponential backoff retry logic
+- **[WildberriesSDK](classes/WildberriesSDK.md)** - Main SDK class aggregating all 11 modules
+- **[BaseClient](classes/BaseClient.md)** - HTTP client with retry and timeout handling
+- **[RateLimiter](-internal-/classes/RateLimiter.md)** - Per-endpoint rate limit enforcement
+- **[RetryHandler](-internal-/classes/RetryHandler.md)** - Exponential backoff retry logic
 
 ## SDK Modules
 
@@ -21,68 +21,64 @@ Complete reference for all 11 API modules covering product management, orders, f
 
 | Module | Description | API Domain |
 |--------|-------------|------------|
-| **[GeneralModule](/api/classes/GeneralModule)** | Ping, news, seller information | common-api |
-| **[ProductsModule](/api/classes/ProductsModule)** | Product catalog, categories, pricing, stock | content-api |
-| **[OrdersFBSModule](/api/classes/OrdersFBSModule)** | Seller warehouse fulfillment orders | marketplace-api |
-| **[OrdersFBWModule](/api/classes/OrdersFBWModule)** | Wildberries warehouse fulfillment | marketplace-api |
-| **[FinancesModule](/api/classes/FinancesModule)** | Balance, transactions, financial reports | finance-api, statistics-api |
-| **[AnalyticsModule](/api/classes/AnalyticsModule)** | Sales analytics, performance metrics, CSV reports | seller-analytics-api |
-| **[ReportsModule](/api/classes/ReportsModule)** | Async report generation and retrieval | - |
-| **[CommunicationsModule](/api/classes/CommunicationsModule)** | Customer chat, Q&A, reviews | - |
-| **[PromotionModule](/api/classes/PromotionModule)** | Campaigns, promo codes, advertising | - |
-| **[TariffsModule](/api/classes/TariffsModule)** | Commission rates, tariff info, fees | - |
-| **[InStorePickupModule](/api/classes/InStorePickupModule)** | Pickup point management | - |
+| **[GeneralModule](classes/GeneralModule.md)** | Ping, news, seller information | common-api |
+| **[ProductsModule](classes/ProductsModule.md)** | Product catalog, categories, pricing, stock | content-api |
+| **[OrdersFbsModule](classes/OrdersFbsModule.md)** | Seller warehouse fulfillment orders | marketplace-api |
+| **[OrdersFbwModule](classes/OrdersFbwModule.md)** | Wildberries warehouse fulfillment | marketplace-api |
+| **[FinancesModule](classes/FinancesModule.md)** | Balance, transactions, financial reports | finance-api, statistics-api |
+| **[AnalyticsModule](classes/AnalyticsModule.md)** | Sales analytics, performance metrics, CSV reports | seller-analytics-api |
+| **[ReportsModule](classes/ReportsModule.md)** | Async report generation and retrieval | - |
+| **[CommunicationsModule](classes/CommunicationsModule.md)** | Customer chat, Q&A, reviews | - |
+| **[PromotionModule](classes/PromotionModule.md)** | Campaigns, promo codes, advertising | - |
+| **[TariffsModule](classes/TariffsModule.md)** | Commission rates, tariff info, fees | - |
+| **[InStorePickupModule](classes/InStorePickupModule.md)** | Pickup point management | - |
 
 ## Configuration Interfaces
 
 Configure the SDK for different environments and use cases:
 
-- **[SDKConfig](/api/interfaces/SDKConfig)** - Main SDK configuration interface
-- **[RetryConfig](/api/-internal-/interfaces/RetryConfig)** - Retry logic configuration
-- **[RateLimitConfig](/api/interfaces/RateLimitConfig)** - Rate limiting configuration
+- **[SDKConfig](interfaces/SDKConfig.md)** - Main SDK configuration interface
+- **[RetryConfig](-internal-/interfaces/RetryConfig.md)** - Retry logic configuration
+- **[RateLimitConfig](interfaces/RateLimitConfig.md)** - Rate limiting configuration
 
 ## Error Classes
 
 Comprehensive error hierarchy for precise error handling:
 
-- **[WBAPIError](/api/classes/WBAPIError)** - Base error class for all SDK errors
-- **[AuthenticationError](/api/classes/AuthenticationError)** - 401/403 authentication errors
-- **[RateLimitError](/api/classes/RateLimitError)** - 429 rate limit errors
-- **[ValidationError](/api/classes/ValidationError)** - 400/422 validation errors
-- **[NetworkError](/api/classes/NetworkError)** - Network failure errors
+- **[WBAPIError](classes/WBAPIError.md)** - Base error class for all SDK errors
+- **[AuthenticationError](classes/AuthenticationError.md)** - 401/403 authentication errors
+- **[RateLimitError](classes/RateLimitError.md)** - 429 rate limit errors
+- **[ValidationError](classes/ValidationError.md)** - 400/422 validation errors
+- **[NetworkError](classes/NetworkError.md)** - Network failure errors
 
 ## Common Interfaces
 
-Frequently used interfaces across modules:
-
-### Product Management
-- **[ProductCard](/api/interfaces/ProductCard)** - Product card data structure
-- **[CreateProductRequest](/api/interfaces/CreateProductRequest)** - Product creation request
-- **[PricingUpdate](/api/interfaces/PricingUpdate)** - Pricing update request
-- **[StockInfo](/api/-internal-/interfaces/StockInfo)** - Stock information
+Frequently used interfaces are available in the internal module documentation. Browse by domain:
 
 ### Order Management
-- **[Order](/api/interfaces/Order)** - Order data structure
-- **[OrderStatus](/api/interfaces/OrderStatus)** - Order status information
-- **[GetOrdersResponse](/api/interfaces/GetOrdersResponse)** - Orders list response
+- **[Order](-internal-/interfaces/Order.md)** - Order data structure
+- **[ApiOrderStatus](-internal-/interfaces/ApiOrderStatus.md)** - Order status information
+- **[ApiOrders](-internal-/interfaces/ApiOrders.md)** - Orders list response
 
-### Financial Data
-- **[BalanceResponse](/api/interfaces/BalanceResponse)** - Account balance response
-- **[Transaction](/api/interfaces/Transaction)** - Transaction data structure
-- **[Payout](/api/interfaces/Payout)** - Payout information
+### Supply & Warehouse
+- **[ModelsAcceptanceCoefficient](-internal-/interfaces/ModelsAcceptanceCoefficient.md)** - Acceptance coefficients for FBW
+- **[ModelsSupply](-internal-/interfaces/ModelsSupply.md)** - Supply data structure
+- **[ModelsWarehousesResultItems](-internal-/interfaces/ModelsWarehousesResultItems.md)** - Warehouse information
 
-### Analytics Data
-- **[CardStatistics](/api/interfaces/CardStatistics)** - Product card statistics
-- **[CategoryPerformanceResponse](/api/interfaces/CategoryPerformanceResponse)** - Category performance metrics
+### Analytics & Reports
+- **[NmReportDetailResponse](-internal-/interfaces/NmReportDetailResponse.md)** - Product report details
+- **[TableGroupResponse](-internal-/interfaces/TableGroupResponse.md)** - Analytics table response
+- **[SalesFunnelProductReq](-internal-/interfaces/SalesFunnelProductReq.md)** - Sales funnel request
 
 ## Type Definitions
 
 Browse complete type definitions for API requests and responses:
 
-- **[Interfaces](/api/interfaces/)** - All interface definitions (261 total)
-- **[Type Aliases](/api/type-aliases/)** - Type alias definitions (46 total)
-- **[Enumerations](/api/enumerations/)** - Enum definitions (7 total)
-- **[Variables](/api/variables/)** - Exported variables and constants
+- **[Public Interfaces](modules.md#interfaces)** - Public configuration interfaces (SDKConfig, RateLimitConfig, RequestOptions)
+- **[Internal Module](-internal-/modules.md)** - Complete internal types reference (all API interfaces)
+- **[Type Aliases](modules.md#type-aliases)** - Type alias definitions (EndpointLimits)
+- **[Variables](modules.md#variables)** - Exported variables and constants (rate limits, version)
+- **[Functions](modules.md#functions)** - Utility functions (calculateSupplyCost, compareTariffs)
 
 ## Quick Start Example
 

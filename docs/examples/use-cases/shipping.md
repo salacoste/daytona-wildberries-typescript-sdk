@@ -310,7 +310,7 @@ async function getShippingMetrics(days = 30): Promise<ShippingMetrics> {
 
 ## Related Materials
 
-- [API Reference: OrdersFBSModule](/api/classes/OrdersFBSModule)
+- [API Reference: OrdersFbsModule](/api/classes/OrdersFbsModule)
 - [Order Processing](order-processing.md)
 - [Returns Handling](returns.md)
 

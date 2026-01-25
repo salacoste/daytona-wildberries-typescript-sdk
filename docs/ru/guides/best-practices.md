@@ -195,7 +195,7 @@ SDK реализует лимиты запросов для каждой кон�
 | Finances | Транзакции | 60 запросов/мин | Интервалы 1с |
 | Tariffs | Комиссия | 1 запрос/мин | Интервалы 60с |
 
-**Справочник API:** См. [ProductsModule](/api/classes/ProductsModule), [OrdersFBSModule](/api/classes/OrdersFBSModule), [AnalyticsModule](/api/classes/AnalyticsModule), [FinancesModule](/api/classes/FinancesModule) для полной документации методов и деталей лимитов запросов.
+**Справочник API:** См. [ProductsModule](/api/classes/ProductsModule), [OrdersFbsModule](/api/classes/OrdersFbsModule), [AnalyticsModule](/api/classes/AnalyticsModule), [FinancesModule](/api/classes/FinancesModule) для полной документации методов и деталей лимитов запросов.
 
 ### Обработка лимитов запросов
 

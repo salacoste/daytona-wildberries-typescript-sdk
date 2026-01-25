@@ -802,7 +802,7 @@ RateLimitError: Too many concurrent requests (max: 10)
 
 2. **Review documentation:**
    - See [Performance Tuning Guide](./performance-tuning.md#rate-limits)
-   - Check [API Reference](../api/modules.html)
+   - Check [API Reference](../api/modules.md)
    - Review Wildberries API documentation
 
 3. **Test rate limits:**
@@ -1135,7 +1135,7 @@ Field: categoryId - Must be a valid category ID
    ```
 
 4. **Review API documentation:**
-   - See [API Reference](../api/modules/ProductsModule.html)
+   - See [API Reference](../api/classes/ProductsModule.md)
    - Check field requirements in type definitions
    - Review examples in [Best Practices](./best-practices.md)
 
@@ -1690,7 +1690,7 @@ TypeError: sdk.products.createProduct is not a function
    ```
 
 2. **Review documentation:**
-   - Check [API Reference](../api/modules.html)
+   - Check [API Reference](../api/modules.md)
    - Review [Best Practices](./best-practices.md)
    - Read [Examples](../../examples/)
 
@@ -1717,7 +1717,7 @@ TypeError: sdk.products.createProduct is not a function
    ```
 
 5. **Report issue:**
-   - Open [GitHub Issue](https://github.com/daytona/wildberries-sdk/issues)
+   - Open [GitHub Issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
    - Include reproduction code
    - Provide SDK version, Node version
    - Include debug logs
@@ -1952,19 +1952,19 @@ If you can't resolve your issue using this guide:
 
 ### 1. Search Existing Resources
 
-- **GitHub Issues**: [Search closed and open issues](https://github.com/daytona/wildberries-sdk/issues)
+- **GitHub Issues**: [Search closed and open issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 - **FAQ**: Check [Frequently Asked Questions](../FAQ.md)
-- **API Reference**: Review [API documentation](../api/modules.html)
+- **API Reference**: Review [API documentation](../api/modules.md)
 - **Examples**: Look at [working examples](../../examples/)
 
 ### 2. Ask the Community
 
-- **GitHub Discussions**: [Ask questions and share knowledge](https://github.com/daytona/wildberries-sdk/discussions)
+- **GitHub Discussions**: [Ask questions and share knowledge](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
 - **Stack Overflow**: Tag questions with `wildberries-sdk`
 
 ### 3. Report a Bug
 
-If you've found a bug, [open a GitHub issue](https://github.com/daytona/wildberries-sdk/issues/new).
+If you've found a bug, [open a GitHub issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues/new).
 
 **Include in your report:**
 
@@ -2030,7 +2030,7 @@ For urgent issues or enterprise support:
 
 - Review [Best Practices Guide](./best-practices.md) to avoid common issues
 - Check [Performance Tuning Guide](./performance-tuning.md) for optimization
-- Read [API Reference](../api/modules.html) for detailed documentation
+- Read [API Reference](../api/modules.md) for detailed documentation
 - Explore [Examples](../../examples/) for working code samples
 
 ---
@@ -2039,4 +2039,4 @@ For urgent issues or enterprise support:
 **Document Version**: 1.0
 **SDK Version**: 1.0.0
 
-For the latest version of this guide, visit [GitHub repository](https://github.com/daytona/wildberries-sdk).
+For the latest version of this guide, visit [GitHub repository](https://github.com/salacoste/daytona-wildberries-typescript-sdk).

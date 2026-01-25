@@ -654,7 +654,7 @@ async function processReshipments(sdk: WildberriesSDK) {
 
 - [Realization Report](./realization-report.md) - Детализация возвратов в отчёте
 - [Commissions & Fees](./commissions-fees.md) - Тарифы на возврат
-- [API Reference: OrdersFBSModule](/api/classes/OrdersFBSModule)
+- [API Reference: OrdersFBSModule](/api/classes/OrdersFbsModule)
 - [API Reference: TariffsModule](/api/classes/TariffsModule)
 
 ---

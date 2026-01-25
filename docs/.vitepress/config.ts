@@ -164,8 +164,8 @@ export default defineConfig({
                 items: [
                   { text: 'GeneralModule', link: '/api/classes/GeneralModule' },
                   { text: 'ProductsModule', link: '/api/classes/ProductsModule' },
-                  { text: 'OrdersFBSModule', link: '/api/classes/OrdersFBSModule' },
-                  { text: 'OrdersFBWModule', link: '/api/classes/OrdersFBWModule' },
+                  { text: 'OrdersFbsModule', link: '/api/classes/OrdersFbsModule' },
+                  { text: 'OrdersFbwModule', link: '/api/classes/OrdersFbwModule' },
                   { text: 'FinancesModule', link: '/api/classes/FinancesModule' },
                   { text: 'AnalyticsModule', link: '/api/classes/AnalyticsModule' },
                   { text: 'ReportsModule', link: '/api/classes/ReportsModule' },
@@ -326,8 +326,8 @@ export default defineConfig({
                 items: [
                   { text: 'GeneralModule', link: '/api/classes/GeneralModule' },
                   { text: 'ProductsModule', link: '/api/classes/ProductsModule' },
-                  { text: 'OrdersFBSModule', link: '/api/classes/OrdersFBSModule' },
-                  { text: 'OrdersFBWModule', link: '/api/classes/OrdersFBWModule' },
+                  { text: 'OrdersFbsModule', link: '/api/classes/OrdersFbsModule' },
+                  { text: 'OrdersFbwModule', link: '/api/classes/OrdersFbwModule' },
                   { text: 'FinancesModule', link: '/api/classes/FinancesModule' },
                   { text: 'AnalyticsModule', link: '/api/classes/AnalyticsModule' },
                   { text: 'ReportsModule', link: '/api/classes/ReportsModule' },

@@ -112,11 +112,11 @@ getTariffs();
 
 ```typescript
 async function getWarehouses() {
-  const warehouses = await sdk.ordersFBW.getWarehouses();
+  const warehouses = await sdk.ordersFBW.warehouses();
 
   console.log('Available warehouses:');
   warehouses.forEach(wh => {
-    console.log(`- ${wh.name} (ID: ${wh.id})`);
+    console.log(`- ${wh.name} (ID: ${wh.ID})`);
   });
 
   return warehouses;
@@ -149,7 +149,7 @@ categories.data?.forEach(cat => {
 
 - [API Reference: ProductsModule](/api/classes/ProductsModule)
 - [API Reference: FinancesModule](/api/classes/FinancesModule)
-- [API Reference: OrdersFBSModule](/api/classes/OrdersFBSModule)
+- [API Reference: OrdersFbsModule](/api/classes/OrdersFbsModule)
 - [Error Handling](../intermediate/error-handling.md)
 
 ---

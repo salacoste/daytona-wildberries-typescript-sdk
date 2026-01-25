@@ -195,7 +195,7 @@ The SDK implements per-endpoint rate limiting based on Wildberries API specifica
 | Finances | Transactions | 60 req/min | 1s intervals |
 | Tariffs | Commission | 1 req/min | 60s intervals |
 
-**API Reference:** See [ProductsModule](/api/classes/ProductsModule), [OrdersFBSModule](/api/classes/OrdersFBSModule), [AnalyticsModule](/api/classes/AnalyticsModule), [FinancesModule](/api/classes/FinancesModule) for complete method documentation and rate limit details.
+**API Reference:** See [ProductsModule](/api/classes/ProductsModule), [OrdersFBSModule](/api/classes/OrdersFbsModule), [AnalyticsModule](/api/classes/AnalyticsModule), [FinancesModule](/api/classes/FinancesModule) for complete method documentation and rate limit details.
 
 ### Rate Limit Handling
 
@@ -1302,7 +1302,7 @@ async function timedOperation<T>(
 - **[Configuration Guide](configuration.md)** - SDK configuration options
 - **[Performance Tuning](performance.md)** - Advanced performance optimization
 - **[Troubleshooting](troubleshooting.md)** - Common issues and solutions
-- **[FAQ](faq.md)** - Frequently asked questions
+- **[FAQ](../FAQ.md)** - Frequently asked questions
 
 ---
 

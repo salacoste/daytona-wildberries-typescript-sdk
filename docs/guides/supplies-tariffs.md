@@ -345,7 +345,7 @@ Compares tariffs between inventory storage (from Tariffs API) and supply accepta
 ```typescript
 async function compareTariffs(
   input: CompareTariffsInput,
-  getBoxTariffs: () => Promise<ModelsWarehouseBoxRates[]>,
+  getBoxTariffs: () => Promise<ModelsWarehouseBoxRates[]>,  // Adapter for sdk.tariffs.getTariffsBox()
   getAcceptanceCoefficients: () => Promise<ModelsAcceptanceCoefficient[]>
 ): Promise<TariffComparison>
 ```
@@ -412,7 +412,10 @@ const comparison = await compareTariffs(
     warehouseName: 'Коледино',
     date: '2025-01-25'
   },
-  () => sdk.tariffs.getBoxTariffs(),
+  async () => {
+    const response = await sdk.tariffs.getTariffsBox({ date: '2025-01-25' });
+    return response.response?.data?.warehouseList ?? [];
+  },
   () => sdk.ordersFBW.getAcceptanceCoefficients()
 );
 
