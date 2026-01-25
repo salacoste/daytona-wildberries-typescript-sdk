@@ -13,6 +13,7 @@ Comprehensive collection of practical examples demonstrating how to use the Wild
 - [Getting Started](#getting-started)
 - [Products Module](#products-module)
 - [Orders Module](#orders-module)
+- [Supply Planning Module](#supply-planning-module)
 - [Finances Module](#finances-module)
 - [Analytics Module](#analytics-module)
 - [Communications Module](#communications-module)
@@ -41,6 +42,8 @@ Perfect for getting started with the SDK and understanding basic concepts.
 | [orders-fbs-processing.ts](#orders-fbs-processingts---fbs-order-processing) | Orders FBS | 10 min | Fetch and process FBS orders |
 | [finances-balance-transactions.ts](#finances-balance-transactionsts---balance--transaction-management) | Finances | 10 min | Check balance and transaction history |
 | [customer-support.ts](#customer-supportts---customer-support-workflows) | Communications | 15 min | Basic customer chat management |
+| [supply-cost-calculator.ts](#supply-cost-calculatorts---supply-cost-calculator) | Supply Planning | 10 min | Calculate FBW supply costs |
+| [tariff-comparison.ts](#tariff-comparisont---tariff-comparison-tool) | Supply Planning | 10 min | Compare inventory vs supply tariffs |
 
 #### 🟡 Intermediate (15-30 minutes)
 Build on basic knowledge with more complex workflows and multi-step processes.
@@ -52,6 +55,7 @@ Build on basic knowledge with more complex workflows and multi-step processes.
 | [complete-product-workflow.ts](#complete-product-workflowts---end-to-end-product-lifecycle) | Products | 30 min | End-to-end product creation workflow |
 | [orders-fbs-fulfillment.ts](#orders-fbs-fulfillmentts---complete-fbs-fulfillment-workflow) | Orders FBS | 25 min | Complete FBS order fulfillment process |
 | [orders-fbw-fulfillment.ts](#orders-fbw-fulfillmentts---fbw-warehouse-supply-planning) | Orders FBW | 30 min | FBW supply planning and management |
+| [supplies-planning.ts](#supplies-planningts---complete-supply-planning-workflow) | Supply Planning | 25 min | Complete supply planning workflow |
 | [in-store-pickup-workflow.ts](#in-store-pickup-workflowts---in-store-pickup-management) | In-Store Pickup | 25 min | Manage Click & Collect orders |
 | [finances-reports-payouts.ts](#finances-reports-payoutsts---financial-reports--payouts) | Finances | 20 min | Generate reports and track payouts |
 | [analytics-dashboard.ts](#analytics-dashboardts---analytics-dashboard) | Analytics | 25 min | Build analytics dashboard with key metrics |
@@ -84,6 +88,11 @@ Complex multi-module integrations and comprehensive business workflows.
 #### 📊 Inventory & Stock Management
 - [products-warehouse-stock.ts](#products-warehouse-stockts---warehouse--stock-management) - Warehouse and stock operations (🟡 25 min)
 - [orders-fbw-fulfillment.ts](#orders-fbw-fulfillmentts---fbw-warehouse-supply-planning) - FBW supply planning (🟡 30 min)
+
+#### 📦 Supply Planning & Cost Optimization
+- [supplies-planning.ts](#supplies-planningts---complete-supply-planning-workflow) - Complete supply workflow (🟡 25 min)
+- [supply-cost-calculator.ts](#supply-cost-calculatorts---supply-cost-calculator) - Calculate supply costs (🟢 10 min)
+- [tariff-comparison.ts](#tariff-comparisont---tariff-comparison-tool) - Compare tariff types (🟢 10 min)
 
 #### 🚚 Order Fulfillment
 - [orders-fbs-processing.ts](#orders-fbs-processingts---fbs-order-processing) - FBS order processing (🟢 10 min)
@@ -127,6 +136,7 @@ Complex multi-module integrations and comprehensive business workflows.
 | **Products** | 5 | 🟢 Basic → 🟡 Intermediate |
 | **Orders FBS** | 2 | 🟢 Basic → 🟡 Intermediate |
 | **Orders FBW** | 1 | 🟡 Intermediate |
+| **Supply Planning** | 3 | 🟢 Basic → 🟡 Intermediate |
 | **In-Store Pickup** | 1 | 🟡 Intermediate |
 | **Finances** | 3 | 🟢 Basic → 🔴 Advanced |
 | **Analytics** | 2 | 🟡 Intermediate |
@@ -136,7 +146,7 @@ Complex multi-module integrations and comprehensive business workflows.
 | **Promotion** | 1 | 🟡 Intermediate |
 | **Multi-Module** | 4 | 🔴 Advanced |
 
-**Total: 24 examples** covering all SDK modules and common business workflows.
+**Total: 27 examples** covering all SDK modules and common business workflows.
 
 ---
 
@@ -538,6 +548,173 @@ npx tsx examples/in-store-pickup-workflow.ts
 ✅ Order prepared for pickup
 ✅ Metadata set (SGTIN: 12345678)
 ✅ Order received by customer
+```
+
+---
+
+## Supply Planning Module
+
+The Supply Planning module provides utilities for calculating costs and optimizing FBW (Fulfillment by Wildberries) supply operations using the new Epic 11 utilities.
+
+### `supplies-planning.ts` - Complete Supply Planning Workflow
+
+**Complexity**: 🟡 Intermediate | **Time**: 25 minutes
+
+**Purpose**: Complete supply planning workflow with cost optimization
+
+**Demonstrates**:
+- Getting available WB warehouses
+- Checking acceptance coefficients for next 14 days
+- Finding free acceptance dates (coefficient = 0)
+- Using calculateSupplyCost utility for accurate cost estimation
+- Using compareTariffs utility for FBW vs FBS comparison
+- Making data-driven supply decisions
+
+**Key Concepts**:
+- **Acceptance Coefficients**: -1 (unavailable), 0 (free), >0 (paid multiplier)
+- **Cost Components**: Acceptance + Storage + Logistics = Total
+- **Tariff Comparison**: Inventory storage vs supply acceptance costs
+- **Optimization Strategy**: Plan supplies on free acceptance dates
+
+**Run it:**
+```bash
+export WB_API_KEY="your-api-key"
+npx tsx examples/supplies-planning.ts
+```
+
+**Expected Output:**
+```
+=== Supply Planning Workflow ===
+
+Step 1: Getting available warehouses...
+Found 15 active warehouses
+
+Step 2: Checking acceptance coefficients...
+Warehouses with free acceptance: 5
+
+Step 3: Calculating supply costs...
+Supply Cost Breakdown:
+  Acceptance: 0.00 RUB (free)
+  Storage (30 days): 150.00 RUB
+  Logistics: 45.00 RUB
+  TOTAL: 195.00 RUB
+
+Step 4: Comparing FBW vs FBS tariffs...
+RECOMMENDATION: SUPPLY_CHEAPER
+  -> Use FBW supply for lower overall costs
+
+Step 5: Supply strategy recommendations...
+RECOMMENDED SUPPLY STRATEGY:
+  Warehouse: Koledino
+  Optimal Date: 2025-01-28
+  Acceptance: FREE (coefficient = 0)
+```
+
+---
+
+### `supply-cost-calculator.ts` - Supply Cost Calculator
+
+**Complexity**: 🟢 Beginner | **Time**: 10 minutes
+
+**Purpose**: Calculate and compare FBW supply costs across warehouses
+
+**Demonstrates**:
+- Using the calculateSupplyCost utility function
+- Understanding cost breakdown (acceptance, storage, logistics)
+- Calculating costs for different volumes
+- Comparing costs across multiple warehouses
+- Finding the cheapest warehouse for given parameters
+- Analyzing volume and duration impact on costs
+
+**Key Concepts**:
+- **Volume Scaling**: How costs change with supply volume
+- **Storage Duration**: Impact of storage days on total cost
+- **Cost Per Liter**: Efficiency metric for comparing options
+- **Applied Coefficients**: Understanding how coefficients affect costs
+
+**Run it:**
+```bash
+export WB_API_KEY="your-api-key"
+npx tsx examples/supply-cost-calculator.ts
+```
+
+**Expected Output:**
+```
+=== Supply Cost Calculator ===
+
+Parameters: 10L volume, 30 days storage, box type
+
+Cost Breakdown for Warehouse: Koledino
+  Acceptance: 0.00 RUB
+  Storage:    150.00 RUB
+  Logistics:  45.00 RUB
+  TOTAL:      195.00 RUB
+
+Cost Comparison Across Warehouses:
+  1. Koledino: 195.00 RUB (19.50 RUB/L) [FREE acceptance]
+  2. Kazan: 210.00 RUB (21.00 RUB/L)
+  3. Krasnodar: 225.00 RUB (22.50 RUB/L)
+
+Volume Cost Scaling:
+   1L | 25.00 RUB | 25.00 RUB/L
+   5L | 110.00 RUB | 22.00 RUB/L
+  10L | 195.00 RUB | 19.50 RUB/L
+  25L | 450.00 RUB | 18.00 RUB/L
+```
+
+---
+
+### `tariff-comparison.ts` - Tariff Comparison Tool
+
+**Complexity**: 🟢 Beginner | **Time**: 10 minutes
+
+**Purpose**: Compare inventory storage vs supply acceptance tariffs
+
+**Demonstrates**:
+- Using the compareTariffs utility function
+- Understanding inventory vs supply tariff APIs
+- Interpreting recommendation results
+- Making data-driven fulfillment decisions
+- Comparing multiple warehouses
+
+**Key Concepts**:
+- **Inventory Storage (tariffs/box)**: Tariffs for goods already in WB warehouses
+- **Supply Acceptance (acceptance/coefficients)**: Tariffs for new shipments
+- **Recommendations**: SUPPLY_CHEAPER, INVENTORY_CHEAPER, or EQUAL
+- **Decision Making**: When to use each fulfillment method
+
+**Run it:**
+```bash
+export WB_API_KEY="your-api-key"
+npx tsx examples/tariff-comparison.ts
+```
+
+**Expected Output:**
+```
+=== Tariff Comparison Tool ===
+
+Warehouse: Koledino
+==================================================
+
+Inventory Storage Tariffs (tariffs/box API):
+  Delivery base:     45.00 RUB/L
+  Storage base:      5.00 RUB/L/day
+
+Supply Acceptance Tariffs (acceptance/coefficients API):
+  Delivery base:     40.00 RUB/L
+  Storage base:      4.50 RUB/L/day
+
+Difference (Supply vs Inventory):
+  Delivery base:     -11.1% (supply cheaper)
+  Storage base:      -10.0% (supply cheaper)
+
+RECOMMENDATION: SUPPLY_CHEAPER
+  FBW supply has lower base costs. Consider sending new shipments via supply acceptance.
+
+Summary:
+  Supply cheaper:     3 warehouses
+  Inventory cheaper:  1 warehouses
+  Equal costs:        1 warehouses
 ```
 
 ---
