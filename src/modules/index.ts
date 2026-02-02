@@ -40,3 +40,6 @@ export { TariffsModule } from './tariffs';
 
 // In-Store Pickup Module (Story 4.6)
 export { InStorePickupModule } from './in-store-pickup';
+
+// Orders DBS Module (Epic 12)
+export { OrdersDbsModule } from './orders-dbs';

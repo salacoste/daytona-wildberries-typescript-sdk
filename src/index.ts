@@ -17,6 +17,7 @@ import { ReportsModule } from './modules/reports';
 import { PromotionModule } from './modules/promotion';
 import { TariffsModule } from './modules/tariffs';
 import { InStorePickupModule } from './modules/in-store-pickup';
+import { OrdersDbsModule } from './modules/orders-dbs';
 import { AuthenticationError } from './errors/auth-error';
 import type { SDKConfig } from './config/sdk-config';
 
@@ -426,6 +427,70 @@ export class WildberriesSDK {
   public readonly inStorePickup: InStorePickupModule;
 
   /**
+   * Orders DBS (Delivery by Seller) API module
+   *
+   * Provides comprehensive methods for managing DBS orders where sellers handle
+   * both storage AND delivery directly to customers:
+   *
+   * **Core Operations:**
+   * - Get new orders awaiting delivery with full delivery details
+   * - Query completed orders with date range filtering and pagination
+   * - Get customer contact information for delivery coordination
+   *
+   * **Status Management:**
+   * - Bulk status operations: confirm, deliver, receive, reject, cancel
+   * - Legacy single-order status methods (deprecated, disabled 13.04.2026)
+   * - Status information retrieval for multiple orders
+   *
+   * **Metadata Operations:**
+   * - SGTIN (marking codes), IMEI, UIN, GTIN management
+   * - Customs declaration handling
+   * - Metadata retrieval and deletion
+   *
+   * **B2B Support:**
+   * - Get organizational buyer information (company name, INN, KPP)
+   *
+   * @see {@link OrdersDbsModule} for available methods
+   *
+   * @example Order processing workflow
+   * ```typescript
+   * // 1. Get new DBS orders
+   * const newOrders = await sdk.ordersDBS.getNewOrders();
+   * const order = newOrders.orders[0];
+   *
+   * // 2. Get customer contact for delivery coordination
+   * const clientInfo = await sdk.ordersDBS.getClientInfo([order.id]);
+   * console.log('Deliver to:', clientInfo.orders[0].fullName);
+   *
+   * // 3. Confirm order (bulk operation)
+   * await sdk.ordersDBS.confirmOrdersBulk([order.id]);
+   *
+   * // 4. Mark as delivered
+   * await sdk.ordersDBS.deliverOrdersBulk([order.id]);
+   *
+   * // 5. Complete handover with verification code
+   * await sdk.ordersDBS.receiveOrdersBulk([{ orderId: order.id, code: '1234' }]);
+   * ```
+   *
+   * @example Metadata management for regulated products
+   * ```typescript
+   * // Add SGTIN marking codes (Честный знак)
+   * await sdk.ordersDBS.addOrderMeta(orderId, {
+   *   sgtin: { value: ['1234567890123456', '9876543210987654'] }
+   * });
+   *
+   * // Add IMEI for electronics
+   * await sdk.ordersDBS.addOrderMeta(orderId, {
+   *   imei: { value: 123456789012345 }
+   * });
+   *
+   * // Get order metadata
+   * const meta = await sdk.ordersDBS.getOrderMeta(orderId);
+   * ```
+   */
+  public readonly ordersDBS: OrdersDbsModule;
+
+  /**
    * Initialize the Wildberries SDK with configuration
    *
    * Creates a new SDK instance with the provided configuration.
@@ -488,6 +553,9 @@ export class WildberriesSDK {
 
     // Initialize In-Store Pickup module (Story 4.6 - implemented)
     this.inStorePickup = new InStorePickupModule(this.client);
+
+    // Initialize Orders DBS module (Epic 12 - implemented)
+    this.ordersDBS = new OrdersDbsModule(this.client);
   }
 }
 
@@ -510,6 +578,7 @@ export {
   generalRateLimits,
   ordersFbsRateLimits,
   ordersFbwRateLimits,
+  ordersDbsRateLimits,
   promotionRateLimits,
   tariffsRateLimits,
 } from './config';
@@ -530,6 +599,7 @@ export { ReportsModule } from './modules/reports';
 export { PromotionModule } from './modules/promotion';
 export { TariffsModule } from './modules/tariffs';
 export { InStorePickupModule } from './modules/in-store-pickup';
+export { OrdersDbsModule } from './modules/orders-dbs';
 
 // Type definitions
 // NOTE: Types are NOT re-exported from main entry to avoid name conflicts (Error, Date, etc.)

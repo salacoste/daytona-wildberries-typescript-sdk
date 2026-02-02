@@ -773,6 +773,69 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 
+  /api/marketplace/v3/dbs/orders/b2b/info:
+    post:
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Bulk-операции DBS
+      summary: Информация о покупателе B2B
+      description: |
+        Метод возвращает данные B2B-покупателей по ID сборочных заданий:
+        - ИНН
+        - КПП
+        - Наименование организации
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов сборочных заданий DBS:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ordersIds
+              properties:
+                ordersIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  maxItems: 1000
+                  description: Список ID сборочных заданий (до 1000 шт)
+                  example: [4299281547, 4279781545]
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: string
+                    format: uuid
+                    description: Уникальный ID запроса
+                    example: "03615778-eb9e-4f55-b404-fd3ac0fad2cc"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/B2BInfoResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
   # ============================================================================
   # УСТАРЕВШИЕ МЕТОДЫ (будут отключены 13.04.2026)
   # ============================================================================
@@ -1785,6 +1848,49 @@ components:
           type: string
           description: Код подтверждения. Отображается у покупателя на сайте и в приложении Wildberries
           example: "741852"
+
+    B2BInfoResult:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID сборочного задания
+          example: 4299281547
+        isError:
+          type: boolean
+          description: Признак наличия ошибки
+          example: false
+        data:
+          type: object
+          description: Данные B2B-покупателя (присутствует если isError=false)
+          properties:
+            orgName:
+              type: string
+              description: Наименование организации
+              example: "ИП Иванов И.И."
+            inn:
+              type: string
+              description: ИНН организации
+              example: "8888888888"
+            kpp:
+              type: string
+              description: КПП организации (может быть пустым для ИП)
+              example: ""
+        errors:
+          type: array
+          description: Массив ошибок (присутствует если isError=true)
+          items:
+            type: object
+            properties:
+              code:
+                type: integer
+                description: Код ошибки
+                example: 404
+              detail:
+                type: string
+                description: Описание ошибки
+                example: "NotFound"
 
     Error:
       type: object
