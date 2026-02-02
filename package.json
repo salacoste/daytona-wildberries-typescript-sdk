@@ -101,6 +101,7 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.2",
     "js-yaml": "^4.1.0",
+    "jsdom": "^28.0.0",
     "markdown-link-check": "^3.14.1",
     "msw": "^2.11.5",
     "prettier": "^3.2.4",

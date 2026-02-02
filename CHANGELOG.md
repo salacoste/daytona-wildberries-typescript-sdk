@@ -5,6 +5,97 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-02-02
+
+### Added
+
+#### New Module: Orders DBS (Delivery by Seller) - Epic 12
+Complete implementation of DBS (Delivery by Seller) module for managing orders where sellers handle both storage AND delivery directly to customers.
+
+**Core Operations (Story 12.1):**
+- `getNewOrders()` - Fetch new DBS orders awaiting delivery with full delivery details
+- `getOrders(params)` - Query completed orders with date range filtering and pagination
+- `getClientInfo(orderIds)` - Get customer contact information for delivery coordination
+
+**Status Management (Story 12.2):**
+- **Bulk Operations (New API from 14.01.2026):**
+  - `getStatusesBulk(orderIds)` - Get status info for multiple orders
+  - `confirmBulk(orderIds)` - Confirm multiple orders
+  - `deliverBulk(orderIds)` - Mark multiple orders as delivered
+  - `receiveBulk(orders)` - Complete handover with verification codes
+  - `rejectBulk(orders)` - Reject multiple orders with codes
+  - `cancelBulk(orderIds)` - Cancel multiple orders
+
+- **Legacy Methods (Deprecated - disabled 13.04.2026):**
+  - `getStatuses(orderIds)` - Get order statuses
+  - `confirm(orderId)` - Confirm single order
+  - `deliver(orderId)` - Mark single order delivered
+  - `receive(orderId, code)` - Complete single order handover
+  - `reject(orderId, code)` - Reject single order
+  - `cancel(orderId)` - Cancel single order
+
+**Metadata Operations (Story 12.3):**
+- `getMeta(orderId)` - Get order metadata
+- `deleteMeta(orderId, keys)` - Delete specific metadata keys
+- `setSgtin(orderId, codes)` - Set SGTIN marking codes (Честный знак)
+- `setImei(orderId, imei)` - Set IMEI for electronics
+- `setUin(orderId, uin)` - Set UIN code
+- `setGtin(orderId, gtin)` - Set GTIN barcode
+- `setCustomsDeclaration(orderId, declaration)` - Set customs declaration number
+
+**B2B Support (Story 12.4):**
+- `getB2BInfo(orderIds)` - Get organizational buyer information (company name, INN, KPP)
+
+**Integration (Story 12.5):**
+- `ordersDBS` property added to `WildberriesSDK` class
+- Rate limits configuration for all 23 DBS methods
+- Type exports from main SDK entry point
+
+#### New Examples
+- `examples/orders-dbs-core-workflow.ts` - Complete DBS order processing workflow
+- `examples/orders-dbs-b2b.ts` - B2B organizational buyer handling
+- `examples/orders-dbs-metadata.ts` - Product marking and metadata management
+
+#### New Types
+- `DBSAddress` - Delivery address with GPS coordinates
+- `DBSOrderNew` - New DBS order with delivery window
+- `DBSOrder` - Completed DBS order
+- `DBSClientInfo` - Customer contact information
+- `DBSOrderStatusBulk` - Bulk status response
+- `DBSSupplierStatus` - Supplier status enum
+- `DBSWbStatus` - WB system status enum
+- `OrderCodeRequest` - Order with verification code
+- `B2BInfoResult` - B2B buyer information
+- `DBSOrderMeta` - Order metadata structure
+- `StatusSetResponse` - Status change response
+- `BulkStatusChangeResponse` - Bulk operation response
+
+### Changed
+- Updated `src/modules/index.ts` to export `OrdersDbsModule`
+- Updated `src/config/rate-limits.ts` with DBS rate limits
+- Updated README with DBS module documentation (English and Russian)
+
+### Developer Notes
+- **208 tests** added for DBS module (100% passing)
+- TDD methodology used for all implementations
+- Full TypeScript strict mode compliance
+- ESLint clean (0 errors)
+- Migration guide available for deprecated legacy methods
+
+### Migration Notice
+**DBS Legacy Methods Deprecation:**
+6 legacy methods will be disabled on **13.04.2026**:
+- `getStatuses()` → Use `getStatusesBulk()`
+- `confirm()` → Use `confirmBulk()`
+- `deliver()` → Use `deliverBulk()`
+- `receive()` → Use `receiveBulk()`
+- `reject()` → Use `rejectBulk()`
+- `cancel()` → Use `cancelBulk()`
+
+See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
+
+---
+
 ## [2.4.3] - 2026-01-13
 
 ### Added

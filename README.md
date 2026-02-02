@@ -175,6 +175,7 @@ All 11 Wildberries API modules are fully supported with 100% API coverage:
 | **Promotion** | Campaigns, promo codes, advertising ⚠️ **[Migration Required](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 methods deprecated (Feb 2, 2026) |
 | **Tariffs** | Commission rates, fee schedules |
 | **In-Store Pickup** | Pickup point orders and management |
+| **Orders DBS** | Delivery by Seller orders - seller handles storage AND delivery directly to customers, B2B support, product marking (SGTIN, IMEI) |
 
 ## 📄 License
 
@@ -367,6 +368,7 @@ chats.result?.forEach(chat => {
 | **Promotion** | Кампании, промокоды, реклама ⚠️ **[Требуется Миграция](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 метода устарели (2 февраля 2026) |
 | **Tariffs** | Ставки комиссий, тарифные планы |
 | **In-Store Pickup** | Заказы с самовывозом и управление |
+| **Orders DBS** | Заказы DBS (Доставка Продавцом) - продавец хранит и доставляет товар напрямую покупателю, поддержка B2B, маркировка (SGTIN, IMEI) |
 
 ## 📄 Лицензия
 
