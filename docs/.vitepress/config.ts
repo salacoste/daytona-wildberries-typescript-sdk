@@ -142,7 +142,10 @@ export default defineConfig({
                   { text: 'Commissions & Fees', link: '/guides/commissions-fees' },
                   { text: 'Stock Management', link: '/guides/stock-management' },
                   { text: 'Returns Handling', link: '/guides/returns-handling' },
-                  { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' }
+                  { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' },
+                  { text: 'Orders DBS Guide', link: '/guides/orders-dbs-getting-started' },
+                  { text: 'DBS Workflows', link: '/guides/orders-dbs-workflows' },
+                  { text: 'DBS Migration Guide', link: '/guides/migration-dbs-legacy-to-bulk' }
                 ]
               }
             ]
@@ -166,6 +169,7 @@ export default defineConfig({
                   { text: 'ProductsModule', link: '/api/classes/ProductsModule' },
                   { text: 'OrdersFbsModule', link: '/api/classes/OrdersFbsModule' },
                   { text: 'OrdersFbwModule', link: '/api/classes/OrdersFbwModule' },
+                  { text: 'OrdersDbsModule', link: '/api/classes/OrdersDbsModule' },
                   { text: 'FinancesModule', link: '/api/classes/FinancesModule' },
                   { text: 'AnalyticsModule', link: '/api/classes/AnalyticsModule' },
                   { text: 'ReportsModule', link: '/api/classes/ReportsModule' },
@@ -328,6 +332,7 @@ export default defineConfig({
                   { text: 'ProductsModule', link: '/api/classes/ProductsModule' },
                   { text: 'OrdersFbsModule', link: '/api/classes/OrdersFbsModule' },
                   { text: 'OrdersFbwModule', link: '/api/classes/OrdersFbwModule' },
+                  { text: 'OrdersDbsModule', link: '/api/classes/OrdersDbsModule' },
                   { text: 'FinancesModule', link: '/api/classes/FinancesModule' },
                   { text: 'AnalyticsModule', link: '/api/classes/AnalyticsModule' },
                   { text: 'ReportsModule', link: '/api/classes/ReportsModule' },

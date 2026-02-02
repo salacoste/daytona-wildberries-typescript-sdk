@@ -25,6 +25,7 @@ Complete reference for all 11 API modules covering product management, orders, f
 | **[ProductsModule](classes/ProductsModule.md)** | Product catalog, categories, pricing, stock | content-api |
 | **[OrdersFbsModule](classes/OrdersFbsModule.md)** | Seller warehouse fulfillment orders | marketplace-api |
 | **[OrdersFbwModule](classes/OrdersFbwModule.md)** | Wildberries warehouse fulfillment | marketplace-api |
+| **[OrdersDbsModule](classes/OrdersDbsModule.md)** | Delivery by Seller - direct customer delivery | marketplace-api |
 | **[FinancesModule](classes/FinancesModule.md)** | Balance, transactions, financial reports | finance-api, statistics-api |
 | **[AnalyticsModule](classes/AnalyticsModule.md)** | Sales analytics, performance metrics, CSV reports | seller-analytics-api |
 | **[ReportsModule](classes/ReportsModule.md)** | Async report generation and retrieval | - |
@@ -90,10 +91,14 @@ const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!
 });
 
-// Access any of the 11 modules
+// Access any of the 12 modules
 const categories = await sdk.products.getParentAll();
 const orders = await sdk.ordersFBS.getOrders({ limit: 10 });
 const balance = await sdk.finances.getBalance();
+
+// DBS (Delivery by Seller) - direct customer delivery
+const dbsOrders = await sdk.ordersDBS.getNewOrders();
+const clientInfo = await sdk.ordersDBS.getClientInfo([123456]);
 ```
 
 ## Error Handling Example
