@@ -145,7 +145,8 @@ export default defineConfig({
                   { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' },
                   { text: 'Orders DBS Guide', link: '/guides/orders-dbs-getting-started' },
                   { text: 'DBS Workflows', link: '/guides/orders-dbs-workflows' },
-                  { text: 'DBS Migration Guide', link: '/guides/migration-dbs-legacy-to-bulk' }
+                  { text: 'DBS Migration Guide', link: '/guides/migration-dbs-legacy-to-bulk' },
+                  { text: '📊 Advertising Statistics Guide', link: '/guides/advertising-statistics-guide' }
                 ]
               }
             ]
@@ -308,7 +309,8 @@ export default defineConfig({
                   { text: 'Комиссии и тарифы', link: '/ru/guides/commissions-fees' },
                   { text: 'Управление остатками', link: '/ru/guides/stock-management' },
                   { text: 'Возвраты и отмены', link: '/ru/guides/returns-handling' },
-                  { text: 'Платное хранение', link: '/ru/guides/storage-fees-integration' }
+                  { text: 'Платное хранение', link: '/ru/guides/storage-fees-integration' },
+                  { text: '📊 Рекламная статистика', link: '/guides/advertising-statistics-guide' }
                 ]
               }
             ]
