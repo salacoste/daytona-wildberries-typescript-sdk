@@ -50,7 +50,7 @@ Quick solutions for common Wildberries SDK issues. This guide helps you diagnose
 
 Quick lookup table for common operations and their actual SDK methods. Copy these exact method names to avoid `TypeError: method is not a function` errors.
 
-**✅ Verified Against**: SDK v2.5.0 | **Last Updated**: 2026-01-18 | **Validation**: All methods cross-checked against actual implementation
+**✅ Verified Against**: SDK v2.7.0 | **Last Updated**: 2026-02-03 | **Validation**: All methods cross-checked against actual implementation (Analytics v3 migration applied)
 
 ### Products & Catalog
 
@@ -110,11 +110,13 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 ### Analytics
 
+> **v2.7.0 Migration Note**: The Sales Funnel methods below use the v3 API. The old v2 methods (`createNmReportDetail`, `createDetailHistory`, `createGroupedHistory`) still work as deprecated wrappers but will be removed in a future version. See the [Analytics v3 Migration Guide](./migration-v2.7-analytics-v3.md) for details.
+
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get product detail report | `sdk.analytics.createNmReportDetail(data)` | Detailed product metrics |
-| Get detail history | `sdk.analytics.createDetailHistory(data)` | Historical detail data |
-| Get grouped history | `sdk.analytics.createGroupedHistory(data)` | Grouped historical data |
+| Get sales funnel products | `sdk.analytics.getSalesFunnelProducts(data)` | **v3** - Replaces `createNmReportDetail()`. Product metrics with `selectedPeriod`, `nmIds`, `limit`/`offset` pagination |
+| Get product history | `sdk.analytics.getSalesFunnelProductsHistory(data)` | **v3** - Replaces `createDetailHistory()`. Time-series data with `aggregationLevel` |
+| Get grouped history | `sdk.analytics.getSalesFunnelGroupedHistory(data)` | **v3** - Replaces `createGroupedHistory()`. Grouped stats by subject/brand/tag |
 | Get report downloads | `sdk.analytics.getNmReportDownloads({ filter? })` | List available reports |
 | Create report download | `sdk.analytics.createNmReportDownload(data)` | Async report generation |
 | Retry report download | `sdk.analytics.createDownloadsRetry(data)` | Retry failed download |
@@ -203,7 +205,8 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 const cards = await sdk.products.createCardsList({ settings: { cursor: { limit: 100 } } });
 const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
 const balance = await sdk.finances.getAccountBalance();
-const report = await sdk.analytics.createNmReportDetail({ ... });
+const report = await sdk.analytics.getSalesFunnelProducts({ ... }); // v3 (recommended)
+// or: sdk.analytics.createNmReportDetail({ ... }); // v2 deprecated wrapper (still works)
 
 // ❌ WRONG - These methods DO NOT exist
 const products = await sdk.products.listProducts();     // TypeError: listProducts is not a function

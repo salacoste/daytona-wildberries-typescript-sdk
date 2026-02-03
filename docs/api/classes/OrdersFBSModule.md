@@ -2,7 +2,7 @@
 
 # Class: OrdersFbsModule
 
-Defined in: [modules/orders-fbs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L10)
+Defined in: [modules/orders-fbs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L10)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbs/index.ts:10](https://github.com/salacoste/dayton
 new OrdersFbsModule(client: BaseClient): OrdersFbsModule;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L11)
+Defined in: [modules/orders-fbs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L11)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/orders-fbs/index.ts:11](https://github.com/salacoste/dayton
 getPassesOffices(): Promise<PassOffice[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L27)
+Defined in: [modules/orders-fbs/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L27)
 
 Получить список складов, для которых требуется пропуск
 
@@ -63,7 +63,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getPassesOffices();
+const result = await sdk.ordersFBS.getPassesOffices();
 console.log(result);
 ```
 
@@ -75,7 +75,7 @@ console.log(result);
 passes(): Promise<Pass[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L45)
+Defined in: [modules/orders-fbs/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L45)
 
 Получить список пропусков
 
@@ -106,7 +106,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.passes();
+const result = await sdk.ordersFBS.passes();
 console.log(result);
 ```
 
@@ -126,7 +126,7 @@ createPass(data: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L64)
+Defined in: [modules/orders-fbs/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L64)
 
 Создать пропуск
 
@@ -170,7 +170,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createPass({});
+const result = await sdk.ordersFBS.createPass({});
 console.log(result);
 ```
 
@@ -188,7 +188,7 @@ updatePass(passId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L83)
+Defined in: [modules/orders-fbs/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L83)
 
 Обновить пропуск
 
@@ -231,7 +231,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updatePass('passId-value', {});
+const result = await sdk.ordersFBS.updatePass('passId-value', {});
 ```
 
 ***
@@ -242,7 +242,7 @@ const result = await sdk.general.updatePass('passId-value', {});
 deletePass(passId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L101)
+Defined in: [modules/orders-fbs/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L101)
 
 Удалить пропуск
 
@@ -279,7 +279,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deletePass('passId-value');
+const result = await sdk.ordersFBS.deletePass('passId-value');
 ```
 
 ***
@@ -292,7 +292,7 @@ getOrdersNew(): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L119)
+Defined in: [modules/orders-fbs/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L119)
 
 Получить список новых сборочных заданий
 
@@ -325,7 +325,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getOrdersNew();
+const result = await sdk.ordersFBS.getOrdersNew();
 console.log(result);
 ```
 
@@ -345,7 +345,7 @@ orders(options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L138)
+Defined in: [modules/orders-fbs/index.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L138)
 
 Получить информацию о сборочных заданиях
 
@@ -389,7 +389,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.orders({});
+const result = await sdk.ordersFBS.orders({});
 console.log(result);
 ```
 
@@ -417,7 +417,7 @@ createOrdersStatu(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L157)
+Defined in: [modules/orders-fbs/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L157)
 
 Получить статусы сборочных заданий
 
@@ -469,7 +469,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrdersStatu({});
+const result = await sdk.ordersFBS.createOrdersStatu({});
 console.log(result);
 ```
 
@@ -486,7 +486,7 @@ getOrdersReshipment(): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L175)
+Defined in: [modules/orders-fbs/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L175)
 
 Получить все сборочные задания для повторной отгрузки
 
@@ -522,7 +522,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getOrdersReshipment();
+const result = await sdk.ordersFBS.getOrdersReshipment();
 console.log(result);
 ```
 
@@ -534,7 +534,7 @@ console.log(result);
 updateOrdersCancel(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L193)
+Defined in: [modules/orders-fbs/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L193)
 
 Отменить сборочное задание
 
@@ -571,7 +571,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateOrdersCancel('orderId-value');
+const result = await sdk.ordersFBS.updateOrdersCancel('orderId-value');
 ```
 
 ***
@@ -596,7 +596,7 @@ createOrdersSticker(options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L213)
+Defined in: [modules/orders-fbs/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L213)
 
 Получить стикеры сборочных заданий
 
@@ -646,7 +646,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrdersSticker({}, {});
+const result = await sdk.ordersFBS.createOrdersSticker({}, {});
 console.log(result);
 ```
 
@@ -660,7 +660,7 @@ getOrdersMeta(orderId: number): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L232)
+Defined in: [modules/orders-fbs/index.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L232)
 
 Получить метаданные сборочного задания
 
@@ -699,7 +699,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getOrdersMeta('orderId-value');
+const result = await sdk.ordersFBS.getOrdersMeta('orderId-value');
 console.log(result);
 ```
 
@@ -713,7 +713,7 @@ deleteOrdersMeta(orderId: number, options?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L251)
+Defined in: [modules/orders-fbs/index.ts:251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L251)
 
 Удалить метаданные сборочного задания
 
@@ -752,7 +752,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deleteOrdersMeta('orderId-value', {});
+const result = await sdk.ordersFBS.deleteOrdersMeta('orderId-value', {});
 ```
 
 ***
@@ -765,7 +765,7 @@ updateMetaSgtin(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L270)
+Defined in: [modules/orders-fbs/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L270)
 
 Закрепить за сборочным заданием код маркировки товара
 
@@ -804,7 +804,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaSgtin('orderId-value', {});
+const result = await sdk.ordersFBS.updateMetaSgtin('orderId-value', {});
 ```
 
 ***
@@ -817,7 +817,7 @@ updateMetaUin(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:289](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L289)
+Defined in: [modules/orders-fbs/index.ts:289](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L289)
 
 Закрепить за сборочным заданием УИН
 
@@ -856,7 +856,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaUin('orderId-value', {});
+const result = await sdk.ordersFBS.updateMetaUin('orderId-value', {});
 ```
 
 ***
@@ -869,7 +869,7 @@ updateMetaImei(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L308)
+Defined in: [modules/orders-fbs/index.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L308)
 
 Закрепить за сборочным заданием IMEI
 
@@ -908,7 +908,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaImei('orderId-value', {});
+const result = await sdk.ordersFBS.updateMetaImei('orderId-value', {});
 ```
 
 ***
@@ -921,7 +921,7 @@ updateMetaGtin(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L327)
+Defined in: [modules/orders-fbs/index.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L327)
 
 Закрепить за сборочным заданием GTIN
 
@@ -960,7 +960,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaGtin('orderId-value', {});
+const result = await sdk.ordersFBS.updateMetaGtin('orderId-value', {});
 ```
 
 ***
@@ -973,7 +973,7 @@ updateMetaExpiration(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L346)
+Defined in: [modules/orders-fbs/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L346)
 
 Закрепить за сборочным заданием срок годности товара
 
@@ -1012,7 +1012,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaExpiration('orderId-value', {});
+const result = await sdk.ordersFBS.updateMetaExpiration('orderId-value', {});
 ```
 
 ***
@@ -1025,7 +1025,7 @@ setCustomsDeclaration(orderId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L374)
+Defined in: [modules/orders-fbs/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L374)
 
 Закрепить за сборочным заданием номер ГТД
 
@@ -1073,7 +1073,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.setCustomsDeclaration(123456, { customsDeclaration: '10129050/010120/0001234' });
+const result = await sdk.ordersFBS.setCustomsDeclaration(123456, { customsDeclaration: '10129050/010120/0001234' });
 ```
 
 ***
@@ -1091,7 +1091,7 @@ createStickersCrossBorder(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L393)
+Defined in: [modules/orders-fbs/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L393)
 
 Получить стикеры сборочных заданий кроссбордера
 
@@ -1134,7 +1134,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createStickersCrossBorder({});
+const result = await sdk.ordersFBS.createStickersCrossBorder({});
 console.log(result);
 ```
 
@@ -1154,7 +1154,7 @@ createOrdersExternalSticker(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L412)
+Defined in: [modules/orders-fbs/index.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L412)
 
 Получить список ссылок на стикеры сборочных заданий, которые требуются при кроссбордере
 
@@ -1198,7 +1198,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrdersExternalSticker({});
+const result = await sdk.ordersFBS.createOrdersExternalSticker({});
 console.log(result);
 ```
 
@@ -1221,7 +1221,7 @@ createStatusHistory(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L431)
+Defined in: [modules/orders-fbs/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L431)
 
 История статусов для сборочных заданий кроссбордера
 
@@ -1268,7 +1268,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createStatusHistory({});
+const result = await sdk.ordersFBS.createStatusHistory({});
 console.log(result);
 ```
 
@@ -1280,7 +1280,7 @@ console.log(result);
 createOrdersClient(data: OrdersRequestAPI): Promise<CrossborderTurkeyClientInfoResp>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L450)
+Defined in: [modules/orders-fbs/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L450)
 
 Заказы с информацией по клиенту
 
@@ -1317,7 +1317,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrdersClient({});
+const result = await sdk.ordersFBS.createOrdersClient({});
 console.log(result);
 ```
 
@@ -1335,7 +1335,7 @@ supplies(options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L469)
+Defined in: [modules/orders-fbs/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L469)
 
 Получить список поставок
 
@@ -1377,7 +1377,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.supplies({});
+const result = await sdk.ordersFBS.supplies({});
 console.log(result);
 ```
 
@@ -1393,7 +1393,7 @@ createSupply(data: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L488)
+Defined in: [modules/orders-fbs/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L488)
 
 Создать новую поставку
 
@@ -1433,7 +1433,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createSupply({});
+const result = await sdk.ordersFBS.createSupply({});
 console.log(result);
 ```
 
@@ -1445,7 +1445,7 @@ console.log(result);
 updateSuppliesOrder(supplyId: string, orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L507)
+Defined in: [modules/orders-fbs/index.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L507)
 
 Добавить сборочное задание к поставке
 
@@ -1483,7 +1483,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateSuppliesOrder('supplyId-value', 'orderId-value');
+const result = await sdk.ordersFBS.updateSuppliesOrder('supplyId-value', 'orderId-value');
 ```
 
 ***
@@ -1494,7 +1494,7 @@ const result = await sdk.general.updateSuppliesOrder('supplyId-value', 'orderId-
 getSupply(supplyId: string): Promise<Supply>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L526)
+Defined in: [modules/orders-fbs/index.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L526)
 
 Получить информацию о поставке
 
@@ -1531,7 +1531,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSupply('supplyId-value');
+const result = await sdk.ordersFBS.getSupply('supplyId-value');
 console.log(result);
 ```
 
@@ -1543,7 +1543,7 @@ console.log(result);
 deleteSupply(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:544](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L544)
+Defined in: [modules/orders-fbs/index.ts:544](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L544)
 
 Удалить поставку
 
@@ -1580,7 +1580,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deleteSupply('supplyId-value');
+const result = await sdk.ordersFBS.deleteSupply('supplyId-value');
 ```
 
 ***
@@ -1593,7 +1593,7 @@ getSuppliesOrder(supplyId: string): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:563](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L563)
+Defined in: [modules/orders-fbs/index.ts:563](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L563)
 
 Получить сборочные задания в поставке
 
@@ -1632,7 +1632,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSuppliesOrder('supplyId-value');
+const result = await sdk.ordersFBS.getSuppliesOrder('supplyId-value');
 console.log(result);
 ```
 
@@ -1644,7 +1644,7 @@ console.log(result);
 updateSuppliesDeliver(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:581](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L581)
+Defined in: [modules/orders-fbs/index.ts:581](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L581)
 
 Передать поставку в доставку
 
@@ -1681,7 +1681,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateSuppliesDeliver('supplyId-value');
+const result = await sdk.ordersFBS.updateSuppliesDeliver('supplyId-value');
 ```
 
 ***
@@ -1697,7 +1697,7 @@ getSuppliesBarcode(supplyId: string, options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L601)
+Defined in: [modules/orders-fbs/index.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L601)
 
 Получить QR-код поставки
 
@@ -1739,7 +1739,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSuppliesBarcode('supplyId-value', {});
+const result = await sdk.ordersFBS.getSuppliesBarcode('supplyId-value', {});
 console.log(result);
 ```
 
@@ -1753,7 +1753,7 @@ getSuppliesTrbx(supplyId: string): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L620)
+Defined in: [modules/orders-fbs/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L620)
 
 Получить список коробов поставки
 
@@ -1792,7 +1792,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSuppliesTrbx('supplyId-value');
+const result = await sdk.ordersFBS.getSuppliesTrbx('supplyId-value');
 console.log(result);
 ```
 
@@ -1808,7 +1808,7 @@ createSuppliesTrbx(supplyId: string, data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L640)
+Defined in: [modules/orders-fbs/index.ts:640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L640)
 
 Добавить короба к поставке
 
@@ -1849,7 +1849,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createSuppliesTrbx('supplyId-value', {});
+const result = await sdk.ordersFBS.createSuppliesTrbx('supplyId-value', {});
 console.log(result);
 ```
 
@@ -1863,7 +1863,7 @@ deleteSuppliesTrbx(supplyId: string, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:659](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L659)
+Defined in: [modules/orders-fbs/index.ts:659](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L659)
 
 Удалить короба из поставки
 
@@ -1902,7 +1902,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deleteSuppliesTrbx('supplyId-value', {});
+const result = await sdk.ordersFBS.deleteSuppliesTrbx('supplyId-value', {});
 ```
 
 ***
@@ -1922,7 +1922,7 @@ createTrbxSticker(
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/orders-fbs/index.ts#L680)
+Defined in: [modules/orders-fbs/index.ts:680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L680)
 
 Получить стикеры коробов поставки
 
@@ -1965,6 +1965,6 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createTrbxSticker('supplyId-value', {}, {});
+const result = await sdk.ordersFBS.createTrbxSticker('supplyId-value', {}, {});
 console.log(result);
 ```

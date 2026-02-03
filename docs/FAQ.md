@@ -244,15 +244,22 @@ console.log(`Current balance: ${balance.amount} RUB`);
 ### 16. How do I fetch sales analytics?
 
 ```typescript
-const analytics = await sdk.analytics.getSalesFunnel({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
+// v3 Sales Funnel API (SDK v2.7.0+)
+const result = await sdk.analytics.getSalesFunnelProducts({
+  selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+  orderBy: { field: 'orderCount', mode: 'desc' },
+  limit: 10,
+  offset: 0,
 });
 
-console.log(`Conversion rate: ${analytics.conversionRate}%`);
+result.products?.forEach(p => {
+  console.log(`Product ${p.product.nmId}: ${p.statistic.selected.orderCount} orders`);
+});
 ```
 
-**See also:** [Analytics Dashboard Example](../examples/README.md#analytics-dashboard)
+> **Note:** Prior to v2.7.0, the SDK used `createNmReportDetail()` which called the v2 endpoint. That endpoint now returns 404. See the [Analytics v3 Migration Guide](/guides/migration-v2.7-analytics-v3) for details.
+
+**See also:** [Analytics Dashboard Tutorial](/getting-started/tutorials/analytics-dashboard)
 
 ---
 

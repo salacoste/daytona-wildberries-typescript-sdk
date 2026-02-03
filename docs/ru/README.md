@@ -76,14 +76,13 @@ console.log('Новые заказы:', orders.length);
 const balance = await sdk.finances.getBalance();
 console.log('Баланс:', balance.for_withdraw, balance.currency);
 
-// Получение аналитики продаж
-const salesFunnel = await sdk.analytics.getSalesFunnel({
-  period: {
-    begin: '2024-01-01 00:00:00',
-    end: '2024-01-31 23:59:59'
-  }
+// Получение аналитики продаж (v3 API, SDK v2.7.0+)
+const salesFunnel = await sdk.analytics.getSalesFunnelProducts({
+  selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+  limit: 10,
+  offset: 0,
 });
-console.log('Проанализировано товаров:', salesFunnel.data.cards.length);
+console.log('Проанализировано товаров:', salesFunnel.products?.length ?? 0);
 ```
 
 **Время до первого API вызова:** <5 минут 🚀

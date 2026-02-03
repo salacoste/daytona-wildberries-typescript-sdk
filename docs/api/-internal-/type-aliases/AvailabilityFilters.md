@@ -12,7 +12,7 @@ type AvailabilityFilters =
   | "invalidData"[];
 ```
 
-Defined in: [types/analytics.types.ts:1152](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1152)
+Defined in: [types/analytics.types.ts:1174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1174)
 
 Доступность товара:
  - `deficient` — Дефицит

@@ -2,10 +2,10 @@
 
 # Interface: TableGroupResponse
 
-Defined in: [types/analytics.types.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L277)
+Defined in: [types/analytics.types.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L277)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="groups"></a> `groups` | [`TableGroupItem`](TableGroupItem.md)[] | Список групп товаров для таблицы | [types/analytics.types.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L279) |
+| <a id="groups"></a> `groups` | [`TableGroupItem`](TableGroupItem.md)[] | Список групп товаров для таблицы | [types/analytics.types.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L279) |

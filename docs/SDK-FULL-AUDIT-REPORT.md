@@ -202,11 +202,13 @@
 
 ## Module 9: Analytics (11-analytics.yaml)
 
-### Summary: ⚠️ Issues found
+> **v2.7.0 Update (EPIC 13 - Analytics v3 Migration)**: The v2 endpoint `/api/v2/nm-report/detail` has been replaced by v3 endpoints. The SDK now provides `getSalesFunnelProducts()`, `getSalesFunnelProductsHistory()`, and `getSalesFunnelGroupedHistory()` using the `/api/analytics/v3/sales-funnel/*` endpoints. The old `getSalesFunnel()` method is deprecated. See `docs/guides/migration-v2.7-analytics-v3.md`.
+
+### Summary: ⚠️ Issues found (pre-v3 migration)
 
 | # | Endpoint | SDK Method | Status | Issue |
 |---|----------|------------|--------|-------|
-| 1 | POST `/api/v2/nm-report/detail` | `getSalesFunnel()` | ❌ 400 | Validation failed (param format) |
+| 1 | POST `/api/v2/nm-report/detail` | `getSalesFunnel()` (deprecated) | ❌ 400 | Validation failed (param format). Resolved in v2.7.0 with v3 migration: use `getSalesFunnelProducts()` instead |
 
 ---
 

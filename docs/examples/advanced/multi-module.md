@@ -149,11 +149,14 @@ async function generateInventoryReport(): Promise<InventoryReport> {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const analyticsResponse = await sdk.analytics.getSalesFunnel({
-    period: {
-      begin: thirtyDaysAgo.toISOString().replace('T', ' ').slice(0, 19),
-      end: new Date().toISOString().replace('T', ' ').slice(0, 19)
-    }
+  // v3 Sales Funnel API (SDK v2.7.0+)
+  const analyticsResponse = await sdk.analytics.getSalesFunnelProducts({
+    selectedPeriod: {
+      start: thirtyDaysAgo.toISOString().split('T')[0],
+      end: new Date().toISOString().split('T')[0]
+    },
+    limit: 50,
+    offset: 0,
   });
 
   // 4. Build product map

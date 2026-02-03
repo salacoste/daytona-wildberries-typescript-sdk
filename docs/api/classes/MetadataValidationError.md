@@ -2,7 +2,7 @@
 
 # Class: MetadataValidationError
 
-Defined in: [errors/in-store-pickup-errors.ts:246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/in-store-pickup-errors.ts#L246)
+Defined in: [errors/in-store-pickup-errors.ts:246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/in-store-pickup-errors.ts#L246)
 
 Error thrown when product metadata validation fails
 
@@ -31,7 +31,7 @@ try {
     console.log('Current status:', statuses.orders[0].supplierStatus);
 
     // Check required metadata
-    const newOrders = await sdk.inStorePickup.getOrdersNew();
+    const newOrders = await sdk.inStorePickup.getNewOrders();
     const order = newOrders.orders.find(o => o.id === 12345);
     console.log('Required metadata:', order?.requiredMeta);
   }
@@ -54,7 +54,7 @@ new MetadataValidationError(
    requestId?: string): MetadataValidationError;
 ```
 
-Defined in: [errors/in-store-pickup-errors.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/in-store-pickup-errors.ts#L255)
+Defined in: [errors/in-store-pickup-errors.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/in-store-pickup-errors.ts#L255)
 
 Creates a new MetadataValidationError
 
@@ -79,11 +79,11 @@ Creates a new MetadataValidationError
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L35) |
-| <a id="codetype"></a> `codeType` | `readonly` | `"SGTIN"` \| `"UIN"` \| `"IMEI"` \| `"GTIN"` | Type of metadata code (SGTIN, UIN, IMEI, GTIN) | - | [errors/in-store-pickup-errors.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/in-store-pickup-errors.ts#L256) |
-| <a id="orderid"></a> `orderId` | `readonly` | `number` | ID of the order for which metadata update failed | - | [errors/in-store-pickup-errors.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/in-store-pickup-errors.ts#L257) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L35) |
+| <a id="codetype"></a> `codeType` | `readonly` | `"SGTIN"` \| `"UIN"` \| `"IMEI"` \| `"GTIN"` | Type of metadata code (SGTIN, UIN, IMEI, GTIN) | - | [errors/in-store-pickup-errors.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/in-store-pickup-errors.ts#L256) |
+| <a id="orderid"></a> `orderId` | `readonly` | `number` | ID of the order for which metadata update failed | - | [errors/in-store-pickup-errors.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/in-store-pickup-errors.ts#L257) |
 
 ## Methods
 
@@ -99,7 +99,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/base-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L125)
+Defined in: [errors/base-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L125)
 
 Custom JSON serialization to preserve all error properties.
 
@@ -123,11 +123,11 @@ Object representation of the error for JSON serialization
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/base-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L126) |
-| `message` | `string` | [errors/base-error.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L127) |
-| `statusCode?` | `number` | [errors/base-error.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L128) |
-| `response?` | `unknown` | [errors/base-error.ts:129](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L129) |
-| `requestId?` | `string` | [errors/base-error.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L130) |
+| `name` | `string` | [errors/base-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L126) |
+| `message` | `string` | [errors/base-error.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L127) |
+| `statusCode?` | `number` | [errors/base-error.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L128) |
+| `response?` | `unknown` | [errors/base-error.ts:129](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L129) |
+| `requestId?` | `string` | [errors/base-error.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L130) |
 
 #### Example
 
@@ -149,7 +149,7 @@ const json = JSON.stringify(error);
 getUserMessage(): string;
 ```
 
-Defined in: [errors/in-store-pickup-errors.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/in-store-pickup-errors.ts#L277)
+Defined in: [errors/in-store-pickup-errors.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/in-store-pickup-errors.ts#L277)
 
 Returns user-friendly error message with recovery guidance
 

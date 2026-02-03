@@ -49,7 +49,7 @@ layout: doc
 
 Таблица быстрого поиска для распространенных операций и их фактических методов SDK. Копируйте эти точные имена методов, чтобы избежать ошибок `TypeError: method is not a function`.
 
-**✅ Проверено на**: SDK v2.5.0 | **Последнее обновление**: 2026-01-18 | **Валидация**: Все методы проверены на соответствие фактической реализации
+**✅ Проверено на**: SDK v2.7.0 | **Последнее обновление**: 2026-02-03 | **Валидация**: Все методы проверены на соответствие фактической реализации (применена миграция Analytics v3)
 
 ### Товары и каталог
 
@@ -107,11 +107,13 @@ layout: doc
 
 ### Аналитика
 
+> **Примечание о миграции v2.7.0**: Методы воронки продаж ниже используют API v3. Старые методы v2 (`createNmReportDetail`, `createDetailHistory`, `createGroupedHistory`) по-прежнему работают как устаревшие обертки, но будут удалены в будущей версии. Подробности см. в [Руководстве по миграции Analytics v3](/guides/migration-v2.7-analytics-v3.md).
+
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Получить детальный отчет по товару | `sdk.analytics.createNmReportDetail(data)` | Детальные метрики товара |
-| Получить историю деталей | `sdk.analytics.createDetailHistory(data)` | Исторические данные деталей |
-| Получить сгруппированную историю | `sdk.analytics.createGroupedHistory(data)` | Сгруппированные исторические данные |
+| Получить товары воронки продаж | `sdk.analytics.getSalesFunnelProducts(data)` | **v3** - Заменяет `createNmReportDetail()`. Метрики товаров с `selectedPeriod`, `nmIds`, пагинация `limit`/`offset` |
+| Получить историю товаров | `sdk.analytics.getSalesFunnelProductsHistory(data)` | **v3** - Заменяет `createDetailHistory()`. Временные ряды с `aggregationLevel` |
+| Получить сгруппированную историю | `sdk.analytics.getSalesFunnelGroupedHistory(data)` | **v3** - Заменяет `createGroupedHistory()`. Группированная статистика по предметам/брендам/ярлыкам |
 | Получить загрузки отчетов | `sdk.analytics.getNmReportDownloads({ filter? })` | Список доступных отчетов |
 | Создать загрузку отчета | `sdk.analytics.createNmReportDownload(data)` | Асинхронная генерация отчета |
 | Повторить загрузку отчета | `sdk.analytics.createDownloadsRetry(data)` | Повторить неудачную загрузку |
@@ -200,7 +202,8 @@ layout: doc
 const cards = await sdk.products.createCardsList({ settings: { cursor: { limit: 100 } } });
 const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
 const balance = await sdk.finances.getAccountBalance();
-const report = await sdk.analytics.createNmReportDetail({ ... });
+const report = await sdk.analytics.getSalesFunnelProducts({ ... }); // v3 (рекомендуется)
+// или: sdk.analytics.createNmReportDetail({ ... }); // устаревшая обертка v2 (всё ещё работает)
 
 // ❌ НЕПРАВИЛЬНО - Эти методы НЕ существуют
 const products = await sdk.products.listProducts();     // TypeError: listProducts is not a function

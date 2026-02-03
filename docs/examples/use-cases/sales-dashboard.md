@@ -182,29 +182,39 @@ async function getSalesFunnel(days = 30): Promise<SalesFunnelReport> {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
-  const response = await sdk.analytics.getSalesFunnel({
-    period: {
-      begin: startDate.toISOString().replace('T', ' ').slice(0, 19),
-      end: endDate.toISOString().replace('T', ' ').slice(0, 19)
-    }
+  // v3 Sales Funnel API (SDK v2.7.0+)
+  const response = await sdk.analytics.getSalesFunnelProducts({
+    selectedPeriod: {
+      start: startDate.toISOString().split('T')[0],
+      end: endDate.toISOString().split('T')[0]
+    },
+    limit: 50,
+    offset: 0,
   });
 
-  const data = response.data;
+  // Aggregate across all products
+  const products = response.products ?? [];
+  const totals = products.reduce((acc, p) => ({
+    views: acc.views + (p.statistic?.selected?.openCount ?? 0),
+    clicks: acc.clicks + (p.statistic?.selected?.openCount ?? 0),
+    carts: acc.carts + (p.statistic?.selected?.cartCount ?? 0),
+    orders: acc.orders + (p.statistic?.selected?.orderCount ?? 0),
+  }), { views: 0, clicks: 0, carts: 0, orders: 0 });
 
   return {
     period: {
       from: startDate.toISOString().split('T')[0],
       to: endDate.toISOString().split('T')[0]
     },
-    views: data?.shows ?? 0,
-    clicks: data?.clicks ?? 0,
-    cartAdditions: data?.carts ?? 0,
-    orders: data?.orders ?? 0,
+    views: totals.views,
+    clicks: totals.clicks,
+    cartAdditions: totals.carts,
+    orders: totals.orders,
     conversions: {
-      clickToView: data?.shows ? (data.clicks / data.shows) * 100 : 0,
-      cartToClick: data?.clicks ? (data.carts / data.clicks) * 100 : 0,
-      orderToCart: data?.carts ? (data.orders / data.carts) * 100 : 0,
-      orderToView: data?.shows ? (data.orders / data.shows) * 100 : 0
+      clickToView: totals.views ? (totals.clicks / totals.views) * 100 : 0,
+      cartToClick: totals.clicks ? (totals.carts / totals.clicks) * 100 : 0,
+      orderToCart: totals.carts ? (totals.orders / totals.carts) * 100 : 0,
+      orderToView: totals.views ? (totals.orders / totals.views) * 100 : 0
     }
   };
 }

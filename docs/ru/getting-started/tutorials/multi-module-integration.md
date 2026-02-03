@@ -659,19 +659,30 @@ async function runCompleteIntegration() {
     // === ФАЗА 4: АНАЛИТИКА ===
     console.log('📊 ФАЗА 4: Сводка аналитики\n');
 
-    const salesFunnel = await sdk.analytics.getSalesFunnel({
-      dateFrom: dateFrom.toISOString(),
-      dateTo: new Date().toISOString()
+    // v3 Sales Funnel API (SDK v2.7.0+)
+    const salesFunnel = await sdk.analytics.getSalesFunnelProducts({
+      selectedPeriod: {
+        start: dateFrom.toISOString().split('T')[0],
+        end: new Date().toISOString().split('T')[0]
+      },
+      limit: 50,
+      offset: 0,
     });
 
-    const productMetrics = salesFunnel.data.find(p => p.productId === product.data.id);
+    const productMetrics = salesFunnel.products?.find(
+      item => item.product.nmId === product.data.id
+    );
 
     if (productMetrics) {
+      const stats = productMetrics.statistic?.selected;
+      const conversion = (stats?.openCount ?? 0) > 0
+        ? ((stats?.orderCount ?? 0) / (stats?.openCount ?? 1)) * 100
+        : 0;
       console.log('✓ Метрики эффективности товара:');
-      console.log(`  Просмотры: ${productMetrics.views.toLocaleString()}`);
-      console.log(`  Покупки: ${productMetrics.purchases}`);
-      console.log(`  Конверсия: ${productMetrics.conversionRate.toFixed(2)}%`);
-      console.log(`  Выручка: ${productMetrics.revenue.toLocaleString()} RUB`);
+      console.log(`  Просмотры: ${(stats?.openCount ?? 0).toLocaleString()}`);
+      console.log(`  Заказы: ${stats?.orderCount ?? 0}`);
+      console.log(`  Конверсия: ${conversion.toFixed(2)}%`);
+      console.log(`  Выручка: ${(stats?.orderSum ?? 0).toLocaleString()} RUB`);
     } else {
       console.log('ℹ️  Аналитика пока недоступна (требуется 24-48ч)');
     }

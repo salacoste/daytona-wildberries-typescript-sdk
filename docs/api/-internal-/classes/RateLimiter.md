@@ -2,7 +2,7 @@
 
 # Class: RateLimiter
 
-Defined in: [client/rate-limiter.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L327)
+Defined in: [client/rate-limiter.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L327)
 
 Rate limiter for API endpoints using the token bucket algorithm.
 
@@ -63,7 +63,7 @@ await limiter.waitForSlot('products.update');
 new RateLimiter(config?: EndpointLimits): RateLimiter;
 ```
 
-Defined in: [client/rate-limiter.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L358)
+Defined in: [client/rate-limiter.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L358)
 
 Creates a new RateLimiter instance.
 
@@ -97,7 +97,7 @@ const limiter = new RateLimiter();
 waitForSlot(key: string): Promise<void>;
 ```
 
-Defined in: [client/rate-limiter.ts:410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L410)
+Defined in: [client/rate-limiter.ts:410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L410)
 
 Waits for a rate limit slot to become available for the specified endpoint.
 
@@ -163,7 +163,7 @@ await Promise.all(promises);
 configure(key: string, config: RateLimitConfig): void;
 ```
 
-Defined in: [client/rate-limiter.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L471)
+Defined in: [client/rate-limiter.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L471)
 
 Dynamically configure or update rate limit for an endpoint.
 
@@ -208,7 +208,7 @@ limiter.configure('products.create', {
 getConfiguration(key: string): RateLimitConfig | undefined;
 ```
 
-Defined in: [client/rate-limiter.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L491)
+Defined in: [client/rate-limiter.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L491)
 
 Get the current rate limit configuration for an endpoint.
 
@@ -241,7 +241,7 @@ if (config) {
 canProceed(key: string): boolean;
 ```
 
-Defined in: [client/rate-limiter.ts:516](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L516)
+Defined in: [client/rate-limiter.ts:516](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L516)
 
 Check if a request can proceed immediately without queueing.
 
@@ -281,7 +281,7 @@ await limiter.waitForSlot('products.create');
 getRemainingTokens(key: string): number;
 ```
 
-Defined in: [client/rate-limiter.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L541)
+Defined in: [client/rate-limiter.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L541)
 
 Get the number of tokens currently available for an endpoint.
 
@@ -315,7 +315,7 @@ console.log(`${remaining} requests can execute immediately`);
 reset(key?: string): void;
 ```
 
-Defined in: [client/rate-limiter.ts:570](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/client/rate-limiter.ts#L570)
+Defined in: [client/rate-limiter.ts:570](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/client/rate-limiter.ts#L570)
 
 Reset rate limiting state for an endpoint or all endpoints.
 

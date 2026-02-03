@@ -2,7 +2,7 @@
 
 # Interface: TableGroupItemSt
 
-Defined in: [types/analytics.types.ts:1215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1215)
+Defined in: [types/analytics.types.ts:1262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1262)
 
 Данные по группе
 
@@ -10,10 +10,10 @@ Defined in: [types/analytics.types.ts:1215](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="subjectid"></a> `subjectID` | `number` | ID предмета | [types/analytics.types.ts:1217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1217) |
-| <a id="subjectname"></a> `subjectName` | `string` | Название предмета | [types/analytics.types.ts:1219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1219) |
-| <a id="brandname"></a> `brandName` | `string` | Бренд | [types/analytics.types.ts:1221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1221) |
-| <a id="tagid"></a> `tagID` | `number` | ID ярлыка | [types/analytics.types.ts:1223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1223) |
-| <a id="tagname"></a> `tagName` | `string` | Название ярлыка | [types/analytics.types.ts:1225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1225) |
-| <a id="metrics"></a> `metrics` | [`TableCommonMetrics`](TableCommonMetrics.md) | Метрики группы | [types/analytics.types.ts:1227](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1227) |
-| <a id="items"></a> `items` | [`TableProductItemSt`](TableProductItemSt.md)[] | Товары группы | [types/analytics.types.ts:1229](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1229) |
+| <a id="subjectid"></a> `subjectID` | `number` | ID предмета | [types/analytics.types.ts:1264](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1264) |
+| <a id="subjectname"></a> `subjectName` | `string` | Название предмета | [types/analytics.types.ts:1266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1266) |
+| <a id="brandname"></a> `brandName` | `string` | Бренд | [types/analytics.types.ts:1268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1268) |
+| <a id="tagid"></a> `tagID` | `number` | ID ярлыка | [types/analytics.types.ts:1270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1270) |
+| <a id="tagname"></a> `tagName` | `string` | Название ярлыка | [types/analytics.types.ts:1272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1272) |
+| <a id="metrics"></a> `metrics` | [`TableCommonMetrics`](TableCommonMetrics.md) | Метрики группы | [types/analytics.types.ts:1274](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1274) |
+| <a id="items"></a> `items` | [`TableProductItemSt`](TableProductItemSt.md)[] | Товары группы | [types/analytics.types.ts:1276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1276) |

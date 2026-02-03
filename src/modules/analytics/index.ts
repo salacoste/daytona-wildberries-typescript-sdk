@@ -5,67 +5,126 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import type { CommonResponseProperties, MainRequest, MainResponse, NmReportCreateReportResponse, NmReportDetailHistoryRequest, NmReportDetailHistoryResponse, NmReportDetailRequest, NmReportDetailResponse, NmReportGetReportsResponse, NmReportGroupedHistoryRequest, NmReportGroupedHistoryResponse, NmReportRetryReportRequest, NmReportRetryReportResponse, ProductOrdersRequest, ProductOrdersResponse, ProductSearchTextsRequest, ProductSearchTextsResponse, SalesFunnelGroupReq, SalesFunnelProductReq, SearchReportGroupReq, SearchReportProductReq, SearchReportTextReq, StocksReportReq, TableDetailsRequest, TableDetailsResponse, TableGroupRequest, TableGroupRequestSt, TableGroupResponse, TableGroupResponseSt, TableProductRequest, TableProductResponse, TableShippingOfficeRequest, TableShippingOfficeResponse, TableSizeRequest, TableSizeResponse } from '../../types/analytics.types';
+import type {
+  CommonResponseProperties,
+  MainRequest,
+  MainResponse,
+  NmReportCreateReportResponse,
+  NmReportDetailHistoryRequest,
+  NmReportDetailHistoryResponse,
+  NmReportDetailRequest,
+  NmReportDetailResponse,
+  NmReportGetReportsResponse,
+  NmReportGroupedHistoryRequest,
+  NmReportGroupedHistoryResponse,
+  NmReportRetryReportRequest,
+  NmReportRetryReportResponse,
+  ProductOrdersRequest,
+  ProductOrdersResponse,
+  ProductSearchTextsRequest,
+  ProductSearchTextsResponse,
+  SalesFunnelGroupReq,
+  SalesFunnelProductReq,
+  SalesFunnelProductsRequest,
+  SalesFunnelProductsResponse,
+  SalesFunnelProductsHistoryRequest,
+  SalesFunnelProductsHistoryResponse,
+  SalesFunnelGroupedHistoryRequest,
+  SalesFunnelGroupedHistoryResponse,
+  SearchReportGroupReq,
+  SearchReportProductReq,
+  SearchReportTextReq,
+  StocksReportReq,
+  TableDetailsRequest,
+  TableDetailsResponse,
+  TableGroupRequest,
+  TableGroupRequestSt,
+  TableGroupResponse,
+  TableGroupResponseSt,
+  TableProductRequest,
+  TableProductResponse,
+  TableShippingOfficeRequest,
+  TableShippingOfficeResponse,
+  TableSizeRequest,
+  TableSizeResponse,
+} from '../../types/analytics.types';
 
 export class AnalyticsModule {
   constructor(private client: BaseClient) {}
 
   /**
-   * Статистика карточек товаров за период
-   *
-   * Метод формирует отчёт о товарах, сравнивая ключевые показатели — например, добавления в корзину, заказы и переходы в карточку товара — за текущий период с аналогичным прошлым.<br><br> Параметры `brandNames`,`objectIDs`, `tagIDs`, `nmIDs` могут быть пустыми `[]`, тогда в ответе возвращаются все карточки продавца.<br><br> Если выбрано несколько параметров, в ответе будут карточки, в которых есть одновременно все эти параметры. Если карточки не подходят по параметрам запроса, вернётся пустой ответ `[]`.<br><br> Можно получить отчёт максимум за последние 365 дней.<br><br> В данных предыдущего периода: * Данные в `previousPeriod` указаны за такой же период, что и в `selectedPeriod`. * Если дата начала `previousPeriod` раньше, чем год назад от текущей даты, она будет приведена к виду: `previousPeriod.begin = текущая дата — 365 дней.` <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
-   *
-   * @param data - Parameter
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.createNmReportDetail({});
-  console.log(result);
+   * @deprecated Use {@link getSalesFunnelProducts} instead. v2 endpoint is dead (404).
+   * Maps v2 parameters to v3 format and delegates to getSalesFunnelProducts.
    */
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   async createNmReportDetail(data: NmReportDetailRequest): Promise<NmReportDetailResponse> {
-    return this.client.post<NmReportDetailResponse>('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail', data);
+    const page = data.page || 1;
+    const v3Request: SalesFunnelProductsRequest = {
+      selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
+      ...(data.nmIDs ? { nmIds: data.nmIDs } : {}),
+      ...(data.objectIDs ? { subjectIds: data.objectIDs } : {}),
+      ...(data.tagIDs ? { tagIds: data.tagIDs } : {}),
+      ...(data.brandNames ? { brandNames: data.brandNames } : {}),
+      ...(data.orderBy ? { orderBy: data.orderBy as SalesFunnelProductsRequest['orderBy'] } : {}),
+      limit: 50,
+      offset: (page - 1) * 50,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    return this.getSalesFunnelProducts(v3Request) as unknown as Promise<NmReportDetailResponse>;
   }
 
   /**
-   * Статистика карточек товаров по дням
-   *
-   * Метод возвращает статистику карточек товаров по дням. Можно получить данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br> Можно получить данные максимум за последнюю неделю. <div class="description_important"> Чтобы получать <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">отчёты за период до года</a>, подпишитесь на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
-   *
-   * @param data - Parameter
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.createDetailHistory({});
-  console.log(result);
+   * @deprecated Use {@link getSalesFunnelProductsHistory} instead. v2 endpoint is dead (404).
+   * Maps v2 parameters to v3 format and delegates to getSalesFunnelProductsHistory.
    */
-  async createDetailHistory(data: NmReportDetailHistoryRequest): Promise<NmReportDetailHistoryResponse> {
-    return this.client.post<NmReportDetailHistoryResponse>('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/detail/history', data);
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  async createDetailHistory(
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    data: NmReportDetailHistoryRequest
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+  ): Promise<NmReportDetailHistoryResponse> {
+    const v3Request: SalesFunnelProductsHistoryRequest = {
+      selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
+      nmIds: data.nmIDs,
+      ...(data.aggregationLevel
+        ? {
+            aggregationLevel:
+              data.aggregationLevel as SalesFunnelProductsHistoryRequest['aggregationLevel'],
+          }
+        : {}),
+    };
+    /* eslint-disable @typescript-eslint/no-deprecated */
+    return this.getSalesFunnelProductsHistory(
+      v3Request
+    ) as unknown as Promise<NmReportDetailHistoryResponse>;
+    /* eslint-enable @typescript-eslint/no-deprecated */
   }
 
   /**
-   * Статистика групп карточек товаров по дням
-   *
-   * Метод возвращает статистику карточек товаров по дням. Карточки товаров сгруппированы по предметам, брендам и ярлыкам. Можно получить данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br> Параметры `brandNames`, `objectIDs`, `tagIDs` могут быть пустыми `[]`, тогда группировка происходит по всем карточкам продавца.<br><br> Произведение количества предметов, брендов, ярлыков в запросе может быть не больше 16.<br><br> Можно получить данные максимум за последнюю неделю. <div class="description_important"> Чтобы получать <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">отчёты за период до года</a>, подпишитесь на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 3 запроса | 20 секунд | 3 запроса | </div>
-   *
-   * @param data - Parameter
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.createGroupedHistory({});
-  console.log(result);
+   * @deprecated Use {@link getSalesFunnelGroupedHistory} instead. v2 endpoint is dead (404).
+   * Maps v2 parameters to v3 format and delegates to getSalesFunnelGroupedHistory.
    */
-  async createGroupedHistory(data: NmReportGroupedHistoryRequest): Promise<NmReportGroupedHistoryResponse> {
-    return this.client.post<NmReportGroupedHistoryResponse>('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/grouped/history', data);
+  /* eslint-disable @typescript-eslint/no-deprecated */
+  async createGroupedHistory(
+    data: NmReportGroupedHistoryRequest
+  ): Promise<NmReportGroupedHistoryResponse> {
+    const v3Request: SalesFunnelGroupedHistoryRequest = {
+      selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
+      ...(data.objectIDs ? { subjectIds: data.objectIDs } : {}),
+      ...(data.tagIDs ? { tagIds: data.tagIDs } : {}),
+      ...(data.brandNames ? { brandNames: data.brandNames } : {}),
+      ...(data.aggregationLevel
+        ? {
+            aggregationLevel:
+              data.aggregationLevel as SalesFunnelGroupedHistoryRequest['aggregationLevel'],
+          }
+        : {}),
+    };
+    return this.getSalesFunnelGroupedHistory(
+      v3Request
+    ) as unknown as Promise<NmReportGroupedHistoryResponse>;
   }
+  /* eslint-enable @typescript-eslint/no-deprecated */
 
   /**
    * Получить список отчётов
@@ -82,8 +141,13 @@ export class AnalyticsModule {
   const result = await sdk.general.getNmReportDownloads({});
   console.log(result);
    */
-  async getNmReportDownloads(options?: { 'filter[downloadIds]'?: string[] }): Promise<NmReportGetReportsResponse> {
-    return this.client.get<NmReportGetReportsResponse>('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads', { params: options });
+  async getNmReportDownloads(options?: {
+    'filter[downloadIds]'?: string[];
+  }): Promise<NmReportGetReportsResponse> {
+    return this.client.get<NmReportGetReportsResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads',
+      { params: options }
+    );
   }
 
   /**
@@ -101,8 +165,19 @@ export class AnalyticsModule {
   const result = await sdk.general.createNmReportDownload({});
   console.log(result);
    */
-  async createNmReportDownload(data?: SalesFunnelProductReq | SalesFunnelGroupReq | SearchReportGroupReq | SearchReportProductReq | SearchReportTextReq | StocksReportReq): Promise<NmReportCreateReportResponse> {
-    return this.client.post<NmReportCreateReportResponse>('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads', data);
+  async createNmReportDownload(
+    data?:
+      | SalesFunnelProductReq
+      | SalesFunnelGroupReq
+      | SearchReportGroupReq
+      | SearchReportProductReq
+      | SearchReportTextReq
+      | StocksReportReq
+  ): Promise<NmReportCreateReportResponse> {
+    return this.client.post<NmReportCreateReportResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads',
+      data
+    );
   }
 
   /**
@@ -120,8 +195,13 @@ export class AnalyticsModule {
   const result = await sdk.general.createDownloadsRetry({});
   console.log(result);
    */
-  async createDownloadsRetry(data: NmReportRetryReportRequest): Promise<NmReportRetryReportResponse> {
-    return this.client.post<NmReportRetryReportResponse>('https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads/retry', data);
+  async createDownloadsRetry(
+    data: NmReportRetryReportRequest
+  ): Promise<NmReportRetryReportResponse> {
+    return this.client.post<NmReportRetryReportResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads/retry',
+      data
+    );
   }
 
   /**
@@ -140,7 +220,9 @@ export class AnalyticsModule {
   console.log(result);
    */
   async getDownloadsFile(downloadId: string): Promise<unknown> {
-    return this.client.get<unknown>(`https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads/file/${downloadId}`);
+    return this.client.get<unknown>(
+      `https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads/file/${downloadId}`
+    );
   }
 
   /**
@@ -158,8 +240,13 @@ export class AnalyticsModule {
   const result = await sdk.general.createSearchReportReport({});
   console.log(result);
    */
-  async createSearchReportReport(data: MainRequest): Promise<CommonResponseProperties & { data: MainResponse }> {
-    return this.client.post<CommonResponseProperties & { data: MainResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/search-report/report', data);
+  async createSearchReportReport(
+    data: MainRequest
+  ): Promise<CommonResponseProperties & { data: MainResponse }> {
+    return this.client.post<CommonResponseProperties & { data: MainResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/search-report/report',
+      data
+    );
   }
 
   /**
@@ -177,8 +264,13 @@ export class AnalyticsModule {
   const result = await sdk.general.createTableGroup({});
   console.log(result);
    */
-  async createTableGroup(data: TableGroupRequest): Promise<CommonResponseProperties & { data: TableGroupResponse }> {
-    return this.client.post<CommonResponseProperties & { data: TableGroupResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/search-report/table/groups', data);
+  async createTableGroup(
+    data: TableGroupRequest
+  ): Promise<CommonResponseProperties & { data: TableGroupResponse }> {
+    return this.client.post<CommonResponseProperties & { data: TableGroupResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/search-report/table/groups',
+      data
+    );
   }
 
   /**
@@ -196,8 +288,13 @@ export class AnalyticsModule {
   const result = await sdk.general.createTableDetail({});
   console.log(result);
    */
-  async createTableDetail(data: TableDetailsRequest): Promise<CommonResponseProperties & { data: TableDetailsResponse }> {
-    return this.client.post<CommonResponseProperties & { data: TableDetailsResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/search-report/table/details', data);
+  async createTableDetail(
+    data: TableDetailsRequest
+  ): Promise<CommonResponseProperties & { data: TableDetailsResponse }> {
+    return this.client.post<CommonResponseProperties & { data: TableDetailsResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/search-report/table/details',
+      data
+    );
   }
 
   /**
@@ -215,8 +312,13 @@ export class AnalyticsModule {
   const result = await sdk.general.createProductSearchText({});
   console.log(result);
    */
-  async createProductSearchText(data: ProductSearchTextsRequest): Promise<CommonResponseProperties & { data: ProductSearchTextsResponse }> {
-    return this.client.post<CommonResponseProperties & { data: ProductSearchTextsResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/search-report/product/search-texts', data);
+  async createProductSearchText(
+    data: ProductSearchTextsRequest
+  ): Promise<CommonResponseProperties & { data: ProductSearchTextsResponse }> {
+    return this.client.post<CommonResponseProperties & { data: ProductSearchTextsResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/search-report/product/search-texts',
+      data
+    );
   }
 
   /**
@@ -234,8 +336,13 @@ export class AnalyticsModule {
   const result = await sdk.general.createProductOrder({});
   console.log(result);
    */
-  async createProductOrder(data: ProductOrdersRequest): Promise<CommonResponseProperties & { data: ProductOrdersResponse }> {
-    return this.client.post<CommonResponseProperties & { data: ProductOrdersResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/search-report/product/orders', data);
+  async createProductOrder(
+    data: ProductOrdersRequest
+  ): Promise<CommonResponseProperties & { data: ProductOrdersResponse }> {
+    return this.client.post<CommonResponseProperties & { data: ProductOrdersResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/search-report/product/orders',
+      data
+    );
   }
 
   /**
@@ -254,7 +361,10 @@ export class AnalyticsModule {
   console.log(result);
    */
   async createProductsGroup(data: TableGroupRequestSt): Promise<{ data: TableGroupResponseSt }> {
-    return this.client.post<{ data: TableGroupResponseSt }>('https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/products/groups', data);
+    return this.client.post<{ data: TableGroupResponseSt }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/products/groups',
+      data
+    );
   }
 
   /**
@@ -273,7 +383,10 @@ export class AnalyticsModule {
   console.log(result);
    */
   async createProductsProduct(data: TableProductRequest): Promise<{ data: TableProductResponse }> {
-    return this.client.post<{ data: TableProductResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/products/products', data);
+    return this.client.post<{ data: TableProductResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/products/products',
+      data
+    );
   }
 
   /**
@@ -292,7 +405,10 @@ export class AnalyticsModule {
   console.log(result);
    */
   async createProductsSize(data: TableSizeRequest): Promise<{ data: TableSizeResponse }> {
-    return this.client.post<{ data: TableSizeResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/products/sizes', data);
+    return this.client.post<{ data: TableSizeResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/products/sizes',
+      data
+    );
   }
 
   /**
@@ -310,8 +426,108 @@ export class AnalyticsModule {
   const result = await sdk.general.createStocksReportOffice({});
   console.log(result);
    */
-  async createStocksReportOffice(data: TableShippingOfficeRequest): Promise<{ data: TableShippingOfficeResponse }> {
-    return this.client.post<{ data: TableShippingOfficeResponse }>('https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/offices', data);
+  async createStocksReportOffice(
+    data: TableShippingOfficeRequest
+  ): Promise<{ data: TableShippingOfficeResponse }> {
+    return this.client.post<{ data: TableShippingOfficeResponse }>(
+      'https://seller-analytics-api.wildberries.ru/api/v2/stocks-report/offices',
+      data
+    );
   }
 
+  // ============ v3 Sales Funnel Methods ============
+
+  /**
+   * Статистика карточек товаров за период (v3)
+   *
+   * Возвращает отчёт о товарах с ключевыми показателями — переходы в карточку,
+   * добавления в корзину, заказы — за текущий и прошлый периоды.
+   *
+   * Rate limit: 3 requests/minute, 20-second interval, 3-request burst
+   *
+   * @param data - Request parameters
+   * @returns Sales funnel products statistics
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/seller-analytics#tag/Voronka-prodazh}
+   * @example
+   * const result = await sdk.analytics.getSalesFunnelProducts({
+   *   selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+   *   orderBy: { field: 'orderCount', mode: 'desc' },
+   *   limit: 10,
+   *   offset: 0,
+   * });
+   * console.log(result.products);
+   */
+  async getSalesFunnelProducts(
+    data: SalesFunnelProductsRequest
+  ): Promise<SalesFunnelProductsResponse> {
+    return this.client.post<SalesFunnelProductsResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v3/sales-funnel/products',
+      data
+    );
+  }
+
+  /**
+   * Статистика карточек товаров по дням (v3)
+   *
+   * Возвращает статистику карточек товаров по дням или неделям.
+   *
+   * Rate limit: 3 requests/minute, 20-second interval, 3-request burst
+   *
+   * @param data - Request parameters
+   * @returns Products history statistics
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/seller-analytics#tag/Voronka-prodazh}
+   * @example
+   * const result = await sdk.analytics.getSalesFunnelProductsHistory({
+   *   selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+   *   nmIds: [268913787],
+   *   aggregationLevel: 'day',
+   * });
+   * console.log(result);
+   */
+  async getSalesFunnelProductsHistory(
+    data: SalesFunnelProductsHistoryRequest
+  ): Promise<SalesFunnelProductsHistoryResponse> {
+    return this.client.post<SalesFunnelProductsHistoryResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v3/sales-funnel/products/history',
+      data
+    );
+  }
+
+  /**
+   * Статистика групп карточек товаров по дням (v3)
+   *
+   * Возвращает статистику карточек товаров по дням, сгруппированных по предметам, брендам и ярлыкам.
+   *
+   * Rate limit: 3 requests/minute, 20-second interval, 3-request burst
+   *
+   * @param data - Request parameters
+   * @returns Grouped history statistics
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/seller-analytics#tag/Voronka-prodazh}
+   * @example
+   * const result = await sdk.analytics.getSalesFunnelGroupedHistory({
+   *   selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+   *   aggregationLevel: 'day',
+   * });
+   * console.log(result);
+   */
+  async getSalesFunnelGroupedHistory(
+    data: SalesFunnelGroupedHistoryRequest
+  ): Promise<SalesFunnelGroupedHistoryResponse> {
+    return this.client.post<SalesFunnelGroupedHistoryResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v3/sales-funnel/grouped/history',
+      data
+    );
+  }
 }

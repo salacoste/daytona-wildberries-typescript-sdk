@@ -2,10 +2,10 @@
 
 # Interface: TableProductResponse
 
-Defined in: [types/analytics.types.ts:1365](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1365)
+Defined in: [types/analytics.types.ts:1412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1412)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`TableProductItemSt`](TableProductItemSt.md)[] | Множество данных по товарам | [types/analytics.types.ts:1367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1367) |
+| <a id="items"></a> `items` | [`TableProductItemSt`](TableProductItemSt.md)[] | Множество данных по товарам | [types/analytics.types.ts:1414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1414) |

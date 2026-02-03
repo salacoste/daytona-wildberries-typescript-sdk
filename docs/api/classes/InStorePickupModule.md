@@ -2,7 +2,7 @@
 
 # Class: InStorePickupModule
 
-Defined in: [modules/in-store-pickup/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L10)
+Defined in: [modules/in-store-pickup/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L10)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/in-store-pickup/index.ts:10](https://github.com/salacoste/d
 new InStorePickupModule(client: BaseClient): InStorePickupModule;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L11)
+Defined in: [modules/in-store-pickup/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L11)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/in-store-pickup/index.ts:11](https://github.com/salacoste/d
 getOrdersNew(): Promise<ApiNewOrders>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L27)
+Defined in: [modules/in-store-pickup/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L27)
 
 Получить список новых сборочных заданий
 
@@ -75,7 +75,7 @@ console.log(result);
 updateOrdersConfirm(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L45)
+Defined in: [modules/in-store-pickup/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L45)
 
 Перевести на сборку
 
@@ -123,7 +123,7 @@ const result = await sdk.general.updateOrdersConfirm('orderId-value');
 updateOrdersPrepare(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L63)
+Defined in: [modules/in-store-pickup/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L63)
 
 Сообщить, что сборочное задание готово к выдаче
 
@@ -171,7 +171,7 @@ const result = await sdk.general.updateOrdersPrepare('orderId-value');
 createOrdersClient(data: ApiOrdersRequest): Promise<ApiOrderClientInfoResp>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L82)
+Defined in: [modules/in-store-pickup/index.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L82)
 
 Информация о покупателе
 
@@ -220,7 +220,7 @@ console.log(result);
 createClientIdentity(data: ApiCheckIdentityRequest): Promise<ApiCheckedIdentity>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L101)
+Defined in: [modules/in-store-pickup/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L101)
 
 Проверить, что заказ принадлежит покупателю
 
@@ -269,7 +269,7 @@ console.log(result);
 updateOrdersReceive(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L119)
+Defined in: [modules/in-store-pickup/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L119)
 
 Сообщить, что заказ принят покупателем
 
@@ -317,7 +317,7 @@ const result = await sdk.general.updateOrdersReceive('orderId-value');
 updateOrdersReject(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:137](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L137)
+Defined in: [modules/in-store-pickup/index.ts:137](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L137)
 
 Сообщить, что покупатель отказался от заказа
 
@@ -365,7 +365,7 @@ const result = await sdk.general.updateOrdersReject('orderId-value');
 createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:156](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L156)
+Defined in: [modules/in-store-pickup/index.ts:156](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L156)
 
 Получить статусы сборочных заданий
 
@@ -419,7 +419,7 @@ getClickCollectOrders(options?: {
 }): Promise<ApiOrders>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L175)
+Defined in: [modules/in-store-pickup/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L175)
 
 Получить информацию о завершённых сборочных заданиях
 
@@ -472,7 +472,7 @@ console.log(result);
 updateOrdersCancel(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L193)
+Defined in: [modules/in-store-pickup/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L193)
 
 Отменить сборочное задание
 
@@ -520,7 +520,7 @@ const result = await sdk.general.updateOrdersCancel('orderId-value');
 getOrdersMeta(orderId: number): Promise<ApiOrdersMeta>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L212)
+Defined in: [modules/in-store-pickup/index.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L212)
 
 Получить метаданные сборочного задания
 
@@ -571,7 +571,7 @@ deleteOrdersMeta(orderId: number, options?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L231)
+Defined in: [modules/in-store-pickup/index.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L231)
 
 Удалить метаданные сборочного задания
 
@@ -621,7 +621,7 @@ const result = await sdk.general.deleteOrdersMeta('orderId-value', {});
 updateMetaSgtin(orderId: number, data: ApiSGTINsRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L250)
+Defined in: [modules/in-store-pickup/index.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L250)
 
 Закрепить за сборочным заданием код маркировки товара
 
@@ -670,7 +670,7 @@ const result = await sdk.general.updateMetaSgtin('orderId-value', {});
 updateMetaUin(orderId: number, data: ApiUINRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L269)
+Defined in: [modules/in-store-pickup/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L269)
 
 Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
 
@@ -719,7 +719,7 @@ const result = await sdk.general.updateMetaUin('orderId-value', {});
 updateMetaImei(orderId: number, data: ApiIMEIRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L288)
+Defined in: [modules/in-store-pickup/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L288)
 
 Закрепить за сборочным заданием IMEI
 
@@ -768,7 +768,7 @@ const result = await sdk.general.updateMetaImei('orderId-value', {});
 updateMetaGtin(orderId: number, data: ApiGTINRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:307](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/in-store-pickup/index.ts#L307)
+Defined in: [modules/in-store-pickup/index.ts:307](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/in-store-pickup/index.ts#L307)
 
 Закрепить за сборочным заданием GTIN
 

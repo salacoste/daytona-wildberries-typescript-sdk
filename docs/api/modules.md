@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v2.5.0
+# Wildberries API TypeScript SDK v2.7.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -33,6 +33,7 @@ Main entry point
 | [FinancesModule](classes/FinancesModule.md) | - |
 | [GeneralModule](classes/GeneralModule.md) | - |
 | [InStorePickupModule](classes/InStorePickupModule.md) | - |
+| [OrdersDbsModule](classes/OrdersDbsModule.md) | Orders DBS Module for managing Delivery by Seller orders |
 | [OrdersFbsModule](classes/OrdersFbsModule.md) | - |
 | [OrdersFbwModule](classes/OrdersFbwModule.md) | - |
 | [ProductsModule](classes/ProductsModule.md) | - |
@@ -47,31 +48,39 @@ Main entry point
 | [RateLimitConfig](interfaces/RateLimitConfig.md) | Configuration for rate limiting a specific endpoint. |
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
+| [SupplyCostInput](interfaces/SupplyCostInput.md) | Input parameters for supply cost calculation |
+| [SupplyCostResult](interfaces/SupplyCostResult.md) | Result of supply cost calculation |
+| [CompareTariffsInput](interfaces/CompareTariffsInput.md) | Input parameters for tariff comparison |
+| [TariffData](interfaces/TariffData.md) | Tariff data from a single source |
+| [TariffDifference](interfaces/TariffDifference.md) | Percentage differences between inventory and supply tariffs |
+| [TariffComparison](interfaces/TariffComparison.md) | Complete tariff comparison result |
 
 ## Type Aliases
 
 | Type Alias | Description |
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
-
-## Functions
-
-| Function | Description |
-| ------ | ------ |
-| [calculateSupplyCost](functions/utilities.md#calculatesupplycost) | Calculate supply costs including acceptance, storage, and logistics |
-| [compareTariffs](functions/utilities.md#comparetariffs) | Compare inventory vs supply tariffs for cost optimization |
+| [TariffRecommendation](type-aliases/TariffRecommendation.md) | Recommendation based on tariff comparison |
 
 ## Variables
 
 | Variable | Description |
 | ------ | ------ |
 | [generalRateLimits](variables/generalRateLimits.md) | - |
+| [ordersDbsRateLimits](variables/ordersDbsRateLimits.md) | - |
 | [ordersFbsRateLimits](variables/ordersFbsRateLimits.md) | - |
 | [ordersFbwRateLimits](variables/ordersFbwRateLimits.md) | - |
 | [promotionRateLimits](variables/promotionRateLimits.md) | - |
 | [ALL\_RATE\_LIMITS](variables/ALL_RATE_LIMITS.md) | Aggregated rate limit configuration for all SDK modules. |
 | [tariffsRateLimits](variables/tariffsRateLimits.md) | - |
 | [version](variables/version.md) | SDK version |
+
+## Functions
+
+| Function | Description |
+| ------ | ------ |
+| [calculateSupplyCost](functions/calculateSupplyCost.md) | Calculates the total supply cost including acceptance, storage, and logistics |
+| [compareTariffs](functions/compareTariffs.md) | Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs |
 
 ## References
 

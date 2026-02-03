@@ -205,29 +205,35 @@ export class WildberriesSDK {
    * Analytics API module
    *
    * Provides access to analytics and reporting endpoints:
-   * - Sales funnel conversion metrics
-   * - Product performance tracking
-   * - Search query analysis
-   * - Category-level analytics
-   * - CSV report generation
+   * - Sales funnel v3: product statistics, daily history, grouped history
+   * - Search query analysis and product search texts
+   * - Stock history (inventory tracking)
+   * - CSV report generation and download
+   *
+   * **v3 Sales Funnel methods (replace deprecated v2):**
+   * - `getSalesFunnelProducts()` — product statistics with conversion metrics
+   * - `getSalesFunnelProductsHistory()` — daily/weekly time-series per product
+   * - `getSalesFunnelGroupedHistory()` — daily/weekly time-series grouped by subject/brand/tag
    *
    * @see {@link AnalyticsModule} for available methods
    *
    * @example
    * ```typescript
-   * // Get sales funnel metrics
-   * const funnel = await sdk.analytics.getSalesFunnel({
-   *   period: {
-   *     begin: '2024-01-01 00:00:00',
-   *     end: '2024-01-31 23:59:59'
-   *   }
+   * // Get sales funnel metrics (v3)
+   * const funnel = await sdk.analytics.getSalesFunnelProducts({
+   *   selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+   *   orderBy: { field: 'orderCount', mode: 'desc' },
+   *   limit: 10,
+   *   offset: 0,
    * });
+   * console.log(funnel.products[0].statistic.selected.openCount);
    *
-   * // Track product performance
-   * const performance = await sdk.analytics.getProductPerformance(
-   *   [12345, 67890],
-   *   { from: '2024-01-01', to: '2024-01-31' }
-   * );
+   * // Get daily history for specific products (v3)
+   * const history = await sdk.analytics.getSalesFunnelProductsHistory({
+   *   selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+   *   nmIds: [12345, 67890],
+   *   aggregationLevel: 'day',
+   * });
    * ```
    */
   public readonly analytics: AnalyticsModule;

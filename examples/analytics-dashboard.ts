@@ -85,7 +85,7 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src';
 
 // Initialize SDK with API key
@@ -99,40 +99,49 @@ const sdk = new WildberriesSDK({
  * Get conversion metrics showing the journey from views to purchases
  */
 async function analyzeSalesFunnel() {
-  console.log('\n=== Sales Funnel Analysis ===\n');
+  console.log('\n=== Sales Funnel Analysis (v3) ===\n');
 
   try {
-    // Get sales funnel for last 30 days
-    const funnel = await sdk.analytics.getSalesFunnel({
-      period: {
-        begin: '2024-01-01 00:00:00',
-        end: '2024-01-31 23:59:59',
-      },
-      page: 1,
-      pageSize: 100,
+    // Get sales funnel for last 30 days using v3 endpoint
+    const funnel = await sdk.analytics.getSalesFunnelProducts({
+      selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+      orderBy: { field: 'orderCount', mode: 'desc' },
+      limit: 100,
+      offset: 0,
     });
 
-    console.log(`Total Products Analyzed: ${funnel.data.cards.length}\n`);
+    console.log(`Total Products Analyzed: ${funnel.products.length}\n`);
 
     // Display funnel metrics for each product
-    funnel.data.cards.forEach((card, index) => {
-      const stats = card.statistics.selectedPeriod;
-      const prev = card.statistics.previousPeriod;
+    funnel.products.forEach((entry, index) => {
+      const product = entry.product;
+      const stats = entry.statistic.selected;
+      const comparison = entry.statistic.comparison;
 
-      console.log(`${index + 1}. ${card.brandName} (ID: ${card.nmID})`);
-      console.log(`   Category: ${card.object.name}`);
-      console.log(`   Views: ${stats.openCardCount.toLocaleString()}`);
-      console.log(`   Add to Cart: ${stats.addToCartCount.toLocaleString()} (${stats.conversions.addToCartPercent}%)`);
-      console.log(`   Orders: ${stats.ordersCount.toLocaleString()} (${stats.conversions.cartToOrderPercent}%)`);
-      console.log(`   Purchases: ${stats.buyoutsCount.toLocaleString()} (${stats.conversions.buyoutsPercent}%)`);
-      console.log(`   Revenue: ${stats.buyoutsSumRub.toLocaleString()} RUB`);
-      console.log(`   Avg Price: ${stats.avgPriceRub} RUB`);
+      console.log(`${index + 1}. ${product.brandName} (ID: ${product.nmId})`);
+      console.log(`   Category: ${product.subjectName}`);
+      console.log(`   Views: ${stats.openCount.toLocaleString()}`);
+      console.log(
+        `   Add to Cart: ${stats.cartCount.toLocaleString()} (${stats.addToCartConversion.toFixed(1)}%)`
+      );
+      console.log(
+        `   Orders: ${stats.orderCount.toLocaleString()} (${stats.cartToOrderConversion.toFixed(1)}%)`
+      );
+      console.log(
+        `   Purchases: ${stats.buyoutCount.toLocaleString()} (${stats.buyoutPercent.toFixed(1)}%)`
+      );
+      console.log(`   Revenue: ${stats.buyoutSum.toLocaleString()} RUB`);
 
-      // Show growth vs previous period
-      const comparison = card.statistics.periodComparison;
-      console.log(`   Growth vs Previous Period:`);
-      console.log(`     Views: ${comparison.openCardDynamics > 0 ? '+' : ''}${comparison.openCardDynamics}%`);
-      console.log(`     Revenue: ${comparison.buyoutsSumRubDynamics > 0 ? '+' : ''}${comparison.buyoutsSumRubDynamics}%`);
+      // Show growth vs previous period (if comparison data is available)
+      if (comparison) {
+        console.log(`   Growth vs Previous Period:`);
+        console.log(
+          `     Views: ${comparison.openCount > 0 ? '+' : ''}${comparison.openCount.toFixed(1)}%`
+        );
+        console.log(
+          `     Revenue: ${comparison.buyoutSum > 0 ? '+' : ''}${comparison.buyoutSum.toFixed(1)}%`
+        );
+      }
       console.log('');
     });
   } catch (error) {
@@ -141,47 +150,59 @@ async function analyzeSalesFunnel() {
 }
 
 /**
- * Example 2: Product Performance Comparison
+ * Example 2: Product Performance Comparison (v3)
  *
- * Compare performance metrics across multiple products
+ * Compare performance metrics across multiple products using v3 Sales Funnel
  */
 async function compareProductPerformance() {
-  console.log('\n=== Product Performance Comparison ===\n');
+  console.log('\n=== Product Performance Comparison (v3) ===\n');
 
   try {
-    // Compare top 5 products
+    // Compare top 5 products using v3 Sales Funnel endpoint
     const productIds = [12345, 67890, 11111, 22222, 33333];
 
-    const performance = await sdk.analytics.getProductPerformance(
-      productIds,
-      { from: '2024-01-01', to: '2024-01-31' }
-    );
-
-    // Sort by revenue (descending)
-    const sortedByRevenue = performance.products.sort((a, b) => b.revenue - a.revenue);
+    const performance = await sdk.analytics.getSalesFunnelProducts({
+      selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+      nmIds: productIds,
+      orderBy: { field: 'buyoutSum', mode: 'desc' },
+      limit: 5,
+      offset: 0,
+    });
 
     console.log('Products ranked by revenue:\n');
-    sortedByRevenue.forEach((product, index) => {
-      console.log(`${index + 1}. ${product.productName || `Product ${product.nmID}`}`);
-      console.log(`   Revenue: ${product.revenue.toLocaleString()} RUB`);
-      console.log(`   Units Sold: ${product.unitsSold.toLocaleString()}`);
-      console.log(`   Avg Price: ${product.avgPrice.toLocaleString()} RUB`);
-      console.log(`   Conversion Rate: ${product.conversionRate.toFixed(2)}%`);
-      console.log(`   Return Rate: ${product.returnRate.toFixed(2)}%`);
+    performance.products.forEach((entry, index) => {
+      const product = entry.product;
+      const stats = entry.statistic.selected;
+
+      console.log(`${index + 1}. ${product.title || `Product ${product.nmId}`}`);
+      console.log(`   Revenue: ${stats.buyoutSum.toLocaleString()} RUB`);
+      console.log(`   Orders: ${stats.orderCount.toLocaleString()}`);
+      console.log(`   Cart to Order: ${stats.cartToOrderConversion.toFixed(2)}%`);
+      console.log(`   Buyout Rate: ${stats.buyoutPercent.toFixed(2)}%`);
       console.log(`   Vendor Code: ${product.vendorCode}`);
       console.log('');
     });
 
     // Calculate aggregate metrics
-    const totalRevenue = sortedByRevenue.reduce((sum, p) => sum + p.revenue, 0);
-    const totalUnits = sortedByRevenue.reduce((sum, p) => sum + p.unitsSold, 0);
-    const avgConversionRate = sortedByRevenue.reduce((sum, p) => sum + p.conversionRate, 0) / sortedByRevenue.length;
+    const totalRevenue = performance.products.reduce(
+      (sum, e) => sum + e.statistic.selected.buyoutSum,
+      0
+    );
+    const totalOrders = performance.products.reduce(
+      (sum, e) => sum + e.statistic.selected.orderCount,
+      0
+    );
+    const avgConversion =
+      performance.products.reduce((sum, e) => sum + e.statistic.selected.cartToOrderConversion, 0) /
+      performance.products.length;
 
     console.log('Aggregate Metrics:');
     console.log(`  Total Revenue: ${totalRevenue.toLocaleString()} RUB`);
-    console.log(`  Total Units Sold: ${totalUnits.toLocaleString()}`);
-    console.log(`  Average Conversion Rate: ${avgConversionRate.toFixed(2)}%`);
-    console.log(`  Average Revenue per Product: ${(totalRevenue / sortedByRevenue.length).toLocaleString()} RUB`);
+    console.log(`  Total Orders: ${totalOrders.toLocaleString()}`);
+    console.log(`  Average Cart-to-Order Conversion: ${avgConversion.toFixed(2)}%`);
+    console.log(
+      `  Average Revenue per Product: ${(totalRevenue / performance.products.length).toLocaleString()} RUB`
+    );
   } catch (error) {
     console.error('Error comparing product performance:', error);
   }
@@ -225,7 +246,7 @@ async function optimizeSearchQueries() {
 
     // Identify optimization opportunities (high volume, low conversion)
     const opportunities = queries.data
-      .filter(q => q.searchCount > 1000 && q.conversionRate < 2)
+      .filter((q) => q.searchCount > 1000 && q.conversionRate < 2)
       .sort((a, b) => b.searchCount - a.searchCount);
 
     if (opportunities.length > 0) {
@@ -254,23 +275,27 @@ async function analyzeCategoryPerformance() {
   try {
     const categoryId = '447'; // Example category ID
 
-    const category = await sdk.analytics.getCategoryPerformance(
-      categoryId,
-      { from: '2024-01-01', to: '2024-01-31' }
-    );
+    const category = await sdk.analytics.getCategoryPerformance(categoryId, {
+      from: '2024-01-01',
+      to: '2024-01-31',
+    });
 
     console.log(`Category: ${category.data.categoryName} (ID: ${category.data.categoryId})`);
     console.log(`Total Products: ${category.data.productCount}`);
     console.log(`Total Revenue: ${category.data.revenue.toLocaleString()} RUB`);
     console.log(`Total Units Sold: ${category.data.unitsSold.toLocaleString()}`);
-    console.log(`Avg Revenue per Product: ${(category.data.revenue / category.data.productCount).toLocaleString()} RUB\n`);
+    console.log(
+      `Avg Revenue per Product: ${(category.data.revenue / category.data.productCount).toLocaleString()} RUB\n`
+    );
 
     console.log('Top 10 Products in Category:\n');
     category.data.topProducts.forEach((product, index) => {
       console.log(`${index + 1}. ${product.name} (ID: ${product.nmID})`);
       console.log(`   Revenue: ${product.revenue.toLocaleString()} RUB`);
       console.log(`   Units Sold: ${product.unitsSold.toLocaleString()}`);
-      console.log(`   % of Category Revenue: ${((product.revenue / category.data.revenue) * 100).toFixed(2)}%`);
+      console.log(
+        `   % of Category Revenue: ${((product.revenue / category.data.revenue) * 100).toFixed(2)}%`
+      );
       console.log('');
     });
   } catch (error) {
@@ -279,40 +304,76 @@ async function analyzeCategoryPerformance() {
 }
 
 /**
- * Example 5: Product History Time-Series Data
+ * Example 5: Product History Time-Series Data (v3)
  *
- * Analyze daily performance trends
+ * Analyze daily performance trends using v3 Sales Funnel history
  */
 async function analyzeProductHistory() {
-  console.log('\n=== Product History Analysis ===\n');
+  console.log('\n=== Product History Analysis (v3) ===\n');
 
   try {
-    const history = await sdk.analytics.getProductHistory({
-      period: {
-        begin: '2024-01-01 00:00:00',
-        end: '2024-01-07 23:59:59',
-      },
-      nmIDs: [12345, 67890],
+    const history = await sdk.analytics.getSalesFunnelProductsHistory({
+      selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+      nmIds: [12345, 67890],
+      aggregationLevel: 'day',
     });
 
-    history.data.forEach(product => {
-      console.log(`Product: ${product.brandName} (ID: ${product.nmID})`);
-      console.log(`Category: ${product.object.name}\n`);
+    history.forEach((entry) => {
+      console.log(`Product: ${entry.product.brandName} (ID: ${entry.product.nmId})`);
+      console.log(`Category: ${entry.product.subjectName}\n`);
 
       console.log('Daily Performance:');
-      product.history.forEach(day => {
+      entry.history.forEach((day) => {
         console.log(`  ${day.date}:`);
-        console.log(`    Views: ${day.openCardCount.toLocaleString()}`);
-        console.log(`    Add to Cart: ${day.addToCartCount.toLocaleString()}`);
-        console.log(`    Orders: ${day.ordersCount.toLocaleString()}`);
-        console.log(`    Purchases: ${day.buyoutsCount.toLocaleString()}`);
-        console.log(`    Revenue: ${day.buyoutsSumRub.toLocaleString()} RUB`);
-        console.log(`    Conversion: ${day.conversions.buyoutsPercent.toFixed(2)}%`);
+        console.log(`    Views: ${day.openCount.toLocaleString()}`);
+        console.log(`    Add to Cart: ${day.cartCount.toLocaleString()}`);
+        console.log(`    Orders: ${day.orderCount.toLocaleString()}`);
+        console.log(`    Purchases: ${day.buyoutCount.toLocaleString()}`);
+        console.log(`    Revenue: ${day.buyoutSum.toLocaleString()} RUB`);
+        console.log(`    Buyout Rate: ${day.buyoutPercent.toFixed(2)}%`);
       });
       console.log('');
     });
   } catch (error) {
     console.error('Error analyzing product history:', error);
+  }
+}
+
+/**
+ * Example 5b: Grouped History Analysis (v3)
+ *
+ * Analyze aggregated performance trends by brand/category/tag using v3 Sales Funnel
+ */
+async function analyzeGroupedHistory() {
+  console.log('\n=== Grouped History Analysis (v3) ===\n');
+
+  try {
+    const grouped = await sdk.analytics.getSalesFunnelGroupedHistory({
+      selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+      brandNames: ['BrandA', 'BrandB'],
+      subjectIds: [100, 200],
+      tagIds: [],
+      aggregationLevel: 'day',
+      skipDeletedNm: true,
+    });
+
+    grouped.forEach((entry) => {
+      console.log(`Group: ${entry.product.brandName} — ${entry.product.subjectName}`);
+      console.log(`  Product ID: ${entry.product.nmId}\n`);
+
+      console.log('  Daily Grouped Performance:');
+      entry.history.forEach((day) => {
+        console.log(`    ${day.date}:`);
+        console.log(`      Views: ${day.openCount.toLocaleString()}`);
+        console.log(`      Cart: ${day.cartCount.toLocaleString()}`);
+        console.log(`      Orders: ${day.orderCount.toLocaleString()}`);
+        console.log(`      Revenue: ${day.buyoutSum.toLocaleString()} RUB`);
+        console.log(`      Avg Price: ${day.avgPrice.toLocaleString()} RUB`);
+      });
+      console.log('');
+    });
+  } catch (error) {
+    console.error('Error analyzing grouped history:', error);
   }
 }
 
@@ -349,7 +410,9 @@ async function generateAnalyticsReport() {
     if (report.status === 'completed' && report.downloadUrl) {
       console.log(`Download URL: ${report.downloadUrl}`);
       console.log(`Format: ${report.format}`);
-      console.log(`File Size: ${report.fileSize ? (report.fileSize / 1024).toFixed(2) + ' KB' : 'N/A'}`);
+      console.log(
+        `File Size: ${report.fileSize ? (report.fileSize / 1024).toFixed(2) + ' KB' : 'N/A'}`
+      );
       console.log(`Expires At: ${report.expiresAt}`);
 
       // Alternative: Use downloadReport helper
@@ -364,79 +427,80 @@ async function generateAnalyticsReport() {
 }
 
 /**
- * Example 7: Complete Dashboard Data Aggregation
+ * Example 7: Complete Dashboard Data Aggregation (v3)
  *
  * Combine multiple analytics endpoints to build a complete dashboard
  */
 async function buildCompleteDashboard() {
-  console.log('\n=== Building Complete Analytics Dashboard ===\n');
+  console.log('\n=== Building Complete Analytics Dashboard (v3) ===\n');
 
   try {
-    const dateRange = { from: '2024-01-01', to: '2024-01-31' };
+    const period = { start: '2026-01-01', end: '2026-01-31' };
 
     console.log('Fetching dashboard data...\n');
 
     // Fetch all data in parallel for performance
-    const [funnel, queries, topProducts] = await Promise.all([
-      sdk.analytics.getSalesFunnel({
-        period: {
-          begin: dateRange.from + ' 00:00:00',
-          end: dateRange.to + ' 23:59:59',
-        },
-        page: 1,
-        pageSize: 100,
+    const [funnel, queries] = await Promise.all([
+      sdk.analytics.getSalesFunnelProducts({
+        selectedPeriod: period,
+        orderBy: { field: 'buyoutSum', mode: 'desc' },
+        limit: 100,
+        offset: 0,
       }),
-      sdk.analytics.getSearchQueries(dateRange),
-      sdk.analytics.getProductPerformance(
-        [12345, 67890, 11111, 22222, 33333],
-        dateRange
-      ),
+      sdk.analytics.getSearchQueries({ from: period.start, to: period.end }),
     ]);
 
-    // Calculate KPIs
-    const totalViews = funnel.data.cards.reduce((sum, card) =>
-      sum + card.statistics.selectedPeriod.openCardCount, 0
+    // Calculate KPIs from v3 response
+    const totalViews = funnel.products.reduce((sum, e) => sum + e.statistic.selected.openCount, 0);
+    const totalPurchases = funnel.products.reduce(
+      (sum, e) => sum + e.statistic.selected.buyoutCount,
+      0
     );
-    const totalPurchases = funnel.data.cards.reduce((sum, card) =>
-      sum + card.statistics.selectedPeriod.buyoutsCount, 0
+    const totalRevenue = funnel.products.reduce(
+      (sum, e) => sum + e.statistic.selected.buyoutSum,
+      0
     );
-    const totalRevenue = topProducts.products.reduce((sum, p) => sum + p.revenue, 0);
-    const overallConversion = (totalPurchases / totalViews) * 100;
+    const overallConversion = totalViews > 0 ? (totalPurchases / totalViews) * 100 : 0;
 
     // Display Dashboard
     console.log('='.repeat(60));
     console.log('                   ANALYTICS DASHBOARD');
     console.log('='.repeat(60));
-    console.log(`Period: ${dateRange.from} to ${dateRange.to}`);
+    console.log(`Period: ${period.start} to ${period.end}`);
     console.log('='.repeat(60));
     console.log('');
 
-    console.log('📊 KEY PERFORMANCE INDICATORS');
+    console.log('KEY PERFORMANCE INDICATORS');
     console.log('-'.repeat(60));
     console.log(`Total Views:           ${totalViews.toLocaleString()}`);
     console.log(`Total Purchases:       ${totalPurchases.toLocaleString()}`);
     console.log(`Total Revenue:         ${totalRevenue.toLocaleString()} RUB`);
     console.log(`Conversion Rate:       ${overallConversion.toFixed(2)}%`);
-    console.log(`Avg Revenue per Sale:  ${(totalRevenue / totalPurchases).toLocaleString()} RUB`);
+    console.log(
+      `Avg Revenue per Sale:  ${totalPurchases > 0 ? (totalRevenue / totalPurchases).toLocaleString() : 0} RUB`
+    );
     console.log('');
 
-    console.log('🏆 TOP 3 PRODUCTS BY REVENUE');
+    console.log('TOP 3 PRODUCTS BY REVENUE');
     console.log('-'.repeat(60));
-    topProducts.products
-      .sort((a, b) => b.revenue - a.revenue)
-      .slice(0, 3)
-      .forEach((p, i) => {
-        console.log(`${i + 1}. ${p.productName || `Product ${p.nmID}`}: ${p.revenue.toLocaleString()} RUB`);
+    funnel.products
+      .slice(0, 3) // already sorted by buyoutSum desc
+      .forEach((e, i) => {
+        console.log(
+          `${i + 1}. ${e.product.title || `Product ${e.product.nmId}`}: ${e.statistic.selected.buyoutSum.toLocaleString()} RUB`
+        );
       });
     console.log('');
 
-    console.log('🔍 TOP 3 SEARCH QUERIES');
+    console.log('TOP 3 SEARCH QUERIES');
     console.log('-'.repeat(60));
     queries.data
       .sort((a, b) => b.searchCount - a.searchCount)
       .slice(0, 3)
       .forEach((q, i) => {
-        console.log(`${i + 1}. "${q.query}": ${q.searchCount.toLocaleString()} searches (${q.conversionRate.toFixed(2)}% conversion)`);
+        console.log(
+          `${i + 1}. "${q.query}": ${q.searchCount.toLocaleString()} searches (${q.conversionRate.toFixed(2)}% conversion)`
+        );
       });
     console.log('');
 
@@ -459,6 +523,7 @@ async function main() {
   await optimizeSearchQueries();
   await analyzeCategoryPerformance();
   await analyzeProductHistory();
+  await analyzeGroupedHistory();
   await generateAnalyticsReport();
   await buildCompleteDashboard();
 
@@ -494,7 +559,9 @@ async function analyzeStockHistory(sdk: WildberriesSDK): Promise<void> {
     console.log(`  Total Sales: ${stockHistory.summary.totalSales} units`);
     console.log(`  Total Returns: ${stockHistory.summary.totalReturns} units`);
     console.log(`  Total Adjustments: ${stockHistory.summary.totalAdjustments} units`);
-    console.log(`  Avg Daily Velocity: ${stockHistory.summary.avgDailyVelocity.toFixed(2)} units/day`);
+    console.log(
+      `  Avg Daily Velocity: ${stockHistory.summary.avgDailyVelocity.toFixed(2)} units/day`
+    );
 
     // Analyze recent stock changes
     console.log(`\n📋 Recent Stock Changes (last 10):`);
@@ -724,6 +791,7 @@ export {
   optimizeSearchQueries,
   analyzeCategoryPerformance,
   analyzeProductHistory,
+  analyzeGroupedHistory,
   generateAnalyticsReport,
   buildCompleteDashboard,
   analyzeStockHistory,

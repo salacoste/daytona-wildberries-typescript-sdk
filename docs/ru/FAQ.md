@@ -245,15 +245,22 @@ console.log(`Текущий баланс: ${balance.amount} RUB`);
 ### 16. Как получить аналитику продаж?
 
 ```typescript
-const analytics = await sdk.analytics.getSalesFunnel({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31'
+// v3 Sales Funnel API (SDK v2.7.0+)
+const result = await sdk.analytics.getSalesFunnelProducts({
+  selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+  orderBy: { field: 'orderCount', mode: 'desc' },
+  limit: 10,
+  offset: 0,
 });
 
-console.log(`Коэффициент конверсии: ${analytics.conversionRate}%`);
+result.products?.forEach(p => {
+  console.log(`Товар ${p.product.nmId}: ${p.statistic.selected.orderCount} заказов`);
+});
 ```
 
-**Смотрите также:** [Пример панели аналитики](../examples/README.md#analytics-dashboard)
+> **Примечание:** До версии v2.7.0 SDK использовал `createNmReportDetail()`, который вызывал v2 endpoint. Этот endpoint теперь возвращает 404. См. [Руководство по миграции Analytics v3](/guides/migration-v2.7-analytics-v3).
+
+**Смотрите также:** [Руководство по панели аналитики](/getting-started/tutorials/analytics-dashboard)
 
 ---
 

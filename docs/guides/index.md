@@ -17,6 +17,13 @@ In-depth guides for production deployment and advanced SDK usage.
 - **[Troubleshooting](/guides/troubleshooting)** - Common issues and solutions
 - **[Configuration](/guides/configuration)** - SDK configuration options
 
+## Migration Guides
+
+- **[Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3)** - Breaking changes in Promotion module method signatures
+- **[Migration v2.4 - Promotion API Deprecation](/guides/migration-v2.4-promotion-deprecation)** - Type 8 campaign method deprecation
+- **[Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3)** - Migrate from deprecated v2 Sales Funnel methods to new v3 endpoints
+- **[Migration DBS Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk)** - Migrate from deprecated single-order DBS methods to bulk APIs
+
 ## Module Guides
 
 ### Product Management

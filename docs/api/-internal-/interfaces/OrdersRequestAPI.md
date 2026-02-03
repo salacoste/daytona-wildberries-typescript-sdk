@@ -2,7 +2,7 @@
 
 # Interface: OrdersRequestAPI
 
-Defined in: [types/orders-fbs.types.ts:329](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/orders-fbs.types.ts#L329)
+Defined in: [types/orders-fbs.types.ts:329](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/orders-fbs.types.ts#L329)
 
 ## Example
 
@@ -19,4 +19,4 @@ Defined in: [types/orders-fbs.types.ts:329](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | `number`[] | Список заказов | [types/orders-fbs.types.ts:331](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/orders-fbs.types.ts#L331) |
+| <a id="orders"></a> `orders?` | `number`[] | Список заказов | [types/orders-fbs.types.ts:331](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/orders-fbs.types.ts#L331) |

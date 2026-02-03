@@ -342,13 +342,15 @@ Wildberries отслеживает метрики производительно
 Отслеживание воронки конверсии для каждого варианта:
 
 ```typescript
-// Получить воронку продаж для конкретного варианта
-const funnel = await sdk.analytics.getSalesFunnel({
-  nmIDs: [12345678],
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  }
+// Получить воронку продаж для конкретного варианта (v3 API)
+const funnel = await sdk.analytics.getSalesFunnelProducts({
+  nmIds: [12345678],
+  selectedPeriod: {
+    start: '2026-01-01',
+    end: '2026-01-31'
+  },
+  limit: 10,
+  offset: 0
 });
 
 console.log('Производительность Варианта:');
@@ -372,13 +374,15 @@ const mergedCardVariants = await sdk.products.getCardsList({
 
 const nmIDs = mergedCardVariants.cards!.map(c => c.nmID!);
 
-// Получить аналитику для всех вариантов
-const allFunnels = await sdk.analytics.getSalesFunnel({
-  nmIDs: nmIDs,
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  }
+// Получить аналитику для всех вариантов (v3 API)
+const allFunnels = await sdk.analytics.getSalesFunnelProducts({
+  nmIds: nmIDs,
+  selectedPeriod: {
+    start: '2026-01-01',
+    end: '2026-01-31'
+  },
+  limit: 50,
+  offset: 0
 });
 
 // Агрегировать метрики
@@ -531,10 +535,12 @@ async function getComprehensiveAdAnalytics(
 
   const allNmIDs = mergedCard.cards!.map(c => c.nmID!);
 
-  // 3. Получить фактические продажи для каждого варианта
-  const salesData = await sdk.analytics.getSalesFunnel({
-    nmIDs: allNmIDs,
-    period: dateRange
+  // 3. Получить фактические продажи для каждого варианта (v3 API)
+  const salesData = await sdk.analytics.getSalesFunnelProducts({
+    nmIds: allNmIDs,
+    selectedPeriod: { start: dateRange.begin, end: dateRange.end },
+    limit: 50,
+    offset: 0,
   });
 
   const variantSales = (salesData.data || []).map(variant => ({
@@ -635,10 +641,12 @@ ID Кампании: 123456
 Определите вариант с лучшим коэффициентом конверсии и рекламируйте его:
 
 ```typescript
-// 1. Проанализировать коэффициенты конверсии для всех вариантов
-const variants = await sdk.analytics.getSalesFunnel({
-  nmIDs: [12345678, 23456789, 34567890, 45678901],
-  period: { begin: '2024-01-01', end: '2024-01-31' }
+// 1. Проанализировать коэффициенты конверсии для всех вариантов (v3 API)
+const variants = await sdk.analytics.getSalesFunnelProducts({
+  nmIds: [12345678, 23456789, 34567890, 45678901],
+  selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+  limit: 50,
+  offset: 0,
 });
 
 const bestVariant = (variants.data || [])
@@ -758,10 +766,12 @@ async function analyzeABTest() {
       spend: acc.spend + stat.sum
     }), { impressions: 0, clicks: 0, spend: 0 });
 
-    // Получить продажи склеенной карточки
-    const sales = await sdk.analytics.getSalesFunnel({
-      nmIDs: [12345678, 23456789, 34567890, 45678901],
-      period: { begin: '2024-01-01', end: '2024-01-07' }
+    // Получить продажи склеенной карточки (v3 API)
+    const sales = await sdk.analytics.getSalesFunnelProducts({
+      nmIds: [12345678, 23456789, 34567890, 45678901],
+      selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+      limit: 50,
+      offset: 0,
     });
 
     const totalOrders = sales.data?.reduce((sum, v) => sum + (v.ordersCount || 0), 0) || 0;
@@ -1274,10 +1284,12 @@ async function generateFinancialReport(
   });
   const nmIDs = mergedCard.cards!.map(c => c.nmID!);
 
-  // Получить данные о продажах
-  const salesData = await sdk.analytics.getSalesFunnel({
-    nmIDs,
-    period: dateRange
+  // Получить данные о продажах (v3 API)
+  const salesData = await sdk.analytics.getSalesFunnelProducts({
+    nmIds: nmIDs,
+    selectedPeriod: { start: dateRange.begin, end: dateRange.end },
+    limit: 50,
+    offset: 0,
   });
 
   const variantSales = (salesData.data || []).map(variant => ({
@@ -1586,10 +1598,12 @@ async function optimizeMergedCardAds(imtID: number, campaignId: number) {
 
   const nmIDs = mergedCard.cards!.map(c => c.nmID!);
 
-  // Получить производительность продаж
-  const sales = await sdk.analytics.getSalesFunnel({
-    nmIDs,
-    period: dateRange
+  // Получить производительность продаж (v3 API)
+  const sales = await sdk.analytics.getSalesFunnelProducts({
+    nmIds: nmIDs,
+    selectedPeriod: { start: dateRange.begin, end: dateRange.end },
+    limit: 50,
+    offset: 0,
   });
 
   // Получить производительность кампании

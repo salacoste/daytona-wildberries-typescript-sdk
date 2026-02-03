@@ -25,7 +25,9 @@
 
 ## Приоритет 1: КРИТИЧЕСКИЕ ПРОБЛЕМЫ
 
-### 🔴 Analytics API - Фейковые URL (НЕ РАБОТАЮТ)
+### 🔴 Analytics API - Фейковые URL (НЕ РАБОТАЮТ) -- RESOLVED in v2.7.0
+
+> **v2.7.0 Update (EPIC 13)**: This section is largely resolved by the Analytics v3 migration. Fake URLs were removed and replaced with real v3 endpoints (`/api/analytics/v3/sales-funnel/*`). The old v2 methods are deprecated wrappers. See `docs/guides/migration-v2.7-analytics-v3.md`.
 
 **Файлы:**
 - SDK: `src/modules/analytics/index.ts`
@@ -57,7 +59,9 @@
 
 ---
 
-### 🔴 Analytics API - 11 эндпоинтов не реализовано (31% покрытие)
+### 🔴 Analytics API - 11 эндпоинтов не реализовано (31% покрытие) -- PARTIALLY RESOLVED in v2.7.0
+
+> **v2.7.0 Update**: The v3 Sales Funnel endpoints (`getSalesFunnelProducts`, `getSalesFunnelProductsHistory`, `getSalesFunnelGroupedHistory`) are now implemented. Some v2 endpoints below may still be unimplemented for non-sales-funnel operations.
 
 **Не реализованные эндпоинты (ВЫСОКИЙ приоритет):**
 
@@ -352,10 +356,10 @@ node comparison_docs/test-12-reports-api.cjs
 ## Чеклист для разработчика
 
 ### Критические задачи (блокируют релиз):
-- [ ] Удалить/переписать `getStockHistory()` в analytics
-- [ ] Удалить/переписать `exportAnalyticsCSV()` в analytics
-- [ ] Удалить/переписать `getCSVReportStatus()` в analytics
-- [ ] Удалить/переписать `downloadCSVReport()` в analytics
+- [x] Удалить/переписать `getStockHistory()` в analytics -- Resolved in v2.7.0 (EPIC 13 Analytics v3 migration)
+- [x] Удалить/переписать `exportAnalyticsCSV()` в analytics -- Resolved in v2.7.0
+- [x] Удалить/переписать `getCSVReportStatus()` в analytics -- Resolved in v2.7.0
+- [x] Удалить/переписать `downloadCSVReport()` в analytics -- Resolved in v2.7.0
 
 ### Документация (требует переработки):
 - [ ] Переписать `02-products-api-comparison.md` в техническом формате

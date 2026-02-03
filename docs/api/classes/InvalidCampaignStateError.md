@@ -2,7 +2,7 @@
 
 # Class: InvalidCampaignStateError
 
-Defined in: [errors/promotion-errors.ts:360](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L360)
+Defined in: [errors/promotion-errors.ts:360](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L360)
 
 Error thrown when attempting invalid campaign state transitions.
 
@@ -53,7 +53,7 @@ new InvalidCampaignStateError(
    requestId?: string): InvalidCampaignStateError;
 ```
 
-Defined in: [errors/promotion-errors.ts:385](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L385)
+Defined in: [errors/promotion-errors.ts:385](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L385)
 
 Creates an InvalidCampaignStateError
 
@@ -79,12 +79,12 @@ Creates an InvalidCampaignStateError
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/base-error.ts#L35) |
-| <a id="currentstate"></a> `currentState` | `readonly` | `string` | Current campaign state | - | [errors/promotion-errors.ts:364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L364) |
-| <a id="attemptedaction"></a> `attemptedAction` | `readonly` | `string` | Action that was attempted | - | [errors/promotion-errors.ts:369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L369) |
-| <a id="validstates"></a> `validStates?` | `readonly` | `string`[] | List of valid states for the attempted action | - | [errors/promotion-errors.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L374) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L35) |
+| <a id="currentstate"></a> `currentState` | `readonly` | `string` | Current campaign state | - | [errors/promotion-errors.ts:364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L364) |
+| <a id="attemptedaction"></a> `attemptedAction` | `readonly` | `string` | Action that was attempted | - | [errors/promotion-errors.ts:369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L369) |
+| <a id="validstates"></a> `validStates?` | `readonly` | `string`[] | List of valid states for the attempted action | - | [errors/promotion-errors.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L374) |
 
 ## Methods
 
@@ -94,7 +94,7 @@ Creates an InvalidCampaignStateError
 getUserMessage(): string;
 ```
 
-Defined in: [errors/promotion-errors.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L404)
+Defined in: [errors/promotion-errors.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L404)
 
 Returns user-friendly error message with state transition guidance
 
@@ -125,7 +125,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/promotion-errors.ts:436](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L436)
+Defined in: [errors/promotion-errors.ts:436](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L436)
 
 Custom JSON serialization
 
@@ -146,14 +146,14 @@ Custom JSON serialization
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/promotion-errors.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L437) |
-| `message` | `string` | [errors/promotion-errors.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L438) |
-| `statusCode` | `number` | [errors/promotion-errors.ts:439](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L439) |
-| `currentState` | `string` | [errors/promotion-errors.ts:440](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L440) |
-| `attemptedAction` | `string` | [errors/promotion-errors.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L441) |
-| `validStates?` | `string`[] | [errors/promotion-errors.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L442) |
-| `response?` | `unknown` | [errors/promotion-errors.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L443) |
-| `requestId?` | `string` | [errors/promotion-errors.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/errors/promotion-errors.ts#L444) |
+| `name` | `string` | [errors/promotion-errors.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L437) |
+| `message` | `string` | [errors/promotion-errors.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L438) |
+| `statusCode` | `number` | [errors/promotion-errors.ts:439](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L439) |
+| `currentState` | `string` | [errors/promotion-errors.ts:440](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L440) |
+| `attemptedAction` | `string` | [errors/promotion-errors.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L441) |
+| `validStates?` | `string`[] | [errors/promotion-errors.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L442) |
+| `response?` | `unknown` | [errors/promotion-errors.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L443) |
+| `requestId?` | `string` | [errors/promotion-errors.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/promotion-errors.ts#L444) |
 
 #### Overrides
 

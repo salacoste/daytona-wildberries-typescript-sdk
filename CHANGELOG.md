@@ -5,6 +5,98 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-02-03
+
+### Breaking Changes — Analytics v3 Migration
+
+Wildberries migrated the Sales Funnel ("Воронка продаж") endpoints from v2 to v3. The old `/api/v2/nm-report/*` endpoints are dead (return 404).
+
+#### New Methods
+- `getSalesFunnelProducts()` — replaces `createNmReportDetail()`
+- `getSalesFunnelProductsHistory()` — replaces `createDetailHistory()`
+- `getSalesFunnelGroupedHistory()` — replaces `createGroupedHistory()`
+
+#### Endpoint Migration Map
+| Old (dead, 404) | New (active) |
+|---|---|
+| POST /api/v2/nm-report/detail | POST /api/analytics/v3/sales-funnel/products |
+| POST /api/v2/nm-report/detail/history | POST /api/analytics/v3/sales-funnel/products/history |
+| POST /api/v2/nm-report/grouped/history | POST /api/analytics/v3/sales-funnel/grouped/history |
+| POST /api/v2/nm-report/grouped | *(removed by WB, no replacement)* |
+
+#### Request Field Renames
+| v2 | v3 |
+|---|---|
+| `period: { begin, end }` | `selectedPeriod: { start, end }` |
+| `nmIDs` | `nmIds` |
+| `objectIDs` | `subjectIds` |
+| `tagIDs` | `tagIds` |
+| `page` | `limit` + `offset` |
+| `timezone` | *(removed)* |
+| *(new)* | `skipDeletedNm` |
+| *(new)* | `pastPeriod` |
+| `aggregationLevel` (string) | `aggregationLevel` (enum: `'day'` \| `'week'`) |
+
+#### OrderBy Field Renames
+| v2 | v3 |
+|---|---|
+| `openCard` | `openCard` *(unchanged)* |
+| `addToCart` | `addToCart` *(unchanged)* |
+| `orders` | `orderCount` |
+| `ordersSumRub` | `orderSum` |
+| `avgRubPrice` | `avgPrice` |
+| `buyoutCount` | `buyoutCount` *(unchanged)* |
+| `buyoutSumRub` | `buyoutSum` |
+| `cancelCount` | `cancelCount` *(unchanged)* |
+| `cancelSumRub` | `cancelSum` |
+| `stockMpQty` | `stockMpQty` *(unchanged)* |
+| `stockWbQty` | `stockWbQty` *(unchanged)* |
+| *(new)* | `shareOrderPercent` |
+| *(new)* | `addToWishlist` |
+| *(new)* | `timeToReady` |
+| *(new)* | `localizationPercent` |
+| *(new)* | `wbClub.orderCount`, `wbClub.orderSum`, `wbClub.buyoutSum`, `wbClub.cancelSum`, `wbClub.buyoutCount`, `wbClub.avgPrice`, `wbClub.buyoutPercent`, `wbClub.avgOrderCountPerDay`, `wbClub.cancelCount` |
+
+#### Response Field Renames
+| v2 | v3 |
+|---|---|
+| `openCardCount` | `openCount` |
+| `addToCartCount` | `cartCount` |
+| `ordersCount` | `orderCount` |
+| `ordersSumRub` | `orderSum` |
+| `buyoutsSumRub` | `buyoutSum` |
+| `cancelSumRub` | `cancelSum` |
+| `avgPriceRub` | `avgPrice` |
+| `dt` | `date` |
+| `openCardDynamics` | `openCountDynamic` |
+| `addToCartDynamics` | `cartCountDynamic` |
+
+#### New v3 Response Fields
+The following fields are new in v3 and have no v2 equivalent:
+- `shareOrderPercent` — order share percentage
+- `addToWishlist` — wishlist additions count
+- `timeToReady` — time to ready (`{ days, hours, mins }`)
+- `localizationPercent` — localization percentage
+- `wbClub` — WB Club metrics (9 sub-fields: `orderCount`, `orderSum`, `buyoutSum`, `cancelSum`, `buyoutCount`, `avgPrice`, `buyoutPercent`, `avgOrderCountPerDay`, `cancelCount`)
+- `productRating` — product rating score
+- `feedbackRating` — feedback rating score
+- `stocks.balanceSum` — total stock balance sum
+- `conversions` — conversion metrics (`cartToOrderPercent`, `buyoutPercent`)
+
+#### Deprecated Methods
+The old v2 methods are preserved as deprecated wrappers with parameter mapping:
+- `createNmReportDetail()` → use `getSalesFunnelProducts()`
+- `createDetailHistory()` → use `getSalesFunnelProductsHistory()`
+- `createGroupedHistory()` → use `getSalesFunnelGroupedHistory()`
+
+### Changed
+- Updated Swagger spec `11-analytics.yaml` to latest version with v3 Sales Funnel paths
+- Archived old spec as `11-analytics.v2-deprecated.yaml`
+
+See: https://dev.wildberries.ru/openapi/seller-analytics
+
+---
+
 ## [2.6.0] - 2026-02-02
 
 ### Added

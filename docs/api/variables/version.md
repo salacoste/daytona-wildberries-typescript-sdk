@@ -6,6 +6,6 @@
 const version: "0.1.0" = '0.1.0';
 ```
 
-Defined in: [index.ts:501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/index.ts#L501)
+Defined in: [index.ts:575](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/index.ts#L575)
 
 SDK version

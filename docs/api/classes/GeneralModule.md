@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:9](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L9)
+Defined in: [modules/general/index.ts:9](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/general/index.ts#L9)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:9](https://github.com/salacoste/daytona-wi
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L10)
+Defined in: [modules/general/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/general/index.ts#L10)
 
 #### Parameters
 
@@ -35,7 +35,7 @@ ping(): Promise<{
 }>;
 ```
 
-Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L24)
+Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/general/index.ts#L24)
 
 Проверка подключения
 
@@ -93,7 +93,7 @@ news(options?: {
 }>;
 ```
 
-Defined in: [modules/general/index.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L41)
+Defined in: [modules/general/index.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/general/index.ts#L41)
 
 Получение новостей портала продавцов
 
@@ -157,7 +157,7 @@ sellerInfo(): Promise<{
 }>;
 ```
 
-Defined in: [modules/general/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/modules/general/index.ts#L57)
+Defined in: [modules/general/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/general/index.ts#L57)
 
 Получение информации о продавце
 

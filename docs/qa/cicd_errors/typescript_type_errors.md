@@ -1,5 +1,7 @@
 # CI/CD TypeScript Type Errors - URGENT FIX REQUIRED
 
+> **v2.7.0 Note**: This document was written before the Analytics v3 migration (EPIC 13). The v2 endpoints (`/api/v2/nm-report/detail`), types (`NmReportDetailedByPeriodItem`), and mock data structures referenced below are now outdated. The SDK v2.7.0 uses v3 endpoints (`/api/analytics/v3/sales-funnel/products`) and new types (`SalesFunnelProductReq`, `SalesFunnelProductItem`). See `docs/guides/migration-v2.7-analytics-v3.md` for current analytics types.
+
 **Status**: ❌ **ALL CI/CD BUILDS FAILING**
 **File**: `tests/integration/cross-module-examples.integration.test.ts`
 **Impact**: Production deployment blocked

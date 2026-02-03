@@ -2,10 +2,10 @@
 
 # Interface: ApiOrdersMeta
 
-Defined in: [types/in-store-pickup.types.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/in-store-pickup.types.ts#L226)
+Defined in: [types/in-store-pickup.types.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/in-store-pickup.types.ts#L226)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="meta"></a> `meta?` | [`ApiBaseMeta`](ApiBaseMeta.md) | Метаданные сборочного задания | [types/in-store-pickup.types.ts:228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/in-store-pickup.types.ts#L228) |
+| <a id="meta"></a> `meta?` | [`ApiBaseMeta`](ApiBaseMeta.md) | Метаданные сборочного задания | [types/in-store-pickup.types.ts:228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/in-store-pickup.types.ts#L228) |

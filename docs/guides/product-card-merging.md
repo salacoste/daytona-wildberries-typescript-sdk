@@ -342,13 +342,15 @@ Wildberries tracks performance metrics at multiple levels:
 Track conversion funnel for each variant:
 
 ```typescript
-// Get sales funnel for specific variant
-const funnel = await sdk.analytics.getSalesFunnel({
-  nmIDs: [12345678],
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  }
+// Get sales funnel for specific variant (v3 API)
+const funnel = await sdk.analytics.getSalesFunnelProducts({
+  nmIds: [12345678],
+  selectedPeriod: {
+    start: '2026-01-01',
+    end: '2026-01-31'
+  },
+  limit: 10,
+  offset: 0
 });
 
 console.log('Variant Performance:');
@@ -372,13 +374,15 @@ const mergedCardVariants = await sdk.products.getCardsList({
 
 const nmIDs = mergedCardVariants.cards!.map(c => c.nmID!);
 
-// Get analytics for all variants
-const allFunnels = await sdk.analytics.getSalesFunnel({
-  nmIDs: nmIDs,
-  period: {
-    begin: '2024-01-01',
-    end: '2024-01-31'
-  }
+// Get analytics for all variants (v3 API)
+const allFunnels = await sdk.analytics.getSalesFunnelProducts({
+  nmIds: nmIDs,
+  selectedPeriod: {
+    start: '2026-01-01',
+    end: '2026-01-31'
+  },
+  limit: 50,
+  offset: 0
 });
 
 // Aggregate metrics
@@ -531,10 +535,12 @@ async function getComprehensiveAdAnalytics(
 
   const allNmIDs = mergedCard.cards!.map(c => c.nmID!);
 
-  // 3. Get actual sales for each variant
-  const salesData = await sdk.analytics.getSalesFunnel({
-    nmIDs: allNmIDs,
-    period: dateRange
+  // 3. Get actual sales for each variant (v3 API)
+  const salesData = await sdk.analytics.getSalesFunnelProducts({
+    nmIds: allNmIDs,
+    selectedPeriod: { start: dateRange.begin, end: dateRange.end },
+    limit: 50,
+    offset: 0,
   });
 
   const variantSales = (salesData.data || []).map(variant => ({
@@ -635,10 +641,12 @@ Totals:
 Identify the variant with the best conversion rate and advertise it:
 
 ```typescript
-// 1. Analyze conversion rates for all variants
-const variants = await sdk.analytics.getSalesFunnel({
-  nmIDs: [12345678, 23456789, 34567890, 45678901],
-  period: { begin: '2024-01-01', end: '2024-01-31' }
+// 1. Analyze conversion rates for all variants (v3 API)
+const variants = await sdk.analytics.getSalesFunnelProducts({
+  nmIds: [12345678, 23456789, 34567890, 45678901],
+  selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+  limit: 50,
+  offset: 0,
 });
 
 const bestVariant = (variants.data || [])
@@ -758,10 +766,12 @@ async function analyzeABTest() {
       spend: acc.spend + stat.sum
     }), { impressions: 0, clicks: 0, spend: 0 });
 
-    // Get merged card sales
-    const sales = await sdk.analytics.getSalesFunnel({
-      nmIDs: [12345678, 23456789, 34567890, 45678901],
-      period: { begin: '2024-01-01', end: '2024-01-07' }
+    // Get merged card sales (v3 API)
+    const sales = await sdk.analytics.getSalesFunnelProducts({
+      nmIds: [12345678, 23456789, 34567890, 45678901],
+      selectedPeriod: { start: '2026-01-01', end: '2026-01-07' },
+      limit: 50,
+      offset: 0,
     });
 
     const totalOrders = sales.data?.reduce((sum, v) => sum + (v.ordersCount || 0), 0) || 0;
@@ -1274,10 +1284,12 @@ async function generateFinancialReport(
   });
   const nmIDs = mergedCard.cards!.map(c => c.nmID!);
 
-  // Get sales data
-  const salesData = await sdk.analytics.getSalesFunnel({
-    nmIDs,
-    period: dateRange
+  // Get sales data (v3 API)
+  const salesData = await sdk.analytics.getSalesFunnelProducts({
+    nmIds: nmIDs,
+    selectedPeriod: { start: dateRange.begin, end: dateRange.end },
+    limit: 50,
+    offset: 0,
   });
 
   const variantSales = (salesData.data || []).map(variant => ({
@@ -1586,10 +1598,12 @@ async function optimizeMergedCardAds(imtID: number, campaignId: number) {
 
   const nmIDs = mergedCard.cards!.map(c => c.nmID!);
 
-  // Get sales performance
-  const sales = await sdk.analytics.getSalesFunnel({
-    nmIDs,
-    period: dateRange
+  // Get sales performance (v3 API)
+  const sales = await sdk.analytics.getSalesFunnelProducts({
+    nmIds: nmIDs,
+    selectedPeriod: { start: dateRange.begin, end: dateRange.end },
+    limit: 50,
+    offset: 0,
   });
 
   // Get campaign performance

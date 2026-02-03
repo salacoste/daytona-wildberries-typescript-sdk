@@ -382,14 +382,17 @@ const dates = [
 ];
 
 for (const period of dates) {
-  const data = await sdk.analytics.getSalesFunnel({
-    period: {
+  // v3 method (recommended, added in v2.7.0):
+  const data = await sdk.analytics.getSalesFunnelProducts({
+    selectedPeriod: {
       begin: `${period.begin} 00:00:00`,
       end: `${period.end} 23:59:59`
     }
   });
   // Process data
 }
+// Note: The old sdk.analytics.getSalesFunnel() is deprecated as of v2.7.0.
+// See docs/guides/migration-v2.7-analytics-v3.md for migration details.
 ```
 
 ### TypeScript errors about missing types

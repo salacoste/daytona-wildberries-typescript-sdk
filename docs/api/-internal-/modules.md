@@ -41,12 +41,12 @@
 | [Period](interfaces/Period.md) | Текущий период |
 | [PastPeriod](interfaces/PastPeriod.md) | Прошлый период для сравнения. Количество дней — меньше или равно `currentPeriod` |
 | [CommonResponseProperties](interfaces/CommonResponseProperties.md) | Результат запроса |
-| [NmReportDetailRequest](interfaces/NmReportDetailRequest.md) | - |
-| [NmReportDetailHistoryRequest](interfaces/NmReportDetailHistoryRequest.md) | - |
-| [NmReportGroupedHistoryRequest](interfaces/NmReportGroupedHistoryRequest.md) | - |
-| [NmReportDetailResponse](interfaces/NmReportDetailResponse.md) | - |
-| [NmReportDetailHistoryResponse](interfaces/NmReportDetailHistoryResponse.md) | - |
-| [NmReportGroupedHistoryResponse](interfaces/NmReportGroupedHistoryResponse.md) | - |
+| [~~NmReportDetailRequest~~](interfaces/NmReportDetailRequest.md) | - |
+| [~~NmReportDetailHistoryRequest~~](interfaces/NmReportDetailHistoryRequest.md) | - |
+| [~~NmReportGroupedHistoryRequest~~](interfaces/NmReportGroupedHistoryRequest.md) | - |
+| [~~NmReportDetailResponse~~](interfaces/NmReportDetailResponse.md) | - |
+| [~~NmReportDetailHistoryResponse~~](interfaces/NmReportDetailHistoryResponse.md) | - |
+| [~~NmReportGroupedHistoryResponse~~](interfaces/NmReportGroupedHistoryResponse.md) | - |
 | [SalesFunnelProductReq](interfaces/SalesFunnelProductReq.md) | - |
 | [SalesFunnelGroupReq](interfaces/SalesFunnelGroupReq.md) | - |
 | [SearchReportGroupReq](interfaces/SearchReportGroupReq.md) | - |
@@ -74,6 +74,23 @@
 | [TableShippingOfficeResponse](interfaces/TableShippingOfficeResponse.md) | - |
 | [TableShippingOfficeItem](interfaces/TableShippingOfficeItem.md) | Данные по региону отгрузки |
 | [TableShippingOfficeMetrics](interfaces/TableShippingOfficeMetrics.md) | Общие метрики по регионам/складам отгрузки |
+| [DatePeriod](interfaces/DatePeriod.md) | Период дат для v3 Sales Funnel запросов |
+| [SalesFunnelOrderBy](interfaces/SalesFunnelOrderBy.md) | Параметры сортировки для v3 Sales Funnel |
+| [SalesFunnelTag](interfaces/SalesFunnelTag.md) | Ярлык товара (v3) |
+| [SalesFunnelTimeToReady](interfaces/SalesFunnelTimeToReady.md) | Среднее время доставки |
+| [SalesFunnelConversions](interfaces/SalesFunnelConversions.md) | Конверсии |
+| [SalesFunnelWbClubMetrics](interfaces/SalesFunnelWbClubMetrics.md) | Статистика WB Клуба |
+| [SalesFunnelWbClubMetricsDynamic](interfaces/SalesFunnelWbClubMetricsDynamic.md) | Динамика статистики WB Клуба |
+| [SalesFunnelProductsRequest](interfaces/SalesFunnelProductsRequest.md) | Запрос списка товаров воронки продаж v3 (Swagger: ProductsRequest) |
+| [SalesFunnelProductsHistoryRequest](interfaces/SalesFunnelProductsHistoryRequest.md) | Запрос истории по товарам воронки продаж v3 (Swagger: ProductHistoryRequest) |
+| [SalesFunnelGroupedHistoryRequest](interfaces/SalesFunnelGroupedHistoryRequest.md) | Запрос сгруппированной истории воронки продаж v3 (Swagger: GroupedHistoryRequest) |
+| [SalesFunnelProduct](interfaces/SalesFunnelProduct.md) | Карточка товара v3 (Swagger: Product) |
+| [SalesFunnelHistoryProduct](interfaces/SalesFunnelHistoryProduct.md) | Облегчённая карточка товара для истории v3 (Swagger: HistoryProduct) |
+| [SalesFunnelStatistic](interfaces/SalesFunnelStatistic.md) | Статистика за период v3 (Swagger: Statistic) |
+| [SalesFunnelComparison](interfaces/SalesFunnelComparison.md) | Сравнение двух периодов v3 (Swagger: Comparison) |
+| [SalesFunnelStatistics](interfaces/SalesFunnelStatistics.md) | Статистика по периодам v3 (Swagger: Statistics) |
+| [SalesFunnelHistory](interfaces/SalesFunnelHistory.md) | Запись истории v3 (Swagger: History) — использует `date` вместо `dt` |
+| [SalesFunnelProductsResponse](interfaces/SalesFunnelProductsResponse.md) | Ответ списка товаров воронки продаж v3 (Swagger: ProductsResponse) |
 | [ResponseTemplate](interfaces/ResponseTemplate.md) | Успешно |
 | [PostTemplate](interfaces/PostTemplate.md) | - |
 | [PatchDelResp](interfaces/PatchDelResp.md) | - |
@@ -111,6 +128,25 @@
 | [ApiSGTINsRequest](interfaces/ApiSGTINsRequest.md) | - |
 | [ApiUINRequest](interfaces/ApiUINRequest.md) | - |
 | [ApiBaseMeta](interfaces/ApiBaseMeta.md) | - |
+| [DBSAddress](interfaces/DBSAddress.md) | Address information for DBS delivery Contains full address and GPS coordinates for delivery routing |
+| [DBSOrderNew](interfaces/DBSOrderNew.md) | New DBS order (assembly task) awaiting processing Contains delivery window, customer address, and required metadata |
+| [DBSOrder](interfaces/DBSOrder.md) | Completed DBS order information Returned by getOrders for completed/cancelled orders |
+| [DBSClientInfo](interfaces/DBSClientInfo.md) | Customer contact information for DBS orders Returned by getClientInfo |
+| [DBSOrderStatusBulk](interfaces/DBSOrderStatusBulk.md) | Order status from bulk status info endpoint |
+| [StatusSetResponse](interfaces/StatusSetResponse.md) | Response item for bulk status change operations |
+| [OrderCodeRequest](interfaces/OrderCodeRequest.md) | Request item for receive/reject operations requiring confirmation code |
+| [B2BInfoResult](interfaces/B2BInfoResult.md) | B2B buyer information result |
+| [DBSOrderMeta](interfaces/DBSOrderMeta.md) | Order metadata structure |
+| [GetNewOrdersResponse](interfaces/GetNewOrdersResponse.md) | Response from getNewOrders |
+| [GetOrdersParams](interfaces/GetOrdersParams.md) | Parameters for getOrders |
+| [GetOrdersResponse](interfaces/GetOrdersResponse.md) | Response from getOrders |
+| [GetClientInfoResponse](interfaces/GetClientInfoResponse.md) | Response from getClientInfo |
+| [GetStatusInfoResponse](interfaces/GetStatusInfoResponse.md) | Response from bulk status info endpoint |
+| [BulkStatusChangeResponse](interfaces/BulkStatusChangeResponse.md) | Response from bulk status change operations |
+| [GetB2BInfoResponse](interfaces/GetB2BInfoResponse.md) | Response from B2B info endpoint |
+| [GetOrderMetaResponse](interfaces/GetOrderMetaResponse.md) | Response from getOrderMeta |
+| [~~DBSOrderStatusLegacy~~](interfaces/DBSOrderStatusLegacy.md) | - |
+| [~~GetStatusResponseLegacy~~](interfaces/GetStatusResponseLegacy.md) | - |
 | [PassOffice](interfaces/PassOffice.md) | Данные о складе, для которого требуется пропуск |
 | [Order](interfaces/Order.md) | - |
 | [Supply](interfaces/Supply.md) | - |
@@ -220,8 +256,13 @@
 | [OrderByMode](type-aliases/OrderByMode.md) | Порядок сортировки: - asc — по возрастанию - desc — по убыванию |
 | [TableGroups](type-aliases/TableGroups.md) | Множество данных по группам |
 | [TableProductRequest](type-aliases/TableProductRequest.md) | Параметры запроса об остатках по товарам |
+| [AggregationLevel](type-aliases/AggregationLevel.md) | Тип агрегации: по дням или по неделям |
+| [SalesFunnelProductsHistoryResponse](type-aliases/SalesFunnelProductsHistoryResponse.md) | Ответ истории по товарам воронки продаж v3 (Swagger: ProductHistoryResponse) |
+| [SalesFunnelGroupedHistoryResponse](type-aliases/SalesFunnelGroupedHistoryResponse.md) | Ответ сгруппированной истории воронки продаж v3 (Swagger: GroupedHistoryResponse) |
 | [ResponseFeedback](type-aliases/ResponseFeedback.md) | Массив отзывов |
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
+| [DBSSupplierStatus](type-aliases/DBSSupplierStatus.md) | DBS supplier status Triggered by seller actions |
+| [DBSMetadataKey](type-aliases/DBSMetadataKey.md) | Metadata key types |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
 | [PlacementType](type-aliases/PlacementType.md) | Места размещения: - `search` — поиск - `recommendation` — рекомендации - `combined` — поиск и рекомендации |
 | [DailyStats1](type-aliases/DailyStats1.md) | - |

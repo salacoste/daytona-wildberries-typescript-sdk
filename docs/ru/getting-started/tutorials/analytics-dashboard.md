@@ -107,40 +107,49 @@ async function getSalesData() {
 
     console.log(`Получение данных о продажах с ${dateFrom.toISOString().split('T')[0]} по ${dateTo.toISOString().split('T')[0]}\n`);
 
-    // Получение данных воронки продаж
-    const salesFunnel = await sdk.analytics.getSalesFunnel({
-      dateFrom: dateFrom.toISOString(),
-      dateTo: dateTo.toISOString()
+    // Получение данных воронки продаж (v3 API, SDK v2.7.0+)
+    const salesFunnel = await sdk.analytics.getSalesFunnelProducts({
+      selectedPeriod: {
+        start: dateFrom.toISOString().split('T')[0],
+        end: dateTo.toISOString().split('T')[0]
+      },
+      orderBy: { field: 'orderCount', mode: 'desc' },
+      limit: 50,
+      offset: 0,
     });
 
     console.log('=== Воронка продаж (последние 30 дней) ===\n');
 
-    salesFunnel.data.forEach(product => {
-      console.log(`Товар: ${product.productName}`);
-      console.log(`  SKU: ${product.sku}`);
-      console.log(`  Просмотры: ${product.views.toLocaleString()}`);
-      console.log(`  Добавлено в корзину: ${product.addToCarts.toLocaleString()}`);
-      console.log(`  Покупки: ${product.purchases.toLocaleString()}`);
-      console.log(`  Коэффициент конверсии: ${product.conversionRate.toFixed(2)}%`);
-      console.log(`  Выручка: ${product.revenue.toLocaleString()} RUB`);
-      console.log(`  Средняя стоимость заказа: ${product.averageOrderValue.toFixed(2)} RUB`);
+    salesFunnel.products?.forEach(item => {
+      const product = item.product;
+      const stats = item.statistic?.selected;
+      console.log(`Товар: ${product.name}`);
+      console.log(`  nmId: ${product.nmId}`);
+      console.log(`  Просмотры: ${(stats?.openCount ?? 0).toLocaleString()}`);
+      console.log(`  Добавлено в корзину: ${(stats?.cartCount ?? 0).toLocaleString()}`);
+      console.log(`  Заказы: ${(stats?.orderCount ?? 0).toLocaleString()}`);
+      console.log(`  Сумма заказов: ${(stats?.orderSum ?? 0).toLocaleString()} RUB`);
+      console.log(`  Средняя цена: ${(stats?.avgPrice ?? 0).toFixed(2)} RUB`);
       console.log('');
     });
 
     // Расчет итогов
-    const totals = salesFunnel.data.reduce((acc, p) => ({
-      views: acc.views + p.views,
-      purchases: acc.purchases + p.purchases,
-      revenue: acc.revenue + p.revenue
-    }), { views: 0, purchases: 0, revenue: 0 });
+    const totals = (salesFunnel.products ?? []).reduce((acc, item) => {
+      const stats = item.statistic?.selected;
+      return {
+        views: acc.views + (stats?.openCount ?? 0),
+        orders: acc.orders + (stats?.orderCount ?? 0),
+        revenue: acc.revenue + (stats?.orderSum ?? 0)
+      };
+    }, { views: 0, orders: 0, revenue: 0 });
 
     console.log('=== Итоги ===');
     console.log(`  Всего просмотров: ${totals.views.toLocaleString()}`);
-    console.log(`  Всего покупок: ${totals.purchases.toLocaleString()}`);
+    console.log(`  Всего заказов: ${totals.orders.toLocaleString()}`);
     console.log(`  Общая выручка: ${totals.revenue.toLocaleString()} RUB`);
-    console.log(`  Общая конверсия: ${((totals.purchases / totals.views) * 100).toFixed(2)}%`);
+    console.log(`  Общая конверсия: ${totals.views > 0 ? ((totals.orders / totals.views) * 100).toFixed(2) : '0.00'}%`);
 
-    return salesFunnel.data;
+    return salesFunnel.products;
 
   } catch (error) {
     console.error('Ошибка получения данных о продажах:', error.message);
@@ -190,33 +199,50 @@ async function getTopPerformers() {
   const dateFrom = new Date();
   dateFrom.setDate(dateFrom.getDate() - 30);
 
-  const salesFunnel = await sdk.analytics.getSalesFunnel({
-    dateFrom: dateFrom.toISOString(),
-    dateTo: new Date().toISOString()
+  const salesFunnel = await sdk.analytics.getSalesFunnelProducts({
+    selectedPeriod: {
+      start: dateFrom.toISOString().split('T')[0],
+      end: new Date().toISOString().split('T')[0]
+    },
+    orderBy: { field: 'orderSum', mode: 'desc' },
+    limit: 50,
+    offset: 0,
   });
 
-  // Сортировка по выручке
-  const topByRevenue = [...salesFunnel.data]
-    .sort((a, b) => b.revenue - a.revenue)
+  const products = salesFunnel.products ?? [];
+
+  // Сортировка по сумме заказов (выручке)
+  const topByRevenue = [...products]
+    .sort((a, b) => (b.statistic?.selected?.orderSum ?? 0) - (a.statistic?.selected?.orderSum ?? 0))
     .slice(0, 5);
 
   console.log('Топ-5 товаров по выручке:\n');
-  topByRevenue.forEach((p, i) => {
-    console.log(`${i + 1}. ${p.productName}`);
-    console.log(`   Выручка: ${p.revenue.toLocaleString()} RUB`);
-    console.log(`   Покупки: ${p.purchases}`);
+  topByRevenue.forEach((item, i) => {
+    const stats = item.statistic?.selected;
+    console.log(`${i + 1}. ${item.product.name}`);
+    console.log(`   Выручка: ${(stats?.orderSum ?? 0).toLocaleString()} RUB`);
+    console.log(`   Заказы: ${stats?.orderCount ?? 0}`);
   });
 
   // Сортировка по коэффициенту конверсии
-  const topByConversion = [...salesFunnel.data]
-    .sort((a, b) => b.conversionRate - a.conversionRate)
+  const topByConversion = [...products]
+    .filter(item => (item.statistic?.selected?.openCount ?? 0) > 0)
+    .sort((a, b) => {
+      const convA = (a.statistic?.selected?.orderCount ?? 0) / (a.statistic?.selected?.openCount ?? 1);
+      const convB = (b.statistic?.selected?.orderCount ?? 0) / (b.statistic?.selected?.openCount ?? 1);
+      return convB - convA;
+    })
     .slice(0, 5);
 
   console.log('\nТоп-5 товаров по коэффициенту конверсии:\n');
-  topByConversion.forEach((p, i) => {
-    console.log(`${i + 1}. ${p.productName}`);
-    console.log(`   Конверсия: ${p.conversionRate.toFixed(2)}%`);
-    console.log(`   Просмотры: ${p.views.toLocaleString()}`);
+  topByConversion.forEach((item, i) => {
+    const stats = item.statistic?.selected;
+    const conversion = (stats?.openCount ?? 0) > 0
+      ? ((stats?.orderCount ?? 0) / (stats?.openCount ?? 1)) * 100
+      : 0;
+    console.log(`${i + 1}. ${item.product.name}`);
+    console.log(`   Конверсия: ${conversion.toFixed(2)}%`);
+    console.log(`   Просмотры: ${(stats?.openCount ?? 0).toLocaleString()}`);
   });
 }
 ```
@@ -560,33 +586,47 @@ async function runAnalyticsDashboard() {
     // 1. Обзор продаж
     console.log('📊 Обзор продаж (последние 30 дней)\n');
 
-    const salesFunnel = await sdk.analytics.getSalesFunnel({
-      dateFrom: dateFrom.toISOString(),
-      dateTo: dateTo.toISOString()
+    // v3 Sales Funnel API (SDK v2.7.0+)
+    const salesFunnel = await sdk.analytics.getSalesFunnelProducts({
+      selectedPeriod: {
+        start: dateFrom.toISOString().split('T')[0],
+        end: dateTo.toISOString().split('T')[0]
+      },
+      orderBy: { field: 'orderCount', mode: 'desc' },
+      limit: 50,
+      offset: 0,
     });
 
-    const totals = salesFunnel.data.reduce((acc, p) => ({
-      views: acc.views + p.views,
-      purchases: acc.purchases + p.purchases,
-      revenue: acc.revenue + p.revenue
-    }), { views: 0, purchases: 0, revenue: 0 });
+    const products = salesFunnel.products ?? [];
+    const totals = products.reduce((acc, item) => {
+      const stats = item.statistic?.selected;
+      return {
+        views: acc.views + (stats?.openCount ?? 0),
+        orders: acc.orders + (stats?.orderCount ?? 0),
+        revenue: acc.revenue + (stats?.orderSum ?? 0)
+      };
+    }, { views: 0, orders: 0, revenue: 0 });
 
     console.log(`Всего просмотров: ${totals.views.toLocaleString()}`);
-    console.log(`Всего покупок: ${totals.purchases.toLocaleString()}`);
+    console.log(`Всего заказов: ${totals.orders.toLocaleString()}`);
     console.log(`Общая выручка: ${totals.revenue.toLocaleString()} RUB`);
-    console.log(`Коэффициент конверсии: ${((totals.purchases / totals.views) * 100).toFixed(2)}%`);
+    console.log(`Коэффициент конверсии: ${totals.views > 0 ? ((totals.orders / totals.views) * 100).toFixed(2) : '0.00'}%`);
 
     // 2. Топовые товары
     console.log('\n🏆 Топ-5 товаров по выручке\n');
 
-    const topProducts = [...salesFunnel.data]
-      .sort((a, b) => b.revenue - a.revenue)
+    const topProducts = [...products]
+      .sort((a, b) => (b.statistic?.selected?.orderSum ?? 0) - (a.statistic?.selected?.orderSum ?? 0))
       .slice(0, 5);
 
-    topProducts.forEach((p, i) => {
-      console.log(`${i + 1}. ${p.productName}`);
-      console.log(`   Выручка: ${p.revenue.toLocaleString()} RUB`);
-      console.log(`   Конверсия: ${p.conversionRate.toFixed(2)}%\n`);
+    topProducts.forEach((item, i) => {
+      const stats = item.statistic?.selected;
+      const conversion = (stats?.openCount ?? 0) > 0
+        ? ((stats?.orderCount ?? 0) / (stats?.openCount ?? 1)) * 100
+        : 0;
+      console.log(`${i + 1}. ${item.product.name}`);
+      console.log(`   Выручка: ${(stats?.orderSum ?? 0).toLocaleString()} RUB`);
+      console.log(`   Конверсия: ${conversion.toFixed(2)}%\n`);
     });
 
     // 3. Эффективность поиска

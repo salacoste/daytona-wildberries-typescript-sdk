@@ -212,9 +212,9 @@ const queue = new RateLimitQueue(1);
 
 // All requests will be automatically spaced
 const results = await Promise.all([
-  queue.add(() => sdk.analytics.getSalesFunnel({ period: { begin: '2024-01-01', end: '2024-01-31' } })),
-  queue.add(() => sdk.analytics.getSalesFunnel({ period: { begin: '2024-02-01', end: '2024-02-28' } })),
-  queue.add(() => sdk.analytics.getSalesFunnel({ period: { begin: '2024-03-01', end: '2024-03-31' } })),
+  queue.add(() => sdk.analytics.getSalesFunnelProducts({ selectedPeriod: { start: '2026-01-01', end: '2026-01-31' }, limit: 10, offset: 0 })),
+  queue.add(() => sdk.analytics.getSalesFunnelProducts({ selectedPeriod: { start: '2026-02-01', end: '2026-02-28' }, limit: 10, offset: 0 })),
+  queue.add(() => sdk.analytics.getSalesFunnelProducts({ selectedPeriod: { start: '2026-03-01', end: '2026-03-31' }, limit: 10, offset: 0 })),
 ]);
 ```
 

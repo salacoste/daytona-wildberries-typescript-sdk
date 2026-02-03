@@ -843,10 +843,13 @@ npx tsx examples/financial-reconciliation.ts
 
 **Purpose**: Build comprehensive analytics dashboard with key metrics
 
+> **Updated in v2.7.0**: Now uses the v3 Sales Funnel methods (`getSalesFunnelProducts`, `getSalesFunnelProductsHistory`, `getSalesFunnelGroupedHistory`) which replace the deprecated v2 `createNmReportDetail`/`createDetailHistory`/`createGroupedHistory` methods. See the [Analytics v3 Migration Guide](../docs/guides/migration-v2.7-analytics-v3.md) for details.
+
 **Demonstrates**:
-- Sales funnel analysis (impressions → clicks → orders)
-- Product performance metrics
-- Historical statistics over time periods
+- Sales funnel analysis using v3 API (impressions → clicks → orders)
+- Product performance metrics via `getSalesFunnelProducts()`
+- Historical statistics over time periods via `getSalesFunnelProductsHistory()`
+- Grouped analytics via `getSalesFunnelGroupedHistory()`
 - Search query analysis
 - Category performance tracking
 - Stock history monitoring

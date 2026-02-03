@@ -1,5 +1,7 @@
 # Quick Fix Guide - CI/CD TypeScript Errors
 
+> **v2.7.0 Note**: This guide was written before the Analytics v3 migration (EPIC 13). The v2 endpoints and types referenced below (`/api/v2/nm-report/detail`, `NmReportDetailedByPeriodItem`) have been replaced by v3 equivalents. See `docs/guides/migration-v2.7-analytics-v3.md` for current analytics types and endpoints.
+
 🔴 **CRITICAL**: All CI/CD builds failing. See [`typescript_type_errors.md`](./typescript_type_errors.md) for full details.
 
 ---

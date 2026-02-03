@@ -6,6 +6,6 @@
 type TableGroups = TableGroupItemSt[];
 ```
 
-Defined in: [types/analytics.types.ts:1210](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/types/analytics.types.ts#L1210)
+Defined in: [types/analytics.types.ts:1257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/analytics.types.ts#L1257)
 
 Множество данных по группам

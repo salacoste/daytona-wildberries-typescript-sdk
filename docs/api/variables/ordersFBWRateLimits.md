@@ -6,4 +6,4 @@
 const ordersFbwRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/orders-fbw-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/c8fc381eae7a16d563b3d9f7ec9624f796368e0c/src/config/orders-fbw-rate-limits.ts#L16)
+Defined in: [config/orders-fbw-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/config/orders-fbw-rate-limits.ts#L16)

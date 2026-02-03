@@ -697,19 +697,30 @@ async function runCompleteIntegration() {
     // === PHASE 4: ANALYTICS ===
     console.log('📊 PHASE 4: Analytics Summary\n');
 
-    const salesFunnel = await sdk.analytics.getSalesFunnel({
-      dateFrom: dateFrom.toISOString(),
-      dateTo: new Date().toISOString()
+    // v3 Sales Funnel API (SDK v2.7.0+)
+    const salesFunnel = await sdk.analytics.getSalesFunnelProducts({
+      selectedPeriod: {
+        start: dateFrom.toISOString().split('T')[0],
+        end: new Date().toISOString().split('T')[0]
+      },
+      limit: 50,
+      offset: 0,
     });
 
-    const productMetrics = salesFunnel.data.find(p => p.productId === product.data.id);
+    const productMetrics = salesFunnel.products?.find(
+      item => item.product.nmId === product.data.id
+    );
 
     if (productMetrics) {
+      const stats = productMetrics.statistic?.selected;
+      const conversion = (stats?.openCount ?? 0) > 0
+        ? ((stats?.orderCount ?? 0) / (stats?.openCount ?? 1)) * 100
+        : 0;
       console.log('✓ Product performance metrics:');
-      console.log(`  Views: ${productMetrics.views.toLocaleString()}`);
-      console.log(`  Purchases: ${productMetrics.purchases}`);
-      console.log(`  Conversion: ${productMetrics.conversionRate.toFixed(2)}%`);
-      console.log(`  Revenue: ${productMetrics.revenue.toLocaleString()} RUB`);
+      console.log(`  Views: ${(stats?.openCount ?? 0).toLocaleString()}`);
+      console.log(`  Orders: ${stats?.orderCount ?? 0}`);
+      console.log(`  Conversion: ${conversion.toFixed(2)}%`);
+      console.log(`  Revenue: ${(stats?.orderSum ?? 0).toLocaleString()} RUB`);
     } else {
       console.log('ℹ️  Analytics not yet available (requires 24-48h)');
     }
