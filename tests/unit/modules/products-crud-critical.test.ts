@@ -105,7 +105,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/upload',
-        productData
+        productData,
+        { rateLimitKey: 'products.postContentCardsUpload' }
       );
       expect(result).toEqual(mockCreateResponse);
       expect(result.error).toBe(false);
@@ -149,7 +150,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/upload',
-        batchData
+        batchData,
+        { rateLimitKey: 'products.postContentCardsUpload' }
       );
     });
 
@@ -295,7 +297,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/update',
-        updateData
+        updateData,
+        { rateLimitKey: 'products.postContentCardsUpdate' }
       );
       expect(result).toEqual(mockUpdateResponse);
       expect(result.error).toBe(false);

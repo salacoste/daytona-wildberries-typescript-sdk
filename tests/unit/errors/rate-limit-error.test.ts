@@ -160,6 +160,41 @@ describe('RateLimitError', () => {
     });
   });
 
+  describe('RFC 7807 fields (origin and timestamp)', () => {
+    it('should accept and store origin and timestamp', () => {
+      const error = new RateLimitError(
+        'rate limit exceeded',
+        5000,
+        { title: 'too many requests' },
+        'req-xyz',
+        's2s-api-rate-limiter',
+        '2024-09-30T06:52:38Z'
+      );
+
+      expect(error.origin).toBe('s2s-api-rate-limiter');
+      expect(error.timestamp).toBe('2024-09-30T06:52:38Z');
+      expect(error.requestId).toBe('req-xyz');
+    });
+
+    it('should default origin and timestamp to undefined', () => {
+      const error = new RateLimitError('Rate limited', 5000);
+
+      expect(error.origin).toBeUndefined();
+      expect(error.timestamp).toBeUndefined();
+    });
+
+    it('should preserve backward compatibility with 4-arg constructor', () => {
+      const error = new RateLimitError('Rate limited', 5000, { limit: 60 }, 'req-abc');
+
+      expect(error.message).toBe('Rate limited');
+      expect(error.retryAfter).toBe(5000);
+      expect(error.response).toEqual({ limit: 60 });
+      expect(error.requestId).toBe('req-abc');
+      expect(error.origin).toBeUndefined();
+      expect(error.timestamp).toBeUndefined();
+    });
+  });
+
   describe('error scenarios', () => {
     it('should represent short-term rate limit', () => {
       const error = new RateLimitError('Too many requests', 1000);

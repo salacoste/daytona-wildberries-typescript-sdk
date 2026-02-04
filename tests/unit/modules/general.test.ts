@@ -58,7 +58,9 @@ describe('GeneralModule', () => {
       await generalModule.ping();
 
       // Assert
-      expect(mockClient.get).toHaveBeenCalledWith('https://common-api.wildberries.ru/ping');
+      expect(mockClient.get).toHaveBeenCalledWith('https://common-api.wildberries.ru/ping', {
+        rateLimitKey: 'general.ping',
+      });
       expect(mockClient.get).toHaveBeenCalledTimes(1);
     });
 
@@ -131,7 +133,7 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'general.communicationsNews' }
       );
       expect(result).toEqual(mockNewsResponse);
     });
@@ -147,7 +149,10 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: options }
+        expect.objectContaining({
+          params: expect.objectContaining({ from: '2024-01-01' }),
+          rateLimitKey: 'general.communicationsNews',
+        })
       );
     });
 
@@ -162,7 +167,10 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: options }
+        expect.objectContaining({
+          params: expect.objectContaining({ fromID: 123 }),
+          rateLimitKey: 'general.communicationsNews',
+        })
       );
     });
 
@@ -177,7 +185,10 @@ describe('GeneralModule', () => {
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://common-api.wildberries.ru/api/communications/v2/news',
-        { params: options }
+        expect.objectContaining({
+          params: expect.objectContaining({ from: '2024-01-01', fromID: 123 }),
+          rateLimitKey: 'general.communicationsNews',
+        })
       );
     });
 
@@ -193,9 +204,7 @@ describe('GeneralModule', () => {
       expect(result).toEqual(mockNewsResponse);
       expect(result.data).toBeDefined();
       expect(result.data).toHaveLength(1);
-      if (result.data && result.data.length > 0) {
-        expect(result.data[0].header).toBe('Test News Header');
-      }
+      expect(result.data[0].header).toBe('Test News Header');
     });
 
     it('should handle empty news array gracefully', async () => {
@@ -239,7 +248,8 @@ describe('GeneralModule', () => {
 
       // Assert
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://common-api.wildberries.ru/api/v1/seller-info'
+        'https://common-api.wildberries.ru/api/v1/seller-info',
+        { rateLimitKey: 'general.sellerInfo' }
       );
       expect(mockClient.get).toHaveBeenCalledTimes(1);
     });

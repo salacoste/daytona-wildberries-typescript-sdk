@@ -134,6 +134,72 @@ describe('AuthenticationError', () => {
     });
   });
 
+  describe('RFC 7807 fields (origin and timestamp)', () => {
+    it('should accept and store origin and timestamp', () => {
+      const error = new AuthenticationError(
+        'token problem; token is malformed',
+        401,
+        { title: 'unauthorized' },
+        'req-abc',
+        's2s-api-auth-catalog',
+        '2024-09-30T06:52:38Z'
+      );
+
+      expect(error.origin).toBe('s2s-api-auth-catalog');
+      expect(error.timestamp).toBe('2024-09-30T06:52:38Z');
+      expect(error.requestId).toBe('req-abc');
+    });
+
+    it('should default origin and timestamp to undefined', () => {
+      const error = new AuthenticationError('Auth failed', 401);
+
+      expect(error.origin).toBeUndefined();
+      expect(error.timestamp).toBeUndefined();
+    });
+
+    it('should include origin in getUserMessage()', () => {
+      const error = new AuthenticationError(
+        'Auth failed',
+        401,
+        undefined,
+        undefined,
+        's2s-api-auth-catalog'
+      );
+
+      expect(error.getUserMessage()).toContain('[Origin: s2s-api-auth-catalog]');
+    });
+
+    it('should include origin and timestamp in toJSON()', () => {
+      const error = new AuthenticationError(
+        'Auth failed',
+        401,
+        undefined,
+        'req-123',
+        's2s-api-auth-catalog',
+        '2024-09-30T06:52:38Z'
+      );
+      const json = JSON.stringify(error);
+      const parsed = JSON.parse(json) as {
+        origin: string;
+        timestamp: string;
+      };
+
+      expect(parsed.origin).toBe('s2s-api-auth-catalog');
+      expect(parsed.timestamp).toBe('2024-09-30T06:52:38Z');
+    });
+
+    it('should preserve backward compatibility with 4-arg constructor', () => {
+      const error = new AuthenticationError('Auth failed', 401, { data: true }, 'req-abc');
+
+      expect(error.message).toBe('Auth failed');
+      expect(error.statusCode).toBe(401);
+      expect(error.response).toEqual({ data: true });
+      expect(error.requestId).toBe('req-abc');
+      expect(error.origin).toBeUndefined();
+      expect(error.timestamp).toBeUndefined();
+    });
+  });
+
   describe('error scenarios', () => {
     it('should represent invalid API key scenario', () => {
       const error = new AuthenticationError('Invalid API key', 401);

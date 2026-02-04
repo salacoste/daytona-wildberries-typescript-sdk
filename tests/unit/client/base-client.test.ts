@@ -549,4 +549,273 @@ describe('BaseClient', () => {
       });
     });
   });
+
+  describe('RFC 7807 problem+json Support', () => {
+    const testUrl = 'https://api.example.com/test';
+
+    const problemJsonBody = {
+      title: 'unauthorized',
+      detail: 'token problem; token is malformed',
+      code: '07e4668e--a53a3d31f8b0',
+      requestId: '7b80742415072fe8b6b7f7761f1d1211',
+      origin: 's2s-api-auth-catalog',
+      status: 401,
+      statusText: 'Unauthorized',
+      timestamp: '2024-09-30T06:52:38Z',
+    };
+
+    describe('application/problem+json content-type detection', () => {
+      it('should detect application/problem+json and extract RFC 7807 fields for 401', async () => {
+        mockAxios
+          .onGet(testUrl)
+          .reply(401, problemJsonBody, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          expect(authError.message).toBe('token problem; token is malformed');
+          expect(authError.statusCode).toBe(401);
+          expect(authError.origin).toBe('s2s-api-auth-catalog');
+          expect(authError.timestamp).toBe('2024-09-30T06:52:38Z');
+          expect(authError.requestId).toBe('7b80742415072fe8b6b7f7761f1d1211');
+          expect(authError.response).toEqual(problemJsonBody);
+        }
+      });
+
+      it('should handle application/problem+json with charset suffix', async () => {
+        mockAxios.onGet(testUrl).reply(401, problemJsonBody, {
+          'content-type': 'application/problem+json; charset=utf-8',
+        });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          expect(authError.message).toBe('token problem; token is malformed');
+          expect(authError.origin).toBe('s2s-api-auth-catalog');
+          expect(authError.timestamp).toBe('2024-09-30T06:52:38Z');
+        }
+      });
+
+      it('should detect application/problem+json for 429 rate limit', async () => {
+        const rateLimitBody = {
+          title: 'too many requests',
+          detail: 'rate limit exceeded for this endpoint',
+          requestId: 'req-rate-limit-123',
+          origin: 's2s-api-rate-limiter',
+          status: 429,
+          timestamp: '2024-09-30T07:00:00Z',
+        };
+
+        mockAxios.onGet(testUrl).reply(429, rateLimitBody, {
+          'content-type': 'application/problem+json',
+          'retry-after': '10',
+        });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown RateLimitError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(RateLimitError);
+          const rateError = error as RateLimitError;
+          expect(rateError.message).toBe('rate limit exceeded for this endpoint');
+          expect(rateError.retryAfter).toBe(10000);
+          expect(rateError.origin).toBe('s2s-api-rate-limiter');
+          expect(rateError.timestamp).toBe('2024-09-30T07:00:00Z');
+          expect(rateError.requestId).toBe('req-rate-limit-123');
+        }
+      });
+
+      it('should detect application/problem+json for 403 forbidden', async () => {
+        const forbiddenBody = {
+          title: 'forbidden',
+          detail: 'insufficient permissions for this resource',
+          origin: 's2s-api-auth',
+          status: 403,
+          timestamp: '2024-09-30T08:00:00Z',
+        };
+
+        mockAxios
+          .onGet(testUrl)
+          .reply(403, forbiddenBody, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          expect(authError.message).toBe('insufficient permissions for this resource');
+          expect(authError.statusCode).toBe(403);
+          expect(authError.origin).toBe('s2s-api-auth');
+        }
+      });
+    });
+
+    describe('backward compatibility with application/json', () => {
+      it('should still handle 401 with application/json content-type', async () => {
+        mockAxios
+          .onGet(testUrl)
+          .reply(401, { error: 'Unauthorized' }, { 'content-type': 'application/json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          expect(authError.statusCode).toBe(401);
+          expect(authError.origin).toBeUndefined();
+          expect(authError.timestamp).toBeUndefined();
+        }
+      });
+
+      it('should still handle 429 with application/json content-type', async () => {
+        mockAxios
+          .onGet(testUrl)
+          .reply(429, { error: 'Too Many Requests' }, { 'content-type': 'application/json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown RateLimitError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(RateLimitError);
+          const rateError = error as RateLimitError;
+          expect(rateError.statusCode).toBe(429);
+          expect(rateError.origin).toBeUndefined();
+          expect(rateError.timestamp).toBeUndefined();
+        }
+      });
+
+      it('should still handle 401 without content-type header', async () => {
+        mockAxios.onGet(testUrl).reply(401, { error: 'Unauthorized' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          expect(authError.statusCode).toBe(401);
+          expect(authError.origin).toBeUndefined();
+          expect(authError.timestamp).toBeUndefined();
+        }
+      });
+
+      it('should still handle validation errors identically', async () => {
+        const fieldErrors = { email: 'Invalid format' };
+        mockAxios
+          .onPost(testUrl)
+          .reply(400, { errors: fieldErrors }, { 'content-type': 'application/json' });
+
+        try {
+          await client.post(testUrl, {});
+          expect.fail('Should have thrown ValidationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(ValidationError);
+          expect((error as ValidationError).fieldErrors).toEqual(fieldErrors);
+        }
+      });
+    });
+
+    describe('edge cases', () => {
+      it('should handle null response data with problem+json content-type', async () => {
+        mockAxios.onGet(testUrl).reply(401, null, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          expect(authError.origin).toBeUndefined();
+          expect(authError.timestamp).toBeUndefined();
+        }
+      });
+
+      it('should use detail over title when both present', async () => {
+        const body = {
+          title: 'unauthorized',
+          detail: 'token problem; token is malformed',
+          origin: 's2s-api-auth',
+          timestamp: '2024-09-30T06:52:38Z',
+        };
+
+        mockAxios.onGet(testUrl).reply(401, body, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          // detail takes precedence over title
+          expect((error as AuthenticationError).message).toBe('token problem; token is malformed');
+        }
+      });
+
+      it('should fall back to title when detail is absent', async () => {
+        const body = {
+          title: 'unauthorized',
+          origin: 's2s-api-auth',
+          timestamp: '2024-09-30T06:52:38Z',
+        };
+
+        mockAxios.onGet(testUrl).reply(401, body, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          expect((error as AuthenticationError).message).toBe('unauthorized');
+        }
+      });
+
+      it('should use default message when neither title nor detail present', async () => {
+        mockAxios
+          .onGet(testUrl)
+          .reply(401, { status: 401 }, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          expect((error as AuthenticationError).message).toBe(
+            'Authentication failed. Please verify your API key.'
+          );
+        }
+      });
+
+      it('should handle non-string fields gracefully', async () => {
+        const body = {
+          title: 123, // not a string
+          detail: true, // not a string
+          origin: null, // not a string
+          timestamp: { time: 'now' }, // not a string
+          requestId: 42, // not a string
+        };
+
+        mockAxios.onGet(testUrl).reply(401, body, { 'content-type': 'application/problem+json' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown AuthenticationError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(AuthenticationError);
+          const authError = error as AuthenticationError;
+          // Non-string fields should be ignored, falling back to default message
+          expect(authError.message).toBe('Authentication failed. Please verify your API key.');
+          expect(authError.origin).toBeUndefined();
+          expect(authError.timestamp).toBeUndefined();
+          expect(authError.requestId).toBeUndefined();
+        }
+      });
+    });
+  });
 });

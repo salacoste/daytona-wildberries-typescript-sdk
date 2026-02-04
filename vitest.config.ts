@@ -66,6 +66,7 @@ export default defineConfig({
       'tests/integration/promotion.integration.test.ts',
       'tests/integration/retry-handler.integration.test.ts',
       'tests/integration/sdk-initialization.test.ts',
+      'tests/integration/user-management.integration.test.ts',
     ],
 
     // Coverage configuration

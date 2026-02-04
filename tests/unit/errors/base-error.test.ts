@@ -191,6 +191,71 @@ describe('WBAPIError', () => {
     });
   });
 
+  describe('RFC 7807 fields (origin and timestamp)', () => {
+    it('should create error with origin and timestamp', () => {
+      const error = new WBAPIError(
+        'unauthorized',
+        401,
+        { title: 'unauthorized' },
+        'req-123',
+        's2s-api-auth-catalog',
+        '2024-09-30T06:52:38Z'
+      );
+
+      expect(error.origin).toBe('s2s-api-auth-catalog');
+      expect(error.timestamp).toBe('2024-09-30T06:52:38Z');
+    });
+
+    it('should default origin and timestamp to undefined', () => {
+      const error = new WBAPIError('Test error', 400, undefined, 'req-123');
+
+      expect(error.origin).toBeUndefined();
+      expect(error.timestamp).toBeUndefined();
+    });
+
+    it('should include origin in getUserMessage()', () => {
+      const error = new WBAPIError('Test error', 401, undefined, undefined, 's2s-api-auth-catalog');
+
+      expect(error.getUserMessage()).toContain('[Origin: s2s-api-auth-catalog]');
+    });
+
+    it('should not include origin bracket when origin is undefined', () => {
+      const error = new WBAPIError('Test error', 401);
+
+      expect(error.getUserMessage()).not.toContain('[Origin:');
+    });
+
+    it('should include origin and timestamp in toJSON()', () => {
+      const error = new WBAPIError(
+        'Test error',
+        401,
+        undefined,
+        'req-123',
+        's2s-api-auth-catalog',
+        '2024-09-30T06:52:38Z'
+      );
+      const json = JSON.stringify(error);
+      const parsed = JSON.parse(json) as {
+        origin: string;
+        timestamp: string;
+      };
+
+      expect(parsed.origin).toBe('s2s-api-auth-catalog');
+      expect(parsed.timestamp).toBe('2024-09-30T06:52:38Z');
+    });
+
+    it('should preserve backward compatibility with 4-arg constructor', () => {
+      const error = new WBAPIError('Test error', 400, { data: true }, 'req-abc');
+
+      expect(error.message).toBe('Test error');
+      expect(error.statusCode).toBe(400);
+      expect(error.response).toEqual({ data: true });
+      expect(error.requestId).toBe('req-abc');
+      expect(error.origin).toBeUndefined();
+      expect(error.timestamp).toBeUndefined();
+    });
+  });
+
   describe('error message handling', () => {
     it('should handle empty message', () => {
       const error = new WBAPIError('');
