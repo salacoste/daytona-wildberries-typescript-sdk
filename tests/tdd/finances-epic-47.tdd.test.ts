@@ -125,7 +125,7 @@ describe('EPIC 47: Finances Code Quality', () => {
       await module.createDownloadAll();
       expect(mockClient.post).toHaveBeenCalledWith(
         expect.any(String),
-        expect.anything(),
+        undefined,
         expect.objectContaining({ rateLimitKey: expect.any(String) })
       );
     });
@@ -198,7 +198,8 @@ describe('EPIC 47: Finances Code Quality', () => {
       await module.createDownloadAll();
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://documents-api.wildberries.ru/api/v1/documents/download/all',
-        expect.anything()
+        undefined,
+        expect.objectContaining({ rateLimitKey: expect.any(String) })
       );
     });
 
