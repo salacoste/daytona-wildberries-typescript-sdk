@@ -147,7 +147,10 @@ export default defineConfig({
                   { text: 'Orders DBS Guide', link: '/guides/orders-dbs-getting-started' },
                   { text: 'DBS Workflows', link: '/guides/orders-dbs-workflows' },
                   { text: 'DBS Migration Guide', link: '/guides/migration-dbs-legacy-to-bulk' },
-                  { text: '📊 Advertising Statistics Guide', link: '/guides/advertising-statistics-guide' }
+                  { text: '📊 Advertising Statistics Guide', link: '/guides/advertising-statistics-guide' },
+                  { text: '🎯 Advertising Campaign Best Practices', link: '/guides/best-practices-advertising' },
+                  { text: '📈 Sales Funnel Analytics Best Practices', link: '/guides/best-practices-sales-funnel' },
+                  { text: '📋 Promotion Module Guide', link: '/guides/promotion-advertising' }
                 ]
               }
             ]
@@ -312,7 +315,10 @@ export default defineConfig({
                   { text: 'Управление остатками', link: '/ru/guides/stock-management' },
                   { text: 'Возвраты и отмены', link: '/ru/guides/returns-handling' },
                   { text: 'Платное хранение', link: '/ru/guides/storage-fees-integration' },
-                  { text: '📊 Рекламная статистика', link: '/guides/advertising-statistics-guide' }
+                  { text: '📊 Рекламная статистика', link: '/guides/advertising-statistics-guide' },
+                  { text: '🎯 Лучшие практики рекламных кампаний', link: '/ru/guides/best-practices-advertising' },
+                  { text: '📈 Аналитика воронки продаж', link: '/ru/guides/best-practices-sales-funnel' },
+                  { text: '📋 Руководство по модулю Promotion', link: '/guides/promotion-advertising' }
                 ]
               }
             ]
