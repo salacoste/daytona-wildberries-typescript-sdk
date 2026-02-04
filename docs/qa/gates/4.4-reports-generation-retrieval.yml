@@ -222,3 +222,133 @@ history:
     gate: PASS
     reviewer: "Quinn (Test Architect)"
     note: "Initial QA review - production-ready with exceptional async workflows and comprehensive reporting"
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/12-reports.yaml"
+  endpoint_coverage: "23/26 implemented (3 new missing, 3 stale)"
+  schemas: 20
+  tags: 10
+  deprecated_endpoints: 1
+  base_urls:
+    - "https://seller-analytics-api.wildberries.ru"
+    - "https://statistics-api.wildberries.ru"
+
+  tag_evolution:
+    - tag: "Отчёты об удержаниях"
+      old_count: 3
+      new_count: 5
+      change: "Old combined endpoint split into 3 new separate endpoints + 2 existing"
+    - tag: "Основные отчёты"
+      old_count: 4
+      new_count: 4
+      change: "1 endpoint deprecated (supplier/incomes)"
+    - tag: "Отчёт об остатках на складах"
+      old_count: 3
+      new_count: 3
+      change: "No change"
+    - tag: "Платная приёмка"
+      old_count: 3
+      new_count: 3
+      change: "No change"
+    - tag: "Платное хранение"
+      old_count: 3
+      new_count: 3
+      change: "No change"
+    - tag: "Доля бренда в продажах"
+      old_count: 3
+      new_count: 3
+      change: "No change"
+    - tag: "Скрытые товары"
+      old_count: 2
+      new_count: 2
+      change: "No change"
+    - tag: "Отчёт о товарах c обязательной маркировкой"
+      old_count: 1
+      new_count: 1
+      change: "No change"
+    - tag: "Продажи по регионам"
+      old_count: 1
+      new_count: 1
+      change: "No change"
+    - tag: "Отчёт о возвратах и перемещении товаров"
+      old_count: 1
+      new_count: 1
+      change: "No change"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "critical"
+      title: "3 new endpoints not implemented"
+      description: "measurement-penalties, warehouse-measurements, deductions under /api/analytics/v1/ not in SDK"
+      files: ["src/modules/reports/index.ts"]
+      epic: "EPIC 44 (task-44)"
+
+    - id: "gap-2"
+      severity: "critical"
+      title: "3 SDK methods call removed endpoints"
+      description: "getAnalyticsWarehouseMeasurements, getAnalyticsIncorrectAttachments, getAnalyticsCharacteristicsChange"
+      files: ["src/modules/reports/index.ts"]
+      epic: "EPIC 44 (task-44)"
+
+    - id: "gap-3"
+      severity: "critical"
+      title: "Zero rateLimitKey wired"
+      description: "25 rate limit config entries defined but 0 methods pass rateLimitKey to BaseClient"
+      files: ["src/modules/reports/index.ts", "src/config/reports-rate-limits.ts"]
+      epic: "EPIC 45 (task-45)"
+
+    - id: "gap-4"
+      severity: "critical"
+      title: "Zero tests"
+      description: "No unit or integration tests exist for any of the 26 methods"
+      files: ["tests/unit/modules/reports.test.ts", "tests/integration/reports.integration.test.ts"]
+      epic: "EPIC 45 (task-45)"
+
+    - id: "gap-5"
+      severity: "high"
+      title: "ExciseReportRequest.countries type bug"
+      description: "Union/array precedence error identical to analytics AvailabilityFilters bug"
+      files: ["src/types/reports.types.ts"]
+      epic: "EPIC 43 (task-43)"
+
+    - id: "gap-6"
+      severity: "high"
+      title: "Schema drift and Promise<unknown>"
+      description: "Penalty/Measurement types diverged from swagger, 6 methods return untyped responses"
+      files: ["src/types/reports.types.ts", "src/modules/reports/index.ts"]
+      epic: "EPIC 43 (task-43)"
+
+    - id: "gap-7"
+      severity: "high"
+      title: "26 wrong @example blocks and missing @deprecated"
+      description: "All sdk.general.* references, getSupplierIncomes not marked deprecated"
+      files: ["src/modules/reports/index.ts"]
+      epic: "EPIC 44 (task-44), EPIC 45 (task-45)"
+
+    - id: "gap-8"
+      severity: "high"
+      title: "Poor method naming"
+      description: "getTasksStatu/2/3 and getTasksDownload/2/3 use numeric suffixes instead of descriptive names"
+      files: ["src/modules/reports/index.ts"]
+      epic: "EPIC 44 (task-44)"
+
+  follow_up_epics:
+    - epic: 43
+      task: "task-43"
+      title: "Reports Type & Schema Fixes"
+      doc: "docs/epics/EPIC_43_REPORTS_TYPE_SCHEMA_FIXES.md"
+
+    - epic: 44
+      task: "task-44"
+      title: "Reports New & Removed Endpoints"
+      doc: "docs/epics/EPIC_44_REPORTS_NEW_REMOVED_ENDPOINTS.md"
+      depends_on: "task-43"
+
+    - epic: 45
+      task: "task-45"
+      title: "Reports Code Quality"
+      doc: "docs/epics/EPIC_45_REPORTS_CODE_QUALITY.md"
+      depends_on: "task-43, task-44"

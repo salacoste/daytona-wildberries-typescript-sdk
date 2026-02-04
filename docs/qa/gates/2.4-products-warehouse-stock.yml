@@ -52,3 +52,39 @@ recommendations:
       refs: ["src/modules/products/index.ts"]
     - action: "Monitor production for 409 conflict patterns to optimize rate limiting strategy"
       refs: ["src/config/products-rate-limits.ts"]
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/02-products.yaml"
+  endpoint_coverage: "All warehouse/stock endpoints implemented"
+  schemas: "62+ (partial coverage)"
+  tags: "11"
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://content-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "high"
+      title: "Rate limit keys not wired for warehouse/stock endpoints"
+      description: "Rate limit config exists but warehouse/stock endpoints do not pass rateLimitKey"
+      files: ["src/modules/products/index.ts"]
+      epic: "EPIC 17 (task-17)"
+    - id: "gap-2"
+      severity: "medium"
+      title: "Test coverage below 80% for warehouse/stock methods"
+      description: "Warehouse and stock methods lack comprehensive unit test coverage"
+      files: ["tests/unit/modules/products-crud-critical.test.ts"]
+      epic: "EPIC 21 (task-21)"
+
+  follow_up_epics:
+    - epic: 17
+      task: "task-17"
+      title: "Products Rate Limits"
+      doc: "docs/epics/EPIC_17_PRODUCTS_RATE_LIMITS.md"
+    - epic: 21
+      task: "task-21"
+      title: "Products Test Coverage"
+      doc: "docs/epics/EPIC_21_PRODUCTS_TESTING.md"

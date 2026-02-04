@@ -220,6 +220,80 @@ notes: |
 
   Story marked as "TO DO" but implementation is complete and production-ready with all tests passing.
 
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/08-promotion.yaml"
+  endpoint_coverage: "42/50 implemented (9 new, 1 removed)"
+  schemas: 62
+  tags: 9
+  deprecated_endpoints: 16
+  base_urls:
+    - "https://advert-api.wildberries.ru"
+    - "https://advert-media-api.wildberries.ru"
+    - "https://dp-calendar-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "high"
+      title: "9 new endpoints not in SDK"
+      description: "6 normquery (search clusters) endpoints and 3 v2 replacement endpoints not implemented"
+      files: ["src/modules/promotion/index.ts"]
+      epic: "EPIC 34 (task-34)"
+
+    - id: "gap-2"
+      severity: "high"
+      title: "16 deprecated endpoints not marked"
+      description: "16 endpoints deprecated in swagger but SDK has no @deprecated tags or console.warn"
+      files: ["src/modules/promotion/index.ts"]
+      epic: "EPIC 35 (task-35)"
+
+    - id: "gap-3"
+      severity: "high"
+      title: "1 removed endpoint still in SDK"
+      description: "POST /adv/v1/save-ad removed from swagger but createAdvSaveAd() still exists"
+      files: ["src/modules/promotion/index.ts"]
+      epic: "EPIC 35 (task-35)"
+
+    - id: "gap-4"
+      severity: "medium"
+      title: "JSDoc @example blocks reference wrong module"
+      description: "All 42 @example blocks use sdk.general.* instead of sdk.promotion.*"
+      files: ["src/modules/promotion/index.ts"]
+      epic: "EPIC 35 (task-35)"
+
+    - id: "gap-5"
+      severity: "high"
+      title: "Rate limit keys not wired"
+      description: "promotion-rate-limits.ts defines 42 entries but module methods do not pass rateLimitKey to BaseClient"
+      files: ["src/modules/promotion/index.ts", "src/config/promotion-rate-limits.ts"]
+      epic: "EPIC 35 (task-35)"
+
+    - id: "gap-6"
+      severity: "medium"
+      title: "TypeScript types incomplete"
+      description: "44 types exist but swagger has 62 schemas including new normquery types"
+      files: ["src/types/promotion.types.ts"]
+      epic: "EPIC 33 (task-33)"
+
+  follow_up_epics:
+    - epic: 33
+      task: "task-33"
+      title: "Promotion Type Expansion — Cover all 62 swagger schemas"
+      doc: "docs/epics/EPIC_33_PROMOTION_TYPE_EXPANSION.md"
+
+    - epic: 34
+      task: "task-34"
+      title: "Promotion New Endpoints — Search Clusters + v2 Replacements"
+      doc: "docs/epics/EPIC_34_PROMOTION_NEW_ENDPOINTS.md"
+      depends_on: "task-33"
+
+    - epic: 35
+      task: "task-35"
+      title: "Promotion Code Quality — Deprecated Marking, JSDoc Fix, Rate Limit Wiring"
+      doc: "docs/epics/EPIC_35_PROMOTION_CODE_QUALITY.md"
+
 # Review methodology
 review_process:
   approach: "Comprehensive test architecture review with quality gate decision"
@@ -245,3 +319,106 @@ history:
     gate: PASS
     reviewer: "Quinn (Test Architect)"
     note: "Initial QA review - production-ready dual module with campaign lifecycle and cost management"
+
+# February 2026 Swagger Audit — Tariffs Module
+february_2026_audit_tariffs:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/10-tariffs.yaml"
+  endpoint_coverage: "4/5 implemented (1 missing)"
+  schemas: 20
+  tags: 4
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://common-api.wildberries.ru"
+
+  tag_evolution:
+    - tag: "Комиссии"
+      old_count: 1
+      new_count: 1
+      change: "No change"
+    - tag: "Коэффициенты складов"
+      old_count: 2
+      new_count: 0
+      change: "RENAMED to Тарифы на остаток"
+    - tag: "Тарифы на остаток"
+      old_count: 0
+      new_count: 2
+      change: "NEW — renamed from Коэффициенты складов (box, pallet)"
+    - tag: "Тарифы на поставку"
+      old_count: 0
+      new_count: 1
+      change: "NEW — acceptance/coefficients endpoint"
+    - tag: "Стоимость возврата продавцу"
+      old_count: 1
+      new_count: 1
+      change: "No change"
+
+  gaps_found:
+    - id: "gap-t1"
+      severity: "critical"
+      title: "CommissionUzbekistan type mismatch"
+      description: "SDK has single kgvpUzbekistan field, swagger defines 3 fields (kgvpMarketplaceUz, kgvpPaidStorageUz, kgvpSupplierUz)"
+      files: ["src/types/tariffs.types.ts"]
+      epic: "EPIC 39 (task-39)"
+
+    - id: "gap-t2"
+      severity: "high"
+      title: "Required date parameter bug"
+      description: "getTariffsBox, getTariffsPallet, getTariffsReturn have optional options wrapper for required date param, causing 400 errors"
+      files: ["src/modules/tariffs/index.ts"]
+      epic: "EPIC 39 (task-39)"
+
+    - id: "gap-t3"
+      severity: "high"
+      title: "1 endpoint missing from TariffsModule"
+      description: "GET /api/tariffs/v1/acceptance/coefficients not in TariffsModule (exists in OrdersFBW with wrong URL and path)"
+      files: ["src/modules/tariffs/index.ts"]
+      epic: "EPIC 40 (task-40)"
+
+    - id: "gap-t4"
+      severity: "high"
+      title: "Rate limit keys not wired"
+      description: "tariffs-rate-limits.ts defines 4 entries but 0 methods pass rateLimitKey to BaseClient"
+      files: ["src/modules/tariffs/index.ts", "src/config/tariffs-rate-limits.ts"]
+      epic: "EPIC 40 (task-40)"
+
+    - id: "gap-t5"
+      severity: "medium"
+      title: "2 missing TypeScript types"
+      description: "models.ErrorModel and models.AcceptanceCoefficient not in tariffs.types.ts (20 schemas vs 18 types)"
+      files: ["src/types/tariffs.types.ts"]
+      epic: "EPIC 39 (task-39)"
+
+    - id: "gap-t6"
+      severity: "low"
+      title: "4 JSDoc @example bugs"
+      description: "All 4 methods reference sdk.general.* instead of sdk.tariffs.*"
+      files: ["src/modules/tariffs/index.ts"]
+      epic: "EPIC 40 (task-40)"
+
+    - id: "gap-t7"
+      severity: "medium"
+      title: "Missing rate limit entry"
+      description: "No config for acceptance/coefficients endpoint (6 rpm, 10s interval, burst 6)"
+      files: ["src/config/tariffs-rate-limits.ts"]
+      epic: "EPIC 40 (task-40)"
+
+    - id: "gap-t8"
+      severity: "medium"
+      title: "No integration tests"
+      description: "0 integration tests exist, 6 unit tests skipped due to date validation issues"
+      files: ["tests/integration/tariffs.integration.test.ts"]
+      epic: "EPIC 40 (task-40)"
+
+  follow_up_epics:
+    - epic: 39
+      task: "task-39"
+      title: "Tariffs Type & Parameter Fixes — CommissionUzbekistan, missing types, date params"
+      doc: "docs/epics/EPIC_39_TARIFFS_TYPE_PARAMETER_FIXES.md"
+
+    - epic: 40
+      task: "task-40"
+      title: "Tariffs Code Quality — JSDoc, Rate Limits, Acceptance Endpoint, Tests"
+      doc: "docs/epics/EPIC_40_TARIFFS_CODE_QUALITY.md"
+      depends_on: "task-39"

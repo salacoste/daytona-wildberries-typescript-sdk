@@ -74,3 +74,78 @@ history:
   - at: "2025-10-23T01:51:00Z"
     gate: CONCERNS
     note: "Initial review - All ACs met with excellent quality. Minor concerns: getTransactionById workaround and scope expansion to Story 3.2."
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/13-finances.yaml"
+  endpoint_coverage: "6/6 implemented (0 new, 0 removed)"
+  schemas: 6
+  tags: 3
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://finance-api.wildberries.ru"
+    - "https://statistics-api.wildberries.ru"
+    - "https://documents-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "critical"
+      title: "report_type enum missing values 3 and 4"
+      description: "SDK type only has 1|2, swagger defines 1|2|3|4"
+      files: ["src/types/finances.types.ts"]
+      epic: "EPIC 46 (task-46)"
+    - id: "gap-2"
+      severity: "critical"
+      title: "suppliercontract_code wrong type"
+      description: "Record<string, never> instead of object | null"
+      files: ["src/types/finances.types.ts"]
+      epic: "EPIC 46 (task-46)"
+    - id: "gap-3"
+      severity: "critical"
+      title: "5 DetailReportItem fields missing"
+      description: "payment_schedule, seller_promo_id, seller_promo_discount, uuid_promocode, sale_price_promocode_discount_prc"
+      files: ["src/types/finances.types.ts"]
+      epic: "EPIC 46 (task-46)"
+    - id: "gap-4"
+      severity: "critical"
+      title: "Zero rateLimitKey wired"
+      description: "0/6 methods pass rateLimitKey to BaseClient"
+      files: ["src/modules/finances/index.ts"]
+      epic: "EPIC 47 (task-47)"
+    - id: "gap-5"
+      severity: "high"
+      title: "No tests exist"
+      description: "0 unit tests, 0 integration tests for finances module"
+      files: ["tests/unit/modules/finances.test.ts"]
+      epic: "EPIC 47 (task-47)"
+    - id: "gap-6"
+      severity: "high"
+      title: "Required params wrapped in optional objects"
+      description: "getDocumentsDownload and getSupplierReportdetailbyperiod have required params in optional wrapper"
+      files: ["src/modules/finances/index.ts"]
+      epic: "EPIC 46 (task-46)"
+    - id: "gap-7"
+      severity: "high"
+      title: "Multiple JSDoc description mismatches"
+      description: "acceptance, trbx_id, report_type JSDoc text diverges from swagger"
+      files: ["src/types/finances.types.ts"]
+      epic: "EPIC 47 (task-47)"
+    - id: "gap-8"
+      severity: "high"
+      title: "Balance response inline anonymous type"
+      description: "getAccountBalance returns inline type, no AccountBalanceResponse interface"
+      files: ["src/types/finances.types.ts", "src/modules/finances/index.ts"]
+      epic: "EPIC 46 (task-46)"
+
+  follow_up_epics:
+    - epic: 46
+      task: "task-46"
+      title: "Finances Type & Parameter Fixes"
+      doc: "docs/epics/EPIC_46_FINANCES_TYPE_PARAMETER_FIXES.md"
+    - epic: 47
+      task: "task-47"
+      title: "Finances Code Quality — JSDoc, Rate Limits, Tests, Naming"
+      doc: "docs/epics/EPIC_47_FINANCES_CODE_QUALITY.md"
+      depends_on: "task-46"

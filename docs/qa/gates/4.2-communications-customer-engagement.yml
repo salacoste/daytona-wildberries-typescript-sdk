@@ -237,3 +237,110 @@ history:
     gate: PASS
     reviewer: "Quinn (Test Architect)"
     note: "Initial QA review - production-ready with exceptional event-based architecture"
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/09-communications.yaml"
+  endpoint_coverage: "20/25 implemented (5 new, 6 removed)"
+  schemas: 27
+  tags: 5
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://feedbacks-api.wildberries.ru"
+    - "https://buyer-chat-api.wildberries.ru"
+    - "https://returns-api.wildberries.ru"
+
+  tag_evolution:
+    - tag: "Вопросы"
+      old_count: 6
+      new_count: 6
+      change: "No change"
+    - tag: "Отзывы"
+      old_count: 10
+      new_count: 8
+      change: "2 endpoints removed (supplierValuations, feedbacksAction)"
+    - tag: "Шаблоны ответов"
+      old_count: 4
+      new_count: 0
+      change: "REMOVED — entire tag deleted from swagger"
+    - tag: "Закреплённые отзывы"
+      old_count: 0
+      new_count: 5
+      change: "NEW — 5 endpoints for pinned reviews management"
+    - tag: "Чат с покупателями"
+      old_count: 4
+      new_count: 4
+      change: "No change (base URL corrected in swagger)"
+    - tag: "Возвраты покупателями"
+      old_count: 2
+      new_count: 2
+      change: "No change"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "high"
+      title: "5 new endpoints not in SDK"
+      description: "Entire Закреплённые отзывы (Pinned Reviews) tag with 5 endpoints not implemented"
+      files: ["src/modules/communications/index.ts"]
+      epic: "EPIC 37 (task-37)"
+
+    - id: "gap-2"
+      severity: "high"
+      title: "6 removed endpoints still in SDK"
+      description: "4 template methods + 2 review methods (supplierValuations, createFeedbacksAction) call non-existent endpoints"
+      files: ["src/modules/communications/index.ts"]
+      epic: "EPIC 38 (task-38)"
+
+    - id: "gap-3"
+      severity: "high"
+      title: "3 base URL mismatches"
+      description: "getSellerEvents, createSellerMessage, getSellerDownload use api.wildberries.ru instead of buyer-chat-api.wildberries.ru"
+      files: ["src/modules/communications/index.ts"]
+      epic: "EPIC 38 (task-38)"
+
+    - id: "gap-4"
+      severity: "medium"
+      title: "All 26 JSDoc @example blocks reference wrong module"
+      description: "All 26 @example blocks use sdk.general.* instead of sdk.communications.*"
+      files: ["src/modules/communications/index.ts"]
+      epic: "EPIC 38 (task-38)"
+
+    - id: "gap-5"
+      severity: "high"
+      title: "Rate limit keys not wired"
+      description: "communications-rate-limits.ts defines 26 entries but module methods do not pass rateLimitKey to BaseClient"
+      files: ["src/modules/communications/index.ts", "src/config/communications-rate-limits.ts"]
+      epic: "EPIC 38 (task-38)"
+
+    - id: "gap-6"
+      severity: "medium"
+      title: "TypeScript types incomplete"
+      description: "16 types exist but swagger has 27 schemas including new Pinned Reviews types"
+      files: ["src/types/communications.types.ts"]
+      epic: "EPIC 36 (task-36)"
+
+    - id: "gap-7"
+      severity: "high"
+      title: "No tests for auto-generated module"
+      description: "0 unit tests and 0 integration tests exist for the auto-generated CommunicationsModule"
+      files: ["tests/unit/modules/communications.test.ts"]
+      epic: "EPIC 38 (task-38)"
+
+  follow_up_epics:
+    - epic: 36
+      task: "task-36"
+      title: "Communications Type Expansion — Cover all 27 swagger schemas"
+      doc: "docs/epics/EPIC_36_COMMUNICATIONS_TYPE_EXPANSION.md"
+
+    - epic: 37
+      task: "task-37"
+      title: "Communications New Endpoints — 5 Pinned Reviews Methods"
+      doc: "docs/epics/EPIC_37_COMMUNICATIONS_NEW_ENDPOINTS.md"
+      depends_on: "task-36"
+
+    - epic: 38
+      task: "task-38"
+      title: "Communications Code Quality — Removed Endpoints, URL Fixes, JSDoc, Rate Limits, Tests"
+      doc: "docs/epics/EPIC_38_COMMUNICATIONS_CODE_QUALITY.md"

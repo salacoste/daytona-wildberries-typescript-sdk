@@ -48,3 +48,39 @@ recommendations:
   future:
     - action: "Consider adding more integration test scenarios for pagination edge cases"
       refs: ["tests/integration/products-categories.integration.test.ts"]
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/02-products.yaml"
+  endpoint_coverage: "All category/characteristic endpoints implemented"
+  schemas: "62+ (partial coverage)"
+  tags: "11"
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://content-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "high"
+      title: "Brand types not generated from swagger"
+      description: "SDK missing dedicated brand-related types from swagger schemas"
+      files: ["src/types/products.types.ts"]
+      epic: "EPIC 16 (task-16)"
+    - id: "gap-2"
+      severity: "high"
+      title: "Rate limit keys not wired for category endpoints"
+      description: "Rate limit config exists but category endpoints do not pass rateLimitKey"
+      files: ["src/modules/products/index.ts"]
+      epic: "EPIC 17 (task-17)"
+
+  follow_up_epics:
+    - epic: 16
+      task: "task-16"
+      title: "Products Brand Types"
+      doc: "docs/epics/EPIC_16_PRODUCTS_BRANDS.md"
+    - epic: 17
+      task: "task-17"
+      title: "Products Rate Limits"
+      doc: "docs/epics/EPIC_17_PRODUCTS_RATE_LIMITS.md"

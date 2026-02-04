@@ -52,3 +52,49 @@ recommendations:
       refs: ["src/modules/orders-fbs/index.ts"]
     - action: "Monitor pagination performance with very large order volumes (>10K orders)"
       refs: ["src/modules/orders-fbs/index.ts"]
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/03-orders-fbs.yaml"
+  endpoint_coverage: "Retrieval/status endpoints — 5 URL changes detected"
+  schemas: "Multiple (partial coverage)"
+  tags: "Multiple"
+  deprecated_endpoints: 1
+  base_urls:
+    - "https://marketplace-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "critical"
+      title: "5 methods call removed/changed endpoint URLs"
+      description: "Wildberries migrated endpoints from /api/v3/ to /api/marketplace/v3/; SDK still calls old URLs causing 404 errors"
+      files: ["src/modules/orders-fbs/index.ts"]
+      epic: "EPIC 22 (task-22)"
+    - id: "gap-2"
+      severity: "high"
+      title: "Type safety gaps in order retrieval types"
+      description: "Some request/response types need alignment with updated swagger schemas"
+      files: ["src/types/orders-fbs.types.ts"]
+      epic: "EPIC 23 (task-23)"
+    - id: "gap-3"
+      severity: "high"
+      title: "Rate limit keys not wired for retrieval endpoints"
+      description: "Rate limit config exists but retrieval endpoints do not pass rateLimitKey"
+      files: ["src/modules/orders-fbs/index.ts"]
+      epic: "EPIC 24 (task-24)"
+
+  follow_up_epics:
+    - epic: 22
+      task: "task-22"
+      title: "Orders FBS URL Fixes"
+      doc: "docs/epics/EPIC_22_FBS_URL_FIXES.md"
+    - epic: 23
+      task: "task-23"
+      title: "Orders FBS Type Safety"
+      doc: "docs/epics/EPIC_23_FBS_TYPE_SAFETY.md"
+    - epic: 24
+      task: "task-24"
+      title: "Orders FBS Rate Limits"
+      doc: "docs/epics/EPIC_24_FBS_RATE_LIMITS.md"

@@ -195,3 +195,101 @@ history:
     gate: PASS
     reviewer: "Quinn (Test Architect)"
     note: "Initial QA review - production-ready analytics with comprehensive business intelligence"
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/11-analytics.yaml"
+  endpoint_coverage: "16/16 implemented (+ 3 deprecated v2 wrappers)"
+  schemas: 92
+  tags: 4
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://seller-analytics-api.wildberries.ru"
+
+  tag_evolution:
+    - tag: "Воронка продаж"
+      old_count: 3
+      new_count: 3
+      change: "Migrated from v2 to v3 in SDK v2.7.0"
+    - tag: "Поисковые запросы по вашим товарам"
+      old_count: 5
+      new_count: 5
+      change: "No change"
+    - tag: "История остатков"
+      old_count: 4
+      new_count: 4
+      change: "No change"
+    - tag: "Аналитика продавца CSV"
+      old_count: 4
+      new_count: 4
+      change: "No change"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "critical"
+      title: "Zero rateLimitKey wired in 16 methods"
+      description: "analytics-rate-limits.ts defines 16 entries but 0 methods pass rateLimitKey to BaseClient"
+      files: ["src/modules/analytics/index.ts", "src/config/analytics-rate-limits.ts"]
+      epic: "EPIC 42 (task-42)"
+
+    - id: "gap-2"
+      severity: "high"
+      title: "TableProductItem empty interface"
+      description: "SDK defines empty interface but swagger has 18+ fields via allOf"
+      files: ["src/types/analytics.types.ts"]
+      epic: "EPIC 41 (task-41)"
+
+    - id: "gap-3"
+      severity: "high"
+      title: "AvailabilityFilters type bug"
+      description: "Union/array precedence error: only last variant is array, should wrap entire union in array"
+      files: ["src/types/analytics.types.ts"]
+      epic: "EPIC 41 (task-41)"
+
+    - id: "gap-4"
+      severity: "high"
+      title: "13 wrong @example blocks"
+      description: "All v2 methods use sdk.general.* instead of sdk.analytics.*"
+      files: ["src/modules/analytics/index.ts"]
+      epic: "EPIC 42 (task-42)"
+
+    - id: "gap-5"
+      severity: "high"
+      title: "Missing integration tests"
+      description: "0 MSW-based integration tests exist for any analytics endpoint"
+      files: ["tests/integration/analytics.integration.test.ts"]
+      epic: "EPIC 42 (task-42)"
+
+    - id: "gap-6"
+      severity: "high"
+      title: "3 missing v3 rate limit config entries"
+      description: "No config for postSalesFunnelProducts, postSalesFunnelProductsHistory, postSalesFunnelGroupedHistory"
+      files: ["src/config/analytics-rate-limits.ts"]
+      epic: "EPIC 42 (task-42)"
+
+    - id: "gap-7"
+      severity: "medium"
+      title: "getDownloadsFile returns Promise<unknown>"
+      description: "Swagger specifies application/zip binary but SDK returns unknown"
+      files: ["src/modules/analytics/index.ts", "src/types/analytics.types.ts"]
+      epic: "EPIC 41 (task-41)"
+
+    - id: "gap-8"
+      severity: "medium"
+      title: "ErrorObject and OrderByMainAndDetails schemas missing"
+      description: "2 swagger schemas not represented in SDK types"
+      files: ["src/types/analytics.types.ts"]
+      epic: "EPIC 41 (task-41)"
+
+  follow_up_epics:
+    - epic: 41
+      task: "task-41"
+      title: "Analytics Type & Schema Fixes — AvailabilityFilters bug, TableProductItem, missing schemas"
+      doc: "docs/epics/EPIC_41_ANALYTICS_TYPE_SCHEMA_FIXES.md"
+
+    - epic: 42
+      task: "task-42"
+      title: "Analytics Code Quality — JSDoc, Rate Limits, Tests, Config Cleanup"
+      doc: "docs/epics/EPIC_42_ANALYTICS_CODE_QUALITY.md"

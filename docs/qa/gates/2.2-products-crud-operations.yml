@@ -48,3 +48,49 @@ recommendations:
   future:
     - action: "Consider adding async task polling helper for createProduct/updateProduct workflows"
       refs: ["src/modules/products/index.ts:982-1223"]
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/02-products.yaml"
+  endpoint_coverage: "All CRUD endpoints implemented"
+  schemas: "62+ (partial coverage)"
+  tags: "11"
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://content-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "high"
+      title: "Metadata support missing"
+      description: "Product metadata endpoints exist in swagger but SDK lacks metadata helper methods"
+      files: ["src/modules/products/index.ts"]
+      epic: "EPIC 18 (task-18)"
+    - id: "gap-2"
+      severity: "high"
+      title: "Type safety gaps in CRUD types"
+      description: "Some request/response types use inline anonymous types instead of named interfaces"
+      files: ["src/types/products.types.ts"]
+      epic: "EPIC 19 (task-19)"
+    - id: "gap-3"
+      severity: "medium"
+      title: "Method naming inconsistencies"
+      description: "Some CRUD methods do not follow consistent naming convention"
+      files: ["src/modules/products/index.ts"]
+      epic: "EPIC 20 (task-20)"
+
+  follow_up_epics:
+    - epic: 18
+      task: "task-18"
+      title: "Products Metadata Support"
+      doc: "docs/epics/EPIC_18_METADATA_SUPPORT.md"
+    - epic: 19
+      task: "task-19"
+      title: "Products Type Safety"
+      doc: "docs/epics/EPIC_19_PRODUCTS_TYPE_SAFETY.md"
+    - epic: 20
+      task: "task-20"
+      title: "Products Naming"
+      doc: "docs/epics/EPIC_20_PRODUCTS_NAMING.md"

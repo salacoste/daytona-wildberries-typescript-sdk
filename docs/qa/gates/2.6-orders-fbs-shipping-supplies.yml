@@ -52,3 +52,49 @@ recommendations:
       refs: ["src/modules/orders-fbs/index.ts"]
     - action: "Monitor thermal printer label generation (ZPLV/ZPLH) in production"
       refs: ["src/modules/orders-fbs/index.ts"]
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/03-orders-fbs.yaml"
+  endpoint_coverage: "Shipping/supplies endpoints — URL migration needed"
+  schemas: "Multiple (partial coverage)"
+  tags: "Multiple"
+  deprecated_endpoints: 0
+  base_urls:
+    - "https://marketplace-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "critical"
+      title: "Shipping endpoint URLs outdated"
+      description: "Shipping-related endpoints use old URL paths that return 404"
+      files: ["src/modules/orders-fbs/index.ts"]
+      epic: "EPIC 22 (task-22)"
+    - id: "gap-2"
+      severity: "high"
+      title: "Test coverage below target for shipping/supplies"
+      description: "Shipping and supplies methods lack comprehensive unit and integration tests"
+      files: ["tests/unit/modules/orders-fbs.test.ts"]
+      epic: "EPIC 25 (task-25)"
+    - id: "gap-3"
+      severity: "high"
+      title: "Rate limit enforcement missing for shipping endpoints"
+      description: "Rate limit configuration not passed through to BaseClient calls"
+      files: ["src/modules/orders-fbs/index.ts"]
+      epic: "EPIC 24 (task-24)"
+
+  follow_up_epics:
+    - epic: 22
+      task: "task-22"
+      title: "Orders FBS URL Fixes"
+      doc: "docs/epics/EPIC_22_FBS_URL_FIXES.md"
+    - epic: 24
+      task: "task-24"
+      title: "Orders FBS Rate Limits"
+      doc: "docs/epics/EPIC_24_FBS_RATE_LIMITS.md"
+    - epic: 25
+      task: "task-25"
+      title: "Orders FBS Testing"
+      doc: "docs/epics/EPIC_25_FBS_TESTING.md"
