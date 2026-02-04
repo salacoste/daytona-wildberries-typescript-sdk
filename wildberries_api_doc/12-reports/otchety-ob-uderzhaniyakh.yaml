@@ -1,30 +1,36 @@
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
-  title: 12-reports - Отчёты об удержаниях
-  description: Extracted from original file for agent processing
-  version: 1.0.0-shard
-servers:
-  - url: https://seller-analytics-api.wildberries.ru
+  title: Отчёты об удержаниях
+  version: reports
 tags:
   - name: Отчёты об удержаниях
-    description: Отчёты об удержаниях endpoints
+    description: ''
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+security:
+  - HeaderApiKey: []
 paths:
-  /api/v1/analytics/warehouse-measurements:
+  /api/analytics/v1/measurement-penalties:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
         - Отчёты об удержаниях
-      summary: Занижение габаритов упаковки
+      summary: Удержания за занижение габаритов упаковки
+      operationId: getMeasurementPenalties
       description: |
-        Метод возвращает отчёты об [удержаниях за занижение габаритов упаковки](https://seller.wildberries.ru/analytics-reports/dimensions-penalties) и [замерах склада](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/warehouse-measurements)
+        Метод возвращает отчёт об [удержаниях за занижение габаритов упаковки](https://seller.wildberries.ru/analytics-reports/dimensions-penalties)
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 5 запросов | 12 секунд | 1 запрос |
+        | 1 мин | 1 запрос | 1 мин | 1 запрос |
         </div>
       parameters:
         - in: query
@@ -42,19 +48,6 @@ paths:
             type: string
             format: date-time
           example: '2025-10-11T18:00:00Z'
-        - name: tab
-          in: query
-          required: true
-          schema:
-            type: string
-            example: measurement
-            enum:
-              - penalty
-              - measurement
-            description: |
-              Тип отчёта:
-                - `penalty` — Удержания за занижение габаритов упаковки
-                - `measurement` — Замеры склада
         - name: limit
           in: query
           required: true
@@ -62,7 +55,7 @@ paths:
             type: integer
             example: 330
             maximum: 1000
-            description: Количество удержаний или замеров в ответе
+            description: Количество удержаний в ответе
         - name: offset
           in: query
           schema:
@@ -76,32 +69,211 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Penalty'
-                  - $ref: '#/components/schemas/Measurement'
+                $ref: '_schemas.yaml#/components/schemas/MeasurementPenalties'
               examples:
-                Penalty:
-                  $ref: '#/components/examples/Penalty'
-                Measurement:
-                  $ref: '#/components/examples/Measurement'
+                MeasurementPenalties:
+                  $ref: '_schemas.yaml#/components/examples/MeasurementPenalties'
         '400':
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response400WHM'
+                $ref: '_schemas.yaml#/components/schemas/Response400Retentions'
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '403':
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response403WHM'
+                $ref: '_schemas.yaml#/components/schemas/Response403Retentions'
         '429':
-          $ref: '#/components/responses/429'
-  /api/v1/analytics/antifraud-details:
+          $ref: '_schemas.yaml#/components/responses/429'
+  /api/analytics/v1/warehouse-measurements:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Отчёты об удержаниях
+      summary: Замеры склада
+      operationId: getWarehouseMeasurements
+      description: |
+        Метод возвращает отчёт о [замерах склада](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/warehouse-measurements)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 1 запрос | 1 мин | 1 запрос |
+        </div>
+      parameters:
+        - in: query
+          name: dateFrom
+          description: Начало отчётного периода. По умолчанию используется дата, когда были впервые получены данные для отчёта
+          schema:
+            type: string
+            format: date-time
+          example: '2025-02-01T15:00:00Z'
+        - in: query
+          name: dateTo
+          required: true
+          description: Конец отчётного периода
+          schema:
+            type: string
+            format: date-time
+          example: '2025-10-11T18:00:00Z'
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 330
+            maximum: 1000
+            description: Количество замеров в ответе
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            example: 220
+            default: 0
+            description: Сколько элементов пропустить. Например, для значения `10` ответ начнётся с 11 элемента
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '_schemas.yaml#/components/schemas/WHM'
+              examples:
+                Measurements:
+                  $ref: '_schemas.yaml#/components/examples/WHM'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '_schemas.yaml#/components/schemas/Response400Retentions'
+        '401':
+          $ref: '_schemas.yaml#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '_schemas.yaml#/components/schemas/Response403Retentions'
+        '429':
+          $ref: '_schemas.yaml#/components/responses/429'
+  /api/analytics/v1/deductions:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Отчёты об удержаниях
+      summary: Подмены и неверные вложения
+      operationId: getDeductions
+      description: |
+        Метод возвращает отчёт об удержаниях за [подмены и неверные вложения](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/retentions)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 1 запрос | 1 мин | 1 запрос |
+        </div>
+      parameters:
+        - name: dateFrom
+          in: query
+          description: Начало отчётного периода. По умолчанию используются дата и время, когда были впервые получены данные для отчёта
+          schema:
+            type: string
+            format: date-time
+          example: '2025-02-01T15:00:00Z'
+        - name: dateTo
+          in: query
+          required: true
+          description: Конец отчётного периода
+          schema:
+            type: string
+            format: date-time
+          example: '2025-10-11T18:00:00Z'
+        - name: sort
+          in: query
+          schema:
+            type: string
+            description: |
+              Сортировка:
+              - `nmId` — по артикулу WB
+              - `dtBonus` — по дате и времени удержания
+              - `bonusSumm` — по сумме удержания
+            enum:
+              - nmId
+              - dtBonus
+              - bonusSumm
+            default: dtBonus
+            example: nmId
+        - name: order
+          in: query
+          schema:
+            type: string
+            description: |
+              Порядок выдачи:
+              - `desc` — по убыванию
+              - `asc` — по возрастанию
+            enum:
+              - desc
+              - asc
+            default: desc
+            example: asc
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 330
+            maximum: 1000
+            description: Количество удержаний в ответе
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            example: 220
+            default: 0
+            description: Сколько элементов пропустить. Например, для значения `10` ответ начнётся с 11 элемента
+      responses:
+        '200':
+          $ref: '_schemas.yaml#/components/responses/SuccessSubstIncorAttachResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '_schemas.yaml#/components/schemas/Response400Retentions'
+        '401':
+          $ref: '_schemas.yaml#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '_schemas.yaml#/components/schemas/Response403Retentions'
+        '429':
+          $ref: '_schemas.yaml#/components/responses/429'
+  /api/v1/analytics/antifraud-details:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -119,78 +291,32 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 100 минут | 10 запросов | 10 минут | 10 запросов |
+        | 10 мин | 1 запрос | 10 мин | 10 запросов |
         </div>
       parameters:
-        - $ref: '#/components/parameters/Date'
+        - $ref: '_schemas.yaml#/components/parameters/Date'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessTaskResponse'
+          $ref: '_schemas.yaml#/components/responses/SuccessTaskResponse'
         '400':
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               examples:
                 IncorrectDate:
-                  $ref: '#/components/examples/IncorrectDate'
+                  $ref: '_schemas.yaml#/components/examples/IncorrectDate'
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '429':
-          $ref: '#/components/responses/429'
-  /api/v1/analytics/incorrect-attachments:
-    get:
-      security:
-        - HeaderApiKey: []
-      tags:
-        - Отчёты об удержаниях
-      summary: Подмена товара
-      description: |
-        Метод возвращает отчёт об удержаниях за отправку ошибочных товаров, пустых коробок или коробок без товара, но с посторонними предметами. В таких случаях удерживается 100% от стоимости заказа.<br><br>
-
-        Можно получить отчёт максимум за 31 день. Данные доступны с июня 2023.
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 1 минута | 1 запрос | 1 минута | 10 запросов |
-        </div>
-      parameters:
-        - $ref: '#/components/parameters/DateFrom'
-        - $ref: '#/components/parameters/DateTo'
-      responses:
-        '200':
-          $ref: '#/components/responses/SuccessIncorrectProductsResponse'
-        '400':
-          description: Неправильный запрос
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/4xxResponse'
-              examples:
-                IncorrectDateFrom:
-                  $ref: '#/components/examples/IncorrectDateFrom'
-                MissingDateTimeFrom:
-                  $ref: '#/components/examples/MissingDateTimeFrom'
-                MissingDateTimeTo:
-                  $ref: '#/components/examples/MissingDateTimeTo'
-                IncorrectDateTimeFrom:
-                  $ref: '#/components/examples/IncorrectDateTimeFrom'
-                IncorrectDateTimeTo:
-                  $ref: '#/components/examples/IncorrectDateTimeTo'
-                DateRangeExceeded:
-                  $ref: '#/components/examples/DateRangeExceeded'
-                DateRanges:
-                  $ref: '#/components/examples/DateRanges'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+          $ref: '_schemas.yaml#/components/responses/429'
   /api/v1/analytics/goods-labeling:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -208,360 +334,40 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 10 минут | 10 запросов | 1 минута | 10 запросов |
+        | 1 мин | 1 запрос | 1 мин | 10 запросов |
         </div>
       parameters:
-        - $ref: '#/components/parameters/DateFromGoodsLabeling'
-        - $ref: '#/components/parameters/DateToGoodsLabeling'
+        - $ref: '_schemas.yaml#/components/parameters/DateFromGoodsLabeling'
+        - $ref: '_schemas.yaml#/components/parameters/DateToGoodsLabeling'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessGoodsLabelingResponse'
+          $ref: '_schemas.yaml#/components/responses/SuccessGoodsLabelingResponse'
         '400':
           description: Неправильный запрос
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               examples:
                 MissingDateTimeFrom:
-                  $ref: '#/components/examples/MissingDateTimeFrom'
+                  $ref: '_schemas.yaml#/components/examples/MissingDateTimeFrom'
                 MissingDateTimeTo:
-                  $ref: '#/components/examples/MissingDateTimeTo'
+                  $ref: '_schemas.yaml#/components/examples/MissingDateTimeTo'
                 IncorrectDateTimeFrom:
-                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                  $ref: '_schemas.yaml#/components/examples/IncorrectDateTimeFrom'
                 IncorrectDateTimeTo:
-                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                  $ref: '_schemas.yaml#/components/examples/IncorrectDateTimeTo'
                 DateRangeExceeded:
-                  $ref: '#/components/examples/DateRangeExceeded'
+                  $ref: '_schemas.yaml#/components/examples/DateRangeExceeded'
                 DateRanges:
-                  $ref: '#/components/examples/DateRanges'
+                  $ref: '_schemas.yaml#/components/examples/DateRanges'
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '429':
-          $ref: '#/components/responses/429'
-  /api/v1/analytics/characteristics-change:
-    get:
-      servers:
-        - url: https://seller-analytics-api.wildberries.ru
-      security:
-        - HeaderApiKey: []
-      tags:
-        - Отчёты об удержаниях
-      summary: Смена характеристик
-      description: |
-        Метод возвращает отчёт об удержаниях за смену характеристик товара. Если товары после приёмки не соответствуют заявленным цветам и размерам, и на складе их перемаркировали с правильными характеристиками, по таким товарам назначается штраф.<br><br>
-
-        Можно получить отчёт максимум за 31 день. Данные доступны с 28 декабря 2021.
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 10 минут | 10 запросов | 1 минута | 10 запросов |
-        </div>
-      parameters:
-        - in: query
-          name: dateFrom
-          required: true
-          description: Начало отчётного периода, `ГГГГ-ММ-ДД`
-          schema:
-            type: string
-            format: date
-          example: '2024-04-01'
-        - in: query
-          name: dateTo
-          required: true
-          description: Конец отчётного периода, `ГГГГ-ММ-ДД`
-          schema:
-            type: string
-            format: date
-          example: '2024-04-30'
-      responses:
-        '200':
-          $ref: '#/components/responses/SuccessCharacteristicsTaskResponse'
-        '400':
-          description: Неправильный запрос
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/4xxResponse'
-              examples:
-                MissingDateTimeFrom:
-                  $ref: '#/components/examples/MissingDateTimeFrom'
-                MissingDateTimeTo:
-                  $ref: '#/components/examples/MissingDateTimeTo'
-                IncorrectDateTimeFrom:
-                  $ref: '#/components/examples/IncorrectDateTimeFrom'
-                IncorrectDateTimeTo:
-                  $ref: '#/components/examples/IncorrectDateTimeTo'
-                DateRangeExceeded:
-                  $ref: '#/components/examples/DateRangeExceeded'
-                DateRanges:
-                  $ref: '#/components/examples/DateRanges'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+          $ref: '_schemas.yaml#/components/responses/429'
 components:
-  schemas:
-    Penalty:
-      required:
-        - data
-      type: object
-      properties:
-        data:
-          required:
-            - reports
-            - totalCount
-          type: object
-          description: Данные ответа
-          properties:
-            reports:
-              type: array
-              description: Удержания
-              items:
-                type: object
-                properties:
-                  nmId:
-                    type: integer
-                    description: Артикул WB
-                    example: 123456789
-                  dimId:
-                    type: integer
-                    description: ID замера
-                    example: 123456789
-                  subject:
-                    type: string
-                    description: Предмет
-                    example: Костюмы спортивные
-                  prcOver:
-                    type: number
-                    description: Разница в габаритах, %
-                    example: 130.71
-                  volume:
-                    type: number
-                    description: Объём, л (фактические габариты)
-                    example: 6.47
-                  width:
-                    type: integer
-                    description: Ширина, см (фактические габариты)
-                    example: 7
-                  length:
-                    type: integer
-                    description: Длина, см (фактические габариты)
-                    example: 28
-                  height:
-                    type: integer
-                    description: Высота, см (фактические габариты)
-                    example: 33
-                  volumeSup:
-                    type: number
-                    description: Объём, л (габариты карточки товара)
-                    example: 4.95
-                  widthSup:
-                    type: integer
-                    description: Ширина, см (габариты карточки товара)
-                    example: 8
-                  lengthSup:
-                    type: integer
-                    description: Длина, см (габариты карточки товара)
-                    example: 33
-                  heightSup:
-                    type: integer
-                    description: Высота, см (габариты карточки товара)
-                    example: 33
-                  photoUrls:
-                    type: array
-                    items:
-                      type: string
-                    description: Фото замеров
-                    example:
-                      - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35154094220_em907759_n1_b2eaa5ed-bf21-4c58-b419-b5b5ec6f29ee.webp
-                      - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35159094420_em907759_n2_040407b0-7752-4ae7-a4a4-7ec016e86511.webp
-                      - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35189094220_em904757_n3_9f502e24-3b3e-4efd-9hac-802813046ac3.webp
-                  dtBonus:
-                    type: string
-                    format: date-time
-                    description: Дата штрафа
-                    example: '2025-06-02T00:00:00Z'
-                  isValid:
-                    type: boolean
-                    description: |
-                      Статус обмера:
-                        - `false` — отменён
-                        - `true` — подтверждён
-                    example: true
-                  isValidDt:
-                    type: string
-                    format: date-time
-                    description: Дата и время подтверждения или отмены обмера
-                    example: '2025-05-29T13:35:57Z'
-                  reversalAmount:
-                    type: number
-                    description: Сумма сторно
-                    example: 0
-                  penaltyAmount:
-                    type: number
-                    description: Сумма штрафа
-                    example: 449.83
-            totalCount:
-              type: integer
-              description: Количество удержаний в отчёте
-              example: 11
-    Measurement:
-      required:
-        - data
-      type: object
-      properties:
-        data:
-          required:
-            - reports
-            - totalCount
-          type: object
-          description: Данные ответа
-          properties:
-            reports:
-              type: array
-              description: Замеры
-              items:
-                type: object
-                properties:
-                  nmId:
-                    type: integer
-                    description: Артикул WB
-                    example: 123456789
-                  subject:
-                    type: string
-                    description: Предмет
-                    example: ''
-                  dimId:
-                    type: integer
-                    description: ID замера
-                    example: 123456789
-                  prcOver:
-                    type: number
-                    description: Разница в габаритах, %
-                    example: 1274.8
-                  volume:
-                    type: number
-                    description: Объём, л (фактические габариты)
-                    example: 39.2
-                  width:
-                    type: integer
-                    description: Ширина, см (фактические габариты)
-                    example: 66
-                  length:
-                    type: integer
-                    description: Длина, см (фактические габариты)
-                    example: 54
-                  height:
-                    type: integer
-                    description: Высота, см (фактические габариты)
-                    example: 11
-                  volumeSup:
-                    type: number
-                    description: Объём, л (габариты карточки товара)
-                    example: 3.08
-                  widthSup:
-                    type: integer
-                    description: Ширина, см (габариты карточки товара)
-                    example: 5
-                  lengthSup:
-                    type: integer
-                    description: Длина, см (габариты карточки товара)
-                    example: 15
-                  heightSup:
-                    type: integer
-                    description: Высота, см (габариты карточки товара)
-                    example: 41
-                  photoUrls:
-                    type: array
-                    items:
-                      type: string
-                    description: Фото замеров
-                    example:
-                      - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_a9f839da-c3b7-4ed6-737c-a9e731250fb0.jpg
-                      - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_2aac23b7-c8f9-42db-74e9-b4a9c916017c.jpg
-                      - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_ff93b7c4-19d6-e0a2-4dba-7c2f09f06b3.jpg
-                  dt:
-                    type: string
-                    format: date-time
-                    description: Дата и время
-                    example: '2025-04-01T00:06:00Z'
-                  dateStart:
-                    type: string
-                    format: date-time
-                    description: |
-                      Дата начала замера
-                    example: '2025-04-02T00:00:00Z'
-                  dateEnd:
-                    type: string
-                    format: date-time
-                    description: Дата конца замера
-                    example: '2025-04-06T00:00:00Z'
-            totalCount:
-              type: integer
-              description: Количество замеров в отчёте
-              example: 11
-    Response400WHM:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Заголовок ошибки
-          example: bad request
-        status:
-          type: integer
-          description: HTTP статус-код
-          example: 400
-        detail:
-          type: string
-          description: Детали ошибки
-          example: 'invalid parameter: dateTo'
-        requestId:
-          type: string
-          description: Уникальный ID запроса
-          example: 31db50b5-14c0-4f4e-965e-6e1f9607ee78
-        origin:
-          type: string
-          description: ID внутреннего сервиса WB
-          example: dimension-penalty
-    Response403WHM:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Заголовок ошибки
-          example: access denied
-        status:
-          type: integer
-          description: HTTP статус-код
-          example: 403
-        detail:
-          type: string
-          description: Детали ошибки
-          example: 'abac: access denied'
-        requestId:
-          type: string
-          description: Уникальный ID запроса
-          example: 31db50b5-14c0-4f4e-965e-6e1f9607ee78
-        origin:
-          type: string
-          description: ID внутреннего сервиса WB
-          example: dimension-penalty
-    4xxResponse:
-      type: object
-      properties:
-        detail:
-          type: string
-          description: Детали ошибки
-        origin:
-          type: string
-          description: ID внутреннего сервиса WB
-        requestId:
-          type: string
-          description: Уникальный ID запроса
-        title:
-          type: string
-          description: Заголовок ошибки
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

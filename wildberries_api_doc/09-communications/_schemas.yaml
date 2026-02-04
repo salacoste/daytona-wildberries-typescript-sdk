@@ -1,37 +1,794 @@
-components:
-  schemas:
-    File:
+standardizedFQError:
+  type: object
+  properties:
+    title:
+      type: string
+      description: Заголовок ошибки
+    requestId:
+      type: string
+      description: Уникальный ID запроса
+    origin:
+      type: string
+      description: ID внутреннего сервиса WB
+    detail:
+      type: string
+      description: Детали ошибки
+responsefeedbackErr:
+  type: object
+  properties:
+    data:
+      type: object
+      nullable: true
+    error:
+      description: Есть ли ошибка
+      type: boolean
+    errorText:
+      description: Описание ошибки
+      type: string
+    additionalErrors:
+      description: Дополнительные ошибки
+      nullable: true
+      type: array
+      items:
+        type: string
+    requestId:
+      description: ''
+      type: string
+responseFeedback:
+  description: Массив отзывов
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID отзыва
+      text:
+        type: string
+        description: Текст отзыва
+        nullable: false
+      pros:
+        type: string
+        description: Достоинства товара
+        nullable: false
+      cons:
+        type: string
+        description: Недостатки товара
+        nullable: false
+      productValuation:
+        type: integer
+        description: Оценка товара
+      createdDate:
+        type: string
+        format: date-time
+        description: Дата и время создания отзыва
+      answer:
+        nullable: true
+        type: object
+        description: Структура ответа
+        properties:
+          text:
+            type: string
+            description: Текст ответа
+          state:
+            type: string
+            description: |
+              Статус:
+                - `none` — новый
+                - `wbRu` — отображается на сайте
+                - `reviewRequired` — ответ проходит проверку
+                - `rejected` — ответ отклонён
+          editable:
+            type: boolean
+            description: |
+              Можно ли отредактировать ответ:
+                - `false` — нет
+                - `true` — да
+      state:
+        type: string
+        description: |
+          Статус отзыва:
+            - `none` - не обработан (новый)
+            - `wbRu` - обработан
+      productDetails:
+        description: Информация о товаре
+        type: object
+        properties:
+          nmId:
+            type: integer
+            description: Артикул WB
+          imtId:
+            type: integer
+            description: ID для [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+          productName:
+            type: string
+            description: Название товара
+          supplierArticle:
+            type: string
+            nullable: true
+            description: Артикул продавца
+          supplierName:
+            type: string
+            nullable: true
+            description: Имя продавца
+          brandName:
+            type: string
+            nullable: true
+            description: Бренд товара
+          size:
+            type: string
+            description: Размер товара (`techSize` в КТ)
+      photoLinks:
+        nullable: true
+        description: Массив структур фотографий
+        type: array
+        items:
+          type: object
+          properties:
+            fullSize:
+              type: string
+              description: Адрес фотографии полного размера
+            miniSize:
+              type: string
+              description: Адрес фотографии маленького размера
+      video:
+        nullable: true
+        description: Структура видео
+        type: object
+        properties:
+          previewImage:
+            type: string
+            description: Ссылка на обложку видео
+          link:
+            type: string
+            description: Ссылка на файл плейлиста видео (доступно по протоколу HLS)
+          durationSec:
+            type: integer
+            description: Общая продолжительность видео
+      wasViewed:
+        type: boolean
+        description: Просмотрен ли отзыв
+      userName:
+        type: string
+        description: Имя автора отзыва
+      matchingSize:
+        type: string
+        description: |
+          Соответствие заявленного размера реальному.
+          <br>Возможные значения:
+          - ` ` - для безразмерных товаров
+          - `ок` - соответствует размеру
+          - `smaller` - маломерит
+          - `bigger` - большемерит
+      isAbleSupplierFeedbackValuation:
+        description: Доступна ли продавцу возможность оставить жалобу на отзыв (`true` - доступна, `false` - не доступна)
+        type: boolean
+      supplierFeedbackValuation:
+        description: |
+          Ключ причины жалобы на отзыв
+        type: integer
+      isAbleSupplierProductValuation:
+        description: |
+          Доступна ли продавцу возможность сообщить о проблеме с товаром:
+            - `true` — да
+            - `false` — нет
+        type: boolean
+      supplierProductValuation:
+        description: |
+          Ключ проблемы с товаром
+        type: integer
+      isAbleReturnProductOrders:
+        description: |
+          Опция возврата товара:
+           - `true` — доступна
+           - `false` — недоступна
+        type: boolean
+      returnProductOrdersDate:
+        nullable: true
+        description: Дата и время, когда на запрос возврата был получен ответ со статус-кодом 200.
+        type: string
+      bables:
+        nullable: true
+        description: Список тегов покупателя
+        type: array
+        items:
+          type: string
+      lastOrderShkId:
+        type: integer
+        description: Штрихкод единицы товара
+      lastOrderCreatedAt:
+        type: string
+        description: Дата покупки
+      color:
+        type: string
+        description: Цвет товара
+      subjectId:
+        type: integer
+        description: ID предмета
+      subjectName:
+        type: string
+        description: Название предмета
+      parentFeedbackId:
+        type: string
+        description: ID начального отзыва (`null`, если этот отзыв начальный)
+        nullable: true
+      childFeedbackId:
+        type: string
+        nullable: true
+        description: ID дополненного отзыва (`null`, если этот отзыв дополненный)
+Chat:
+  type: object
+  properties:
+    chatID:
+      type: string
+      description: ID чата
+      example: 1:4019cd7d-cca8-4e90-8b11-f78afbea42e3
+    replySign:
+      type: string
+      description: |
+        Подпись чата. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post)
+      example: 1:4019cd7d-cca8-4e90-8b11-f78afbea42e3:54828159:bc3a4c04079f5956cff170b25e73523aa1208b5c0bd7aea1e520a64ae3e212b1ebae6712661f3afd27520fa785fa3042254e8a3100ce00644322054ae7cfcd0e
+    clientID:
+      deprecated: true
+      type: string
+      description: ID покупателя. Поле будет отключено [2 февраля](https://dev.wildberries.ru/release-notes?id=466)
+    clientName:
+      type: string
+      description: Имя покупателя
+      example: Иван
+    goodCard:
+      $ref: '#/GoodCard'
+    lastMessage:
+      description: Последнее сообщение в чате
+      allOf:
+        - $ref: '#/LastMessage'
+ChatsResponse:
+  type: object
+  properties:
+    result:
+      type: array
+      items:
+        $ref: '#/Chat'
+    errors:
+      description: Ошибки, если есть
+      nullable: true
+      type: array
+      example: null
+      items:
+        type: string
+Event:
+  type: object
+  properties:
+    chatID:
+      type: string
+      description: ID чата
+    eventID:
+      type: string
+      description: ID события
+    eventType:
+      $ref: '#/EventType'
+    isNewChat:
+      type: boolean
+      description: |
+        Признак нового чата:
+        - `false` — чат не новый
+        - `true` — чат новый
+    message:
+      type: object
+      description: Данные сообщения
+      properties:
+        attachments:
+          $ref: '#/EventAttachments'
+        text:
+          type: string
+          description: Текст сообщения
+    source:
+      type: string
+      description: |
+        Источник отправки сообщения:
+        - `seller-portal` — портал продавцов
+        - `seller-public-api` — API Чата с покупателями
+        - `rusite` — портал покупателей
+        - `global` — портал `global.wildberries.ru`
+        - `ios` —  мобильная операционная система от **Apple**
+        - `android` — операционная система **Android** от **Google**
+    addTimestamp:
+      type: integer
+      description: Время появления события на сервере. Формат Unix timestamp
+    addTime:
+      type: string
+      description: Время появления события на сервере в UTC
+    replySign:
+      type: string
+      description: |
+        Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post)
+    sender:
+      $ref: '#/Sender'
+    clientID:
+      deprecated: true
+      type: string
+      description: ID покупателя. Поле будет отключено [2 февраля](https://dev.wildberries.ru/release-notes?id=466)
+    clientName:
+      type: string
+      description: Имя покупателя
+EventAttachments:
+  type: object
+  description: Вложения
+  properties:
+    goodCard:
+      $ref: '#/GoodCard'
+    files:
+      type: array
+      description: Файлы
+      items:
+        $ref: '#/File'
+    images:
+      type: array
+      description: Изображения
+      items:
+        $ref: '#/Image'
+EventType:
+  type: string
+  description: |
+    Тип события:
+    - `message` — сообщение
+  enum:
+    - message
+File:
+  type: object
+  properties:
+    contentType:
+      type: string
+      description: Тип файла
+    date:
+      type: string
+      description: Дата загрузки файла
+    downloadID:
+      description: ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
+      type: string
+    name:
+      type: string
+      description: Название файла
+    url:
+      type: string
+      description: URL для получения файла
+      nullable: false
+    size:
+      type: integer
+      description: Размер файла в байтах
+GoodCard:
+  type: object
+  description: Информация о заказе
+  properties:
+    date:
+      type: string
+      description: Дата заказа
+    nmID:
+      type: integer
+      description: Артикул WB
+    price:
+      type: integer
+      description: Фактическая цена с учетом всех скидок. Взимается с покупателя
+    priceCurrency:
+      type: string
+      description: Валюта
+    rid:
+      type: string
+      description: |
+        Уникальный ID заказа. <br>
+        Примечание: `rid` — это `srid` в ответах методов:
+          - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+          - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+          - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+          - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+          - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+    size:
+      type: string
+      description: Размер товара, соответствует `wbSize` в [карточке товара](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post)
+    statusID:
+      type: integer
+      deprecated: true
+      description: |
+        Поле будет отключено [10 февраля](https://dev.wildberries.ru/release-notes?id=469)
+LastMessage:
+  type: object
+  example:
+    text: Можно заказать 100 штук?
+    addTimestamp: 1766138234889
+  properties:
+    text:
+      type: string
+      description: Текст сообщения
+    addTimestamp:
+      type: integer
+      description: Время сообщения
+Image:
+  type: object
+  description: Изображение
+  properties:
+    date:
+      type: string
+      description: Дата загрузки изображения
+    downloadID:
+      description: ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
+      type: string
+    url:
+      type: string
+      description: URL для получения изображения
+MessageResponse:
+  type: object
+  properties:
+    errors:
+      type: array
+      description: Ошибки загрузки файлов, если есть
+      items:
+        type: string
+    result:
       type: object
       properties:
-        contentType:
-          type: string
-          description: Тип файла
-        date:
-          type: string
-          description: Дата загрузки файла
-        downloadID:
-          description: ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
-          type: string
-        name:
-          type: string
-          description: Название файла
-        url:
-          type: string
-          description: URL для получения файла
-          nullable: false
-        size:
+        addTime:
           type: integer
-          description: Размер файла в байтах
-    Image:
+          description: Время загрузки
+        chatID:
+          type: string
+          description: ID чата
+Sender:
+  type: string
+  description: |
+    Отправитель:
+    - `client` — покупатель
+    - `seller` — продавец
+    - `wb` — Wildberries
+  enum:
+    - client
+    - seller
+    - wb
+EventsResponse:
+  type: object
+  properties:
+    result:
+      $ref: '#/EventsResult'
+    errors:
+      description: Ошибки, если есть
+      nullable: true
+      type: array
+      items:
+        type: string
+EventsResult:
+  type: object
+  properties:
+    next:
+      type: integer
+      description: Пагинатор. Значение поля необходимо указать в запросе для получения следующего пакета данных
+      format: Unix timestamp
+    newestEventTime:
+      description: Время новейшего события в ответе
+      type: string
+      format: date-time
+    oldestEventTime:
+      description: Время старейшего события в ответе
+      type: string
+      format: date-time
+    totalEvents:
+      type: integer
+      description: Количество событий
+    events:
+      type: array
+      items:
+        $ref: '#/Event'
+domain.ReviewPinMethod:
+  type: string
+  enum:
+    - subscription
+    - tariff
+  x-enum-varnames:
+    - PinMethodSubscription
+    - PinMethodTariff
+domain.ReviewPinOn:
+  type: string
+  enum:
+    - imt
+    - nm
+  x-enum-varnames:
+    - PinOnIMT
+    - PinOnNM
+domain.ReviewState:
+  type: string
+  enum:
+    - pinned
+    - unpinned
+  x-enum-varnames:
+    - StatePinned
+    - StateUnpinned
+openapi.PinReviewItem:
+  type: object
+  required:
+    - pinMethod
+    - pinOn
+    - feedbackId
+  properties:
+    pinMethod:
+      type: string
+      description: |
+        Метод закрепления:
+          - `subscription` — подписка Джем
+          - `tariff` — тарифная опция
+      example: subscription
+      enum:
+        - tariff
+        - subscription
+    pinOn:
+      type: string
+      description: |
+        Место закрепления отзыва:
+          - `nm` — карточка товара
+          - `imt` — группа [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+      example: imt
+      enum:
+        - nm
+        - imt
+    feedbackId:
+      type: string
+      description: ID отзыва
+      example: DibuRAImknLyiqgzvGcU
+openapi.PinReviewItemResult:
+  type: object
+  example:
+    data:
+      - feedbackId: VlbkVVl7mtw37wуWkJZz
+        pinId: 18577062
+        pinMethod: subscription
+        pinOn: imt
+        isErrors: false
+      - feedbackId: DibuRAImknLyiqgzvGcU
+        pinMethod: tariff
+        pinOn: imt
+        isErrors: true
+        errors:
+          - status: itemNotFound
+            title: item not found
+            detail: item not found or does not belong to seller
+            requestId: 0414dc48df701618e0a3bfc414fe3136
+            origin: pin-open-api
+  properties:
+    data:
+      type: array
+      items:
+        type: object
+        properties:
+          feedbackId:
+            type: string
+            description: ID отзыва
+          pinId:
+            type: integer
+            description: |
+              ID операции закрепления. Если поле отсутствует — закрепить отзыв не удалось
+          pinMethod:
+            type: string
+            description: |
+              Метод закрепления:
+                - `subscription` — подписка Джем
+                - `tariff` — тарифная опция
+            enum:
+              - tariff
+              - subscription
+          pinOn:
+            type: string
+            description: |
+              Место закрепления отзыва:
+                - `nm` — карточка товара
+                - `imt` — группа [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+            enum:
+              - nm
+              - imt
+          isErrors:
+            type: boolean
+            description: Есть ли ошибки
+          errors:
+            type: array
+            description: Детали ошибок
+            items:
+              $ref: '#/openapi.ResultErr'
+            example:
+              - status: itemNotFound
+                title: item not found
+                detail: item not found or does not belong to seller
+                requestId: 0414dс48df701618e0а3bfc414fe3136
+                origin: pin-open-api
+        required:
+          - feedbackId
+          - isErrors
+          - pinMethod
+          - pinOn
+openapi.PinnedReviewItemResult:
+  type: object
+  properties:
+    changeStateAt:
+      type: string
+      description: Дата и время закрепления или открепления
+      format: date-time
+      example: '2020-01-01T15:04:05Z'
+    imtId:
+      type: integer
+      description: ID для [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+      example: 256971531
+    nmId:
+      type: integer
+      description: Артикул WB
+      example: 177974151
+    pinId:
+      type: integer
+      description: ID операции закрепления отзыва
+      example: 1857762
+    pinMethod:
+      type: string
+      description: |
+        Метод закрепления:
+          - `subscription` — подписка Джем
+          - `tariff` — тарифная опция
+      example: subscription
+      allOf:
+        - $ref: '#/domain.ReviewPinMethod'
+    pinOn:
+      type: string
+      description: |
+        Место закрепления отзыва:
+          - `nm` — карточка товара
+          - `imt` — группа [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+      example: imt
+      allOf:
+        - $ref: '#/domain.ReviewPinOn'
+    feedbackId:
+      type: string
+      description: ID отзыва
+      example: DibuRAImknLyiqgzvGcU
+    state:
+      type: string
+      description: |
+        Закреплён ли отзыв:
+          - `pinned` — да
+          - `unpinned` — нет
+      example: unpinned
+      allOf:
+        - $ref: '#/domain.ReviewState'
+    unpinnedCause:
+      type: string
+      description: |
+        Причина открепления отзыва:
+          - `sysTariffUnpinned` — закончилась подписка или тарифная опция
+          - `sysLimitReached` — закончился общий лимит по подписке
+          - `sysNoratingUnpinned` — отзыв исключён из рейтинга. Например, удалён или забанен
+          - `sysAdditionalSlot` — к карточке или к группе [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек прикреплено максимальное количество отзывов
+      example: sysTariffUnpinned
+      enum:
+        - sysTariffUnpinned
+        - sysLimitReached
+        - sysNoratingUnpinned
+        - sysAdditionalSlot
+  required:
+    - changeStateAt
+    - feedbackId
+    - imtId
+    - nmId
+    - pinId
+    - pinMethod
+    - pinOn
+    - state
+openapi.ResultErr:
+  type: object
+  properties:
+    origin:
+      type: string
+      description: ID внутреннего сервиса WB
+    detail:
+      type: string
+      description: Детали ошибки
+    requestId:
+      type: string
+      example: req-12345
+      description: ID запроса
+    status:
+      type: string
+      example: feedbackNotFound
+      enum:
+        - feedbackNotFound
+        - itemNotFound
+        - feedbackMismatch
+        - itemNoImages
+        - feedbackExcluded
+        - imtNotDisplayed
+        - globalLimitReached
+        - unitLimitReached
+        - tariffRestriction
+        - subscriptionRestriction
+        - alreadyPinned
+        - bodyNotValid
+      description: Статус
+    title:
+      type: string
+      example: feedbackNotFound
+      description: Заголовок ошибки
+  required:
+    - origin
+    - requestId
+    - status
+    - title
+openapi.SellerLimit:
+  properties:
+    perUnitLimit:
+      type: integer
+      description: Максимальное количество закреплённых отзывов в одной карточке товара или в группе [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек
+      example: 2
+    remaining:
+      type: integer
+      description: Сколько ещё отзывов можно закрепить
+      example: 5
+    totalLimit:
+      type: integer
+      description: Общий лимит закреплений
+      example: 15
+    unlimited:
+      type: boolean
+      description: |
+        Количество закреплённых отзывов не ограничено:
+          - `true` — да
+          - `false` — нет
+      example: false
+    used:
+      type: integer
+      description: Текущее количество закреплённых отзывов
+      example: 10
+  required:
+    - perUnitLimit
+    - remaining
+    - totalLimit
+    - unlimited
+    - used
+openapi.SellerLimitsResponse:
+  type: object
+  properties:
+    data:
       type: object
-      description: Изображение
       properties:
-        date:
-          type: string
-          description: Дата загрузки изображения
-        downloadID:
-          description: ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
-          type: string
-        url:
-          type: string
-          description: URL для получения изображения
+        subscription:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/openapi.SellerLimit'
+            - description: Лимиты по подписке
+        tariff:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/openapi.SellerLimit'
+            - description: Лимиты по тарифной опции
+respond.ResultErr:
+  type: object
+  properties:
+    detail:
+      type: string
+      description: Детали ошибки
+    origin:
+      type: string
+      description: ID внутреннего сервиса WB
+    requestId:
+      type: string
+      description: ID запроса
+    status:
+      type: integer
+      description: HTTP статус-код
+    title:
+      type: string
+      description: Заголовок ошибки
+  required:
+    - origin
+    - requestId
+    - status
+    - title
+respond.SuccessResponse:
+  type: object
+  properties:
+    data:
+      type: object
+  required:
+    - data

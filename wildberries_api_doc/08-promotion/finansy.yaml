@@ -10,29 +10,40 @@ tags:
     description: Финансы endpoints
 paths:
   /adv/v1/balance:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Баланс
-      description: |
+      description: >
         Метод возвращает информацию о:
           - счёте кабинета Продвижения WB. Его пополняет продавец.
-          - балансе — максимальной сумме для оплаты камапнии по взаиморасчету: удержании средств из будущих продаж. Баланс пополнить нельзя, он рассчитывается автоматически на основе отчётов по продвижению.
+          - балансе — максимальной сумме для оплаты кампании по взаиморасчету: удержании средств из будущих продаж. Баланс пополнить нельзя, он рассчитывается автоматически на основе отчётов по продвижению.
           - бонусных начислениях WB.
 
-        Информацию о бюджете кампаний можно получить в [отдельном методе](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget/get).
+        Информацию о бюджете кампаний можно получить в [отдельном
+        методе](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget/get).
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+
+        | 1 сек | 1 запрос | 1 сек | 5 запросов |
+
         </div>
       tags:
         - Финансы
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -59,7 +70,9 @@ paths:
                           description: Промо-бонусы, ₽
                         percent:
                           type: integer
-                          description: Процент от суммы пополнения бюджета кампании, который можно оплатить промо-бонусами за один раз
+                          description: >-
+                            Процент от суммы пополнения бюджета кампании, который можно оплатить промо-бонусами за один
+                            раз
                         expiration_date:
                           type: string
                           format: ISO 8601
@@ -71,8 +84,8 @@ paths:
                 cashbacks:
                   - sum: 10672
                     percent: 50
-                    expiration_date: '2026-04-17T10:46:02.176174Z'
-        '400':
+                    expiration_date: "2026-04-17T10:46:02.176174Z"
+        "400":
           description: Неправильный запрос
           content:
             application/json:
@@ -80,25 +93,38 @@ paths:
                 type: string
               examples:
                 IncorrectSupplierIdAdv:
-                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/IncorrectSupplierIdAdv"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/budget:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Бюджет кампании
-      description: |
-        Метод возвращает информацию о бюджете [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) — максимальной сумме затрат на кампанию. Бюджет кампании можно [пополнить](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post).
+      description: >
+        Метод возвращает информацию о бюджете
+        [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get) — максимальной сумме затрат на
+        кампанию. Бюджет кампании можно
+        [пополнить](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post).
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса |
+
+        | 1 сек | 4 запроса | 250 мс | 4 запроса |
+
         </div>
       tags:
         - Финансы
@@ -111,7 +137,7 @@ paths:
             example: 1
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -131,7 +157,7 @@ paths:
                 cash: 0
                 netting: 0
                 total: 500
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             text/plain:
@@ -139,26 +165,38 @@ paths:
                 type: string
               examples:
                 CampaignNotBelongSeller:
-                  $ref: '#/components/examples/CampaignNotBelongSeller'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/CampaignNotBelongSeller"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/budget/deposit:
+    servers:
+      - url: https://advert-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Пополнение бюджета кампании
-      description: |
-        Метод пополняет [бюджет](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget/get) кампании в статусе `11` — на паузе. <br>
-        Чтобы запустить кампанию после пополнения бюджета, используйте метод [Запуск кампании](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1start/get).
+      description: >
+        Метод пополняет [бюджет](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget/get) кампании. <br>
+
+        Чтобы запустить кампанию после пополнения бюджета, используйте метод [Запуск
+        кампании](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1start/get).
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+
+        | 1 сек | 1 запрос | 1 сек | 5 запросов |
+
         </div>
       tags:
         - Финансы
@@ -182,28 +220,44 @@ paths:
                   type: integer
                   example: 5000
                 cashback_sum:
-                  description: |
+                  description: >
                     Сумма пополнения бюджета промо-бонусами.
+
                     <br>
-                    Пополнить можно только определённый процент от общей суммы, указанный в поле `percent` ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get).
+
+                    Пополнить можно только определённый процент от общей суммы, указанный в поле `percent` ответа метода
+                    получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get).
+
                     <br>
+
                     Оставшаяся часть общей суммы спишется с указанного источника пополнения.
-                    Пополнить можно только определённый процент от общей суммы, указанный в поле `percent` ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get).
+
+                    Пополнить можно только определённый процент от общей суммы, указанный в поле `percent` ответа метода
+                    получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get).
+
                     <br>
+
                     Оставшаяся часть общей суммы спишется с указанного источника пополнения.
+
                     <br>
+
                     Списать промо-бонусы можно только для источников пополнения:
                       - `0` — счёт
                       - `1` — баланс
                   type: integer
+                  nullable: true
                   example: 1000
                 cashback_percent:
-                  description: |
-                    Процент от суммы пополнения, который можно пополнить промо-бонусами. Нужно указать значение поля percent из ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get)
+                  description: >
+                    Процент от суммы пополнения, который можно пополнить промо-бонусами. Нужно указать значение поля
+                    percent из ответа метода получения [баланса](./promotion#tag/Finansy/paths/~1adv~1v1~1balance/get)
+
                     <br>
+
                     Если вы указали `cashback_sum`, параметр `cashback_percent` становится обязательным
                   example: 50
                   type: integer
+                  nullable: true
                 type:
                   description: |
                     Тип источника пополнения:
@@ -214,19 +268,21 @@ paths:
                   example: 1
                 return:
                   type: boolean
-                  description: Флаг возврата ответа (`true` — в ответе вернется обновлённый размер бюджета кампании, `false` или не указать параметр вообще — не вернётся.)
+                  description: >-
+                    Флаг возврата ответа (`true` — в ответе вернется обновлённый размер бюджета кампании, `false` или не
+                    указать параметр вообще — не вернётся.)
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ResponseWithReturn'
+                  - $ref: "#/components/schemas/ResponseWithReturn"
               examples:
                 ResponseWithReturn:
-                  $ref: '#/components/examples/ResponseWithReturn'
-        '400':
+                  $ref: "#/components/examples/ResponseWithReturn"
+        "400":
           description: Неправильный запрос
           content:
             application/json:
@@ -247,13 +303,17 @@ paths:
                 IncorrectType:
                   description: Неверный тип источника списания для пополнения промо-бонусами
                   value:
-                    error: 'Invalid Params: cashback can not be used with such type'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                    error: "Invalid Params: cashback can not be used with such type"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/upd:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Получение истории затрат
@@ -265,7 +325,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+        | 1 сек | 1 запрос | 1 сек | 5 запросов |
         </div>
       tags:
         - Финансы
@@ -276,7 +336,7 @@ paths:
           schema:
             type: string
             format: date
-            example: '2023-07-31'
+            example: "2023-07-31"
           required: true
         - name: to
           in: query
@@ -286,10 +346,10 @@ paths:
           schema:
             type: string
             format: date
-            example: '2023-08-02'
+            example: "2023-08-02"
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -338,7 +398,7 @@ paths:
                       type: integer
               example:
                 - updNum: 0
-                  updTime: '2023-07-31T12:12:54.060536+03:00'
+                  updTime: "2023-07-31T12:12:54.060536+03:00"
                   updSum: 24
                   advertId: 3355881
                   campName: лук лучок
@@ -353,7 +413,7 @@ paths:
                   advertType: 8
                   paymentType: Счет
                   advertStatus: 11
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             text/plain:
@@ -361,13 +421,17 @@ paths:
                 type: string
               examples:
                 IncorrectSupplierIdAdv:
-                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/IncorrectSupplierIdAdv"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/payments:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Получение истории пополнений счёта
@@ -379,7 +443,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
+        | 1 сек | 1 запрос | 1 сек | 5 запросов |
         </div>
       tags:
         - Финансы
@@ -390,7 +454,7 @@ paths:
           schema:
             type: string
             format: date
-            example: '2023-07-31'
+            example: "2023-07-31"
         - name: to
           in: query
           description: |
@@ -399,9 +463,9 @@ paths:
           schema:
             type: string
             format: date
-            example: '2023-08-02'
+            example: "2023-08-02"
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -443,20 +507,20 @@ paths:
                       type: string
               example:
                 - id: 1036666
-                  date: '2022-02-04T09:06:47.985843Z'
+                  date: "2022-02-04T09:06:47.985843Z"
                   sum: 600
                   type: 0
                   statusId: 1
-                  cardStatus: ''
+                  cardStatus: ""
                 - id: 55261296
-                  date: '2023-04-13T10:07:42'
+                  date: "2023-04-13T10:07:42"
                   sum: 1500
                   type: 3
                   statusId: 1
                   cardStatus: succeeded
-        '204':
+        "204":
           description: История пополнений счета не найдена
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
@@ -464,16 +528,8 @@ paths:
                 type: string
               examples:
                 IncorrectSupplierIdAdv:
-                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    ResponseWithReturn:
-      type: object
-      properties:
-        total:
-          type: integer
-          description: Размер обновлённого бюджета
+                  $ref: "#/components/examples/IncorrectSupplierIdAdv"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"

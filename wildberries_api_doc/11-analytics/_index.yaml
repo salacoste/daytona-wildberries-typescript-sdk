@@ -6,20 +6,20 @@ _description: |
 
   В разделе описаны методы получения:
     1. [Воронки продаж](/openapi/analytics#tag/Voronka-prodazh)
-    2. [Поисковых запросов](/openapi/analytics#tag/Poiskovye-zaprosy)
+    2. [Поисковых запросов по вашим товарам](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram)
     3. [Истории остатков](/openapi/analytics#tag/Istoriya-ostatkov)
     4. [Аналитики продавца в формате CSV](/openapi/analytics#tag/Analitika-prodavca-CSV)
 _original_file: 11-analytics.yaml
-_base_url: N/A
+_base_url: https://seller-analytics-api.wildberries.ru
 _shards:
   - file: voronka-prodazh.yaml
     domain: Воронка продаж
     endpoints: 3
     description: Sales Funnel
   - file: poiskovye-zaprosy.yaml
-    domain: Поисковые запросы
+    domain: Поисковые запросы по вашим товарам
     endpoints: 5
-    description: Search Queries
+    description: Search Queries for Your Products
   - file: istoriya-ostatkov.yaml
     domain: История остатков
     endpoints: 4
@@ -30,3 +30,5 @@ _shards:
     description: Seller Analytics CSV
 _shared_schemas: _schemas.yaml
 _total_endpoints: 16
+_base_urls:
+  - https://seller-analytics-api.wildberries.ru

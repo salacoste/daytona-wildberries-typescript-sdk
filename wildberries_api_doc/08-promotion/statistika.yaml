@@ -1,0 +1,1155 @@
+openapi: 3.0.1
+info:
+  title: 08-promotion - Статистика
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://advert-api.wildberries.ru
+tags:
+  - name: Статистика
+    description: Статистика endpoints
+paths:
+  /adv/v0/normquery/stats:
+    post:
+      x-readonly-method: true
+      servers:
+        - url: https://advert-api.wildberries.ru
+      x-category: advert
+      tags:
+        - Статистика
+      summary: Статистика поисковых кластеров
+      description: |
+        Метод возвращает статистику по поисковым кластерам за указанный период.<br>
+        Можно использовать только для кампаний с моделью оплаты `cpm` — за показы.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 10 запросов | 6 сек | 20 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0GetNormQueryStatsRequest"
+            example:
+              from: "2025-10-07"
+              to: "2025-10-08"
+              items:
+                - advert_id: 1825035
+                  nm_id: 983512347
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V0GetNormQueryStatsResponse"
+              example:
+                stats:
+                  - advert_id: 1825035
+                    nm_id: 983512347
+                    stats:
+                      - atbs: 68
+                        avg_pos: 3.6
+                        clicks: 2090
+                        cpc: 471
+                        cpm: 813
+                        ctr: 107.23
+                        norm_query: Фраза 1
+                        orders: 19
+                        views: 1949
+                      - atbs: 68
+                        avg_pos: 3.6
+                        clicks: 2090
+                        cpc: 471
+                        cpm: 813
+                        ctr: 107.23
+                        norm_query: Фраза 2
+                        orders: 19
+                        views: 1949
+                      - atbs: 68
+                        avg_pos: 3.6
+                        clicks: 2090
+                        cpc: 471
+                        cpm: 813
+                        ctr: 107.23
+                        norm_query: Фраза 3
+                        orders: 19
+                        views: 1949
+                      - atbs: 36
+                        avg_pos: 3.9
+                        clicks: 1847
+                        cpc: 278
+                        cpm: 445
+                        ctr: 96.4
+                        norm_query: Фраза 4
+                        orders: 28
+                        views: 1916
+                      - atbs: 36
+                        avg_pos: 3.9
+                        clicks: 1847
+                        cpc: 278
+                        cpm: 445
+                        ctr: 96.4
+                        norm_query: Фраза 5
+                        orders: 28
+                        views: 1916
+                      - atbs: 79
+                        avg_pos: 2.2
+                        clicks: 2468
+                        cpc: 106
+                        cpm: 819
+                        ctr: 145.01
+                        norm_query: Фраза 6
+                        orders: 14
+                        views: 1702
+                      - atbs: 79
+                        avg_pos: 2.2
+                        clicks: 2468
+                        cpc: 106
+                        cpm: 819
+                        ctr: 145.01
+                        norm_query: Фраза 7
+                        orders: 14
+                        views: 1702
+                      - atbs: 67
+                        avg_pos: 9.9
+                        clicks: 1166
+                        cpc: 250
+                        cpm: 837
+                        ctr: 70.33
+                        norm_query: Фраза 8
+                        orders: 26
+                        views: 1658
+                      - atbs: 67
+                        avg_pos: 9.9
+                        clicks: 1166
+                        cpc: 250
+                        cpm: 837
+                        ctr: 70.33
+                        norm_query: Фраза 9
+                        orders: 26
+                        views: 1658
+                      - atbs: 46
+                        avg_pos: 2
+                        clicks: 2927
+                        cpc: 122
+                        cpm: 468
+                        ctr: 186.43
+                        norm_query: Фраза 10
+                        orders: 23
+                        views: 1570
+                      - atbs: 46
+                        avg_pos: 2
+                        clicks: 2927
+                        cpc: 122
+                        cpm: 468
+                        ctr: 186.43
+                        norm_query: Фраза 11
+                        orders: 23
+                        views: 1570
+                      - atbs: 79
+                        avg_pos: 7.1
+                        clicks: 2447
+                        cpc: 67
+                        cpm: 426
+                        ctr: 163.9
+                        norm_query: Фраза 12
+                        orders: 13
+                        views: 1493
+                      - atbs: 79
+                        avg_pos: 7.1
+                        clicks: 2447
+                        cpc: 67
+                        cpm: 426
+                        ctr: 163.9
+                        norm_query: Фраза 13
+                        orders: 13
+                        views: 1493
+                      - atbs: 61
+                        avg_pos: 6
+                        clicks: 1391
+                        cpc: 370
+                        cpm: 980
+                        ctr: 99.29
+                        norm_query: Фраза 14
+                        orders: 27
+                        views: 1401
+                      - atbs: 61
+                        avg_pos: 6
+                        clicks: 1391
+                        cpc: 370
+                        cpm: 980
+                        ctr: 99.29
+                        norm_query: Фраза 15
+                        orders: 27
+                        views: 1401
+                      - atbs: 26
+                        avg_pos: 6.9
+                        clicks: 1029
+                        cpc: 88
+                        cpm: 459
+                        ctr: 77.43
+                        norm_query: Фраза 16
+                        orders: 3
+                        views: 1329
+                      - atbs: 26
+                        avg_pos: 6.9
+                        clicks: 1029
+                        cpc: 88
+                        cpm: 459
+                        ctr: 77.43
+                        norm_query: Фраза 17
+                        orders: 3
+                        views: 1329
+                      - atbs: 67
+                        avg_pos: 3.8
+                        clicks: 1371
+                        cpc: 448
+                        cpm: 534
+                        ctr: 104.18
+                        norm_query: Фраза 18
+                        orders: 3
+                        views: 1316
+                      - atbs: 67
+                        avg_pos: 3.8
+                        clicks: 1371
+                        cpc: 448
+                        cpm: 534
+                        ctr: 104.18
+                        norm_query: Фраза 19
+                        orders: 3
+                        views: 1316
+                      - atbs: 18
+                        avg_pos: 10
+                        clicks: 2944
+                        cpc: 472
+                        cpm: 839
+                        ctr: 256
+                        norm_query: Фраза 20
+                        orders: 4
+                        views: 1150
+                      - atbs: 18
+                        avg_pos: 10
+                        clicks: 2944
+                        cpc: 472
+                        cpm: 839
+                        ctr: 256
+                        norm_query: Фраза 21
+                        orders: 4
+                        views: 1150
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: invalid payment_type value
+                origin: camp-api-public-cache
+                request_id: 7e5cb1f106cc6e85b5b29eb2e8815da2
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v2/fullstats:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: advert
+      deprecated: true
+      security:
+        - HeaderApiKey: []
+      summary: Статистика кампаний
+      description: >
+        Метод будет отключён 30 сентября. Используйте [актуальный
+        метод](/openapi/promotion#tag/Statistika/paths/~1adv~1v3~1fullstats/get).
+
+
+        <div class="description_limit">
+
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+
+        | Период | Лимит | Интервал | Всплеск |
+
+        | --- | --- | --- | --- |
+
+        | 1 мин | 1 запрос | 1 мин | 5 запросов |
+
+        </div>
+      tags:
+        - Статистика
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                oneOf:
+                  - $ref: "#/components/schemas/RequestWithDate"
+                  - $ref: "#/components/schemas/RequestWithInterval"
+                  - $ref: "#/components/schemas/RequestWithCampaignID"
+            examples:
+              RequestWithDate:
+                $ref: "#/components/examples/RequestWithDate"
+              RequestWithInterval:
+                $ref: "#/components/examples/RequestWithInterval"
+              RequestWithCampaignID:
+                $ref: "#/components/examples/RequestWithoutIDParam"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ResponseWithDate"
+                  - $ref: "#/components/schemas/ResponseWithInterval"
+              examples:
+                ResponseWithDate:
+                  $ref: "#/components/examples/ResponseWithDate"
+                ResponseWithInterval:
+                  $ref: "#/components/examples/ResponseWithInterval"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseAdvError1"
+              examples:
+                CampaignNotFoundAdv:
+                  $ref: "#/components/examples/CampaignNotFoundAdv"
+                responseIncorrectBeginDate:
+                  $ref: "#/components/examples/responseIncorrectBeginDate"
+                responseIncorrectEndDate:
+                  $ref: "#/components/examples/responseIncorrectEndDate"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v3/fullstats:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: advert
+      security:
+        - HeaderApiKey: []
+      summary: Статистика кампаний
+      description: |
+        Метод формирует статистику для кампаний независимо от типа.
+        <br><br>
+        Максимальный период в запросе — 31 день.
+        <br><br>
+        Для кампаний в статусах `7`, `9` и `11`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 1 запрос |
+        </div>
+      tags:
+        - Статистика
+      parameters:
+        - name: ids
+          in: query
+          description: ID кампаний, максимум 50 значений
+          schema:
+            type: string
+            example: 22161678,28449281,28155229
+          required: true
+        - name: beginDate
+          in: query
+          description: Дата начала интервала
+          schema:
+            type: string
+            format: date
+          required: true
+          example: "2025-09-07"
+        - name: endDate
+          in: query
+          description: Дата окончания интервала
+          schema:
+            type: string
+            format: date
+          required: true
+          example: "2025-09-08"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFullStats"
+              example:
+                - advertId: 22161678
+                  atbs: 9
+                  boosterStats:
+                    - avg_position: 24
+                      date: "2025-09-07"
+                      nm: 221725278
+                    - avg_position: 35
+                      date: "2025-09-08"
+                      nm: 221725278
+                  canceled: 0
+                  clicks: 139
+                  cpc: 4.76
+                  cr: 0
+                  ctr: 10.12
+                  days:
+                    - apps:
+                        - appType: 1
+                          atbs: 0
+                          canceled: 0
+                          clicks: 1
+                          cpc: 10.19
+                          cr: 0
+                          ctr: 4.76
+                          nms:
+                            - atbs: 0
+                              canceled: 0
+                              clicks: 1
+                              cpc: 10.19
+                              cr: 0
+                              ctr: 4.76
+                              name: постер 2
+                              nmId: 221725278
+                              orders: 0
+                              shks: 0
+                              sum: 10.19
+                              sum_price: 0
+                              views: 21
+                          orders: 0
+                          shks: 0
+                          sum: 10.19
+                          sum_price: 0
+                          views: 21
+                        - appType: 32
+                          atbs: 1
+                          canceled: 0
+                          clicks: 54
+                          cpc: 4.26
+                          cr: 0
+                          ctr: 11.37
+                          nms:
+                            - atbs: 1
+                              canceled: 0
+                              clicks: 54
+                              cpc: 4.26
+                              cr: 0
+                              ctr: 11.37
+                              name: постер 2
+                              nmId: 221725278
+                              orders: 0
+                              shks: 0
+                              sum: 230.08
+                              sum_price: 0
+                              views: 475
+                          orders: 0
+                          shks: 0
+                          sum: 230.08
+                          sum_price: 0
+                          views: 475
+                        - appType: 64
+                          atbs: 1
+                          canceled: 0
+                          clicks: 20
+                          cpc: 6.91
+                          cr: 0
+                          ctr: 6.94
+                          nms:
+                            - atbs: 1
+                              canceled: 0
+                              clicks: 20
+                              cpc: 6.91
+                              cr: 0
+                              ctr: 6.94
+                              name: постер 2
+                              nmId: 221725278
+                              orders: 0
+                              shks: 0
+                              sum: 138.23
+                              sum_price: 0
+                              views: 288
+                          orders: 0
+                          shks: 0
+                          sum: 138.23
+                          sum_price: 0
+                          views: 288
+                      atbs: 2
+                      canceled: 0
+                      clicks: 75
+                      cpc: 5.05
+                      cr: 0
+                      ctr: 9.57
+                      date: "2025-09-07T00:00:00Z"
+                      orders: 0
+                      shks: 0
+                      sum: 378.49
+                      sum_price: 0
+                      views: 784
+                    - apps:
+                        - appType: 32
+                          atbs: 5
+                          canceled: 0
+                          clicks: 45
+                          cpc: 3.58
+                          cr: 0
+                          ctr: 13.43
+                          nms:
+                            - atbs: 5
+                              canceled: 0
+                              clicks: 45
+                              cpc: 3.58
+                              cr: 0
+                              ctr: 13.43
+                              name: постер 2
+                              nmId: 221725278
+                              orders: 0
+                              shks: 0
+                              sum: 161.02
+                              sum_price: 0
+                              views: 335
+                          orders: 0
+                          shks: 0
+                          sum: 161.02
+                          sum_price: 0
+                          views: 335
+                        - appType: 64
+                          atbs: 2
+                          canceled: 0
+                          clicks: 19
+                          cpc: 6.05
+                          cr: 0
+                          ctr: 8.02
+                          nms:
+                            - atbs: 2
+                              canceled: 0
+                              clicks: 19
+                              cpc: 6.05
+                              cr: 0
+                              ctr: 8.02
+                              name: постер 2
+                              nmId: 221725278
+                              orders: 0
+                              shks: 0
+                              sum: 114.95
+                              sum_price: 0
+                              views: 237
+                          orders: 0
+                          shks: 0
+                          sum: 114.95
+                          sum_price: 0
+                          views: 237
+                        - appType: 1
+                          atbs: 0
+                          canceled: 0
+                          clicks: 0
+                          cpc: 0
+                          cr: 0
+                          ctr: 0
+                          nms:
+                            - atbs: 0
+                              canceled: 0
+                              clicks: 0
+                              cpc: 0
+                              cr: 0
+                              ctr: 0
+                              name: постер 2
+                              nmId: 221725278
+                              orders: 0
+                              shks: 0
+                              sum: 6.79
+                              sum_price: 0
+                              views: 17
+                          orders: 0
+                          shks: 0
+                          sum: 6.79
+                          sum_price: 0
+                          views: 17
+                      atbs: 7
+                      canceled: 0
+                      clicks: 64
+                      cpc: 4.42
+                      cr: 0
+                      ctr: 10.87
+                      date: "2025-09-08T00:00:00Z"
+                      orders: 0
+                      shks: 0
+                      sum: 282.76
+                      sum_price: 0
+                      views: 589
+                  orders: 0
+                  shks: 0
+                  sum: 661.25
+                  sum_price: 0
+                  views: 1373
+                - advertId: 28449281
+                  atbs: 1
+                  canceled: 0
+                  clicks: 9
+                  cpc: 35.94
+                  cr: 11.11
+                  ctr: 1.76
+                  days:
+                    - apps:
+                        - appType: 32
+                          atbs: 1
+                          canceled: 0
+                          clicks: 7
+                          cpc: 26.31
+                          cr: 14.29
+                          ctr: 2.41
+                          nms:
+                            - atbs: 1
+                              canceled: 0
+                              clicks: 5
+                              cpc: 33.02
+                              cr: 20
+                              ctr: 1.92
+                              name: Футболка желтая
+                              nmId: 398309059
+                              orders: 1
+                              shks: 1
+                              sum: 165.1
+                              sum_price: 500
+                              views: 260
+                            - atbs: 0
+                              canceled: 0
+                              clicks: 2
+                              cpc: 9.53
+                              cr: 0
+                              ctr: 6.67
+                              name: Футболка салатовая
+                              nmId: 301957154
+                              orders: 0
+                              shks: 0
+                              sum: 19.05
+                              sum_price: 0
+                              views: 30
+                          orders: 1
+                          shks: 1
+                          sum: 184.15
+                          sum_price: 500
+                          views: 290
+                        - appType: 64
+                          atbs: 0
+                          canceled: 0
+                          clicks: 2
+                          cpc: 62.87
+                          cr: 0
+                          ctr: 1.01
+                          nms:
+                            - atbs: 0
+                              canceled: 0
+                              clicks: 1
+                              cpc: 12.7
+                              cr: 0
+                              ctr: 5
+                              name: Футболка салатовая
+                              nmId: 301957154
+                              orders: 0
+                              shks: 0
+                              sum: 12.7
+                              sum_price: 0
+                              views: 20
+                            - atbs: 0
+                              canceled: 0
+                              clicks: 1
+                              cpc: 113.03
+                              cr: 0
+                              ctr: 0.56
+                              name: Футболка желтая
+                              nmId: 398309059
+                              orders: 0
+                              shks: 0
+                              sum: 113.03
+                              sum_price: 0
+                              views: 178
+                          orders: 0
+                          shks: 0
+                          sum: 125.73
+                          sum_price: 0
+                          views: 198
+                        - appType: 1
+                          atbs: 0
+                          canceled: 0
+                          clicks: 0
+                          cpc: 0
+                          cr: 0
+                          ctr: 0
+                          nms:
+                            - atbs: 0
+                              canceled: 0
+                              clicks: 0
+                              cpc: 0
+                              cr: 0
+                              ctr: 0
+                              name: Футболка желтая
+                              nmId: 398309059
+                              orders: 0
+                              shks: 0
+                              sum: 13.59
+                              sum_price: 0
+                              views: 22
+                          orders: 0
+                          shks: 0
+                          sum: 13.59
+                          sum_price: 0
+                          views: 22
+                      atbs: 1
+                      canceled: 0
+                      clicks: 9
+                      cpc: 35.94
+                      cr: 11.11
+                      ctr: 1.76
+                      date: "2025-09-08T00:00:00Z"
+                      orders: 1
+                      shks: 1
+                      sum: 323.47
+                      sum_price: 500
+                      views: 510
+                  orders: 1
+                  shks: 1
+                  sum: 323.47
+                  sum_price: 500
+                  views: 510
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FullStatsError"
+              example:
+                detail: invalid ids
+                origin: camp-api-public-cache
+                request_id: 40a229f3775b03585b65420c787aaebe
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v2/auto/stat-words:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    get:
+      deprecated: true
+      x-readonly-method: true
+      x-category: advert
+      security:
+        - HeaderApiKey: []
+      summary: Статистика кампании с единой ставкой по кластерам фраз
+      description: |
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=429)
+      tags:
+        - Статистика
+      parameters:
+        - name: id
+          in: query
+          description: ID кампании
+          schema:
+            type: integer
+            example: 1234
+          required: true
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  excluded:
+                    description: >-
+                      Исключения (минус-фразы) для товаров из кампании. Можно задать помощью метода [установка/удаление
+                      минус-фраз](./ru/openapi/promotion#tag/Parametry-kampanij/paths/~1adv~1v1~1search~1set-phrase/post)
+                      или в настройках кампании в личном кабинете
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - Samsung
+                      - Xiaomi
+                  clusters:
+                    description: Кластеры ключевых фраз
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        cluster:
+                          description: Кластер — набор похожих ключевых фраз
+                          type: string
+                          example: Телефон
+                        count:
+                          description: Сколько раз товары показывались по всем фразам из кластера
+                          type: integer
+                          example: 100
+                        keywords:
+                          description: Ключевые фразы из кластера, по которым товары показывались хотя бы один раз
+                          type: array
+                          items:
+                            type: string
+                          example:
+                            - Телефон
+                            - Мобильный телефон
+        "204":
+          description: Кампания не найдена
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseAdvError1"
+              examples:
+                CampaignNotFoundAdv:
+                  $ref: "#/components/examples/CampaignNotFoundAdv"
+                AvailableOnlyForAutoCampaign:
+                  $ref: "#/components/examples/AvailableOnlyForAutoCampaign"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v1/stat/words:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    get:
+      deprecated: true
+      x-readonly-method: true
+      x-category: advert
+      security:
+        - HeaderApiKey: []
+      summary: Статистика кампании c ручной ставкой по ключевым фразам
+      description: |
+        Данный метод устарел. Он будет удалён [15 января](https://dev.wildberries.ru/release-notes?id=385)
+      tags:
+        - Статистика
+      parameters:
+        - name: id
+          in: query
+          description: ID кампании
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  words:
+                    description: Блок информации по ключевым фразам
+                    type: object
+                    properties:
+                      phrase:
+                        description: Фразовое соответствие (минус фразы)
+                        type: array
+                        items:
+                          type: string
+                      strong:
+                        description: Точное соответствие (минус фразы)
+                        type: array
+                        items:
+                          type: string
+                      excluded:
+                        description: Минус фразы из поиска
+                        type: array
+                        items:
+                          type: string
+                      pluse:
+                        description: Фиксированные фразы
+                        type: array
+                        items:
+                          type: string
+                      keywords:
+                        description: Блок со статистикой по ключевым фразам
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            keyword:
+                              description: Ключевая фраза
+                              type: string
+                            count:
+                              description: Количество просмотров по ключевой фразе
+                              type: integer
+                      fixed:
+                        description: |
+                          Фиксированные ключевые фразы (`true` — включены, `false` — выключены)
+                        type: boolean
+                  stat:
+                    description: >
+                      Массив информации по статистике.<br>
+
+                      **Первый элемент массива** с `keyword: "Всего по кампании"` содержит суммарную информацию обо всех
+                      ключевых фразах.<br>
+
+                      **Каждый следующий элемент массива** содержит информацию об отдельных ключевых фразах.<br>
+
+                      Отображается 60 ключевых фраз с наибольшим количеством просмотров.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        advertId:
+                          description: ID кампании в системе WB
+                          type: integer
+                        keyword:
+                          description: Ключевая фраза
+                          type: string
+                        advertName:
+                          description: Поле перманентно отключено
+                          type: string
+                        campaignName:
+                          description: Название кампании
+                          type: string
+                        begin:
+                          description: Дата запуска кампании
+                          type: string
+                          format: date-time
+                        end:
+                          description: Дата завершения кампании
+                          type: string
+                          format: date-time
+                        views:
+                          description: Количество просмотров
+                          type: integer
+                        clicks:
+                          description: Количество кликов
+                          type: integer
+                        frq:
+                          description: Частота — отношение количества просмотров к количеству уникальных пользователей
+                          type: integer
+                        ctr:
+                          description: |
+                            Кликабельность — отношение числа кликов к количеству показов, %
+                          type: number
+                        cpc:
+                          description: Стоимость клика, ₽
+                          type: number
+                        duration:
+                          description: Длительность кампании, в секундах
+                          type: integer
+                        sum:
+                          description: Затраты, ₽
+                          type: number
+              example:
+                words:
+                  phrase: []
+                  strong: []
+                  excluded: []
+                  pluse:
+                    - детское постельное белье для мальчика 1.5
+                  keywords:
+                    - keyword: постельное белье 1.5
+                      count: 772
+                  fixed: true
+                stat:
+                  - advertId: 7703570
+                    keyword: Всего по кампании
+                    advertName: ""
+                    campaignName: Бельё
+                    begin: "2023-07-03T15:15:38.287441+03:00"
+                    end: "2023-07-03T15:15:38.287441+03:00"
+                    views: 1846
+                    clicks: 73
+                    frq: 1
+                    ctr: 3.95
+                    cpc: 7.88
+                    duration: 769159
+                    sum: 575.6
+                  - advertId: 7703570
+                    keyword: постельное белье 1.5 детское
+                    advertName: ""
+                    campaignName: Бельё
+                    begin: "2023-07-03T15:15:38.287441+03:00"
+                    end: "2023-07-03T15:15:38.287441+03:00"
+                    views: 1846
+                    clicks: 73
+                    frq: 1
+                    ctr: 3.95
+                    cpc: 7.88
+                    duration: 769159
+                    sum: 575.6
+        "400":
+          description: Неправильный запрос
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v0/stats/keywords:
+    get:
+      deprecated: true
+      x-readonly-method: true
+      x-category: advert
+      servers:
+        - url: https://advert-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Статистика
+      summary: Статистика по ключевым фразам
+      description: |
+        Данный метод устарел. Он будет удалён [15 января](https://dev.wildberries.ru/release-notes?id=385)
+      parameters:
+        - in: query
+          name: advert_id
+          required: true
+          description: ID кампании
+          schema:
+            type: integer
+          example: 123456789
+        - in: query
+          name: from
+          required: true
+          description: Начало периода
+          schema:
+            type: string
+            format: date
+          example: "2024-08-10"
+        - in: query
+          required: true
+          name: to
+          description: Конец периода
+          schema:
+            type: string
+            format: date
+          example: "2024-08-12"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V0KeywordsStatisticsResponse"
+              example:
+                keywords:
+                  - date: "2024-08-12"
+                    stats:
+                      - clicks: 68
+                        ctr: 3.73
+                        keyword: светильники
+                        sum: 565.75
+                        views: 1825
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                DateRangeExceeded:
+                  $ref: "#/components/examples/DateRangeExceeded"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                CampaignNotFound:
+                  $ref: "#/components/examples/CampaignNotFound"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v1/stats:
+    servers:
+      - url: https://advert-media-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: advert
+      security:
+        - HeaderApiKey: []
+      summary: Статистика медиакампаний
+      description: >
+        Метод формирует статистику кампаний сервиса [WB Медиа](https://cmp.wildberries.ru/cmpf/statistics). Статистику
+        можно группировать по датам и/или интервалам.
+
+
+        <div class="description_limit">
+
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+
+        | Период | Лимит | Интервал | Всплеск |
+
+        | --- | --- | --- | --- |
+
+        | 1 сек | 10 запросов | 100 мс | 10 запросов |
+
+        </div>
+      tags:
+        - Статистика
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              maxItems: 100
+              items:
+                oneOf:
+                  - $ref: "#/components/schemas/RequestWithDate"
+                  - $ref: "#/components/schemas/RequestWithInterval"
+                  - $ref: "#/components/schemas/RequestWithCampaignID"
+            examples:
+              RequestWithDate:
+                $ref: "#/components/examples/RequestWithDate"
+              RequestWithInterval:
+                $ref: "#/components/examples/RequestWithInterval"
+              RequestWithoutParam:
+                $ref: "#/components/examples/RequestWithoutParam"
+              RequestAggregate:
+                $ref: "#/components/examples/RequestAggregate"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/StatInterval"
+                    - $ref: "#/components/schemas/StatDate"
+                    - $ref: "#/components/schemas/Stat"
+              examples:
+                RespStatMediaInterval:
+                  $ref: "#/components/examples/RespStatMediaInterval"
+                RespStatMediaDates:
+                  $ref: "#/components/examples/RespStatMediaDates"
+                RespStatMediaWithoutParam:
+                  $ref: "#/components/examples/RespStatMediaWithoutParam"
+                RespStatMediaAggregate:
+                  $ref: "#/components/examples/RespStatMediaAggregate"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseAdvError1"
+              examples:
+                invalidAdvert:
+                  $ref: "#/components/examples/incorrectRequestBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"

@@ -1,52 +1,50 @@
 _module: 08-promotion
 _description: |
-  <div class="description_important">
-      Узнать больше о маркетинге и продвижении можно в <a href="https://seller.wildberries.ru/instructions/category/59d92bd3-6ea0-40f2-b762-ca8835d7d42e?goBackOption=prevRoute&categoryId=479385c6-de01-4b4d-ad4e-ed941e65582e">справочном центре</a>
-  </div>
-
-  Методы маркетинга и продвижения позволяют:
-    1. Получать информацию о кампаниях [продвижения](/openapi/promotion#tag/Kampanii) и [медиакампаниях](/openapi/promotion#tag/Media).
-    2. [Создавать](/openapi/promotion#tag/Sozdanie-kampanij) и [управлять](/openapi/promotion#tag/Upravlenie-kampaniyami) кампаниями.
-    3. Настраивать [параметры](/openapi/promotion#tag/Parametry-kampanij) кампаний — кластеры фраз, продвигаемые товары и так далее.
-    4. Управлять [финансами](/openapi/promotion#tag/Finansy) кампаний.
-    5. Выгружать [статистику](/openapi/promotion#tag/Statistika) кампаний продвижения и медиакампаний.
-    6. Работать с [календарём акций](/openapi/promotion#tag/Kalendar-akcij).
-
-  Данные синхронизируются с базой раз в 3 минуты. Статусы кампаний меняются раз в минуту. Ставки кампаний меняются раз в 30 секунд.
+  Маркетинг и продвижение — кампании, поисковые кластеры, медиакампании, статистика, финансы, акции.
 _original_file: 08-promotion.yaml
 _base_url: N/A
 _shards:
   - file: kampanii.yaml
     domain: Кампании
-    endpoints: 3
-    description: Campaigns
+    endpoints: 4
+    description: Campaign listing and info
   - file: sozdanie-kampaniy.yaml
     domain: Создание кампаний
     endpoints: 6
-    description: Campaign Creation
+    description: Campaign creation and bid minimums
   - file: upravlenie-kampaniyami.yaml
     domain: Управление кампаниями
-    endpoints: 8
-    description: Campaign Management
+    endpoints: 9
+    description: Campaign management (start/stop/delete/rename/bids)
   - file: parametry-kampaniy.yaml
     domain: Параметры кампаний
     endpoints: 7
-    description: Campaign Parameters
+    description: Campaign parameters (subjects, nms, auction settings)
+  - file: poiskovye-klastery.yaml
+    domain: Поисковые кластеры
+    endpoints: 5
+    description: Search cluster stats, bids, minus phrases (NEW in Feb 2026)
   - file: finansy.yaml
     domain: Финансы
     endpoints: 5
-    description: Finances
+    description: Balance, budget, deposit, spending history, payments
   - file: media.yaml
     domain: Медиа
     endpoints: 3
-    description: Media
+    description: Media campaign count, list, details
   - file: statistika.yaml
     domain: Статистика
-    endpoints: 6
-    description: Statistics
+    endpoints: 7
+    description: Campaign statistics (full stats, keyword stats, media stats)
   - file: kalendar-aktsiy.yaml
     domain: Календарь акций
     endpoints: 4
-    description: Promotion Calendar
+    description: Promotions calendar (list, details, nomenclatures, upload)
 _shared_schemas: _schemas.yaml
-_total_endpoints: 42
+_total_endpoints: 50
+_deprecated_endpoints: 16
+_new_endpoints_feb_2026: 9
+_base_urls:
+  - https://advert-api.wildberries.ru
+  - https://advert-media-api.wildberries.ru
+  - https://dp-calendar-api.wildberries.ru

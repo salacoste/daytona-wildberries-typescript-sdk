@@ -1,16 +1,21 @@
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
-  title: 12-reports - Скрытые товары
-  description: Extracted from original file for agent processing
-  version: 1.0.0-shard
-servers:
-  - url: https://seller-analytics-api.wildberries.ru
+  title: Скрытые товары
+  version: reports
 tags:
   - name: Скрытые товары
-    description: Скрытые товары endpoints
+    description: ''
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+security:
+  - HeaderApiKey: []
 paths:
   /api/v1/analytics/banned-products/blocked:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -24,7 +29,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 10 секунд | 1 запрос | 10 секунд | 6 запросов |
+        | 10 сек | 1 запрос | 10 сек | 6 запросов |
         </div>
       parameters:
         - in: query
@@ -122,11 +127,15 @@ paths:
                 requestId: 94b52fca-8403-49fb-85dd-95dfb73160ad
                 origin: banreportsvc-api
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '429':
-          $ref: '#/components/responses/429'
+          $ref: '_schemas.yaml#/components/responses/429'
   /api/v1/analytics/banned-products/shadowed:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -140,7 +149,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 10 секунд | 1 запрос | 10 секунд | 6 запросов |
+        | 10 сек | 1 запрос | 10 сек | 6 запросов |
         </div>
       parameters:
         - in: query
@@ -238,7 +247,12 @@ paths:
                 requestId: 064f6c9e-924e-4e13-b551-0b89e3077938
                 origin: banreportsvc-api
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '429':
-          $ref: '#/components/responses/429'
-components: {}
+          $ref: '_schemas.yaml#/components/responses/429'
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

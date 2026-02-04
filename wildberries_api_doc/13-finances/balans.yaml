@@ -1,0 +1,51 @@
+_tag: "Баланс"
+_tag_en: "Balance"
+_endpoints: 1
+_base_url: "https://finance-api.wildberries.ru"
+paths:
+  /api/v1/account/balance:
+    servers:
+      - url: https://finance-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: finance
+      security:
+        - HeaderApiKey: []
+      summary: Получить баланс продавца
+      description: |
+        Метод возвращает данные виджета баланса на [главной странице](https://seller.wildberries.ru) портала продавцов.
+        <br><br>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 1 запрос | 1 мин | 1 запрос |
+        </div>
+      tags:
+        - Баланс
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    example: RUB
+                    type: string
+                    description: Валюта
+                  current:
+                    example: 10196.21
+                    type: number
+                    description: Текущий баланс продавца
+                  for_withdraw:
+                    example: 6395.8
+                    type: number
+                    description: Сумма, доступная к выводу
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'

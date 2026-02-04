@@ -1,0 +1,326 @@
+openapi: 3.0.1
+info:
+  title: Поисковые запросы по вашим товарам
+  version: analytics
+servers:
+- url: https://seller-analytics-api.wildberries.ru
+security:
+- HeaderApiKey: []
+tags:
+- name: Поисковые запросы по вашим товарам
+  description: ''
+paths:
+  /api/v2/search-report/report:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Поисковые запросы по вашим товарам
+      summary: Основная страница
+      description: |
+        Метод формирует набор данных для основной страницы отчёта по поисковым запросам с:
+         - общей информацией
+         - позициями товаров
+         - данными по видимости и переходам в карточку
+         - данными для таблицы по группам
+
+        Для получения дополнительных данных в таблице используйте отдельный запрос для:
+         - [пагинации по группам](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram/paths/~1api~1v2~1search-report~1table~1groups/post)
+         - [получения по товарам в группе](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram/paths/~1api~1v2~1search-report~1table~1details/post)
+
+        Дополнительный параметр выбора списка товаров в таблице:
+         - `positionCluster` — средняя позиция в поиске
+
+        Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/MainRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: _schemas.yaml#/components/schemas/CommonResponseProperties
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: _schemas.yaml#/components/schemas/MainResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/search-report/table/groups:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Поисковые запросы по вашим товарам
+      summary: Пагинация по группам
+      description: |
+        Метод формирует дополнительные данные к [основному отчёту](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram/paths/~1api~1v2~1search-report~1report/post) с пагинацией по группам. Пагинация возможна только при наличии фильтра по бренду, предмету или ярлыку.<br><br>
+
+        Дополнительный параметр выбора списка товаров в таблице:
+         - `positionCluster` — средняя позиция в поиске
+
+        Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/TableGroupRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: _schemas.yaml#/components/schemas/CommonResponseProperties
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: _schemas.yaml#/components/schemas/TableGroupResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/search-report/table/details:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Поисковые запросы по вашим товарам
+      summary: Пагинация по товарам в группе
+      description: |
+        Метод формирует дополнительные данные к [основному отчёту](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram/paths/~1api~1v2~1search-report~1report/post) с пагинацией по товарам в группе. Пагинация возможна вне зависимости от наличия фильтров.<br><br>
+
+        Фильтры для пагинации по товарам в группе или без фильтров:
+         - кортеж `subjectId`,`brandName`,`tagId` — фильтр для группы
+         - `nmIds` — фильтр по карточке товара
+
+        Дополнительный параметр выбора списка товаров:
+         - `positionCluster` — средняя позиция в поиске
+
+        Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/TableDetailsRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: _schemas.yaml#/components/schemas/CommonResponseProperties
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: _schemas.yaml#/components/schemas/TableDetailsResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/search-report/product/search-texts:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Поисковые запросы по вашим товарам
+      summary: Поисковые запросы по товару
+      description: |
+        Метод формирует топ поисковых запросов по товару.
+
+        Параметры выбора поисковых запросов:
+         - `limit` — количество запросов, максимум 30 (для тарифа [Продвинутый](https://seller.wildberries.ru/monetization/tariffs) — 100)
+         - `topOrderBy` — способ выбора топа запросов
+
+        Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/ProductSearchTextsRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: _schemas.yaml#/components/schemas/CommonResponseProperties
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: _schemas.yaml#/components/schemas/ProductSearchTextsResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/search-report/product/orders:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Поисковые запросы по вашим товарам
+      summary: Заказы и позиции по поисковым запросам товара
+      description: |
+        Метод формирует данные для таблицы по количеству заказов и позиций в поиске по запросам покупателя. Данные указаны в рамках периода для [запрошенного товара](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram/paths/~1api~1v2~1search-report~1product~1search-texts/post).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/ProductOrdersRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: _schemas.yaml#/components/schemas/CommonResponseProperties
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: _schemas.yaml#/components/schemas/ProductOrdersResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

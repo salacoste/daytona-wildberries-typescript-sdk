@@ -1,5 +1,488 @@
+openapi: 3.0.1
+info:
+  title: 08-promotion - Shared Schemas
+  description: All shared schemas, parameters, responses, requestBodies, examples, and securitySchemes
+  version: 1.0.0-shard
 components:
   schemas:
+    400Response:
+      type: object
+      properties:
+        error:
+          type: string
+    PlacementType:
+      type: string
+      enum:
+        - combined
+        - search
+        - recommendation
+      description: |
+        Места размещения:
+          - `search` — поиск
+          - `recommendation` — рекомендации
+          - `combined` — поиск и рекомендации
+    V0GetNormQueryStatsRequest:
+      type: object
+      required:
+        - from
+        - to
+        - items
+      properties:
+        from:
+          type: string
+          format: date
+          description: Дата начала периода
+          example: "2025-10-07"
+        to:
+          type: string
+          format: date
+          description: Дата окончания периода
+          example: "2025-10-08"
+        items:
+          type: array
+          maxItems: 100
+          items:
+            type: object
+            required:
+              - advert_id
+              - nm_id
+            properties:
+              advert_id:
+                type: integer
+                description: ID кампании
+              nm_id:
+                type: integer
+                description: Артикул WB
+    V0GetNormQueryStatsItem:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+        stats:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/V0GetNormQueryStatsItemStat"
+    V0GetNormQueryStatsItemStat:
+      type: object
+      properties:
+        norm_query:
+          type: string
+          description: Поисковый кластер
+        views:
+          type: integer
+          description: Количество просмотров
+        clicks:
+          type: integer
+          description: Количество кликов
+        atbs:
+          description: Количество добавлений товаров в корзину
+          type: integer
+        orders:
+          description: Количество заказов
+          type: integer
+        ctr:
+          description: |
+            Кликабельность — отношение числа кликов к количеству показов, %
+          type: number
+          format: double
+        cpc:
+          type: number
+          format: double
+          description: Стоимость одного клика, ₽
+        cpm:
+          type: number
+          format: double
+          description: Средняя стоимость за тысячу показов, ₽
+        avg_pos:
+          type: number
+          format: double
+          description: Средняя позиция товара на страницах поисковой выдачи
+    V0GetNormQueryStatsResponse:
+      type: object
+      description: Статистика по поисковым кластерам
+      required:
+        - stats
+      properties:
+        stats:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0GetNormQueryStatsItem"
+    V0SetNormQueryBidsRequestItem:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+        - norm_query
+        - bid
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+        norm_query:
+          type: string
+          description: Поисковый кластер
+        bid:
+          type: integer
+          description: Ставка за тысячу показов, ₽
+    V0SetNormQueryBidsRequest:
+      type: object
+      required:
+        - bids
+      properties:
+        bids:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/V0SetNormQueryBidsRequestItem"
+    V0SetMinusNormQueryRequest:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+        - norm_queries
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+        norm_queries:
+          type: array
+          maxItems: 1000
+          items:
+            type: string
+            description: Поисковый кластер
+    V0GetNormQueryBidsRequestItem:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+    V0GetNormQueryBidsRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/V0GetNormQueryBidsRequestItem"
+    V0GetNormQueryBidsItem:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+        - bid
+        - norm_query
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+        norm_query:
+          type: string
+          description: Поисковый кластер
+        bid:
+          type: integer
+          description: Текущая ставка за тысячу показов, ₽
+    V0GetNormQueryBidsResponse:
+      type: object
+      required:
+        - bids
+      properties:
+        bids:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0GetNormQueryBidsItem"
+    V0GetNormQueryMinusRequestItem:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+    V0GetNormQueryMinusRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/V0GetNormQueryMinusRequestItem"
+    V0GetNormQueryMinusResponseItem:
+      type: object
+      required:
+        - advert_id
+        - nm_id
+      properties:
+        advert_id:
+          type: integer
+          description: ID кампании
+        nm_id:
+          type: integer
+          description: Артикул WB
+        norm_queries:
+          type: array
+          description: Список минус-фраз
+          items:
+            type: string
+    V0GetNormQueryMinusResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0GetNormQueryMinusResponseItem"
+    StandardizedBatchError:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+          example: some nms are not belong to advert
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+          example: camp-api-public-cache
+        request_id:
+          description: Уникальный ID запроса
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        status:
+          type: integer
+          description: HTTP статус-код
+          example: 400
+        title:
+          type: string
+          description: Заголовок ошибки
+          example: Invalid Params
+      required:
+        - title
+        - detail
+        - request_id
+        - origin
+        - status
+    V0GetConfigCategoriesResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID категории товара
+        name:
+          type: string
+          description: Название категории товара
+        cpm_min:
+          type: integer
+          description: Минимально допустимая ставка
+      required:
+        - id
+        - name
+        - cpm_min
+      example:
+        id: 760
+        name: Автомобильные товары
+        cpm_min: 112
+    V0AdvertMultiBidItem:
+      type: object
+      required:
+        - nm
+        - bid
+      properties:
+        nm:
+          type: integer
+          example: 3462354
+          description: Артикул WB
+        bid:
+          type: integer
+          example: 500
+          description: >-
+            Ставка. Минимально допустимые ставки вы можете получить в ответе метода [получения минимальных ставок для
+            карточек товаров](./promotion#tag/Sozdanie-kampanij/paths/~1adv~1v0~1bids~1min/post)
+    V0AdvertMultibid:
+      type: object
+      required:
+        - advert_id
+        - nm_bids
+      properties:
+        advert_id:
+          type: integer
+          example: 6348555
+          description: ID кампании
+        nm_bids:
+          type: array
+          description: Артикулы WB и ставки для них
+          items:
+            $ref: "#/components/schemas/V0AdvertMultiBidItem"
+    ResponseWithReturn:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Размер обновлённого бюджета
+    ResponseInfoAdvertType8:
+      type: object
+      properties:
+        endTime:
+          description: Дата завершения кампании
+          type: string
+          format: date-time
+        createTime:
+          description: Дата создания кампании
+          type: string
+          format: date-time
+        changeTime:
+          description: Дата последнего изменения кампании
+          type: string
+          format: date-time
+        startTime:
+          description: Дата последнего запуска кампании
+          type: string
+          format: date-time
+        autoParams:
+          type: object
+          properties:
+            subject:
+              description: Продвигаемый предмет
+              type: object
+              properties:
+                id:
+                  description: ID предмета
+                  type: integer
+                name:
+                  description: Название предмета
+                  type: string
+            sets:
+              description: Внутренняя (системная) сущность (пол + предмет)
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    description: ID set
+                    type: integer
+                  name:
+                    description: Название set
+                    type: string
+            menus:
+              type: array
+              items:
+                type: object
+                description: Меню, где размещается кампания
+                properties:
+                  id:
+                    description: ID меню
+                    type: integer
+                  name:
+                    description: Название меню
+                    type: string
+            active:
+              description: Места размещения
+              type: object
+              properties:
+                carousel:
+                  description: |
+                    Карточка товара
+                      - `false` — отключено
+                      - `true` — включено
+                  type: boolean
+                recom:
+                  description: |
+                    Рекомендации на главной
+                      - `false` — отключено
+                      - `true` — включено
+                  type: boolean
+                booster:
+                  description: |
+                    Ручная ставка
+                      - `false` — отключено
+                      - `true` — включено
+                  type: boolean
+            nmCPM:
+              type: array
+              description: |
+                Ставки карточек товаров
+              items:
+                type: object
+                properties:
+                  nm:
+                    description: Артикул WB
+                    type: integer
+                  cpm:
+                    description: Ставка
+                    type: integer
+            nms:
+              description: Артикулы WB
+              type: array
+              items:
+                type: integer
+            cpm:
+              description: |
+                Ставка, указанная при создании кампании.<br> Поле актуально только для кампаний, созданных через API.
+              type: integer
+        name:
+          description: Название кампании
+          type: string
+        dailyBudget:
+          description: Не используется
+          type: integer
+        advertId:
+          description: ID кампании
+          type: integer
+        status:
+          description: |
+            Статус кампании:
+            - `-1` — удалена, процесс удаления будет завершён в течение 10 минут
+            - `4` — готова к запуску
+            - `7` — завершена
+            - `8` — отменена
+            - `9` — активна
+            - `11` — на паузе
+          type: integer
+        type:
+          description: |
+            Тип кампании:
+              - `8` — единая ставка
+          type: integer
+        paymentType:
+          type: string
+          description: |
+            Модель оплаты:
+            - `cpm` — за показы
+    responseAdvError1:
+      type: object
+      properties:
+        error:
+          type: string
     PromotionsGoodsList:
       type: object
       properties:
@@ -36,6 +519,478 @@ components:
           type: integer
           example: 34
           description: Рекомендуемая скидка для участия в акции
+    GetAuctionAdverts:
+      type: object
+      required:
+        - adverts
+      properties:
+        adverts:
+          description: Кампании
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - timestamps
+              - settings
+              - nm_settings
+              - status
+              - bid_type
+            properties:
+              id:
+                type: integer
+                format: int64
+                description: ID кампании
+              nm_settings:
+                description: Настройки товаров
+                type: array
+                items:
+                  $ref: "#/components/schemas/AuctionAdvertNMsSettings"
+              settings:
+                $ref: "#/components/schemas/AuctionAdvertSettings"
+              status:
+                description: |
+                  Статус кампании:
+                  - `-1` — удалена, процесс удаления будет завершён в течение 10 минут
+                  - `4` — готова к запуску
+                  - `7` — завершена
+                  - `8` — отменена
+                  - `9` — активна
+                  - `11` — на паузе
+                enum:
+                  - -1
+                  - 4
+                  - 7
+                  - 8
+                  - 9
+                  - 11
+                type: integer
+              timestamps:
+                $ref: "#/components/schemas/Timestamps"
+              bid_type:
+                type: string
+                description: |
+                  Тип ставки:
+                    - `unified` — единая ставка
+                    - `manual` — ручная ставка
+    GetAdverts:
+      type: object
+      required:
+        - adverts
+      properties:
+        adverts:
+          description: Кампании
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - timestamps
+              - settings
+              - nm_settings
+              - status
+              - bid_type
+            properties:
+              bid_type:
+                type: string
+                description: |
+                  Тип ставки:
+                    - `unified` — единая ставка
+                    - `manual` — ручная ставка
+              id:
+                type: integer
+                format: int64
+                description: ID кампании
+              nm_settings:
+                description: Настройки товаров
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdvertNMsSettings"
+              settings:
+                $ref: "#/components/schemas/AdvertSettings"
+              status:
+                description: |
+                  Статус кампании:
+                  - `-1` — удалена, процесс удаления будет завершён в течение 10 минут
+                  - `4` — готова к запуску
+                  - `7` — завершена
+                  - `8` — отменена
+                  - `9` — активна
+                  - `11` — на паузе
+                enum:
+                  - -1
+                  - 4
+                  - 7
+                  - 8
+                  - 9
+                  - 11
+                type: integer
+              timestamps:
+                $ref: "#/components/schemas/Timestamps"
+    AuctionAdvertNMsSettings:
+      type: object
+      required:
+        - subject
+        - bids
+        - nm_id
+      properties:
+        bids:
+          $ref: "#/components/schemas/AuctionAdvertBids"
+        subject:
+          $ref: "#/components/schemas/AuctionAdvertSubject"
+        nm_id:
+          type: integer
+          format: int64
+          description: Артикул WB
+    AdvertNMsSettings:
+      type: object
+      required:
+        - subject
+        - bids_kopecks
+        - nm_id
+      properties:
+        bids_kopecks:
+          $ref: "#/components/schemas/AdvertBidsKopecks"
+        subject:
+          $ref: "#/components/schemas/AdvertSubject"
+        nm_id:
+          type: integer
+          format: int64
+          description: Артикул WB
+    AuctionAdvertSubject:
+      description: Предмет
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          description: ID предмета
+          format: int64
+        name:
+          type: string
+          description: Название предмета
+    AdvertSubject:
+      description: Предмет
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          description: ID предмета
+          format: int64
+        name:
+          type: string
+          description: Название предмета
+    AuctionAdvertBids:
+      description: Ставки
+      required:
+        - recommendations
+        - search
+      properties:
+        search:
+          type: integer
+          format: int64
+          description: Ставка в поиске
+        recommendations:
+          type: integer
+          format: int64
+          description: Ставка в рекомендациях
+    AdvertBidsKopecks:
+      description: Ставки, копейки
+      required:
+        - recommendations
+        - search
+      properties:
+        search:
+          type: integer
+          format: int64
+          description: Ставка в поиске
+        recommendations:
+          type: integer
+          format: int64
+          description: Ставка в рекомендациях
+    AuctionAdvertSettings:
+      description: Настройки кампании
+      type: object
+      required:
+        - payment_type
+        - name
+        - placements
+      properties:
+        payment_type:
+          type: string
+          enum:
+            - cpm
+            - cpc
+          description: |
+            Тип оплаты:
+            - `cpm` — за показы
+            - `cpc` — за клик
+        name:
+          type: string
+          description: Имя кампании
+        placements:
+          description: Места размещения
+          type: object
+          required:
+            - search
+            - recommendations
+          properties:
+            search:
+              type: boolean
+              description: |
+                Размещение в поиске:
+                  - `false` — отключено
+                  - `true` — включено
+            recommendations:
+              description: |
+                Размещение в рекомендациях:
+                  - `false` — отключено
+                  - `true` — включено
+              type: boolean
+    AdvertSettings:
+      description: Настройки кампании
+      type: object
+      required:
+        - payment_type
+        - name
+        - placements
+      properties:
+        payment_type:
+          type: string
+          enum:
+            - cpm
+            - cpc
+          description: |
+            Тип оплаты:
+            - `cpm` — за показы
+            - `cpc` — за клик
+        name:
+          type: string
+          description: Название кампании
+        placements:
+          description: Места размещения
+          type: object
+          required:
+            - search
+            - recommendations
+          properties:
+            search:
+              type: boolean
+              description: |
+                Размещение в поиске:
+                  - `false` — отключено
+                  - `true` — включено
+            recommendations:
+              description: |
+                Размещение в рекомендациях:
+                  - `false` — отключено
+                  - `true` — включено
+              type: boolean
+    Timestamps:
+      description: Временные отметки
+      type: object
+      required:
+        - created
+        - updated
+        - started
+        - deleted
+      properties:
+        created:
+          description: Время создания кампании
+          type: string
+          format: date-time
+        updated:
+          description: Время последнего изменения кампании
+          type: string
+          format: date-time
+        started:
+          description: Время последнего запуска кампании
+          nullable: true
+          type: string
+          format: date-time
+        deleted:
+          type: string
+          description: Время удаления кампании. Если кампания не удалена, время указывается в будущем
+          format: date-time
+    response400:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+          example: camp-api-public-cache
+        request_id:
+          type: string
+          description: Уникальный ID запроса
+          example: 6023d2950af564838f9b44a279d2140c
+        status:
+          type: integer
+          description: HTTP статус-код
+          example: 400
+        title:
+          type: string
+          description: Заголовок ошибки
+          example: invalid payload
+      required:
+        - detail
+        - title
+        - request_id
+        - origin
+        - status
+    StatInterval:
+      additionalProperties: false
+      type: object
+      required:
+        - interval
+      properties:
+        interval:
+          description: Период
+          type: object
+          properties:
+            begin:
+              description: Начало периода
+              type: string
+              format: date
+            end:
+              description: Конец периода
+              type: string
+              format: date
+        stats:
+          description: Блок статистики
+          type: array
+          items:
+            $ref: "#/components/schemas/StatsBlok1"
+    StatDate:
+      additionalProperties: false
+      type: object
+      required:
+        - dates
+      properties:
+        dates:
+          description: Даты, за которые нужно получить информацию
+          type: array
+          items:
+            type: string
+            format: date
+        stats:
+          description: Блок статистики
+          type: array
+          items:
+            $ref: "#/components/schemas/StatsBlok2"
+    Stat:
+      additionalProperties: false
+      type: object
+      properties:
+        stats:
+          description: Блок статистики
+          type: array
+          items:
+            $ref: "#/components/schemas/StatsBlok1"
+    StatsBlok1:
+      type: object
+      properties:
+        item_id:
+          description: ID баннера
+          type: integer
+        item_name:
+          description: Бренд
+          type: string
+        category_name:
+          description: Название категории
+          type: string
+        advert_type:
+          description: |
+            Тип медиакампании:
+              - `1` — размещение по дням
+              - `2` — размещение по просмотрам
+          type: integer
+        place:
+          description: Место на странице
+          type: integer
+        views:
+          description: Количество просмотров
+          type: integer
+        clicks:
+          description: Количество кликов
+          type: integer
+        cr:
+          description: |
+            CR(conversion rate) — это отношение количества заказов к общему количеству посещений медиакампании
+          type: number
+        ctr:
+          description: >
+            CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках
+            медиакампании
+          type: number
+        date_from:
+          description: Время начала размещения
+          type: string
+          format: date-time
+        date_to:
+          description: Время завершения размещения
+          type: string
+          format: date-time
+        subject_name:
+          description: Родительская категория предмета
+          type: string
+        atbs:
+          description: Количество добавлений товаров в корзину
+          type: integer
+        orders:
+          description: Количество заказов
+          type: integer
+        price:
+          description: Стоимость размещения
+          type: number
+        cpc:
+          description: (cost per click) — цена клика по продвигаемому товару
+          type: number
+        status:
+          description: Статус медиакампании
+          type: integer
+        daily_stats:
+          $ref: "#/components/schemas/DailyStats1"
+        expenses:
+          description: Стоимость размещения баннера
+          type: number
+        cr1:
+          description: Отношение количества добавлений в корзину к количеству кликов
+          type: number
+        cr2:
+          description: Отношение количества заказов к количеству добавлений в корзину
+          type: integer
+    DailyStats1:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            description: Дата
+            type: string
+            format: date-time
+          app_type_stats:
+            description: Статистика по платформам
+            type: array
+            items:
+              type: object
+              properties:
+                app_type:
+                  description: |
+                    Тип платформы:
+                    - `1` — сайт
+                    - `32` — Android
+                    - `64` — IOS
+                  type: integer
+                stats:
+                  $ref: "#/components/schemas/Stats1"
     Stats1:
       type: array
       items:
@@ -51,9 +1006,107 @@ components:
             description: Количество добавлений товаров в корзину
             type: integer
           ctr:
-            description: |
-              CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках медиакампании
+            description: >
+              CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках
+              медиакампании
             type: number
+    StatsBlok2:
+      type: object
+      properties:
+        item_id:
+          description: ID баннера
+          type: integer
+        item_name:
+          description: Бренд
+          type: string
+        category_name:
+          description: Название категории
+          type: string
+        advert_type:
+          description: |
+            Тип медиакампании:
+              - `1` — размещение по дням
+              - `2` — размещение по просмотрам
+          type: integer
+        place:
+          description: Место на странице
+          type: integer
+        views:
+          description: Количество просмотров
+          type: integer
+        clicks:
+          description: Количество кликов
+          type: integer
+        cr:
+          description: |
+            CR(conversion rate) — это отношение количества заказов к общему количеству посещений медиакампании
+          type: number
+        ctr:
+          description: >
+            CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках
+            медиакампании
+          type: number
+        date_from:
+          description: Время начала размещения
+          type: string
+          format: date-time
+        date_to:
+          description: Время завершения размещения
+          type: string
+          format: date-time
+        subject_name:
+          description: Родительская категория предмета
+          type: string
+        atbs:
+          description: Количество добавлений товаров в корзину
+          type: integer
+        orders:
+          description: Количество заказов
+          type: integer
+        price:
+          description: Стоимость размещения
+          type: number
+        cpc:
+          description: (cost per click) — цена клика по продвигаемому товару
+          type: number
+        status:
+          description: Статус медиакампании
+          type: integer
+        daily_stats:
+          $ref: "#/components/schemas/DailyStats2"
+        expenses:
+          description: Стоимость размещения баннера
+          type: number
+        cr1:
+          description: Отношение количества добавлений в корзину к количеству кликов
+          type: number
+        cr2:
+          description: Отношение количества заказов к количеству добавлений в корзину
+          type: integer
+    DailyStats2:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            description: Дата
+            type: string
+            format: date-time
+          app_type_stats:
+            description: Статистика по платформам
+            type: array
+            items:
+              type: object
+              properties:
+                app_type:
+                  description: |
+                    Тип платформы:
+                    - `1` — сайт
+                    - `32` — Android
+                    - `64` — IOS
+                  type: integer
+                stats:
+                  $ref: "#/components/schemas/Stats2"
     Stats2:
       type: array
       items:
@@ -76,6 +1129,1787 @@ components:
               CR(conversion rate) — отношение количества заказов к общему количеству посещений медиакампании
             type: number
           ctr:
-            description: |
-              CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках медиакампании
+            description: >
+              CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках
+              медиакампании
             type: number
+    RequestWithDate:
+      type: object
+      required:
+        - id
+        - dates
+      properties:
+        id:
+          description: ID кампании
+          type: integer
+        dates:
+          description: Даты, за которые нужно получить информацию
+          type: array
+          items:
+            type: string
+            format: date
+    RequestWithCampaignID:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+      properties:
+        id:
+          description: ID кампании
+          type: integer
+    RequestWithInterval:
+      type: object
+      required:
+        - id
+        - interval
+      properties:
+        id:
+          description: ID кампании
+          type: integer
+        interval:
+          description: Временной диапазон, за который необходимо выдать данные
+          type: object
+          properties:
+            begin:
+              description: Начало запрашиваемого периода
+              type: string
+              format: date
+            end:
+              description: Конец запрашиваемого периода
+              type: string
+              format: date
+    Days:
+      description: Статистка по дням
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            description: Дата, за которую представлены данные
+            type: string
+            format: date-time
+          views:
+            type: integer
+            description: Количество просмотров
+          clicks:
+            type: integer
+            description: Количество кликов
+          ctr:
+            type: number
+            description: |
+              Показатель кликабельности, отношение числа кликов к количеству показов, %
+          cpc:
+            type: number
+            description: Средняя стоимость клика, ₽
+          sum:
+            type: number
+            description: Затраты, ₽
+          atbs:
+            type: integer
+            description: Количество добавлений товаров в корзину
+          orders:
+            type: integer
+            description: Количество заказов
+          cr:
+            type: number
+            description: |
+              CR(conversion rate) — отношение количества заказов к общему количеству посещений кампании
+          shks:
+            type: integer
+            description: Количество заказанных товаров, шт.
+          sum_price:
+            type: number
+            description: Заказов на сумму, ₽
+          apps:
+            description: Блок информации о платформе
+            type: array
+            items:
+              type: object
+              properties:
+                views:
+                  type: integer
+                  description: Количество просмотров
+                clicks:
+                  type: integer
+                  description: Количество кликов
+                ctr:
+                  type: number
+                  description: |
+                    Показатель кликабельности, отношение числа кликов к количеству показов, %
+                cpc:
+                  type: number
+                  description: Средняя стоимость клика, ₽
+                sum:
+                  type: number
+                  description: Затраты, ₽
+                atbs:
+                  type: integer
+                  description: Количество добавлений товаров в корзину
+                orders:
+                  type: integer
+                  description: Количество заказов
+                cr:
+                  type: number
+                  description: |
+                    CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании
+                shks:
+                  type: integer
+                  description: Количество заказанных товаров, шт.
+                sum_price:
+                  type: number
+                  description: Заказов на сумму, ₽
+                nm:
+                  description: Блок статистики по артикулам WB
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      views:
+                        type: integer
+                        description: Количество просмотров
+                      clicks:
+                        type: integer
+                        description: Количество кликов
+                      ctr:
+                        type: number
+                        description: |
+                          Показатель кликабельности, отношение числа кликов к количеству показов, %
+                      cpc:
+                        type: number
+                        description: Средняя стоимость клика, ₽
+                      sum:
+                        type: number
+                        description: Затраты, ₽
+                      atbs:
+                        type: integer
+                        description: Количество добавлений товаров в корзину
+                      orders:
+                        type: integer
+                        description: Количество заказов
+                      cr:
+                        type: number
+                        description: |
+                          CR(conversion rate) — отношение количества заказов к общему количеству посещений кампании
+                      shks:
+                        type: integer
+                        description: Количество заказанных товаров, шт.
+                      sum_price:
+                        type: number
+                        description: Заказов на сумму, ₽
+                      name:
+                        description: Название товара
+                        type: string
+                      nmId:
+                        description: ID артикула WB
+                        type: integer
+                appType:
+                  type: integer
+                  description: Тип платформы (`1` — сайт, `32` — Android, `64` — IOS)
+    BoosterStats:
+      description: Статистика по средней позиции товара на страницах поисковой выдачи и каталога (для кампаний с единой ставкой)
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            description: Дата, за которую предоставлены данные
+            type: string
+            format: date-time
+          nm:
+            description: Артикул WB
+            type: integer
+          avg_position:
+            description: Средняя позиция товара на страницах поисковой выдачи и каталога
+            type: integer
+    ResponseWithInterval:
+      description: Ответ при запросе с interval
+      type: array
+      items:
+        type: object
+        properties:
+          interval:
+            description: Период
+            type: object
+            additionalProperties: false
+            properties:
+              begin:
+                description: Начало периода
+                type: string
+                format: date
+              end:
+                description: Конец периода
+                type: string
+                format: date
+          views:
+            type: integer
+            description: |
+              Количество просмотров. <br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          clicks:
+            type: integer
+            description: |
+              Количество кликов.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          ctr:
+            type: number
+            description: |
+              Показатель кликабельности.<br>
+              Отношение числа кликов к количеству показов. Выражается в процентах.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          cpc:
+            type: number
+            description: |
+              Средняя стоимость клика, ₽.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          sum:
+            type: number
+            description: |
+              Затраты, ₽.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          atbs:
+            type: integer
+            description: |
+              Количество добавлений товаров в корзину.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          orders:
+            type: integer
+            description: |
+              Количество заказов.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          cr:
+            type: number
+            description: |
+              CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          shks:
+            type: integer
+            description: |
+              Количество заказанных товаров, шт.<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          sum_price:
+            type: number
+            description: |
+              Заказов на сумму, ₽<br>
+              За все дни запрошенного диапазона, по всем артикулам WB и платформам
+          days:
+            $ref: "#/components/schemas/Days"
+          boosterStats:
+            $ref: "#/components/schemas/BoosterStats"
+          advertId:
+            description: ID кампании
+            type: integer
+    ResponseWithDate:
+      description: Ответ при запросе с dates
+      type: array
+      nullable: true
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          dates:
+            description: Даты, за которые нужно получить информацию
+            type: array
+            items:
+              type: string
+              format: date
+          views:
+            type: integer
+            description: |
+              Количество просмотров. <br>
+              За все дни, по всем артикулам WB и платформам
+          clicks:
+            type: integer
+            description: |
+              Количество кликов.<br>
+              За все дни, по всем артикулам WB и платформам
+          ctr:
+            type: number
+            description: |
+              Показатель кликабельности.<br>
+              Отношение числа кликов к количеству показов. Выражается в процентах<br>
+              За все дни, по всем артикулам WB и платформам<br>
+          cpc:
+            type: number
+            description: |
+              Средняя стоимость клика, ₽.<br>
+              За все дни, по всем артикулам WB и платформам
+          sum:
+            type: number
+            description: |
+              Затраты, ₽.<br>
+              За все дни, по всем артикулам WB и платформам
+          atbs:
+            type: integer
+            description: |
+              Количество добавлений товаров в корзину.<br>
+              За все дни, по всем артикулам WB и платформам
+          orders:
+            type: integer
+            description: |
+              Количество заказов.<br>
+              За все дни, по всем артикулам WB и платформам
+          cr:
+            type: number
+            description: |
+              CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании.<br>
+              За все дни, по всем артикулам WB и платформам
+          shks:
+            type: integer
+            description: |
+              Количество заказанных товаров, шт.<br>
+              За все дни, по всем артикулам WB и платформам
+          sum_price:
+            type: number
+            description: |
+              Заказов на сумму, ₽.<br>
+              За все дни, по всем артикулам WB и платформам
+          days:
+            $ref: "#/components/schemas/Days"
+          boosterStats:
+            $ref: "#/components/schemas/BoosterStats"
+          advertId:
+            description: ID кампании
+            type: integer
+    V0KeywordsStatistic:
+      type: object
+      required:
+        - keyword
+        - views
+        - clicks
+        - ctr
+        - sum
+      properties:
+        clicks:
+          type: integer
+          description: Количество кликов
+        ctr:
+          type: number
+          description: CTR (Click-Through Rate) — показатель кликабельности
+        keyword:
+          type: string
+          description: Ключевая фраза
+        sum:
+          type: number
+          description: Сумма затрат по ключевой фразе
+        views:
+          type: integer
+          description: Количество показов
+    V0KeywordsStatistics:
+      type: object
+      required:
+        - date
+        - stats
+      properties:
+        date:
+          type: string
+          format: date
+          description: Дата
+        stats:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0KeywordsStatistic"
+    V0KeywordsStatisticsResponse:
+      type: object
+      required:
+        - keywords
+      properties:
+        keywords:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0KeywordsStatistics"
+    ErrorResponse:
+      type: object
+      required:
+        - type
+        - message
+      properties:
+        type:
+          type: string
+        message:
+          type: string
+    ResponseFullStats:
+      type: array
+      description: Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам
+      items:
+        $ref: "#/components/schemas/FullStatsItem"
+    FullStatsItem:
+      type: object
+      required:
+        - advertId
+        - atbs
+        - canceled
+        - clicks
+        - cpc
+        - cr
+        - ctr
+        - days
+        - orders
+        - shks
+        - sum
+        - sum_price
+        - views
+      description: Статистика по одной кампании за период, указанный в запросе. По всем артикулам WB и платформам
+      properties:
+        advertId:
+          type: integer
+          description: ID кампании
+        atbs:
+          type: integer
+          description: Количество добавлений товаров в корзину
+        boosterStats:
+          type: array
+          description: Статистика по бустеру
+          $ref: "#/components/schemas/BoosterStatsV3"
+        canceled:
+          type: integer
+          description: Отмены, шт.
+        clicks:
+          type: integer
+          description: Количество кликов
+        cpc:
+          type: number
+          format: double
+          description: Средняя стоимость клика, ₽
+        cr:
+          type: number
+          format: double
+          description: CR (conversion rate) — отношение количества заказов к общему количеству кликов
+        ctr:
+          type: number
+          format: double
+          description: CTR (click-through rate) — отношение числа кликов к количеству показов в процентах
+        days:
+          type: array
+          description: Статистика с разбивкой по дням
+          $ref: "#/components/schemas/DaysV3"
+        orders:
+          type: integer
+          description: Количество заказов
+        shks:
+          type: integer
+          description: Количество заказанных товаров, шт.
+        sum:
+          type: number
+          format: double
+          description: Затраты, ₽
+        sum_price:
+          type: number
+          format: double
+          description: Сумма заказов, ₽
+        views:
+          type: integer
+          description: Количество просмотров
+    DaysV3:
+      description: Статистка по дням
+      items:
+        type: object
+        required:
+          - apps
+          - atbs
+          - canceled
+          - clicks
+          - cpc
+          - cr
+          - ctr
+          - date
+          - orders
+          - shks
+          - sum
+          - sum_price
+          - views
+        properties:
+          apps:
+            description: Блок информации о платформе
+            type: array
+            items:
+              type: object
+              required:
+                - appType
+                - atbs
+                - canceled
+                - clicks
+                - cpc
+                - cr
+                - ctr
+                - nms
+                - orders
+                - shks
+                - sum
+                - sum_price
+                - views
+              properties:
+                appType:
+                  type: integer
+                  enum:
+                    - 1
+                    - 32
+                    - 64
+                  description: |
+                    Тип платформы:
+                      - `1` — сайт
+                      - `32` — Android
+                      - `64` — IOS
+                atbs:
+                  type: integer
+                  description: Количество добавлений товаров в корзину
+                canceled:
+                  type: integer
+                  description: Отмены, шт.
+                clicks:
+                  type: integer
+                  description: Количество кликов
+                cpc:
+                  type: number
+                  description: Средняя стоимость клика, ₽
+                cr:
+                  type: number
+                  description: CR (conversion rate) — отношение количества заказов к общему количеству кликов
+                ctr:
+                  type: number
+                  description: CTR (click-through rate) — отношение числа кликов к количеству показов в процентах
+                nms:
+                  description: Блок статистики по артикулам WB
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - atbs
+                      - canceled
+                      - clicks
+                      - cpc
+                      - cr
+                      - ctr
+                      - name
+                      - nmId
+                      - orders
+                      - shks
+                      - sum
+                      - sum_price
+                      - views
+                    properties:
+                      atbs:
+                        type: integer
+                        description: Количество добавлений товаров в корзину
+                      canceled:
+                        type: integer
+                        description: Отмены, шт.
+                      clicks:
+                        type: integer
+                        description: Количество кликов
+                      cpc:
+                        type: number
+                        description: Средняя стоимость клика, ₽
+                      cr:
+                        type: number
+                        description: CR (conversion rate) — отношение количества заказов к общему количеству кликов
+                      ctr:
+                        type: number
+                        description: CTR (click-through rate) — отношение числа кликов к количеству показов в процентах
+                      name:
+                        description: Название товара
+                        type: string
+                      nmId:
+                        description: Артикул WB
+                        type: integer
+                      orders:
+                        type: integer
+                        description: Количество заказов
+                      shks:
+                        type: integer
+                        description: Количество заказанных товаров, шт.
+                      sum:
+                        type: number
+                        description: Затраты, ₽
+                      sum_price:
+                        type: number
+                        description: Заказов на сумму, ₽
+                      views:
+                        type: integer
+                        description: Количество просмотров
+                orders:
+                  type: integer
+                  description: Количество заказов
+                shks:
+                  type: integer
+                  description: Количество заказанных товаров, шт.
+                sum:
+                  type: number
+                  description: Затраты, ₽
+                sum_price:
+                  type: number
+                  description: Заказов на сумму, ₽
+                views:
+                  type: integer
+                  description: Количество просмотров
+          atbs:
+            type: integer
+            description: Количество добавлений товаров в корзину
+          canceled:
+            type: integer
+            description: Отмены, шт.
+          date:
+            description: Дата, за которую представлены данные
+            type: string
+            format: date-time
+          clicks:
+            type: integer
+            description: Количество кликов
+          cpc:
+            type: number
+            description: Средняя стоимость клика, ₽
+          cr:
+            type: number
+            description: CR (conversion rate) — отношение количества заказов к общему количеству посещений кампании
+          ctr:
+            type: number
+            description: CTR (click-through rate) — отношение числа кликов к количеству показов в процентах
+          orders:
+            type: integer
+            description: Количество заказов
+          shks:
+            type: integer
+            description: Количество заказанных товаров, шт.
+          sum:
+            type: number
+            description: Затраты, ₽
+          sum_price:
+            type: number
+            description: Заказов на сумму, ₽
+          views:
+            type: integer
+            description: Количество просмотров
+    BoosterStatsV3:
+      description: Статистика по средней позиции товара (для кампаний с единой ставкой)
+      items:
+        type: object
+        required:
+          - avg_position
+          - date
+          - nm
+        properties:
+          avg_position:
+            description: Средняя позиция товара
+            type: integer
+          date:
+            description: Дата, за которую предоставлены данные
+            type: string
+            format: date
+          nm:
+            description: Артикул WB
+            type: integer
+    FullStatsError:
+      type: object
+      description: Ошибка
+      properties:
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        request_id:
+          type: string
+          description: ID запроса
+        status:
+          type: integer
+          description: HTTP статус-код
+        title:
+          type: string
+          description: Заголовок ошибки
+      required:
+        - detail
+        - title
+        - request_id
+        - origin
+        - status
+  parameters:
+    inAction:
+      in: query
+      name: inAction
+      description: |
+        Участвует в акции:
+          - `true` — да
+          - `false` — нет
+      schema:
+        type: boolean
+        example: true
+        default: false
+      required: true
+    promotionID:
+      in: query
+      name: promotionID
+      description: ID акции
+      schema:
+        type: integer
+        example: 1
+      required: true
+    limitNomenclature:
+      in: query
+      name: limit
+      description: Количество запрашиваемых товаров
+      schema:
+        type: integer
+        format: uint
+        minimum: 1
+        maximum: 1000
+        example: 10
+    promotionIDs:
+      in: query
+      description: ID акций, по которым нужно вернуть информацию
+      name: promotionIDs
+      required: true
+      schema:
+        type: string
+        items:
+          type: integer
+        example:
+          - 1
+          - 3
+          - 64
+        uniqueItems: true
+        minItems: 1
+        maxItems: 100
+    offset:
+      in: query
+      name: offset
+      description: После какого элемента выдавать данные
+      schema:
+        type: integer
+        format: uint
+        minimum: 0
+        example: 0
+    startDateTime:
+      in: query
+      name: startDateTime
+      description: Начало периода, формат `YYYY-MM-DDTHH:MM:SSZ`
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: "2023-09-01T00:00:00Z"
+    endDateTime:
+      in: query
+      name: endDateTime
+      description: Конец периода, формат `YYYY-MM-DDTHH:MM:SSZ`
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: "2024-08-01T23:59:59Z"
+    allPromo:
+      in: query
+      name: allPromo
+      description: |
+        Показать акции:
+          - `false` — доступные для участия
+          - `true` — все акции
+      schema:
+        type: boolean
+        default: false
+      required: true
+    limitPromotion:
+      in: query
+      name: limit
+      description: Количество запрашиваемых акций
+      schema:
+        type: integer
+        format: uint
+        minimum: 1
+        maximum: 1000
+        example: 10
+  requestBodies:
+    PromotionsSupplierTaskRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные запроса
+                properties:
+                  promotionID:
+                    type: integer
+                    description: ID акции
+                    example: 1
+                    minimum: 1
+                  uploadNow:
+                    type: boolean
+                    example: true
+                    description: |
+                      Установить скидку:
+                        - `true` — сейчас
+                        - `false` — в момент старта акции
+                  nomenclatures:
+                    type: array
+                    description: Артикулы WB, которые можно добавить в акцию
+                    example:
+                      - 75632091
+                      - 31322455
+                      - 642080796
+                    items:
+                      type: integer
+                      minimum: 1
+                    minItems: 1
+                    maxItems: 1000
+                    uniqueItems: true
+  responses:
+    "401":
+      description: Не авторизован
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: "token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84"
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: "2024-09-30T06:52:38Z"
+    "429":
+      description: Слишком много запросов
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: "2024-09-30T06:52:38Z"
+    AccessDenied:
+      description: Доступ запрещён
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/StandardizedBatchError"
+          example:
+            detail: norm_query API not available
+            origin: camp-api-public-cache
+            request_id: 60aaf2bc6164e84a9399fae9565b568a
+            status: 403
+            title: request forbidden
+    ErrParameterValuesIncorrect:
+      description: Ошибка обработки параметров запроса
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errorText:
+                type: string
+                description: Текст ошибки
+          examples:
+            PromotionCompletedOrNotExist:
+              description: Акция завершена, или акция с данным id не существует
+              value:
+                errorText: Unprocessable entity
+    ErrorWrongParameters:
+      description: Неправильный запрос
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errorText:
+                type: string
+                description: Текст ошибки
+                example: Invalid query params
+    ResponsePromotionsGoodsLists:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  nomenclatures:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PromotionsGoodsList"
+                    description: Список товаров
+    UploadSuccessResponse:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  alreadyExists:
+                    description: Загрузка с такими данными уже существует
+                    type: boolean
+                    example: false
+                  uploadID:
+                    description: ID загрузки
+                    type: integer
+                    example: 11
+    UnprocessableEntity:
+      description: Ошибка обработки параметров запроса
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errorText:
+                description: Текст ошибки
+                type: string
+                example: Unprocessable entity
+    PromotionsGetByIDSuccessResponse:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  promotions:
+                    type: array
+                    description: Список акций
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID акции
+                          example: 123
+                        name:
+                          type: string
+                          description: Название акции
+                          example: ХИТЫ ГОДА
+                        description:
+                          type: string
+                          description: Описание акции
+                          example: >-
+                            В акции принимают участие самые популярные товары 2023 года. Карточки товаров будут выделены
+                            плашкой «ХИТ ГОДА», чтобы покупатели замечали эти товары среди других. Также они будут
+                            размещены под баннерами на главной странице и примут участие в PUSH-уведомлениях. С ценами
+                            для вступления в акцию вы можете ознакомиться ниже.
+                        advantages:
+                          type: array
+                          description: Преимущества акции
+                          example:
+                            - Плашка
+                            - Баннер
+                            - Топ выдачи товаров
+                          items:
+                            type: string
+                        startDateTime:
+                          type: string
+                          example: "2023-06-05T21:00:00Z"
+                          description: Начало акции
+                        endDateTime:
+                          type: string
+                          example: "2023-06-05T21:00:00Z"
+                          description: Конец акции
+                        inPromoActionLeftovers:
+                          description: Количество товаров с остатками, участвующих в акции
+                          type: integer
+                          example: 45
+                        inPromoActionTotal:
+                          type: integer
+                          description: Общее количество товаров, участвующих в акции
+                          example: 123
+                        notInPromoActionLeftovers:
+                          type: integer
+                          example: 3
+                          description: Количество товаров с остатками, не участвующих в акции
+                        notInPromoActionTotal:
+                          type: integer
+                          example: 10
+                          description: Общее количество товаров, не участвующих в акции
+                        participationPercentage:
+                          type: integer
+                          description: Уже участвующие в акции товары, %. Рассчитывается по товарам в акции и с остатком
+                          example: 10
+                        type:
+                          type: string
+                          enum:
+                            - regular
+                            - auto
+                          example: auto
+                          description: |
+                            Тип акции:
+                              - `regular` — акция
+                              - `auto` — автоакция
+                        exceptionProductsCount:
+                          type: integer
+                          format: uint
+                          example: 10
+                          description: |
+                            Количество товаров, исключенных из автоакции до её старта. Только при `"type": "auto"`.
+                            <br>В момент старта акции эти товары автоматически будут без скидки
+                        ranging:
+                          type: array
+                          description: Ранжирование (если подключено)
+                          items:
+                            type: object
+                            properties:
+                              condition:
+                                type: string
+                                description: |
+                                  Тип [ранжирования](https://seller.wildberries.ru/help-center/article/A-385):
+                                    - `productsInPromotion` — продвижение получат товары продавца, участвующие в акции
+                                    - `calculateProducts` — продвижение получат любые товара продавца, предложенные к участию в акции
+                                    - `allProducts` — продвижение получат все товары продавца
+                              participationRate:
+                                type: integer
+                                format: uint
+                                minimum: 0
+                                maximum: 100
+                                description: Количество товаров продавца для перехода на следующий уровень ранжирования, %
+                              boost:
+                                type: integer
+                                format: uint
+                                description: Текущий уровень поднятия в поиске, %
+                          example:
+                            - condition: productsInPromotion
+                              participationRate: 10
+                              boost: 7
+                            - condition: calculateProducts
+                              participationRate: 20
+                              boost: 17
+                            - condition: allProducts
+                              participationRate: 35
+                              boost: 30
+    PromotionsSuccessResponse:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  promotions:
+                    type: array
+                    description: Список акций
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 123
+                          description: ID акции
+                        name:
+                          type: string
+                          example: скидки
+                          description: Название акции
+                        startDateTime:
+                          type: string
+                          format: date-time
+                          example: "2023-06-05T21:00:00Z"
+                          description: Начало акции
+                        endDateTime:
+                          type: string
+                          format: date-time
+                          example: "2023-06-05T21:00:00Z"
+                          description: Конец акции
+                        type:
+                          type: string
+                          enum:
+                            - regular
+                            - auto
+                          description: |
+                            Тип акции:
+                              - `regular` — акция
+                              - `auto` — автоакция
+    ErrorFailedParseData:
+      description: Неправильный запрос
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errorText:
+                type: string
+                description: Текст ошибки
+                example: Failed to parse data
+  examples:
+    InvalidRcIdAdv:
+      value: Некорректный ID РК
+    AdvertNotFound:
+      description: Кампания не найдена
+      value:
+        error: "AdvertChangeStatus: Not Found: advert not found"
+    LowBudget:
+      description: Бюджета недостаточно
+      value:
+        error: "AdvertChangeStatus: Low Budget: not enough budget"
+    IncorrectId:
+      description: Некорректный ID кампании
+      value:
+        error: "Invalid Advert: invalid advert"
+    InvalidCampaignId:
+      description: Некорректный ID кампании
+      value:
+        error: "Invalid Params: invalid advert ID"
+    InvalidPayloadBody:
+      description: Некорректное тело запроса
+      value:
+        error: "Invalid Params: invalid payload body"
+    CampaignIsNotUnique:
+      description: Повторяется ID кампании. <br> В `.bids[n]` указана позиция кампании в массиве запроса `bids`
+      value:
+        errors:
+          - detail: advert 1234567 is not unique
+            field: .bids[2]
+        request_id: 2c991dcab0fe971e8c0321c340a8c7fd
+        status: 400
+        title: invalid payload
+        type: Bad Request
+    CanNotDeserializeResponseBody:
+      description: Недопустимое содержимое запроса
+      value:
+        detail: can not deserialize response body
+        origin: camp-api-public-cache
+        request_id: 49d317c56e62373b52710251280cea76
+        status: 400
+        title: invalid payload
+    CampaignNotFoundBids:
+      description: Кампания не найдена. <br> В `.bids[n]` указана позиция кампании в массиве запроса `bids`
+      value:
+        errors:
+          - detail: advert 22568519 not found
+            field: .bids[0]
+        request_id: 202707ea56b2e3ca7705ef00b1db4563
+        status: 400
+        title: invalid payload
+        type: Bad Request
+    WrongCampaignID:
+      description: Некорректный ID кампании.<br> В `.Bids[n]` указана позиция кампании в массиве запроса `bids`
+      value:
+        errors:
+          - detail: >-
+              Key: 'V0PatchAdvertsBidsJSONBody.Bids[0].AdvertId' Error:Field validation for 'AdvertId' failed on the
+              'gt' tag
+            field: AdvertId
+        request_id: af8a2f59dd49a037c2ed1f6dcb7abb99
+        status: 400
+        title: validation request params error
+        type: bad request
+    WrongCampaignStatus:
+      description: Некорректный статус кампании.<br> В `.bids[n]` указана позиция кампании в массиве запроса `bids`
+      value:
+        errors:
+          - detail: "wrong advert status: 7"
+            field: .bids[0]
+        request_id: 1dffc16267c1f9266a4d74e999f823b4
+        status: 400
+        title: invalid payload
+        type: Bad Request
+    WrongBidValue:
+      description: >-
+        Некорректный размер ставки. <br> В `.bids[n]` указана позиция кампании в массиве запроса `bids`, в `.nm_bids[n]`
+        указана позиция артикула с некорректной ставкой <br> Минимальное и максимальное значение ставки указаны в `min`
+        и `max` соответственно
+      value:
+        errors:
+          - detail: "wrong bid value: 100; min: 125 max:100000"
+            field: .bids[0].nm_bids[0].bid
+          - detail: "wrong bid value: 100; min: 150 max:100000"
+            field: .bids[1].nm_bids[0].bid
+        request_id: dcf254d3eae270675cbaa1e2ff1cce60
+        status: 400
+        title: invalid payload
+        type: Bad Request
+    NmNotFound:
+      description: >
+        Артикул не найден. <br> В `.bids[n]` указана позиция кампании в массиве запроса `bids`, в `.nm_bids[n]` указана
+        позиция ненайденного артикула этой кампании
+      value:
+        errors:
+          - detail: nm 2406138149 not found or inactive
+            field: .bids[0].nm_bids[0]
+        request_id: 2ebb8590d15c6c70e74e9cc3a9dc260b
+        status: 400
+        title: invalid payload
+        type: Bad Request
+    ResponseWithReturn:
+      description: Ответ при return=true
+      value:
+        total: 7289
+    SettingMinusPhrase:
+      description: Установка минус-фраз
+      value:
+        excluded:
+          - первая фраза
+          - вторая фраза
+    RemovingMinusPhrase:
+      description: Удаление минус-фраз
+      value:
+        excluded: []
+    ResponseInvalidCampaignID:
+      description: Некорректный ID кампании
+      value:
+        error: Некорректный ID кампании
+    StatusNoChangeAdv:
+      value: Статус кампании не изменен
+    IncorrectSupplierIdAdv:
+      value: Некорректный ID продавца
+    IncorrectTypeAdv:
+      value: Некорректное значение параметра type
+    IncorrectUsingMethods:
+      description: Некорректное использование метода
+      value: Для получения информации передайте или список кампаний, или набор фильтров
+    IncorrectName:
+      value: Некорректное название
+    CompanyNameChangeErr:
+      value: Ошибка изменения названия кампании
+    ErrorProcessRequestParam:
+      value: Ошибка обработки параметров запроса
+    RequestBodyProcessErrorAdv:
+      value: Ошибка обработки тела запроса
+    CampaignNotBelongSeller:
+      value: кампания не принадлежит продавцу
+    CampaignNotFoundAdv:
+      value:
+        error: Не найдено
+    invalidAdvert:
+      value:
+        error: |-
+          Invalid Advert: not found
+          advert not found
+    incorrectRequestBody:
+      value:
+        error: Некорректное тело запроса
+    ResponseInfoAdvertType8:
+      value:
+        - endTime: "2023-10-05T21:37:37.226021+03:00"
+          createTime: "2023-08-21T13:45:31.121172+03:00"
+          changeTime: "2023-08-21T14:59:33.622594+03:00"
+          startTime: "2023-08-21T13:45:31.147601+03:00"
+          autoParams:
+            subject:
+              name: Обложки
+              id: 342
+            sets:
+              - name: для женщин
+                id: 623
+            nms:
+              - 1234567
+            active:
+              carousel: true
+              recom: true
+              booster: true
+            nmCPM:
+              - nm: 1234567
+                cpm: 150
+          name: Кампания1
+          dailyBudget: 0
+          advertId: 11111111
+          status: 7
+          type: 8
+          paymentType: cpm
+    ResponseInfoAdvertsAll:
+      value:
+        - endTime: "2100-01-01 00:00:00+03:00"
+          createTime: "2023-05-31 16:57:42.654141+03:00"
+          changeTime: "2023-06-21 22:10:43.074183+03:00"
+          startTime: "2023-07-21 21:17:42.872376+03:00"
+          name: Носки_Шерстяные
+          params:
+            - intervals:
+                - begin: 3
+                  end: 5
+              price: 400
+              subjectId: 201
+              subjectName: Носки
+              nms:
+                - nm: 11111111
+                  active: true
+              active: false
+          dailyBudget: 0
+          advertId: 12345
+          status: 9
+          type: 8
+          paymentType: cpm
+          searchPluseState: false
+        - endTime: "2023-10-05T21:37:37.226021+03:00"
+          createTime: "2023-08-21T13:45:31.121172+03:00"
+          changeTime: "2023-08-21T14:59:33.622594+03:00"
+          startTime: "2023-08-21T13:45:31.147601+03:00"
+          autoParams:
+            subject:
+              name: Обложки
+              id: 342
+            sets:
+              - name: для женщин
+                id: 623
+            nms:
+              - 1234567
+            active:
+              carousel: true
+              recom: true
+              booster: true
+            nmCPM:
+              - nm: 1234567
+                cpm: 150
+          name: Кампания1
+          dailyBudget: 0
+          advertId: 11111111
+          status: 7
+          type: 8
+          paymentType: cpm
+    DateRangeExceeded:
+      description: Можно получить данные максимум за 7 дней
+      value:
+        message: the period of stats cannot be more than one week
+        type: bad request
+    CampaignNotFound:
+      description: Кампания не найдена
+      value:
+        message: campaign not found
+        type: not found
+    RequestWithoutParam:
+      description: Запрос без параметров
+      value:
+        - id: 107024
+    RequestAggregate:
+      description: Запрос с интервалами и датами
+      value:
+        - id: 107024
+          interval:
+            begin: "2023-10-21"
+            end: "2023-10-21"
+        - id: 107024
+          dates:
+            - "2023-10-22"
+            - "2023-10-26"
+    RespStatMediaInterval:
+      description: Ответ при запросе с интервалами
+      value:
+        - interval:
+            begin: "2023-10-21"
+            end: "2023-10-25"
+          stats:
+            - item_id: 62237
+              item_name: Gloria Jeans
+              category_name: Детям
+              advert_type: 1
+              place: 2
+              views: 11849
+              clicks: 209
+              cr: 0.48
+              ctr: 1.76
+              date_from: "2023-10-21T00:00:00+03:00"
+              date_to: "2023-10-27T23:59:59+03:00"
+              subject_name: Одежда
+              atbs: 4
+              orders: 1
+              price: 175000
+              cpc: 837.32
+              status: 6
+              daily_stats:
+                - date: "2023-10-21T00:00:00+03:00"
+                  app_type_stats:
+                    - app_type: 1
+                      stats:
+                        - views: 2017
+                          clicks: 27
+                          atbs: 1
+                          ctr: 1.34
+              expenses: 175000
+              cr1: 1.91
+              cr2: 25
+    RespStatMediaDates:
+      description: Ответ при запросе с датами
+      value:
+        - dates:
+            - "2023-10-26"
+            - "2023-10-22"
+          stats:
+            - item_id: 62237
+              item_name: Gloria Jeans
+              category_name: Детям
+              advert_type: 1
+              place: 2
+              views: 4584
+              clicks: 74
+              cr: 1.35
+              ctr: 1.61
+              date_from: "2023-10-21T00:00:00+03:00"
+              date_to: "2023-10-27T23:59:59+03:00"
+              subject_name: Одежда
+              atbs: 2
+              orders: 1
+              price: 175000
+              cpc: 2364.86
+              status: 6
+              daily_stats:
+                - date: "2023-10-22T00:00:00+03:00"
+                  app_type_stats:
+                    - app_type: 1
+                      stats:
+                        - views: 2384
+                          clicks: 33
+                          atbs: 2
+                          orders: 1
+                          cr: 3.03
+                          ctr: 1.38
+              expenses: 175000
+              cr1: 2.7
+              cr2: 50
+    RespStatMediaWithoutParam:
+      description: Ответ при запросе без параметров
+      value:
+        - stats:
+            - item_id: 62237
+              item_name: Gloria Jeans
+              category_name: Детям
+              advert_type: 1
+              place: 2
+              views: 11849
+              clicks: 209
+              cr: 0.48
+              ctr: 1.76
+              date_from: "2023-10-21T00:00:00+03:00"
+              date_to: "2023-10-27T23:59:59+03:00"
+              subject_name: Одежда
+              atbs: 4
+              orders: 1
+              price: 175000
+              cpc: 837.32
+              status: 6
+              daily_stats:
+                - date: "2023-10-21T00:00:00+03:00"
+                  app_type_stats:
+                    - app_type: 1
+                      stats:
+                        - views: 2017
+                          clicks: 27
+                          atbs: 1
+                          ctr: 1.34
+              expenses: 175000
+              cr1: 1.91
+              cr2: 25
+    RespStatMediaAggregate:
+      description: Ответ при запросе с интервалами и датами
+      value:
+        - interval:
+            begin: "2023-10-21"
+            end: "2023-10-25"
+          stats:
+            - item_id: 62237
+              item_name: Gloria Jeans
+              category_name: Детям
+              advert_type: 1
+              place: 2
+              views: 11849
+              clicks: 209
+              cr: 0.48
+              ctr: 1.76
+              date_from: "2023-10-21T00:00:00+03:00"
+              date_to: "2023-10-27T23:59:59+03:00"
+              subject_name: Одежда
+              atbs: 4
+              orders: 1
+              price: 175000
+              cpc: 837.32
+              status: 6
+              daily_stats:
+                - date: "2023-10-21T00:00:00+03:00"
+                  app_type_stats:
+                    - app_type: 1
+                      stats:
+                        - views: 2017
+                          clicks: 27
+                          atbs: 1
+                          ctr: 1.34
+              expenses: 175000
+              cr1: 1.91
+              cr2: 25
+        - dates:
+            - "2023-10-26"
+            - "2023-10-22"
+          stats:
+            - item_id: 62237
+              item_name: Gloria Jeans
+              category_name: Детям
+              advert_type: 1
+              place: 2
+              views: 4584
+              clicks: 74
+              cr: 1.35
+              ctr: 1.61
+              date_from: "2023-10-21T00:00:00+03:00"
+              date_to: "2023-10-27T23:59:59+03:00"
+              subject_name: Одежда
+              atbs: 2
+              orders: 1
+              price: 175000
+              cpc: 2364.86
+              status: 6
+              daily_stats:
+                - date: "2023-10-22T00:00:00+03:00"
+                  app_type_stats:
+                    - app_type: 1
+                      stats:
+                        - views: 2384
+                          clicks: 33
+                          atbs: 2
+                          orders: 1
+                          cr: 3.03
+                          ctr: 1.38
+              expenses: 175000
+              cr1: 2.7
+              cr2: 50
+        - stats:
+            - item_id: 62237
+              item_name: Gloria Jeans
+              category_name: Детям
+              advert_type: 1
+              place: 2
+              views: 11849
+              clicks: 209
+              cr: 0.48
+              ctr: 1.76
+              date_from: "2023-10-21T00:00:00+03:00"
+              date_to: "2023-10-27T23:59:59+03:00"
+              subject_name: Одежда
+              atbs: 4
+              orders: 1
+              price: 175000
+              cpc: 837.32
+              status: 6
+              daily_stats:
+                - date: "2023-10-21T00:00:00+03:00"
+                  app_type_stats:
+                    - app_type: 1
+                      stats:
+                        - views: 2017
+                          clicks: 27
+                          atbs: 1
+                          ctr: 1.34
+              expenses: 175000
+              cr1: 1.91
+              cr2: 25
+    RequestWithDate:
+      description: Запрос с датами
+      value:
+        - id: 8960367
+          dates:
+            - "2023-10-07"
+            - "2023-10-06"
+        - id: 9876543
+          dates:
+            - "2023-10-07"
+            - "2023-12-06"
+    RequestWithInterval:
+      description: Запрос с интервалами
+      value:
+        - id: 8960367
+          interval:
+            begin: "2023-10-08"
+            end: "2023-10-10"
+        - id: 78978565
+          interval:
+            begin: "2023-09-08"
+            end: "2023-09-11"
+    RequestWithoutIDParam:
+      description: Запрос только с ID кампаний
+      value:
+        - id: 8960367
+        - id: 9876543
+    ResponseWithDate:
+      description: Ответ при запросе с полем date
+      value:
+        - views: 1052
+          clicks: 2
+          ctr: 0.19
+          cpc: 0.09
+          sum: 177.7
+          atbs: 0
+          orders: 0
+          cr: 0
+          shks: 0
+          sum_price: 0
+          dates:
+            - "2023-10-07"
+            - "2023-10-06"
+          days:
+            - date: "2023-10-06T03:00:00+03:00"
+              views: 414
+              clicks: 1
+              ctr: 0.24
+              cpc: 70
+              sum: 70
+              atbs: 0
+              orders: 0
+              cr: 0
+              shks: 0
+              sum_price: 0
+              apps:
+                - views: 228
+                  clicks: 0
+                  ctr: 0
+                  cpc: 0
+                  sum: 38.71
+                  atbs: 0
+                  orders: 0
+                  cr: 0
+                  shks: 0
+                  sum_price: 0
+                  nm:
+                    - views: 25
+                      clicks: 0
+                      ctr: 0
+                      cpc: 0
+                      sum: 4
+                      atbs: 0
+                      orders: 0
+                      cr: 0
+                      shks: 0
+                      sum_price: 0
+                      name: Тапочки
+                      nmId: 111111111111
+                  appType: 1
+          boosterStats:
+            - date: "2023-10-07T00:00:00Z"
+              nm: 170095908
+              avg_position: 348
+          advertId: 10524818
+    ResponseWithInterval:
+      description: Ответ при запросе с полем interval
+      value:
+        - interval:
+            begin: "2023-10-08"
+            end: "2023-10-10"
+          views: 1052
+          clicks: 2
+          ctr: 0.19
+          cpc: 0.09
+          sum: 177.7
+          atbs: 0
+          orders: 0
+          cr: 0
+          shks: 0
+          sum_price: 0
+          days:
+            - date: "2023-10-08T03:00:00+03:00"
+              views: 730
+              clicks: 1
+              ctr: 0.14
+              cpc: 124.91
+              sum: 124.91
+              atbs: 0
+              orders: 0
+              cr: 0
+              shks: 0
+              sum_price: 0
+              apps:
+                - views: 424
+                  clicks: 1
+                  ctr: 0.24
+                  cpc: 72.63
+                  sum: 72.63
+                  atbs: 0
+                  orders: 0
+                  cr: 0
+                  shks: 0
+                  sum_price: 0
+                  nm:
+                    - views: 424
+                      clicks: 1
+                      ctr: 0.24
+                      cpc: 72.63
+                      sum: 72.63
+                      atbs: 0
+                      orders: 0
+                      cr: 0
+                      shks: 0
+                      sum_price: 0
+                      name: Тапочки
+                      nmId: 1111111111111
+                  appType: 1
+          boosterStats:
+            - date: "2023-10-08T00:00:00Z"
+              nm: 1111111111111
+              avg_position: 395
+          advertId: 10524818
+    responseIncorrectBeginDate:
+      value:
+        error: Некорректная дата начала
+    responseIncorrectEndDate:
+      value:
+        error: Некорректная дата конца
+    AvailableOnlyForAutoCampaign:
+      description: Доступно только для кампаний с единой ставкой
+      value:
+        error: доступно только для кампаний с единой ставкой
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

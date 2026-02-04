@@ -1,0 +1,480 @@
+requestDownload:
+  type: object
+  properties:
+    params:
+      type: array
+      maxItems: 50
+      minItems: 1
+      items:
+        type: object
+        properties:
+          extension:
+            type: string
+            description: Формат документа
+          serviceName:
+            type: string
+            description: Уникальный ID документа
+GetCategories:
+  properties:
+    data:
+      type: object
+      properties:
+        categories:
+          description: Категории документов
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: redeem-notification
+                description: ID категории документа из параметра [запроса](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category`
+              title:
+                type: string
+                example: Уведомление о выкупе
+                description: Название категории документа из поля [ответа](./financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category`
+GetList:
+  properties:
+    data:
+      type: object
+      properties:
+        documents:
+          description: Категории документов
+          type: array
+          items:
+            type: object
+            properties:
+              serviceName:
+                type: string
+                example: redeem-notification-44841941
+                description: Уникальный ID документа
+              name:
+                type: string
+                example: redeem-notification
+                description: Название документа
+              category:
+                type: string
+                example: Уведомление о выкупе
+                description: Название [категории документов](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля ответа `title`
+              extensions:
+                type: array
+                items:
+                  type: string
+                  example: zip
+                description: Форматы документа
+              creationTime:
+                type: string
+                example: '2023-10-03T00:18:06.879Z'
+                description: Дата и время создания документа
+              viewed:
+                type: boolean
+                example: false
+                description: Выгружен ли документ в личном кабинете
+GetDoc:
+  properties:
+    data:
+      type: object
+      properties:
+        fileName:
+          type: string
+          example: Notice of redemption 44841941.zip
+          description: Название документа
+        extension:
+          type: string
+          example: zip
+          description: Формат документа
+        document:
+          type: string
+          example: UEsDBBQACAgIAAAAAAAAAAAAAAAAAAAAAABHAAAA0KPQstC10LTQvtC80LvQtdC90LjQtSDQviDQstGL0LrRg9C/0LUg4oSWNDQ4NDE5NDEg0L7RgiAyNS4wOS4yMDIzLnhsc3jsnQk0lP3f/0dEUiRkNwmVECI7o0WS7EklxprdkH2bKVkqISRkGSlkaxRlN2TPnmzJvu/Gzmz/Uz33fY/L8/Q8zrn/x/07565zcjrn9f1cn/V6f69v53zTVCWnYATtA+0DAX/Rg0AgM5ip5l2Yg5OwKeyu+Wl3O1vbcA3YV5FDVfPej2vXKptOK1V9LjycmPDG72uW4vcG9xdsOI1V2wj86sk6+4nHJeZ92NFgC/He3gmDlccFXSyumXYUGSKK4hLLsqu5aBTspu5lqlcGB/JNlQVn1Eumj6o8ZEWPRotEVGkH9/kf457totEKj2N2P4dSZWAIaC0ajy5J+VL5fen1YOhcGMxvvUw+XOKFOHL...LSL/tC77s0GzTi2iBuHorbMpcOaw0Hmsc/gpk7ty3/cdDYRmhkRUPAIC37P94CA8oiP/fIvpPK8n9l43YARWRgH/tI6E3ntD/nfOfPyj9jxxDwn+b8/8dZqBDQPjPNSAACJgBAAD21P9s/y8AAP//UEsHCFHrudyQEwAASxQAAFBLAQIUABQACAgIAAAAAACH4v2BaSgAAGNjAABHAAAAAAAAAAAAAAAAAAAAAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeFBLAQIUABQACAgIAAAAAADTmLxwRQcAAGAPAABLAAAAAAAAAAAAAAAAAN4oAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeC5zaWdQSwECFAAUAAgACAAAAAAAUeu53JATAABLFAAACAAAAAAAAAAAAAAAAACcMAAAbWNoZC56aXBQSwUGAAAAAAMAAwAkAQAAYkQAAAAA
+          description: Документ в кодировке base64
+GetDocs:
+  properties:
+    data:
+      type: object
+      properties:
+        fileName:
+          type: string
+          example: documents.zip
+          description: Название документа
+        extension:
+          type: string
+          example: zip
+          description: Формат документа
+        document:
+          type: string
+          example: UEsDBBQACAgIAAAAAAAAAAAAAAAAAAAAAABHAAAA0KPQstC10LTQvtC80LvQtdC90LjQtSDQviDQstGL0LrRg9C/0LUg4oSWNDQ4NDE5NDEg0L7RgiAyNS4wOS4yMDIzLnhsc3jsnQk0lP3f/0dEUiRkNwmVECI7o0WS7EklxprdkH2bKVkqISRkGSlkaxRlN2TPnmzJvu/Gzmz/Uz33fY/L8/Q8zrn/x/07565zcjrn9f1cn/V6f69v53zTVCWnYATtA+0DAX/Rg0AgM5ip5l2Yg5OwKeyu+Wl3O1vbcA3YV5FDVfPej2vXKptOK1V9LjycmPDG72uW4vcG9xdsOI1V2wj86sk6+4nHJeZ92NFgC/He3gmDlccFXSyumXYUGSKK4hLLsqu5aBTspu5lqlcGB/JNlQVn1Eumj6o8ZEWPRotEVGkH9/kf457totEKj2N2P4dSZWAIaC0ajy5J+VL5fen1YOhcGMxvvUw+XOKFOHL...LSL/tC77s0GzTi2iBuHorbMpcOaw0Hmsc/gpk7ty3/cdDYRmhkRUPAIC37P94CA8oiP/fIvpPK8n9l43YARWRgH/tI6E3ntD/nfOfPyj9jxxDwn+b8/8dZqBDQPjPNSAACJgBAAD21P9s/y8AAP//UEsHCFHrudyQEwAASxQAAFBLAQIUABQACAgIAAAAAACH4v2BaSgAAGNjAABHAAAAAAAAAAAAAAAAAAAAAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeFBLAQIUABQACAgIAAAAAADTmLxwRQcAAGAPAABLAAAAAAAAAAAAAAAAAN4oAADQo9Cy0LXQtNC+0LzQu9C10L3QuNC1INC+INCy0YvQutGD0L/QtSDihJY0NDg0MTk0MSDQvtGCIDI1LjA5LjIwMjMueGxzeC5zaWdQSwECFAAUAAgACAAAAAAAUeu53JATAABLFAAACAAAAAAAAAAAAAAAAACcMAAAbWNoZC56aXBQSwUGAAAAAAMAAwAkAQAAYkQAAAAA
+          description: Документ в кодировке base64
+DetailReportItem:
+  type: object
+  properties:
+    realizationreport_id:
+      example: 1234567
+      type: integer
+      description: Номер отчёта
+    date_from:
+      example: '2022-10-17'
+      type: string
+      format: date
+      description: Дата начала отчётного периода
+    date_to:
+      example: '2022-10-23'
+      type: string
+      format: date
+      description: Дата конца отчётного периода
+    create_dt:
+      example: '2022-10-24'
+      type: string
+      format: date
+      description: Дата формирования отчёта
+    currency_name:
+      example: руб
+      type: string
+      description: Валюта отчёта
+    suppliercontract_code:
+      example: null
+      type: object
+      description: Договор
+      nullable: true
+    rrd_id:
+      example: 1232610467
+      type: integer
+      description: Номер строки
+    gi_id:
+      example: 123456
+      type: integer
+      description: Номер поставки
+    dlv_prc:
+      example: 1.8
+      type: number
+      description: Фиксированный коэффициент склада по поставке
+    fix_tariff_date_from:
+      example: '2024-10-23'
+      type: string
+      format: date
+      description: Дата начала действия фиксации
+    fix_tariff_date_to:
+      example: '2024-11-18'
+      type: string
+      format: date
+      description: Дата конца действия фиксации
+    subject_name:
+      example: Мини-печи
+      type: string
+      description: Предмет
+    nm_id:
+      example: 1234567
+      type: integer
+      description: Артикул WB
+    brand_name:
+      example: BlahBlah
+      type: string
+      description: Бренд
+    sa_name:
+      example: MAB123
+      type: string
+      description: Артикул продавца
+    ts_name:
+      example: '0'
+      type: string
+      description: Размер
+    barcode:
+      example: '1231312352310'
+      type: string
+      description: Баркод
+    doc_type_name:
+      example: Продажа
+      type: string
+      description: Тип документа
+    quantity:
+      type: integer
+      example: 1
+      description: Количество
+    retail_price:
+      example: 1249
+      type: number
+      description: Цена розничная
+    retail_amount:
+      example: 367
+      type: number
+      description: Вайлдберриз реализовал Товар (Пр)
+    sale_percent:
+      example: 0
+      type: integer
+      description: Согласованный продуктовый дисконт, %
+    commission_percent:
+      example: 24
+      type: number
+      description: Размер кВВ, %
+    office_name:
+      example: Коледино
+      type: string
+      description: Склад
+    supplier_oper_name:
+      example: Продажа
+      type: string
+      description: Обоснование для оплаты
+    order_dt:
+      example: '2022-10-13T00:00:00Z'
+      type: string
+      format: date-time
+      description: Дата заказа. <br>Присылается с явным указанием часового пояса
+    sale_dt:
+      example: '2022-10-20T00:00:00Z'
+      type: string
+      format: date-time
+      description: Дата продажи. <br>Присылается с явным указанием часового пояса
+    rr_dt:
+      example: '2022-10-20'
+      type: string
+      format: date
+      description: Дата операции
+    shk_id:
+      example: 1239159661
+      type: integer
+      description: Штрихкод
+    retail_price_withdisc_rub:
+      example: 399.68
+      type: number
+      description: Цена розничная с учётом согласованной скидки
+    delivery_amount:
+      example: 0
+      type: integer
+      description: Количество доставок
+    return_amount:
+      example: 0
+      type: integer
+      description: Количество возврата
+    delivery_rub:
+      example: 0
+      type: number
+      description: Услуги по доставке товара покупателю
+    gi_box_type_name:
+      example: Монопаллета
+      type: string
+      description: Тип коробов
+    product_discount_for_report:
+      example: 0
+      type: number
+      description: Итоговая согласованная скидка, %
+    supplier_promo:
+      example: 0
+      type: number
+      description: Промокод, %
+    ppvz_spp_prc:
+      example: 25.31
+      type: number
+      description: Скидка постоянного Покупателя (СПП), %
+    ppvz_kvw_prc_base:
+      example: 24.15
+      type: number
+      description: Размер кВВ без НДС, % базовый
+    ppvz_kvw_prc:
+      example: 1.81
+      type: number
+      description: Итоговый кВВ без НДС, %
+    sup_rating_prc_up:
+      type: number
+      description: Размер снижения кВВ из-за рейтинга, %
+    is_kgvp_v2:
+      type: number
+      description: Размер снижения кВВ из-за акции, %
+    ppvz_sales_commission:
+      example: 23.74
+      type: number
+      description: Вознаграждение с продаж до вычета услуг поверенного, без НДС
+    ppvz_for_pay:
+      example: 376.99
+      type: number
+      description: К перечислению продавцу за реализованный товар
+    ppvz_reward:
+      example: 0
+      type: number
+      description: Возмещение за выдачу и возврат товаров на ПВЗ
+    acquiring_fee:
+      example: 14.89
+      type: number
+      description: Эквайринг/Комиссии за организацию платежей
+    acquiring_percent:
+      example: 4.06
+      type: number
+      description: Размер комиссии за эквайринг/Комиссии за организацию платежей, %
+    payment_processing:
+      example: Комиссия за организацию платежа с НДС
+      type: string
+      description: Тип платежа за Эквайринг/Комиссии за организацию платежей
+    acquiring_bank:
+      example: Тинькофф
+      type: string
+      description: Наименование банка-эквайера
+    ppvz_vw:
+      example: 22.25
+      type: number
+      description: Вознаграждение Вайлдберриз (ВВ), без НДС
+    ppvz_vw_nds:
+      example: 4.45
+      type: number
+      description: НДС с вознаграждения Вайлдберриз
+    ppvz_office_name:
+      example: Пункт самовывоза (ПВЗ)
+      type: string
+      description: Наименование офиса доставки
+    ppvz_office_id:
+      example: 105383
+      type: integer
+      description: Номер офиса доставки
+    ppvz_supplier_id:
+      example: 186465
+      type: integer
+      description: Номер партнёра
+    ppvz_supplier_name:
+      example: ИП Жасмин
+      type: string
+      description: Партнёр
+    ppvz_inn:
+      example: '010101010101'
+      type: string
+      description: ИНН партнёра
+    declaration_number:
+      example: ''
+      type: string
+      description: Номер таможенной декларации
+    bonus_type_name:
+      example: Штраф МП. Невыполненный заказ (отмена клиентом после недовоза)
+      type: string
+      description: |
+        Виды логистики, штрафов и корректировок ВВ.<br>
+        Поле будет в ответе при наличии значения
+    sticker_id:
+      example: '1964038895'
+      type: string
+      description: Цифровое значение стикера, который клеится на товар в процессе сборки заказа по схеме "Маркетплейс"
+    site_country:
+      example: Россия
+      type: string
+      description: Страна продажи
+    srv_dbs:
+      example: true
+      type: boolean
+      description: Признак услуги платной доставки
+    penalty:
+      example: 231.35
+      type: number
+      description: Общая сумма штрафов
+    additional_payment:
+      example: 0
+      type: number
+      description: Корректировка Вознаграждения Вайлдберриз (ВВ)
+    rebill_logistic_cost:
+      example: 1.349
+      type: number
+      description: Возмещение издержек по перевозке/по складским операциям с товаром
+    rebill_logistic_org:
+      example: ИП Иванов Иван Иванович(123456789012)
+      type: string
+      description: |
+        Организатор перевозки.<br>
+        Поле будет в ответе при наличии значения
+    storage_fee:
+      type: number
+      description: Хранение
+      example: 12647.29
+    deduction:
+      type: number
+      description: Удержания
+      example: 6354
+    acceptance:
+      type: number
+      description: Операции на приёмке
+      example: 865
+    assembly_id:
+      type: integer
+      description: Номер сборочного задания
+      example: 2816993144
+    kiz:
+      example: "0102900000376311210G2CIS?ehge)S\x1D91002A\x1D92F9Qof4FDo/31Icm14kmtuVYQzLypxm3HWkC1vQ/+pVVjm1dNAth1laFMoAGn7yEMWlTjxIe7lQnJqZ7TRZhlHQ=="
+      type: string
+      description: |
+        Код маркировки.<br>
+        Поле будет в ответе при наличии значения
+    srid:
+      example: 0f1c3999172603062979867564654dac5b702849
+      type: string
+      description: |
+        Уникальный ID заказа.
+
+        Примечание для использующих API Marketplace: `srid` равен `rid` в ответах методов сборочных заданий.
+    report_type:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      description: "Тип отчёта:\n  - `1`\xA0— стандартный\n  - `2`\xA0— для уведомления о\xA0выкупе\n  - `3`, `4` — для уведомления о\xA0выкупе для Грузии\n"
+      example: 1
+    is_legal_entity:
+      type: boolean
+      description: Признак B2B-продажи
+      example: false
+    trbx_id:
+      type: string
+      description: Номер короба для обработки товара
+      example: WB-TRBX-1234567
+    installment_cofinancing_amount:
+      type: number
+      description: Скидка по программе софинансирования
+      example: 0
+    wibes_wb_discount_percent:
+      type: number
+      description: Скидка Wibes, %
+      example: 1
+    cashback_amount:
+      type: number
+      description: Сумма, удержанная за начисленные баллы программы лояльности
+      example: 0
+    cashback_discount:
+      type: number
+      description: Компенсация скидки по программе лояльности
+      example: 0
+    cashback_commission_change:
+      type: number
+      format: decimal
+      description: Стоимость участия в программе лояльности
+      example: 0
+    order_uid:
+      type: string
+      description: ID транзакции. Заказы в одной корзине покупателя будут иметь одинаковый `order_uid`
+      example: id375f16c4bec295d9995393af803ff7b
+    payment_schedule:
+      type: number
+      format: decimal
+      description: Разовое изменение срока перечисления денежных средств
+      example: 0
+    delivery_method:
+      type: string
+      description: Способ продажи и тип товара
+      example: FBS, (МГТ)
+    seller_promo_id:
+      type: integer
+      description: ID собственной акции продавца с дополнительной скидкой
+      example: 14350
+    seller_promo_discount:
+      type: number
+      description: Размер дополнительной скидки по собственной акции продавца, %
+      example: 3
+    loyalty_id:
+      type: integer
+      description: ID скидки лояльности от продавца
+      example: 0
+    loyalty_discount:
+      type: number
+      description: Размер скидки лояльности от продавца, %
+      example: 0
+    uuid_promocode:
+      type: string
+      description: ID промокода
+      example: ''
+    sale_price_promocode_discount_prc:
+      type: number
+      description: Скидка за промокод, %
+      example: 0

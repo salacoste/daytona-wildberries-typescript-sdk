@@ -1,165 +1,93 @@
 openapi: 3.0.1
 info:
-  title: 11-analytics - Воронка продаж
-  description: Extracted from original file for agent processing
-  version: 1.0.0-shard
+  title: Воронка продаж
+  version: analytics
 servers:
-  - url: https://seller-analytics-api.wildberries.ru
+- url: https://seller-analytics-api.wildberries.ru
+security:
+- HeaderApiKey: []
 tags:
-  - name: Воронка продаж
-    description: Воронка продаж endpoints
+- name: Воронка продаж
+  description: ''
 paths:
-  /api/v2/nm-report/detail:
+  /api/analytics/v3/sales-funnel/products:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: contentanalytics
       tags:
-        - Воронка продаж
+      - Воронка продаж
       summary: Статистика карточек товаров за период
+      operationId: postSalesFunnelProducts
       description: |
         Метод формирует отчёт о товарах, сравнивая ключевые показатели — например, добавления в корзину, заказы и переходы в карточку товара — за текущий период с аналогичным прошлым.<br><br>
 
-        Параметры `brandNames`,`objectIDs`, `tagIDs`, `nmIDs` могут быть пустыми `[]`, тогда в ответе возвращаются все карточки продавца.<br><br>
+        Параметры `brandNames`,`subjectIds`, `tagIds`, `nmIds` могут быть пустыми `[]`, тогда в ответе возвращаются все карточки продавца.<br><br>
 
-        Если выбрано несколько параметров, в ответе будут карточки, в которых есть одновременно все эти параметры. Если карточки не подходят по параметрам запроса, вернётся пустой ответ `[]`.<br><br>
+        Если вы указали несколько параметров, в ответе будут карточки, в которых есть одновременно все эти параметры. Если карточки не подходят по параметрам запроса, вернётся пустой ответ `[]`.<br><br>
 
         Можно получить отчёт максимум за последние 365 дней.<br><br>
 
         В данных предыдущего периода:
-          * Данные в `previousPeriod` указаны за такой же период, что и в `selectedPeriod`.
-          * Если дата начала  `previousPeriod` раньше, чем год назад от текущей даты, она будет приведена к виду: `previousPeriod.begin = текущая дата — 365 дней.`
+          * Данные в `pastPeriod` указаны за такой же период, что и в `selectedPeriod`
+          * Если дата начала  `pastPeriod` раньше, чем год назад от текущей даты, она будет приведена к виду: `pastPeriod.start = текущая дата — 365 дней`
+
+        Можно использовать пагинацию.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 3 запроса | 20 секунд | 3 запроса |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
         </div>
       requestBody:
-        description: ''
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NmReportDetailRequest'
-        required: true
+              $ref: _schemas.yaml#/components/schemas/ProductsRequest
       responses:
         '200':
           description: Успешно
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NmReportDetailResponse'
-              examples:
-                NmReportDetailResponse:
-                  value:
-                    data:
-                      page: 1
-                      isNextPage: true
-                      cards:
-                        - nmID: 1234567
-                          vendorCode: supplierVendor
-                          brandName: Some
-                          tags:
-                            - id: 123
-                              name: Sale
-                          object:
-                            id: 447
-                            name: Кондиционеры для волос
-                          statistics:
-                            selectedPeriod:
-                              begin: '2023-06-01 20:05:32'
-                              end: '2024-03-01 20:05:32'
-                              openCardCount: 0
-                              addToCartCount: 0
-                              ordersCount: 0
-                              ordersSumRub: 0
-                              buyoutsCount: 0
-                              buyoutsSumRub: 0
-                              cancelCount: 0
-                              cancelSumRub: 0
-                              avgPriceRub: 0
-                              avgOrdersCountPerDay: 0
-                              conversions:
-                                addToCartPercent: 0
-                                cartToOrderPercent: 0
-                                buyoutsPercent: 0
-                            previousPeriod:
-                              begin: '2023-05-07 20:05:31'
-                              end: '2023-06-01 20:05:31'
-                              openCardCount: 0
-                              addToCartCount: 0
-                              ordersCount: 1
-                              ordersSumRub: 1262
-                              buyoutsCount: 1
-                              buyoutsSumRub: 1262
-                              cancelCount: 0
-                              cancelSumRub: 0
-                              avgPriceRub: 1262
-                              avgOrdersCountPerDay: 0.04
-                              conversions:
-                                addToCartPercent: 0
-                                cartToOrderPercent: 0
-                                buyoutsPercent: 100
-                            periodComparison:
-                              openCardDynamics: 0
-                              addToCartDynamics: 0
-                              ordersCountDynamics: -100
-                              ordersSumRubDynamics: -100
-                              buyoutsCountDynamics: -100
-                              buyoutsSumRubDynamics: -100
-                              cancelCountDynamics: 0
-                              cancelSumRubDynamics: 0
-                              avgOrdersCountPerDayDynamics: 0
-                              avgPriceRubDynamics: -100
-                              conversions:
-                                addToCartPercent: 0
-                                cartToOrderPercent: 0
-                                buyoutsPercent: -100
-                          stocks:
-                            stocksMp: 0
-                            stocksWb: 0
-                    error: true
-                    errorText: ''
-                    additionalErrors:
-                      - field: string
-                        description: string
-                NmReportDetailResponseEmpty:
-                  description: По параметрам запроса не нашлась ни одна карточка товара
-                  value:
-                    data:
-                      page: 0
-                      isNextPage: false
-                      cards: []
-                    error: false
-                    errorText: ''
-                    additionalErrors: null
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    allOf:
+                    - type: object
+                      description: Статистика
+                    - $ref: _schemas.yaml#/components/schemas/ProductsResponse
         '400':
-          description: Неправильный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseError'
+          $ref: _schemas.yaml#/components/responses/BadRequestErrorResponse
         '401':
-          $ref: '#/components/responses/401'
+          $ref: _schemas.yaml#/components/responses/401
         '403':
-          description: Доступ запрещён
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseError'
+          $ref: _schemas.yaml#/components/responses/AuthorizationErrorResponse
         '429':
-          $ref: '#/components/responses/429'
-  /api/v2/nm-report/detail/history:
+          $ref: _schemas.yaml#/components/responses/429
+  /api/analytics/v3/sales-funnel/products/history:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: contentanalytics
       tags:
-        - Воронка продаж
+      - Воронка продаж
       summary: Статистика карточек товаров по дням
+      operationId: postSalesFunnelProductsHistory
       description: |
-        Метод возвращает статистику карточек товаров по дням. Можно получить данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br>
+        Метод возвращает статистику карточек товаров по дням или неделям. Доступны данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.
 
         Можно получить данные максимум за последнюю неделю.
 
         <div class="description_important">
-          Чтобы получать <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">отчёты за период до года</a>, подпишитесь на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a>
+          Чтобы получать отчёты за период до года, используйте методы <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">Аналитика продавца CSV</a>. Эти методы доступны только с подпиской на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a>
         </div>
 
         <div class="description_limit">
@@ -167,54 +95,50 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 3 запроса | 20 секунд | 3 запроса |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
         </div>
       requestBody:
-        description: ''
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NmReportDetailHistoryRequest'
-        required: true
+              $ref: _schemas.yaml#/components/schemas/ProductHistoryRequest
       responses:
         '200':
           description: Успешно
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NmReportDetailHistoryResponse'
+                $ref: _schemas.yaml#/components/schemas/ProductHistoryResponse
         '400':
-          description: Неправильный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseError'
+          $ref: _schemas.yaml#/components/responses/BadRequestErrorResponse
         '401':
-          $ref: '#/components/responses/401'
+          $ref: _schemas.yaml#/components/responses/401
         '403':
-          description: Доступ запрещён
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseError'
+          $ref: _schemas.yaml#/components/responses/AuthorizationErrorResponse
         '429':
-          $ref: '#/components/responses/429'
-  /api/v2/nm-report/grouped/history:
+          $ref: _schemas.yaml#/components/responses/429
+  /api/analytics/v3/sales-funnel/grouped/history:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: contentanalytics
       tags:
-        - Воронка продаж
+      - Воронка продаж
       summary: Статистика групп карточек товаров по дням
+      operationId: postSalesFunnelGroupedHistory
       description: |
-        Метод возвращает статистику карточек товаров по дням. Карточки товаров сгруппированы по предметам, брендам и ярлыкам. Можно получить данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br>
+        Метод возвращает статистику карточек товаров по дням или неделям. Карточки товаров сгруппированы по предметам, брендам и ярлыкам. Доступны данные по добавлениям в корзину, заказам, переходам в карточку товара и так далее.<br><br>
 
-        Параметры `brandNames`, `objectIDs`, `tagIDs` могут быть пустыми `[]`, тогда группировка происходит по всем карточкам продавца.<br><br>
+        Параметры `brandNames`, `subjectIds`, `tagIds` могут быть пустыми `[]`, тогда группировка происходит по всем карточкам продавца.<br><br>
 
-        Произведение количества предметов, брендов, ярлыков в запросе может быть не больше 16.<br><br>
+        Произведение количества предметов, брендов, ярлыков в запросе может быть не больше 16. Например, 4 бренда и 4 предмета или 2 предмета, 2 ярлыка и 4 бренда.<br><br>
 
         Можно получить данные максимум за последнюю неделю.
 
         <div class="description_important">
-          Чтобы получать <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">отчёты за период до года</a>, подпишитесь на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a>
+          Чтобы получать отчёты за период до года, используйте методы <a href="/openapi/analytics#tag/Analitika-prodavca-CSV">Аналитика продавца CSV</a>. Эти методы доступны только с подпиской на <a href='https://seller.wildberries.ru/monetization/jam'>расширенную аналитику Джем</a>
         </div>
 
         <div class="description_limit">
@@ -222,777 +146,36 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 3 запроса | 20 секунд | 3 запроса |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
         </div>
       requestBody:
-        description: ''
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NmReportGroupedHistoryRequest'
-        required: true
+              $ref: _schemas.yaml#/components/schemas/GroupedHistoryRequest
       responses:
         '200':
           description: Успешно
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NmReportGroupedHistoryResponse'
+                required:
+                - data
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/GroupedHistoryResponse
         '400':
-          description: Неправильный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseError'
+          $ref: _schemas.yaml#/components/responses/BadRequestErrorResponse
         '401':
-          $ref: '#/components/responses/401'
+          $ref: _schemas.yaml#/components/responses/401
         '403':
-          description: Доступ запрещён
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseError'
+          $ref: _schemas.yaml#/components/responses/AuthorizationErrorResponse
         '429':
-          $ref: '#/components/responses/429'
+          $ref: _schemas.yaml#/components/responses/429
 components:
-  schemas:
-    NmReportDetailRequest:
-      type: object
-      required:
-        - page
-        - period
-      properties:
-        brandNames:
-          type: array
-          description: Бренды
-          items:
-            type: string
-            example: Some
-        objectIDs:
-          type: array
-          description: ID предметов
-          items:
-            type: integer
-            format: int32
-            example: 358
-        tagIDs:
-          type: array
-          description: ID ярлыков
-          items:
-            type: integer
-            format: int32
-            example: 123
-        nmIDs:
-          type: array
-          description: Артикулы WB
-          items:
-            type: integer
-            format: int32
-            example: 1234567
-        timezone:
-          type: string
-          description: |
-            Временная зона.<br> Если не указано, то по умолчанию используется Europe/Moscow.
-          example: Europe/Moscow
-        period:
-          type: object
-          description: Период
-          properties:
-            begin:
-              description: Начало периода
-              type: string
-              format: time-date
-              example: '2023-06-01 20:05:32'
-            end:
-              description: Конец периода
-              type: string
-              format: time-date
-              example: '2024-03-01 20:05:32'
-        orderBy:
-          description: |
-            Параметры сортировки.
-            Если не указано, то по умолчанию используется значение "openCard" и сортировка по убыванию.
-
-            Все виды сортировки `field`:
-            - `openCard` — по открытию карточки (переход на страницу товара)
-            - `addToCart` — по добавлениям в корзину
-            - `orders` — по кол-ву заказов
-            - `avgRubPrice` — по средней цене в рублях
-            - `ordersSumRub` — по сумме заказов в рублях
-            - `stockMpQty` — по кол-ву остатков маркетплейса шт.
-            - `stockWbQty` — по кол-ву остатков на складе шт.
-            - `cancelSumRub` — сумме возвратов в рублях
-            - `cancelCount` — по кол-ву возвратов
-            - `buyoutCount` — по кол-ву выкупов
-            - `buyoutSumRub` — по сумме выкупов
-          type: object
-          properties:
-            field:
-              description: Вид сортировки
-              type: string
-              example: ordersSumRub
-            mode:
-              description: |
-                `asc` — по возрастанию, `desc` — по убыванию
-              type: string
-              example: asc
-        page:
-          description: Страница
-          type: integer
-          format: int32
-          example: 1
-    NmReportDetailResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            page:
-              description: Страница
-              type: integer
-              format: int32
-              example: 1
-            isNextPage:
-              description: Есть ли следующая страница (`false` — нет, `true` — есть)
-              type: boolean
-            cards:
-              type: array
-              items:
-                type: object
-                properties:
-                  nmID:
-                    description: Артикул WB
-                    type: integer
-                    format: int32
-                    example: 1234567
-                  vendorCode:
-                    description: Артикул продавца
-                    type: string
-                    example: supplierVendor
-                  brandName:
-                    description: Бренд
-                    type: string
-                    example: Some
-                  tags:
-                    description: Ярлыки
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          description: ID ярлыка
-                          type: integer
-                          format: int32
-                          example: 123
-                        name:
-                          description: Название ярлыка
-                          type: string
-                          example: Sale
-                  object:
-                    description: Предмет
-                    type: object
-                    properties:
-                      id:
-                        description: ID предмета
-                        type: integer
-                        format: int32
-                        example: 447
-                      name:
-                        description: Название предмета
-                        type: string
-                        example: Кондиционеры для волос
-                  statistics:
-                    description: Статистика
-                    type: object
-                    properties:
-                      selectedPeriod:
-                        description: Запрашиваемый период
-                        type: object
-                        properties:
-                          begin:
-                            description: Начало периода
-                            type: string
-                            example: '2023-06-01 20:05:32'
-                          end:
-                            description: Конец периода
-                            type: string
-                            example: '2024-03-01 20:05:32'
-                          openCardCount:
-                            description: Количество переходов в карточку товара
-                            type: integer
-                            format: int32
-                            example: 0
-                          addToCartCount:
-                            description: Положили в корзину, штук
-                            type: integer
-                            format: int32
-                            example: 0
-                          ordersCount:
-                            description: Заказали товаров, шт
-                            type: integer
-                            format: int32
-                            example: 0
-                          ordersSumRub:
-                            description: Заказали на сумму, руб.
-                            type: integer
-                            format: int32
-                            example: 0
-                          buyoutsCount:
-                            description: Выкупили товаров, шт.
-                            type: integer
-                            format: int32
-                            example: 0
-                          buyoutsSumRub:
-                            description: Выкупили на сумму, руб.
-                            type: integer
-                            format: int32
-                            example: 0
-                          cancelCount:
-                            description: Отменили товаров, шт.
-                            type: integer
-                            format: int32
-                            example: 0
-                          cancelSumRub:
-                            description: Отменили на сумму, руб.
-                            type: integer
-                            format: int32
-                            example: 0
-                          avgPriceRub:
-                            description: Средняя цена, руб.
-                            type: integer
-                            format: int32
-                            example: 0
-                          avgOrdersCountPerDay:
-                            description: Среднее количество заказов в день, шт.
-                            type: integer
-                            format: int32
-                            example: 0
-                          conversions:
-                            description: Конверсии
-                            type: object
-                            properties:
-                              addToCartPercent:
-                                description: Конверсия в корзину, % (Какой процент посетителей, открывших карточку товара, добавили товар в корзину)
-                                type: integer
-                                format: int32
-                                example: 0
-                              cartToOrderPercent:
-                                description: Конверсия в заказ, % (Какой процент посетителей, добавивших товар в корзину, сделали заказ)
-                                type: integer
-                                format: int32
-                                example: 0
-                              buyoutsPercent:
-                                description: Процент выкупа, % (Какой процент посетителей, заказавших товар, его выкупили. Без учёта товаров, которые еще доставляются покупателю.)
-                                type: integer
-                                format: int32
-                                example: 0
-                      previousPeriod:
-                        description: Статистика за предыдущий период
-                        type: object
-                        properties:
-                          begin:
-                            type: string
-                            description: Начало периода
-                            example: '2023-05-07 20:05:31'
-                          end:
-                            type: string
-                            description: Конец периода
-                            example: '2023-06-01 20:05:31'
-                          openCardCount:
-                            description: Количество переходов в карточку товара
-                            type: integer
-                            format: int32
-                            example: 0
-                          addToCartCount:
-                            description: Положили в корзину, штук
-                            type: integer
-                            format: int32
-                            example: 0
-                          ordersCount:
-                            description: Заказали товаров, штук
-                            type: integer
-                            format: int32
-                            example: 1
-                          ordersSumRub:
-                            description: Заказали на сумму, руб.
-                            type: integer
-                            format: int32
-                            example: 1262
-                          buyoutsCount:
-                            description: Выкупили товаров, шт.
-                            type: integer
-                            format: int32
-                            example: 1
-                          buyoutsSumRub:
-                            description: Выкупили на сумму, руб.
-                            type: integer
-                            format: int32
-                            example: 1262
-                          cancelCount:
-                            description: Отменили товаров, штук
-                            type: integer
-                            format: int32
-                            example: 0
-                          cancelSumRub:
-                            description: Отменили на сумму, руб.
-                            type: integer
-                            format: int32
-                            example: 0
-                          avgPriceRub:
-                            description: Средняя цена, руб.
-                            type: integer
-                            format: int32
-                            example: 1262
-                          avgOrdersCountPerDay:
-                            description: Среднее количество заказов в день, шт.
-                            type: number
-                            example: 0.04
-                          conversions:
-                            description: Конверсии
-                            type: object
-                            properties:
-                              addToCartPercent:
-                                description: Конверсия в корзину, % (Какой процент посетителей, открывших карточку товара, добавили товар в корзину)
-                                type: integer
-                                format: int32
-                                example: 0
-                              cartToOrderPercent:
-                                description: Конверсия в заказ, % (Какой процент посетителей, добавивших товар в корзину, сделали заказ)
-                                type: integer
-                                format: int32
-                                example: 0
-                              buyoutsPercent:
-                                description: Процент выкупа, % (Какой процент посетителей, заказавших товар, его выкупили. Без учёта товаров, которые еще доставляются покупателю.)
-                                type: integer
-                                format: int32
-                                example: 100
-                      periodComparison:
-                        description: Сравнение двух периодов, в процентах
-                        type: object
-                        properties:
-                          openCardDynamics:
-                            description: Динамика переходов в карточку товара
-                            type: integer
-                            format: int32
-                            example: 0
-                          addToCartDynamics:
-                            description: Динамика добавлений в корзину
-                            type: integer
-                            format: int32
-                            example: 0
-                          ordersCountDynamics:
-                            description: Динамика количества заказов
-                            type: integer
-                            format: int32
-                            example: -100
-                          ordersSumRubDynamics:
-                            description: Динамика суммы заказов, рублей
-                            type: integer
-                            format: int32
-                            example: -100
-                          buyoutsCountDynamics:
-                            description: Динамика выкупов, штук
-                            type: integer
-                            format: int32
-                            example: -100
-                          buyoutsSumRubDynamics:
-                            description: Динамика суммы выкупов, рублей
-                            type: integer
-                            format: int32
-                            example: -100
-                          cancelCountDynamics:
-                            description: Динамика отмен товаров, штук
-                            type: integer
-                            format: int32
-                            example: 0
-                          cancelSumRubDynamics:
-                            description: Динамика сумм отмен товаров, рублей
-                            type: integer
-                            format: int32
-                            example: 0
-                          avgOrdersCountPerDayDynamics:
-                            type: integer
-                            format: int32
-                            example: 0
-                            description: Динамика среднего количества заказов в день
-                          avgPriceRubDynamics:
-                            type: integer
-                            format: int32
-                            example: -100
-                            description: Динамика средней цены на товары. Учитываются скидки для акций и WB скидка.
-                          conversions:
-                            description: Конверсии
-                            type: object
-                            properties:
-                              addToCartPercent:
-                                description: Конверсия в корзину, % (Какой процент посетителей, открывших карточку товара, добавили товар в корзину)
-                                type: integer
-                                format: int32
-                                example: 0
-                              cartToOrderPercent:
-                                description: Конверсия в заказ, % (Какой процент посетителей, добавивших товар в корзину, сделали заказ)
-                                type: integer
-                                format: int32
-                                example: 0
-                              buyoutsPercent:
-                                description: Процент выкупа, % (Какой процент посетителей, заказавших товар, его выкупили. Без учёта товаров, которые еще доставляются покупателю.)
-                                type: integer
-                                format: int32
-                                example: -100
-                  stocks:
-                    description: Остатки
-                    type: object
-                    properties:
-                      stocksMp:
-                        description: Остатки МП, шт. (Общее количество остатков на складах продавца на текущий день)
-                        type: integer
-                        format: int32
-                        example: 0
-                      stocksWb:
-                        description: Остатки на складах WB (Общее количество остатков на складах WB на текущий день)
-                        type: integer
-                        format: int32
-                        example: 0
-        error:
-          type: boolean
-          description: Флаг ошибки
-        errorText:
-          description: Описание ошибки
-          type: string
-          example: ''
-        additionalErrors:
-          description: Дополнительные ошибки
-          nullable: true
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                description: Структура, где допущена ошибка
-                type: string
-              description:
-                description: Описание
-                type: string
-    responseError:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-          example: null
-        error:
-          description: Флаг ошибки
-          type: boolean
-          example: true
-        errorText:
-          description: Описание ошибки
-          type: string
-          example: Текст ошибки
-        additionalErrors:
-          description: Дополнительные ошибки
-          nullable: true
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                description: Структура, где допущена ошибка
-                type: string
-              description:
-                description: Описание
-                type: string
-    NmReportDetailHistoryRequest:
-      type: object
-      required:
-        - nmIDs
-        - period
-      properties:
-        nmIDs:
-          description: Артикул WB (максимум 20)
-          type: array
-          items:
-            type: integer
-            format: int32
-            example: 1234567
-        period:
-          description: Период
-          type: object
-          properties:
-            begin:
-              description: Начало периода
-              type: string
-              format: date
-              example: '2023-06-20'
-            end:
-              description: Конец периода
-              type: string
-              format: date
-              example: '2023-06-22'
-        timezone:
-          type: string
-          description: |
-            Временная зона.<br> Если не указано, то по умолчанию используется Europe/Moscow.
-          example: Europe/Moscow
-        aggregationLevel:
-          description: |
-            Тип агрегации. Если не указано, то по умолчанию используется агрегация по дням. <br> Доступные уровни агрегации `day`, `week`
-          type: string
-          example: day
-    NmReportDetailHistoryResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              nmID:
-                type: integer
-                format: int32
-                example: 1234567
-                description: Артикул WB
-              imtName:
-                type: string
-                example: Наименование карточки товара
-                description: Наименование карточки товара
-              vendorCode:
-                type: string
-                example: supplierVendor
-                description: Артикул продавца
-              history:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    dt:
-                      type: string
-                      format: date
-                      example: '2023-06-20'
-                      description: Дата
-                    openCardCount:
-                      type: integer
-                      format: int32
-                      example: 26
-                      description: Количество переходов в карточку товара
-                    addToCartCount:
-                      type: integer
-                      format: int32
-                      example: 1
-                      description: Положили в корзину, штук
-                    ordersCount:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Заказали товаров, шт
-                    ordersSumRub:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Заказали на сумму, руб.
-                    buyoutsCount:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Выкупили товаров, шт.
-                    buyoutsSumRub:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Выкупили на сумму, руб.
-                    buyoutPercent:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Процент выкупа, % (Какой процент посетителей, заказавших товар, его выкупили. Без учёта товаров, которые еще доставляются покупателю.)
-                    addToCartConversion:
-                      type: number
-                      example: 3.8
-                      description: Конверсия в корзину, % (Какой процент посетителей, открывших карточку товара, добавили товар в корзину)
-                    cartToOrderConversion:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Конверсия в заказ, % (Какой процент посетителей, добавивших товар в корзину, сделали заказ)
-        error:
-          type: boolean
-          description: Флаг ошибки
-        errorText:
-          description: Описание ошибки
-          type: string
-          example: ''
-        additionalErrors:
-          description: Дополнительные ошибки
-          nullable: true
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                description: Структура, где допущена ошибка
-                type: string
-              description:
-                description: Описание
-                type: string
-    NmReportGroupedHistoryRequest:
-      type: object
-      required:
-        - period
-      properties:
-        objectIDs:
-          type: array
-          description: ID предметов
-          items:
-            type: integer
-            format: int32
-            example: 358
-        brandNames:
-          description: Бренды
-          type: array
-          items:
-            type: string
-            example: Some
-        tagIDs:
-          description: ID ярлыков
-          type: array
-          items:
-            type: integer
-            format: int32
-            example: 123
-        period:
-          description: Период
-          type: object
-          properties:
-            begin:
-              description: Начало периода
-              type: string
-              format: date
-              example: '2023-06-21'
-            end:
-              description: Конец периода
-              type: string
-              format: date
-              example: '2023-06-23'
-        timezone:
-          description: |
-            Временная зона.<br> Если не указано, то по умолчанию используется Europe/Moscow.
-          type: string
-          example: Europe/Moscow
-        aggregationLevel:
-          description: |
-            Тип агрегации. Если не указано, то по умолчанию используется агрегация по дням. <br> Доступные уровни агрегации `day`, `week`
-          type: string
-          example: day
-    NmReportGroupedHistoryResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              object:
-                description: Предмет
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    format: int32
-                    example: 358
-                    description: ID предмета
-                  name:
-                    type: string
-                    example: Шампуни
-                    description: Название предмета
-              brandName:
-                type: string
-                example: Some
-                description: Бренд
-              tag:
-                description: Ярлык
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    format: int32
-                    example: 123
-                    description: ID ярлыка
-                  name:
-                    type: string
-                    example: Sale
-                    description: Название ярлыка
-              history:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    dt:
-                      type: string
-                      format: date
-                      example: '2023-06-21'
-                      description: Дата
-                    openCardCount:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Количество переходов в карточку товара
-                    addToCartCount:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Положили в корзину, штук
-                    ordersCount:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Заказали товаров, шт
-                    ordersSumRub:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Заказали на сумму, руб.
-                    buyoutsCount:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Выкупили товаров, шт.
-                    buyoutsSumRub:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Выкупили на сумму, руб.
-                    buyoutPercent:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Процент выкупа, % (Какой процент посетителей, заказавших товар, его выкупили. Без учёта товаров, которые еще доставляются покупателю.)
-                    addToCartConversion:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Конверсия в корзину, % (Какой процент посетителей, открывших карточку товара, добавили товар в корзину)
-                    cartToOrderConversion:
-                      type: integer
-                      format: int32
-                      example: 0
-                      description: Конверсия в заказ, % (Какой процент посетителей, добавивших товар в корзину, сделали заказ)
-        error:
-          type: boolean
-          description: Флаг ошибки
-        errorText:
-          description: Описание ошибки
-          type: string
-          example: ''
-        additionalErrors:
-          description: Дополнительные ошибки
-          nullable: true
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                description: Структура, где допущена ошибка
-                type: string
-              description:
-                description: Описание
-                type: string
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

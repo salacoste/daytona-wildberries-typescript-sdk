@@ -1,0 +1,513 @@
+openapi: 3.0.1
+info:
+  title: 09-communications - Закреплённые отзывы
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://feedbacks-api.wildberries.ru
+tags:
+  - name: Закреплённые отзывы
+    description: Закреплённые отзывы endpoints
+paths:
+  /api/feedbacks/v1/pins:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Список закреплённых и откреплённых отзывов
+      description: |
+        Метод предоставляет список закреплённых и откреплённых отзывов.
+        <br>
+        Откреплёнными считаются только отзывы, которые были откреплены автоматически по причинам, указанным в ответе в поле `unpinnedCause`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Закреплённые отзывы
+      parameters:
+        - name: state
+          in: query
+          description: |
+            Закреплён ли отзыв:
+              - `pinned` — да
+              - `unpinned` — нет
+          schema:
+            type: string
+            enum:
+              - pinned
+              - unpinned
+            example: pinned
+        - name: pinOn
+          in: query
+          description: |
+            Место закрепления отзыва:
+              - `nm` — карточка товара
+              - `imt` — группа [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+          schema:
+            type: string
+            enum:
+              - nm
+              - imt
+            example: nm
+        - name: imtId
+          in: query
+          description: |
+            ID для [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров.<br>Един для всех артикулов WB группы объединённых карточек.<br>У каждой карточки товара есть `imtId`, даже если она не объединена с другими карточками<br>
+          schema:
+            type: integer
+            example: 256972151
+        - name: nmId
+          in: query
+          description: Артикул WB
+          schema:
+            type: integer
+            example: 177974151
+        - name: feedbackId
+          in: query
+          description: ID отзыва
+          schema:
+            type: integer
+            example: 789
+        - name: dateFrom
+          in: query
+          description: Дата закрепления первого отзыва в списке
+          schema:
+            type: string
+            format: date-time
+            example: '2020-01-01T15:04:05Z'
+        - name: dateTo
+          in: query
+          description: Дата закрепления последнего отзыва в списке
+          schema:
+            type: string
+            format: date-time
+            example: '2020-02-01T15:04:05Z'
+        - name: next
+          in: query
+          description: ID последней операции закрепления (пагинатор)
+          schema:
+            type: integer
+            example: 741
+        - name: limit
+          in: query
+          description: Количество отзывов на одной странице (пагинация)
+          schema:
+            type: integer
+            default: 500
+            example: 100
+            maximum: 500
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ./_schemas.yaml#/respond.SuccessResponse
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: ./_schemas.yaml#/openapi.PinnedReviewItemResult
+                      next:
+                        type: integer
+                        description: Параметр пагинации. Укажите это значение в запросе, чтобы получить следующий пакет данных. Если поле отсутствует, вы получили все данные
+                        example: 200
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/respond.ResultErr
+              example:
+                status: 400
+                title: Bad Request
+                detail: state must be one of the values 'pinned', 'unpinned'
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                origin: pin-open-api
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Закрепить отзывы
+      description: |
+        Метод позволяет закрепить отзывы в карточке товара или в группе [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек. <br>
+        Чтобы получить ID отзывов, используйте метод [Список закреплённых и откреплённых отзывов](/openapi/user-communication#tag/Zakreplyonnye-otzyvy/paths/~1api~1feedbacks~1v1~1pins/get).<br>
+        <br>
+        Метод доступен по [подписке Джем](https://seller.wildberries.ru/monetization/jam) или c [тарифной опцией](https://seller.wildberries.ru/tariff-constructor) **Закрепление отзыва**.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Закреплённые отзывы
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              example:
+                - pinMethod: subscription
+                  pinOn: imt
+                  feedbackId: VlbkVVl7mtw37wуWkJZz
+                - pinMethod: tariff
+                  pinOn: imt
+                  feedbackId: DibuRAImknLyiqgzvGcU
+              maxItems: 500
+              items:
+                $ref: ./_schemas.yaml#/openapi.PinReviewItem
+        required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ./_schemas.yaml#/respond.SuccessResponse
+                  - $ref: ./_schemas.yaml#/openapi.PinReviewItemResult
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/respond.ResultErr
+              example:
+                detail: invalid request body
+                origin: pin-open-api
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                status: 400
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/respond.ResultErr
+              example:
+                origin: pin-open-api
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                status: 403
+                title: no active subscription or tariff
+                detail: this feature requires active subscription or active tariff
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Открепить отзывы
+      description: |
+        Метод позволяет открепить отзывы в карточке товара или в группе [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек.<br>
+        Чтобы получить `pinId` — ID операций закрепления, используйте метод [Список закреплённых и откреплённых отзывов](/openapi/user-communication#tag/Zakreplyonnye-otzyvy/paths/~1api~1feedbacks~1v1~1pins/get).<br>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Закреплённые отзывы
+      requestBody:
+        description: Список `pinId` — ID операций закрепления отзывов
+        content:
+          application/json:
+            schema:
+              type: array
+              maxItems: 500
+              items:
+                type: integer
+              example:
+                - 123456
+                - 234567
+                - 345678
+        required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ./_schemas.yaml#/respond.SuccessResponse
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        description: Список `pinId` — ID операций закрепления отзывов, которые были успешно откреплены
+                        example:
+                          - 123456
+                          - 234567
+                          - 345678
+                        items:
+                          type: integer
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/respond.ResultErr
+              example:
+                detail: invalid request body
+                origin: pin-open-api
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                status: 400
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/feedbacks/v1/pins/count:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Количество закреплённых и откреплённых отзывов
+      description: |
+        Метод возвращает количество закреплённых и откреплённых отзывов за заданный период.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Закреплённые отзывы
+      parameters:
+        - name: state
+          in: query
+          description: |
+            Закреплён ли отзыв:
+              - `pinned` — да
+              - `unpinned` — нет
+          schema:
+            type: string
+            enum:
+              - pinned
+              - unpinned
+            example: pinned
+        - name: pinOn
+          in: query
+          description: |
+            Место закрепления отзыва:
+              - `nm` — карточка товара
+              - `imt` — группа [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+          schema:
+            type: string
+            enum:
+              - nm
+              - imt
+            example: nm
+        - name: imtId
+          in: query
+          description: |
+            ID для [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров.<br>Един для всех артикулов WB группы объединённых карточек.<br>У каждой карточки товара есть `imtId`, даже если она не объединена с другими карточками<br>
+          schema:
+            type: integer
+            example: 256971531
+        - name: nmId
+          in: query
+          description: Артикул WB
+          schema:
+            type: integer
+            example: 177974151
+        - name: feedbackId
+          in: query
+          description: ID отзыва
+          schema:
+            type: integer
+            example: 789
+        - name: dateFrom
+          in: query
+          description: Дата закрепления первого отзыва в списке
+          schema:
+            type: string
+            format: date-time
+            example: '2020-01-01T15:04:05Z'
+        - name: dateTo
+          in: query
+          description: Дата закрепления последнего отзыва в списке
+          schema:
+            type: string
+            format: date-time
+            example: '2020-02-01T15:04:05Z'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ./_schemas.yaml#/respond.SuccessResponse
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        description: Количество отзывов
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/respond.ResultErr
+              example:
+                status: 400
+                title: Bad Request
+                detail: state must be one of the values 'pinned', 'unpinned'
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                origin: pin-open-api
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/feedbacks/v1/pins/limits:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Лимиты закреплённых отзывов
+      description: |
+        Метод возвращает лимиты закреплённых отзывов по тарифу и подписке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Закреплённые отзывы
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ./_schemas.yaml#/respond.SuccessResponse
+                  - $ref: ./_schemas.yaml#/openapi.SellerLimitsResponse
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  responses:
+    '401':
+      description: Не авторизован
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Слишком много запросов
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'

@@ -1,0 +1,245 @@
+openapi: 3.0.1
+info:
+  title: История остатков
+  version: analytics
+servers:
+- url: https://seller-analytics-api.wildberries.ru
+security:
+- HeaderApiKey: []
+tags:
+- name: История остатков
+  description: ''
+paths:
+  /api/v2/stocks-report/products/groups:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - История остатков
+      summary: Данные по группам
+      description: |
+        Метод формирует набор данных об остатках по группам товаров.
+        <br><br>
+        Группа товаров описывается кортежем `subjectID, brandName, tagID`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/TableGroupRequestSt
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/TableGroupResponseSt
+                required:
+                - data
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/stocks-report/products/products:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - История остатков
+      summary: Данные по товарам
+      description: |
+        Метод формирует набор данных об остатках по товарам.
+        <br><br>
+        Можно получить данные как по отдельным товарам, так и в рамках всего отчёта — если в запросе отсутствуют фильтры: `nmIDs`, `subjectID`, `brandName`, `tagID`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/TableProductRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/TableProductResponse
+                required:
+                - data
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/stocks-report/products/sizes:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - История остатков
+      summary: Данные по размерам
+      description: |
+        Метод формирует набор данных об остатках по размерам товара.
+        <br><br>
+        Возможны случаи:
+        1. Товар имеет размеры и `"includeOffice":true`, тогда в ответе будут данные об остатках по каждому из размеров с вложенной детализацией по складам.
+        2. Товар имеет размеры и `"includeOffice":false`, тогда в ответе будут данные об остатках по каждому из размеров без вложенной детализации по складам.
+        3. Товар не имеет размера и `"includeOffice":true`, тогда в ответе будет детализация по складам. Без данных об остатках по каждому из размеров.
+        4. Товар не имеет размера и `"includeOffice":false`, тогда тело ответа будет пустым.<br></br>
+        Товар не имеет размера, если у него единственный размер с `"techSize":"0"`. В ответах метода получения данных по [товарам](/openapi/analytics#tag/Istoriya-ostatkov/paths/~1api~1v2~1stocks-report~1products~1products/post) у таких товаров `"hasSizes":false`.<br></br>
+        Данные по складам продавца приходят в агрегированном виде — по всем сразу, без детализации по конкретным складам — эти записи будут с `"regionName":"Маркетплейс"` и `"officeName":""`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/TableSizeRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/TableSizeResponse
+                required:
+                - data
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/stocks-report/offices:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - История остатков
+      summary: Данные по складам
+      description: |
+        Метод формирует набор данных об остатках по складам.
+        <br><br>
+        Данные по складам продавца приходят в агрегированном виде — по всем сразу, без детализации по конкретным складам — эти записи будут с `"regionName":"Маркетплейс"` и `"offices":[]`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/TableShippingOfficeRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/TableShippingOfficeResponse
+                required:
+                - data
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

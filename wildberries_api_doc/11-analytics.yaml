@@ -13,37 +13,6 @@ info:
       3. [Истории остатков](/openapi/analytics#tag/Istoriya-ostatkov)
       4. [Аналитики продавца в формате CSV](/openapi/analytics#tag/Analitika-prodavca-CSV)
   x-file-name: analytics
-  x-changelog: |
-    ## Changelog
-
-    ### 2026-02-03 — v3 Migration (Sales Funnel)
-    Source: https://dev.wildberries.ru/yaml/ru/11-analytics.yaml
-    Swagger UI: https://dev.wildberries.ru/swagger/analytics
-
-    **BREAKING**: "Воронка продаж" endpoints migrated from v2 to v3:
-
-    | Old (REMOVED, returns 404)               | New (v3, ACTIVE)                                    |
-    |------------------------------------------|-----------------------------------------------------|
-    | POST /api/v2/nm-report/detail            | POST /api/analytics/v3/sales-funnel/products         |
-    | POST /api/v2/nm-report/detail/history    | POST /api/analytics/v3/sales-funnel/products/history |
-    | POST /api/v2/nm-report/grouped/history   | POST /api/analytics/v3/sales-funnel/grouped/history  |
-    | POST /api/v2/nm-report/grouped           | (removed, no direct replacement)                     |
-
-    **Request body changes (v2 → v3)**:
-    - `period: { begin, end }` → `selectedPeriod: { start, end }`
-    - `nmIDs` → `nmIds`
-    - `objectIDs` → `subjectIds`
-    - `tagIDs` → `tagIds`
-    - `page` → `limit` + `offset` (pagination)
-
-    **Unchanged endpoints** (still v2):
-    - /api/v2/nm-report/downloads (POST/GET) — CSV reports
-    - /api/v2/nm-report/downloads/retry (POST)
-    - /api/v2/nm-report/downloads/file/{downloadId} (GET)
-    - /api/v2/search-report/* (5 endpoints)
-    - /api/v2/stocks-report/* (4 endpoints)
-
-    Previous spec archived: 11-analytics.v2-deprecated.yaml
 security:
   - HeaderApiKey: []
 tags:

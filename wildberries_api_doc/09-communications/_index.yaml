@@ -6,7 +6,7 @@ _description: |
 
   С помощью методов общения с покупателями вы можете работать с:
     1. [Вопросами](/openapi/user-communication#tag/Voprosy) и [отзывами](/openapi/user-communication#tag/Otzyvy) покупателей
-    2. [Шаблонами ответов](/openapi/user-communication#tag/Shablony-otvetov) на вопросы и отзывы
+    2. [Закреплёнными отзывами](/openapi/user-communication#tag/Zakreplyonnye-otzyvy)
     3. [Чатами с покупателями](/openapi/user-communication#tag/Chat-s-pokupatelyami)
     4. [Заявками покупателей на возврат](/openapi/user-communication#tag/Vozvraty-pokupatelyami)
 _original_file: 09-communications.yaml
@@ -18,12 +18,12 @@ _shards:
     description: Questions
   - file: otzyvy.yaml
     domain: Отзывы
-    endpoints: 10
+    endpoints: 8
     description: Reviews
-  - file: shablony-otvetov.yaml
-    domain: Шаблоны ответов
-    endpoints: 4
-    description: Response Templates
+  - file: zakreplyonnye-otzyvy.yaml
+    domain: Закреплённые отзывы
+    endpoints: 5
+    description: Pinned Reviews
   - file: chat-s-pokupatelyami.yaml
     domain: Чат с покупателями
     endpoints: 4
@@ -33,4 +33,8 @@ _shards:
     endpoints: 2
     description: Customer Returns
 _shared_schemas: _schemas.yaml
-_total_endpoints: 26
+_total_endpoints: 25
+_base_urls:
+  - https://feedbacks-api.wildberries.ru
+  - https://buyer-chat-api.wildberries.ru
+  - https://returns-api.wildberries.ru

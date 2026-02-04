@@ -23,6 +23,8 @@ paths:
     servers:
       - url: https://finance-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: finance
       security:
         - HeaderApiKey: []
       summary: Получить баланс продавца
@@ -35,7 +37,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1 запрос | 1 минута | 1 запрос |
+        | 1 мин | 1 запрос | 1 мин | 1 запрос |
         </div>
       tags:
         - Баланс
@@ -67,6 +69,8 @@ paths:
     servers:
       - url: https://statistics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: statistics
       security:
         - HeaderApiKey: []
       summary: Отчёт о продажах по реализации
@@ -93,7 +97,7 @@ paths:
           in: query
           schema:
             type: string
-            format: RFC3339
+            format: date-time
           required: true
           description: |
             Начальная дата отчёта.<br>
@@ -109,7 +113,7 @@ paths:
           name: dateTo
           schema:
             type: string
-            format: date
+            format: date-time
           required: true
           description: Конечная дата отчёта
         - in: query
@@ -131,7 +135,7 @@ paths:
             <br>
             Загрузку отчёта нужно начинать с `rrdid = 0` и при последующих вызовах API передавать в запросе значение `rrd_id` из последней строки, полученной в результате предыдущего вызова.
             <br>
-            Таким образом, для загрузки одного отчёта может понадобиться вызывать API до тех пор, пока в ответе не будет отдан пустой массив `[]`.
+            Таким образом, для загрузки одного отчёта может понадобиться вызывать API до тех пор, пока не вернётся ответ 204.
         - in: query
           name: period
           schema:
@@ -154,6 +158,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DetailReportItem'
+        '204':
+          description: Нет данных
         '400':
           $ref: '#/components/responses/response400rDBP'
         '401':
@@ -164,6 +170,8 @@ paths:
     servers:
       - url: https://documents-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: documents
       tags:
         - Документы
       security:
@@ -177,7 +185,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 10 секунд | 1 запрос | 10 секунд | 5 запросов |
+        | 10 сек | 1 запрос | 10 сек | 5 запросов |
         </div>
       parameters:
         - $ref: '#/components/parameters/LocaleCat'
@@ -196,6 +204,8 @@ paths:
     servers:
       - url: https://documents-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: documents
       security:
         - HeaderApiKey: []
       tags:
@@ -209,7 +219,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 10 секунд | 1 запрос | 10 секунд | 5 запросов |
+        | 10 сек | 1 запрос | 10 сек | 5 запросов |
         </div>
       parameters:
         - $ref: '#/components/parameters/LocaleList'
@@ -301,6 +311,8 @@ paths:
     servers:
       - url: https://documents-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: documents
       security:
         - HeaderApiKey: []
       tags:
@@ -314,7 +326,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 10 секунд | 1 запрос | 10 секунд | 5 запросов |
+        | 10 сек | 1 запрос | 10 сек | 5 запросов |
         </div>
       parameters:
         - in: query
@@ -348,6 +360,8 @@ paths:
     servers:
       - url: https://documents-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: documents
       security:
         - HeaderApiKey: []
       tags:
@@ -361,7 +375,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 5 минут | 1 запрос | 5 минут | 5 запросов |
+        | 5 мин | 1 запрос | 5 мин | 5 запросов |
         </div>
       requestBody:
         content:
@@ -550,6 +564,7 @@ components:
           example: null
           type: object
           description: Договор
+          nullable: true
         rrd_id:
           example: 1232610467
           type: integer
@@ -799,7 +814,7 @@ components:
           example: 6354
         acceptance:
           type: number
-          description: Платная приёмка
+          description: Операции на приёмке
           example: 865
         assembly_id:
           type: integer
@@ -823,7 +838,9 @@ components:
           enum:
             - 1
             - 2
-          description: "Тип отчёта:\n  - `1`\_— стандартный\n  - `2`\_— для уведомления о\_выкупе\n"
+            - 3
+            - 4
+          description: "Тип отчёта:\n  - `1`\_— стандартный\n  - `2`\_— для уведомления о\_выкупе\n  - `3`, `4` — для уведомления о\_выкупе для Грузии\n"
           example: 1
         is_legal_entity:
           type: boolean
@@ -831,7 +848,7 @@ components:
           example: false
         trbx_id:
           type: string
-          description: Номер короба для платной приёмки
+          description: Номер короба для обработки товара
           example: WB-TRBX-1234567
         installment_cofinancing_amount:
           type: number
@@ -858,35 +875,44 @@ components:
           type: string
           description: ID транзакции. Заказы в одной корзине покупателя будут иметь одинаковый `order_uid`
           example: id375f16c4bec295d9995393af803ff7b
-        delivery_method:
-          type: string
-          description: |
-            Способ продажи и тип товара.
-            Возможные значения:
-              - `FBS` — продажа со склада продавца
-              - `FBW` — продажа со склада Wildberries
-              - `DBS` — доставка силами продавца
-          example: FBS
-        loyalty_id:
-          type: integer
-          description: |
-            Идентификатор программы лояльности продавца.
-            Добавлено в API 13 января 2026 (Release #433).
-            Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
-          example: 12345
-        loyalty_discount:
+        payment_schedule:
           type: number
           format: decimal
-          description: |
-            Скидка по программе лояльности продавца, %.
-            Добавлено в API 13 января 2026 (Release #433).
-            Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
-          example: 5.5
+          description: Разовое изменение срока перечисления денежных средств
+          example: 0
+        delivery_method:
+          type: string
+          description: Способ продажи и тип товара
+          example: FBS, (МГТ)
+        seller_promo_id:
+          type: integer
+          description: ID собственной акции продавца с дополнительной скидкой
+          example: 14350
+        seller_promo_discount:
+          type: number
+          description: Размер дополнительной скидки по собственной акции продавца, %
+          example: 3
+        loyalty_id:
+          type: integer
+          description: ID скидки лояльности от продавца
+          example: 0
+        loyalty_discount:
+          type: number
+          description: Размер скидки лояльности от продавца, %
+          example: 0
+        uuid_promocode:
+          type: string
+          description: ID промокода
+          example: ''
+        sale_price_promocode_discount_prc:
+          type: number
+          description: Скидка за промокод, %
+          example: 0
   responses:
     '401':
       description: Не авторизован
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:
@@ -927,7 +953,7 @@ components:
     '429':
       description: Слишком много запросов
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:

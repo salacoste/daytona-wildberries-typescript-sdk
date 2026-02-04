@@ -1,0 +1,1222 @@
+openapi: 3.0.1
+info:
+  title: 09-communications - Отзывы
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://feedbacks-api.wildberries.ru
+tags:
+  - name: Отзывы
+    description: Отзывы endpoints
+paths:
+  /api/v1/feedbacks/count-unanswered:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Необработанные отзывы
+      description: |
+        Метод возвращает:
+          - количество необработанных [отзывов](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get) за сегодня и за всё время
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Отзывы
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      countUnanswered:
+                        type: integer
+                        description: Количество необработанных отзывов
+                        example: 1
+                      countUnansweredToday:
+                        type: integer
+                        description: Количество необработанных отзывов за сегодня
+                        example: 0
+                  error:
+                    type: boolean
+                    description: Есть ли ошибка
+                    example: false
+                  errorText:
+                    type: string
+                    description: Описание ошибки
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/count:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Количество отзывов
+      description: |
+        Метод возвращает количество обработанных или необработанных [отзывов](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get) за заданный период.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Отзывы
+      parameters:
+        - name: dateFrom
+          in: query
+          description: Дата начала периода в формате Unix timestamp
+          schema:
+            type: integer
+            example: 1688465092
+        - name: dateTo
+          in: query
+          description: Дата конца периода в формате Unix timestamp
+          schema:
+            type: integer
+            example: 1688465092
+        - name: isAnswered
+          in: query
+          description: |
+            Обработан ли отзыв:
+              - `true` — да
+              - `false` — нет
+          schema:
+            type: boolean
+            default: true
+            example: false
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: integer
+                    description: Количество отзывов
+                    example: 724583
+                  error:
+                    type: boolean
+                    description: Есть ли ошибка
+                    example: false
+                  errorText:
+                    type: string
+                    description: Описание ошибки
+                    example: ''
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                IsAnsweredErr400:
+                  $ref: '#/components/examples/IsAnsweredErr400'
+                DateFromErr400:
+                  $ref: '#/components/examples/DateFromErr400'
+                DateToErr400:
+                  $ref: '#/components/examples/DateToErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Список отзывов
+      description: |
+        Метод возвращает список отзывов по заданным фильтрам. Вы можете:
+          - получить данные обработанных и необработанных отзывов
+          - сортировать отзывы по дате
+          - настроить пагинацию и количество отзывов в ответе
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Отзывы
+      parameters:
+        - name: isAnswered
+          in: query
+          required: true
+          description: |
+            Обработан ли отзыв:
+              - `true` — да
+              - `false` — нет
+          schema:
+            type: boolean
+            example: false
+        - name: nmId
+          in: query
+          description: Артикул WB
+          schema:
+            type: integer
+            example: 5870243
+        - name: take
+          in: query
+          required: true
+          description: Количество отзывов (max. 5 000)
+          schema:
+            type: integer
+            example: 1
+        - name: skip
+          in: query
+          required: true
+          description: Количество отзывов для пропуска (max. 199990)
+          schema:
+            type: integer
+            example: 0
+        - name: order
+          in: query
+          description: Сортировка отзывов по дате (dateAsc/dateDesc)
+          schema:
+            type: string
+            enum:
+              - dateAsc
+              - dateDesc
+        - name: dateFrom
+          in: query
+          description: Дата начала периода в формате Unix timestamp
+          schema:
+            type: integer
+            example: 1688465092
+        - name: dateTo
+          in: query
+          description: Дата конца периода в формате Unix timestamp
+          schema:
+            type: integer
+            example: 1688465092
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      countUnanswered:
+                        type: integer
+                        description: Количество необработанных отзывов
+                      countArchive:
+                        type: integer
+                        description: Количество обработанных отзывов
+                      feedbacks:
+                        $ref: ./_schemas.yaml#/responseFeedback
+                  error:
+                    type: boolean
+                    description: Есть ли ошибка
+                  errorText:
+                    type: string
+                    description: Описание ошибки
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  countUnanswered: 52
+                  countArchive: 1000
+                  feedbacks:
+                    - id: YX52RZEBhH9mrcYdEJuD
+                      text: Спасибо, всё подошло
+                      pros: Удобный
+                      cons: Нет
+                      productValuation: 5
+                      createdDate: '2024-09-26T10:20:48+03:00'
+                      answer:
+                        text: Пожалуйста. Ждём вас снова!
+                        state: wbRu
+                        editable: false
+                      state: wbRu
+                      productDetails:
+                        imtId: 123456789
+                        nmId: 987654321
+                        productName: ВАЗ
+                        supplierArticle: DP02/черный
+                        supplierName: ГП Реклама и услуги
+                        brandName: Бест Трикотаж
+                        size: '0'
+                      video:
+                        previewImage: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/preview.webp
+                        link: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/index.m3u8
+                        durationSec: 10
+                      wasViewed: true
+                      photoLinks:
+                        - fullSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/fs.jpg
+                          miniSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/ms.jpg
+                        - fullSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/fs.jpg
+                          miniSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/ms.jpg
+                        - fullSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/fs.jpg
+                          miniSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/ms.jpg
+                      userName: Николай
+                      matchingSize: ok
+                      isAbleSupplierFeedbackValuation: false
+                      supplierFeedbackValuation: 1
+                      isAbleSupplierProductValuation: false
+                      supplierProductValuation: 2
+                      isAbleReturnProductOrders: false
+                      returnProductOrdersDate: '2024-08-20T16:39:49Z'
+                      bables:
+                        - цена
+                      lastOrderShkId: 123456789
+                      lastOrderCreatedAt: '2024-08-12T10:20:48+03:00'
+                      color: colorless
+                      subjectId: 219
+                      subjectName: Футболки-поло
+                      parentFeedbackId: null
+                      childFeedbackId: bIjTCZDvJni7NGnLbUlf
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/FeedbackErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/answer:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      tags:
+        - Отзывы
+      security:
+        - HeaderApiKey: []
+      summary: Ответить на отзыв
+      description: |
+        Метод позволяет ответить на [отзыв](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get) покупателя.
+
+        <div class="description_important">
+          ID отзыва не валидируется. Если в запросе вы передали некорректный ID, вы не получите ошибку.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - text
+              properties:
+                id:
+                  type: string
+                  description: ID отзыва
+                  example: J2FMRjUj6hwvwCElqssz
+                text:
+                  type: string
+                  description: Текст ответа
+                  example: Спасибо за Ваш отзыв!
+                  minimum: 2
+                  maximum: 5000
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/standardizedFQError
+              examples:
+                contentTypeHeaderNotSpecified:
+                  $ref: '#/components/examples/contentTypeHeaderNotSpecified'
+                incorrectContentTypeHeader:
+                  $ref: '#/components/examples/incorrectContentTypeHeader'
+                incorrectContentType:
+                  $ref: '#/components/examples/incorrectContentType'
+                invalidJsonSyntax:
+                  $ref: '#/components/examples/invalidJsonSyntax'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+    patch:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      tags:
+        - Отзывы
+      security:
+        - HeaderApiKey: []
+      summary: Отредактировать ответ на отзыв
+      description: |
+        Метод позволяет отредактировать уже отправленный [ответ на отзыв](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks~1answer/post) покупателя.
+        <br><br>
+        Отредактировать ответ можно только один раз в течение 60 дней c момента отправки.
+
+        <div class="description_important">
+          ID отзыва не валидируется. Если в запросе вы передали некорректный ID, вы не получите ошибку.
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - text
+              properties:
+                id:
+                  type: string
+                  description: ID отзыва
+                  example: J2FMRjUj6hwvwCElqssz
+                text:
+                  type: string
+                  description: Текст ответа
+                  example: Спасибо за Ваш отзыв, он очень важен для нас!
+                  minimum: 2
+                  maximum: 5000
+      responses:
+        '204':
+          description: Успешно
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/order/return:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Возврат товара по ID отзыва
+      description: |
+        Метод запрашивает возврат товара, по которому оставлен [отзыв](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get).
+        <br><br>
+        Возврат доступен для отзывов с полем `"isAbleReturnProductOrders": true`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Отзывы
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedbackId:
+                  type: string
+                  description: ID отзыва
+            example:
+              feedbackId: absdfgerrrfff1234
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  error:
+                    type: boolean
+                    description: Есть ли ошибка
+                  errorText:
+                    type: string
+                    description: Описание ошибки
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/ResponseDoNotGetFeedback400'
+                RequestBodyErr400:
+                  $ref: '#/components/examples/RequestBodyErr400'
+                RequestIDErr400:
+                  $ref: '#/components/examples/RequestIDErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '422':
+          description: Ошибка обработки параметров запроса
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                responseInaccessibleBackGoodError422:
+                  $ref: '#/components/examples/responseInaccessibleBackGoodError422'
+                responseUnsuccessfullyBackGoodError422:
+                  $ref: '#/components/examples/responseUnsuccessfullyBackGoodError422'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedback:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Получить отзыв по ID
+      description: |
+        Метод возвращает данные [отзыва](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get) по его ID.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Отзывы
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID отзыва
+          schema:
+            type: string
+            example: G7Y9Y1kBAtKOitoBT_lV
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: ID отзыва
+                      userName:
+                        type: string
+                        description: Имя автора отзыва
+                        nullable: false
+                      pros:
+                        type: string
+                        description: Достоинства товара
+                        nullable: false
+                      cons:
+                        type: string
+                        description: Недостатки товара
+                        nullable: false
+                      matchingSize:
+                        type: string
+                        description: |
+                          Соответствие заявленного размера реальному.
+                          <br>Возможные значения:
+                          - ` ` - для безразмерных товаров
+                          - `ок` - соответствует размеру
+                          - `smaller` - маломерит
+                          - `bigger` - большемерит
+                      text:
+                        type: string
+                        description: Текст отзыва
+                      productValuation:
+                        type: integer
+                        description: Оценка товара
+                      createdDate:
+                        type: string
+                        format: date-time
+                        description: Дата и время создания отзыва
+                      answer:
+                        nullable: true
+                        type: object
+                        description: Структура ответа
+                        properties:
+                          text:
+                            type: string
+                            description: Текст ответа
+                          state:
+                            type: string
+                            description: |
+                              Статус:
+                                - `none` — новый
+                                - `wbRu`— отображается на сайте
+                                - `reviewRequired` — ответ проходит проверку
+                                - `rejected` — ответ отклонён
+                          editable:
+                            type: boolean
+                            description: |
+                              Можно ли отредактировать ответ:
+                                - `false` — нет
+                                - `true` — да
+                      state:
+                        type: string
+                        description: |
+                          Статус отзыва:
+                            - `none` - не обработан (новый)
+                            - `wbRu` - обработан
+                      productDetails:
+                        description: Product information
+                        type: object
+                        properties:
+                          nmId:
+                            type: integer
+                            description: Артикул WB
+                          imtId:
+                            type: integer
+                            description: ID для [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров
+                          productName:
+                            type: string
+                            description: Название товара
+                          supplierArticle:
+                            type: string
+                            nullable: true
+                            description: Артикул продавца
+                          supplierName:
+                            type: string
+                            nullable: true
+                            description: Имя продавца
+                          brandName:
+                            type: string
+                            nullable: true
+                            description: Бренд товара
+                          size:
+                            type: string
+                            description: Размер товара (`techSize` в КТ)
+                      photoLinks:
+                        nullable: true
+                        description: Массив структур фотографий
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            fullSize:
+                              type: string
+                              description: Адрес фотографии полного размера
+                            miniSize:
+                              type: string
+                              description: Адрес фотографии маленького размера
+                      video:
+                        nullable: true
+                        description: Структура видео
+                        type: object
+                        properties:
+                          previewImage:
+                            type: string
+                            description: Ссылка на обложку видео
+                          link:
+                            type: string
+                            description: Ссылка на файл плейлиста видео (доступно по протоколу hls)
+                          durationSec:
+                            type: integer
+                            description: Общая продолжительность видео
+                      wasViewed:
+                        type: boolean
+                        description: Просмотрен ли отзыв
+                      isAbleSupplierFeedbackValuation:
+                        description: |
+                          Доступна ли продавцу возможность оставить жалобу на отзыв:
+                            - `true`— да
+                            - `false` — нет
+                        type: boolean
+                      supplierFeedbackValuation:
+                        description: |
+                          Ключ причины жалобы на отзыв
+                        type: integer
+                      isAbleSupplierProductValuation:
+                        description: Доступна ли продавцу возможность сообщить о проблеме с товаром  (`true` - доступна, `false` - не доступна)
+                        type: boolean
+                      supplierProductValuation:
+                        description: |
+                          Ключ проблемы с товаром
+                        type: integer
+                      isAbleReturnProductOrders:
+                        description: |
+                          Опция возврата товара:
+                            - `true` — доступна
+                            - `false` — недоступна
+                        type: boolean
+                      returnProductOrdersDate:
+                        nullable: true
+                        description: Дата и время, когда на запрос возврата был получен ответ со статус-кодом 200.
+                        type: string
+                      bables:
+                        nullable: true
+                        description: Список тегов покупателя
+                        type: array
+                        items:
+                          type: string
+                      lastOrderShkId:
+                        type: integer
+                        description: Штрихкод единицы товара
+                      lastOrderCreatedAt:
+                        type: string
+                        description: Дата покупки
+                      color:
+                        type: string
+                        description: Цвет товара
+                      subjectId:
+                        type: integer
+                        description: ID предмета
+                      subjectName:
+                        type: string
+                        description: Название предмета
+                      parentFeedbackId:
+                        type: string
+                        description: ID начального отзыва (`null`, если этот отзыв начальный)
+                        nullable: true
+                      childFeedbackId:
+                        type: string
+                        nullable: true
+                        description: ID дополненного отзыва (`null`, если этот отзыв дополненный)
+                  error:
+                    type: boolean
+                    description: Есть ли ошибка
+                  errorText:
+                    type: string
+                    description: Описание ошибки
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  id: YX52RZEBhH9mrcYdEJuD
+                  text: Спасибо, всё подошло
+                  pros: Удобный
+                  cons: Нет
+                  productValuation: 5
+                  createdDate: '2024-09-26T10:20:48+03:00'
+                  answer:
+                    text: Пожалуйста. Ждём вас снова!
+                    state: wbRu
+                    editable: false
+                  state: wbRu
+                  productDetails:
+                    imtId: 123456789
+                    nmId: 987654321
+                    productName: ВАЗ
+                    supplierArticle: DP02/черный
+                    supplierName: ГП Реклама и услуги
+                    brandName: Бест Трикотаж
+                    size: '0'
+                  video:
+                    previewImage: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/preview.webp
+                    link: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/index.m3u8
+                    durationSec: 10
+                  wasViewed: true
+                  photoLinks:
+                    - fullSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/fs.jpg
+                      miniSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/ms.jpg
+                    - fullSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/fs.jpg
+                      miniSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/ms.jpg
+                    - fullSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/fs.jpg
+                      miniSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/ms.jpg
+                  userName: Николай
+                  matchingSize: ok
+                  isAbleSupplierFeedbackValuation: false
+                  supplierFeedbackValuation: 1
+                  isAbleSupplierProductValuation: false
+                  supplierProductValuation: 2
+                  isAbleReturnProductOrders: false
+                  returnProductOrdersDate: '2024-08-20T16:39:49Z'
+                  bables:
+                    - цена
+                  lastOrderShkId: 123456789
+                  lastOrderCreatedAt: '2024-08-12T10:20:48+03:00'
+                  color: colorless
+                  subjectId: 219
+                  subjectName: Футболки-поло
+                  parentFeedbackId: null
+                  childFeedbackId: bIjTCZDvJni7NGnLbUlf
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '401':
+          $ref: '#/components/responses/401'
+        '422':
+          description: Ошибка обработки параметров запроса
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                ResponseGetFeedbackByIdErrEx:
+                  $ref: '#/components/examples/ResponseGetFeedbackByIdErrEx'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/archive:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Список архивных отзывов
+      description: |
+        Метод возвращает список архивных [отзывов](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get).
+        <br><br>
+        Отзыв становится архивным, если:
+          - на отзыв получен ответ
+          - на отзыв не получен ответ в течение 30 дней
+          - в отзыве нет текста и фото
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 3 запроса | 333 мс | 6 запросов |
+
+        </div>
+      tags:
+        - Отзывы
+      parameters:
+        - name: nmId
+          in: query
+          description: Артикул WB
+          schema:
+            type: integer
+            example: 14917842
+        - name: take
+          in: query
+          required: true
+          description: Количество отзывов (max. 5 000)
+          schema:
+            type: integer
+            example: 1
+        - name: skip
+          in: query
+          required: true
+          description: Количество отзывов для пропуска
+          schema:
+            type: integer
+            example: 0
+        - name: order
+          in: query
+          description: Сортировка отзывов по дате (dateAsc/dateDesc)
+          schema:
+            type: string
+            enum:
+              - dateAsc
+              - dateDesc
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feedbacks:
+                        $ref: ./_schemas.yaml#/responseFeedback
+                  error:
+                    type: boolean
+                    description: Есть ли ошибка
+                  errorText:
+                    type: string
+                    description: Описание ошибки
+                  additionalErrors:
+                    description: Дополнительные ошибки
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  feedbacks:
+                    - id: YX52RZEBhH9mrcYdEJuD
+                      text: Спасибо, всё подошло
+                      pros: Удобный
+                      cons: Нет
+                      productValuation: 5
+                      createdDate: '2024-09-26T10:20:48+03:00'
+                      answer:
+                        text: Пожалуйста. Ждём вас снова!
+                        state: wbRu
+                        editable: false
+                      state: wbRu
+                      productDetails:
+                        imtId: 123456789
+                        nmId: 987654321
+                        productName: ВАЗ
+                        supplierArticle: DP02/черный
+                        supplierName: ГП Реклама и услуги
+                        brandName: Бест Трикотаж
+                        size: '0'
+                      video:
+                        previewImage: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/preview.webp
+                        link: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/index.m3u8
+                        durationSec: 10
+                      wasViewed: true
+                      photoLinks:
+                        - fullSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/fs.jpg
+                          miniSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/ms.jpg
+                        - fullSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/fs.jpg
+                          miniSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/ms.jpg
+                        - fullSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/fs.jpg
+                          miniSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/ms.jpg
+                      userName: Николай
+                      matchingSize: ok
+                      isAbleSupplierFeedbackValuation: false
+                      supplierFeedbackValuation: 1
+                      isAbleSupplierProductValuation: false
+                      supplierProductValuation: 2
+                      isAbleReturnProductOrders: false
+                      returnProductOrdersDate: '2024-08-20T16:39:49Z'
+                      bables:
+                        - цена
+                      lastOrderShkId: 123456789
+                      lastOrderCreatedAt: '2024-08-12T10:20:48+03:00'
+                      color: colorless
+                      subjectId: 219
+                      subjectName: Футболки-поло
+                      parentFeedbackId: null
+                      childFeedbackId: bIjTCZDvJni7NGnLbUlf
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/FeedbackErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/responsefeedbackErr
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  responses:
+    '401':
+      description: Не авторизован
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Слишком много запросов
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+  examples:
+    FeedbackErr403:
+      description: Доступ запрещён
+      value:
+        data: null
+        error: true
+        errorText: Ошибка авторизации
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    IsAnsweredErr400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Плохой формат isAnswered
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    DateFromErr400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Плохой формат dateFrom
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    DateToErr400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Плохой формат dateTo
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    FeedbackErr400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Something went wrong
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    contentTypeHeaderNotSpecified:
+      description: Не указан заголовок Content-Type
+      value:
+        title: bad request
+        requestId: e6c4100223db8bf5818b2e5f12705891
+        origin: fbapi
+        detail: content-type header not specified
+    incorrectContentTypeHeader:
+      description: Некорректный заголовок Content-Type
+      value:
+        title: bad request
+        requestId: e3676d061de748d9beaaa752d53e1670
+        origin: fbapi
+        detail: 'content-type is not a valid mime-type: u'
+    incorrectContentType:
+      description: Указан неверный тип данных в заголовке Content-Type
+      value:
+        title: bad request
+        requestId: cb4e8b210b4841ce9a3424946b497cb3
+        origin: fbapi
+        detail: 'not a json content-type: application/javascript'
+    invalidJsonSyntax:
+      description: Неверный синтаксис JSON
+      value:
+        title: bad request
+        requestId: 7f5a4faf91634812de5e143955ca0371
+        origin: fbapi
+        detail: Неверный синтаксис JSON
+    ResponseDoNotGetFeedback400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Не удалось получить отзыв
+        additionalErrors: null
+        requestId: 958d9676-b50c-41d6-b7ce-3c9f0bc3b822
+    RequestBodyErr400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: failed to decode JSON request.
+        additionalErrors: null
+        requestId: 958d9676-b50c-41d6-b7ce-3c9f0bc3b822
+    RequestIDErr400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Неправильный id в запросе
+        additionalErrors: null
+        requestId: 958d9676-b50c-41d6-b7ce-3c9f0bc3b822
+    responseInaccessibleBackGoodError422:
+      description: Запрос на возврат покупок недоступен
+      value:
+        data: null
+        error: true
+        errorText: Запрос на возврат покупок недоступен
+        additionalErrors: null
+        requestId: f551e94d-9bd5-431d-a4b6-b78106fe6348
+    responseUnsuccessfullyBackGoodError422:
+      description: Не удалось выполнить запрос на возврат покупок
+      value:
+        data: null
+        error: true
+        errorText: Не удалось выполнить запрос на возврат покупок
+        additionalErrors: null
+        requestId: 93ea349d-d0ec-41b0-aaac-a8f5f137a109
+    ResponseGetFeedbackByIdErrEx:
+      description: Не удалось получить отзыв по ID
+      value:
+        data: null
+        error: true
+        errorText: Невозможно получить отзыв по id
+        additionalErrors: null
+        requestId: 87a2fe4d-d28b-4bae-b824-c0f498c72702

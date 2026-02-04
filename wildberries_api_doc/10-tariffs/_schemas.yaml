@@ -1,0 +1,480 @@
+models.TariffsBoxResponse:
+  type: object
+  properties:
+    data:
+      $ref: '#/models.WarehousesBoxRates'
+models.WarehousesBoxRates:
+  type: object
+  properties:
+    dtNextBox:
+      type: string
+      description: Дата начала следующего тарифа
+      example: '2024-02-01'
+    dtTillMax:
+      type: string
+      description: Дата окончания последнего установленного тарифа
+      example: '2024-03-31'
+    warehouseList:
+      type: array
+      items:
+        $ref: '#/models.WarehouseBoxRates'
+      nullable: true
+      description: Тарифы для коробов, сгруппированные по складам
+models.WarehouseBoxRates:
+  type: object
+  properties:
+    boxDeliveryBase:
+      type: string
+      description: "Логистика, первый литр,\_₽"
+      example: '48'
+    boxDeliveryCoefExpr:
+      type: string
+      description: "Коэффициент **Логистика**,\_%. На\_него умножается стоимость логистики. Уже учтён в\_тарифах"
+      example: '160'
+    boxDeliveryLiter:
+      type: string
+      description: "Логистика, дополнительный литр,\_₽"
+      example: 11,2
+    boxDeliveryMarketplaceBase:
+      type: string
+      description: "Логистика FBS, первый литр,\_₽"
+      example: '40'
+    boxDeliveryMarketplaceCoefExpr:
+      type: string
+      description: "Коэффициент **FBS**,\_%. На\_него умножается стоимость логистики FBS. Уже учтён в\_тарифах"
+      example: '125'
+    boxDeliveryMarketplaceLiter:
+      type: string
+      description: "Логистика FBS, дополнительный литр,\_₽"
+      example: '11'
+    boxStorageBase:
+      type: string
+      description: "Хранение в\_день, первый литр,\_₽"
+      example: 0,14
+    boxStorageCoefExpr:
+      type: string
+      description: "Коэффициент **Хранение**,\_%. На\_него умножается стоимость хранения в день. Уже учтён в\_тарифах"
+      example: '115'
+    boxStorageLiter:
+      type: string
+      description: "Хранение в\_день, дополнительный литр,\_₽"
+      example: 0,07
+    geoName:
+      type: string
+      description: "Страна, для РФ\_—\_округ"
+      example: Центральный федеральный округ
+    warehouseName:
+      type: string
+      description: Название склада
+      example: Коледино
+models.TariffsPalletResponse:
+  type: object
+  properties:
+    data:
+      $ref: '#/models.WarehousesPalletRates'
+models.WarehousesPalletRates:
+  type: object
+  properties:
+    dtNextPallet:
+      type: string
+      description: Дата начала следующего тарифа
+      example: '2024-02-01'
+    dtTillMax:
+      type: string
+      description: Дата окончания последнего установленного тарифа
+      example: '2024-03-31'
+    warehouseList:
+      type: array
+      items:
+        $ref: '#/models.WarehousePalletRates'
+      nullable: true
+      description: Тарифы для монопаллет, сгруппированные по складам
+models.WarehousePalletRates:
+  type: object
+  properties:
+    palletDeliveryExpr:
+      type: string
+      description: Коэффициент доставки, %. На него умножается стоимость доставки. Во всех тарифах этот коэффициент уже учтён
+      example: '170'
+    palletDeliveryValueBase:
+      type: string
+      description: "Доставка 1\_литра,\_₽"
+      example: '51'
+    palletDeliveryValueLiter:
+      type: string
+      description: "Доставка каждого дополнительного литра,\_₽"
+      example: 11,9
+    palletStorageExpr:
+      type: string
+      description: Коэффициент хранения, %. На него умножается стоимость хранения. Во всех тарифах этот коэффициент уже учтён
+      example: '155'
+    palletStorageValueExpr:
+      type: string
+      description: "Хранение 1\_монопаллеты,\_₽"
+      example: '35.65'
+    warehouseName:
+      type: string
+      description: Название склада
+      example: Коледино
+models.ReturnTariffsResponse:
+  type: object
+  properties:
+    data:
+      $ref: '#/models.WarehousesReturnRates'
+models.WarehousesReturnRates:
+  type: object
+  properties:
+    dtNextDeliveryDumpKgt:
+      type: string
+      description: Дата начала следующего тарифа при грузовой доставке
+      example: '2024-02-01'
+    dtNextDeliveryDumpSrg:
+      type: string
+      description: Дата начала следующего тарифа для неопознанных товаров
+      example: '2024-02-01'
+    dtNextDeliveryDumpSup:
+      type: string
+      description: Дата начала следующего тарифа при обычной доставке
+      example: '2024-02-01'
+    warehouseList:
+      type: array
+      items:
+        $ref: '#/models.WarehouseReturnRates'
+      nullable: true
+      description: "Тарифы на\_возврат, сгруппированные по складам:\n  - стоимость возврата брака и возврата по инициативе продавца при грузовой доставке.\n  - стоимость возврата неопознанного складом товара.\n  - стоимость возврата брака, возврата по инициативе продавца и автовозвратов Маркетплейс (в пункт выдачи и обратно).\n\nМожно получить стоимость возврата в пункт выдачи (ПВЗ) и обратной логистики\_— если продавец не забрал товары из пункта выдачи за\_7 дней.\n"
+models.WarehouseReturnRates:
+  type: object
+  properties:
+    deliveryDumpKgtOfficeBase:
+      type: string
+      description: "**Стоимость возврата при грузовой доставке, доставка на\_ПВЗ (базовая цена\_за\_1\_л),\_₽**\nПрименяется для крупногабаритных товаров, когда:\n  - продавец хочет вывезти товары со склада WB;\n  - на\_складе обнаружили бракованные товары;\n  - покупатель возвращает товар, но его нельзя вернуть в продажу.\n"
+      example: 1 039
+    deliveryDumpKgtOfficeLiter:
+      type: string
+      description: "**Стоимость возврата при грузовой доставке, доставка на\_ПВЗ (доп. литр),\_₽**<br>\nСтоимость за\_каждый дополнительный литр.\n"
+      example: 9,1
+    deliveryDumpKgtReturnExpr:
+      type: string
+      description: "**Стоимость возврата при грузовой доставке, обратная логистика невостребованного возврата,\_₽**<br>\nГрузовая доставка невостребованного возврата обратно на\_склад WB. За единицу товара.\n"
+      example: 1 050
+    deliveryDumpSrgOfficeExpr:
+      type: string
+      description: |
+        **Стоимость возврата неопознанного складом товара за каждую единицу, доставка на ПВЗ, ₽**<br>
+        Применяется для товаров, которые не смогли принять на складе.
+      example: '170'
+    deliveryDumpSrgReturnExpr:
+      type: string
+      description: |
+        **Стоимость возврата неопознанного складом товара за каждую единицу, обратная логистика невостребованного возврата, ₽** <br>Доставка невостребованного возврата обратно на склад WB.
+      example: '170'
+    deliveryDumpSupCourierBase:
+      type: string
+      description: |
+        **Стоимость возврата, доставка курьером (базовая цена за 1 л), ₽**
+
+        Применяется, когда:
+          - продавец хочет вывезти товары со склада Wildberries
+          - на складе обнаружили бракованные товары
+          - покупатель возвращает товар, но его нельзя вернуть в продажу
+          - подключён автовозврат товаров, продаваемых по схеме Маркетплейс
+      example: '229'
+    deliveryDumpSupCourierLiter:
+      type: string
+      description: |
+        **Стоимость возврата, доставка курьером (доп. л), ₽**
+        <br>Стоимость за каждый дополнительный литр.
+      example: 9,1
+    deliveryDumpSupOfficeBase:
+      type: string
+      description: |
+        **Стоимость возврата, доставка на ПВЗ (базовая цена за 1 л), ₽**
+
+        Применяется, когда:
+          - продавец хочет вывезти товары со склада Wildberries
+          - на складе обнаружили бракованные товары
+          - покупатель возвращает товар, но его нельзя вернуть в продажу
+          - подключён автовозврат товаров, продаваемых по схеме Маркетплейс
+      example: '129'
+    deliveryDumpSupOfficeLiter:
+      type: string
+      description: |
+        **Стоимость возврата, доставка на ПВЗ (доп. литр), ₽** <br>Стоимость за каждый дополнительный литр
+      example: 9,1
+    deliveryDumpSupReturnExpr:
+      type: string
+      description: |
+        **Стоимость возврата, обратная логистика невостребованного возврата, за единицу товара, ₽**<br>
+        Доставка невостребованного возврата обратно на склад Wildberries.
+
+        Применяется, когда:
+          - продавец хочет вывезти товары со склада Wildberries
+          - на складе обнаружили бракованные товары
+          - покупатель возвращает товар, но его нельзя вернуть в продажу
+          - подключён автовозврат товаров, продаваемых по схеме Маркетплейс
+      example: '250'
+    warehouseName:
+      type: string
+      description: Название склада
+      example: Электросталь
+models.ErrorModel:
+  type: object
+  properties:
+    status:
+      type: integer
+      description: HTTP статус-код
+    title:
+      type: string
+      description: ID ошибки
+    detail:
+      type: string
+      description: Описание ошибки
+    requestId:
+      type: string
+      description: ID запроса
+    origin:
+      type: string
+      description: Сервис, вернувший ошибку
+models.AcceptanceCoefficient:
+  type: object
+  properties:
+    date:
+      type: string
+      description: Дата начала действия коэффициента
+    coefficient:
+      type: number
+      description: |
+        Коэффициент приёмки:
+          - `-1` — приёмка недоступна, вне зависимости от значения поля `allowUnload`
+          - `0` — бесплатная приёмка
+          - от `1` — множитель стоимости приёмки
+    warehouseID:
+      type: integer
+      description: ID склада. По нему можно получить [информацию о складе](./orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get)
+    warehouseName:
+      type: string
+      description: Название склада
+    allowUnload:
+      type: boolean
+      description: |
+        Доступность приёмки для поставок данного типа, смотри значение поля `boxTypeID`:
+
+         - `true` — приёмка доступна
+         - `false` — приёмка не доступна
+    boxTypeID:
+      type: integer
+      description: |
+        ID типа поставки:
+          - `2` — Короба
+          - `5` — Монопаллеты
+          - `6` — Суперсейф
+        <br>Для типа поставки **QR-поставка с коробами** поле не возвращается
+    storageCoef:
+      type: string
+      nullable: true
+      description: Коэффициент хранения
+    deliveryCoef:
+      type: string
+      nullable: true
+      description: Коэффициент логистики
+    deliveryBaseLiter:
+      type: string
+      nullable: true
+      description: Стоимость логистики первого литра
+    deliveryAdditionalLiter:
+      type: string
+      nullable: true
+      description: Стоимость логистики каждого следующего литра
+    storageBaseLiter:
+      type: string
+      nullable: true
+      description: |
+        Стоимость хранения:
+          - для паллет — стоимость за одну паллету
+          - для коробов — стоимость хранения за первый литр
+    storageAdditionalLiter:
+      type: string
+      nullable: true
+      description: |
+        Стоимость хранения каждого последующего литра:
+          - для паллет — всегда будет `null`, т.к. стоимость хранения за единицу паллеты определяется в `StorageBaseLiter`
+          - для коробов — стоимость хранения за каждый последующий литр
+    isSortingCenter:
+      type: boolean
+      description: |
+        Тип склада:
+
+         - `true` — сортировочный центр (СЦ)
+         - `false` — обычный
+TariffsBoxResponse:
+  type: object
+  properties:
+    response:
+      $ref: '#/models.TariffsBoxResponse'
+TariffsPalletResponse:
+  type: object
+  properties:
+    response:
+      $ref: '#/models.TariffsPalletResponse'
+ReturnTariffsResponse:
+  type: object
+  properties:
+    response:
+      $ref: '#/models.ReturnTariffsResponse'
+Commission:
+  additionalProperties: false
+  type: object
+  properties:
+    report:
+      type: array
+      description: Список комиссий
+      items:
+        type: object
+        properties:
+          kgvpBooking:
+            type: number
+            description: Комиссия по модели «Бронирование», %
+          kgvpMarketplace:
+            type: number
+            description: Комиссия по модели «Маркетплейс» (`FBS`), %
+          kgvpPickup:
+            type: number
+            description: Комиссия по модели «Самовывоз из магазина продавца» (`C&C`), %
+          kgvpSupplier:
+            type: number
+            description: Комиссия по моделям «Витрина» (`DBS`) и «Курьер WB» (`DBW`), %
+          kgvpSupplierExpress:
+            type: number
+            description: Комиссия по модели «Витрина экспресс» (`EDBS`), %
+          paidStorageKgvp:
+            type: number
+            description: Комиссия по модели «Склад WB» (`FBW`), %
+          parentID:
+            type: integer
+            description: ID родительской категории
+          parentName:
+            type: string
+            description: Название родительской категории
+          subjectID:
+            type: integer
+            description: ID предмета
+          subjectName:
+            type: string
+            description: Название предмета
+CommissionChina:
+  type: object
+  properties:
+    report:
+      type: array
+      description: Список комиссий
+      items:
+        type: object
+        properties:
+          kgvpChina:
+            type: number
+            description: Комиссия для продавцов из Китая, %
+          parentID:
+            type: integer
+            description: ID родительской категории
+          parentName:
+            type: string
+            description: Название родительской категории
+          subjectID:
+            type: integer
+            description: ID предмета
+          subjectName:
+            type: string
+            description: Название предмета
+CommissionTurkey:
+  type: object
+  properties:
+    report:
+      type: array
+      description: Список комиссий
+      items:
+        type: object
+        properties:
+          kgvpTurkey:
+            type: number
+            description: Комиссия для продавцов из Турции, %
+          parentID:
+            type: integer
+            description: ID родительской категории
+          parentName:
+            type: string
+            description: Название родительской категории
+          subjectID:
+            type: integer
+            description: ID предмета
+          subjectName:
+            type: string
+            description: Название предмета
+CommissionUzbekistan:
+  type: object
+  properties:
+    report:
+      type: array
+      description: Список комиссий
+      items:
+        type: object
+        properties:
+          kgvpMarketplaceUz:
+            type: number
+            description: Комиссия по модели «Маркетплейс» (`FBS`), %
+          kgvpPaidStorageUz:
+            type: number
+            description: Комиссия по модели «Склад WB» (`FBW`), %
+          kgvpSupplierUz:
+            type: number
+            description: Комиссия по модели «Витрина» (`DBS`), %
+          parentID:
+            type: integer
+            description: ID родительской категории
+          parentName:
+            type: string
+            description: Название родительской категории
+          subjectID:
+            type: integer
+            description: ID предмета
+          subjectName:
+            type: string
+            description: Название предмета
+CommissionUAE:
+  type: object
+  properties:
+    report:
+      type: array
+      description: Список комиссий
+      items:
+        type: object
+        properties:
+          kgvpUAE:
+            type: number
+            description: Комиссия для продавцов из ОАЭ, %
+          parentID:
+            type: integer
+            description: ID родительской категории
+          parentName:
+            type: string
+            description: Название родительской категории
+          subjectID:
+            type: integer
+            description: ID предмета
+          subjectName:
+            type: string
+            description: Название предмета
+BadRequest:
+  type: object
+  properties:
+    detail:
+      type: string
+      description: Детали ошибки
+    origin:
+      type: string
+      description: ID внутреннего сервиса WB
+    requestId:
+      type: string
+      description: Уникальный ID запроса
+    title:
+      type: string
+      description: Заголовок ошибки

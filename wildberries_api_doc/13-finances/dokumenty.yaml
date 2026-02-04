@@ -1,0 +1,240 @@
+_tag: "Документы"
+_tag_en: "Documents"
+_endpoints: 4
+_base_url: "https://documents-api.wildberries.ru"
+paths:
+  /api/v1/documents/categories:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: documents
+      tags:
+        - Документы
+      security:
+        - HeaderApiKey: []
+      summary: Категории документов
+      description: |
+        Метод возвращает категории документов для получения [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 сек | 1 запрос | 10 сек | 5 запросов |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/LocaleCat'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCategories'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/list:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: documents
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Документы
+      summary: Список документов
+      description: |
+        Метод возвращает список документов продавца. Вы можете получить [один](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1download/get) или [несколько](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1download~1all/post) документов из полученного списка.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 сек | 1 запрос | 10 сек | 5 запросов |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/LocaleList'
+        - in: query
+          name: beginTime
+          schema:
+            type: string
+            format: date
+            description: Начало периода. Только вместе с `endTime`
+            example: '2024-07-09'
+        - in: query
+          name: endTime
+          schema:
+            type: string
+            format: date
+            description: Конец периода. Только вместе с `beginTime`
+            example: '2024-07-15'
+        - in: query
+          name: sort
+          schema:
+            type: string
+            description: |
+              Сортировка:
+                - `date` — по дате создания документа
+                - `category` — по категории (только при `locale=ru`)
+
+              Только вместе с `order`
+            enum:
+              - date
+              - category
+            default: date
+            example: category
+        - in: query
+          name: order
+          schema:
+            type: string
+            description: |
+              Сортировка:
+                - `desc` — по убыванию
+                - `asc` — по возрастанию
+
+              Только вместе с `sort`
+            enum:
+              - desc
+              - asc
+            default: desc
+            example: asc
+        - in: query
+          name: category
+          schema:
+            type: string
+            description: ID [категории документов](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля `name`
+            example: redeem-notification
+        - in: query
+          name: serviceName
+          schema:
+            type: string
+            description: Уникальный ID документа
+            example: redeem-notification-44841941
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            description: Максимальное количество строк ответа
+            default: 50
+            maximum: 50
+            example: 10
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            description: После какой строки выдавать данные
+            default: 0
+            example: 90
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetList'
+        '400':
+          $ref: '#/components/responses/Responses400List'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/download:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: documents
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Документы
+      summary: Получить документ
+      description: |
+        Метод загружает один документ из [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 10 сек | 1 запрос | 10 сек | 5 запросов |
+        </div>
+      parameters:
+        - in: query
+          required: true
+          name: serviceName
+          schema:
+            type: string
+            description: Уникальный ID документа
+            example: redeem-notification-44841941
+        - in: query
+          required: true
+          name: extension
+          schema:
+            type: string
+            description: Формат документа
+            example: zip
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDoc'
+        '400':
+          $ref: '#/components/responses/Responses400Download'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/documents/download/all:
+    servers:
+      - url: https://documents-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: documents
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Документы
+      summary: Получить документы
+      description: |
+        Метод загружает несколько документов из [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 5 мин | 1 запрос | 5 мин | 5 запросов |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestDownload'
+            example:
+              params:
+                - extension: zip
+                  serviceName: redeem-notification-44841941
+                - extension: xlsx
+                  serviceName: act-income-mp-392460936
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDocs'
+        '400':
+          $ref: '#/components/responses/Responses400DownloadAll'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'

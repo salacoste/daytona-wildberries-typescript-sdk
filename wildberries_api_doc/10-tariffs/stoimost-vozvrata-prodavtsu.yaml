@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: 10-tariffs - Стоимость возврата продавцу
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://common-api.wildberries.ru
+tags:
+  - name: Стоимость возврата продавцу
+    description: Стоимость возврата продавцу endpoints
+paths:
+  /api/v1/tariffs/return:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: commonapi
+      security:
+        - HeaderApiKey: []
+      summary: "Тарифы на\_возврат"
+      tags:
+        - Стоимость возврата продавцу
+      description: "Метод возвращает [тарифы](https://seller.wildberries.ru/dynamic-product-categories/return-cost):\n  - на\_перевозку товаров со склада WB или из пункта приёма до продавца\n  - на\_обратную перевозку возвратов, которые не забрал продавец\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 60 запросов | 1 сек | 5 запросов |\n</div>\n"
+      parameters:
+        - in: query
+          name: date
+          required: true
+          description: Дата в формате ГГГГ-ММ-ДД
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: ./_schemas.yaml#/ReturnTariffsResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: ./_schemas.yaml#/BadRequest
+              example:
+                detail: 'parameter "date" in query has an error: empty value is not allowed'
+                origin: tariffs
+                requestId: e8096bddcfe5e3ff75f1afd26755364c
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  responses:
+    '401':
+      description: Не авторизован
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '429':
+      description: Слишком много запросов
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'

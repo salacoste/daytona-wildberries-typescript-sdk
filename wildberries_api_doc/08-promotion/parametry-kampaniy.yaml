@@ -10,22 +10,17 @@ tags:
     description: Параметры кампаний endpoints
 paths:
   /adv/v1/search/set-plus:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Управление активностью фиксированных фраз
       description: |
-        Метод делает активными или неактивными фиксированные фразы в кампаниях [с ручной ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1seacat~1save-ad/post). Фиксированные фразы нужны, чтобы товар отображался в поиске только по определенным поисковым запросам.<br><br>
-
-        Установить или удалить фиксированные фразы можно через [отдельный метод](/openapi/promotion#tag/Parametry-kampanij/paths/~1adv~1v1~1search~1set-plus/post).
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 500 миллисекунд | 1 запрос | 500 миллисекунд | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [15 января](https://dev.wildberries.ru/release-notes?id=385)
       tags:
         - Параметры кампаний
       parameters:
@@ -42,35 +37,28 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
                 type: string
                 example: Неправильный запрос
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
     post:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Установка/удаление фиксированных фраз
       description: |
-        Метод устанавливает и удаляет фиксированные фразы в кампаниях [с ручной ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1seacat~1save-ad/post). Фиксированные фразы можно выбрать в списке ключевых фраз кампании, который формируется после запуска.<br><br>
-
-        Отправка пустого массива в методе удаляет все фиксированные фразы и отключает [активность](/openapi/promotion#tag/Parametry-kampanij/paths/~1adv~1v1~1search~1set-plus/get) всех фиксированных фраз кампании.
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 500 миллисекунд | 1 запрос | 500 миллисекунд | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [15 января](https://dev.wildberries.ru/release-notes?id=385)
       tags:
         - Параметры кампаний
       parameters:
@@ -98,7 +86,7 @@ paths:
                 - Фраза 1
                 - Фраза 2
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -109,7 +97,7 @@ paths:
               example:
                 - Фраза 1
                 - Фраза 2
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
@@ -121,33 +109,26 @@ paths:
               examples:
                 NotFound:
                   value:
-                    error: 'Not Found: Campaign not found'
+                    error: "Not Found: Campaign not found"
                 InvalidParams:
                   value:
-                    error: 'Invalid Params: not available for unified campaigns'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                    error: "Invalid Params: not available for unified campaigns"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/search/set-excluded:
+    servers:
+      - url: https://advert-api.wildberries.ru
     post:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Установка/удаление минус-фраз в поиске
       description: |
-        Метод устанавливает и удаляет минус-фразы в поиске, в кампаниях [с ручной ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1seacat~1save-ad/post).<br><br>
-
-        Данные фразы можно выбрать из списка запросов, по которым покупатели находили ваш товар. Список запросов можно получить в [статистике ключевых фраз](/openapi/analytics#tag/Statistika-po-prodvizheniyu/paths/~1adv~1v0~1stats~1keywords/get).<br>Максимально допустимое количество минус-фраз в кампании — 1000.<br>
-
-        Отправка пустого массива удаляет все минус-фразы из поиска из кампании.
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 1 секунда | 2 запроса | 500 миллисекунд | 2 запроса |
-        </div>
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=388)
       tags:
         - Параметры кампаний
       parameters:
@@ -175,49 +156,31 @@ paths:
                 - что-то синее
                 - картошечка
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             text/plain:
               schema:
                 type: string
                 example: Неправильный запрос
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/auto/set-excluded:
+    servers:
+      - url: https://advert-api.wildberries.ru
     post:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Установка/удаление минус-фраз для кампании с единой ставкой
-      deprecated: true
       description: |
-        <div class="description_important">
-          ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br>
-
-          **Обновление**: Дата отключения перенесена с 15 января на 2 февраля 2026.<br><br>
-
-          **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br>
-
-          **Альтернатива**: Для работы с минус-фразами в кампаниях type 9 используйте соответствующие методы управления кампаниями с ручной ставкой.
-        </div>
-
-        Метод устанавливает и удаляет минус-фразы для кампании [с единой ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v1~1save-ad/post).<br><br>
-
-        Данные фразы можно выбрать из списка запросов, по которым покупатели находили ваш товар. Список запросов можно получить в [статистике ключевых фраз](/openapi/analytics#tag/Statistika-po-prodvizheniyu/paths/~1adv~1v0~1stats~1keywords/get).<br>
-
-        Отправка пустого массива удаляет все минус-фразы из кампании.
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 6 секунд | 1 запрос | 6 секунд | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=429)
       tags:
         - Параметры кампаний
       parameters:
@@ -242,51 +205,39 @@ paths:
                     type: string
             examples:
               SettingMinusPhrase:
-                $ref: '#/components/examples/SettingMinusPhrase'
+                $ref: "#/components/examples/SettingMinusPhrase"
               RemovingMinusPhrase:
-                $ref: '#/components/examples/RemovingMinusPhrase'
+                $ref: "#/components/examples/RemovingMinusPhrase"
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/400Response'
+                $ref: "#/components/schemas/400Response"
               examples:
                 InvalidCampaignId:
-                  $ref: '#/components/examples/InvalidCampaignId'
+                  $ref: "#/components/examples/InvalidCampaignId"
                 InvalidPayloadBody:
-                  $ref: '#/components/examples/InvalidPayloadBody'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/InvalidPayloadBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/auto/getnmtoadd:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      deprecated: true
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Список карточек товаров для кампании с единой ставкой
-      deprecated: true
       description: |
-        <div class="description_important">
-          ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br>
-
-          **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br>
-
-          **Альтернатива**: Для работы с кампаниями type 9 используйте метод [Информация о кампаниях с ручной ставкой](/openapi/promotion#tag/Kampanii/paths/~1adv~1v0~1auction~1adverts/get) и [Управление товарами в кампаниях](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1nms/patch).
-        </div>
-
-        Метод формирует [список карточек товаров](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1supplier~1nms/post), которые можно добавить в кампанию с единой ставкой.<br><br>
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=429)
       tags:
         - Параметры кампаний
       parameters:
@@ -298,7 +249,7 @@ paths:
             example: 1
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -311,51 +262,31 @@ paths:
                 - 2222222222
                 - 3333333333
                 - 4444444444
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseAdvError1'
+                $ref: "#/components/schemas/responseAdvError1"
               examples:
                 invalidAdvert:
-                  $ref: '#/components/examples/invalidAdvert'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/invalidAdvert"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/auto/updatenm:
+    servers:
+      - url: https://advert-api.wildberries.ru
     post:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Изменение списка карточек товаров в кампании с единой ставкой
-      deprecated: true
       description: |
-        <div class="description_important">
-          ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br>
-
-          **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br>
-
-          **Альтернатива**: Для работы с товарами в кампаниях type 9 используйте метод [Управление товарами в кампаниях](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1nms/patch).
-        </div>
-
-        Метод добавляет и удаляет карточки товаров в кампании с единой ставкой.<br><br>
-
-        <div class="description_important">
-          Добавить можно только те карточки товаров, которые вернутся в <a href="/openapi/promotion#tag/Parametry-avtomaticheskih-kampanij/paths/~1adv~1v1~1auto~1getnmtoadd/get">списке карточек товаров для кампании с единой ставкой</a>.<br>Удалить единственную карточку товара из кампании нельзя.
-        </div>
-
-        Проверки по параметру `delete` не предусмотрено.
-
-        Если пришел ответ со статус-кодом `200`, а изменений не произошло, проверьте, чтобы запрос соответствовал документации.
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 1 минута | 60 запросов | 1 секунда | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=429)
       tags:
         - Параметры кампаний
       parameters:
@@ -390,23 +321,27 @@ paths:
               delete:
                 - 55555555
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseAdvError1'
+                $ref: "#/components/schemas/responseAdvError1"
               examples:
                 CampaignNotFoundAdv:
-                  $ref: '#/components/examples/CampaignNotFoundAdv'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/CampaignNotFoundAdv"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/auction/nms:
+    servers:
+      - url: https://advert-api.wildberries.ru
     patch:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Изменение списка карточек товаров в кампаниях
@@ -422,7 +357,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 1 запрос |
+        | 1 сек | 1 запрос | 1 сек | 1 запрос |
         </div>
       tags:
         - Параметры кампаний
@@ -472,7 +407,7 @@ paths:
                     delete:
                       - 55555555
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -520,59 +455,19 @@ paths:
                         - 44444444
                       deleted:
                         - 55555555
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/response400'
+                $ref: "#/components/schemas/response400"
               example:
                 detail: nomenclature 13335157 cannot be both added and deleted for advert 27247695
                 origin: camp-api-public-cache
                 request_id: 6023d2950af564838f9b44a279d2140c
                 status: 400
                 title: invalid payload
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    400Response:
-      type: object
-      properties:
-        error:
-          type: string
-    responseAdvError1:
-      type: object
-      properties:
-        error:
-          type: string
-    response400:
-      type: object
-      properties:
-        detail:
-          type: string
-          description: Детали ошибки
-        origin:
-          type: string
-          description: ID внутреннего сервиса WB
-          example: camp-api-public-cache
-        request_id:
-          type: string
-          description: Уникальный ID запроса
-          example: 6023d2950af564838f9b44a279d2140c
-        status:
-          type: integer
-          description: HTTP статус-код
-          example: 400
-        title:
-          type: string
-          description: Заголовок ошибки
-          example: invalid payload
-      required:
-        - detail
-        - title
-        - request_id
-        - origin
-        - status
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"

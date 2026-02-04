@@ -10,139 +10,193 @@ tags:
     description: Календарь акций endpoints
 paths:
   /api/v1/calendar/promotions:
+    servers:
+      - url: https://dp-calendar-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       tags:
         - Календарь акций
       security:
         - HeaderApiKey: []
       summary: Список акций
-      description: |
-        Метод возвращает список [акций](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get) в WB с датами и временем проведения.
+      description: >
+        Метод возвращает список
+        [акций](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get) в WB с датами
+        и временем проведения.
+
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Календарь акций</strong>:
+
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для
+        всех методов категории <strong>Календарь акций</strong>:
+
 
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
+
 
         </div>
       parameters:
-        - $ref: '#/components/parameters/startDateTime'
-        - $ref: '#/components/parameters/endDateTime'
-        - $ref: '#/components/parameters/allPromo'
-        - $ref: '#/components/parameters/limitPromotion'
-        - $ref: '#/components/parameters/offset'
+        - $ref: "#/components/parameters/startDateTime"
+        - $ref: "#/components/parameters/endDateTime"
+        - $ref: "#/components/parameters/allPromo"
+        - $ref: "#/components/parameters/limitPromotion"
+        - $ref: "#/components/parameters/offset"
       responses:
-        '200':
-          $ref: '#/components/responses/PromotionsSuccessResponse'
-        '400':
-          $ref: '#/components/responses/ErrorFailedParseData'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "200":
+          $ref: "#/components/responses/PromotionsSuccessResponse"
+        "400":
+          $ref: "#/components/responses/ErrorFailedParseData"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v1/calendar/promotions/details:
+    servers:
+      - url: https://dp-calendar-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       tags:
         - Календарь акций
       security:
         - HeaderApiKey: []
       summary: Детальная информация об акциях
-      description: |
-        Метод возвращает подробную информацию об [акции](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get) по ID.
+      description: >
+        Метод возвращает подробную информацию об
+        [акции](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get) по ID.
+
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Календарь акций</strong>:
+
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для
+        всех методов категории <strong>Календарь акций</strong>:
+
 
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
+
 
         </div>
       parameters:
-        - $ref: '#/components/parameters/promotionIDs'
+        - $ref: "#/components/parameters/promotionIDs"
       responses:
-        '200':
-          $ref: '#/components/responses/PromotionsGetByIDSuccessResponse'
-        '400':
-          $ref: '#/components/responses/ErrorFailedParseData'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "200":
+          $ref: "#/components/responses/PromotionsGetByIDSuccessResponse"
+        "400":
+          $ref: "#/components/responses/ErrorFailedParseData"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v1/calendar/promotions/nomenclatures:
+    servers:
+      - url: https://dp-calendar-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       tags:
         - Календарь акций
       security:
         - HeaderApiKey: []
       summary: Список товаров для участия в акции
-      description: |
-        Метод формирует список товаров, подходящих для участия в [акции](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get). Эти товары можно добавить в акцию с помощью [отдельного метода](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1upload/post).
+      description: >
+        Метод формирует список товаров, подходящих для участия в
+        [акции](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get). Эти товары
+        можно добавить в акцию с помощью [отдельного
+        метода](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1upload/post).
+
 
         <div class="description_important">
           Данный метод неприменим для автоакций.
         </div>
 
+
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Календарь акций</strong>:
+
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для
+        всех методов категории <strong>Календарь акций</strong>:
+
 
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
+
 
         </div>
       parameters:
-        - $ref: '#/components/parameters/promotionID'
-        - $ref: '#/components/parameters/inAction'
-        - $ref: '#/components/parameters/limitNomenclature'
-        - $ref: '#/components/parameters/offset'
+        - $ref: "#/components/parameters/promotionID"
+        - $ref: "#/components/parameters/inAction"
+        - $ref: "#/components/parameters/limitNomenclature"
+        - $ref: "#/components/parameters/offset"
       responses:
-        '200':
-          $ref: '#/components/responses/ResponsePromotionsGoodsLists'
-        '400':
-          $ref: '#/components/responses/ErrorWrongParameters'
-        '401':
-          $ref: '#/components/responses/401'
-        '422':
-          $ref: '#/components/responses/ErrParameterValuesIncorrect'
-        '429':
-          $ref: '#/components/responses/429'
+        "200":
+          $ref: "#/components/responses/ResponsePromotionsGoodsLists"
+        "400":
+          $ref: "#/components/responses/ErrorWrongParameters"
+        "401":
+          $ref: "#/components/responses/401"
+        "422":
+          $ref: "#/components/responses/ErrParameterValuesIncorrect"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v1/calendar/promotions/upload:
+    servers:
+      - url: https://dp-calendar-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: discountsandprices
       tags:
         - Календарь акций
       security:
         - HeaderApiKey: []
       summary: Добавить товар в акцию
-      description: |
-        Метод создаёт задание на загрузку товара в [акцию](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get).<br>
-        Состояние загрузки можно проверить с помощью [отдельных методов](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get).
+      description: >
+        Метод создаёт задание на загрузку товара в
+        [акцию](/openapi/promotion#tag/Kalendar-akcij/paths/~1api~1v1~1calendar~1promotions~1details/get).<br>
+
+        Состояние загрузки можно проверить с помощью [отдельных
+        методов](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get).
+
 
         <div class="description_important">
           Данный метод неприменим для автоакций.
         </div>
 
+
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Календарь акций</strong>:
+
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для
+        всех методов категории <strong>Календарь акций</strong>:
+
 
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
+
 
         </div>
       requestBody:
-        $ref: '#/components/requestBodies/PromotionsSupplierTaskRequest'
+        $ref: "#/components/requestBodies/PromotionsSupplierTaskRequest"
       responses:
-        '200':
-          $ref: '#/components/responses/UploadSuccessResponse'
-        '400':
-          $ref: '#/components/responses/ErrorWrongParameters'
-        '401':
-          $ref: '#/components/responses/401'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-        '429':
-          $ref: '#/components/responses/429'
-components: {}
+        "200":
+          $ref: "#/components/responses/UploadSuccessResponse"
+        "400":
+          $ref: "#/components/responses/ErrorWrongParameters"
+        "401":
+          $ref: "#/components/responses/401"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/429"

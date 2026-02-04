@@ -1,16 +1,21 @@
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
-  title: 12-reports - Платное хранение
-  description: Extracted from original file for agent processing
-  version: 1.0.0-shard
-servers:
-  - url: https://seller-analytics-api.wildberries.ru
+  title: Платное хранение
+  version: reports
 tags:
   - name: Платное хранение
-    description: Платное хранение endpoints
+    description: ''
+servers:
+  - url: https://seller-analytics-api.wildberries.ru
+security:
+  - HeaderApiKey: []
 paths:
   /api/v1/paid_storage:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -26,7 +31,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1 запрос | 1 минута | 5 запросов |
+        | 1 мин | 1 запрос | 1 мин | 5 запросов |
         </div>
       parameters:
         - name: dateFrom
@@ -61,35 +66,39 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateTaskResponse'
+                $ref: '_schemas.yaml#/components/schemas/CreateTaskResponse'
               examples:
                 CreateResponseData:
-                  $ref: '#/components/examples/CreateResponseData'
+                  $ref: '_schemas.yaml#/components/examples/CreateResponseData'
         '400':
           description: Неправильный запрос
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               examples:
                 MissingDateTimeFrom:
-                  $ref: '#/components/examples/MissingDateTimeFrom'
+                  $ref: '_schemas.yaml#/components/examples/MissingDateTimeFrom'
                 MissingDateTimeTo:
-                  $ref: '#/components/examples/MissingDateTimeTo'
+                  $ref: '_schemas.yaml#/components/examples/MissingDateTimeTo'
                 IncorrectDateTimeFrom:
-                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                  $ref: '_schemas.yaml#/components/examples/IncorrectDateTimeFrom'
                 IncorrectDateTimeTo:
-                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                  $ref: '_schemas.yaml#/components/examples/IncorrectDateTimeTo'
                 DateRangeExceeded:
-                  $ref: '#/components/examples/DateRangeExceeded8'
+                  $ref: '_schemas.yaml#/components/examples/DateRangeExceeded8'
                 DateRanges:
-                  $ref: '#/components/examples/DateRanges'
+                  $ref: '_schemas.yaml#/components/examples/DateRanges'
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '429':
-          $ref: '#/components/responses/429'
+          $ref: '_schemas.yaml#/components/responses/429'
   /api/v1/paid_storage/tasks/{task_id}/status:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -103,7 +112,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 5 секунд | 1 запрос | 5 секунд | 5 запросов |
+        | 5 сек | 1 запрос | 5 сек | 5 запросов |
         </div>
       parameters:
         - name: task_id
@@ -120,38 +129,42 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetTasksResponse'
+                $ref: '_schemas.yaml#/components/schemas/GetTasksResponse'
               examples:
                 GetTasksResponseData:
-                  $ref: '#/components/examples/GetTasksResponseData'
+                  $ref: '_schemas.yaml#/components/examples/GetTasksResponseData'
         '400':
           description: Неправильный запрос
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               example:
                 detail: 'Invalid format for parameter task_id: error unmarshaling ''2f071556-ae39-492f-fd8cf1eb0d25'' text as *uuid.UUID: invalid UUID length: 31'
                 origin: api-statistics
                 requestId: 52dd27a91a1a643feae7201b206462df
                 title: Bad Request
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '404':
           description: Не найдено
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               example:
                 detail: not found
                 origin: api-statistics
                 requestId: c777731fc180f215a49c9896c2f1200d
                 title: Not Found
         '429':
-          $ref: '#/components/responses/429'
+          $ref: '_schemas.yaml#/components/responses/429'
   /api/v1/paid_storage/tasks/{task_id}/download:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
@@ -165,7 +178,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1 запрос | 1 минута | 1 запрос |
+        | 1 мин | 1 запрос | 1 мин | 1 запрос |
         </div>
       parameters:
         - name: task_id
@@ -182,7 +195,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponsePaidStorage'
+                $ref: '_schemas.yaml#/components/schemas/ResponsePaidStorage'
               example:
                 - date: '2023-10-01'
                   logWarehouseCoef: 1
@@ -212,171 +225,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               example:
                 detail: 'Invalid format for parameter task_id: error unmarshaling ''7b8875---9f03-46f1-af21-b9b4b22fe821'' text as *uuid.UUID: invalid UUID format'
                 origin: api-statistics
                 requestId: 44bac63ab29c46cb2d49392e6604c1a0
                 title: Bad Request
         '401':
-          $ref: '#/components/responses/401'
+          $ref: '_schemas.yaml#/components/responses/401'
         '404':
           description: Не найдено
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/4xxResponse'
+                $ref: '_schemas.yaml#/components/schemas/4xxResponse'
               example:
                 detail: not found
                 origin: api-statistics
                 requestId: c777731fc180f215a49c9896c2f1200d
                 title: Not Found
         '429':
-          $ref: '#/components/responses/429'
+          $ref: '_schemas.yaml#/components/responses/429'
 components:
-  schemas:
-    CreateTaskResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/CreateTaskResponseData'
-    CreateTaskResponseData:
-      type: object
-      properties:
-        taskId:
-          type: string
-          description: ID задания на генерацию
-    4xxResponse:
-      type: object
-      properties:
-        detail:
-          type: string
-          description: Детали ошибки
-        origin:
-          type: string
-          description: ID внутреннего сервиса WB
-        requestId:
-          type: string
-          description: Уникальный ID запроса
-        title:
-          type: string
-          description: Заголовок ошибки
-    GetTasksResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/GetTasksResponseData'
-    GetTasksResponseData:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID задания
-        status:
-          type: string
-          description: |
-            Статус задания:
-
-              * `new` — новое
-              * `processing` —  обрабатывается
-              * `done` — отчёт готов
-              * `purged` — отчёт удалён
-              * `canceled` — отклонено
-    ResponsePaidStorage:
-      type: array
-      items:
-        type: object
-        properties:
-          date:
-            type: string
-            description: Дата, за которую был расчёт или перерасчёт
-          logWarehouseCoef:
-            type: number
-            description: Коэффициент логистики и хранения
-          officeId:
-            type: integer
-            description: ID склада
-          warehouse:
-            type: string
-            description: Название склада
-          warehouseCoef:
-            type: number
-            description: Коэффициент склада
-          giId:
-            type: integer
-            description: ID поставки
-          chrtId:
-            type: integer
-            description: ID размера для этого артикула WB
-          size:
-            type: string
-            description: Размер (`techSize` в карточке товара)
-          barcode:
-            type: string
-            description: Баркод
-          subject:
-            type: string
-            description: Предмет
-          brand:
-            type: string
-            description: Бренд
-          vendorCode:
-            type: string
-            description: Артикул продавца
-          nmId:
-            type: integer
-            description: Артикул WB
-          volume:
-            type: number
-            description: Объём товара
-          calcType:
-            type: string
-            description: Способ расчёта
-          warehousePrice:
-            type: number
-            description: Сумма хранения
-          barcodesCount:
-            type: integer
-            description: Количество единиц товара (штук), подлежащих тарифицированию за расчётные сутки
-          palletPlaceCode:
-            type: integer
-            description: Код паллетоместа
-          palletCount:
-            type: number
-            description: Количество паллет
-          originalDate:
-            type: string
-            description: Если был перерасчёт, это дата первоначального расчёта. Если перерасчёта не было, совпадает с `date`
-          loyaltyDiscount:
-            type: number
-            description: "Скидка программы лояльности,\_₽"
-          tariffFixDate:
-            type: string
-            description: Дата фиксации тарифа
-          tariffLowerDate:
-            type: string
-            description: Дата понижения тарифа
-      example:
-        - date: '2023-10-01'
-          logWarehouseCoef: 0
-          officeId: 507
-          warehouse: Коледино
-          warehouseCoef: 1.7
-          giId: 123456
-          chrt_id: 1234567
-          size: '0'
-          barcode: ''
-          subject: Маски одноразовые
-          brand: 1000 Каталог
-          vendorCode: Артикул_продавца
-          nmId: 1234567
-          volume: 12
-          calcType: 'короба: без габаритов'
-          warehousePrice: 7.65
-          barcodesCount: 1
-          palletPlaceCode: 0
-          palletCount: 0
-          originalDate: '2023-10-01'
-          loyaltyDiscount: 10
-          tariffFixDate: '2023-10-01'
-          tariffLowerDate: '2023-11-01'
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -17,45 +17,48 @@ _description: |
 _original_file: 12-reports.yaml
 _base_url: N/A
 _shards:
-  - file: osnovnye-otchety.yaml
-    domain: Основные отчёты
-    endpoints: 4
-    description: Main Reports
-  - file: otchet-ob-ostatkakh-na-skladakh.yaml
-    domain: Отчёт об остатках на складах
-    endpoints: 3
-    description: Warehouse Stock Reports
-  - file: otchet-o-tovarakh-c-obyazatelnoy-markirovkoy.yaml
-    domain: Отчёт о товарах c обязательной маркировкой
-    endpoints: 1
-    description: Marked Goods Reports
   - file: otchety-ob-uderzhaniyakh.yaml
     domain: Отчёты об удержаниях
     endpoints: 5
-    description: Deduction Reports
+    description: Deductions Reports
+  - file: osnovnye-otchety.yaml
+    domain: Основные отчёты
+    endpoints: 4
+    description: Core Reports
+  - file: otchet-ob-ostatkakh-na-skladakh.yaml
+    domain: Отчёт об остатках на складах
+    endpoints: 3
+    description: Warehouse Stock Remainders
   - file: platnaya-priemka.yaml
     domain: Платная приёмка
     endpoints: 3
-    description: Paid Receiving
+    description: Paid Acceptance
   - file: platnoe-khranenie.yaml
     domain: Платное хранение
     endpoints: 3
     description: Paid Storage
-  - file: prodazhi-po-regionam.yaml
-    domain: Продажи по регионам
-    endpoints: 1
-    description: Regional Sales
   - file: dolya-brenda-v-prodazhakh.yaml
     domain: Доля бренда в продажах
     endpoints: 3
-    description: Brand Share
+    description: Brand Share in Sales
   - file: skrytye-tovary.yaml
     domain: Скрытые товары
     endpoints: 2
-    description: Hidden Items
+    description: Hidden Products
+  - file: otchet-o-tovarakh-c-obyazatelnoy-markirovkoy.yaml
+    domain: Отчёт о товарах c обязательной маркировкой
+    endpoints: 1
+    description: Mandatory Labeling Report
+  - file: prodazhi-po-regionam.yaml
+    domain: Продажи по регионам
+    endpoints: 1
+    description: Sales by Region
   - file: otchet-o-vozvratakh-i-peremeshchenii-tovarov.yaml
     domain: Отчёт о возвратах и перемещении товаров
     endpoints: 1
-    description: Returns and Movement Reports
+    description: Returns and Transfers Report
 _shared_schemas: _schemas.yaml
 _total_endpoints: 26
+_base_urls:
+  - https://seller-analytics-api.wildberries.ru
+  - https://statistics-api.wildberries.ru

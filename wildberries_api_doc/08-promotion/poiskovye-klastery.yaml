@@ -1,0 +1,312 @@
+openapi: 3.0.1
+info:
+  title: 08-promotion - Поисковые кластеры
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://advert-api.wildberries.ru
+tags:
+  - name: Поисковые кластеры
+    description: Поисковые кластеры endpoints
+paths:
+  /adv/v0/normquery/get-bids:
+    post:
+      x-readonly-method: true
+      x-category: advert
+      servers:
+        - url: https://advert-api.wildberries.ru
+      tags:
+        - Поисковые кластеры
+      summary: Список ставок поисковых кластеров
+      description: |
+        Метод возвращает список поисковых кластеров со ставками по:
+          - ID кампаний
+          - артикулам WB
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 5 запросов | 200 мс | 10 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0GetNormQueryBidsRequest"
+            example:
+              items:
+                - advert_id: 1825035
+                  nm_id: 983512347
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V0GetNormQueryBidsResponse"
+              example:
+                bids:
+                  - advert_id: 1825035
+                    bid: 700
+                    nm_id: 983512347
+                    norm_query: Фраза 1
+                  - advert_id: 1825035
+                    bid: 9000
+                    nm_id: 983512347
+                    norm_query: Фраза 2
+                  - advert_id: 1825035
+                    bid: 9999
+                    nm_id: 983512347
+                    norm_query: Фраза 3
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: invalid payment_type value
+                origin: camp-api-public-cache
+                request_id: 7e5cb1f106cc6e85b5b29eb2e8815da2
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v0/normquery/bids:
+    post:
+      x-readonly-method: false
+      x-category: advert
+      servers:
+        - url: https://advert-api.wildberries.ru
+      tags:
+        - Поисковые кластеры
+      summary: Установить ставки для поисковых кластеров
+      description: |
+        Метод устанавливает ставки на поисковые кластеры.<br>
+        Можно использовать только для кампаний с:
+          - ручной ставкой
+          - моделью оплаты `cpm` — за показы
+
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 2 запроса | 500 мс | 4 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0SetNormQueryBidsRequest"
+            example:
+              bids:
+                - advert_id: 1825035
+                  nm_id: 983512347
+                  norm_query: Фраза 1
+                  bid: 1000
+      responses:
+        "200":
+          description: Успешно
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: invalid payment_type value
+                origin: camp-api-public-cache
+                request_id: 7e5cb1f106cc6e85b5b29eb2e8815da2
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+    delete:
+      x-readonly-method: false
+      x-category: advert
+      servers:
+        - url: https://advert-api.wildberries.ru
+      tags:
+        - Поисковые кластеры
+      summary: Удалить ставки поисковых кластеров
+      description: |
+        Метод удаляет ставки с поисковых кластеров.<br>
+        Можно использовать только для кампаний с:
+          - ручной ставкой
+          - моделью оплаты `cpm` — за показы
+
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 5 запросов | 200 мс | 10 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0SetNormQueryBidsRequest"
+            example:
+              bids:
+                - advert_id: 1825035
+                  nm_id: 983512347
+                  norm_query: Фраза 1
+                  bid: 1000
+      responses:
+        "200":
+          description: Успешно
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: invalid payment_type value
+                origin: camp-api-public-cache
+                request_id: 7e5cb1f106cc6e85b5b29eb2e8815da2
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v0/normquery/get-minus:
+    post:
+      x-readonly-method: true
+      x-category: advert
+      servers:
+        - url: https://advert-api.wildberries.ru
+      tags:
+        - Поисковые кластеры
+      summary: Список минус-фраз кампаний
+      description: |
+        Метод возвращает список минус-фраз по:
+          - ID кампаний
+          - артикулам WB
+
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 5 запросов | 200 мс | 10 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0GetNormQueryMinusRequest"
+            example:
+              items:
+                - advert_id: 1825035
+                  nm_id: 983512347
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V0GetNormQueryMinusResponse"
+              example:
+                items:
+                  - advert_id: 1825035
+                    nm_id: 983512347
+                    norm_queries:
+                      - Фраза 1
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: invalid payment_type value
+                origin: camp-api-public-cache
+                request_id: 7e5cb1f106cc6e85b5b29eb2e8815da2
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /adv/v0/normquery/set-minus:
+    post:
+      x-readonly-method: false
+      x-category: advert
+      servers:
+        - url: https://advert-api.wildberries.ru
+      tags:
+        - Поисковые кластеры
+      summary: Установка и удаление минус-фраз
+      description: |
+        Метод устанавливает и удаляет минус-фразы в кампаниях c:
+          - ручной ставкой
+          - моделью оплаты `cpm` — за показы
+
+        <div class="description_important">
+          Отправка пустого массива удаляет все минус-фразы
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 5 запросов | 200 мс | 10 запросов |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0SetMinusNormQueryRequest"
+            example:
+              advert_id: 1825035
+              nm_id: 983512347
+              norm_queries:
+                - Фраза 1
+      responses:
+        "200":
+          description: Успешно
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: invalid payment_type value
+                origin: camp-api-public-cache
+                request_id: 7e5cb1f106cc6e85b5b29eb2e8815da2
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"

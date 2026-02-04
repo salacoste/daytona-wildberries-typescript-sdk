@@ -10,24 +10,35 @@ tags:
     description: Медиа endpoints
 paths:
   /adv/v1/count:
+    servers:
+      - url: https://advert-media-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Количество медиакампаний
-      description: |
-        Метод возвращает количество [медиакампаний](/openapi/promotion#tag/Media/paths/~1adv~1v1~1advert/get) продавца с группировкой по статусам.
+      description: >
+        Метод возвращает количество [медиакампаний](/openapi/promotion#tag/Media/paths/~1adv~1v1~1advert/get) продавца с
+        группировкой по статусам.
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов |
+
+        | 1 сек | 10 запросов | 100 мс | 10 запросов |
+
         </div>
       tags:
         - Медиа
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -70,24 +81,35 @@ paths:
                   type: 2
                   status: 7
                   count: 2
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/adverts:
+    servers:
+      - url: https://advert-media-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Список медиакампаний
-      description: |
-        Метод возвращает список всех [медиакампаний](/openapi/promotion#tag/Media/paths/~1adv~1v1~1advert/get) продавца по их типам и статусам.
+      description: >
+        Метод возвращает список всех [медиакампаний](/openapi/promotion#tag/Media/paths/~1adv~1v1~1advert/get) продавца
+        по их типам и статусам.
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов |
+
+        | 1 сек | 10 запросов | 100 мс | 10 запросов |
+
         </div>
       tags:
         - Медиа
@@ -150,7 +172,7 @@ paths:
             type: string
             example: desc
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -200,37 +222,48 @@ paths:
               example:
                 - advertId: 123456
                   name: тост
-                  brand: goosb
+                  brand: brand
                   type: 2
                   status: 8
-                  createTime: '2023-03-25T20:35:57.116943+03:00'
+                  createTime: "2023-03-25T20:35:57.116943+03:00"
                 - advertId: 54321
                   name: тест
-                  brand: bobr
+                  brand: brandname
                   type: 1
                   status: 7
-                  createTime: '2023-07-24T16:48:20.935599+03:00'
-                  endTime: '2023-07-25T20:35:50.104978Z'
-        '204':
+                  createTime: "2023-07-24T16:48:20.935599+03:00"
+                  endTime: "2023-07-25T20:35:50.104978Z"
+        "204":
           description: Медиакампании не найдены
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/advert:
+    servers:
+      - url: https://advert-media-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Информация о медиакампании
-      description: |
-        Метод возвращает информацию о кампании [WB Медиа](https://cmp.wildberries.ru/cmpf/list). Вместо карточек товаров в медиакампаниях продвигаются рекламные баннеры продавца на сайте и в приложении WB.
+      description: >
+        Метод возвращает информацию о кампании [WB Медиа](https://cmp.wildberries.ru/cmpf/list). Вместо карточек товаров
+        в медиакампаниях продвигаются рекламные баннеры продавца на сайте и в приложении WB.
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов |
+
+        | 1 сек | 10 запросов | 100 мс | 10 запросов |
+
         </div>
       tags:
         - Медиа
@@ -243,7 +276,7 @@ paths:
             example: 23569
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -407,7 +440,7 @@ paths:
 
 
                             Социальная сеть:
-                            - `1` — VKontakte
+                            - `1` — VK
                             - `2` — OK (Одноклассники)
                           type: integer
                         receiversCount:
@@ -443,13 +476,13 @@ paths:
                   brand: Plank
                   type: 2
                   status: 11
-                  createTime: '2023-07-19T11:13:41.195138+03:00'
+                  createTime: "2023-07-19T11:13:41.195138+03:00"
                   extended:
                     reason: Для возобновления показов пополните бюджет медиакампании
                     expenses: 10000
-                    from: '2023-07-19T12:05:35.847348Z'
-                    to: '2123-07-20T08:14:13.079176+03:00'
-                    updated_at: '2023-07-21T13:25:31.129766+03:00'
+                    from: "2023-07-19T12:05:35.847348Z"
+                    to: "2123-07-20T08:14:13.079176+03:00"
+                    updated_at: "2023-07-21T13:25:31.129766+03:00"
                     price: 0
                     budget: 0
                     operation: 1
@@ -465,10 +498,10 @@ paths:
                       cpm: 351
                       url: https://www.wildberries.ru/promotions/ssylka-na-akciyou
                       advert_type: 1
-                      created_at: '2023-11-01T15:40:46.86165+03:00'
-                      updated_at: '2023-11-08T23:44:33.248229+03:00'
-                      date_from: '2023-11-01T16:05:22.286002Z'
-                      date_to: '2023-11-09T17:27:32.745869+03:00'
+                      created_at: "2023-11-01T15:40:46.86165+03:00"
+                      updated_at: "2023-11-08T23:44:33.248229+03:00"
+                      date_from: "2023-11-01T16:05:22.286002Z"
+                      date_to: "2023-11-09T17:27:32.745869+03:00"
                       nms:
                         - 123456
                         - 11111111
@@ -484,10 +517,9 @@ paths:
                         - From: 7
                           To: 8
                       Erid: string
-        '204':
+        "204":
           description: Медиакампания не найдена
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
-components: {}
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"

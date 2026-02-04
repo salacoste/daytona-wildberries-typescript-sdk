@@ -1,0 +1,679 @@
+openapi: 3.0.1
+info:
+  title: Аналитика продавца CSV
+  version: analytics
+servers:
+- url: https://seller-analytics-api.wildberries.ru
+security:
+- HeaderApiKey: []
+tags:
+- name: Аналитика продавца CSV
+  description: ''
+paths:
+  /api/v2/nm-report/downloads:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Аналитика продавца CSV
+      security:
+      - HeaderApiKey: []
+      summary: Получить список отчётов
+      description: |
+        Метод возвращает список отчётов с расширенной аналитикой продавца. Ответ содержит ID [созданных отчётов](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post) и статусы генерации.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      parameters:
+      - in: query
+        name: filter[downloadIds]
+        description: ID отчёта
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/NmReportGetReportsResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                required:
+                - title
+                - detail
+                - requestId
+                - origin
+              examples:
+                errorExample:
+                  value:
+                    title: Invalid request body
+                    detail: download id was not found
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              examples:
+                errorExample:
+                  value:
+                    title: Authorization error
+                    detail: Authorization error
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Аналитика продавца CSV
+      security:
+      - HeaderApiKey: []
+      summary: Создать отчёт
+      description: |
+        Метод создаёт задание на генерацию отчёта с расширенной аналитикой продавца.<br><br>
+
+        Вы можете создать CSV-версии отчётов по [воронке продаж](/openapi/analytics#tag/Voronka-prodazh) или [параметрам поиска](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram) с группировкой по:
+          * артикулам WB
+          * предметам, брендам и ярлыкам
+
+        В отчётах по воронке продаж можно группировать данные по дням, неделям или месяцам.<br><br>
+
+        Также можете создать CSV-версии отчётов по [текстам поисковых запросов](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram/paths/~1api~1v2~1search-report~1product~1search-texts/post) и [истории остатков](/openapi/analytics#tag/Istoriya-ostatkov).<br><br>
+
+        Набор параметров запроса в объекте `params` зависит от типа отчёта. Чтобы получить описание параметров, выберите тип отчёта в раскрывающемся списке в описании параметра `reportType`.<br><br>
+
+        Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.<br><br>
+
+        Если не удалось [получить отчёт](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads~1file~1%7BdownloadId%7D/get), можно создать [повторное задание на генерацию](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads~1retry/post). Также можно [получить список и проверить статусы](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/get) отчётов.
+
+        <div class="description_important">
+          Отчёт по <a href="https://seller.wildberries.ru/content-analytics/history-remains">истории остатков</a> — тип <code>STOCK_HISTORY_REPORT_CSV</code> — можно создать без подписки <a href="https://seller.wildberries.ru/monetization/jam">Джем</a>
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: _schemas.yaml#/components/schemas/SalesFunnelProductReq
+              - $ref: _schemas.yaml#/components/schemas/SalesFunnelGroupReq
+              - $ref: _schemas.yaml#/components/schemas/SearchReportGroupReq
+              - $ref: _schemas.yaml#/components/schemas/SearchReportProductReq
+              - $ref: _schemas.yaml#/components/schemas/SearchReportTextReq
+              - $ref: _schemas.yaml#/components/schemas/StocksReportReq
+              discriminator:
+                propertyName: reportType
+                mapping:
+                  DETAIL_HISTORY_REPORT: '#/components/schemas/SalesFunnelProductReq'
+                  GROUPED_HISTORY_REPORT: '#/components/schemas/SalesFunnelGroupReq'
+                  SEARCH_QUERIES_PREMIUM_REPORT_GROUP: '#/components/schemas/SearchReportGroupReq'
+                  SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT: '#/components/schemas/SearchReportProductReq'
+                  SEARCH_QUERIES_PREMIUM_REPORT_TEXT: '#/components/schemas/SearchReportTextReq'
+                  STOCK_HISTORY_REPORT_CSV: '#/components/schemas/StocksReportReq'
+            examples:
+              SalesFunnelProductReq:
+                description: Воронка продаж. По артикулам WB
+                value:
+                  id: 06eae887-9d9f-491f-b16a-bb1766fcb8d2
+                  reportType: DETAIL_HISTORY_REPORT
+                  userReportName: Card report
+                  params:
+                    nmIDs:
+                    - 1234567
+                    subjectIds:
+                    - 1234567
+                    brandNames:
+                    - Name
+                    tagIds:
+                    - 1234567
+                    startDate: '2024-06-21'
+                    endDate: '2024-06-23'
+                    timezone: Europe/Moscow
+                    aggregationLevel: day
+                    skipDeletedNm: false
+              SalesFunnelGroupReq:
+                description: Воронка продаж. По предметам, брендам и ярлыкам
+                value:
+                  id: 06eea887-9d9f-491f-b16a-bb1766fcb8d2
+                  reportType: GROUPED_HISTORY_REPORT
+                  userReportName: Subject report
+                  params:
+                    subjectIds:
+                    - 1234567
+                    brandNames:
+                    - Name
+                    tagIds:
+                    - 1234567
+                    startDate: '2024-06-21'
+                    endDate: '2024-06-23'
+                    timezone: Europe/Moscow
+                    aggregationLevel: day
+                    skipDeletedNm: false
+              SearchReportGroupReq:
+                description: Отчёт по параметрам поиска. По предметам, брендам и ярлыкам
+                value:
+                  id: 06eae887-9d9f-491f-b16a-bb1766fcb8d2
+                  reportType: SEARCH_QUERIES_PREMIUM_REPORT_GROUP
+                  userReportName: Subject report
+                  params:
+                    currentPeriod:
+                      start: '2024-02-10'
+                      end: '2024-02-10'
+                    pastPeriod:
+                      start: '2024-02-08'
+                      end: '2024-02-08'
+                    nmIds:
+                    - 162579635
+                    - 166699779
+                    subjectIds:
+                    - 64
+                    - 334
+                    brandNames:
+                    - nikkle
+                    - abikas
+                    tagIds:
+                    - 32
+                    - 53
+                    orderBy:
+                      field: avgPosition
+                      mode: asc
+                    positionCluster: all
+                    includeSubstitutedSKUs: true
+                    includeSearchTexts: false
+              SearchReportProductReq:
+                description: Отчёт по параметрам поиска. По артикулам WB
+                value:
+                  id: 06eea887-9d9f-491f-b16a-bb1766fcb8d2
+                  reportType: SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT
+                  userReportName: Card report
+                  params:
+                    currentPeriod:
+                      start: '2024-02-10'
+                      end: '2024-02-10'
+                    pastPeriod:
+                      start: '2024-02-08'
+                      end: '2024-02-08'
+                    subjectId: 123
+                    brandName: Abble
+                    tagId: 45
+                    nmIds:
+                    - 162579635
+                    - 166699779
+                    orderBy:
+                      field: buyoutCount
+                      mode: asc
+                    positionCluster: all
+                    includeSubstitutedSKUs: false
+                    includeSearchTexts: true
+              SearchReportTextReq:
+                description: Отчёт по текстам поисковых запросов по вашим товарам
+                value:
+                  id: 06eae887-9d9f-491f-b16a-bb1766fcb8d2
+                  reportType: SEARCH_QUERIES_PREMIUM_REPORT_TEXT
+                  userReportName: Subject report
+                  params:
+                    currentPeriod:
+                      start: '2024-02-10'
+                      end: '2024-02-10'
+                    pastPeriod:
+                      start: '2024-02-08'
+                      end: '2024-02-08'
+                    nmIds:
+                    - 162579635
+                    - 166699779
+                    subjectIds:
+                    - 64
+                    - 334
+                    brandNames:
+                    - nikkle
+                    - abikas
+                    tagIds:
+                    - 32
+                    - 53
+                    topOrderBy: openCard
+                    orderBy:
+                      field: avgPosition
+                      mode: asc
+                    includeSubstitutedSKUs: true
+                    includeSearchTexts: true
+                    limit: 50
+              StocksReportReq:
+                description: Отчёт по истории остатков
+                value:
+                  id: 06eae887-9d9f-491f-b16a-bb1766fcb8d2
+                  reportType: STOCK_HISTORY_REPORT_CSV
+                  userReportName: Stocks report
+                  params:
+                    nmIDs:
+                    - 111222333
+                    - 444555666
+                    subjectIDs:
+                    - 123
+                    - 456
+                    brandNames:
+                    - ЭгКа
+                    - Stock
+                    tagIDs:
+                    - 3
+                    - 4
+                    - 5
+                    currentPeriod:
+                      start: '2024-02-10'
+                      end: '2024-02-10'
+                    stockType: mp
+                    skipDeletedNm: true
+                    availabilityFilters:
+                    - deficient
+                    - balanced
+                    orderBy:
+                      field: avgOrders
+                      mode: asc
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/NmReportCreateReportResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                required:
+                - title
+                - detail
+                - requestId
+                - origin
+              examples:
+                errorExample:
+                  value:
+                    title: Invalid request body
+                    detail: userReportName can not contain emojis
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              examples:
+                errorExample:
+                  value:
+                    title: Authorization error
+                    detail: Authorization error
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '429':
+          description: Слишком много запросов
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: _schemas.yaml#/components/schemas/response429Download
+                - $ref: _schemas.yaml#/components/schemas/response429DownloadDaily
+  /api/v2/nm-report/downloads/retry:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Аналитика продавца CSV
+      security:
+      - HeaderApiKey: []
+      summary: Сгенерировать отчёт повторно
+      description: |
+        Метод создает повторное [задание на генерацию](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post) отчёта с расширенной аналитикой продавца. Необходимо, если при генерации отчёта вы [получили статус](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/get) `FAILED`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/NmReportRetryReportRequest
+        required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/NmReportRetryReportResponse
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                required:
+                - title
+                - detail
+                - requestId
+                - origin
+              examples:
+                errorExample:
+                  value:
+                    title: Invalid request body
+                    detail: invalid download id
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              examples:
+                errorExample:
+                  value:
+                    title: Authorization error
+                    detail: Authorization error
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v2/nm-report/downloads/file/{downloadId}:
+    servers:
+    - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+      - Аналитика продавца CSV
+      security:
+      - HeaderApiKey: []
+      summary: Получить отчёт
+      description: |
+        Метод возвращает отчёт с расширенной аналитикой продавца по ID [задания на генерацию](/openapi/analytics#tag/Analitika-prodavca-CSV/paths/~1api~1v2~1nm-report~1downloads/post).
+        <br><br>
+        Можно получить отчёт, который сгенерирован за последние 48 часов.<br>Отчёт будет загружен внутри архива ZIP в формате CSV.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      parameters:
+      - in: path
+        name: downloadId
+        description: ID отчёта
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+                description: "Описание полей в файле CSV:\n<br>\n<br>\n**Воронка продаж**\n\n| Имя | Тип | Формат | Описание |\n|-----------------| --- | --- | --- |\n| nmID (только для `DETAIL_HISTORY_REPORT`)\
+                  \ | integer | int32 | Артикул WB |\n| dt | string | date | Дата |\n| openCardCount | integer | int32 | Переходы в карточку товара |\n| addToCartCount | integer | int32 | Положили в корзину,\
+                  \ шт. |\n| ordersCount | integer | int32 | Заказали товаров, шт. |\n| ordersSumRub | integer | int32 | Заказали на сумму, ₽ |\n| buyoutsCount | integer | int32 | Выкупили товаров, шт.\
+                  \ |\n| buyoutsSumRub | integer | int32 | Выкупили на сумму, ₽ |\n| cancelCount | integer | int32 | Отменили товаров, шт. |\n| cancelSumRub | integer | int32 | Отменили на сумму, ₽ |\n\
+                  | addToCartConversion | number | int32 | Конверсия в корзину, % (Какой процент посетителей, открывших карточку товара, добавили товар в корзину) |\n| cartToOrderConversion | integer |\
+                  \ int32 | Конверсия в заказ, % (Какой процент посетителей, добавивших товар в корзину, сделали заказ) |\n| buyoutPercent | integer | int32 | Процент выкупа, % (Какой процент посетителей,\
+                  \ заказавших товар, его выкупили. Без учёта товаров, которые еще доставляются покупателю) |\n| addToWishlist | integer | int32 | Добавили в **Отложенные**|\n\n\n**Отчёт по параметрам поиска.\
+                  \ По предметам, брендам и ярлыкам**\n\n| Имя | Поле | Формат | Описание |\n|-----------------| --- | --- | --- |\n| SubjectName |\tstring | string | Название предмета |\n| SubjectID |\
+                  \ integer | int32 | ID предмета |\n| BrandName | string | string  | Бренд |\n| TagID | integer | int64 | ID ярлыка |\n| AveragePosition | integer | uint64 | Средняя позиция в поиске в\
+                  \ текущий период |\n| OpenCard | integer | uint64 | Количество переходов в карточку товара из поиска в текущий период |\n| AddToCart | integer | uint64 | Количество добавлений товара в\
+                  \ корзину из поиска в текущий период |\n| OpenToCart | integer | uint64 |\tКонверсия в корзину из поиска в текущий период |\n| Orders | integer | uint64 | Заказали товар из поиска в текущий\
+                  \ период |\n| CartToOrder | integer | uint64 | Конверсия в заказ из поиска в текущий период |\n| Visibility | integer | uint64 | Видимость товара в поиске в текущий период. Процент вероятности,\
+                  \ что пользователь увидит карточку товара. Зависит от средней позиции |\n| AveragePositionPast | integer | uint64 | Средняя позиция в поиске в предыдущий период (заполняется, если указан\
+                  \ прошлый период) |\n| OpenCardPast | integer | uint64 | Количество переходов в карточку товара из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| AddToCartPast\
+                  \ | integer | uint64 | Количество добавлений товара в корзину из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| OpenToCartPast | integer | uint64 | Конверсия\
+                  \ в корзину из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| OrdersPast | integer | uint64 | Заказали товар из поиска в предыдущий период (заполняется, если\
+                  \ указан прошлый период) |\n| CartToOrderPast | integer | uint64 | Конверсия в заказ из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| VisibilityPast | integer\
+                  \ | uint64 | Видимость товара в поиске в предыдущий период. Процент вероятности, что пользователь увидит карточку товара. Зависит от средней позиции (заполняется, если указан прошлый период),\
+                  \ % |\n\n\n**Отчёт по параметрам поиска. По артикулам WB**\n\n| Имя | Поле | Формат | Описание |\n|-----------------| --- | --- | --- |\n| NmID | integer | int64 | Артикул WB |\n| VendorCode\
+                  \ | string | string | Артикул продавца |\n| Name | string\t| string | Название товара |\n| SubjectName | string\t| string | Название предмета |\n| BrandName | string | string  | Бренд\
+                  \ |\n| IsAdvertised | boolean | bool\t| Рекламируется ли товар |\n| IsRated | boolean | bool | Есть ли возможность оценить качество карточки товара |\n| Rating | float | float64 | Рейтинг\
+                  \ карточки товара |\n| FeedbackRating | float | float64 | Рейтинг по отзывам |\n| MinPrice | integer | uint64 | Минимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба\
+                  \ |\n| MaxPrice | integer | uint64 | Максимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба) |\n| AveragePosition | integer | uint64 | Средняя позиция товара в поиске\
+                  \ в текущий период |\n| OpenCard | integer | uint64 | Количество переходов в карточку товара из поиска в текущий период |\n| AddToCart | integer | uint64 | Количество добавлений товара\
+                  \ в корзину из поиска в текущий период |\n| OpenToCart | integer | uint64 | Конверсия в корзину из поиска в текущий период |\n| Orders | integer | uint64 | Заказали товар из поиска в текущий\
+                  \ период |\n| CartToOrder | integer | uint64 | Конверсия в заказ из поиска в текущий период |\n| Visibility | integer | uint64 | Видимость товара в поиске в текущий период. Процент вероятности,\
+                  \ что пользователь увидит карточку товара. Зависит от средней позиции |\n| AveragePositionPast | integer | uint64 | Средняя позиция товара в поиске в предыдущий период (заполняется, если\
+                  \ указан прошлый период) |\n| OpenCardPast | integer | uint64 | Количество переходов в карточку товара из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| AddToCartPast\
+                  \ | integer | uint64 | Количество добавлений товара в корзину из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| OpenToCartPast | integer | uint64 | Конверсия\
+                  \ в корзину из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| OrdersPast | integer | uint64 | Заказали товар из поиска в предыдущий период (заполняется, если\
+                  \ указан прошлый период) |\n| CartToOrderPast | integer | uint64 | Конверсия в заказ из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| VisibilityPast | integer\
+                  \ | uint64 | Видимость товара в поиске в предыдущий период. Процент вероятности, что пользователь увидит карточку товара. Зависит от средней позиции (заполняется, если указан прошлый период),\
+                  \ % |\n| IsSubstitutedSKU | boolean | bool | Искали ли товар по подменному артикулу. Будет в ответе при наличии в запросе `includeSubstitutedSKUs` и/или `includeSearchTexts` |\n\n\n**Отчёт\
+                  \ по текстам поисковых запросов по вашим товарам**\n\n| Имя | Поле | Формат | Описание |\n|-----------------| --- | --- | --- |\n| Text | string\t| string | Текст поискового запроса |\n\
+                  | NmID | integer | int64 | Артикул WB |\n| SubjectName | string\t| string | Название предмета |\n| BrandName | string | string  | Бренд |\n| VendorCode | string | string | Артикул продавца\
+                  \ |\n| Name | string\t| string | Название товара |\n| Rating | float | float64 | Рейтинг карточки товара. Если рейтинг отсутствует, то значение будет `no rating` |\n| FeedbackRating |\
+                  \ float | float64 | Рейтинг по отзывам |\n| MinPrice | integer | uint64 | Минимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба) |\n| MaxPrice | integer | uint64 | Максимальная\
+                  \ цена продавца со скидкой продавца (без учёта скидки WB Клуба) |\n| Frequency | integer | uint64 | Количество обращений с поисковым запросом в текущий период |\n| MedianPosition | float\
+                  \ | float64 | Медианная позиция товара в поиске в текущий период. Учитываются только те позиции, из которых пользователи добавляли товар в корзину или переходили в его карточку. Серединное\
+                  \ значение позиции в поисковой выдаче, которое исключает сильные отклонения данных от среднего значения |\n| AveragePosition | integer | uint64 | Средняя позиция товара в поиске в текущий\
+                  \ период. Учитываются только те позиции, из которых пользователи добавляли товар в корзину или переходили в его карточку |\n| OpenCard | integer | uint64 | Количество открытий карточки\
+                  \ товара из поисковой выдачи в текущий период |\n| OpenCardPercentile | float | float64 | Процент, на который показатель количества открытий карточки товара выше, чем у карточек конкурентов\
+                  \ по поисковому запросу |\n| AddToCart | integer | uint64 | Количество добавлений товара в корзину из поисковой выдачи в текущий период |\n| AddToCartPercentile | float | float64 | Процент,\
+                  \ на который показатель добавлений в корзину выше, чем у карточек конкурентов по поисковому запросу |\n| OpenToCart | integer | uint64 | Конверсия в корзину из поиска в текущий период,\
+                  \ % |\n| OpenToCartPercentile\t| float\t| float64\t| Процент, на который показатель конверсии в корзину выше, чем у карточек конкурентов по поисковому запросу |\n| Orders | integer | uint64\
+                  \ | Заказали товар из поиска в текущий период |\n| OrdersPercentile | float | float64 | Процент, на который показатель заказов выше, чем у карточек конкурентов по поисковому запросу |\n\
+                  | CartToOrder | integer | uint64 | Конверсия в заказ из поиска в текущий период, % |\n| CartToOrderPercentile | float | float64 | Процент, на который показатель конверсии в заказ выше,\
+                  \ чем у карточек конкурентов по поисковому запросу |\n| Visibility | integer | uint64 | Видимость товара в поиске в текущий период. Процент вероятности, что пользователь увидит карточку\
+                  \ товара. Зависит от средней позиции |\n| FrequencyPast | integer | uint64 | Количество обращений с поисковым запросом за предыдущий период (заполняется, если указан прошлый период) |\n\
+                  | MedianPositionPast | float | float64 | Медианная позиция товара в поиске за предыдущий период (заполняется, если указан прошлый период) |\n| AveragePositionPast | integer | uint64 |\
+                  \ Средняя позиция товара в поиске в предыдущий период (заполняется, если указан прошлый период) |\n| OpenCardPast | integer | uint64 | Количество открытий карточки товара из поисковой\
+                  \ выдачи в предыдущий период (заполняется, если указан прошлый период) |\n| AddToCartPast | integer | uint64 | Количество добавлений товара в корзину в предыдущий период (заполняется,\
+                  \ если указан прошлый период) |\n| OpenToCartPast | integer | uint64 | Конверсия в корзину из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| OrdersPast | integer\
+                  \ | uint64 | Заказали товар из поиска в предыдущий период (заполняется, если указан прошлый период) |\n| CartToOrderPast | integer | uint64 | Конверсия в заказ из поиска в предыдущий период\
+                  \ (заполняется, если указан прошлый период), % |\n| VisibilityPast | integer | uint64 | Видимость товара в поиске в предыдущий период. Процент вероятности, что пользователь увидит карточку\
+                  \ товара. Зависит от средней позиции (заполняется, если указан прошлый период), % |\n\n\n**Отчёт по истории остатков**\n\n| Имя | Поле | Формат | Описание |\n|-----------------| --- |\
+                  \ --- | --- |\n| VendorCode | string | string | Артикул продавца |\n| Name | string\t| string | Название товара |\n| NmID | integer | int64 | Артикул WB |\n| SubjectName | string\t| string\
+                  \ | Название предмета |\n| BrandName | string | string  | Бренд |\n| SizeName | string\t| string | Название размера |\n| ChrtID | integer | int64 | ID размера |\n| RegionName | string\t\
+                  | string | Регион отгрузки |\n| OfficeName | string\t| string | Название склада |\n| Availability | string\t| enum | Доступность товара |\n| OrdersCount | integer\t| uint64 | Заказы, шт.\
+                  \ |\n| OrdersSum | integer\t| uint64 | Заказы, сумма |\n| BuyoutCount | integer\t| uint64 | Выкупы, шт. |\n| BuyoutSum | integer\t| uint64 | Выкупы, сумма |\n| BuyoutPercent | integer\t\
+                  | uint32 | Процент выкупа |\n| AvgOrders | number\t| float64 | Среднее количество заказов в день |\n| StockCount | integer\t| uint64 | Остатки на текущий день, шт. |\n| StockSum | integer\t\
+                  | uint64 | Стоимость остатков на текущий день |\n| SaleRate | integer\t| int32 | Оборачиваемость текущих остатков в часах |\n| AvgStockTurnover | integer\t| int32 | Оборачиваемость средних\
+                  \ остатков в часах |\n| ToClientCount | integer\t| uint64 | В пути к клиенту, шт. |\n| FromClientCount | integer\t| uint64 | В пути от клиента, шт. |\n| Price | integer\t| uint64 | Текущая\
+                  \ цена продавца со скидкой продавца (без учёта скидки WB Клуба) |\n| OfficeMissingTime | integer\t| int32 | Время отсутствия товара на складе в часах |\n| LostOrdersCount | number\t| float64\
+                  \ | Упущенные заказы, шт. |\n| LostOrdersSum | number\t| float64 | Упущенные заказы, сумма |\n| LostBuyoutsCount | number\t| float64 | Упущенные выкупы, шт. |\n| LostBuyoutsSum | number\t\
+                  | float64 | Упущенные выкупы, сумма |\n| AvgOrdersByMonth_MM.YYYY | number\t| float64 | Среднее количество заказов по месяцам. Столбцы формируются динамически в зависимости от переданного\
+                  \ текущего периода. Каждому месяцу текущего периода соответствует один столбец. В случае, если товар не существовал на момент конкретного месяца, то значение будет пропущено |\n"
+              examples:
+                SalesFunnelProductRes:
+                  $ref: _schemas.yaml#/components/examples/SalesFunnelProductRes
+                SalesFunnelGroupRes:
+                  $ref: _schemas.yaml#/components/examples/SalesFunnelGroupRes
+                SearchReportGroupRes:
+                  $ref: _schemas.yaml#/components/examples/SearchReportGroupRes
+                SearchReportProductRes:
+                  $ref: _schemas.yaml#/components/examples/SearchReportProductRes
+                SearchReportTextRes:
+                  $ref: _schemas.yaml#/components/examples/SearchReportTextRes
+                StocksReportRes:
+                  $ref: _schemas.yaml#/components/examples/StocksReportRes
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                required:
+                - title
+                - detail
+                - requestId
+                - origin
+              examples:
+                errorExample:
+                  value:
+                    title: Invalid request body
+                    detail: check correctness of download id
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  requestId:
+                    type: string
+                    description: Уникальный ID запроса
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+              examples:
+                errorExample:
+                  value:
+                    title: Authorization error
+                    detail: Authorization error
+                    requestId: 51b7828b-e298-4dfa-b7cd-45ab179921d3
+                    origin: analytics-open-api
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

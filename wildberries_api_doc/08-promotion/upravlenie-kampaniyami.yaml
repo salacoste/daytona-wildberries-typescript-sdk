@@ -10,21 +10,34 @@ tags:
     description: Управление кампаниями endpoints
 paths:
   /adv/v0/delete:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Удаление кампании
-      description: |
-        Метод удаляет [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) в статусе `4` — готова к запуску.<br><br>
+      description: >
+        Метод удаляет [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get) в статусе `4` —
+        готова к запуску.<br><br>
 
-        После удаления кампания некоторое время будет находиться в статусе `-1` — кампания в процессе удаления. Полное удаление кампании занимает от 3 до 10 минут.
+
+        После удаления кампания некоторое время будет находиться в статусе `-1` — кампания в процессе удаления. Полное
+        удаление кампании занимает от 3 до 10 минут.
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
+
+        | 1 сек | 5 запросов | 200 мс | 5 запросов |
+
         </div>
       tags:
         - Управление кампаниями
@@ -36,35 +49,46 @@ paths:
             type: integer
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseAdvError1'
+                $ref: "#/components/schemas/responseAdvError1"
               examples:
                 ResponseInvalidCampaignID:
-                  $ref: '#/components/examples/ResponseInvalidCampaignID'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/ResponseInvalidCampaignID"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/rename:
+    servers:
+      - url: https://advert-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Переименование кампании
-      description: |
-        Метод меняет название [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post). Это можно сделать в любой момент существования кампании.
+      description: >
+        Метод меняет название [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get). Это
+        можно сделать в любой момент существования кампании.
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
+
+        | 1 сек | 5 запросов | 200 мс | 5 запросов |
+
         </div>
       tags:
         - Управление кампаниями
@@ -85,11 +109,11 @@ paths:
                   description: Новое название (максимум 100 символов)
             example:
               advertId: 2233344
-              name: newnmame
+              name: newname
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             text/plain:
@@ -97,14 +121,14 @@ paths:
                 type: string
               examples:
                 InvalidRcIdAdv:
-                  $ref: '#/components/examples/InvalidRcIdAdv'
+                  $ref: "#/components/examples/InvalidRcIdAdv"
                 IncorrectName:
-                  $ref: '#/components/examples/IncorrectName'
+                  $ref: "#/components/examples/IncorrectName"
                 IncorrectSupplierIdAdv:
-                  $ref: '#/components/examples/IncorrectSupplierIdAdv'
-        '401':
-          $ref: '#/components/responses/401'
-        '422':
+                  $ref: "#/components/examples/IncorrectSupplierIdAdv"
+        "401":
+          $ref: "#/components/responses/401"
+        "422":
           description: Ошибка обработки параметров запроса
           content:
             text/plain:
@@ -112,31 +136,39 @@ paths:
                 type: string
               examples:
                 RequestBodyProcessErrorAdv:
-                  $ref: '#/components/examples/RequestBodyProcessErrorAdv'
+                  $ref: "#/components/examples/RequestBodyProcessErrorAdv"
                 CompanyNameChangeErr:
-                  $ref: '#/components/examples/CompanyNameChangeErr'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/CompanyNameChangeErr"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/start:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Запуск кампании
-      description: |
-        Метод запускает [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) в статусах `4` — готово к запуску — или `11` — пауза.
+      description: >
+        Метод запускает [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get) в статусах `4`
+        — готово к запуску — или `11` — пауза.
 
-        Чтобы запустить кампанию со статусом `4`, необходимо выполнить два условия:
-          1. После создания кампании в кабинете **WB. Продвижение** нажать кнопку **Применить изменения**.
-          2. Установить бюджет — максимальную сумму затрат на кампанию.
+        Чтобы запустить кампанию, проверьте ее бюджет. Если бюджета недостаточно, [пополните
+        его](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post).
 
-        Чтобы запустить кампанию со статусом `11`, проверьте ее бюджет. Если бюджета недостаточно, [пополните его](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post).
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
+
+        | 1 сек | 5 запросов | 200 мс | 5 запросов |
+
         </div>
       tags:
         - Управление кампаниями
@@ -149,22 +181,24 @@ paths:
             example: 1234
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/400Response'
+                $ref: "#/components/schemas/400Response"
               examples:
                 IncorrectId:
-                  $ref: '#/components/examples/IncorrectId'
+                  $ref: "#/components/examples/IncorrectId"
                 AdvertNotFound:
-                  $ref: '#/components/examples/AdvertNotFound'
-        '401':
-          $ref: '#/components/responses/401'
-        '422':
+                  $ref: "#/components/examples/AdvertNotFound"
+                LowBudget:
+                  $ref: "#/components/examples/LowBudget"
+        "401":
+          $ref: "#/components/responses/401"
+        "422":
           description: Статус не изменен
           content:
             text/plain:
@@ -172,23 +206,34 @@ paths:
                 type: string
               examples:
                 StatusNoChangeAdv:
-                  $ref: '#/components/examples/StatusNoChangeAdv'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/StatusNoChangeAdv"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/pause:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Пауза кампании
-      description: |
-        Метод ставит [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) в статусе `9` — активна — на паузу.
+      description: >
+        Метод ставит [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get) в статусе `9` —
+        активна — на паузу.
+
 
         <div class="description_limit">
+
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
+
         | Период | Лимит | Интервал | Всплеск |
+
         | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
+
+        | 1 сек | 5 запросов | 200 мс | 5 запросов |
+
         </div>
       tags:
         - Управление кампаниями
@@ -201,22 +246,22 @@ paths:
             example: 1234
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/400Response'
+                $ref: "#/components/schemas/400Response"
               examples:
                 IncorrectId:
-                  $ref: '#/components/examples/IncorrectId'
+                  $ref: "#/components/examples/IncorrectId"
                 AdvertNotFound:
-                  $ref: '#/components/examples/AdvertNotFound'
-        '401':
-          $ref: '#/components/responses/401'
-        '422':
+                  $ref: "#/components/examples/AdvertNotFound"
+        "401":
+          $ref: "#/components/responses/401"
+        "422":
           description: Статус не изменен
           content:
             text/plain:
@@ -224,16 +269,20 @@ paths:
                 type: string
               examples:
                 StatusNoChangeAdv:
-                  $ref: '#/components/examples/StatusNoChangeAdv'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/StatusNoChangeAdv"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/stop:
+    servers:
+      - url: https://advert-api.wildberries.ru
     get:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Завершение кампании
       description: |
-        Метод завершает [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) в статусах:
+        Метод завершает [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get) в статусах:
           - `4` — готово к запуску
           - `9` — активна
           - `11` — пауза
@@ -243,7 +292,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
+        | 1 сек | 5 запросов | 200 мс | 5 запросов |
         </div>
       tags:
         - Управление кампаниями
@@ -256,22 +305,22 @@ paths:
             example: 1234
           required: true
       responses:
-        '200':
+        "200":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/400Response'
+                $ref: "#/components/schemas/400Response"
               examples:
                 IncorrectId:
-                  $ref: '#/components/examples/IncorrectId'
+                  $ref: "#/components/examples/IncorrectId"
                 AdvertNotFound:
-                  $ref: '#/components/examples/AdvertNotFound'
-        '401':
-          $ref: '#/components/responses/401'
-        '422':
+                  $ref: "#/components/examples/AdvertNotFound"
+        "401":
+          $ref: "#/components/responses/401"
+        "422":
           description: Статус не изменен
           content:
             text/plain:
@@ -279,28 +328,19 @@ paths:
                 type: string
               examples:
                 StatusNoChangeAdv:
-                  $ref: '#/components/examples/StatusNoChangeAdv'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/StatusNoChangeAdv"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/bids:
+    servers:
+      - url: https://advert-api.wildberries.ru
     patch:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       summary: Изменение ставок
       description: |
-        Метод меняет ставки карточек товаров по артикулам WB в кампаниях с единой ставкой.
-        <br><br>
-        Для кампаний в статусах `4`, `9` и `11`.
-        <br><br>
-        Для изменения ставок в кампаниях с ручной ставкой используйте [отдельный метод](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1bids/patch).
-        <br><br>
-        Минимально допустимые ставки вы можете получить в ответе метода [получения минимальных ставок для карточек товаров](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v0~1bids~1min/post).
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=388)
       tags:
         - Управление кампаниями
       requestBody:
@@ -316,11 +356,11 @@ paths:
                   type: array
                   maxItems: 20
                   items:
-                    $ref: '#/components/schemas/V0AdvertMultibid'
+                    $ref: "#/components/schemas/V0AdvertMultibid"
       responses:
-        '204':
+        "204":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
@@ -329,10 +369,10 @@ paths:
                 properties:
                   detail:
                     type: string
-                    description: 'Детали ошибки '
+                    description: "Детали ошибки "
                   origin:
                     type: string
-                    description: 'ID внутреннего сервиса WB '
+                    description: "ID внутреннего сервиса WB "
                   request_id:
                     type: string
                     description: Уникальный ID запроса
@@ -359,30 +399,34 @@ paths:
                     description: Тип ошибки
               examples:
                 CampaignIsNotUnique:
-                  $ref: '#/components/examples/CampaignIsNotUnique'
+                  $ref: "#/components/examples/CampaignIsNotUnique"
                 CanNotDeserializeResponseBody:
-                  $ref: '#/components/examples/CanNotDeserializeResponseBody'
+                  $ref: "#/components/examples/CanNotDeserializeResponseBody"
                 CampaignNotFound:
-                  $ref: '#/components/examples/CampaignNotFoundBids'
+                  $ref: "#/components/examples/CampaignNotFoundBids"
                 NmNotFound:
-                  $ref: '#/components/examples/NmNotFound'
+                  $ref: "#/components/examples/NmNotFound"
                 WrongCampaignID:
-                  $ref: '#/components/examples/WrongCampaignID'
+                  $ref: "#/components/examples/WrongCampaignID"
                 WrongCampaignStatus:
-                  $ref: '#/components/examples/WrongCampaignStatus'
+                  $ref: "#/components/examples/WrongCampaignStatus"
                 WrongBidValue:
-                  $ref: '#/components/examples/WrongBidValue'
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/WrongBidValue"
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/auction/placements:
+    servers:
+      - url: https://advert-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Изменение мест размещения в кампаниях с ручной ставкой
       description: |
-        Метод меняет места размещения в кампаниях с ручной ставкой.
+        Метод меняет места размещения в кампаниях с ручной ставкой и моделью оплаты за показы — `cpm`.
         <br><br>
         Для кампаний в статусах `4`, `9` и `11`.
 
@@ -391,7 +435,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 секунда | 1 запрос | 1 секунда | 1 запрос |
+        | 1 сек | 1 запрос | 1 сек | 1 запрос |
         </div>
       tags:
         - Управление кампаниями
@@ -429,13 +473,13 @@ paths:
                             type: boolean
                             description: |
                               Размещение в поиске:
-                                - `false` — да
-                                - `true` — нет
+                                - `false` — отключено
+                                - `true` — включено
                           recommendations:
                             description: |
                               Размещение в рекомендациях:
-                                - `false` — да
-                                - `true` — нет
+                                - `false` — отключено
+                                - `true` — включено
                             type: boolean
             example:
               placements:
@@ -444,45 +488,45 @@ paths:
                     search: true
                     recommendations: true
       responses:
-        '204':
+        "204":
           description: Успешно
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/response400'
-              example:
-                detail: can not deserialize response body
-                origin: camp-api-public-cache
-                request_id: 9a929a81ea9dc1601fcc4be81f32c1cb
-                status: 400
-                title: invalid payload
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/response400"
+              examples:
+                BadRequest:
+                  value:
+                    detail: can not deserialize response body
+                    origin: camp-api-public-cache
+                    request_id: 9a929a81ea9dc1601fcc4be81f32c1cb
+                    status: 400
+                    title: invalid payload
+                BadAdvertPaymentType:
+                  value:
+                    detail: advert 12345 has payment type cpc, placements cannot be changed
+                    origin: camp-api-public-cache
+                    request_id: e53addfabe9274d5b8f77272ca085ac4
+                    status: 400
+                    title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v0/auction/bids:
+    servers:
+      - url: https://advert-api.wildberries.ru
     patch:
+      deprecated: true
+      x-readonly-method: false
+      x-category: advert
       security:
         - HeaderApiKey: []
       summary: Изменение ставок в кампаниях
       description: |
-        Метод меняет ставки карточек товаров по артикулам WB в кампаниях типа `9` с единой или ручной ставкой.
-        <br><br>
-        Для кампаний в статусах `4`, `9` и `11`.
-        <br><br>
-        В запросе укажите место размещения в параметре `placement`:
-          - `combined` — в поиске и рекомендациях для кампаний с единой ставкой
-          - `search `или `recommendations` — в поиске или рекомендациях для кампаний с ручной ставкой
-
-        <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
-
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов |
-        </div>
+        Данный метод устарел. Он будет удалён [2 февраля](https://dev.wildberries.ru/release-notes?id=388)
       tags:
         - Управление кампаниями
       requestBody:
@@ -546,7 +590,7 @@ paths:
                       bid: 250
                       placement: recommendations
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -556,7 +600,7 @@ paths:
                   - bids
                 properties:
                   bids:
-                    description: Результат отработки запроса
+                    description: Ставки кампании
                     type: array
                     items:
                       type: object
@@ -599,88 +643,176 @@ paths:
                       - nm_id: 13335157
                         bid: 250
                         placement: recommendations
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/response400'
+                $ref: "#/components/schemas/response400"
               example:
-                detail: 'wrong bid value: 3; min: 150'
+                detail: "wrong bid value: 3; min: 150"
                 origin: camp-api-public-cache
                 request_id: 9a929a81ea9dc1601fcc4be81f32c1cb
                 status: 400
                 title: invalid payload
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    responseAdvError1:
-      type: object
-      properties:
-        error:
-          type: string
-    400Response:
-      type: object
-      properties:
-        error:
-          type: string
-    V0AdvertMultibid:
-      type: object
-      required:
-        - advert_id
-        - nm_bids
-      properties:
-        advert_id:
-          type: integer
-          example: 6348555
-          description: ID кампании
-        nm_bids:
-          type: array
-          description: Артикулы WB и ставки для них
-          items:
-            $ref: '#/components/schemas/V0AdvertMultiBidItem'
-    V0AdvertMultiBidItem:
-      type: object
-      required:
-        - nm
-        - bid
-      properties:
-        nm:
-          type: integer
-          example: 3462354
-          description: Артикул WB
-        bid:
-          type: integer
-          example: 500
-          description: Ставка. Минимально допустимые ставки вы можете получить в ответе метода [получения минимальных ставок для карточек товаров](./promotion#tag/Sozdanie-kampanij/paths/~1adv~1v0~1bids~1min/post)
-    response400:
-      type: object
-      properties:
-        detail:
-          type: string
-          description: Детали ошибки
-        origin:
-          type: string
-          description: ID внутреннего сервиса WB
-          example: camp-api-public-cache
-        request_id:
-          type: string
-          description: Уникальный ID запроса
-          example: 6023d2950af564838f9b44a279d2140c
-        status:
-          type: integer
-          description: HTTP статус-код
-          example: 400
-        title:
-          type: string
-          description: Заголовок ошибки
-          example: invalid payload
-      required:
-        - detail
-        - title
-        - request_id
-        - origin
-        - status
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/advert/v1/bids:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: advert
+      security:
+        - HeaderApiKey: []
+      summary: Изменение ставок в кампаниях
+      description: |
+        Метод меняет ставки карточек товаров по артикулам WB в кампаниях с единой или ручной ставкой.
+        <br><br>
+        Для кампаний в статусах `4`, `9` и `11`.
+        <br><br>
+        В запросе укажите место размещения в параметре `placement`:
+          - `combined` — в поиске и рекомендациях для кампаний с единой ставкой
+          - `search `или `recommendations` — в поиске или рекомендациях для кампаний с ручной ставкой
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 5 запросов | 200 мс | 5 запросов |
+        </div>
+      tags:
+        - Управление кампаниями
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - bids
+              properties:
+                bids:
+                  description: Ставки в кампаниях
+                  type: array
+                  maxItems: 50
+                  items:
+                    type: object
+                    required:
+                      - advert_id
+                      - nm_bids
+                    properties:
+                      advert_id:
+                        description: ID кампании
+                        type: integer
+                        format: int64
+                      nm_bids:
+                        description: Ставки, копейки
+                        type: array
+                        maxItems: 50
+                        items:
+                          type: object
+                          required:
+                            - nm_id
+                            - bid_kopecks
+                            - placement
+                          properties:
+                            nm_id:
+                              type: integer
+                              format: int64
+                              description: Артикул WB
+                            bid_kopecks:
+                              type: integer
+                              format: int64
+                              description: Ставка, копейки
+                            placement:
+                              type: string
+                              enum:
+                                - search
+                                - recommendations
+                                - combined
+                              description: |
+                                Место размещения:
+                                  - `search` — в поиске (для кампаний с ручной ставкой)
+                                  - `recommendations`— в рекомендациях (для кампаний с ручной ставкой)
+                                  - `combined` — в поиске и рекомендациях (для кампаний с единой ставкой)
+            example:
+              bids:
+                - advert_id: 12345
+                  nm_bids:
+                    - nm_id: 13335157
+                      bid_kopecks: 250
+                      placement: recommendations
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - bids
+                properties:
+                  bids:
+                    description: Результат отработки запроса
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - advert_id
+                        - nm_bids
+                      properties:
+                        advert_id:
+                          description: ID кампании
+                          type: integer
+                          format: int64
+                        nm_bids:
+                          description: Ставки
+                          type: array
+                          items:
+                            type: object
+                            required:
+                              - nm_id
+                              - bid_kopecks
+                              - placement
+                            properties:
+                              nm_id:
+                                type: integer
+                                format: int64
+                                description: Артикул WB
+                              bid_kopecks:
+                                type: integer
+                                format: int64
+                                description: Ставка
+                              placement:
+                                type: string
+                                description: |
+                                  Место размещения:
+                                    - `search` — в поиске
+                                    - `recommendations`— в рекомендациях
+              example:
+                bids:
+                  - advert_id: 12345
+                    nm_bids:
+                      - nm_id: 13335157
+                        bid: 250
+                        placement: recommendations
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              example:
+                detail: "wrong bid value: 3; min: 150"
+                origin: camp-api-public-cache
+                request_id: 9a929a81ea9dc1601fcc4be81f32c1cb
+                status: 400
+                title: invalid payload
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"

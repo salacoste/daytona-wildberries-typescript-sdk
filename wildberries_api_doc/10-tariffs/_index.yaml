@@ -1,0 +1,33 @@
+_module: 10-tariffs
+_description: |
+  <div class="description_important">
+      Узнать больше о комиссиях и тарифах можно в <a href="https://seller.wildberries.ru/instructions/category/a04560b5-256d-48cb-8f09-60e283b5d493">справочном центре</a>
+  </div>
+
+  В разделе описаны методы получения:
+    1. [Комиссий](/openapi/wb-tariffs#tag/Komissii)
+    2. [Тарифов на остаток](/openapi/wb-tariffs#tag/Tarify-na-ostatok)
+    3. [Тарифов на возврат товаров продавцу](/openapi/wb-tariffs#tag/Stoimost-vozvrata-prodavcu)
+_original_file: 10-tariffs.yaml
+_base_url: https://common-api.wildberries.ru
+_shards:
+  - file: komissii.yaml
+    domain: Комиссии
+    endpoints: 1
+    description: Commission rates by product category
+  - file: tarify-na-ostatok.yaml
+    domain: Тарифы на остаток
+    endpoints: 2
+    description: Storage tariffs for boxes and pallets
+  - file: tarify-na-postavku.yaml
+    domain: Тарифы на поставку
+    endpoints: 1
+    description: Supply acceptance tariffs and coefficients
+  - file: stoimost-vozvrata-prodavtsu.yaml
+    domain: Стоимость возврата продавцу
+    endpoints: 1
+    description: Return-to-seller tariffs
+_shared_schemas: _schemas.yaml
+_total_endpoints: 5
+_base_urls:
+  - https://common-api.wildberries.ru
