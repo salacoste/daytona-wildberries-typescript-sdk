@@ -5,7 +5,16 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import type { DetailReportItem, GetCategories, GetDoc, GetDocs, GetList, RequestDownload } from '../../types/finances.types';
+import type {
+  AccountBalanceResponse,
+  DetailReportItem,
+  DocumentsLocale,
+  GetCategories,
+  GetDoc,
+  GetDocs,
+  GetList,
+  RequestDownload,
+} from '../../types/finances.types';
 
 export class FinancesModule {
   constructor(private client: BaseClient) {}
@@ -15,17 +24,23 @@ export class FinancesModule {
    *
    * Метод возвращает данные виджета баланса на [главной странице](https://seller.wildberries.ru) портала продавцов. <br><br> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
    *
-   * @returns Успешно
+   * @returns Account balance data including currency, current balance, and available withdrawal amount
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Balans}
    * @example
-  const result = await sdk.general.getAccountBalance();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.finances.getAccountBalance();
+   * console.log(result);
+   * ```
    */
-  async getAccountBalance(): Promise<{ currency?: string; current?: number; for_withdraw?: number }> {
-    return this.client.get<{ currency?: string; current?: number; for_withdraw?: number }>('https://finance-api.wildberries.ru/api/v1/account/balance');
+  async getAccountBalance(): Promise<AccountBalanceResponse> {
+    return this.client.get<AccountBalanceResponse>(
+      'https://finance-api.wildberries.ru/api/v1/account/balance',
+      { rateLimitKey: 'finances.accountBalance' }
+    );
   }
 
   /**
@@ -33,18 +48,47 @@ export class FinancesModule {
    *
    * Метод возвращает детализации к [отчётам реализации](https://seller.wildberries.ru/suppliers-mutual-settlements). <br><br> Данные доступны с 29 января 2024 года. <div class="description_important"> Вы можете выгрузить данные в <a href="https://dev.wildberries.ru/ru/cases/1">Google Таблицы</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
    *
-   * @param [options] - Query parameters
-   * @returns Успешно
+   * @param options - Query parameters including required dateFrom and dateTo
+   * @returns Array of detailed report items for the specified period
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty}
    * @example
-  const result = await sdk.general.getSupplierReportdetailbyperiod({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.finances.getSupplierReportDetailByPeriod({
+   *   dateFrom: '2024-01-01',
+   *   dateTo: '2024-01-31',
+   *   period: 'weekly',
+   * });
+   * console.log(result);
+   * ```
    */
-  async getSupplierReportdetailbyperiod(options?: { dateFrom: string; dateTo: string; limit?: number; rrdid?: number; period?: 'weekly' | 'daily' }): Promise<DetailReportItem[]> {
-    return this.client.get<DetailReportItem[]>('https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod', { params: options });
+  async getSupplierReportDetailByPeriod(options: {
+    dateFrom: string;
+    dateTo: string;
+    limit?: number;
+    rrdid?: number;
+    period?: 'weekly' | 'daily';
+  }): Promise<DetailReportItem[]> {
+    return this.client.get<DetailReportItem[]>(
+      'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
+      { params: options, rateLimitKey: 'finances.supplierReportDetailByPeriod' }
+    );
+  }
+
+  /**
+   * @deprecated Use getSupplierReportDetailByPeriod instead. Will be removed in v3.0.0.
+   */
+  async getSupplierReportdetailbyperiod(options: {
+    dateFrom: string;
+    dateTo: string;
+    limit?: number;
+    rrdid?: number;
+    period?: 'weekly' | 'daily';
+  }): Promise<DetailReportItem[]> {
+    return this.getSupplierReportDetailByPeriod(options);
   }
 
   /**
@@ -53,17 +97,23 @@ export class FinancesModule {
    * Метод возвращает категории документов для получения [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 5 запросов | </div>
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @returns List of document categories available for the seller
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty}
    * @example
-  const result = await sdk.general.getDocumentsCategories({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.finances.getDocumentsCategories({ locale: 'ru' });
+   * console.log(result);
+   * ```
    */
-  async getDocumentsCategories(options?: { locale?: string }): Promise<GetCategories> {
-    return this.client.get<GetCategories>('https://documents-api.wildberries.ru/api/v1/documents/categories', { params: options });
+  async getDocumentsCategories(options?: { locale?: DocumentsLocale }): Promise<GetCategories> {
+    return this.client.get<GetCategories>(
+      'https://documents-api.wildberries.ru/api/v1/documents/categories',
+      { params: options, rateLimitKey: 'finances.documentsCategories' }
+    );
   }
 
   /**
@@ -72,17 +122,39 @@ export class FinancesModule {
    * Метод возвращает список документов продавца. Вы можете получить [один](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1download/get) или [несколько](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1download~1all/post) документов из полученного списка. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 5 запросов | </div>
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @returns Paginated list of seller documents with metadata
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @remarks The `sort` and `order` parameters work together — specifying `order` without `sort` has no effect.
+   * @remarks The `beginTime` and `endTime` parameters define a date range and should be used as a pair.
+   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty}
    * @example
-  const result = await sdk.general.getDocumentsList({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.finances.getDocumentsList({
+   *   locale: 'ru',
+   *   sort: 'date',
+   *   order: 'desc',
+   * });
+   * console.log(result);
+   * ```
    */
-  async getDocumentsList(options?: { locale?: string; beginTime?: string; endTime?: string; sort?: 'date' | 'category'; order?: 'desc' | 'asc'; category?: string; serviceName?: string; limit?: number; offset?: number }): Promise<GetList> {
-    return this.client.get<GetList>('https://documents-api.wildberries.ru/api/v1/documents/list', { params: options });
+  async getDocumentsList(options?: {
+    locale?: DocumentsLocale;
+    beginTime?: string;
+    endTime?: string;
+    sort?: 'date' | 'category';
+    order?: 'desc' | 'asc';
+    category?: string;
+    serviceName?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<GetList> {
+    return this.client.get<GetList>('https://documents-api.wildberries.ru/api/v1/documents/list', {
+      params: options,
+      rateLimitKey: 'finances.documentsList',
+    });
   }
 
   /**
@@ -90,18 +162,27 @@ export class FinancesModule {
    *
    * Метод загружает один документ из [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 5 запросов | </div>
    *
-   * @param [options] - Query parameters
-   * @returns Успешно
+   * @param options - Query parameters including required serviceName and extension
+   * @returns Document file data for the requested document
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty}
    * @example
-  const result = await sdk.general.getDocumentsDownload({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.finances.getDocumentsDownload({
+   *   serviceName: 'act',
+   *   extension: 'pdf',
+   * });
+   * console.log(result);
+   * ```
    */
-  async getDocumentsDownload(options?: { serviceName: string; extension: string }): Promise<GetDoc> {
-    return this.client.get<GetDoc>('https://documents-api.wildberries.ru/api/v1/documents/download', { params: options });
+  async getDocumentsDownload(options: { serviceName: string; extension: string }): Promise<GetDoc> {
+    return this.client.get<GetDoc>(
+      'https://documents-api.wildberries.ru/api/v1/documents/download',
+      { params: options, rateLimitKey: 'finances.documentsDownload' }
+    );
   }
 
   /**
@@ -110,17 +191,25 @@ export class FinancesModule {
    * Метод загружает несколько документов из [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 минут | 1 запрос | 5 минут | 5 запросов | </div>
    *
    * @param [data] - Request body data
-   * @returns Успешно
+   * @returns Download details for the requested batch of documents
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty}
    * @example
-  const result = await sdk.general.createDownloadAll({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.finances.createDownloadAll({
+   *   serviceNames: ['act', 'invoice'],
+   * });
+   * console.log(result);
+   * ```
    */
   async createDownloadAll(data?: RequestDownload): Promise<GetDocs> {
-    return this.client.post<GetDocs>('https://documents-api.wildberries.ru/api/v1/documents/download/all', data);
+    return this.client.post<GetDocs>(
+      'https://documents-api.wildberries.ru/api/v1/documents/download/all',
+      data,
+      { rateLimitKey: 'finances.createDownloadAll' }
+    );
   }
-
 }

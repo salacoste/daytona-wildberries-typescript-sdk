@@ -7,67 +7,80 @@
  * Generated: 2025-12-14T23:02:33.810Z
  */
 
+/** Response from the balance endpoint */
+export interface AccountBalanceResponse {
+  /** Валюта (currency code) */
+  currency?: string;
+  /** Текущий баланс */
+  current?: number;
+  /** Доступно для вывода */
+  for_withdraw?: number;
+}
+
+/** Supported locale values for document endpoints */
+export type DocumentsLocale = 'ru' | 'en' | 'zh';
+
 export interface RequestDownload {
   params?: {
-  /** Формат документа */
-  extension?: string;
-  /** Уникальный ID документа */
-  serviceName?: string;
-}[];
+    /** Формат документа */
+    extension?: string;
+    /** Уникальный ID документа */
+    serviceName?: string;
+  }[];
 }
 
 export interface GetCategories {
   data?: {
-  /** Категории документов */
-  categories?: {
-  /** ID категории документа из параметра [запроса](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category` */
-  name?: string;
-  /** Название категории документа из поля [ответа](./financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category` */
-  title?: string;
-}[];
-};
+    /** Категории документов */
+    categories?: {
+      /** ID категории документа из параметра [запроса](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category` */
+      name?: string;
+      /** Название категории документа из поля [ответа](./financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category` */
+      title?: string;
+    }[];
+  };
 }
 
 export interface GetList {
   data?: {
-  /** Категории документов */
-  documents?: {
-  /** Уникальный ID документа */
-  serviceName?: string;
-  /** Название документа */
-  name?: string;
-  /** Название [категории документов](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля ответа `title` */
-  category?: string;
-  /** Форматы документа */
-  extensions?: string[];
-  /** Дата и время создания документа */
-  creationTime?: string;
-  /** Выгружен ли документ в личном кабинете */
-  viewed?: boolean;
-}[];
-};
+    /** Категории документов */
+    documents?: {
+      /** Уникальный ID документа */
+      serviceName?: string;
+      /** Название документа */
+      name?: string;
+      /** Название [категории документов](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля ответа `title` */
+      category?: string;
+      /** Форматы документа */
+      extensions?: string[];
+      /** Дата и время создания документа */
+      creationTime?: string;
+      /** Выгружен ли документ в личном кабинете */
+      viewed?: boolean;
+    }[];
+  };
 }
 
 export interface GetDoc {
   data?: {
-  /** Название документа */
-  fileName?: string;
-  /** Формат документа */
-  extension?: string;
-  /** Документ в кодировке base64 */
-  document?: string;
-};
+    /** Название документа */
+    fileName?: string;
+    /** Формат документа */
+    extension?: string;
+    /** Документ в кодировке base64 */
+    document?: string;
+  };
 }
 
 export interface GetDocs {
   data?: {
-  /** Название документа */
-  fileName?: string;
-  /** Формат документа */
-  extension?: string;
-  /** Документ в кодировке base64 */
-  document?: string;
-};
+    /** Название документа */
+    fileName?: string;
+    /** Формат документа */
+    extension?: string;
+    /** Документ в кодировке base64 */
+    document?: string;
+  };
 }
 
 export interface DetailReportItem {
@@ -82,7 +95,7 @@ export interface DetailReportItem {
   /** Валюта отчёта */
   currency_name?: string;
   /** Договор */
-  suppliercontract_code?: Record<string, never>;
+  suppliercontract_code?: object | null;
   /** Номер строки */
   rrd_id?: number;
   /** Номер поставки */
@@ -203,7 +216,7 @@ export interface DetailReportItem {
   storage_fee?: number;
   /** Удержания */
   deduction?: number;
-  /** Платная приёмка */
+  /** Операции на приёмке */
   acceptance?: number;
   /** Номер сборочного задания */
   assembly_id?: number;
@@ -211,11 +224,11 @@ export interface DetailReportItem {
   kiz?: string;
   /** Уникальный ID заказа. Примечание для использующих API Marketplace: `srid` равен `rid` в ответах методов сборочных заданий. */
   srid?: string;
-  /** Тип отчёта: - `1` — стандартный - `2` — для уведомления о выкупе */
-  report_type?: 1 | 2;
+  /** Тип отчёта: - `1` — стандартный - `2` — для уведомления о выкупе - `3` — уведомление о выкупе для Грузии - `4` — уведомление о выкупе для Грузии */
+  report_type?: 1 | 2 | 3 | 4;
   /** Признак B2B-продажи */
   is_legal_entity?: boolean;
-  /** Номер короба для платной приёмки */
+  /** Номер короба для обработки товара */
   trbx_id?: string;
   /** Скидка по программе софинансирования */
   installment_cofinancing_amount?: number;
@@ -229,24 +242,20 @@ export interface DetailReportItem {
   cashback_commission_change?: number;
   /** ID транзакции. Заказы в одной корзине покупателя будут иметь одинаковый `order_uid` */
   order_uid?: string;
-  /**
-   * Способ продажи и тип товара.
-   * Возможные значения:
-   * - `FBS` — продажа со склада продавца
-   * - `FBW` — продажа со склада Wildberries
-   * - `DBS` — доставка силами продавца
-   */
+  /** Способ продажи: `FBS` — со склада продавца, `FBW` — со склада WB, `DBS` — доставка продавцом */
   delivery_method?: string;
-  /**
-   * Идентификатор программы лояльности продавца.
-   * Добавлено в API 13 января 2026 (Release #433).
-   * Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
-   */
+  /** Идентификатор программы лояльности продавца */
   loyalty_id?: number;
-  /**
-   * Скидка по программе лояльности продавца, %.
-   * Добавлено в API 13 января 2026 (Release #433).
-   * Доступно в daily reports с 12 января 2026, в weekly reports с периода 12-18 января 2026.
-   */
+  /** Скидка по программе лояльности продавца, % */
   loyalty_discount?: number;
+  /** Разовое изменение срока перечисления денежных средств */
+  payment_schedule?: number;
+  /** ID собственной акции продавца с дополнительной скидкой */
+  seller_promo_id?: number;
+  /** Размер дополнительной скидки по собственной акции продавца, % */
+  seller_promo_discount?: number;
+  /** ID промокода */
+  uuid_promocode?: string;
+  /** Скидка за промокод, % */
+  sale_price_promocode_discount_prc?: number;
 }
