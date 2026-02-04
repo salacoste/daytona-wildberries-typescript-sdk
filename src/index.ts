@@ -177,8 +177,8 @@ export class WildberriesSDK {
    * Finances API module
    *
    * Provides access to financial data endpoints:
-   * - Balance and transaction retrieval
-   * - Financial reports (sales reports by period)
+   * - Account balance retrieval
+   * - Sales reports by realization period
    * - Document management (categories, list, download)
    *
    * @see {@link FinancesModule} for available methods
@@ -186,18 +186,18 @@ export class WildberriesSDK {
    * @example
    * ```typescript
    * // Get current balance
-   * const balance = await sdk.finances.getBalance();
+   * const balance = await sdk.finances.getAccountBalance();
    * console.log(`Available: ${balance.for_withdraw} ${balance.currency}`);
    *
-   * // Get transaction history
-   * const transactions = await sdk.finances.getTransactions({
+   * // Get sales report by period
+   * const report = await sdk.finances.getSupplierReportDetailByPeriod({
    *   dateFrom: '2024-01-01',
    *   dateTo: '2024-01-31',
    *   period: 'weekly'
    * });
    *
-   * // Download documents
-   * const docs = await sdk.finances.getDocuments();
+   * // List seller documents
+   * const docs = await sdk.finances.getDocumentsList();
    * ```
    */
   public readonly finances: FinancesModule;
@@ -624,11 +624,15 @@ export type { SDKConfig, RequestOptions } from './config/sdk-config';
 export {
   ALL_RATE_LIMITS,
   generalRateLimits,
+  productsRateLimits,
   ordersFbsRateLimits,
   ordersFbwRateLimits,
   ordersDbsRateLimits,
+  userManagementRateLimits,
+  financesRateLimits,
   promotionRateLimits,
   tariffsRateLimits,
+  inStorePickupRateLimits,
 } from './config';
 export type { RateLimitConfig, EndpointLimits } from './client/rate-limiter';
 
