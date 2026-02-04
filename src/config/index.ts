@@ -17,4 +17,6 @@ export { tariffsRateLimits } from './tariffs-rate-limits';
 export { inStorePickupRateLimits } from './in-store-pickup-rate-limits';
 export { ordersDbsRateLimits } from './orders-dbs-rate-limits';
 export { userManagementRateLimits } from './user-management-rate-limits';
+export { productsRateLimits } from './products-rate-limits';
+export { financesRateLimits } from './finances-rate-limits';
 export type { RateLimitConfig, EndpointLimits } from '../client/rate-limiter';

@@ -24,14 +24,14 @@ import { ordersFbsRateLimits } from './orders-fbs-rate-limits';
 import { ordersFbwRateLimits } from './orders-fbw-rate-limits';
 import { ordersDbsRateLimits } from './orders-dbs-rate-limits';
 import { userManagementRateLimits } from './user-management-rate-limits';
+import { financesRateLimits } from './finances-rate-limits';
+import { promotionRateLimits } from './promotion-rate-limits';
+import { tariffsRateLimits } from './tariffs-rate-limits';
+import { inStorePickupRateLimits } from './in-store-pickup-rate-limits';
 // Import additional module rate limits here as they are generated:
-// import { financesRateLimits } from './finances-rate-limits';
 // import { analyticsRateLimits } from './analytics-rate-limits';
 // import { reportsRateLimits } from './reports-rate-limits';
 // import { communicationsRateLimits } from './communications-rate-limits';
-// import { promotionRateLimits } from './promotion-rate-limits';
-// import { tariffsRateLimits } from './tariffs-rate-limits';
-// import { inStorePickupRateLimits } from './in-store-pickup-rate-limits';
 
 /**
  * Aggregated rate limit configuration for all SDK modules.
@@ -77,14 +77,14 @@ export const ALL_RATE_LIMITS = {
   ...ordersFbwRateLimits,
   ...ordersDbsRateLimits,
   ...userManagementRateLimits,
+  ...financesRateLimits,
+  ...promotionRateLimits,
+  ...tariffsRateLimits,
+  ...inStorePickupRateLimits,
   // Spread additional module rate limits here as they are generated:
-  // ...financesRateLimits,
   // ...analyticsRateLimits,
   // ...reportsRateLimits,
   // ...communicationsRateLimits,
-  // ...promotionRateLimits,
-  // ...tariffsRateLimits,
-  // ...inStorePickupRateLimits,
 };
 
 /**

@@ -17,31 +17,31 @@ export const financesRateLimits: Record<string, RateLimitConfig> = {
   'finances.accountBalance': {
     requestsPerMinute: 1,
     intervalSeconds: 60,
-    burstLimit: 1
+    burstLimit: 1,
   },
   'finances.supplierReportDetailByPeriod': {
     requestsPerMinute: 1,
     intervalSeconds: 60,
-    burstLimit: 1
+    burstLimit: 1,
   },
   'finances.documentsCategories': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 5
+    burstLimit: 5,
   },
   'finances.documentsList': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 5
+    burstLimit: 5,
   },
   'finances.documentsDownload': {
     requestsPerMinute: 6,
     intervalSeconds: 10,
-    burstLimit: 5
+    burstLimit: 5,
   },
-  'finances.postDocumentsDownloadAll': {
-    requestsPerMinute: 0,
+  'finances.createDownloadAll': {
+    requestsPerMinute: 1,
     intervalSeconds: 300,
-    burstLimit: 5
-  }
+    burstLimit: 5,
+  },
 };
