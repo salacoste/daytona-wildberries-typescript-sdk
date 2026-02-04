@@ -7,326 +7,700 @@
  * Generated: 2025-12-14T23:02:33.780Z
  */
 
-/**
- * Данные о складе, для которого требуется пропуск
- */
-export interface PassOffice {
-  /** Название */
-  name?: string;
-  /** Адрес */
-  address?: string;
-  /** ID */
-  id?: number;
+// ============================================================================
+// Enums & Union Types
+// ============================================================================
+
+/** Supplier-side order status */
+export type OrderSupplierStatus = 'new' | 'confirm' | 'complete' | 'cancel';
+
+/** Wildberries system order status */
+export type OrderWbStatus =
+  | 'waiting'
+  | 'sorted'
+  | 'sold'
+  | 'canceled'
+  | 'canceled_by_client'
+  | 'declined_by_client'
+  | 'defect'
+  | 'ready_for_pickup'
+  | 'postponed_delivery'
+  | 'accepted_by_carrier'
+  | 'sent_to_carrier';
+
+/** Cargo type: 1 = small, 2 = oversized, 3 = large */
+export type CargoType = 1 | 2 | 3;
+
+/** Sticker output format */
+export type StickerType = 'svg' | 'zplv' | 'zplh' | 'png';
+
+// ============================================================================
+// Request Types
+// ============================================================================
+
+/** Parameters for paginated order listing */
+export interface GetOrdersParams {
+  /** Maximum number of items to return (1-1000) */
+  limit: number;
+  /** Pagination cursor; set to 0 for the first request */
+  next: number;
+  /** Start of date range (Unix timestamp) */
+  dateFrom?: number;
+  /** End of date range (Unix timestamp) */
+  dateTo?: number;
 }
 
-export interface Error {
-  /** Код ошибки */
-  code?: string;
-  /** Описание ошибки */
-  message?: string;
-  /** Дополнительные данные, обогащающие ошибку */
-  data?: Record<string, never>;
+/** Request body containing an array of order IDs for status lookup */
+export interface OrderStatusRequest {
+  /** List of order IDs */
+  orders: number[];
+}
+
+/** Request body for retrieving order stickers */
+export interface StickerRequest {
+  /** List of order IDs (max 100) */
+  orders?: number[];
+}
+
+/** Query parameters for sticker format and dimensions */
+export interface StickerParams {
+  /** Output format */
+  type: StickerType;
+  /** Sticker width in mm (58 or 40) */
+  width: number;
+  /** Sticker height in mm (40 or 30) */
+  height: number;
+}
+
+/** Request body for cross-border order stickers */
+export interface CrossBorderStickerRequest {
+  /** List of order IDs */
+  orders?: number[];
+}
+
+/** Request body for cross-border status history lookup */
+export interface StatusHistoryRequest {
+  /** List of order IDs */
+  orders?: number[];
+}
+
+/** Query parameters for deleting order metadata by key */
+export interface DeleteMetaParams {
+  /** Metadata key to delete (e.g. "imei", "uin", "gtin", "sgtin") */
+  key?: string;
+}
+
+/** Request body for attaching SGTIN marking codes to an order */
+export interface MetaSgtinRequest {
+  /** List of SGTIN marking codes */
+  sgtins: string[];
+}
+
+/** Request body for attaching a UIN to an order */
+export interface MetaUinRequest {
+  /** Unique identification number */
+  uin: string;
+}
+
+/** Request body for attaching an IMEI to an order */
+export interface MetaImeiRequest {
+  /** IMEI number */
+  imei: string;
+}
+
+/** Request body for attaching a GTIN to an order */
+export interface MetaGtinRequest {
+  /** Global Trade Item Number */
+  gtin: string;
+}
+
+/** Request body for attaching an expiration date to an order */
+export interface MetaExpirationRequest {
+  /** Expiration date string (dd.mm.yyyy) */
+  expiration: string;
+}
+
+/** Request body for attaching a customs declaration number to an order */
+export interface MetaCustomsDeclarationRequest {
+  /** Customs declaration number */
+  customsDeclaration: string;
+}
+
+/** Request body for creating a new supply */
+export interface SupplyCreateRequest {
+  /** Supply name */
+  name: string;
+}
+
+/** Request body for adding orders to a supply */
+export interface AddOrdersToSupplyRequest {
+  /** List of order IDs to add */
+  orders: number[];
+}
+
+/** Request body for creating boxes (trbx) in a supply */
+export interface TrbxCreateRequest {
+  /** Number of boxes to create */
+  amount: number;
+}
+
+/** Request body for deleting boxes from a supply */
+export interface TrbxDeleteRequest {
+  /** List of box IDs to delete */
+  trbxIds: string[];
+}
+
+/** Request body for retrieving box stickers */
+export interface TrbxStickerRequest {
+  /** List of box IDs */
+  trbxIds: string[];
+}
+
+/** Request body for creating a seller pass */
+export interface PassCreateRequest {
+  /** Driver first name */
+  firstName: string;
+  /** Driver last name */
+  lastName: string;
+  /** Car model */
+  carModel: string;
+  /** Car number (letters and digits only) */
+  carNumber: string;
+  /** Warehouse office ID */
+  officeId: number;
+}
+
+/** Request body for retrieving metadata of multiple orders (max 100) */
+export interface GetMetaMultiRequest {
+  /** List of order IDs (max 100) */
+  orders: number[];
 }
 
 /**
- * Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных
+ * Generic order IDs request body used across multiple endpoints
  *
  * @example
-```json
-13833711
-```
+ * ```json
+ * {
+ *   "orders": [
+ *     987654321,
+ *     123456789
+ *   ]
+ * }
+ * ```
+ */
+export interface OrdersRequestAPI {
+  /** List of order IDs */
+  orders?: number[];
+}
+
+// ============================================================================
+// Response Types
+// ============================================================================
+
+/** Response containing a list of new (unprocessed) orders */
+export interface OrdersNewResponse {
+  /** List of new orders */
+  orders?: OrderNew[];
+}
+
+/** Paginated response containing orders */
+export interface OrdersResponse {
+  /** Pagination cursor for the next page */
+  next?: Next;
+  /** List of orders */
+  orders?: Order[];
+}
+
+/** Response containing order statuses */
+export interface OrderStatusResponse {
+  /** List of order status entries */
+  orders?: {
+    /** Order ID */
+    id?: number;
+    /** Supplier-side status */
+    supplierStatus?: OrderSupplierStatus;
+    /** Wildberries system status */
+    wbStatus?: OrderWbStatus;
+  }[];
+}
+
+/** Response containing orders that require reshipment */
+export interface ReshipmentResponse {
+  /** List of reshipment orders */
+  orders?: ReshipmentOrder[];
+}
+
+/** An order that requires reshipment */
+export interface ReshipmentOrder {
+  /** Supply ID the order belongs to */
+  supplyID?: string;
+  /** Order ID */
+  orderID?: number;
+}
+
+/** Response containing order stickers */
+export interface StickerResponse {
+  /** List of sticker data */
+  stickers?: {
+    /** Order ID */
+    orderId?: number;
+    /** Sticker part A value */
+    partA?: number;
+    /** Sticker part B value */
+    partB?: number;
+    /** Encoded barcode value */
+    barcode?: string;
+    /** Base64-encoded sticker file */
+    file?: string;
+  }[];
+}
+
+/** Response containing cross-border order stickers */
+export interface CrossBorderStickerResponse {
+  /** List of cross-border sticker data */
+  stickers?: {
+    /** Base64-encoded sticker file */
+    file?: string;
+    /** Order ID */
+    orderId?: number;
+    /** Parcel ID */
+    parcelId?: string;
+  }[];
+}
+
+/** Response containing cross-border status history */
+export interface StatusHistoryResponse {
+  /** List of order status histories */
+  orders?: {
+    /** Delivery date */
+    deliveryDate?: string;
+    /** List of status entries */
+    statuses?: {
+      /** Status timestamp */
+      date?: string;
+      /** Status code */
+      code?: string;
+    }[];
+    /** Order ID */
+    orderID?: number;
+  }[];
+}
+
+/** Response containing metadata for a single order */
+export interface OrderMetaResponse {
+  /** Order metadata */
+  meta?: Meta;
+}
+
+/** Response containing metadata for multiple orders */
+export interface OrdersMetaResponse {
+  /** List of order metadata items */
+  orders?: OrderMetaItem[];
+}
+
+/** A single order's metadata entry (used in bulk metadata responses) */
+export interface OrderMetaItem {
+  /** Order ID */
+  id?: number;
+  /** Order metadata */
+  meta?: Meta;
+}
+
+/** Response after creating a new supply */
+export interface SupplyCreateResponse {
+  /** Created supply ID */
+  id?: string;
+}
+
+/** Paginated response containing supplies */
+export interface SuppliesResponse {
+  /** Pagination cursor for the next page */
+  next?: Next;
+  /** List of supplies */
+  supplies?: Supply[];
+}
+
+/** Response containing orders within a supply (legacy format) */
+export interface SupplyOrdersResponse {
+  /** List of supply orders */
+  orders?: SupplyOrder[];
+}
+
+/** Response containing order IDs within a supply */
+export interface SupplyOrderIdsResponse {
+  /** List of order IDs in the supply */
+  orderIds?: number[];
+}
+
+/** Response containing a supply barcode / QR code */
+export interface BarcodeResponse {
+  /** Encoded barcode value */
+  barcode?: string;
+  /** Base64-encoded barcode file */
+  file?: string;
+}
+
+/** Response containing a list of supply boxes */
+export interface TrbxListResponse {
+  /** List of boxes */
+  trbxes?: SupplyTrbx[];
+}
+
+/** Response after creating boxes in a supply */
+export interface TrbxCreateResponse {
+  /** List of created box IDs */
+  trbxIds?: string[];
+}
+
+/** Array of seller passes */
+export type PassesResponse = Pass[];
+
+// ============================================================================
+// Entity Types
+// ============================================================================
+
+/**
+ * API error object returned by FBS endpoints.
+ * Named FbsApiError to avoid shadowing the built-in Error class.
+ */
+export interface FbsApiError {
+  /** Error code */
+  code?: string;
+  /** Error description */
+  message?: string;
+  /** Additional data enriching the error */
+  data?: Record<string, unknown>;
+}
+
+/**
+ * Pagination cursor value for retrieving the next batch of data
+ *
+ * @example
+ * ```json
+ * 13833711
+ * ```
  */
 export type Next = number;
 
+/**
+ * Assembly order (sborochnoe zadanie) with full details
+ */
 export interface Order {
-  /** Точный адрес покупателя для доставки, если применимо. Из-за особенностей адреса некоторые поля могут быть пустыми */
+  /** Buyer's delivery address; some fields may be empty depending on address specifics */
   address?: {
-  /** Адрес доставки */
-  fullAddress?: string;
-  /** Долгота */
-  longitude?: number;
-  /** Широта */
-  latitude?: number;
-};
-  /** Цена приёмки в копейках. Отображается после фактической приёмки заказа */
+    /** Full delivery address */
+    fullAddress?: string;
+    /** Longitude */
+    longitude?: number;
+    /** Latitude */
+    latitude?: number;
+  };
+  /** Acceptance price in kopecks; shown after actual order acceptance */
   scanPrice?: number;
-  /** Тип доставки: - `fbs` — доставка на склад Wildberries (FBS) */
+  /** Delivery type: fbs = delivery to Wildberries warehouse */
   deliveryType?: 'fbs';
-  /** ID поставки. Возвращается, если заказ закреплён за поставкой */
+  /** Supply ID; returned if the order is assigned to a supply */
   supplyId?: string;
-  /** ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid` */
+  /** Transaction ID for grouping orders from the same buyer cart */
   orderUid?: string;
-  /** Артикул продавца */
+  /** Seller article */
   article?: string;
-  /** Код цвета (только для колеруемых товаров) */
+  /** Color code (only for tintable products) */
   colorCode?: string;
-  /** Уникальный ID заказа. <br> Примечание: `rid` — это `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
+  /** Unique order ID (corresponds to srid in other report endpoints) */
   rid?: string;
-  /** Дата создания сборочного задания (RFC3339) */
+  /** Order creation date (RFC3339) */
   createdAt?: string;
-  /** Список офисов, куда следует привезти товар */
+  /** List of offices where the product should be delivered */
   offices?: string[];
-  /** Список баркодов */
+  /** List of barcodes */
   skus?: string[];
-  /** ID сборочного задания */
+  /** Assembly order ID */
   id?: number;
-  /** ID склада продавца, на который поступило сборочное задание */
+  /** Seller warehouse ID that received the order */
   warehouseId?: number;
-  /** ID склада WB, к которому привязан склад продавца */
+  /** WB warehouse ID linked to the seller warehouse */
   officeId?: number;
-  /** Артикул WB */
+  /** WB article number */
   nmId?: number;
-  /** ID размера товара в системе WB */
+  /** Product size ID in the WB system */
   chrtId?: number;
-  /** Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях */
+  /** Price in sale currency with all discounts except WB Wallet, multiplied by 100 */
   price?: number;
-  /** Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях */
+  /** Price in seller's country currency with all discounts except WB Wallet, multiplied by 100 */
   convertedPrice?: number;
-  /** Код валюты продажи */
+  /** Sale currency code (ISO 4217) */
   currencyCode?: number;
-  /** Код валюты страны продавца */
+  /** Seller's country currency code (ISO 4217) */
   convertedCurrencyCode?: number;
-  /** Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) */
-  cargoType?: 1 | 2 | 3;
-  /** Комментарий покупателя */
+  /** Cargo type: 1 = small, 2 = oversized, 3 = large */
+  cargoType?: CargoType;
+  /** Cross-border type: 0 = not cross-border, 1 = cross-border */
+  crossBorderType?: 0 | 1;
+  /** Buyer comment */
   comment?: string;
-  /** Признак заказа товара с нулевым остатком: - `false` — заказ сделан на товар с ненулевым остатком - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену */
+  /** Whether this is a zero-stock order (can be cancelled without penalty) */
   isZeroOrder?: boolean;
-  /** Опции заказа */
+  /** Order options */
   options?: {
-  /** Признак B2B-продажи: - `false` — не B2B-продажа - `true` — B2B-продажа */
-  isB2b?: boolean;
-};
+    /** Whether this is a B2B sale */
+    isB2b?: boolean;
+  };
 }
 
+/**
+ * Supply (postavka) entity representing a shipment batch
+ */
 export interface Supply {
-  /** ID поставки */
+  /** Supply ID */
   id?: string;
-  /** Флаг закрытия поставки: - `true` — закрыта - `false` — открыта */
+  /** Whether the supply is closed */
   done?: boolean;
-  /** Дата создания поставки (RFC3339) */
+  /** Supply creation date (RFC3339) */
   createdAt?: string;
-  /** Дата закрытия поставки (RFC3339) */
+  /** Supply closing date (RFC3339) */
   closedAt?: string;
-  /** Дата скана поставки (RFC3339) */
+  /** Supply scan date (RFC3339) */
   scanDt?: string;
-  /** Наименование поставки */
+  /** Supply name */
   name?: string;
-  /** Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) */
+  /** Cargo type: 0 = unset, 1 = small, 2 = oversized, 3 = large */
   cargoType?: 0 | 1 | 2 | 3;
-  /** ID склада назначения поставки. Если `null`, склад назначения не указан */
+  /** Cross-border type: 0 = not cross-border, 1 = cross-border, null = unset */
+  crossBorderType?: 0 | 1 | null;
+  /** Destination warehouse ID; null if not specified */
   destinationOfficeId?: number;
 }
 
+/**
+ * New (unprocessed) assembly order with additional pricing and metadata fields
+ */
 export interface OrderNew {
-  /** Точный адрес покупателя для доставки, если применимо. Из-за особенностей адреса некоторые поля могут быть пустыми */
+  /** Buyer's delivery address; some fields may be empty depending on address specifics */
   address?: {
-  /** Адрес доставки */
-  fullAddress?: string;
-  /** Долгота */
-  longitude?: number;
-  /** Широта */
-  latitude?: number;
-};
-  /** Планируемая дата доставки.<br> Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`. */
+    /** Full delivery address */
+    fullAddress?: string;
+    /** Longitude */
+    longitude?: number;
+    /** Latitude */
+    latitude?: number;
+  };
+  /** Planned delivery date; shown for oversized (SGT, cargoType: 2) orders */
   ddate?: string;
-  /** Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100. Предоставляется в информационных целях */
+  /** Recommended delivery date for oversized items to the sorting center */
+  sellerDate?: string;
+  /** Seller price in sale currency with seller discount, without WB Club discount, multiplied by 100 */
   salePrice?: number;
-  /** Список метаданных, которые необходимо добавить в сборочное задание. <br> На данный момент обязательными к добавлению являются UIN и IMEI при их наличии в перечне */
+  /** List of required metadata keys that must be added to the order */
   requiredMeta?: string[];
-  /** Тип доставки: - `fbs` — доставка на склад Wildberries (FBS) */
+  /** List of optional metadata keys that can be added to the order */
+  optionalMeta?: string[];
+  /** Delivery type: fbs = delivery to Wildberries warehouse */
   deliveryType?: 'fbs';
-  /** Комментарий покупателя */
+  /** Buyer comment */
   comment?: string;
-  /** Цена приёмки в копейках. Отображается после фактической приёмки заказа. Для данного метода всегда будет возвращаться `null`. Предоставляется в информационных целях */
+  /** Acceptance price in kopecks; always null for this endpoint */
   scanPrice?: number;
-  /** ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid` */
+  /** Transaction ID for grouping orders from the same buyer cart */
   orderUid?: string;
-  /** Артикул продавца */
+  /** Seller article */
   article?: string;
-  /** Код цвета (только для колеруемых товаров) */
+  /** Color code (only for tintable products) */
   colorCode?: string;
-  /** Уникальный ID заказа. <br> Примечание: `rid` — это `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
+  /** Unique order ID (corresponds to srid in other report endpoints) */
   rid?: string;
-  /** Дата создания сборочного задания (RFC3339) */
+  /** Order creation date (RFC3339) */
   createdAt?: string;
-  /** Список офисов, куда следует привезти товар */
+  /** List of offices where the product should be delivered */
   offices?: string[];
-  /** Список баркодов */
+  /** List of barcodes */
   skus?: string[];
-  /** ID сборочного задания */
+  /** Assembly order ID */
   id?: number;
-  /** ID склада продавца, на который поступило сборочное задание */
+  /** Seller warehouse ID that received the order */
   warehouseId?: number;
-  /** ID склада WB, к которому привязан склад продавца */
+  /** WB warehouse ID linked to the seller warehouse */
   officeId?: number;
-  /** Артикул WB */
+  /** WB article number */
   nmId?: number;
-  /** ID размера товара в системе WB */
+  /** Product size ID in the WB system */
   chrtId?: number;
-  /** Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях */
+  /** Price in sale currency with all discounts except WB Wallet, multiplied by 100 */
   price?: number;
-  /** Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях */
+  /** Amount to be paid by buyer in sale currency with all discounts, multiplied by 100 */
   finalPrice?: number;
-  /** Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях */
+  /** Price in seller's country currency with all discounts except WB Wallet, multiplied by 100 */
   convertedPrice?: number;
-  /** Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях */
+  /** Amount to be paid by buyer in seller's country currency with all discounts, multiplied by 100 */
   convertedFinalPrice?: number;
-  /** Код валюты продажи */
+  /** Sale currency code (ISO 4217) */
   currencyCode?: number;
-  /** Код валюты страны продавца */
+  /** Seller's country currency code (ISO 4217) */
   convertedCurrencyCode?: number;
-  /** Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) */
-  cargoType?: 1 | 2 | 3;
-  /** Признак заказа товара с нулевым остатком: - `false` — заказ сделан на товар с ненулевым остатком - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену */
+  /** Cargo type: 1 = small, 2 = oversized, 3 = large */
+  cargoType?: CargoType;
+  /** Cross-border type: 0 = not cross-border, 1 = cross-border */
+  crossBorderType?: 0 | 1;
+  /** Whether this is a zero-stock order (can be cancelled without penalty) */
   isZeroOrder?: boolean;
-  /** Опции заказа */
+  /** Order options */
   options?: {
-  /** Признак B2B-продажи: - `false` — не B2B-продажа - `true` — B2B-продажа */
-  isB2b?: boolean;
-};
+    /** Whether this is a B2B sale */
+    isB2b?: boolean;
+  };
 }
 
+/**
+ * Order within a supply (legacy response format)
+ */
 export interface SupplyOrder {
-  /** Цена приёмки в копейках. Отображается после фактической приёмки заказа. Для данного метода всегда будет возвращаться `null`. Предоставляется в информационных целях */
+  /** Acceptance price in kopecks; always null for this endpoint */
   scanPrice?: number;
-  /** ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid` */
+  /** Transaction ID for grouping orders from the same buyer cart */
   orderUid?: string;
-  /** Артикул продавца */
+  /** Seller article */
   article?: string;
-  /** Код цвета (только для колеруемых товаров) */
+  /** Color code (only for tintable products) */
   colorCode?: string;
-  /** Уникальный ID заказа. <br> Примечание: `rid` — это `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
+  /** Unique order ID (corresponds to srid in other report endpoints) */
   rid?: string;
-  /** Дата создания сборочного задания (RFC3339) */
+  /** Order creation date (RFC3339) */
   createdAt?: string;
-  /** Список офисов, куда следует привезти товар */
+  /** List of offices where the product should be delivered */
   offices?: string[];
-  /** Список баркодов */
+  /** List of barcodes */
   skus?: string[];
-  /** ID сборочного задания */
+  /** Assembly order ID */
   id?: number;
-  /** ID склада продавца, на который поступило сборочное задание */
+  /** Seller warehouse ID that received the order */
   warehouseId?: number;
-  /** Артикул WB */
+  /** WB article number */
   nmId?: number;
-  /** ID размера товара в системе WB */
+  /** Product size ID in the WB system */
   chrtId?: number;
-  /** Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях */
+  /** Price in sale currency with all discounts except WB Wallet, multiplied by 100 */
   price?: number;
-  /** Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях */
+  /** Price in seller's country currency with all discounts except WB Wallet, multiplied by 100 */
   convertedPrice?: number;
-  /** Код валюты продажи */
+  /** Sale currency code (ISO 4217) */
   currencyCode?: number;
-  /** Код валюты страны продавца */
+  /** Seller's country currency code (ISO 4217) */
   convertedCurrencyCode?: number;
-  /** Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) */
-  cargoType?: 1 | 2 | 3;
-  /** Признак заказа товара с нулевым остатком: - `false` — заказ сделан на товар с ненулевым остатком - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену */
+  /** Cargo type: 1 = small, 2 = oversized, 3 = large */
+  cargoType?: CargoType;
+  /** Whether this is a zero-stock order (can be cancelled without penalty) */
   isZeroOrder?: boolean;
 }
 
+/**
+ * Supply box (transport box) entity
+ */
 export interface SupplyTrbx {
-  /** ID короба */
+  /** Box ID */
   id?: string;
 }
 
+/**
+ * Box sticker data with encoded barcode and file content
+ */
 export interface TrbxStickers {
-  /** Закодированное значение стикера */
+  /** Encoded sticker barcode value */
   barcode?: string;
-  /** Полное представление стикера в заданном формате (кодировка base64) */
+  /** Full sticker representation in the requested format (base64 encoded) */
   file?: string;
 }
 
 /**
- * Метаданные сборочного задания
+ * Order metadata containing various identification and tracking codes
  */
 export interface Meta {
   /** IMEI */
   imei?: {
-  value?: string;
-};
-  /** УИН */
+    value?: string;
+  };
+  /** UIN (unique identification number) */
   uin?: {
-  value?: string;
-};
-  /** GTIN */
+    value?: string;
+  };
+  /** GTIN (Global Trade Item Number) */
   gtin?: {
-  value?: string;
-};
-  /** Код маркировки Честного знака */
+    value?: string;
+  };
+  /** Honest Sign marking code (SGTIN) */
   sgtin?: {
-  value?: string[];
-};
-  /** Срок годности товара */
+    value?: string[];
+  };
+  /** Product expiration date */
   expiration?: {
-  value?: string;
-};
-
-  /** Номер грузовой таможенной декларации (ГТД) */
+    value?: string;
+  };
+  /** Customs declaration number */
   customsDeclaration?: {
     value?: string;
-};
+  };
 }
 
 /**
- * Данные о пропуске продавца
+ * Warehouse office data for seller pass registration
  */
-export interface Pass {
-  /** Имя водителя */
-  firstName?: string;
-  /** Дата окончания действия пропуска */
-  dateEnd?: string;
-  /** Фамилия водителя */
-  lastName?: string;
-  /** Марка машины */
-  carModel?: string;
-  /** Номер машины */
-  carNumber?: string;
-  /** Название склада */
-  officeName?: string;
-  /** Адрес склада */
-  officeAddress?: string;
-  /** ID склада */
-  officeId?: number;
-  /** ID пропуска */
+export interface PassOffice {
+  /** Office name */
+  name?: string;
+  /** Office address */
+  address?: string;
+  /** Office ID */
   id?: number;
 }
 
-export interface CrossborderTurkeyClientInfo {
-  /** Имя клиента */
+/**
+ * Seller pass for warehouse access
+ */
+export interface Pass {
+  /** Driver first name */
   firstName?: string;
-  /** Фамилия, Имя, Отчество */
-  fullName?: string;
-  /** Фамилия клиента */
+  /** Pass expiration date */
+  dateEnd?: string;
+  /** Driver last name */
   lastName?: string;
-  /** Отчество клиента */
-  middleName?: string;
-  /** Номер заказа */
-  orderID?: number;
-  /** Телефон для связи с клиентом */
-  phone?: string;
-  /** Не используется */
-  phoneCode?: string;
-}
-
-export interface CrossborderTurkeyClientInfoResp {
-  /** Информация по клиенту для кроссбордер-заказа из Турции */
-  orders?: CrossborderTurkeyClientInfo[];
+  /** Car model */
+  carModel?: string;
+  /** Car number */
+  carNumber?: string;
+  /** Warehouse name */
+  officeName?: string;
+  /** Warehouse address */
+  officeAddress?: string;
+  /** Warehouse ID */
+  officeId?: number;
+  /** Pass ID */
+  id?: number;
 }
 
 /**
- * @example
-```json
-{
-  "orders": [
-    987654321,
-    123456789
-  ]
-}
-```
+ * Client information for cross-border orders from Turkey
  */
-export interface OrdersRequestAPI {
-  /** Список заказов */
-  orders?: number[];
+export interface CrossborderTurkeyClientInfo {
+  /** Client first name */
+  firstName?: string;
+  /** Full name (last, first, middle) */
+  fullName?: string;
+  /** Client last name */
+  lastName?: string;
+  /** Client middle name */
+  middleName?: string;
+  /** Order ID */
+  orderID?: number;
+  /** Client phone number */
+  phone?: string;
+  /** Not used */
+  phoneCode?: string;
+}
+
+/**
+ * Response wrapper for cross-border Turkey client information
+ */
+export interface CrossborderTurkeyClientInfoResp {
+  /** Client info entries for cross-border orders from Turkey */
+  orders?: CrossborderTurkeyClientInfo[];
 }

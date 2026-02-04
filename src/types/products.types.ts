@@ -756,3 +756,115 @@ export interface QuarantineGoodsResponse {
   /** Error description */
   errorText?: string;
 }
+
+// ─── Directory & Category Response Types ───────────────────────────────
+
+/**
+ * Родительская категория
+ *
+ * Returned by GET /content/v2/object/parent/all
+ */
+export interface ParentCategory {
+  /** ID родительской категории */
+  id: number;
+  /** Название категории (e.g., "Электроника") */
+  name: string;
+  /** Виден на сайте */
+  isVisible: boolean;
+}
+
+/**
+ * Response for parent categories (GET /content/v2/object/parent/all)
+ */
+export interface GetParentAllResponse {
+  /** Массив родительских категорий */
+  data?: ParentCategory[];
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Описание ошибки */
+  errorText?: string;
+  /** Дополнительные ошибки */
+  additionalErrors?: string;
+}
+
+/**
+ * Цвет из справочника
+ *
+ * Returned by GET /content/v2/directory/colors
+ */
+export interface DirectoryColor {
+  /** Наименование цвета (e.g., "персиковый мелок") */
+  name: string;
+  /** Наименование родительского цвета (e.g., "оранжевый") */
+  parentName: string;
+}
+
+/**
+ * Response for colors directory (GET /content/v2/directory/colors)
+ */
+export interface GetDirectoryColorsResponse {
+  /** Массив цветов */
+  data?: DirectoryColor[];
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Описание ошибки */
+  errorText?: string;
+  /** Дополнительные ошибки */
+  additionalErrors?: string;
+}
+
+/**
+ * Страна из справочника
+ *
+ * Returned by GET /content/v2/directory/countries
+ */
+export interface DirectoryCountry {
+  /** ID страны */
+  id: number;
+  /** Значение характеристики Страны (e.g., "Китай") */
+  name: string;
+  /** Полное название страны (e.g., "Китайская Народная Республика") */
+  fullName: string;
+}
+
+/**
+ * Response for countries directory (GET /content/v2/directory/countries)
+ */
+export interface GetDirectoryCountriesResponse {
+  /** Массив стран */
+  data?: DirectoryCountry[];
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Описание ошибки */
+  errorText?: string;
+  /** Дополнительные ошибки */
+  additionalErrors?: string;
+}
+
+/**
+ * Ярлык (тег контента)
+ *
+ * Returned by GET /content/v2/tags
+ */
+export interface ContentTag {
+  /** Числовой ID ярлыка */
+  id: number;
+  /** Цвет ярлыка (e.g., "D1CFD7") */
+  color: string;
+  /** Имя ярлыка (e.g., "Sale") */
+  name: string;
+}
+
+/**
+ * Response for content tags (GET /content/v2/tags)
+ */
+export interface GetContentTagsResponse {
+  /** Массив ярлыков */
+  data?: ContentTag[];
+  /** Флаг ошибки */
+  error?: boolean;
+  /** Описание ошибки */
+  errorText?: string;
+  /** Дополнительные ошибки */
+  additionalErrors?: string;
+}

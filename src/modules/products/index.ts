@@ -8,6 +8,10 @@ import { BaseClient } from '../../client/base-client';
 import type {
   BrandsResponse,
   ClubDisc,
+  GetContentTagsResponse,
+  GetDirectoryColorsResponse,
+  GetDirectoryCountriesResponse,
+  GetParentAllResponse,
   Goods,
   GoodsBufferResponse,
   GoodsFilterByNmResponse,
@@ -36,46 +40,58 @@ export class ProductsModule {
   /**
    * Родительские категории товаров
    *
-   * Метод возвращает названия и ID всех родительских категорий для [создания карточек товаров](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov): например, `Электроника`, `Бытовая химия`, `Рукоделие`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns parent category names and IDs for product card creation (e.g., Electronics, Household chemicals).
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Parent categories list
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getParentAll({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getParentAll({ locale: 'ru' });
+   * console.log(result.data); // Parent categories array
+   * ```
    */
-  async getParentAll(options?: {
-    locale?: string;
-  }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{
-      data?: unknown;
-      error?: boolean;
-      errorText?: string;
-      additionalErrors?: string;
-    }>('https://content-api.wildberries.ru/content/v2/object/parent/all', {
-      params: options,
-      rateLimitKey: 'products.contentObjectParentAll',
-    });
+  async getParentAll(options?: { locale?: string }): Promise<GetParentAllResponse> {
+    return this.client.get<GetParentAllResponse>(
+      'https://content-api.wildberries.ru/content/v2/object/parent/all',
+      {
+        params: options,
+        rateLimitKey: 'products.contentObjectParentAll',
+      }
+    );
   }
 
   /**
    * Список предметов
    *
-   * Метод возвращает список названий [родительских категорий предметов](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1parent~1all/get) и их предметов с ID. Например, у категории `Игрушки` будут предметы `Калейдоскопы`, `Куклы`, `Мячики`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns parent category names and their subjects with IDs (e.g., category "Toys" contains "Kaleidoscopes", "Dolls", "Balls").
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @param [options.name] - Subject name filter
+   * @param [options.limit] - Number of items to return
+   * @param [options.offset] - Items offset
+   * @param [options.parentID] - Parent category ID filter
+   * @returns List of subjects with their parent categories
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getObjectAll({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getObjectAll({ parentID: 306, locale: 'ru', limit: 50 });
+   * console.log(result.data); // [{ subjectID, parentID, subjectName, parentName }]
+   * ```
    */
   async getObjectAll(options?: {
     locale?: string;
@@ -103,18 +119,25 @@ export class ProductsModule {
   /**
    * Характеристики предмета
    *
-   * Метод возвращает параметры характеристик предмета: названия, типы данных, единицы измерения и так далее. В запросе необходимо указать ID [предмета](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get). <div class="description_important"> Для получения значений характеристик <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1colors/get">Цвет</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1kinds/get">Пол</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1countries/get">Страна производства</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1seasons/get">Сезон</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1vat/get">Ставка НДС</a> и <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1tnved/get">ТНВЭД-код</a> используйте отдельные методы </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns characteristic parameters for a subject: names, data types, units of measure, etc.
+   * Use separate methods for Color, Gender, Country, Season, VAT, and TNVED values.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param subjectId - ID предмета
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Subject characteristics list
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getObjectCharc('subjectId-value', {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getObjectCharc(105, { locale: 'ru' });
+   * console.log(result.data); // [{ charcID, name, required, unitName, charcType }]
+   * ```
    */
   async getObjectCharc(
     subjectId: number,
@@ -159,46 +182,54 @@ export class ProductsModule {
   /**
    * Цвет
    *
-   * Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Цвет`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns possible values for the "Color" product characteristic.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Available color values
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getDirectoryColors({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getDirectoryColors({ locale: 'ru' });
+   * console.log(result.data); // Available color values
+   * ```
    */
-  async getDirectoryColors(options?: {
-    locale?: string;
-  }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{
-      data?: unknown;
-      error?: boolean;
-      errorText?: string;
-      additionalErrors?: string;
-    }>('https://content-api.wildberries.ru/content/v2/directory/colors', {
-      params: options,
-      rateLimitKey: 'products.contentDirectoryColors',
-    });
+  async getDirectoryColors(options?: { locale?: string }): Promise<GetDirectoryColorsResponse> {
+    return this.client.get<GetDirectoryColorsResponse>(
+      'https://content-api.wildberries.ru/content/v2/directory/colors',
+      {
+        params: options,
+        rateLimitKey: 'products.contentDirectoryColors',
+      }
+    );
   }
 
   /**
    * Пол
    *
-   * Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Пол`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns possible values for the "Gender" product characteristic.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Available gender values
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getDirectoryKinds({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getDirectoryKinds({ locale: 'ru' });
+   * console.log(result.data); // ['Мужской', 'Женский', 'Унисекс']
+   * ```
    */
   async getDirectoryKinds(options?: {
     locale?: string;
@@ -217,46 +248,56 @@ export class ProductsModule {
   /**
    * Страна производства
    *
-   * Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Страна производства`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns possible values for the "Country of manufacture" product characteristic.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Available country values
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getDirectoryCountries({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getDirectoryCountries({ locale: 'ru' });
+   * console.log(result.data); // Available country values
+   * ```
    */
   async getDirectoryCountries(options?: {
     locale?: string;
-  }): Promise<{ data?: unknown; error?: boolean; errorText?: string; additionalErrors?: string }> {
-    return this.client.get<{
-      data?: unknown;
-      error?: boolean;
-      errorText?: string;
-      additionalErrors?: string;
-    }>('https://content-api.wildberries.ru/content/v2/directory/countries', {
-      params: options,
-      rateLimitKey: 'products.contentDirectoryCountries',
-    });
+  }): Promise<GetDirectoryCountriesResponse> {
+    return this.client.get<GetDirectoryCountriesResponse>(
+      'https://content-api.wildberries.ru/content/v2/directory/countries',
+      {
+        params: options,
+        rateLimitKey: 'products.contentDirectoryCountries',
+      }
+    );
   }
 
   /**
    * Сезон
    *
-   * Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Сезон`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns possible values for the "Season" product characteristic.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Available season values
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getDirectorySeasons({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getDirectorySeasons({ locale: 'ru' });
+   * console.log(result.data); // ['Лето', 'Зима', 'Демисезон', 'Всесезон']
+   * ```
    */
   async getDirectorySeasons(options?: {
     locale?: string;
@@ -275,17 +316,23 @@ export class ProductsModule {
   /**
    * Ставка НДС
    *
-   * Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Ставка НДС`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns possible values for the "VAT rate" product characteristic.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Available VAT rate values
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getDirectoryVat({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getDirectoryVat({ locale: 'ru' });
+   * console.log(result.data); // Available VAT rate values
+   * ```
    */
   async getDirectoryVat(options?: {
     locale?: string;
@@ -304,17 +351,25 @@ export class ProductsModule {
   /**
    * ТНВЭД-код
    *
-   * Метод возвращает список ТНВЭД-кодов по ID [предмета](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get) и фрагменту ТНВЭД-кода. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns list of TNVED codes by subject ID and optional code fragment search.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param options.subjectID - Subject ID (required)
+   * @param [options.search] - TNVED code fragment to search
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns TNVED codes with KIZ marking flag
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getDirectoryTnved({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getDirectoryTnved({ subjectID: 105, search: 6403 });
+   * console.log(result.data); // [{ tnved: '6403919100', isKiz: true }]
+   * ```
    */
   async getDirectoryTnved(options?: {
     subjectID: number;
@@ -382,47 +437,52 @@ export class ProductsModule {
   /**
    * Список ярлыков
    *
-   * Метод возвращает список и характеристики всех ярлыков продавца для группировки и фильтрации товаров. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns all seller tags for grouping and filtering products.
    *
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @returns Seller tags list
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getContentTags();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getContentTags();
+   * console.log(result.data); // Seller tags array
+   * ```
    */
-  async getContentTags(): Promise<{
-    data?: unknown;
-    error?: boolean;
-    errorText?: string;
-    additionalErrors?: string;
-  }> {
-    return this.client.get<{
-      data?: unknown;
-      error?: boolean;
-      errorText?: string;
-      additionalErrors?: string;
-    }>('https://content-api.wildberries.ru/content/v2/tags', {
-      rateLimitKey: 'products.contentTags',
-    });
+  async getContentTags(): Promise<GetContentTagsResponse> {
+    return this.client.get<GetContentTagsResponse>(
+      'https://content-api.wildberries.ru/content/v2/tags',
+      {
+        rateLimitKey: 'products.contentTags',
+      }
+    );
   }
 
   /**
    * Создание ярлыка
    *
-   * Метод добавляет один ярлык продавца. Можно создать максимум 15 ярлыков для одного продавца. Максимальная длина ярлыка — 15 символов. <br>Созданный ярлык можно получить в общем [списке](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Creates a seller tag. Max 15 tags per seller, max 15 characters per tag name.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Tag creation data
+   * @param [data.color] - Tag color
+   * @param [data.name] - Tag name (max 15 characters)
+   * @returns Creation result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createContentTag({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createContentTag({ color: '#ff0000', name: 'Sale' });
+   * console.log(result);
+   * ```
    */
   async createContentTag(data: { color?: string; name?: string }): Promise<ResponseContentError> {
     return this.client.post<ResponseContentError>(
@@ -435,18 +495,25 @@ export class ProductsModule {
   /**
    * Изменение ярлыка
    *
-   * Метод заменяет данные ярлыка: имя и цвет. <br>Новые данные можно получить в общем [списке](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Replaces tag data: name and color.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param id - Числовой ID ярлыка
-   * @param data - Request body data
-   * @returns Успешно
+   * @param data - Tag update data
+   * @param [data.color] - New tag color
+   * @param [data.name] - New tag name
+   * @returns Update result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.updateContentTag('id-value', {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.updateContentTag(42, { color: '#00ff00', name: 'New Arrivals' });
+   * console.log(result);
+   * ```
    */
   async updateContentTag(
     id: number,
@@ -462,17 +529,22 @@ export class ProductsModule {
   /**
    * Удаление ярлыка
    *
-   * Метод удаляет ярлык из [списка ярлыков](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get) продавца. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Deletes a tag from the seller's tag list.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
    *
    * @param id - Числовой ID ярлыка
-   * @returns Успешно
+   * @returns Deletion result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.deleteContentTag('id-value');
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.deleteContentTag(42);
+   * console.log(result);
+   * ```
    */
   async deleteContentTag(id: number): Promise<ResponseContentError> {
     return this.client.delete<ResponseContentError>(
@@ -485,17 +557,25 @@ export class ProductsModule {
   /**
    * Управление ярлыками в карточке товара
    *
-   * Метод добавляет или снимает ярлык с карточки товара. К карточке можно добавить максимум 15 ярлыков.<br> При удалении ярлыка из карточки товара он не удаляется из [списка ярлыков](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get) продавца. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Adds or removes tags from a product card. Max 15 tags per card.
+   * Removing a tag from a card does not delete it from the seller's tag list.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Tag link data
+   * @param [data.nmID] - Product card nomenclature ID
+   * @param [data.tagsIDs] - Array of tag IDs to link/unlink
+   * @returns Link result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createNomenclatureLink({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createNomenclatureLink({ nmID: 12345678, tagsIDs: [1, 2, 3] });
+   * console.log(result);
+   * ```
    */
   async createNomenclatureLink(data: {
     nmID?: number;
@@ -511,20 +591,33 @@ export class ProductsModule {
   /**
    * Список карточек товаров
    *
-   * <div class="description_auth"> Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong> </div> Метод возвращает список созданных карточек товаров. <div class="description_important"> В ответе метода не будет карточек, находящихся в корзине. Получить такие карточки можно через <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post">отдельный метод</a>. </div> Чтобы получить **больше 100** карточек товаров, используйте пагинацию: 1. Сделайте первый запрос: <br> <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935"> { "settings": { "cursor": { "limit": 100 }, "filter": { "withPhoto": -1 } } }</pre> 2. Пройдите в конец полученного списка карточек товаров. 3. Скопируйте из `cursor` две строки: - `"updatedAt": "***"` - `"nmID": ***` 4. Вставьте скопированные строки в параметр запроса `cursor`. 5. Повторите запрос. 6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns a paginated list of product cards. Trashed cards are excluded; use getTrashedCards() instead.
+   * Use cursor-based pagination with updatedAt and nmID from the response cursor to fetch more than 100 cards.
    *
-   * @param data - Request body data
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Request body with settings, filters, and cursor
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Product cards with pagination cursor
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createCardsList({}, {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getCardsList({
+   *   settings: {
+   *     cursor: { limit: 100 },
+   *     filter: { withPhoto: -1 },
+   *   },
+   * }, { locale: 'ru' });
+   * console.log(result.cards); // Product cards array
+   * console.log(result.cursor?.total); // Total count
+   * ```
    */
-  async createCardsList(
+  async getCardsList(
     data: {
       settings?: {
         sort?: { ascending?: boolean };
@@ -642,20 +735,89 @@ export class ProductsModule {
   }
 
   /**
+   * @deprecated Use {@link getCardsList} instead. Will be removed in next major version.
+   */
+  async createCardsList(
+    data: {
+      settings?: {
+        sort?: { ascending?: boolean };
+        filter?: {
+          withPhoto?: number;
+          textSearch?: string;
+          tagIDs?: number[];
+          allowedCategoriesOnly?: boolean;
+          objectIDs?: number[];
+          brands?: string[];
+          imtID?: number;
+        };
+        cursor?: { limit?: number; updatedAt?: string; nmID?: number };
+      };
+    },
+    options?: { locale?: string }
+  ): Promise<{
+    cards?: {
+      nmID?: number;
+      imtID?: number;
+      nmUUID?: string;
+      subjectID?: number;
+      subjectName?: string;
+      vendorCode?: string;
+      brand?: string;
+      title?: string;
+      description?: string;
+      needKiz?: boolean;
+      photos?: {
+        big?: string;
+        c246x328?: string;
+        c516x688?: string;
+        square?: string;
+        tm?: string;
+      }[];
+      video?: string;
+      wholesale?: { enabled?: boolean; quantum?: number };
+      dimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        weightBrutto?: number;
+        isValid?: boolean;
+      };
+      characteristics?: { id?: number; name?: string; value?: unknown }[];
+      sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+      tags?: { id?: number; name?: string; color?: string }[];
+      createdAt?: string;
+      updatedAt?: string;
+    }[];
+    cursor?: { updatedAt?: string; nmID?: number; total?: number };
+  }> {
+    return this.getCardsList(data, options);
+  }
+
+  /**
    * Список несозданных карточек товаров с ошибками
    *
-   * Метод возвращает список карточек товаров ([черновиков](https://seller.wildberries.ru/new-goods/error-cards)), при создании или редактировании которых произошли ошибки, с описанием этих ошибок. <br><br> Данные в ответе возвращаются пакетами `batch`. Один пакет содержит: - все ошибки по одной объединённой карточке товара `imtID` одного запроса при [создании](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post) карточек товаров - все ошибки одного запроса при [создании с присоединением](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post) или [редактировании](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров <br><br> Чтобы получить более 100 пакетов, используйте пагинацию: 1. Сделайте первый запрос: <br> <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935"> { "cursor": { "limit": 100 }, "order": { "ascending": true } }</pre> 2. Скопируйте `"updatedAt": "***"`,`"batchUUID": "***" `из `cursor` ответа и вставьте в `cursor` запроса. 3. Повторите запрос. 4. Повторяйте пункты 2 и 3, пока не получите в ответе `"next": false`. Это будет означать, что вы получили все пакеты. <div class="description_important"> Чтобы удалить карточку товара из списка, сделайте ещё один запрос на создание, создание с присоединением или редактирование карточки товара с исправленными ошибками </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+   * Returns product cards (drafts) that failed during creation or editing, with error descriptions.
+   * Data is returned in batches. Use cursor pagination with updatedAt and batchUUID.
    *
-   * @param data - Request body data
+   * Rate limit: 10 req/min, 6s interval, burst 5
+   *
+   * @param data - Request body with cursor and order settings
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale (e.g., 'ru', 'en')
+   * @returns Error list with pagination
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createErrorList({}, {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createErrorList(
+   *   { cursor: { limit: 100 }, order: { ascending: true } },
+   *   { locale: 'ru' }
+   * );
+   * console.log(result);
+   * ```
    */
   async createErrorList(
     data: RequestPublicViewerPublicErrorsTableListV2,
@@ -671,17 +833,30 @@ export class ProductsModule {
   /**
    * Редактирование карточек товаров
    *
-   * Метод обновляет карточки товаров. Данные для обновления можно получить через [список карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) и [список карточек товаров в корзине](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). <div class="description_important"> Карточка товара перезаписывается при обновлении. Поэтому в запросе нужно передать <strong>все</strong> параметры карточки, в том числе те, которые вы не собираетесь обновлять. </div> Нельзя редактировать или удалять баркоды, но можно добавить дополнительный баркод к карточке товара. Параметры `photos`, `video` и `tags` редактировать или удалять через данный метод нельзя.<br> Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`. <br><br> В одном запросе можно отредактировать максимум 3000 карточек товаров (`nmID`). Максимальный размер запроса 10 Мб.<br> Если ответ `Успешно` (`200`), но какие-то карточки не обновились, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+   * Updates product cards. Card is fully overwritten, so all parameters must be sent including unchanged ones.
+   * Cannot edit barcodes, photos, video, or tags. Max 3000 cards per request, 10 MB max.
+   * Dimensions in cm, weight in kg.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * Rate limit: 10 req/min, 6s interval, burst 5
+   *
+   * @param [data] - Array of product cards to update
+   * @returns Update result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createCardsUpdate({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createCardsUpdate([{
+   *   nmID: 12345678,
+   *   vendorCode: 'ART-001',
+   *   title: 'Updated Product',
+   *   sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+   *   characteristics: [{ id: 1, value: 'Blue' }],
+   * }]);
+   * console.log(result);
+   * ```
    */
   async createCardsUpdate(
     data?: {
@@ -705,17 +880,27 @@ export class ProductsModule {
   /**
    * Объединение и разъединение карточек товаров
    *
-   * Метод объединяет и разъединяет карточки товаров. Карточки товаров считаются объединёнными, если у них одинаковый `imtID`. <br><br> Для объединения карточек товаров сделайте запрос **с указанием** `imtID`. Можно объединять не более 30 карточек товаров.<br> Для разъединения карточек товаров сделайте запрос **без указания** `imtID`. Для разъединенных карточек будут сгенерированы новые `imtID`. <br><br> Если вы разъедините одновременно несколько карточек товаров, эти карточки объединятся в одну и получат новый `imtID`.<br> Чтобы присвоить каждой карточке товара уникальный `imtID`, необходимо передавать по одной карточке товара за запрос.<br> <br> Максимальный размер запроса 10 Мб. <div class="description_important"> Объединить можно только карточки товаров с одинаковыми предметами. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Merges or splits product cards by imtID. With imtID: merge (max 30 cards, same subject only).
+   * Without imtID: split (new imtID generated). Max request size 10 MB.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param [data] - Merge/split request (with or without imtID)
+   * @returns Operation result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createCardsMovenm({});
-  console.log(result);
+   * ```typescript
+   * // Merge cards under a single imtID
+   * const result = await sdk.products.createCardsMovenm({
+   *   imtID: 98765,
+   *   nmIDs: [12345678, 12345679],
+   * });
+   * console.log(result);
+   * ```
    */
   async createCardsMovenm(
     data?: RequestMoveNmsImtConn | RequestMoveNmsImtDisconn
@@ -730,17 +915,24 @@ export class ProductsModule {
   /**
    * Перенос карточек товаров в корзину
    *
-   * Метод переносит [карточки товаров в корзину](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). При этом карточки товаров не удаляются, их можно [восстановить](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1recover/post). <div class="description_important"> После переноса в корзину карточке товара присваивается новый <code>imtID</code>. </div> Карточки товаров удаляются автоматически, если лежат в корзине больше 30 дней. Очистка корзины происходит каждую ночь по московскому времени.<br> Карточки товаров можно удалить в любое время в [личном кабинете](https://seller.wildberries.ru/new-goods/basket-cards). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Moves product cards to trash. Cards are not deleted and can be recovered.
+   * Cards get a new imtID after trashing. Auto-deleted after 30 days.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Request body with nmIDs to trash
+   * @param [data.nmIDs] - Array of product card IDs to move to trash
+   * @returns Trash operation result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createDeleteTrash({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createDeleteTrash({ nmIDs: [12345678, 12345679] });
+   * console.log(result);
+   * ```
    */
   async createDeleteTrash(data: { nmIDs?: number[] }): Promise<{
     data?: Record<string, never>;
@@ -753,23 +945,31 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: Record<string, never>;
-    }>('https://content-api.wildberries.ru/content/v2/cards/delete/trash', data, { rateLimitKey: 'products.postContentCardsDeleteTrash' });
+    }>('https://content-api.wildberries.ru/content/v2/cards/delete/trash', data, {
+      rateLimitKey: 'products.postContentCardsDeleteTrash',
+    });
   }
 
   /**
    * Восстановление карточек товаров из корзины
    *
-   * Метод восстанавливает [карточки товаров из корзины](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). <div class="description_important"> Карточка товара сохраняет тот же <code>imtID</code>, что был присвоен ей при <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1delete~1trash/post">перемещении в корзину</a>. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Restores product cards from trash. Card retains the imtID assigned when it was trashed.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Request body with nmIDs to recover
+   * @param [data.nmIDs] - Array of product card IDs to restore
+   * @returns Recovery result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createCardsRecover({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createCardsRecover({ nmIDs: [12345678] });
+   * console.log(result);
+   * ```
    */
   async createCardsRecover(data: { nmIDs?: number[] }): Promise<{
     data?: Record<string, never>;
@@ -782,26 +982,36 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: Record<string, never>;
-    }>('https://content-api.wildberries.ru/content/v2/cards/recover', data, { rateLimitKey: 'products.postContentCardsRecover' });
+    }>('https://content-api.wildberries.ru/content/v2/cards/recover', data, {
+      rateLimitKey: 'products.postContentCardsRecover',
+    });
   }
 
   /**
    * Список карточек товаров в корзине
    *
-   * <div class="description_auth"> Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong> </div> Метод возвращает список карточек товаров в корзине.<br><br> Чтобы получить **больше 100** карточек товаров, воспользуйтесь пагинацией: 1. Сделайте первый запрос: <br> <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935"> { "settings": { "cursor": { "limit": 100 }, "filter": { "withPhoto": -1 } } }</pre> 2. Пройдите в конец полученного списка карточек товаров. 3. Скопируйте из `cursor` две строки: - `"trashedAt": "***"` - `"nmID": ***` 4. Вставьте скопированные строки в параметр запроса `cursor`. 5. Повторите запрос. 6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns trashed product cards with cursor-based pagination (trashedAt + nmID).
    *
-   * @param data - Request body data
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Request body with settings, cursor, and filter
    * @param [options] - Query parameters
-   * @returns Успешно
+   * @param [options.locale] - Language locale ('ru', 'en', 'zh')
+   * @returns Trashed product cards with pagination cursor
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createCardsTrash({}, {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getTrashedCards({
+   *   settings: { cursor: { limit: 100 }, filter: { textSearch: 'shoes' } },
+   * }, { locale: 'ru' });
+   * console.log(result.cards); // Trashed cards array
+   * ```
    */
-  async createCardsTrash(
+  async getTrashedCards(
     data: {
       settings?: {
         sort?: { ascending?: boolean };
@@ -867,22 +1077,75 @@ export class ProductsModule {
         trashedAt?: string;
       }[];
       cursor?: { trashedAt?: string; nmID?: number; total?: number };
-    }>('https://content-api.wildberries.ru/content/v2/get/cards/trash', data, { params: options, rateLimitKey: 'products.postContentGetCardsTrash' });
+    }>('https://content-api.wildberries.ru/content/v2/get/cards/trash', data, {
+      params: options,
+      rateLimitKey: 'products.postContentGetCardsTrash',
+    });
+  }
+
+  /**
+   * @deprecated Use {@link getTrashedCards} instead. Will be removed in next major version.
+   */
+  async createCardsTrash(
+    data: {
+      settings?: {
+        sort?: { ascending?: boolean };
+        cursor?: { limit?: number; trashedAt?: string; nmID?: number };
+        filter?: { textSearch?: string };
+      };
+    },
+    options?: { locale?: 'ru' | 'en' | 'zh' }
+  ): Promise<{
+    cards?: {
+      nmID?: number;
+      vendorCode?: string;
+      subjectID?: number;
+      subjectName?: string;
+      photos?: {
+        big?: string;
+        c246x328?: string;
+        c516x688?: string;
+        square?: string;
+        tm?: string;
+      }[];
+      video?: string;
+      wholesale?: { enabled?: boolean; quantum?: number };
+      sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+      dimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        weightBrutto?: number;
+        isValid?: boolean;
+      };
+      characteristics?: { id?: number; name?: string; value?: unknown }[];
+      createdAt?: string;
+      trashedAt?: string;
+    }[];
+    cursor?: { trashedAt?: string; nmID?: number; total?: number };
+  }> {
+    return this.getTrashedCards(data, options);
   }
 
   /**
    * Лимиты карточек товаров
    *
-   * Возвращает бесплатные и платные лимиты продавца на [создание карточек товаров](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post).<br><br> Формула для получения количества карточек, которые можно создать: > (`freeLimits` + `paidLimits`) - количество созданных карточек Созданными считаются карточки, которые можно получить через методы [список карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) и [список карточек товаров в корзине](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Returns free and paid limits for product card creation.
+   * Available cards = (freeLimits + paidLimits) - created cards count.
    *
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @returns Card creation limits
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.getCardsLimits();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getCardsLimits();
+   * console.log(result.data); // { freeLimits: 1000, paidLimits: 500 }
+   * ```
    */
   async getCardsLimits(): Promise<{
     data?: { freeLimits?: number; paidLimits?: number };
@@ -895,23 +1158,31 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: string;
-    }>('https://content-api.wildberries.ru/content/v2/cards/limits', { rateLimitKey: 'products.contentCardsLimits' });
+    }>('https://content-api.wildberries.ru/content/v2/cards/limits', {
+      rateLimitKey: 'products.contentCardsLimits',
+    });
   }
 
   /**
    * Генерация баркодов
    *
-   * Метод генерирует массив уникальных баркодов для создания размера в [карточке товара](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post). Можно использовать, если у вас нет собственных баркодов. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Generates unique barcodes for product card size creation. Use when you don't have your own barcodes.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Request body
+   * @param [data.count] - Number of barcodes to generate
+   * @returns Generated barcodes array
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createContentBarcode({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createContentBarcode({ count: 5 });
+   * console.log(result.data); // ['1234567890123', '1234567890124', ...]
+   * ```
    */
   async createContentBarcode(data: {
     count?: number;
@@ -921,23 +1192,40 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: string;
-    }>('https://content-api.wildberries.ru/content/v2/barcodes', data, { rateLimitKey: 'products.postContentBarcodes' });
+    }>('https://content-api.wildberries.ru/content/v2/barcodes', data, {
+      rateLimitKey: 'products.postContentBarcodes',
+    });
   }
 
   /**
    * Создание карточек товаров
    *
-   * Метод создаёт карточки товаров c указанием описаний и характеристик товаров.<br> <div class="description_important"> Есть две формы запроса: для создания отдельных и объединённых карточек товаров. </div> Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`. <br><br> Создание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br> В одном запросе можно создать максимум 100 объединённых карточек товаров (`imtID`), по 30 карточек товаров в каждой. Максимальный размер запроса 10 Мб.<br> Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+   * Creates product cards asynchronously. Max 100 merged cards (imtID) with 30 cards each per request, 10 MB max.
+   * Dimensions in cm, weight in kg. Check error list if 200 response but some cards were not created.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * Rate limit: 10 req/min, 6s interval, burst 5
+   *
+   * @param [data] - Array of product card groups to create
+   * @returns Creation result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createCardsUpload({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createCardsUpload([{
+   *   subjectID: 105,
+   *   variants: [{
+   *     vendorCode: 'ART-001',
+   *     brand: 'MyBrand',
+   *     title: 'Product Name',
+   *     sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+   *     characteristics: [{ id: 1, value: 'Blue' }],
+   *   }],
+   * }]);
+   * console.log(result);
+   * ```
    */
   async createCardsUpload(
     data?: {
@@ -964,17 +1252,30 @@ export class ProductsModule {
   /**
    * Создание карточек товаров с присоединением
    *
-   * Метод создаёт новые карточки товаров, присоединяя их к существующим карточкам. <br><br> Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`. <br><br> Создание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br>Максимальный размер запроса 10 Мб.<br> Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+   * Creates new product cards and joins them to existing cards by imtID. Async processing, 10 MB max.
+   * Dimensions in cm, weight in kg.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * Rate limit: 10 req/min, 6s interval, burst 5
+   *
+   * @param [data] - Cards to create and join to existing imtID
+   * @returns Creation result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createUploadAdd({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createUploadAdd({
+   *   imtID: 98765,
+   *   cardsToAdd: [{
+   *     vendorCode: 'ART-002',
+   *     sizes: [{ techSize: '44', skus: ['1234567890124'] }],
+   *     characteristics: [{ id: 1, value: 'Red' }],
+   *   }],
+   * });
+   * console.log(result);
+   * ```
    */
   async createUploadAdd(data?: {
     imtID?: number;
@@ -999,16 +1300,22 @@ export class ProductsModule {
   /**
    * Загрузить медиафайл
    *
-   * Метод загружает и добавляет один медиафайл к карточке товара. Требования к изображениям: * максимум изображений для одной карточки товара — 30 * минимальное разрешение — 700x900 px * максимальный размер — 32 Мб * минимальное качество — 65% * форматы — JPG, PNG, BMP, GIF (статичные), WebP Требования к видео: * максимум одно видео для одной карточки товара * максимальный размер — 50 Мб * форматы — MOV, MP4 <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Uploads a single media file to a product card. Images: max 30 per card, min 700x900px, max 32MB,
+   * formats JPG/PNG/BMP/GIF/WebP. Video: max 1 per card, max 50MB, formats MOV/MP4.
    *
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @returns Upload result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createMediaFile();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createMediaFile();
+   * console.log(result);
+   * ```
    */
   async createMediaFile(): Promise<{
     data?: Record<string, never>;
@@ -1021,23 +1328,36 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: Record<string, never>;
-    }>('https://content-api.wildberries.ru/content/v3/media/file', undefined, { rateLimitKey: 'products.postContentMediaFile' });
+    }>('https://content-api.wildberries.ru/content/v3/media/file', undefined, {
+      rateLimitKey: 'products.postContentMediaFile',
+    });
   }
 
   /**
    * Загрузить медиафайлы по ссылкам
    *
-   * Метод загружает набор медиафайлов в карточку товара через указание ссылок в запросе. <div class="description_important"> Новые медиафайлы полностью заменяют старые. Чтобы добавить новые медиафайлы, укажите в запросе ссылки одновременно на новые и старые медиафайлы. </div> Требования к ссылкам: * ссылка должна вести прямо на файл. Убедитесь, что ссылка не ведёт на страницу предпросмотра или авторизации, например. Если по ссылке открывается текстовая страница TXT или HTML, ссылка считается некорректной * для доступа к файлу по ссылке не нужна авторизация Требования к изображениям: * максимум изображений для одной карточки товара — 30 * минимальное разрешение — 700×900 px * максимальный размер — 32 Мб * минимальное качество — 65% * форматы — JPG, PNG, BMP, GIF (статичные), WebP Требования к видео: * максимум одно видео для одной карточки товара * максимальный размер — 50 Мб * форматы — MOV, MP4 Если видео или хотя бы одно изображение в запросе не соответствует требованиям, то даже при успешном ответе (`200`) ни одно изображение/видео не загрузится. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+   * Uploads media files to a product card via URLs. New files fully replace old ones.
+   * Links must be direct file URLs (no auth required). If any file fails validation, none are uploaded.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param data - Request body
+   * @param [data.nmId] - Product card nomenclature ID
+   * @param [data.data] - Array of direct file URLs
+   * @returns Upload result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
-  const result = await sdk.general.createMediaSave({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createMediaSave({
+   *   nmId: 12345678,
+   *   data: ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg'],
+   * });
+   * console.log(result);
+   * ```
    */
   async createMediaSave(data: { nmId?: number; data?: string[] }): Promise<{
     data?: Record<string, never>;
@@ -1050,22 +1370,33 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: Record<string, never>;
-    }>('https://content-api.wildberries.ru/content/v3/media/save', data, { rateLimitKey: 'products.postContentMediaSave' });
+    }>('https://content-api.wildberries.ru/content/v3/media/save', data, {
+      rateLimitKey: 'products.postContentMediaSave',
+    });
   }
 
   /**
    * Установить цены и скидки
    *
-   * Метод устанавливает цены и скидки для товаров. <br><br> Чтобы установить цены для размеров товара, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post). <div class="description_important"> Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Sets prices and discounts for products. Use createTaskSize() for per-size pricing.
+   * Track upload status via getHistoryTasks() and getGoodsTask().
    *
-   * @returns Response data
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
+   *
+   * @param data - Goods pricing data
+   * @returns Upload task response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.createUploadTask();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createUploadTask({
+   *   data: [{ nmID: 12345678, price: 1500, discount: 10 }],
+   * });
+   * console.log(result);
+   * ```
    */
   async createUploadTask(data: Goods): Promise<UploadTaskResponse> {
     return this.client.post<UploadTaskResponse>(
@@ -1078,16 +1409,25 @@ export class ProductsModule {
   /**
    * Установить цены для размеров
    *
-   * Метод устанавливает цены отдельно для размеров товаров. Работает только для товаров из категорий, где можно устанавливать цены отдельно для разных размеров. Для [таких товаров](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) `"editableSizePrice":true`. Чтобы установить цены и скидки для самих товаров, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post). <div class="description_important"> Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Sets prices per size for eligible products (editableSizePrice: true).
+   * Use createUploadTask() for product-level pricing.
    *
-   * @returns Response data
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
+   *
+   * @param data - Size pricing data
+   * @returns Upload task response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.createTaskSize();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createTaskSize({
+   *   data: [{ nmID: 12345678, sizeID: 100, price: 2000 }],
+   * });
+   * console.log(result);
+   * ```
    */
   async createTaskSize(data: SizeGoodsBody): Promise<UploadTaskResponse> {
     return this.client.post<UploadTaskResponse>(
@@ -1100,16 +1440,24 @@ export class ProductsModule {
   /**
    * Установить скидки WB Клуба
    *
-   * Устанавливает скидки для товаров в рамках подписки [WB Клуб](https://seller.wildberries.ru/help-center/article/A-337). <div class="description_important"> Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Sets WB Club subscription discounts for products.
    *
-   * @returns Response data
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
+   *
+   * @param data - Club discount data
+   * @returns Upload task response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.createTaskClubDiscount();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createTaskClubDiscount({
+   *   data: [{ nmID: 12345678, clubDiscount: 15 }],
+   * });
+   * console.log(result);
+   * ```
    */
   async createTaskClubDiscount(data: ClubDisc): Promise<UploadTaskResponse> {
     return this.client.post<UploadTaskResponse>(
@@ -1122,17 +1470,23 @@ export class ProductsModule {
   /**
    * Состояние обработанной загрузки
    *
-   * Метод возвращает информацию об обработанной загрузке цен и скидок. <div class="description_important"> Обработанная загрузка — это загрузка цен и скидок для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post">товаров</a>, цен для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post">размеров товаров</a> и скидок <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post">WB Клуба</a>. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns processed upload status for prices, size prices, and WB Club discounts.
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.uploadID - Upload task ID to check
+   * @returns Task history with status
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getHistoryTasks({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getHistoryTasks({ uploadID: 12345 });
+   * console.log(result);
+   * ```
    */
   async getHistoryTasks(options?: { uploadID: number }): Promise<TaskHistoryResponse> {
     return this.client.get<TaskHistoryResponse>(
@@ -1144,17 +1498,25 @@ export class ProductsModule {
   /**
    * Детализация обработанной загрузки
    *
-   * Метод возвращает информацию о товарах и об ошибках в товарах в обработанной загрузке. <div class="description_important"> Обработанная загрузка — это загрузка цен и скидок для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post">товаров</a>, цен для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post">размеров товаров</a> и скидок <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post">WB Клуба</a>. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns per-item details and errors from a processed price/discount upload.
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.limit - Number of items to return
+   * @param [options.offset] - Items offset
+   * @param options.uploadID - Upload task ID
+   * @returns Goods history with errors
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getGoodsTask({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getGoodsTask({ limit: 100, uploadID: 12345 });
+   * console.log(result);
+   * ```
    */
   async getGoodsTask(options?: {
     limit: number;
@@ -1170,17 +1532,23 @@ export class ProductsModule {
   /**
    * Состояние необработанной загрузки
    *
-   * Метод возвращает информацию про загрузку скидок в обработке. <div class="description_important"> Необработанная загрузка — это загрузка скидок в <a href="/openapi/promotion#tag/Kalendar-akcij">календаре акций</a>. Такие скидки применятся к товарам только в момент старта акции. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns pending upload status (promo calendar discounts not yet applied).
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.uploadID - Upload task ID to check
+   * @returns Buffer task status
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getBufferTasks({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getBufferTasks({ uploadID: 12345 });
+   * console.log(result);
+   * ```
    */
   async getBufferTasks(options?: { uploadID: number }): Promise<TaskBufferResponse> {
     return this.client.get<TaskBufferResponse>(
@@ -1192,19 +1560,27 @@ export class ProductsModule {
   /**
    * Детализация необработанной загрузки
    *
-   * Метод возвращает информацию о товарах и ошибках в товарах из загрузки в обработке. <div class="description_important"> Необработанная загрузка — это загрузка скидок в <a href="/openapi/promotion#tag/Kalendar-akcij">календаре акций</a>. Такие скидки применятся к товарам только в момент старта акции. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns per-item details and errors from a pending (promo calendar) discount upload.
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.limit - Number of items to return
+   * @param [options.offset] - Items offset
+   * @param options.uploadID - Upload task ID
+   * @returns Buffer goods with errors
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getGoodsTask({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getBufferGoodsTask({ limit: 100, uploadID: 12345 });
+   * console.log(result);
+   * ```
    */
-  async getGoodsTask2(options?: {
+  async getBufferGoodsTask(options?: {
     limit: number;
     offset?: number;
     uploadID: number;
@@ -1216,19 +1592,39 @@ export class ProductsModule {
   }
 
   /**
+   * @deprecated Use {@link getBufferGoodsTask} instead. Will be removed in next major version.
+   */
+  async getGoodsTask2(options?: {
+    limit: number;
+    offset?: number;
+    uploadID: number;
+  }): Promise<GoodsBufferResponse> {
+    return this.getBufferGoodsTask(options);
+  }
+
+  /**
    * Получить товары с ценами
    *
-   * Метод возвращает информацию о товарах: цены, валюту, общие скидки и скидки [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post). <br><br> В одном запросе можно указать только один артикул. <br><br> Чтобы получить информацию обо всех товарах продавца, не указывая артикулы, установите `limit=1000`, в параметре `offset` установите смещение по количеству записей. Количество нужно рассчитать по формуле: `offset` плюс `limit` из предыдущего запроса. Повторяйте запрос, пока вы не получите ответ с пустым массивом.<br><br> Используйте отдельные методы, чтобы получить информацию: - о [нескольких товарах по артикулам](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/post) - о [размерах товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns product pricing info: prices, currency, discounts, WB Club discounts.
+   * Use limit/offset pagination for all products, or filterNmID for a single article.
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.limit - Number of items to return (max 1000)
+   * @param [options.offset] - Items offset for pagination
+   * @param [options.filterNmID] - Filter by single article ID
+   * @returns Goods with pricing information
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getGoodsFilter({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getGoodsFilter({ limit: 1000, offset: 0 });
+   * console.log(result);
+   * ```
    */
   async getGoodsFilter(options?: {
     limit: number;
@@ -1244,16 +1640,23 @@ export class ProductsModule {
   /**
    * Получить товары с ценами по артикулам
    *
-   * Метод возвращает информацию о товарах по их артикулам: цены, валюту, общие скидки и скидки [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post). <br><br> В одном запросе можно указать более одного артикула. <br><br> Используйте отдельные методы, чтобы получить информацию: - обо [всех товарах продавца, не указывая артикулы](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get) - о [размерах товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns pricing info for multiple products by article IDs.
    *
-   * @returns Response data
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
+   *
+   * @param data - Request body with article IDs
+   * @param data.nmIDs - Array of article IDs to fetch pricing for
+   * @returns Goods with pricing information filtered by nmIDs
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.createGoodsFilter();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createGoodsFilter({ nmIDs: [12345678, 87654321] });
+   * console.log(result);
+   * ```
    */
   async createGoodsFilter(data: { nmIDs: number[] }): Promise<GoodsFilterByNmResponse> {
     return this.client.post<GoodsFilterByNmResponse>(
@@ -1266,17 +1669,25 @@ export class ProductsModule {
   /**
    * Получить размеры товара с ценами
    *
-   * Метод возвращает информацию обо всех размерах одного товара: цены, валюту, общие скидки и скидки для [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post). <br><br> Работает только для товаров из категорий, где можно устанавливать цены отдельно для разных размеров. Для таких товаров `"editableSizePrice":true`. <br><br> Чтобы получить информацию о самом товаре, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns per-size pricing info for a single product (only for categories with editableSizePrice: true).
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.limit - Number of items to return
+   * @param [options.offset] - Items offset
+   * @param options.nmID - Product article ID
+   * @returns Size-level pricing data
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getSizeNm({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getSizeNm({ limit: 100, nmID: 12345678 });
+   * console.log(result);
+   * ```
    */
   async getSizeNm(options?: {
     limit: number;
@@ -1292,17 +1703,25 @@ export class ProductsModule {
   /**
    * Получить товары в карантине
    *
-   * Метод возвращает информацию о товарах в карантине. <br><br> Если новая цена товара со скидкой будет минимум в 3 раза меньше старой, товар попадёт в [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и будет продаваться по старой цене. Ошибка об этом будет в ответах методов [состояний загрузок](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get). <br><br> Вы можете изменить цену или скидку с помощью API либо вывести товар из карантина в [личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine). <br><br> Для товаров с [поразмерной установкой цен](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post) карантин не применяется. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+   * Returns quarantined products (price dropped 3x or more). Quarantine does not apply to per-size pricing.
+   * Products sell at old price while quarantined. Remove via API or seller dashboard.
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param [options] - Query parameters
-   * @returns Response data
+   * @param options.limit - Number of items to return
+   * @param [options.offset] - Items offset
+   * @returns Quarantined goods list
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
-  const result = await sdk.general.getQuarantineGoods({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getQuarantineGoods({ limit: 100, offset: 0 });
+   * console.log(result);
+   * ```
    */
   async getQuarantineGoods(options?: {
     limit: number;
@@ -1317,20 +1736,26 @@ export class ProductsModule {
   /**
    * Получить остатки товаров
    *
-   * Метод возвращает данные об остатках товаров на [складах продавца](/openapi/work-with-products#tag/Sklady-prodavca). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>остатков на складах продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns stock amounts for products at a seller's warehouse. A 409 response counts as 5 requests.
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body data
-   * @returns Успешно
+   * @param data - Request body with SKUs
+   * @param data.skus - Array of SKU barcodes to check
+   * @returns Stock amounts per SKU
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
    * @example
-  const result = await sdk.general.createStock('warehouseId-value', {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getStocks(12345, { skus: ['1234567890123', '1234567890124'] });
+   * console.log(result.stocks); // [{ sku: '1234567890123', amount: 50 }]
+   * ```
    */
-  async createStock(
+  async getStocks(
     warehouseId: number,
     data: { skus: string[] }
   ): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
@@ -1342,19 +1767,38 @@ export class ProductsModule {
   }
 
   /**
+   * @deprecated Use {@link getStocks} instead. Will be removed in next major version.
+   */
+  async createStock(
+    warehouseId: number,
+    data: { skus: string[] }
+  ): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
+    return this.getStocks(warehouseId, data);
+  }
+
+  /**
    * Обновить остатки товаров
    *
-   * Метод обновляет количество остатков товаров продавца [в списке](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_important"> Названия параметров запроса не валидируются. При отправке некорректных названий вы получите успешный ответ (<code>204</code>), но остатки не обновятся. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>остатков на складах продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates stock amounts for products at a seller's warehouse. Parameter names are not validated;
+   * incorrect names return 204 but do not update stocks. A 409 response counts as 5 requests.
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param [data] - Stock update data
+   * @param data.stocks - Array of SKU/amount pairs
+   * @returns void on success (204)
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
    * @example
-  const result = await sdk.general.updateStock('warehouseId-value', {});
+   * ```typescript
+   * await sdk.products.updateStock(12345, {
+   *   stocks: [{ sku: '1234567890123', amount: 100 }],
+   * });
+   * ```
    */
   async updateStock(
     warehouseId: number,
@@ -1370,17 +1814,24 @@ export class ProductsModule {
   /**
    * Удалить остатки товаров
    *
-   * Метод удаляет запись об остатках товаров продавца из [списка остатков](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_important"> <strong>Действие необратимо</strong>. Удаленный остаток будет необходимо загрузить повторно для возобновления продаж. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>остатков на складах продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Irreversibly deletes stock records. Must re-upload stocks to resume sales.
+   * A 409 response counts as 5 requests.
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body data
-   * @returns Response data
+   * @param data - Request body with SKUs to delete
+   * @param [data.skus] - Array of SKU barcodes to delete
+   * @returns void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
    * @example
-  const result = await sdk.general.deleteStock('warehouseId-value', {});
+   * ```typescript
+   * await sdk.products.deleteStock(12345, { skus: ['1234567890123'] });
+   * ```
    */
   async deleteStock(warehouseId: number, data: { skus?: string[] }): Promise<void> {
     return this.client.delete(
@@ -1393,55 +1844,78 @@ export class ProductsModule {
   /**
    * Получить список складов WB
    *
-   * Метод возвращает список всех складов WB для привязки к складам продавца. Предназначен для определения складов WB, чтобы сдавать готовые заказы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns all WB warehouses for binding to seller warehouses (FBS model).
    *
-   * @returns Успешно
+   * Rate limit: 300 req/min, 200ms interval, burst 20
+   *
+   * @returns Array of WB office/warehouse locations
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.offices();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.offices();
+   * console.log(result); // [{ id: 1, name: 'Коледино', ... }]
+   * ```
    */
   async offices(): Promise<Office[]> {
-    return this.client.get<Office[]>('https://marketplace-api.wildberries.ru/api/v3/offices', { rateLimitKey: 'products.offices' });
+    return this.client.get<Office[]>('https://marketplace-api.wildberries.ru/api/v3/offices', {
+      rateLimitKey: 'products.offices',
+    });
   }
 
   /**
    * Получить список складов продавца
    *
-   * Метод возвращает список всех складов продавца. Может использоваться для получения [остатков товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns all seller warehouses. Use warehouse IDs to manage stock.
    *
-   * @returns Успешно
+   * Rate limit: 300 req/min, 200ms interval, burst 20
+   *
+   * @returns Array of seller warehouses
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.warehouses();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.warehouses();
+   * console.log(result); // [{ id: 12345, name: 'Main Warehouse', officeId: 1 }]
+   * ```
    */
   async warehouses(): Promise<Warehouse[]> {
-    return this.client.get<Warehouse[]>('https://marketplace-api.wildberries.ru/api/v3/warehouses', { rateLimitKey: 'products.warehouses' });
+    return this.client.get<Warehouse[]>(
+      'https://marketplace-api.wildberries.ru/api/v3/warehouses',
+      { rateLimitKey: 'products.warehouses' }
+    );
   }
 
   /**
    * Создать склад продавца
    *
-   * Метод создаёт склад продавца для работы с [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). Нужно привязать к складу продавца [склад WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) для работы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Creates a seller warehouse bound to a WB office for FBS fulfillment.
+   * Cannot bind a WB warehouse that is already in use.
    *
-   * @param data - Request body data
-   * @returns Создано
+   * Rate limit: 300 req/min, 200ms interval, burst 20
+   *
+   * @param data - Warehouse creation data
+   * @param data.name - Warehouse name
+   * @param data.officeId - WB office ID to bind
+   * @returns Created warehouse with ID
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.createWarehous({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.createWarehouse({ name: 'Main Warehouse', officeId: 1 });
+   * console.log(result.id); // New warehouse ID
+   * ```
    */
-  async createWarehous(data: { name: string; officeId: number }): Promise<{ id?: number }> {
+  async createWarehouse(data: { name: string; officeId: number }): Promise<{ id?: number }> {
     return this.client.post<{ id?: number }>(
       'https://marketplace-api.wildberries.ru/api/v3/warehouses',
       data,
@@ -1450,21 +1924,36 @@ export class ProductsModule {
   }
 
   /**
+   * @deprecated Use {@link createWarehouse} instead. Will be removed in next major version.
+   */
+  async createWarehous(data: { name: string; officeId: number }): Promise<{ id?: number }> {
+    return this.createWarehouse(data);
+  }
+
+  /**
    * Обновить склад продавца
    *
-   * Метод обновляет данные склада продавца в [списке складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). Данные о привязанном [складе WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) можно изменить один раз в сутки. <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates seller warehouse data. WB office binding can be changed once per day.
+   * Cannot bind a WB warehouse that is already in use.
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body data
-   * @returns Response data
+   * @param data - Warehouse update data
+   * @param data.name - Updated warehouse name
+   * @param data.officeId - Updated WB office ID
+   * @returns void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.updateWarehous('warehouseId-value', {});
+   * ```typescript
+   * await sdk.products.updateWarehouse(12345, { name: 'Updated Warehouse', officeId: 2 });
+   * ```
    */
-  async updateWarehous(
+  async updateWarehouse(
     warehouseId: number,
     data: { name: string; officeId: number }
   ): Promise<void> {
@@ -1476,20 +1965,35 @@ export class ProductsModule {
   }
 
   /**
+   * @deprecated Use {@link updateWarehouse} instead. Will be removed in next major version.
+   */
+  async updateWarehous(
+    warehouseId: number,
+    data: { name: string; officeId: number }
+  ): Promise<void> {
+    return this.updateWarehouse(warehouseId, data);
+  }
+
+  /**
    * Удалить склад продавца
    *
-   * Метод удаляет склад продавца из [списка складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Deletes a seller warehouse from the list.
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @returns Response data
+   * @returns void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.deleteWarehous('warehouseId-value');
+   * ```typescript
+   * await sdk.products.deleteWarehouse(12345);
+   * ```
    */
-  async deleteWarehous(warehouseId: number): Promise<void> {
+  async deleteWarehouse(warehouseId: number): Promise<void> {
     return this.client.delete(
       `https://marketplace-api.wildberries.ru/api/v3/warehouses/${warehouseId}`,
       undefined,
@@ -1498,19 +2002,31 @@ export class ProductsModule {
   }
 
   /**
+   * @deprecated Use {@link deleteWarehouse} instead. Will be removed in next major version.
+   */
+  async deleteWarehous(warehouseId: number): Promise<void> {
+    return this.deleteWarehouse(warehouseId);
+  }
+
+  /**
    * Список контактов
    *
-   * Метод возвращает список контактов, привязанных к [складу продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <br> Только для складов с типом доставки `3` — доставка курьером WB (DBW). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для следующих методов DBW: <ul> <li>получение и обновление списка контактов</li> <li>получение и удаление метаданных</li> <li>методы сборочных заданий</li> </ul> | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | </div>
+   * Returns contacts linked to a seller warehouse. Only for warehouses with delivery type 3 (DBW - WB courier).
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @returns Успешно
+   * @returns Warehouse contacts list
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.getWarehousesContact('warehouseId-value');
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.products.getWarehousesContact(12345);
+   * console.log(result.contacts); // [{ phone: '+79001234567', comment: 'Main' }]
+   * ```
    */
   async getWarehousesContact(
     warehouseId: number
@@ -1524,17 +2040,25 @@ export class ProductsModule {
   /**
    * Обновить список контактов
    *
-   * Метод обновляет список контактов [склада продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <div class="description_important"> Список контактов перезаписывается при обновлении. Поэтому в запросе нужно передать <strong>все</strong> параметры списка контактов, в том числе те, которые вы не собираетесь обновлять. </div> Только для складов с типом доставки `3` — курьером WB (DBW). <br><br> К складу можно добавить максимум 5 контактов. Чтобы удалить контакты, отправьте пустой массив `contacts`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для следующих методов DBW: <ul> <li>получение и обновление списка контактов</li> <li>получение и удаление метаданных</li> <li>методы сборочных заданий</li> </ul> | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | </div>
+   * Overwrites the contact list for a seller warehouse (DBW delivery type 3 only).
+   * Send ALL contacts including unchanged ones. Max 5 contacts. Send empty array to delete all.
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body data
-   * @returns Response data
+   * @param data - Contact list data (overwrites existing)
+   * @returns void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca}
    * @example
-  const result = await sdk.general.updateWarehousesContact('warehouseId-value', {});
+   * ```typescript
+   * await sdk.products.updateWarehousesContact(12345, {
+   *   contacts: [{ phone: '+79001234567', comment: 'Main contact' }],
+   * });
+   * ```
    */
   async updateWarehousesContact(warehouseId: number, data: StoreContactRequestBody): Promise<void> {
     return this.client.put(

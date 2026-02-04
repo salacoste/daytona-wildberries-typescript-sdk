@@ -5,680 +5,1210 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import type { CrossborderTurkeyClientInfoResp, Meta, Next, Order, OrderNew, OrdersRequestAPI, Pass, PassOffice, Supply, SupplyOrder, SupplyTrbx, TrbxStickers } from '../../types/orders-fbs.types';
+import type {
+  PassOffice,
+  Pass,
+  Order,
+  OrderNew,
+  Next,
+  Supply,
+  SupplyOrder,
+  SupplyTrbx,
+  TrbxStickers,
+  Meta,
+  OrdersRequestAPI,
+  CrossborderTurkeyClientInfoResp,
+  OrderStatusResponse,
+  GetMetaMultiRequest,
+  OrdersMetaResponse,
+  AddOrdersToSupplyRequest,
+  SupplyOrderIdsResponse,
+  ReshipmentResponse,
+} from '../../types/orders-fbs.types';
 
 export class OrdersFbsModule {
   constructor(private client: BaseClient) {}
 
   /**
-   * Получить список складов, для которых требуется пропуск
+   * Get list of warehouses that require a pass
    *
-   * Метод возвращает список складов для привязки к [пропуску продавца](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get). <div class="description_important"> Данные, которые возвращает метод, могут меняться. Рекомендуем периодически синхронизировать список </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns a list of warehouses for binding to a seller pass. The data returned by this method may change.
+   * It is recommended to periodically synchronize the list.
    *
-   * @returns Успешно
+   * @returns Promise resolving to an array of pass offices
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Propuska-FBS/paths/~1api~1v3~1passes~1offices/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getPassesOffices();
-  console.log(result);
+   * ```typescript
+   * const offices = await sdk.ordersFBS.getPassesOffices();
+   * console.log(offices);
+   * ```
    */
   async getPassesOffices(): Promise<PassOffice[]> {
-    return this.client.get<PassOffice[]>('https://marketplace-api.wildberries.ru/api/v3/passes/offices');
+    return this.client.get<PassOffice[]>(
+      'https://marketplace-api.wildberries.ru/api/v3/passes/offices',
+      { rateLimitKey: 'orders-fbs.passesOffices' }
+    );
   }
 
   /**
-   * Получить список пропусков
+   * Get list of seller passes
    *
-   * Метод возвращает список всех [созданных](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/post) пропусков продавца. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns a list of all created seller passes.
    *
-   * @returns Успешно
+   * @returns Promise resolving to an array of passes
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Propuska-FBS/paths/~1api~1v3~1passes/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.passes();
-  console.log(result);
+   * ```typescript
+   * const passes = await sdk.ordersFBS.passes();
+   * console.log(passes);
+   * ```
    */
   async passes(): Promise<Pass[]> {
-    return this.client.get<Pass[]>('https://marketplace-api.wildberries.ru/api/v3/passes');
+    return this.client.get<Pass[]>('https://marketplace-api.wildberries.ru/api/v3/passes', {
+      rateLimitKey: 'orders-fbs.passes',
+    });
   }
 
   /**
-   * Создать пропуск
+   * Create a seller pass
    *
-   * Метод создаёт [пропуск продавца](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get) с привязкой к складу WB. Пропуск действует 48 часов со времени создания. <div class="description_limit"> Максимум 1 запрос в 10 <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">минут</a> на один аккаунт продавца </div>
+   * Creates a seller pass bound to a WB warehouse. The pass is valid for 48 hours from creation.
    *
-   * @param data - Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.
-   * @returns Создано
+   * @param data - Pass data (full name length must be 6-100 characters, car number allows only letters and digits)
+   * @returns Promise resolving to the created pass ID
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Propuska-FBS/paths/~1api~1v3~1passes/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createPass({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createPass({
+   *   firstName: 'Ivan',
+   *   lastName: 'Petrov',
+   *   carModel: 'GAZelle',
+   *   carNumber: 'A123BC77',
+   *   officeId: 1,
+   * });
+   * console.log(result.id);
+   * ```
    */
-  async createPass(data: { firstName: string; lastName: string; carModel: string; carNumber: string; officeId: number }): Promise<{ id?: number }> {
-    return this.client.post<{ id?: number }>('https://marketplace-api.wildberries.ru/api/v3/passes', data);
+  async createPass(data: {
+    firstName: string;
+    lastName: string;
+    carModel: string;
+    carNumber: string;
+    officeId: number;
+  }): Promise<{ id?: number }> {
+    return this.client.post<{ id?: number }>(
+      'https://marketplace-api.wildberries.ru/api/v3/passes',
+      data,
+      { rateLimitKey: 'orders-fbs.postPasses' }
+    );
   }
 
   /**
-   * Обновить пропуск
+   * Update a seller pass
    *
-   * Метод обновляет данные [пропуска продавца](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get). В том числе, можно обновить данные привязанного склада WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates seller pass data, including the bound WB warehouse.
    *
-   * @param passId - ID пропуска
-   * @param data - Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.
-   * @returns Response data
+   * @param passId - ID of the pass to update
+   * @param data - Updated pass data (full name length must be 6-100 characters, car number allows only letters and digits)
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Propuska-FBS/paths/~1api~1v3~1passes~1%7BpassId%7D/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.updatePass('passId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.updatePass(12345, {
+   *   firstName: 'Ivan',
+   *   lastName: 'Petrov',
+   *   carModel: 'GAZelle',
+   *   carNumber: 'A123BC77',
+   *   officeId: 2,
+   * });
+   * ```
    */
-  async updatePass(passId: number, data: { firstName: string; lastName: string; carModel: string; carNumber: string; officeId: number }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`, data);
+  async updatePass(
+    passId: number,
+    data: {
+      firstName: string;
+      lastName: string;
+      carModel: string;
+      carNumber: string;
+      officeId: number;
+    }
+  ): Promise<void> {
+    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`, data, {
+      rateLimitKey: 'orders-fbs.putPasses',
+    });
   }
 
   /**
-   * Удалить пропуск
+   * Delete a seller pass
    *
-   * Метод удаляет пропуск продавца [из списка](/openapi/orders-fbs#tag/Propuska-FBS/paths/~1api~1v3~1passes/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Removes a seller pass from the list.
    *
-   * @param passId - ID пропуска
-   * @returns Response data
+   * @param passId - ID of the pass to delete
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Propuska-FBS/paths/~1api~1v3~1passes~1%7BpassId%7D/delete}
+   *
    * @example
-  const result = await sdk.ordersFBS.deletePass('passId-value');
+   * ```typescript
+   * await sdk.ordersFBS.deletePass(12345);
+   * ```
    */
   async deletePass(passId: number): Promise<void> {
-    return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`);
+    return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`, {
+      rateLimitKey: 'orders-fbs.deletePasses',
+    });
   }
 
   /**
-   * Получить список новых сборочных заданий
+   * Get list of new assembly tasks
    *
-   * Метод возвращает список всех новых [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), которые есть у продавца на момент запроса. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | </div>
+   * Returns a list of all new assembly tasks available for the seller at the time of request.
    *
-   * @returns Успешно
+   * @returns Promise resolving to new orders response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1new/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getOrdersNew();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.getOrdersNew();
+   * console.log(result.orders);
+   * ```
    */
   async getOrdersNew(): Promise<{ orders?: OrderNew[] }> {
-    return this.client.get<{ orders?: OrderNew[] }>('https://marketplace-api.wildberries.ru/api/v3/orders/new');
+    return this.client.get<{ orders?: OrderNew[] }>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/new',
+      { rateLimitKey: 'orders-fbs.ordersNew' }
+    );
   }
 
   /**
-   * Получить информацию о сборочных заданиях
+   * Get assembly tasks information
    *
-   * Метод возвращает информацию о сборочных заданиях без их актуального [статуса](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post). Можно получить данные за заданный период, максимум 30 календарных дней одним запросом. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns assembly task information without their current status.
+   * Data can be retrieved for a given period, up to 30 calendar days per request.
    *
-   * @param [options] - Query parameters
-   * @returns Успешно
+   * @param options - Query parameters for pagination and date filtering
+   * @returns Promise resolving to orders with pagination cursor
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.orders({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.orders({ limit: 100, next: 0 });
+   * console.log(result.orders);
+   * ```
    */
-  async orders(options?: { limit: number; next: number; dateFrom?: number; dateTo?: number }): Promise<{ next?: Next; orders?: Order[] }> {
-    return this.client.get<{ next?: Next; orders?: Order[] }>('https://marketplace-api.wildberries.ru/api/v3/orders', { params: options });
+  async orders(options?: {
+    limit: number;
+    next: number;
+    dateFrom?: number;
+    dateTo?: number;
+  }): Promise<{ next?: Next; orders?: Order[] }> {
+    return this.client.get<{ next?: Next; orders?: Order[] }>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders',
+      { params: options, rateLimitKey: 'orders-fbs.orders' }
+    );
   }
 
   /**
-   * Получить статусы сборочных заданий
+   * Get assembly task statuses
    *
-   * Метод возвращает статусы [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) по их ID. <br><br> `supplierStatus` — статус сборочного задания. Триггер его изменения — действие самого продавца. Возможные значения `supplierStatus`: | Статус | Описание | Как перевести сборочное задание в данный статус | |-------|----------------------|--------------------------------------| | `new` | **Новое сборочное задание** | | | `confirm` | **На сборке** |[Добавить сборочное задание к поставке](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch) | `complete` | **В доставке** | [Передать поставку в доставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch) | | `cancel` | **Отменено продавцом** | [Отменить сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1cancel/patch)| <br><br> `wbStatus` — статус системы Wildberries. Возможные значения `wbStatus`: - `waiting` — сборочное задание в работе - `sorted` — сборочное задание отсортировано - `sold` — заказ получен покупателем - `canceled` — отмена сборочного задания - `canceled_by_client` — покупатель отменил заказ при получении - `declined_by_client` — покупатель отменил заказ. Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку - `defect` — отмена заказа по причине брака - `ready_for_pickup` — сборочное задание прибыло на пункт выдачи заказов (ПВЗ) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * @deprecated Use {@link getOrderStatuses} instead. This method has an incorrect name and will be removed in a future release.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * Returns statuses of assembly tasks by their IDs.
+   *
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to order statuses
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createOrdersStatu({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createOrdersStatu({ orders: [123, 456] });
+   * console.log(result.orders);
+   * ```
    */
-  async createOrdersStatu(data?: { orders: number[] }): Promise<{ orders?: { id?: number; supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel'; wbStatus?: 'waiting' | 'sorted' | 'sold' | 'canceled' | 'canceled_by_client' | 'declined_by_client' | 'defect' | 'ready_for_pickup' | 'postponed_delivery' }[] }> {
-    return this.client.post<{ orders?: { id?: number; supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel'; wbStatus?: 'waiting' | 'sorted' | 'sold' | 'canceled' | 'canceled_by_client' | 'declined_by_client' | 'defect' | 'ready_for_pickup' | 'postponed_delivery' }[] }>('https://marketplace-api.wildberries.ru/api/v3/orders/status', data);
+  async createOrdersStatu(data?: { orders: number[] }): Promise<{
+    orders?: {
+      id?: number;
+      supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel';
+      wbStatus?:
+        | 'waiting'
+        | 'sorted'
+        | 'sold'
+        | 'canceled'
+        | 'canceled_by_client'
+        | 'declined_by_client'
+        | 'defect'
+        | 'ready_for_pickup'
+        | 'postponed_delivery';
+    }[];
+  }> {
+    return this.client.post<{
+      orders?: {
+        id?: number;
+        supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel';
+        wbStatus?:
+          | 'waiting'
+          | 'sorted'
+          | 'sold'
+          | 'canceled'
+          | 'canceled_by_client'
+          | 'declined_by_client'
+          | 'defect'
+          | 'ready_for_pickup'
+          | 'postponed_delivery';
+      }[];
+    }>('https://marketplace-api.wildberries.ru/api/v3/orders/status', data, {
+      rateLimitKey: 'orders-fbs.postOrdersStatus',
+    });
   }
 
   /**
-   * Получить все сборочные задания для повторной отгрузки
+   * Get all assembly tasks requiring reshipment
    *
-   * Метод возвращает все [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), требующие повторной отгрузки. <br><br> Повторная отгрузка требуется, если поставка была отсканирована в пункте приёмки, но при этом в ней всё ещё есть неотсканированные товары. Спустя определённое время необходимо доставить эти товары заново. Данные сборочные задания можно перевести в [другую активную поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns all assembly tasks that require reshipment. Reshipment is needed when a supply was scanned
+   * at the reception point but still has unscanned items. These tasks can be moved to another active supply.
    *
-   * @returns Успешно
+   * @returns Promise resolving to reshipment orders response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1supplies~1orders~1reshipment/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getOrdersReshipment();
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.getOrdersReshipment();
+   * console.log(result);
+   * ```
    */
-  async getOrdersReshipment(): Promise<{ orders?: { supplyID?: unknown; orderID?: unknown }[] }> {
-    return this.client.get<{ orders?: { supplyID?: unknown; orderID?: unknown }[] }>('https://marketplace-api.wildberries.ru/api/v3/supplies/orders/reshipment');
+  async getOrdersReshipment(): Promise<ReshipmentResponse> {
+    return this.client.get<ReshipmentResponse>(
+      'https://marketplace-api.wildberries.ru/api/v3/supplies/orders/reshipment',
+      { rateLimitKey: 'orders-fbs.suppliesOrdersReshipment' }
+    );
   }
 
   /**
-   * Отменить сборочное задание
+   * Cancel an assembly task
    *
-   * Метод отменяет [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) и переводит в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `cancel` — отменено продавцом. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Cancels an assembly task and sets its status to `cancel` (cancelled by seller).
    *
-   * @param orderId - ID сборочного задания
-   * @returns Response data
+   * @param orderId - ID of the assembly task to cancel
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1cancel/patch}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateOrdersCancel('orderId-value');
+   * ```typescript
+   * await sdk.ordersFBS.updateOrdersCancel(123456);
+   * ```
    */
   async updateOrdersCancel(orderId: number): Promise<void> {
-    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/cancel`, undefined);
+    return this.client.patch(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/cancel`,
+      undefined,
+      { rateLimitKey: 'orders-fbs.patchOrdersCancel' }
+    );
   }
 
   /**
-   * Получить стикеры сборочных заданий
+   * Get assembly task stickers
    *
-   * Метод возвращает список стикеров для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get). Можно получить стикер в форматах: - SVG - ZPLV (вертикальный) - ZPLH (горизонтальный) - PNG Ограничения: - За один запрос можно получить максимум 100 стикеров. - Можно получить стикеры только для сборочных заданий, находящихся на сборке — [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`. Доступны размеры: - 580x400 px при `width=58&height=40` в запросе - 400x300 px при `width=40&height=30` в запросе <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns stickers for assembly tasks in SVG, ZPLV, ZPLH, or PNG format.
+   * Maximum 100 stickers per request. Only available for tasks with status `confirm`.
    *
-   * @param [options] - Query parameters
-   * @param [data] - Request body data
-   * @returns Успешно
+   * @param options - Sticker format and size options
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to stickers response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1stickers/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createOrdersSticker({}, {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createOrdersSticker(
+   *   { type: 'png', width: 58, height: 40 },
+   *   { orders: [123, 456] },
+   * );
+   * console.log(result.stickers);
+   * ```
    */
-  async createOrdersSticker(options?: { type: 'svg' | 'zplv' | 'zplh' | 'png'; width: 58 | 40; height: 40 | 30 }, data?: { orders?: number[] }): Promise<{ stickers?: { orderId?: number; partA?: string; partB?: string; barcode?: string; file?: string }[] }> {
-    return this.client.post<{ stickers?: { orderId?: number; partA?: string; partB?: string; barcode?: string; file?: string }[] }>('https://marketplace-api.wildberries.ru/api/v3/orders/stickers', data, { params: options });
+  async createOrdersSticker(
+    options?: { type: 'svg' | 'zplv' | 'zplh' | 'png'; width: 58 | 40; height: 40 | 30 },
+    data?: { orders?: number[] }
+  ): Promise<{
+    stickers?: {
+      orderId?: number;
+      partA?: string;
+      partB?: string;
+      barcode?: string;
+      file?: string;
+    }[];
+  }> {
+    return this.client.post<{
+      stickers?: {
+        orderId?: number;
+        partA?: string;
+        partB?: string;
+        barcode?: string;
+        file?: string;
+      }[];
+    }>('https://marketplace-api.wildberries.ru/api/v3/orders/stickers', data, {
+      params: options,
+      rateLimitKey: 'orders-fbs.postOrdersStickers',
+    });
   }
 
   /**
-   * Получить метаданные сборочного задания
+   * Get metadata for an assembly task
    *
-   * Метод возвращает метаданные [сборочного задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get). <br><br> Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1v3~1dbs~1orders~1new/get), поле `requiredMeta`. <br><br> Возможные метаданные: - `imei` — [IMEI](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put) - `uin` — [УИН](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put) - `gtin` — [GTIN](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put) - `sgtin` — [код маркировки](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put) - `expiration` — [срок годности товара](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1expiration/put) - `customsDeclaration` — [номер ГТД](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1customs-declaration/put) Если в ответе не вернулись какие-либо из объектов метаданных, значит, у сборочного задания не может быть таких метаданных — и добавить их нельзя. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * @deprecated Use {@link getOrdersMetaBulk} for bulk metadata retrieval. This single-order endpoint may be removed in a future release.
    *
-   * @param orderId - ID сборочного задания
-   * @returns Успешно
+   * Returns metadata for a single assembly task (imei, uin, gtin, sgtin, expiration, customsDeclaration).
+   *
+   * @param orderId - ID of the assembly task
+   * @returns Promise resolving to order metadata
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getOrdersMeta('orderId-value');
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.getOrdersMeta(123456);
+   * console.log(result.meta);
+   * ```
    */
   async getOrdersMeta(orderId: number): Promise<{ meta?: Meta }> {
-    return this.client.get<{ meta?: Meta }>(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`);
+    return this.client.get<{ meta?: Meta }>(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`,
+      { rateLimitKey: 'orders-fbs.ordersMeta' }
+    );
   }
 
   /**
-   * Удалить метаданные сборочного задания
+   * Delete assembly task metadata
    *
-   * Метод удаляет значение [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) для переданного ключа. <br><br> Возможные метаданные: - `imei` — [IMEI](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put) - `uin` — [УИН](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put) - `gtin` — [GTIN](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put) - `sgtin` — [код маркировки](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put) Можно передать только один ключ. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Deletes a metadata value for the given key. Only one key can be passed per request.
+   * Supported keys: imei, uin, gtin, sgtin.
    *
-   * @param orderId - ID сборочного задания
-   * @param [options] - Query parameters
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param options - Query parameters specifying which metadata key to delete
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/delete}
+   *
    * @example
-  const result = await sdk.ordersFBS.deleteOrdersMeta('orderId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.deleteOrdersMeta(123456, { key: 'imei' });
+   * ```
    */
   async deleteOrdersMeta(orderId: number, options?: { key?: string }): Promise<void> {
-    return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`, { params: options });
+    return this.client.delete(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`,
+      { params: options, rateLimitKey: 'orders-fbs.deleteOrdersMeta' }
+    );
   }
 
   /**
-   * Закрепить за сборочным заданием код маркировки товара
+   * Attach marking codes (SGTIN) to an assembly task
    *
-   * Метод позволяет закрепить за [сборочным заданием](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) код маркировки [Честный знак](https://честныйзнак.рф). <br><br> Закрепить код маркировки можно только если в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) есть поле `sgtin`, а сборочное задание находится в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`. <br><br> Получить загруженные маркировки можно в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Attaches product marking codes to an assembly task. Only available when the task metadata
+   * includes the `sgtin` field and the task is in `confirm` status.
    *
-   * @param orderId - ID сборочного задания
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param data - Request body containing SGTIN marking codes
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateMetaSgtin('orderId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.updateMetaSgtin(123456, { sgtins: ['01046009544741002'] });
+   * ```
    */
   async updateMetaSgtin(orderId: number, data?: { sgtins?: string[] }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/sgtin`, data);
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/sgtin`,
+      data,
+      { rateLimitKey: 'orders-fbs.putOrdersMetaSgtin' }
+    );
   }
 
   /**
-   * Закрепить за сборочным заданием УИН
+   * Attach UIN to an assembly task
    *
-   * Метод обновляет УИН в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) — уникальный идентификационный номер. <br><br> У одного сборочного задания может быть только один УИН. Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates the unique identification number (UIN) in the assembly task metadata.
+   * Each task can have only one UIN. Only available for orders delivered by WB in `confirm` status.
    *
-   * @param orderId - ID сборочного задания
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param data - Request body containing the UIN value
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateMetaUin('orderId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.updateMetaUin(123456, { uin: 'UIN123456789' });
+   * ```
    */
   async updateMetaUin(orderId: number, data?: { uin: string }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/uin`, data);
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/uin`,
+      data,
+      { rateLimitKey: 'orders-fbs.putOrdersMetaUin' }
+    );
   }
 
   /**
-   * Закрепить за сборочным заданием IMEI
+   * Attach IMEI to an assembly task
    *
-   * Метод обновляет IMEI в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get). <br><br> У одного сборочного задания может быть только один IMEI. Если у устройства два IMEI — **IMEI** и **IMEI2** или **IMEI1** и **IMEI2** — укажите только **IMEI** или **IMEI1**. **IMEI2** указывать не нужно. <br><br> Добавлять маркировку можно только для заказов, которые находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates the IMEI in the assembly task metadata. Each task can have only one IMEI.
+   * If a device has two IMEIs, only provide the primary one. Only available for orders in `confirm` status.
    *
-   * @param orderId - ID сборочного задания
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param data - Request body containing the IMEI value
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateMetaImei('orderId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.updateMetaImei(123456, { imei: '354567890123456' });
+   * ```
    */
   async updateMetaImei(orderId: number, data?: { imei: string }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/imei`, data);
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/imei`,
+      data,
+      { rateLimitKey: 'orders-fbs.putOrdersMetaImei' }
+    );
   }
 
   /**
-   * Закрепить за сборочным заданием GTIN
+   * Attach GTIN to an assembly task
    *
-   * Метод обновляет GTIN в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) — уникальный ID товара в Беларуси. <br><br> У одного сборочного задания может быть только один GTIN. Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates the GTIN (unique product ID for Belarus) in the assembly task metadata.
+   * Each task can have only one GTIN. Only available for orders delivered by WB in `confirm` status.
    *
-   * @param orderId - ID сборочного задания
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param data - Request body containing the GTIN value
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateMetaGtin('orderId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.updateMetaGtin(123456, { gtin: '4600000000001' });
+   * ```
    */
   async updateMetaGtin(orderId: number, data?: { gtin: string }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/gtin`, data);
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/gtin`,
+      data,
+      { rateLimitKey: 'orders-fbs.putOrdersMetaGtin' }
+    );
   }
 
   /**
-   * Закрепить за сборочным заданием срок годности товара
+   * Attach expiration date to an assembly task
    *
-   * Метод закрепляет за [сборочным заданием](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) срок годности товара. Товар годен до указанной даты. <br> Добавить срок годности можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`. <br> <br> Получить загруженные данные можно в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get). Чтобы изменить срок годности, отправьте запрос с новой датой. Удалить срок годности из метаданных сборочного задания невозможно. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Sets the product expiration date for an assembly task. Only available for orders delivered
+   * by WB in `confirm` status. To change the date, send a new request. Expiration cannot be removed once set.
    *
-   * @param orderId - ID сборочного задания
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param data - Request body containing the expiration date
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1expiration/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateMetaExpiration('orderId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.updateMetaExpiration(123456, { expiration: '2025-12-31' });
+   * ```
    */
   async updateMetaExpiration(orderId: number, data?: { expiration?: string }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/expiration`, data);
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/expiration`,
+      data,
+      { rateLimitKey: 'orders-fbs.putOrdersMetaExpiration' }
+    );
   }
 
   /**
-   * Закрепить за сборочным заданием номер ГТД
+   * Attach customs declaration number to an assembly task
    *
-   * Метод обновляет номер грузовой таможенной декларации в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
-   * <br><br>
-   * У одного сборочного задания может быть только один номер ГТД.
-   * <br><br>
-   * Чтобы проверить, можно ли указать номер ГТД для сборочного задания, используйте метод [получения списка новых сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get):
-   * <br>
-   * - если в поле ответа `requiredMeta` есть значение `customsDeclaration` — можно указать номер ГТД
-   * <br>
-   * - если в поле ответа `requiredMeta` нет значения `customsDeclaration` — указать номер ГТД нельзя
-   * <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Updates the customs declaration number in the assembly task metadata.
+   * Each task can have only one customs declaration number. Check if the task supports it
+   * by verifying `customsDeclaration` is in the `requiredMeta` field of new orders.
    *
-   * @param orderId - ID сборочного задания
-   * @param data - Request body data
-   * @returns Response data
+   * @param orderId - ID of the assembly task
+   * @param data - Request body containing the customs declaration number
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1customs-declaration/put}
+   *
    * @example
-  const result = await sdk.ordersFBS.setCustomsDeclaration(123456, { customsDeclaration: '10129050/010120/0001234' });
+   * ```typescript
+   * await sdk.ordersFBS.setCustomsDeclaration(123456, {
+   *   customsDeclaration: '10129050/010120/0001234',
+   * });
+   * ```
    */
-  async setCustomsDeclaration(orderId: number, data: { customsDeclaration: string }): Promise<void> {
-    return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/customs-declaration`, data, { rateLimitKey: 'orders-fbs.putOrdersMetaCustomsDeclaration' });
+  async setCustomsDeclaration(
+    orderId: number,
+    data: { customsDeclaration: string }
+  ): Promise<void> {
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/orders/${orderId}/meta/customs-declaration`,
+      data,
+      { rateLimitKey: 'orders-fbs.putOrdersMetaCustomsDeclaration' }
+    );
   }
 
   /**
-   * Получить стикеры сборочных заданий кроссбордера
+   * Get cross-border assembly task stickers
    *
-   * Метод возвращает список стикеров [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) кроссбордера, в формате PDF.<br><br> Ограничения: - За один запрос можно получить максимум 100 стикеров. - Можно получить стикеры только для сборочных заданий, находящихся на сборке — [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns stickers for cross-border assembly tasks in PDF format.
+   * Maximum 100 stickers per request. Only available for tasks with status `confirm`.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to cross-border stickers response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1stickers~1cross-border/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createStickersCrossBorder({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createStickersCrossBorder({ orders: [123, 456] });
+   * console.log(result.stickers);
+   * ```
    */
-  async createStickersCrossBorder(data?: { orders?: number[] }): Promise<{ stickers?: { file?: string; orderId?: number }[] }> {
-    return this.client.post<{ stickers?: { file?: string; orderId?: number }[] }>('https://marketplace-api.wildberries.ru/api/v3/orders/stickers/cross-border', data);
+  async createStickersCrossBorder(data?: {
+    orders?: number[];
+  }): Promise<{ stickers?: { file?: string; orderId?: number }[] }> {
+    return this.client.post<{ stickers?: { file?: string; orderId?: number }[] }>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/stickers/cross-border',
+      data,
+      { rateLimitKey: 'orders-fbs.postOrdersStickersCrossBorder' }
+    );
   }
 
   /**
-   * Получить список ссылок на стикеры сборочных заданий, которые требуются при кроссбордере
+   * Get cross-border sticker links (deprecated)
    *
-   * [ Метод будет отключен 23 октября](https://dev.wildberries.ru/release-notes?id=348).
+   * @deprecated This method will be disabled by Wildberries. Use {@link createStickersCrossBorder} instead.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * Returns a list of sticker links for cross-border assembly tasks.
+   *
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to sticker URLs response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1files~1orders~1external-stickers/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createOrdersExternalSticker({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createOrdersExternalSticker({ orders: [123] });
+   * console.log(result.stickers);
+   * ```
    */
-  async createOrdersExternalSticker(data?: { orders?: number[] }): Promise<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }> {
-    return this.client.post<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }>('https://marketplace-api.wildberries.ru/api/v3/files/orders/external-stickers', data);
+  async createOrdersExternalSticker(data?: {
+    orders?: number[];
+  }): Promise<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }> {
+    return this.client.post<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }>(
+      'https://marketplace-api.wildberries.ru/api/v3/files/orders/external-stickers',
+      data,
+      { rateLimitKey: 'orders-fbs.postFilesOrdersExternalStickers' }
+    );
   }
 
   /**
-   * История статусов для сборочных заданий кроссбордера
+   * Get cross-border assembly task status history
    *
-   * Метод возвращает историю [статусов](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) кроссбордера. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns the status history for cross-border assembly tasks.
    *
-   * @param [data] - Request body data
-   * @returns Успешно
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to status history response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status~1history/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createStatusHistory({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createStatusHistory({ orders: [123, 456] });
+   * console.log(result.orders);
+   * ```
    */
-  async createStatusHistory(data?: { orders?: number[] }): Promise<{ orders?: { deliveryDate?: string; statuses?: { date?: string; code?: string }[]; orderID?: number }[] }> {
-    return this.client.post<{ orders?: { deliveryDate?: string; statuses?: { date?: string; code?: string }[]; orderID?: number }[] }>('https://api.wildberries.ru/api/v3/orders/status/history', data);
+  async createStatusHistory(data?: { orders?: number[] }): Promise<{
+    orders?: {
+      deliveryDate?: string;
+      statuses?: { date?: string; code?: string }[];
+      orderID?: number;
+    }[];
+  }> {
+    return this.client.post<{
+      orders?: {
+        deliveryDate?: string;
+        statuses?: { date?: string; code?: string }[];
+        orderID?: number;
+      }[];
+    }>('https://marketplace-api.wildberries.ru/api/v3/orders/status/history', data, {
+      rateLimitKey: 'orders-fbs.postOrdersStatusHistory',
+    });
   }
 
   /**
-   * Заказы с информацией по клиенту
+   * Get orders with client information (Turkey cross-border)
    *
-   * Метод позволяет получать информацию о покупателе по ID сборочного задания. Только для кроссбордера из **Турции**. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns buyer information by assembly task ID. Only available for cross-border orders from Turkey.
    *
-   * @param data - Request body data
-   * @returns Успешно
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to client info response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1client/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createOrdersClient({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createOrdersClient({ orders: [123456] });
+   * console.log(result);
+   * ```
    */
   async createOrdersClient(data: OrdersRequestAPI): Promise<CrossborderTurkeyClientInfoResp> {
-    return this.client.post<CrossborderTurkeyClientInfoResp>('https://marketplace-api.wildberries.ru/api/v3/orders/client', data);
+    return this.client.post<CrossborderTurkeyClientInfoResp>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/client',
+      data,
+      { rateLimitKey: 'orders-fbs.postOrdersClient' }
+    );
   }
 
   /**
-   * Получить список поставок
+   * Get list of supplies
    *
-   * Метод возвращает список [поставок](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns a paginated list of supplies.
    *
-   * @param [options] - Query parameters
-   * @returns Успешно
+   * @param options - Query parameters for pagination
+   * @returns Promise resolving to supplies list with pagination cursor
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.supplies({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.supplies({ limit: 100, next: 0 });
+   * console.log(result.supplies);
+   * ```
    */
-  async supplies(options?: { limit: number; next: number }): Promise<{ next?: Next; supplies?: Supply[] }> {
-    return this.client.get<{ next?: Next; supplies?: Supply[] }>('https://marketplace-api.wildberries.ru/api/v3/supplies', { params: options });
+  async supplies(options?: {
+    limit: number;
+    next: number;
+  }): Promise<{ next?: Next; supplies?: Supply[] }> {
+    return this.client.get<{ next?: Next; supplies?: Supply[] }>(
+      'https://marketplace-api.wildberries.ru/api/v3/supplies',
+      { params: options, rateLimitKey: 'orders-fbs.supplies' }
+    );
   }
 
   /**
-   * Создать новую поставку
+   * Create a new supply
    *
-   * Метод создаёт новую [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get). Ограничения: - Только для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) по модели FBS. - При добавлении в поставку все передаваемые сборочные задания в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `new` будут автоматически переведены в статус `confirm` — на сборке. - Если вы переведёте сборочное задание в статус `cancel` — отмена продавцом, прикрепленное сборочное задание автоматически удалится из поставки. - Поставку можно собрать только из сборочных заданий (заказов) одного габаритного типа `cargoType`. Новая поставка не обладает габаритным признаком, она приобретает габаритный признак первого заказа, добавленного в поставку. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Creates a new supply for FBS assembly tasks. A new supply acquires the cargo type
+   * of the first order added to it. Only orders of the same cargo type can be in one supply.
    *
-   * @param data - Request body data
-   * @returns Создано
+   * @param data - Request body containing the supply name
+   * @returns Promise resolving to the created supply ID
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createSupply({});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createSupply({ name: 'Supply 2025-01' });
+   * console.log(result.id);
+   * ```
    */
   async createSupply(data: { name?: string }): Promise<{ id?: string }> {
-    return this.client.post<{ id?: string }>('https://marketplace-api.wildberries.ru/api/v3/supplies', data);
+    return this.client.post<{ id?: string }>(
+      'https://marketplace-api.wildberries.ru/api/v3/supplies',
+      data,
+      { rateLimitKey: 'orders-fbs.postSupplies' }
+    );
   }
 
   /**
-   * Добавить сборочное задание к поставке
+   * Add an assembly task to a supply
    *
-   * Метод добавляет [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) к поставке и переводит его в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm` — на сборке. Может перемещать сборочное задание: - между активными поставками. - из закрытой поставки в активную, если сборочное задание требует [повторной отгрузки](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1supplies~1orders~1reshipment/get). <div class="description_important"> В пустую поставку можно добавить сборочное задание любого габаритного типа. Поставка приобретает габаритный тип первого добавленного сборочного задания <a href ="./orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get">из поля</a> <code>cargoType</code>. <br> После этого в поставку можно добавить сборочные задания только того же габаритного типа, что и у поставки. </div> <div class="description_important"> Нельзя добавлять в поставку сборочные задания поступившие на разные склады. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для метода <strong>добавления сборочных заданий к поставке FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * @deprecated Use {@link addOrdersToSupply} for bulk order-to-supply assignment. This single-order endpoint may be removed in a future release.
    *
-   * @param supplyId - ID поставки
-   * @param orderId - ID сборочного задания
-   * @returns Response data
+   * Adds an assembly task to a supply and sets its status to `confirm`.
+   * Can move tasks between active supplies or from closed to active supplies for reshipment.
+   *
+   * @param supplyId - ID of the supply
+   * @param orderId - ID of the assembly task to add
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateSuppliesOrder('supplyId-value', 'orderId-value');
+   * ```typescript
+   * await sdk.ordersFBS.updateSuppliesOrder('WB-GI-1234', 123456);
+   * ```
    */
   async updateSuppliesOrder(supplyId: string, orderId: number): Promise<void> {
-    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders/${orderId}`, undefined);
+    return this.client.patch(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders/${orderId}`,
+      undefined,
+      { rateLimitKey: 'orders-fbs.patchSuppliesOrders' }
+    );
   }
 
   /**
-   * Получить информацию о поставке
+   * Get supply information
    *
-   * Метод возвращает подробную информацию о поставке. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns detailed information about a supply.
    *
-   * @param supplyId - ID поставки
-   * @returns Успешно
+   * @param supplyId - ID of the supply
+   * @returns Promise resolving to supply details
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getSupply('supplyId-value');
-  console.log(result);
+   * ```typescript
+   * const supply = await sdk.ordersFBS.getSupply('WB-GI-1234');
+   * console.log(supply);
+   * ```
    */
   async getSupply(supplyId: string): Promise<Supply> {
-    return this.client.get<Supply>(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}`);
+    return this.client.get<Supply>(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}`,
+      { rateLimitKey: 'orders-fbs.getSupply' }
+    );
   }
 
   /**
-   * Удалить поставку
+   * Delete a supply
    *
-   * Метод удаляет [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get), если она активна и за ней не закреплено ни одно [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Deletes a supply if it is active and has no assembly tasks assigned.
    *
-   * @param supplyId - ID поставки
-   * @returns Response data
+   * @param supplyId - ID of the supply to delete
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/delete}
+   *
    * @example
-  const result = await sdk.ordersFBS.deleteSupply('supplyId-value');
+   * ```typescript
+   * await sdk.ordersFBS.deleteSupply('WB-GI-1234');
+   * ```
    */
   async deleteSupply(supplyId: string): Promise<void> {
-    return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}`);
+    return this.client.delete(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}`,
+      {
+        rateLimitKey: 'orders-fbs.deleteSupplies',
+      }
+    );
   }
 
   /**
-   * Получить сборочные задания в поставке
+   * Get assembly tasks in a supply
    *
-   * Метод возвращает [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), закреплённые за [поставкой](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * @deprecated Use {@link getSupplyOrderIds} for retrieving order IDs in a supply. This endpoint returns legacy format and may be removed in a future release.
    *
-   * @param supplyId - ID поставки
-   * @returns Успешно
+   * Returns assembly tasks assigned to a supply.
+   *
+   * @param supplyId - ID of the supply
+   * @returns Promise resolving to supply orders response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getSuppliesOrder('supplyId-value');
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.getSuppliesOrder('WB-GI-1234');
+   * console.log(result.orders);
+   * ```
    */
   async getSuppliesOrder(supplyId: string): Promise<{ orders?: SupplyOrder[] }> {
-    return this.client.get<{ orders?: SupplyOrder[] }>(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders`);
+    return this.client.get<{ orders?: SupplyOrder[] }>(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders`,
+      { rateLimitKey: 'orders-fbs.suppliesOrders' }
+    );
   }
 
   /**
-   * Передать поставку в доставку
+   * Transfer supply to delivery
    *
-   * Метод закрывает [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) и переводит все [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) в ней в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `complete` — в доставке. После закрытия поставки добавить новые сборочные задания к ней нельзя. <br><br> Если поставка не была передана в доставку, то при приёмке первого товара поставка автоматически закроется. <br><br> Передать поставку в доставку можно только если в ней: - есть хотя бы одно сборочное задания <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Closes a supply and sets all assembly tasks in it to `complete` status.
+   * After closing, no new tasks can be added. The supply must have at least one task.
    *
-   * @param supplyId - ID поставки
-   * @returns Response data
+   * @param supplyId - ID of the supply to deliver
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch}
+   *
    * @example
-  const result = await sdk.ordersFBS.updateSuppliesDeliver('supplyId-value');
+   * ```typescript
+   * await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-1234');
+   * ```
    */
   async updateSuppliesDeliver(supplyId: string): Promise<void> {
-    return this.client.patch(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/deliver`, undefined);
+    return this.client.patch(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/deliver`,
+      undefined,
+      { rateLimitKey: 'orders-fbs.patchSuppliesDeliver' }
+    );
   }
 
   /**
-   * Получить QR-код поставки
+   * Get supply QR code
    *
-   * Метод возвращает QR-код [поставки](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) в форматах: - SVG - ZPLV (вертикальный) - ZPLH (горизонтальный) - PNG QR-код поставки можно получить только если поставка [передана в доставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch). <br><br> Размер — 580x400 px. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns the supply QR code in SVG, ZPLV, ZPLH, or PNG format (580x400 px).
+   * Only available after the supply has been transferred to delivery.
    *
-   * @param supplyId - ID поставки
-   * @param [options] - Query parameters
-   * @returns Успешно
+   * @param supplyId - ID of the supply
+   * @param options - Sticker format options
+   * @returns Promise resolving to barcode and file data
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1barcode/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getSuppliesBarcode('supplyId-value', {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.getSuppliesBarcode('WB-GI-1234', { type: 'png' });
+   * console.log(result.barcode);
+   * ```
    */
-  async getSuppliesBarcode(supplyId: string, options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' }): Promise<{ barcode?: string; file?: string }> {
-    return this.client.get<{ barcode?: string; file?: string }>(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/barcode`, { params: options });
+  async getSuppliesBarcode(
+    supplyId: string,
+    options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' }
+  ): Promise<{ barcode?: string; file?: string }> {
+    return this.client.get<{ barcode?: string; file?: string }>(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/barcode`,
+      { params: options, rateLimitKey: 'orders-fbs.suppliesBarcode' }
+    );
   }
 
   /**
-   * Получить список коробов поставки
+   * Get list of supply boxes (trbx)
    *
-   * Возвращает список коробов поставки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns the list of boxes for a supply.
    *
-   * @param supplyId - ID поставки
-   * @returns Успешно
+   * @param supplyId - ID of the supply
+   * @returns Promise resolving to boxes list
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get}
+   *
    * @example
-  const result = await sdk.ordersFBS.getSuppliesTrbx('supplyId-value');
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.getSuppliesTrbx('WB-GI-1234');
+   * console.log(result.trbxes);
+   * ```
    */
   async getSuppliesTrbx(supplyId: string): Promise<{ trbxes?: SupplyTrbx[] }> {
-    return this.client.get<{ trbxes?: SupplyTrbx[] }>(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`);
+    return this.client.get<{ trbxes?: SupplyTrbx[] }>(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
+      { rateLimitKey: 'orders-fbs.suppliesTrbx' }
+    );
   }
 
   /**
-   * Добавить короба к поставке
+   * Add boxes to a supply
    *
-   * Метод добавляет требуемое количество [коробов](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/get) в [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get). <br> <br> Короба необходимо добавлять только в поставки, отгружаемые на ПВЗ. <br> Можно добавить только в открытую поставку. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Adds the required number of boxes to a supply. Only for supplies shipped to pickup points (PVZ).
+   * Can only be added to an open supply.
    *
-   * @param supplyId - ID поставки
-   * @param [data] - Request body data
-   * @returns Создано
+   * @param supplyId - ID of the supply
+   * @param data - Request body containing the number of boxes to add
+   * @returns Promise resolving to created box IDs
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createSuppliesTrbx('supplyId-value', {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createSuppliesTrbx('WB-GI-1234', { amount: 5 });
+   * console.log(result.trbxIds);
+   * ```
    */
-  async createSuppliesTrbx(supplyId: string, data?: { amount: number }): Promise<{ trbxIds?: string[] }> {
-    return this.client.post<{ trbxIds?: string[] }>(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`, data);
+  async createSuppliesTrbx(
+    supplyId: string,
+    data?: { amount: number }
+  ): Promise<{ trbxIds?: string[] }> {
+    return this.client.post<{ trbxIds?: string[] }>(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
+      data,
+      { rateLimitKey: 'orders-fbs.postSuppliesTrbx' }
+    );
   }
 
   /**
-   * Удалить короба из поставки
+   * Delete boxes from a supply
    *
-   * Метод даляет короба из поставки. <br><br> Можно удалить только пока поставка на сборке. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Removes boxes from a supply. Can only delete while the supply is being assembled.
    *
-   * @param supplyId - ID поставки
-   * @param [data] - Request body data
-   * @returns Response data
+   * @param supplyId - ID of the supply
+   * @param data - Request body containing box IDs to delete
+   * @returns Promise resolving to void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx/delete}
+   *
    * @example
-  const result = await sdk.ordersFBS.deleteSuppliesTrbx('supplyId-value', {});
+   * ```typescript
+   * await sdk.ordersFBS.deleteSuppliesTrbx('WB-GI-1234', { trbxIds: ['trbx-1', 'trbx-2'] });
+   * ```
    */
   async deleteSuppliesTrbx(supplyId: string, data?: { trbxIds: string[] }): Promise<void> {
-    return this.client.delete(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`, data);
+    return this.client.delete(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
+      data,
+      { rateLimitKey: 'orders-fbs.deleteSuppliesTrbx' }
+    );
   }
 
   /**
-   * Получить стикеры коробов поставки
+   * Get supply box stickers
    *
-   * Метод возвращает QR-стикеры в форматах: - SVG - ZPLV (вертикальный) - ZPLH (горизонтальный) - PNG <br><br> Размер стикеров — 580x400 px. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+   * Returns QR stickers for boxes in SVG, ZPLV, ZPLH, or PNG format (580x400 px).
    *
-   * @param supplyId - ID поставки
-   * @param [options] - Query parameters
-   * @param [data] - Request body data
-   * @returns Успешно
+   * @param supplyId - ID of the supply
+   * @param options - Sticker format options
+   * @param data - Request body containing box IDs
+   * @returns Promise resolving to box stickers
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1trbx~1stickers/post}
+   *
    * @example
-  const result = await sdk.ordersFBS.createTrbxSticker('supplyId-value', {}, {});
-  console.log(result);
+   * ```typescript
+   * const result = await sdk.ordersFBS.createTrbxSticker(
+   *   'WB-GI-1234',
+   *   { type: 'png' },
+   *   { trbxIds: ['trbx-1', 'trbx-2'] },
+   * );
+   * console.log(result.stickers);
+   * ```
    */
-  async createTrbxSticker(supplyId: string, options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' }, data?: { trbxIds: string[] }): Promise<{ stickers?: TrbxStickers[] }> {
-    return this.client.post<{ stickers?: TrbxStickers[] }>(`https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx/stickers`, data, { params: options });
+  async createTrbxSticker(
+    supplyId: string,
+    options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' },
+    data?: { trbxIds: string[] }
+  ): Promise<{ stickers?: TrbxStickers[] }> {
+    return this.client.post<{ stickers?: TrbxStickers[] }>(
+      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx/stickers`,
+      data,
+      { params: options, rateLimitKey: 'orders-fbs.postSuppliesTrbxStickers' }
+    );
   }
 
+  // ============================================================================
+  // New bulk/replacement methods
+  // ============================================================================
+
+  /**
+   * Get assembly task statuses
+   *
+   * Returns statuses of assembly tasks by their IDs.
+   * Replacement for {@link createOrdersStatu} with a corrected method name.
+   *
+   * @param data - Request body containing order IDs
+   * @returns Promise resolving to order statuses
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post}
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.getOrderStatuses({ orders: [123, 456] });
+   * console.log(result);
+   * ```
+   */
+  async getOrderStatuses(data: { orders: number[] }): Promise<OrderStatusResponse> {
+    return this.client.post<OrderStatusResponse>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/status',
+      data,
+      { rateLimitKey: 'orders-fbs.postOrdersStatus' }
+    );
+  }
+
+  /**
+   * Get metadata for multiple assembly tasks
+   *
+   * Returns metadata for multiple assembly tasks (up to 100).
+   *
+   * @param data - Request body containing order IDs (max 100)
+   * @returns Promise resolving to metadata for the requested orders
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post}
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.getOrdersMetaBulk({ orders: [123, 456] });
+   * console.log(result);
+   * ```
+   */
+  async getOrdersMetaBulk(data: GetMetaMultiRequest): Promise<OrdersMetaResponse> {
+    return this.client.post<OrdersMetaResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/orders/meta',
+      data,
+      { rateLimitKey: 'orders-fbs.postMarketplaceOrdersMeta' }
+    );
+  }
+
+  /**
+   * Add multiple assembly tasks to a supply (bulk)
+   *
+   * Adds multiple assembly tasks to a supply in a single request.
+   *
+   * @param supplyId - ID of the supply
+   * @param data - Request body containing order IDs to add
+   * @returns Promise resolving to void on success
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1marketplace~1v3~1supplies~1%7BsupplyId%7D~1orders/patch}
+   *
+   * @example
+   * ```typescript
+   * await sdk.ordersFBS.addOrdersToSupply('WB-GI-1234', { orders: [123, 456] });
+   * ```
+   */
+  async addOrdersToSupply(supplyId: string, data: AddOrdersToSupplyRequest): Promise<void> {
+    return this.client.patch(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/supplies/${supplyId}/orders`,
+      data,
+      { rateLimitKey: 'orders-fbs.patchMarketplaceSuppliesOrders' }
+    );
+  }
+
+  /**
+   * Get assembly task IDs in a supply
+   *
+   * Returns a list of assembly task IDs assigned to a supply.
+   *
+   * @param supplyId - ID of the supply
+   * @returns Promise resolving to order IDs in the supply
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1marketplace~1v3~1supplies~1%7BsupplyId%7D~1order-ids/get}
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.getSupplyOrderIds('WB-GI-1234');
+   * console.log(result);
+   * ```
+   */
+  async getSupplyOrderIds(supplyId: string): Promise<SupplyOrderIdsResponse> {
+    return this.client.get<SupplyOrderIdsResponse>(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/supplies/${supplyId}/order-ids`,
+      { rateLimitKey: 'orders-fbs.getMarketplaceSuppliesOrderIds' }
+    );
+  }
 }
