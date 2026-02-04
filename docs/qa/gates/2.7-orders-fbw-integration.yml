@@ -40,3 +40,62 @@ recommendations:
   future:
     - action: "Monitor acceptance coefficient accuracy in production"
       refs: ["src/modules/orders-fbw/index.ts"]
+
+# February 2026 Swagger Audit
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/07-orders-fbw.yaml"
+  endpoint_coverage: "8/8 match (0 new)"
+  schemas: 15
+  tags: 2
+  deprecated_endpoints: 1
+  base_url: "https://supplies-api.wildberries.ru"
+
+  gaps_found:
+    - id: "gap-1"
+      severity: "medium"
+      title: "JSDoc @example blocks reference wrong module"
+      description: "All 8 @example blocks use sdk.general.* instead of sdk.ordersFBW.*"
+      files: ["src/modules/orders-fbw/index.ts"]
+      epic: "EPIC 30 (task-30)"
+
+    - id: "gap-2"
+      severity: "medium"
+      title: "Deprecated endpoint not marked"
+      description: "GET /api/v1/acceptance/coefficients is deprecated in swagger but SDK has no @deprecated tag or console.warn"
+      files: ["src/modules/orders-fbw/index.ts"]
+      epic: "EPIC 30 (task-30)"
+
+    - id: "gap-3"
+      severity: "high"
+      title: "Rate limit keys not wired"
+      description: "orders-fbw-rate-limits.ts defines 8 entries but module methods do not pass rateLimitKey to BaseClient"
+      files: ["src/modules/orders-fbw/index.ts", "src/config/orders-fbw-rate-limits.ts"]
+      epic: "EPIC 30 (task-30)"
+
+    - id: "gap-4"
+      severity: "low"
+      title: "Missing x-readonly-method and x-category on transit-tariffs"
+      description: "WB API issue, not SDK issue. GET /api/v1/transit-tariffs missing swagger extensions"
+      files: ["wildberries_api_doc/07-orders-fbw.yaml"]
+      epic: "none (document only)"
+
+    - id: "gap-5"
+      severity: "high"
+      title: "Integration tests missing"
+      description: "QA results reference 24 integration tests but file tests/integration/orders-fbw.integration.test.ts does not exist"
+      files: []
+      epic: "EPIC 31 (task-31)"
+
+  follow_up_epics:
+    - epic: 30
+      task: "task-30"
+      title: "Orders FBW Code Quality — JSDoc, Deprecated Marking & Rate Limit Wiring"
+      doc: "docs/epics/EPIC_30_FBW_CODE_QUALITY.md"
+
+    - epic: 31
+      task: "task-31"
+      title: "Orders FBW Integration Tests with MSW"
+      doc: "docs/epics/EPIC_31_FBW_INTEGRATION_TESTS.md"
+      depends_on: "task-30"
