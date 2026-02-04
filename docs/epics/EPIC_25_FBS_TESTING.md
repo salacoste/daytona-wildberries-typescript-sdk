@@ -4,7 +4,13 @@
 
 **Target Completion**: Epic 25.x (Stories 25.1-25.4)
 **SDK Version**: 2.8.0
-**Status**: TO DO
+**Status**: DONE ✅
+
+**Completion Summary**:
+- **100 tests created** across 3 test files (exceeded 65-test target)
+- **39/39 methods covered** (100% method coverage, exceeded 80% target)
+- **Unit tests only** — MSW integration tests deferred due to MSW v2.x localStorage blocker
+- All tests pass: `npx vitest run tests/unit/modules/orders-fbs*.test.ts`
 
 **Business Value**:
 - Prevents regression when fixing broken endpoints (Epic 22) and refactoring types (Epic 23)

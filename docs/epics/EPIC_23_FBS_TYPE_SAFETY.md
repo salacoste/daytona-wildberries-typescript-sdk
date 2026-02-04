@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 23.x (Stories 23.1-23.3)
 **SDK Version**: 2.8.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - Full type safety across all 34 FBS methods -- no `unknown` returns

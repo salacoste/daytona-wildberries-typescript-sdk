@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 19.x (Stories 19.1-19.4)
 **SDK Version**: 3.x.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - Restores compile-time type safety for 11 Prices & Discounts methods (currently zero autocomplete, zero type checking)
@@ -24,7 +24,7 @@ This was identified during the task-4.6 comparison audit (December 2025) but no 
 
 ### Technical Context
 
-**Module File**: `src/modules/products/index.ts` (47 methods total)
+**Module File**: `src/modules/products/index.ts` (49 unique methods + 7 deprecated wrappers = 56 total)
 **Types File**: `src/types/products.types.ts` (types exist but are unused by 11 methods)
 **Swagger Source**: `wildberries_api_doc/02-products.yaml` + `wildberries_api_doc/02-products/_schemas.yaml`
 

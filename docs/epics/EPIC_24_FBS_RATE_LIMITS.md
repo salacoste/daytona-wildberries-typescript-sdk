@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 24.x (Stories 24.1-24.3)
 **SDK Version**: 2.8.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - Prevents 429 rate limit errors and the 5x penalty multiplier for 409 responses

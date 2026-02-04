@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 15.x (Stories 15.1-15.3)
 **SDK Version**: 2.8.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - Eliminates spurious 429 errors caused by overly permissive placeholder rate limits in production

@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0] - 2026-02-04
+
+### Products Module — Method Naming & Deprecated Wrappers (EPIC 20, task-17)
+
+#### Renamed Methods (old names still work as `@deprecated` wrappers)
+
+| Old Name (deprecated) | New Name | Reason |
+|---|---|---|
+| `createWarehous()` | `createWarehouse()` | Typo fix (missing 'e') |
+| `updateWarehous()` | `updateWarehouse()` | Typo fix (missing 'e') |
+| `deleteWarehous()` | `deleteWarehouse()` | Typo fix (missing 'e') |
+| `createStock()` | `getStocks()` | POST reads stock levels (x-readonly-method) |
+| `createCardsList()` | `getCardsList()` | POST reads/lists product cards |
+| `createCardsTrash()` | `getTrashedCards()` | POST reads trashed cards list |
+| `getGoodsTask2()` | `getBufferGoodsTask()` | Collision workaround replaced with descriptive name |
+
+All old method names remain available as thin `@deprecated` wrappers that delegate to the new names. They will be removed in the next major version.
+
 ## [2.7.0] - 2026-02-03
 
 ### Breaking Changes — Analytics v3 Migration

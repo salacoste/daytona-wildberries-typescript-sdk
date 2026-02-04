@@ -332,20 +332,20 @@ Run `npx tsc --noEmit` and `npm run lint` to ensure zero errors. Run all tests t
 
 ## Success Criteria
 
-- [ ] All 6 `@example` blocks reference `sdk.finances.*` (not `sdk.general.*`)
-- [ ] All 6 methods pass correct `rateLimitKey` from finances-rate-limits config to BaseClient
-- [ ] Rate limit config for `postDocumentsDownloadAll` fixed from `requestsPerMinute: 0` to correct value representing 1 req/5min
-- [ ] Rate limit key renamed from `postDocumentsDownloadAll` to `createDownloadAll` to match method name
-- [ ] Method `getSupplierReportdetailbyperiod` renamed to `getSupplierReportDetailByPeriod` with deprecated wrapper for backward compatibility
-- [ ] JSDoc for `DetailReportItem.acceptance` fixed from "Платная приёмка" to "Операции на приёмке" per swagger
-- [ ] JSDoc for `DetailReportItem.trbx_id` fixed from "Номер короба для платной приёмки" to "Номер короба для обработки товара" per swagger
-- [ ] JSDoc for `report_type` updated with descriptions for all 4 enum values (1, 2, 3, 4) per swagger
-- [ ] `@see` links added to all 6 methods pointing to official WB documentation tag anchors
-- [ ] Stale method references in `src/index.ts` JSDoc removed (`getBalance`, `getTransactions`, `getDocuments`)
-- [ ] Unit tests created for all 6 methods (minimum 6 tests covering URL, HTTP method, params, rateLimitKey)
-- [ ] Integration tests created with MSW covering all 3 endpoint tags (balance, reports, documents)
-- [ ] Parameter co-dependency constraints documented in JSDoc: `sort`/`order` and `beginTime`/`endTime` for `getDocumentsList`
-- [ ] All tests pass and `npx tsc --noEmit` + `npm run lint` exit 0
+- [x] All 6 `@example` blocks reference `sdk.finances.*` (not `sdk.general.*`)
+- [x] All 6 methods pass correct `rateLimitKey` from finances-rate-limits config to BaseClient
+- [x] Rate limit config for `postDocumentsDownloadAll` fixed from `requestsPerMinute: 0` to correct value representing 1 req/5min
+- [x] Rate limit key renamed from `postDocumentsDownloadAll` to `createDownloadAll` to match method name
+- [x] Method `getSupplierReportdetailbyperiod` renamed to `getSupplierReportDetailByPeriod` with deprecated wrapper for backward compatibility
+- [x] JSDoc for `DetailReportItem.acceptance` fixed from "Платная приёмка" to "Операции на приёмке" per swagger
+- [x] JSDoc for `DetailReportItem.trbx_id` fixed from "Номер короба для платной приёмки" to "Номер короба для обработки товара" per swagger
+- [x] JSDoc for `report_type` updated with descriptions for all 4 enum values (1, 2, 3, 4) per swagger
+- [x] `@see` links added to all 6 methods pointing to official WB documentation tag anchors
+- [x] Stale method references in `src/index.ts` JSDoc removed (`getBalance`, `getTransactions`, `getDocuments`)
+- [x] Unit tests created for all 6 methods (minimum 6 tests covering URL, HTTP method, params, rateLimitKey)
+- [x] Integration tests created with MSW covering all 3 endpoint tags (balance, reports, documents)
+- [x] Parameter co-dependency constraints documented in JSDoc: `sort`/`order` and `beginTime`/`endTime` for `getDocumentsList`
+- [x] All tests pass and `npx tsc --noEmit` + `npm run lint` exit 0
 
 ---
 

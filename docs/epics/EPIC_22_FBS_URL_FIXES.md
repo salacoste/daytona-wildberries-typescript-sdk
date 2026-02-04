@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 22.x (Stories 22.1-22.5)
 **SDK Version**: 2.8.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - Restores core FBS order management functionality (meta, supplies, crossborder)

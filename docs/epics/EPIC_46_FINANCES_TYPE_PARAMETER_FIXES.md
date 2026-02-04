@@ -196,14 +196,14 @@ Run `npm run lint` to verify code style compliance.
 
 ## Success Criteria
 
-- [ ] report_type enum expanded from `1 | 2` to `1 | 2 | 3 | 4` with JSDoc descriptions for all values (1=standard, 2=buyout notification, 3/4=buyout notification for Georgia)
-- [ ] suppliercontract_code type changed from `Record<string, never>` to `object | null` to match swagger `nullable: true`
-- [ ] Five missing fields added to DetailReportItem: `payment_schedule` (number), `seller_promo_id` (number), `seller_promo_discount` (number), `uuid_promocode` (string), `sale_price_promocode_discount_prc` (number)
-- [ ] AccountBalanceResponse named interface created to replace inline anonymous type in `getAccountBalance()` return
-- [ ] `getDocumentsDownload()` parameter changed from optional to required (`options: { serviceName: string; extension: string }`) per swagger `required: true`
-- [ ] `getSupplierReportdetailbyperiod()` parameter changed from optional to required for `dateFrom` and `dateTo` per swagger `required: true`
-- [ ] locale parameter for documents endpoints constrained to `'ru' | 'en' | 'zh'` union type per swagger description
-- [ ] All type changes pass TypeScript strict compilation with zero errors
+- [x] report_type enum expanded from `1 | 2` to `1 | 2 | 3 | 4` with JSDoc descriptions for all values (1=standard, 2=buyout notification, 3/4=buyout notification for Georgia)
+- [x] suppliercontract_code type changed from `Record<string, never>` to `object | null` to match swagger `nullable: true`
+- [x] Five missing fields added to DetailReportItem: `payment_schedule` (number), `seller_promo_id` (number), `seller_promo_discount` (number), `uuid_promocode` (string), `sale_price_promocode_discount_prc` (number)
+- [x] AccountBalanceResponse named interface created to replace inline anonymous type in `getAccountBalance()` return
+- [x] `getDocumentsDownload()` parameter changed from optional to required (`options: { serviceName: string; extension: string }`) per swagger `required: true`
+- [x] `getSupplierReportdetailbyperiod()` parameter changed from optional to required for `dateFrom` and `dateTo` per swagger `required: true`
+- [x] locale parameter for documents endpoints constrained to `'ru' | 'en' | 'zh'` union type per swagger description
+- [x] All type changes pass TypeScript strict compilation with zero errors
 
 ---
 

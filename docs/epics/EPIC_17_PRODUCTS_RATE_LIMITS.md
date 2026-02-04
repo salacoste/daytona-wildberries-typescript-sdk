@@ -243,10 +243,10 @@ Example:
 
 From task-14:
 
-- [ ] All 11 Prices & Discounts rate limit entries corrected to 10 req/6sec period, 0.6s interval, burst 5
-- [ ] 409 penalty for stocks endpoints documented as counting as 10 requests (not 5)
-- [ ] Rate limit unit tests updated to verify correct values
-- [ ] No other rate limit entries accidentally changed
+- [x] All 11 Prices & Discounts rate limit entries corrected to 10 req/6sec period, 0.6s interval, burst 5
+- [x] 409 penalty for stocks endpoints documented as counting as 10 requests (not 5)
+- [x] Rate limit unit tests updated to verify correct values
+- [x] No other rate limit entries accidentally changed
 
 ---
 
