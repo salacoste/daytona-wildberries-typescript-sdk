@@ -15,18 +15,18 @@ import type { RateLimitConfig } from '../client/rate-limiter';
 
 export const generalRateLimits: Record<string, RateLimitConfig> = {
   'general.ping': {
-    requestsPerMinute: 10,
-    intervalSeconds: 6,
-    burstLimit: 5
+    requestsPerMinute: 6,
+    intervalSeconds: 10,
+    burstLimit: 3,
   },
   'general.communicationsNews': {
-    requestsPerMinute: 10,
-    intervalSeconds: 6,
-    burstLimit: 5
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
   },
   'general.sellerInfo': {
-    requestsPerMinute: 10,
-    intervalSeconds: 6,
-    burstLimit: 5
-  }
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
+  },
 };
