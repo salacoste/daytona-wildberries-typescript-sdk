@@ -12,11 +12,11 @@
  */
 export interface StoreContactRequestBody {
   contacts?: {
-  /** Комментарий */
-  comment?: string;
-  /** Номер телефона.<br>Поддерживаются коды стран: - `+7` — Россия, Казахстан - `+374` — Армения - `+375` — Беларусь - `+996` — Кыргызстан */
-  phone?: string;
-}[];
+    /** Комментарий */
+    comment?: string;
+    /** Номер телефона.<br>Поддерживаются коды стран: - `+7` — Россия, Казахстан - `+374` — Армения - `+375` — Беларусь - `+996` — Кыргызстан */
+    phone?: string;
+  }[];
 }
 
 export interface ResponseCardCreate {
@@ -27,11 +27,14 @@ export interface ResponseCardCreate {
   /** Описание ошибки */
   errorText?: string;
   /** Дополнительные ошибки */
-  additionalErrors?: {
-  string?: string;
-} | string | {
-  error: string;
-};
+  additionalErrors?:
+    | {
+        string?: string;
+      }
+    | string
+    | {
+        error: string;
+      };
 }
 
 export interface RequestMoveNmsImtConn {
@@ -139,11 +142,11 @@ export interface ResponseError {
 export interface RequestAlreadyExistsError {
   /** Данные ответа */
   data?: {
-  /** ID загрузки */
-  id?: number;
-  /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
-  alreadyExists?: boolean;
-};
+    /** ID загрузки */
+    id?: number;
+    /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
+    alreadyExists?: boolean;
+  };
   /** Флаг ошибки */
   error?: boolean;
   /** Текст ошибки */
@@ -162,11 +165,11 @@ export type StocksWarehouseError = {
 export interface TaskCreated {
   /** Данные ответа */
   data?: {
-  /** ID загрузки */
-  id?: number;
-  /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
-  alreadyExists?: boolean;
-};
+    /** ID загрузки */
+    id?: number;
+    /** Флаг дублирования загрузки: `true` — такая загрузка уже есть */
+    alreadyExists?: boolean;
+  };
   /** Флаг ошибки */
   error?: boolean;
   /** Текст ошибки */
@@ -175,9 +178,9 @@ export interface TaskCreated {
 
 /**
  * Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно.
- * 
+ *
  * Если новая цена со скидкой будет хотя бы в 3 раза меньше старой, она попадёт в [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и товар будет продаваться по старой цене. Ошибка об этом будет в ответах методов состояний загрузок.
- * 
+ *
  * Вы можете изменить цену или скидку с помощью API либо вывести товар из карантина в [личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine)
  */
 export type Goods = Good[];
@@ -193,7 +196,7 @@ export interface Good {
 
 /**
  * Размеры и цены для них. Максимум 1 000 размеров.
- * 
+ *
  * Для товаров с поразмерной установкой цен [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) не применяется
  */
 export type SizeGoodsBody = SizeGoodReq[];
@@ -229,17 +232,17 @@ export interface GoodsList {
   vendorCode?: string;
   /** Размер */
   sizes?: {
-  /** ID размера. В методах Контента это поле `chrtID` */
-  sizeID: number;
-  /** Цена */
-  price: number;
-  /** Цена со скидкой */
-  discountedPrice: number;
-  /** Цена со скидкой, включая скидку WB Клуба */
-  clubDiscountedPrice: number;
-  /** Размер товара */
-  techSizeName: string;
-}[];
+    /** ID размера. В методах Контента это поле `chrtID` */
+    sizeID: number;
+    /** Цена */
+    price: number;
+    /** Цена со скидкой */
+    discountedPrice: number;
+    /** Цена со скидкой, включая скидку WB Клуба */
+    clubDiscountedPrice: number;
+    /** Размер товара */
+    techSizeName: string;
+  }[];
   /** Валюта, по стандарту ISO 4217 */
   currencyIsoCode4217?: string;
   /** Скидка, % */
@@ -579,4 +582,177 @@ export interface SwaggerPublicErrorsCursorInput {
 export interface SwaggerPublicErrorsOrderV2 {
   /** - `false` — сортировка по убыванию - `true` — сортировка по возрастанию */
   ascending?: boolean;
+}
+
+/**
+ * Бренд
+ */
+export interface Brand {
+  /** ID бренда */
+  id: number;
+  /** URL логотипа бренда */
+  logoUrl: string;
+  /** Название бренда */
+  name: string;
+}
+
+/**
+ * Ответ со списком брендов
+ *
+ * Возвращается методом GET /api/content/v1/brands.
+ * Содержит пагинированный список брендов для указанного предмета.
+ */
+export interface BrandsResponse {
+  /** Список брендов */
+  brands: Brand[];
+  /**
+   * Курсор пагинации. Передайте это значение как параметр `next`
+   * для получения следующей страницы. Отсутствует, когда все данные получены.
+   */
+  next?: number;
+  /** Общее количество брендов для предмета */
+  total: number;
+}
+
+/**
+ * Ошибка при запросе брендов (400/404)
+ *
+ * Использует формат application/problem+json.
+ */
+export interface BrandsResponseError {
+  /** Заголовок ошибки */
+  title: string;
+  /** Детали ошибки */
+  detail: string;
+  /** Внутренний ID сервиса WB */
+  origin: string;
+  /** Уникальный ID запроса */
+  requestId: string;
+  /** Детали ошибок валидации */
+  errors?: {
+    /** Текст ошибки */
+    message: string;
+    /** Местоположение параметра, вызвавшего ошибку */
+    location: string;
+  }[];
+}
+
+/**
+ * Response for upload task creation (POST /api/v2/upload/task, /task/size, /task/club-discount)
+ */
+export interface UploadTaskResponse {
+  /** Upload task data */
+  data?: {
+    /** Upload task ID */
+    id?: number;
+    /** Whether this upload already exists */
+    alreadyExists?: boolean;
+  };
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for processed upload tasks history (GET /api/v2/history/tasks)
+ */
+export interface TaskHistoryResponse {
+  /** Upload task metadata */
+  data?: SupplierTaskMetadata;
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for goods in processed upload (GET /api/v2/history/goods/task)
+ */
+export interface GoodsHistoryResponse {
+  /** Goods history items */
+  data?: GoodHistory[];
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for buffer upload tasks (GET /api/v2/buffer/tasks)
+ */
+export interface TaskBufferResponse {
+  /** Buffer upload task metadata */
+  data?: SupplierTaskMetadataBuffer;
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for goods in buffer upload (GET /api/v2/buffer/goods/task)
+ */
+export interface GoodsBufferResponse {
+  /** Goods buffer history items */
+  data?: GoodBufferHistory[];
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for goods list with prices (GET /api/v2/list/goods/filter)
+ */
+export interface GoodsFilterResponse {
+  /** Goods list with pricing */
+  data?: {
+    /** Cursor for next offset */
+    listGoods?: GoodsList[];
+  };
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for goods list by article numbers (POST /api/v2/list/goods/filter)
+ */
+export interface GoodsFilterByNmResponse {
+  /** Goods list with pricing */
+  data?: {
+    listGoods?: GoodsList[];
+  };
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for size-specific pricing (GET /api/v2/list/goods/size/nm)
+ */
+export interface SizeGoodsResponse {
+  /** Size-specific pricing data */
+  data?: {
+    listGoods?: SizeGood[];
+  };
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for quarantine goods (GET /api/v2/list/goods/quarantine)
+ */
+export interface QuarantineGoodsResponse {
+  /** Quarantine goods items */
+  data?: QuarantineGoods[];
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
 }
