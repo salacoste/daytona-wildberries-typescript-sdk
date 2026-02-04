@@ -10,7 +10,11 @@ tags:
     description: Остатки на складах продавца endpoints
 paths:
   /api/v3/stocks/{warehouseId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -28,12 +32,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       requestBody:
         content:
           application/json:
@@ -50,67 +54,74 @@ paths:
                   items:
                     type: object
                     properties:
+                      chrtId:
+                        type: integer
+                        description: ID размера товара
+                        example: 12345678
                       sku:
                         type: string
-                        description: Баркод
-                        example: BarcodeTest123
+                        description: Баркод. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                        deprecated: true
+                        example: SKUTest123
                       amount:
                         type: integer
                         maximum: 100000
                         description: Остаток
                         example: 10
       responses:
-        '204':
+        "204":
           description: Обновлено
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 IncorrectRequest:
-                  $ref: '#/components/examples/IncorrectRequest'
+                  $ref: "#/components/examples/IncorrectRequest"
                 IncorrectParameter:
-                  $ref: '#/components/examples/IncorrectParameter'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '406':
-          $ref: '#/components/responses/StatusNotAcceptable'
-        '409':
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/StatusNotAcceptable"
+        "409":
           description: Ошибка обновления остатков
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StocksWarehouseError'
+                $ref: "#/components/schemas/StocksWarehouseError"
               examples:
                 SubjectDBSRestriction:
-                  $ref: '#/components/examples/SubjectDBSRestriction'
+                  $ref: "#/components/examples/SubjectDBSRestriction"
                 SubjectFBSRestriction:
-                  $ref: '#/components/examples/SubjectFBSRestriction'
+                  $ref: "#/components/examples/SubjectFBSRestriction"
                 UploadDataLimit:
-                  $ref: '#/components/examples/UploadDataLimit'
+                  $ref: "#/components/examples/UploadDataLimit"
                 CargoWarehouseRestrictionMGT:
-                  $ref: '#/components/examples/CargoWarehouseRestrictionMGT'
+                  $ref: "#/components/examples/CargoWarehouseRestrictionMGT"
                 CargoWarehouseRestrictionSGT:
-                  $ref: '#/components/examples/CargoWarehouseRestrictionSGT'
+                  $ref: "#/components/examples/CargoWarehouseRestrictionSGT"
                 CargoWarehouseRestrictionSGTKGTPlus:
-                  $ref: '#/components/examples/CargoWarehouseRestrictionSGTKGTPlus'
+                  $ref: "#/components/examples/CargoWarehouseRestrictionSGTKGTPlus"
                 CargoWarehouseRestrictionKGTPlus:
-                  $ref: '#/components/examples/CargoWarehouseRestrictionKGTPlus'
+                  $ref: "#/components/examples/CargoWarehouseRestrictionKGTPlus"
                 NotFound:
-                  $ref: '#/components/examples/NotFound'
+                  $ref: "#/components/examples/NotFound"
                 StoreIsProcessing:
-                  $ref: '#/components/examples/StoreIsProcessing1'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/StoreIsProcessing1"
+        "429":
+          $ref: "#/components/responses/429"
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -128,12 +139,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 10 запросов | 6 сек | 2 запроса |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       requestBody:
         required: true
         content:
@@ -141,60 +152,75 @@ paths:
             schema:
               type: object
               properties:
+                chrtIds:
+                  type: array
+                  nullable: false
+                  minItems: 1
+                  maxItems: 1000
+                  description: Массив ID размеров товаров
+                  items:
+                    type: integer
+                    nullable: false
+                    example: 123456789
                 skus:
                   type: array
                   nullable: false
                   minItems: 1
                   maxItems: 1000
-                  description: Массив баркодов
+                  description: Массив баркодов. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                  deprecated: true
                   items:
                     type: string
                     nullable: false
-                    example: BarcodeTest123
+                    example: SKUTest123
+              required:
+                - chrtIds
       responses:
-        '204':
+        "204":
           description: Удалено
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 IncorrectRequest:
-                  $ref: '#/components/examples/IncorrectRequest'
+                  $ref: "#/components/examples/IncorrectRequest"
                 IncorrectParameter:
-                  $ref: '#/components/examples/IncorrectParameter'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
           description: Не найдено
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               example:
                 code: NotFound
-                message: ''
+                message: ""
                 data:
-                  skuTest1: ''
-                  skuTest2: ''
-        '409':
+                  skuTest1: ""
+                  skuTest2: ""
+        "409":
           description: Ошибка удаления остатков
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 StoreIsProcessing:
-                  $ref: '#/components/examples/StoreIsProcessing'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/StoreIsProcessing"
+        "429":
+          $ref: "#/components/responses/429"
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -208,12 +234,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       requestBody:
         required: true
         content:
@@ -222,18 +248,25 @@ paths:
               type: object
               nullable: false
               properties:
+                chrtIds:
+                  type: array
+                  description: Массив ID размеров товаров
+                  items:
+                    type: integer
+                    example: 12345678
                 skus:
                   type: array
-                  description: Массив баркодов
+                  description: Массив баркодов. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                  deprecated: true
                   minItems: 1
                   maxItems: 1000
                   items:
                     type: string
-                    example: BarcodeTest123
+                    example: SKUTest123
               required:
-                - skus
+                - chrtIds
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -246,67 +279,39 @@ paths:
                     items:
                       type: object
                       properties:
+                        chrtId:
+                          type: integer
+                          description: ID размера товара
+                          example: 12345678
                         sku:
                           type: string
                           nullable: false
-                          description: Баркод
-                          example: BarcodeTest123
+                          description: Баркод. Поле будет отключено [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                          deprecated: true
+                          example: SKUTest123
                         amount:
                           type: integer
                           nullable: false
                           description: Остаток
                           example: 10
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 IncorrectRequest:
-                  $ref: '#/components/examples/IncorrectRequest'
+                  $ref: "#/components/examples/IncorrectRequest"
                 IncorrectParameter:
-                  $ref: '#/components/examples/IncorrectParameter'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    Error:
-      type: object
-      nullable: false
-      properties:
-        code:
-          type: string
-          description: Код ошибки
-          nullable: false
-        message:
-          type: string
-          description: Описание ошибки
-          nullable: false
-        data:
-          type: object
-          description: Дополнительные данные ошибки
-          nullable: true
-    StocksWarehouseError:
-      type: array
-      items:
-        type: object
-        properties:
-          code:
-            description: Код ошибки
-            type: string
-          data:
-            description: Дополнительная информация об ошибке
-            nullable: true
-            type: object
-          message:
-            description: Описание ошибки
-            type: string
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/429"

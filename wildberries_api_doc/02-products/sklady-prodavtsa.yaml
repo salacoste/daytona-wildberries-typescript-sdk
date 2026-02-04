@@ -10,7 +10,11 @@ tags:
     description: Склады продавца endpoints
 paths:
   /api/v3/offices:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -24,12 +28,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -38,15 +42,19 @@ paths:
                 nullable: false
                 description: Список складов WB
                 items:
-                  $ref: '#/components/schemas/Office'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/schemas/Office"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v3/warehouses:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -60,12 +68,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -74,14 +82,16 @@ paths:
                 nullable: false
                 description: Список складов продавца
                 items:
-                  $ref: '#/components/schemas/Warehouse'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/schemas/Warehouse"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
     post:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -99,9 +109,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         required: true
@@ -127,7 +137,7 @@ paths:
                 - name
                 - officeId
       responses:
-        '201':
+        "201":
           description: Создано
           content:
             application/json:
@@ -139,33 +149,37 @@ paths:
                     nullable: false
                     description: ID склада продавца
                     example: 2
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 WarehouseNameInvalid:
-                  $ref: '#/components/examples/WarehouseNameInvalid'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+                  $ref: "#/components/examples/WarehouseNameInvalid"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: Ошибка создания нового склада
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/Error"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v3/warehouses/{warehouseId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -183,12 +197,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       requestBody:
         required: true
         content:
@@ -213,34 +227,36 @@ paths:
                 - name
                 - officeId
       responses:
-        '204':
+        "204":
           description: Обновлено
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 WarehouseNameInvalid:
-                  $ref: '#/components/examples/WarehouseNameInvalid'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+                  $ref: "#/components/examples/WarehouseNameInvalid"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: Ошибка обновления склада
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/Error"
+        "429":
+          $ref: "#/components/responses/429"
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -254,25 +270,29 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       responses:
-        '204':
+        "204":
           description: Удалено
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/429'
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v3/dbw/warehouses/{warehouseId}/contacts:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -293,13 +313,13 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
         </div>
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -323,30 +343,32 @@ paths:
                           type: string
                           nullable: false
                           description: Номер телефона
-                          example: '+79998887766'
-        '400':
+                          example: "+79998887766"
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectParameter:
-                  $ref: '#/components/examples/IncorrectParameter'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Склады продавца
       summary: Обновить список контактов
       parameters:
-        - $ref: '#/components/parameters/Warehouse'
+        - $ref: "#/components/parameters/Warehouse"
       description: |
         Метод обновляет список контактов [склада продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get).
 
@@ -368,7 +390,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
         </div>
       requestBody:
@@ -376,215 +398,28 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StoreContactRequestBody'
+              $ref: "#/components/schemas/StoreContactRequestBody"
       responses:
-        '204':
+        "204":
           description: Обновлено
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectParameter:
-                  $ref: '#/components/examples/IncorrectParameter'
+                  $ref: "#/components/examples/IncorrectParameter"
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 UploadDataLimitDbw:
-                  $ref: '#/components/examples/UploadDataLimitDbw'
+                  $ref: "#/components/examples/UploadDataLimitDbw"
                 IncorrectRequest:
-                  $ref: '#/components/examples/IncorrectRequest'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    Office:
-      type: object
-      description: Данные о складе WB
-      properties:
-        address:
-          type: string
-          nullable: false
-          description: Адрес
-          example: ул. Троицкая, Подольск, Московская обл.
-        name:
-          type: string
-          nullable: false
-          description: Название
-          example: Коледино
-        city:
-          type: string
-          nullable: false
-          description: Город
-          example: Москва
-        id:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID
-          example: 15
-        longitude:
-          type: number
-          format: float64
-          nullable: false
-          description: Долгота
-          example: 55.386871
-        latitude:
-          type: number
-          format: float64
-          nullable: false
-          description: Широта
-          example: 37.588898
-        cargoType:
-          description: |
-            Тип товара, который принимает склад:
-              - `1` — малогабаритный товар (МГТ)
-              - `2` — сверхгабаритный товар (СГТ)
-              - `3` — крупногабаритный товар (КГТ+)
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-          example: 1
-        deliveryType:
-          type: integer
-          description: |
-            Тип доставки, который принимает склад:
-              - `1` — доставка на склад WB (FBS)
-              - `2` — доставка силами продавца (DBS)
-              - `3` — доставка курьером WB (DBW)
-              - `5` — самовывоз (C&C)
-              - `6` — экспресс-доставка силами продавца (ЕDBS)
-          enum:
-            - 1
-            - 2
-            - 3
-            - 5
-            - 6
-          example: 1
-        federalDistrict:
-          type: string
-          nullable: true
-          example: Центральный
-          description: Федеральный округ склада WB. Если `null`, склад находится за пределами РФ или федеральный округ не указан
-        selected:
-          type: boolean
-          nullable: false
-          description: Признак того, что склад уже выбран продавцом
-    Warehouse:
-      type: object
-      description: Данные о складе продавца
-      properties:
-        name:
-          type: string
-          nullable: false
-          description: Название склада продавца
-          example: ул. Троицкая, Подольск, Московская обл.
-        officeId:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID склада WB
-          example: 15
-        id:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID склада продавца
-          example: 1
-        cargoType:
-          description: |
-            Тип товара:
-              - `1` — малогабаритный товар (МГТ)
-              - `2` — сверхгабаритный товар (СГТ)
-              - `3` — крупногабаритный товар (КГТ+)
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-          example: 1
-        deliveryType:
-          type: integer
-          description: |
-            Тип доставки, который принимает склад:
-              - `1` — доставка на склад WB (FBS)
-              - `2` — доставка силами продавца (DBS)
-              - `3` — доставка курьером WB (DBW)
-              - `5` — самовывоз (C&C)
-              - `6` — экспресс-доставка силами продавца (ЕDBS)
-          enum:
-            - 1
-            - 2
-            - 3
-            - 5
-            - 6
-          example: 1
-        isDeleting:
-          type: boolean
-          nullable: false
-          description: |
-            Склад удаляется:
-              - `false` — нет
-              - `true` — да
-
-            После удаления склад пропадёт из списка
-          example: false
-        isProcessing:
-          type: boolean
-          nullable: false
-          description: |
-            Данные склада обновляются:
-              - `false` — нет
-              - `true` — да, обновление и удаление остатков недоступно
-
-            Обновление данных может занимать несколько минут
-          example: true
-    Error:
-      type: object
-      nullable: false
-      properties:
-        code:
-          type: string
-          description: Код ошибки
-          nullable: false
-        message:
-          type: string
-          description: Описание ошибки
-          nullable: false
-        data:
-          type: object
-          description: Дополнительные данные ошибки
-          nullable: true
-    StoreContactRequestBody:
-      type: object
-      description: Контакты склада продавца
-      properties:
-        contacts:
-          type: array
-          maxItems: 5
-          items:
-            type: object
-            properties:
-              comment:
-                type: string
-                nullable: false
-                description: Комментарий
-                example: Иванов Иван Иванович. Звонить с 10 до 21 часа.
-                maxLength: 1000
-              phone:
-                type: string
-                nullable: false
-                description: |
-                  Номер телефона.<br>Поддерживаются коды стран:
-                    - `+7` — Россия, Казахстан
-                    - `+374` — Армения
-                    - `+375` — Беларусь
-                    - `+996` — Кыргызстан
-                example: '+79998887766'
+                  $ref: "#/components/examples/IncorrectRequest"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"

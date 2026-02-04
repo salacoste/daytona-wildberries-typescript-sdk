@@ -7,12 +7,17 @@ info:
     <b>Методы для работы со сборочными заданиями модели DBW (Доставка курьером WB) теперь на <a href="https://dev.wildberries.ru/release-notes?id=312">отдельном контуре</a>.</b>
     </div>
 
-
-    В разделе заказов FBS (Fulfillment by Seller) вам доступны методы:
-      1. Управления [сборочными заданиями](/openapi/orders-fbs#tag/Sborochnye-zadaniya): информация о сборочных заданиях, метаданные, стикеры и так далее.
-      2. Управления [поставками заказов](/openapi/orders-fbs#tag/Postavki-FBS) продавца на склады WB.
-      3. Заказа [пропусков](/openapi/orders-fbs#tag/Propuska-FBS) на склады WB.
+    С помощью методов раздела Заказы FBS (Fulfillment by Seller) вы можете:
+      - получать информацию о [сборочных заданиях](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS) и их статусах, отменять сборочные задания, получать стикеры
+      - добавлять, редактировать и удалять [метаданные](/openapi/orders-fbs#tag/Metadannye-FBS) сборочных заданий
+      - управлять [поставками](/openapi/orders-fbs#tag/Postavki-FBS)
+      - создавать, редактировать и удалять [пропуски](/openapi/orders-fbs#tag/Propuska-FBS) на склады WB
     <br>
+
+      <div class="description_ref">
+        Узнать, как использовать методы в бизнес-кейсах, можно в <a href="https://dev.wildberries.ru/news/127">инструкции по работе с заказами FBS</a>
+      </div>
+
     <div class="description_important">
         Узнать больше о заказах FBS можно в <a href="https://seller.wildberries.ru/instructions/ru/ru/category/b3e60238-fd4c-49ce-8668-ff688725a12d">справочном центре</a>
     </div>
@@ -33,6 +38,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -50,9 +57,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
         '200':
@@ -75,6 +82,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -88,9 +97,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
         '200':
@@ -110,6 +119,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     post:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -204,6 +215,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -217,9 +230,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Pass'
@@ -293,6 +306,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -306,9 +321,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Pass'
@@ -327,20 +342,29 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Сборочные задания FBS
       summary: Получить список новых сборочных заданий
       description: |
-        Метод возвращает список всех новых [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), которые есть у продавца на момент запроса.
+        Метод возвращает список всех новых [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get), которые есть у продавца на момент запроса.
+
+        <div class="description_important">
+        Наличие в сборочных заданиях метаданных, указанных в полях <code>requiredMeta</code> и <code>optionalMeta</code>, влияет только на возможность перевести поставку в доставку. Если ваш товар подлежит обязательной <a href ="https://seller.wildberries.ru/instructions/ru/ru/material/items-labeling-in-fbs">маркировке</a> средствами
+        идентификации, необходимо указывать метаданные независимо от того, в каком поле они были получены (п. 4.6 <a href ="https://seller.wildberries.ru/confirm-offer-condition/product/view">Оферты</a>).
+        <br>
+        Рекомендуем добавлять в сборочные задания все метаданные, полученные в полях <code>requiredMeta</code> и <code>optionalMeta</code>
+        </div>
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
         </div>
       responses:
@@ -368,13 +392,15 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Сборочные задания FBS
       summary: Получить информацию о сборочных заданиях
       description: |
-        Метод возвращает информацию о сборочных заданиях без их актуального [статуса](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post).
+        Метод возвращает информацию о сборочных заданиях без их актуального [статуса](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post).
 
         Можно получить данные за заданный период, максимум 30 календарных дней одним запросом.
 
@@ -383,9 +409,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Limit'
@@ -436,13 +462,15 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Сборочные задания FBS
       summary: Получить статусы сборочных заданий
       description: |
-        Метод возвращает статусы [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) по их ID.
+        Метод возвращает статусы [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) по их ID.
         <br><br>
         `supplierStatus` — статус сборочного задания. Триггер его изменения — действие самого продавца.
 
@@ -451,7 +479,7 @@ paths:
         | Статус   | Описание            | Как перевести сборочное задание в данный статус |
         |-------|----------------------|--------------------------------------|
         | `new`      | **Новое сборочное задание** |  |
-        | `confirm`  | **На сборке** |[Добавить сборочное задание к поставке](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch)
+        | `confirm`  | **На сборке** |[Добавить сборочное задание к поставке](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1marketplace~1v3~1supplies~1%7BsupplyId%7D~1orders/patch)
         | `complete` | **В доставке** | [Передать поставку в доставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch) |
         | `cancel`   | **Отменено продавцом**   | [Отменить сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1cancel/patch)|
 
@@ -467,15 +495,17 @@ paths:
         - `declined_by_client` — покупатель отменил заказ. Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку
         - `defect` — отмена заказа по причине брака
         - `ready_for_pickup` — сборочное задание прибыло на пункт выдачи заказов (ПВЗ)
+        - `accepted_by_carrier` — продавец передал заказ в службу доставки в своей стране
+        - `sent_to_carrier` — заказ отправлен на склад службы доставки в стране продавца
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         content:
@@ -538,6 +568,8 @@ paths:
                             - defect
                             - ready_for_pickup
                             - postponed_delivery
+                            - accepted_by_carrier
+                            - sent_to_carrier
         '400':
           description: Неправильный запрос
           content:
@@ -561,24 +593,26 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Сборочные задания FBS
       summary: Получить все сборочные задания для повторной отгрузки
       description: |
-        Метод возвращает все [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), требующие повторной отгрузки.
+        Метод возвращает все [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get), требующие повторной отгрузки.
         <br><br>
-        Повторная отгрузка требуется, если поставка была отсканирована в пункте приёмки, но при этом в ней всё ещё есть неотсканированные товары. Спустя определённое время необходимо доставить эти товары заново. Данные сборочные задания можно перевести в [другую активную поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch).
+        Повторная отгрузка требуется, если поставка была отсканирована в пункте приёмки, но при этом в ней всё ещё есть неотсканированные товары. Спустя определённое время необходимо доставить эти товары заново. Данные сборочные задания можно перевести в [другую активную поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1marketplace~1v3~1supplies~1%7BsupplyId%7D~1orders/patch).
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
         '200':
@@ -621,22 +655,24 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Сборочные задания FBS
       summary: Отменить сборочное задание
       description: |
-        Метод отменяет [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) и переводит в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `cancel` — отменено продавцом.
+        Метод отменяет [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) и переводит в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `cancel` — отменено продавцом.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        | 1 мин | 100 запросов | 600 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -675,13 +711,15 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Сборочные задания FBS
       summary: Получить стикеры сборочных заданий
       description: |
-        Метод возвращает список стикеров для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get).
+        Метод возвращает список стикеров для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS).
 
         Можно получить стикер в форматах:
           - SVG
@@ -691,7 +729,7 @@ paths:
 
         Ограничения:
           - За один запрос можно получить максимум 100 стикеров.
-          - Можно получить стикеры только для сборочных заданий, находящихся на сборке — [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+          - Стикеры можно получить только для сборочных заданий в [статусах](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm` — на сборке и `complete` — в доставке.
 
         Доступны размеры:
           - 580x400 px при `width=58&height=40` в запросе
@@ -702,9 +740,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: type
@@ -772,15 +810,15 @@ paths:
                           description: ID сборочного задания
                           example: 5346346
                         partA:
-                          type: string
+                          type: integer
                           nullable: false
                           description: Первая часть ID стикера (для печати подписи)
-                          example: '231648'
+                          example: 231648
                         partB:
-                          type: string
+                          type: integer
                           nullable: false
                           description: Вторая часть ID стикера
-                          example: '9753'
+                          example: 9753
                         barcode:
                           type: string
                           nullable: false
@@ -791,7 +829,7 @@ paths:
                           format: byte
                           nullable: false
                           description: Полное представление стикера в заданном формате (кодировка base64)
-                          example: PD94bWwgdmVyc2lvbj0iMS4wIj8+CjwhLS0gR2VuZXJhdGVkIGJ5IFNWR28gLS0+Cjxzdmcgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICAgIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjQwMCIgaGVpZQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzE4IiB5PSIyMCIgd2lkdGg9IjYiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzI2IiB5PSIyMCIgd2lkdGg9IjIiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzMwIiB5PSIyMCIgd2lkdGg9IjQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMjAiIHk9IjIwMCIgd2lkdGg9IjM1MCIgaGVpZ2h0PSI5MCIgc3R5bGU9ImZpbGw6YmxhY2siIC8+Cjx0ZXh0IHg9IjMwIiB5PSIyNDAiIHN0eWxlPSJmaWxsOndoaXRlO2ZvbnQtc2l6ZTozMHB0O3RleHQtYW5jaG9yOnN0YXJ0IiA+MjMxNjQ4PC90ZXh0Pgo8dGV4dCB4PSIzNTAiIHk9IjI3MCIgc3R5bGU9ImZpbGw6d2hpdGU7Zm9udC1zaXplOjUwcHQ7dGV4dC1hbmNob3I6ZW5kIiA+OTc1MzwvdGV4dD4KPC9zdmc+Cg==
+                          example: iVBORw0KGgoAAAANSUhEUgAAASIAAAEiAQAAAAB1xeIbAAABiElEQVR4nO2YUW6DMAyGbUDaI0g9wI4Sjg5H2Q3IeyZPthNKV03tNiVdtf9/cFvXAvRhkh+z0G2t3R1FRKgqAokikCgCiSKQeDQJzho8yXMsmfmh1/UvqoKoNrsLdgN6S8hzXP2TV8Xc47KMyTPnx+DvX/1zVg1Xmch1z9ih6gv2HLZTuqIPXjX7ftSlPRLJ+prXnONLF9hXZL96q/fE4W1Q+O8XvQ/29djL/lvWiTg/Bt89Voeqn/j7OQ4eTLJY7tz8oEoVSFC28aN9JqKwqbX3kP+VBewrsg/KedE3qmXUn3IMYF/d3zONm38TiqckFKeyEaDv6/W96Nus9b2tPrbw2LOAvq/Pfpfn/Fb4HoA1p9UcU3SHJTLHExk+p8VeK3JwN0Q2UNPmR9+3m2OyDzPjoOFFML9vOMcUin0iHahR2CaGz/mkmo6P5zHtQdD3TeeY5NY++/sKZ+xQdUliNZszqePRkFd+tfvHqhtC1S/nmOQh7eH+Y3WoygKJIpAoAokikChqT+IDIkbb8/8OLskAAAAASUVORK5CYII=
         '400':
           description: Неправильный запрос
           content:
@@ -811,19 +849,21 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '429':
           $ref: '#/components/responses/429'
-  /api/v3/orders/{orderId}/meta:
+  /api/marketplace/v3/orders/meta:
     servers:
       - url: https://marketplace-api.wildberries.ru
-    get:
+    post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
-      summary: Получить метаданные сборочного задания
+      summary: Получить метаданные сборочных заданий
       description: |
-        Метод возвращает метаданные [сборочного задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get).
+        Метод возвращает метаданные [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) по списку их ID.
         <br><br>
-        Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1v3~1dbs~1orders~1new/get), поле `requiredMeta`.
+        Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1new/get), поля `requiredMeta` и `optionalMeta`.
         <br><br>
         Возможные метаданные:
           - `imei` — [IMEI](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put)
@@ -831,6 +871,7 @@ paths:
           - `gtin` — [GTIN](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put)
           - `sgtin` — [код маркировки](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put)
           - `expiration` — [срок годности товара](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1expiration/put)
+          - `customsDeclaration` — [номер ГТД](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1%7BorderId%7D~1meta~1customs-declaration/put)
 
         Если в ответе не вернулись какие-либо из объектов метаданных, значит, у сборочного задания не может быть таких метаданных — и добавить их нельзя.
 
@@ -839,45 +880,76 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
-      parameters:
-        - $ref: '#/components/parameters/Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v3.GetMetaMultiRequest'
       responses:
         '200':
           description: Успешно
           content:
             application/json:
               schema:
-                type: object
-                nullable: false
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/Meta'
+                $ref: '#/components/schemas/v3.OrdersMetaAPI'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v3.APIError'
+              example:
+                code: BadRequest
+                message: Неправильный запрос
+                data: {}
         '401':
           $ref: '#/components/responses/401'
         '403':
-          $ref: '#/components/responses/AccessDenied'
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v3.APIError'
+              example:
+                code: AccessDenied
+                message: Доступ запрещён
+                data: {}
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v3.APIError'
+              example:
+                code: NotFound
+                message: Не найдено
+                data: {}
         '429':
           $ref: '#/components/responses/429'
+  /api/v3/orders/{orderId}/meta:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Удалить метаданные сборочного задания
       description: |
-        Метод удаляет значение [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) для переданного ключа.
+        Метод удаляет значение [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post) для переданного ключа.
         <br><br>
         Возможные метаданные:
           - `imei` — [IMEI](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1imei/put)
           - `uin` — [УИН](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1uin/put)
           - `gtin` — [GTIN](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1gtin/put)
           - `sgtin` — [код маркировки](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta~1sgtin/put)
+          - `customsDeclaration` — [номер ГТД](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1%7BorderId%7D~1meta~1customs-declaration/put)
 
         Можно передать только один ключ.
 
@@ -886,9 +958,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -896,7 +968,7 @@ paths:
           in: query
           schema:
             type: string
-          description: Название метаданных для удаления (`imei`, `uin`, `gtin`, `sgtin`). Передается только одно значение.
+          description: Название метаданных для удаления (`imei`, `uin`, `gtin`, `sgtin`, `customsDeclaration`). Передается только одно значение.
       responses:
         '204':
           description: Удалено
@@ -930,26 +1002,28 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Закрепить за сборочным заданием код маркировки товара
       description: |
-        Метод позволяет закрепить за [сборочным заданием](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) код маркировки [Честный знак](https://честныйзнак.рф).
+        Метод позволяет закрепить за [сборочным заданием](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) код маркировки [Честный знак](https://честныйзнак.рф).
         <br><br>
-        Закрепить код маркировки можно только если в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) есть поле `sgtin`, а сборочное задание находится в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+        Закрепить код маркировки можно только если в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post) есть поле `sgtin`, а сборочное задание находится в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`.
         <br><br>
-        Получить загруженные маркировки можно в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+        Получить загруженные маркировки можно в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post).
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -963,7 +1037,7 @@ paths:
                   type: array
                   description: Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки.
                   minItems: 1
-                  maxItems: 24
+                  maxItems: 100
                   items:
                     type: string
                     description: Код маркировки на упаковке. От 16 до 135 символов.
@@ -1005,26 +1079,28 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Закрепить за сборочным заданием УИН
       description: |
-        Метод обновляет УИН в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) — уникальный идентификационный номер.
+        Метод обновляет УИН в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post) — уникальный идентификационный номер.
         <br><br>
         У одного сборочного задания может быть только один УИН.
 
-        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -1077,26 +1153,28 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Закрепить за сборочным заданием IMEI
       description: |
-        Метод обновляет IMEI в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+        Метод обновляет IMEI в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post).
         <br><br>
         У одного сборочного задания может быть только один IMEI. Если у устройства два IMEI — **IMEI** и **IMEI2** или **IMEI1** и **IMEI2** — укажите только **IMEI** или **IMEI1**. **IMEI2** указывать не нужно.
         <br><br>
-        Добавлять маркировку можно только для заказов, которые находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+        Добавлять маркировку можно только для заказов, которые находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -1149,26 +1227,28 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Закрепить за сборочным заданием GTIN
       description: |
-        Метод обновляет GTIN в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get) — уникальный ID товара в Беларуси.
+        Метод обновляет GTIN в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post) — уникальный ID товара в Беларуси.
         <br><br>
         У одного сборочного задания может быть только один GTIN.
 
-        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+        Добавлять маркировку можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -1221,18 +1301,20 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Закрепить за сборочным заданием срок годности товара
       description: |
-        Метод закрепляет за [сборочным заданием](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) срок годности товара. Товар годен до указанной даты.
+        Метод закрепляет за [сборочным заданием](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) срок годности товара. Товар годен до указанной даты.
         <br>
-        Добавить срок годности можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm`.
+        Добавить срок годности можно только для заказов, которые доставляются WB и находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`.
         <br>
         <br>
-        Получить загруженные данные можно в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+        Получить загруженные данные можно в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post).
         Чтобы изменить срок годности, отправьте запрос с новой датой.
         Удалить срок годности из метаданных сборочного задания невозможно.
 
@@ -1241,9 +1323,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -1293,34 +1375,32 @@ paths:
                   $ref: '#/components/examples/FailedToUpdateMeta'
         '429':
           $ref: '#/components/responses/429'
-  /api/v3/orders/{orderId}/meta/customs-declaration:
+  /api/marketplace/v3/orders/{orderId}/meta/customs-declaration:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Метаданные FBS
       summary: Закрепить за сборочным заданием номер ГТД
       description: |
-        Метод обновляет номер грузовой таможенной декларации в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
-        <br><br>
+        Метод обновляет номер грузовой таможенной декларации (ГТД) в [метаданных сборочного задания](/openapi/orders-fbs#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get).
+        <br>
         У одного сборочного задания может быть только один номер ГТД.
-        <br><br>
-        Чтобы проверить, можно ли указать номер ГТД для сборочного задания, используйте метод [получения списка новых сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get):
-        <br>
-        - если в поле ответа `requiredMeta` есть значение `customsDeclaration` — можно указать номер ГТД
-        <br>
-        - если в поле ответа `requiredMeta` нет значения `customsDeclaration` — указать номер ГТД нельзя
+
+        Добавлять номер ГТД можно только для сборочных заданий, которые находятся в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm` или `complete`
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Order'
@@ -1329,14 +1409,13 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - customsDeclaration
               properties:
                 customsDeclaration:
                   type: string
-                  maxLength: 50
-                  description: Номер грузовой таможенной декларации
-                  example: 10129050/010120/0001234
+                  minLength: 17
+                  maxLength: 29
+                  description: Номер ГТД
+                  example: 10704010/010624/0000302
       responses:
         '204':
           description: Обновлено
@@ -1360,7 +1439,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '409':
-          description: Ошибка обновления метаданных
+          description: Ошибка обновления номера ГТД
           content:
             application/json:
               schema:
@@ -1374,6 +1453,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -1384,16 +1465,16 @@ paths:
 
         Ограничения:
           - За один запрос можно получить максимум 100 стикеров.
-          - Можно получить стикеры только для сборочных заданий, находящихся на сборке — [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`.
+          - Можно получить стикеры только для сборочных заданий, находящихся на сборке или в доставке — [статусы](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm`, `complete`.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         content:
@@ -1428,85 +1509,15 @@ paths:
                           type: string
                           format: byte
                           nullable: false
-                          description: Cтикер в формате PDF, кодировка base64
-                          example: PD94bWwgdmVyc2lvbj0iMS4wIj8+CjwhLS0gR2VuZXJhdGVkIGJ5IFNWR28gLS0+Cjxzdmcgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICAgIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjQwMCIgaGVpZQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzE4IiB5PSIyMCIgd2lkdGg9IjYiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzI2IiB5PSIyMCIgd2lkdGg9IjIiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMzMwIiB5PSIyMCIgd2lkdGg9IjQiIGhlaWdodD0iMTcwIiBzdHlsZT0iZmlsbDpibGFjayIgLz4KPHJlY3QgeD0iMjAiIHk9IjIwMCIgd2lkdGg9IjM1MCIgaGVpZ2h0PSI5MCIgc3R5bGU9ImZpbGw6YmxhY2siIC8+Cjx0ZXh0IHg9IjMwIiB5PSIyNDAiIHN0eWxlPSJmaWxsOndoaXRlO2ZvbnQtc2l6ZTozMHB0O3RleHQtYW5jaG9yOnN0YXJ0IiA+MjMxNjQ4PC90ZXh0Pgo8dGV4dCB4PSIzNTAiIHk9IjI3MCIgc3R5bGU9ImZpbGw6d2hpdGU7Zm9udC1zaXplOjUwcHQ7dGV4dC1hbmNob3I6ZW5kIiA+OTc1MzwvdGV4dD4KPC9zdmc+Cg==
+                          description: Стикер в формате PDF, кодировка base64
+                          example: JVBERi0xLjQKJSBjcmVhdGVkIGJ5IFBpbGxvdyBQREYgZHJpdmVyCjQgMCBvYmo8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgNSAwIFIKPj5lbmRvYmoKNSAwIG9iajw8Ci9UeXBlIC9QYWdlcwovQ291bnQgMQovS2lkcyBbIDIgMCBSIF0KPj5lbmRvYmoKMSAwIG9iajw8Ci9UeXBlIC9YT2JqZWN0Ci9TdWJ0eXBlIC9JbWFnZQovV2lkdGggMjkwCi9IZWlnaHQgMjkwCi9GaWx0ZXIgWyAvQ0NJVFRGYXhEZWNvZGUgXQovRGVjb2RlUGFybXMgWyA8PAovSyAtMQovQmxhY2tJczEgdHJ1ZQovQ29sdW1ucyAyOTAKL1Jvd3MgMjkwCj4+IF0KL0JpdHNQZXJDb21wb25lbnQgMQovQ29sb3JTcGFjZSAvRGV2aWNlR3JheQovTGVuZ3RoIDY2Ngo+PnN0cmVhbQomoLYaX////////////8g2b4gpHITff///////////8nBSkIB8nBS/////////////////////+QgHkNB/IQD////////////////////////////+P//////////////////////////IQ5CHIQ////////////////////////////////jkNB/H/////////////////////4yEOQh+P//////////////////EhoKR//////yDYchDkIchDyBg2E4aCcFL////////////////////////IgFIiAhODQTg0f/////////////////+ThCICEQGgnDQTg0E4NBODZ////////////////////////4k4NESEOJCCP/////////////////8gpHIQ5CCCEEENB8hDyBg2f//////////////////////////xEZKQhOEJwhOB5f//////////////yDZviDQIjkDBS///////////////ycFLEnCCThP//////////////////kIB5CHkQEEnCEQEJwbP///////////////////////////4ycGgnBoIgFL/////////////////////+QhxIQ4kIcg0H////////////////////////8cSEOJCHEhAP//////////////////jIQDIQ+Qh5OE////////////////////////4iIiI/////////////wAQAQJAAABAwABAAAAIgEAAAEBAwABAAAAIgEAAAIBAwABAAAAAQAAAAMBAwABAAAABAAAAAYBAwABAAAAAQAAABEBBAABAAAACAAAABYBAwABAAAAIgEAABcBBAABAAAAKAIAABwBAwABAAAAAQAAAAAAAAAKZW5kc3RyZWFtCmVuZG9iagoyIDAgb2JqPDwKL1Jlc291cmNlcyA8PAovUHJvY1NldCBbIC9QREYgL0ltYWdlQiBdCi9YT2JqZWN0IDw8Ci9pbWFnZSAxIDAgUgo+Pgo+PgovTWVkaWFCb3ggWyAwIDAgMjkwLjAgMjkwLjAgXQovQ29udGVudHMgMyAwIFIKL1R5cGUgL1BhZ2UKL1BhcmVudCA1IDAgUgo+PmVuZG9iagozIDAgb2JqPDwKL0xlbmd0aCA0Nwo+PnN0cmVhbQpxIDI5MC4wMDAwMDAgMCAwIDI5MC4wMDAwMDAgMCAwIGNtIC9pbWFnZSBEbyBRCgplbmRzdHJlYW0KZW5kb2JqCjYgMCBvYmo8PAovQ3JlYXRpb25EYXRlIChEOjIwMjUxMTA3MTMzNTE1WikKL01vZERhdGUgKEQ6MjAyNTExMDcxMzM1MTVaKQo+PmVuZG9iagp4cmVmCjAgNwowMDAwMDAwMDAwIDY1NTM2IGYgCjAwMDAwMDAxNDQgMDAwMDAgbiAKMDAwMDAwMTA1MiAwMDAwMCBuIAowMDAwMDAxMjE0IDAwMDAwIG4gCjAwMDAwMDAwNDAgMDAwMDAgbiAKMDAwMDAwMDA4NyAwMDAwMCBuIAowMDAwMDAxMzA5IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1Jvb3QgNCAwIFIKL1NpemUgNwovSW5mbyA2IDAgUgo+PgpzdGFydHhyZWYKMTM5MQolJUVPRg==
                         orderId:
                           type: integer
                           nullable: false
                           description: ID сборочного задания
                           example: 3869227998
-        '400':
-          description: Неправильный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
-                IncorrectRequest:
-                  $ref: '#/components/examples/IncorrectRequest'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
-  /api/v3/files/orders/external-stickers:
-    servers:
-      - url: https://marketplace-api.wildberries.ru
-    post:
-      security:
-        - HeaderApiKey: []
-      tags:
-        - Сборочные задания FBS
-      summary: Получить список ссылок на стикеры сборочных заданий, которые требуются при кроссбордере
-      deprecated: true
-      description: |
-        [ Метод будет отключен 23 октября](https://dev.wildberries.ru/release-notes?id=348).
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                orders:
-                  type: array
-                  minItems: 1
-                  maxItems: 100
-                  description: Список ID сборочных заданий
-                  items:
-                    type: integer
-                    format: int64
-                    example: 5346346
-      responses:
-        '200':
-          description: Успешно
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  stickers:
-                    type: array
-                    nullable: false
-                    items:
-                      type: object
-                      properties:
-                        orderID:
-                          type: integer
-                          format: int64
-                          nullable: false
-                          description: ID сборочного задания
-                          example: 5346346
-                        url:
+                        parcelId:
                           type: string
-                          nullable: false
-                          description: Ссылка, по которой можно получить стикер для сборочного задания
-                          example: https://.../some-sticker
-                        parcelID:
-                          type: string
-                          nullable: false
                           description: Трек-номер в стикере для отслеживания сборочного задания
                           example: WB0000000001
         '400':
@@ -1520,8 +1531,6 @@ paths:
                   $ref: '#/components/examples/IncorrectRequestBody'
                 IncorrectRequest:
                   $ref: '#/components/examples/IncorrectRequest'
-                IncorrectParameter:
-                  $ref: '#/components/examples/IncorrectParameter'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1530,6 +1539,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/orders/status/history:
     post:
+      x-readonly-method: true
+      x-category: marketplace
       servers:
         - url: https://marketplace-api.wildberries.ru
       security:
@@ -1538,16 +1549,16 @@ paths:
         - Сборочные задания FBS
       summary: История статусов для сборочных заданий кроссбордера
       description: |
-        Метод возвращает историю [статусов](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) кроссбордера.
+        Метод возвращает историю [статусов](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) кроссбордера.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         content:
@@ -1581,6 +1592,7 @@ paths:
                       properties:
                         deliveryDate:
                           type: string
+                          format: date-time
                           description: Планируемая дата доставки, [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339)
                         statuses:
                           description: Статусы
@@ -1591,11 +1603,14 @@ paths:
                               date:
                                 type: string
                                 description: Дата присвоения статуса
+                                nullable: true
                                 example: null
                               code:
                                 type: string
                                 description: |
                                   Статус-код сборочного задания/заказа:
+                                    - `dispatched_to_delivery_service` — Продавец передал заказ в службу доставки в своей стране
+                                    - `on_way_to_delivery_service` — Заказ едет на склад службы доставки в стране продавца
                                     - `accepted_by_carrier` — Товар принят перевозчиком
                                     - `assembling` — Отправлен на сборку
                                     - `assembled` — Собран на складе
@@ -1660,6 +1675,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       summary: Заказы с информацией по клиенту
@@ -1675,9 +1692,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         required: true
@@ -1702,17 +1719,19 @@ paths:
                 IncorrectParameter:
                   $ref: '#/components/examples/IncorrectParameter'
         '401':
-          $ref: '#/components/responses/401-2'
+          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
-          $ref: '#/components/responses/429-2'
+          $ref: '#/components/responses/429'
   /api/v3/supplies:
     servers:
       - url: https://marketplace-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -1722,8 +1741,8 @@ paths:
         Метод создаёт новую [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
 
         Ограничения:
-        - Только для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) по модели FBS.
-        - При добавлении в поставку все передаваемые сборочные задания в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `new` будут автоматически переведены в статус `confirm` — на сборке.
+        - Только для [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) по модели FBS.
+        - При добавлении в поставку все передаваемые сборочные задания в [статусе](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `new` будут автоматически переведены в статус `confirm` — на сборке.
         - Если вы переведёте сборочное задание в статус `cancel` — отмена продавцом, прикрепленное сборочное задание автоматически удалится из поставки.
         - Поставку можно собрать только из сборочных заданий (заказов) одного габаритного типа `cargoType`. Новая поставка не обладает габаритным признаком, она приобретает габаритный признак первого заказа, добавленного в поставку.
 
@@ -1732,9 +1751,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         required: true
@@ -1778,6 +1797,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -1791,9 +1812,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Limit'
@@ -1830,47 +1851,72 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '429':
           $ref: '#/components/responses/429'
-  /api/v3/supplies/{supplyId}/orders/{orderId}:
+  /api/marketplace/v3/supplies/{supplyId}/orders:
     servers:
       - url: https://marketplace-api.wildberries.ru
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Поставки FBS
-      summary: Добавить сборочное задание к поставке
+      summary: Добавить сборочные задания к поставке
       description: |
-        Метод добавляет [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) к поставке и переводит его в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `confirm` — на сборке.
+        Метод добавляет до 100 [сборочных заданий](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) к поставке и переводит их в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `confirm` — на сборке.
 
-        Может перемещать сборочное задание:
-          - между активными поставками.
-          - из закрытой поставки в активную, если сборочное задание требует [повторной отгрузки](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1supplies~1orders~1reshipment/get).
+        Может перемещать сборочные задания:
+          - между активными поставками
+          - из закрытой поставки в активную, если сборочные задания требуют [повторной отгрузки](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1supplies~1orders~1reshipment/get)
 
         <div class="description_important">
-          В пустую поставку можно добавить сборочное задание любого габаритного типа. Поставка приобретает габаритный тип первого добавленного сборочного задания <a href ="./orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get">из поля</a> <code>cargoType</code>.
+          В пустую поставку можно добавить сборочные задания любого габаритного типа. Поставка приобретает габаритный тип первого добавленного сборочного задания <a href ="./orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get">из поля</a> <code>cargoType</code>.
           <br>
           После этого в поставку можно добавить сборочные задания только того же габаритного типа, что и у поставки.
          </div>
 
         <div class="description_important">
-        Нельзя добавлять в поставку сборочные задания поступившие на разные склады.
+        В поставку нельзя добавить сборочные задания, поступившие на разные склады.
+        </div>
+        <div class="description_important">
+        В пустую поставку можно добавить сборочные задания любого типа: кроссбордер или не кроссбордер.
+        После этого поставка приобретает тип первого добавленного сборочного задания из поля <code>crossBorderType</code>.
+        Далее в неё можно добавить только сборочные задания такого же типа.
         </div>
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для метода <strong>добавления сборочных заданий к поставке FBS</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
-        - $ref: '#/components/parameters/Order'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  description: ID сборочных заданий
+                  example:
+                    - 5632423
+                    - 3453452
+                    - 7654533
+                    - 4529544
+                  items:
+                    type: integer
       responses:
         '204':
-          description: Задание закреплено за поставкой
+          description: Сборочные задания закреплены за поставкой
         '400':
           description: Неправильный запрос
           content:
@@ -1901,6 +1947,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -1914,9 +1962,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -1945,22 +1993,24 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Поставки FBS
       summary: Удалить поставку
       description: |
-        Метод удаляет [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get), если она активна и за ней не закреплено ни одно [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get).
+        Метод удаляет [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get), если она активна и за ней не закреплено ни одно [сборочное задание](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get).
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -1993,43 +2043,41 @@ paths:
                   $ref: '#/components/examples/SupplyHasOrders'
         '429':
           $ref: '#/components/responses/429'
-  /api/v3/supplies/{supplyId}/orders:
+  /api/marketplace/v3/supplies/{supplyId}/order-ids:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
-      security:
-        - HeaderApiKey: []
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Поставки FBS
-      summary: Получить сборочные задания в поставке
+      summary: Получить ID сборочных заданий поставки
       description: |
-        Метод возвращает [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get), закреплённые за [поставкой](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get).
+        Метод возвращает список ID сборочных заданий, закреплённых за поставкой.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий, поставок и пропусков FBS</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Supply'
+        - name: supplyId
+          in: path
+          description: ID поставки
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Успешно
           content:
             application/json:
               schema:
-                type: object
-                nullable: false
-                properties:
-                  orders:
-                    type: array
-                    nullable: false
-                    items:
-                      $ref: '#/components/schemas/SupplyOrder'
+                $ref: '#/components/schemas/v3.SupplyOrderIDsAPI'
         '400':
           description: Неправильный запрос
           content:
@@ -2051,13 +2099,15 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Поставки FBS
       summary: Передать поставку в доставку
       description: |
-        Метод закрывает [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) и переводит все [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders/get) в ней в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1status/post) `complete` — в доставке. После закрытия поставки добавить новые сборочные задания к ней нельзя.
+        Метод закрывает [поставку](/openapi/orders-fbs#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D/get) и переводит все [сборочные задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders/get) в ней в [статус](/openapi/orders-fbs#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post) `complete` — в доставке. После закрытия поставки добавить новые сборочные задания к ней нельзя.
         <br><br>
         Если поставка не была передана в доставку, то при приёмке первого товара поставка автоматически закроется.
         <br><br>
@@ -2069,9 +2119,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -2110,6 +2160,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -2131,9 +2183,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -2198,6 +2250,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -2211,9 +2265,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -2247,6 +2301,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     post:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -2265,9 +2321,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -2318,13 +2374,15 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
         - Поставки FBS
       summary: Удалить короба из поставки
       description: |
-        Метод даляет короба из поставки.
+        Метод удаляет короба из поставки.
         <br><br>
         Можно удалить только пока поставка на сборке.
 
@@ -2333,9 +2391,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -2377,6 +2435,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -2396,9 +2456,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Supply'
@@ -2561,100 +2621,9 @@ components:
     StatusChangeNotAllowed:
       value:
         code: StatusChangeNotAllowed
-        message: Задание перейдёт в завершенные после сканирования на пунте выдачи заказов (ПВЗ)
+        message: Задание перейдёт в завершенные после сканирования на пункте выдачи заказов (ПВЗ)
   responses:
     '401':
-      description: Пользователь не авторизован
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              title:
-                type: string
-                description: Заголовок ошибки
-              detail:
-                type: string
-                description: Детали ошибки
-              code:
-                type: string
-                description: Внутренний код ошибки
-              requestId:
-                type: string
-                description: Уникальный ID запроса
-              origin:
-                type: string
-                description: ID внутреннего сервиса WB
-              status:
-                type: number
-                description: HTTP статус-код
-              statusText:
-                type: string
-                description: Расшифровка HTTP статус-кода
-              timestamp:
-                type: string
-                format: RFC3339
-                description: Дата и время запроса
-    '429':
-      description: Слишком много запросов
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              title:
-                type: string
-                description: Заголовок ошибки
-              detail:
-                type: string
-                description: Детали ошибки
-              code:
-                type: string
-                description: Внутренний код ошибки
-              requestId:
-                type: string
-                description: Уникальный ID запроса
-              origin:
-                type: string
-                description: ID внутреннего сервиса WB
-              status:
-                type: number
-                description: HTTP статус-код
-              statusText:
-                type: string
-                description: Расшифровка HTTP статус-кода
-              timestamp:
-                type: string
-                format: RFC3339
-                description: Дата и время запроса
-          example:
-            title: too many requests
-            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
-            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
-            requestId: 9d3c02cc698f8b041c661a7c28bed293
-            origin: s2s-api-auth-catalog
-            status: 429
-            statusText: Too Many Requests
-            timestamp: '2024-09-30T06:52:38Z'
-    NotFound:
-      description: Не найдено
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: NotFound
-            message: Не найдено
-    AccessDenied:
-      description: Доступ запрещён
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: AccessDenied
-            message: Доступ запрещён
-    401-2:
       description: Не авторизован
       content:
         application/json:
@@ -2695,7 +2664,7 @@ components:
             status: 401
             statusText: Unauthorized
             timestamp: '2024-09-30T06:52:38Z'
-    429-2:
+    '429':
       description: Слишком много запросов
       content:
         application/json:
@@ -2736,7 +2705,38 @@ components:
             status: 429
             statusText: Too Many Requests
             timestamp: '2024-09-30T06:52:38Z'
+    NotFound:
+      description: Не найдено
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: NotFound
+            message: Не найдено
+    AccessDenied:
+      description: Доступ запрещён
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: AccessDenied
+            message: Доступ запрещён
   schemas:
+    v3.SupplyOrderIDsAPI:
+      type: object
+      properties:
+        orderIds:
+          type: array
+          description: ID сборочных заданий
+          items:
+            type: integer
+          example:
+            - 132334
+            - 203984
+            - 403543
+            - 598349
     PassOffice:
       type: object
       description: Данные о складе, для которого требуется пропуск
@@ -2928,6 +2928,18 @@ components:
             - 1
             - 2
             - 3
+        crossBorderType:
+          description: |
+            Тип сборочного задания:
+              - `0` — не кроссбордер
+              - `1` — кроссбордер
+          enum:
+            - 0
+            - 1
+          format: int32
+          type: integer
+          example: 1
+          nullable: false
         comment:
           description: Комментарий покупателя
           type: string
@@ -3002,6 +3014,19 @@ components:
             - 1
             - 2
             - 3
+        crossBorderType:
+          description: |
+            Тип поставки:
+              - `0` — не кроссбордер
+              - `1` — кроссбордер
+              - `null` — значение отсутствует
+          enum:
+            - 0
+            - 1
+          format: int32
+          type: integer
+          example: 1
+          nullable: true
         destinationOfficeId:
           type: integer
           format: int64
@@ -3036,9 +3061,16 @@ components:
           type: string
           description: |
             Планируемая дата доставки.<br>
-            Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`.
+            Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`
           nullable: false
           example: 17.05.2024
+        sellerDate:
+          type: string
+          nullable: true
+          description: |
+            Рекомендуемая дата доставки СГТ в сортировочный центр или на склад. <br>
+            Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`
+          example: 02.06.2025
         salePrice:
           description: |
             Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100. Предоставляется в информационных целях
@@ -3047,13 +3079,23 @@ components:
           example: 504600
         requiredMeta:
           description: |
-            Список метаданных, которые необходимо добавить в сборочное задание.  <br> На данный момент обязательными к добавлению являются UIN и IMEI при их наличии в перечне
+            Список метаданных, которые необходимо добавить в сборочное задание, чтобы поставку с этим сборочным заданием можно было перевести в доставку
           type: array
           nullable: true
           items:
             type: string
           example:
             - uin
+        optionalMeta:
+          description: |
+            Список метаданных, которые можно добавить в сборочное задание.<br>
+            Поставку со сборочным заданием без этих метаданных можно перевести в доставку, но они могут потребоваться, например, при возврате товара покупателем
+          items:
+            type: string
+          type: array
+          nullable: true
+          example:
+            - sgtin
         deliveryType:
           type: string
           nullable: false
@@ -3154,7 +3196,7 @@ components:
             Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях
           example: 1014
         finalPrice:
-          description: Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          description: Сумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
           type: integer
           example: 1014
         convertedPrice:
@@ -3163,7 +3205,7 @@ components:
           description: Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях
           example: 28322
         convertedFinalPrice:
-          description: Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
+          description: Сумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
           type: integer
           example: 1014
         currencyCode:
@@ -3190,6 +3232,18 @@ components:
             - 1
             - 2
             - 3
+        crossBorderType:
+          description: |
+            Тип сборочного задания:
+              - `0` — не кроссбордер
+              - `1` — кроссбордер
+          enum:
+            - 0
+            - 1
+          format: int32
+          type: integer
+          example: 1
+          nullable: false
         isZeroOrder:
           type: boolean
           description: |
@@ -3207,124 +3261,6 @@ components:
                 Признак B2B-продажи:
                   - `false` — не B2B-продажа
                   - `true` — B2B-продажа
-    SupplyOrder:
-      type: object
-      properties:
-        scanPrice:
-          description: Цена приёмки в копейках. Отображается после фактической приёмки заказа. Для данного метода всегда будет возвращаться `null`. Предоставляется в информационных целях
-          type: number
-          format: uint32
-          nullable: true
-          example: null
-        orderUid:
-          type: string
-          description: ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid`
-          example: 165918930_629fbc924b984618a44354475ca58675
-        article:
-          type: string
-          nullable: false
-          description: Артикул продавца
-          example: one-ring-7548
-        colorCode:
-          description: Код цвета (только для колеруемых товаров)
-          type: string
-          nullable: false
-          example: RAL 3017
-        rid:
-          type: string
-          nullable: false
-          description: |
-            Уникальный ID заказа. <br>
-            Примечание: `rid` — это `srid` в ответах методов:
-              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
-              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
-              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
-              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
-              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
-          example: f884001e44e511edb8780242ac120002
-        createdAt:
-          type: string
-          format: date-time
-          nullable: false
-          description: Дата создания сборочного задания (RFC3339)
-          example: '2022-05-04T07:56:29Z'
-        offices:
-          type: array
-          nullable: true
-          description: Список офисов, куда следует привезти товар
-          items:
-            type: string
-            example: Калуга
-        skus:
-          type: array
-          nullable: false
-          description: Список баркодов
-          items:
-            type: string
-            example: '6665956397512'
-        id:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID сборочного задания
-          example: 13833711
-        warehouseId:
-          type: integer
-          nullable: false
-          description: ID склада продавца, на который поступило сборочное задание
-          example: 658434
-        nmId:
-          type: integer
-          nullable: false
-          description: Артикул WB
-          example: 123456789
-        chrtId:
-          type: integer
-          nullable: false
-          description: ID размера товара в системе WB
-          example: 987654321
-        price:
-          type: integer
-          nullable: false
-          description: |
-            Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях
-          example: 1014
-        convertedPrice:
-          type: integer
-          nullable: false
-          description: Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях
-          example: 28322
-        currencyCode:
-          type: integer
-          nullable: false
-          description: Код валюты продажи
-          format: ISO 4217
-          example: 933
-        convertedCurrencyCode:
-          type: integer
-          nullable: false
-          description: Код валюты страны продавца
-          format: ISO 4217
-          example: 643
-        cargoType:
-          type: integer
-          nullable: false
-          description: |
-            Тип товара:
-              - `1` — малогабаритный товар (МГТ)
-              - `2` — сверхгабаритный товар (СГТ)
-              - `3` — крупногабаритный товар (КГТ+)
-          enum:
-            - 1
-            - 2
-            - 3
-        isZeroOrder:
-          type: boolean
-          description: |
-            Признак заказа товара с нулевым остатком:
-              - `false` — заказ сделан на товар с ненулевым остатком
-              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
-          example: false
     SupplyTrbx:
       type: object
       properties:
@@ -3394,6 +3330,46 @@ components:
               nullable: true
           description: Срок годности товара
           format: date (dd.mm.yyyy)
+        customsDeclaration:
+          type: object
+          properties:
+            value:
+              type: string
+              example: 10704010/010624/0000302
+              nullable: true
+          description: Номер грузовой таможенной декларации
+    v3.GetMetaMultiRequest:
+      type: object
+      description: ID сборочных заданий
+      required:
+        - orders
+      properties:
+        orders:
+          items:
+            type: integer
+          type: array
+          maxItems: 100
+          example:
+            - 123456
+            - 234567
+            - 345678
+    v3.OrdersMetaAPI:
+      properties:
+        orders:
+          items:
+            $ref: '#/components/schemas/v3.OrderMetaAPI'
+          type: array
+      type: object
+    v3.OrderMetaAPI:
+      properties:
+        id:
+          type: integer
+          description: ID сборочного задания
+        meta:
+          description: Метаданные сборочного задания
+          $ref: '#/components/schemas/Meta'
+          type: object
+      type: object
     Pass:
       type: object
       description: Данные о пропуске продавца
@@ -3470,11 +3446,11 @@ components:
         phone:
           type: string
           description: Телефон для связи с клиентом
-          example: 79871234567
+          example: '79871234567'
         phoneCode:
           type: string
           description: Не используется
-          example: 0
+          example: '0'
     CrossborderTurkeyClientInfoResp:
       properties:
         orders:
@@ -3495,3 +3471,15 @@ components:
         orders:
           - 987654321
           - 123456789
+    v3.APIError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+        message:
+          type: string
+          description: Описание ошибки
+        data:
+          type: object
+          description: Дополнительные данные ошибки

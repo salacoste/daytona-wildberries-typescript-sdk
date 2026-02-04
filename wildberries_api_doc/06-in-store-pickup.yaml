@@ -17,6 +17,8 @@ tags:
 paths:
   /api/v3/click-collect/orders/new:
     get:
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Получить список новых сборочных заданий
@@ -28,9 +30,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
         '200':
@@ -50,6 +52,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/confirm:
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Перевести на сборку
@@ -61,9 +65,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        | 1 мин | 100 запросов | 600 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -103,6 +107,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/prepare:
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Сообщить, что сборочное задание готово к выдаче
@@ -114,9 +120,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        | 1 мин | 100 запросов | 600 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -156,6 +162,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/client:
     post:
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Информация о покупателе
@@ -171,9 +179,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         content:
@@ -205,6 +213,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/client/identity:
     post:
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Проверить, что заказ принадлежит покупателю
@@ -218,9 +228,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 30 запросов | 2 секунды | 20 запросов |
+        | 1 мин | 30 запросов | 2 сек | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         content:
@@ -270,6 +280,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/receive:
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Сообщить, что заказ принят покупателем
@@ -281,9 +293,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        | 1 мин | 100 запросов | 600 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -323,6 +335,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/reject:
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Сообщить, что покупатель отказался от заказа
@@ -334,9 +348,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        | 1 мин | 100 запросов | 600 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -376,10 +390,12 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/status:
     post:
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Получить статусы сборочных заданий
-      description: "Метод возвращает статусы сборочных заданий по их ID.\n<br><br>\n`supplierStatus` — статус сборочного задания. Триггер его изменения - действие самого продавца.\n\nВозможные значения `supplierStatus`:\n| Статус   | Описание            | Как перевести сборочное задание в данный статус |\n| -------  | ---------           | --------------------------------------|\n| `new`      | **Новое сборочное задание** |\n| `confirm`  | **На сборке**  | \t[Перевести сборочное задание на сборку](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1confirm/patch)\n| `prepare`  | **Готов к выдаче** | \t[Сообщить, что сборочное задание готово к выдаче](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1prepare/patch)\n| `receive`  | **Получено покупателем**   | [Сообщить, что заказ принят покупателем](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1receive/patch)\n| `reject`  | **Отказ покупателя при получении**    |  \t[Сообщить, что покупатель отказался от заказа](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1reject/patch)\n| `cancel`   | **Отменено продавцом**    |  \t[Отменить сборочное задание](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1cancel/patch)\n| `cancel_shelf_life` | **Отмена по истечении срока хранения**    |  \tПереводится автоматически по возникновению события\n\n<br><br>\n`wbStatus` — статус системы Wildberries.\n\nВозможные значения `wbStatus`:\n- `waiting` - сборочное задание в работе\n- `sold` - заказ получен покупателем\n- `canceled` - отмена сборочного задания\n- `canceled_by_client` - покупатель отменил заказ при получении\n- `declined_by_client` - покупатель отменил заказ в первый чаc\n<br> Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку\n- `defect` - отмена заказа по причине брака\n- `ready_for_pickup` - сборочное задание готово к выдаче\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |\n\nОдин запрос с кодом ответа <code>409</code> учитывается как 5 запросов\n</div>\n"
+      description: "Метод возвращает статусы сборочных заданий по их ID.\n<br><br>\n`supplierStatus` — статус сборочного задания. Триггер его изменения - действие самого продавца.\n\nВозможные значения `supplierStatus`:\n| Статус   | Описание            | Как перевести сборочное задание в данный статус |\n| -------  | ---------           | --------------------------------------|\n| `new`      | **Новое сборочное задание** |\n| `confirm`  | **На сборке**  | \t[Перевести сборочное задание на сборку](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1confirm/patch)\n| `prepare`  | **Готов к выдаче** | \t[Сообщить, что сборочное задание готово к выдаче](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1prepare/patch)\n| `receive`  | **Получено покупателем**   | [Сообщить, что заказ принят покупателем](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1receive/patch)\n| `reject`  | **Отказ покупателя при получении**    |  \t[Сообщить, что покупатель отказался от заказа](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1reject/patch)\n| `cancel`   | **Отменено продавцом**    |  \t[Отменить сборочное задание](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1cancel/patch)\n| `cancel_shelf_life` | **Отмена по истечении срока хранения**    |  \tПереводится автоматически по возникновению события\n\n<br><br>\n`wbStatus` — статус системы Wildberries.\n\nВозможные значения `wbStatus`:\n- `waiting` - сборочное задание в работе\n- `sold` - заказ получен покупателем\n- `canceled` - отмена сборочного задания\n- `canceled_by_client` - покупатель отменил заказ при получении\n- `declined_by_client` - покупатель отменил заказ в первый чаc\n<br> Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку\n- `defect` - отмена заказа по причине брака\n- `ready_for_pickup` - сборочное задание готово к выдаче\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 300 запросов | 200 мс | 20 запросов |\n\nОдин запрос с кодом ответа <code>409</code> учитывается как 10 запросов\n</div>\n"
       requestBody:
         content:
           application/json:
@@ -410,6 +426,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders:
     get:
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Получить информацию о завершённых сборочных заданиях
@@ -423,9 +441,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: limit
@@ -484,6 +502,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/cancel:
     patch:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Сборочные задания Самовывоз
       summary: Отменить сборочное задание
@@ -495,9 +515,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов |
+        | 1 мин | 100 запросов | 600 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -537,11 +557,13 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/meta:
     get:
+      x-readonly-method: true
+      x-category: marketplace
       tags:
         - Метаданные Самовывоз
       summary: Получить метаданные сборочного задания
       description: |
-        Метод возвращает метаданные [сборочного задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get).
+        Метод возвращает метаданные [сборочного задания](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get).
         <br><br>
         Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get), поле `requiredMeta`.
         <br><br>
@@ -551,9 +573,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -578,6 +600,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Метаданные Самовывоз
       summary: Удалить метаданные сборочного задания
@@ -591,9 +615,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -623,6 +647,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/meta/sgtin:
     put:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Метаданные Самовывоз
       summary: Закрепить за сборочным заданием код маркировки товара
@@ -638,9 +664,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -690,6 +716,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/meta/uin:
     put:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Метаданные Самовывоз
       summary: Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
@@ -703,9 +731,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -755,6 +783,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/meta/imei:
     put:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Метаданные Самовывоз
       summary: Закрепить за сборочным заданием IMEI
@@ -768,9 +798,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -820,6 +850,8 @@ paths:
           $ref: '#/components/responses/429'
   /api/v3/click-collect/orders/{orderId}/meta/gtin:
     put:
+      x-readonly-method: false
+      x-category: marketplace
       tags:
         - Метаданные Самовывоз
       summary: Закрепить за сборочным заданием GTIN
@@ -834,9 +866,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов |
+        | 1 мин | 1000 запросов | 60 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - name: orderId
@@ -1046,7 +1078,7 @@ components:
         createdAt:
           type: string
           description: Дата и время создания сборочного задания
-          format: RFC3339
+          format: date-time
         warehouseAddress:
           type: string
           description: |
@@ -1089,7 +1121,7 @@ components:
             Цена в валюте продажи с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100.
             Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
         finalPrice:
-          description: Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          description: Сумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
           type: integer
           example: 5000
         convertedPrice:
@@ -1097,7 +1129,7 @@ components:
           type: integer
           example: 5000
         convertedFinalPrice:
-          description: Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
+          description: Сумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
           type: integer
           example: 5000
         currencyCode:
@@ -1163,7 +1195,7 @@ components:
         createdAt:
           type: string
           description: Дата и время создания сборочного задания
-          format: RFC3339
+          format: date-time
           example: '2025-03-21T09:53:31Z'
         price:
           type: integer
@@ -1172,7 +1204,7 @@ components:
             Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
           example: 5000
         finalPrice:
-          description: Cумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          description: Сумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
           type: integer
           example: 5000
         convertedPrice:
@@ -1180,7 +1212,7 @@ components:
           type: integer
           example: 5000
         convertedFinalPrice:
-          description: Cумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
+          description: Сумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
           type: integer
           example: 5000
         currencyCode:
@@ -1396,7 +1428,7 @@ components:
     '401':
       description: Не авторизован
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:
@@ -1437,7 +1469,7 @@ components:
     '429':
       description: Слишком много запросов
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:

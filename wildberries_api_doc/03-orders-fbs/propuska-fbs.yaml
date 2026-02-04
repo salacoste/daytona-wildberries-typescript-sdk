@@ -10,7 +10,11 @@ tags:
     description: Пропуска FBS endpoints
 paths:
   /api/v3/passes/offices:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -28,12 +32,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -42,15 +46,19 @@ paths:
                 nullable: false
                 description: Список складов
                 items:
-                  $ref: '#/components/schemas/PassOffice'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/schemas/PassOffice"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v3/passes:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -64,12 +72,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -78,14 +86,16 @@ paths:
                 nullable: false
                 description: Список пропусков продавца
                 items:
-                  $ref: '#/components/schemas/Pass'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/schemas/Pass"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
     post:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -147,7 +157,7 @@ paths:
                 - carNumber
                 - officeId
       responses:
-        '201':
+        "201":
           description: Создано
           content:
             application/json:
@@ -159,25 +169,29 @@ paths:
                     nullable: false
                     description: ID пропуска продавца
                     example: 2
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/IncorrectRequestBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/429"
   /api/v3/passes/{passId}:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -191,12 +205,12 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Pass'
+        - $ref: "#/components/parameters/Pass"
       requestBody:
         required: true
         description: Общая длина ФИО ограничена от 6 до 100 символов. В номере машины могут быть только буквы и цифры.
@@ -245,28 +259,30 @@ paths:
                 - carNumber
                 - officeId
       responses:
-        '204':
+        "204":
           description: Обновлено
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 IncorrectRequestBody:
-                  $ref: '#/components/examples/IncorrectRequestBody'
+                  $ref: "#/components/examples/IncorrectRequestBody"
                 WarehouseNameInvalid:
-                  $ref: '#/components/examples/WarehouseNameInvalid'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/429'
+                  $ref: "#/components/examples/WarehouseNameInvalid"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/429"
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -280,109 +296,20 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
-        - $ref: '#/components/parameters/Pass'
+        - $ref: "#/components/parameters/Pass"
       responses:
-        '204':
+        "204":
           description: Удалено
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    PassOffice:
-      type: object
-      description: Данные о складе, для которого требуется пропуск
-      properties:
-        name:
-          type: string
-          nullable: false
-          description: Название
-          example: Коледино
-        address:
-          type: string
-          nullable: false
-          description: Адрес
-          example: г. Подольск, д. Коледино, ул. Троицкая
-        id:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID
-          example: 1
-    Pass:
-      type: object
-      description: Данные о пропуске продавца
-      properties:
-        firstName:
-          type: string
-          nullable: false
-          description: Имя водителя
-          example: Александр
-        dateEnd:
-          type: string
-          nullable: false
-          description: Дата окончания действия пропуска
-          example: '2022-07-31 17:53:13+00:00'
-        lastName:
-          type: string
-          nullable: false
-          description: Фамилия водителя
-          example: Петров
-        carModel:
-          type: string
-          nullable: false
-          description: Марка машины
-          example: Lamborghini
-        carNumber:
-          type: string
-          nullable: false
-          description: Номер машины
-          example: A456BC123
-        officeName:
-          type: string
-          nullable: false
-          description: Название склада
-          example: Коледино
-        officeAddress:
-          type: string
-          nullable: false
-          description: Адрес склада
-          example: г. Подольск, д. Коледино, ул. Троицкая
-        officeId:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID склада
-          example: 15
-        id:
-          type: integer
-          format: int64
-          nullable: false
-          description: ID пропуска
-          example: 1
-    Error:
-      type: object
-      nullable: false
-      properties:
-        code:
-          type: string
-          description: Код ошибки
-          nullable: false
-        message:
-          type: string
-          description: Описание ошибки
-          nullable: false
-        data:
-          type: object
-          description: Дополнительные данные, обогащающие ошибку
-          nullable: true
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/429"

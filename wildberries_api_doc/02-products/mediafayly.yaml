@@ -10,11 +10,15 @@ tags:
     description: Медиафайлы endpoints
 paths:
   /content/v3/media/file:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Загрузить медиафайл
-      description: "Метод загружает и добавляет один медиафайл к карточке товара.\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700x900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
+      description: "Метод загружает и добавляет один медиафайл к карточке товара.\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700x900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 100 запросов | 600 мс | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
       tags:
         - Медиафайлы
       parameters:
@@ -23,7 +27,7 @@ paths:
           description: Артикул WB
           schema:
             type: string
-            example: '213864079'
+            example: "213864079"
           required: true
         - name: X-Photo-Number
           in: header
@@ -43,7 +47,7 @@ paths:
                   type: string
                   format: binary
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -65,32 +69,36 @@ paths:
               example:
                 data: {}
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: null
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/mediaErrors'
+                $ref: "#/components/schemas/mediaErrors"
             plain/text:
               example: Invalid 'boundary' for 'multipart/form-data' request
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/mediaErrors'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/mediaErrors"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v3/media/save:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Загрузить медиафайлы по ссылкам
-      description: "Метод загружает набор медиафайлов в карточку товара через указание ссылок в запросе.\n\n<div class=\"description_important\">\n  Новые медиафайлы полностью заменяют старые. Чтобы добавить новые медиафайлы, укажите в запросе ссылки одновременно на новые и старые медиафайлы.\n</div>\n\nТребования к ссылкам:\n  * ссылка должна вести прямо на файл. Убедитесь, что ссылка не ведёт на страницу предпросмотра или авторизации, например. Если по ссылке открывается текстовая страница TXT или HTML, ссылка считается некорректной\n  * для доступа к файлу по ссылке не нужна авторизация\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700×900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\nЕсли видео или хотя бы одно изображение в запросе не соответствует требованиям, то даже при успешном ответе (`200`) ни одно изображение/видео не загрузится.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
+      description: "Метод загружает набор медиафайлов в карточку товара через указание ссылок в запросе.\n\n<div class=\"description_important\">\n  Новые медиафайлы полностью заменяют старые. Чтобы добавить новые медиафайлы, укажите в запросе ссылки одновременно на новые и старые медиафайлы.\n</div>\n\nТребования к ссылкам:\n  * ссылка должна вести прямо на файл. Убедитесь, что ссылка не ведёт на страницу предпросмотра или авторизации, например. Если по ссылке открывается текстовая страница TXT или HTML, ссылка считается некорректной\n  * для доступа к файлу по ссылке не нужна авторизация\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700×900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\nЕсли видео или хотя бы одно изображение в запросе не соответствует требованиям, то даже при успешном ответе (`200`) ни одно изображение/видео не загрузится.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 100 запросов | 600 мс | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
       tags:
         - Медиафайлы
       requestBody:
@@ -114,7 +122,7 @@ paths:
                 - https://basket-stage-02.dasec.ru/vol669/part66964/66964260/images/big/2.jpg
                 - https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_mb.mp4
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -136,57 +144,33 @@ paths:
               example:
                 data: {}
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: null
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/mediaErrors'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/mediaErrors"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/mediaErrors'
-        '409':
+                $ref: "#/components/schemas/mediaErrors"
+        "409":
           description: Ошибка сохранения части ссылок
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/mediaErrors'
-        '422':
+                $ref: "#/components/schemas/mediaErrors"
+        "422":
           description: Отсутствует параметр nmId
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/mediaErrors'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    mediaErrors:
-      type: object
-      properties:
-        additionalErrors:
-          description: Дополнительные ошибки
-          nullable: true
-          type: object
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-      example:
-        additionalErrors: null
-        data: null
-        error: true
-        errorText: Текст ошибки
+                $ref: "#/components/schemas/mediaErrors"
+        "429":
+          $ref: "#/components/responses/429"

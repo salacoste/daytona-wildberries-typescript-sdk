@@ -9,8 +9,119 @@ tags:
   - name: Карточки товаров
     description: Карточки товаров endpoints
 paths:
-  /content/v2/cards/delete/trash:
+  /content/v2/cards/moveNm:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
+      tags:
+        - Карточки товаров
+      summary: Объединение и разъединение карточек товаров
+      description: |
+        Метод [объединяет и разъединяет](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточки товаров. Карточки товаров являются объединёнными, если у них одинаковый `imtID`.
+        <br><br>
+        Для объединения карточек товаров сделайте запрос **с указанием** `imtID`. Можно объединять не более 30 карточек товаров.<br>
+        Для разъединения карточек товаров сделайте запрос **без указания** `imtID`. Для разъединенных карточек будут сгенерированы новые `imtID`.
+        <br><br>
+        Если вы разъедините одновременно несколько карточек товаров, эти карточки объединятся в одну и получат новый `imtID`.<br>
+        Чтобы присвоить каждой карточке товара уникальный `imtID`, необходимо передавать по одной карточке товара за запрос.<br>
+        <br>
+        Максимальный размер запроса 10 Мб.
+
+        <div class="description_important">
+          Объединить можно карточки товаров только в рамках одного предмета
+        </div>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
+
+        Исключение — методы:
+
+        <ul>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li>
+            <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li>
+        </ul>
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/requestMoveNmsImtConn"
+                - $ref: "#/components/schemas/requestMoveNmsImtDisconn"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseCardCreate"
+              example:
+                data: null
+                error: false
+                errorText: ""
+                additionalErrors: {}
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/responseCardCreate"
+                  - $ref: "#/components/schemas/responseIncorrectDate"
+              examples:
+                responseExceededLimit:
+                  $ref: "#/components/examples/responseExceededLimit"
+                responseCombining:
+                  $ref: "#/components/examples/responseCombining"
+                responseIncorrectRequestFormat:
+                  $ref: "#/components/examples/responseIncorrectRequestFormat"
+                responseNonExistentNmId:
+                  $ref: "#/components/examples/responseNonExistentNmId"
+                responseNonExistentImt:
+                  $ref: "#/components/examples/responseNonExistentImt"
+                responseCardCreate1:
+                  $ref: "#/components/examples/responseCardCreate1"
+                responseDuplicateRequests:
+                  $ref: "#/components/examples/responseDuplicateRequests"
+                responseAllCardsInSameGroup:
+                  $ref: "#/components/examples/responseAllCardsInSameGroup"
+                responseIncorrectBeginDate:
+                  $ref: "#/components/examples/responseIncorrectBeginDate"
+                responseIncorrectEndDate:
+                  $ref: "#/components/examples/responseIncorrectEndDate"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseCardCreate"
+        "413":
+          description: Превышен лимит объёма данных в запросе
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                BodySizeExceedsTheGivenLimit:
+                  $ref: "#/components/examples/BodySizeExceedsTheGivenLimit"
+        "429":
+          $ref: "#/components/responses/429"
+  /content/v2/cards/delete/trash:
+    servers:
+      - url: https://content-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Перенос карточек товаров в корзину
@@ -18,18 +129,20 @@ paths:
         Метод переносит [карточки товаров в корзину](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). При этом карточки товаров не удаляются, их можно [восстановить](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1recover/post).
 
         <div class="description_important">
-          После переноса в корзину карточке товара присваивается новый <code>imtID</code>.
+          После переноса в корзину карточке товара присваивается новый <code>imtID</code> — ID для <a href="https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov">объединённых</a> карточек товаров
         </div>
 
-        Карточки товаров удаляются автоматически, если лежат в корзине больше 30 дней. Очистка корзины происходит каждую ночь по московскому времени.<br>
+        Карточки товаров удаляются автоматически, если лежат в корзине больше 30 дней, и на них нет остатков. Очистка корзины происходит каждую ночь по московскому времени.<br>
         Карточки товаров можно удалить в любое время в [личном кабинете](https://seller.wildberries.ru/new-goods/basket-cards).
+        <br><br>
+        Карточка будет продаваться, пока по ней есть остатки на складе, даже если её переместили в корзину. Чтобы полностью снять карточку с продажи, обнулите остатки.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -50,7 +163,9 @@ paths:
               type: object
               properties:
                 nmIDs:
-                  description: Артикул WB (max. 1000)
+                  description: Артикулы WB
+                  minimum: 1
+                  maximum: 1000
                   type: array
                   items:
                     type: integer
@@ -59,7 +174,7 @@ paths:
                 - 123456789
                 - 987654321
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -82,26 +197,30 @@ paths:
               example:
                 data: null
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: {}
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/cards/recover:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Восстановление карточек товаров из корзины
@@ -109,7 +228,7 @@ paths:
         Метод восстанавливает [карточки товаров из корзины](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post).
 
         <div class="description_important">
-          Карточка товара сохраняет тот же <code>imtID</code>, что был присвоен ей при <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1delete~1trash/post">перемещении в корзину</a>.
+          Карточка товара сохраняет тот же <code>imtID</code> — ID для <a href="https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov">объединённых</a> карточек товаров — что был присвоен ей при <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1delete~1trash/post">перемещении в корзину</a>
         </div>
 
         <div class="description_limit">
@@ -117,7 +236,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -138,8 +257,10 @@ paths:
               type: object
               properties:
                 nmIDs:
-                  description: Артикул WB (max. 1000)
+                  description: Артикулы WB
                   type: array
+                  minimum: 1
+                  maximum: 1000
                   items:
                     type: integer
             example:
@@ -147,7 +268,7 @@ paths:
                 - 123456789
                 - 987654321
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -170,280 +291,21 @@ paths:
               example:
                 data: null
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: {}
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    responseBodyContentError400:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: object
-    responseBodyContentError403:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: string
-      example:
-        data: null
-        error: true
-        errorText: Доступ запрещен
-        additionalErrors: Доступ запрещен
-    requestPublicViewerPublicErrorsTableListV2:
-      type: object
-      properties:
-        cursor:
-          $ref: '#/components/schemas/swagger.PublicErrorsCursorInput'
-        order:
-          $ref: '#/components/schemas/swagger.PublicErrorsOrderV2'
-    swagger.PublicErrorsCursorInput:
-      type: object
-      description: Пагинатор
-      properties:
-        limit:
-          type: number
-          format: int
-          description: Количество пакетов в ответе
-          maximum: 100
-          default: 100
-        updatedAt:
-          type: string
-          format: date-time
-          description: Дата и время формирования последнего пакета в ответе на предыдущий запрос
-        batchUUID:
-          type: string
-          format: UUID
-          description: ID последнего пакета в ответе на предыдущий запрос
-    swagger.PublicErrorsOrderV2:
-      type: object
-      description: Порядок выдачи пакетов
-      properties:
-        ascending:
-          type: boolean
-          description: |
-            - `false` — сортировка по убыванию
-            - `true` — сортировка по возрастанию
-          default: true
-    responsePublicViewerPublicErrorsTableListV2:
-      type: object
-      required:
-        - data
-        - error
-        - errorText
-        - additionalErrors
-      properties:
-        data:
-          $ref: '#/components/schemas/models.ErrorTableListPublicRespV2'
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Описание ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: object
-    models.ErrorTableListPublicRespV2:
-      type: object
-      description: Данные ответа
-      required:
-        - items
-        - cursor
-      properties:
-        items:
-          type: array
-          description: Пакеты данных
-          items:
-            $ref: '#/components/schemas/models.ErrorTableListPublicRespV2Item'
-        cursor:
-          $ref: '#/components/schemas/viewer_contract.PublicErrorsCursorOutput'
-    models.ErrorTableListPublicRespV2Item:
-      type: object
-      required:
-        - batchUUID
-        - subjects
-        - brands
-        - vendorCodes
-        - errors
-      properties:
-        batchUUID:
-          type: string
-          format: UUID
-          description: ID пакета
-        subjects:
-          type: object
-          description: Предметы. Разбивка по `vendorCodes`
-          additionalProperties:
-            $ref: '#/components/schemas/models.ErrorSubject'
-        brands:
-          type: object
-          description: Бренды. Разбивка по `vendorCodes`
-          additionalProperties:
-            $ref: '#/components/schemas/models.ErrorBrand'
-        vendorCodes:
-          type: array
-          description: Артикулы продавца
-          items:
-            type: string
-        errors:
-          type: object
-          description: Ошибки. Разбивка по `vendorCodes`
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    models.ErrorSubject:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: number
-          format: uint64
-          description: ID предмета
-        name:
-          type: string
-          description: Название предмета
-    models.ErrorBrand:
-      type: object
-      properties:
-        id:
-          type: number
-          format: uint64
-          description: ID бренда
-        name:
-          type: string
-          description: Бренд
-    viewer_contract.PublicErrorsCursorOutput:
-      type: object
-      required:
-        - next
-        - updatedAt
-        - batchUUID
-      description: Пагинатор
-      properties:
-        next:
-          type: boolean
-          description: |
-            Есть ли ещё черновики:
-              - `false` — нет
-              - `true` — да
-        updatedAt:
-          type: string
-          format: date-time
-          description: Дата и время формирования последнего пакета в ответе
-        batchUUID:
-          type: string
-          format: UUID
-          description: ID последнего пакета в ответе
-    responseCardCreate:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          example: null
-          description: Данные ответа
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Описание ошибки
-          type: string
-        additionalErrors:
-          description: Дополнительные ошибки
-          oneOf:
-            - type: object
-              nullable: true
-              properties:
-                string:
-                  type: string
-              additionalProperties: false
-            - type: string
-              nullable: true
-            - type: object
-              properties:
-                error:
-                  type: string
-              required:
-                - error
-    requestMoveNmsImtConn:
-      type: object
-      required:
-        - targetIMT
-        - nmIDs
-      properties:
-        targetIMT:
-          description: Существующий у продавца `imtID`, под которым необходимо объединить карточки товаров
-          type: integer
-          example: 123
-        nmIDs:
-          description: '`nmID`, которые необходимо объединить (максимум 30)'
-          type: array
-          items:
-            type: integer
-          example:
-            - 837459235
-            - 828572090
-    requestMoveNmsImtDisconn:
-      type: object
-      required:
-        - nmIDs
-      properties:
-        nmIDs:
-          description: '`nmID`, которые необходимо разъединить (max 30)'
-          type: array
-          items:
-            type: integer
-          example:
-            - 837459235
-            - 828572090
-      additionalProperties: false
-    responseIncorrectDate:
-      type: object
-      properties:
-        error:
-          type: string
-      additionalProperties: false
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"

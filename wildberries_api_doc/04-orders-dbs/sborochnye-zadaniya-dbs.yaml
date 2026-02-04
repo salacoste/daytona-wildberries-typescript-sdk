@@ -1,0 +1,1069 @@
+openapi: 3.0.1
+info:
+  title: 04-orders-dbs - Сборочные задания DBS
+  description: Extracted from original file for agent processing
+  version: 1.0.0-shard
+servers:
+  - url: https://marketplace-api.wildberries.ru
+tags:
+  - name: Сборочные задания DBS
+    description: Сборочные задания DBS endpoints
+paths:
+  /api/v3/dbs/orders/new:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Получить список новых сборочных заданий
+      description: |
+        Метод возвращает список всех новых [сборочных заданий](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS), которые есть у продавца на момент запроса.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        </div>
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  orders:
+                    type: array
+                    nullable: false
+                    description: Список новых сборочных заданий
+                    items:
+                      $ref: "#/components/schemas/OrderNewDBS"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Получить информацию о завершенных сборочных заданиях
+      description: |
+        Метод возвращает информацию о завершенных [сборочных заданиях](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) после продажи или отмены заказа.
+        <br><br>
+        Можно получить данные за заданный период, максимум 30 календарных дней одним запросом.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        </div>
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Next"
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: |
+            Дата начала периода в формате Unix timestamp
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Дата конца периода в формате Unix timestamp
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  next:
+                    $ref: "#/components/schemas/Next"
+                  orders:
+                    type: array
+                    nullable: false
+                    items:
+                      $ref: "#/components/schemas/OrderDBS"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/groups/info:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      description: |
+        Метод возвращает информацию о платной доставке сборочных заданий, которые поступили на один склад (`warehouseId`) в рамках одной транзакции покупателя (`orderUid`).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      tags:
+        - Сборочные задания DBS
+      summary: Получить информацию о платной доставке
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrderGroupsRequest"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.OrderGroup"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectRequestBody:
+                  $ref: "#/components/examples/IncorrectRequestBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/client:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      summary: Информация о покупателе
+      description: |
+        Метод возвращает информацию о покупателе по ID сборочных заданий.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      tags:
+        - Сборочные задания DBS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrdersRequestAPI"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DbsOnlyClientInfoResp"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+                IncorrectRequestBody:
+                  $ref: "#/components/examples/IncorrectRequestBody"
+                IncorrectRequest:
+                  $ref: "#/components/examples/IncorrectRequest"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/b2b/info:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Информация о покупателе B2B
+      description: |
+        Метод возвращает данные B2B-покупателей по ID сборочных заданий:
+          - ИНН
+          - КПП
+          - Наименование организации
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersRequestV2"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.B2bClientInfoResponses"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/delivery-date:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      summary: Дата и время доставки
+      description: |
+        Метод возвращает информацию о выбранных покупателем дате и времени доставки сборочных заданий.
+        <br>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        </div>
+      tags:
+        - Сборочные задания DBS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryDatesRequest"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryDatesInfoResp"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectRequest:
+                  $ref: "#/components/examples/IncorrectRequest1"
+                IncorrectRequestBody:
+                  $ref: "#/components/examples/IncorrectRequestBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/status/info:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Получить статусы сборочных заданий
+      description: |
+        Метод возвращает статусы [сборочных заданий](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) по их ID.
+        <br><br>
+        `supplierStatus` — статус сборочного задания. Триггер его изменения — действие самого продавца.
+
+        Возможные значения `supplierStatus`:
+        | Статус   | Описание            | Как перевести сборочное задание в данный статус |
+        | -------  | ---------           | --------------------------------------|
+        | `new`      | **Новое сборочное задание** | |
+        | `confirm`  | **На сборке**      |  [Перевести сборочное задание на сборку](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1confirm/post)
+        | `deliver`  | **В доставке**    | [Перевести сборочное задание в доставку](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1deliver/post)
+        | `receive`  | **Получено покупателем**       | [Сообщить, что заказ принят покупателем](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1receive/post) <br>
+        | `reject`   | **Отказ покупателя при получении**           |  [Сообщить, что покупатель отказался от заказа](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1reject/post)
+        | `cancel`   | **Отменено продавцом**   |  [Отменить сборочное задание](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1cancel/post)
+        | `cancel_missed_call` | **Отмена по причине недозвона** | Статус меняется автоматически |
+
+        <br><br>
+        `wbStatus` — статус системы Wildberries.
+
+        Возможные значения `wbStatus`:
+        - `waiting` — сборочное задание в работе
+        - `sold` — заказ получен покупателем
+        - `canceled` — отмена сборочного задания
+        - `canceled_by_client` — покупатель отменил заказ при получении
+        - `declined_by_client` — покупатель отменил заказ в первый чаc
+        <br> Отмена доступна покупателю в первый час с момента заказа, если заказ не переведен на сборку
+        - `defect` — отмена заказа по причине брака
+        - `ready_for_pickup` — сборочное задание прибыло на ПВЗ
+        - `canceled_by_missed_call` — отмена по причине недозвона
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий DBS</strong>:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
+
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersRequestV2"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.OrderStatusesV2"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/status/cancel:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Отменить сборочные задания
+      description: |
+        Метод переводит [сборочные задания](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) из [статусов](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1info/post) `new`, `confirm` и `deliver` в статус `cancel` — отменено продавцом.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 10 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersRequestV2"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.StatusSetResponses"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/status/confirm:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Перевести сборочные задания на сборку
+      description: |
+        Метод переводит [сборочные задания](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) из [статуса](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1info/post) `new` в статус `confirm` — на сборке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 10 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersRequestV2"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.StatusSetResponses"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/status/deliver:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Перевести сборочные задания в доставку
+      description: |
+        Метод переводит [сборочные задания](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) из [статуса](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1info/post) `confirm` в статус `deliver` — в доставке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 10 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersRequestV2"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.StatusSetResponses"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/status/receive:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Сообщить о получении заказов
+      description: |
+        Метод переводит [сборочные задания](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) из [статуса](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1info/post) `deliver` в статус `receive` — получено покупателем.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 10 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersCodeRequest"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.StatusSetResponses"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/dbs/orders/status/reject:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Сообщить об отказе от заказов
+      description: |
+        Метод переводит [сборочные задания](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) из [статуса](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1status~1info/post) `deliver` в статус `reject` — отказ покупателя при получении.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 10 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api.OrdersCodeRequest"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.StatusSetResponses"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.BatchError"
+              example:
+                detail: {}
+                origin: dbs-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/status:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Получить статусы сборочных заданий
+      deprecated: true
+      description: |
+        Данный метод устарел. Он будет удалён [13 апреля](https://dev.wildberries.ru/release-notes?id=378)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orders
+              properties:
+                orders:
+                  type: array
+                  minItems: 1
+                  maxItems: 1000
+                  description: Список ID сборочных заданий
+                  items:
+                    type: integer
+                    format: int64
+                    example: 5632423
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    nullable: false
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                          nullable: false
+                          description: ID сборочного задания
+                          example: 5632423
+                        supplierStatus:
+                          type: string
+                          nullable: false
+                          description: Статус сборочного задания, установленный продавцом
+                          example: new
+                        wbStatus:
+                          type: string
+                          nullable: false
+                          description: Статус сборочного задания в системе Wildberries
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+                IncorrectRequestBody:
+                  $ref: "#/components/examples/IncorrectRequestBody"
+                IncorrectRequest:
+                  $ref: "#/components/examples/IncorrectRequest"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/{orderId}/cancel:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Отменить сборочное задание
+      deprecated: true
+      description: |
+        Данный метод устарел. Он будет удалён [13 апреля](https://dev.wildberries.ru/release-notes?id=378)
+      parameters:
+        - $ref: "#/components/parameters/Order"
+      responses:
+        "204":
+          description: Отменено
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                StatusMismatch:
+                  $ref: "#/components/examples/StatusMismatch"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/{orderId}/confirm:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Перевести на сборку
+      deprecated: true
+      description: |
+        Данный метод устарел. Он будет удалён [13 апреля](https://dev.wildberries.ru/release-notes?id=378)
+      parameters:
+        - $ref: "#/components/parameters/OrderDBS"
+      responses:
+        "204":
+          description: Подтверждено
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                StatusMismatch:
+                  $ref: "#/components/examples/StatusMismatch"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/{orderId}/deliver:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Перевести в доставку
+      deprecated: true
+      description: |
+        Данный метод устарел. Он будет удалён [13 апреля](https://dev.wildberries.ru/release-notes?id=378)
+      parameters:
+        - $ref: "#/components/parameters/OrderDBS"
+      responses:
+        "204":
+          description: Подтверждено
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                StatusMismatch:
+                  $ref: "#/components/examples/StatusMismatch"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/{orderId}/receive:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Сообщить, что заказ принят покупателем
+      deprecated: true
+      description: |
+        Данный метод устарел. Он будет удалён [13 апреля](https://dev.wildberries.ru/release-notes?id=378)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Code"
+      parameters:
+        - $ref: "#/components/parameters/OrderDBS"
+      responses:
+        "204":
+          description: Подтверждено
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+                IncorrectRequestBody:
+                  $ref: "#/components/examples/IncorrectRequestBody"
+                IncorrectRequest:
+                  $ref: "#/components/examples/IncorrectRequest"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                StatusMismatch:
+                  $ref: "#/components/examples/StatusMismatch"
+                InvalidWBCode:
+                  $ref: "#/components/examples/InvalidWBCode"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/v3/dbs/orders/{orderId}/reject:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBS
+      summary: Сообщить, что покупатель отказался от заказа
+      deprecated: true
+      description: |
+        Данный метод устарел. Он будет удалён [13 апреля](https://dev.wildberries.ru/release-notes?id=378)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Code"
+      parameters:
+        - $ref: "#/components/parameters/OrderDBS"
+      responses:
+        "204":
+          description: Подтверждено
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+                IncorrectRequestBody:
+                  $ref: "#/components/examples/IncorrectRequestBody"
+                IncorrectRequest:
+                  $ref: "#/components/examples/IncorrectRequest"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Ошибка обновления статуса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                StatusMismatch:
+                  $ref: "#/components/examples/StatusMismatch"
+                InvalidWBCode:
+                  $ref: "#/components/examples/InvalidWBCode"
+        "429":
+          $ref: "#/components/responses/429"

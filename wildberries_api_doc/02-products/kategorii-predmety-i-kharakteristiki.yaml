@@ -10,7 +10,11 @@ tags:
     description: Категории, предметы и характеристики endpoints
 paths:
   /content/v2/object/parent/all:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Родительские категории товаров
@@ -22,7 +26,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -43,7 +47,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -73,30 +77,34 @@ paths:
                   errorText:
                     description: Описание ошибки
                     type: string
-                    example: ''
+                    example: ""
                   additionalErrors:
                     description: Дополнительные ошибки
                     nullable: true
                     type: string
-                    example: ''
-        '400':
+                    example: ""
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/object/all:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Список предметов
@@ -108,7 +116,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -155,7 +163,7 @@ paths:
             example: 1000
           description: ID родительской категории предмета
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -201,14 +209,18 @@ paths:
                     subjectName: 3D-принтеры
                     parentName: Оргтехника
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: null
-        '401':
-          $ref: '#/components/responses/401'
-        '429':
-          $ref: '#/components/responses/429'
+        "401":
+          $ref: "#/components/responses/401"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/object/charcs/{subjectId}:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Характеристики предмета
@@ -224,7 +236,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -252,7 +264,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -290,9 +302,9 @@ paths:
                           description: |
                             Максимальное количество значений, которое можно присвоить характеристике при [создании](./work-with-products#tag/Sozdanie-kartochek-tovarov) или [редактировании](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров.
                             <br>
-                            Используется только для характеристик с `"charcType":1`— массив строк.
+                            Используется только для характеристик с `"charcType":1` — массив строк.
                             <br>
-                            Характеристикам с `"charcType":4`— число, можно присвоить только одно значение.
+                            Характеристикам с `"charcType":4` — число, можно присвоить только одно значение.
                             <br><br>
                             Если `"maxCount":0`, количество значений не ограничено
                         popular:
@@ -303,7 +315,7 @@ paths:
                           description: |
                             Тип данных характеристики, который необходимо использовать при [создании](./work-with-products#tag/Sozdanie-kartochek-tovarov) или [редактировании](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров:
                               -  `1` — массив строк
-                              -  `4` — число
+                              -  `4` — число (целое либо с десятичной дробью)
                               -  `0` — характеристика не используется
                   error:
                     type: boolean
@@ -327,26 +339,30 @@ paths:
                       popular: false
                       charcType: 4
                   error: false
-                  errorText: ''
+                  errorText: ""
                   additionalErrors: null
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/directory/colors:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Цвет
@@ -358,7 +374,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -379,7 +395,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -405,30 +421,34 @@ paths:
                   errorText:
                     description: Описание ошибки
                     type: string
-                    example: ''
+                    example: ""
                   additionalErrors:
                     description: Дополнительные ошибки
                     nullable: true
                     type: string
-                    example: ''
-        '400':
+                    example: ""
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/directory/kinds:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Пол
@@ -440,7 +460,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -461,7 +481,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -481,30 +501,34 @@ paths:
                   errorText:
                     description: Описание ошибки
                     type: string
-                    example: ''
+                    example: ""
                   additionalErrors:
                     description: Дополнительные ошибки
                     nullable: true
                     type: string
-                    example: ''
-        '400':
+                    example: ""
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/directory/countries:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Страна производства
@@ -516,7 +540,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -537,7 +561,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -548,6 +572,10 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          description: ID страны
+                          type: integer
+                          example: 15000170
                         name:
                           description: Значение характеристики Страны
                           type: string
@@ -563,30 +591,34 @@ paths:
                   errorText:
                     description: Описание ошибки
                     type: string
-                    example: ''
+                    example: ""
                   additionalErrors:
                     description: Дополнительные ошибки
                     nullable: true
                     type: string
-                    example: ''
-        '400':
+                    example: ""
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/directory/seasons:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Сезон
@@ -598,7 +630,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -619,7 +651,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -639,30 +671,34 @@ paths:
                   errorText:
                     description: Описание ошибки
                     type: string
-                    example: ''
+                    example: ""
                   additionalErrors:
                     description: Дополнительные ошибки
                     nullable: true
                     type: string
-                    example: ''
-        '400':
+                    example: ""
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/directory/vat:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Ставка НДС
@@ -674,7 +710,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -695,7 +731,7 @@ paths:
             type: string
             example: ru
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -718,32 +754,36 @@ paths:
                     description: Дополнительные ошибки
               example:
                 data:
-                  - '0'
-                  - '10'
-                  - '20'
+                  - "0"
+                  - "10"
+                  - "20"
                   - Без НДС
-                  - '13'
+                  - "13"
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: null
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/directory/tnved:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: ТНВЭД-код
@@ -755,7 +795,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -789,7 +829,7 @@ paths:
             type: string
             example: en
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -823,65 +863,90 @@ paths:
                     description: Дополнительные ошибки
               example:
                 data:
-                  - tnved: '6106903000'
+                  - tnved: "6106903000"
                     isKiz: true
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: null
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                $ref: "#/components/schemas/responseBodyContentError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    responseBodyContentError400:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: object
-    responseBodyContentError403:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: string
-      example:
-        data: null
-        error: true
-        errorText: Доступ запрещен
-        additionalErrors: Доступ запрещен
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/content/v1/brands:
+    servers:
+      - url: https://content-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: content
+      security:
+        - HeaderApiKey: []
+      summary: Бренды
+      description: |
+        Метод возвращает список брендов по ID предмета.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 5 запросов |
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: subjectId
+          in: query
+          schema:
+            type: integer
+            example: 1234
+          description: ID предмета
+          required: true
+        - name: next
+          in: query
+          schema:
+            type: integer
+            example: 1234
+          description: Параметр пагинации. Используйте значение `next` из ответа, чтобы получить следующий пакет данных
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandsResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/BrandsResponseError"
+              examples:
+                BrandsResponseBadRequest1:
+                  $ref: "#/components/examples/BrandsResponseBadRequest1"
+                BrandsResponseBadRequest2:
+                  $ref: "#/components/examples/BrandsResponseBadRequest2"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Не найдено
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/BrandsResponseError"
+              examples:
+                BrandsResponseNotFound:
+                  $ref: "#/components/examples/BrandsResponseNotFound"
+        "429":
+          $ref: "#/components/responses/429"

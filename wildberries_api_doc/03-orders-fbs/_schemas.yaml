@@ -1,0 +1,911 @@
+components:
+  schemas:
+    v3.SupplyOrderIDsAPI:
+      type: object
+      properties:
+        orderIds:
+          type: array
+          description: ID сборочных заданий
+          items:
+            type: integer
+          example:
+            - 132334
+            - 203984
+            - 403543
+            - 598349
+    PassOffice:
+      type: object
+      description: Данные о складе, для которого требуется пропуск
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Название
+          example: Коледино
+        address:
+          type: string
+          nullable: false
+          description: Адрес
+          example: г. Подольск, д. Коледино, ул. Троицкая
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID
+          example: 1
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          nullable: false
+        message:
+          type: string
+          description: Описание ошибки
+          nullable: false
+        data:
+          type: object
+          description: Дополнительные данные, обогащающие ошибку
+          nullable: true
+    Next:
+      type: integer
+      format: int64
+      nullable: false
+      description: Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных
+      example: 13833711
+    Order:
+      type: object
+      properties:
+        address:
+          type: object
+          nullable: true
+          description: Точный адрес покупателя для доставки, если применимо. Из-за особенностей адреса некоторые поля могут быть пустыми
+          properties:
+            fullAddress:
+              description: Адрес доставки
+              type: string
+              example: Челябинская область, г. Челябинск, 51-я улица Арабкира, д. 10А, кв. 42
+            longitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Долгота
+              example: 44.519068
+            latitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Широта
+              example: 40.20192
+        scanPrice:
+          type: number
+          format: uint32
+          description: Цена приёмки в копейках. Отображается после фактической приёмки заказа
+          example: 1500
+        deliveryType:
+          type: string
+          nullable: false
+          description: |
+            Тип доставки:
+            - `fbs` — доставка на склад Wildberries (FBS)
+          enum:
+            - fbs
+        supplyId:
+          type: string
+          description: ID поставки. Возвращается, если заказ закреплён за поставкой
+          example: WB-GI-92937123
+        orderUid:
+          type: string
+          description: ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid`
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Артикул продавца
+          example: one-ring-7548
+        colorCode:
+          type: string
+          nullable: false
+          description: Код цвета (только для колеруемых товаров)
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: `rid` — это `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Дата создания сборочного задания (RFC3339)
+          example: "2022-05-04T07:56:29Z"
+        offices:
+          type: array
+          nullable: true
+          description: Список офисов, куда следует привезти товар
+          items:
+            type: string
+            example: Калуга
+        skus:
+          type: array
+          nullable: false
+          description: Список баркодов
+          items:
+            type: string
+            example: "6665956397512"
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID сборочного задания
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID склада продавца, на который поступило сборочное задание
+          example: 658434
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада WB, к которому привязан склад продавца
+          example: 123
+        nmId:
+          type: integer
+          nullable: false
+          description: Артикул WB
+          example: 12345678
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID размера товара в системе WB
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях
+          example: 28322
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты продажи
+          format: ISO 4217
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты страны продавца
+          format: ISO 4217
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 1
+            - 2
+            - 3
+        crossBorderType:
+          description: |
+            Тип сборочного задания:
+              - `0` — не кроссбордер
+              - `1` — кроссбордер
+          enum:
+            - 0
+            - 1
+          format: int32
+          type: integer
+          example: 1
+          nullable: false
+        comment:
+          description: Комментарий покупателя
+          type: string
+          nullable: false
+          maxLength: 300
+          example: Упакуйте в плёнку, пожалуйста
+        isZeroOrder:
+          type: boolean
+          description: |
+            Признак заказа товара с нулевым остатком:
+              - `false` — заказ сделан на товар с ненулевым остатком
+              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
+          example: false
+        options:
+          type: object
+          description: Опции заказа
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Признак B2B-продажи:
+                  - `false` — не B2B-продажа
+                  - `true` — B2B-продажа
+    Supply:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: false
+          description: ID поставки
+          example: WB-GI-1234567
+        done:
+          type: boolean
+          nullable: false
+          description: |
+            Флаг закрытия поставки:
+              - `true` — закрыта
+              - `false` — открыта
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Дата создания поставки (RFC3339)
+          example: "2022-05-04T07:56:29Z"
+        closedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Дата закрытия поставки (RFC3339)
+          example: "2022-05-04T07:56:29Z"
+        scanDt:
+          type: string
+          nullable: true
+          format: date-time
+          description: Дата скана поставки (RFC3339)
+          example: "2022-05-04T07:56:29Z"
+        name:
+          type: string
+          nullable: false
+          description: Наименование поставки
+          example: Тестовая поставка
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+        crossBorderType:
+          description: |
+            Тип поставки:
+              - `0` — не кроссбордер
+              - `1` — кроссбордер
+              - `null` — значение отсутствует
+          enum:
+            - 0
+            - 1
+          format: int32
+          type: integer
+          example: 1
+          nullable: true
+        destinationOfficeId:
+          type: integer
+          format: int64
+          nullable: true
+          description: ID склада назначения поставки. Если `null`, склад назначения не указан
+          example: 123
+    OrderNew:
+      type: object
+      properties:
+        address:
+          type: object
+          nullable: true
+          description: Точный адрес покупателя для доставки, если применимо. Из-за особенностей адреса некоторые поля могут быть пустыми
+          properties:
+            fullAddress:
+              description: Адрес доставки
+              type: string
+              example: Челябинская область, г. Челябинск, 51-я улица Арабкира, д. 10А, кв. 42
+            longitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Долгота
+              example: 44.519068
+            latitude:
+              type: number
+              format: float64
+              nullable: false
+              description: Широта
+              example: 40.20192
+        ddate:
+          type: string
+          description: |
+            Планируемая дата доставки.<br>
+            Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`
+          nullable: false
+          example: 17.05.2024
+        sellerDate:
+          type: string
+          nullable: true
+          description: |
+            Рекомендуемая дата доставки СГТ в сортировочный центр или на склад. <br>
+            Поле отображается для сборочных заданий со сверхгабаритными товарами `СГТ`, `cargoType: 2`
+          example: 02.06.2025
+        salePrice:
+          description: |
+            Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100. Предоставляется в информационных целях
+          type: integer
+          nullable: true
+          example: 504600
+        requiredMeta:
+          description: |
+            Список метаданных, которые необходимо добавить в сборочное задание, чтобы поставку с этим сборочным заданием можно было перевести в доставку
+          type: array
+          nullable: true
+          items:
+            type: string
+          example:
+            - uin
+        optionalMeta:
+          description: |
+            Список метаданных, которые можно добавить в сборочное задание.<br>
+            Поставку со сборочным заданием без этих метаданных можно перевести в доставку, но они могут потребоваться, например, при возврате товара покупателем
+          items:
+            type: string
+          type: array
+          nullable: true
+          example:
+            - sgtin
+        deliveryType:
+          type: string
+          nullable: false
+          description: |
+            Тип доставки:
+            - `fbs` — доставка на склад Wildberries (FBS)
+          enum:
+            - fbs
+        comment:
+          description: Комментарий покупателя
+          type: string
+          nullable: false
+          maxLength: 300
+          example: Упакуйте в плёнку, пожалуйста
+        scanPrice:
+          description: Цена приёмки в копейках. Отображается после фактической приёмки заказа. Для данного метода всегда будет возвращаться `null`. Предоставляется в информационных целях
+          type: number
+          format: uint32
+          nullable: true
+          example: null
+        orderUid:
+          type: string
+          description: ID транзакции для группировки сборочных заданий. Сборочные задания в одной корзине покупателя будут иметь одинаковый `orderUid`
+          example: 165918930_629fbc924b984618a44354475ca58675
+        article:
+          type: string
+          nullable: false
+          description: Артикул продавца
+          example: one-ring-7548
+        colorCode:
+          description: Код цвета (только для колеруемых товаров)
+          type: string
+          nullable: false
+          example: RAL 3017
+        rid:
+          type: string
+          nullable: false
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: `rid` — это `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+          example: f884001e44e511edb8780242ac120002
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+          description: Дата создания сборочного задания (RFC3339)
+          example: "2022-05-04T07:56:29Z"
+        offices:
+          type: array
+          nullable: true
+          description: Список офисов, куда следует привезти товар
+          items:
+            type: string
+            example: Калуга
+        skus:
+          type: array
+          nullable: false
+          description: Список баркодов
+          items:
+            type: string
+            example: "6665956397512"
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID сборочного задания
+          example: 13833711
+        warehouseId:
+          type: integer
+          nullable: false
+          description: ID склада продавца, на который поступило сборочное задание
+          example: 658434
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада WB, к которому привязан склад продавца
+          example: 123
+        nmId:
+          type: integer
+          nullable: false
+          description: Артикул WB
+          example: 123456789
+        chrtId:
+          type: integer
+          nullable: false
+          description: ID размера товара в системе WB
+          example: 987654321
+        price:
+          type: integer
+          nullable: false
+          description: |
+            Цена в валюте продажи с учётом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код валюты продажи — в поле `currencyCode`. Предоставляется в информационных целях
+          example: 1014
+        finalPrice:
+          description: Сумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          type: integer
+          example: 1014
+        convertedPrice:
+          type: integer
+          nullable: false
+          description: Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Предоставляется в информационных целях
+          example: 28322
+        convertedFinalPrice:
+          description: Сумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется в информационных целях
+          type: integer
+          example: 1014
+        currencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты продажи
+          format: ISO 4217
+          example: 933
+        convertedCurrencyCode:
+          type: integer
+          nullable: false
+          description: Код валюты страны продавца
+          format: ISO 4217
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 1
+            - 2
+            - 3
+        crossBorderType:
+          description: |
+            Тип сборочного задания:
+              - `0` — не кроссбордер
+              - `1` — кроссбордер
+          enum:
+            - 0
+            - 1
+          format: int32
+          type: integer
+          example: 1
+          nullable: false
+        isZeroOrder:
+          type: boolean
+          description: |
+            Признак заказа товара с нулевым остатком:
+              - `false` — заказ сделан на товар с ненулевым остатком
+              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
+          example: false
+        options:
+          type: object
+          description: Опции заказа
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Признак B2B-продажи:
+                  - `false` — не B2B-продажа
+                  - `true` — B2B-продажа
+    SupplyTrbx:
+      type: object
+      properties:
+        id:
+          description: ID короба
+          type: string
+          example: WB-TRBX-1234567
+    TrbxStickers:
+      type: object
+      properties:
+        barcode:
+          type: string
+          minLength: 1
+          description: Закодированное значение стикера
+          example: $WBMP:1:123:1234567
+        file:
+          type: string
+          format: byte
+          minLength: 1
+          description: Полное представление стикера в заданном формате (кодировка base64)
+          example: U3dhZ2dlciByb2Nrcw==
+    Meta:
+      type: object
+      description: Метаданные сборочного задания
+      properties:
+        imei:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: "123456789012345"
+          description: IMEI
+        uin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: "123456789012345"
+          description: УИН
+        gtin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: "123456789012345"
+          description: GTIN
+        sgtin:
+          type: object
+          properties:
+            value:
+              type: array
+              items:
+                type: string
+              example:
+                - "123456789012345"
+              nullable: true
+          description: Код маркировки Честного знака
+        expiration:
+          type: object
+          properties:
+            value:
+              type: string
+              example: 12.09.2030
+              nullable: true
+          description: Срок годности товара
+          format: date (dd.mm.yyyy)
+        customsDeclaration:
+          type: object
+          properties:
+            value:
+              type: string
+              example: 10704010/010624/0000302
+              nullable: true
+          description: Номер грузовой таможенной декларации
+    v3.GetMetaMultiRequest:
+      type: object
+      description: ID сборочных заданий
+      required:
+        - orders
+      properties:
+        orders:
+          items:
+            type: integer
+          type: array
+          maxItems: 100
+          example:
+            - 123456
+            - 234567
+            - 345678
+    v3.OrdersMetaAPI:
+      properties:
+        orders:
+          items:
+            $ref: "#/components/schemas/v3.OrderMetaAPI"
+          type: array
+      type: object
+    v3.OrderMetaAPI:
+      properties:
+        id:
+          type: integer
+          description: ID сборочного задания
+        meta:
+          description: Метаданные сборочного задания
+          $ref: "#/components/schemas/Meta"
+          type: object
+      type: object
+    Pass:
+      type: object
+      description: Данные о пропуске продавца
+      properties:
+        firstName:
+          type: string
+          nullable: false
+          description: Имя водителя
+          example: Александр
+        dateEnd:
+          type: string
+          nullable: false
+          description: Дата окончания действия пропуска
+          example: "2022-07-31 17:53:13+00:00"
+        lastName:
+          type: string
+          nullable: false
+          description: Фамилия водителя
+          example: Петров
+        carModel:
+          type: string
+          nullable: false
+          description: Марка машины
+          example: Lamborghini
+        carNumber:
+          type: string
+          nullable: false
+          description: Номер машины
+          example: A456BC123
+        officeName:
+          type: string
+          nullable: false
+          description: Название склада
+          example: Коледино
+        officeAddress:
+          type: string
+          nullable: false
+          description: Адрес склада
+          example: г. Подольск, д. Коледино, ул. Троицкая
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада
+          example: 15
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID пропуска
+          example: 1
+    CrossborderTurkeyClientInfo:
+      properties:
+        firstName:
+          type: string
+          description: Имя клиента
+          example: Иван
+        fullName:
+          type: string
+          description: Фамилия, Имя, Отчество
+          example: Андреев Иван Васильевич
+        lastName:
+          type: string
+          description: Фамилия клиента
+          example: Андреев
+        middleName:
+          type: string
+          description: Отчество клиента
+          example: Васильевич
+        orderID:
+          type: integer
+          description: Номер заказа
+          example: 134567
+        phone:
+          type: string
+          description: Телефон для связи с клиентом
+          example: "79871234567"
+        phoneCode:
+          type: string
+          description: Не используется
+          example: "0"
+    CrossborderTurkeyClientInfoResp:
+      properties:
+        orders:
+          description: Информация по клиенту для кроссбордер-заказа из Турции
+          items:
+            $ref: "#/components/schemas/CrossborderTurkeyClientInfo"
+          type: array
+      type: object
+    OrdersRequestAPI:
+      properties:
+        orders:
+          description: Список заказов
+          items:
+            type: integer
+          type: array
+      type: object
+      example:
+        orders:
+          - 987654321
+          - 123456789
+    v3.APIError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+        message:
+          type: string
+          description: Описание ошибки
+        data:
+          type: object
+          description: Дополнительные данные ошибки
+  responses:
+    "401":
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: "token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84"
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: "2024-09-30T06:52:38Z"
+    "429":
+      description: Слишком много запросов
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: "2024-09-30T06:52:38Z"
+    NotFound:
+      description: Не найдено
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: NotFound
+            message: Не найдено
+    AccessDenied:
+      description: Доступ запрещён
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: AccessDenied
+            message: Доступ запрещён
+  parameters:
+    Supply:
+      name: supplyId
+      in: path
+      required: true
+      description: ID поставки
+      schema:
+        type: string
+        example: WB-GI-1234567
+    Order:
+      name: orderId
+      in: path
+      required: true
+      description: ID сборочного задания
+      schema:
+        type: integer
+        format: int64
+        example: 5632423
+    Pass:
+      name: passId
+      in: path
+      required: true
+      description: ID пропуска
+      schema:
+        type: integer
+        format: int64
+        example: 45
+    Next:
+      name: next
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Параметр пагинации. Устанавливает значение, с которого надо получить следующий пакет данных. Для получения полного списка данных должен быть равен `0` в первом запросе. Для следующих запросов необходимо брать значения из одноимённого поля в ответе.
+    Limit:
+      name: limit
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+      description: Параметр пагинации. Устанавливает предельное количество возвращаемых данных.
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

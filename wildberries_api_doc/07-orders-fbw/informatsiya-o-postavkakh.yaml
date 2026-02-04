@@ -1,0 +1,318 @@
+openapi: 3.0.1
+info:
+  title: Поставки FBW — Информация о поставках
+  version: ordersfbw
+  description: "Shard for tag: Информация о поставках"
+  x-file-name: orders-fbw
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Информация о поставках
+    description: ""
+paths:
+  /api/v1/supplies:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Информация о поставках
+      summary: Список поставок
+      description: |
+        Метод возвращает список поставок, по умолчанию — последние 1000 поставок.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          description: Количество записей в ответе
+          schema:
+            type: integer
+            default: 1000
+            maximum: 1000
+            minimum: 1
+        - name: offset
+          in: query
+          description: После какого элемента выдавать данные
+          schema:
+            type: integer
+            default: 0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/models.SuppliesFiltersRequest
+            example:
+              dates:
+                - from: "2024-03-04"
+                  till: "2025-03-24"
+                  type: factDate
+              statusIDs:
+                - 5
+                - 6
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: _schemas.yaml#/components/schemas/models.Supply
+              example:
+                - phone: +7 916 *** 44 44
+                  supplyID: null
+                  preorderID: 34597755
+                  createDate: "2024-12-29T16:58:26+03:00"
+                  supplyDate: null
+                  factDate: null
+                  updatedDate: null
+                  statusID: 1
+                - phone: +7 916 *** 33 33
+                  supplyID: 26596368
+                  preorderID: 34601223
+                  createDate: "2024-12-29T16:57:59+03:00"
+                  supplyDate: "2024-12-29T00:00:00+03:00"
+                  factDate: null
+                  updatedDate: null
+                  statusID: 2
+                - phone: +7 000 *** 36 76
+                  supplyID: 22677736
+                  preorderID: 27363170
+                  createDate: "2024-08-22T18:10:59+03:00"
+                  supplyDate: "2024-08-22T00:00:00+03:00"
+                  factDate: "2024-08-22T12:24:14+03:00"
+                  updatedDate: "2024-08-22T18:33:45+03:00"
+                  statusID: 6
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                BadTypeFormat:
+                  $ref: _schemas.yaml#/components/examples/BadTypeFormat
+                BadLimitFormat:
+                  $ref: _schemas.yaml#/components/examples/BadLimitFormat
+                BadOffsetFormat:
+                  $ref: _schemas.yaml#/components/examples/BadOffsetFormat
+                BadFromOrTill:
+                  $ref: _schemas.yaml#/components/examples/BadFromOrTill
+                BadStatusIDs:
+                  $ref: _schemas.yaml#/components/examples/BadStatusIDs
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v1/supplies/{ID}:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Информация о поставках
+      summary: Детали поставки
+      description: |
+        Метод возвращает детали поставки по ID.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
+        </div>
+      parameters:
+        - name: ID
+          in: path
+          description: ID поставки или заказа
+          required: true
+          schema:
+            type: integer
+        - name: isPreorderID
+          in: query
+          description: |
+            Поиск по:
+              - `true` — ID заказа, если в `ID` передаёте ID заказа
+              - `false` — ID поставки, если в `ID` передаёте ID поставки
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.SupplyDetails
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                BadPathParamFormat:
+                  $ref: _schemas.yaml#/components/examples/BadPathParamFormat
+                BadisPreorderIDFormat:
+                  $ref: _schemas.yaml#/components/examples/BadisPreorderIDFormat
+                PreorderIdSearchError:
+                  $ref: _schemas.yaml#/components/examples/PreorderIdSearchError
+                BadID:
+                  $ref: _schemas.yaml#/components/examples/BadID
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                SupplyNotFound:
+                  $ref: _schemas.yaml#/components/examples/SupplyNotFound
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v1/supplies/{ID}/goods:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Информация о поставках
+      summary: Товары поставки
+      description: |
+        Метод возвращает информацию о товарах в поставке.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          description: Количество записей в ответе
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: offset
+          in: query
+          description: После какого элемента выдавать данные
+          schema:
+            type: integer
+            default: 0
+        - name: isPreorderID
+          in: query
+          description: |
+            Поиск по:
+              - `true` — ID заказа, если в `ID` передаёте ID заказа
+              - `false` — ID поставки, если в `ID` передаёте ID поставки
+          schema:
+            type: boolean
+            default: false
+        - name: ID
+          in: path
+          description: ID поставки или заказа
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: _schemas.yaml#/components/schemas/models.GoodInSupply
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                BadOffsetFormat:
+                  $ref: _schemas.yaml#/components/examples/BadOffsetFormat
+                BadisPreorderIDFormat:
+                  $ref: _schemas.yaml#/components/examples/BadisPreorderIDFormat
+                BadPathParamFormat:
+                  $ref: _schemas.yaml#/components/examples/BadPathParamFormat
+                BadLimitFormat:
+                  $ref: _schemas.yaml#/components/examples/BadLimitFormat
+                BadSupplyIDGoods:
+                  $ref: _schemas.yaml#/components/examples/BadSupplyIDGoods
+                BadID:
+                  $ref: _schemas.yaml#/components/examples/BadID
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+  /api/v1/supplies/{ID}/package:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Информация о поставках
+      summary: Упаковка поставки
+      description: |
+        Метод возвращает информацию об упаковке поставки.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
+        </div>
+      parameters:
+        - name: ID
+          in: path
+          description: ID поставки
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: _schemas.yaml#/components/schemas/models.Box
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                BadPathParamFormat:
+                  $ref: _schemas.yaml#/components/examples/BadPathParamFormat
+                BadSupplyIDPackage:
+                  $ref: _schemas.yaml#/components/examples/BadSupplyIDPackage
+                BadID:
+                  $ref: _schemas.yaml#/components/examples/BadID
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "429":
+          $ref: _schemas.yaml#/components/responses/429

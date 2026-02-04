@@ -1,0 +1,13 @@
+_module: 07-orders-fbw
+_original_file: 07-orders-fbw.yaml
+_base_url: https://supplies-api.wildberries.ru
+_shards:
+  - _file: informatsiya-dlya-formirovaniya-postavok.yaml
+    _tag: Информация для формирования поставок
+    _endpoints: 4
+  - _file: informatsiya-o-postavkakh.yaml
+    _tag: Информация о поставках
+    _endpoints: 4
+_shared_schemas: _schemas.yaml
+_total_endpoints: 8
+_deprecated_endpoints: 1

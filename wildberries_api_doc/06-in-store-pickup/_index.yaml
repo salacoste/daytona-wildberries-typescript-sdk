@@ -1,0 +1,17 @@
+_module: 06-in-store-pickup
+_description: >
+  Управление [сборочными заданиями](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz) и
+  [метаданными](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz) заказов модели Самовывоз.
+_original_file: 06-in-store-pickup.yaml
+_base_url: N/A
+_shards:
+  - file: sborochnye-zadaniya-samovyvoz.yaml
+    domain: Сборочные задания Самовывоз
+    endpoints: 10
+    description: Сборочные задания Самовывоз
+  - file: metadannye-samovyvoz.yaml
+    domain: Метаданные Самовывоз
+    endpoints: 6
+    description: Метаданные Самовывоз
+_shared_schemas: _schemas.yaml
+_total_endpoints: 16

@@ -23,24 +23,25 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: supplies
+      deprecated: true
       security:
         - HeaderApiKey: []
       tags:
         - Информация для формирования поставок
       summary: Коэффициенты приёмки
       description: |
-        Метод возвращает коэффициенты приёмки для конкретных складов на ближайшие 14 дней.
+        Метод находится в разделе [Тарифы](/openapi/wb-tariffs#tag/Tarify-na-postavku/paths/~1api~1tariffs~1v1~1acceptance~1coefficients/get) и называется **Тарифы на поставку** `GET /api/tariffs/v1/acceptance/coefficients`. Он доступен по домену `common-api.wildberries.ru` с <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-personalnyj-bazovyj-ili-testovyj-token">токеном</a> любой категории.
 
-        <div class="description_important">
-          Приёмка для поставки доступна только при сочетании: <br> <code>coefficient</code> — <code>0</code> или <code>1</code> <br> и <code>allowUnload</code> — <code>true</code>
-        </div>
+        Доступ к этому методу с доменом `supplies-api.wildberries.ru` будет отключен [3 февраля](https://dev.wildberries.ru/release-notes?id=370)
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 6 запросов | 10 секунд | 6 запросов |
+        | 1 мин | 6 запросов | 10 сек | 6 запросов |
         </div>
       parameters:
         - name: warehouseIDs
@@ -82,6 +83,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: supplies
       security:
         - HeaderApiKey: []
       tags:
@@ -95,14 +98,14 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 6 запросов | 10 секунд | 6 запросов |
+        | 1 мин | 6 запросов | 10 сек | 6 запросов |
         </div>
       parameters:
         - name: warehouseID
           in: query
           description: ID склада. <br> Если параметр не указан, возвращаются данные по всем складам.<br> **Максимум одно значение**
           schema:
-            type: string
+            type: integer
           example: 507
       requestBody:
         content:
@@ -147,6 +150,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: supplies
       security:
         - HeaderApiKey: []
       tags:
@@ -160,7 +165,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 6 запросов | 10 секунд | 6 запросов |
+        | 1 мин | 6 запросов | 10 сек | 6 запросов |
         </div>
       responses:
         '200':
@@ -183,6 +188,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: supplies
       tags:
         - Информация для формирования поставок
       summary: Транзитные направления
@@ -194,7 +201,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 6 запросов | 10 секунд | 10 запросов |
+        | 1 мин | 6 запросов | 10 сек | 10 запросов |
         </div>
       responses:
         '200':
@@ -216,6 +223,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: supplies
       tags:
         - Информация о поставках
       summary: Список поставок
@@ -227,7 +236,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 30 запросов | 2 секунды | 10 запросов |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
         </div>
       parameters:
         - name: limit
@@ -276,7 +285,6 @@ paths:
                   factDate: null
                   updatedDate: null
                   statusID: 1
-                  statusName: Не запланировано
                 - phone: +7 916 *** 33 33
                   supplyID: 26596368
                   preorderID: 34601223
@@ -285,7 +293,6 @@ paths:
                   factDate: null
                   updatedDate: null
                   statusID: 2
-                  statusName: Запланировано
                 - phone: +7 000 *** 36 76
                   supplyID: 22677736
                   preorderID: 27363170
@@ -294,7 +301,6 @@ paths:
                   factDate: '2024-08-22T12:24:14+03:00'
                   updatedDate: '2024-08-22T18:33:45+03:00'
                   statusID: 6
-                  statusName: Отгружено на воротах
         '400':
           description: Неправильный запрос
           content:
@@ -320,6 +326,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: supplies
       tags:
         - Информация о поставках
       summary: Детали поставки
@@ -331,7 +339,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 30 запросов | 2 секунды | 10 запросов |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
         </div>
       parameters:
         - name: ID
@@ -388,6 +396,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: supplies
       tags:
         - Информация о поставках
       summary: Товары поставки
@@ -399,7 +409,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 30 запросов | 2 секунды | 10 запросов |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
         </div>
       parameters:
         - name: limit
@@ -467,6 +477,8 @@ paths:
     servers:
       - url: https://supplies-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: supplies
       tags:
         - Информация о поставках
       summary: Упаковка поставки
@@ -478,7 +490,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 30 запросов | 2 секунды | 10 запросов |
+        | 1 мин | 30 запросов | 2 сек | 10 запросов |
         </div>
       parameters:
         - name: ID
@@ -532,7 +544,7 @@ components:
         activeFrom:
           type: string
           description: С какого числа доступно транзитное направление
-          format: RFC 3339
+          format: date-time
         boxTariff:
           nullable: true
           type: array
@@ -626,9 +638,9 @@ components:
           description: |
             Код ТНВЭД.
             <br>
-            Если `"needKIZ":true`, а `"tnved":null`, нужно заполнить характеристику товара **ТН ВЭД** в [личном кабинете](https://seller.wildberries.ru/new-goods) или по [API](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post)
+            Если `"needKiz":true`, а `"tnved":null`, нужно заполнить характеристику товара **ТН ВЭД** в [личном кабинете](https://seller.wildberries.ru/new-goods) или по [API](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post)
           nullable: true
-        techsize:
+        techSize:
           type: string
           description: Размер товара, указанный продавцом
         color:
@@ -716,17 +728,6 @@ components:
             - 5
             - 6
           type: integer
-        statusName:
-          description: Статус поставки
-          deprecated: true
-          enum:
-            - Не запланировано
-            - Запланировано
-            - Отгрузка разрешена
-            - Идёт приёмка
-            - Принято
-            - Отгружено на воротах
-          type: string
         virtualTypeID:
           description: |
             ID типа виртуальной поставки. Отображается только для поставок с `"boxTypeID":0`.
@@ -736,16 +737,6 @@ components:
               - `5` — Допринято
               - `6` — Скан-приёмка
           type: integer
-        virtualTypeName:
-          deprecated: true
-          description: |
-            Тип виртуальной поставки. Отображается только для поставок с `"boxTypeID":0`.
-              - `Перенос остатков`
-              - `Обезличка`
-              - `QR-поставка`
-              - `Допринято`
-              - `Скан-приёмка`
-          type: string
         boxTypeID:
           description: |
             ID типа поставки:
@@ -754,15 +745,6 @@ components:
               - `5` — Монопаллеты
               - `6` — Суперсейф
           type: integer
-        boxTypeName:
-          deprecated: true
-          description: |
-            Тип поставки:
-              - `Короба`
-              - `Монопаллеты`
-              - `Суперсейф`
-              - `Без коробов`
-          type: string
         createDate:
           description: Дата и время создания поставки
           type: string
@@ -843,9 +825,7 @@ components:
       example:
         phone: +7 903 *** 98 62
         statusID: 5
-        statusName: Принято
         boxTypeID: 5
-        boxTypeName: Монопаллеты
         createDate: '2025-07-15T17:17:45+03:00'
         supplyDate: '2025-07-15T00:00:00+03:00'
         factDate: '2025-07-18T11:37:32+03:00'
@@ -859,7 +839,7 @@ components:
         acceptanceCost: 5000
         paidAcceptanceCoefficient: 10
         rejectReason: null
-        supplierAssignName: Магазн
+        supplierAssignName: Магазин
         storageCoef: '215'
         deliveryCoef: '200'
         quantity: 10
@@ -896,7 +876,6 @@ components:
         preorderID:
           description: ID заказа (незапланированная поставка). Для всех виртуальных поставок будет `0`
           type: integer
-          nullable: true
         createDate:
           description: Дата и время создания поставки
           type: string
@@ -929,17 +908,6 @@ components:
             - 5
             - 6
           type: integer
-        statusName:
-          description: Текущий статус поставки
-          deprecated: true
-          enum:
-            - Не запланировано
-            - Запланировано
-            - Отгрузка разрешена
-            - Идёт приёмка
-            - Принято
-            - Отгружено на воротах
-          type: string
       type: object
     models.AcceptanceCoefficient:
       type: object
@@ -963,20 +931,10 @@ components:
         allowUnload:
           type: boolean
           description: |
-            Доступность приёмки для поставок данного типа, смотри значение поля `boxTypeName`:
+            Доступность приёмки для поставок данного типа, смотри значение поля `boxTypeID`:
 
              - `true` — приёмка доступна
              - `false` — приёмка не доступна
-        boxTypeName:
-          deprecated: true
-          type: string
-          description: |
-            Тип поставки:
-
-              - `Короба`
-              - `Монопаллеты`
-              - `Суперсейф`
-              - `QR-поставка с коробами`
         boxTypeID:
           type: integer
           description: |
@@ -1037,12 +995,6 @@ components:
         workTime:
           type: string
           description: Режим работы склада
-        acceptsQr:
-          type: boolean
-          description: |
-            Принимает ли склад QR-поставки:
-            - `true` — да
-            - `false` — нет
         isActive:
           type: boolean
           description: |
@@ -1060,7 +1012,6 @@ components:
         name: Гомель 2
         address: Гомель, Могилёвская улица 1/А
         workTime: 24/7
-        acceptsQR: false
         isActive: false
         isTransitActive: true
     models.Good:
@@ -1165,7 +1116,6 @@ components:
           warehouseID: 217081
           warehouseName: Сц Брянск 2
           allowUnload: false
-          boxTypeName: Суперсейф
           boxTypeID: 6
           storageCoef: null
           deliveryCoef: null
@@ -1185,11 +1135,11 @@ components:
     OptionsResponse:
       value:
         result:
-          - barcode: кrrr
+          - barcode: Seller
             warehouses: null
             error:
               title: barcode validation error
-              detail: barcode кrrr is not found
+              detail: barcode Seller is not found
             isError: true
           - barcode: '123456789'
             warehouses:
@@ -1335,7 +1285,7 @@ components:
     '401':
       description: Не авторизован
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:
@@ -1376,7 +1326,7 @@ components:
     '429':
       description: Слишком много запросов
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:

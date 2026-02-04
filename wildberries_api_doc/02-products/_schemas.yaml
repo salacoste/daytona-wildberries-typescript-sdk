@@ -1,5 +1,269 @@
 components:
   schemas:
+    BrandsResponse:
+      type: object
+      required:
+        - brands
+        - total
+      properties:
+        brands:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - logoUrl
+              - name
+            properties:
+              id:
+                description: ID бренда
+                example: 9007199254
+                type: integer
+              logoUrl:
+                description: URL логотипа бренда
+                type: string
+              name:
+                description: Название бренда
+                type: string
+                example: Brand
+        next:
+          type: integer
+          description: Параметр пагинации. Укажите это значение в запросе, чтобы получить следующий пакет данных. Если поле отсутствует, вы получили все данные
+          example: 1212
+        total:
+          type: integer
+          description: Общее количество брендов предмета
+          example: 344534
+    BrandsResponseError:
+      type: object
+      required:
+        - title
+        - detail
+        - origin
+        - requestId
+      properties:
+        title:
+          type: string
+          description: Заголовок ошибки
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Текст ошибки
+              location:
+                type: string
+                description: Параметр, где произошла ошибка
+              value:
+                description: Значение параметра, где произошла ошибка
+    StoreContactRequestBody:
+      type: object
+      description: Контакты склада продавца
+      properties:
+        contacts:
+          type: array
+          maxItems: 5
+          items:
+            type: object
+            properties:
+              comment:
+                type: string
+                nullable: false
+                description: Комментарий
+                example: Иванов Иван Иванович. Звонить с 10 до 21 часа.
+                maxLength: 1000
+              phone:
+                type: string
+                nullable: false
+                description: |
+                  Номер телефона.<br>Поддерживаются коды стран:
+                    - `+7` — Россия, Казахстан
+                    - `+374` — Армения
+                    - `+375` — Беларусь
+                    - `+996` — Кыргызстан
+                example: "+79998887766"
+    responseCardCreate:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          example: null
+          description: Данные ответа
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Описание ошибки
+          type: string
+        additionalErrors:
+          description: Дополнительные ошибки
+          oneOf:
+            - type: object
+              nullable: true
+              properties:
+                string:
+                  type: string
+              additionalProperties: false
+            - type: string
+              nullable: true
+            - type: object
+              properties:
+                error:
+                  type: string
+              required:
+                - error
+    requestMoveNmsImtConn:
+      type: object
+      required:
+        - targetIMT
+        - nmIDs
+      properties:
+        targetIMT:
+          description: Существующий `imtID`, под которым необходимо [объединить](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточки товаров
+          type: integer
+          example: 123
+        nmIDs:
+          description: |
+            `nmID`, которые необходимо объединить
+          minimum: 1
+          maximum: 30
+          type: array
+          items:
+            type: integer
+          example:
+            - 837459235
+            - 828572090
+    requestMoveNmsImtDisconn:
+      type: object
+      required:
+        - nmIDs
+      properties:
+        nmIDs:
+          description: |
+            `nmID`, которые необходимо разъединить
+          minimum: 1
+          maximum: 30
+          type: array
+          items:
+            type: integer
+          example:
+            - 837459235
+            - 828572090
+      additionalProperties: false
+    responseIncorrectDate:
+      type: object
+      properties:
+        error:
+          type: string
+      additionalProperties: false
+    responseBodyContentError400:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: object
+    responseBodyContentError403:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: string
+      example:
+        data: null
+        error: true
+        errorText: Access denied
+        additionalErrors: Access denied
+    responseContentError:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+        additionalErrors:
+          description: Дополнительные ошибки
+          type: string
+          nullable: true
+      example:
+        data: null
+        error: false
+        errorText: ""
+        additionalErrors: null
+    mediaErrors:
+      type: object
+      properties:
+        additionalErrors:
+          description: Дополнительные ошибки
+          nullable: true
+          type: object
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Текст ошибки
+          type: string
+      example:
+        additionalErrors: null
+        data: null
+        error: true
+        errorText: Error text
+    ResponseError:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Данные ошибки
+        error:
+          type: boolean
+          description: Флаг ошибки
+        errorText:
+          type: string
+          description: Текст ошибки
     RequestAlreadyExistsError:
       type: object
       properties:
@@ -19,6 +283,30 @@ components:
         errorText:
           description: Текст ошибки
           type: string
+    StocksWarehouseError:
+      type: array
+      items:
+        type: object
+        properties:
+          data:
+            description: Дополнительная информация об ошибке
+            nullable: true
+            type: array
+            items:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: Баркод
+                amount:
+                  type: integer
+                  description: Остаток
+          code:
+            description: Код ошибки
+            type: string
+          message:
+            description: Описание ошибки
+            type: string
     TaskCreated:
       type: object
       properties:
@@ -40,12 +328,12 @@ components:
         errorText:
           description: Текст ошибки
           type: string
-          example: ''
+          example: ""
     Goods:
       type: array
       description: "Товары, цены и скидки для них. Максимум 1\_000\_товаров. Цена и скидка не могут быть пустыми одновременно.\n<br><br>\nЕсли новая цена со скидкой будет хотя бы в\_3 раза меньше старой, она попадёт в\_[карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и товар будет продаваться по\_старой цене. Ошибка об\_этом будет в\_ответах методов состояний загрузок.\n<br><br>\nВы можете изменить цену или скидку с помощью API либо вывести товар из\_карантина в\_[личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine)\n"
       items:
-        $ref: '#/components/schemas/Good'
+        $ref: "#/components/schemas/Good"
     Good:
       type: object
       required:
@@ -67,7 +355,7 @@ components:
       description: "Размеры и цены для них. Максимум 1\_000 размеров.\n<br><br>\nДля товаров с поразмерной установкой цен [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) не применяется\n"
       type: array
       items:
-        $ref: '#/components/schemas/SizeGoodReq'
+        $ref: "#/components/schemas/SizeGoodReq"
     SizeGoodReq:
       type: object
       required:
@@ -91,7 +379,7 @@ components:
       type: array
       description: "Товары и скидки WB Клуба для них. Максимум 1\_000\_товаров.\n"
       items:
-        $ref: '#/components/schemas/ClubDiscReq'
+        $ref: "#/components/schemas/ClubDiscReq"
     ClubDiscReq:
       type: object
       required:
@@ -117,7 +405,7 @@ components:
         vendorCode:
           type: string
           description: Артикул продавца
-          example: '07326060'
+          example: "07326060"
         sizes:
           type: array
           description: Размер
@@ -150,7 +438,7 @@ components:
               techSizeName:
                 description: Размер товара
                 type: string
-                example: '42'
+                example: "42"
         currencyIsoCode4217:
           type: string
           description: Валюта, по стандарту ISO 4217
@@ -191,7 +479,7 @@ components:
           example: 98989887
         vendorCode:
           type: string
-          example: '34552332'
+          example: "34552332"
           description: Артикул продавца
         price:
           type: integer
@@ -220,7 +508,7 @@ components:
         techSizeName:
           description: Размер товара
           type: string
-          example: '42'
+          example: "42"
         editableSizePrice:
           description: |
             Можно ли устанавливать цены отдельно для разных размеров (зависит от категории товара):
@@ -244,7 +532,7 @@ components:
           description: Артикул WB
         vendorCode:
           type: string
-          example: '34552332'
+          example: "34552332"
           description: Артикул продавца
         sizeID:
           type: integer
@@ -271,11 +559,12 @@ components:
           example: 5
           description: "Скидка WB Клуба,\_%"
         status:
-          $ref: '#/components/schemas/GoodStatusBuffer'
+          $ref: "#/components/schemas/GoodStatusBuffer"
         errorText:
           type: string
           example: null
           description: Текст ошибки
+          nullable: true
     GoodHistory:
       type: object
       properties:
@@ -285,7 +574,7 @@ components:
           description: Артикул WB
         vendorCode:
           type: string
-          example: '34552332'
+          example: "34552332"
           description: Артикул продавца
         sizeID:
           type: integer
@@ -293,7 +582,7 @@ components:
           description: ID размера. В методах Контента это поле `chrtID`
         techSizeName:
           type: string
-          example: '42'
+          example: "42"
           description: Размер
         price:
           type: integer
@@ -313,7 +602,7 @@ components:
           description: "Скидка WB Клуба,\_%"
           nullable: true
         status:
-          $ref: '#/components/schemas/GoodStatus'
+          $ref: "#/components/schemas/GoodStatus"
         errorText:
           type: string
           example: You can't change the item price. Item was added to the Sale due to high inventory
@@ -328,11 +617,11 @@ components:
           example: 395643565
           description: ID загрузки
         status:
-          $ref: '#/components/schemas/TaskStatus'
+          $ref: "#/components/schemas/TaskStatus"
         uploadDate:
-          $ref: '#/components/schemas/Date'
+          $ref: "#/components/schemas/Date"
         activationDate:
-          $ref: '#/components/schemas/Date1'
+          $ref: "#/components/schemas/Date1"
         overAllGoodsNumber:
           description: Всего товаров
           type: integer
@@ -349,11 +638,11 @@ components:
           example: 395643565
           description: ID загрузки
         status:
-          $ref: '#/components/schemas/TaskStatusBuffer'
+          $ref: "#/components/schemas/TaskStatusBuffer"
         uploadDate:
-          $ref: '#/components/schemas/Date'
+          $ref: "#/components/schemas/Date"
         activationDate:
-          $ref: '#/components/schemas/Date1'
+          $ref: "#/components/schemas/Date1"
         overAllGoodsNumber:
           description: Всего товаров
           type: integer
@@ -364,12 +653,12 @@ components:
           example: 0
     Date:
       type: string
-      example: '2022-08-21T22:00:13+02:00'
+      example: "2022-08-21T22:00:13+02:00"
       format: date-time
       description: Дата и время, когда загрузка создана
     Date1:
       type: string
-      example: '2022-08-21T22:00:13+02:00'
+      example: "2022-08-21T22:00:13+02:00"
       format: date-time
       description: "Дата и время, когда загрузка отправляется в\_обработку"
     TaskStatus:
@@ -388,6 +677,22 @@ components:
       description: "Статус товара: `1`\_— в обработке\n"
       type: integer
       example: 1
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          nullable: false
+        message:
+          type: string
+          description: Описание ошибки
+          nullable: false
+        data:
+          type: object
+          description: Дополнительные данные ошибки
+          nullable: true
     QuarantineGoods:
       type: object
       properties:
@@ -399,10 +704,11 @@ components:
           description: Не используется
           type: integer
           example: null
+          nullable: true
         techSizeName:
           description: Не используется
           type: string
-          example: ''
+          example: ""
         currencyIsoCode4217:
           type: string
           description: Валюта по стандарту ISO 4217
@@ -428,5 +734,1271 @@ components:
         priceDiff:
           type: number
           format: float
-          description: 'Разница: `newPrice` * (1 - `newDiscount` / 100) - `oldPrice` * (1 - `oldDiscount` / 100)'
+          description: "Разница: `newPrice` * (1 - `newDiscount` / 100) - `oldPrice` * (1 - `oldDiscount` / 100)"
           example: -2899.5
+    Office:
+      type: object
+      description: Данные о складе WB
+      properties:
+        address:
+          type: string
+          nullable: false
+          description: Адрес
+          example: ул. Троицкая, Подольск, Московская обл.
+        name:
+          type: string
+          nullable: false
+          description: Название
+          example: Коледино
+        city:
+          type: string
+          nullable: false
+          description: Город
+          example: Москва
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID
+          example: 15
+        longitude:
+          type: number
+          format: float64
+          nullable: false
+          description: Долгота
+          example: 55.386871
+        latitude:
+          type: number
+          format: float64
+          nullable: false
+          description: Широта
+          example: 37.588898
+        cargoType:
+          description: |
+            Тип товара, который принимает склад:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        deliveryType:
+          type: integer
+          description: |
+            Тип доставки, который принимает склад:
+              - `1` — доставка на склад WB (FBS)
+              - `2` — доставка силами продавца (DBS)
+              - `3` — доставка курьером WB (DBW)
+              - `5` — самовывоз (C&C)
+              - `6` — экспресс-доставка силами продавца (ЕDBS)
+          enum:
+            - 1
+            - 2
+            - 3
+            - 5
+            - 6
+          example: 1
+        federalDistrict:
+          type: string
+          nullable: true
+          example: Центральный
+          description: Федеральный округ склада WB. Если `null`, склад находится за пределами РФ или федеральный округ не указан
+        selected:
+          type: boolean
+          nullable: false
+          description: Признак того, что склад уже выбран продавцом
+    Warehouse:
+      type: object
+      description: Данные о складе продавца
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Название склада продавца
+          example: ул. Троицкая, Подольск, Московская обл.
+        officeId:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада WB
+          example: 15
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          description: ID склада продавца
+          example: 1
+        cargoType:
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        deliveryType:
+          type: integer
+          description: |
+            Тип доставки, который принимает склад:
+              - `1` — доставка на склад WB (FBS)
+              - `2` — доставка силами продавца (DBS)
+              - `3` — доставка курьером WB (DBW)
+              - `5` — самовывоз (C&C)
+              - `6` — экспресс-доставка силами продавца (ЕDBS)
+          enum:
+            - 1
+            - 2
+            - 3
+            - 5
+            - 6
+          example: 1
+        isDeleting:
+          type: boolean
+          nullable: false
+          description: |
+            Склад удаляется:
+              - `false` — нет
+              - `true` — да
+
+            После удаления склад пропадёт из списка
+          example: false
+        isProcessing:
+          type: boolean
+          nullable: false
+          description: |
+            Данные склада обновляются:
+              - `false` — нет
+              - `true` — да, обновление и удаление остатков недоступно
+
+            Обновление данных может занимать несколько минут
+          example: true
+    responsePublicViewerPublicErrorsTableListV2:
+      type: object
+      required:
+        - data
+        - error
+        - errorText
+        - additionalErrors
+      properties:
+        data:
+          $ref: "#/components/schemas/models.ErrorTableListPublicRespV2"
+        error:
+          description: Флаг ошибки
+          type: boolean
+        errorText:
+          description: Описание ошибки
+          type: string
+        additionalErrors:
+          nullable: true
+          description: Дополнительные ошибки
+          type: object
+    models.ErrorTableListPublicRespV2:
+      type: object
+      description: Данные ответа
+      required:
+        - items
+        - cursor
+      properties:
+        items:
+          type: array
+          description: Пакеты данных
+          items:
+            $ref: "#/components/schemas/models.ErrorTableListPublicRespV2Item"
+        cursor:
+          $ref: "#/components/schemas/viewer_contract.PublicErrorsCursorOutput"
+    models.ErrorTableListPublicRespV2Item:
+      type: object
+      required:
+        - batchUUID
+        - subjects
+        - brands
+        - vendorCodes
+        - errors
+      properties:
+        batchUUID:
+          type: string
+          format: UUID
+          description: ID пакета
+        subjects:
+          type: object
+          description: Предметы. Разбивка по `vendorCodes`
+          additionalProperties:
+            $ref: "#/components/schemas/models.ErrorSubject"
+        brands:
+          type: object
+          description: Бренды. Разбивка по `vendorCodes`
+          additionalProperties:
+            $ref: "#/components/schemas/models.ErrorBrand"
+        vendorCodes:
+          type: array
+          description: Артикулы продавца
+          items:
+            type: string
+        errors:
+          type: object
+          description: Ошибки. Разбивка по `vendorCodes`
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    viewer_contract.PublicErrorsCursorOutput:
+      type: object
+      required:
+        - next
+        - updatedAt
+        - batchUUID
+      description: Пагинатор
+      properties:
+        next:
+          type: boolean
+          description: |
+            Есть ли ещё черновики:
+              - `false` — нет
+              - `true` — да
+        updatedAt:
+          type: string
+          format: date-time
+          description: Дата и время формирования последнего пакета в ответе
+        batchUUID:
+          type: string
+          format: UUID
+          description: ID последнего пакета в ответе
+    models.ErrorSubject:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: number
+          format: uint64
+          description: ID предмета
+        name:
+          type: string
+          description: Название предмета
+    models.ErrorBrand:
+      type: object
+      properties:
+        id:
+          type: number
+          format: uint64
+          description: ID бренда
+        name:
+          type: string
+          description: Бренд
+    requestPublicViewerPublicErrorsTableListV2:
+      type: object
+      properties:
+        cursor:
+          $ref: "#/components/schemas/swagger.PublicErrorsCursorInput"
+        order:
+          $ref: "#/components/schemas/swagger.PublicErrorsOrderV2"
+    swagger.PublicErrorsCursorInput:
+      type: object
+      description: Пагинатор
+      properties:
+        limit:
+          type: number
+          format: int
+          description: Количество пакетов в ответе
+          maximum: 100
+          default: 100
+        updatedAt:
+          type: string
+          format: date-time
+          description: Дата и время формирования последнего пакета в ответе на предыдущий запрос
+        batchUUID:
+          type: string
+          format: UUID
+          description: ID последнего пакета в ответе на предыдущий запрос
+    swagger.PublicErrorsOrderV2:
+      type: object
+      description: Порядок выдачи пакетов
+      properties:
+        ascending:
+          type: boolean
+          description: |
+            - `false` — сортировка по убыванию
+            - `true` — сортировка по возрастанию
+          default: true
+  parameters:
+    Warehouse:
+      name: warehouseId
+      in: path
+      required: true
+      description: ID склада продавца
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    uploadID:
+      in: query
+      name: uploadID
+      description: ID загрузки
+      required: true
+      schema:
+        type: integer
+        example: 146567
+    limit:
+      in: query
+      name: limit
+      description: Сколько элементов вывести на одной странице (пагинация)
+      schema:
+        type: integer
+        format: uint
+        maximum: 1000
+        example: 10
+      required: true
+    offset:
+      in: query
+      name: offset
+      description: Сколько элементов пропустить. Например, для значения `10` ответ начнется с 11 элемента
+      schema:
+        type: integer
+        format: uint
+        minimum: 0
+        example: 0
+    nmID:
+      in: query
+      name: nmID
+      description: Артикул WB
+      schema:
+        type: integer
+        example: 1
+      required: true
+    filterNmID:
+      in: query
+      description: Артикул WB для поиска товара
+      name: filterNmID
+      schema:
+        type: integer
+      example: 44589768676
+  requestBodies:
+    SupplierTaskRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - data
+            properties:
+              data:
+                $ref: "#/components/schemas/Goods"
+    SupplierTaskRequestSize:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - data
+            properties:
+              data:
+                $ref: "#/components/schemas/SizeGoodsBody"
+    SupplierTaskRequestClubDisc:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - data
+            properties:
+              data:
+                $ref: "#/components/schemas/ClubDisc"
+    FilterPost:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - nmList
+            properties:
+              nmList:
+                description: Артикулы WB для поиска товара
+                type: array
+                minItems: 1
+                maxItems: 1000
+                items:
+                  type: integer
+          example:
+            nmList:
+              - 26613989
+              - 1348041
+  responses:
+    "401":
+      description: Не авторизован
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: "token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84"
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: "2024-09-30T06:52:38Z"
+    "429":
+      description: Слишком много запросов
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: "2024-09-30T06:52:38Z"
+    NotFound:
+      description: Не найдено
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: NotFound
+            message: ""
+    AccessDenied:
+      description: Доступ запрещён
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: AccessDenied
+            message: ""
+    ResponseGoodsLists:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - data
+              - error
+              - errorText
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                required:
+                  - listGoods
+                properties:
+                  listGoods:
+                    description: Информация о товарах
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GoodsList"
+              error:
+                type: boolean
+                description: Флаг ошибки
+                example: false
+              errorText:
+                type: string
+                description: Текст ошибки
+                example: ""
+    ResponseGoodHistories:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  uploadID:
+                    type: integer
+                    description: ID загрузки
+                    example: 3235236546
+                  historyGoods:
+                    type: array
+                    description: Информация о товарах в загрузке
+                    items:
+                      $ref: "#/components/schemas/GoodHistory"
+    ResponseGoodBufferHistories:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  uploadID:
+                    type: integer
+                    description: ID загрузки
+                    example: 3235236546
+                    nullable: true
+                  bufferGoods:
+                    type: array
+                    nullable: true
+                    description: Информация о товарах в загрузке
+                    items:
+                      $ref: "#/components/schemas/GoodBufferHistory"
+              error:
+                type: boolean
+                description: Флаг ошибки
+                example: false
+              errorText:
+                type: string
+                description: Текст ошибки
+                example: ""
+    ResponseTaskHistory:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: "#/components/schemas/SupplierTaskMetadata"
+              error:
+                type: boolean
+                description: Флаг ошибки
+                example: false
+              errorText:
+                description: Текст ошибки
+                type: string
+                example: ""
+    ResponseTaskBuffer:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: "#/components/schemas/SupplierTaskMetadataBuffer"
+              error:
+                type: boolean
+                description: Флаг ошибки
+                example: false
+              errorText:
+                type: string
+                description: Текст ошибки
+                example: ""
+    ResponseSizeLists:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: Данные ответа
+                properties:
+                  listGoods:
+                    description: Размеры товара
+                    type: array
+                    nullable: true
+                    items:
+                      $ref: "#/components/schemas/SizeGood"
+              error:
+                description: Флаг ошибки
+                type: boolean
+                example: false
+              errorText:
+                description: Текст ошибки
+                type: string
+    SuccessTaskResponse:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TaskCreated"
+    ResponseQuarantineGoods:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                nullable: true
+                type: object
+                description: Данные ответа
+                properties:
+                  quarantineGoods:
+                    description: Информация о товарах в карантине
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuarantineGoods"
+              error:
+                description: Флаг ошибки
+                type: boolean
+                example: false
+              errorText:
+                description: Текст ошибки
+                type: string
+                example: ""
+    Responses208:
+      description: Такая загрузка уже есть
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RequestAlreadyExistsError"
+          examples:
+            This task already exists:
+              description: Такая загрузка уже есть
+              value:
+                data:
+                  id: 1111111
+                  alreadyExists: true
+                error: false
+                errorText: This task already exists
+    StatusNotAcceptable:
+      description: Обновление остатков заблокировано
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: string
+                description: Код ошибки
+                nullable: false
+                example: StatusNotAcceptable
+              message:
+                type: string
+                description: Описание ошибки
+                nullable: false
+                example: Обновление остатков заблокировано в связи с баном поставщика
+              data:
+                type: object
+                description: Дополнительные данные ошибки
+                nullable: true
+  examples:
+    WarehouseNameInvalid:
+      value:
+        code: WarehouseNameInvalid
+        message: Некорректное имя склада
+    StoreIsProcessing:
+      description: Склад находится в процессе обновления или удаления. Повторите попытку через несколько секунд.
+      value:
+        code: StoreIsProcessing
+        message: The store is processing
+    StoreIsProcessing1:
+      description: Склад находится в процессе обновления или удаления. Повторите попытку через несколько секунд.
+      value:
+        - code: StoreIsProcessing
+          message: The store is processing
+    IncorrectRequestBody:
+      value:
+        code: IncorrectRequestBody
+        message: Incorrect required body
+    IncorrectRequest:
+      value:
+        code: IncorrectRequest
+        message: Переданы некорректные данные
+    SubjectDBSRestriction:
+      description: Категория товара недоступна для продажи по модели FBS
+      value:
+        - code: SubjectDBSRestriction
+          message: The product category cannot be sold with 'Fulfillment By Wildberries'.
+          data:
+            - sku: skuTest1
+              amount: 0
+    SubjectFBSRestriction:
+      description: Категория товара недоступна для продажи по модели DBS
+      value:
+        - code: SubjectFBSRestriction
+          message: The product category cannot be sold with 'Delivery By Supplier'.
+          data:
+            - sku: skuTest2
+              amount: 1
+    UploadDataLimit:
+      description: Превышен лимит загружаемых данных
+      value:
+        - code: UploadDataLimit
+          message: Upload limit exceeded.
+          data:
+            - sku: skuTest2
+              amount: 100001
+    UploadDataLimitDbw:
+      description: Превышен лимит загружаемых данных
+      value:
+        code: UploadDataLimit
+        message: Upload limit exceeded.
+    CargoWarehouseRestrictionMGT:
+      description: Выбранный склад не подходит для товаров с типом «МГТ (малогабаритные товары)». Загрузите остатки на склад без метки СГТ или КГТ+
+      value:
+        - code: CargoWarehouseRestrictionMGT
+          message: The selected warehouse is not suitable for goods with the type "LCL (Less than Container Load)". Upload the balances to the warehouse without the ODC or CD+ mark
+          data:
+            - sku: skuTest3
+              amount: 10
+    CargoWarehouseRestrictionSGT:
+      description: Выбранный склад не подходит для товаров с типом «СГТ». Загрузите остатки на склад с отметкой — СГТ
+      value:
+        - code: CargoWarehouseRestrictionSGT
+          message: The selected warehouse is not suitable for goods with the type "ODC". Upload the balances to the warehouse marked - ODC
+          data:
+            - sku: "2042688657617"
+              amount: 0
+    CargoWarehouseRestrictionSGTKGTPlus:
+      description: Выбранный склад не подходит для товаров с типом «СГТ/КГТ+». Загрузите остатки на склад с меткой — СГТ или КГТ+
+      value:
+        - code: CargoWarehouseRestrictionSGTKGTPlus
+          message: The selected warehouse is not suitable for goods with the type "ODC/CD+". Upload the balances to the warehouse with the label - ODC or CD+
+          data:
+            - sku: skuTest3
+              amount: 10
+    CargoWarehouseRestrictionKGTPlus:
+      description: Выбранный склад не подходит для товаров с типом «КГТ+». Загрузите остатки на склад с отметкой — КГТ+
+      value:
+        - code: CargoWarehouseRestrictionKGTPlus
+          message: The selected warehouse is not suitable for goods with the type "CD+". Upload the balances to the warehouse marked - CD+
+          data:
+            - sku: skuTest3
+              amount: 10
+    NotFound:
+      description: Не найдено
+      value:
+        - code: NotFound
+          message: Not found
+          data:
+            - sku: skuTest4
+              amount: 10
+    IncorrectParameter:
+      value:
+        code: IncorrectParameter
+        message: IncorrectParameter
+    creatingOneCard:
+      description: ""
+      value:
+        - subjectID: 105
+          variants:
+            - vendorCode: АртикулПродавца
+              wholesale:
+                enabled: true
+                quantum: 211
+              title: Наименование товара
+              description: Описание товара
+              brand: Бренд
+              dimensions:
+                length: 12
+                width: 7
+                height: 5
+                weightBrutto: 1.242
+              characteristics:
+                - id: 12
+                  value:
+                    - Turkish flag
+                - id: 25471
+                  value: 1200
+                - id: 14177449
+                  value:
+                    - red
+              sizes:
+                - techSize: S
+                  wbSize: "42"
+                  price: 5000
+                  skus:
+                    - "88005553535"
+    creatingMergedCards:
+      description: ""
+      value:
+        - subjectID: 3091
+          variants:
+            - vendorCode: АртикулПродавца11
+              wholesale:
+                enabled: true
+                quantum: 211
+              title: Наименование товара 1
+              description: Описание товара 1
+              brand: Бренд
+              dimensions:
+                length: 55
+                width: 40
+                height: 15
+                weightBrutto: 6.24
+              characteristics:
+                - id: 12
+                  value:
+                    - Turkish flag
+                - id: 25471
+                  value: 1200
+                - id: 14177449
+                  value:
+                    - red
+              sizes:
+                - skus:
+                    - "111111111133111"
+            - vendorCode: АртикулПродавца22
+              title: Наименование товара 2
+              description: Описание товара 2
+              brand: БрендДругой
+              dimensions:
+                length: 55
+                width: 40
+                height: 15
+                weightBrutto: 6.241
+              characteristics:
+                - id: 12
+                  value:
+                    - Turkish flag
+                - id: 25471
+                  value: 1200
+                - id: 14177449
+                  value:
+                    - red
+              sizes:
+                - skus:
+                    - "111111111441111"
+    creatingGroupOfIndividualCards:
+      description: ""
+      value:
+        - subjectID: 3091
+          variants:
+            - vendorCode: АртикулПродавца1
+              wholesale:
+                enabled: true
+                quantum: 211
+              title: Наименование товара 1
+              description: Описание товара 1
+              brand: Бренд
+              dimensions:
+                length: 55
+                width: 40
+                height: 15
+                weightBrutto: 6
+              characteristics:
+                - id: 12
+                  value:
+                    - Turkish flag
+                - id: 25471
+                  value: 1200
+                - id: 14177449
+                  value:
+                    - red
+              sizes:
+                - skus:
+                    - "1111111111111"
+        - subjectID: 105
+          variants:
+            - vendorCode: Артикул продавца 2
+              title: Наименование товара 2
+              description: Описание товара 2
+              brand: Бренд
+              dimensions:
+                length: 14
+                width: 5
+                height: 4
+                weightBrutto: 0.94
+              characteristics:
+                - id: 12
+                  value:
+                    - Turkish flag
+                - id: 25471
+                  value: 1200
+                - id: 14177449
+                  value:
+                    - red
+              sizes:
+                - techSize: S
+                  wbSize: "42"
+                  price: 5000
+                  skus:
+                    - "2222222222222"
+    responseIncorrectBeginDate:
+      description: Некорректная дата начала
+      value:
+        error: Некорректная дата начала
+    responseIncorrectEndDate:
+      description: Некорректная дата конца
+      value:
+        error: Некорректная дата конца
+    responseExceededLimit:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: В группу можно объединить не больше 30 карточек. В результате запроса будет превышен лимит
+        additionalErrors:
+          error: В группу можно объединить не больше 30 карточек. В результате запроса будет превышен лимит
+    responseCombining:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Объединение товаров с разными предметами невозможно
+        additionalErrors:
+          error: Объединение товаров с разными предметами невозможно
+    responseIncorrectRequestFormat:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Неправильный формат запроса
+        additionalErrors:
+          error: Неправильный формат запроса
+    responseNonExistentNmId:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Указан несуществующий nmID карточки товара
+        additionalErrors:
+          error: Указан несуществующий nmID карточки товара
+    responseNonExistentImt:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Указан несуществующий imt
+        additionalErrors:
+          error: Указан несуществующий imt
+    responseDuplicateRequests:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Недопустимо отправлять дублирующиеся запросы!
+        additionalErrors:
+          error: Недопустимо отправлять дублирующиеся запросы!
+    responseAllCardsInSameGroup:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Все карточки находятся в одной группе
+        additionalErrors:
+          error: Все карточки находятся в одной группе
+    responseCardCreate1:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: string
+        additionalErrors:
+          string: string
+    InvalidRequestFormatContent:
+      description: Некорректный формат запроса
+      value:
+        data: null
+        error: true
+        errorText: Invalid request format
+        additionalErrors: {}
+    CardCreatedWithoutVendorCode:
+      description: Карточку товара нельзя создать без артикула продавца
+      value:
+        data: null
+        error: true
+        errorText: A card cannot be created without a vendorCode
+        additionalErrors: {}
+    CardsVendorCodeUsedInOtherCards:
+      description: Артикул продавца используется в другой карточке товара
+      value:
+        data: null
+        error: true
+        errorText: bad request; Unexpected the specified card's vendor code is used in other cards
+        additionalErrors: {}
+    ThisCategoryDoesNotExist:
+      description: Такого предмета не существует
+      value:
+        data: null
+        error: true
+        errorText: This category does not exist
+        additionalErrors:
+          id: "342342"
+    responseBodyContentError400:
+      description: Неправильный запрос
+      value:
+        data: null
+        error: true
+        errorText: Текст ошибки
+        additionalErrors: null
+    responseBody400LenName:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Недопустимое значение наименования ярлыка
+        additionalErrors:
+          description: Слишком длинное название ярлыка. Разрешено не более 15 символов
+    responseBodyLimitTag:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Исчерпан лимит на создание ярлыков
+        additionalErrors: null
+    responseBodyNameNotExist:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Ярлык с таким именем уже существует
+        additionalErrors: null
+    responseNotFound200:
+      description: Успешно
+      value:
+        data: null
+        error: true
+        errorText: Неправильный запрос
+        additionalErrors: null
+    responseNotFound200Del:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Такого ярлыка не существует
+        additionalErrors: null
+    IncorrectRequestNm:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Неправильный запрос
+        additionalErrors: null
+    responseBodyTagNotExist:
+      description: ""
+      value:
+        data: null
+        error: true
+        errorText: Такого ярлыка не существует
+        additionalErrors: null
+    BodySizeExceedsTheGivenLimit:
+      description: Превышен лимит объёма данных в запросе
+      value: body size exceeds the given limit
+    InvalidRequestParameters:
+      description: Неправильные параметры запроса
+      value:
+        data: null
+        error: true
+        errorText: Invalid request parameters
+    UploadLimitExceeded:
+      description: В запросе слишком много товаров (следует читать `1000 items`)
+      value:
+        data: null
+        error: true
+        errorText: "Upload limit exceeded: You can upload a maximum of 10 000 items"
+    DuplicateItemNos:
+      description: В запросе несколько одинаковых `nmID`
+      value:
+        data: null
+        error: true
+        errorText: Duplicate item Nos.
+    DuplicateSizeIDs:
+      description: В запросе несколько одинаковых `sizeID`
+      value:
+        data: null
+        error: true
+        errorText: Duplicate size IDs
+    TheSpecifiedPricesAndDiscountsAreAlreadySet:
+      description: Цены и скидки такие же, как сейчас
+      value:
+        data: null
+        error: true
+        errorText: The specified prices and discounts are already set
+    TheSpecifiedPricesAreAlreadySet:
+      description: Цены такие же, как сейчас
+      value:
+        data: null
+        error: true
+        errorText: The specified prices and discounts are already set
+    InvalidDataFormat:
+      description: Не удалось обработать данные, проверьте, что запрос правильный
+      value:
+        data: null
+        error: true
+        errorText: Invalid data format
+    PriceShouldBeAWholeNumber:
+      description: У цены дробное значение, исправьте на целое
+      value:
+        data: null
+        error: true
+        errorText: Price should be a whole number
+    InvalidPriceValue:
+      description: Некорректная цена
+      value:
+        data: null
+        error: true
+        errorText: Invalid price value
+    InvalidDiscountValue:
+      description: Некорректная скидка
+      value:
+        data: null
+        error: true
+        errorText: Invalid discount value
+    InvalidItemNo:
+      description: Неправильный `nmID`
+      value:
+        data: null
+        error: true
+        errorText: Invalid item No.
+    InvalidSize:
+      description: Неправильный `sizeID`
+      value:
+        data: null
+        error: true
+        errorText: Invalid size
+    PriceAndDiscountNotSpecified:
+      description: Цена и скидка не указаны
+      value:
+        data: null
+        error: true
+        errorText: Price and discount not specified
+    PriceNotSpecified:
+      description: Цена не указана
+      value:
+        data: null
+        error: true
+        errorText: Price and discount not specified
+    EmptyData:
+      description: Нет данных
+      value:
+        data: null
+        error: true
+        errorText: Empty data
+    AllItemNosAreSpecifiedIncorrectlyOrPricesAndDiscounts:
+      description: Таких товаров нет (например, их удалили), или цены и скидки такие же, как сейчас
+      value:
+        data: null
+        error: true
+        errorText: All item Nos. are specified incorrectly, or the specified prices and discounts are already set
+    AllItemNosAreSpecifiedIncorrectlyOrPrices:
+      description: Таких товаров или размеров нет (например, их удалили), или цены такие же, как сейчас
+      value:
+        data: null
+        error: true
+        errorText: All item Nos. are specified incorrectly, or the specified prices and discounts are already set
+    SortError:
+      description: Можно сортировать либо по цене, либо по скидке
+      value:
+        data: null
+        error: true
+        errorText: You can't sort items by price and discount at the same time
+    CheckTheWBClubDiscount:
+      description: Скидки WB Клуба могут принимать только указанные значения
+      value:
+        data: null
+        error: true
+        errorText: "Check the field values in the WB Club Discount column. Field format: a whole number between {{.WbClubMinDiscount}} and {{.WbClubMaxDiscount}}, without dots or commas"
+    DiscountsAreTheSameAsThoseAlreadySet:
+      description: Некоторые из скидок в запросе уже установлены
+      value:
+        data: null
+        error: true
+        errorText: Discounts in the file are the same as those already set. To change discounts, edit the file and upload it again
+    AllItemNosAreSpecifiedIncorrectlyOrDiscounts:
+      description: Таких товаров нет (например, их удалили), или скидки такие же, как сейчас
+      value:
+        data: null
+        error: true
+        errorText: All item Nos. are specified incorrectly, or the specified discounts are already set
+    UnexpectedResult:
+      description: Неожидаемый результат, создайте диалог в Поддержку продавцов, категория `API`
+      value:
+        data: null
+        error: true
+        errorText: Unexpected result
+    Result403:
+      description: Доступ запрещён
+      value:
+        data: null
+        error: true
+        errorText: Access denied
+    BrandsResponseBadRequest1:
+      value:
+        title: Bad Request
+        detail: validation failed
+        origin: brands-api
+        requestId: 102d2641a932d61bed60649d6c99d80a
+        errors:
+          - message: invalid integer
+            location: query.next
+            value: MTkxOTAzMQ==
+    BrandsResponseBadRequest2:
+      value:
+        title: Bad Request
+        detail: validation failed
+        origin: brands-api
+        requestId: 102d2641a932d61bed60649d6c99d80a
+        errors:
+          - message: expected number >= 0
+            location: query.subjectId
+            value: "-1"
+    BrandsResponseNotFound:
+      value:
+        title: Not Found
+        detail: Brands not found
+        origin: brands-api
+        requestId: 102d2641a932d61bed60649d6c99d80a
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

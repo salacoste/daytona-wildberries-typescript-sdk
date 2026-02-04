@@ -1,0 +1,20 @@
+_module: 04-orders-dbs
+_description: |
+  <div class="description_important">
+      Узнать больше о заказах DBS можно в <a href="https://seller.wildberries.ru/instructions/category/6572e024-7428-4db1-86a8-a4c7dbebbfcf?goBackOption=prevRoute&categoryId=5a8e1202-0865-45b7-acae-5d0afc7add56">справочном центре</a>
+  </div>
+
+  Управление [сборочными заданиями](/openapi/orders-dbs#tag/Sborochnye-zadaniya-DBS) и [метаданными](/openapi/orders-dbs#tag/Metadannye-DBS) заказов DBS (Delivery by Seller).
+_original_file: 04-orders-dbs.yaml
+_base_url: N/A
+_shards:
+  - file: sborochnye-zadaniya-dbs.yaml
+    domain: Сборочные задания DBS
+    endpoints: 18
+    description: DBS Assembly Tasks
+  - file: metadannye-dbs.yaml
+    domain: Метаданные DBS
+    endpoints: 13
+    description: DBS Metadata
+_shared_schemas: _schemas.yaml
+_total_endpoints: 31

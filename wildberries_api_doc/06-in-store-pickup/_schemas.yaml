@@ -1,0 +1,629 @@
+openapi: 3.0.1
+info:
+  title: Заказы Самовывоз - Shared Components
+  version: instorepickup
+components:
+  schemas:
+    api.CheckedIdentity:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: |
+            Принадлежит ли заказ покупателю:
+              - `true` — принадлежит
+              - `false` — значение не применяется. Если заказ не принадлежит покупателю, вы получите ответ со статус-кодом `409`
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Код ошибки
+          nullable: false
+        message:
+          type: string
+          description: Описание ошибки
+          nullable: false
+        data:
+          type: object
+          description: Дополнительные данные, обогащающие ошибку
+          nullable: true
+    api.CheckIdentityRequest:
+      type: object
+      properties:
+        orderCode:
+          type: string
+          description: Уникальный ID заказа покупателя
+        passcode:
+          type: string
+          description: Код подтверждения
+      example:
+        orderCode: 170046918-0011
+        passcode: "4567"
+    api.Error:
+      type: object
+      properties:
+        code:
+          type: string
+        data:
+          type: object
+        message:
+          type: string
+    api.GTINRequest:
+      type: object
+      properties:
+        gtin:
+          type: string
+          description: GTIN
+      example:
+        gtin:
+          - "1234567890123456"
+    api.IMEIRequest:
+      type: object
+      properties:
+        imei:
+          type: string
+          description: IMEI
+      example:
+        imei:
+          - "123456789012345"
+    api.NewOrder:
+      type: object
+      properties:
+        ddate:
+          type: string
+          description: Планируемая дата доставки
+        salePrice:
+          description: >
+            Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100.
+            Предоставляется в информационных целях
+          type: integer
+          nullable: true
+          example: 504600
+        requiredMeta:
+          type: array
+          nullable: true
+          description: |
+            Список метаданных, доступных для сборочного задания
+          items:
+            type: string
+        article:
+          type: string
+          description: Артикул продавца
+        rid:
+          type: string
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: поле `rid` — это поле `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+        createdAt:
+          type: string
+          description: Дата и время создания сборочного задания
+          format: date-time
+        warehouseAddress:
+          type: string
+          description: |
+            Адрес магазина (склада продавца), на который поступило сборочное
+            задание
+        orderCode:
+          type: string
+          description: |
+            Уникальный ID заказа покупателя
+        payMode:
+          description: |
+            Режим оплаты:
+              - `prepaid` — предоплатный
+              - `postpaid` — постоплатный
+              - `unknown` — неизвестный
+          type: string
+          example: prepaid
+        skus:
+          type: array
+          description: Массив баркодов товара
+          items:
+            type: string
+        id:
+          type: integer
+          description: ID сборочного задания
+        warehouseId:
+          type: integer
+          description: |
+            ID склада продавца, на который поступило сборочное
+            задание
+        nmId:
+          type: integer
+          description: Артикул WB
+        chrtId:
+          type: integer
+          description: ID размера товара в системе WB
+        price:
+          type: integer
+          description: |
+            Цена в валюте продажи с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100.
+            Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+        finalPrice:
+          description: >-
+            Сумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи
+            указан в поле `currencyCode`. Предоставляется в информационных целях
+          type: integer
+          example: 5000
+        convertedPrice:
+          description: >-
+            Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код
+            валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          type: integer
+          example: 5000
+        convertedFinalPrice:
+          description: >-
+            Сумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется
+            в информационных целях
+          type: integer
+          example: 5000
+        currencyCode:
+          type: integer
+          description: Код валюты продажи
+          example: 643
+          format: ISO 4217
+        convertedCurrencyCode:
+          description: Код валюты страны продавца
+          format: ISO 4217
+          type: integer
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 1
+            - 2
+            - 3
+        isZeroOrder:
+          type: boolean
+          description: |
+            Признак заказа товара с нулевым остатком:
+              - `false` — заказ сделан на товар с ненулевым остатком
+              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
+    api.NewOrders:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Список сборочных заданий
+          items:
+            $ref: "#/components/schemas/api.NewOrder"
+    api.Order:
+      type: object
+      properties:
+        article:
+          type: string
+          description: Артикул продавца
+          example: wb6scpbwvp
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Тип товара:
+              - `1` — малогабаритный товар (МГТ)
+              - `2` — сверхгабаритный товар (СГТ)
+              - `3` — крупногабаритный товар (КГТ+)
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        chrtId:
+          type: integer
+          description: ID размера товара в системе WB
+          example: 12345676
+        createdAt:
+          type: string
+          description: Дата и время создания сборочного задания
+          format: date-time
+          example: "2025-03-21T09:53:31Z"
+        price:
+          type: integer
+          description: |
+            Цена в валюте продажи с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100.
+            Код валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          example: 5000
+        finalPrice:
+          description: >-
+            Сумма к оплате покупателем в валюте продажи с учетом всех скидок, умноженная на 100. Код валюты продажи
+            указан в поле `currencyCode`. Предоставляется в информационных целях
+          type: integer
+          example: 5000
+        convertedPrice:
+          description: >-
+            Цена в валюте страны продавца с учетом всех скидок, кроме скидки по WB Кошельку, умноженная на 100. Код
+            валюты продажи указан в поле `currencyCode`. Предоставляется в информационных целях
+          type: integer
+          example: 5000
+        convertedFinalPrice:
+          description: >-
+            Сумма к оплате покупателем в валюте страны продавца с учетом всех скидок, умноженная на 100. Предоставляется
+            в информационных целях
+          type: integer
+          example: 5000
+        currencyCode:
+          type: integer
+          description: Код валюты продажи
+          format: ISO 4217
+          example: 643
+        convertedCurrencyCode:
+          description: Код валюты страны продавца
+          format: ISO 4217
+          type: integer
+          example: 643
+        id:
+          type: integer
+          description: ID сборочного задания
+          example: 123456789
+        isZeroOrder:
+          type: boolean
+          description: |
+            Признак заказа товара с нулевым остатком:
+              - `false` — заказ сделан на товар с ненулевым остатком
+              - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
+          example: false
+        nmId:
+          type: integer
+          description: Артикул WB
+          example: 1234567898765
+        orderCode:
+          type: string
+          description: |
+            Уникальный ID заказа покупателя
+          example: 21117866-0006
+        payMode:
+          description: |
+            Режим оплаты:
+              - `prepaid` — предоплатный
+              - `postpaid` — постоплатный
+              - `unknown` — неизвестный
+          type: string
+          example: prepaid
+        rid:
+          type: string
+          description: |
+            Уникальный ID заказа. <br>
+            Примечание: поле `rid` — это поле `srid` в ответах методов:
+              - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get)
+              - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get)
+              - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get)
+              - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov)
+              - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
+          example: 5044304527347733263.0.0
+        skus:
+          type: array
+          description: Массив баркодов товара
+          items:
+            type: string
+          example:
+            - "2043227963145"
+        warehouseAddress:
+          type: string
+          description: Адрес магазина (склада продавца), на который поступило сборочное задание
+          example: Москва, район Якиманка, Софийская набережная, 4 с1
+        warehouseId:
+          type: integer
+          description: ID склада продавца, на который поступило сборочное задание
+          example: 1162157
+    api.OrderClientInfo:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: |
+            Телефон для связи с покупателем. Чтобы связаться с покупателем наберите
+            этот номер и введите добавочный код. Данный номер не является прямым
+            номером покупателя.
+        firstName:
+          type: string
+          description: Имя покупателя
+        orderID:
+          type: integer
+          description: ID сборочного задания
+        phoneCode:
+          type: integer
+          description: Добавочный код
+      example:
+        phone: "+71111111111"
+        firstName: Иван
+        orderID: 1234567
+        phoneCode: 1234567
+    api.OrderClientInfoResp:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/api.OrderClientInfo"
+    api.OrderStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID сборочного задания
+        supplierStatus:
+          type: string
+          description: Статус сборочного задания, установленный продавцом
+        wbStatus:
+          type: string
+          description: Статус сборочного задания в системе WB
+      example:
+        supplierStatus: confirm
+        wbStatus: waiting
+        id: 1234567
+    api.OrderStatuses:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Список статусов сборочных заданий
+          items:
+            $ref: "#/components/schemas/api.OrderStatus"
+    api.Orders:
+      type: object
+      properties:
+        next:
+          type: integer
+          description: |
+            Параметр пагинации. Содержит значение, которое необходимо указать в
+            запросе для получения следующего пакета данных
+          example: 12345566
+        orders:
+          type: array
+          description: Список сборочных заданий
+          items:
+            $ref: "#/components/schemas/api.Order"
+    api.OrdersMeta:
+      type: object
+      properties:
+        meta:
+          type: object
+          description: Метаданные сборочного задания
+          allOf:
+            - $ref: "#/components/schemas/api.baseMeta"
+    api.OrdersRequest:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Список ID сборочных заданий
+          items:
+            type: integer
+      example:
+        orders:
+          - 1234567
+    api.SGTINsRequest:
+      type: object
+      properties:
+        sgtins:
+          type: array
+          description: Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки
+          items:
+            type: string
+      example:
+        sgtins:
+          - "1234567890123456"
+    api.UINRequest:
+      type: object
+      properties:
+        uin:
+          type: string
+          description: УИН
+      example:
+        uin:
+          - "1234567890123456"
+    api.baseMeta:
+      type: object
+      properties:
+        gtin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: "123456789012345"
+          description: GTIN
+        imei:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: "123456789012345"
+          description: IMEI
+        sgtin:
+          type: object
+          properties:
+            value:
+              type: array
+              items:
+                type: string
+              example:
+                - "123456789012345"
+              nullable: true
+          description: Код маркировки Честного знака
+        uin:
+          type: object
+          properties:
+            value:
+              nullable: true
+              type: string
+              example: "123456789012345"
+          description: УИН
+  responses:
+    "401":
+      description: Не авторизован
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: unauthorized
+            detail: "token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84"
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: "2024-09-30T06:52:38Z"
+    "429":
+      description: Слишком много запросов
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Заголовок ошибки
+              detail:
+                type: string
+                description: Детали ошибки
+              code:
+                type: string
+                description: Внутренний код ошибки
+              requestId:
+                type: string
+                description: Уникальный ID запроса
+              origin:
+                type: string
+                description: ID внутреннего сервиса WB
+              status:
+                type: number
+                description: HTTP статус-код
+              statusText:
+                type: string
+                description: Расшифровка HTTP статус-кода
+              timestamp:
+                type: string
+                format: date-time
+                description: Дата и время запроса
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: "2024-09-30T06:52:38Z"
+    AccessDenied:
+      description: Доступ запрещён
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: AccessDenied
+            message: Доступ запрещён
+    NotFound:
+      description: Не найдено
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: NotFound
+            message: Not Found
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  examples:
+    NewOrderClick:
+      value:
+        orders:
+          - ddate: 29.10.2024
+            salePrice: 14000
+            requiredMeta:
+              - sgtin
+            article: wb1702fyjh
+            rid: 1234567673554519872.0.0
+            createdAt: "2024-10-29T10:19:30Z"
+            warehouseAddress: Москва, район Якиманка, Софийская набережная, 4 с1
+            orderCode: 23457822-6667
+            payMode: prepaid
+            skus:
+              - "2041546265353"
+            id: 1234567890
+            warehouseId: 1234567
+            nmId: 123456789
+            chrtId: 987654321
+            price: 14000
+            finalPrice: 14000
+            convertedPrice: 14000
+            convertedFinalPrice: 14000
+            currencyCode: 643
+            convertedCurrencyCode: 643
+            cargoType: 1
+            isZeroOrder: false
+    IncorrectRequestBody:
+      value:
+        code: IncorrectRequestBody
+        message: Некорректное тело запроса
+    InvalidPasscode:
+      description: Введён неправильный проверочный код
+      value:
+        code: InvalidPasscode
+    OrderNotFound:
+      description: Заказ не найден
+      value:
+        code: NotFound
+    StatusMismatch:
+      value:
+        code: StatusMismatch
+        message: Несоответствие статусов, проверьте их правильность
+    FailedToUpdateMeta:
+      value:
+        code: FailedToUpdateMeta
+        message: >-
+          Не удалось обновить метаданные сборочного задания. Убедитесь, что сборочное задание удовлетворяет всем
+          необходимым требованиям (сборочное задание существует, находится в статусе "На сборке", сборочному заданию
+          доступны метаданные см. описание метода **Получить метаданные сборочного задания**)
+    IncorrectParameter:
+      value:
+        code: IncorrectParameter
+        message: Передан некорректный параметр
+    IncorrectRequest:
+      value:
+        code: IncorrectRequest
+        message: Переданы некорректные данные

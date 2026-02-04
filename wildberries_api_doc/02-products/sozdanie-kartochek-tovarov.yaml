@@ -10,7 +10,11 @@ tags:
     description: Создание карточек товаров endpoints
 paths:
   /content/v2/cards/limits:
+    servers:
+      - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Лимиты карточек товаров
@@ -28,7 +32,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -42,7 +46,7 @@ paths:
       tags:
         - Создание карточек товаров
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -73,20 +77,24 @@ paths:
                   freeLimits: 1500
                   paidLimits: 10
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: null
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/barcodes:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Генерация баркодов
@@ -98,7 +106,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -123,7 +131,7 @@ paths:
                   type: integer
                   example: 100
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
@@ -135,7 +143,7 @@ paths:
                     type: array
                     items:
                       type: string
-                      example: '5032781145187'
+                      example: "5032781145187"
                   error:
                     description: Флаг ошибки
                     type: boolean
@@ -143,51 +151,59 @@ paths:
                   errorText:
                     description: Описание ошибки
                     type: string
-                    example: ''
+                    example: ""
                   additionalErrors:
                     description: Дополнительные ошибки
                     nullable: true
                     type: string
-                    example: ''
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
+                    example: ""
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
           description: Доступ запрещён
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError403'
-        '429':
-          $ref: '#/components/responses/429'
+                $ref: "#/components/schemas/responseBodyContentError403"
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/cards/upload:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       tags:
         - Создание карточек товаров
       summary: Создание карточек товаров
-      description: "Метод создаёт карточки товаров c указанием описаний и характеристик товаров.<br>\n\n<div class=\"description_important\">\n  Есть две формы запроса: для создания отдельных и объединённых карточек товаров.\n</div>\n\nГабариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.\n<br><br>\nСоздание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br>\nВ одном запросе можно создать максимум 100 объединённых карточек\_товаров (`imtID`), по\_30 карточек товаров в\_каждой. Максимальный размер запроса 10 Мб.<br>\nЕсли ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 10 запросов | 6 секунд | 5 запросов |\n</div>\n"
+      description: "Метод создаёт карточки товаров c указанием описаний и характеристик товаров.<br>\n\n<div class=\"description_important\">\n  Есть две формы запроса: для создания отдельных и объединённых карточек товаров\n</div>\n\nГабариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.\n<br><br>\nСоздание карточки товара происходит асинхронно. Синхронизация новой карточки с сервисами может занимать до 30 минут. В течение этого времени невозможно добавить остатки на склады и настроить цены. <br>\nОдним запросом можно создать максимум 100 отдельных карточек товаров или 100 групп [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек\_товаров по\_30 карточек в\_каждой. Максимальный размер запроса 10 Мб.<br>\nЕсли ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 10 запросов | 6 сек | 5 запросов |\n</div>\n"
       requestBody:
         content:
           application/json:
             schema:
+              description: Отдельные карточки товаров или группы объединённых карточек товаров
               type: array
               items:
                 type: object
                 required:
                   - subjectID
                   - variants
+                minimum: 1
+                maximum: 100
                 properties:
                   subjectID:
                     type: integer
                     description: ID предмета
                   variants:
                     description: |
-                      Массив вариантов товара.<br>
-                      В каждой объединённой карточке товара может быть не более 30 карточек товаров
+                      [Объединённые](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточки товаров.<br>Чтобы создать отдельную карточку, передайте только один объект
                     type: array
                     items:
                       type: object
                       required:
                         - vendorCode
+                      minimum: 1
+                      maximum: 30
                       properties:
                         brand:
                           type: string
@@ -202,7 +218,7 @@ paths:
                             Описание товара.<br>
                             Максимальное количество символов зависит от категории товара<br>
                             Стандарт — 2000, минимум — 1000, максимум — 5000<br>
-                            Подробно о правилах описания в **Правилах заполнения карточки товара** в разделе в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113#описание) на портале продавцов
+                            Подробно о правилах описания в **Правилах заполнения карточки товара** в разделе в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113) на портале продавцов
                         vendorCode:
                           type: string
                           description: Артикул продавца
@@ -222,7 +238,8 @@ paths:
                           description: |
                             Габариты и вес товара `c упаковкой`.<br>
                             Укажите в `сантиметрах` и `килограммах` для любого товара.<br>
-                            Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса
+                            Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса.<br>
+                            Синхронизация данных новой карточки с сервисом может занимать до 30 минут
                           type: object
                           properties:
                             length:
@@ -258,7 +275,10 @@ paths:
                                 type: array
                                 items:
                                   type: string
-                                description: Баркод. Если не указать, сгенерируется автоматически
+                                description: |
+                                  Массив баркодов для размера. <br>
+                                  Если не указать, сгенерируется автоматически. <br>
+                                  Позволяет связать несколько баркодов с одним размером, например, для разных партий товара
                         characteristics:
                           type: array
                           description: |
@@ -278,46 +298,46 @@ paths:
                                 description: |
                                   Значения характеристики.
                                   <br>
-                                  Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе **Характеристики предмета**.
+                                  Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                   <br>
                                   Допустимое количество значений отображено в поле `maxCount` того же метода
             examples:
               creatingOneCard:
-                $ref: '#/components/examples/creatingOneCard'
+                $ref: "#/components/examples/creatingOneCard"
               creatingMergedCards:
-                $ref: '#/components/examples/creatingMergedCards'
+                $ref: "#/components/examples/creatingMergedCards"
               creatingGroupOfIndividualCards:
-                $ref: '#/components/examples/creatingGroupOfIndividualCards'
+                $ref: "#/components/examples/creatingGroupOfIndividualCards"
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseCardCreate'
+                $ref: "#/components/schemas/responseCardCreate"
               example:
                 data: null
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: {}
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
+                $ref: "#/components/schemas/responseBodyContentError400"
               examples:
                 InvalidRequestFormatContent:
-                  $ref: '#/components/examples/InvalidRequestFormatContent'
+                  $ref: "#/components/examples/InvalidRequestFormatContent"
                 CardCreatedWithoutVendorCode:
-                  $ref: '#/components/examples/CardCreatedWithoutVendorCode'
+                  $ref: "#/components/examples/CardCreatedWithoutVendorCode"
                 CardsVendorCodeUsedInOtherCards:
-                  $ref: '#/components/examples/CardsVendorCodeUsedInOtherCards'
+                  $ref: "#/components/examples/CardsVendorCodeUsedInOtherCards"
                 ThisCategoryDoesNotExist:
-                  $ref: '#/components/examples/ThisCategoryDoesNotExist'
-        '401':
-          $ref: '#/components/responses/401'
-        '413':
+                  $ref: "#/components/examples/ThisCategoryDoesNotExist"
+        "401":
+          $ref: "#/components/responses/401"
+        "413":
           description: Превышен лимит объёма данных в запросе
           content:
             application/json:
@@ -353,27 +373,31 @@ paths:
                 origin: s2s-api-auth-content
                 status: 413
                 statusText: Request Entity Too Large
-        '429':
-          $ref: '#/components/responses/429'
+        "429":
+          $ref: "#/components/responses/429"
   /content/v2/cards/upload/add:
+    servers:
+      - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       tags:
         - Создание карточек товаров
       summary: Создание карточек товаров с присоединением
       description: |
-        Метод создаёт новые карточки товаров, присоединяя их к существующим карточкам.
-        <br><br>
+        Метод создаёт карточки товаров, присоединяя их к существующим отдельным карточкам и группам [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек. В одной группе объединённых карточек товаров может быть не более 30 карточек, соответственно, создать с присоединением можно не более 29 карточек товаров за один запрос.
+
         Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.
         <br><br>
-        Создание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br>Максимальный размер запроса 10 Мб.<br>
-        Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).
+        Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).<br>
+        Создание карточки товара происходит асинхронно. Синхронизация новой карточки с сервисами может занимать до 30 минут. В течение этого времени невозможно добавить остатки на склады и настроить цены.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 10 запросов | 6 секунд | 5 запросов |
+        | 1 мин | 10 запросов | 6 сек | 5 запросов |
         </div>
       requestBody:
         content:
@@ -384,14 +408,16 @@ paths:
                 imtID:
                   type: integer
                   description: |
-                    `imtID` карточки товара, к которой присоединяется карточка товара
+                    `imtID` отдельной карточки товара или группы [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров, к которой присоединяются создаваемые карточки
                 cardsToAdd:
-                  description: Структура присоединяемой карточки товара
+                  description: Добавляемые карточки товаров
                   type: array
                   items:
                     type: object
                     required:
                       - vendorCode
+                    minimum: 1
+                    maximum: 29
                     properties:
                       brand:
                         type: string
@@ -421,12 +447,13 @@ paths:
                           Описание товара.<br>
                           Максимальное количество символов зависит от категории товара<br>
                           Стандарт — 2000, минимум — 1000, максимум — 5000<br>
-                          Подробно о правилах описания в **Правилах заполнения карточки товара** в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113#описание) на портале продавцов
+                          Подробно о правилах описания в **Правилах заполнения карточки товара** в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113) на портале продавцов
                       dimensions:
                         description: |
                           Габариты и вес товара `c упаковкой`.<br>
                           Укажите в `сантиметрах` и `килограммах` для любого товара. <br>
-                          Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса
+                          Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса. <br>
+                          Синхронизация данных с сервисом может занимать до 30 минут
                         type: object
                         properties:
                           length:
@@ -482,7 +509,7 @@ paths:
                               description: |
                                 Значения характеристики.
                                 <br>
-                                Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе **Характеристики предмета**.
+                                Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                 <br>
                                 Допустимое количество значений отображено в поле `maxCount` того же метода
             example:
@@ -511,7 +538,7 @@ paths:
                         - blue
                   sizes:
                     - skus:
-                        - '12345678'
+                        - "12345678"
                 - vendorCode: myVariant2
                   title: Наименование товара
                   description: Описание товаров
@@ -532,37 +559,37 @@ paths:
                         - blue
                   sizes:
                     - skus:
-                        - '222222222222'
+                        - "222222222222"
       responses:
-        '200':
+        "200":
           description: Успешно
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseCardCreate'
+                $ref: "#/components/schemas/responseCardCreate"
               example:
                 data: null
                 error: false
-                errorText: ''
+                errorText: ""
                 additionalErrors: {}
-        '400':
+        "400":
           description: Неправильный запрос
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseBodyContentError400'
+                $ref: "#/components/schemas/responseBodyContentError400"
               examples:
                 InvalidRequestFormatContent:
-                  $ref: '#/components/examples/InvalidRequestFormatContent'
+                  $ref: "#/components/examples/InvalidRequestFormatContent"
                 CardCreatedWithoutVendorCode:
-                  $ref: '#/components/examples/CardCreatedWithoutVendorCode'
+                  $ref: "#/components/examples/CardCreatedWithoutVendorCode"
                 CardsVendorCodeUsedInOtherCards:
-                  $ref: '#/components/examples/CardsVendorCodeUsedInOtherCards'
+                  $ref: "#/components/examples/CardsVendorCodeUsedInOtherCards"
                 ThisCategoryDoesNotExist:
-                  $ref: '#/components/examples/ThisCategoryDoesNotExist'
-        '401':
-          $ref: '#/components/responses/401'
-        '413':
+                  $ref: "#/components/examples/ThisCategoryDoesNotExist"
+        "401":
+          $ref: "#/components/responses/401"
+        "413":
           description: Превышен лимит объёма данных в запросе
           content:
             application/json:
@@ -598,77 +625,5 @@ paths:
                 origin: s2s-api-auth-content
                 status: 413
                 statusText: Request Entity Too Large
-        '429':
-          $ref: '#/components/responses/429'
-components:
-  schemas:
-    responseBodyContentError403:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: string
-      example:
-        data: null
-        error: true
-        errorText: Доступ запрещен
-        additionalErrors: Доступ запрещен
-    responseCardCreate:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          example: null
-          description: Данные ответа
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Описание ошибки
-          type: string
-        additionalErrors:
-          description: Дополнительные ошибки
-          oneOf:
-            - type: object
-              nullable: true
-              properties:
-                string:
-                  type: string
-              additionalProperties: false
-            - type: string
-              nullable: true
-            - type: object
-              properties:
-                error:
-                  type: string
-              required:
-                - error
-    responseBodyContentError400:
-      type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-          description: Данные ошибки
-        error:
-          description: Флаг ошибки
-          type: boolean
-        errorText:
-          description: Текст ошибки
-          type: string
-        additionalErrors:
-          nullable: true
-          description: Дополнительные ошибки
-          type: object
+        "429":
+          $ref: "#/components/responses/429"

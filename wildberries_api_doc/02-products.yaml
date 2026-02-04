@@ -3,15 +3,17 @@ info:
   title: Работа с товарами
   version: products
   description: |
-    <div class="description_ref">
-      Узнать, как использовать методы в бизнес-кейсах, можно в <a href="https://dev.wildberries.ru/news/101">инструкции по работе с товарами</a>
-    </div>
+    С помощью методов этого раздела вы можете:
+      - [создать](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov) и [редактировать](/openapi/work-with-products#tag/Kartochki-tovarov) карточки товаров
+      - получить [категории, предметы, характеристики и бренды товаров](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki)
+      - загрузить [медиафайлы](/openapi/work-with-products#tag/Mediafajly) в карточки товаров
+      - настроить [ярлыки](/openapi/work-with-products#tag/Yarlyki) для поиска товаров
+      - установить [цены и скидки](/openapi/work-with-products#tag/Ceny-i-skidki)
+      - управлять [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca) и [складами](/openapi/work-with-products#tag/Sklady-prodavca), если вы работаете по модели продаж со склада продавца
 
-    Работа с товарами включает в себя:
-      1. [Создание](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov) и [редактирование](/openapi/work-with-products#tag/Kartochki-tovarov) карточек товаров: в том числе, получение [категорий, предметов и характеристик товаров](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki) и загрузку [медиафайлов](/openapi/work-with-products#tag/Mediafajly).
-      2. Настройку [ярлыков](/openapi/work-with-products#tag/Yarlyki) для удобного поиска товаров.
-      3. Установку [цен и скидок](/openapi/work-with-products#tag/Ceny-i-skidki).
-      4. Управление [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca) и [складами](/openapi/work-with-products#tag/Sklady-prodavca), если вы работаете по модели продаж со склада продавца.
+      <div class="description_ref">
+        Узнать, как использовать методы в бизнес-кейсах, можно в <a href="https://dev.wildberries.ru/news/101">инструкции по работе с товарами</a>
+      </div>
   x-file-name: products
 security:
   - HeaderApiKey: []
@@ -37,6 +39,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Родительские категории товаров
@@ -48,7 +52,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -125,6 +129,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Список предметов
@@ -136,7 +142,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -239,6 +245,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Характеристики предмета
@@ -254,7 +262,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -320,9 +328,9 @@ paths:
                           description: |
                             Максимальное количество значений, которое можно присвоить характеристике при [создании](./work-with-products#tag/Sozdanie-kartochek-tovarov) или [редактировании](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров.
                             <br>
-                            Используется только для характеристик с `"charcType":1`— массив строк.
+                            Используется только для характеристик с `"charcType":1` — массив строк.
                             <br>
-                            Характеристикам с `"charcType":4`— число, можно присвоить только одно значение.
+                            Характеристикам с `"charcType":4` — число, можно присвоить только одно значение.
                             <br><br>
                             Если `"maxCount":0`, количество значений не ограничено
                         popular:
@@ -333,7 +341,7 @@ paths:
                           description: |
                             Тип данных характеристики, который необходимо использовать при [создании](./work-with-products#tag/Sozdanie-kartochek-tovarov) или [редактировании](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров:
                               -  `1` — массив строк
-                              -  `4` — число
+                              -  `4` — число (целое либо с десятичной дробью)
                               -  `0` — характеристика не используется
                   error:
                     type: boolean
@@ -379,6 +387,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Цвет
@@ -390,7 +400,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -463,6 +473,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Пол
@@ -474,7 +486,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -541,6 +553,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Страна производства
@@ -552,7 +566,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -584,6 +598,10 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          description: ID страны
+                          type: integer
+                          example: 15000170
                         name:
                           description: Значение характеристики Страны
                           type: string
@@ -625,6 +643,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Сезон
@@ -636,7 +656,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -703,6 +723,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Ставка НДС
@@ -714,7 +736,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -786,6 +808,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: ТНВЭД-код
@@ -797,7 +821,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -886,10 +910,78 @@ paths:
                 $ref: '#/components/schemas/responseBodyContentError403'
         '429':
           $ref: '#/components/responses/429'
+  /api/content/v1/brands:
+    servers:
+      - url: https://content-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: content
+      security:
+        - HeaderApiKey: []
+      summary: Бренды
+      description: |
+        Метод возвращает список брендов по ID предмета.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 сек | 1 запрос | 1 сек | 5 запросов |
+        </div>
+      tags:
+        - Категории, предметы и характеристики
+      parameters:
+        - name: subjectId
+          in: query
+          schema:
+            type: integer
+            example: 1234
+          description: ID предмета
+          required: true
+        - name: next
+          in: query
+          schema:
+            type: integer
+            example: 1234
+          description: Параметр пагинации. Используйте значение `next` из ответа, чтобы получить следующий пакет данных
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandsResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BrandsResponseError'
+              examples:
+                BrandsResponseBadRequest1:
+                  $ref: '#/components/examples/BrandsResponseBadRequest1'
+                BrandsResponseBadRequest2:
+                  $ref: '#/components/examples/BrandsResponseBadRequest2'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Не найдено
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BrandsResponseError'
+              examples:
+                BrandsResponseNotFound:
+                  $ref: '#/components/examples/BrandsResponseNotFound'
+        '429':
+          $ref: '#/components/responses/429'
   /content/v2/tags:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Список ярлыков
@@ -901,7 +993,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -968,6 +1060,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Создание ярлыка
@@ -980,7 +1074,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -1053,6 +1147,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     patch:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Изменение ярлыка
@@ -1065,7 +1161,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -1134,6 +1230,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Удаление ярлыка
@@ -1145,7 +1243,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -1201,6 +1299,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Управление ярлыками в карточке товара
@@ -1213,7 +1313,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -1279,6 +1379,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       tags:
@@ -1286,13 +1388,13 @@ paths:
       summary: Список карточек товаров
       description: |
         <div class="description_auth">
-          Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong>
+          Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-personalnyj-bazovyj-ili-testovyj-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong>
         </div>
 
         Метод возвращает список созданных карточек товаров.
 
         <div class="description_important">
-          В ответе метода не будет карточек, находящихся в корзине. Получить такие карточки можно через <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post">отдельный метод</a>.
+          В ответе метода не будет карточек, находящихся в корзине. Получить такие карточки можно через <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post">отдельный метод</a>
         </div>
 
         Чтобы получить **больше 100** карточек товаров, используйте пагинацию:
@@ -1300,6 +1402,9 @@ paths:
               <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935">
                 {
                   "settings": {
+                    "sort": {
+                      "ascending": true
+                    },
                     "cursor": {
                       "limit": 100
                     },
@@ -1308,21 +1413,22 @@ paths:
                     }
                   }
                 }</pre>
-          2. Пройдите в конец полученного списка карточек товаров.
-          3. Скопируйте из `cursor` две строки:
-              - `"updatedAt": "***"`
-              - `"nmID": ***`
-          4. Вставьте скопированные строки в параметр запроса `cursor`.
-          5. Повторите запрос.
-          6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки.
+             Чтобы после выгрузки получать только новые или обновлённые карточки товаров, используйте сортировку по возрастанию: `"sort":{"ascending":true}`.
+          2. Скопируйте `"updatedAt":"***","nmID":"***"` из `cursor` ответа и вставьте в `cursor` запроса.
+          3. Повторите запрос.
+          4. Повторяйте пункты 2 и 3, пока значение `total` в ответе не станет меньше, чем значение `limit` в запросе. Это будет означать, что вы получили все карточки.
 
+        Чтобы получать только карточки товаров, которые были созданы или обновлены после предыдущей выгрузки данных:
+          1. Сохраните поля `"cursor":{"updatedAt":"***","nmID":"***"}` из последнего ответа предыдущей выгрузки. При выгрузке используйте сортировку по возрастанию: `"sort":{"ascending":true}`.
+          2. Укажите в первом запросе сохранённые поля `"cursor":{"updatedAt":"***","nmID":"***"}`. Продолжайте использовать сортировку по возрастанию.
+          3. Сохраните поля `"cursor":{"updatedAt":"***","nmID":"***"}` из последнего ответа текущей выгрузки.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -1365,7 +1471,7 @@ paths:
                       properties:
                         withPhoto:
                           type: integer
-                          description: "Фильтр по\_фото:\n\n  * `0`\_— только карточки без фото\n  * `1`\_— только карточки с\_фото\n  * `-1`\_— все карточки товара\n"
+                          description: "Фильтр по\_фото:\n  * `0`\_— только карточки без фото\n  * `1`\_— только карточки с\_фото\n  * `-1`\_— все карточки товара\n"
                           default: 0
                         textSearch:
                           type: string
@@ -1389,7 +1495,7 @@ paths:
                           items:
                             type: string
                         imtID:
-                          description: Поиск по ID объединённой карточки товара
+                          description: Поиск по [ID для объединённых карточек товаров](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov)
                           type: integer
                     cursor:
                       description: |
@@ -1398,6 +1504,8 @@ paths:
                       properties:
                         limit:
                           type: integer
+                          maximum: 100
+                          default: 10
                           description: Сколько карточек товаров выдать в ответе
                         updatedAt:
                           type: string
@@ -1446,7 +1554,7 @@ paths:
                           description: Артикул WB
                         imtID:
                           type: integer
-                          description: ID объединённой карточки товара.<br>Един для всех артикулов WB одной объединённой карточки товара.<br>Есть у карточки товара, даже если она не объединена ни с одной другой карточкой
+                          description: ID для [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров.<br>Един для всех артикулов WB группы объединённых карточек.<br>У каждой карточки товара есть `imtID`, даже если она не объединена с другими карточками<br>
                         nmUUID:
                           type: string
                           format: UUID
@@ -1683,6 +1791,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Список несозданных карточек товаров с ошибками
@@ -1690,11 +1800,10 @@ paths:
         Метод возвращает список карточек товаров ([черновиков](https://seller.wildberries.ru/new-goods/error-cards)), при создании или редактировании которых произошли ошибки, с описанием этих ошибок.
         <br><br>
         Данные в ответе возвращаются пакетами `batch`. Один пакет содержит:
-          - все ошибки по одной объединённой карточке товара `imtID` одного запроса при [создании](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post) карточек товаров
+          - все ошибки по одному массиву `variants` одного запроса при [создании](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post) карточек товаров
           - все ошибки одного запроса при [создании с присоединением](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post) или [редактировании](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров
         <br><br>
         Чтобы получить более 100 пакетов, используйте пагинацию:
-
           1. Сделайте первый запрос: <br>
               <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935">
                 {
@@ -1705,9 +1814,9 @@ paths:
                     "ascending": true
                   }
                 }</pre>
-          2. Скопируйте `"updatedAt": "***"`,`"batchUUID": "***" `из `cursor` ответа и вставьте в `cursor` запроса.
+          2. Скопируйте `"updatedAt":"***","batchUUID":"***" `из `cursor` ответа и вставьте в `cursor` запроса.
           3. Повторите запрос.
-          4. Повторяйте пункты 2 и 3, пока не получите в ответе `"next": false`. Это будет означать, что вы получили все пакеты.
+          4. Повторяйте пункты 2 и 3, пока не получите в ответе `"next":false`. Это будет означать, что вы получили все пакеты.
 
         <div class="description_important">
           Чтобы удалить карточку товара из списка, сделайте ещё один запрос на создание, создание с присоединением или редактирование карточки товара с исправленными ошибками
@@ -1718,7 +1827,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 10 запросов | 6 секунд | 5 запросов |
+        | 1 мин | 10 запросов | 6 сек | 5 запросов |
         </div>
       tags:
         - Карточки товаров
@@ -1830,28 +1939,39 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       tags:
         - Карточки товаров
       summary: Редактирование карточек товаров
       description: |
-        Метод обновляет карточки товаров. Данные для обновления можно получить через [список карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) и [список карточек товаров в корзине](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post).
+        Метод обновляет данные карточек товаров. Также используйте его, чтобы добавлять новые размеры.
 
         <div class="description_important">
-          Карточка товара перезаписывается при обновлении. Поэтому в запросе нужно передать <strong>все</strong> параметры карточки, в том числе те, которые вы не собираетесь обновлять.
+          Карточка товара перезаписывается при обновлении. Поэтому в запросе нужно передать в том числе те параметры карточки, которые вы не собираетесь обновлять. Их значения можно получить в <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post">списке карточек товаров</a> и <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post">списке карточек товаров в корзине</a>.
         </div>
 
-        Нельзя редактировать или удалять баркоды, но можно добавить дополнительный баркод к карточке товара. Параметры `photos`, `video` и `tags` редактировать или удалять через данный метод нельзя.<br>
+        С помощью этого метода нельзя обновлять или удалять:
+          - баркоды размеров товара. Можно только добавить дополнительные баркоды
+          - параметры `photos`, `video` и `tags`
+          - цены товаров. Цену можно задать, только если вы добавляете новые размеры
+
+        При добавлении нового размера укажите его цену через параметр `price`. Если в запросе не указан `price`, цена размера будет `0` — в этом случае изменить её можно будет с помощью методов:
+          - [Установить цены и скидки](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post), если у [товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get) `"editablePriceSize":false`
+          - [Установить цены для размеров](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post), если у [товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get) `"editablePriceSize":true`
+
         Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.
         <br><br>
-        В одном запросе можно отредактировать максимум 3000 карточек товаров (`nmID`). Максимальный размер запроса 10 Мб.<br>
-        Если ответ `Успешно` (`200`), но какие-то карточки не обновились, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).
+        Одним запросом можно отредактировать максимум 3000 карточек товаров (`nmID`). Максимальный размер запроса 10 Мб.<br>
+        Если ответ `Успешно` (`200`), но какие-то карточки не обновились, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).<br>
+        Синхронизация данных с сервисами может занимать до 30 минут. В течение этого времени невозможно добавить остатки на склады и настроить цены. <br>
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 10 запросов | 6 секунд | 5 запросов |
+        | 1 мин | 10 запросов | 6 сек | 5 запросов |
         </div>
       requestBody:
         content:
@@ -1864,6 +1984,8 @@ paths:
                   - nmID
                   - vendorCode
                   - sizes
+                minimum: 1
+                maximum: 3000
                 properties:
                   nmID:
                     type: integer
@@ -1884,11 +2006,12 @@ paths:
                       Описание товара<br>
                       Максимальное количество символов зависит от категории товара<br>
                       Стандарт — 2000, минимум — 1000, максимум — 5000<br>
-                      Подробно о правилах описания в **Правилах заполнения карточки товара** в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113#описание) на портале продавцов
+                      Подробно о правилах описания в **Правилах заполнения карточки товара** в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113) на портале продавцов
                   dimensions:
                     description: |
                       Габариты и вес товара `c упаковкой`.<br>
-                      Укажите в `сантиметрах` и `килограммах` для любого товара
+                      Укажите в `сантиметрах` и `килограммах` для любого товара.<br>
+                      Синхронизация новых данных с сервисом может занимать до 30 минут
                     type: object
                     properties:
                       length:
@@ -1922,7 +2045,7 @@ paths:
                           description: |
                             Значения характеристики.
                             <br>
-                            Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе **Характеристики предмета**.
+                            Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                             <br>
                             Допустимое количество значений отображено в поле `maxCount` того же метода
                   sizes:
@@ -1945,6 +2068,11 @@ paths:
                         wbSize:
                           type: string
                           description: Российский размер товара
+                        price:
+                          type: integer
+                          description: |
+                            Цена товара, ₽<br>
+                            Указывается при добавлении размера
                         skus:
                           type: array
                           items:
@@ -2042,11 +2170,13 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       tags:
         - Карточки товаров
       summary: Объединение и разъединение карточек товаров
       description: |
-        Метод объединяет и разъединяет карточки товаров. Карточки товаров считаются объединёнными, если у них одинаковый `imtID`.
+        Метод [объединяет и разъединяет](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточки товаров. Карточки товаров являются объединёнными, если у них одинаковый `imtID`.
         <br><br>
         Для объединения карточек товаров сделайте запрос **с указанием** `imtID`. Можно объединять не более 30 карточек товаров.<br>
         Для разъединения карточек товаров сделайте запрос **без указания** `imtID`. Для разъединенных карточек будут сгенерированы новые `imtID`.
@@ -2057,7 +2187,7 @@ paths:
         Максимальный размер запроса 10 Мб.
 
         <div class="description_important">
-          Объединить можно только карточки товаров с одинаковыми предметами.
+          Объединить можно карточки товаров только в рамках одного предмета
         </div>
 
         <div class="description_limit">
@@ -2065,7 +2195,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -2147,6 +2277,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Перенос карточек товаров в корзину
@@ -2154,18 +2286,20 @@ paths:
         Метод переносит [карточки товаров в корзину](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). При этом карточки товаров не удаляются, их можно [восстановить](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1recover/post).
 
         <div class="description_important">
-          После переноса в корзину карточке товара присваивается новый <code>imtID</code>.
+          После переноса в корзину карточке товара присваивается новый <code>imtID</code> — ID для <a href="https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov">объединённых</a> карточек товаров
         </div>
 
-        Карточки товаров удаляются автоматически, если лежат в корзине больше 30 дней. Очистка корзины происходит каждую ночь по московскому времени.<br>
+        Карточки товаров удаляются автоматически, если лежат в корзине больше 30 дней, и на них нет остатков. Очистка корзины происходит каждую ночь по московскому времени.<br>
         Карточки товаров можно удалить в любое время в [личном кабинете](https://seller.wildberries.ru/new-goods/basket-cards).
+        <br><br>
+        Карточка будет продаваться, пока по ней есть остатки на складе, даже если её переместили в корзину. Чтобы полностью снять карточку с продажи, обнулите остатки.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -2186,7 +2320,9 @@ paths:
               type: object
               properties:
                 nmIDs:
-                  description: Артикул WB (max. 1000)
+                  description: Артикулы WB
+                  minimum: 1
+                  maximum: 1000
                   type: array
                   items:
                     type: integer
@@ -2240,6 +2376,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Восстановление карточек товаров из корзины
@@ -2247,7 +2385,7 @@ paths:
         Метод восстанавливает [карточки товаров из корзины](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post).
 
         <div class="description_important">
-          Карточка товара сохраняет тот же <code>imtID</code>, что был присвоен ей при <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1delete~1trash/post">перемещении в корзину</a>.
+          Карточка товара сохраняет тот же <code>imtID</code> — ID для <a href="https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov">объединённых</a> карточек товаров — что был присвоен ей при <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1delete~1trash/post">перемещении в корзину</a>
         </div>
 
         <div class="description_limit">
@@ -2255,7 +2393,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -2276,8 +2414,10 @@ paths:
               type: object
               properties:
                 nmIDs:
-                  description: Артикул WB (max. 1000)
+                  description: Артикулы WB
                   type: array
+                  minimum: 1
+                  maximum: 1000
                   items:
                     type: integer
             example:
@@ -2330,44 +2470,47 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Список карточек товаров в корзине
       description: |
         <div class="description_auth">
-          Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong>
+          Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-personalnyj-bazovyj-ili-testovyj-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong>
         </div>
 
         Метод возвращает список карточек товаров в корзине.<br><br>
 
-        Чтобы получить **больше 100** карточек товаров, воспользуйтесь пагинацией:
-
+        Чтобы получить **больше 100** карточек товаров, используйте пагинацию.
           1. Сделайте первый запрос: <br>
               <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935">
                 {
                   "settings": {
+                    "sort": {
+                      "ascending": true
+                    },
                     "cursor": {
                       "limit": 100
-                    },
-                    "filter": {
-                      "withPhoto": -1
                     }
                   }
                 }</pre>
-          2. Пройдите в конец полученного списка карточек товаров.
-          3. Скопируйте из `cursor` две строки:
-              - `"trashedAt": "***"`
-              - `"nmID": ***`
-          4. Вставьте скопированные строки в параметр запроса `cursor`.
-          5. Повторите запрос.
-          6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки.
+             Чтобы получать только карточки товаров, которые были перенесены в корзину после выгрузки, используйте сортировку по возрастанию: `"sort":{"ascending":true}`.
+          2. Скопируйте `"trashedAt":"***","nmID":***` из `cursor` ответа и вставьте в `cursor` запроса.
+          3. Повторите запрос.
+          4. Повторяйте пункты 2 и 3, пока значение `total` в ответе не станет меньше, чем значение `limit` в запросе. Это будет означать, что вы получили все карточки.
+
+        Чтобы получать только карточки товаров, которые были перенесены в корзину после предыдущей выгрузки данных:
+          1. Сохраните поля `"cursor":{"trashedAt":"***","nmID":***}` из последнего ответа предыдущей выгрузки. При выгрузке используйте сортировку по возрастанию: `"sort":{"ascending":true}`.
+          2. Укажите в первом запросе сохранённые поля `"cursor":{"trashedAt":"***","nmID":"***"}`. Продолжайте использовать сортировку по возрастанию.
+          3. Сохраните поля `"cursor":{"trashedAt":"***","nmID":***}` из последнего ответа текущей выгрузки.
 
           <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -2415,6 +2558,8 @@ paths:
                       properties:
                         limit:
                           type: integer
+                          maximum: 100
+                          default: 10
                           description: Сколько карточек товаров выдать в ответе
                         trashedAt:
                           type: string
@@ -2634,6 +2779,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Лимиты карточек товаров
@@ -2651,7 +2798,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -2712,6 +2859,8 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Генерация баркодов
@@ -2723,7 +2872,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |
+        | 1 мин | 100 запросов | 600 мс | 5 запросов |
 
         Исключение — методы:
 
@@ -2788,33 +2937,39 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       tags:
         - Создание карточек товаров
       summary: Создание карточек товаров
-      description: "Метод создаёт карточки товаров c указанием описаний и характеристик товаров.<br>\n\n<div class=\"description_important\">\n  Есть две формы запроса: для создания отдельных и объединённых карточек товаров.\n</div>\n\nГабариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.\n<br><br>\nСоздание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br>\nВ одном запросе можно создать максимум 100 объединённых карточек\_товаров (`imtID`), по\_30 карточек товаров в\_каждой. Максимальный размер запроса 10 Мб.<br>\nЕсли ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 10 запросов | 6 секунд | 5 запросов |\n</div>\n"
+      description: "Метод создаёт карточки товаров c указанием описаний и характеристик товаров.<br>\n\n<div class=\"description_important\">\n  Есть две формы запроса: для создания отдельных и объединённых карточек товаров\n</div>\n\nГабариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.\n<br><br>\nСоздание карточки товара происходит асинхронно. Синхронизация новой карточки с сервисами может занимать до 30 минут. В течение этого времени невозможно добавить остатки на склады и настроить цены. <br>\nОдним запросом можно создать максимум 100 отдельных карточек товаров или 100 групп [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек\_товаров по\_30 карточек в\_каждой. Максимальный размер запроса 10 Мб.<br>\nЕсли ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 10 запросов | 6 сек | 5 запросов |\n</div>\n"
       requestBody:
         content:
           application/json:
             schema:
+              description: Отдельные карточки товаров или группы объединённых карточек товаров
               type: array
               items:
                 type: object
                 required:
                   - subjectID
                   - variants
+                minimum: 1
+                maximum: 100
                 properties:
                   subjectID:
                     type: integer
                     description: ID предмета
                   variants:
                     description: |
-                      Массив вариантов товара.<br>
-                      В каждой объединённой карточке товара может быть не более 30 карточек товаров
+                      [Объединённые](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточки товаров.<br>Чтобы создать отдельную карточку, передайте только один объект
                     type: array
                     items:
                       type: object
                       required:
                         - vendorCode
+                      minimum: 1
+                      maximum: 30
                       properties:
                         brand:
                           type: string
@@ -2829,7 +2984,7 @@ paths:
                             Описание товара.<br>
                             Максимальное количество символов зависит от категории товара<br>
                             Стандарт — 2000, минимум — 1000, максимум — 5000<br>
-                            Подробно о правилах описания в **Правилах заполнения карточки товара** в разделе в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113#описание) на портале продавцов
+                            Подробно о правилах описания в **Правилах заполнения карточки товара** в разделе в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113) на портале продавцов
                         vendorCode:
                           type: string
                           description: Артикул продавца
@@ -2849,7 +3004,8 @@ paths:
                           description: |
                             Габариты и вес товара `c упаковкой`.<br>
                             Укажите в `сантиметрах` и `килограммах` для любого товара.<br>
-                            Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса
+                            Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса.<br>
+                            Синхронизация данных новой карточки с сервисом может занимать до 30 минут
                           type: object
                           properties:
                             length:
@@ -2885,7 +3041,10 @@ paths:
                                 type: array
                                 items:
                                   type: string
-                                description: Баркод. Если не указать, сгенерируется автоматически
+                                description: |
+                                  Массив баркодов для размера. <br>
+                                  Если не указать, сгенерируется автоматически. <br>
+                                  Позволяет связать несколько баркодов с одним размером, например, для разных партий товара
                         characteristics:
                           type: array
                           description: |
@@ -2905,7 +3064,7 @@ paths:
                                 description: |
                                   Значения характеристики.
                                   <br>
-                                  Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе **Характеристики предмета**.
+                                  Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                   <br>
                                   Допустимое количество значений отображено в поле `maxCount` того же метода
             examples:
@@ -2986,23 +3145,25 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       tags:
         - Создание карточек товаров
       summary: Создание карточек товаров с присоединением
       description: |
-        Метод создаёт новые карточки товаров, присоединяя их к существующим карточкам.
-        <br><br>
+        Метод создаёт карточки товаров, присоединяя их к существующим отдельным карточкам и группам [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек. В одной группе объединённых карточек товаров может быть не более 30 карточек, соответственно, создать с присоединением можно не более 29 карточек товаров за один запрос.
+
         Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`.
         <br><br>
-        Создание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br>Максимальный размер запроса 10 Мб.<br>
-        Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).
+        Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post).<br>
+        Создание карточки товара происходит асинхронно. Синхронизация новой карточки с сервисами может занимать до 30 минут. В течение этого времени невозможно добавить остатки на склады и настроить цены.
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 10 запросов | 6 секунд | 5 запросов |
+        | 1 мин | 10 запросов | 6 сек | 5 запросов |
         </div>
       requestBody:
         content:
@@ -3013,14 +3174,16 @@ paths:
                 imtID:
                   type: integer
                   description: |
-                    `imtID` карточки товара, к которой присоединяется карточка товара
+                    `imtID` отдельной карточки товара или группы [объединённых](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточек товаров, к которой присоединяются создаваемые карточки
                 cardsToAdd:
-                  description: Структура присоединяемой карточки товара
+                  description: Добавляемые карточки товаров
                   type: array
                   items:
                     type: object
                     required:
                       - vendorCode
+                    minimum: 1
+                    maximum: 29
                     properties:
                       brand:
                         type: string
@@ -3050,12 +3213,13 @@ paths:
                           Описание товара.<br>
                           Максимальное количество символов зависит от категории товара<br>
                           Стандарт — 2000, минимум — 1000, максимум — 5000<br>
-                          Подробно о правилах описания в **Правилах заполнения карточки товара** в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113#описание) на портале продавцов
+                          Подробно о правилах описания в **Правилах заполнения карточки товара** в [Справочном центре](https://seller.wildberries.ru/help-center/article/A-113) на портале продавцов
                       dimensions:
                         description: |
                           Габариты и вес товара `c упаковкой`.<br>
                           Укажите в `сантиметрах` и `килограммах` для любого товара. <br>
-                          Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса
+                          Если данные не указаны, автоматически сгенерируются нулевые значения длины, ширины, высоты и веса. <br>
+                          Синхронизация данных с сервисом может занимать до 30 минут
                         type: object
                         properties:
                           length:
@@ -3111,7 +3275,7 @@ paths:
                               description: |
                                 Значения характеристики.
                                 <br>
-                                Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе **Характеристики предмета**.
+                                Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                 <br>
                                 Допустимое количество значений отображено в поле `maxCount` того же метода
             example:
@@ -3233,10 +3397,12 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Загрузить медиафайл
-      description: "Метод загружает и добавляет один медиафайл к карточке товара.\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700x900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
+      description: "Метод загружает и добавляет один медиафайл к карточке товара.\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700x900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 100 запросов | 600 мс | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
       tags:
         - Медиафайлы
       parameters:
@@ -3311,10 +3477,12 @@ paths:
     servers:
       - url: https://content-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: content
       security:
         - HeaderApiKey: []
       summary: Загрузить медиафайлы по ссылкам
-      description: "Метод загружает набор медиафайлов в карточку товара через указание ссылок в запросе.\n\n<div class=\"description_important\">\n  Новые медиафайлы полностью заменяют старые. Чтобы добавить новые медиафайлы, укажите в запросе ссылки одновременно на новые и старые медиафайлы.\n</div>\n\nТребования к ссылкам:\n  * ссылка должна вести прямо на файл. Убедитесь, что ссылка не ведёт на страницу предпросмотра или авторизации, например. Если по ссылке открывается текстовая страница TXT или HTML, ссылка считается некорректной\n  * для доступа к файлу по ссылке не нужна авторизация\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700×900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\nЕсли видео или хотя бы одно изображение в запросе не соответствует требованиям, то даже при успешном ответе (`200`) ни одно изображение/видео не загрузится.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 минута | 100 запросов | 600 миллисекунд | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
+      description: "Метод загружает набор медиафайлов в карточку товара через указание ссылок в запросе.\n\n<div class=\"description_important\">\n  Новые медиафайлы полностью заменяют старые. Чтобы добавить новые медиафайлы, укажите в запросе ссылки одновременно на новые и старые медиафайлы.\n</div>\n\nТребования к ссылкам:\n  * ссылка должна вести прямо на файл. Убедитесь, что ссылка не ведёт на страницу предпросмотра или авторизации, например. Если по ссылке открывается текстовая страница TXT или HTML, ссылка считается некорректной\n  * для доступа к файлу по ссылке не нужна авторизация\n\nТребования к изображениям:\n  * максимум изображений для одной карточки товара\_— 30\n  * минимальное разрешение — 700×900 px\n  * максимальный размер\_— 32\_Мб\n  * минимальное качество\_— 65%\n  * форматы\_— JPG, PNG, BMP, GIF (статичные), WebP\n\nТребования к видео:\n  * максимум одно\_видео для одной карточки товара\n  * максимальный размер\_— 50\_Мб\n  * форматы\_— MOV, MP4\n\nЕсли видео или хотя бы одно изображение в запросе не соответствует требованиям, то даже при успешном ответе (`200`) ни одно изображение/видео не загрузится.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 1 мин | 100 запросов | 600 мс | 5 запросов |\n\nИсключение — методы:\n\n<ul>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post\">создания карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post\">создания карточек товаров с присоединением</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post\">редактирования карточек товаров</a></li>\n    <li><a href=\"/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post\">получения несозданных карточек товаров с ошибками</a></li>\n</ul>\n</div>\n"
       tags:
         - Медиафайлы
       requestBody:
@@ -3394,6 +3562,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3413,7 +3583,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       requestBody:
@@ -3478,6 +3648,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3499,7 +3671,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       requestBody:
@@ -3566,6 +3738,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     post:
+      x-readonly-method: false
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3583,7 +3757,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       requestBody:
@@ -3634,6 +3808,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3651,7 +3827,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       parameters:
@@ -3685,6 +3861,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3702,7 +3880,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       parameters:
@@ -3738,6 +3916,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3755,7 +3935,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       parameters:
@@ -3789,6 +3969,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3806,7 +3988,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       parameters:
@@ -3842,6 +4024,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3862,7 +4046,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       parameters:
@@ -3897,6 +4081,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     post:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3916,7 +4102,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       requestBody:
@@ -3950,6 +4136,8 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
@@ -3967,7 +4155,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |
+        | 6 сек | 10 запросов | 600 мс | 5 запросов |
 
         </div>
       parameters:
@@ -4003,12 +4191,14 @@ paths:
     servers:
       - url: https://discounts-prices-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: discountsandprices
       security:
         - HeaderApiKey: []
       tags:
         - Цены и скидки
       summary: Получить товары в карантине
-      description: "Метод возвращает информацию о товарах в карантине.\n<br><br>\nЕсли новая цена товара со скидкой будет минимум в\_3 раза меньше старой, товар попадёт в\_[карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и будет продаваться по\_старой цене. Ошибка об\_этом будет в\_ответах методов [состояний загрузок](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get).\n<br><br>\nВы можете изменить цену или скидку с помощью API либо вывести товар из\_карантина в\_[личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine).\n<br><br>\nДля товаров с [поразмерной установкой цен](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post) карантин не применяется.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов |\n\n</div>\n"
+      description: "Метод возвращает информацию о товарах в карантине.\n<br><br>\nЕсли новая цена товара со скидкой будет минимум в\_3 раза меньше старой, товар попадёт в\_[карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и будет продаваться по\_старой цене. Ошибка об\_этом будет в\_ответах методов [состояний загрузок](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get).\n<br><br>\nВы можете изменить цену или скидку с помощью API либо вывести товар из\_карантина в\_[личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine).\n<br><br>\nДля товаров с [поразмерной установкой цен](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post) карантин не применяется.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Vvedenie/Limity-zaprosov\">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>:\n\n| Период | Лимит | Интервал | Всплеск |\n| --- | --- | --- | --- |\n| 6 сек | 10 запросов | 600 мс | 5 запросов |\n\n</div>\n"
       parameters:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
@@ -4050,6 +4240,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4067,9 +4259,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Warehouse'
@@ -4089,10 +4281,15 @@ paths:
                   items:
                     type: object
                     properties:
+                      chrtId:
+                        type: integer
+                        description: ID размера товара
+                        example: 12345678
                       sku:
                         type: string
-                        description: Баркод
-                        example: BarcodeTest123
+                        description: Баркод. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                        deprecated: true
+                        example: SKUTest123
                       amount:
                         type: integer
                         maximum: 100000
@@ -4150,6 +4347,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4167,9 +4366,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 10 запросов | 6 сек | 2 запроса |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Warehouse'
@@ -4180,16 +4379,29 @@ paths:
             schema:
               type: object
               properties:
+                chrtIds:
+                  type: array
+                  nullable: false
+                  minItems: 1
+                  maxItems: 1000
+                  description: Массив ID размеров товаров
+                  items:
+                    type: integer
+                    nullable: false
+                    example: 123456789
                 skus:
                   type: array
                   nullable: false
                   minItems: 1
                   maxItems: 1000
-                  description: Массив баркодов
+                  description: Массив баркодов. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                  deprecated: true
                   items:
                     type: string
                     nullable: false
-                    example: BarcodeTest123
+                    example: SKUTest123
+              required:
+                - chrtIds
       responses:
         '204':
           description: Удалено
@@ -4234,6 +4446,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     post:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4247,9 +4461,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Warehouse'
@@ -4261,16 +4475,23 @@ paths:
               type: object
               nullable: false
               properties:
+                chrtIds:
+                  type: array
+                  description: Массив ID размеров товаров
+                  items:
+                    type: integer
+                    example: 12345678
                 skus:
                   type: array
-                  description: Массив баркодов
+                  description: Массив баркодов. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                  deprecated: true
                   minItems: 1
                   maxItems: 1000
                   items:
                     type: string
-                    example: BarcodeTest123
+                    example: SKUTest123
               required:
-                - skus
+                - chrtIds
       responses:
         '200':
           description: Успешно
@@ -4285,11 +4506,16 @@ paths:
                     items:
                       type: object
                       properties:
+                        chrtId:
+                          type: integer
+                          description: ID размера товара
+                          example: 12345678
                         sku:
                           type: string
                           nullable: false
-                          description: Баркод
-                          example: BarcodeTest123
+                          description: Баркод. Поле будет отключено [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
+                          deprecated: true
+                          example: SKUTest123
                         amount:
                           type: integer
                           nullable: false
@@ -4320,6 +4546,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4333,9 +4561,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
         '200':
@@ -4358,6 +4586,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4371,9 +4601,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       responses:
         '200':
@@ -4393,6 +4623,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     post:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4410,9 +4642,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       requestBody:
         required: true
@@ -4479,6 +4711,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4496,9 +4730,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Warehouse'
@@ -4554,6 +4788,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     delete:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4567,9 +4803,9 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
-        Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
       parameters:
         - $ref: '#/components/parameters/Warehouse'
@@ -4588,6 +4824,8 @@ paths:
     servers:
       - url: https://marketplace-api.wildberries.ru
     get:
+      x-readonly-method: true
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4608,7 +4846,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
         </div>
       parameters:
@@ -4655,6 +4893,8 @@ paths:
         '429':
           $ref: '#/components/responses/429'
     put:
+      x-readonly-method: false
+      x-category: marketplace
       security:
         - HeaderApiKey: []
       tags:
@@ -4683,7 +4923,7 @@ paths:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов |
+        | 1 мин | 300 запросов | 200 мс | 20 запросов |
 
         </div>
       requestBody:
@@ -4718,6 +4958,73 @@ paths:
           $ref: '#/components/responses/429'
 components:
   schemas:
+    BrandsResponse:
+      type: object
+      required:
+        - brands
+        - total
+      properties:
+        brands:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - logoUrl
+              - name
+            properties:
+              id:
+                description: ID бренда
+                example: 9007199254
+                type: integer
+              logoUrl:
+                description: URL логотипа бренда
+                type: string
+              name:
+                description: Название бренда
+                type: string
+                example: Brand
+        next:
+          type: integer
+          description: Параметр пагинации. Укажите это значение в запросе, чтобы получить следующий пакет данных. Если поле отсутствует, вы получили все данные
+          example: 1212
+        total:
+          type: integer
+          description: Общее количество брендов предмета
+          example: 344534
+    BrandsResponseError:
+      type: object
+      required:
+        - title
+        - detail
+        - origin
+        - requestId
+      properties:
+        title:
+          type: string
+          description: Заголовок ошибки
+        detail:
+          type: string
+          description: Детали ошибки
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Текст ошибки
+              location:
+                type: string
+                description: Параметр, где произошла ошибка
+              value:
+                description: Значение параметра, где произошла ошибка
     StoreContactRequestBody:
       type: object
       description: Контакты склада продавца
@@ -4782,11 +5089,14 @@ components:
         - nmIDs
       properties:
         targetIMT:
-          description: Существующий у продавца `imtID`, под которым необходимо объединить карточки товаров
+          description: Существующий `imtID`, под которым необходимо [объединить](https://dev.wildberries.ru/news/101#obuedinenie-i-razuedinenie-kartochek-tovarov) карточки товаров
           type: integer
           example: 123
         nmIDs:
-          description: '`nmID`, которые необходимо объединить (максимум 30)'
+          description: |
+            `nmID`, которые необходимо объединить
+          minimum: 1
+          maximum: 30
           type: array
           items:
             type: integer
@@ -4799,7 +5109,10 @@ components:
         - nmIDs
       properties:
         nmIDs:
-          description: '`nmID`, которые необходимо разъединить (max 30)'
+          description: |
+            `nmID`, которые необходимо разъединить
+          minimum: 1
+          maximum: 30
           type: array
           items:
             type: integer
@@ -4850,8 +5163,8 @@ components:
       example:
         data: null
         error: true
-        errorText: Доступ запрещен
-        additionalErrors: Доступ запрещен
+        errorText: Access denied
+        additionalErrors: Access denied
     responseContentError:
       type: object
       properties:
@@ -4895,7 +5208,7 @@ components:
         additionalErrors: null
         data: null
         error: true
-        errorText: Текст ошибки
+        errorText: Error text
     ResponseError:
       type: object
       properties:
@@ -4933,13 +5246,22 @@ components:
       items:
         type: object
         properties:
-          code:
-            description: Код ошибки
-            type: string
           data:
             description: Дополнительная информация об ошибке
             nullable: true
-            type: object
+            type: array
+            items:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: Баркод
+                amount:
+                  type: integer
+                  description: Остаток
+          code:
+            description: Код ошибки
+            type: string
           message:
             description: Описание ошибки
             type: string
@@ -5200,6 +5522,7 @@ components:
           type: string
           example: null
           description: Текст ошибки
+          nullable: true
     GoodHistory:
       type: object
       properties:
@@ -5339,6 +5662,7 @@ components:
           description: Не используется
           type: integer
           example: null
+          nullable: true
         techSizeName:
           description: Не используется
           type: string
@@ -5772,7 +6096,7 @@ components:
     '401':
       description: Не авторизован
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:
@@ -5813,7 +6137,7 @@ components:
     '429':
       description: Слишком много запросов
       content:
-        application/json:
+        application/problem+json:
           schema:
             type: object
             properties:
@@ -5861,7 +6185,7 @@ components:
             code: NotFound
             message: ''
     AccessDenied:
-      description: Доступ запрещен
+      description: Доступ запрещён
       content:
         application/json:
           schema:
@@ -6102,72 +6426,69 @@ components:
         - code: SubjectDBSRestriction
           message: The product category cannot be sold with 'Fulfillment By Wildberries'.
           data:
-            sku: skuTest1
-            stock: 0
+            - sku: skuTest1
+              amount: 0
     SubjectFBSRestriction:
       description: Категория товара недоступна для продажи по модели DBS
       value:
         - code: SubjectFBSRestriction
           message: The product category cannot be sold with 'Delivery By Supplier'.
           data:
-            sku: skuTest2
-            stock: 1
+            - sku: skuTest2
+              amount: 1
     UploadDataLimit:
       description: Превышен лимит загружаемых данных
       value:
         - code: UploadDataLimit
           message: Upload limit exceeded.
           data:
-            sku: skuTest2
-            stock: 100001
+            - sku: skuTest2
+              amount: 100001
     UploadDataLimitDbw:
       description: Превышен лимит загружаемых данных
       value:
         code: UploadDataLimit
         message: Upload limit exceeded.
-        data:
-          sku: skuTest2
-          stock: 100001
     CargoWarehouseRestrictionMGT:
       description: Выбранный склад не подходит для товаров с типом «МГТ (малогабаритные товары)». Загрузите остатки на склад без метки СГТ или КГТ+
       value:
         - code: CargoWarehouseRestrictionMGT
           message: The selected warehouse is not suitable for goods with the type "LCL (Less than Container Load)". Upload the balances to the warehouse without the ODC or CD+ mark
           data:
-            sku: skuTest3
-            stock: 10
+            - sku: skuTest3
+              amount: 10
     CargoWarehouseRestrictionSGT:
       description: Выбранный склад не подходит для товаров с типом «СГТ». Загрузите остатки на склад с отметкой — СГТ
       value:
         - code: CargoWarehouseRestrictionSGT
           message: The selected warehouse is not suitable for goods with the type "ODC". Upload the balances to the warehouse marked - ODC
           data:
-            sku: '2042688657617'
-            stock: 0
+            - sku: '2042688657617'
+              amount: 0
     CargoWarehouseRestrictionSGTKGTPlus:
       description: Выбранный склад не подходит для товаров с типом «СГТ/КГТ+». Загрузите остатки на склад с меткой — СГТ или КГТ+
       value:
         - code: CargoWarehouseRestrictionSGTKGTPlus
           message: The selected warehouse is not suitable for goods with the type "ODC/CD+". Upload the balances to the warehouse with the label - ODC or CD+
           data:
-            sku: skuTest3
-            amount: 10
+            - sku: skuTest3
+              amount: 10
     CargoWarehouseRestrictionKGTPlus:
       description: Выбранный склад не подходит для товаров с типом «КГТ+». Загрузите остатки на склад с отметкой — КГТ+
       value:
         - code: CargoWarehouseRestrictionKGTPlus
           message: The selected warehouse is not suitable for goods with the type "CD+". Upload the balances to the warehouse marked - CD+
           data:
-            sku: skuTest3
-            stock: 10
+            - sku: skuTest3
+              amount: 10
     NotFound:
       description: Не найдено
       value:
         - code: NotFound
           message: Not found
           data:
-            sku: skuTest4
-            stock: 10
+            - sku: skuTest4
+              amount: 10
     IncorrectParameter:
       value:
         code: IncorrectParameter
@@ -6608,6 +6929,32 @@ components:
         data: null
         error: true
         errorText: Access denied
+    BrandsResponseBadRequest1:
+      value:
+        title: Bad Request
+        detail: validation failed
+        origin: brands-api
+        requestId: 102d2641a932d61bed60649d6c99d80a
+        errors:
+          - message: invalid integer
+            location: query.next
+            value: MTkxOTAzMQ==
+    BrandsResponseBadRequest2:
+      value:
+        title: Bad Request
+        detail: validation failed
+        origin: brands-api
+        requestId: 102d2641a932d61bed60649d6c99d80a
+        errors:
+          - message: expected number >= 0
+            location: query.subjectId
+            value: '-1'
+    BrandsResponseNotFound:
+      value:
+        title: Not Found
+        detail: Brands not found
+        origin: brands-api
+        requestId: 102d2641a932d61bed60649d6c99d80a
   securitySchemes:
     HeaderApiKey:
       type: apiKey
