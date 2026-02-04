@@ -52,6 +52,9 @@ export default defineConfig({
       'node_modules',
       'dist',
       '**/*.d.ts',
+      // TDD test files - excluded from default runs (red-phase tests expected to fail)
+      // Run separately via: npm run test:tdd
+      'tests/tdd/**',
       // MSW v2.x integration tests - skipped due to localStorage compatibility issue
       // MSW's CookieStore accesses localStorage.getItem() during import,
       // before any test setup can polyfill it.
