@@ -2,7 +2,7 @@
 
 # Class: RateLimitError
 
-Defined in: [errors/rate-limit-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L25)
+Defined in: [errors/rate-limit-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L25)
 
 Rate limit error thrown when API rate limits are exceeded.
 
@@ -42,7 +42,7 @@ new RateLimitError(
    requestId?: string): RateLimitError;
 ```
 
-Defined in: [errors/rate-limit-error.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L39)
+Defined in: [errors/rate-limit-error.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L39)
 
 Creates a rate limit error
 
@@ -67,10 +67,10 @@ Creates a rate limit error
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/base-error.ts#L35) |
-| <a id="retryafter"></a> `retryAfter` | `readonly` | `number` | Milliseconds to wait before retrying the request | - | [errors/rate-limit-error.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L29) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/base-error.ts#L35) |
+| <a id="retryafter"></a> `retryAfter` | `readonly` | `number` | Milliseconds to wait before retrying the request | - | [errors/rate-limit-error.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L29) |
 
 ## Methods
 
@@ -80,7 +80,7 @@ Creates a rate limit error
 getUserMessage(): string;
 ```
 
-Defined in: [errors/rate-limit-error.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L55)
+Defined in: [errors/rate-limit-error.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L55)
 
 Returns user-friendly error message with retry timing information
 
@@ -109,7 +109,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/rate-limit-error.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L76)
+Defined in: [errors/rate-limit-error.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L76)
 
 Custom JSON serialization to preserve retryAfter property
 
@@ -130,12 +130,12 @@ Object representation including retryAfter timing
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/rate-limit-error.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L77) |
-| `message` | `string` | [errors/rate-limit-error.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L78) |
-| `statusCode` | `number` | [errors/rate-limit-error.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L79) |
-| `retryAfter` | `number` | [errors/rate-limit-error.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L80) |
-| `response?` | `unknown` | [errors/rate-limit-error.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L81) |
-| `requestId?` | `string` | [errors/rate-limit-error.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/errors/rate-limit-error.ts#L82) |
+| `name` | `string` | [errors/rate-limit-error.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L77) |
+| `message` | `string` | [errors/rate-limit-error.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L78) |
+| `statusCode` | `number` | [errors/rate-limit-error.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L79) |
+| `retryAfter` | `number` | [errors/rate-limit-error.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L80) |
+| `response?` | `unknown` | [errors/rate-limit-error.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L81) |
+| `requestId?` | `string` | [errors/rate-limit-error.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/errors/rate-limit-error.ts#L82) |
 
 #### Overrides
 

@@ -6,7 +6,7 @@
 type Sender = "client" | "seller" | "wb";
 ```
 
-Defined in: [types/communications.types.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/communications.types.ts#L315)
+Defined in: [types/communications.types.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/communications.types.ts#L315)
 
 Отправитель:
 - `client` — покупатель

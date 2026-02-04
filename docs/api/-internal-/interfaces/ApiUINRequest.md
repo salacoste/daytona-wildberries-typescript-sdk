@@ -2,7 +2,7 @@
 
 # Interface: ApiUINRequest
 
-Defined in: [types/in-store-pickup.types.ts:271](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/in-store-pickup.types.ts#L271)
+Defined in: [types/in-store-pickup.types.ts:271](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/in-store-pickup.types.ts#L271)
 
 ## Example
 
@@ -18,4 +18,4 @@ Defined in: [types/in-store-pickup.types.ts:271](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="uin"></a> `uin?` | `string` | УИН | [types/in-store-pickup.types.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/in-store-pickup.types.ts#L273) |
+| <a id="uin"></a> `uin?` | `string` | УИН | [types/in-store-pickup.types.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/in-store-pickup.types.ts#L273) |

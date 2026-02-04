@@ -2,10 +2,10 @@
 
 # Interface: GetTasksResponse
 
-Defined in: [types/reports.types.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/reports.types.ts#L450)
+Defined in: [types/reports.types.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/reports.types.ts#L450)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`GetTasksResponseData`](GetTasksResponseData.md) | [types/reports.types.ts:451](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/types/reports.types.ts#L451) |
+| <a id="data"></a> `data?` | [`GetTasksResponseData`](GetTasksResponseData.md) | [types/reports.types.ts:451](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/reports.types.ts#L451) |

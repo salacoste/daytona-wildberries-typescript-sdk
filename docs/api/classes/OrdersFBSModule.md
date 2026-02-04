@@ -2,7 +2,7 @@
 
 # Class: OrdersFbsModule
 
-Defined in: [modules/orders-fbs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L10)
+Defined in: [modules/orders-fbs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L10)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbs/index.ts:10](https://github.com/salacoste/dayton
 new OrdersFbsModule(client: BaseClient): OrdersFbsModule;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L11)
+Defined in: [modules/orders-fbs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L11)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/orders-fbs/index.ts:11](https://github.com/salacoste/dayton
 getPassesOffices(): Promise<PassOffice[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L27)
+Defined in: [modules/orders-fbs/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L27)
 
 Получить список складов, для которых требуется пропуск
 
@@ -75,7 +75,7 @@ console.log(result);
 passes(): Promise<Pass[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L45)
+Defined in: [modules/orders-fbs/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L45)
 
 Получить список пропусков
 
@@ -126,7 +126,7 @@ createPass(data: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L64)
+Defined in: [modules/orders-fbs/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L64)
 
 Создать пропуск
 
@@ -188,7 +188,7 @@ updatePass(passId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L83)
+Defined in: [modules/orders-fbs/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L83)
 
 Обновить пропуск
 
@@ -242,7 +242,7 @@ const result = await sdk.ordersFBS.updatePass('passId-value', {});
 deletePass(passId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L101)
+Defined in: [modules/orders-fbs/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L101)
 
 Удалить пропуск
 
@@ -292,7 +292,7 @@ getOrdersNew(): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L119)
+Defined in: [modules/orders-fbs/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L119)
 
 Получить список новых сборочных заданий
 
@@ -345,7 +345,7 @@ orders(options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L138)
+Defined in: [modules/orders-fbs/index.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L138)
 
 Получить информацию о сборочных заданиях
 
@@ -417,7 +417,7 @@ createOrdersStatu(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L157)
+Defined in: [modules/orders-fbs/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L157)
 
 Получить статусы сборочных заданий
 
@@ -486,7 +486,7 @@ getOrdersReshipment(): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L175)
+Defined in: [modules/orders-fbs/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L175)
 
 Получить все сборочные задания для повторной отгрузки
 
@@ -534,7 +534,7 @@ console.log(result);
 updateOrdersCancel(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L193)
+Defined in: [modules/orders-fbs/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L193)
 
 Отменить сборочное задание
 
@@ -596,7 +596,7 @@ createOrdersSticker(options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L213)
+Defined in: [modules/orders-fbs/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L213)
 
 Получить стикеры сборочных заданий
 
@@ -660,7 +660,7 @@ getOrdersMeta(orderId: number): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L232)
+Defined in: [modules/orders-fbs/index.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L232)
 
 Получить метаданные сборочного задания
 
@@ -713,7 +713,7 @@ deleteOrdersMeta(orderId: number, options?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L251)
+Defined in: [modules/orders-fbs/index.ts:251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L251)
 
 Удалить метаданные сборочного задания
 
@@ -765,7 +765,7 @@ updateMetaSgtin(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L270)
+Defined in: [modules/orders-fbs/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L270)
 
 Закрепить за сборочным заданием код маркировки товара
 
@@ -817,7 +817,7 @@ updateMetaUin(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:289](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L289)
+Defined in: [modules/orders-fbs/index.ts:289](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L289)
 
 Закрепить за сборочным заданием УИН
 
@@ -869,7 +869,7 @@ updateMetaImei(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L308)
+Defined in: [modules/orders-fbs/index.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L308)
 
 Закрепить за сборочным заданием IMEI
 
@@ -921,7 +921,7 @@ updateMetaGtin(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L327)
+Defined in: [modules/orders-fbs/index.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L327)
 
 Закрепить за сборочным заданием GTIN
 
@@ -973,7 +973,7 @@ updateMetaExpiration(orderId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L346)
+Defined in: [modules/orders-fbs/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L346)
 
 Закрепить за сборочным заданием срок годности товара
 
@@ -1025,7 +1025,7 @@ setCustomsDeclaration(orderId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L374)
+Defined in: [modules/orders-fbs/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L374)
 
 Закрепить за сборочным заданием номер ГТД
 
@@ -1091,7 +1091,7 @@ createStickersCrossBorder(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L393)
+Defined in: [modules/orders-fbs/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L393)
 
 Получить стикеры сборочных заданий кроссбордера
 
@@ -1154,7 +1154,7 @@ createOrdersExternalSticker(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L412)
+Defined in: [modules/orders-fbs/index.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L412)
 
 Получить список ссылок на стикеры сборочных заданий, которые требуются при кроссбордере
 
@@ -1221,7 +1221,7 @@ createStatusHistory(data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L431)
+Defined in: [modules/orders-fbs/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L431)
 
 История статусов для сборочных заданий кроссбордера
 
@@ -1280,7 +1280,7 @@ console.log(result);
 createOrdersClient(data: OrdersRequestAPI): Promise<CrossborderTurkeyClientInfoResp>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L450)
+Defined in: [modules/orders-fbs/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L450)
 
 Заказы с информацией по клиенту
 
@@ -1335,7 +1335,7 @@ supplies(options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L469)
+Defined in: [modules/orders-fbs/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L469)
 
 Получить список поставок
 
@@ -1393,7 +1393,7 @@ createSupply(data: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L488)
+Defined in: [modules/orders-fbs/index.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L488)
 
 Создать новую поставку
 
@@ -1445,7 +1445,7 @@ console.log(result);
 updateSuppliesOrder(supplyId: string, orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L507)
+Defined in: [modules/orders-fbs/index.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L507)
 
 Добавить сборочное задание к поставке
 
@@ -1494,7 +1494,7 @@ const result = await sdk.ordersFBS.updateSuppliesOrder('supplyId-value', 'orderI
 getSupply(supplyId: string): Promise<Supply>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L526)
+Defined in: [modules/orders-fbs/index.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L526)
 
 Получить информацию о поставке
 
@@ -1543,7 +1543,7 @@ console.log(result);
 deleteSupply(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:544](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L544)
+Defined in: [modules/orders-fbs/index.ts:544](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L544)
 
 Удалить поставку
 
@@ -1593,7 +1593,7 @@ getSuppliesOrder(supplyId: string): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:563](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L563)
+Defined in: [modules/orders-fbs/index.ts:563](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L563)
 
 Получить сборочные задания в поставке
 
@@ -1644,7 +1644,7 @@ console.log(result);
 updateSuppliesDeliver(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:581](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L581)
+Defined in: [modules/orders-fbs/index.ts:581](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L581)
 
 Передать поставку в доставку
 
@@ -1697,7 +1697,7 @@ getSuppliesBarcode(supplyId: string, options?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L601)
+Defined in: [modules/orders-fbs/index.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L601)
 
 Получить QR-код поставки
 
@@ -1753,7 +1753,7 @@ getSuppliesTrbx(supplyId: string): Promise<{
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L620)
+Defined in: [modules/orders-fbs/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L620)
 
 Получить список коробов поставки
 
@@ -1808,7 +1808,7 @@ createSuppliesTrbx(supplyId: string, data?: {
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L640)
+Defined in: [modules/orders-fbs/index.ts:640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L640)
 
 Добавить короба к поставке
 
@@ -1863,7 +1863,7 @@ deleteSuppliesTrbx(supplyId: string, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:659](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L659)
+Defined in: [modules/orders-fbs/index.ts:659](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L659)
 
 Удалить короба из поставки
 
@@ -1922,7 +1922,7 @@ createTrbxSticker(
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b3a3d7a7e6aa73efc6d10acff39440fe6420b8ec/src/modules/orders-fbs/index.ts#L680)
+Defined in: [modules/orders-fbs/index.ts:680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/orders-fbs/index.ts#L680)
 
 Получить стикеры коробов поставки
 
