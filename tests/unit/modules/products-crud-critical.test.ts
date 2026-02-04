@@ -4,7 +4,7 @@
  * This file tests the most critical CRUD methods that were previously untested:
  * - createCardsUpload() - Create new product cards (33.82% → coverage improvement)
  * - createCardsUpdate() - Update existing product cards
- * - createCardsTrash() - Move products to trash (soft delete)
+ * - getTrashedCards() - Move products to trash (soft delete)
  * - createCardsRecover() - Recover products from trash
  * - createDeleteTrash() - Permanently delete products from trash
  * - createContentTag() - Create product tags
@@ -327,7 +327,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/update',
-        updateData
+        updateData,
+        { rateLimitKey: 'products.postContentCardsUpdate' }
       );
     });
 
@@ -373,7 +374,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/update',
-        bulkUpdates
+        bulkUpdates,
+        { rateLimitKey: 'products.postContentCardsUpdate' }
       );
     });
 
@@ -413,10 +415,10 @@ describe('ProductsModule - Critical CRUD Operations', () => {
   });
 
   // ============================================================================
-  // CRITICAL: Move to Trash (createCardsTrash)
+  // CRITICAL: List Trashed Cards (getTrashedCards)
   // ============================================================================
 
-  describe('createCardsTrash() - Move Products to Trash (Soft Delete)', () => {
+  describe('getTrashedCards() - List Products in Trash', () => {
     const mockTrashResponse = {
       cards: [
         {
@@ -445,13 +447,13 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       };
 
       // Act
-      const result = await productsModule.createCardsTrash(filters);
+      const result = await productsModule.getTrashedCards(filters);
 
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/get/cards/trash',
         filters,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'products.postContentGetCardsTrash' }
       );
       expect(result.cards).toHaveLength(1);
       expect(result.cards?.[0].trashedAt).toBeDefined();
@@ -471,7 +473,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       };
 
       // Act
-      const result = await productsModule.createCardsTrash(filters);
+      const result = await productsModule.getTrashedCards(filters);
 
       // Assert
       expect(result.cursor?.total).toBe(1);
@@ -488,13 +490,13 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       };
 
       // Act
-      await productsModule.createCardsTrash(filters);
+      await productsModule.getTrashedCards(filters);
 
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/get/cards/trash',
         filters,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'products.postContentGetCardsTrash' }
       );
     });
 
@@ -503,7 +505,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockResolvedValue({ cards: [], cursor: { total: 0 } });
 
       // Act
-      const result = await productsModule.createCardsTrash({});
+      const result = await productsModule.getTrashedCards({});
 
       // Assert
       expect(result.cards).toEqual([]);
@@ -516,7 +518,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       const filters = { settings: { cursor: { limit: 10 } } };
 
       // Act
-      await productsModule.createCardsTrash(filters, { locale: 'en' });
+      await productsModule.getTrashedCards(filters, { locale: 'en' });
 
       // Assert
       expect(mockClient.post).toHaveBeenCalledTimes(1);
@@ -528,7 +530,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       mockClient.post.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(productsModule.createCardsTrash({})).rejects.toThrow(AuthenticationError);
+      await expect(productsModule.getTrashedCards({})).rejects.toThrow(AuthenticationError);
     });
   });
 
@@ -555,7 +557,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/recover',
-        { nmIDs }
+        { nmIDs },
+        { rateLimitKey: 'products.postContentCardsRecover' }
       );
       expect(result.error).toBe(false);
     });
@@ -571,7 +574,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/recover',
-        { nmIDs }
+        { nmIDs },
+        { rateLimitKey: 'products.postContentCardsRecover' }
       );
       expect(result.error).toBe(false);
     });
@@ -639,7 +643,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/delete/trash',
-        { nmIDs }
+        { nmIDs },
+        { rateLimitKey: 'products.postContentCardsDeleteTrash' }
       );
       expect(result.error).toBe(false);
     });
@@ -655,7 +660,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/delete/trash',
-        { nmIDs }
+        { nmIDs },
+        { rateLimitKey: 'products.postContentCardsDeleteTrash' }
       );
       expect(result.error).toBe(false);
     });
@@ -739,7 +745,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/tag',
-        tagData
+        tagData,
+        { rateLimitKey: 'products.postContentTag' }
       );
       expect(result.error).toBe(false);
     });
@@ -757,7 +764,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/tag',
-        tagData
+        tagData,
+        { rateLimitKey: 'products.postContentTag' }
       );
     });
 
@@ -811,7 +819,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.patch).toHaveBeenCalledWith(
         `https://content-api.wildberries.ru/content/v2/tag/${tagId}`,
-        updateData
+        updateData,
+        { rateLimitKey: 'products.patchContentTag' }
       );
       expect(result.error).toBe(false);
     });
@@ -830,7 +839,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.patch).toHaveBeenCalledWith(
         `https://content-api.wildberries.ru/content/v2/tag/${tagId}`,
-        updateData
+        updateData,
+        { rateLimitKey: 'products.patchContentTag' }
       );
     });
 
@@ -879,7 +889,9 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 
       // Assert
       expect(mockClient.delete).toHaveBeenCalledWith(
-        `https://content-api.wildberries.ru/content/v2/tag/${tagId}`
+        `https://content-api.wildberries.ru/content/v2/tag/${tagId}`,
+        undefined,
+        { rateLimitKey: 'products.deleteContentTag' }
       );
       expect(result.error).toBe(false);
     });
@@ -926,7 +938,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/barcodes',
-        { count }
+        { count },
+        { rateLimitKey: 'products.postContentBarcodes' }
       );
       expect(result.data).toHaveLength(3);
       expect(result.error).toBe(false);
@@ -969,7 +982,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/barcodes',
-        { count: 100 }
+        { count: 100 },
+        { rateLimitKey: 'products.postContentBarcodes' }
       );
       expect(result.data).toHaveLength(100);
     });
@@ -1053,7 +1067,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/moveNm',
-        mergeData
+        mergeData,
+        { rateLimitKey: 'products.postContentCardsMoveNm' }
       );
       expect(result.error).toBe(false);
     });
@@ -1071,7 +1086,8 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       // Assert
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v2/cards/moveNm',
-        splitData
+        splitData,
+        { rateLimitKey: 'products.postContentCardsMoveNm' }
       );
       expect(result.error).toBe(false);
     });

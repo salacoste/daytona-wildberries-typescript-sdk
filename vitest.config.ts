@@ -67,6 +67,7 @@ export default defineConfig({
       'tests/integration/retry-handler.integration.test.ts',
       'tests/integration/sdk-initialization.test.ts',
       'tests/integration/user-management.integration.test.ts',
+      'tests/integration/finances.integration.test.ts',
     ],
 
     // Coverage configuration
