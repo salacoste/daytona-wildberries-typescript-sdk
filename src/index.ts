@@ -18,6 +18,7 @@ import { PromotionModule } from './modules/promotion';
 import { TariffsModule } from './modules/tariffs';
 import { InStorePickupModule } from './modules/in-store-pickup';
 import { OrdersDbsModule } from './modules/orders-dbs';
+import { UserManagementModule } from './modules/user-management';
 import { AuthenticationError } from './errors/auth-error';
 import type { SDKConfig } from './config/sdk-config';
 
@@ -497,6 +498,44 @@ export class WildberriesSDK {
   public readonly ordersDBS: OrdersDbsModule;
 
   /**
+   * User Management API module
+   *
+   * Provides access to seller profile user management endpoints:
+   * - Create invitations for new users with access settings
+   * - List active and invited users with pagination
+   * - Update user access rights to seller profile sections
+   * - Delete users from seller profile
+   *
+   * @see {@link UserManagementModule} for available methods
+   *
+   * @example
+   * ```typescript
+   * // Get all users
+   * const result = await sdk.userManagement.getUsers({ limit: 50, offset: 0 });
+   * console.log(result.total);
+   *
+   * // Invite a new user
+   * const invite = await sdk.userManagement.createInvite({
+   *   invite: { phoneNumber: '+79991234567', position: 'Manager' },
+   *   access: [{ code: 'balance', disabled: false }],
+   * });
+   * console.log(invite.inviteUrl);
+   *
+   * // Update user access
+   * await sdk.userManagement.updateUserAccess({
+   *   usersAccesses: [{
+   *     userId: 12345,
+   *     access: [{ code: 'finance', disabled: true }],
+   *   }],
+   * });
+   *
+   * // Delete a user
+   * await sdk.userManagement.deleteUser(12345);
+   * ```
+   */
+  public readonly userManagement: UserManagementModule;
+
+  /**
    * Initialize the Wildberries SDK with configuration
    *
    * Creates a new SDK instance with the provided configuration.
@@ -562,6 +601,9 @@ export class WildberriesSDK {
 
     // Initialize Orders DBS module (Epic 12 - implemented)
     this.ordersDBS = new OrdersDbsModule(this.client);
+
+    // Initialize User Management module (Story 14.4 - implemented)
+    this.userManagement = new UserManagementModule(this.client);
   }
 }
 
@@ -606,6 +648,7 @@ export { PromotionModule } from './modules/promotion';
 export { TariffsModule } from './modules/tariffs';
 export { InStorePickupModule } from './modules/in-store-pickup';
 export { OrdersDbsModule } from './modules/orders-dbs';
+export { UserManagementModule } from './modules/user-management';
 
 // Type definitions
 // NOTE: Types are NOT re-exported from main entry to avoid name conflicts (Error, Date, etc.)
@@ -615,6 +658,21 @@ export { OrdersDbsModule } from './modules/orders-dbs';
 //
 // Or import everything from a specific module:
 //   import * as ProductTypes from 'daytona-wildberries-typescript-sdk/types/products.types';
+
+// User Management types (no name conflicts with global types)
+export type {
+  AccessCode,
+  AccessItem,
+  InviteeInfo,
+  UserInfo,
+  GetUsersResponse,
+  GetUsersParams,
+  CreateInviteRequest,
+  CreateInviteResponse,
+  UserAccess,
+  UpdateUserAccessRequest,
+  UserManagementErrorResponse,
+} from './types/user-management.types';
 
 // Error classes
 export { WBAPIError } from './errors/base-error';
