@@ -35,14 +35,18 @@ export class RateLimitError extends WBAPIError {
    * @param retryAfter - Milliseconds until retry is allowed
    * @param response - API response body if available
    * @param requestId - Correlation ID for debugging
+   * @param origin - Origin service identifier from RFC 7807 responses
+   * @param timestamp - ISO 8601 timestamp from RFC 7807 responses
    */
   constructor(
     message = 'Rate limit exceeded. The SDK will automatically retry this request.',
     retryAfter: number,
     response?: unknown,
-    requestId?: string
+    requestId?: string,
+    origin?: string,
+    timestamp?: string
   ) {
-    super(message, 429, response, requestId);
+    super(message, 429, response, requestId, origin, timestamp);
     this.name = 'RateLimitError';
     this.retryAfter = retryAfter;
   }

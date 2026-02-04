@@ -35,14 +35,39 @@ export class WBAPIError extends Error {
   public readonly requestId?: string;
 
   /**
+   * Origin service identifier from RFC 7807 problem+json responses.
+   *
+   * Indicates which internal Wildberries service originated the error
+   * (e.g., "s2s-api-auth-catalog").
+   */
+  public readonly origin?: string;
+
+  /**
+   * ISO 8601 timestamp from RFC 7807 problem+json responses.
+   *
+   * Indicates when the error occurred on the server side
+   * (e.g., "2024-09-30T06:52:38Z").
+   */
+  public readonly timestamp?: string;
+
+  /**
    * Creates a new WBAPIError
    *
    * @param message - Error message describing what went wrong
    * @param statusCode - HTTP status code if applicable
    * @param response - API response body if available
    * @param requestId - Correlation ID for debugging
+   * @param origin - Origin service identifier from RFC 7807 responses
+   * @param timestamp - ISO 8601 timestamp from RFC 7807 responses
    */
-  constructor(message: string, statusCode?: number, response?: unknown, requestId?: string) {
+  constructor(
+    message: string,
+    statusCode?: number,
+    response?: unknown,
+    requestId?: string,
+    origin?: string,
+    timestamp?: string
+  ) {
     super(message);
 
     // Set error name to class name for proper identification
@@ -65,6 +90,8 @@ export class WBAPIError extends Error {
     this.statusCode = statusCode;
     this.response = response;
     this.requestId = requestId;
+    this.origin = origin;
+    this.timestamp = timestamp;
   }
 
   /**
@@ -103,6 +130,10 @@ export class WBAPIError extends Error {
       message += ` [Request ID: ${this.requestId}]`;
     }
 
+    if (this.origin) {
+      message += ` [Origin: ${this.origin}]`;
+    }
+
     return message;
   }
 
@@ -128,6 +159,8 @@ export class WBAPIError extends Error {
     statusCode?: number;
     response?: unknown;
     requestId?: string;
+    origin?: string;
+    timestamp?: string;
   } {
     return {
       name: this.name,
@@ -135,6 +168,8 @@ export class WBAPIError extends Error {
       statusCode: this.statusCode,
       response: this.response,
       requestId: this.requestId,
+      origin: this.origin,
+      timestamp: this.timestamp,
     };
   }
 }

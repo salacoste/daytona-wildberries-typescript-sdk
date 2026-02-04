@@ -21,6 +21,22 @@ import { RetryHandler } from './retry-handler';
 import { ALL_RATE_LIMITS } from '../config/rate-limits';
 
 /**
+ * Parsed fields from an RFC 7807 problem+json error response.
+ *
+ * @see {@link https://datatracker.ietf.org/doc/html/rfc7807}
+ */
+interface ProblemJsonFields {
+  title?: string;
+  detail?: string;
+  code?: string;
+  requestId?: string;
+  origin?: string;
+  status?: number;
+  statusText?: string;
+  timestamp?: string;
+}
+
+/**
  * Base HTTP client for all Wildberries API modules
  *
  * This class provides a unified HTTP interface with:
@@ -460,24 +476,47 @@ export class BaseClient {
       url: axiosError.config?.url,
     });
 
+    // Detect RFC 7807 problem+json responses
+    const contentTypeHeader: unknown = axiosError.response.headers['content-type'];
+    const contentType = typeof contentTypeHeader === 'string' ? contentTypeHeader : '';
+    const isProblemJson = contentType.includes('application/problem+json');
+
+    // Extract RFC 7807 fields when available (problem+json or standard json with RFC 7807 shape)
+    const pf = this.extractProblemJsonFields(responseData, isProblemJson);
+
     // Transform based on status code
     if (status === 401 || status === 403) {
-      throw new AuthenticationError('Authentication failed. Please verify your API key.', status);
+      const message = pf.detail ?? pf.title ?? 'Authentication failed. Please verify your API key.';
+      throw new AuthenticationError(
+        message,
+        status,
+        responseData,
+        pf.requestId,
+        pf.origin,
+        pf.timestamp
+      );
     }
 
     if (status === 429) {
       const retryAfter = this.parseRetryAfter(
         axiosError.response.headers['retry-after'] as string | undefined
       );
+      const message =
+        pf.detail ?? pf.title ?? `Rate limit exceeded. Retry after ${retryAfter.toString()}ms`;
       throw new RateLimitError(
-        `Rate limit exceeded. Retry after ${retryAfter.toString()}ms`,
-        retryAfter
+        message,
+        retryAfter,
+        responseData,
+        pf.requestId,
+        pf.origin,
+        pf.timestamp
       );
     }
 
     if (status === 400 || status === 422) {
       const fieldErrors = this.extractFieldErrors(responseData);
-      throw new ValidationError('Validation failed', fieldErrors, status);
+      const message = pf.detail ?? pf.title ?? 'Validation failed';
+      throw new ValidationError(message, fieldErrors, status, responseData, pf.requestId);
     }
 
     if (status >= 500) {
@@ -485,7 +524,14 @@ export class BaseClient {
     }
 
     // Fallback for unexpected status codes
-    throw new WBAPIError(`HTTP error ${status.toString()}`, status, responseData);
+    throw new WBAPIError(
+      `HTTP error ${status.toString()}`,
+      status,
+      responseData,
+      pf.requestId,
+      pf.origin,
+      pf.timestamp
+    );
   }
 
   /**
@@ -500,6 +546,51 @@ export class BaseClient {
     if (!header) return 5000; // Default 5 seconds
     const seconds = parseInt(header, 10);
     return isNaN(seconds) ? 5000 : seconds * 1000; // Convert to milliseconds
+  }
+
+  /**
+   * Extract RFC 7807 problem+json fields from response data.
+   *
+   * Handles both `application/problem+json` and `application/json` responses
+   * that contain RFC 7807-shaped bodies (with title, detail, etc.).
+   *
+   * @param responseData - API response body
+   * @param isProblemJson - Whether the Content-Type is application/problem+json
+   * @returns Extracted problem fields with string-safe values
+   *
+   * @private
+   */
+  private extractProblemJsonFields(
+    responseData: unknown,
+    isProblemJson: boolean
+  ): ProblemJsonFields {
+    const empty: ProblemJsonFields = {};
+
+    // Only attempt extraction if response looks like an object
+    if (!responseData || typeof responseData !== 'object') {
+      return empty;
+    }
+
+    const data = responseData as Record<string, unknown>;
+
+    // For application/problem+json, always extract fields.
+    // For application/json, only extract if the body has RFC 7807 shape (has 'title' or 'detail').
+    const hasRfc7807Shape = typeof data.title === 'string' || typeof data.detail === 'string';
+
+    if (!isProblemJson && !hasRfc7807Shape) {
+      return empty;
+    }
+
+    return {
+      title: typeof data.title === 'string' ? data.title : undefined,
+      detail: typeof data.detail === 'string' ? data.detail : undefined,
+      code: typeof data.code === 'string' ? data.code : undefined,
+      requestId: typeof data.requestId === 'string' ? data.requestId : undefined,
+      origin: typeof data.origin === 'string' ? data.origin : undefined,
+      status: typeof data.status === 'number' ? data.status : undefined,
+      statusText: typeof data.statusText === 'string' ? data.statusText : undefined,
+      timestamp: typeof data.timestamp === 'string' ? data.timestamp : undefined,
+    };
   }
 
   /**

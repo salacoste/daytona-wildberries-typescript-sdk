@@ -30,14 +30,18 @@ export class AuthenticationError extends WBAPIError {
    * @param statusCode - HTTP status code (401 or 403)
    * @param response - API response body if available
    * @param requestId - Correlation ID for debugging
+   * @param origin - Origin service identifier from RFC 7807 responses
+   * @param timestamp - ISO 8601 timestamp from RFC 7807 responses
    */
   constructor(
     message = 'Authentication failed. Please verify your API key is valid and has the required permissions.',
     statusCode: 401 | 403 = 401,
     response?: unknown,
-    requestId?: string
+    requestId?: string,
+    origin?: string,
+    timestamp?: string
   ) {
-    super(message, statusCode, response, requestId);
+    super(message, statusCode, response, requestId, origin, timestamp);
     this.name = 'AuthenticationError';
   }
 
