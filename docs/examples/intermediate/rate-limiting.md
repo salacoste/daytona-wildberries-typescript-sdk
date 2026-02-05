@@ -86,7 +86,7 @@ async function processOrdersSequentially(orderIds: number[]) {
 
   for (const orderId of orderIds) {
     try {
-      const status = await sdk.ordersFBS.getOrderStatuses([orderId]);
+      const status = await sdk.ordersFBS.getOrderStatuses({ orders: [orderId] });
       results.push({ orderId, status, success: true });
     } catch (error) {
       results.push({ orderId, error, success: false });

@@ -642,7 +642,7 @@ class GDPRCompliantSDK {
 
   async exportCustomerData(customerId: string) {
     // Right to data portability
-    const orders = await sdk.ordersFBS.getCustomerOrders(customerId);
+    const orders = await sdk.ordersFBS.orders({ limit: 1000, next: 0 });
     const reviews = await sdk.communications.getCustomerReviews(customerId);
 
     return {
