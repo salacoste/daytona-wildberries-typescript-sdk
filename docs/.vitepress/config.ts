@@ -149,6 +149,7 @@ export default defineConfig({
                   { text: 'Storage Fees Integration', link: '/guides/storage-fees-integration' },
                   { text: 'Orders DBS Guide', link: '/guides/orders-dbs-getting-started' },
                   { text: 'DBS Workflows', link: '/guides/orders-dbs-workflows' },
+                  { text: 'In-Store Pickup Guide', link: '/guides/in-store-pickup-getting-started' },
                   { text: 'DBS Migration Guide', link: '/guides/migration-dbs-legacy-to-bulk' },
                   { text: '📊 Advertising Statistics Guide', link: '/guides/advertising-statistics-guide' },
                   { text: '🎯 Advertising Campaign Best Practices', link: '/guides/best-practices-advertising' },

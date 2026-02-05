@@ -127,7 +127,7 @@
 **Modules Completed:**
 - `promotion` — 26 methods
 - `tariffs` — Commission rates, warehouse coefficients
-- `in-store-pickup` — Pickup point management (10 methods)
+- `in-store-pickup` — Pickup point management (16 methods)
 - `orders-fbw-enhanced` — Enhanced FBW (8 methods, 95/100)
 - `communications-enhanced` — Advanced features (14 methods, 98/100)
 - `analytics-enhanced` — Extended analytics (14 methods, 96/100)
@@ -387,7 +387,7 @@ Integrate undocumented Web APIs using JWT tokens instead of API keys
 | `reports` | ✅ Complete | ~6 | 90%+ | 97/100 |
 | `promotion` | ✅ Complete | 42 | 100% | 95/100 |
 | `tariffs` | ✅ Complete | ~4 | 100% | 96/100 |
-| `in-store-pickup` | ✅ Complete | 10 | 100% | 96/100 |
+| `in-store-pickup` | ✅ Complete | 16 | 100% | 96/100 |
 | `web-api` | 📝 Planned | TBD | 0% | N/A |
 
 **Total:** 11/11 modules implemented (100%)
