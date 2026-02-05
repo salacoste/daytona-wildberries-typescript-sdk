@@ -586,10 +586,10 @@ if (alerts.length > 0) {
 
 | Метод | Лимит | Интервал |
 |-------|-------|----------|
-| `updateOrdersCancel()` | 400 запросов | 1 минута |
-| `createOrdersStatus()` | 600 запросов | 1 минута |
-| `createOrdersStatusHistory()` | 300 запросов | 1 минута |
-| `createSuppliesOrdersReshipment()` | 6 запросов | 1 минута |
+| `updateOrdersCancel()` | 100 запросов | 1 минута |
+| `getOrderStatuses()` | 300 запросов | 1 минута |
+| `createStatusHistory()` | 300 запросов | 1 минута |
+| `getOrdersReshipment()` | 300 запросов | 1 минута |
 | `getTariffsReturn()` | 60 запросов | 1 минута |
 | `getSupplierReportdetailbyperiod()` | 1 запрос | 1 минута |
 

@@ -136,7 +136,7 @@ Identify all merged cards in your catalog:
 const allCards = await sdk.products.getCardsList({
   settings: {
     filter: { withPhoto: -1 },
-    cursor: { limit: 1000 }
+    cursor: { limit: 100 }  // Maximum 100 per request; use pagination for more
   }
 });
 
@@ -1526,13 +1526,14 @@ async function launchProductLine() {
   // Step 3: Set stock levels
   console.log('\nSetting stock levels...');
 
-  await sdk.products.updateStocks({
+  const warehouseId = 117501;
+  await sdk.products.updateStock(warehouseId, {
     stocks: [
-      { sku: '8800555111111', amount: 100, warehouseId: 117501 },
-      { sku: '8800555222222', amount: 100, warehouseId: 117501 },
-      { sku: '8800555333333', amount: 50, warehouseId: 117501 },
-      { sku: '8800555444444', amount: 50, warehouseId: 117501 }
-    ]
+      { sku: '8800555111111', amount: 100 },
+      { sku: '8800555222222', amount: 100 },
+      { sku: '8800555333333', amount: 50 },
+      { sku: '8800555444444', amount: 50 },
+    ],
   });
 
   console.log('✅ Stock levels set');
