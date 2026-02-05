@@ -52,6 +52,8 @@ The bulk methods use the same rate limit tiers as their legacy counterparts, but
 
 **Example**: Processing 100 orders with IMEI metadata requires 100 T4 calls with legacy `setImei()`, but only 1 T4 call with `setImeiBulk()`.
 
+> **Penalty Multiplier**: All DBS endpoints use a penalty multiplier of **10**. If the API returns a `409 Conflict` response (e.g., invalid state transition), that single request counts as **10 requests** toward your rate limit. Bulk methods reduce the chance of hitting this penalty because you can validate order states before making batch transitions.
+
 ## Migration Examples
 
 ### Status Retrieval

@@ -57,7 +57,7 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getClickCollectOrders(params?)` | GET | `/api/v3/click-collect/orders` | List orders with pagination |
+| `getClickCollectOrders(options)` | GET | `/api/v3/click-collect/orders` | List orders with pagination |
 | `createOrdersStatus(data)` | POST | `/api/v3/click-collect/orders/status` | Get order statuses by IDs |
 
 ### Customer Interaction (2 methods)
@@ -72,7 +72,7 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getOrdersMeta(orderId)` | GET | `/api/v3/click-collect/orders/{id}/meta` | Get order metadata |
-| `deleteOrdersMeta(orderId, key)` | DELETE | `/api/v3/click-collect/orders/{id}/meta` | Delete order metadata |
+| `deleteOrdersMeta(orderId, { key })` | DELETE | `/api/v3/click-collect/orders/{id}/meta` | Delete order metadata |
 | `updateMetaSgtin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/sgtin` | Set SGTIN codes |
 | `updateMetaUin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/uin` | Set UIN code |
 | `updateMetaImei(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/imei` | Set IMEI code |
@@ -95,10 +95,11 @@ All methods have a **10x penalty multiplier** on 409 Conflict responses.
 | T1 | Assembly reads | 300 req/min | 200ms |
 | T2 | State transitions | 100 req/min | 600ms |
 | T3 | Identity check | 30 req/min | 2s |
-| T4 | Metadata operations | 1000 req/min | 60ms |
+| T4 | Metadata set (PUT) | 1000 req/min | 60ms |
 
 ---
 
 ## Related Resources
 
 - [API Reference: InStorePickupModule](/api/classes/InStorePickupModule)
+- [In-Store Pickup Getting Started Guide](/guides/in-store-pickup-getting-started)

@@ -493,11 +493,21 @@ The DBS API uses a **4-tier rate limit system**. The SDK enforces these limits a
 | **T3** | Meta Read/Delete | 150 | 400ms | 20 | `getMetaBulk`, `deleteMetaBulk` (and deprecated `getMeta`, `deleteMeta`) |
 | **T4** | Meta Set | 500 | 120ms | 20 | `setSgtinBulk`, `setUinBulk`, `setImeiBulk`, `setGtinBulk`, `setCustomsDeclarationBulk` |
 
+### Penalty Multiplier (409 Responses)
+
+All DBS endpoints use a **penalty multiplier of 10**. If the API returns a `409 Conflict` response (e.g., due to an invalid state transition), that single request counts as **10 requests** toward your rate limit budget. This means a few 409 errors can quickly exhaust your rate limit allowance.
+
+**Avoid 409 errors by:**
+- Checking order status with `getStatusesBulk()` before attempting state transitions
+- Not confirming already-confirmed orders
+- Ensuring metadata is set before confirming orders that require it
+
 ### Rate Limit Tips
 
 - **T2 (Status Write)** is the most restrictive at 60 requests/minute. Batch order IDs into `confirmBulk([...])` calls instead of confirming one at a time.
 - **T4 (Meta Set)** is the most generous at 500 requests/minute. Metadata set operations are fast but still benefit from bulk calls for fewer round-trips.
 - The SDK handles rate limiting automatically. If a limit is hit, the request is queued and retried after the required interval.
+- **Watch for 409 errors**: Each 409 response counts as 10 requests toward the rate limit (penalty multiplier), so invalid state transitions are costly.
 
 ```typescript
 // Efficient: one API call for 500 orders

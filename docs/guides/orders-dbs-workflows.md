@@ -744,6 +744,27 @@ async function fetchAllCompletedOrders(
 }
 ```
 
+## Rate Limit Considerations
+
+### Penalty Multiplier (409 Responses)
+
+All DBS endpoints enforce a **penalty multiplier of 10**. If the API returns a `409 Conflict` response (e.g., confirming an already-confirmed order or an invalid state transition), that single request counts as **10 requests** toward your rate limit budget.
+
+This is especially important for T2 (Status Write) operations, which only allow 60 requests/minute. A few 409 errors could consume your entire rate budget:
+
+```typescript
+// Always check status before transitioning to avoid 409 penalties
+const statuses = await sdk.ordersDBS.getStatusesBulk(orderIds);
+const confirmable = (statuses.orders ?? [])
+  .filter(o => o.supplierStatus === 'new')
+  .map(o => o.orderId!);
+
+// Only confirm orders that are actually in "new" status
+if (confirmable.length > 0) {
+  await sdk.ordersDBS.confirmBulk(confirmable);
+}
+```
+
 ## Error Recovery
 
 ### Retry Failed Operations

@@ -12,8 +12,9 @@ The **Orders DBS (Delivery by Seller)** module manages orders where the seller h
 | **SDK Namespace** | `sdk.ordersDBS.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/04-orders-dbs/` |
-| **Methods** | 32 (20 active + 12 deprecated) |
+| **Methods** | 32 (19 active + 13 deprecated) |
 | **Authentication** | API Key (Header) |
+| **409 Penalty** | 10x rate limit multiplier |
 
 ---
 
@@ -48,9 +49,9 @@ await sdk.ordersDBS.setImeiBulk({
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getNewOrders()` | GET | `/api/v3/dbs/orders/new` | Get new DBS orders |
-| `getOrders(params?)` | GET | `/api/v3/dbs/orders` | Get orders with pagination |
-| `getClientInfo(data)` | POST | `/api/v3/dbs/orders/client` | Get customer contact info |
-| `getB2BInfo(data)` | POST | `/api/marketplace/v3/dbs/orders/b2b/info` | Get B2B buyer info |
+| `getOrders(params)` | GET | `/api/v3/dbs/orders` | Get orders with pagination |
+| `getClientInfo(orderIds)` | POST | `/api/v3/dbs/orders/client` | Get customer contact info |
+| `getB2BInfo(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/b2b/info` | Get B2B buyer info |
 
 ### Info Endpoints (2 methods)
 
@@ -63,11 +64,11 @@ await sdk.ordersDBS.setImeiBulk({
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getStatusesBulk(data)` | POST | `/api/marketplace/v3/dbs/orders/status/info` | Get statuses (bulk) |
+| `getStatusesBulk(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/status/info` | Get statuses (bulk) |
 | `confirmBulk(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/status/confirm` | Confirm orders (bulk) |
 | `deliverBulk(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/status/deliver` | Mark delivered (bulk) |
-| `receiveBulk(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/status/receive` | Complete handover (bulk) |
-| `rejectBulk(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/status/reject` | Reject orders (bulk) |
+| `receiveBulk(orders)` | POST | `/api/marketplace/v3/dbs/orders/status/receive` | Complete handover (bulk) |
+| `rejectBulk(orders)` | POST | `/api/marketplace/v3/dbs/orders/status/reject` | Reject orders (bulk) |
 | `cancelBulk(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/status/cancel` | Cancel orders (bulk) |
 
 ### Bulk Metadata Operations (7 methods)
@@ -90,21 +91,23 @@ await sdk.ordersDBS.setImeiBulk({
 |--------|-------------|
 | `getMeta(orderId)` | `getMetaBulk()` |
 | `deleteMeta(orderId, key)` | `deleteMetaBulk()` |
-| `setSgtin(orderId, data)` | `setSgtinBulk()` |
-| `setUin(orderId, data)` | `setUinBulk()` |
-| `setImei(orderId, data)` | `setImeiBulk()` |
-| `setGtin(orderId, data)` | `setGtinBulk()` |
-| `setCustomsDeclaration(orderId, data)` | `setCustomsDeclarationBulk()` |
-| `getStatuses(data)` | `getStatusesBulk()` |
+| `setSgtin(orderId, sgtins)` | `setSgtinBulk()` |
+| `setUin(orderId, uin)` | `setUinBulk()` |
+| `setImei(orderId, imei)` | `setImeiBulk()` |
+| `setGtin(orderId, gtin)` | `setGtinBulk()` |
+| `setCustomsDeclaration(orderId, customsDeclaration)` | `setCustomsDeclarationBulk()` |
+| `getStatuses(orderIds)` | `getStatusesBulk()` |
 | `confirm(orderId)` | `confirmBulk()` |
 | `deliver(orderId)` | `deliverBulk()` |
-| `receive(orderId)` | `receiveBulk()` |
-| `reject(orderId)` | `rejectBulk()` |
+| `receive(orderId, code)` | `receiveBulk()` |
+| `reject(orderId, code)` | `rejectBulk()` |
 | `cancel(orderId)` | `cancelBulk()` |
 
 ---
 
 ## Rate Limits
+
+All methods have a **10x penalty multiplier** on 409 Conflict responses.
 
 | Tier | Operations | Limit | Interval |
 |------|-----------|-------|----------|
