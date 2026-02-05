@@ -118,7 +118,7 @@ async function analyzeStockMovements(days = 30): Promise<StockMovementReport> {
   const [incomes, sales, products] = await Promise.all([
     sdk.reports.getIncomes(dateFrom),
     sdk.reports.getSales(dateFrom, 0),
-    sdk.products.getAllProducts({ locale: 'ru' })
+    sdk.products.getCardsList({ locale: 'ru' })
   ]);
 
   const productNames = new Map(products.map(p => [p.nmID, p.title]));
@@ -212,7 +212,7 @@ async function getInventoryValuation(): Promise<InventoryValuation> {
 
   const [stocks, products] = await Promise.all([
     sdk.reports.getStocks(today),
-    sdk.products.getAllProducts({ locale: 'ru' })
+    sdk.products.getCardsList({ locale: 'ru' })
   ]);
 
   // Create product lookup with prices
@@ -312,7 +312,7 @@ async function analyzeStockAging(): Promise<AgingReport> {
   const [stocks, incomes, products] = await Promise.all([
     sdk.reports.getStocks(today),
     sdk.reports.getIncomes(ninetyDaysAgo),
-    sdk.products.getAllProducts({ locale: 'ru' })
+    sdk.products.getCardsList({ locale: 'ru' })
   ]);
 
   // Map product prices
@@ -405,7 +405,7 @@ async function compareWarehouses(): Promise<WarehouseComparison> {
   const [stocks, sales, products] = await Promise.all([
     sdk.reports.getStocks(today),
     sdk.reports.getSales(thirtyDaysAgo, 0),
-    sdk.products.getAllProducts({ locale: 'ru' })
+    sdk.products.getCardsList({ locale: 'ru' })
   ]);
 
   const productPrices = new Map(products.map(p => [
@@ -502,7 +502,7 @@ async function generateDailyReport(): Promise<ScheduledReport> {
 
   const [stocks, products] = await Promise.all([
     sdk.reports.getStocks(today),
-    sdk.products.getAllProducts({ locale: 'ru' })
+    sdk.products.getCardsList({ locale: 'ru' })
   ]);
 
   const productPrices = new Map(products.map(p => [

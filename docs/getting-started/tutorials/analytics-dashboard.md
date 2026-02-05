@@ -431,7 +431,7 @@ Warehouse: WH-SPB-02
 
 ```typescript
 async function checkLowStock(threshold: number = 30) {
-  const products = await sdk.products.listProducts();
+  const products = await sdk.products.getCardsList();
 
   const lowStockProducts = [];
 
@@ -649,7 +649,7 @@ async function runAnalyticsDashboard() {
     console.log('📦 Stock Status\n');
 
     const lowStockThreshold = 50;
-    const products = await sdk.products.listProducts({ limit: 10 });
+    const products = await sdk.products.getCardsList({ limit: 10 });
 
     for (const product of products.data) {
       const stock = await sdk.products.getStock(product.sku);

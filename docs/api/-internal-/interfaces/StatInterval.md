@@ -2,13 +2,13 @@
 
 # Interface: StatInterval
 
-Defined in: [types/promotion.types.ts:357](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/promotion.types.ts#L357)
+Defined in: [types/promotion.types.ts:357](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L357)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="interval"></a> `interval` | \{ `begin?`: `string`; `end?`: `string`; \} | Период | [types/promotion.types.ts:359](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/promotion.types.ts#L359) |
-| `interval.begin?` | `string` | Начало периода | [types/promotion.types.ts:361](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/promotion.types.ts#L361) |
-| `interval.end?` | `string` | Конец периода | [types/promotion.types.ts:363](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/promotion.types.ts#L363) |
-| <a id="stats"></a> `stats?` | [`StatsBlok1`](StatsBlok1.md)[] | Блок статистики | [types/promotion.types.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/promotion.types.ts#L366) |
+| <a id="interval"></a> `interval` | \{ `begin?`: `string`; `end?`: `string`; \} | Период | [types/promotion.types.ts:359](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L359) |
+| `interval.begin?` | `string` | Начало периода | [types/promotion.types.ts:361](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L361) |
+| `interval.end?` | `string` | Конец периода | [types/promotion.types.ts:363](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L363) |
+| <a id="stats"></a> `stats?` | [`StatsBlok1`](StatsBlok1.md)[] | Блок статистики | [types/promotion.types.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L366) |

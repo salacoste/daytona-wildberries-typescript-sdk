@@ -417,33 +417,30 @@ async function createShippingLabel(orderId: string) {
     // Generate shipping label
     console.log(`Generating shipping label for ${orderId}...`);
 
-    const label = await sdk.ordersFBS.getOrderStickers({
-      orderId: orderId,
-      carrier: 'CDEK', // Carrier name
-      shippingMethod: 'courier' // or 'pickup'
-    });
+    // Generate shipping sticker (base64-encoded)
+    const stickersResult = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: [Number(orderId)] }
+    );
 
-    console.log('✓ Shipping label generated');
-    console.log(`  Label ID: ${label.data.labelId}`);
-    console.log(`  Tracking Number: ${label.data.trackingNumber}`);
-    console.log(`  Label URL: ${label.data.labelUrl}`);
+    const sticker = stickersResult.stickers?.[0];
+    console.log('Shipping sticker generated');
+    console.log(`  Barcode: ${sticker?.barcode}`);
+    console.log(`  Part A: ${sticker?.partA}`);
+    console.log(`  Part B: ${sticker?.partB}`);
 
-    // Download and print label
-    console.log('\nLabel ready for printing:');
-    console.log(`  Download: ${label.data.labelUrl}`);
-    console.log(`  Format: PDF`);
+    // Save sticker file (base64 decoded)
+    if (sticker?.file) {
+      const { writeFileSync } = await import('fs');
+      const buffer = Buffer.from(sticker.file, 'base64');
+      writeFileSync(`sticker-${orderId}.png`, buffer);
+      console.log(`  Saved: sticker-${orderId}.png`);
+    }
 
-    // Update order to shipped
-    await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-      orderId: orderId,
-      status: 'shipped',
-      trackingNumber: label.data.trackingNumber
-    });
+    // Note: In WB FBS API, "shipped" status is managed through the supply workflow:
+    // sdk.ordersFBS.updateSuppliesDeliver(supplyId) marks all orders as complete.
 
-    console.log('✓ Order marked as shipped');
-
-    return label.data;
+    return sticker;
 
   } catch (error) {
     if (error.name === 'ValidationError') {

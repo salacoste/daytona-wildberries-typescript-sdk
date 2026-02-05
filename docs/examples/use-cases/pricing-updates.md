@@ -155,7 +155,7 @@ async function applyDiscountToCategory(
   discountPercent: number
 ) {
   // 1. Get all products in category
-  const products = await sdk.products.getAllProducts({
+  const products = await sdk.products.getCardsList({
     locale: 'ru',
     withPhoto: 0
   });
@@ -200,7 +200,7 @@ interface PriceReport {
 }
 
 async function generatePriceReport(): Promise<PriceReport[]> {
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  const products = await sdk.products.getCardsList({ locale: 'ru' });
 
   const report: PriceReport[] = products.map(p => {
     const size = p.sizes?.[0];
@@ -236,7 +236,7 @@ interface ExternalPrice {
 
 async function syncPricesFromExternal(externalPrices: ExternalPrice[]) {
   // 1. Get current WB products
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  const products = await sdk.products.getCardsList({ locale: 'ru' });
 
   // 2. Create SKU to nmID mapping
   const skuToNmId = new Map<string, number>();

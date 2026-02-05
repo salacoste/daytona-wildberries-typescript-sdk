@@ -364,7 +364,7 @@ export async function setupE2ETest() {
   });
 
   // Создание тестовых данных
-  const testProduct = await sdk.products.createProduct({
+  const testProduct = await sdk.products.createCardsUpload({
     vendorCode: `TEST-${Date.now()}`,
     title: 'E2E Test Product',
     // ... другие поля
@@ -375,7 +375,7 @@ export async function setupE2ETest() {
     testProduct,
     cleanup: async () => {
       // Очистка тестовых данных
-      await sdk.products.deleteProduct(testProduct.nmId);
+      await sdk.products.createDeleteTrash(testProduct.nmId);
     }
   };
 }
@@ -396,7 +396,7 @@ describe('Полный жизненный цикл товара E2E', () => {
 
   it('должен завершить полный жизненный цикл товара', async () => {
     // 1. Создание товара
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       vendorCode: `TEST-${Date.now()}`,
       title: 'E2E Test Product',
       // ... другие поля
@@ -423,14 +423,14 @@ describe('Полный жизненный цикл товара E2E', () => {
     expect(updated.nmId).toBe(testProductId);
 
     // 5. Удаление товара
-    await sdk.products.deleteProduct(testProductId);
+    await sdk.products.createDeleteTrash(testProductId);
   });
 
   afterAll(async () => {
     // Очистка оставшихся тестовых данных
     if (testProductId) {
       try {
-        await sdk.products.deleteProduct(testProductId);
+        await sdk.products.createDeleteTrash(testProductId);
       } catch (error) {
         // Товар уже удален
       }
@@ -545,7 +545,7 @@ class TestDataManager {
       try {
         switch (resource.type) {
           case 'product':
-            await sdk.products.deleteProduct(resource.id);
+            await sdk.products.createDeleteTrash(resource.id);
             break;
           case 'order':
             // Отменить заказ если возможно

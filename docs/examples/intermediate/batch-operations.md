@@ -99,7 +99,7 @@ const orders = await getAllOrders(thirtyDaysAgo);
 ```typescript
 // The SDK provides a helper for paginated product retrieval
 async function getAllProductCards() {
-  const allProducts = await sdk.products.getAllProducts({
+  const allProducts = await sdk.products.getCardsList({
     locale: 'ru',
     withPhoto: 1
   });

@@ -17,7 +17,7 @@ const sdk = new WildberriesSDK({
 
 // Get list of seller's warehouses
 async function getWarehouses() {
-  const warehouses = await sdk.products.getWarehouses();
+  const warehouses = await sdk.products.warehouses();
 
   console.log('Your warehouses:');
   warehouses.forEach(wh => {
@@ -63,7 +63,7 @@ async function createStockRecords(
   warehouseId: number,
   skus: string[]
 ) {
-  const result = await sdk.products.createStock(warehouseId, { skus });
+  const result = await sdk.products.getStocks(warehouseId, { skus });
 
   console.log('Created stock records:');
   result.stocks?.forEach(item => {
@@ -131,10 +131,9 @@ async function updateStockLevels(
   warehouseId: number,
   updates: Array<{ sku: string; quantity: number }>
 ) {
-  await sdk.products.updateStockLevels(
-    warehouseId,
-    updates.map(u => ({ sku: u.sku, amount: u.quantity }))
-  );
+  await sdk.products.updateStock(warehouseId, {
+    stocks: updates.map(u => ({ sku: u.sku, amount: u.quantity }))
+  });
 
   console.log(`Updated ${updates.length} items`);
 }
@@ -144,7 +143,7 @@ async function removeStockRecords(
   warehouseId: number,
   skus: string[]
 ) {
-  await sdk.products.deleteStockRecords(warehouseId, skus);
+  await sdk.products.deleteStock(warehouseId, { skus });
   console.log(`Removed ${skus.length} items`);
 }
 ```
@@ -227,7 +226,7 @@ async function checkLowStock(
   });
 
   // 4. Get product names
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  const products = await sdk.products.getCardsList({ locale: 'ru' });
   const productNames = new Map(products.map(p => [p.nmID, p.title]));
 
   // 5. Find low stock items
@@ -326,7 +325,7 @@ async function batchUpdateStockWithValidation(
   updates: StockUpdate[]
 ) {
   // Validate SKUs exist
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  const products = await sdk.products.getCardsList({ locale: 'ru' });
   const validSkus = new Set<string>();
 
   products.forEach(p => {

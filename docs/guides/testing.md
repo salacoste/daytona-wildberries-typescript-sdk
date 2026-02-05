@@ -364,7 +364,7 @@ export async function setupE2ETest() {
   });
 
   // Create test data
-  const testProduct = await sdk.products.createProduct({
+  const testProduct = await sdk.products.createCardsUpload({
     vendorCode: `TEST-${Date.now()}`,
     title: 'E2E Test Product',
     // ... other fields
@@ -375,7 +375,7 @@ export async function setupE2ETest() {
     testProduct,
     cleanup: async () => {
       // Clean up test data
-      await sdk.products.deleteProduct(testProduct.nmId);
+      await sdk.products.createDeleteTrash(testProduct.nmId);
     }
   };
 }
@@ -396,7 +396,7 @@ describe('Complete Product Lifecycle E2E', () => {
 
   it('should complete full product lifecycle', async () => {
     // 1. Create product
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       vendorCode: `TEST-${Date.now()}`,
       title: 'E2E Test Product',
       // ... other fields
@@ -423,14 +423,14 @@ describe('Complete Product Lifecycle E2E', () => {
     expect(updated.nmId).toBe(testProductId);
 
     // 5. Delete product
-    await sdk.products.deleteProduct(testProductId);
+    await sdk.products.createDeleteTrash(testProductId);
   });
 
   afterAll(async () => {
     // Cleanup any remaining test data
     if (testProductId) {
       try {
-        await sdk.products.deleteProduct(testProductId);
+        await sdk.products.createDeleteTrash(testProductId);
       } catch (error) {
         // Product already deleted
       }
@@ -545,7 +545,7 @@ class TestDataManager {
       try {
         switch (resource.type) {
           case 'product':
-            await sdk.products.deleteProduct(resource.id);
+            await sdk.products.createDeleteTrash(resource.id);
             break;
           case 'order':
             // Cancel order if possible

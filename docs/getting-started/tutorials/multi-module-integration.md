@@ -128,7 +128,7 @@ async function createProductWithInventory() {
     // 1.1: Create product
     console.log('Creating product...');
 
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       brandName: 'IntegrationDemo',
       categoryId: '101',
       title: 'Integration Test Product - Wireless Earbuds',
@@ -155,7 +155,7 @@ async function createProductWithInventory() {
     // 1.2: Set initial inventory
     console.log('\nSetting up inventory...');
 
-    const inventory = await sdk.products.updateStockLevels({
+    const inventory = await sdk.products.updateStock({
       sku: product.data.sku,
       warehouses: [
         { warehouseId: 'WH-MOSCOW-01', quantity: 100 },
@@ -179,7 +179,7 @@ async function createProductWithInventory() {
     console.log('\nPublishing product to marketplace...');
 
     await // NOTE: publishProduct doesn't exist - products are auto-published after creation
-    // No explicit publish method needed - just use sdk.products.createProduct(product.data.id);
+    // No explicit publish method needed - just use sdk.products.createCardsUpload(product.data.id);
 
     console.log('✓ Product published and live on marketplace');
 
@@ -240,14 +240,11 @@ async function processOrderForProduct(productId: string) {
     console.log('(Simulating order creation - in production, this happens automatically)\n');
 
     // Simulate checking for new orders
-    const orders = await sdk.ordersFBS.getOrders({
-      status: 'new',
-      limit: 10
-    });
+    const ordersResult = await sdk.ordersFBS.getOrdersNew();
 
     // Find order containing our product
-    let targetOrder = orders.data.find(order =>
-      order.items.some(item => item.productId === productId)
+    let targetOrder = (ordersResult.orders ?? []).find((order: any) =>
+      order.nmId === productId
     );
 
     // For demo: if no order exists, simulate one
@@ -318,7 +315,7 @@ async function processOrderForProduct(productId: string) {
     const warehouse = stock.data.find(wh => wh.quantity >= product.quantity);
 
     if (warehouse) {
-      await sdk.products.updateStockLevels({
+      await sdk.products.updateStock({
         sku: product.sku,
         warehouses: [
           {
@@ -349,15 +346,14 @@ async function processOrderForProduct(productId: string) {
     // 2.5: Generate shipping label
     console.log('\nGenerating shipping label...');
 
-    const label = await sdk.ordersFBS.getOrderStickers({
-      orderId: targetOrder.orderId,
-      carrier: 'CDEK',
-      shippingMethod: 'courier'
-    });
+    const stickersResult = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: [Number(targetOrder.orderId)] }
+    );
 
-    console.log(`✓ Shipping label generated`);
-    console.log(`  Tracking: ${label.data.trackingNumber}`);
-    console.log(`  Label URL: ${label.data.labelUrl}`);
+    console.log(`✓ Shipping sticker generated`);
+    const sticker = stickersResult.stickers?.[0];
+    console.log(`  Barcode: ${sticker?.barcode}`);
 
     // 2.6: Mark as shipped
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow
@@ -565,7 +561,7 @@ async function runCompleteIntegration() {
     // === PHASE 1: PRODUCT SETUP ===
     console.log('📦 PHASE 1: Product Setup\n');
 
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       brandName: 'IntegrationDemo',
       categoryId: '101',
       title: 'Integration Test - Wireless Earbuds',
@@ -580,7 +576,7 @@ async function runCompleteIntegration() {
     state.productId = product.data.id;
     console.log(`✓ Product created: ${product.data.id}`);
 
-    await sdk.products.updateStockLevels({
+    await sdk.products.updateStock({
       sku: product.data.sku,
       warehouses: [
         { warehouseId: 'WH-MOSCOW-01', quantity: 100 }
@@ -590,18 +586,18 @@ async function runCompleteIntegration() {
     console.log('✓ Inventory set: 100 units');
 
     await // NOTE: publishProduct doesn't exist - products are auto-published after creation
-    // No explicit publish method needed - just use sdk.products.createProduct(product.data.id);
+    // No explicit publish method needed - just use sdk.products.createCardsUpload(product.data.id);
     console.log('✓ Product published\n');
 
     // === PHASE 2: ORDER PROCESSING ===
     console.log('🛒 PHASE 2: Order Processing\n');
 
     // Simulate getting new order
-    const orders = await sdk.ordersFBS.getOrders({ status: 'new', limit: 1 });
+    const ordersResult = await sdk.ordersFBS.getOrdersNew();
 
     let order;
-    if (orders.data.length > 0) {
-      order = orders.data[0];
+    if ((ordersResult.orders?.length ?? 0) > 0) {
+      order = ordersResult.orders![0];
     } else {
       // Demo: Create simulated order
       order = {
@@ -634,7 +630,7 @@ async function runCompleteIntegration() {
     const stock = await sdk.products.getStock(product.data.sku);
     const warehouse = stock.data[0];
 
-    await sdk.products.updateStockLevels({
+    await sdk.products.updateStock({
       sku: product.data.sku,
       warehouses: [
         {
@@ -653,20 +649,13 @@ async function runCompleteIntegration() {
     });
     console.log('✓ Order assembled');
 
-    // Ship
-    const label = await sdk.ordersFBS.getOrderStickers({
-      orderId: order.orderId,
-      carrier: 'CDEK',
-      shippingMethod: 'courier'
-    });
+    // Generate stickers
+    const stickersResult = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: [Number(order.orderId)] }
+    );
 
-    await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-      orderId: order.orderId,
-      status: 'shipped',
-      trackingNumber: label.data.trackingNumber
-    });
-    console.log(`✓ Order shipped: ${label.data.trackingNumber}\n`);
+    console.log(`✓ Sticker generated: ${stickersResult.stickers?.[0]?.barcode}\n`);
 
     // === PHASE 3: FINANCIAL RECONCILIATION ===
     console.log('💰 PHASE 3: Financial Reconciliation\n');
@@ -773,12 +762,12 @@ async function handleCrossModuleTransaction() {
 
   try {
     // Step 1: Create product
-    const product = await sdk.products.createProduct(productData);
-    rollbackActions.push(() => sdk.products.deleteProduct(product.data.id));
+    const product = await sdk.products.createCardsUpload(productData);
+    rollbackActions.push(() => sdk.products.createDeleteTrash(product.data.id));
 
     // Step 2: Set inventory
-    await sdk.products.updateStockLevels(stockData);
-    rollbackActions.push(() => sdk.products.updateStockLevels({ sku: product.data.sku, warehouses: [] }));
+    await sdk.products.updateStock(stockData);
+    rollbackActions.push(() => sdk.products.updateStock({ sku: product.data.sku, warehouses: [] }));
 
     // Step 3: Process order
     const order = await // NOTE: updateOrderStatus doesn't exist - use supply workflow

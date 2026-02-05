@@ -579,7 +579,7 @@ Retry after: 20000ms
    ```typescript
    try {
      // SDK automatically waits and retries
-     const result = await sdk.products.createProduct(data);
+     const result = await sdk.products.createCardsUpload(data);
      console.log('✅ Product created:', result);
    } catch (error) {
      if (error instanceof RateLimitError) {
@@ -603,7 +603,7 @@ Retry after: 20000ms
    ```typescript
    // ❌ WRONG - Sequential requests hit rate limit
    for (const product of products) {
-     await sdk.products.createProduct(product);  // Rate limited!
+     await sdk.products.createCardsUpload(product);  // Rate limited!
    }
 
    // ✅ CORRECT - Batch with delays between requests
@@ -613,7 +613,7 @@ Retry after: 20000ms
    for (const batch of batches) {
      // Process batch with delays
      for (const product of batch) {
-       await sdk.products.createProduct(product);
+       await sdk.products.createCardsUpload(product);
        await sleep(10000);  // Wait 10s between products (rate limit: 1 per 10s)
      }
      // Optional: longer delay between batches
@@ -681,7 +681,7 @@ Reset at: 2024-10-28T00:00:00Z
    }
 
    // Use wrapper for all API calls
-   const products = await trackRequest(() => sdk.products.listProducts());
+   const products = await trackRequest(() => sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } }));
    ```
 
 2. **Optimize API usage:**
@@ -750,7 +750,7 @@ RateLimitError: Too many concurrent requests (max: 10)
    const limit = pLimit(10);  // Max 10 concurrent requests
 
    const promises = products.map(product =>
-     limit(() => sdk.products.createProduct(product))
+     limit(() => sdk.products.createCardsUpload(product))
    );
 
    const results = await Promise.all(promises);
@@ -819,7 +819,7 @@ RateLimitError: Too many concurrent requests (max: 10)
 
    try {
      while (true) {
-       await sdk.products.listProducts({ limit: 1 });
+       await sdk.products.getCardsList({ settings: { cursor: { limit: 1 } } });
        requestCount++;
        console.log(`Request ${requestCount} succeeded`);
      }
@@ -1112,7 +1112,7 @@ Field: categoryId - Must be a valid category ID
    };
 
    // TypeScript error: Property 'brandName' is missing
-   await sdk.products.createProduct(product);
+   await sdk.products.createCardsUpload(product);
    ```
 
 3. **Add runtime validation:**
@@ -1135,7 +1135,7 @@ Field: categoryId - Must be a valid category ID
      return;
    }
 
-   await sdk.products.createProduct(value);
+   await sdk.products.createCardsUpload(value);
    ```
 
 4. **Review API documentation:**
@@ -1299,14 +1299,14 @@ ValidationError: Missing required field 'brandName'
 
 ```typescript
 // ❌ WRONG - Missing brandName
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   title: 'Product',
   categoryId: 'electronics'
   // brandName missing!
 });
 
 // ✅ CORRECT - All required fields present
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   brandName: 'TechCorp',  // Required
   title: 'Product',
   categoryId: 'electronics'
@@ -1324,7 +1324,7 @@ if (!product.brandName) {
   throw new Error('Brand name is required');
 }
 
-await sdk.products.createProduct(product);
+await sdk.products.createCardsUpload(product);
 ```
 
 **How to Prevent:**
@@ -1355,7 +1355,7 @@ Expected: number, Received: string
 
 ```typescript
 // ❌ WRONG - Incorrect types
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   brandName: 'TechCorp',
   categoryId: 'electronics',
   title: 'Product',
@@ -1366,7 +1366,7 @@ await sdk.products.createProduct({
 });
 
 // ✅ CORRECT - Proper types
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   brandName: 'TechCorp',
   categoryId: 'electronics',
   title: 'Product',
@@ -1392,7 +1392,7 @@ if (isNaN(product.pricing.price)) {
   throw new Error('Invalid price');
 }
 
-await sdk.products.createProduct(product);
+await sdk.products.createCardsUpload(product);
 ```
 
 **Common Format Requirements:**
@@ -1451,7 +1451,7 @@ Expected property 'items' to be array, got undefined
 3. **Handle schema mismatches:**
    ```typescript
    try {
-     const result = await sdk.products.listProducts();
+     const result = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
 
      // Defensive programming - check structure
      if (!result.data || !Array.isArray(result.data)) {
@@ -1538,7 +1538,7 @@ Error: Cannot find module '@daytona/wildberries-sdk'
 
 **Error Message:**
 ```
-TypeError: sdk.products.createProduct is not a function
+TypeError: sdk.products.createCardsUpload is not a function
 ```
 
 **Cause:** Incorrect SDK usage or method doesn't exist.
@@ -1554,21 +1554,21 @@ TypeError: sdk.products.createProduct is not a function
 1. **Check method name:**
    ```typescript
    // ❌ WRONG - Typo
-   await sdk.products.creatProduct(data);  // Missing 'e'
+   await sdk.products.creatCardsUpload(data);  // Missing 'e'
 
    // ✅ CORRECT
-   await sdk.products.createProduct(data);
+   await sdk.products.createCardsUpload(data);
    ```
 
 2. **Verify SDK initialization:**
    ```typescript
    // ❌ WRONG - Using before initialization
-   const result = await sdk.products.listProducts();
+   const result = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
    const sdk = new WildberriesSDK({ apiKey: '...' });
 
    // ✅ CORRECT - Initialize first
    const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
-   const result = await sdk.products.listProducts();
+   const result = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
    ```
 
 3. **Check method exists:**
@@ -1648,7 +1648,7 @@ TypeError: sdk.products.createProduct is not a function
 3. **Verify data exists:**
    ```typescript
    // Check if data exists in dashboard
-   const all = await sdk.products.listProducts({ limit: 1 });
+   const all = await sdk.products.getCardsList({ settings: { cursor: { limit: 1 } } });
    if (all.data.length === 0) {
      console.log('No products exist - create some first');
    }
@@ -1686,7 +1686,7 @@ TypeError: sdk.products.createProduct is not a function
    });
 
    // See exactly what SDK is doing
-   await sdk.products.listProducts();
+   await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
    ```
 
 2. **Review documentation:**
@@ -1711,7 +1711,7 @@ TypeError: sdk.products.createProduct is not a function
    });
 
    // Minimal code showing unexpected behavior
-   const result = await sdk.products.listProducts({ limit: 10 });
+   const result = await sdk.products.getCardsList({ settings: { cursor: { limit: 10 } } });
    console.log('Expected: 10 items');
    console.log('Received:', result.data.length);
    ```
@@ -1766,7 +1766,7 @@ Quick reference for all error codes returned by the API.
 #### Pattern 1: Authentication Failed
 ```typescript
 try {
-  await sdk.products.listProducts();
+  await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('Auth failed:', error.message);
@@ -1778,7 +1778,7 @@ try {
 #### Pattern 2: Rate Limit Exceeded
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof RateLimitError) {
     console.log(`Rate limited. Retry after ${error.retryAfter}ms`);
@@ -1790,7 +1790,7 @@ try {
 #### Pattern 3: Validation Error
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof ValidationError) {
     console.error('Validation failed:');
@@ -1987,7 +1987,7 @@ const sdk = new WildberriesSDK({
 });
 
 try {
-  await sdk.products.listProducts();
+  await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
 } catch (error) {
   console.error('Error occurred:', error);
 }

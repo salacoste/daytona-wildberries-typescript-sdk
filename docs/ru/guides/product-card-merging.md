@@ -136,7 +136,7 @@ response.cards?.forEach(card => {
 const allCards = await sdk.products.getCardsList({
   settings: {
     filter: { withPhoto: -1 },
-    cursor: { limit: 1000 }
+    cursor: { limit: 100 }
   }
 });
 
@@ -187,7 +187,7 @@ imtID 555444: 3 варианта
 
 ```typescript
 // Склеить 3 существующие карточки под существующим imtID 999888
-await sdk.products.mergeCards({
+await sdk.products.createCardsMovenm({
   targetIMT: 999888,        // Существующий imtID (любой карточки, которую хотите сохранить)
   nmIDs: [12345678, 23456789, 34567890]  // До 30 карточек
 });
@@ -211,7 +211,7 @@ console.log('Карточки успешно склеены');
 
 ```typescript
 // Создать новый вариант и присоединить к imtID 999888
-const result = await sdk.products.createAndAttachCard({
+const result = await sdk.products.createUploadAdd({
   imtID: 999888,
   cardsToAdd: [
     {
@@ -242,7 +242,7 @@ console.log('Новый вариант создан и присоединен к
 Создать несколько вариантов как склеенную карточку в одном запросе:
 
 ```typescript
-const newMergedCard = await sdk.products.createProduct([
+const newMergedCard = await sdk.products.createCardsUpload([
   {
     subjectID: 3091, // Смартфоны
     variants: [
@@ -293,7 +293,7 @@ console.log('Склеенная карточка создана с 2 вариа�
 
 ```typescript
 // Разъединить ОДНУ карточку за раз для получения уникального imtID
-await sdk.products.unmergeCards({
+await sdk.products.createCardsMovenm({
   nmIDs: [12345678] // Передать один nmID для уникального imtID
 });
 
@@ -304,14 +304,14 @@ console.log('Карточка разъединена с новым уникал�
 
 ```typescript
 // ❌ Неправильно: Объединит эти 3 карточки вместе под новым imtID
-await sdk.products.unmergeCards({
+await sdk.products.createCardsMovenm({
   nmIDs: [12345678, 23456789, 34567890]
 });
 
 // ✅ Правильно: Каждая получит уникальный imtID
-await sdk.products.unmergeCards({ nmIDs: [12345678] });
-await sdk.products.unmergeCards({ nmIDs: [23456789] });
-await sdk.products.unmergeCards({ nmIDs: [34567890] });
+await sdk.products.createCardsMovenm({ nmIDs: [12345678] });
+await sdk.products.createCardsMovenm({ nmIDs: [23456789] });
+await sdk.products.createCardsMovenm({ nmIDs: [34567890] });
 ```
 
 ---
@@ -1454,7 +1454,7 @@ async function launchProductLine() {
   // Шаг 1: Создать склеенную карточку со всеми вариантами
   console.log('Создание склеенной карточки с 4 вариантами...');
 
-  const product = await sdk.products.createProduct([
+  const product = await sdk.products.createCardsUpload([
     {
       subjectID: 3091,
       variants: [
@@ -1526,12 +1526,12 @@ async function launchProductLine() {
   // Шаг 3: Установить уровни запасов
   console.log('\nУстановка уровней запасов...');
 
-  await sdk.products.updateStocks({
+  await sdk.products.updateStock(117501, {
     stocks: [
-      { sku: '8800555111111', amount: 100, warehouseId: 117501 },
-      { sku: '8800555222222', amount: 100, warehouseId: 117501 },
-      { sku: '8800555333333', amount: 50, warehouseId: 117501 },
-      { sku: '8800555444444', amount: 50, warehouseId: 117501 }
+      { sku: '8800555111111', amount: 100 },
+      { sku: '8800555222222', amount: 100 },
+      { sku: '8800555333333', amount: 50 },
+      { sku: '8800555444444', amount: 50 }
     ]
   });
 
@@ -1804,7 +1804,7 @@ const found = await sdk.products.getCardsList({
 console.log(`Найден imtID: ${found.cards?.[0]?.imtID}`);
 
 // Проверить корзину
-const trash = await sdk.products.getCardsTrash({
+const trash = await sdk.products.getTrashedCards({
   settings: {
     filter: { textSearch: 'известный-артикул-продавца' },
     cursor: { limit: 100 }
@@ -1821,11 +1821,11 @@ const trash = await sdk.products.getCardsTrash({
 **Решение:**
 ```typescript
 // ❌ Неправильно
-await sdk.products.unmergeCards({ nmIDs: [111, 222, 333] });
+await sdk.products.createCardsMovenm({ nmIDs: [111, 222, 333] });
 
 // ✅ Правильно - по одному за раз
 for (const nmID of [111, 222, 333]) {
-  await sdk.products.unmergeCards({ nmIDs: [nmID] });
+  await sdk.products.createCardsMovenm({ nmIDs: [nmID] });
 }
 ```
 

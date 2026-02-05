@@ -197,7 +197,7 @@ async function createProduct() {
       ]
     };
 
-    const result = await sdk.products.createProduct(productData);
+    const result = await sdk.products.createCardsUpload(productData);
 
     console.log('Товар успешно создан!');
     console.log('ID товара:', result.data.id);
@@ -340,7 +340,7 @@ async function uploadProductMedia(productId: string) {
 async function updatePricing(productId: string) {
   try {
     // Обновление цены товара
-    const result = await sdk.products.updatePricing({
+    const result = await sdk.products.createGoodsFilter({
       productId: productId,
       price: 54999, // Новая цена: 549.99 RUB
       discount: 15, // Скидка 15%
@@ -375,7 +375,7 @@ async function updatePricing(productId: string) {
 async function bulkUpdatePrices(products: Array<{id: string, price: number}>) {
   try {
     const updates = products.map(product =>
-      sdk.products.updatePricing({
+      sdk.products.createGoodsFilter({
         productId: product.id,
         price: product.price
       })
@@ -432,7 +432,7 @@ async function syncProductCatalog() {
       }
     };
 
-    const product = await sdk.products.createProduct(productData);
+    const product = await sdk.products.createCardsUpload(productData);
     console.log(`✓ Товар создан: ${product.data.id}\n`);
 
     // Шаг 3: Загрузка медиафайлов
@@ -452,7 +452,7 @@ async function syncProductCatalog() {
 
     // Шаг 4: Обновление ценообразования
     console.log('Шаг 4: Обновление ценообразования...');
-    await sdk.products.updatePricing({
+    await sdk.products.createGoodsFilter({
       productId: product.data.id,
       price: 54999,
       discount: 15
@@ -513,7 +513,7 @@ ID товара: prod_abc123xyz
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error.name === 'RateLimitError') {
     console.log(`Лимит запросов. Повтор через ${error.retryAfter}мс`);
@@ -528,7 +528,7 @@ try {
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error.name === 'ValidationError') {
     console.error('Ошибки валидации:');
@@ -546,7 +546,7 @@ try {
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error.name === 'NetworkError') {
     console.error('Проблема сети:', error.message);

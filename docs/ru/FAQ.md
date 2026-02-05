@@ -195,7 +195,7 @@ const newProduct: CreateProductRequest = {
   ]
 };
 
-const result = await sdk.products.createProduct(newProduct);
+const result = await sdk.products.createCardsUpload(newProduct);
 console.log(result.nmId); // ID нового товара
 ```
 
@@ -208,10 +208,10 @@ console.log(result.nmId); // ID нового товара
 ### 13. Как получить новые заказы (FBS)?
 
 ```typescript
-const orders = await sdk.ordersFBS.getOrdersNew();
+const result = await sdk.ordersFBS.getOrdersNew();
 
-for (const order of orders.orders) {
-  console.log(`Заказ ${order.orderId}: ${order.status}`);
+for (const order of result.orders ?? []) {
+  console.log(`Заказ ${order.id}: ${order.supplierStatus}`);
 }
 ```
 
@@ -219,13 +219,19 @@ for (const order of orders.orders) {
 
 ---
 
-### 14. Как обновить статус заказа?
+### 14. Как проверить статус заказа?
 
 ```typescript
-await sdk.ordersFBS.confirmOrder({ orderId: '12345' });
+const result = await sdk.ordersFBS.getOrderStatuses({
+  orders: [12345]
+});
+
+result.orders?.forEach(order => {
+  console.log(`Заказ ${order.id}: ${order.supplierStatus} / ${order.wbStatus}`);
+});
 ```
 
-**Доступные статусы:** `new` → `confirmed` → `assembled` → `shipped` → `delivered`
+**Рабочий процесс FBS:** Создайте поставку, добавьте заказы (new -> confirm), доставьте поставку (confirm -> complete), или отмените заказ через `updateOrdersCancel()`.
 
 **Смотрите также:** [Рабочий процесс статусов заказов](/ru/guides/best-practices.md#order-management)
 
@@ -348,10 +354,17 @@ const products = await sdk.products.getProductList({
 console.log(`Всего: ${products.total}, Есть еще: ${products.hasMore}`);
 ```
 
-**На основе курсора:**
+**На основе курсора (FBS заказы):**
 ```typescript
-const orders = await sdk.ordersFBS.getOrders({
-  cursor: response.cursor // Из предыдущего ответа
+const result = await sdk.ordersFBS.orders({
+  limit: 1000,
+  next: 0        // 0 для первой страницы, затем значение из response.next
+});
+
+// Следующая страница
+const nextPage = await sdk.ordersFBS.orders({
+  limit: 1000,
+  next: result.next  // Курсор из предыдущего ответа
 });
 ```
 
@@ -374,7 +387,7 @@ import {
 } from '@daytona/wildberries-typescript-sdk';
 
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('Недействительный API ключ:', error.message);
@@ -415,7 +428,7 @@ try {
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof ValidationError) {
     console.error('Ошибки полей:', error.fieldErrors);
@@ -440,7 +453,7 @@ SDK автоматически обрабатывает лимиты запро�
 **Ручная обработка:**
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof RateLimitError) {
     console.log(`Подождите ${error.retryAfter}ms перед повтором`);
@@ -507,13 +520,13 @@ const [categories, balance] = await Promise.all([
 const sdk = new WildberriesSDK({ apiKey });
 
 for (const order of orders) {
-  await sdk.ordersFBS.confirmOrder({ orderId: order.id });
+  await sdk.ordersFBS.updateOrdersCancel(order.id);
 }
 
 // ❌ Плохо: Создание нового экземпляра для каждого запроса
 for (const order of orders) {
   const sdk = new WildberriesSDK({ apiKey }); // Не делайте так!
-  await sdk.ordersFBS.confirmOrder({ orderId: order.id });
+  await sdk.ordersFBS.updateOrdersCancel(order.id);
 }
 ```
 
@@ -576,7 +589,7 @@ class CustomProductsService {
   async createProductWithRetry(data: CreateProductRequest, maxAttempts = 3) {
     for (let i = 0; i < maxAttempts; i++) {
       try {
-        return await this.sdk.products.createProduct(data);
+        return await this.sdk.products.createCardsUpload(data);
       } catch (error) {
         if (i === maxAttempts - 1) throw error;
         await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
@@ -604,7 +617,10 @@ app.post('/webhooks/wildberries', async (req, res) => {
   // Обработайте событие
   if (event.type === 'order.created') {
     const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY });
-    await sdk.ordersFBS.confirmOrder({ orderId: event.orderId });
+    const result = await sdk.ordersFBS.getOrderStatuses({
+      orders: [event.orderId]
+    });
+    console.log('Order status:', result.orders?.[0]?.supplierStatus);
   }
 
   res.status(200).send('OK');

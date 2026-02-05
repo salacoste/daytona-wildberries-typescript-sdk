@@ -50,7 +50,7 @@ async function getDashboardOverview(): Promise<DashboardOverview> {
     sdk.finances.getBalance(),
     sdk.ordersFBS.getOrdersNew(),
     sdk.ordersFBS.getOrders({ dateFrom: todayTimestamp }),
-    sdk.products.getAllProducts({ locale: 'ru' }),
+    sdk.products.getCardsList({ locale: 'ru' }),
     sdk.communications.getQuestionsCountUnanswered(),
     sdk.communications.getReviewsCount({ isAnswered: false })
   ]);
@@ -100,7 +100,7 @@ async function getSalesAnalytics(days = 30): Promise<SalesAnalytics> {
   const sales = await sdk.reports.getSales(fromDate, 0);
 
   // Get products for names
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  const products = await sdk.products.getCardsList({ locale: 'ru' });
   const productMap = new Map(products.map(p => [p.nmID, p]));
 
   // Calculate total revenue

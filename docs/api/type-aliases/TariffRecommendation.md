@@ -6,6 +6,6 @@
 type TariffRecommendation = "SUPPLY_CHEAPER" | "INVENTORY_CHEAPER" | "EQUAL";
 ```
 
-Defined in: [utils/compareTariffs.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/utils/compareTariffs.ts#L51)
+Defined in: [utils/compareTariffs.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/utils/compareTariffs.ts#L51)
 
 Recommendation based on tariff comparison

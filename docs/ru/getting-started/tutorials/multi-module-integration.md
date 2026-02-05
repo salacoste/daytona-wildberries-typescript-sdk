@@ -128,7 +128,7 @@ async function createProductWithInventory() {
     // 1.1: Создание товара
     console.log('Создание товара...');
 
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       brandName: 'IntegrationDemo',
       categoryId: '101',
       title: 'Интеграционный тестовый товар - Беспроводные наушники',
@@ -155,7 +155,7 @@ async function createProductWithInventory() {
     // 1.2: Установка начального инвентаря
     console.log('\nНастройка инвентаря...');
 
-    const inventory = await sdk.products.updateStockLevels({
+    const inventory = await sdk.products.updateStock({
       sku: product.data.sku,
       warehouses: [
         { warehouseId: 'WH-MOSCOW-01', quantity: 100 },
@@ -179,7 +179,7 @@ async function createProductWithInventory() {
     console.log('\nПубликация товара на маркетплейс...');
 
     // ПРИМЕЧАНИЕ: publishProduct не существует - товары автоматически публикуются после создания
-    // Явный метод публикации не требуется - просто используйте sdk.products.createProduct
+    // Явный метод публикации не требуется - просто используйте sdk.products.createCardsUpload
 
     console.log('✓ Товар опубликован и доступен на маркетплейсе');
 
@@ -240,14 +240,11 @@ async function processOrderForProduct(productId: string) {
     console.log('(Симуляция создания заказа - в production это происходит автоматически)\n');
 
     // Симуляция проверки новых заказов
-    const orders = await sdk.ordersFBS.getOrders({
-      status: 'new',
-      limit: 10
-    });
+    const ordersResult = await sdk.ordersFBS.getOrdersNew();
 
     // Поиск заказа, содержащего наш товар
-    let targetOrder = orders.data.find(order =>
-      order.items.some(item => item.productId === productId)
+    let targetOrder = (ordersResult.orders ?? []).find((order: any) =>
+      order.nmId === productId
     );
 
     // Для демонстрации: если заказа нет, создаем симуляцию
@@ -314,7 +311,7 @@ async function processOrderForProduct(productId: string) {
     const warehouse = stock.data.find(wh => wh.quantity >= product.quantity);
 
     if (warehouse) {
-      await sdk.products.updateStockLevels({
+      await sdk.products.updateStock({
         sku: product.sku,
         warehouses: [
           {
@@ -339,15 +336,14 @@ async function processOrderForProduct(productId: string) {
     // 2.5: Генерация транспортной этикетки
     console.log('\nГенерация транспортной этикетки...');
 
-    const label = await sdk.ordersFBS.getOrderStickers({
-      orderId: targetOrder.orderId,
-      carrier: 'CDEK',
-      shippingMethod: 'courier'
-    });
+    const stickersResult = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: [Number(targetOrder.orderId)] }
+    );
 
-    console.log(`✓ Транспортная этикетка сгенерирована`);
-    console.log(`  Отслеживание: ${label.data.trackingNumber}`);
-    console.log(`  URL этикетки: ${label.data.labelUrl}`);
+    console.log(`✓ Стикер сгенерирован`);
+    const sticker = stickersResult.stickers?.[0];
+    console.log(`  Штрихкод: ${sticker?.barcode}`);
 
     // 2.6: Отметка как отгружено
     console.log('✓ Заказ отгружен');
@@ -544,7 +540,7 @@ async function runCompleteIntegration() {
     // === ФАЗА 1: НАСТРОЙКА ТОВАРА ===
     console.log('📦 ФАЗА 1: Настройка товара\n');
 
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       brandName: 'IntegrationDemo',
       categoryId: '101',
       title: 'Интеграционный тест - Беспроводные наушники',
@@ -559,7 +555,7 @@ async function runCompleteIntegration() {
     state.productId = product.data.id;
     console.log(`✓ Товар создан: ${product.data.id}`);
 
-    await sdk.products.updateStockLevels({
+    await sdk.products.updateStock({
       sku: product.data.sku,
       warehouses: [
         { warehouseId: 'WH-MOSCOW-01', quantity: 100 }
@@ -575,11 +571,11 @@ async function runCompleteIntegration() {
     console.log('🛒 ФАЗА 2: Обработка заказа\n');
 
     // Симуляция получения нового заказа
-    const orders = await sdk.ordersFBS.getOrders({ status: 'new', limit: 1 });
+    const ordersResult = await sdk.ordersFBS.getOrdersNew();
 
     let order;
-    if (orders.data.length > 0) {
-      order = orders.data[0];
+    if ((ordersResult.orders?.length ?? 0) > 0) {
+      order = ordersResult.orders![0];
     } else {
       // Демо: Создание симулированного заказа
       order = {
@@ -607,7 +603,7 @@ async function runCompleteIntegration() {
     const stock = await sdk.products.getStock(product.data.sku);
     const warehouse = stock.data[0];
 
-    await sdk.products.updateStockLevels({
+    await sdk.products.updateStock({
       sku: product.data.sku,
       warehouses: [
         {
@@ -621,14 +617,13 @@ async function runCompleteIntegration() {
     // Сборка
     console.log('✓ Заказ собран');
 
-    // Отгрузка
-    const label = await sdk.ordersFBS.getOrderStickers({
-      orderId: order.orderId,
-      carrier: 'CDEK',
-      shippingMethod: 'courier'
-    });
+    // Генерация стикера
+    const stickersResult = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: [Number(order.orderId)] }
+    );
 
-    console.log(`✓ Заказ отгружен: ${label.data.trackingNumber}\n`);
+    console.log(`✓ Стикер сгенерирован: ${stickersResult.stickers?.[0]?.barcode}\n`);
 
     // === ФАЗА 3: ФИНАНСОВАЯ СВЕРКА ===
     console.log('💰 ФАЗА 3: Финансовая сверка\n');
@@ -735,12 +730,12 @@ async function handleCrossModuleTransaction() {
 
   try {
     // Шаг 1: Создание товара
-    const product = await sdk.products.createProduct(productData);
-    rollbackActions.push(() => sdk.products.deleteProduct(product.data.id));
+    const product = await sdk.products.createCardsUpload(productData);
+    rollbackActions.push(() => sdk.products.createDeleteTrash(product.data.id));
 
     // Шаг 2: Установка инвентаря
-    await sdk.products.updateStockLevels(stockData);
-    rollbackActions.push(() => sdk.products.updateStockLevels({ sku: product.data.sku, warehouses: [] }));
+    await sdk.products.updateStock(stockData);
+    rollbackActions.push(() => sdk.products.updateStock({ sku: product.data.sku, warehouses: [] }));
 
     // Шаг 3: Обработка заказа
     // ПРИМЕЧАНИЕ: updateOrderStatus не существует - используйте рабочий процесс поставок

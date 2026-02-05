@@ -23,7 +23,7 @@ const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 const warehouses = await sdk.products.warehouses();
 
 // Получить остатки на складе продавца
-const stocks = await sdk.products.createStock(warehouseId, {
+const stocks = await sdk.products.getStocks(warehouseId, {
   skus: ['sku1', 'sku2']
 });
 
@@ -55,7 +55,7 @@ await sdk.products.updateStock(warehouseId, {
 ├─────────────────────┼───────────────────────────────────┤
 │ sdk.products.*      │ sdk.reports.*                     │
 │ - warehouses()      │ - warehouseRemains() (async)      │
-│ - createStock()     │ - getSupplierStocks() (sync)      │
+│ - getStocks()       │ - getSupplierStocks() (sync)      │
 │ - updateStock()     │                                   │
 │ - deleteStock()     │                                   │
 └─────────────────────┴───────────────────────────────────┘
@@ -118,7 +118,7 @@ async function updateStocks(
 | Метод | Лимит | Интервал |
 |-------|-------|----------|
 | `warehouses()` | 60 запросов | 1 минута |
-| `createStock()` | 600 запросов | 1 минута |
+| `getStocks()` | 600 запросов | 1 минута |
 | `updateStock()` | 600 запросов | 1 минута |
 | `deleteStock()` | 600 запросов | 1 минута |
 | `getSupplierStocks()` | 1 запрос | 1 минута |

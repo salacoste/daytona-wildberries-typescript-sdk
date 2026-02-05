@@ -140,7 +140,7 @@ async function generateInventoryReport(): Promise<InventoryReport> {
   );
 
   // 2. Get product cards for names
-  const products = await sdk.products.getAllProducts({
+  const products = await sdk.products.getCardsList({
     locale: 'ru',
     withPhoto: 0
   });

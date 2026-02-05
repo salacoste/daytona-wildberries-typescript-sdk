@@ -897,7 +897,7 @@ describe('Products Integration', () => {
     expect(categories.data).toHaveLength(2);
 
     // Create product
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       subjectID: 1,
       variants: [{
         vendorCode: 'TEST-001',
@@ -928,7 +928,7 @@ describe('Product Lifecycle E2E', () => {
   it('should complete full product lifecycle', async () => {
     // 1. Create product
     const vendorCode = `E2E-${Date.now()}`;
-    const product = await sdk.products.createProduct({
+    const product = await sdk.products.createCardsUpload({
       subjectID: 123,
       variants: [{
         vendorCode,
@@ -948,7 +948,7 @@ describe('Product Lifecycle E2E', () => {
     // 2. Fetch product to verify
     await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for indexing
 
-    const products = await sdk.products.listProducts({
+    const products = await sdk.products.getCardsList({
       limit: 1,
       vendorCodes: [vendorCode]
     });
@@ -964,7 +964,7 @@ describe('Product Lifecycle E2E', () => {
     });
 
     // 4. Delete product (cleanup)
-    await sdk.products.deleteProduct(vendorCode);
+    await sdk.products.createDeleteTrash(vendorCode);
   }, 60000); // 60 second timeout for E2E
 });
 ```

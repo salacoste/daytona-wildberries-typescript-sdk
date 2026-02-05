@@ -194,7 +194,7 @@ const newProduct: CreateProductRequest = {
   ]
 };
 
-const result = await sdk.products.createProduct(newProduct);
+const result = await sdk.products.createCardsUpload(newProduct);
 console.log(result.nmId); // New product ID
 ```
 
@@ -378,7 +378,7 @@ import {
 } from '@daytona/wildberries-typescript-sdk';
 
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('Invalid API key:', error.message);
@@ -419,7 +419,7 @@ Check the `fieldErrors` property for specific field issues:
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof ValidationError) {
     console.error('Field errors:', error.fieldErrors);
@@ -444,7 +444,7 @@ The SDK automatically handles rate limits:
 **Manual Handling:**
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof RateLimitError) {
     console.log(`Wait ${error.retryAfter}ms before retrying`);
@@ -580,7 +580,7 @@ class CustomProductsService {
   async createProductWithRetry(data: CreateProductRequest, maxAttempts = 3) {
     for (let i = 0; i < maxAttempts; i++) {
       try {
-        return await this.sdk.products.createProduct(data);
+        return await this.sdk.products.createCardsUpload(data);
       } catch (error) {
         if (i === maxAttempts - 1) throw error;
         await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));

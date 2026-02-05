@@ -23,7 +23,7 @@ const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 const warehouses = await sdk.products.warehouses();
 
 // Получить остатки на складе продавца
-const stocks = await sdk.products.createStock(warehouseId, {
+const stocks = await sdk.products.getStocks(warehouseId, {
   skus: ['sku1', 'sku2']
 });
 
@@ -55,7 +55,7 @@ await sdk.products.updateStock(warehouseId, {
 ├─────────────────────┼───────────────────────────────────┤
 │ sdk.products.*      │ sdk.reports.*                     │
 │ - warehouses()      │ - warehouseRemains() (async)      │
-│ - createStock()     │ - getSupplierStocks() (sync)      │
+│ - getStocks()       │ - getSupplierStocks() (sync)      │
 │ - updateStock()     │                                   │
 │ - deleteStock()     │                                   │
 └─────────────────────┴───────────────────────────────────┘
@@ -97,7 +97,7 @@ async function createWarehouse(
   name: string,
   officeId: number
 ) {
-  const result = await sdk.products.createWarehous({
+  const result = await sdk.products.createWarehouse({
     name,
     officeId
   });
@@ -111,13 +111,13 @@ async function createWarehouse(
 
 ```typescript
 // Обновить склад
-await sdk.products.updateWarehous(warehouseId, {
+await sdk.products.updateWarehouse(warehouseId, {
   name: 'Новое название',
   officeId: 12345
 });
 
 // Удалить склад
-await sdk.products.deleteWarehous(warehouseId);
+await sdk.products.deleteWarehouse(warehouseId);
 ```
 
 ---
@@ -135,7 +135,7 @@ async function getStocksBySku(
   warehouseId: number,
   skus: string[]
 ) {
-  const result = await sdk.products.createStock(warehouseId, { skus });
+  const result = await sdk.products.getStocks(warehouseId, { skus });
 
   const stockMap = new Map<string, number>();
 
@@ -483,7 +483,7 @@ async function syncStocksFromExternalSystem(
 ) {
   // 1. Получить текущие остатки на WB
   const currentSkus = externalStocks.map(s => s.sku);
-  const wbStocks = await sdk.products.createStock(warehouseId, {
+  const wbStocks = await sdk.products.getStocks(warehouseId, {
     skus: currentSkus
   });
 
@@ -574,7 +574,7 @@ async function handleStockChangeWebhook(
 | Метод | Лимит | Интервал |
 |-------|-------|----------|
 | `warehouses()` | 60 запросов | 1 минута |
-| `createStock()` | 600 запросов | 1 минута |
+| `getStocks()` | 600 запросов | 1 минута |
 | `updateStock()` | 600 запросов | 1 минута |
 | `deleteStock()` | 600 запросов | 1 минута |
 | `getSupplierStocks()` | 1 запрос | 1 минута |

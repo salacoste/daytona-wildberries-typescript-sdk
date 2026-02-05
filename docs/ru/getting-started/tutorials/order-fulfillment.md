@@ -122,31 +122,27 @@ const sdk = new WildberriesSDK({
 async function listPendingOrders() {
   try {
     // Получение всех новых заказов (еще не подтверждены)
-    const newOrders = await sdk.ordersFBS.getOrders({
-      status: 'new',
-      limit: 50
-    });
+    const newOrders = await sdk.ordersFBS.getOrdersNew();
 
-    console.log(`Найдено ${newOrders.data.length} новых заказов`);
+    console.log(`Найдено ${newOrders.orders?.length ?? 0} новых заказов`);
 
     // Отображение сводки по заказам
-    newOrders.data.forEach(order => {
-      console.log(`\nЗаказ ${order.orderId}:`);
-      console.log(`  - Статус: ${order.status}`);
-      console.log(`  - Товаров: ${order.items.length}`);
-      console.log(`  - Всего: ${order.totalAmount} RUB`);
-      console.log(`  - Срок доставки: ${order.deliveryDeadline}`);
+    newOrders.orders?.forEach(order => {
+      console.log(`\nЗаказ ${order.id}:`);
+      console.log(`  - Артикул: ${order.article}`);
+      console.log(`  - Цена: ${order.convertedPrice} коп.`);
+      console.log(`  - Склад: ${order.warehouseId}`);
     });
 
-    // Получение заказов, готовых к отправке
-    const readyToShip = await sdk.ordersFBS.getOrders({
-      status: 'assembled',
-      limit: 50
+    // Получение всех заказов с пагинацией
+    const allOrders = await sdk.ordersFBS.orders({
+      limit: 50,
+      next: 0
     });
 
-    console.log(`\n${readyToShip.data.length} заказов готовы к отправке`);
+    console.log(`\n${allOrders.orders?.length ?? 0} всего заказов`);
 
-    return newOrders.data;
+    return newOrders.orders ?? [];
 
   } catch (error) {
     console.error('Ошибка получения заказов:', error.message);
@@ -190,16 +186,17 @@ async function getTodaysOrders() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  // Используем Unix timestamp (в секундах) для dateFrom
+  const dateFrom = Math.floor(today.getTime() / 1000);
 
-  const orders = await sdk.ordersFBS.getOrders({
-    dateFrom: today.toISOString(),
-    dateTo: tomorrow.toISOString()
+  const result = await sdk.ordersFBS.orders({
+    limit: 1000,
+    next: 0,
+    dateFrom
   });
 
-  console.log(`Сегодняшние заказы: ${orders.data.length}`);
-  return orders.data;
+  console.log(`Сегодняшние заказы: ${result.orders?.length ?? 0}`);
+  return result.orders ?? [];
 }
 ```
 
@@ -219,31 +216,27 @@ async function getTodaysOrders() {
 ### Пример кода
 
 ```typescript
-async function confirmOrder(orderId: string) {
+async function addOrderToSupply(supplyId: string, orderId: number) {
   try {
-    // Подтверждение заказа
-    await sdk.ordersFBS.confirmOrder(orderId);
+    // Добавление заказа к поставке (статус меняется: new -> confirm)
+    await sdk.ordersFBS.addOrdersToSupply(supplyId, { orders: [orderId] });
 
-    console.log(`✓ Заказ ${orderId} подтвержден`);
-    console.log('Статус изменён: NEW → CONFIRMED');
+    console.log(`✓ Заказ ${orderId} добавлен к поставке ${supplyId}`);
+    console.log('Статус изменён: NEW → CONFIRM');
 
-  } catch (error) {
-    if (error.name === 'InvalidOrderStateError') {
-      console.error(`Не могу подтвердить: заказ в состоянии ${error.currentState}`);
+  } catch (error: any) {
+    if (error.statusCode === 409) {
+      console.error(`Не могу добавить: несовпадение типа груза или заказ уже в другой поставке`);
     } else {
-      console.error('Ошибка подтверждения заказа:', error.message);
+      console.error('Ошибка добавления заказа:', error.message);
     }
   }
 }
 
-// Подтверждение нескольких заказов
-async function confirmMultipleOrders(orderIds: string[]) {
-  for (const orderId of orderIds) {
-    await confirmOrder(orderId);
-    // SDK автоматически обрабатывает лимиты запросов
-  }
-
-  console.log(`\n✓ Подтверждено ${orderIds.length} заказов`);
+// Добавление нескольких заказов (через bulk API)
+async function addMultipleOrdersToSupply(supplyId: string, orderIds: number[]) {
+  await sdk.ordersFBS.addOrdersToSupply(supplyId, { orders: orderIds });
+  console.log(`\n✓ Добавлено ${orderIds.length} заказов к поставке`);
 }
 ```
 
@@ -278,19 +271,21 @@ async function confirmMultipleOrders(orderIds: string[]) {
 ```typescript
 async function assembleOrder(orderId: string) {
   try {
-    // Получение деталей заказа
-    const order = await sdk.ordersFBS.getOrderDetails(orderId);
-
-    console.log(`\nСборка заказа ${orderId}:`);
-    console.log('Требуемые товары:');
-
-    order.items.forEach(item => {
-      console.log(`  - ${item.productName} x ${item.quantity}`);
-      console.log(`    Артикул: ${item.sku}`);
+    // Проверка статуса заказа
+    const statusResult = await sdk.ordersFBS.getOrderStatuses({
+      orders: [Number(orderId)]
     });
 
-    // После физической сборки и упаковки...
-    await sdk.ordersFBS.markAssembled(orderId);
+    const order = statusResult.orders?.[0];
+    console.log(`\nСборка заказа ${orderId}:`);
+    console.log(`  Статус продавца: ${order?.supplierStatus}`);
+    console.log(`  Статус WB: ${order?.wbStatus}`);
+
+    // В WB FBS API нет отдельного шага "assembled".
+    // Статусы управляются через рабочий процесс поставок:
+    // 1. addOrdersToSupply() - new -> confirm
+    // 2. updateSuppliesDeliver() - confirm -> complete
+    console.log('  Заказ готов к отправке через поставку');
 
     console.log('\n✓ Заказ отмечен как собранный');
     console.log('Статус изменён: CONFIRMED → ASSEMBLED');
@@ -334,32 +329,27 @@ async function assembleOrder(orderId: string) {
 ```typescript
 async function generateShippingLabel(orderId: string) {
   try {
-    // Генерация транспортной накладной
-    const label = await sdk.ordersFBS.generateLabel({
-      orderId: orderId,
-      format: 'pdf', // или 'zpl' для принтеров этикеток
-      size: 'A4'     // или '100x150' для термопринтеров
-    });
+    // Генерация стикера (транспортной наклейки)
+    const stickersResult = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: [Number(orderId)] }
+    );
 
-    console.log('✓ Транспортная накладная сгенерирована');
-    console.log(`  - URL накладной: ${label.url}`);
-    console.log(`  - Номер отслеживания: ${label.trackingNumber}`);
+    const sticker = stickersResult.stickers?.[0];
+    console.log('✓ Стикер сгенерирован');
+    console.log(`  - Штрихкод: ${sticker?.barcode}`);
 
-    // Скачивание и печать накладной
-    const response = await fetch(label.url);
-    const pdfBuffer = await response.arrayBuffer();
+    // Сохранение стикера как файла
+    if (sticker?.file) {
+      const { writeFileSync } = await import('fs');
+      const buffer = Buffer.from(sticker.file, 'base64');
+      writeFileSync(`sticker-${orderId}.png`, buffer);
+      console.log(`✓ Стикер сохранён: sticker-${orderId}.png`);
+    }
 
-    // Сохранение или отправка на принтер
-    console.log('✓ Накладная готова к печати');
-
-    // Обновление статуса в SHIPPED
-    await sdk.ordersFBS.markShipped({
-      orderId: orderId,
-      trackingNumber: label.trackingNumber
-    });
-
-    console.log('✓ Заказ отмечен как отправленный');
-    console.log('Статус изменён: ASSEMBLED → SHIPPED');
+    // Примечание: В FBS API статус "shipped" управляется через поставку.
+    // Используйте updateSuppliesDeliver() для завершения поставки.
+    console.log('Для отправки используйте updateSuppliesDeliver(supplyId)');
 
   } catch (error) {
     console.error('Ошибка генерации накладной:', error.message);
@@ -397,54 +387,50 @@ async function processOrderFulfillment() {
 
     // Шаг 1: Получение новых заказов
     console.log('Шаг 1: Получение новых заказов...');
-    const newOrders = await sdk.ordersFBS.getOrders({
-      status: 'new',
-      limit: 10
-    });
-    console.log(`✓ Найдено ${newOrders.data.length} новых заказов\n`);
+    const result = await sdk.ordersFBS.getOrdersNew();
+    const newOrders = result.orders ?? [];
+    console.log(`✓ Найдено ${newOrders.length} новых заказов\n`);
 
-    if (newOrders.data.length === 0) {
+    if (newOrders.length === 0) {
       console.log('Нет заказов для обработки');
       return;
     }
 
-    // Шаг 2: Подтверждение заказов
-    console.log('Шаг 2: Подтверждение заказов...');
-    for (const order of newOrders.data) {
-      await sdk.ordersFBS.confirmOrder(order.orderId);
-      console.log(`  ✓ Подтвержден: ${order.orderId}`);
-    }
-    console.log(`✓ Подтверждено ${newOrders.data.length} заказов\n`);
+    // Шаг 2: Создание поставки
+    console.log('Шаг 2: Создание поставки...');
+    const supply = await sdk.ordersFBS.createSupply({
+      name: `Поставка ${new Date().toISOString().split('T')[0]}`
+    });
+    console.log(`✓ Поставка создана: ${supply.id}\n`);
 
-    // Шаг 3: Сборка заказов
-    console.log('Шаг 3: Сборка заказов...');
-    for (const order of newOrders.data) {
-      // Здесь происходит физическая сборка
-      await sdk.ordersFBS.markAssembled(order.orderId);
-      console.log(`  ✓ Собран: ${order.orderId}`);
-    }
-    console.log(`✓ Собрано ${newOrders.data.length} заказов\n`);
+    // Шаг 3: Добавление заказов к поставке (статус: new -> confirm)
+    console.log('Шаг 3: Добавление заказов к поставке...');
+    const orderIds = newOrders.slice(0, 10).map(o => o.id!);
+    await sdk.ordersFBS.addOrdersToSupply(supply.id!, { orders: orderIds });
+    console.log(`✓ Добавлено ${orderIds.length} заказов\n`);
 
-    // Шаг 4: Генерация накладных и отправка
-    console.log('Шаг 4: Генерация накладных...');
-    for (const order of newOrders.data) {
-      const label = await sdk.ordersFBS.generateLabel({
-        orderId: order.orderId,
-        format: 'pdf',
-        size: 'A4'
-      });
+    // Шаг 4: Генерация стикеров
+    console.log('Шаг 4: Генерация стикеров...');
+    const stickers = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: orderIds }
+    );
+    stickers.stickers?.forEach(s => {
+      console.log(`  ✓ Стикер: заказ ${s.orderId}, штрихкод ${s.barcode}`);
+    });
 
-      await sdk.ordersFBS.markShipped({
-        orderId: order.orderId,
-        trackingNumber: label.trackingNumber
-      });
+    // Шаг 5: Доставка поставки (статус: confirm -> complete)
+    console.log('\nШаг 5: Доставка поставки...');
+    await sdk.ordersFBS.updateSuppliesDeliver(supply.id!);
+    console.log('✓ Поставка доставлена');
 
-      console.log(`  ✓ Отправлен: ${order.orderId}`);
-      console.log(`    Отслеживание: ${label.trackingNumber}`);
-    }
+    // Шаг 6: Получение QR-кода поставки
+    console.log('\nШаг 6: Получение QR-кода...');
+    const barcode = await sdk.ordersFBS.getSuppliesBarcode(supply.id!, { type: 'png' });
+    console.log(`✓ QR-код: ${barcode.barcode}`);
 
-    console.log(`\n✓ Обработано ${newOrders.data.length} заказов`);
-    console.log('\n🎉 Процесс выполнения заказов завершен!');
+    console.log(`\n✓ Обработано ${orderIds.length} заказов`);
+    console.log('\nПроцесс выполнения заказов завершен!');
 
   } catch (error) {
     console.error('\n❌ Ошибка процесса выполнения:', error.message);
@@ -503,16 +489,16 @@ npx tsx order-fulfillment.ts
 
 ## Обработка ошибок
 
-### Ошибки состояния заказа
+### Ошибки конфликта (409)
 
 ```typescript
 try {
-  await sdk.ordersFBS.confirmOrder(orderId);
-} catch (error) {
-  if (error.name === 'InvalidOrderStateError') {
-    console.error(`Не могу подтвердить: заказ в состоянии ${error.currentState}`);
-    console.error(`Ожидаемое состояние: ${error.expectedState}`);
-    // Обработайте соответственно
+  await sdk.ordersFBS.addOrdersToSupply(supplyId, { orders: [orderId] });
+} catch (error: any) {
+  if (error.statusCode === 409) {
+    console.error(`Конфликт: ${error.message}`);
+    // Частые причины: несовпадение типа груза, заказ уже в другой поставке
+    // Важно: ошибки 409 считаются как 10 запросов к лимиту!
   }
 }
 ```
@@ -521,12 +507,14 @@ try {
 
 ```typescript
 try {
-  const order = await sdk.ordersFBS.getOrderDetails(orderId);
-} catch (error) {
-  if (error.name === 'OrderNotFoundError') {
+  const result = await sdk.ordersFBS.getOrderStatuses({
+    orders: [orderId]
+  });
+  if (!result.orders?.length) {
     console.error(`Заказ ${orderId} не найден`);
-    // Возможно, уже обработан или отменен
   }
+} catch (error: any) {
+  console.error('Ошибка получения статуса:', error.message);
 }
 ```
 
@@ -534,9 +522,9 @@ try {
 
 ```typescript
 try {
-  await sdk.ordersFBS.confirmOrder(orderId);
-} catch (error) {
-  if (error.name === 'RateLimitError') {
+  await sdk.ordersFBS.updateOrdersCancel(orderId);
+} catch (error: any) {
+  if (error.statusCode === 429) {
     console.log(`Лимит запросов. SDK повторит попытку автоматически.`);
     // SDK обрабатывает повторные попытки
   }
@@ -559,7 +547,7 @@ try {
 
 **Проблема: "Отсутствует информация о доставке"**
 - **Причина:** Неполные детали заказа
-- **Решение:** Используйте `getOrderDetails()` для получения полной информации
+- **Решение:** Используйте `getOrderStatuses()` для проверки текущего статуса
 
 ---
 

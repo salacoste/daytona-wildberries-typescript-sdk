@@ -2,7 +2,7 @@
 
 # ~~Interface: DBSOrderStatusLegacy~~
 
-Defined in: [types/orders-dbs.types.ts:362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-dbs.types.ts#L362)
+Defined in: [types/orders-dbs.types.ts:362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-dbs.types.ts#L362)
 
 ## Deprecated
 
@@ -13,6 +13,6 @@ Order status from deprecated status endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> ~~`id?`~~ | `number` | Order ID | [types/orders-dbs.types.ts:364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-dbs.types.ts#L364) |
-| <a id="supplierstatus"></a> ~~`supplierStatus?`~~ | [`DBSSupplierStatus`](../type-aliases/DBSSupplierStatus.md) | Supplier status | [types/orders-dbs.types.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-dbs.types.ts#L366) |
-| <a id="wbstatus"></a> ~~`wbStatus?`~~ | `string` | WB system status | [types/orders-dbs.types.ts:368](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-dbs.types.ts#L368) |
+| <a id="id"></a> ~~`id?`~~ | `number` | Order ID | [types/orders-dbs.types.ts:364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-dbs.types.ts#L364) |
+| <a id="supplierstatus"></a> ~~`supplierStatus?`~~ | [`DBSSupplierStatus`](../type-aliases/DBSSupplierStatus.md) | Supplier status | [types/orders-dbs.types.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-dbs.types.ts#L366) |
+| <a id="wbstatus"></a> ~~`wbStatus?`~~ | `string` | WB system status | [types/orders-dbs.types.ts:368](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-dbs.types.ts#L368) |

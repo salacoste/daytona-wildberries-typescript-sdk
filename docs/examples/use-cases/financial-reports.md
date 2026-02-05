@@ -125,7 +125,7 @@ async function analyzeRevenue(days = 30): Promise<RevenueAnalysis> {
 
   const [sales, products] = await Promise.all([
     sdk.reports.getSales(dateFrom, 0),
-    sdk.products.getAllProducts({ locale: 'ru' })
+    sdk.products.getCardsList({ locale: 'ru' })
   ]);
 
   const productNames = new Map(products.map(p => [p.nmID, p.title]));

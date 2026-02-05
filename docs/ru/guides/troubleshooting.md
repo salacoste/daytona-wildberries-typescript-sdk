@@ -55,7 +55,7 @@ layout: doc
 
 | Операция | Фактический метод SDK | Примечания |
 |----------|----------------------|------------|
-| Список карточек товаров | `sdk.products.createCardsList({ settings })` | **Основной метод** - Возвращает карточки с курсорной пагинацией |
+| Список карточек товаров | `sdk.products.getCardsList({ settings })` | **Основной метод** - Возвращает карточки с курсорной пагинацией |
 | Создать новый товар | `sdk.products.createCardsUpload(data[])` | Принимает массив карточек товаров |
 | Обновить товар | `sdk.products.createCardsUpdate(data[])` | Принимает массив обновлений |
 | Удалить в корзину | `sdk.products.createDeleteTrash({ nmIDs })` | Перемещает товары в корзину |
@@ -65,7 +65,7 @@ layout: doc
 | Получить атрибуты категории | `sdk.products.getObjectCharc(subjectId)` | Обязательные/опциональные поля |
 | Загрузить медиафайл | `sdk.products.createMediaFile()` | Инициировать загрузку медиа |
 | Сохранить медиа | `sdk.products.createMediaSave({ nmId, data })` | Сохранить загруженные медиа |
-| Получить остатки | `sdk.products.createStock(warehouseId, { skus })` | Получить остатки по SKU |
+| Получить остатки | `sdk.products.getStocks(warehouseId, { skus })` | Получить остатки по SKU |
 | Обновить остатки | `sdk.products.updateStock(warehouseId, { stocks })` | Обновить уровни остатков |
 | Удалить остатки | `sdk.products.deleteStock(warehouseId, { skus })` | Удалить записи остатков |
 | Получить склады | `sdk.products.warehouses()` | Список складов продавца |
@@ -79,20 +79,23 @@ layout: doc
 |----------|----------------------|------------|
 | Получить новые заказы | `sdk.ordersFBS.getOrdersNew()` | Заказы, ожидающие обработки |
 | Список всех заказов | `sdk.ordersFBS.orders({ limit, next, dateFrom?, dateTo? })` | Пагинация с фильтрами по дате |
-| Получить статусы заказов | `sdk.ordersFBS.createOrdersStatus({ orders: number[] })` | Пакетная проверка статуса |
+| Получить статусы заказов | `sdk.ordersFBS.getOrderStatuses({ orders: number[] })` | Пакетная проверка статуса |
+| Отменить заказ | `sdk.ordersFBS.updateOrdersCancel(orderId)` | Отмена до отгрузки |
+| Получить заказы на переотправку | `sdk.ordersFBS.getOrdersReshipment()` | Заказы для переотправки |
 | Создать поставку | `sdk.ordersFBS.createSupply({ name })` | Начать новую отгрузку |
 | Получить поставки | `sdk.ordersFBS.supplies({ limit, next })` | Список всех поставок |
-| Добавить заказ в поставку | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | Добавить заказ в поставку |
-| Получить этикетки заказов | `sdk.ordersFBS.createOrdersSticker({ type, width, height }, { orders })` | Печать этикеток |
-| Доставить поставку | `sdk.ordersFBS.updateSuppliesDeliver(supplyId)` | Отметить как отгруженную |
-| Отменить заказ | `sdk.ordersFBS.updateOrdersCancel(orderId)` | Отмена до отгрузки |
 | Получить поставку | `sdk.ordersFBS.getSupply(supplyId)` | Получить детали поставки |
 | Удалить поставку | `sdk.ordersFBS.deleteSupply(supplyId)` | Удалить поставку |
-| Получить заказы поставки | `sdk.ordersFBS.getSuppliesOrder(supplyId)` | Заказы в поставке |
+| Добавить заказы в поставку | `sdk.ordersFBS.addOrdersToSupply(supplyId, { orders })` | Массовое добавление заказов |
+| Получить ID заказов в поставке | `sdk.ordersFBS.getSupplyOrderIds(supplyId)` | ID заказов в поставке |
+| Доставить поставку | `sdk.ordersFBS.updateSuppliesDeliver(supplyId)` | Отметить как отгруженную |
+| Получить этикетки заказов | `sdk.ordersFBS.createOrdersSticker({ type, width, height }, { orders })` | Печать этикеток |
 | Получить штрихкод поставки | `sdk.ordersFBS.getSuppliesBarcode(supplyId, { type })` | Штрихкод поставки |
+| Получить метаданные (массово) | `sdk.ordersFBS.getOrdersMetaBulk({ orders })` | Метаданные для нескольких заказов |
 | Получить пропуска | `sdk.ordersFBS.passes()` | Список пропусков |
 | Создать пропуск | `sdk.ordersFBS.createPass(data)` | Создать пропуск для доставки |
-| Получить заказы на переотправку | `sdk.ordersFBS.getOrdersReshipment()` | Заказы для переотправки |
+| Получить заказы поставки | `sdk.ordersFBS.getSuppliesOrder(supplyId)` | **@deprecated** Используйте `getSupplyOrderIds()` |
+| Добавить заказ в поставку | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | **@deprecated** Используйте `addOrdersToSupply()` |
 
 ### Финансы
 
@@ -199,14 +202,14 @@ layout: doc
 
 ```typescript
 // ✅ ПРАВИЛЬНО - Используйте фактические имена методов
-const cards = await sdk.products.createCardsList({ settings: { cursor: { limit: 100 } } });
+const cards = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
 const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
 const balance = await sdk.finances.getAccountBalance();
 const report = await sdk.analytics.getSalesFunnelProducts({ ... }); // v3 (рекомендуется)
 // или: sdk.analytics.createNmReportDetail({ ... }); // устаревшая обертка v2 (всё ещё работает)
 
 // ❌ НЕПРАВИЛЬНО - Эти методы НЕ существуют
-const products = await sdk.products.listProducts();     // TypeError: listProducts is not a function
+const products = await sdk.products.getCardsList();     // TypeError: listProducts is not a function
 const orders = await sdk.ordersFBS.getOrders();         // TypeError: getOrders is not a function
 const balance = await sdk.finances.getBalance();        // TypeError: getBalance is not a function
 const created = await sdk.products.createProduct(data); // TypeError: createProduct is not a function
@@ -573,7 +576,7 @@ Retry after: 20000ms
    ```typescript
    try {
      // SDK автоматически ждет и повторяет
-     const result = await sdk.products.createProduct(data);
+     const result = await sdk.products.createCardsUpload(data);
      console.log('✅ Товар создан:', result);
    } catch (error) {
      if (error instanceof RateLimitError) {
@@ -597,7 +600,7 @@ Retry after: 20000ms
    ```typescript
    // ❌ НЕПРАВИЛЬНО - Последовательные запросы достигают лимита
    for (const product of products) {
-     await sdk.products.createProduct(product);  // Лимит запросов!
+     await sdk.products.createCardsUpload(product);  // Лимит запросов!
    }
 
    // ✅ ПРАВИЛЬНО - Пакеты с задержками между запросами
@@ -607,7 +610,7 @@ Retry after: 20000ms
    for (const batch of batches) {
      // Обработка пакета с задержками
      for (const product of batch) {
-       await sdk.products.createProduct(product);
+       await sdk.products.createCardsUpload(product);
        await sleep(10000);  // Ждать 10с между товарами (лимит: 1 на 10с)
      }
      // Опционально: более длинная задержка между пакетами
@@ -675,7 +678,7 @@ Reset at: 2024-10-28T00:00:00Z
    }
 
    // Использовать обертку для всех API вызовов
-   const products = await trackRequest(() => sdk.products.listProducts());
+   const products = await trackRequest(() => sdk.products.getCardsList());
    ```
 
 2. **Оптимизировать использование API:**
@@ -744,7 +747,7 @@ RateLimitError: Too many concurrent requests (max: 10)
    const limit = pLimit(10);  // Макс 10 одновременных запросов
 
    const promises = products.map(product =>
-     limit(() => sdk.products.createProduct(product))
+     limit(() => sdk.products.createCardsUpload(product))
    );
 
    const results = await Promise.all(promises);
@@ -813,7 +816,7 @@ RateLimitError: Too many concurrent requests (max: 10)
 
    try {
      while (true) {
-       await sdk.products.listProducts({ limit: 1 });
+       await sdk.products.getCardsList({ limit: 1 });
        requestCount++;
        console.log(`Запрос ${requestCount} успешен`);
      }
@@ -1108,7 +1111,7 @@ Field: categoryId - Must be a valid category ID
    };
 
    // Ошибка TypeScript: Property 'brandName' is missing
-   await sdk.products.createProduct(product);
+   await sdk.products.createCardsUpload(product);
    ```
 
 3. **Добавить валидацию времени выполнения:**
@@ -1131,7 +1134,7 @@ Field: categoryId - Must be a valid category ID
      return;
    }
 
-   await sdk.products.createProduct(value);
+   await sdk.products.createCardsUpload(value);
    ```
 
 4. **Просмотреть документацию API:**
@@ -1167,14 +1170,14 @@ ValidationError: Missing required field 'brandName'
 
 ```typescript
 // ❌ НЕПРАВИЛЬНО - Отсутствует brandName
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   title: 'Product',
   categoryId: 'electronics'
   // brandName отсутствует!
 });
 
 // ✅ ПРАВИЛЬНО - Все обязательные поля присутствуют
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   brandName: 'TechCorp',  // Обязательно
   title: 'Product',
   categoryId: 'electronics'
@@ -1192,7 +1195,7 @@ if (!product.brandName) {
   throw new Error('Требуется название бренда');
 }
 
-await sdk.products.createProduct(product);
+await sdk.products.createCardsUpload(product);
 ```
 
 **Как предотвратить:**
@@ -1223,7 +1226,7 @@ Expected: number, Received: string
 
 ```typescript
 // ❌ НЕПРАВИЛЬНО - Неправильные типы
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   brandName: 'TechCorp',
   categoryId: 'electronics',
   title: 'Product',
@@ -1234,7 +1237,7 @@ await sdk.products.createProduct({
 });
 
 // ✅ ПРАВИЛЬНО - Правильные типы
-await sdk.products.createProduct({
+await sdk.products.createCardsUpload({
   brandName: 'TechCorp',
   categoryId: 'electronics',
   title: 'Product',
@@ -1260,7 +1263,7 @@ if (isNaN(product.pricing.price)) {
   throw new Error('Неверная цена');
 }
 
-await sdk.products.createProduct(product);
+await sdk.products.createCardsUpload(product);
 ```
 
 **Распространенные требования к форматам:**
@@ -1319,7 +1322,7 @@ Expected property 'items' to be array, got undefined
 3. **Обработать несоответствия схемы:**
    ```typescript
    try {
-     const result = await sdk.products.listProducts();
+     const result = await sdk.products.getCardsList();
 
      // Защитное программирование - проверить структуру
      if (!result.data || !Array.isArray(result.data)) {
@@ -1406,7 +1409,7 @@ Error: Cannot find module '@daytona/wildberries-sdk'
 
 **Сообщение об ошибке:**
 ```
-TypeError: sdk.products.createProduct is not a function
+TypeError: sdk.products.createCardsUpload is not a function
 ```
 
 **Причина:** Неправильное использование SDK или метод не существует.
@@ -1425,18 +1428,18 @@ TypeError: sdk.products.createProduct is not a function
    await sdk.products.creatProduct(data);  // Отсутствует 'e'
 
    // ✅ ПРАВИЛЬНО
-   await sdk.products.createProduct(data);
+   await sdk.products.createCardsUpload(data);
    ```
 
 2. **Проверить инициализацию SDK:**
    ```typescript
    // ❌ НЕПРАВИЛЬНО - Использование до инициализации
-   const result = await sdk.products.listProducts();
+   const result = await sdk.products.getCardsList();
    const sdk = new WildberriesSDK({ apiKey: '...' });
 
    // ✅ ПРАВИЛЬНО - Сначала инициализировать
    const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
-   const result = await sdk.products.listProducts();
+   const result = await sdk.products.getCardsList();
    ```
 
 3. **Проверить существование метода:**
@@ -1520,7 +1523,7 @@ TypeError: sdk.products.createProduct is not a function
 3. **Проверить существование данных:**
    ```typescript
    // Проверить, существуют ли данные в панели
-   const all = await sdk.products.listProducts({ limit: 1 });
+   const all = await sdk.products.getCardsList({ limit: 1 });
    if (all.data.length === 0) {
      console.log('Товары не существуют - сначала создайте некоторые');
    }
@@ -1558,7 +1561,7 @@ TypeError: sdk.products.createProduct is not a function
    });
 
    // Увидеть, что именно делает SDK
-   await sdk.products.listProducts();
+   await sdk.products.getCardsList();
    ```
 
 2. **Просмотреть документацию:**
@@ -1583,7 +1586,7 @@ TypeError: sdk.products.createProduct is not a function
    });
 
    // Минимальный код, показывающий неожиданное поведение
-   const result = await sdk.products.listProducts({ limit: 10 });
+   const result = await sdk.products.getCardsList({ limit: 10 });
    console.log('Ожидалось: 10 товаров');
    console.log('Получено:', result.data.length);
    ```
@@ -1638,7 +1641,7 @@ TypeError: sdk.products.createProduct is not a function
 #### Паттерн 1: Ошибка аутентификации
 ```typescript
 try {
-  await sdk.products.listProducts();
+  await sdk.products.getCardsList();
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('Ошибка аутентификации:', error.message);
@@ -1650,7 +1653,7 @@ try {
 #### Паттерн 2: Превышен лимит запросов
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof RateLimitError) {
     console.log(`Лимит запросов. Повтор через ${error.retryAfter}ms`);
@@ -1662,7 +1665,7 @@ try {
 #### Паттерн 3: Ошибка валидации
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error instanceof ValidationError) {
     console.error('Валидация не прошла:');
@@ -1862,7 +1865,7 @@ const sdk = new WildberriesSDK({
 });
 
 try {
-  await sdk.products.listProducts();
+  await sdk.products.getCardsList();
 } catch (error) {
   console.error('Произошла ошибка:', error);
 }

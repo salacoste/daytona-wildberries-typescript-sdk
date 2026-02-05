@@ -2,7 +2,7 @@
 
 # Interface: SetUinBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-dbs.types.ts#L510)
+Defined in: [types/orders-dbs.types.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-dbs.types.ts#L510)
 
 Request body for setUinBulk
 
@@ -10,4 +10,4 @@ Request body for setUinBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `uin`: `string`; \}[] | Array of orders with UIN codes to set | [types/orders-dbs.types.ts:512](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-dbs.types.ts#L512) |
+| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `uin`: `string`; \}[] | Array of orders with UIN codes to set | [types/orders-dbs.types.ts:512](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-dbs.types.ts#L512) |

@@ -23,7 +23,7 @@ async function getAllProducts() {
   let cursor: any = { limit: 100 };
 
   while (true) {
-    const response = await sdk.products.createCardsList({
+    const response = await sdk.products.getCardsList({
       settings: {
         filter: { withPhoto: -1 },  // All cards
         cursor
@@ -59,7 +59,7 @@ const products = await getAllProducts();
 ```typescript
 // Get products with specific filters
 async function getProductsFiltered() {
-  const response = await sdk.products.createCardsList({
+  const response = await sdk.products.getCardsList({
     settings: {
       filter: {
         withPhoto: 1,  // Only with photos

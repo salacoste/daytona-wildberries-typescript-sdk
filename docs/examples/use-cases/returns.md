@@ -172,7 +172,7 @@ async function analyzeReturns(days = 30): Promise<ReturnAnalysis> {
   const sales = await sdk.reports.getSales(fromDate, 0);
 
   // Get product names
-  const products = await sdk.products.getAllProducts({ locale: 'ru' });
+  const products = await sdk.products.getCardsList({ locale: 'ru' });
   const productNames = new Map(products.map(p => [p.nmID, p.title]));
 
   // Analyze by product

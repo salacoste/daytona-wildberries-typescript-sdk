@@ -205,7 +205,7 @@ async function createProduct() {
       ]
     };
 
-    const result = await sdk.products.createProduct(productData);
+    const result = await sdk.products.createCardsUpload(productData);
 
     console.log('Product created successfully!');
     console.log('Product ID:', result.data.id);
@@ -440,7 +440,7 @@ async function syncProductCatalog() {
       }
     };
 
-    const product = await sdk.products.createProduct(productData);
+    const product = await sdk.products.createCardsUpload(productData);
     console.log(`✓ Product created: ${product.data.id}\n`);
 
     // Step 3: Upload media
@@ -521,7 +521,7 @@ Product operations have strict rate limits:
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error.name === 'RateLimitError') {
     console.log(`Rate limited. Retry after ${error.retryAfter}ms`);
@@ -536,7 +536,7 @@ Handle field-level validation:
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error.name === 'ValidationError') {
     console.error('Validation errors:');
@@ -554,7 +554,7 @@ Handle transient failures:
 
 ```typescript
 try {
-  await sdk.products.createProduct(data);
+  await sdk.products.createCardsUpload(data);
 } catch (error) {
   if (error.name === 'NetworkError') {
     console.error('Network issue:', error.message);
