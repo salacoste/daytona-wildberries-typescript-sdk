@@ -71,6 +71,19 @@ export interface RateLimitConfig {
    * @default requestsPerMinute // Burst limit equals per-minute limit
    */
   burstLimit?: number;
+
+  /**
+   * Optional penalty multiplier for 409 (Conflict) responses.
+   *
+   * When a request receives a 409 response, this many tokens are consumed from the bucket
+   * instead of the default 1. This accounts for API-level penalties where conflict responses
+   * count as multiple requests toward the rate limit.
+   *
+   * @example 5 // In-store pickup: one 409 counts as 5 requests
+   * @example 10 // FBS/FBW: one 409 counts as 10 requests
+   * @default undefined // No penalty (409 counts as 1 request like any other)
+   */
+  penaltyMultiplier?: number;
 }
 
 /**
