@@ -542,6 +542,22 @@ Card creation/update and pricing operations are processed asynchronously. A 200 
 - Office binding can only be changed once per 24 hours
 - Deleting a warehouse frees the office for reuse
 
+## Deprecated Methods
+
+The following methods are deprecated and will be removed in a future version. Use the recommended replacements:
+
+| Deprecated Method | Use Instead | Reason |
+|-------------------|-------------|--------|
+| `createCardsList()` | `getCardsList()` | Naming consistency (GET operation) |
+| `createCardsTrash()` | `getTrashedCards()` | Naming consistency (GET operation) |
+| `getGoodsTask2()` | `getBufferGoodsTask()` | Clearer naming |
+| `createStock()` | `getStocks()` | Naming consistency (GET operation) |
+| `createWarehous()` | `createWarehouse()` | Typo fix |
+| `updateWarehous()` | `updateWarehouse()` | Typo fix |
+| `deleteWarehous()` | `deleteWarehouse()` | Typo fix |
+
+> **Note**: Deprecated methods are fully functional and will continue to work. They simply delegate to the recommended methods internally.
+
 ## Related Documentation
 
 ### Stories

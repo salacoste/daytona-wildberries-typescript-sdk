@@ -31,7 +31,7 @@ This module is typically the first one developers use when integrating with the 
 ### Accessing via SDK
 
 ```typescript
-import { WildberriesSDK } from 'wildberries-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY || 'your-api-key-here',
@@ -48,8 +48,8 @@ const seller = await sdk.general.sellerInfo();
 For cases where you need direct control over the BaseClient:
 
 ```typescript
-import { GeneralModule } from 'wildberries-sdk';
-import { BaseClient } from 'wildberries-sdk';
+import { GeneralModule } from 'daytona-wildberries-typescript-sdk';
+import { BaseClient } from 'daytona-wildberries-typescript-sdk';
 
 const client = new BaseClient({
   apiKey: process.env.WB_API_KEY || 'your-api-key-here',
@@ -280,7 +280,7 @@ import type {
   NewsTag,
   NewsRequestParams,
   SellerInfoResponse,
-} from 'wildberries-sdk';
+} from 'daytona-wildberries-typescript-sdk';
 ```
 
 ### Type Definitions
@@ -376,7 +376,7 @@ import {
   ValidationError,
   NetworkError,
   WBAPIError,
-} from 'wildberries-sdk';
+} from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
 
@@ -444,7 +444,7 @@ const result = await sdk.general.ping();
 ## Complete Usage Example
 
 ```typescript
-import { WildberriesSDK, AuthenticationError, RateLimitError } from 'wildberries-sdk';
+import { WildberriesSDK, AuthenticationError, RateLimitError } from 'daytona-wildberries-typescript-sdk';
 
 async function demonstrateGeneralModule() {
   // Initialize SDK

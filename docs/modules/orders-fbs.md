@@ -73,7 +73,7 @@ Ensure your API key has the following permissions enabled:
 | `deleteSupply(supplyId)` | Delete an empty supply | 300 req/min |
 | `updateSuppliesDeliver(supplyId)` | Transfer supply to delivery | 300 req/min |
 | `getSuppliesBarcode(supplyId, options?)` | Get supply QR code | 300 req/min |
-| `addOrdersToSupply(supplyId, data)` | Add multiple orders to supply (bulk) | 1000 req/min |
+| `addOrdersToSupply(supplyId, data)` | Add multiple orders to supply (bulk) | 300 req/min |
 | `getSupplyOrderIds(supplyId)` | Get order IDs in a supply | 300 req/min |
 | `updateSuppliesOrder(supplyId, orderId)` | **@deprecated** Use `addOrdersToSupply()` | 300 req/min |
 | `getSuppliesOrder(supplyId)` | **@deprecated** Use `getSupplyOrderIds()` | 300 req/min |
@@ -93,7 +93,7 @@ Ensure your API key has the following permissions enabled:
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
 | `getOrdersMetaBulk(data)` | Get metadata for multiple orders (bulk) | 1000 req/min |
-| `deleteOrdersMeta(orderId, options?)` | Delete order metadata by key | 1000 req/min |
+| `deleteOrdersMeta(orderId, options?)` | Delete order metadata by key | 300 req/min |
 | `updateMetaSgtin(orderId, data)` | Attach SGTIN marking codes | 1000 req/min |
 | `updateMetaUin(orderId, data)` | Attach UIN code | 1000 req/min |
 | `updateMetaImei(orderId, data)` | Attach IMEI code | 1000 req/min |
@@ -539,12 +539,12 @@ try {
 |------|-------|----------|-------|-----------|
 | **Standard FBS** | 300/min | 200ms | 20 | Most FBS endpoints (28 methods) |
 | **Cancel Order** | 100/min | 600ms | 20 | `updateOrdersCancel` |
-| **Meta Attachment** | 1000/min | 60ms | 20 | Metadata methods, `addOrdersToSupply` |
+| **Meta Attachment** | 1000/min | 60ms | 20 | Metadata PUT methods (SGTIN, UIN, IMEI, etc.) |
 | **Create Pass** | 1/10min | - | 1 | `createPass` |
 
 ### 409 Error Penalty
 
-**Important**: When an operation returns a 409 (Conflict) error, it counts as **5 requests** against your rate limit quota instead of 1. This applies to all supply operations.
+**Important**: When an operation returns a 409 (Conflict) error, it counts as **10 requests** against your rate limit quota instead of 1. This applies to all supply operations.
 
 ### Rate Limit Handling
 
@@ -592,6 +592,26 @@ The following methods are deprecated and will be removed in future versions:
 ### Migration Examples
 
 ```typescript
+// createOrdersStatu() → getOrderStatuses()
+// BEFORE (deprecated)
+const statuses = await sdk.ordersFBS.createOrdersStatu({ orders: [123, 456] });
+
+// AFTER (recommended)
+const statuses = await sdk.ordersFBS.getOrderStatuses({ orders: [123, 456] });
+```
+
+```typescript
+// createOrdersExternalSticker() → Note: endpoint removed by Wildberries
+// This method now throws - use createStickersCrossBorder() for cross-border orders
+// BEFORE (deprecated - no longer works)
+const stickers = await sdk.ordersFBS.createOrdersExternalSticker({ orders: [123] });
+
+// AFTER (recommended for cross-border)
+const stickers = await sdk.ordersFBS.createStickersCrossBorder({ orders: [123] });
+```
+
+```typescript
+// getOrdersMeta() → getOrdersMetaBulk()
 // BEFORE (deprecated)
 const meta = await sdk.ordersFBS.getOrdersMeta(orderId);
 
@@ -601,6 +621,7 @@ const meta = metaResponse.orders?.find(o => o.id === orderId)?.meta;
 ```
 
 ```typescript
+// updateSuppliesOrder() → addOrdersToSupply()
 // BEFORE (deprecated)
 await sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId);
 
@@ -609,6 +630,7 @@ await sdk.ordersFBS.addOrdersToSupply(supplyId, { orders: [orderId] });
 ```
 
 ```typescript
+// getSuppliesOrder() → getSupplyOrderIds()
 // BEFORE (deprecated)
 const { orders } = await sdk.ordersFBS.getSuppliesOrder(supplyId);
 
