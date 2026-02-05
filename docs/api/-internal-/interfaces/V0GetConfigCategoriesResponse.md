@@ -2,7 +2,7 @@
 
 # Interface: V0GetConfigCategoriesResponse
 
-Defined in: [types/promotion.types.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L45)
+Defined in: [types/promotion.types.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/promotion.types.ts#L45)
 
 ## Example
 
@@ -18,6 +18,6 @@ Defined in: [types/promotion.types.ts:45](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID категории товара | [types/promotion.types.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L47) |
-| <a id="name"></a> `name` | `string` | Название категории товара | [types/promotion.types.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L49) |
-| <a id="cpm_min"></a> `cpm_min` | `number` | Минимально допустимая ставка | [types/promotion.types.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/promotion.types.ts#L51) |
+| <a id="id"></a> `id` | `number` | ID категории товара | [types/promotion.types.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/promotion.types.ts#L47) |
+| <a id="name"></a> `name` | `string` | Название категории товара | [types/promotion.types.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/promotion.types.ts#L49) |
+| <a id="cpm_min"></a> `cpm_min` | `number` | Минимально допустимая ставка | [types/promotion.types.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/promotion.types.ts#L51) |

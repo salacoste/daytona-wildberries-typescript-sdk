@@ -2,12 +2,12 @@
 
 # Interface: ModelsVolumeTariff
 
-Defined in: [types/orders-fbw.types.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-fbw.types.ts#L23)
+Defined in: [types/orders-fbw.types.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-fbw.types.ts#L23)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="from"></a> `from?` | `number` | Объём поставки от, литры | [types/orders-fbw.types.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-fbw.types.ts#L25) |
-| <a id="to"></a> `to?` | `number` | Объём поставки до, литры | [types/orders-fbw.types.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-fbw.types.ts#L27) |
-| <a id="value"></a> `value?` | `number` | Тариф, ₽ за литр | [types/orders-fbw.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/orders-fbw.types.ts#L29) |
+| <a id="from"></a> `from?` | `number` | Объём поставки от, литры | [types/orders-fbw.types.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-fbw.types.ts#L25) |
+| <a id="to"></a> `to?` | `number` | Объём поставки до, литры | [types/orders-fbw.types.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-fbw.types.ts#L27) |
+| <a id="value"></a> `value?` | `number` | Тариф, ₽ за литр | [types/orders-fbw.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-fbw.types.ts#L29) |

@@ -389,7 +389,7 @@ async function ensureMetadataCompliance(
   // Get metadata for all orders in one bulk call
   const metaBulk = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
   const metaMap = new Map(
-    (metaBulk.orders ?? []).map(m => [m.orderId, m.meta])
+    (metaBulk.orders ?? []).map(m => [m.orderId, m])
   );
 
   for (const orderId of orderIds) {

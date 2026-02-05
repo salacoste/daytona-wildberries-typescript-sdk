@@ -2,10 +2,10 @@
 
 # Interface: ApiOrderClientInfoResp
 
-Defined in: [types/in-store-pickup.types.ts:191](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/in-store-pickup.types.ts#L191)
+Defined in: [types/in-store-pickup.types.ts:191](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/in-store-pickup.types.ts#L191)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`ApiOrderClientInfo`](ApiOrderClientInfo.md)[] | [types/in-store-pickup.types.ts:192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/61f168a41d66a8f9e222bafc7c76a54db1b5e61b/src/types/in-store-pickup.types.ts#L192) |
+| <a id="orders"></a> `orders?` | [`ApiOrderClientInfo`](ApiOrderClientInfo.md)[] | [types/in-store-pickup.types.ts:192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/in-store-pickup.types.ts#L192) |
