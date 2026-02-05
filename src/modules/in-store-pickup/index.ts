@@ -231,7 +231,7 @@ export class InStorePickupModule {
    * const result = await sdk.inStorePickup.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
    * console.log(result);
    */
-  async getClickCollectOrders(options?: {
+  async getClickCollectOrders(options: {
     limit: number;
     next: number;
     dateFrom: number;
@@ -295,7 +295,8 @@ export class InStorePickupModule {
    * Возможные метаданные: imei, uin, gtin, sgtin. Передается только одно значение.
    *
    * @param orderId - ID сборочного задания
-   * @param [options] - Query parameters
+   * @param options - Query parameters
+   * @param options.key - Metadata key to delete (imei, uin, gtin, sgtin)
    * @returns Response data
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -304,7 +305,7 @@ export class InStorePickupModule {
    * @example
    * await sdk.inStorePickup.deleteOrdersMeta(12345, { key: 'imei' });
    */
-  async deleteOrdersMeta(orderId: number, options?: { key: string }): Promise<void> {
+  async deleteOrdersMeta(orderId: number, options: { key: string }): Promise<void> {
     return this.client.delete(
       `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta`,
       {},

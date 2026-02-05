@@ -63,7 +63,7 @@ export class PickupOrderNotFoundError extends WBAPIError {
  *
  * **HTTP Status**: 409 Conflict
  * **Retry**: No (permanent failure - requires state correction)
- * **Rate Limit**: 409 responses count as 5 requests!
+ * **Rate Limit**: 409 responses count as 10 requests!
  *
  * This error occurs when attempting to transition an order to a state that is
  * not valid given its current state (e.g., trying to prepare an order that
@@ -138,7 +138,7 @@ export class InvalidOrderStateError extends WBAPIError {
       `Please check the current order status using getOrderStatuses() and ` +
       `ensure you follow the correct state transition sequence: ` +
       `new → confirm → prepare → receive/reject. ` +
-      `Note: This 409 response counts as 5 requests toward your rate limit.`
+      `Note: This 409 response counts as 10 requests toward your rate limit.`
     );
   }
 }
@@ -148,7 +148,7 @@ export class InvalidOrderStateError extends WBAPIError {
  *
  * **HTTP Status**: 409 Conflict
  * **Retry**: No (permanent failure - requires correct passcode)
- * **Rate Limit**: 409 responses count as 5 requests!
+ * **Rate Limit**: 409 responses count as 10 requests!
  *
  * This error occurs when the passcode provided for identity verification does
  * not match the customer's order code. The customer needs to provide the correct
@@ -203,7 +203,7 @@ export class CustomerVerificationError extends WBAPIError {
       `Customer identity verification failed for order ${this.orderCode}. ` +
       `The passcode provided does not match. Please ask the customer to check ` +
       `their Wildberries app for the correct passcode. ` +
-      `Note: This 409 response counts as 5 requests toward your rate limit. ` +
+      `Note: This 409 response counts as 10 requests toward your rate limit. ` +
       `Be careful not to exceed the 30 requests/minute limit for this endpoint.`
     );
   }
@@ -214,7 +214,7 @@ export class CustomerVerificationError extends WBAPIError {
  *
  * **HTTP Status**: 409 Conflict (metadata update failures)
  * **Retry**: No (permanent failure - requires correct data or order state)
- * **Rate Limit**: 409 responses count as 5 requests!
+ * **Rate Limit**: 409 responses count as 10 requests!
  *
  * This error occurs when attempting to set metadata (SGTIN, UIN, IMEI, GTIN) codes
  * but the operation fails due to:
@@ -282,7 +282,7 @@ export class MetadataValidationError extends WBAPIError {
       `3) Code format is valid, ` +
       `4) For UIN/IMEI/GTIN: delivery is by WB. ` +
       `Use getNewOrders() to check requiredMeta and getOrderStatuses() to check status. ` +
-      `Note: This 409 response counts as 5 requests toward your rate limit.`
+      `Note: This 409 response counts as 10 requests toward your rate limit.`
     );
   }
 }

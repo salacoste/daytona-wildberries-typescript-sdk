@@ -18,7 +18,7 @@ export interface Error {
   /** Описание ошибки */
   message?: string;
   /** Дополнительные данные, обогащающие ошибку */
-  data?: Record<string, never>;
+  data?: Record<string, unknown> | null;
 }
 
 /**
@@ -39,7 +39,7 @@ export interface ApiCheckIdentityRequest {
 
 export interface ApiError {
   code?: string;
-  data?: Record<string, never>;
+  data?: Record<string, unknown> | null;
   message?: string;
 }
 
@@ -77,9 +77,9 @@ export interface ApiNewOrder {
   /** Планируемая дата доставки */
   ddate?: string;
   /** Цена продавца в валюте продажи с учётом скидки продавца, без учёта скидки WB Клуба, умноженная на 100. Предоставляется в информационных целях */
-  salePrice?: number;
+  salePrice?: number | null;
   /** Список метаданных, доступных для сборочного задания */
-  requiredMeta?: string[];
+  requiredMeta?: string[] | null;
   /** Артикул продавца */
   article?: string;
   /** Уникальный ID заказа. <br> Примечание: поле `rid` — это поле `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
@@ -91,7 +91,7 @@ export interface ApiNewOrder {
   /** Уникальный ID заказа покупателя */
   orderCode?: string;
   /** Режим оплаты: - `prepaid` — предоплатный - `postpaid` — постоплатный - `unknown` — неизвестный */
-  payMode?: string;
+  payMode?: 'prepaid' | 'postpaid' | 'unknown';
   /** Массив баркодов товара */
   skus?: string[];
   /** ID сборочного задания */
@@ -155,7 +155,7 @@ export interface ApiOrder {
   /** Уникальный ID заказа покупателя */
   orderCode?: string;
   /** Режим оплаты: - `prepaid` — предоплатный - `postpaid` — постоплатный - `unknown` — неизвестный */
-  payMode?: string;
+  payMode?: 'prepaid' | 'postpaid' | 'unknown';
   /** Уникальный ID заказа. <br> Примечание: поле `rid` — это поле `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
   rid?: string;
   /** Массив баркодов товара */
@@ -206,9 +206,23 @@ export interface ApiOrderStatus {
   /** ID сборочного задания */
   id?: number;
   /** Статус сборочного задания, установленный продавцом */
-  supplierStatus?: string;
+  supplierStatus?:
+    | 'new'
+    | 'confirm'
+    | 'prepare'
+    | 'receive'
+    | 'reject'
+    | 'cancel'
+    | 'cancel_shelf_life';
   /** Статус сборочного задания в системе WB */
-  wbStatus?: string;
+  wbStatus?:
+    | 'waiting'
+    | 'sold'
+    | 'canceled'
+    | 'canceled_by_client'
+    | 'declined_by_client'
+    | 'defect'
+    | 'ready_for_pickup';
 }
 
 export interface ApiOrderStatuses {
@@ -276,18 +290,18 @@ export interface ApiUINRequest {
 export interface ApiBaseMeta {
   /** GTIN */
   gtin?: {
-  value?: string;
-};
+    value?: string | null;
+  };
   /** IMEI */
   imei?: {
-  value?: string;
-};
+    value?: string | null;
+  };
   /** Код маркировки Честного знака */
   sgtin?: {
-  value?: string[];
-};
+    value?: string[] | null;
+  };
   /** УИН */
   uin?: {
-  value?: string;
-};
+    value?: string | null;
+  };
 }
