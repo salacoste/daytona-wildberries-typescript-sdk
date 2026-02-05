@@ -1170,7 +1170,7 @@ This is **the most common mistake** with `getCardsList()`:
 ❌ **Mistake 1: Empty cursor fields in first request**
 ```typescript
 // ❌ WRONG - Causes validation error
-await sdk.products.createCardsList({
+await sdk.products.getCardsList({
   settings: {
     cursor: {
       limit: 100,
@@ -1184,7 +1184,7 @@ await sdk.products.createCardsList({
 ❌ **Mistake 2: Missing `settings` wrapper**
 ```typescript
 // ❌ WRONG - Missing settings wrapper
-await sdk.products.createCardsList({
+await sdk.products.getCardsList({
   cursor: { limit: 100 },
   filter: { withPhoto: -1 }
 });
@@ -1192,8 +1192,8 @@ await sdk.products.createCardsList({
 
 ❌ **Mistake 3: Limit exceeds maximum**
 ```typescript
-// ❌ WRONG - Max limit is 1000
-await sdk.products.createCardsList({
+// ❌ WRONG - Max limit is 100
+await sdk.products.getCardsList({
   settings: {
     cursor: { limit: 5000 }
   }
@@ -1205,7 +1205,7 @@ await sdk.products.createCardsList({
 **For FIRST request:**
 ```typescript
 // ✅ CORRECT - Only include limit
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: {
       limit: 100  // ONLY limit, omit updatedAt and nmID
@@ -1220,7 +1220,7 @@ const response = await sdk.products.createCardsList({
 **For PAGINATION requests:**
 ```typescript
 // ✅ CORRECT - Copy cursor from previous response
-const nextResponse = await sdk.products.createCardsList({
+const nextResponse = await sdk.products.getCardsList({
   settings: {
     cursor: {
       limit: 100,
@@ -1241,7 +1241,7 @@ async function getAllCards() {
   let cursor: any = { limit: 100 };  // Start with only limit
 
   while (true) {
-    const response = await sdk.products.createCardsList({
+    const response = await sdk.products.getCardsList({
       settings: {
         filter: { withPhoto: -1 },
         cursor

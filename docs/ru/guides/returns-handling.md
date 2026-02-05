@@ -24,7 +24,7 @@ const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 await sdk.ordersFBS.updateOrdersCancel(orderId);
 
 // Получить заказы на повторную отгрузку (возвраты)
-const reshipments = await sdk.ordersFBS.createSuppliesOrdersReshipment();
+const reshipments = await sdk.ordersFBS.getOrdersReshipment();
 
 // Получить тарифы на возврат
 const returnTariffs = await sdk.tariffs.getTariffsReturn({ date: '2024-12-01' });
@@ -80,7 +80,7 @@ async function canCancelOrder(
   sdk: WildberriesSDK,
   orderId: number
 ): Promise<boolean> {
-  const statusResult = await sdk.ordersFBS.createOrdersStatus({
+  const statusResult = await sdk.ordersFBS.getOrderStatuses({
     orders: [orderId]
   });
 
@@ -108,7 +108,7 @@ interface ReshipmentOrder {
 async function getReshipmentOrders(
   sdk: WildberriesSDK
 ): Promise<ReshipmentOrder[]> {
-  const result = await sdk.ordersFBS.createSuppliesOrdersReshipment();
+  const result = await sdk.ordersFBS.getOrdersReshipment();
 
   return (result.orders || []).map(order => ({
     supplyId: String(order.supplyID || ''),
@@ -167,8 +167,8 @@ async function getReturnTariffs(
 | Метод | Лимит | Интервал |
 |-------|-------|----------|
 | `updateOrdersCancel()` | 400 запросов | 1 минута |
-| `createOrdersStatus()` | 600 запросов | 1 минута |
-| `createOrdersStatusHistory()` | 300 запросов | 1 минута |
+| `getOrderStatuses()` | 300 запросов | 1 минута |
+| `createStatusHistory()` | 300 запросов | 1 минута |
 | `createSuppliesOrdersReshipment()` | 6 запросов | 1 минута |
 | `getTariffsReturn()` | 60 запросов | 1 минута |
 | `getSupplierReportdetailbyperiod()` | 1 запрос | 1 минута |

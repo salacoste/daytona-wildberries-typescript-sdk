@@ -999,7 +999,7 @@ Layered architecture with:
 3. Tool discovery endpoint returns JSON schema for available tools
 4. `ping` tool implemented exposing `sdk.general.ping()` with proper parameter/response mapping
 5. `list_products` tool implemented exposing `sdk.products.listProducts()` with filter parameters
-6. `get_order` tool implemented exposing `sdk.ordersFBS.getOrderById()` with orderId parameter
+6. `get_order` tool implemented exposing `sdk.ordersFBS.getOrderStatuses()` with order IDs parameter
 7. Tool execution properly delegates to SDK methods, inheriting rate limiting and error handling
 8. SDK configuration accepted via MCP server initialization (API key from environment or config file)
 9. Wildberries SDK imported as dependency, zero modifications to SDK source code
