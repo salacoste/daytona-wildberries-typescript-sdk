@@ -192,13 +192,18 @@ async function getTodaysOrders() {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const orders = await sdk.ordersFBS.getOrders({
-    dateFrom: today.toISOString(),
-    dateTo: tomorrow.toISOString()
+  const dateFrom = Math.floor(today.getTime() / 1000);
+  const dateTo = Math.floor(tomorrow.getTime() / 1000);
+
+  const result = await sdk.ordersFBS.orders({
+    limit: 1000,
+    next: 0,
+    dateFrom,
+    dateTo
   });
 
-  console.log(`Today's orders: ${orders.data.length}`);
-  return orders.data;
+  console.log(`Today's orders: ${result.orders?.length ?? 0}`);
+  return result.orders ?? [];
 }
 ```
 
@@ -498,80 +503,77 @@ Here's the full order fulfillment workflow:
 
 ```typescript
 import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
+import { writeFileSync } from 'fs';
 
 const sdk = new WildberriesSDK({
-  apiKey: process.env.WB_API_KEY
+  apiKey: process.env.WB_API_KEY!
 });
 
 async function fulfillOrders() {
   try {
     console.log('=== Order Fulfillment Workflow ===\n');
 
-    // Step 1: Get pending orders
+    // Step 1: Get new orders
     console.log('Step 1: Fetching new orders...');
-    const orders = await sdk.ordersFBS.getOrders({
-      status: 'new',
-      limit: 10
+    const { orders: newOrders } = await sdk.ordersFBS.getOrdersNew();
+
+    if (!newOrders?.length) {
+      console.log('No new orders to process.');
+      return;
+    }
+    console.log(`Found ${newOrders.length} orders to process\n`);
+
+    // Step 2: Create a supply
+    console.log('Step 2: Creating supply...');
+    const { id: supplyId } = await sdk.ordersFBS.createSupply({
+      name: `Supply ${new Date().toISOString().split('T')[0]}`
     });
+    console.log(`Created supply: ${supplyId}`);
 
-    console.log(`✓ Found ${orders.data.length} orders to process\n`);
+    // Step 3: Add orders to supply (status changes: new -> confirm)
+    const orderIds = newOrders.slice(0, 10).map(o => o.id!);
+    console.log('\nStep 3: Adding orders to supply...');
+    await sdk.ordersFBS.addOrdersToSupply(supplyId!, { orders: orderIds });
+    console.log(`Added ${orderIds.length} orders to supply`);
 
-    for (const order of orders.data) {
-      console.log(`\n--- Processing Order ${order.orderId} ---`);
-
-      // Step 2: Get full details
-      console.log('Fetching order details...');
-      const details = await sdk.ordersFBS.getOrders({ id: order.orderId });
-      console.log(`✓ Customer: ${details.data[0].customerInfo.name}`);
-      console.log(`✓ Items: ${details.data[0].items.length}`);
-      console.log(`✓ Total: ${details.data[0].totalAmount} RUB`);
-
-      // Step 3: Confirm order
-      console.log('\nConfirming order...');
-      await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-        orderId: order.orderId,
-        status: 'confirmed'
-      });
-      console.log('✓ Order confirmed');
-
-      // Step 4: Assemble (simulate warehouse picking)
-      console.log('Assembling order...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-        orderId: order.orderId,
-        status: 'assembled'
-      });
-      console.log('✓ Order assembled');
-
-      // Step 5: Generate shipping label
-      console.log('Generating shipping label...');
-      const label = await sdk.ordersFBS.getOrderStickers({
-        orderId: order.orderId,
-        carrier: 'CDEK',
-        shippingMethod: 'courier'
-      });
-      console.log(`✓ Label: ${label.data.trackingNumber}`);
-
-      // Step 6: Mark as shipped
-      await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-        orderId: order.orderId,
-        status: 'shipped',
-        trackingNumber: label.data.trackingNumber
-      });
-      console.log('✓ Order shipped');
-
-      console.log(`\n✓ Order ${order.orderId} completed!`);
+    // Step 4: Attach required metadata
+    console.log('\nStep 4: Attaching metadata...');
+    for (const order of newOrders.slice(0, 10)) {
+      if (order.requiredMeta?.includes('imei')) {
+        await sdk.ordersFBS.updateMetaImei(order.id!, { imei: '354567890123456' });
+        console.log(`  Attached IMEI to order ${order.id}`);
+      }
     }
 
-    console.log('\n=== Fulfillment Complete ===');
-    console.log(`Processed ${orders.data.length} orders successfully`);
+    // Step 5: Generate shipping stickers
+    console.log('\nStep 5: Generating stickers...');
+    const stickersResponse = await sdk.ordersFBS.createOrdersSticker(
+      { type: 'png', width: 58, height: 40 },
+      { orders: orderIds }
+    );
+    stickersResponse.stickers?.forEach(sticker => {
+      const buffer = Buffer.from(sticker.file!, 'base64');
+      writeFileSync(`sticker-${sticker.orderId}.png`, buffer);
+      console.log(`  Saved sticker for order ${sticker.orderId}`);
+    });
 
-  } catch (error) {
-    console.error('❌ Fulfillment failed:', error.message);
+    // Step 6: Deliver supply (status changes: confirm -> complete)
+    console.log('\nStep 6: Delivering supply...');
+    await sdk.ordersFBS.updateSuppliesDeliver(supplyId!);
+    console.log('Supply delivered');
+
+    // Step 7: Get supply QR code
+    console.log('\nStep 7: Getting supply QR code...');
+    const barcode = await sdk.ordersFBS.getSuppliesBarcode(supplyId!, { type: 'png' });
+    const qrBuffer = Buffer.from(barcode.file!, 'base64');
+    writeFileSync(`supply-${supplyId}.png`, qrBuffer);
+    console.log(`Saved supply QR: ${barcode.barcode}`);
+
+    console.log('\n=== Fulfillment Complete ===');
+    console.log(`Processed ${orderIds.length} orders successfully`);
+
+  } catch (error: any) {
+    console.error('Fulfillment failed:', error.message);
     process.exit(1);
   }
 }
