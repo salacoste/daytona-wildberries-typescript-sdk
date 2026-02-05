@@ -17,81 +17,97 @@ export const inStorePickupRateLimits: Record<string, RateLimitConfig> = {
   'in-store-pickup.clickCollectOrdersNew': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.patchClickCollectOrdersConfirm': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.patchClickCollectOrdersPrepare': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.postClickCollectOrdersClient': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.postClickCollectOrdersClientIdentity': {
     requestsPerMinute: 30,
     intervalSeconds: 2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.patchClickCollectOrdersReceive': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.patchClickCollectOrdersReject': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.postClickCollectOrdersStatus': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.clickCollectOrders': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.patchClickCollectOrdersCancel': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.clickCollectOrdersMeta': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.deleteClickCollectOrdersMeta': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.putClickCollectOrdersMetaSgtin': {
     requestsPerMinute: 1000,
     intervalSeconds: 0.06,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.putClickCollectOrdersMetaUin': {
     requestsPerMinute: 1000,
     intervalSeconds: 0.06,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.putClickCollectOrdersMetaImei': {
     requestsPerMinute: 1000,
     intervalSeconds: 0.06,
-    burstLimit: 20
+    burstLimit: 20,
+    penaltyMultiplier: 5,
   },
   'in-store-pickup.putClickCollectOrdersMetaGtin': {
     requestsPerMinute: 1000,
     intervalSeconds: 0.06,
-    burstLimit: 20
-  }
+    burstLimit: 20,
+    penaltyMultiplier: 5,
+  },
 };
