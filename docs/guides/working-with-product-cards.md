@@ -1,12 +1,14 @@
 ---
 title: Working with Product Cards
-description: Complete guide to fetching, filtering, and paginating product cards with createCardsList() method
+description: Complete guide to fetching, filtering, and paginating product cards with getCardsList() method
 layout: doc
 ---
 
 # Working with Product Cards
 
-Complete guide to fetching, filtering, and paginating product cards using the `createCardsList()` method.
+Complete guide to fetching, filtering, and paginating product cards using the `getCardsList()` method.
+
+> **Note**: The older `createCardsList()` method is deprecated. Use `getCardsList()` instead -- they are functionally identical.
 
 ## Table of Contents
 
@@ -25,7 +27,7 @@ Complete guide to fetching, filtering, and paginating product cards using the `c
 
 ## Overview
 
-The `createCardsList()` method retrieves a list of your product cards from Wildberries. It supports:
+The `getCardsList()` method retrieves a list of your product cards from Wildberries. It supports:
 
 - **Cursor-based pagination** for fetching large datasets
 - **Advanced filtering** by photos, text search, brands, categories, tags
@@ -36,7 +38,7 @@ The `createCardsList()` method retrieves a list of your product cards from Wildb
 
 **Rate Limit:** 100 requests/minute with 600ms intervals (burst: 5 requests)
 
-**⚠️ Important:** Cards in trash are NOT returned by this method. Use `getCardsTrash()` to fetch trashed cards separately.
+**Important:** Cards in trash are NOT returned by this method. Use `getTrashedCards()` to fetch trashed cards separately.
 
 ### 🚨 CRITICAL: Pagination Limit Restrictions
 
@@ -66,7 +68,7 @@ const sdk = new WildberriesSDK({
 });
 
 // Get first 100 product cards
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     filter: {
       withPhoto: -1  // All cards (with and without photos)
@@ -296,7 +298,7 @@ async function getAllProductCards() {
   let cursor: any = { limit: 100 };  // Start with only limit
 
   while (hasMore) {
-    const response = await sdk.products.createCardsList({
+    const response = await sdk.products.getCardsList({
       settings: {
         filter: { withPhoto: -1 },
         cursor
@@ -351,7 +353,7 @@ async function getFilteredCardsWithPagination(filters: {
   let cursor: any = { limit: 100 };
 
   while (true) {
-    const response = await sdk.products.createCardsList({
+    const response = await sdk.products.getCardsList({
       settings: {
         filter: {
           ...filters,
@@ -403,7 +405,7 @@ const cardsWithPhotos = await getFilteredCardsWithPagination({
 
 ```typescript
 // ❌ WRONG - Causes "Validation failed"
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: {
       limit: 100,
@@ -418,7 +420,7 @@ const response = await sdk.products.createCardsList({
 **✅ Solution:** Omit `updatedAt` and `nmID` in first request:
 
 ```typescript
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: {
       limit: 100  // ONLY limit
@@ -432,7 +434,7 @@ const response = await sdk.products.createCardsList({
 
 ```typescript
 // ❌ WRONG - Missing settings wrapper
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   cursor: { limit: 100 },      // Should be inside settings
   filter: { withPhoto: -1 }    // Should be inside settings
 });
@@ -441,7 +443,7 @@ const response = await sdk.products.createCardsList({
 **✅ Solution:** Wrap everything in `settings`:
 
 ```typescript
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {  // ✅ Wrapper required
     cursor: { limit: 100 },
     filter: { withPhoto: -1 }
@@ -453,14 +455,14 @@ const response = await sdk.products.createCardsList({
 
 ```typescript
 // ❌ WRONG - Limit exceeds maximum, causes ValidationError (HTTP 400)
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: { limit: 1000 }  // ❌ FAILS - Maximum is 100!
   }
 });
 
 // ❌ ALSO WRONG - Even higher values fail
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: { limit: 5000 }  // ❌ FAILS - Maximum is 100!
   }
@@ -470,7 +472,7 @@ const response = await sdk.products.createCardsList({
 **✅ Solution:** ALWAYS use limit: 100 (maximum allowed):
 
 ```typescript
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: { limit: 100 }  // ✅ MAXIMUM & RECOMMENDED
   }
@@ -487,7 +489,7 @@ HTTP Status: 400
 
 ```typescript
 // ❌ WRONG - Only gets first 100 cards
-const response = await sdk.products.createCardsList({
+const response = await sdk.products.getCardsList({
   settings: {
     cursor: { limit: 100 },
     filter: { withPhoto: -1 }
@@ -569,7 +571,7 @@ const response = await sdk.products.createCardsList({
 ```typescript
 // Add delay between requests
 async function fetchWithDelay() {
-  const response = await sdk.products.createCardsList({...});
+  const response = await sdk.products.getCardsList({...});
 
   // Wait 650ms before next request (100 req/min = 600ms interval + buffer)
   await new Promise(resolve => setTimeout(resolve, 650));
@@ -585,7 +587,7 @@ async function fetchWithDelay() {
 1. **Cards are in trash**
    ```typescript
    // Use separate method for trashed cards
-   const trashedCards = await sdk.products.getCardsTrash({
+   const trashedCards = await sdk.products.getTrashedCards({
      settings: { cursor: { limit: 100 } }
    });
    ```
@@ -653,7 +655,7 @@ async function fetchWithRateLimit(requestFn: () => Promise<any>) {
 async function safeFetchCards(cursor: any, retries = 3) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      return await sdk.products.createCardsList({
+      return await sdk.products.getCardsList({
         settings: { cursor, filter: { withPhoto: -1 } }
       });
     } catch (error: any) {
@@ -681,7 +683,7 @@ async function getAllCardsWithProgress() {
   while (true) {
     console.log(`Fetching page ${pageNumber}...`);
 
-    const response = await sdk.products.createCardsList({
+    const response = await sdk.products.getCardsList({
       settings: { cursor, filter: { withPhoto: -1 } }
     });
 
@@ -745,7 +747,7 @@ async function getCachedCards(cacheDuration = 3600000) {  // 1 hour
 
 ```typescript
 // ✅ GOOD - Filter on API side
-const nikeCards = await sdk.products.createCardsList({
+const nikeCards = await sdk.products.getCardsList({
   settings: {
     filter: { brands: ['Nike'] },
     cursor: { limit: 100 }
@@ -877,7 +879,7 @@ const nikeCards = allCards.filter(c => c.brand === 'Nike');
 - **[Product Catalog Use Case](/examples/use-cases/product-catalog)** - Complete product catalog sync examples
 - **[Stock Management Guide](/guides/stock-management)** - Managing inventory with fetched cards
 - **[Best Practices Guide](/guides/best-practices)** - General SDK best practices
-- **[API Reference: ProductsModule](/api/classes/ProductsModule#createCardsList)** - TypeScript API documentation
+- **[API Reference: ProductsModule](/api/classes/ProductsModule#getCardsList)** - TypeScript API documentation
 
 ---
 
@@ -897,7 +899,7 @@ const nikeCards = allCards.filter(c => c.brand === 'Nike');
 
 ```typescript
 // First request
-const first = await sdk.products.createCardsList({
+const first = await sdk.products.getCardsList({
   settings: {
     cursor: { limit: 100 },
     filter: { withPhoto: -1 }
@@ -905,7 +907,7 @@ const first = await sdk.products.createCardsList({
 });
 
 // Next request (pagination)
-const next = await sdk.products.createCardsList({
+const next = await sdk.products.getCardsList({
   settings: {
     cursor: {
       limit: 100,

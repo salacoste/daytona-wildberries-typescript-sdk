@@ -1616,36 +1616,32 @@ TypeError: sdk.products.createProduct is not a function
 
 1. **Check filters:**
    ```typescript
-   // ❌ WRONG - Too restrictive filter
-   const orders = await sdk.ordersFBS.getOrders({
-     status: 'confirmed',
-     dateFrom: '2024-10-27',
-     dateTo: '2024-10-27'
+   // ❌ WRONG - Too narrow date range
+   const result = await sdk.ordersFBS.orders({
+     limit: 100,
+     next: 0,
+     dateFrom: 1698364800,  // Single day
+     dateTo: 1698451200
    });
-   console.log(orders.data);  // [] - No orders in this time range
+   console.log(result.orders);  // [] - No orders in this time range
 
-   // ✅ CORRECT - Broader filter
-   const orders = await sdk.ordersFBS.getOrders({
-     status: 'confirmed',
-     dateFrom: '2024-10-01',  // Whole month
-     dateTo: '2024-10-31'
+   // ✅ CORRECT - Broader date range (Unix timestamps)
+   const result = await sdk.ordersFBS.orders({
+     limit: 100,
+     next: 0,
+     dateFrom: 1696118400,  // Whole month
+     dateTo: 1698796800
    });
    ```
 
 2. **Check pagination:**
    ```typescript
-   // ❌ WRONG - Offset too large
-   const orders = await sdk.ordersFBS.getOrders({
-     limit: 100,
-     offset: 10000  // Beyond total count
-   });
+   // ✅ CORRECT - Use cursor-based pagination
+   const firstPage = await sdk.ordersFBS.orders({ limit: 100, next: 0 });
+   console.log('Orders:', firstPage.orders?.length);
 
-   // ✅ CORRECT - Check total before paginating
-   const firstPage = await sdk.ordersFBS.getOrders({ limit: 100, offset: 0 });
-   console.log('Total:', firstPage.data.total);
-
-   if (firstPage.data.hasMore) {
-     const nextPage = await sdk.ordersFBS.getOrders({ limit: 100, offset: 100 });
+   if ((firstPage.next ?? 0) > 0) {
+     const nextPage = await sdk.ordersFBS.orders({ limit: 100, next: firstPage.next! });
    }
    ```
 
@@ -1809,7 +1805,7 @@ try {
 #### Pattern 4: Network Error
 ```typescript
 try {
-  await sdk.ordersFBS.getOrders();
+  await sdk.ordersFBS.orders({ limit: 100, next: 0 });
 } catch (error) {
   if (error instanceof NetworkError) {
     if (error.isTimeout) {
