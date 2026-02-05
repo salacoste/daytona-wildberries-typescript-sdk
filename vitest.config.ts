@@ -68,6 +68,7 @@ export default defineConfig({
       'tests/integration/sdk-initialization.test.ts',
       'tests/integration/user-management.integration.test.ts',
       'tests/integration/finances.integration.test.ts',
+      'tests/integration/orders-fbw.integration.test.ts',
     ],
 
     // Coverage configuration
