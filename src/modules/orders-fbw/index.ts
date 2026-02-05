@@ -1,13 +1,31 @@
 /**
- * Auto-generated module
+ * Orders FBW Module
+ *
+ * Manages Fulfillment by Wildberries (FBW) supply operations including
+ * acceptance coefficients, warehouse info, transit tariffs, and supply management.
+ *
  * Generated from: wildberries_api_doc/07-orders-fbw.yaml
- * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
+ *
+ * @module modules/orders-fbw
  */
 
 import { BaseClient } from '../../client/base-client';
-import type { ModelsAcceptanceCoefficient, ModelsBox, ModelsGood, ModelsGoodInSupply, ModelsOptionsResultModel, ModelsSuppliesFiltersRequest, ModelsSupply, ModelsSupplyDetails, ModelsTransitTariff, ModelsWarehousesResultItems } from '../../types/orders-fbw.types';
+import type {
+  ModelsAcceptanceCoefficient,
+  ModelsBox,
+  ModelsGood,
+  ModelsGoodInSupply,
+  ModelsOptionsResultModel,
+  ModelsSuppliesFiltersRequest,
+  ModelsSupply,
+  ModelsSupplyDetails,
+  ModelsTransitTariff,
+  ModelsWarehousesResultItems,
+} from '../../types/orders-fbw.types';
 
 export class OrdersFbwModule {
+  private static _coefficientsDeprecationWarned = false;
+
   constructor(private client: BaseClient) {}
 
   /**
@@ -15,6 +33,7 @@ export class OrdersFbwModule {
    *
    * Метод возвращает коэффициенты приёмки для конкретных складов на ближайшие 14 дней. <div class="description_important"> Приёмка для поставки доступна только при сочетании: <br> <code>coefficient</code> — <code>0</code> или <code>1</code> <br> и <code>allowUnload</code> — <code>true</code> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 6 запросов | </div>
    *
+   * @deprecated Use tariffs module instead. This endpoint has been moved to common-api.wildberries.ru.
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -22,11 +41,22 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAcceptanceCoefficients({});
+  const result = await sdk.ordersFBW.getAcceptanceCoefficients({});
   console.log(result);
    */
-  async getAcceptanceCoefficients(options?: { warehouseIDs?: string }): Promise<ModelsAcceptanceCoefficient[]> {
-    return this.client.get<ModelsAcceptanceCoefficient[]>('https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients', { params: options });
+  async getAcceptanceCoefficients(options?: {
+    warehouseIDs?: string;
+  }): Promise<ModelsAcceptanceCoefficient[]> {
+    if (!OrdersFbwModule._coefficientsDeprecationWarned) {
+      console.warn(
+        '[WB SDK] getAcceptanceCoefficients() is deprecated. Use tariffs module instead. Endpoint moved to common-api.wildberries.ru.'
+      );
+      OrdersFbwModule._coefficientsDeprecationWarned = true;
+    }
+    return this.client.get<ModelsAcceptanceCoefficient[]>(
+      'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
+      { params: options, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
+    );
   }
 
   /**
@@ -42,11 +72,18 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAcceptanceOption({}, {});
+  const result = await sdk.ordersFBW.createAcceptanceOption([{ barcode: '1234567891234', quantity: 10 }]);
   console.log(result);
    */
-  async createAcceptanceOption(data: ModelsGood[], options?: { warehouseID?: string }): Promise<ModelsOptionsResultModel> {
-    return this.client.post<ModelsOptionsResultModel>('https://supplies-api.wildberries.ru/api/v1/acceptance/options', data, { params: options });
+  async createAcceptanceOption(
+    data: ModelsGood[],
+    options?: { warehouseID?: string }
+  ): Promise<ModelsOptionsResultModel> {
+    return this.client.post<ModelsOptionsResultModel>(
+      'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
+      data,
+      { params: options, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
+    );
   }
 
   /**
@@ -60,11 +97,14 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.warehouses();
+  const result = await sdk.ordersFBW.warehouses();
   console.log(result);
    */
   async warehouses(): Promise<ModelsWarehousesResultItems[]> {
-    return this.client.get<ModelsWarehousesResultItems[]>('https://supplies-api.wildberries.ru/api/v1/warehouses');
+    return this.client.get<ModelsWarehousesResultItems[]>(
+      'https://supplies-api.wildberries.ru/api/v1/warehouses',
+      { rateLimitKey: 'orders-fbw.warehouses' }
+    );
   }
 
   /**
@@ -78,11 +118,14 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.transitTariffs();
+  const result = await sdk.ordersFBW.transitTariffs();
   console.log(result);
    */
   async transitTariffs(): Promise<ModelsTransitTariff[]> {
-    return this.client.get<ModelsTransitTariff[]>('https://supplies-api.wildberries.ru/api/v1/transit-tariffs');
+    return this.client.get<ModelsTransitTariff[]>(
+      'https://supplies-api.wildberries.ru/api/v1/transit-tariffs',
+      { rateLimitKey: 'orders-fbw.transitTariffs' }
+    );
   }
 
   /**
@@ -98,11 +141,28 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSupply({}, {});
+  const result = await sdk.ordersFBW.listSupplies({});
   console.log(result);
    */
-  async createSupply(data: ModelsSuppliesFiltersRequest, options?: { limit?: number; offset?: number }): Promise<ModelsSupply[]> {
-    return this.client.post<ModelsSupply[]>('https://supplies-api.wildberries.ru/api/v1/supplies', data, { params: options });
+  async listSupplies(
+    data: ModelsSuppliesFiltersRequest,
+    options?: { limit?: number; offset?: number }
+  ): Promise<ModelsSupply[]> {
+    return this.client.post<ModelsSupply[]>(
+      'https://supplies-api.wildberries.ru/api/v1/supplies',
+      data,
+      { params: options, rateLimitKey: 'orders-fbw.postSupplies' }
+    );
+  }
+
+  /**
+   * @deprecated Use {@link listSupplies} instead. This method will be removed in v3.0.0.
+   */
+  async createSupply(
+    data: ModelsSuppliesFiltersRequest,
+    options?: { limit?: number; offset?: number }
+  ): Promise<ModelsSupply[]> {
+    return this.listSupplies(data, options);
   }
 
   /**
@@ -118,11 +178,14 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupply('ID-value', {});
+  const result = await sdk.ordersFBW.getSupply(12345);
   console.log(result);
    */
   async getSupply(ID: number, options?: { isPreorderID?: boolean }): Promise<ModelsSupplyDetails> {
-    return this.client.get<ModelsSupplyDetails>(`https://supplies-api.wildberries.ru/api/v1/supplies/${ID}`, { params: options });
+    return this.client.get<ModelsSupplyDetails>(
+      `https://supplies-api.wildberries.ru/api/v1/supplies/${ID}`,
+      { params: options, rateLimitKey: 'orders-fbw.supplies' }
+    );
   }
 
   /**
@@ -138,11 +201,17 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSuppliesGood('ID-value', {});
+  const result = await sdk.ordersFBW.getSuppliesGood(12345);
   console.log(result);
    */
-  async getSuppliesGood(ID: number, options?: { limit?: number; offset?: number; isPreorderID?: boolean }): Promise<ModelsGoodInSupply[]> {
-    return this.client.get<ModelsGoodInSupply[]>(`https://supplies-api.wildberries.ru/api/v1/supplies/${ID}/goods`, { params: options });
+  async getSuppliesGood(
+    ID: number,
+    options?: { limit?: number; offset?: number; isPreorderID?: boolean }
+  ): Promise<ModelsGoodInSupply[]> {
+    return this.client.get<ModelsGoodInSupply[]>(
+      `https://supplies-api.wildberries.ru/api/v1/supplies/${ID}/goods`,
+      { params: options, rateLimitKey: 'orders-fbw.suppliesGoods' }
+    );
   }
 
   /**
@@ -157,11 +226,13 @@ export class OrdersFbwModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSuppliesPackage('ID-value');
+  const result = await sdk.ordersFBW.getSuppliesPackage(12345);
   console.log(result);
    */
   async getSuppliesPackage(ID: number): Promise<ModelsBox[]> {
-    return this.client.get<ModelsBox[]>(`https://supplies-api.wildberries.ru/api/v1/supplies/${ID}/package`);
+    return this.client.get<ModelsBox[]>(
+      `https://supplies-api.wildberries.ru/api/v1/supplies/${ID}/package`,
+      { rateLimitKey: 'orders-fbw.suppliesPackage' }
+    );
   }
-
 }

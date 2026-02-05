@@ -98,7 +98,7 @@ export interface ModelsGoodInSupply {
   /** Код ТНВЭД. <br> Если `"needKIZ":true`, а `"tnved":null`, нужно заполнить характеристику товара **ТН ВЭД** в [личном кабинете](https://seller.wildberries.ru/new-goods) или по [API](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) */
   tnved?: string;
   /** Размер товара, указанный продавцом */
-  techsize?: string;
+  techSize?: string;
   /** Цвет товара */
   color?: string;
   /** Указано в упаковке, шт */
@@ -161,7 +161,13 @@ export interface ModelsSupplyDetails {
   /** ID статуса поставки: - `1` — Не запланировано - `2` — Запланировано - `3` — Отгрузка разрешена - `4` — Идёт приёмка - `5` — Принято - `6` — Отгружено на воротах */
   statusID?: 1 | 2 | 3 | 4 | 5 | 6;
   /** Статус поставки */
-  statusName?: 'Не запланировано' | 'Запланировано' | 'Отгрузка разрешена' | 'Идёт приёмка' | 'Принято' | 'Отгружено на воротах';
+  statusName?:
+    | 'Не запланировано'
+    | 'Запланировано'
+    | 'Отгрузка разрешена'
+    | 'Идёт приёмка'
+    | 'Принято'
+    | 'Отгружено на воротах';
   /** ID типа виртуальной поставки. Отображается только для поставок с `"boxTypeID":0`. - `0` — Перенос остатков - `1` — Обезличка - `4` — QR-поставка - `5` — Допринято - `6` — Скан-приёмка */
   virtualTypeID?: number;
   /** Тип виртуальной поставки. Отображается только для поставок с `"boxTypeID":0`. - `Перенос остатков` - `Обезличка` - `QR-поставка` - `Допринято` - `Скан-приёмка` */
@@ -234,7 +240,13 @@ export interface ModelsSupply {
   /** ID статуса поставки: - `1` — Не запланировано - `2` — Запланировано - `3` — Отгрузка разрешена - `4` — Идёт приёмка - `5` — Принято - `6` — Отгружено на воротах */
   statusID?: 1 | 2 | 3 | 4 | 5 | 6;
   /** Текущий статус поставки */
-  statusName?: 'Не запланировано' | 'Запланировано' | 'Отгрузка разрешена' | 'Идёт приёмка' | 'Принято' | 'Отгружено на воротах';
+  statusName?:
+    | 'Не запланировано'
+    | 'Запланировано'
+    | 'Отгрузка разрешена'
+    | 'Идёт приёмка'
+    | 'Принято'
+    | 'Отгружено на воротах';
 }
 
 export interface ModelsAcceptanceCoefficient {
@@ -292,7 +304,7 @@ export interface ModelsWarehousesResultItems {
   /** Режим работы склада */
   workTime?: string;
   /** Принимает ли склад QR-поставки: - `true` — да - `false` — нет */
-  acceptsQr?: boolean;
+  acceptsQR?: boolean;
   /** Доступен ли в качестве склада назначения: - `true` — да - `false` — нет */
   isActive?: boolean;
   /** Доступен ли в качестве транзитного склада: - `true` — да - `false` — нет */
@@ -321,29 +333,29 @@ export interface ModelsErrorModel {
 
 export interface ModelsOptionsResultModel {
   result?: {
-  /** Баркод из карточки товара */
-  barcode?: string;
-  /** Данные ошибки. При наличии */
-  error?: {
-  /** ID ошибки */
-  title?: string;
-  /** Описание ошибки */
-  detail?: string;
-};
-  /** Наличие ошибки: - `true` — ошибка есть - Поля нет — ошибка отсутствует */
-  isError?: boolean;
-  /** Список складов. При наличии ошибки будет `null` */
-  warehouses?: {
-  /** ID склада. По нему можно получить [информацию о складе](./orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get) */
-  warehouseID?: number;
-  /** Тип упаковки **Короб**: - `true` — доступен - `false` — недоступен */
-  canBox?: boolean;
-  /** Тип упаковки **Монопаллета**: - `true` — доступен - `false` — недоступен */
-  canMonopallet?: boolean;
-  /** Тип упаковки **Суперсейф**: - `true` — доступен - `false` — недоступен */
-  canSupersafe?: boolean;
-}[];
-}[];
+    /** Баркод из карточки товара */
+    barcode?: string;
+    /** Данные ошибки. При наличии */
+    error?: {
+      /** ID ошибки */
+      title?: string;
+      /** Описание ошибки */
+      detail?: string;
+    };
+    /** Наличие ошибки: - `true` — ошибка есть - Поля нет — ошибка отсутствует */
+    isError?: boolean;
+    /** Список складов. При наличии ошибки будет `null` */
+    warehouses?: {
+      /** ID склада. По нему можно получить [информацию о складе](./orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get) */
+      warehouseID?: number;
+      /** Тип упаковки **Короб**: - `true` — доступен - `false` — недоступен */
+      canBox?: boolean;
+      /** Тип упаковки **Монопаллета**: - `true` — доступен - `false` — недоступен */
+      canMonopallet?: boolean;
+      /** Тип упаковки **Суперсейф**: - `true` — доступен - `false` — недоступен */
+      canSupersafe?: boolean;
+    }[];
+  }[];
   /** ID запроса при наличии ошибок */
   requestId?: string;
 }
