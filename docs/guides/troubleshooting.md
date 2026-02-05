@@ -58,7 +58,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| List product cards | `sdk.products.createCardsList({ settings })` | **Main method** - Returns cards with cursor pagination |
+| List product cards | `sdk.products.getCardsList({ settings })` | **Main method** - Returns cards with cursor pagination |
 | Create new product | `sdk.products.createCardsUpload(data[])` | Accepts array of product cards |
 | Update product | `sdk.products.createCardsUpdate(data[])` | Accepts array of updates |
 | Delete to trash | `sdk.products.createDeleteTrash({ nmIDs })` | Moves products to trash |
@@ -68,7 +68,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 | Get category attributes | `sdk.products.getObjectCharc(subjectId)` | Required/optional fields |
 | Upload media file | `sdk.products.createMediaFile()` | Initiate media upload |
 | Save media | `sdk.products.createMediaSave({ nmId, data })` | Save uploaded media |
-| Get stock | `sdk.products.createStock(warehouseId, { skus })` | Get stock for SKUs |
+| Get stock | `sdk.products.getStocks(warehouseId, { skus })` | Get stock for SKUs |
 | Update stock | `sdk.products.updateStock(warehouseId, { stocks })` | Update stock levels |
 | Delete stock | `sdk.products.deleteStock(warehouseId, { skus })` | Remove stock entries |
 | Get warehouses | `sdk.products.warehouses()` | List seller warehouses |

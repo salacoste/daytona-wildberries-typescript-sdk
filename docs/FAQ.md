@@ -353,8 +353,9 @@ console.log(`Total: ${products.total}, Has more: ${products.hasMore}`);
 
 **Cursor-based:**
 ```typescript
-const orders = await sdk.ordersFBS.getOrders({
-  cursor: response.cursor // From previous response
+const result = await sdk.ordersFBS.orders({
+  limit: 100,
+  next: previousResponse.next ?? 0 // From previous response
 });
 ```
 
@@ -607,7 +608,8 @@ app.post('/webhooks/wildberries', async (req, res) => {
   // Process event
   if (event.type === 'order.created') {
     const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY });
-    await sdk.ordersFBS.confirmOrder({ orderId: event.orderId });
+    // Process the new order - check statuses, add to supply, etc.
+    const result = await sdk.ordersFBS.getOrderStatuses({ orders: [event.orderId] });
   }
 
   res.status(200).send('OK');

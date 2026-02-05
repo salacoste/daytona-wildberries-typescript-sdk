@@ -17,8 +17,8 @@
  *
  * **What This Example Covers:**
  * - **Connectivity Testing**: ping() endpoint for health checks
- * - **News Retrieval**: getNews() for marketplace announcements
- * - **Seller Info**: getSeller() for account information
+ * - **News Retrieval**: news() for marketplace announcements
+ * - **Seller Info**: sellerInfo() for account information
  * - Error handling for authentication, rate limits, and network issues
  * - Manual BaseClient initialization (advanced usage)
  *
@@ -52,8 +52,8 @@
  * @see {@link https://dev.wildberries.ru/openapi/common} - General Module API Reference
  * @see {@link ../docs/api/classes/GeneralModule.html} - GeneralModule Class Reference
  * @see {@link ../docs/api/classes/GeneralModule.html#ping} - ping() Method Documentation
- * @see {@link ../docs/api/classes/GeneralModule.html#getNews} - getNews() Method Documentation
- * @see {@link ../docs/api/classes/GeneralModule.html#getSeller} - getSeller() Method Documentation
+ * @see {@link ../docs/api/classes/GeneralModule.html#news} - news() Method Documentation
+ * @see {@link ../docs/api/classes/GeneralModule.html#sellerInfo} - sellerInfo() Method Documentation
  *
  * **Usage:**
  * ```bash
@@ -101,8 +101,8 @@ async function main() {
     retryConfig: {
       maxRetries: 3,
       retryDelay: 1000,
-      exponentialBackoff: true
-    }
+      exponentialBackoff: true,
+    },
   });
 
   const general = new GeneralModule(baseClient);
@@ -168,7 +168,7 @@ async function main() {
 
   try {
     const newsWithFilter = await general.news({
-      from: '2024-01-01'
+      from: '2024-01-01',
     });
 
     console.log(`✅ Found ${newsWithFilter.data?.length ?? 0} news items since 2024-01-01\n`);
@@ -184,7 +184,7 @@ async function main() {
 
   try {
     const newsWithID = await general.news({
-      fromID: 100
+      fromID: 100,
     });
 
     console.log(`✅ Found ${newsWithID.data?.length ?? 0} news items from ID 100 onwards\n`);
