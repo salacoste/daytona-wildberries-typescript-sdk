@@ -7,6 +7,9 @@
  * - Supply management and details
  * - Package information
  * - Transit tariff calculation
+ * - Rate limit key wiring (EPIC 30)
+ * - Deprecation warnings (EPIC 30)
+ * - Method renaming and aliases (EPIC 32)
  *
  * @module tests/unit/modules/orders-fbw.test
  */
@@ -14,10 +17,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbwModule } from '../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../src/client/base-client';
-import type {
-  ModelsGood,
-  ModelsSuppliesFiltersRequest,
-} from '../../../src/types/orders-fbw.types';
+import type { ModelsGood, ModelsSuppliesFiltersRequest } from '../../../src/types/orders-fbw.types';
 
 describe('OrdersFbwModule', () => {
   let mockClient: { get: ReturnType<typeof vi.fn>; post: ReturnType<typeof vi.fn> };
@@ -30,6 +30,10 @@ describe('OrdersFbwModule', () => {
     };
 
     ordersFbw = new OrdersFbwModule(mockClient as unknown as BaseClient);
+
+    // Reset static deprecation flag between tests
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (OrdersFbwModule as any)._coefficientsDeprecationWarned = false;
   });
 
   // ============================================================================
@@ -44,7 +48,7 @@ describe('OrdersFbwModule', () => {
           name: 'Коледино',
           address: 'МО, Подольск',
           workTime: 'Пн-Пт: 09:00-18:00',
-          acceptsQr: true,
+          acceptsQR: true,
           isActive: true,
           isTransitActive: false,
         },
@@ -55,7 +59,8 @@ describe('OrdersFbwModule', () => {
       const result = await ordersFbw.warehouses();
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/warehouses'
+        'https://supplies-api.wildberries.ru/api/v1/warehouses',
+        { rateLimitKey: 'orders-fbw.warehouses' }
       );
       expect(result).toEqual(mockWarehouses);
     });
@@ -84,11 +89,12 @@ describe('OrdersFbwModule', () => {
 
       mockClient.get.mockResolvedValue(mockCoefficients);
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const result = await ordersFbw.getAcceptanceCoefficients();
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
       );
       expect(result).toEqual(mockCoefficients);
     });
@@ -111,13 +117,36 @@ describe('OrdersFbwModule', () => {
 
       mockClient.get.mockResolvedValue(mockCoefficients);
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const result = await ordersFbw.getAcceptanceCoefficients({ warehouseIDs: '507,117501' });
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: { warehouseIDs: '507,117501' } }
+        {
+          params: { warehouseIDs: '507,117501' },
+          rateLimitKey: 'orders-fbw.acceptanceCoefficients',
+        }
       );
       expect(result).toEqual(mockCoefficients);
+    });
+
+    it('should emit deprecation warning on first call only', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      mockClient.get.mockResolvedValue([]);
+
+      /* eslint-disable @typescript-eslint/no-deprecated */
+      await ordersFbw.getAcceptanceCoefficients();
+      await ordersFbw.getAcceptanceCoefficients();
+      await ordersFbw.getAcceptanceCoefficients();
+      /* eslint-enable @typescript-eslint/no-deprecated */
+
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('getAcceptanceCoefficients() is deprecated')
+      );
+
+      warnSpy.mockRestore();
     });
   });
 
@@ -157,7 +186,7 @@ describe('OrdersFbwModule', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
       expect(result).toEqual(mockOptions);
     });
@@ -173,7 +202,7 @@ describe('OrdersFbwModule', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: { warehouseID: '507' } }
+        { params: { warehouseID: '507' }, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
     });
   });
@@ -202,17 +231,18 @@ describe('OrdersFbwModule', () => {
       const result = await ordersFbw.transitTariffs();
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/transit-tariffs'
+        'https://supplies-api.wildberries.ru/api/v1/transit-tariffs',
+        { rateLimitKey: 'orders-fbw.transitTariffs' }
       );
       expect(result).toEqual(mockTariffs);
     });
   });
 
   // ============================================================================
-  // createSupply() - List supplies with filters
+  // listSupplies() - List supplies with filters (renamed from createSupply)
   // ============================================================================
 
-  describe('createSupply', () => {
+  describe('listSupplies', () => {
     it('should fetch supplies with filters', async () => {
       const filters: ModelsSuppliesFiltersRequest = {
         dates: [
@@ -241,12 +271,12 @@ describe('OrdersFbwModule', () => {
 
       mockClient.post.mockResolvedValue(mockSupplies);
 
-      const result = await ordersFbw.createSupply(filters, { limit: 100, offset: 0 });
+      const result = await ordersFbw.listSupplies(filters, { limit: 100, offset: 0 });
 
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies',
         filters,
-        { params: { limit: 100, offset: 0 } }
+        { params: { limit: 100, offset: 0 }, rateLimitKey: 'orders-fbw.postSupplies' }
       );
       expect(result).toEqual(mockSupplies);
     });
@@ -255,13 +285,35 @@ describe('OrdersFbwModule', () => {
       const filters: ModelsSuppliesFiltersRequest = { dates: [], statusIDs: [] };
       mockClient.post.mockResolvedValue([]);
 
-      await ordersFbw.createSupply(filters);
+      await ordersFbw.listSupplies(filters);
 
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies',
         filters,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.postSupplies' }
       );
+    });
+  });
+
+  // ============================================================================
+  // createSupply() - Deprecated alias for listSupplies
+  // ============================================================================
+
+  describe('createSupply (deprecated alias)', () => {
+    it('should delegate to listSupplies', async () => {
+      const filters: ModelsSuppliesFiltersRequest = { dates: [], statusIDs: [] };
+      const mockSupplies = [{ supplyID: 1 }];
+      mockClient.post.mockResolvedValue(mockSupplies);
+
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      const result = await ordersFbw.createSupply(filters, { limit: 10 });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/v1/supplies',
+        filters,
+        { params: { limit: 10 }, rateLimitKey: 'orders-fbw.postSupplies' }
+      );
+      expect(result).toEqual(mockSupplies);
     });
   });
 
@@ -299,7 +351,7 @@ describe('OrdersFbwModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies/12345',
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.supplies' }
       );
       expect(result).toEqual(mockDetails);
     });
@@ -321,7 +373,7 @@ describe('OrdersFbwModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies/67890',
-        { params: { isPreorderID: true } }
+        { params: { isPreorderID: true }, rateLimitKey: 'orders-fbw.supplies' }
       );
       expect(result).toEqual(mockDetails);
     });
@@ -340,7 +392,7 @@ describe('OrdersFbwModule', () => {
           nmID: 98765,
           needKiz: true,
           tnved: '6204620000',
-          techsize: '42',
+          techSize: '42',
           color: 'Черный',
           quantity: 10,
           acceptedQuantity: 9,
@@ -355,7 +407,7 @@ describe('OrdersFbwModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods',
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.suppliesGoods' }
       );
       expect(result).toEqual(mockGoods);
     });
@@ -367,7 +419,10 @@ describe('OrdersFbwModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies/12345/goods',
-        { params: { limit: 50, offset: 100, isPreorderID: false } }
+        {
+          params: { limit: 50, offset: 100, isPreorderID: false },
+          rateLimitKey: 'orders-fbw.suppliesGoods',
+        }
       );
     });
 
@@ -378,7 +433,7 @@ describe('OrdersFbwModule', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/supplies/67890/goods',
-        { params: { isPreorderID: true } }
+        { params: { isPreorderID: true }, rateLimitKey: 'orders-fbw.suppliesGoods' }
       );
     });
   });
@@ -405,7 +460,8 @@ describe('OrdersFbwModule', () => {
       const result = await ordersFbw.getSuppliesPackage(12345);
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/package'
+        'https://supplies-api.wildberries.ru/api/v1/supplies/12345/package',
+        { rateLimitKey: 'orders-fbw.suppliesPackage' }
       );
       expect(result).toEqual(mockBoxes);
     });

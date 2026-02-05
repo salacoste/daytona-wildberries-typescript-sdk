@@ -7,6 +7,7 @@
  * @module tests/unit/modules/supplies/getAcceptanceCoefficients.test
  */
 
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { OrdersFbwModule } from '../../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../../src/client/base-client';
@@ -68,7 +69,7 @@ describe('getAcceptanceCoefficients', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
       );
       expect(result).toEqual(mockResponse);
       expect(result).toHaveLength(2);
@@ -93,7 +94,7 @@ describe('getAcceptanceCoefficients', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: { warehouseIDs: '507' } }
+        { params: { warehouseIDs: '507' }, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
       );
       expect(result).toHaveLength(1);
       expect(result[0].warehouseID).toBe(507);
@@ -138,7 +139,10 @@ describe('getAcceptanceCoefficients', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: { warehouseIDs: '507,211622,300461' } }
+        {
+          params: { warehouseIDs: '507,211622,300461' },
+          rateLimitKey: 'orders-fbw.acceptanceCoefficients',
+        }
       );
       expect(result).toHaveLength(3);
     });
@@ -371,7 +375,7 @@ describe('getAcceptanceCoefficients', () => {
 
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: { warehouseIDs: '999999999' } }
+        { params: { warehouseIDs: '999999999' }, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
       );
       expect(result).toEqual([]);
     });

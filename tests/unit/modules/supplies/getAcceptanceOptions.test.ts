@@ -9,6 +9,7 @@
  * @module tests/unit/modules/supplies/getAcceptanceOptions.test
  */
 
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { OrdersFbwModule } from '../../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../../src/client/base-client';
@@ -73,7 +74,7 @@ describe('getAcceptanceOptions (createAcceptanceOption)', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
       expect(result).toEqual(mockResponse);
     });
@@ -104,7 +105,7 @@ describe('getAcceptanceOptions (createAcceptanceOption)', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: { warehouseID: '507' } }
+        { params: { warehouseID: '507' }, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
       expect(result).toEqual(mockResponse);
     });
@@ -146,7 +147,7 @@ describe('getAcceptanceOptions (createAcceptanceOption)', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
       expect(result.result).toHaveLength(3);
     });
@@ -270,7 +271,7 @@ describe('getAcceptanceOptions (createAcceptanceOption)', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         [],
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
       expect(result.result).toEqual([]);
     });
@@ -522,7 +523,7 @@ describe('getAcceptanceOptions (createAcceptanceOption)', () => {
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://supplies-api.wildberries.ru/api/v1/acceptance/options',
         goods,
-        { params: undefined }
+        { params: undefined, rateLimitKey: 'orders-fbw.postAcceptanceOptions' }
       );
     });
   });

@@ -31,6 +31,9 @@ describe('EPIC 30: Orders FBW Code Quality', () => {
       delete: vi.fn().mockResolvedValue({}),
     };
     module = new OrdersFbwModule(mockClient as unknown as BaseClient);
+    // Reset static deprecation flag between tests
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (OrdersFbwModule as any)._coefficientsDeprecationWarned = false;
   });
 
   describe('AC #1: JSDoc @example blocks use sdk.ordersFBW.*', () => {

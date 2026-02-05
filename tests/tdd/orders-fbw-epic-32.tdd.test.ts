@@ -105,14 +105,15 @@ describe('EPIC 32: Orders FBW Type & Naming Fixes', () => {
       );
     });
 
-    it('createSupply alias should emit deprecation warning', async () => {
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {
-        // Suppress console output during tests
-      });
+    it('createSupply alias should delegate to listSupplies', async () => {
       mockClient.post.mockResolvedValue([]);
       await module.createSupply({ dates: [], statusIDs: [] });
-      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
-      warnSpy.mockRestore();
+      // Verify it calls the same endpoint as listSupplies
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.stringContaining('/api/v1/supplies'),
+        expect.anything(),
+        expect.anything()
+      );
     });
   });
 });
