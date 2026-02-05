@@ -27,10 +27,13 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
 
       // Unused variables detection
-      '@typescript-eslint/no-unused-vars': ['error', {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
 
       // Prevent console.log in source code
       'no-console': 'warn',
@@ -42,10 +45,13 @@ export default tseslint.config(
       '@typescript-eslint/prefer-optional-chain': 'error',
 
       // Allow numbers and booleans in template expressions (TypeScript safely converts them)
-      '@typescript-eslint/restrict-template-expressions': ['error', {
-        allowNumber: true,
-        allowBoolean: true,
-      }],
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
+          allowBoolean: true,
+        },
+      ],
     },
   },
   {
@@ -74,6 +80,7 @@ export default tseslint.config(
       'wildberries_api_doc/**',
       'examples/**',
       'scripts/**',
+      'tests/tdd/**',
     ],
   }
 );
