@@ -268,14 +268,15 @@ describe('InStorePickupModule', () => {
         expect(result.next).toBe(54321);
       });
 
-      it('should fetch orders without parameters', async () => {
+      it('should fetch orders with minimal required parameters', async () => {
         mockClient.get.mockResolvedValue({ orders: [] });
+        const params = { limit: 1, next: 0, dateFrom: 0, dateTo: 0 };
 
-        const result = await module.getClickCollectOrders();
+        const result = await module.getClickCollectOrders(params);
 
         expect(mockClient.get).toHaveBeenCalledWith(
           `${BASE_URL}/api/v3/click-collect/orders`,
-          expect.objectContaining({ params: undefined })
+          expect.objectContaining({ params })
         );
         expect(result).toEqual({ orders: [] });
       });
@@ -429,16 +430,16 @@ describe('InStorePickupModule', () => {
         );
       });
 
-      it('should delete order metadata without options', async () => {
+      it('should delete order metadata with different key values', async () => {
         const orderId = 12345;
         mockClient.delete.mockResolvedValue(undefined);
 
-        await module.deleteOrdersMeta(orderId);
+        await module.deleteOrdersMeta(orderId, { key: 'gtin' });
 
         expect(mockClient.delete).toHaveBeenCalledWith(
           `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta`,
           {},
-          expect.objectContaining({ params: undefined })
+          expect.objectContaining({ params: { key: 'gtin' } })
         );
       });
     });
@@ -636,7 +637,7 @@ describe('InStorePickupModule', () => {
 
     it('should pass rateLimitKey for deleteOrdersMeta', async () => {
       mockClient.delete.mockResolvedValue(undefined);
-      await module.deleteOrdersMeta(1);
+      await module.deleteOrdersMeta(1, { key: 'imei' });
       expect(mockClient.delete).toHaveBeenCalledWith(
         expect.any(String),
         expect.anything(),
@@ -752,7 +753,9 @@ describe('InStorePickupModule', () => {
       const error = new AuthenticationError('Invalid API key');
       mockClient.delete.mockRejectedValue(error);
 
-      await expect(module.deleteOrdersMeta(1)).rejects.toThrow(AuthenticationError);
+      await expect(module.deleteOrdersMeta(1, { key: 'imei' })).rejects.toThrow(
+        AuthenticationError
+      );
     });
 
     it('should propagate errors from PUT operations', async () => {

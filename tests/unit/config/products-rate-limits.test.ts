@@ -26,6 +26,7 @@ describe('productsRateLimits', () => {
       requestsPerMinute: 300,
       intervalSeconds: 0.2,
       burstLimit: 20,
+      penaltyMultiplier: 10,
     });
   }
 
@@ -119,27 +120,30 @@ describe('productsRateLimits', () => {
   });
 
   describe('Marketplace Tier - Stocks', () => {
-    it('postStocks should have 300 req/min, 0.2s interval, burst 20', () => {
+    it('postStocks should have 300 req/min, 0.2s interval, burst 20, penalty 10', () => {
       expect(productsRateLimits['products.postStocks']).toEqual({
         requestsPerMinute: 300,
         intervalSeconds: 0.2,
         burstLimit: 20,
+        penaltyMultiplier: 10,
       });
     });
 
-    it('putStocks should have 300 req/min, 0.2s interval, burst 20', () => {
+    it('putStocks should have 300 req/min, 0.2s interval, burst 20, penalty 10', () => {
       expect(productsRateLimits['products.putStocks']).toEqual({
         requestsPerMinute: 300,
         intervalSeconds: 0.2,
         burstLimit: 20,
+        penaltyMultiplier: 10,
       });
     });
 
-    it('deleteStocks should have 10 req/min, 6s interval, burst 2', () => {
+    it('deleteStocks should have 10 req/min, 6s interval, burst 2, penalty 10', () => {
       expect(productsRateLimits['products.deleteStocks']).toEqual({
         requestsPerMinute: 10,
         intervalSeconds: 6,
         burstLimit: 2,
+        penaltyMultiplier: 10,
       });
     });
 

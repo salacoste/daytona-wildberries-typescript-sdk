@@ -5,7 +5,7 @@
  *   AC #1: All 16 @example JSDoc blocks use `sdk.inStorePickup.*` (not `sdk.general.*`)
  *   AC #2: `createOrdersStatu` renamed to `createOrdersStatus` (with deprecated alias)
  *   AC #3: All 16 methods pass `rateLimitKey` to BaseClient
- *   AC #4: 409 response penalty implemented (counts as 5 requests)
+ *   AC #4: 409 response penalty implemented (counts as 10 requests)
  *
  * These tests are expected to FAIL until the corresponding
  * implementation is completed in src/modules/in-store-pickup/index.ts.
@@ -337,10 +337,10 @@ describe('EPIC 28: In-Store Pickup Code Quality', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // AC #4: 409 response penalty implemented (counts as 5 requests)
+  // AC #4: 409 response penalty implemented (counts as 10 requests)
   // ---------------------------------------------------------------------------
-  describe('AC #4: 409 response penalty (5x multiplier)', () => {
-    it('should have penaltyMultiplier: 5 in rate limit config for all keys', async () => {
+  describe('AC #4: 409 response penalty (10x multiplier)', () => {
+    it('should have penaltyMultiplier: 10 in rate limit config for all keys', async () => {
       // Dynamically import the rate limit config to verify penalty multiplier
       const { inStorePickupRateLimits } = await import(
         '../../src/config/in-store-pickup-rate-limits'
@@ -349,7 +349,7 @@ describe('EPIC 28: In-Store Pickup Code Quality', () => {
       expect(keys.length).toBe(16);
 
       for (const key of keys) {
-        expect(inStorePickupRateLimits[key]).toHaveProperty('penaltyMultiplier', 5);
+        expect(inStorePickupRateLimits[key]).toHaveProperty('penaltyMultiplier', 10);
       }
     });
 

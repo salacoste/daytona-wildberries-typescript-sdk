@@ -268,7 +268,7 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
     // -- getClickCollectOrders --
     describe('getClickCollectOrders', () => {
       it('should call client.get with correct URL', async () => {
-        await mod.getClickCollectOrders();
+        await mod.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
         expect(mockClient.get).toHaveBeenCalledWith(
           `${BASE_URL}/api/v3/click-collect/orders`,
           expect.anything()
@@ -276,7 +276,7 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       });
 
       it('should use GET HTTP method', async () => {
-        await mod.getClickCollectOrders();
+        await mod.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
         expect(mockClient.get).toHaveBeenCalledTimes(1);
         expect(mockClient.post).not.toHaveBeenCalled();
       });
@@ -291,14 +291,19 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       });
 
       it('should work without optional params', async () => {
-        await mod.getClickCollectOrders();
+        await mod.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
         expect(mockClient.get).toHaveBeenCalledTimes(1);
       });
 
       it('should return the response from client', async () => {
         const expected = { orders: [{ id: 1 }], next: 200 };
         mockClient.get.mockResolvedValue(expected);
-        const result = await mod.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
+        const result = await mod.getClickCollectOrders({
+          limit: 10,
+          next: 0,
+          dateFrom: 0,
+          dateTo: 0,
+        });
         expect(result).toEqual(expected);
       });
     });
@@ -468,7 +473,7 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       });
 
       it('should interpolate orderId into the URL path', async () => {
-        await mod.deleteOrdersMeta(8888);
+        await mod.deleteOrdersMeta(8888, { key: 'imei' });
         const url = mockClient.delete.mock.calls[0][0];
         expect(url).toContain('/8888/meta');
       });
@@ -639,7 +644,7 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
     });
 
     it('getClickCollectOrders returns a Promise', () => {
-      const result = mod.getClickCollectOrders();
+      const result = mod.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
       expect(result).toBeInstanceOf(Promise);
     });
 
@@ -710,13 +715,17 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       it('should propagate 401 error from createOrdersClient', async () => {
         const err = Object.assign(new Error('Unauthorized'), { response: { status: 401 } });
         mockClient.post.mockRejectedValue(err);
-        await expect(mod.createOrdersClient({ orders: [1] } as any)).rejects.toThrow('Unauthorized');
+        await expect(mod.createOrdersClient({ orders: [1] } as any)).rejects.toThrow(
+          'Unauthorized'
+        );
       });
 
       it('should propagate 401 error from updateMetaSgtin', async () => {
         const err = Object.assign(new Error('Unauthorized'), { response: { status: 401 } });
         mockClient.put.mockRejectedValue(err);
-        await expect(mod.updateMetaSgtin(1, { sgtins: ['x'] } as any)).rejects.toThrow('Unauthorized');
+        await expect(mod.updateMetaSgtin(1, { sgtins: ['x'] } as any)).rejects.toThrow(
+          'Unauthorized'
+        );
       });
 
       it('should propagate 401 error from deleteOrdersMeta', async () => {
@@ -743,7 +752,9 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       it('should propagate 403 error from createClientIdentity', async () => {
         const err = Object.assign(new Error('Forbidden'), { response: { status: 403 } });
         mockClient.post.mockRejectedValue(err);
-        await expect(mod.createClientIdentity({ orderCode: 'x', passcode: 'y' } as any)).rejects.toThrow('Forbidden');
+        await expect(
+          mod.createClientIdentity({ orderCode: 'x', passcode: 'y' } as any)
+        ).rejects.toThrow('Forbidden');
       });
     });
 
@@ -752,7 +763,9 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       it('should propagate 400 error from createOrdersStatus', async () => {
         const err = Object.assign(new Error('Bad Request'), { response: { status: 400 } });
         mockClient.post.mockRejectedValue(err);
-        await expect((mod as any).createOrdersStatus({ orders: [] })).rejects.toThrow('Bad Request');
+        await expect((mod as any).createOrdersStatus({ orders: [] })).rejects.toThrow(
+          'Bad Request'
+        );
       });
 
       it('should propagate 400 error from updateMetaImei', async () => {
@@ -764,7 +777,7 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       it('should propagate 400 error from deleteOrdersMeta', async () => {
         const err = Object.assign(new Error('Bad Request'), { response: { status: 400 } });
         mockClient.delete.mockRejectedValue(err);
-        await expect(mod.deleteOrdersMeta(1)).rejects.toThrow('Bad Request');
+        await expect(mod.deleteOrdersMeta(1, { key: 'imei' })).rejects.toThrow('Bad Request');
       });
     });
 
@@ -793,7 +806,10 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
     describe('409 Conflict', () => {
       it('should propagate 409 error from updateOrdersConfirm', async () => {
         const err = Object.assign(new Error('Conflict'), {
-          response: { status: 409, data: { code: 'conflict', message: 'Invalid state transition' } },
+          response: {
+            status: 409,
+            data: { code: 'conflict', message: 'Invalid state transition' },
+          },
         });
         mockClient.patch.mockRejectedValue(err);
         await expect(mod.updateOrdersConfirm(1)).rejects.toThrow('Conflict');
@@ -828,7 +844,9 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
           response: { status: 409, data: { code: 'conflict', message: 'Not the buyer' } },
         });
         mockClient.post.mockRejectedValue(err);
-        await expect(mod.createClientIdentity({ orderCode: 'x', passcode: 'y' } as any)).rejects.toThrow('Conflict');
+        await expect(
+          mod.createClientIdentity({ orderCode: 'x', passcode: 'y' } as any)
+        ).rejects.toThrow('Conflict');
       });
     });
 
@@ -843,7 +861,9 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       it('should propagate 429 error from getClickCollectOrders', async () => {
         const err = Object.assign(new Error('Too Many Requests'), { response: { status: 429 } });
         mockClient.get.mockRejectedValue(err);
-        await expect(mod.getClickCollectOrders()).rejects.toThrow('Too Many Requests');
+        await expect(
+          mod.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 })
+        ).rejects.toThrow('Too Many Requests');
       });
 
       it('should propagate 429 error from updateOrdersPrepare', async () => {
@@ -855,13 +875,17 @@ describe('EPIC 29: In-Store Pickup Test Coverage', () => {
       it('should propagate 429 error from createOrdersClient', async () => {
         const err = Object.assign(new Error('Too Many Requests'), { response: { status: 429 } });
         mockClient.post.mockRejectedValue(err);
-        await expect(mod.createOrdersClient({ orders: [1] } as any)).rejects.toThrow('Too Many Requests');
+        await expect(mod.createOrdersClient({ orders: [1] } as any)).rejects.toThrow(
+          'Too Many Requests'
+        );
       });
 
       it('should propagate 429 error from updateMetaSgtin', async () => {
         const err = Object.assign(new Error('Too Many Requests'), { response: { status: 429 } });
         mockClient.put.mockRejectedValue(err);
-        await expect(mod.updateMetaSgtin(1, { sgtins: ['x'] } as any)).rejects.toThrow('Too Many Requests');
+        await expect(mod.updateMetaSgtin(1, { sgtins: ['x'] } as any)).rejects.toThrow(
+          'Too Many Requests'
+        );
       });
 
       it('should propagate 429 error from deleteOrdersMeta', async () => {
