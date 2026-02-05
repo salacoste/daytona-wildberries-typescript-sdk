@@ -2,7 +2,7 @@
 
 # Interface: ExciseReportRequest
 
-Defined in: [types/reports.types.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/reports.types.ts#L213)
+Defined in: [types/reports.types.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/reports.types.ts#L213)
 
 ## Example
 
@@ -19,4 +19,4 @@ Defined in: [types/reports.types.ts:213](https://github.com/salacoste/daytona-wi
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="countries"></a> `countries?` | `"AM"` \| `"BY"` \| `"KG"` \| `"KZ"` \| `"RU"` \| `"UZ"`[] | Код стран по стандарту ISO 3166-2. Чтобы получить данные по всем странам, оставьте параметр пустым | [types/reports.types.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/reports.types.ts#L215) |
+| <a id="countries"></a> `countries?` | `"AM"` \| `"BY"` \| `"KG"` \| `"KZ"` \| `"RU"` \| `"UZ"`[] | Код стран по стандарту ISO 3166-2. Чтобы получить данные по всем странам, оставьте параметр пустым | [types/reports.types.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/reports.types.ts#L215) |

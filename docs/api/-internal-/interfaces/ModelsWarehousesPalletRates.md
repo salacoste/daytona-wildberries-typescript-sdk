@@ -2,12 +2,12 @@
 
 # Interface: ModelsWarehousesPalletRates
 
-Defined in: [types/tariffs.types.ts:52](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/tariffs.types.ts#L52)
+Defined in: [types/tariffs.types.ts:52](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/tariffs.types.ts#L52)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="dtnextpallet"></a> `dtNextPallet?` | `string` | Дата начала следующего тарифа | [types/tariffs.types.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/tariffs.types.ts#L54) |
-| <a id="dttillmax"></a> `dtTillMax?` | `string` | Дата окончания последнего установленного тарифа | [types/tariffs.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/tariffs.types.ts#L56) |
-| <a id="warehouselist"></a> `warehouseList?` | [`ModelsWarehousePalletRates`](ModelsWarehousePalletRates.md)[] | Тарифы для монопаллет, сгруппированные по складам | [types/tariffs.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/tariffs.types.ts#L58) |
+| <a id="dtnextpallet"></a> `dtNextPallet?` | `string` | Дата начала следующего тарифа | [types/tariffs.types.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/tariffs.types.ts#L54) |
+| <a id="dttillmax"></a> `dtTillMax?` | `string` | Дата окончания последнего установленного тарифа | [types/tariffs.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/tariffs.types.ts#L56) |
+| <a id="warehouselist"></a> `warehouseList?` | [`ModelsWarehousePalletRates`](ModelsWarehousePalletRates.md)[] | Тарифы для монопаллет, сгруппированные по складам | [types/tariffs.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/tariffs.types.ts#L58) |

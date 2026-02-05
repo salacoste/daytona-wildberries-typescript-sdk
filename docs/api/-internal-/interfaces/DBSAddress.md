@@ -2,7 +2,7 @@
 
 # Interface: DBSAddress
 
-Defined in: [types/orders-dbs.types.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-dbs.types.ts#L18)
+Defined in: [types/orders-dbs.types.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/orders-dbs.types.ts#L18)
 
 Address information for DBS delivery
 Contains full address and GPS coordinates for delivery routing
@@ -11,6 +11,6 @@ Contains full address and GPS coordinates for delivery routing
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="fulladdress"></a> `fullAddress?` | `string` | Full delivery address | [types/orders-dbs.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-dbs.types.ts#L20) |
-| <a id="longitude"></a> `longitude?` | `number` | Longitude coordinate for delivery routing | [types/orders-dbs.types.ts:22](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-dbs.types.ts#L22) |
-| <a id="latitude"></a> `latitude?` | `number` | Latitude coordinate for delivery routing | [types/orders-dbs.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-dbs.types.ts#L24) |
+| <a id="fulladdress"></a> `fullAddress?` | `string` | Full delivery address | [types/orders-dbs.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/orders-dbs.types.ts#L20) |
+| <a id="longitude"></a> `longitude?` | `number` | Longitude coordinate for delivery routing | [types/orders-dbs.types.ts:22](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/orders-dbs.types.ts#L22) |
+| <a id="latitude"></a> `latitude?` | `number` | Latitude coordinate for delivery routing | [types/orders-dbs.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/orders-dbs.types.ts#L24) |

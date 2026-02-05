@@ -2,7 +2,7 @@
 
 # Interface: GetMetaMultiRequest
 
-Defined in: [types/orders-fbs.types.ts:174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-fbs.types.ts#L174)
+Defined in: [types/orders-fbs.types.ts:174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/orders-fbs.types.ts#L174)
 
 Request body for retrieving metadata of multiple orders (max 100)
 
@@ -10,4 +10,4 @@ Request body for retrieving metadata of multiple orders (max 100)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | List of order IDs (max 100) | [types/orders-fbs.types.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/9cacfbec2ace84b26aaf15892c1fecdc034d05cb/src/types/orders-fbs.types.ts#L176) |
+| <a id="orders"></a> `orders` | `number`[] | List of order IDs (max 100) | [types/orders-fbs.types.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/orders-fbs.types.ts#L176) |
