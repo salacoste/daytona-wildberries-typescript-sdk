@@ -8,7 +8,7 @@ Error thrown when product metadata validation fails
 
 **HTTP Status**: 409 Conflict (metadata update failures)
 **Retry**: No (permanent failure - requires correct data or order state)
-**Rate Limit**: 409 responses count as 5 requests!
+**Rate Limit**: 409 responses count as 10 requests!
 
 This error occurs when attempting to set metadata (SGTIN, UIN, IMEI, GTIN) codes
 but the operation fails due to:

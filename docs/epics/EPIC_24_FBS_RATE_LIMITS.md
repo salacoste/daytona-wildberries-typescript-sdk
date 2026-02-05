@@ -7,7 +7,7 @@
 **Status**: DONE
 
 **Business Value**:
-- Prevents 429 rate limit errors and the 5x penalty multiplier for 409 responses
+- Prevents 429 rate limit errors and the 10x penalty multiplier for 409 responses
 - Ensures new bulk endpoints from Epic 22 have correct rate limits from day one
 - Removes stale configuration for the deprecated external stickers endpoint
 - Documents the complete rate limit tier system for FBS module maintainers
@@ -28,13 +28,13 @@ The Orders FBS module has 4 distinct rate limit tiers applied across 35+ endpoin
 
 ### Rate Limit Tiers
 
-The Wildberries FBS API uses 4 distinct rate limit tiers. All tiers include a **409 penalty**: one request returning HTTP 409 counts as 5 requests against the limit.
+The Wildberries FBS API uses 4 distinct rate limit tiers. All tiers include a **409 penalty**: one request returning HTTP 409 counts as 10 requests against the limit.
 
 | Tier | Name | Period | Limit | Interval | Burst | 409 Penalty | Endpoint Count | Applied To |
 |------|------|--------|-------|----------|-------|-------------|----------------|------------|
-| **T1** | General FBS | 1 minute | 300 requests | 200ms | 20 requests | 1 req = 5 reqs | 28 endpoints | Orders, supplies, passes, barcode, trbx, crossborder, status history |
-| **T2** | Cancel Order | 1 minute | 100 requests | 600ms | 20 requests | 1 req = 5 reqs | 1 endpoint | `updateOrdersCancel` only |
-| **T3** | Meta Attachment | 1 minute | 1000 requests | 60ms | 20 requests | 1 req = 5 reqs | 6 endpoints | `updateMetaSgtin`, `updateMetaUin`, `updateMetaImei`, `updateMetaGtin`, `updateMetaExpiration`, `setCustomsDeclaration` |
+| **T1** | General FBS | 1 minute | 300 requests | 200ms | 20 requests | 1 req = 10 reqs | 28 endpoints | Orders, supplies, passes, barcode, trbx, crossborder, status history |
+| **T2** | Cancel Order | 1 minute | 100 requests | 600ms | 20 requests | 1 req = 10 reqs | 1 endpoint | `updateOrdersCancel` only |
+| **T3** | Meta Attachment | 1 minute | 1000 requests | 60ms | 20 requests | 1 req = 10 reqs | 6 endpoints | `updateMetaSgtin`, `updateMetaUin`, `updateMetaImei`, `updateMetaGtin`, `updateMetaExpiration`, `setCustomsDeclaration` |
 | **T4** | Create Pass | 10 minutes | 1 request | N/A | 1 request | N/A | 1 endpoint | `createPass` only |
 
 **Note on Tier grouping from Swagger descriptions**:
@@ -154,7 +154,7 @@ The Wildberries FBS API uses 4 distinct rate limit tiers. All tiers include a **
 **Acceptance Criteria**:
 - [ ] `orders-fbs.postFilesOrdersExternalStickers` entry removed from config
 - [ ] JSDoc header on `ordersFbsRateLimits` documents all 4 tiers
-- [ ] JSDoc explains the 409 penalty (1 request with 409 = 5 requests against limit)
+- [ ] JSDoc explains the 409 penalty (1 request with 409 = 10 requests against limit)
 - [ ] Inline comments on each entry indicate which tier it belongs to
 - [ ] Total entry count after changes: 33 (31 - 1 removed + 3 added)
 
@@ -252,7 +252,7 @@ postPasses (CORRECTED)
 
 ## Notes
 
-- The 409 penalty multiplier (1 req = 5 reqs) is unique to the FBS module and not present in all WB API modules
+- The 409 penalty multiplier (1 req = 10 reqs) is unique to the FBS module and not present in all WB API modules
 - The `patchSuppliesOrders` entry being T3 (1000/min) needs verification -- the Swagger description for "add order to supply" lists its own rate limit table with 1000/60ms/20 which matches T3
 - Consider adding a runtime warning when the rate limiter applies the 409 penalty, to help developers debug throttling issues
 - The `getSupply` method (single supply info) is missing from the current config -- it should be T1 (add as part of this audit)

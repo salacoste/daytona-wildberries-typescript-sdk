@@ -14,7 +14,7 @@ The **In-Store Pickup** module manages click-and-collect orders where customers 
 | **Source Swagger** | `wildberries_api_doc/06-in-store-pickup.yaml` |
 | **Methods** | 16 (+1 deprecated alias) |
 | **Authentication** | API Key (Header) |
-| **409 Penalty** | 5x rate limit multiplier |
+| **409 Penalty** | 10x rate limit multiplier |
 
 ---
 
@@ -88,13 +88,13 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 
 ## Rate Limits
 
-All methods have a **5x penalty multiplier** on 409 Conflict responses.
+All methods have a **10x penalty multiplier** on 409 Conflict responses.
 
 | Tier | Operations | Limit | Interval |
 |------|-----------|-------|----------|
 | T1 | Assembly reads | 300 req/min | 200ms |
 | T2 | State transitions | 100 req/min | 600ms |
-| T3 | Status queries | 30 req/min | 2s |
+| T3 | Identity check | 30 req/min | 2s |
 | T4 | Metadata operations | 1000 req/min | 60ms |
 
 ---

@@ -18,7 +18,7 @@ risk_summary:
   recommendations:
     must_fix: []
     monitor:
-      - "Monitor 409 conflict errors (count as 5 requests for rate limiting)"
+      - "Monitor 409 conflict errors (count as 10 requests for rate limiting)"
       - "Validate WB office binding constraints in production"
 
 quality_score: 90

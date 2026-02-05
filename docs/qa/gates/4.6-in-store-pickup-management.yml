@@ -10,7 +10,7 @@ status_reason: |
   All remediation items from the February 2026 swagger audit are now resolved:
   - EPIC 28 (task-26) COMPLETE: 16 JSDoc examples fixed (sdk.inStorePickup.*),
     method renamed (createOrdersStatus) with deprecated alias, all 16 rateLimitKey
-    values wired to BaseClient calls, penaltyMultiplier: 5 configured.
+    values wired to BaseClient calls, penaltyMultiplier: 10 configured.
   - EPIC 29 (task-27) COMPLETE: 49 unit tests created in
     tests/unit/modules/in-store-pickup.test.ts, all passing.
 
@@ -60,10 +60,10 @@ top_issues:
     severity: "high"
     remediation: "EPIC 28 (task-26) — All 16 rateLimitKey values wired"
     resolved_date: "2026-02-05"
-  - issue: "409 penalty factor (5x) not supported by rate limiter infrastructure"
+  - issue: "409 penalty factor (10x) not supported by rate limiter infrastructure"
     status: "RESOLVED"
     severity: "medium"
-    remediation: "EPIC 28 (task-26) — penaltyMultiplier: 5 configured"
+    remediation: "EPIC 28 (task-26) — penaltyMultiplier: 10 configured"
     resolved_date: "2026-02-05"
 
 # Risk summary
@@ -85,7 +85,7 @@ quality_breakdown: |
   Implementation: 95 (16/16 endpoints, correct URLs, correct types, rate limits wired)
   Test Coverage: 90 (49 unit tests in tests/unit/modules/in-store-pickup.test.ts)
   Documentation: 95 (all 16 JSDoc examples corrected, method naming fixed)
-  Standards Compliance: 95 (all 16 rate limit keys wired, penaltyMultiplier: 5 configured)
+  Standards Compliance: 95 (all 16 rate limit keys wired, penaltyMultiplier: 10 configured)
   Workflow Clarity: 90 (clear order lifecycle, metadata binding)
 expires: "2026-05-05T10:00:00Z"
 
@@ -104,14 +104,14 @@ evidence:
   method_typo: "RESOLVED — Renamed to createOrdersStatus with deprecated alias for createOrdersStatu"
   rate_limits_configured: 16
   rate_limits_wired: 16
-  rate_limit_issue: "RESOLVED — All 16 methods pass rateLimitKey to BaseClient; penaltyMultiplier: 5 configured"
+  rate_limit_issue: "RESOLVED — All 16 methods pass rateLimitKey to BaseClient; penaltyMultiplier: 10 configured"
   validation_scenarios: 49
   trace:
     ac_covered:
       - "All 16 methods have correct JSDoc examples (EPIC 28)"
       - "Method renamed createOrdersStatus with deprecated alias (EPIC 28)"
       - "All 16 rateLimitKey values wired to BaseClient (EPIC 28)"
-      - "penaltyMultiplier: 5 configured for 409 responses (EPIC 28)"
+      - "penaltyMultiplier: 10 configured for 409 responses (EPIC 28)"
       - "49 unit tests created and passing (EPIC 29)"
     ac_gaps: []
     ac_notes: "EPIC 28 and EPIC 29 both completed February 2026. Gate re-issued as PASS."
@@ -123,7 +123,7 @@ nfr_validation:
     notes: "Customer identity verification with passcode, order state validation, no sensitive data exposure"
   performance:
     status: PASS
-    notes: "All 16 rate limit keys wired to BaseClient. penaltyMultiplier: 5 configured for 409 responses."
+    notes: "All 16 rate limit keys wired to BaseClient. penaltyMultiplier: 10 configured for 409 responses."
   reliability:
     status: PASS
     notes: "Comprehensive error handling with 4 custom error classes, order state validation, proper BaseClient integration"
@@ -197,25 +197,25 @@ implementation:
       limit: "300 req/min"
       interval: "200ms"
       burst: 20
-      penalty_409: "5x"
+      penalty_409: "10x"
       endpoints: ["getOrdersNew", "createOrdersClient", "createOrdersStatus", "getClickCollectOrders", "getOrdersMeta", "deleteOrdersMeta"]
     tier_2:
       limit: "100 req/min"
       interval: "600ms"
       burst: 20
-      penalty_409: "5x"
+      penalty_409: "10x"
       endpoints: ["updateOrdersConfirm", "updateOrdersPrepare", "updateOrdersReceive", "updateOrdersReject", "updateOrdersCancel"]
     tier_3:
       limit: "30 req/min"
       interval: "2s"
       burst: 20
-      penalty_409: "5x"
+      penalty_409: "10x"
       endpoints: ["createClientIdentity"]
     tier_4:
       limit: "1000 req/min"
       interval: "60ms"
       burst: 20
-      penalty_409: "5x"
+      penalty_409: "10x"
       endpoints: ["updateMetaSgtin", "updateMetaUin", "updateMetaImei", "updateMetaGtin"]
 
 # Swagger audit details

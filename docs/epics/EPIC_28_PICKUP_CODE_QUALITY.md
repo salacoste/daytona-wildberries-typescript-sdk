@@ -26,7 +26,7 @@ The February 2026 swagger audit of the in-store-pickup module (`06-in-store-pick
 1. All 16 `@example` JSDoc blocks reference `sdk.general.*` instead of `sdk.inStorePickup.*`, making auto-generated documentation and IDE tooltips misleading.
 2. One method is named `createOrdersStatu` (missing trailing `s`), breaking naming consistency.
 3. Rate limit config exists with all 16 entries and correct values (`src/config/in-store-pickup-rate-limits.ts`), but zero methods pass `rateLimitKey` to `BaseClient`, so rate limiting is not enforced for any in-store-pickup call.
-4. The swagger specifies that a 409 response counts as 5 requests toward the rate limit, which differs from the FBS/DBS 10x penalty. This module-specific penalty is not implemented.
+4. The swagger specifies that a 409 response counts as 10 requests toward the rate limit. This penalty is not implemented.
 
 ---
 
@@ -137,13 +137,9 @@ async getOrdersNew(): Promise<ApiNewOrders> {
 
 The swagger description for every in-store-pickup endpoint includes this statement (translated):
 
-> One request with response code `409` counts as 5 requests
+> One request with response code `409` counts as 10 requests
 
-This is a **module-specific** penalty. For comparison:
-- **FBS/FBW modules**: 409 penalty is **10x** (one 409 counts as 10 requests)
-- **In-Store Pickup module**: 409 penalty is **5x** (one 409 counts as 5 requests)
-
-The penalty must be implemented in the rate limiter integration for this module. When a 409 response is received, the rate limiter should consume 4 additional tokens (since 1 was already consumed for the request itself).
+This matches the FBS/FBW modules which also use a **10x** penalty. When a 409 response is received, the rate limiter should consume 9 additional tokens (since 1 was already consumed for the request itself).
 
 **Infrastructure gap:** The current `RateLimitConfig` interface (`src/client/rate-limiter.ts`) has 3 fields (`requestsPerMinute`, `intervalSeconds`, `burstLimit`) but NO `penaltyMultiplier` field. The `_TokenBucket` class has `consume()` (always consumes 1 token) but NO `consumeTokens(count)` method. Both need to be extended:
 
@@ -190,7 +186,7 @@ catch (error) {
 ```
 
 **Cross-module note:** This infrastructure change also benefits FBS (10x penalty) and DBS (10x penalty). The `penaltyMultiplier` field should be set per-module in each rate limit config file:
-- `in-store-pickup-rate-limits.ts`: `penaltyMultiplier: 5`
+- `in-store-pickup-rate-limits.ts`: `penaltyMultiplier: 10`
 - `orders-fbs-rate-limits.ts`: `penaltyMultiplier: 10`
 - `orders-dbs-rate-limits.ts`: `penaltyMultiplier: 10`
 
@@ -216,7 +212,7 @@ Replace all 16 occurrences of `sdk.general.` with `sdk.inStorePickup.` in `src/m
 
 Add `rateLimitKey` option to all 16 BaseClient calls using the keys from `src/config/in-store-pickup-rate-limits.ts`.
 
-### Step 5: Implement 409 Penalty (5x)
+### Step 5: Implement 409 Penalty (10x)
 
 Add 409 error interception to all state-transition methods (confirm, prepare, receive, reject, cancel) and metadata methods that consume additional rate limit tokens on conflict responses.
 
@@ -234,7 +230,7 @@ Add 409 error interception to all state-transition methods (confirm, prepare, re
 |------|---------|
 | `src/client/rate-limiter.ts` | Add `penaltyMultiplier` to `RateLimitConfig`, add `consumeMultiple()` to `_TokenBucket`, add `reportPenalty()` to `RateLimiter` |
 | `src/modules/in-store-pickup/index.ts` | Fix 16 JSDoc examples, rename method, wire 16 rate limit keys, add 409 penalty handling |
-| `src/config/in-store-pickup-rate-limits.ts` | Add `penaltyMultiplier: 5` to all 16 entries |
+| `src/config/in-store-pickup-rate-limits.ts` | Add `penaltyMultiplier: 10` to all 16 entries |
 | `tools/generate-sdk.ts` (or equivalent generator) | Fix template to derive module accessor name |
 | `src/errors/in-store-pickup-errors.ts` | Verify `InvalidOrderStateError` exists or create it |
 
@@ -275,3 +271,8 @@ Add 409 error interception to all state-transition methods (confirm, prepare, re
 | Date | Version | Description | Author |
 |------|---------|-------------|--------|
 | 2026-02-04 | 1.0 | Initial epic creation from February 2026 swagger audit | Technical Writer |
+
+---
+
+### Post-Implementation Note (2026-02-05)
+The Wildberries Marketplace updated the swagger specification: 409 penalty was changed from 5x to 10x (`penaltyMultiplier: 10`). This was addressed in task-49 (Swagger Drift Fixes). All rate limit config entries now use `penaltyMultiplier: 10`.

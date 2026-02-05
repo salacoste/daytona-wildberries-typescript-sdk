@@ -197,14 +197,14 @@ describe('In-Store Pickup Integration Tests')
 
 ## Edge Cases
 
-### 409 Penalty (5x Multiplier)
+### 409 Penalty (10x Multiplier)
 
-The swagger specifies that a 409 response counts as 5 requests toward the rate limit. Tests must verify:
-- The rate limiter consumes 4 additional tokens when a 409 is received.
+The swagger specifies that a 409 response counts as 10 requests toward the rate limit. Tests must verify:
+- The rate limiter consumes 9 additional tokens when a 409 is received.
 - The penalty is applied per-key (state transition tier vs. metadata tier).
 - Subsequent requests are correctly delayed after a 409.
 
-**Note:** This differs from the FBS/FBW 10x penalty. The test must verify the in-store-pickup-specific 5x value.
+**Note:** This matches the FBS/FBW 10x penalty. The test must verify the 10x value.
 
 ### Pagination (Cursor-Based)
 
@@ -297,3 +297,8 @@ Tests written against the post-EPIC-28 codebase will not need updating when EPIC
 | Date | Version | Description | Author |
 |------|---------|-------------|--------|
 | 2026-02-04 | 1.0 | Initial epic creation from February 2026 swagger audit | Technical Writer |
+
+---
+
+### Post-Implementation Note (2026-02-05)
+The Wildberries Marketplace updated the swagger specification: 409 penalty was changed from 5x to 10x. TDD tests referencing the 5x value have been updated. All rate limit config entries now use `penaltyMultiplier: 10`.

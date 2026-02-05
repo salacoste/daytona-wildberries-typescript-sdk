@@ -142,7 +142,7 @@
 - **Supply Workflow**: create → add orders → stickers → deliver → barcode
 - **Sticker Formats**: SVG, PNG, ZPLV, ZPLH (base64-encoded)
 - **Date Range Limit**: 30-day maximum per query
-- **409 Error Handling**: Counts as 5 requests for rate limiting
+- **409 Error Handling**: Counts as 10 requests for rate limiting
 
 **Rate Limits:** 3-tier system
 - Tier 1: 100 req/min (order retrieval)
@@ -333,7 +333,7 @@ this.ordersFBW = new OrdersFBWModule(client);
 - Tier 2: 30 req/min, 2s interval (supply information)
 
 **Special Handling:**
-- 409 errors for sticker generation count as 5 requests
+- 409 errors for sticker generation count as 10 requests
 - Burst limits for transit tariffs (10 requests)
 - Automatic wait calculation and queueing
 
@@ -532,7 +532,7 @@ No low-priority issues identified. All deferred items are enhancements, not bloc
    - Token bucket algorithm prevents API blocks
    - Per-endpoint limits enforce API guidelines
    - Automatic request spacing simplifies client code
-   - 409 error handling (5x request counting) works correctly
+   - 409 error handling (10x request counting) works correctly
 
 5. **Excellent Documentation**
    - Examples make SDK easy to adopt

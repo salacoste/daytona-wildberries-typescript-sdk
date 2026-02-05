@@ -8,7 +8,7 @@ Error thrown when customer identity verification fails
 
 **HTTP Status**: 409 Conflict
 **Retry**: No (permanent failure - requires correct passcode)
-**Rate Limit**: 409 responses count as 5 requests!
+**Rate Limit**: 409 responses count as 10 requests!
 
 This error occurs when the passcode provided for identity verification does
 not match the customer's order code. The customer needs to provide the correct

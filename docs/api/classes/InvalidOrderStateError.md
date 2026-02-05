@@ -8,7 +8,7 @@ Error thrown when an order state transition is invalid
 
 **HTTP Status**: 409 Conflict
 **Retry**: No (permanent failure - requires state correction)
-**Rate Limit**: 409 responses count as 5 requests!
+**Rate Limit**: 409 responses count as 10 requests!
 
 This error occurs when attempting to transition an order to a state that is
 not valid given its current state (e.g., trying to prepare an order that

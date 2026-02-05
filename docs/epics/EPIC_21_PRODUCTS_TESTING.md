@@ -194,7 +194,7 @@ describe('ProductsModule - Critical CRUD Operations', () => {
 1. All 6 Tier 3 methods have unit tests (using corrected names from Epic 20)
 2. CRUD lifecycle tested: create -> read -> update -> delete
 3. Path parameter handling verified (`warehouseId` in URL)
-4. 409 conflict error handling tested (counts as 5 requests per rate limit rules)
+4. 409 conflict error handling tested (counts as 10 requests per rate limit rules)
 5. All tests pass with no skips
 
 ---
