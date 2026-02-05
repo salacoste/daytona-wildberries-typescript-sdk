@@ -79,7 +79,7 @@ export interface RateLimitConfig {
    * instead of the default 1. This accounts for API-level penalties where conflict responses
    * count as multiple requests toward the rate limit.
    *
-   * @example 5 // In-store pickup: one 409 counts as 5 requests
+   * @example 10 // In-store pickup: one 409 counts as 10 requests
    * @example 10 // FBS/FBW: one 409 counts as 10 requests
    * @default undefined // No penalty (409 counts as 1 request like any other)
    */
