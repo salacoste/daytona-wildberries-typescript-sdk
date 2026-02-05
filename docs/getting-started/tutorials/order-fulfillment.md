@@ -216,32 +216,33 @@ For each order, fetch complete details including customer information and items.
 ### Order Details Structure
 
 An order contains:
-- **Order Info:** ID, status, timestamps
-- **Customer Info:** Name, phone, delivery address
-- **Items:** Products, quantities, SKUs
-- **Pricing:** Item prices, discounts, total
-- **Delivery:** Address, deadline, preferences
+- **Order Info:** ID (`id`), article, creation timestamp (`createdAt`)
+- **Warehouse Info:** `warehouseId`, `officeId`
+- **Product Info:** `nmId`, `chrtId`, `skus` (barcodes)
+- **Pricing:** `price`, `convertedPrice` (multiplied by 100)
+- **Delivery:** `address` (fullAddress, longitude, latitude), `cargoType`
 
 ### Code Example
 
 ```typescript
-async function getOrderDetails(orderId: string) {
+async function getOrderDetails(orderId: number) {
   try {
-    const order = await sdk.ordersFBS.getOrders({ id: orderId });
+    // Use getOrderStatuses to check current status
+    const statusResult = await sdk.ordersFBS.getOrderStatuses({ orders: [orderId] });
+    const status = statusResult.orders?.[0];
 
-    console.log(`\nOrder Details: ${order.data.orderId}`);
-    console.log(`Status: ${order.data.status}`);
-    console.log(`Created: ${order.data.createdAt}`);
+    console.log(`\nOrder ${orderId}:`);
+    console.log(`Supplier Status: ${status?.supplierStatus}`);
+    console.log(`WB Status: ${status?.wbStatus}`);
 
-    // Customer information
-    console.log('\nCustomer:');
-    console.log(`  Name: ${order.data.customerInfo.name}`);
-    console.log(`  Phone: ${order.data.customerInfo.phone}`);
-    console.log(`  Address: ${order.data.customerInfo.address.fullAddress}`);
+    // Use getOrdersMetaBulk to get metadata
+    const metaResult = await sdk.ordersFBS.getOrdersMetaBulk({ orders: [orderId] });
+    const orderMeta = metaResult.orders?.find(o => o.id === orderId);
+    console.log('Metadata:', orderMeta?.meta);
 
-    // Order items
-    console.log('\nItems:');
-    order.data.items.forEach(item => {
+    // Note: Full order details (article, price, etc.) are available from
+    // getOrdersNew() or orders() when first fetching orders.
+    // FBS API does not have a single getOrderById endpoint.
       console.log(`  - ${item.productName}`);
       console.log(`    SKU: ${item.sku}`);
       console.log(`    Quantity: ${item.quantity}`);
@@ -728,13 +729,13 @@ function canTransition(from: string, to: string): boolean {
 const ORDER_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
 
 async function checkStaleOrders() {
-  const orders = await sdk.ordersFBS.getOrders({ status: 'new' });
+  const { orders: newOrders } = await sdk.ordersFBS.getOrdersNew();
 
-  for (const order of orders.data) {
-    const orderAge = Date.now() - new Date(order.createdAt).getTime();
+  for (const order of newOrders ?? []) {
+    const orderAge = Date.now() - new Date(order.createdAt!).getTime();
 
     if (orderAge > ORDER_TIMEOUT) {
-      console.warn(`Order ${order.orderId} is stale (${orderAge}ms old)`);
+      console.warn(`Order ${order.id} is stale (${orderAge}ms old)`);
       // Consider auto-cancelling or sending alert
     }
   }
