@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelStatistics
 
-Defined in: [types/analytics.types.ts:1839](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/analytics.types.ts#L1839)
+Defined in: [types/analytics.types.ts:1839](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1839)
 
 Статистика по периодам v3 (Swagger: Statistics)
 
@@ -10,6 +10,6 @@ Defined in: [types/analytics.types.ts:1839](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="selected"></a> `selected` | [`SalesFunnelStatistic`](SalesFunnelStatistic.md) | Запрашиваемый период | [types/analytics.types.ts:1841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/analytics.types.ts#L1841) |
-| <a id="past"></a> `past?` | [`SalesFunnelStatistic`](SalesFunnelStatistic.md) | Период для сравнения | [types/analytics.types.ts:1843](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/analytics.types.ts#L1843) |
-| <a id="comparison"></a> `comparison?` | [`SalesFunnelComparison`](SalesFunnelComparison.md) | Сравнение | [types/analytics.types.ts:1845](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/analytics.types.ts#L1845) |
+| <a id="selected"></a> `selected` | [`SalesFunnelStatistic`](SalesFunnelStatistic.md) | Запрашиваемый период | [types/analytics.types.ts:1841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1841) |
+| <a id="past"></a> `past?` | [`SalesFunnelStatistic`](SalesFunnelStatistic.md) | Период для сравнения | [types/analytics.types.ts:1843](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1843) |
+| <a id="comparison"></a> `comparison?` | [`SalesFunnelComparison`](SalesFunnelComparison.md) | Сравнение | [types/analytics.types.ts:1845](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1845) |

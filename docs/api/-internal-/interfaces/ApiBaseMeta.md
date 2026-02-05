@@ -2,17 +2,17 @@
 
 # Interface: ApiBaseMeta
 
-Defined in: [types/in-store-pickup.types.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L276)
+Defined in: [types/in-store-pickup.types.ts:290](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L290)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="gtin"></a> `gtin?` | \{ `value?`: `string`; \} | GTIN | [types/in-store-pickup.types.ts:278](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L278) |
-| `gtin.value?` | `string` | - | [types/in-store-pickup.types.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L279) |
-| <a id="imei"></a> `imei?` | \{ `value?`: `string`; \} | IMEI | [types/in-store-pickup.types.ts:282](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L282) |
-| `imei.value?` | `string` | - | [types/in-store-pickup.types.ts:283](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L283) |
-| <a id="sgtin"></a> `sgtin?` | \{ `value?`: `string`[]; \} | Код маркировки Честного знака | [types/in-store-pickup.types.ts:286](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L286) |
-| `sgtin.value?` | `string`[] | - | [types/in-store-pickup.types.ts:287](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L287) |
-| <a id="uin"></a> `uin?` | \{ `value?`: `string`; \} | УИН | [types/in-store-pickup.types.ts:290](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L290) |
-| `uin.value?` | `string` | - | [types/in-store-pickup.types.ts:291](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/in-store-pickup.types.ts#L291) |
+| <a id="gtin"></a> `gtin?` | \{ `value?`: `string` \| `null`; \} | GTIN | [types/in-store-pickup.types.ts:292](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L292) |
+| `gtin.value?` | `string` \| `null` | - | [types/in-store-pickup.types.ts:293](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L293) |
+| <a id="imei"></a> `imei?` | \{ `value?`: `string` \| `null`; \} | IMEI | [types/in-store-pickup.types.ts:296](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L296) |
+| `imei.value?` | `string` \| `null` | - | [types/in-store-pickup.types.ts:297](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L297) |
+| <a id="sgtin"></a> `sgtin?` | \{ `value?`: `string`[] \| `null`; \} | Код маркировки Честного знака | [types/in-store-pickup.types.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L300) |
+| `sgtin.value?` | `string`[] \| `null` | - | [types/in-store-pickup.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L301) |
+| <a id="uin"></a> `uin?` | \{ `value?`: `string` \| `null`; \} | УИН | [types/in-store-pickup.types.ts:304](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L304) |
+| `uin.value?` | `string` \| `null` | - | [types/in-store-pickup.types.ts:305](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/in-store-pickup.types.ts#L305) |

@@ -2,10 +2,10 @@
 
 # Interface: Commission
 
-Defined in: [types/tariffs.types.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/tariffs.types.ts#L128)
+Defined in: [types/tariffs.types.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/tariffs.types.ts#L128)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="report"></a> `report?` | \{ `kgvpBooking?`: `number`; `kgvpMarketplace?`: `number`; `kgvpPickup?`: `number`; `kgvpSupplier?`: `number`; `kgvpSupplierExpress?`: `number`; `paidStorageKgvp?`: `number`; `parentID?`: `number`; `parentName?`: `string`; `subjectID?`: `number`; `subjectName?`: `string`; \}[] | Список комиссий | [types/tariffs.types.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ebcf2b7ae30aa00978226bf4a241f6d770c38def/src/types/tariffs.types.ts#L130) |
+| <a id="report"></a> `report?` | \{ `kgvpBooking?`: `number`; `kgvpMarketplace?`: `number`; `kgvpPickup?`: `number`; `kgvpSupplier?`: `number`; `kgvpSupplierExpress?`: `number`; `paidStorageKgvp?`: `number`; `parentID?`: `number`; `parentName?`: `string`; `subjectID?`: `number`; `subjectName?`: `string`; \}[] | Список комиссий | [types/tariffs.types.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/tariffs.types.ts#L130) |
