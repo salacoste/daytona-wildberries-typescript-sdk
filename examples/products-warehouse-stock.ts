@@ -78,7 +78,7 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src/index';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
@@ -99,10 +99,7 @@ async function setupInventoryManagement() {
     // 2. CREATE SELLER WAREHOUSE
     // ========================================
     console.log('\nStep 2: Creating seller warehouse...');
-    const newWarehouse = await sdk.products.createWarehouse(
-      'Склад Москва Центр',
-      wbOffices[0].id
-    );
+    const newWarehouse = await sdk.products.createWarehouse('Склад Москва Центр', wbOffices[0].id);
     console.log(`✓ Warehouse created with ID: ${newWarehouse.id}`);
 
     // ========================================
@@ -111,7 +108,7 @@ async function setupInventoryManagement() {
     console.log('\nStep 3: Listing all warehouses...');
     const warehouses = await sdk.products.getWarehouses();
     console.log(`✓ Total warehouses: ${warehouses.length}`);
-    warehouses.forEach(wh => {
+    warehouses.forEach((wh) => {
       console.log(`  - ${wh.name} (ID: ${wh.id}, Office: ${wh.officeId})`);
     });
 
@@ -122,7 +119,7 @@ async function setupInventoryManagement() {
     await sdk.products.updateStockLevels(newWarehouse.id, [
       { sku: 'BARCODE123', amount: 100 },
       { sku: 'BARCODE456', amount: 50 },
-      { sku: 'BARCODE789', amount: 200 }
+      { sku: 'BARCODE789', amount: 200 },
     ]);
     console.log('✓ Stock updated for 3 products');
 
@@ -130,12 +127,13 @@ async function setupInventoryManagement() {
     // 5. GET CURRENT STOCK LEVELS
     // ========================================
     console.log('\nStep 5: Fetching current stock...');
-    const stocks = await sdk.products.getStock(
-      newWarehouse.id,
-      ['BARCODE123', 'BARCODE456', 'BARCODE789']
-    );
+    const stocks = await sdk.products.getStock(newWarehouse.id, [
+      'BARCODE123',
+      'BARCODE456',
+      'BARCODE789',
+    ]);
     console.log('✓ Current stock levels:');
-    stocks.forEach(stock => {
+    stocks.forEach((stock) => {
       console.log(`  SKU: ${stock.sku}, Stock: ${stock.amount}`);
     });
 
@@ -156,17 +154,17 @@ async function setupInventoryManagement() {
     console.log('\nStep 7: Adjusting stock quantities...');
     await sdk.products.updateStockLevels(newWarehouse.id, [
       { sku: 'BARCODE123', amount: 150 }, // Increased
-      { sku: 'BARCODE456', amount: 30 }   // Decreased
+      { sku: 'BARCODE456', amount: 30 }, // Decreased
     ]);
     console.log('✓ Stock adjusted for 2 products');
 
     // Verify adjustments
-    const updatedStocks = await sdk.products.getStock(
-      newWarehouse.id,
-      ['BARCODE123', 'BARCODE456']
-    );
+    const updatedStocks = await sdk.products.getStock(newWarehouse.id, [
+      'BARCODE123',
+      'BARCODE456',
+    ]);
     console.log('  New stock levels:');
-    updatedStocks.forEach(stock => {
+    updatedStocks.forEach((stock) => {
       console.log(`    ${stock.sku}: ${stock.amount}`);
     });
 
@@ -182,14 +180,10 @@ async function setupInventoryManagement() {
     // 9. VERIFY REMAINING STOCK
     // ========================================
     console.log('\nStep 9: Verifying remaining stock...');
-    const finalStocks = await sdk.products.getStock(
-      newWarehouse.id,
-      ['BARCODE123', 'BARCODE456']
-    );
+    const finalStocks = await sdk.products.getStock(newWarehouse.id, ['BARCODE123', 'BARCODE456']);
     console.log(`✓ Final stock count: ${finalStocks.length} products remaining`);
 
     console.log('\n✅ Inventory management workflow completed successfully!');
-
   } catch (error: unknown) {
     console.error('\n❌ Error during inventory management:');
 
@@ -197,7 +191,7 @@ async function setupInventoryManagement() {
       console.error(`⏱️  Rate limit exceeded: ${error.message}`);
       console.error(`   Retry after: ${error.retryAfter}ms`);
       console.error(`   Warehouse API limit: 300 req/min (200ms interval)`);
-      console.error(`   Note: 409 conflict errors count as 5 requests!`);
+      console.error(`   Note: 409 conflict errors count as 10 requests!`);
     } else if (error instanceof AuthenticationError) {
       console.error(`🔐 Authentication failed: ${error.message}`);
       console.error(`   Verify your API key: echo $WB_API_KEY`);
@@ -247,26 +241,21 @@ async function bulkStockManagement() {
     console.log('Creating bulk stock update for 100 SKUs...');
     const bulkUpdates = Array.from({ length: 100 }, (_, i) => ({
       sku: `BULK-SKU-${String(i + 1).padStart(3, '0')}`,
-      amount: (i + 1) * 10
+      amount: (i + 1) * 10,
     }));
 
     await sdk.products.updateStockLevels(warehouseId, bulkUpdates);
     console.log('✓ Bulk update completed for 100 SKUs');
 
     // Verify sample of bulk stocks
-    const sampleSkus = [
-      'BULK-SKU-001',
-      'BULK-SKU-050',
-      'BULK-SKU-100'
-    ];
+    const sampleSkus = ['BULK-SKU-001', 'BULK-SKU-050', 'BULK-SKU-100'];
     const sampleStocks = await sdk.products.getStock(warehouseId, sampleSkus);
     console.log('\n✓ Sample stock verification:');
-    sampleStocks.forEach(stock => {
+    sampleStocks.forEach((stock) => {
       console.log(`  ${stock.sku}: ${stock.amount}`);
     });
 
     console.log('\n✅ Bulk stock management completed!');
-
   } catch (error: unknown) {
     console.error('\n❌ Error during bulk operation:');
     if (error instanceof RateLimitError) {
@@ -311,9 +300,7 @@ async function demonstrateErrorHandling() {
     // Example 3: Validation error (amount > 100,000)
     console.log('\nExample 3: Testing validation error (amount > 100,000)...');
     try {
-      await sdk.products.updateStockLevels(123, [
-        { sku: 'TEST-SKU', amount: 150000 }
-      ]);
+      await sdk.products.updateStockLevels(123, [{ sku: 'TEST-SKU', amount: 150000 }]);
     } catch (error: unknown) {
       if (error instanceof Error && error.name === 'ValidationError') {
         console.log('✓ Validation error caught:', error.message);
@@ -321,7 +308,6 @@ async function demonstrateErrorHandling() {
     }
 
     console.log('\n✅ Error handling demonstration completed!');
-
   } catch (error: unknown) {
     console.error('\n❌ Unexpected error:');
     if (error instanceof ValidationError) {
@@ -357,7 +343,6 @@ async function main() {
 
     // Demonstrate error handling
     await demonstrateErrorHandling();
-
   } catch (error: unknown) {
     console.error('\n❌ Fatal error:');
     if (error instanceof AuthenticationError) {

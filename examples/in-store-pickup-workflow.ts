@@ -69,7 +69,7 @@
  * - "Order not found": Order may be already processed or canceled
  * - "Customer verification failed": Check passcode matches customer app
  * - "Metadata validation failed": SGTIN must be 29 digits, IMEI 15 digits
- * - "409 errors count as 5 requests": Rate limit impact on conflicts
+ * - "409 errors count as 10 requests": Rate limit impact on conflicts
  *
  * @see {@link https://dev.wildberries.ru/openapi/in-store-pickup} - Official InStorePickup API
  */
@@ -80,14 +80,9 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src';
-import type {
-  PickupNewOrder,
-  PickupOrderStatus,
-  CheckedIdentity,
-  OrderMetadata,
-} from '../src';
+import type { PickupNewOrder, PickupOrderStatus, CheckedIdentity, OrderMetadata } from '../src';
 
 // ============================================================================
 // SETUP
@@ -415,7 +410,7 @@ async function errorHandlingExamples() {
         console.log('\n✗ Customer verification failed');
         console.log(`  Order: ${error.orderCode}`);
         console.log(`  Recovery: ${error.getUserMessage()}`);
-        console.log('\n⚠️  Note: 409 errors count as 5 requests!');
+        console.log('\n⚠️  Note: 409 errors count as 10 requests!');
       }
     }
 
@@ -458,7 +453,7 @@ async function errorHandlingExamples() {
     if (error instanceof RateLimitError) {
       console.error(`⏱️  Rate limit exceeded: ${error.message}`);
       console.error(`   Retry after: ${error.retryAfter}ms`);
-      console.error(`   Note: 409 errors count as 5 requests!`);
+      console.error(`   Note: 409 errors count as 10 requests!`);
     } else if (error instanceof AuthenticationError) {
       console.error(`🔐 Authentication failed: ${error.message}`);
       console.error(`   Verify API key and pickup point permissions`);
