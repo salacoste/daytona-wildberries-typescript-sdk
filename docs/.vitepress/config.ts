@@ -159,6 +159,23 @@ export default defineConfig({
             ]
           },
           {
+            text: 'Modules',
+            items: [
+              { text: 'General', link: '/modules/general' },
+              { text: 'Products', link: '/modules/products' },
+              { text: 'Orders FBS', link: '/modules/orders-fbs' },
+              { text: 'Orders FBW', link: '/modules/orders-fbw' },
+              { text: 'Orders DBS', link: '/modules/orders-dbs' },
+              { text: 'In-Store Pickup', link: '/modules/in-store-pickup' },
+              { text: 'Promotion', link: '/modules/promotion' },
+              { text: 'Communications', link: '/modules/communications' },
+              { text: 'Tariffs', link: '/modules/tariffs' },
+              { text: 'Analytics', link: '/modules/analytics' },
+              { text: 'Reports', link: '/modules/reports' },
+              { text: 'Finances', link: '/modules/finances' }
+            ]
+          },
+          {
             text: 'API Reference',
             items: [
               { text: 'Overview', link: '/api/' },
@@ -324,6 +341,23 @@ export default defineConfig({
                   { text: '📋 Руководство по модулю Promotion', link: '/guides/promotion-advertising' }
                 ]
               }
+            ]
+          },
+          {
+            text: 'Модули',
+            items: [
+              { text: 'General', link: '/modules/general' },
+              { text: 'Products', link: '/modules/products' },
+              { text: 'Orders FBS', link: '/modules/orders-fbs' },
+              { text: 'Orders FBW', link: '/modules/orders-fbw' },
+              { text: 'Orders DBS', link: '/modules/orders-dbs' },
+              { text: 'In-Store Pickup', link: '/modules/in-store-pickup' },
+              { text: 'Promotion', link: '/modules/promotion' },
+              { text: 'Communications', link: '/modules/communications' },
+              { text: 'Tariffs', link: '/modules/tariffs' },
+              { text: 'Analytics', link: '/modules/analytics' },
+              { text: 'Reports', link: '/modules/reports' },
+              { text: 'Finances', link: '/modules/finances' }
             ]
           },
           {
