@@ -147,7 +147,7 @@ async function completeFBWWorkflow() {
       console.log(`  ID ${warehouse.ID}: ${warehouse.name}`);
       console.log(`    Address: ${warehouse.address}`);
       console.log(`    Work Time: ${warehouse.workTime}`);
-      console.log(`    Accepts QR: ${warehouse.acceptsQr ? 'Yes' : 'No'}`);
+      console.log(`    Accepts QR: ${warehouse.acceptsQR ? 'Yes' : 'No'}`);
       console.log(`    Transit Active: ${warehouse.isTransitActive ? 'Yes' : 'No'}`);
       console.log('');
     });
@@ -355,7 +355,7 @@ async function completeFBWWorkflow() {
             console.log(`\n  Barcode: ${good.barcode}`);
             console.log(`    Vendor code: ${good.vendorCode}`);
             console.log(`    NM ID: ${good.nmID}`);
-            console.log(`    Size: ${good.techsize}, Color: ${good.color}`);
+            console.log(`    Size: ${good.techSize}, Color: ${good.color}`);
             console.log(`    Quantity planned: ${good.quantity}`);
             console.log(`    Quantity accepted: ${good.acceptedQuantity}`);
             console.log(`    Ready for sale: ${good.readyForSaleQuantity}`);

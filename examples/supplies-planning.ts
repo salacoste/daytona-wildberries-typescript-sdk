@@ -182,7 +182,7 @@ async function supplyPlanningWorkflow() {
         console.log(`  - ${wh.name} (ID: ${wh.ID})`);
         console.log(`    Address: ${wh.address}`);
         console.log(`    Work Time: ${wh.workTime}`);
-        console.log(`    Accepts QR: ${wh.acceptsQr ? 'Yes' : 'No'}`);
+        console.log(`    Accepts QR: ${wh.acceptsQR ? 'Yes' : 'No'}`);
         console.log('');
       });
     }
