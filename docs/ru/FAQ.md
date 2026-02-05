@@ -65,7 +65,7 @@ const sdk = new WildberriesSDK({
 
 // Проверка соединения
 const ping = await sdk.general.ping();
-console.log(ping); // { success: true }
+console.log(ping); // { Status: 'OK', TS: '2024-12-03T15:22:47Z' }
 ```
 
 **Лучшая практика:** Храните API ключи в переменных окружения, а не в исходном коде.

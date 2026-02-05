@@ -82,20 +82,23 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 |-----------|-------------------|-------|
 | Get new orders | `sdk.ordersFBS.getOrdersNew()` | Orders awaiting processing |
 | List all orders | `sdk.ordersFBS.orders({ limit, next, dateFrom?, dateTo? })` | Paginated with date filters |
-| Get order statuses | `sdk.ordersFBS.createOrdersStatus({ orders: number[] })` | Batch status check |
+| Get order statuses | `sdk.ordersFBS.getOrderStatuses({ orders: number[] })` | Batch status check |
+| Cancel order | `sdk.ordersFBS.updateOrdersCancel(orderId)` | Cancel before shipment |
+| Get reshipment orders | `sdk.ordersFBS.getOrdersReshipment()` | Orders for reshipment |
 | Create supply | `sdk.ordersFBS.createSupply({ name })` | Start new shipment |
 | Get supplies | `sdk.ordersFBS.supplies({ limit, next })` | List all supplies |
-| Add order to supply | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | Add order to supply |
-| Get order stickers | `sdk.ordersFBS.createOrdersSticker({ type, width, height }, { orders })` | Print labels |
-| Deliver supply | `sdk.ordersFBS.updateSuppliesDeliver(supplyId)` | Mark as shipped |
-| Cancel order | `sdk.ordersFBS.updateOrdersCancel(orderId)` | Cancel before shipment |
 | Get supply | `sdk.ordersFBS.getSupply(supplyId)` | Get supply details |
 | Delete supply | `sdk.ordersFBS.deleteSupply(supplyId)` | Delete supply |
-| Get supply orders | `sdk.ordersFBS.getSuppliesOrder(supplyId)` | Orders in a supply |
+| Add orders to supply | `sdk.ordersFBS.addOrdersToSupply(supplyId, { orders })` | Bulk add orders to supply |
+| Get supply order IDs | `sdk.ordersFBS.getSupplyOrderIds(supplyId)` | Order IDs in a supply |
+| Deliver supply | `sdk.ordersFBS.updateSuppliesDeliver(supplyId)` | Mark as shipped |
+| Get order stickers | `sdk.ordersFBS.createOrdersSticker({ type, width, height }, { orders })` | Print labels |
 | Get supply barcode | `sdk.ordersFBS.getSuppliesBarcode(supplyId, { type })` | Supply barcode |
+| Get bulk metadata | `sdk.ordersFBS.getOrdersMetaBulk({ orders })` | Metadata for multiple orders |
 | Get passes | `sdk.ordersFBS.passes()` | List passes |
 | Create pass | `sdk.ordersFBS.createPass(data)` | Create delivery pass |
-| Get reshipment orders | `sdk.ordersFBS.getOrdersReshipment()` | Orders for reshipment |
+| Get supply orders | `sdk.ordersFBS.getSuppliesOrder(supplyId)` | **@deprecated** Use `getSupplyOrderIds()` |
+| Add order to supply | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | **@deprecated** Use `addOrdersToSupply()` |
 
 ### Finances
 
@@ -685,12 +688,12 @@ Reset at: 2024-10-28T00:00:00Z
    ```typescript
    // ❌ WRONG - Polling every second
    setInterval(async () => {
-     const orders = await sdk.ordersFBS.getOrders();  // 86,400 requests/day!
+     const result = await sdk.ordersFBS.orders({ limit: 100, next: 0 });  // 86,400 requests/day!
    }, 1000);
 
    // ✅ CORRECT - Poll less frequently
    setInterval(async () => {
-     const orders = await sdk.ordersFBS.getOrders({ limit: 100 });
+     const result = await sdk.ordersFBS.orders({ limit: 100, next: 0 });
    }, 60000);  // Every minute = 1,440 requests/day
    ```
 
@@ -950,23 +953,21 @@ NetworkError: Request timeout after 30000ms
 
 3. **Optimize request size:**
    ```typescript
-   // ❌ WRONG - Fetching too much data
-   const orders = await sdk.ordersFBS.getOrders({ limit: 10000 });  // Huge response
+   // ❌ WRONG - Fetching too much data at once
+   const result = await sdk.ordersFBS.orders({ limit: 1000, next: 0 });
 
-   // ✅ CORRECT - Paginate results
-   let page = 0;
-   let hasMore = true;
+   // ✅ CORRECT - Paginate results using cursor
+   let nextCursor = 0;
 
-   while (hasMore) {
-     const result = await sdk.ordersFBS.getOrders({
+   do {
+     const result = await sdk.ordersFBS.orders({
        limit: 100,
-       offset: page * 100
+       next: nextCursor
      });
 
-     processOrders(result.data);
-     hasMore = result.hasMore;
-     page++;
-   }
+     processOrders(result.orders ?? []);
+     nextCursor = result.next ?? 0;
+   } while (nextCursor > 0);
    ```
 
 4. **Check network latency:**
