@@ -130,31 +130,22 @@ const sdk = new WildberriesSDK({
 async function listPendingOrders() {
   try {
     // Get all new orders (not yet confirmed)
-    const newOrders = await sdk.ordersFBS.getOrders({
-      status: 'new',
-      limit: 50
-    });
+    const result = await sdk.ordersFBS.getOrdersNew();
+    const newOrders = result.orders ?? [];
 
-    console.log(`Found ${newOrders.data.length} new orders`);
+    console.log(`Found ${newOrders.length} new orders`);
 
     // Display order summary
-    newOrders.data.forEach(order => {
-      console.log(`\nOrder ${order.orderId}:`);
-      console.log(`  - Status: ${order.status}`);
-      console.log(`  - Items: ${order.items.length}`);
-      console.log(`  - Total: ${order.totalAmount} RUB`);
-      console.log(`  - Delivery deadline: ${order.deliveryDeadline}`);
+    newOrders.forEach(order => {
+      console.log(`\nOrder ${order.id}:`);
+      console.log(`  - Article: ${order.article}`);
+      console.log(`  - NM ID: ${order.nmId}`);
+      console.log(`  - Price: ${(order.price ?? 0) / 100} RUB`);
+      console.log(`  - Cargo Type: ${order.cargoType}`);
+      console.log(`  - Required Meta: ${order.requiredMeta?.join(', ') || 'None'}`);
     });
 
-    // Get orders requiring shipping
-    const readyToShip = await sdk.ordersFBS.getOrders({
-      status: 'assembled',
-      limit: 50
-    });
-
-    console.log(`\n${readyToShip.data.length} orders ready for shipping`);
-
-    return newOrders.data;
+    return newOrders;
 
   } catch (error) {
     console.error('Error fetching orders:', error.message);

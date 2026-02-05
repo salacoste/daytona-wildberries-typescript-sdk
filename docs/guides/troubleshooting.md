@@ -41,7 +41,7 @@ Quick solutions for common Wildberries SDK issues. This guide helps you diagnose
 - [Rate limit exceeded](#issue-6-429-too-many-requests)
 - [Connection timeout](#issue-11-etimedout)
 - [Validation error](#issue-13-validation-error)
-- [**createCardsList() validation errors**](#issue-13a-createcardslist-validation-errors--common-issue) ⭐ **NEW**
+- [**getCardsList() validation errors**](#issue-13a-createcardslist-validation-errors--common-issue)
 - [Module not found](#issue-17-module-not-found)
 
 ---
@@ -205,7 +205,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 ```typescript
 // ✅ CORRECT - Use actual method names
-const cards = await sdk.products.createCardsList({ settings: { cursor: { limit: 100 } } });
+const cards = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
 const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
 const balance = await sdk.finances.getAccountBalance();
 const report = await sdk.analytics.getSalesFunnelProducts({ ... }); // v3 (recommended)
@@ -1152,20 +1152,20 @@ Field: categoryId - Must be a valid category ID
 
 ---
 
-### Issue 13a: createCardsList() Validation Errors ⚠️ COMMON ISSUE
+### Issue 13a: getCardsList() Validation Errors - COMMON ISSUE
 
-> **📖 For complete troubleshooting guide, see [Working with Product Cards](/guides/working-with-product-cards#troubleshooting)**
+> **For complete troubleshooting guide, see [Working with Product Cards](/guides/working-with-product-cards#troubleshooting)**
 
 **Error Message:**
 ```
 ValidationError: Validation failed
 ```
 
-**Cause:** Incorrect request structure for `createCardsList()` method.
+**Cause:** Incorrect request structure for `getCardsList()` method.
 
 **What Went Wrong:**
 
-This is **the most common mistake** with `createCardsList()`:
+This is **the most common mistake** with `getCardsList()`:
 
 ❌ **Mistake 1: Empty cursor fields in first request**
 ```typescript
