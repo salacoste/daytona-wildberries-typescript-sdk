@@ -24,7 +24,7 @@ const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 await sdk.ordersFBS.updateOrdersCancel(orderId);
 
 // Получить заказы на повторную отгрузку (возвраты)
-const reshipments = await sdk.ordersFBS.createSuppliesOrdersReshipment();
+const reshipments = await sdk.ordersFBS.getOrdersReshipment();
 
 // Получить тарифы на возврат
 const returnTariffs = await sdk.tariffs.getTariffsReturn({ date: '2024-12-01' });
@@ -134,7 +134,7 @@ async function canCancelOrder(
   sdk: WildberriesSDK,
   orderId: number
 ): Promise<boolean> {
-  const statusResult = await sdk.ordersFBS.createOrdersStatus({
+  const statusResult = await sdk.ordersFBS.getOrderStatuses({
     orders: [orderId]
   });
 
@@ -167,7 +167,7 @@ async function getOrderStatuses(
   sdk: WildberriesSDK,
   orderIds: number[]
 ): Promise<OrderStatusInfo[]> {
-  const result = await sdk.ordersFBS.createOrdersStatus({
+  const result = await sdk.ordersFBS.getOrderStatuses({
     orders: orderIds
   });
 
@@ -196,7 +196,7 @@ async function getOrderStatusHistory(
   sdk: WildberriesSDK,
   orderIds: number[]
 ): Promise<Map<number, StatusHistoryEntry[]>> {
-  const result = await sdk.ordersFBS.createOrdersStatusHistory({
+  const result = await sdk.ordersFBS.createStatusHistory({
     orders: orderIds
   });
 
@@ -235,7 +235,7 @@ interface ReshipmentOrder {
 async function getReshipmentOrders(
   sdk: WildberriesSDK
 ): Promise<ReshipmentOrder[]> {
-  const result = await sdk.ordersFBS.createSuppliesOrdersReshipment();
+  const result = await sdk.ordersFBS.getOrdersReshipment();
 
   return (result.orders || []).map(order => ({
     supplyId: String(order.supplyID || ''),
@@ -492,7 +492,7 @@ async function getReturnsDashboard(
 
   // Параллельно получаем данные
   const [reshipments, analytics] = await Promise.all([
-    sdk.ordersFBS.createSuppliesOrdersReshipment(),
+    sdk.ordersFBS.getOrdersReshipment(),
     analyzeReturns(sdk, weekAgo, today)
   ]);
 

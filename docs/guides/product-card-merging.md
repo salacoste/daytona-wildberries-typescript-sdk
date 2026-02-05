@@ -187,7 +187,7 @@ Combine existing product cards under one `imtID`:
 
 ```typescript
 // Merge 3 existing cards under existing imtID 999888
-await sdk.products.mergeCards({
+await sdk.products.createCardsMovenm({
   targetIMT: 999888,        // Existing imtID (from any card you want to keep)
   nmIDs: [12345678, 23456789, 34567890]  // Up to 30 cards
 });
@@ -211,7 +211,7 @@ Create a new variant and immediately attach to an existing merged card:
 
 ```typescript
 // Create new variant and attach to imtID 999888
-const result = await sdk.products.createAndAttachCard({
+const result = await sdk.products.createUploadAdd({
   imtID: 999888,
   cardsToAdd: [
     {
@@ -242,7 +242,7 @@ console.log('New variant created and attached to merged card');
 Create multiple variants as a merged card in one request:
 
 ```typescript
-const newMergedCard = await sdk.products.createProduct([
+const newMergedCard = await sdk.products.createCardsUpload([
   {
     subjectID: 3091, // Smartphones
     variants: [
@@ -293,7 +293,7 @@ Separate merged cards to give each variant a unique `imtID`:
 
 ```typescript
 // Unmerge ONE card at a time to get unique imtID
-await sdk.products.unmergeCards({
+await sdk.products.createCardsMovenm({
   nmIDs: [12345678] // Pass single nmID for unique imtID
 });
 
@@ -304,14 +304,14 @@ console.log('Card unmerged with new unique imtID');
 
 ```typescript
 // ❌ Wrong: Will merge these 3 cards together under new imtID
-await sdk.products.unmergeCards({
+await sdk.products.createCardsMovenm({
   nmIDs: [12345678, 23456789, 34567890]
 });
 
 // ✅ Correct: Each gets unique imtID
-await sdk.products.unmergeCards({ nmIDs: [12345678] });
-await sdk.products.unmergeCards({ nmIDs: [23456789] });
-await sdk.products.unmergeCards({ nmIDs: [34567890] });
+await sdk.products.createCardsMovenm({ nmIDs: [12345678] });
+await sdk.products.createCardsMovenm({ nmIDs: [23456789] });
+await sdk.products.createCardsMovenm({ nmIDs: [34567890] });
 ```
 
 ---
@@ -1454,7 +1454,7 @@ async function launchProductLine() {
   // Step 1: Create merged card with all variants
   console.log('Creating merged card with 4 variants...');
 
-  const product = await sdk.products.createProduct([
+  const product = await sdk.products.createCardsUpload([
     {
       subjectID: 3091,
       variants: [
@@ -1804,7 +1804,7 @@ const found = await sdk.products.getCardsList({
 console.log(`Found imtID: ${found.cards?.[0]?.imtID}`);
 
 // Check trash
-const trash = await sdk.products.getCardsTrash({
+const trash = await sdk.products.getTrashedCards({
   settings: {
     filter: { textSearch: 'known-vendor-code' },
     cursor: { limit: 100 }
@@ -1821,11 +1821,11 @@ const trash = await sdk.products.getCardsTrash({
 **Solution:**
 ```typescript
 // ❌ Wrong
-await sdk.products.unmergeCards({ nmIDs: [111, 222, 333] });
+await sdk.products.createCardsMovenm({ nmIDs: [111, 222, 333] });
 
 // ✅ Correct - one at a time
 for (const nmID of [111, 222, 333]) {
-  await sdk.products.unmergeCards({ nmIDs: [nmID] });
+  await sdk.products.createCardsMovenm({ nmIDs: [nmID] });
 }
 ```
 

@@ -1272,7 +1272,7 @@ All examples demonstrate comprehensive error handling patterns:
 ```typescript
 try {
   const response = await sdk.general.ping();
-  console.log('Ping successful:', response.data);
+  console.log('Ping successful:', response.Status);
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('❌ Invalid API key:', error.message);
