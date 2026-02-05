@@ -207,10 +207,10 @@ console.log(result.nmId); // New product ID
 ### 13. How do I fetch new orders (FBS)?
 
 ```typescript
-const orders = await sdk.ordersFBS.getOrdersNew();
+const result = await sdk.ordersFBS.getOrdersNew();
 
-for (const order of orders.orders) {
-  console.log(`Order ${order.orderId}: ${order.status}`);
+for (const order of result.orders ?? []) {
+  console.log(`Order ${order.id}: article ${order.article}, nmId ${order.nmId}`);
 }
 ```
 
@@ -218,13 +218,17 @@ for (const order of orders.orders) {
 
 ---
 
-### 14. How do I update order status?
+### 14. How do I check order statuses?
 
 ```typescript
-await sdk.ordersFBS.confirmOrder({ orderId: '12345' });
+const result = await sdk.ordersFBS.getOrderStatuses({ orders: [12345, 67890] });
+
+result.orders?.forEach(order => {
+  console.log(`Order ${order.id}: ${order.supplierStatus} / ${order.wbStatus}`);
+});
 ```
 
-**Available statuses:** `new` → `confirmed` → `assembled` → `shipped` → `delivered`
+**Supplier statuses:** `new` → `confirm` → `complete` (or `cancel`)
 
 **See also:** [Order Status Workflow](guides/best-practices.md#order-management)
 
@@ -505,14 +509,14 @@ Yes, the SDK reuses HTTP connections automatically via Axios's built-in connecti
 // ✅ Good: Reuse instance
 const sdk = new WildberriesSDK({ apiKey });
 
-for (const order of orders) {
-  await sdk.ordersFBS.confirmOrder({ orderId: order.id });
+for (const orderId of orderIds) {
+  await sdk.ordersFBS.updateOrdersCancel(orderId);
 }
 
 // ❌ Bad: Creating new instance per request
-for (const order of orders) {
+for (const orderId of orderIds) {
   const sdk = new WildberriesSDK({ apiKey }); // Don't do this!
-  await sdk.ordersFBS.confirmOrder({ orderId: order.id });
+  await sdk.ordersFBS.updateOrdersCancel(orderId);
 }
 ```
 

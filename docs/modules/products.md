@@ -498,7 +498,7 @@ try {
 | 409 Conflict | Warehouse processing | Wait and retry |
 | 429 Rate Limit | Too many requests | Wait for rate limit window to reset |
 
-**Important**: 409 errors on stock endpoints count as **10 requests** toward your rate limit.
+**Important**: 409 errors on stock endpoints count as **5 requests** toward your rate limit.
 
 ## Rate Limits
 

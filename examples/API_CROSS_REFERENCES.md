@@ -33,7 +33,7 @@ This document maps each example file to its corresponding API documentation refe
 
 ### 2. general.ts
 - Official API: https://dev.wildberries.ru/openapi/common
-- SDK Docs: GeneralModule, ping(), getNews(), getSeller()
+- SDK Docs: GeneralModule, ping(), news(), sellerInfo()
 - Related: quickstart.ts
 
 ### 3. products-categories.ts
