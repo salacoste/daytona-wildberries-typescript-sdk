@@ -64,7 +64,7 @@ const sdk = new WildberriesSDK({
 
 // Test connection
 const ping = await sdk.general.ping();
-console.log(ping); // { success: true }
+console.log(ping); // { Status: 'OK', TS: '2024-12-03T15:22:47Z' }
 ```
 
 **Best Practice:** Store API keys in environment variables, not source code.

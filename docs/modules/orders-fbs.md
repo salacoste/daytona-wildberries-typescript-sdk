@@ -75,7 +75,7 @@ Ensure your API key has the following permissions enabled:
 | `getSuppliesBarcode(supplyId, options?)` | Get supply QR code | 300 req/min |
 | `addOrdersToSupply(supplyId, data)` | Add multiple orders to supply (bulk) | 300 req/min |
 | `getSupplyOrderIds(supplyId)` | Get order IDs in a supply | 300 req/min |
-| `updateSuppliesOrder(supplyId, orderId)` | **@deprecated** Use `addOrdersToSupply()` | 300 req/min |
+| `updateSuppliesOrder(supplyId, orderId)` | **@deprecated** Use `addOrdersToSupply()` | 1000 req/min |
 | `getSuppliesOrder(supplyId)` | **@deprecated** Use `getSupplyOrderIds()` | 300 req/min |
 
 ### Passes (5 methods)
@@ -108,7 +108,7 @@ Ensure your API key has the following permissions enabled:
 |--------|-------------|------------|
 | `createOrdersSticker(options?, data?)` | Generate order stickers (SVG/PNG/ZPL) | 300 req/min |
 | `createStickersCrossBorder(data?)` | Get cross-border stickers (PDF) | 300 req/min |
-| `createOrdersExternalSticker(data?)` | **@deprecated** Will be removed | N/A |
+| `createOrdersExternalSticker(data?)` | **@deprecated** Will be removed | 10 req/min |
 
 ### Cross-Border (2 methods)
 
