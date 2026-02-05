@@ -2,23 +2,23 @@
 
 # Interface: Meta
 
-Defined in: [types/orders-fbs.types.ts:244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L244)
+Defined in: [types/orders-fbs.types.ts:617](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L617)
 
-Метаданные сборочного задания
+Order metadata containing various identification and tracking codes
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="imei"></a> `imei?` | \{ `value?`: `string`; \} | IMEI | [types/orders-fbs.types.ts:246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L246) |
-| `imei.value?` | `string` | - | [types/orders-fbs.types.ts:247](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L247) |
-| <a id="uin"></a> `uin?` | \{ `value?`: `string`; \} | УИН | [types/orders-fbs.types.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L250) |
-| `uin.value?` | `string` | - | [types/orders-fbs.types.ts:251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L251) |
-| <a id="gtin"></a> `gtin?` | \{ `value?`: `string`; \} | GTIN | [types/orders-fbs.types.ts:254](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L254) |
-| `gtin.value?` | `string` | - | [types/orders-fbs.types.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L255) |
-| <a id="sgtin"></a> `sgtin?` | \{ `value?`: `string`[]; \} | Код маркировки Честного знака | [types/orders-fbs.types.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L258) |
-| `sgtin.value?` | `string`[] | - | [types/orders-fbs.types.ts:259](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L259) |
-| <a id="expiration"></a> `expiration?` | \{ `value?`: `string`; \} | Срок годности товара | [types/orders-fbs.types.ts:262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L262) |
-| `expiration.value?` | `string` | - | [types/orders-fbs.types.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L263) |
-| <a id="customsdeclaration"></a> `customsDeclaration?` | \{ `value?`: `string`; \} | Номер грузовой таможенной декларации (ГТД) | [types/orders-fbs.types.ts:267](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L267) |
-| `customsDeclaration.value?` | `string` | - | [types/orders-fbs.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L268) |
+| <a id="imei"></a> `imei?` | \{ `value?`: `string`; \} | IMEI | [types/orders-fbs.types.ts:619](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L619) |
+| `imei.value?` | `string` | - | [types/orders-fbs.types.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L620) |
+| <a id="uin"></a> `uin?` | \{ `value?`: `string`; \} | UIN (unique identification number) | [types/orders-fbs.types.ts:623](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L623) |
+| `uin.value?` | `string` | - | [types/orders-fbs.types.ts:624](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L624) |
+| <a id="gtin"></a> `gtin?` | \{ `value?`: `string`; \} | GTIN (Global Trade Item Number) | [types/orders-fbs.types.ts:627](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L627) |
+| `gtin.value?` | `string` | - | [types/orders-fbs.types.ts:628](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L628) |
+| <a id="sgtin"></a> `sgtin?` | \{ `value?`: `string`[]; \} | Honest Sign marking code (SGTIN) | [types/orders-fbs.types.ts:631](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L631) |
+| `sgtin.value?` | `string`[] | - | [types/orders-fbs.types.ts:632](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L632) |
+| <a id="expiration"></a> `expiration?` | \{ `value?`: `string`; \} | Product expiration date | [types/orders-fbs.types.ts:635](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L635) |
+| `expiration.value?` | `string` | - | [types/orders-fbs.types.ts:636](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L636) |
+| <a id="customsdeclaration"></a> `customsDeclaration?` | \{ `value?`: `string`; \} | Customs declaration number | [types/orders-fbs.types.ts:639](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L639) |
+| `customsDeclaration.value?` | `string` | - | [types/orders-fbs.types.ts:640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L640) |

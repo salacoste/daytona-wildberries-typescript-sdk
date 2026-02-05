@@ -2,17 +2,20 @@
 
 # Interface: Supply
 
-Defined in: [types/orders-fbs.types.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L102)
+Defined in: [types/orders-fbs.types.ts:455](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L455)
+
+Supply (postavka) entity representing a shipment batch
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `string` | ID поставки | [types/orders-fbs.types.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L104) |
-| <a id="done"></a> `done?` | `boolean` | Флаг закрытия поставки: - `true` — закрыта - `false` — открыта | [types/orders-fbs.types.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L106) |
-| <a id="createdat"></a> `createdAt?` | `string` | Дата создания поставки (RFC3339) | [types/orders-fbs.types.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L108) |
-| <a id="closedat"></a> `closedAt?` | `string` | Дата закрытия поставки (RFC3339) | [types/orders-fbs.types.ts:110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L110) |
-| <a id="scandt"></a> `scanDt?` | `string` | Дата скана поставки (RFC3339) | [types/orders-fbs.types.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L112) |
-| <a id="name"></a> `name?` | `string` | Наименование поставки | [types/orders-fbs.types.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L114) |
-| <a id="cargotype"></a> `cargoType?` | `0` \| `1` \| `2` \| `3` | Тип товара: - `1` — малогабаритный товар (МГТ) - `2` — сверхгабаритный товар (СГТ) - `3` — крупногабаритный товар (КГТ+) | [types/orders-fbs.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L116) |
-| <a id="destinationofficeid"></a> `destinationOfficeId?` | `number` | ID склада назначения поставки. Если `null`, склад назначения не указан | [types/orders-fbs.types.ts:118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L118) |
+| <a id="id"></a> `id?` | `string` | Supply ID | [types/orders-fbs.types.ts:457](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L457) |
+| <a id="done"></a> `done?` | `boolean` | Whether the supply is closed | [types/orders-fbs.types.ts:459](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L459) |
+| <a id="createdat"></a> `createdAt?` | `string` | Supply creation date (RFC3339) | [types/orders-fbs.types.ts:461](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L461) |
+| <a id="closedat"></a> `closedAt?` | `string` | Supply closing date (RFC3339) | [types/orders-fbs.types.ts:463](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L463) |
+| <a id="scandt"></a> `scanDt?` | `string` | Supply scan date (RFC3339) | [types/orders-fbs.types.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L465) |
+| <a id="name"></a> `name?` | `string` | Supply name | [types/orders-fbs.types.ts:467](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L467) |
+| <a id="cargotype"></a> `cargoType?` | `0` \| `1` \| `2` \| `3` | Cargo type: 0 = unset, 1 = small, 2 = oversized, 3 = large | [types/orders-fbs.types.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L469) |
+| <a id="crossbordertype"></a> `crossBorderType?` | `0` \| `1` \| `null` | Cross-border type: 0 = not cross-border, 1 = cross-border, null = unset | [types/orders-fbs.types.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L471) |
+| <a id="destinationofficeid"></a> `destinationOfficeId?` | `number` | Destination warehouse ID; null if not specified | [types/orders-fbs.types.ts:473](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L473) |

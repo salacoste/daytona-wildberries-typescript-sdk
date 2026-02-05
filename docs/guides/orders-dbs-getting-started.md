@@ -8,15 +8,19 @@ layout: doc
 
 This guide covers everything you need to know to work with DBS (Delivery by Seller) orders in the Wildberries TypeScript SDK.
 
+> **Migration Notice**: Legacy single-order status and metadata methods are deprecated and will be **disabled on April 13, 2026**. Use the bulk methods described in this guide. See the [Migration Guide](/guides/migration-dbs-legacy-to-bulk) for details.
+
 ## Table of Contents
 
 - [What is DBS?](#what-is-dbs)
 - [DBS vs FBS vs FBW](#dbs-vs-fbs-vs-fbw)
 - [Quick Start](#quick-start)
+- [Available Methods](#available-methods)
 - [Complete Order Workflow](#complete-order-workflow)
 - [Working with Customer Data](#working-with-customer-data)
 - [Metadata and Compliance](#metadata-and-compliance)
 - [B2B Orders](#b2b-orders)
+- [Rate Limits](#rate-limits)
 - [Error Handling](#error-handling)
 - [Best Practices](#best-practices)
 
@@ -83,6 +87,62 @@ Create a `.env` file:
 WB_API_KEY=your_api_key_here
 ```
 
+## Available Methods
+
+### Order Retrieval
+
+| Method | Description | Rate Tier |
+|--------|-------------|-----------|
+| `getNewOrders()` | Get new orders awaiting processing | T1 (300 rpm) |
+| `getOrders(params)` | Get completed orders with pagination | T1 (300 rpm) |
+| `getClientInfo(orderIds)` | Get customer contact information | T1 (300 rpm) |
+| `getB2BInfo(orderIds)` | Get B2B buyer details | T1 (300 rpm) |
+| `getGroupsInfo(request)` | Get paid delivery group information | T1 (300 rpm) |
+| `getDeliveryDates(request)` | Get delivery dates for orders | T1 (300 rpm) |
+
+### Bulk Status Operations
+
+| Method | Description | Rate Tier |
+|--------|-------------|-----------|
+| `getStatusesBulk(orderIds)` | Get statuses for multiple orders | T1 (300 rpm) |
+| `confirmBulk(orderIds)` | Confirm multiple orders | T2 (60 rpm) |
+| `deliverBulk(orderIds)` | Mark multiple orders as delivered | T2 (60 rpm) |
+| `receiveBulk(orders)` | Complete handover for multiple orders | T2 (60 rpm) |
+| `rejectBulk(orders)` | Reject multiple orders | T2 (60 rpm) |
+| `cancelBulk(orderIds)` | Cancel multiple orders | T2 (60 rpm) |
+
+### Bulk Metadata Operations
+
+| Method | Description | Rate Tier |
+|--------|-------------|-----------|
+| `getMetaBulk(request)` | Get metadata for multiple orders | T3 (150 rpm) |
+| `deleteMetaBulk(request)` | Delete metadata for multiple orders | T3 (150 rpm) |
+| `setSgtinBulk(request)` | Set SGTIN codes for multiple orders | T4 (500 rpm) |
+| `setUinBulk(request)` | Set UIN codes for multiple orders | T4 (500 rpm) |
+| `setImeiBulk(request)` | Set IMEI codes for multiple orders | T4 (500 rpm) |
+| `setGtinBulk(request)` | Set GTIN codes for multiple orders | T4 (500 rpm) |
+| `setCustomsDeclarationBulk(request)` | Set customs declarations for multiple orders | T4 (500 rpm) |
+
+### Deprecated Methods (Removed April 13, 2026)
+
+The following legacy single-order methods are deprecated. Migrate to their bulk replacements before the deadline.
+
+| Deprecated Method | Replacement | Deadline |
+|-------------------|-------------|----------|
+| `getMeta(orderId)` | `getMetaBulk(request)` | April 13, 2026 |
+| `deleteMeta(orderId, key)` | `deleteMetaBulk(request)` | April 13, 2026 |
+| `setSgtin(orderId, sgtins)` | `setSgtinBulk(request)` | April 13, 2026 |
+| `setUin(orderId, uin)` | `setUinBulk(request)` | April 13, 2026 |
+| `setImei(orderId, imei)` | `setImeiBulk(request)` | April 13, 2026 |
+| `setGtin(orderId, gtin)` | `setGtinBulk(request)` | April 13, 2026 |
+| `setCustomsDeclaration(orderId, cd)` | `setCustomsDeclarationBulk(request)` | April 13, 2026 |
+| `getStatuses(orderIds)` | `getStatusesBulk(orderIds)` | April 13, 2026 |
+| `confirm(orderId)` | `confirmBulk([orderId])` | April 13, 2026 |
+| `deliver(orderId)` | `deliverBulk([orderId])` | April 13, 2026 |
+| `receive(orderId, code)` | `receiveBulk([{orderId, code}])` | April 13, 2026 |
+| `reject(orderId, code)` | `rejectBulk([{orderId, code}])` | April 13, 2026 |
+| `cancel(orderId)` | `cancelBulk([orderId])` | April 13, 2026 |
+
 ## Complete Order Workflow
 
 ### Step 1: Fetch New Orders
@@ -119,57 +179,117 @@ if (orderIds.length > 0) {
 }
 ```
 
-### Step 3: Add Required Metadata
+### Step 3: Get Delivery Group and Date Info
 
 ```typescript
-// Check if metadata is required
-const order = newOrders.orders?.[0];
-if (order?.requiredMeta?.includes('imei')) {
-  await sdk.ordersDBS.setImei(order.id!, '123456789012345');
+// Get paid delivery group information
+const groups = await sdk.ordersDBS.getGroupsInfo({ orders: orderIds });
+for (const group of groups.groups ?? []) {
+  console.log(`Group ${group.id} "${group.name}": orders ${group.orders.join(', ')}`);
 }
 
-if (order?.requiredMeta?.includes('sgtin')) {
-  await sdk.ordersDBS.setSgtin(order.id!, [
-    '01046012345678900421abc123'
-  ]);
+// Get delivery date details
+const dates = await sdk.ordersDBS.getDeliveryDates({ orders: orderIds });
+for (const dateInfo of dates.orders ?? []) {
+  console.log(`Order ${dateInfo.orderId}: deliver by ${dateInfo.deliveryDate}`);
 }
 ```
 
-### Step 4: Confirm Order
+### Step 4: Add Required Metadata (Bulk)
 
 ```typescript
-const confirmResult = await sdk.ordersDBS.confirmBulk([orderId]);
+// Set IMEI for multiple orders at once
+const imeiOrders = newOrders.orders
+  ?.filter(o => o.requiredMeta?.includes('imei'))
+  ?? [];
 
-if (confirmResult.results?.[0]?.isError) {
-  console.error('Confirmation failed:', confirmResult.results[0].errors);
-} else {
-  console.log('Order confirmed successfully');
+if (imeiOrders.length > 0) {
+  const result = await sdk.ordersDBS.setImeiBulk({
+    orders: imeiOrders.map(o => ({
+      orderId: o.id!,
+      imei: getImeiFromInventory(o.id!)  // your inventory lookup
+    }))
+  });
+
+  for (const r of result.orders ?? []) {
+    if (r.error) {
+      console.error(`IMEI failed for order ${r.orderId}: ${r.error}`);
+    }
+  }
+}
+
+// Set SGTIN for multiple orders at once
+const sgtinOrders = newOrders.orders
+  ?.filter(o => o.requiredMeta?.includes('sgtin'))
+  ?? [];
+
+if (sgtinOrders.length > 0) {
+  const result = await sdk.ordersDBS.setSgtinBulk({
+    orders: sgtinOrders.map(o => ({
+      orderId: o.id!,
+      sgtins: getSgtinsFromInventory(o.id!)  // your inventory lookup
+    }))
+  });
 }
 ```
 
-### Step 5: Deliver Order
+### Step 5: Verify Metadata (Bulk)
+
+```typescript
+// Verify metadata was set correctly for all orders
+const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+
+for (const orderMeta of meta.orders ?? []) {
+  console.log(`Order ${orderMeta.orderId}:`);
+  if (orderMeta.imei) {
+    console.log(`  IMEI: ${orderMeta.imei}`);
+  }
+  if (orderMeta.sgtins?.length) {
+    console.log(`  SGTINs: ${orderMeta.sgtins.length} codes`);
+  }
+}
+```
+
+### Step 6: Confirm Order
+
+```typescript
+const confirmResult = await sdk.ordersDBS.confirmBulk(orderIds);
+
+for (const r of confirmResult.results ?? []) {
+  if (r.isError) {
+    console.error(`Confirmation failed for ${r.orderId}:`, r.errors);
+  } else {
+    console.log(`Order ${r.orderId} confirmed`);
+  }
+}
+```
+
+### Step 7: Deliver Order
 
 ```typescript
 // After physical delivery
-const deliverResult = await sdk.ordersDBS.deliverBulk([orderId]);
+const deliverResult = await sdk.ordersDBS.deliverBulk(orderIds);
 
-if (!deliverResult.results?.[0]?.isError) {
-  console.log('Marked as delivered');
+for (const r of deliverResult.results ?? []) {
+  if (!r.isError) {
+    console.log(`Order ${r.orderId} marked as delivered`);
+  }
 }
 ```
 
-### Step 6: Complete Handover
+### Step 8: Complete Handover
 
 ```typescript
 // Customer provides verification code from WB app
-const customerCode = '1234';
-
 const receiveResult = await sdk.ordersDBS.receiveBulk([
-  { orderId: orderId, code: customerCode }
+  { orderId: orderIds[0], code: '1234' },
+  { orderId: orderIds[1], code: '5678' }
 ]);
 
-if (!receiveResult.results?.[0]?.isError) {
-  console.log('Handover completed!');
+for (const r of receiveResult.results ?? []) {
+  if (!r.isError) {
+    console.log(`Handover completed for order ${r.orderId}`);
+  }
 }
 ```
 
@@ -212,6 +332,20 @@ if (order) {
 }
 ```
 
+### Delivery Dates (Bulk Lookup)
+
+```typescript
+// Get delivery date details for multiple orders at once
+const orderIds = orders.orders?.map(o => o.id!).filter(Boolean) ?? [];
+const dates = await sdk.ordersDBS.getDeliveryDates({ orders: orderIds });
+
+for (const dateInfo of dates.orders ?? []) {
+  console.log(`Order ${dateInfo.orderId}:`);
+  console.log(`  Delivery date: ${dateInfo.deliveryDate}`);
+  console.log(`  Max delivery date: ${dateInfo.maxDeliveryDate}`);
+}
+```
+
 ### Customer Comments
 
 ```typescript
@@ -233,47 +367,72 @@ if (order.comment) {
 | `gtin` | Global trade item | Exactly 13 chars |
 | `customsDeclaration` | Customs number | 1-50 chars |
 
-### Setting Metadata
+### Setting Metadata (Bulk -- Recommended)
+
+Use the bulk metadata methods to set metadata for multiple orders in a single API call:
 
 ```typescript
-// Check what's required
-const meta = order.requiredMeta ?? [];
+// Set IMEI for multiple orders
+const imeiResult = await sdk.ordersDBS.setImeiBulk({
+  orders: [
+    { orderId: 111, imei: '123456789012345' },
+    { orderId: 222, imei: '543210987654321' }
+  ]
+});
 
-// Set SGTIN for marked products
-if (meta.includes('sgtin')) {
-  await sdk.ordersDBS.setSgtin(order.id!, [
-    '01046012345678900421abc123',
-    '01046012345678900421abc124'
-  ]);
-}
+// Set SGTIN for multiple orders
+const sgtinResult = await sdk.ordersDBS.setSgtinBulk({
+  orders: [
+    { orderId: 333, sgtins: ['01046012345678900421abc123'] },
+    { orderId: 444, sgtins: ['01046012345678900421abc456', '01046012345678900421abc789'] }
+  ]
+});
 
-// Set IMEI for electronics
-if (meta.includes('imei')) {
-  await sdk.ordersDBS.setImei(order.id!, '123456789012345');
-}
+// Set customs declaration for multiple orders
+const cdResult = await sdk.ordersDBS.setCustomsDeclarationBulk({
+  orders: [
+    { orderId: 555, customsDeclaration: '10130030/010123/0000001' }
+  ]
+});
+```
 
-// Set customs declaration for imports
-if (meta.includes('customsDeclaration')) {
-  await sdk.ordersDBS.setCustomsDeclaration(order.id!, '10130030/010123/0000001');
+### Verifying Metadata (Bulk)
+
+```typescript
+const meta = await sdk.ordersDBS.getMetaBulk({
+  orders: [111, 222, 333, 444, 555]
+});
+
+for (const orderMeta of meta.orders ?? []) {
+  console.log(`Order ${orderMeta.orderId}:`);
+  if (orderMeta.imei) {
+    console.log(`  IMEI: ${orderMeta.imei}`);
+  }
+  if (orderMeta.sgtins?.length) {
+    console.log(`  SGTIN codes: ${orderMeta.sgtins.length}`);
+  }
+  if (orderMeta.customsDeclaration) {
+    console.log(`  Customs: ${orderMeta.customsDeclaration}`);
+  }
 }
 ```
 
-### Verifying Metadata
+### Deleting Metadata (Bulk)
 
 ```typescript
-const orderMeta = await sdk.ordersDBS.getMeta(orderId);
+// If you need to correct metadata for multiple orders
+const deleteResult = await sdk.ordersDBS.deleteMetaBulk({
+  orders: [111, 222],
+  key: 'imei'
+});
 
-if (orderMeta.meta?.sgtin?.value) {
-  console.log(`SGTIN codes set: ${orderMeta.meta.sgtin.value.length}`);
-}
-```
-
-### Deleting Metadata
-
-```typescript
-// If you need to correct metadata
-await sdk.ordersDBS.deleteMeta(orderId, 'imei');
-await sdk.ordersDBS.setImei(orderId, 'corrected15chars');
+// Then set corrected values
+await sdk.ordersDBS.setImeiBulk({
+  orders: [
+    { orderId: 111, imei: 'corrected150000' },
+    { orderId: 222, imei: 'corrected250000' }
+  ]
+});
 ```
 
 ## B2B Orders
@@ -301,9 +460,9 @@ for (const result of b2bInfo.results ?? []) {
 
 For B2B orders, you typically need:
 
-1. **Invoice (Счёт-фактура)** with organization details
+1. **Invoice** with organization details
 2. **INN and KPP** in accounting documents
-3. **Universal Transfer Document (УПД)** if required
+3. **Universal Transfer Document (UPD)** if required
 
 ```typescript
 // Example: Generate invoice data
@@ -319,6 +478,35 @@ if (b2bOrder?.data) {
 
   // Use invoiceData for your accounting system
 }
+```
+
+## Rate Limits
+
+The DBS API uses a **4-tier rate limit system**. The SDK enforces these limits automatically, but understanding them helps you design efficient integrations.
+
+### Rate Limit Tiers
+
+| Tier | Name | Requests/Min | Interval | Burst | Applies To |
+|------|------|-------------|----------|-------|------------|
+| **T1** | Assembly Read | 300 | 200ms | 20 | `getNewOrders`, `getOrders`, `getClientInfo`, `getStatusesBulk`, `getB2BInfo`, `getGroupsInfo`, `getDeliveryDates` |
+| **T2** | Status Write | 60 | 1s | 10 | `confirmBulk`, `deliverBulk`, `receiveBulk`, `rejectBulk`, `cancelBulk` |
+| **T3** | Meta Read/Delete | 150 | 400ms | 20 | `getMetaBulk`, `deleteMetaBulk` (and deprecated `getMeta`, `deleteMeta`) |
+| **T4** | Meta Set | 500 | 120ms | 20 | `setSgtinBulk`, `setUinBulk`, `setImeiBulk`, `setGtinBulk`, `setCustomsDeclarationBulk` |
+
+### Rate Limit Tips
+
+- **T2 (Status Write)** is the most restrictive at 60 requests/minute. Batch order IDs into `confirmBulk([...])` calls instead of confirming one at a time.
+- **T4 (Meta Set)** is the most generous at 500 requests/minute. Metadata set operations are fast but still benefit from bulk calls for fewer round-trips.
+- The SDK handles rate limiting automatically. If a limit is hit, the request is queued and retried after the required interval.
+
+```typescript
+// Efficient: one API call for 500 orders
+const result = await sdk.ordersDBS.confirmBulk(orderIds); // 1 T2 call
+
+// Inefficient: 500 API calls (would exhaust T2 limit in ~8 minutes)
+// for (const id of orderIds) {
+//   await sdk.ordersDBS.confirm(id); // 500 T2 calls -- DON'T DO THIS
+// }
 ```
 
 ## Error Handling
@@ -391,23 +579,36 @@ for (const failure of failed) {
 
 ## Best Practices
 
-### 1. Check Metadata Before Confirming
+### 1. Use Bulk Methods for Metadata
+
+```typescript
+// Preferred: Set metadata for all orders in one call
+const result = await sdk.ordersDBS.setImeiBulk({
+  orders: [
+    { orderId: 111, imei: '123456789012345' },
+    { orderId: 222, imei: '543210987654321' }
+  ]
+});
+
+// Avoid: Setting metadata one order at a time (deprecated, removed April 13, 2026)
+// await sdk.ordersDBS.setImei(111, '123456789012345');
+// await sdk.ordersDBS.setImei(222, '543210987654321');
+```
+
+### 2. Check Metadata Before Confirming
 
 ```typescript
 // Always add required metadata before confirming
 const order = newOrders.orders?.[0];
 if (order?.requiredMeta?.length) {
-  // Set all required metadata first
-  for (const metaType of order.requiredMeta) {
-    // Set metadata based on type...
-  }
+  // Set all required metadata first using bulk methods
+  // Then confirm
 }
 
-// Then confirm
 await sdk.ordersDBS.confirmBulk([order.id!]);
 ```
 
-### 2. Batch Operations
+### 3. Batch Operations
 
 ```typescript
 // Process multiple orders efficiently
@@ -417,7 +618,7 @@ const orderIds = orders.orders?.map(o => o.id!).filter(Boolean) ?? [];
 const statuses = await sdk.ordersDBS.getStatusesBulk(orderIds);
 ```
 
-### 3. Handle Pagination
+### 4. Handle Pagination
 
 ```typescript
 // Fetch all completed orders with pagination
@@ -440,11 +641,12 @@ do {
 } while (next > 0);
 ```
 
-### 4. Rate Limit Awareness
+### 5. Rate Limit Awareness
 
 ```typescript
-// DBS API: 300 requests/minute with 200ms interval
-// SDK handles this automatically, but for high-volume operations:
+// DBS API has a 4-tier rate limit system.
+// The SDK handles limits automatically, but for high-volume operations
+// batch your order IDs to reduce API call count.
 
 const BATCH_SIZE = 1000; // Max items per bulk request
 const orderBatches = chunkArray(orderIds, BATCH_SIZE);
@@ -463,7 +665,7 @@ function chunkArray<T>(array: T[], size: number): T[][] {
 }
 ```
 
-### 5. Logging and Monitoring
+### 6. Logging and Monitoring
 
 ```typescript
 // Log important operations for debugging
@@ -488,7 +690,7 @@ async function confirmOrderWithLogging(orderId: number) {
 ### "Date range exceeds 30 days"
 
 ```typescript
-// ❌ Wrong
+// Wrong
 const result = await sdk.ordersDBS.getOrders({
   limit: 100,
   next: 0,
@@ -496,7 +698,7 @@ const result = await sdk.ordersDBS.getOrders({
   dateTo: now
 });
 
-// ✅ Correct - split into 30-day chunks
+// Correct - split into 30-day chunks
 const chunks = splitDateRange(startDate, endDate, 30);
 for (const chunk of chunks) {
   const result = await sdk.ordersDBS.getOrders({
@@ -527,12 +729,15 @@ const imei = '123456789012345';
 if (imei.length !== 15) {
   throw new Error(`Invalid IMEI length: ${imei.length}, expected 15`);
 }
-await sdk.ordersDBS.setImei(orderId, imei);
+await sdk.ordersDBS.setImeiBulk({
+  orders: [{ orderId: orderId, imei }]
+});
 ```
 
 ## Next Steps
 
 - [API Reference: OrdersDbsModule](/api/classes/OrdersDbsModule)
+- [DBS Order Workflows](/guides/orders-dbs-workflows)
 - [Migration Guide: Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk)
 - [Example: DBS Core Workflow](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/orders-dbs-core-workflow.ts)
 - [Example: B2B Orders](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/orders-dbs-b2b.ts)

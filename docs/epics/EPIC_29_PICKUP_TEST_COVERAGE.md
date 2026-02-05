@@ -12,6 +12,7 @@
 | Depends On | EPIC 28 (code quality fixes should land first) |
 | Source Swagger | `wildberries_api_doc/06-in-store-pickup.yaml` |
 | Audit Date | February 2026 |
+| Status | DONE |
 
 ---
 

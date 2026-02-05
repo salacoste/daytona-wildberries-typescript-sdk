@@ -2,7 +2,7 @@
 
 # Class: InStorePickupModule
 
-Defined in: [modules/in-store-pickup/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L10)
+Defined in: [modules/in-store-pickup/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L27)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/in-store-pickup/index.ts:10](https://github.com/salacoste/d
 new InStorePickupModule(client: BaseClient): InStorePickupModule;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L11)
+Defined in: [modules/in-store-pickup/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L28)
 
 #### Parameters
 
@@ -32,17 +32,17 @@ Defined in: [modules/in-store-pickup/index.ts:11](https://github.com/salacoste/d
 getOrdersNew(): Promise<ApiNewOrders>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L27)
+Defined in: [modules/in-store-pickup/index.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L44)
 
 Получить список новых сборочных заданий
 
-Метод возвращает список всех новых [сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz), которые есть у продавца на момент запроса. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод возвращает список всех новых сборочных заданий, которые есть у продавца на момент запроса.
 
 #### Returns
 
 `Promise`\<[`ApiNewOrders`](../-internal-/interfaces/ApiNewOrders.md)\>
 
-Успешно
+Список новых сборочных заданий
 
 #### Throws
 
@@ -63,7 +63,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getOrdersNew();
+const result = await sdk.inStorePickup.getOrdersNew();
 console.log(result);
 ```
 
@@ -75,11 +75,11 @@ console.log(result);
 updateOrdersConfirm(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L45)
+Defined in: [modules/in-store-pickup/index.ts:65](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L65)
 
 Перевести на сборку
 
-Метод переводит сборочное задание в статус `confirm` — на сборке. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод переводит сборочное задание в статус confirm — на сборке.
 
 #### Parameters
 
@@ -112,7 +112,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateOrdersConfirm('orderId-value');
+await sdk.inStorePickup.updateOrdersConfirm(12345);
 ```
 
 ***
@@ -123,11 +123,11 @@ const result = await sdk.general.updateOrdersConfirm('orderId-value');
 updateOrdersPrepare(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L63)
+Defined in: [modules/in-store-pickup/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L87)
 
 Сообщить, что сборочное задание готово к выдаче
 
-Метод переводит сборочное задание в статус `prepare` — готово к выдаче. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод переводит сборочное задание в статус prepare — готово к выдаче.
 
 #### Parameters
 
@@ -160,7 +160,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateOrdersPrepare('orderId-value');
+await sdk.inStorePickup.updateOrdersPrepare(12345);
 ```
 
 ***
@@ -171,11 +171,12 @@ const result = await sdk.general.updateOrdersPrepare('orderId-value');
 createOrdersClient(data: ApiOrdersRequest): Promise<ApiOrderClientInfoResp>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L82)
+Defined in: [modules/in-store-pickup/index.ts:111](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L111)
 
 Информация о покупателе
 
-Метод возвращает информацию о покупателе по ID сборочного задания. <br><br> Доступно только для сборочных заданий в статусах: - `confirm` — на сборке - `prepare` — готов к выдаче <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод возвращает информацию о покупателе по ID сборочного задания.
+Доступно только для сборочных заданий в статусах confirm и prepare.
 
 #### Parameters
 
@@ -187,7 +188,7 @@ Defined in: [modules/in-store-pickup/index.ts:82](https://github.com/salacoste/d
 
 `Promise`\<[`ApiOrderClientInfoResp`](../-internal-/interfaces/ApiOrderClientInfoResp.md)\>
 
-Успешно
+Информация о покупателе
 
 #### Throws
 
@@ -208,7 +209,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrdersClient({});
+const result = await sdk.inStorePickup.createOrdersClient({ orders: [12345] });
 console.log(result);
 ```
 
@@ -220,11 +221,12 @@ console.log(result);
 createClientIdentity(data: ApiCheckIdentityRequest): Promise<ApiCheckedIdentity>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:101](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L101)
+Defined in: [modules/in-store-pickup/index.ts:135](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L135)
 
 Проверить, что заказ принадлежит покупателю
 
-Метод сообщает, принадлежит ли проверяемый заказ покупателю или нет по переданному коду. <br><br> Доступно, если хотя бы одно сборочное задание из заказа находится в статусе prepare - готов к выдаче. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 30 запросов | 2 секунды | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод сообщает, принадлежит ли проверяемый заказ покупателю или нет по переданному коду.
+Доступно, если хотя бы одно сборочное задание из заказа находится в статусе prepare.
 
 #### Parameters
 
@@ -236,7 +238,7 @@ Defined in: [modules/in-store-pickup/index.ts:101](https://github.com/salacoste/
 
 `Promise`\<[`ApiCheckedIdentity`](../-internal-/interfaces/ApiCheckedIdentity.md)\>
 
-Успешно
+Результат проверки идентификации
 
 #### Throws
 
@@ -257,7 +259,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createClientIdentity({});
+const result = await sdk.inStorePickup.createClientIdentity({ orderCode: '170046918-0011', passcode: '4567' });
 console.log(result);
 ```
 
@@ -269,11 +271,11 @@ console.log(result);
 updateOrdersReceive(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L119)
+Defined in: [modules/in-store-pickup/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L157)
 
 Сообщить, что заказ принят покупателем
 
-Метод переводит сборочное задание в статус `receive` — получено покупателем. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод переводит сборочное задание в статус receive — получено покупателем.
 
 #### Parameters
 
@@ -306,7 +308,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateOrdersReceive('orderId-value');
+await sdk.inStorePickup.updateOrdersReceive(12345);
 ```
 
 ***
@@ -317,11 +319,11 @@ const result = await sdk.general.updateOrdersReceive('orderId-value');
 updateOrdersReject(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:137](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L137)
+Defined in: [modules/in-store-pickup/index.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L179)
 
 Сообщить, что покупатель отказался от заказа
 
-Метод переводит сборочное задание в статус `reject` — отказ при получении. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод переводит сборочное задание в статус reject — отказ при получении.
 
 #### Parameters
 
@@ -354,22 +356,22 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateOrdersReject('orderId-value');
+await sdk.inStorePickup.updateOrdersReject(12345);
 ```
 
 ***
 
-### createOrdersStatu()
+### createOrdersStatus()
 
 ```ts
-createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses>;
+createOrdersStatus(data: ApiOrdersRequest): Promise<ApiOrderStatuses>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:156](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L156)
+Defined in: [modules/in-store-pickup/index.ts:202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L202)
 
 Получить статусы сборочных заданий
 
-Метод возвращает статусы сборочных заданий по их ID. <br><br> `supplierStatus` — статус сборочного задания. Триггер его изменения - действие самого продавца. Возможные значения `supplierStatus`: | Статус | Описание | Как перевести сборочное задание в данный статус | | ------- | --------- | --------------------------------------| | `new` | **Новое сборочное задание** | | `confirm` | **На сборке** | [Перевести сборочное задание на сборку](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1confirm/patch) | `prepare` | **Готов к выдаче** | [Сообщить, что сборочное задание готово к выдаче](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1prepare/patch) | `receive` | **Получено покупателем** | [Сообщить, что заказ принят покупателем](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1receive/patch) | `reject` | **Отказ покупателя при получении** | [Сообщить, что покупатель отказался от заказа](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1reject/patch) | `cancel` | **Отменено продавцом** | [Отменить сборочное задание](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1%7BorderId%7D~1cancel/patch) | `cancel_shelf_life` | **Отмена по истечении срока хранения** | Переводится автоматически по возникновению события <br><br> `wbStatus` — статус системы Wildberries. Возможные значения `wbStatus`: - `waiting` - сборочное задание в работе - `sold` - заказ получен покупателем - `canceled` - отмена сборочного задания - `canceled_by_client` - покупатель отменил заказ при получении - `declined_by_client` - покупатель отменил заказ в первый чаc <br> Отмена доступна покупателю в первый час с момента заказа, если заказ не переведён на сборку - `defect` - отмена заказа по причине брака - `ready_for_pickup` - сборочное задание готово к выдаче <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод возвращает статусы сборочных заданий по их ID.
 
 #### Parameters
 
@@ -381,7 +383,7 @@ Defined in: [modules/in-store-pickup/index.ts:156](https://github.com/salacoste/
 
 `Promise`\<[`ApiOrderStatuses`](../-internal-/interfaces/ApiOrderStatuses.md)\>
 
-Успешно
+Статусы сборочных заданий
 
 #### Throws
 
@@ -402,9 +404,34 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrdersStatu({});
+const result = await sdk.inStorePickup.createOrdersStatus({ orders: [12345] });
 console.log(result);
 ```
+
+***
+
+### ~~createOrdersStatu()~~
+
+```ts
+createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses>;
+```
+
+Defined in: [modules/in-store-pickup/index.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L214)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `data` | [`ApiOrdersRequest`](../-internal-/interfaces/ApiOrdersRequest.md) |
+
+#### Returns
+
+`Promise`\<[`ApiOrderStatuses`](../-internal-/interfaces/ApiOrderStatuses.md)\>
+
+#### Deprecated
+
+Use [createOrdersStatus](#createordersstatus) instead. This alias will be removed in a future version.
+Renamed from createOrdersStatu to createOrdersStatus to fix the truncated method name.
 
 ***
 
@@ -419,11 +446,12 @@ getClickCollectOrders(options?: {
 }): Promise<ApiOrders>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L175)
+Defined in: [modules/in-store-pickup/index.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L234)
 
 Получить информацию о завершённых сборочных заданиях
 
-Метод возвращает информацию о завершённых сборочных заданиях после продажи или отмены заказа. Можно получить данные за заданный период, максимум 30 календарных дней одним запросом. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для методов <strong>сборочных заданий Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод возвращает информацию о завершённых сборочных заданиях после продажи или отмены заказа.
+Можно получить данные за заданный период, максимум 30 календарных дней одним запросом.
 
 #### Parameters
 
@@ -439,7 +467,7 @@ Defined in: [modules/in-store-pickup/index.ts:175](https://github.com/salacoste/
 
 `Promise`\<[`ApiOrders`](../-internal-/interfaces/ApiOrders.md)\>
 
-Успешно
+Список завершённых сборочных заданий
 
 #### Throws
 
@@ -460,7 +488,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getClickCollectOrders({});
+const result = await sdk.inStorePickup.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
 console.log(result);
 ```
 
@@ -472,11 +500,11 @@ console.log(result);
 updateOrdersCancel(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L193)
+Defined in: [modules/in-store-pickup/index.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L260)
 
 Отменить сборочное задание
 
-Метод отменяет сборочное задание и переводит в статус `cancel` — отменено продавцом. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод отменяет сборочное задание и переводит в статус cancel — отменено продавцом.
 
 #### Parameters
 
@@ -509,7 +537,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateOrdersCancel('orderId-value');
+await sdk.inStorePickup.updateOrdersCancel(12345);
 ```
 
 ***
@@ -520,11 +548,12 @@ const result = await sdk.general.updateOrdersCancel('orderId-value');
 getOrdersMeta(orderId: number): Promise<ApiOrdersMeta>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L212)
+Defined in: [modules/in-store-pickup/index.ts:284](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L284)
 
 Получить метаданные сборочного задания
 
-Метод возвращает метаданные [сборочного задания](/openapi/orders-fbs#tag/Sborochnye-zadaniya/paths/~1api~1v3~1orders~1new/get). <br><br> Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get), поле `requiredMeta`. <br><br> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод возвращает метаданные сборочного задания.
+Перечень метаданных, доступных для сборочного задания, можно получить в списке новых сборочных заданий, поле requiredMeta.
 
 #### Parameters
 
@@ -536,7 +565,7 @@ Defined in: [modules/in-store-pickup/index.ts:212](https://github.com/salacoste/
 
 `Promise`\<[`ApiOrdersMeta`](../-internal-/interfaces/ApiOrdersMeta.md)\>
 
-Успешно
+Метаданные сборочного задания
 
 #### Throws
 
@@ -557,7 +586,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getOrdersMeta('orderId-value');
+const result = await sdk.inStorePickup.getOrdersMeta(12345);
 console.log(result);
 ```
 
@@ -571,11 +600,12 @@ deleteOrdersMeta(orderId: number, options?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L231)
+Defined in: [modules/in-store-pickup/index.ts:307](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L307)
 
 Удалить метаданные сборочного задания
 
-Метод удаляет значение метаданных сборочного задания для переданного ключа. Возможные метаданные: `imei`, `uin`, `gtin`, `sgtin` Передается только одно значение. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод удаляет значение метаданных сборочного задания для переданного ключа.
+Возможные метаданные: imei, uin, gtin, sgtin. Передается только одно значение.
 
 #### Parameters
 
@@ -610,7 +640,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deleteOrdersMeta('orderId-value', {});
+await sdk.inStorePickup.deleteOrdersMeta(12345, { key: 'imei' });
 ```
 
 ***
@@ -621,11 +651,13 @@ const result = await sdk.general.deleteOrdersMeta('orderId-value', {});
 updateMetaSgtin(orderId: number, data: ApiSGTINsRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L250)
+Defined in: [modules/in-store-pickup/index.ts:332](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L332)
 
-Закрепить за сборочным заданием код маркировки товара
+Закрепить за сборочным заданием код маркировки товара (SGTIN)
 
-Метод закрепляет за сборочным заданием код маркировки [Честный знак](https://честныйзнак.рф). <br><br> Закрепить код маркировки можно только, если в [метаданных сборочного задания](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get) есть поле `sgtins`, а сборочное задание находится в [статусе](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1status/post) `confirm`. <br><br> Получить загруженные маркировки можно в [метаданных сборочного задания](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод закрепляет за сборочным заданием код маркировки Честный знак.
+Закрепить код маркировки можно только, если в метаданных есть поле sgtins,
+а сборочное задание находится в статусе confirm.
 
 #### Parameters
 
@@ -659,7 +691,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaSgtin('orderId-value', {});
+await sdk.inStorePickup.updateMetaSgtin(12345, { sgtins: ['1234567890123456'] });
 ```
 
 ***
@@ -670,11 +702,12 @@ const result = await sdk.general.updateMetaSgtin('orderId-value', {});
 updateMetaUin(orderId: number, data: ApiUINRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L269)
+Defined in: [modules/in-store-pickup/index.ts:356](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L356)
 
 Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
 
-Метод обновляет УИН сборочного задания. У одного сборочного задания может быть только один УИН. Добавлять маркировку можно только для сборочных заданий в статусе `confirm` и доставка которых осуществляется силами WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод обновляет УИН сборочного задания. У одного сборочного задания может быть только один УИН.
+Добавлять маркировку можно только для сборочных заданий в статусе confirm.
 
 #### Parameters
 
@@ -708,7 +741,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaUin('orderId-value', {});
+await sdk.inStorePickup.updateMetaUin(12345, { uin: '1234567890123456' });
 ```
 
 ***
@@ -719,11 +752,12 @@ const result = await sdk.general.updateMetaUin('orderId-value', {});
 updateMetaImei(orderId: number, data: ApiIMEIRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L288)
+Defined in: [modules/in-store-pickup/index.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L380)
 
 Закрепить за сборочным заданием IMEI
 
-Метод обновляет IMEI сборочного задания. У одного сборочного задания может быть только один IMEI. Добавлять маркировку можно только для сборочных заданий в статусе `confirm` и доставка которых осуществляется силами WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод обновляет IMEI сборочного задания. У одного сборочного задания может быть только один IMEI.
+Добавлять маркировку можно только для сборочных заданий в статусе confirm.
 
 #### Parameters
 
@@ -757,7 +791,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaImei('orderId-value', {});
+await sdk.inStorePickup.updateMetaImei(12345, { imei: '123456789012345' });
 ```
 
 ***
@@ -768,11 +802,13 @@ const result = await sdk.general.updateMetaImei('orderId-value', {});
 updateMetaGtin(orderId: number, data: ApiGTINRequest): Promise<void>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:307](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/in-store-pickup/index.ts#L307)
+Defined in: [modules/in-store-pickup/index.ts:405](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/in-store-pickup/index.ts#L405)
 
 Закрепить за сборочным заданием GTIN
 
-Метод обновляет GTIN (уникальный ID товара в Беларуси) сборочного задания. У одного сборочного задания может быть только один GTIN. Добавлять маркировку можно только для сборочных заданий в статусе `confirm` и доставка которых осуществляется силами WB. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1000 запросов | 60 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Метод обновляет GTIN (уникальный ID товара в Беларуси) сборочного задания.
+У одного сборочного задания может быть только один GTIN.
+Добавлять маркировку можно только для сборочных заданий в статусе confirm.
 
 #### Parameters
 
@@ -806,5 +842,5 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateMetaGtin('orderId-value', {});
+await sdk.inStorePickup.updateMetaGtin(12345, { gtin: '1234567890123456' });
 ```

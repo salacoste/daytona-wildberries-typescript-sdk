@@ -134,7 +134,7 @@ async function canCancelOrder(
   sdk: WildberriesSDK,
   orderId: number
 ): Promise<boolean> {
-  const statusResult = await sdk.ordersFBS.createOrdersStatu({
+  const statusResult = await sdk.ordersFBS.createOrdersStatus({
     orders: [orderId]
   });
 
@@ -167,7 +167,7 @@ async function getOrderStatuses(
   sdk: WildberriesSDK,
   orderIds: number[]
 ): Promise<OrderStatusInfo[]> {
-  const result = await sdk.ordersFBS.createOrdersStatu({
+  const result = await sdk.ordersFBS.createOrdersStatus({
     orders: orderIds
   });
 
@@ -587,7 +587,7 @@ if (alerts.length > 0) {
 | Метод | Лимит | Интервал |
 |-------|-------|----------|
 | `updateOrdersCancel()` | 400 запросов | 1 минута |
-| `createOrdersStatu()` | 600 запросов | 1 минута |
+| `createOrdersStatus()` | 600 запросов | 1 минута |
 | `createOrdersStatusHistory()` | 300 запросов | 1 минута |
 | `createSuppliesOrdersReshipment()` | 6 запросов | 1 минута |
 | `getTariffsReturn()` | 60 запросов | 1 минута |

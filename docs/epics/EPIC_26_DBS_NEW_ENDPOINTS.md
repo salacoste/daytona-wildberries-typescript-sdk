@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 26.x (Stories 26.1-26.2)
 **SDK Version**: 2.9.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - 2 new info endpoints enable paid delivery group management and delivery date retrieval

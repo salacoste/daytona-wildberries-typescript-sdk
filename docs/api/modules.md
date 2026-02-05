@@ -40,6 +40,7 @@ Main entry point
 | [PromotionModule](classes/PromotionModule.md) | - |
 | [ReportsModule](classes/ReportsModule.md) | - |
 | [TariffsModule](classes/TariffsModule.md) | - |
+| [UserManagementModule](classes/UserManagementModule.md) | - |
 
 ## Interfaces
 
@@ -48,6 +49,16 @@ Main entry point
 | [RateLimitConfig](interfaces/RateLimitConfig.md) | Configuration for rate limiting a specific endpoint. |
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
+| [AccessItem](interfaces/AccessItem.md) | Элемент настройки доступа к разделу профиля продавца |
+| [InviteeInfo](interfaces/InviteeInfo.md) | Информация о приглашении пользователя |
+| [UserInfo](interfaces/UserInfo.md) | Информация о пользователе профиля продавца |
+| [GetUsersResponse](interfaces/GetUsersResponse.md) | Ответ на запрос списка пользователей |
+| [GetUsersParams](interfaces/GetUsersParams.md) | Параметры запроса для получения списка пользователей |
+| [CreateInviteRequest](interfaces/CreateInviteRequest.md) | Запрос на создание приглашения пользователя |
+| [CreateInviteResponse](interfaces/CreateInviteResponse.md) | Ответ на запрос создания приглашения |
+| [UserAccess](interfaces/UserAccess.md) | Настройки доступа для конкретного пользователя |
+| [UpdateUserAccessRequest](interfaces/UpdateUserAccessRequest.md) | Запрос на обновление настроек доступа пользователей |
+| [UserManagementErrorResponse](interfaces/UserManagementErrorResponse.md) | Ответ с информацией об ошибке от User Management API |
 | [SupplyCostInput](interfaces/SupplyCostInput.md) | Input parameters for supply cost calculation |
 | [SupplyCostResult](interfaces/SupplyCostResult.md) | Result of supply cost calculation |
 | [CompareTariffsInput](interfaces/CompareTariffsInput.md) | Input parameters for tariff comparison |
@@ -60,19 +71,24 @@ Main entry point
 | Type Alias | Description |
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
+| [AccessCode](type-aliases/AccessCode.md) | Код раздела профиля продавца, к которому пользователь получит доступ. |
 | [TariffRecommendation](type-aliases/TariffRecommendation.md) | Recommendation based on tariff comparison |
 
 ## Variables
 
 | Variable | Description |
 | ------ | ------ |
+| [financesRateLimits](variables/financesRateLimits.md) | - |
 | [generalRateLimits](variables/generalRateLimits.md) | - |
+| [inStorePickupRateLimits](variables/inStorePickupRateLimits.md) | - |
 | [ordersDbsRateLimits](variables/ordersDbsRateLimits.md) | - |
 | [ordersFbsRateLimits](variables/ordersFbsRateLimits.md) | - |
 | [ordersFbwRateLimits](variables/ordersFbwRateLimits.md) | - |
+| [productsRateLimits](variables/productsRateLimits.md) | - |
 | [promotionRateLimits](variables/promotionRateLimits.md) | - |
 | [ALL\_RATE\_LIMITS](variables/ALL_RATE_LIMITS.md) | Aggregated rate limit configuration for all SDK modules. |
 | [tariffsRateLimits](variables/tariffsRateLimits.md) | - |
+| [userManagementRateLimits](variables/userManagementRateLimits.md) | - |
 | [version](variables/version.md) | SDK version |
 
 ## Functions

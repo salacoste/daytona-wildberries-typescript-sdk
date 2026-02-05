@@ -2,16 +2,18 @@
 
 # Interface: OrdersRequestAPI
 
-Defined in: [types/orders-fbs.types.ts:329](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L329)
+Defined in: [types/orders-fbs.types.ts:192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L192)
+
+Generic order IDs request body used across multiple endpoints
 
 ## Example
 
 ```json
 {
- "orders": [
-   987654321,
-   123456789
- ]
+  "orders": [
+    987654321,
+    123456789
+  ]
 }
 ```
 
@@ -19,4 +21,4 @@ Defined in: [types/orders-fbs.types.ts:329](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | `number`[] | Список заказов | [types/orders-fbs.types.ts:331](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L331) |
+| <a id="orders"></a> `orders?` | `number`[] | List of order IDs | [types/orders-fbs.types.ts:194](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L194) |

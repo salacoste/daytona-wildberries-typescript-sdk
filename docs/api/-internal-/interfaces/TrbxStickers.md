@@ -2,11 +2,13 @@
 
 # Interface: TrbxStickers
 
-Defined in: [types/orders-fbs.types.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L234)
+Defined in: [types/orders-fbs.types.ts:607](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L607)
+
+Box sticker data with encoded barcode and file content
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="barcode"></a> `barcode?` | `string` | Закодированное значение стикера | [types/orders-fbs.types.ts:236](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L236) |
-| <a id="file"></a> `file?` | `string` | Полное представление стикера в заданном формате (кодировка base64) | [types/orders-fbs.types.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L238) |
+| <a id="barcode"></a> `barcode?` | `string` | Encoded sticker barcode value | [types/orders-fbs.types.ts:609](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L609) |
+| <a id="file"></a> `file?` | `string` | Full sticker representation in the requested format (base64 encoded) | [types/orders-fbs.types.ts:611](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L611) |

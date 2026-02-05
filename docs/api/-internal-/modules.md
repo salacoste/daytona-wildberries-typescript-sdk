@@ -14,6 +14,7 @@
 
 | Interface | Description |
 | ------ | ------ |
+| [ProblemJsonFields](interfaces/ProblemJsonFields.md) | Parsed fields from an RFC 7807 problem+json error response. |
 | [RetryConfig](interfaces/RetryConfig.md) | Configuration options for retry behavior |
 | [MainRequest](interfaces/MainRequest.md) | Параметры запроса для формирования главной страницы: - `currentPeriod` — текущий период - `pastPeriod` — предыдущий период для сравнения |
 | [MainResponse](interfaces/MainResponse.md) | - |
@@ -105,12 +106,19 @@
 | [MessageResponse](interfaces/MessageResponse.md) | - |
 | [EventsResponse](interfaces/EventsResponse.md) | - |
 | [EventsResult](interfaces/EventsResult.md) | - |
-| [RequestDownload](interfaces/RequestDownload.md) | Auto-generated TypeScript types for finances module Generated from: wildberries_api_doc/13-finances.yaml |
+| [AccountBalanceResponse](interfaces/AccountBalanceResponse.md) | Response from the balance endpoint |
+| [RequestDownload](interfaces/RequestDownload.md) | - |
 | [GetCategories](interfaces/GetCategories.md) | - |
 | [GetList](interfaces/GetList.md) | - |
 | [GetDoc](interfaces/GetDoc.md) | - |
 | [GetDocs](interfaces/GetDocs.md) | - |
 | [DetailReportItem](interfaces/DetailReportItem.md) | - |
+| [PingResponse](interfaces/PingResponse.md) | Response structure for ping endpoint |
+| [NewsItem](interfaces/NewsItem.md) | News item structure from news endpoint |
+| [NewsTag](interfaces/NewsTag.md) | News tag structure |
+| [NewsResponse](interfaces/NewsResponse.md) | Response structure for news endpoint |
+| [NewsRequestParams](interfaces/NewsRequestParams.md) | Parameters for news endpoint request |
+| [SellerInfoResponse](interfaces/SellerInfoResponse.md) | Response structure for seller info endpoint |
 | [ApiCheckedIdentity](interfaces/ApiCheckedIdentity.md) | Auto-generated TypeScript types for in-store-pickup module Generated from: wildberries_api_doc/06-in-store-pickup.yaml |
 | [ApiCheckIdentityRequest](interfaces/ApiCheckIdentityRequest.md) | - |
 | [ApiGTINRequest](interfaces/ApiGTINRequest.md) | - |
@@ -147,18 +155,45 @@
 | [GetOrderMetaResponse](interfaces/GetOrderMetaResponse.md) | Response from getOrderMeta |
 | [~~DBSOrderStatusLegacy~~](interfaces/DBSOrderStatusLegacy.md) | - |
 | [~~GetStatusResponseLegacy~~](interfaces/GetStatusResponseLegacy.md) | - |
-| [PassOffice](interfaces/PassOffice.md) | Данные о складе, для которого требуется пропуск |
-| [Order](interfaces/Order.md) | - |
-| [Supply](interfaces/Supply.md) | - |
-| [OrderNew](interfaces/OrderNew.md) | - |
-| [SupplyOrder](interfaces/SupplyOrder.md) | - |
-| [SupplyTrbx](interfaces/SupplyTrbx.md) | - |
-| [TrbxStickers](interfaces/TrbxStickers.md) | - |
-| [Meta](interfaces/Meta.md) | Метаданные сборочного задания |
-| [Pass](interfaces/Pass.md) | Данные о пропуске продавца |
-| [CrossborderTurkeyClientInfo](interfaces/CrossborderTurkeyClientInfo.md) | - |
-| [CrossborderTurkeyClientInfoResp](interfaces/CrossborderTurkeyClientInfoResp.md) | - |
-| [OrdersRequestAPI](interfaces/OrdersRequestAPI.md) | - |
+| [OrderGroupsRequest](interfaces/OrderGroupsRequest.md) | Request body for getGroupsInfo Used to query order group information |
+| [OrderGroup](interfaces/OrderGroup.md) | A single order group containing related orders |
+| [OrderGroupsResponse](interfaces/OrderGroupsResponse.md) | Response from getGroupsInfo |
+| [DeliveryDatesRequest](interfaces/DeliveryDatesRequest.md) | Request body for getDeliveryDates Used to query delivery date information for orders |
+| [DeliveryDateInfo](interfaces/DeliveryDateInfo.md) | Delivery date information for a single order |
+| [DeliveryDatesInfoResponse](interfaces/DeliveryDatesInfoResponse.md) | Response from getDeliveryDates |
+| [GetMetaBulkRequest](interfaces/GetMetaBulkRequest.md) | Request body for getMetaBulk |
+| [BulkOrderMeta](interfaces/BulkOrderMeta.md) | Metadata for a single order in bulk response |
+| [GetOrderMetaBulkResponse](interfaces/GetOrderMetaBulkResponse.md) | Response from getMetaBulk |
+| [DeleteMetaBulkRequest](interfaces/DeleteMetaBulkRequest.md) | Request body for deleteMetaBulk |
+| [DeleteMetaBulkResponse](interfaces/DeleteMetaBulkResponse.md) | Response from deleteMetaBulk |
+| [SetSgtinBulkRequest](interfaces/SetSgtinBulkRequest.md) | Request body for setSgtinBulk |
+| [SetUinBulkRequest](interfaces/SetUinBulkRequest.md) | Request body for setUinBulk |
+| [SetImeiBulkRequest](interfaces/SetImeiBulkRequest.md) | Request body for setImeiBulk |
+| [SetGtinBulkRequest](interfaces/SetGtinBulkRequest.md) | Request body for setGtinBulk |
+| [SetCustomsDeclarationBulkRequest](interfaces/SetCustomsDeclarationBulkRequest.md) | Request body for setCustomsDeclarationBulk |
+| [BulkMetaResultItem](interfaces/BulkMetaResultItem.md) | Result item for a single order in bulk metadata set response |
+| [BulkMetaError](interfaces/BulkMetaError.md) | Error detail for a single order in bulk metadata operations |
+| [SetMetaBulkResponse](interfaces/SetMetaBulkResponse.md) | Response from bulk metadata set operations (setSgtinBulk, setUinBulk, etc.) |
+| [AddOrdersToSupplyRequest](interfaces/AddOrdersToSupplyRequest.md) | Request body for adding orders to a supply |
+| [GetMetaMultiRequest](interfaces/GetMetaMultiRequest.md) | Request body for retrieving metadata of multiple orders (max 100) |
+| [OrdersRequestAPI](interfaces/OrdersRequestAPI.md) | Generic order IDs request body used across multiple endpoints |
+| [OrderStatusResponse](interfaces/OrderStatusResponse.md) | Response containing order statuses |
+| [ReshipmentResponse](interfaces/ReshipmentResponse.md) | Response containing orders that require reshipment |
+| [ReshipmentOrder](interfaces/ReshipmentOrder.md) | An order that requires reshipment |
+| [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
+| [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
+| [SupplyOrderIdsResponse](interfaces/SupplyOrderIdsResponse.md) | Response containing order IDs within a supply |
+| [Order](interfaces/Order.md) | Assembly order (sborochnoe zadanie) with full details |
+| [Supply](interfaces/Supply.md) | Supply (postavka) entity representing a shipment batch |
+| [OrderNew](interfaces/OrderNew.md) | New (unprocessed) assembly order with additional pricing and metadata fields |
+| [SupplyOrder](interfaces/SupplyOrder.md) | Order within a supply (legacy response format) |
+| [SupplyTrbx](interfaces/SupplyTrbx.md) | Supply box (transport box) entity |
+| [TrbxStickers](interfaces/TrbxStickers.md) | Box sticker data with encoded barcode and file content |
+| [Meta](interfaces/Meta.md) | Order metadata containing various identification and tracking codes |
+| [PassOffice](interfaces/PassOffice.md) | Warehouse office data for seller pass registration |
+| [Pass](interfaces/Pass.md) | Seller pass for warehouse access |
+| [CrossborderTurkeyClientInfo](interfaces/CrossborderTurkeyClientInfo.md) | Client information for cross-border orders from Turkey |
+| [CrossborderTurkeyClientInfoResp](interfaces/CrossborderTurkeyClientInfoResp.md) | Response wrapper for cross-border Turkey client information |
 | [ModelsTransitTariff](interfaces/ModelsTransitTariff.md) | Auto-generated TypeScript types for orders-fbw module Generated from: wildberries_api_doc/07-orders-fbw.yaml |
 | [ModelsVolumeTariff](interfaces/ModelsVolumeTariff.md) | - |
 | [ModelsBox](interfaces/ModelsBox.md) | - |
@@ -177,6 +212,16 @@
 | [RequestMoveNmsImtConn](interfaces/RequestMoveNmsImtConn.md) | - |
 | [RequestMoveNmsImtDisconn](interfaces/RequestMoveNmsImtDisconn.md) | - |
 | [ResponseContentError](interfaces/ResponseContentError.md) | - |
+| [Good](interfaces/Good.md) | - |
+| [SizeGoodReq](interfaces/SizeGoodReq.md) | - |
+| [ClubDiscReq](interfaces/ClubDiscReq.md) | - |
+| [GoodsList](interfaces/GoodsList.md) | Размеры товара |
+| [SizeGood](interfaces/SizeGood.md) | Информация о размере |
+| [GoodBufferHistory](interfaces/GoodBufferHistory.md) | - |
+| [GoodHistory](interfaces/GoodHistory.md) | - |
+| [SupplierTaskMetadata](interfaces/SupplierTaskMetadata.md) | Данные ответа |
+| [SupplierTaskMetadataBuffer](interfaces/SupplierTaskMetadataBuffer.md) | Данные ответа |
+| [QuarantineGoods](interfaces/QuarantineGoods.md) | - |
 | [Office](interfaces/Office.md) | Данные о складе WB |
 | [Warehouse](interfaces/Warehouse.md) | Данные о складе продавца |
 | [ResponsePublicViewerPublicErrorsTableListV2](interfaces/ResponsePublicViewerPublicErrorsTableListV2.md) | - |
@@ -188,6 +233,25 @@
 | [RequestPublicViewerPublicErrorsTableListV2](interfaces/RequestPublicViewerPublicErrorsTableListV2.md) | - |
 | [SwaggerPublicErrorsCursorInput](interfaces/SwaggerPublicErrorsCursorInput.md) | Пагинатор |
 | [SwaggerPublicErrorsOrderV2](interfaces/SwaggerPublicErrorsOrderV2.md) | Порядок выдачи пакетов |
+| [Brand](interfaces/Brand.md) | Бренд |
+| [BrandsResponse](interfaces/BrandsResponse.md) | Ответ со списком брендов |
+| [UploadTaskResponse](interfaces/UploadTaskResponse.md) | Response for upload task creation (POST /api/v2/upload/task, /task/size, /task/club-discount) |
+| [TaskHistoryResponse](interfaces/TaskHistoryResponse.md) | Response for processed upload tasks history (GET /api/v2/history/tasks) |
+| [GoodsHistoryResponse](interfaces/GoodsHistoryResponse.md) | Response for goods in processed upload (GET /api/v2/history/goods/task) |
+| [TaskBufferResponse](interfaces/TaskBufferResponse.md) | Response for buffer upload tasks (GET /api/v2/buffer/tasks) |
+| [GoodsBufferResponse](interfaces/GoodsBufferResponse.md) | Response for goods in buffer upload (GET /api/v2/buffer/goods/task) |
+| [GoodsFilterResponse](interfaces/GoodsFilterResponse.md) | Response for goods list with prices (GET /api/v2/list/goods/filter) |
+| [GoodsFilterByNmResponse](interfaces/GoodsFilterByNmResponse.md) | Response for goods list by article numbers (POST /api/v2/list/goods/filter) |
+| [SizeGoodsResponse](interfaces/SizeGoodsResponse.md) | Response for size-specific pricing (GET /api/v2/list/goods/size/nm) |
+| [QuarantineGoodsResponse](interfaces/QuarantineGoodsResponse.md) | Response for quarantine goods (GET /api/v2/list/goods/quarantine) |
+| [ParentCategory](interfaces/ParentCategory.md) | Родительская категория |
+| [GetParentAllResponse](interfaces/GetParentAllResponse.md) | Response for parent categories (GET /content/v2/object/parent/all) |
+| [DirectoryColor](interfaces/DirectoryColor.md) | Цвет из справочника |
+| [GetDirectoryColorsResponse](interfaces/GetDirectoryColorsResponse.md) | Response for colors directory (GET /content/v2/directory/colors) |
+| [DirectoryCountry](interfaces/DirectoryCountry.md) | Страна из справочника |
+| [GetDirectoryCountriesResponse](interfaces/GetDirectoryCountriesResponse.md) | Response for countries directory (GET /content/v2/directory/countries) |
+| [ContentTag](interfaces/ContentTag.md) | Ярлык (тег контента) |
+| [GetContentTagsResponse](interfaces/GetContentTagsResponse.md) | Response for content tags (GET /content/v2/tags) |
 | [V0GetConfigCategoriesResponse](interfaces/V0GetConfigCategoriesResponse.md) | - |
 | [V0AdvertMultiBidItem](interfaces/V0AdvertMultiBidItem.md) | - |
 | [V0AdvertMultibid](interfaces/V0AdvertMultibid.md) | - |
@@ -261,9 +325,16 @@
 | [SalesFunnelGroupedHistoryResponse](type-aliases/SalesFunnelGroupedHistoryResponse.md) | Ответ сгруппированной истории воронки продаж v3 (Swagger: GroupedHistoryResponse) |
 | [ResponseFeedback](type-aliases/ResponseFeedback.md) | Массив отзывов |
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
+| [DocumentsLocale](type-aliases/DocumentsLocale.md) | Supported locale values for document endpoints |
 | [DBSSupplierStatus](type-aliases/DBSSupplierStatus.md) | DBS supplier status Triggered by seller actions |
 | [DBSMetadataKey](type-aliases/DBSMetadataKey.md) | Metadata key types |
+| [OrderSupplierStatus](type-aliases/OrderSupplierStatus.md) | Supplier-side order status |
+| [OrderWbStatus](type-aliases/OrderWbStatus.md) | Wildberries system order status |
+| [CargoType](type-aliases/CargoType.md) | Cargo type: 1 = small, 2 = oversized, 3 = large |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
+| [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |
+| [SizeGoodsBody](type-aliases/SizeGoodsBody.md) | Размеры и цены для них. Максимум 1 000 размеров. |
+| [ClubDisc](type-aliases/ClubDisc.md) | Товары и скидки WB Клуба для них. Максимум 1 000 товаров. |
 | [PlacementType](type-aliases/PlacementType.md) | Места размещения: - `search` — поиск - `recommendation` — рекомендации - `combined` — поиск и рекомендации |
 | [DailyStats1](type-aliases/DailyStats1.md) | - |
 | [Stats1](type-aliases/Stats1.md) | - |

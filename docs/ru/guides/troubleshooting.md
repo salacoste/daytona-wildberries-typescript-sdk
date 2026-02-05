@@ -79,7 +79,7 @@ layout: doc
 |----------|----------------------|------------|
 | Получить новые заказы | `sdk.ordersFBS.getOrdersNew()` | Заказы, ожидающие обработки |
 | Список всех заказов | `sdk.ordersFBS.orders({ limit, next, dateFrom?, dateTo? })` | Пагинация с фильтрами по дате |
-| Получить статусы заказов | `sdk.ordersFBS.createOrdersStatu({ orders: number[] })` | Пакетная проверка статуса |
+| Получить статусы заказов | `sdk.ordersFBS.createOrdersStatus({ orders: number[] })` | Пакетная проверка статуса |
 | Создать поставку | `sdk.ordersFBS.createSupply({ name })` | Начать новую отгрузку |
 | Получить поставки | `sdk.ordersFBS.supplies({ limit, next })` | Список всех поставок |
 | Добавить заказ в поставку | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | Добавить заказ в поставку |

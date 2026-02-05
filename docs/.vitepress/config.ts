@@ -48,6 +48,9 @@ export default defineConfig({
     /^\.\//,
     // Russian version links (need localization sync)
     /\/ru\//,
+    // Internal docs (excluded from build via srcExclude, referenced from module pages)
+    /\/epics\//,
+    /\/stories\//,
     // Root-level docs referenced from nested folders
     /README$/,
     /CONTRIBUTING$/,

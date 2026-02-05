@@ -2,16 +2,16 @@
 
 # Interface: CommonInfo
 
-Defined in: [types/analytics.types.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L46)
+Defined in: [types/analytics.types.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L46)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="supplierrating"></a> `supplierRating` | \{ `current`: `number`; `dynamics?`: `number`; \} | Рейтинг продавца | [types/analytics.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L48) |
-| `supplierRating.current` | `number` | Текущий рейтинг продавца | [types/analytics.types.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L50) |
-| `supplierRating.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:52](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L52) |
-| <a id="advertisedproducts"></a> `advertisedProducts` | \{ `current`: `number`; `dynamics?`: `number`; \} | Количество товаров в рекламе | [types/analytics.types.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L55) |
-| `advertisedProducts.current` | `number` | Текущее количество товаров в рекламе | [types/analytics.types.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L57) |
-| `advertisedProducts.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:59](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L59) |
-| <a id="totalproducts"></a> `totalProducts` | `number` | Общее количество товаров | [types/analytics.types.ts:62](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L62) |
+| <a id="supplierrating"></a> `supplierRating` | \{ `current`: `number`; `dynamics?`: `number`; \} | Рейтинг продавца | [types/analytics.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L48) |
+| `supplierRating.current` | `number` | Текущий рейтинг продавца | [types/analytics.types.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L50) |
+| `supplierRating.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:52](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L52) |
+| <a id="advertisedproducts"></a> `advertisedProducts` | \{ `current`: `number`; `dynamics?`: `number`; \} | Количество товаров в рекламе | [types/analytics.types.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L55) |
+| `advertisedProducts.current` | `number` | Текущее количество товаров в рекламе | [types/analytics.types.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L57) |
+| `advertisedProducts.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:59](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L59) |
+| <a id="totalproducts"></a> `totalProducts` | `number` | Общее количество товаров | [types/analytics.types.ts:62](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L62) |

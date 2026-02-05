@@ -5,7 +5,7 @@
 
 ## Overview
 
-Wildberries is deprecating single-order DBS status methods in favor of bulk operations. The legacy methods will be **disabled on April 13, 2026**. This guide helps you migrate your code to the new bulk API.
+Wildberries is deprecating single-order DBS status **and metadata** methods in favor of bulk operations. All 13 legacy methods will be **disabled on April 13, 2026**. This guide helps you migrate your code to the new bulk API.
 
 ## Why Migrate?
 
@@ -16,6 +16,8 @@ Wildberries is deprecating single-order DBS status methods in favor of bulk oper
 
 ## Method Mapping
 
+### Status Methods
+
 | Legacy Method | Bulk Replacement | Notes |
 |--------------|-----------------|-------|
 | `getStatuses(orderIds)` | `getStatusesBulk(orderIds)` | Same signature |
@@ -24,6 +26,31 @@ Wildberries is deprecating single-order DBS status methods in favor of bulk oper
 | `receive(orderId, code)` | `receiveBulk([{orderId, code}])` | Object format |
 | `reject(orderId, code)` | `rejectBulk([{orderId, code}])` | Object format |
 | `cancel(orderId)` | `cancelBulk([orderId])` | Wrap in array |
+
+### Metadata Methods
+
+| Legacy Method | Bulk Replacement | Notes |
+|--------------|-----------------|-------|
+| `getMeta(orderId)` | `getMetaBulk({ orders: [orderId] })` | Request object format |
+| `deleteMeta(orderId, key)` | `deleteMetaBulk({ orders: [orderId], key })` | Request object format |
+| `setSgtin(orderId, sgtins)` | `setSgtinBulk({ orders: [{ orderId, sgtins }] })` | Nested object format |
+| `setUin(orderId, uin)` | `setUinBulk({ orders: [{ orderId, uin }] })` | Nested object format |
+| `setImei(orderId, imei)` | `setImeiBulk({ orders: [{ orderId, imei }] })` | Nested object format |
+| `setGtin(orderId, gtin)` | `setGtinBulk({ orders: [{ orderId, gtin }] })` | Nested object format |
+| `setCustomsDeclaration(orderId, cd)` | `setCustomsDeclarationBulk({ orders: [{ orderId, customsDeclaration }] })` | Nested object format |
+
+### Rate Limit Differences
+
+The bulk methods use the same rate limit tiers as their legacy counterparts, but because you can process multiple orders per call, you use far fewer API requests overall.
+
+| Tier | Legacy Methods | Bulk Methods | RPM | Interval |
+|------|---------------|-------------|-----|----------|
+| **T1** | `getStatuses` | `getStatusesBulk` | 300 | 200ms |
+| **T2** | `confirm`, `deliver`, `receive`, `reject`, `cancel` | `confirmBulk`, `deliverBulk`, `receiveBulk`, `rejectBulk`, `cancelBulk` | 60 | 1s |
+| **T3** | `getMeta`, `deleteMeta` | `getMetaBulk`, `deleteMetaBulk` | 150 | 400ms |
+| **T4** | `setSgtin`, `setUin`, `setImei`, `setGtin`, `setCustomsDeclaration` | `setSgtinBulk`, `setUinBulk`, `setImeiBulk`, `setGtinBulk`, `setCustomsDeclarationBulk` | 500 | 120ms |
+
+**Example**: Processing 100 orders with IMEI metadata requires 100 T4 calls with legacy `setImei()`, but only 1 T4 call with `setImeiBulk()`.
 
 ## Migration Examples
 
@@ -122,6 +149,93 @@ const result = await sdk.ordersDBS.cancelBulk([orderId]);
 // Handle result.results for each order
 ```
 
+### Get Metadata
+
+**Before (Legacy):**
+```typescript
+const meta = await sdk.ordersDBS.getMeta(orderId);
+if (meta.meta?.imei?.value) {
+  console.log(`IMEI: ${meta.meta.imei.value}`);
+}
+```
+
+**After (Bulk):**
+```typescript
+const meta = await sdk.ordersDBS.getMetaBulk({ orders: [orderId] });
+for (const orderMeta of meta.orders ?? []) {
+  if (orderMeta.imei) {
+    console.log(`Order ${orderMeta.orderId} IMEI: ${orderMeta.imei}`);
+  }
+}
+```
+
+### Set IMEI
+
+**Before (Legacy):**
+```typescript
+await sdk.ordersDBS.setImei(orderId, '123456789012345');
+```
+
+**After (Bulk):**
+```typescript
+const result = await sdk.ordersDBS.setImeiBulk({
+  orders: [{ orderId, imei: '123456789012345' }]
+});
+```
+
+### Set SGTIN
+
+**Before (Legacy):**
+```typescript
+await sdk.ordersDBS.setSgtin(orderId, ['01046012345678900421abc123']);
+```
+
+**After (Bulk):**
+```typescript
+const result = await sdk.ordersDBS.setSgtinBulk({
+  orders: [{ orderId, sgtins: ['01046012345678900421abc123'] }]
+});
+```
+
+### Set UIN / GTIN / Customs Declaration
+
+**Before (Legacy):**
+```typescript
+await sdk.ordersDBS.setUin(orderId, '1234567890123456');
+await sdk.ordersDBS.setGtin(orderId, '1234567890123');
+await sdk.ordersDBS.setCustomsDeclaration(orderId, '10130030/010123/0000001');
+```
+
+**After (Bulk):**
+```typescript
+await sdk.ordersDBS.setUinBulk({
+  orders: [{ orderId, uin: '1234567890123456' }]
+});
+
+await sdk.ordersDBS.setGtinBulk({
+  orders: [{ orderId, gtin: '1234567890123' }]
+});
+
+await sdk.ordersDBS.setCustomsDeclarationBulk({
+  orders: [{ orderId, customsDeclaration: '10130030/010123/0000001' }]
+});
+```
+
+### Delete Metadata
+
+**Before (Legacy):**
+```typescript
+await sdk.ordersDBS.deleteMeta(orderId, 'imei');
+```
+
+**After (Bulk):**
+```typescript
+const result = await sdk.ordersDBS.deleteMetaBulk({
+  orders: [orderId],
+  key: 'imei'
+});
+```
+
 ## Processing Multiple Orders
 
 The main advantage of bulk methods is processing multiple orders efficiently:
@@ -141,6 +255,34 @@ confirmResult.results?.forEach(result => {
     console.log(`Order ${result.orderId} confirmed`);
   }
 });
+```
+
+## Processing Multiple Orders with Metadata
+
+The bulk metadata methods allow you to handle metadata for many orders in a single call, replacing loops of single-order calls:
+
+```typescript
+// BEFORE: N API calls for N orders (legacy, deprecated)
+for (const order of orders) {
+  const meta = await sdk.ordersDBS.getMeta(order.id);
+  if (!meta.meta?.imei?.value && order.requiredMeta?.includes('imei')) {
+    await sdk.ordersDBS.setImei(order.id, lookupImei(order.id));
+  }
+}
+
+// AFTER: 2 API calls regardless of order count (bulk)
+const orderIds = orders.map(o => o.id);
+const metaResult = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+
+const needsImei = (metaResult.orders ?? [])
+  .filter(m => !m.imei)
+  .map(m => m.orderId!);
+
+if (needsImei.length > 0) {
+  await sdk.ordersDBS.setImeiBulk({
+    orders: needsImei.map(id => ({ orderId: id, imei: lookupImei(id) }))
+  });
+}
 ```
 
 ## Error Handling Changes
@@ -200,12 +342,24 @@ interface GetStatusInfoResponse {
 
 ## Migration Checklist
 
+### Status Methods
 - [ ] Identify all uses of `getStatuses()` → Replace with `getStatusesBulk()`
 - [ ] Identify all uses of `confirm()` → Replace with `confirmBulk()`
 - [ ] Identify all uses of `deliver()` → Replace with `deliverBulk()`
 - [ ] Identify all uses of `receive()` → Replace with `receiveBulk()`
 - [ ] Identify all uses of `reject()` → Replace with `rejectBulk()`
 - [ ] Identify all uses of `cancel()` → Replace with `cancelBulk()`
+
+### Metadata Methods
+- [ ] Identify all uses of `getMeta()` → Replace with `getMetaBulk()`
+- [ ] Identify all uses of `deleteMeta()` → Replace with `deleteMetaBulk()`
+- [ ] Identify all uses of `setSgtin()` → Replace with `setSgtinBulk()`
+- [ ] Identify all uses of `setUin()` → Replace with `setUinBulk()`
+- [ ] Identify all uses of `setImei()` → Replace with `setImeiBulk()`
+- [ ] Identify all uses of `setGtin()` → Replace with `setGtinBulk()`
+- [ ] Identify all uses of `setCustomsDeclaration()` → Replace with `setCustomsDeclarationBulk()`
+
+### Verification
 - [ ] Update error handling to check per-order results
 - [ ] Update response parsing for new field names (`orderId` vs `id`)
 - [ ] Test with production-like data before deadline

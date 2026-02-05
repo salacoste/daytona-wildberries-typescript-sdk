@@ -82,7 +82,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 |-----------|-------------------|-------|
 | Get new orders | `sdk.ordersFBS.getOrdersNew()` | Orders awaiting processing |
 | List all orders | `sdk.ordersFBS.orders({ limit, next, dateFrom?, dateTo? })` | Paginated with date filters |
-| Get order statuses | `sdk.ordersFBS.createOrdersStatu({ orders: number[] })` | Batch status check |
+| Get order statuses | `sdk.ordersFBS.createOrdersStatus({ orders: number[] })` | Batch status check |
 | Create supply | `sdk.ordersFBS.createSupply({ name })` | Start new shipment |
 | Get supplies | `sdk.ordersFBS.supplies({ limit, next })` | List all supplies |
 | Add order to supply | `sdk.ordersFBS.updateSuppliesOrder(supplyId, orderId)` | Add order to supply |

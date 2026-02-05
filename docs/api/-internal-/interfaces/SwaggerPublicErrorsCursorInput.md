@@ -2,7 +2,7 @@
 
 # Interface: SwaggerPublicErrorsCursorInput
 
-Defined in: [types/products.types.ts:567](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/products.types.ts#L567)
+Defined in: [types/products.types.ts:570](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/products.types.ts#L570)
 
 Пагинатор
 
@@ -10,6 +10,6 @@ Defined in: [types/products.types.ts:567](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="limit"></a> `limit?` | `number` | Количество пакетов в ответе | [types/products.types.ts:569](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/products.types.ts#L569) |
-| <a id="updatedat"></a> `updatedAt?` | `string` | Дата и время формирования последнего пакета в ответе на предыдущий запрос | [types/products.types.ts:571](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/products.types.ts#L571) |
-| <a id="batchuuid"></a> `batchUUID?` | `string` | ID последнего пакета в ответе на предыдущий запрос | [types/products.types.ts:573](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/products.types.ts#L573) |
+| <a id="limit"></a> `limit?` | `number` | Количество пакетов в ответе | [types/products.types.ts:572](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/products.types.ts#L572) |
+| <a id="updatedat"></a> `updatedAt?` | `string` | Дата и время формирования последнего пакета в ответе на предыдущий запрос | [types/products.types.ts:574](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/products.types.ts#L574) |
+| <a id="batchuuid"></a> `batchUUID?` | `string` | ID последнего пакета в ответе на предыдущий запрос | [types/products.types.ts:576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/products.types.ts#L576) |

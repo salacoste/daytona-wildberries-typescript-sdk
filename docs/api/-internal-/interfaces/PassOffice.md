@@ -2,14 +2,14 @@
 
 # Interface: PassOffice
 
-Defined in: [types/orders-fbs.types.ts:13](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L13)
+Defined in: [types/orders-fbs.types.ts:647](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L647)
 
-Данные о складе, для которого требуется пропуск
+Warehouse office data for seller pass registration
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name?` | `string` | Название | [types/orders-fbs.types.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L15) |
-| <a id="address"></a> `address?` | `string` | Адрес | [types/orders-fbs.types.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L17) |
-| <a id="id"></a> `id?` | `number` | ID | [types/orders-fbs.types.ts:19](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/orders-fbs.types.ts#L19) |
+| <a id="name"></a> `name?` | `string` | Office name | [types/orders-fbs.types.ts:649](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L649) |
+| <a id="address"></a> `address?` | `string` | Office address | [types/orders-fbs.types.ts:651](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L651) |
+| <a id="id"></a> `id?` | `number` | Office ID | [types/orders-fbs.types.ts:653](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/orders-fbs.types.ts#L653) |

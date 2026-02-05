@@ -2,7 +2,7 @@
 
 # Class: ProductsModule
 
-Defined in: [modules/products/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L10)
+Defined in: [modules/products/index.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L37)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/products/index.ts:10](https://github.com/salacoste/daytona-
 new ProductsModule(client: BaseClient): ProductsModule;
 ```
 
-Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L11)
+Defined in: [modules/products/index.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L38)
 
 #### Parameters
 
@@ -31,37 +31,29 @@ Defined in: [modules/products/index.ts:11](https://github.com/salacoste/daytona-
 ```ts
 getParentAll(options?: {
   locale?: string;
-}): Promise<{
-  data?: unknown;
-  error?: boolean;
-  errorText?: string;
-  additionalErrors?: string;
-}>;
+}): Promise<GetParentAllResponse>;
 ```
 
-Defined in: [modules/products/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L28)
+Defined in: [modules/products/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L61)
 
 Родительские категории товаров
 
-Метод возвращает названия и ID всех родительских категорий для [создания карточек товаров](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov): например, `Электроника`, `Бытовая химия`, `Рукоделие`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns parent category names and IDs for product card creation (e.g., Electronics, Household chemicals).
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
-`Promise`\<\{
-  `data?`: `unknown`;
-  `error?`: `boolean`;
-  `errorText?`: `string`;
-  `additionalErrors?`: `string`;
-\}\>
+`Promise`\<[`GetParentAllResponse`](../-internal-/interfaces/GetParentAllResponse.md)\>
 
-Успешно
+Parent categories list
 
 #### Throws
 
@@ -79,11 +71,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getParentAll({});
-console.log(result);
+```typescript
+const result = await sdk.products.getParentAll({ locale: 'ru' });
+console.log(result.data); // Parent categories array
 ```
 
 ***
@@ -110,22 +106,24 @@ getObjectAll(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L47)
+Defined in: [modules/products/index.ts:96](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L96)
 
 Список предметов
 
-Метод возвращает список названий [родительских категорий предметов](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1parent~1all/get) и их предметов с ID. Например, у категории `Игрушки` будут предметы `Калейдоскопы`, `Куклы`, `Мячики`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns parent category names and their subjects with IDs (e.g., category "Toys" contains "Kaleidoscopes", "Dolls", "Balls").
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; `name?`: `string`; `limit?`: `number`; `offset?`: `number`; `parentID?`: `number`; \} | Query parameters |
-| `options.locale?` | `string` | - |
-| `options.name?` | `string` | - |
-| `options.limit?` | `number` | - |
-| `options.offset?` | `number` | - |
-| `options.parentID?` | `number` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
+| `options.name?` | `string` | Subject name filter |
+| `options.limit?` | `number` | Number of items to return |
+| `options.offset?` | `number` | Items offset |
+| `options.parentID?` | `number` | Parent category ID filter |
 
 #### Returns
 
@@ -141,7 +139,7 @@ Defined in: [modules/products/index.ts:47](https://github.com/salacoste/daytona-
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+List of subjects with their parent categories
 
 #### Throws
 
@@ -159,11 +157,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getObjectAll({});
-console.log(result);
+```typescript
+const result = await sdk.products.getObjectAll({ parentID: 306, locale: 'ru', limit: 50 });
+console.log(result.data); // [{ subjectID, parentID, subjectName, parentName }]
 ```
 
 ***
@@ -191,11 +193,14 @@ getObjectCharc(subjectId: number, options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:67](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L67)
+Defined in: [modules/products/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L142)
 
 Характеристики предмета
 
-Метод возвращает параметры характеристик предмета: названия, типы данных, единицы измерения и так далее. В запросе необходимо указать ID [предмета](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get). <div class="description_important"> Для получения значений характеристик <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1colors/get">Цвет</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1kinds/get">Пол</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1countries/get">Страна производства</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1seasons/get">Сезон</a>, <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1vat/get">Ставка НДС</a> и <a href="/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1directory~1tnved/get">ТНВЭД-код</a> используйте отдельные методы </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns characteristic parameters for a subject: names, data types, units of measure, etc.
+Use separate methods for Color, Gender, Country, Season, VAT, and TNVED values.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
@@ -203,7 +208,7 @@ Defined in: [modules/products/index.ts:67](https://github.com/salacoste/daytona-
 | ------ | ------ | ------ |
 | `subjectId` | `number` | ID предмета |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
@@ -224,7 +229,7 @@ Defined in: [modules/products/index.ts:67](https://github.com/salacoste/daytona-
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+Subject characteristics list
 
 #### Throws
 
@@ -242,11 +247,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getObjectCharc('subjectId-value', {});
-console.log(result);
+```typescript
+const result = await sdk.products.getObjectCharc(105, { locale: 'ru' });
+console.log(result.data); // [{ charcID, name, required, unitName, charcType }]
 ```
 
 ***
@@ -256,37 +265,29 @@ console.log(result);
 ```ts
 getDirectoryColors(options?: {
   locale?: string;
-}): Promise<{
-  data?: unknown;
-  error?: boolean;
-  errorText?: string;
-  additionalErrors?: string;
-}>;
+}): Promise<GetDirectoryColorsResponse>;
 ```
 
-Defined in: [modules/products/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L86)
+Defined in: [modules/products/index.ts:203](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L203)
 
 Цвет
 
-Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Цвет`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns possible values for the "Color" product characteristic.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
-`Promise`\<\{
-  `data?`: `unknown`;
-  `error?`: `boolean`;
-  `errorText?`: `string`;
-  `additionalErrors?`: `string`;
-\}\>
+`Promise`\<[`GetDirectoryColorsResponse`](../-internal-/interfaces/GetDirectoryColorsResponse.md)\>
 
-Успешно
+Available color values
 
 #### Throws
 
@@ -304,11 +305,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDirectoryColors({});
-console.log(result);
+```typescript
+const result = await sdk.products.getDirectoryColors({ locale: 'ru' });
+console.log(result.data); // Available color values
 ```
 
 ***
@@ -326,18 +331,20 @@ getDirectoryKinds(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L105)
+Defined in: [modules/products/index.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L234)
 
 Пол
 
-Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Пол`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns possible values for the "Gender" product characteristic.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
@@ -348,7 +355,7 @@ Defined in: [modules/products/index.ts:105](https://github.com/salacoste/daytona
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+Available gender values
 
 #### Throws
 
@@ -366,11 +373,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDirectoryKinds({});
-console.log(result);
+```typescript
+const result = await sdk.products.getDirectoryKinds({ locale: 'ru' });
+console.log(result.data); // ['Мужской', 'Женский', 'Унисекс']
 ```
 
 ***
@@ -380,37 +391,29 @@ console.log(result);
 ```ts
 getDirectoryCountries(options?: {
   locale?: string;
-}): Promise<{
-  data?: unknown;
-  error?: boolean;
-  errorText?: string;
-  additionalErrors?: string;
-}>;
+}): Promise<GetDirectoryCountriesResponse>;
 ```
 
-Defined in: [modules/products/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L124)
+Defined in: [modules/products/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L269)
 
 Страна производства
 
-Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Страна производства`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns possible values for the "Country of manufacture" product characteristic.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
-`Promise`\<\{
-  `data?`: `unknown`;
-  `error?`: `boolean`;
-  `errorText?`: `string`;
-  `additionalErrors?`: `string`;
-\}\>
+`Promise`\<[`GetDirectoryCountriesResponse`](../-internal-/interfaces/GetDirectoryCountriesResponse.md)\>
 
-Успешно
+Available country values
 
 #### Throws
 
@@ -428,11 +431,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDirectoryCountries({});
-console.log(result);
+```typescript
+const result = await sdk.products.getDirectoryCountries({ locale: 'ru' });
+console.log(result.data); // Available country values
 ```
 
 ***
@@ -450,18 +457,20 @@ getDirectorySeasons(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L143)
+Defined in: [modules/products/index.ts:302](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L302)
 
 Сезон
 
-Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Сезон`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns possible values for the "Season" product characteristic.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
@@ -472,7 +481,7 @@ Defined in: [modules/products/index.ts:143](https://github.com/salacoste/daytona
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+Available season values
 
 #### Throws
 
@@ -490,11 +499,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDirectorySeasons({});
-console.log(result);
+```typescript
+const result = await sdk.products.getDirectorySeasons({ locale: 'ru' });
+console.log(result.data); // ['Лето', 'Зима', 'Демисезон', 'Всесезон']
 ```
 
 ***
@@ -512,18 +525,20 @@ getDirectoryVat(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:162](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L162)
+Defined in: [modules/products/index.ts:337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L337)
 
 Ставка НДС
 
-Метод возвращает возможные значения [характеристики](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get) предмета `Ставка НДС`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns possible values for the "VAT rate" product characteristic.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
@@ -534,7 +549,7 @@ Defined in: [modules/products/index.ts:162](https://github.com/salacoste/daytona
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+Available VAT rate values
 
 #### Throws
 
@@ -552,11 +567,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDirectoryVat({});
-console.log(result);
+```typescript
+const result = await sdk.products.getDirectoryVat({ locale: 'ru' });
+console.log(result.data); // Available VAT rate values
 ```
 
 ***
@@ -579,20 +598,22 @@ getDirectoryTnved(options?: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L181)
+Defined in: [modules/products/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L374)
 
 ТНВЭД-код
 
-Метод возвращает список ТНВЭД-кодов по ID [предмета](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get) и фрагменту ТНВЭД-кода. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns list of TNVED codes by subject ID and optional code fragment search.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `subjectID`: `number`; `search?`: `number`; `locale?`: `string`; \} | Query parameters |
-| `options.subjectID?` | `number` | - |
-| `options.search?` | `number` | - |
-| `options.locale?` | `string` | - |
+| `options.subjectID?` | `number` | Subject ID (required) |
+| `options.search?` | `number` | TNVED code fragment to search |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
@@ -606,7 +627,7 @@ Defined in: [modules/products/index.ts:181](https://github.com/salacoste/daytona
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+TNVED codes with KIZ marking flag
 
 #### Throws
 
@@ -624,11 +645,81 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
+```typescript
+const result = await sdk.products.getDirectoryTnved({ subjectID: 105, search: 6403 });
+console.log(result.data); // [{ tnved: '6403919100', isKiz: true }]
+```
+
+***
+
+### getBrands()
+
 ```ts
-const result = await sdk.general.getDirectoryTnved({});
-console.log(result);
+getBrands(subjectId: number, next?: number): Promise<BrandsResponse>;
+```
+
+Defined in: [modules/products/index.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L427)
+
+Бренды
+
+Метод возвращает список брендов по ID предмета.
+Используйте курсорную пагинацию с параметром `next` для получения всех результатов.
+
+Rate limit: 1 запрос в секунду, всплеск 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `subjectId` | `number` | ID предмета |
+| `next?` | `number` | Курсор пагинации из предыдущего ответа |
+
+#### Returns
+
+`Promise`\<[`BrandsResponse`](../-internal-/interfaces/BrandsResponse.md)\>
+
+Пагинированный список брендов с общим количеством
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki](https://dev.wildberries.ru/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki)
+
+#### Example
+
+```typescript
+// Получить первую страницу брендов для предмета 1234
+const result = await sdk.products.getBrands(1234);
+console.log(`Всего брендов: ${result.total}`);
+
+// Пагинация по всем брендам
+let next: number | undefined;
+do {
+  const page = await sdk.products.getBrands(1234, next);
+  page.brands.forEach(b => console.log(b.name));
+  next = page.next;
+} while (next);
 ```
 
 ***
@@ -636,30 +727,22 @@ console.log(result);
 ### getContentTags()
 
 ```ts
-getContentTags(): Promise<{
-  data?: unknown;
-  error?: boolean;
-  errorText?: string;
-  additionalErrors?: string;
-}>;
+getContentTags(): Promise<GetContentTagsResponse>;
 ```
 
-Defined in: [modules/products/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L199)
+Defined in: [modules/products/index.ts:456](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L456)
 
 Список ярлыков
 
-Метод возвращает список и характеристики всех ярлыков продавца для группировки и фильтрации товаров. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns all seller tags for grouping and filtering products.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Returns
 
-`Promise`\<\{
-  `data?`: `unknown`;
-  `error?`: `boolean`;
-  `errorText?`: `string`;
-  `additionalErrors?`: `string`;
-\}\>
+`Promise`\<[`GetContentTagsResponse`](../-internal-/interfaces/GetContentTagsResponse.md)\>
 
-Успешно
+Seller tags list
 
 #### Throws
 
@@ -677,11 +760,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getContentTags();
-console.log(result);
+```typescript
+const result = await sdk.products.getContentTags();
+console.log(result.data); // Seller tags array
 ```
 
 ***
@@ -695,25 +782,27 @@ createContentTag(data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L218)
+Defined in: [modules/products/index.ts:487](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L487)
 
 Создание ярлыка
 
-Метод добавляет один ярлык продавца. Можно создать максимум 15 ярлыков для одного продавца. Максимальная длина ярлыка — 15 символов. <br>Созданный ярлык можно получить в общем [списке](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Creates a seller tag. Max 15 tags per seller, max 15 characters per tag name.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `color?`: `string`; `name?`: `string`; \} | Request body data |
-| `data.color?` | `string` | - |
-| `data.name?` | `string` | - |
+| `data` | \{ `color?`: `string`; `name?`: `string`; \} | Tag creation data |
+| `data.color?` | `string` | Tag color |
+| `data.name?` | `string` | Tag name (max 15 characters) |
 
 #### Returns
 
 `Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
-Успешно
+Creation result
 
 #### Throws
 
@@ -731,10 +820,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createContentTag({});
+```typescript
+const result = await sdk.products.createContentTag({ color: '#ff0000', name: 'Sale' });
 console.log(result);
 ```
 
@@ -749,26 +842,28 @@ updateContentTag(id: number, data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L238)
+Defined in: [modules/products/index.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L518)
 
 Изменение ярлыка
 
-Метод заменяет данные ярлыка: имя и цвет. <br>Новые данные можно получить в общем [списке](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Replaces tag data: name and color.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `id` | `number` | Числовой ID ярлыка |
-| `data` | \{ `color?`: `string`; `name?`: `string`; \} | Request body data |
-| `data.color?` | `string` | - |
-| `data.name?` | `string` | - |
+| `data` | \{ `color?`: `string`; `name?`: `string`; \} | Tag update data |
+| `data.color?` | `string` | New tag color |
+| `data.name?` | `string` | New tag name |
 
 #### Returns
 
 `Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
-Успешно
+Update result
 
 #### Throws
 
@@ -786,10 +881,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.updateContentTag('id-value', {});
+```typescript
+const result = await sdk.products.updateContentTag(42, { color: '#00ff00', name: 'New Arrivals' });
 console.log(result);
 ```
 
@@ -801,11 +900,13 @@ console.log(result);
 deleteContentTag(id: number): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L257)
+Defined in: [modules/products/index.ts:549](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L549)
 
 Удаление ярлыка
 
-Метод удаляет ярлык из [списка ярлыков](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get) продавца. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Deletes a tag from the seller's tag list.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
@@ -817,7 +918,7 @@ Defined in: [modules/products/index.ts:257](https://github.com/salacoste/daytona
 
 `Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
-Успешно
+Deletion result
 
 #### Throws
 
@@ -835,10 +936,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.deleteContentTag('id-value');
+```typescript
+const result = await sdk.products.deleteContentTag(42);
 console.log(result);
 ```
 
@@ -853,25 +958,28 @@ createNomenclatureLink(data: {
 }): Promise<ResponseContentError>;
 ```
 
-Defined in: [modules/products/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L276)
+Defined in: [modules/products/index.ts:580](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L580)
 
 Управление ярлыками в карточке товара
 
-Метод добавляет или снимает ярлык с карточки товара. К карточке можно добавить максимум 15 ярлыков.<br> При удалении ярлыка из карточки товара он не удаляется из [списка ярлыков](/openapi/work-with-products#tag/Yarlyki/paths/~1content~1v2~1tags/get) продавца. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Adds or removes tags from a product card. Max 15 tags per card.
+Removing a tag from a card does not delete it from the seller's tag list.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `nmID?`: `number`; `tagsIDs?`: `number`[]; \} | Request body data |
-| `data.nmID?` | `number` | - |
-| `data.tagsIDs?` | `number`[] | - |
+| `data` | \{ `nmID?`: `number`; `tagsIDs?`: `number`[]; \} | Tag link data |
+| `data.nmID?` | `number` | Product card nomenclature ID |
+| `data.tagsIDs?` | `number`[] | Array of tag IDs to link/unlink |
 
 #### Returns
 
 `Promise`\<[`ResponseContentError`](../-internal-/interfaces/ResponseContentError.md)\>
 
-Успешно
+Link result
 
 #### Throws
 
@@ -889,16 +997,231 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createNomenclatureLink({});
+```typescript
+const result = await sdk.products.createNomenclatureLink({ nmID: 12345678, tagsIDs: [1, 2, 3] });
 console.log(result);
 ```
 
 ***
 
-### createCardsList()
+### getCardsList()
+
+```ts
+getCardsList(data: {
+  settings?: {
+     sort?: {
+        ascending?: boolean;
+     };
+     filter?: {
+        withPhoto?: number;
+        textSearch?: string;
+        tagIDs?: number[];
+        allowedCategoriesOnly?: boolean;
+        objectIDs?: number[];
+        brands?: string[];
+        imtID?: number;
+     };
+     cursor?: {
+        limit?: number;
+        updatedAt?: string;
+        nmID?: number;
+     };
+  };
+}, options?: {
+  locale?: string;
+}): Promise<{
+  cards?: {
+     nmID?: number;
+     imtID?: number;
+     nmUUID?: string;
+     subjectID?: number;
+     subjectName?: string;
+     vendorCode?: string;
+     brand?: string;
+     title?: string;
+     description?: string;
+     needKiz?: boolean;
+     photos?: {
+        big?: string;
+        c246x328?: string;
+        c516x688?: string;
+        square?: string;
+        tm?: string;
+     }[];
+     video?: string;
+     wholesale?: {
+        enabled?: boolean;
+        quantum?: number;
+     };
+     dimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        weightBrutto?: number;
+        isValid?: boolean;
+     };
+     characteristics?: {
+        id?: number;
+        name?: string;
+        value?: unknown;
+     }[];
+     sizes?: {
+        chrtID?: number;
+        techSize?: string;
+        wbSize?: string;
+        skus?: string[];
+     }[];
+     tags?: {
+        id?: number;
+        name?: string;
+        color?: string;
+     }[];
+     createdAt?: string;
+     updatedAt?: string;
+  }[];
+  cursor?: {
+     updatedAt?: string;
+     nmID?: number;
+     total?: number;
+  };
+}>;
+```
+
+Defined in: [modules/products/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L620)
+
+Список карточек товаров
+
+Returns a paginated list of product cards. Trashed cards are excluded; use getTrashedCards() instead.
+Use cursor-based pagination with updatedAt and nmID from the response cursor to fetch more than 100 cards.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | \{ `settings?`: \{ `sort?`: \{ `ascending?`: `boolean`; \}; `filter?`: \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \}; `cursor?`: \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \}; \}; \} | Request body with settings, filters, and cursor |
+| `data.settings?` | \{ `sort?`: \{ `ascending?`: `boolean`; \}; `filter?`: \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \}; `cursor?`: \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \}; \} | - |
+| `data.settings.sort?` | \{ `ascending?`: `boolean`; \} | - |
+| `data.settings.sort.ascending?` | `boolean` | - |
+| `data.settings.filter?` | \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \} | - |
+| `data.settings.filter.withPhoto?` | `number` | - |
+| `data.settings.filter.textSearch?` | `string` | - |
+| `data.settings.filter.tagIDs?` | `number`[] | - |
+| `data.settings.filter.allowedCategoriesOnly?` | `boolean` | - |
+| `data.settings.filter.objectIDs?` | `number`[] | - |
+| `data.settings.filter.brands?` | `string`[] | - |
+| `data.settings.filter.imtID?` | `number` | - |
+| `data.settings.cursor?` | \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \} | - |
+| `data.settings.cursor.limit?` | `number` | - |
+| `data.settings.cursor.updatedAt?` | `string` | - |
+| `data.settings.cursor.nmID?` | `number` | - |
+| `options?` | \{ `locale?`: `string`; \} | Query parameters |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
+
+#### Returns
+
+`Promise`\<\{
+  `cards?`: \{
+     `nmID?`: `number`;
+     `imtID?`: `number`;
+     `nmUUID?`: `string`;
+     `subjectID?`: `number`;
+     `subjectName?`: `string`;
+     `vendorCode?`: `string`;
+     `brand?`: `string`;
+     `title?`: `string`;
+     `description?`: `string`;
+     `needKiz?`: `boolean`;
+     `photos?`: \{
+        `big?`: `string`;
+        `c246x328?`: `string`;
+        `c516x688?`: `string`;
+        `square?`: `string`;
+        `tm?`: `string`;
+     \}[];
+     `video?`: `string`;
+     `wholesale?`: \{
+        `enabled?`: `boolean`;
+        `quantum?`: `number`;
+     \};
+     `dimensions?`: \{
+        `length?`: `number`;
+        `width?`: `number`;
+        `height?`: `number`;
+        `weightBrutto?`: `number`;
+        `isValid?`: `boolean`;
+     \};
+     `characteristics?`: \{
+        `id?`: `number`;
+        `name?`: `string`;
+        `value?`: `unknown`;
+     \}[];
+     `sizes?`: \{
+        `chrtID?`: `number`;
+        `techSize?`: `string`;
+        `wbSize?`: `string`;
+        `skus?`: `string`[];
+     \}[];
+     `tags?`: \{
+        `id?`: `number`;
+        `name?`: `string`;
+        `color?`: `string`;
+     \}[];
+     `createdAt?`: `string`;
+     `updatedAt?`: `string`;
+  \}[];
+  `cursor?`: \{
+     `updatedAt?`: `string`;
+     `nmID?`: `number`;
+     `total?`: `number`;
+  \};
+\}\>
+
+Product cards with pagination cursor
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
+#### Example
+
+```typescript
+const result = await sdk.products.getCardsList({
+  settings: {
+    cursor: { limit: 100 },
+    filter: { withPhoto: -1 },
+  },
+}, { locale: 'ru' });
+console.log(result.cards); // Product cards array
+console.log(result.cursor?.total); // Total count
+```
+
+***
+
+### ~~createCardsList()~~
 
 ```ts
 createCardsList(data: {
@@ -981,34 +1304,30 @@ createCardsList(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:296](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L296)
-
-Список карточек товаров
-
-<div class="description_auth"> Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong> </div> Метод возвращает список созданных карточек товаров. <div class="description_important"> В ответе метода не будет карточек, находящихся в корзине. Получить такие карточки можно через <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post">отдельный метод</a>. </div> Чтобы получить **больше 100** карточек товаров, используйте пагинацию: 1. Сделайте первый запрос: <br> <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935"> { "settings": { "cursor": { "limit": 100 }, "filter": { "withPhoto": -1 } } }</pre> 2. Пройдите в конец полученного списка карточек товаров. 3. Скопируйте из `cursor` две строки: - `"updatedAt": "***"` - `"nmID": ***` 4. Вставьте скопированные строки в параметр запроса `cursor`. 5. Повторите запрос. 6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Defined in: [modules/products/index.ts:740](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L740)
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `settings?`: \{ `sort?`: \{ `ascending?`: `boolean`; \}; `filter?`: \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \}; `cursor?`: \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \}; \}; \} | Request body data |
-| `data.settings?` | \{ `sort?`: \{ `ascending?`: `boolean`; \}; `filter?`: \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \}; `cursor?`: \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \}; \} | - |
-| `data.settings.sort?` | \{ `ascending?`: `boolean`; \} | - |
-| `data.settings.sort.ascending?` | `boolean` | - |
-| `data.settings.filter?` | \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \} | - |
-| `data.settings.filter.withPhoto?` | `number` | - |
-| `data.settings.filter.textSearch?` | `string` | - |
-| `data.settings.filter.tagIDs?` | `number`[] | - |
-| `data.settings.filter.allowedCategoriesOnly?` | `boolean` | - |
-| `data.settings.filter.objectIDs?` | `number`[] | - |
-| `data.settings.filter.brands?` | `string`[] | - |
-| `data.settings.filter.imtID?` | `number` | - |
-| `data.settings.cursor?` | \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \} | - |
-| `data.settings.cursor.limit?` | `number` | - |
-| `data.settings.cursor.updatedAt?` | `string` | - |
-| `data.settings.cursor.nmID?` | `number` | - |
-| `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data` | \{ `settings?`: \{ `sort?`: \{ `ascending?`: `boolean`; \}; `filter?`: \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \}; `cursor?`: \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \}; \}; \} |
+| `data.settings?` | \{ `sort?`: \{ `ascending?`: `boolean`; \}; `filter?`: \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \}; `cursor?`: \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \}; \} |
+| `data.settings.sort?` | \{ `ascending?`: `boolean`; \} |
+| `data.settings.sort.ascending?` | `boolean` |
+| `data.settings.filter?` | \{ `withPhoto?`: `number`; `textSearch?`: `string`; `tagIDs?`: `number`[]; `allowedCategoriesOnly?`: `boolean`; `objectIDs?`: `number`[]; `brands?`: `string`[]; `imtID?`: `number`; \} |
+| `data.settings.filter.withPhoto?` | `number` |
+| `data.settings.filter.textSearch?` | `string` |
+| `data.settings.filter.tagIDs?` | `number`[] |
+| `data.settings.filter.allowedCategoriesOnly?` | `boolean` |
+| `data.settings.filter.objectIDs?` | `number`[] |
+| `data.settings.filter.brands?` | `string`[] |
+| `data.settings.filter.imtID?` | `number` |
+| `data.settings.cursor?` | \{ `limit?`: `number`; `updatedAt?`: `string`; `nmID?`: `number`; \} |
+| `data.settings.cursor.limit?` | `number` |
+| `data.settings.cursor.updatedAt?` | `string` |
+| `data.settings.cursor.nmID?` | `number` |
+| `options?` | \{ `locale?`: `string`; \} |
+| `options.locale?` | `string` |
 
 #### Returns
 
@@ -1069,30 +1388,9 @@ Defined in: [modules/products/index.ts:296](https://github.com/salacoste/daytona
   \};
 \}\>
 
-Успешно
+#### Deprecated
 
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.general.createCardsList({}, {});
-console.log(result);
-```
+Use [getCardsList](#getcardslist) instead. Will be removed in next major version.
 
 ***
 
@@ -1104,25 +1402,28 @@ createErrorList(data: RequestPublicViewerPublicErrorsTableListV2, options?: {
 }): Promise<ResponsePublicViewerPublicErrorsTableListV2>;
 ```
 
-Defined in: [modules/products/index.ts:339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L339)
+Defined in: [modules/products/index.ts:822](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L822)
 
 Список несозданных карточек товаров с ошибками
 
-Метод возвращает список карточек товаров ([черновиков](https://seller.wildberries.ru/new-goods/error-cards)), при создании или редактировании которых произошли ошибки, с описанием этих ошибок. <br><br> Данные в ответе возвращаются пакетами `batch`. Один пакет содержит: - все ошибки по одной объединённой карточке товара `imtID` одного запроса при [создании](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post) карточек товаров - все ошибки одного запроса при [создании с присоединением](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post) или [редактировании](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) карточек товаров <br><br> Чтобы получить более 100 пакетов, используйте пагинацию: 1. Сделайте первый запрос: <br> <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935"> { "cursor": { "limit": 100 }, "order": { "ascending": true } }</pre> 2. Скопируйте `"updatedAt": "***"`,`"batchUUID": "***" `из `cursor` ответа и вставьте в `cursor` запроса. 3. Повторите запрос. 4. Повторяйте пункты 2 и 3, пока не получите в ответе `"next": false`. Это будет означать, что вы получили все пакеты. <div class="description_important"> Чтобы удалить карточку товара из списка, сделайте ещё один запрос на создание, создание с присоединением или редактирование карточки товара с исправленными ошибками </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+Returns product cards (drafts) that failed during creation or editing, with error descriptions.
+Data is returned in batches. Use cursor pagination with updatedAt and batchUUID.
+
+Rate limit: 10 req/min, 6s interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | [`RequestPublicViewerPublicErrorsTableListV2`](../-internal-/interfaces/RequestPublicViewerPublicErrorsTableListV2.md) | Request body data |
+| `data` | [`RequestPublicViewerPublicErrorsTableListV2`](../-internal-/interfaces/RequestPublicViewerPublicErrorsTableListV2.md) | Request body with cursor and order settings |
 | `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options.locale?` | `string` | Language locale (e.g., 'ru', 'en') |
 
 #### Returns
 
 `Promise`\<[`ResponsePublicViewerPublicErrorsTableListV2`](../-internal-/interfaces/ResponsePublicViewerPublicErrorsTableListV2.md)\>
 
-Успешно
+Error list with pagination
 
 #### Throws
 
@@ -1140,10 +1441,17 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createErrorList({}, {});
+```typescript
+const result = await sdk.products.createErrorList(
+  { cursor: { limit: 100 }, order: { ascending: true } },
+  { locale: 'ru' }
+);
 console.log(result);
 ```
 
@@ -1177,23 +1485,27 @@ createCardsUpdate(data?: {
 }[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L358)
+Defined in: [modules/products/index.ts:861](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L861)
 
 Редактирование карточек товаров
 
-Метод обновляет карточки товаров. Данные для обновления можно получить через [список карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) и [список карточек товаров в корзине](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). <div class="description_important"> Карточка товара перезаписывается при обновлении. Поэтому в запросе нужно передать <strong>все</strong> параметры карточки, в том числе те, которые вы не собираетесь обновлять. </div> Нельзя редактировать или удалять баркоды, но можно добавить дополнительный баркод к карточке товара. Параметры `photos`, `video` и `tags` редактировать или удалять через данный метод нельзя.<br> Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`. <br><br> В одном запросе можно отредактировать максимум 3000 карточек товаров (`nmID`). Максимальный размер запроса 10 Мб.<br> Если ответ `Успешно` (`200`), но какие-то карточки не обновились, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+Updates product cards. Card is fully overwritten, so all parameters must be sent including unchanged ones.
+Cannot edit barcodes, photos, video, or tags. Max 3000 cards per request, 10 MB max.
+Dimensions in cm, weight in kg.
+
+Rate limit: 10 req/min, 6s interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data?` | \{ `nmID`: `number`; `vendorCode`: `string`; `brand?`: `string`; `title?`: `string`; `description?`: `string`; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; `sizes`: \{ `chrtID?`: `number`; `techSize?`: `string`; `wbSize?`: `string`; `skus?`: `string`[]; \}[]; \}[] | Request body data |
+| `data?` | \{ `nmID`: `number`; `vendorCode`: `string`; `brand?`: `string`; `title?`: `string`; `description?`: `string`; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; `sizes`: \{ `chrtID?`: `number`; `techSize?`: `string`; `wbSize?`: `string`; `skus?`: `string`[]; \}[]; \}[] | Array of product cards to update |
 
 #### Returns
 
 `Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
-Успешно
+Update result
 
 #### Throws
 
@@ -1211,10 +1523,20 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createCardsUpdate({});
+```typescript
+const result = await sdk.products.createCardsUpdate([{
+  nmID: 12345678,
+  vendorCode: 'ART-001',
+  title: 'Updated Product',
+  sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+  characteristics: [{ id: 1, value: 'Blue' }],
+}]);
 console.log(result);
 ```
 
@@ -1228,23 +1550,26 @@ createCardsMovenm(data?:
 | RequestMoveNmsImtDisconn): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L377)
+Defined in: [modules/products/index.ts:905](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L905)
 
 Объединение и разъединение карточек товаров
 
-Метод объединяет и разъединяет карточки товаров. Карточки товаров считаются объединёнными, если у них одинаковый `imtID`. <br><br> Для объединения карточек товаров сделайте запрос **с указанием** `imtID`. Можно объединять не более 30 карточек товаров.<br> Для разъединения карточек товаров сделайте запрос **без указания** `imtID`. Для разъединенных карточек будут сгенерированы новые `imtID`. <br><br> Если вы разъедините одновременно несколько карточек товаров, эти карточки объединятся в одну и получат новый `imtID`.<br> Чтобы присвоить каждой карточке товара уникальный `imtID`, необходимо передавать по одной карточке товара за запрос.<br> <br> Максимальный размер запроса 10 Мб. <div class="description_important"> Объединить можно только карточки товаров с одинаковыми предметами. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Merges or splits product cards by imtID. With imtID: merge (max 30 cards, same subject only).
+Without imtID: split (new imtID generated). Max request size 10 MB.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data?` | \| [`RequestMoveNmsImtConn`](../-internal-/interfaces/RequestMoveNmsImtConn.md) \| [`RequestMoveNmsImtDisconn`](../-internal-/interfaces/RequestMoveNmsImtDisconn.md) | Request body data |
+| `data?` | \| [`RequestMoveNmsImtConn`](../-internal-/interfaces/RequestMoveNmsImtConn.md) \| [`RequestMoveNmsImtDisconn`](../-internal-/interfaces/RequestMoveNmsImtDisconn.md) | Merge/split request (with or without imtID) |
 
 #### Returns
 
 `Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
-Успешно
+Operation result
 
 #### Throws
 
@@ -1262,10 +1587,18 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createCardsMovenm({});
+```typescript
+// Merge cards under a single imtID
+const result = await sdk.products.createCardsMovenm({
+  imtID: 98765,
+  nmIDs: [12345678, 12345679],
+});
 console.log(result);
 ```
 
@@ -1284,18 +1617,21 @@ createDeleteTrash(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L396)
+Defined in: [modules/products/index.ts:937](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L937)
 
 Перенос карточек товаров в корзину
 
-Метод переносит [карточки товаров в корзину](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). При этом карточки товаров не удаляются, их можно [восстановить](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1recover/post). <div class="description_important"> После переноса в корзину карточке товара присваивается новый <code>imtID</code>. </div> Карточки товаров удаляются автоматически, если лежат в корзине больше 30 дней. Очистка корзины происходит каждую ночь по московскому времени.<br> Карточки товаров можно удалить в любое время в [личном кабинете](https://seller.wildberries.ru/new-goods/basket-cards). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Moves product cards to trash. Cards are not deleted and can be recovered.
+Cards get a new imtID after trashing. Auto-deleted after 30 days.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `nmIDs?`: `number`[]; \} | Request body data |
-| `data.nmIDs?` | `number`[] | - |
+| `data` | \{ `nmIDs?`: `number`[]; \} | Request body with nmIDs to trash |
+| `data.nmIDs?` | `number`[] | Array of product card IDs to move to trash |
 
 #### Returns
 
@@ -1306,7 +1642,7 @@ Defined in: [modules/products/index.ts:396](https://github.com/salacoste/daytona
   `additionalErrors?`: `Record`\<`string`, `never`\>;
 \}\>
 
-Успешно
+Trash operation result
 
 #### Throws
 
@@ -1324,10 +1660,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createDeleteTrash({});
+```typescript
+const result = await sdk.products.createDeleteTrash({ nmIDs: [12345678, 12345679] });
 console.log(result);
 ```
 
@@ -1346,18 +1686,20 @@ createCardsRecover(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L415)
+Defined in: [modules/products/index.ts:974](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L974)
 
 Восстановление карточек товаров из корзины
 
-Метод восстанавливает [карточки товаров из корзины](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). <div class="description_important"> Карточка товара сохраняет тот же <code>imtID</code>, что был присвоен ей при <a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1delete~1trash/post">перемещении в корзину</a>. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Restores product cards from trash. Card retains the imtID assigned when it was trashed.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `nmIDs?`: `number`[]; \} | Request body data |
-| `data.nmIDs?` | `number`[] | - |
+| `data` | \{ `nmIDs?`: `number`[]; \} | Request body with nmIDs to recover |
+| `data.nmIDs?` | `number`[] | Array of product card IDs to restore |
 
 #### Returns
 
@@ -1368,7 +1710,7 @@ Defined in: [modules/products/index.ts:415](https://github.com/salacoste/daytona
   `additionalErrors?`: `Record`\<`string`, `never`\>;
 \}\>
 
-Успешно
+Recovery result
 
 #### Throws
 
@@ -1386,16 +1728,192 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createCardsRecover({});
+```typescript
+const result = await sdk.products.createCardsRecover({ nmIDs: [12345678] });
 console.log(result);
 ```
 
 ***
 
-### createCardsTrash()
+### getTrashedCards()
+
+```ts
+getTrashedCards(data: {
+  settings?: {
+     sort?: {
+        ascending?: boolean;
+     };
+     cursor?: {
+        limit?: number;
+        trashedAt?: string;
+        nmID?: number;
+     };
+     filter?: {
+        textSearch?: string;
+     };
+  };
+}, options?: {
+  locale?: "ru" | "en" | "zh";
+}): Promise<{
+  cards?: {
+     nmID?: number;
+     vendorCode?: string;
+     subjectID?: number;
+     subjectName?: string;
+     photos?: {
+        big?: string;
+        c246x328?: string;
+        c516x688?: string;
+        square?: string;
+        tm?: string;
+     }[];
+     video?: string;
+     wholesale?: {
+        enabled?: boolean;
+        quantum?: number;
+     };
+     sizes?: {
+        chrtID?: number;
+        techSize?: string;
+        wbSize?: string;
+        skus?: string[];
+     }[];
+     dimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        weightBrutto?: number;
+        isValid?: boolean;
+     };
+     characteristics?: {
+        id?: number;
+        name?: string;
+        value?: unknown;
+     }[];
+     createdAt?: string;
+     trashedAt?: string;
+  }[];
+  cursor?: {
+     trashedAt?: string;
+     nmID?: number;
+     total?: number;
+  };
+}>;
+```
+
+Defined in: [modules/products/index.ts:1014](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1014)
+
+Список карточек товаров в корзине
+
+Returns trashed product cards with cursor-based pagination (trashedAt + nmID).
+
+Rate limit: 100 req/min, 600ms interval, burst 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | \{ `settings?`: \{ `sort?`: \{ `ascending?`: `boolean`; \}; `cursor?`: \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \}; `filter?`: \{ `textSearch?`: `string`; \}; \}; \} | Request body with settings, cursor, and filter |
+| `data.settings?` | \{ `sort?`: \{ `ascending?`: `boolean`; \}; `cursor?`: \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \}; `filter?`: \{ `textSearch?`: `string`; \}; \} | - |
+| `data.settings.sort?` | \{ `ascending?`: `boolean`; \} | - |
+| `data.settings.sort.ascending?` | `boolean` | - |
+| `data.settings.cursor?` | \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \} | - |
+| `data.settings.cursor.limit?` | `number` | - |
+| `data.settings.cursor.trashedAt?` | `string` | - |
+| `data.settings.cursor.nmID?` | `number` | - |
+| `data.settings.filter?` | \{ `textSearch?`: `string`; \} | - |
+| `data.settings.filter.textSearch?` | `string` | - |
+| `options?` | \{ `locale?`: `"ru"` \| `"en"` \| `"zh"`; \} | Query parameters |
+| `options.locale?` | `"ru"` \| `"en"` \| `"zh"` | Language locale ('ru', 'en', 'zh') |
+
+#### Returns
+
+`Promise`\<\{
+  `cards?`: \{
+     `nmID?`: `number`;
+     `vendorCode?`: `string`;
+     `subjectID?`: `number`;
+     `subjectName?`: `string`;
+     `photos?`: \{
+        `big?`: `string`;
+        `c246x328?`: `string`;
+        `c516x688?`: `string`;
+        `square?`: `string`;
+        `tm?`: `string`;
+     \}[];
+     `video?`: `string`;
+     `wholesale?`: \{
+        `enabled?`: `boolean`;
+        `quantum?`: `number`;
+     \};
+     `sizes?`: \{
+        `chrtID?`: `number`;
+        `techSize?`: `string`;
+        `wbSize?`: `string`;
+        `skus?`: `string`[];
+     \}[];
+     `dimensions?`: \{
+        `length?`: `number`;
+        `width?`: `number`;
+        `height?`: `number`;
+        `weightBrutto?`: `number`;
+        `isValid?`: `boolean`;
+     \};
+     `characteristics?`: \{
+        `id?`: `number`;
+        `name?`: `string`;
+        `value?`: `unknown`;
+     \}[];
+     `createdAt?`: `string`;
+     `trashedAt?`: `string`;
+  \}[];
+  `cursor?`: \{
+     `trashedAt?`: `string`;
+     `nmID?`: `number`;
+     `total?`: `number`;
+  \};
+\}\>
+
+Trashed product cards with pagination cursor
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
+#### Example
+
+```typescript
+const result = await sdk.products.getTrashedCards({
+  settings: { cursor: { limit: 100 }, filter: { textSearch: 'shoes' } },
+}, { locale: 'ru' });
+console.log(result.cards); // Trashed cards array
+```
+
+***
+
+### ~~createCardsTrash()~~
 
 ```ts
 createCardsTrash(data: {
@@ -1461,28 +1979,24 @@ createCardsTrash(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L435)
-
-Список карточек товаров в корзине
-
-<div class="description_auth"> Метод доступен по <a href="/openapi/api-information#tag/Avtorizaciya/Kak-sozdat-token">токену</a> с категорией <strong>Контент</strong> или <strong>Продвижение</strong> </div> Метод возвращает список карточек товаров в корзине.<br><br> Чтобы получить **больше 100** карточек товаров, воспользуйтесь пагинацией: 1. Сделайте первый запрос: <br> <pre style="background-color: rgb(38 50 56 / 5%); color: #e53935"> { "settings": { "cursor": { "limit": 100 }, "filter": { "withPhoto": -1 } } }</pre> 2. Пройдите в конец полученного списка карточек товаров. 3. Скопируйте из `cursor` две строки: - `"trashedAt": "***"` - `"nmID": ***` 4. Вставьте скопированные строки в параметр запроса `cursor`. 5. Повторите запрос. 6. Повторяйте пункты 2-5, пока поле `total` в ответе не станет меньше чем параметр `limit` в запросе. Это будет означать, что вы получили все карточки. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Defined in: [modules/products/index.ts:1089](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1089)
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `settings?`: \{ `sort?`: \{ `ascending?`: `boolean`; \}; `cursor?`: \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \}; `filter?`: \{ `textSearch?`: `string`; \}; \}; \} | Request body data |
-| `data.settings?` | \{ `sort?`: \{ `ascending?`: `boolean`; \}; `cursor?`: \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \}; `filter?`: \{ `textSearch?`: `string`; \}; \} | - |
-| `data.settings.sort?` | \{ `ascending?`: `boolean`; \} | - |
-| `data.settings.sort.ascending?` | `boolean` | - |
-| `data.settings.cursor?` | \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \} | - |
-| `data.settings.cursor.limit?` | `number` | - |
-| `data.settings.cursor.trashedAt?` | `string` | - |
-| `data.settings.cursor.nmID?` | `number` | - |
-| `data.settings.filter?` | \{ `textSearch?`: `string`; \} | - |
-| `data.settings.filter.textSearch?` | `string` | - |
-| `options?` | \{ `locale?`: `"ru"` \| `"en"` \| `"zh"`; \} | Query parameters |
-| `options.locale?` | `"ru"` \| `"en"` \| `"zh"` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data` | \{ `settings?`: \{ `sort?`: \{ `ascending?`: `boolean`; \}; `cursor?`: \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \}; `filter?`: \{ `textSearch?`: `string`; \}; \}; \} |
+| `data.settings?` | \{ `sort?`: \{ `ascending?`: `boolean`; \}; `cursor?`: \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \}; `filter?`: \{ `textSearch?`: `string`; \}; \} |
+| `data.settings.sort?` | \{ `ascending?`: `boolean`; \} |
+| `data.settings.sort.ascending?` | `boolean` |
+| `data.settings.cursor?` | \{ `limit?`: `number`; `trashedAt?`: `string`; `nmID?`: `number`; \} |
+| `data.settings.cursor.limit?` | `number` |
+| `data.settings.cursor.trashedAt?` | `string` |
+| `data.settings.cursor.nmID?` | `number` |
+| `data.settings.filter?` | \{ `textSearch?`: `string`; \} |
+| `data.settings.filter.textSearch?` | `string` |
+| `options?` | \{ `locale?`: `"ru"` \| `"en"` \| `"zh"`; \} |
+| `options.locale?` | `"ru"` \| `"en"` \| `"zh"` |
 
 #### Returns
 
@@ -1532,30 +2046,9 @@ Defined in: [modules/products/index.ts:435](https://github.com/salacoste/daytona
   \};
 \}\>
 
-Успешно
+#### Deprecated
 
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.general.createCardsTrash({}, {});
-console.log(result);
-```
+Use [getTrashedCards](#gettrashedcards) instead. Will be removed in next major version.
 
 ***
 
@@ -1573,11 +2066,14 @@ getCardsLimits(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:453](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L453)
+Defined in: [modules/products/index.ts:1150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1150)
 
 Лимиты карточек товаров
 
-Возвращает бесплатные и платные лимиты продавца на [создание карточек товаров](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post).<br><br> Формула для получения количества карточек, которые можно создать: > (`freeLimits` + `paidLimits`) - количество созданных карточек Созданными считаются карточки, которые можно получить через методы [список карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) и [список карточек товаров в корзине](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1trash/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Returns free and paid limits for product card creation.
+Available cards = (freeLimits + paidLimits) - created cards count.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Returns
 
@@ -1591,7 +2087,7 @@ Defined in: [modules/products/index.ts:453](https://github.com/salacoste/daytona
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+Card creation limits
 
 #### Throws
 
@@ -1609,11 +2105,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.getCardsLimits();
-console.log(result);
+```typescript
+const result = await sdk.products.getCardsLimits();
+console.log(result.data); // { freeLimits: 1000, paidLimits: 500 }
 ```
 
 ***
@@ -1631,18 +2131,20 @@ createContentBarcode(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:472](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L472)
+Defined in: [modules/products/index.ts:1187](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1187)
 
 Генерация баркодов
 
-Метод генерирует массив уникальных баркодов для создания размера в [карточке товара](/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post). Можно использовать, если у вас нет собственных баркодов. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Generates unique barcodes for product card size creation. Use when you don't have your own barcodes.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `count?`: `number`; \} | Request body data |
-| `data.count?` | `number` | - |
+| `data` | \{ `count?`: `number`; \} | Request body |
+| `data.count?` | `number` | Number of barcodes to generate |
 
 #### Returns
 
@@ -1653,7 +2155,7 @@ Defined in: [modules/products/index.ts:472](https://github.com/salacoste/daytona
   `additionalErrors?`: `string`;
 \}\>
 
-Успешно
+Generated barcodes array
 
 #### Throws
 
@@ -1671,11 +2173,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createContentBarcode({});
-console.log(result);
+```typescript
+const result = await sdk.products.createContentBarcode({ count: 5 });
+console.log(result.data); // ['1234567890123', '1234567890124', ...]
 ```
 
 ***
@@ -1714,23 +2220,26 @@ createCardsUpload(data?: {
 }[]): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L491)
+Defined in: [modules/products/index.ts:1230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1230)
 
 Создание карточек товаров
 
-Метод создаёт карточки товаров c указанием описаний и характеристик товаров.<br> <div class="description_important"> Есть две формы запроса: для создания отдельных и объединённых карточек товаров. </div> Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`. <br><br> Создание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br> В одном запросе можно создать максимум 100 объединённых карточек товаров (`imtID`), по 30 карточек товаров в каждой. Максимальный размер запроса 10 Мб.<br> Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+Creates product cards asynchronously. Max 100 merged cards (imtID) with 30 cards each per request, 10 MB max.
+Dimensions in cm, weight in kg. Check error list if 200 response but some cards were not created.
+
+Rate limit: 10 req/min, 6s interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data?` | \{ `subjectID`: `number`; `variants`: \{ `brand?`: `string`; `title?`: `string`; `description?`: `string`; `vendorCode`: `string`; `wholesale?`: \{ `enabled?`: `boolean`; `quantum?`: `number`; \}; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `sizes?`: \{ `techSize?`: `string`; `wbSize?`: `string`; `price?`: `number`; `skus?`: `string`[]; \}[]; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; \}[]; \}[] | Request body data |
+| `data?` | \{ `subjectID`: `number`; `variants`: \{ `brand?`: `string`; `title?`: `string`; `description?`: `string`; `vendorCode`: `string`; `wholesale?`: \{ `enabled?`: `boolean`; `quantum?`: `number`; \}; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `sizes?`: \{ `techSize?`: `string`; `wbSize?`: `string`; `price?`: `number`; `skus?`: `string`[]; \}[]; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; \}[]; \}[] | Array of product card groups to create |
 
 #### Returns
 
 `Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
-Успешно
+Creation result
 
 #### Throws
 
@@ -1748,10 +2257,23 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createCardsUpload({});
+```typescript
+const result = await sdk.products.createCardsUpload([{
+  subjectID: 105,
+  variants: [{
+    vendorCode: 'ART-001',
+    brand: 'MyBrand',
+    title: 'Product Name',
+    sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+    characteristics: [{ id: 1, value: 'Blue' }],
+  }],
+}]);
 console.log(result);
 ```
 
@@ -1791,17 +2313,20 @@ createUploadAdd(data?: {
 }): Promise<ResponseCardCreate>;
 ```
 
-Defined in: [modules/products/index.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L510)
+Defined in: [modules/products/index.ts:1280](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1280)
 
 Создание карточек товаров с присоединением
 
-Метод создаёт новые карточки товаров, присоединяя их к существующим карточкам. <br><br> Габариты товаров можно указать только в `сантиметрах`, вес товара с упаковкой — в `килограммах`. <br><br> Создание карточки товара происходит асинхронно. После отправки запрос становится в очередь на обработку.<br>Максимальный размер запроса 10 Мб.<br> Если ответ `Успешно` (`200`), но какие-то карточки не создались, проверьте [список несозданных карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 10 запросов | 6 секунд | 5 запросов | </div>
+Creates new product cards and joins them to existing cards by imtID. Async processing, 10 MB max.
+Dimensions in cm, weight in kg.
+
+Rate limit: 10 req/min, 6s interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data?` | \{ `imtID?`: `number`; `cardsToAdd?`: \{ `brand?`: `string`; `vendorCode`: `string`; `wholesale?`: \{ `enabled?`: `boolean`; `quantum?`: `number`; \}; `title?`: `string`; `description?`: `string`; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `sizes?`: \{ `techSize?`: `string`; `wbSize?`: `string`; `price?`: `number`; `skus?`: `string`[]; \}[]; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; \}[]; \} | Request body data |
+| `data?` | \{ `imtID?`: `number`; `cardsToAdd?`: \{ `brand?`: `string`; `vendorCode`: `string`; `wholesale?`: \{ `enabled?`: `boolean`; `quantum?`: `number`; \}; `title?`: `string`; `description?`: `string`; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `sizes?`: \{ `techSize?`: `string`; `wbSize?`: `string`; `price?`: `number`; `skus?`: `string`[]; \}[]; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; \}[]; \} | Cards to create and join to existing imtID |
 | `data.imtID?` | `number` | - |
 | `data.cardsToAdd?` | \{ `brand?`: `string`; `vendorCode`: `string`; `wholesale?`: \{ `enabled?`: `boolean`; `quantum?`: `number`; \}; `title?`: `string`; `description?`: `string`; `dimensions?`: \{ `length?`: `number`; `width?`: `number`; `height?`: `number`; `weightBrutto?`: `number`; \}; `sizes?`: \{ `techSize?`: `string`; `wbSize?`: `string`; `price?`: `number`; `skus?`: `string`[]; \}[]; `characteristics?`: \{ `id`: `number`; `value`: `unknown`; \}[]; \}[] | - |
 
@@ -1809,7 +2334,7 @@ Defined in: [modules/products/index.ts:510](https://github.com/salacoste/daytona
 
 `Promise`\<[`ResponseCardCreate`](../-internal-/interfaces/ResponseCardCreate.md)\>
 
-Успешно
+Creation result
 
 #### Throws
 
@@ -1827,10 +2352,21 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createUploadAdd({});
+```typescript
+const result = await sdk.products.createUploadAdd({
+  imtID: 98765,
+  cardsToAdd: [{
+    vendorCode: 'ART-002',
+    sizes: [{ techSize: '44', skus: ['1234567890124'] }],
+    characteristics: [{ id: 1, value: 'Red' }],
+  }],
+});
 console.log(result);
 ```
 
@@ -1847,11 +2383,14 @@ createMediaFile(): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:528](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L528)
+Defined in: [modules/products/index.ts:1320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1320)
 
 Загрузить медиафайл
 
-Метод загружает и добавляет один медиафайл к карточке товара. Требования к изображениям: * максимум изображений для одной карточки товара — 30 * минимальное разрешение — 700x900 px * максимальный размер — 32 Мб * минимальное качество — 65% * форматы — JPG, PNG, BMP, GIF (статичные), WebP Требования к видео: * максимум одно видео для одной карточки товара * максимальный размер — 50 Мб * форматы — MOV, MP4 <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Uploads a single media file to a product card. Images: max 30 per card, min 700x900px, max 32MB,
+formats JPG/PNG/BMP/GIF/WebP. Video: max 1 per card, max 50MB, formats MOV/MP4.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Returns
 
@@ -1862,7 +2401,7 @@ Defined in: [modules/products/index.ts:528](https://github.com/salacoste/daytona
   `additionalErrors?`: `Record`\<`string`, `never`\>;
 \}\>
 
-Успешно
+Upload result
 
 #### Throws
 
@@ -1880,10 +2419,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createMediaFile();
+```typescript
+const result = await sdk.products.createMediaFile();
 console.log(result);
 ```
 
@@ -1903,19 +2446,22 @@ createMediaSave(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:547](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L547)
+Defined in: [modules/products/index.ts:1362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1362)
 
 Загрузить медиафайлы по ссылкам
 
-Метод загружает набор медиафайлов в карточку товара через указание ссылок в запросе. <div class="description_important"> Новые медиафайлы полностью заменяют старые. Чтобы добавить новые медиафайлы, укажите в запросе ссылки одновременно на новые и старые медиафайлы. </div> Требования к ссылкам: * ссылка должна вести прямо на файл. Убедитесь, что ссылка не ведёт на страницу предпросмотра или авторизации, например. Если по ссылке открывается текстовая страница TXT или HTML, ссылка считается некорректной * для доступа к файлу по ссылке не нужна авторизация Требования к изображениям: * максимум изображений для одной карточки товара — 30 * минимальное разрешение — 700×900 px * максимальный размер — 32 Мб * минимальное качество — 65% * форматы — JPG, PNG, BMP, GIF (статичные), WebP Требования к видео: * максимум одно видео для одной карточки товара * максимальный размер — 50 Мб * форматы — MOV, MP4 Если видео или хотя бы одно изображение в запросе не соответствует требованиям, то даже при успешном ответе (`200`) ни одно изображение/видео не загрузится. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Контент</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 100 запросов | 600 миллисекунд | 5 запросов | Исключение — методы: <ul> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload/post">создания карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Sozdanie-kartochek-tovarov/paths/~1content~1v2~1cards~1upload~1add/post">создания карточек товаров с присоединением</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post">редактирования карточек товаров</a></li> <li><a href="/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1error~1list/post">получения несозданных карточек товаров с ошибками</a></li> </ul> </div>
+Uploads media files to a product card via URLs. New files fully replace old ones.
+Links must be direct file URLs (no auth required). If any file fails validation, none are uploaded.
+
+Rate limit: 100 req/min, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `nmId?`: `number`; `data?`: `string`[]; \} | Request body data |
-| `data.nmId?` | `number` | - |
-| `data.data?` | `string`[] | - |
+| `data` | \{ `nmId?`: `number`; `data?`: `string`[]; \} | Request body |
+| `data.nmId?` | `number` | Product card nomenclature ID |
+| `data.data?` | `string`[] | Array of direct file URLs |
 
 #### Returns
 
@@ -1926,7 +2472,7 @@ Defined in: [modules/products/index.ts:547](https://github.com/salacoste/daytona
   `additionalErrors?`: `Record`\<`string`, `never`\>;
 \}\>
 
-Успешно
+Upload result
 
 #### Throws
 
@@ -1944,10 +2490,17 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products](https://dev.wildberries.ru/openapi/work-with-products)
+
 #### Example
 
-```ts
-const result = await sdk.general.createMediaSave({});
+```typescript
+const result = await sdk.products.createMediaSave({
+  nmId: 12345678,
+  data: ['https://example.com/photo1.jpg', 'https://example.com/photo2.jpg'],
+});
 console.log(result);
 ```
 
@@ -1956,20 +2509,29 @@ console.log(result);
 ### createUploadTask()
 
 ```ts
-createUploadTask(): Promise<unknown>;
+createUploadTask(data: Goods): Promise<UploadTaskResponse>;
 ```
 
-Defined in: [modules/products/index.ts:565](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L565)
+Defined in: [modules/products/index.ts:1401](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1401)
 
 Установить цены и скидки
 
-Метод устанавливает цены и скидки для товаров. <br><br> Чтобы установить цены для размеров товара, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post). <div class="description_important"> Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Sets prices and discounts for products. Use createTaskSize() for per-size pricing.
+Track upload status via getHistoryTasks() and getGoodsTask().
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`Goods`](../-internal-/type-aliases/Goods.md) | Goods pricing data |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`UploadTaskResponse`](../-internal-/interfaces/UploadTaskResponse.md)\>
 
-Response data
+Upload task response
 
 #### Throws
 
@@ -1987,10 +2549,16 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.createUploadTask();
+```typescript
+const result = await sdk.products.createUploadTask({
+  data: [{ nmID: 12345678, price: 1500, discount: 10 }],
+});
 console.log(result);
 ```
 
@@ -1999,20 +2567,29 @@ console.log(result);
 ### createTaskSize()
 
 ```ts
-createTaskSize(): Promise<unknown>;
+createTaskSize(data: SizeGoodsBody): Promise<UploadTaskResponse>;
 ```
 
-Defined in: [modules/products/index.ts:583](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L583)
+Defined in: [modules/products/index.ts:1432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1432)
 
 Установить цены для размеров
 
-Метод устанавливает цены отдельно для размеров товаров. Работает только для товаров из категорий, где можно устанавливать цены отдельно для разных размеров. Для [таких товаров](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) `"editableSizePrice":true`. Чтобы установить цены и скидки для самих товаров, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post). <div class="description_important"> Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Sets prices per size for eligible products (editableSizePrice: true).
+Use createUploadTask() for product-level pricing.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`SizeGoodsBody`](../-internal-/type-aliases/SizeGoodsBody.md) | Size pricing data |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`UploadTaskResponse`](../-internal-/interfaces/UploadTaskResponse.md)\>
 
-Response data
+Upload task response
 
 #### Throws
 
@@ -2030,10 +2607,16 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.createTaskSize();
+```typescript
+const result = await sdk.products.createTaskSize({
+  data: [{ nmID: 12345678, sizeID: 100, price: 2000 }],
+});
 console.log(result);
 ```
 
@@ -2042,20 +2625,28 @@ console.log(result);
 ### createTaskClubDiscount()
 
 ```ts
-createTaskClubDiscount(): Promise<unknown>;
+createTaskClubDiscount(data: ClubDisc): Promise<UploadTaskResponse>;
 ```
 
-Defined in: [modules/products/index.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L601)
+Defined in: [modules/products/index.ts:1462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1462)
 
 Установить скидки WB Клуба
 
-Устанавливает скидки для товаров в рамках подписки [WB Клуб](https://seller.wildberries.ru/help-center/article/A-337). <div class="description_important"> Получить информацию о процессе установки цен и скидок можно с помощью методов <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get">состояния</a> и <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1goods~1task/get">детализации</a> обработанной загрузки. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Sets WB Club subscription discounts for products.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`ClubDisc`](../-internal-/type-aliases/ClubDisc.md) | Club discount data |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`UploadTaskResponse`](../-internal-/interfaces/UploadTaskResponse.md)\>
 
-Response data
+Upload task response
 
 #### Throws
 
@@ -2073,10 +2664,16 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.createTaskClubDiscount();
+```typescript
+const result = await sdk.products.createTaskClubDiscount({
+  data: [{ nmID: 12345678, clubDiscount: 15 }],
+});
 console.log(result);
 ```
 
@@ -2087,27 +2684,29 @@ console.log(result);
 ```ts
 getHistoryTasks(options?: {
   uploadID: number;
-}): Promise<unknown>;
+}): Promise<TaskHistoryResponse>;
 ```
 
-Defined in: [modules/products/index.ts:620](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L620)
+Defined in: [modules/products/index.ts:1491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1491)
 
 Состояние обработанной загрузки
 
-Метод возвращает информацию об обработанной загрузке цен и скидок. <div class="description_important"> Обработанная загрузка — это загрузка цен и скидок для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post">товаров</a>, цен для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post">размеров товаров</a> и скидок <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post">WB Клуба</a>. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns processed upload status for prices, size prices, and WB Club discounts.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `uploadID`: `number`; \} | Query parameters |
-| `options.uploadID?` | `number` | - |
+| `options.uploadID?` | `number` | Upload task ID to check |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`TaskHistoryResponse`](../-internal-/interfaces/TaskHistoryResponse.md)\>
 
-Response data
+Task history with status
 
 #### Throws
 
@@ -2125,10 +2724,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getHistoryTasks({});
+```typescript
+const result = await sdk.products.getHistoryTasks({ uploadID: 12345 });
 console.log(result);
 ```
 
@@ -2141,29 +2744,31 @@ getGoodsTask(options?: {
   limit: number;
   offset?: number;
   uploadID: number;
-}): Promise<unknown>;
+}): Promise<GoodsHistoryResponse>;
 ```
 
-Defined in: [modules/products/index.ts:639](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L639)
+Defined in: [modules/products/index.ts:1521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1521)
 
 Детализация обработанной загрузки
 
-Метод возвращает информацию о товарах и об ошибках в товарах в обработанной загрузке. <div class="description_important"> Обработанная загрузка — это загрузка цен и скидок для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task/post">товаров</a>, цен для <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post">размеров товаров</a> и скидок <a href="/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post">WB Клуба</a>. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns per-item details and errors from a processed price/discount upload.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `limit`: `number`; `offset?`: `number`; `uploadID`: `number`; \} | Query parameters |
-| `options.limit?` | `number` | - |
-| `options.offset?` | `number` | - |
-| `options.uploadID?` | `number` | - |
+| `options.limit?` | `number` | Number of items to return |
+| `options.offset?` | `number` | Items offset |
+| `options.uploadID?` | `number` | Upload task ID |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`GoodsHistoryResponse`](../-internal-/interfaces/GoodsHistoryResponse.md)\>
 
-Response data
+Goods history with errors
 
 #### Throws
 
@@ -2181,10 +2786,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getGoodsTask({});
+```typescript
+const result = await sdk.products.getGoodsTask({ limit: 100, uploadID: 12345 });
 console.log(result);
 ```
 
@@ -2195,27 +2804,29 @@ console.log(result);
 ```ts
 getBufferTasks(options?: {
   uploadID: number;
-}): Promise<unknown>;
+}): Promise<TaskBufferResponse>;
 ```
 
-Defined in: [modules/products/index.ts:658](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L658)
+Defined in: [modules/products/index.ts:1553](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1553)
 
 Состояние необработанной загрузки
 
-Метод возвращает информацию про загрузку скидок в обработке. <div class="description_important"> Необработанная загрузка — это загрузка скидок в <a href="/openapi/promotion#tag/Kalendar-akcij">календаре акций</a>. Такие скидки применятся к товарам только в момент старта акции. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns pending upload status (promo calendar discounts not yet applied).
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `uploadID`: `number`; \} | Query parameters |
-| `options.uploadID?` | `number` | - |
+| `options.uploadID?` | `number` | Upload task ID to check |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`TaskBufferResponse`](../-internal-/interfaces/TaskBufferResponse.md)\>
 
-Response data
+Buffer task status
 
 #### Throws
 
@@ -2233,45 +2844,51 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getBufferTasks({});
+```typescript
+const result = await sdk.products.getBufferTasks({ uploadID: 12345 });
 console.log(result);
 ```
 
 ***
 
-### getGoodsTask2()
+### getBufferGoodsTask()
 
 ```ts
-getGoodsTask2(options?: {
+getBufferGoodsTask(options?: {
   limit: number;
   offset?: number;
   uploadID: number;
-}): Promise<unknown>;
+}): Promise<GoodsBufferResponse>;
 ```
 
-Defined in: [modules/products/index.ts:677](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L677)
+Defined in: [modules/products/index.ts:1583](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1583)
 
 Детализация необработанной загрузки
 
-Метод возвращает информацию о товарах и ошибках в товарах из загрузки в обработке. <div class="description_important"> Необработанная загрузка — это загрузка скидок в <a href="/openapi/promotion#tag/Kalendar-akcij">календаре акций</a>. Такие скидки применятся к товарам только в момент старта акции. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns per-item details and errors from a pending (promo calendar) discount upload.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `limit`: `number`; `offset?`: `number`; `uploadID`: `number`; \} | Query parameters |
-| `options.limit?` | `number` | - |
-| `options.offset?` | `number` | - |
-| `options.uploadID?` | `number` | - |
+| `options.limit?` | `number` | Number of items to return |
+| `options.offset?` | `number` | Items offset |
+| `options.uploadID?` | `number` | Upload task ID |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`GoodsBufferResponse`](../-internal-/interfaces/GoodsBufferResponse.md)\>
 
-Response data
+Buffer goods with errors
 
 #### Throws
 
@@ -2289,12 +2906,47 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getGoodsTask({});
+```typescript
+const result = await sdk.products.getBufferGoodsTask({ limit: 100, uploadID: 12345 });
 console.log(result);
 ```
+
+***
+
+### ~~getGoodsTask2()~~
+
+```ts
+getGoodsTask2(options?: {
+  limit: number;
+  offset?: number;
+  uploadID: number;
+}): Promise<GoodsBufferResponse>;
+```
+
+Defined in: [modules/products/index.ts:1597](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1597)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `options?` | \{ `limit`: `number`; `offset?`: `number`; `uploadID`: `number`; \} |
+| `options.limit?` | `number` |
+| `options.offset?` | `number` |
+| `options.uploadID?` | `number` |
+
+#### Returns
+
+`Promise`\<[`GoodsBufferResponse`](../-internal-/interfaces/GoodsBufferResponse.md)\>
+
+#### Deprecated
+
+Use [getBufferGoodsTask](#getbuffergoodstask) instead. Will be removed in next major version.
 
 ***
 
@@ -2305,29 +2957,32 @@ getGoodsFilter(options?: {
   limit: number;
   offset?: number;
   filterNmID?: number;
-}): Promise<unknown>;
+}): Promise<GoodsFilterResponse>;
 ```
 
-Defined in: [modules/products/index.ts:696](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L696)
+Defined in: [modules/products/index.ts:1629](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1629)
 
 Получить товары с ценами
 
-Метод возвращает информацию о товарах: цены, валюту, общие скидки и скидки [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post). <br><br> В одном запросе можно указать только один артикул. <br><br> Чтобы получить информацию обо всех товарах продавца, не указывая артикулы, установите `limit=1000`, в параметре `offset` установите смещение по количеству записей. Количество нужно рассчитать по формуле: `offset` плюс `limit` из предыдущего запроса. Повторяйте запрос, пока вы не получите ответ с пустым массивом.<br><br> Используйте отдельные методы, чтобы получить информацию: - о [нескольких товарах по артикулам](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/post) - о [размерах товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns product pricing info: prices, currency, discounts, WB Club discounts.
+Use limit/offset pagination for all products, or filterNmID for a single article.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `limit`: `number`; `offset?`: `number`; `filterNmID?`: `number`; \} | Query parameters |
-| `options.limit?` | `number` | - |
-| `options.offset?` | `number` | - |
-| `options.filterNmID?` | `number` | - |
+| `options.limit?` | `number` | Number of items to return (max 1000) |
+| `options.offset?` | `number` | Items offset for pagination |
+| `options.filterNmID?` | `number` | Filter by single article ID |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`GoodsFilterResponse`](../-internal-/interfaces/GoodsFilterResponse.md)\>
 
-Response data
+Goods with pricing information
 
 #### Throws
 
@@ -2345,10 +3000,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getGoodsFilter({});
+```typescript
+const result = await sdk.products.getGoodsFilter({ limit: 1000, offset: 0 });
 console.log(result);
 ```
 
@@ -2357,20 +3016,31 @@ console.log(result);
 ### createGoodsFilter()
 
 ```ts
-createGoodsFilter(): Promise<unknown>;
+createGoodsFilter(data: {
+  nmIDs: number[];
+}): Promise<GoodsFilterByNmResponse>;
 ```
 
-Defined in: [modules/products/index.ts:714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L714)
+Defined in: [modules/products/index.ts:1661](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1661)
 
 Получить товары с ценами по артикулам
 
-Метод возвращает информацию о товарах по их артикулам: цены, валюту, общие скидки и скидки [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post). <br><br> В одном запросе можно указать более одного артикула. <br><br> Используйте отдельные методы, чтобы получить информацию: - обо [всех товарах продавца, не указывая артикулы](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get) - о [размерах товара](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1size~1nm/get) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns pricing info for multiple products by article IDs.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | \{ `nmIDs`: `number`[]; \} | Request body with article IDs |
+| `data.nmIDs` | `number`[] | Array of article IDs to fetch pricing for |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`GoodsFilterByNmResponse`](../-internal-/interfaces/GoodsFilterByNmResponse.md)\>
 
-Response data
+Goods with pricing information filtered by nmIDs
 
 #### Throws
 
@@ -2388,10 +3058,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.createGoodsFilter();
+```typescript
+const result = await sdk.products.createGoodsFilter({ nmIDs: [12345678, 87654321] });
 console.log(result);
 ```
 
@@ -2404,29 +3078,31 @@ getSizeNm(options?: {
   limit: number;
   offset?: number;
   nmID: number;
-}): Promise<unknown>;
+}): Promise<SizeGoodsResponse>;
 ```
 
-Defined in: [modules/products/index.ts:733](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L733)
+Defined in: [modules/products/index.ts:1692](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1692)
 
 Получить размеры товара с ценами
 
-Метод возвращает информацию обо всех размерах одного товара: цены, валюту, общие скидки и скидки для [WB Клуба](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1club-discount/post). <br><br> Работает только для товаров из категорий, где можно устанавливать цены отдельно для разных размеров. Для таких товаров `"editableSizePrice":true`. <br><br> Чтобы получить информацию о самом товаре, используйте [отдельный метод](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1list~1goods~1filter/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns per-size pricing info for a single product (only for categories with editableSizePrice: true).
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `limit`: `number`; `offset?`: `number`; `nmID`: `number`; \} | Query parameters |
-| `options.limit?` | `number` | - |
-| `options.offset?` | `number` | - |
-| `options.nmID?` | `number` | - |
+| `options.limit?` | `number` | Number of items to return |
+| `options.offset?` | `number` | Items offset |
+| `options.nmID?` | `number` | Product article ID |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`SizeGoodsResponse`](../-internal-/interfaces/SizeGoodsResponse.md)\>
 
-Response data
+Size-level pricing data
 
 #### Throws
 
@@ -2444,10 +3120,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getSizeNm({});
+```typescript
+const result = await sdk.products.getSizeNm({ limit: 100, nmID: 12345678 });
 console.log(result);
 ```
 
@@ -2459,28 +3139,31 @@ console.log(result);
 getQuarantineGoods(options?: {
   limit: number;
   offset?: number;
-}): Promise<unknown>;
+}): Promise<QuarantineGoodsResponse>;
 ```
 
-Defined in: [modules/products/index.ts:752](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L752)
+Defined in: [modules/products/index.ts:1726](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1726)
 
 Получить товары в карантине
 
-Метод возвращает информацию о товарах в карантине. <br><br> Если новая цена товара со скидкой будет минимум в 3 раза меньше старой, товар попадёт в [карантин](https://seller.wildberries.ru/instructions/ru/ru/material/price-quarantine) и будет продаваться по старой цене. Ошибка об этом будет в ответах методов [состояний загрузок](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1history~1tasks/get). <br><br> Вы можете изменить цену или скидку с помощью API либо вывести товар из карантина в [личном кабинете](https://seller.wildberries.ru/discount-and-prices/quarantine). <br><br> Для товаров с [поразмерной установкой цен](/openapi/work-with-products#tag/Ceny-i-skidki/paths/~1api~1v2~1upload~1task~1size/post) карантин не применяется. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Цены и скидки</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 10 запросов | 600 миллисекунд | 5 запросов | </div>
+Returns quarantined products (price dropped 3x or more). Quarantine does not apply to per-size pricing.
+Products sell at old price while quarantined. Remove via API or seller dashboard.
+
+Rate limit: 10 req/6s, 600ms interval, burst 5
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `options?` | \{ `limit`: `number`; `offset?`: `number`; \} | Query parameters |
-| `options.limit?` | `number` | - |
-| `options.offset?` | `number` | - |
+| `options.limit?` | `number` | Number of items to return |
+| `options.offset?` | `number` | Items offset |
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`QuarantineGoodsResponse`](../-internal-/interfaces/QuarantineGoodsResponse.md)\>
 
-Response data
+Quarantined goods list
 
 #### Throws
 
@@ -2498,16 +3181,89 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki](https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki)
+
 #### Example
 
-```ts
-const result = await sdk.general.getQuarantineGoods({});
+```typescript
+const result = await sdk.products.getQuarantineGoods({ limit: 100, offset: 0 });
 console.log(result);
 ```
 
 ***
 
-### createStock()
+### getStocks()
+
+```ts
+getStocks(warehouseId: number, data: {
+  skus: string[];
+}): Promise<{
+  stocks?: {
+     sku?: string;
+     amount?: number;
+  }[];
+}>;
+```
+
+Defined in: [modules/products/index.ts:1758](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1758)
+
+Получить остатки товаров
+
+Returns stock amounts for products at a seller's warehouse. A 409 response counts as 5 requests.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `warehouseId` | `number` | ID склада продавца |
+| `data` | \{ `skus`: `string`[]; \} | Request body with SKUs |
+| `data.skus` | `string`[] | Array of SKU barcodes to check |
+
+#### Returns
+
+`Promise`\<\{
+  `stocks?`: \{
+     `sku?`: `string`;
+     `amount?`: `number`;
+  \}[];
+\}\>
+
+Stock amounts per SKU
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca)
+
+#### Example
+
+```typescript
+const result = await sdk.products.getStocks(12345, { skus: ['1234567890123', '1234567890124'] });
+console.log(result.stocks); // [{ sku: '1234567890123', amount: 50 }]
+```
+
+***
+
+### ~~createStock()~~
 
 ```ts
 createStock(warehouseId: number, data: {
@@ -2520,19 +3276,15 @@ createStock(warehouseId: number, data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:772](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L772)
-
-Получить остатки товаров
-
-Метод возвращает данные об остатках товаров на [складах продавца](/openapi/work-with-products#tag/Sklady-prodavca). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>остатков на складах продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Defined in: [modules/products/index.ts:1772](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1772)
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | ID склада продавца |
-| `data` | \{ `skus`: `string`[]; \} | Request body data |
-| `data.skus` | `string`[] | - |
+| Parameter | Type |
+| ------ | ------ |
+| `warehouseId` | `number` |
+| `data` | \{ `skus`: `string`[]; \} |
+| `data.skus` | `string`[] |
 
 #### Returns
 
@@ -2543,30 +3295,9 @@ Defined in: [modules/products/index.ts:772](https://github.com/salacoste/daytona
   \}[];
 \}\>
 
-Успешно
+#### Deprecated
 
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.general.createStock('warehouseId-value', {});
-console.log(result);
-```
+Use [getStocks](#getstocks) instead. Will be removed in next major version.
 
 ***
 
@@ -2581,25 +3312,28 @@ updateStock(warehouseId: number, data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:791](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L791)
+Defined in: [modules/products/index.ts:1803](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1803)
 
 Обновить остатки товаров
 
-Метод обновляет количество остатков товаров продавца [в списке](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_important"> Названия параметров запроса не валидируются. При отправке некорректных названий вы получите успешный ответ (<code>204</code>), но остатки не обновятся. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>остатков на складах продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Updates stock amounts for products at a seller's warehouse. Parameter names are not validated;
+incorrect names return 204 but do not update stocks. A 409 response counts as 5 requests.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `warehouseId` | `number` | ID склада продавца |
-| `data?` | \{ `stocks`: \{ `sku?`: `string`; `amount?`: `number`; \}[]; \} | Request body data |
-| `data.stocks?` | \{ `sku?`: `string`; `amount?`: `number`; \}[] | - |
+| `data?` | \{ `stocks`: \{ `sku?`: `string`; `amount?`: `number`; \}[]; \} | Stock update data |
+| `data.stocks?` | \{ `sku?`: `string`; `amount?`: `number`; \}[] | Array of SKU/amount pairs |
 
 #### Returns
 
 `Promise`\<`void`\>
 
-Response data
+void on success (204)
 
 #### Throws
 
@@ -2617,10 +3351,16 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.updateStock('warehouseId-value', {});
+```typescript
+await sdk.products.updateStock(12345, {
+  stocks: [{ sku: '1234567890123', amount: 100 }],
+});
 ```
 
 ***
@@ -2633,25 +3373,28 @@ deleteStock(warehouseId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:810](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L810)
+Defined in: [modules/products/index.ts:1836](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1836)
 
 Удалить остатки товаров
 
-Метод удаляет запись об остатках товаров продавца из [списка остатков](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_important"> <strong>Действие необратимо</strong>. Удаленный остаток будет необходимо загрузить повторно для возобновления продаж. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>остатков на складах продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Irreversibly deletes stock records. Must re-upload stocks to resume sales.
+A 409 response counts as 5 requests.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `warehouseId` | `number` | ID склада продавца |
-| `data` | \{ `skus?`: `string`[]; \} | Request body data |
-| `data.skus?` | `string`[] | - |
+| `data` | \{ `skus?`: `string`[]; \} | Request body with SKUs to delete |
+| `data.skus?` | `string`[] | Array of SKU barcodes to delete |
 
 #### Returns
 
 `Promise`\<`void`\>
 
-Response data
+void on success
 
 #### Throws
 
@@ -2669,10 +3412,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.deleteStock('warehouseId-value', {});
+```typescript
+await sdk.products.deleteStock(12345, { skus: ['1234567890123'] });
 ```
 
 ***
@@ -2683,17 +3430,19 @@ const result = await sdk.general.deleteStock('warehouseId-value', {});
 offices(): Promise<Office[]>;
 ```
 
-Defined in: [modules/products/index.ts:828](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L828)
+Defined in: [modules/products/index.ts:1863](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1863)
 
 Получить список складов WB
 
-Метод возвращает список всех складов WB для привязки к складам продавца. Предназначен для определения складов WB, чтобы сдавать готовые заказы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Returns all WB warehouses for binding to seller warehouses (FBS model).
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Returns
 
 `Promise`\<[`Office`](../-internal-/interfaces/Office.md)[]\>
 
-Успешно
+Array of WB office/warehouse locations
 
 #### Throws
 
@@ -2711,11 +3460,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.offices();
-console.log(result);
+```typescript
+const result = await sdk.products.offices();
+console.log(result); // [{ id: 1, name: 'Коледино', ... }]
 ```
 
 ***
@@ -2726,17 +3479,19 @@ console.log(result);
 warehouses(): Promise<Warehouse[]>;
 ```
 
-Defined in: [modules/products/index.ts:846](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L846)
+Defined in: [modules/products/index.ts:1888](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1888)
 
 Получить список складов продавца
 
-Метод возвращает список всех складов продавца. Может использоваться для получения [остатков товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Returns all seller warehouses. Use warehouse IDs to manage stock.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Returns
 
 `Promise`\<[`Warehouse`](../-internal-/interfaces/Warehouse.md)[]\>
 
-Успешно
+Array of seller warehouses
 
 #### Throws
 
@@ -2754,16 +3509,85 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.warehouses();
-console.log(result);
+```typescript
+const result = await sdk.products.warehouses();
+console.log(result); // [{ id: 12345, name: 'Main Warehouse', officeId: 1 }]
 ```
 
 ***
 
-### createWarehous()
+### createWarehouse()
+
+```ts
+createWarehouse(data: {
+  name: string;
+  officeId: number;
+}): Promise<{
+  id?: number;
+}>;
+```
+
+Defined in: [modules/products/index.ts:1918](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1918)
+
+Создать склад продавца
+
+Creates a seller warehouse bound to a WB office for FBS fulfillment.
+Cannot bind a WB warehouse that is already in use.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | \{ `name`: `string`; `officeId`: `number`; \} | Warehouse creation data |
+| `data.name` | `string` | Warehouse name |
+| `data.officeId` | `number` | WB office ID to bind |
+
+#### Returns
+
+`Promise`\<\{
+  `id?`: `number`;
+\}\>
+
+Created warehouse with ID
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
+#### Example
+
+```typescript
+const result = await sdk.products.createWarehouse({ name: 'Main Warehouse', officeId: 1 });
+console.log(result.id); // New warehouse ID
+```
+
+***
+
+### ~~createWarehous()~~
 
 ```ts
 createWarehous(data: {
@@ -2774,19 +3598,15 @@ createWarehous(data: {
 }>;
 ```
 
-Defined in: [modules/products/index.ts:865](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L865)
-
-Создать склад продавца
-
-Метод создаёт склад продавца для работы с [остатками товаров](/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca/paths/~1api~1v3~1stocks~1%7BwarehouseId%7D/post). Нужно привязать к складу продавца [склад WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) для работы по модели [FBS](/openapi/orders-fbs#tag/Zakazy-FBS) (Fulfillment by Seller). <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Defined in: [modules/products/index.ts:1929](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1929)
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `name`: `string`; `officeId`: `number`; \} | Request body data |
-| `data.name` | `string` | - |
-| `data.officeId` | `number` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data` | \{ `name`: `string`; `officeId`: `number`; \} |
+| `data.name` | `string` |
+| `data.officeId` | `number` |
 
 #### Returns
 
@@ -2794,7 +3614,44 @@ Defined in: [modules/products/index.ts:865](https://github.com/salacoste/daytona
   `id?`: `number`;
 \}\>
 
-Создано
+#### Deprecated
+
+Use [createWarehouse](#createwarehouse) instead. Will be removed in next major version.
+
+***
+
+### updateWarehouse()
+
+```ts
+updateWarehouse(warehouseId: number, data: {
+  name: string;
+  officeId: number;
+}): Promise<void>;
+```
+
+Defined in: [modules/products/index.ts:1956](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1956)
+
+Обновить склад продавца
+
+Updates seller warehouse data. WB office binding can be changed once per day.
+Cannot bind a WB warehouse that is already in use.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `warehouseId` | `number` | ID склада продавца |
+| `data` | \{ `name`: `string`; `officeId`: `number`; \} | Warehouse update data |
+| `data.name` | `string` | Updated warehouse name |
+| `data.officeId` | `number` | Updated WB office ID |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+void on success
 
 #### Throws
 
@@ -2812,16 +3669,19 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.createWarehous({});
-console.log(result);
+```typescript
+await sdk.products.updateWarehouse(12345, { name: 'Updated Warehouse', officeId: 2 });
 ```
 
 ***
 
-### updateWarehous()
+### ~~updateWarehous()~~
 
 ```ts
 updateWarehous(warehouseId: number, data: {
@@ -2830,26 +3690,52 @@ updateWarehous(warehouseId: number, data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:884](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L884)
+Defined in: [modules/products/index.ts:1970](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1970)
 
-Обновить склад продавца
+#### Parameters
 
-Метод обновляет данные склада продавца в [списке складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). Данные о привязанном [складе WB](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1offices/get) можно изменить один раз в сутки. <div class="description_important"> Нельзя привязывать склад WB, который уже используется </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+| Parameter | Type |
+| ------ | ------ |
+| `warehouseId` | `number` |
+| `data` | \{ `name`: `string`; `officeId`: `number`; \} |
+| `data.name` | `string` |
+| `data.officeId` | `number` |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Deprecated
+
+Use [updateWarehouse](#updatewarehouse) instead. Will be removed in next major version.
+
+***
+
+### deleteWarehouse()
+
+```ts
+deleteWarehouse(warehouseId: number): Promise<void>;
+```
+
+Defined in: [modules/products/index.ts:1996](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L1996)
+
+Удалить склад продавца
+
+Deletes a seller warehouse from the list.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `warehouseId` | `number` | ID склада продавца |
-| `data` | \{ `name`: `string`; `officeId`: `number`; \} | Request body data |
-| `data.name` | `string` | - |
-| `data.officeId` | `number` | - |
 
 #### Returns
 
 `Promise`\<`void`\>
 
-Response data
+void on success
 
 #### Throws
 
@@ -2867,59 +3753,39 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.updateWarehous('warehouseId-value', {});
+```typescript
+await sdk.products.deleteWarehouse(12345);
 ```
 
 ***
 
-### deleteWarehous()
+### ~~deleteWarehous()~~
 
 ```ts
 deleteWarehous(warehouseId: number): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:902](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L902)
-
-Удалить склад продавца
-
-Метод удаляет склад продавца из [списка складов](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>складов продавца</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | Один запрос с кодом ответа <code>409</code> учитывается как 5 запросов </div>
+Defined in: [modules/products/index.ts:2007](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L2007)
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `warehouseId` | `number` | ID склада продавца |
+| Parameter | Type |
+| ------ | ------ |
+| `warehouseId` | `number` |
 
 #### Returns
 
 `Promise`\<`void`\>
 
-Response data
+#### Deprecated
 
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.general.deleteWarehous('warehouseId-value');
-```
+Use [deleteWarehouse](#deletewarehouse) instead. Will be removed in next major version.
 
 ***
 
@@ -2934,11 +3800,13 @@ getWarehousesContact(warehouseId: number): Promise<{
 }>;
 ```
 
-Defined in: [modules/products/index.ts:921](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L921)
+Defined in: [modules/products/index.ts:2031](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L2031)
 
 Список контактов
 
-Метод возвращает список контактов, привязанных к [складу продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <br> Только для складов с типом доставки `3` — доставка курьером WB (DBW). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для следующих методов DBW: <ul> <li>получение и обновление списка контактов</li> <li>получение и удаление метаданных</li> <li>методы сборочных заданий</li> </ul> | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | </div>
+Returns contacts linked to a seller warehouse. Only for warehouses with delivery type 3 (DBW - WB courier).
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Parameters
 
@@ -2955,7 +3823,7 @@ Defined in: [modules/products/index.ts:921](https://github.com/salacoste/daytona
   \}[];
 \}\>
 
-Успешно
+Warehouse contacts list
 
 #### Throws
 
@@ -2973,11 +3841,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.getWarehousesContact('warehouseId-value');
-console.log(result);
+```typescript
+const result = await sdk.products.getWarehousesContact(12345);
+console.log(result.contacts); // [{ phone: '+79001234567', comment: 'Main' }]
 ```
 
 ***
@@ -2988,24 +3860,27 @@ console.log(result);
 updateWarehousesContact(warehouseId: number, data: StoreContactRequestBody): Promise<void>;
 ```
 
-Defined in: [modules/products/index.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/products/index.ts#L940)
+Defined in: [modules/products/index.ts:2063](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/products/index.ts#L2063)
 
 Обновить список контактов
 
-Метод обновляет список контактов [склада продавца](/openapi/work-with-products#tag/Sklady-prodavca/paths/~1api~1v3~1warehouses/get). <div class="description_important"> Список контактов перезаписывается при обновлении. Поэтому в запросе нужно передать <strong>все</strong> параметры списка контактов, в том числе те, которые вы не собираетесь обновлять. </div> Только для складов с типом доставки `3` — курьером WB (DBW). <br><br> К складу можно добавить максимум 5 контактов. Чтобы удалить контакты, отправьте пустой массив `contacts`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для следующих методов DBW: <ul> <li>получение и обновление списка контактов</li> <li>получение и удаление метаданных</li> <li>методы сборочных заданий</li> </ul> | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 300 запросов | 200 миллисекунд | 20 запросов | </div>
+Overwrites the contact list for a seller warehouse (DBW delivery type 3 only).
+Send ALL contacts including unchanged ones. Max 5 contacts. Send empty array to delete all.
+
+Rate limit: 300 req/min, 200ms interval, burst 20
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `warehouseId` | `number` | ID склада продавца |
-| `data` | [`StoreContactRequestBody`](../-internal-/interfaces/StoreContactRequestBody.md) | Request body data |
+| `data` | [`StoreContactRequestBody`](../-internal-/interfaces/StoreContactRequestBody.md) | Contact list data (overwrites existing) |
 
 #### Returns
 
 `Promise`\<`void`\>
 
-Response data
+void on success
 
 #### Throws
 
@@ -3023,8 +3898,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca](https://dev.wildberries.ru/openapi/work-with-products#tag/Sklady-prodavca)
+
 #### Example
 
-```ts
-const result = await sdk.general.updateWarehousesContact('warehouseId-value', {});
+```typescript
+await sdk.products.updateWarehousesContact(12345, {
+  contacts: [{ phone: '+79001234567', comment: 'Main contact' }],
+});
 ```

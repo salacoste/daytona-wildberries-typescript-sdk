@@ -8,16 +8,20 @@ layout: doc
 
 This guide covers common workflows for processing DBS (Delivery by Seller) orders with the Wildberries TypeScript SDK.
 
+> **Migration Notice**: Legacy single-order methods are deprecated and will be **disabled on April 13, 2026**. All workflows in this guide use the recommended bulk methods. See the [Migration Guide](/guides/migration-dbs-legacy-to-bulk) for details.
+
 ## Table of Contents
 
 - [Order Lifecycle Overview](#order-lifecycle-overview)
 - [New Order Processing](#new-order-processing)
 - [Delivery Route Planning](#delivery-route-planning)
+- [Bulk Metadata Workflow](#bulk-metadata-workflow)
 - [Metadata Compliance](#metadata-compliance)
 - [Status Transitions](#status-transitions)
 - [B2B Order Handling](#b2b-order-handling)
 - [Batch Processing](#batch-processing)
 - [Error Recovery](#error-recovery)
+- [Migrating from Deprecated Methods](#migrating-from-deprecated-methods)
 
 ## Order Lifecycle Overview
 
@@ -96,62 +100,67 @@ async function processNewOrders() {
     });
   }
 
-  // Step 4: Process each order
-  for (const [orderId, data] of orderMap) {
-    try {
-      // Add required metadata
-      if (data.requiredMeta.length > 0) {
-        await processMetadata(orderId, data.requiredMeta);
-      }
+  // Step 4: Set metadata using bulk methods (grouped by type)
+  await processMetadataBulk(orders);
 
-      // Confirm order
-      const result = await sdk.ordersDBS.confirmBulk([orderId]);
+  // Step 5: Confirm all orders at once
+  const confirmableIds = Array.from(orderMap.keys());
+  const result = await sdk.ordersDBS.confirmBulk(confirmableIds);
 
-      if (result.results?.[0]?.isError) {
-        console.error(`Failed to confirm ${orderId}:`, result.results[0].errors);
-        continue;
-      }
-
-      console.log(`Confirmed order ${orderId} for ${data.address}`);
-
-    } catch (error) {
-      console.error(`Error processing order ${orderId}:`, error);
+  for (const r of result.results ?? []) {
+    if (r.isError) {
+      console.error(`Failed to confirm ${r.orderId}:`, r.errors);
+    } else {
+      const data = orderMap.get(r.orderId);
+      console.log(`Confirmed order ${r.orderId} for ${data?.address}`);
     }
   }
 }
 
-async function processMetadata(orderId: number, requiredMeta: string[]) {
-  // Get metadata values from your system
-  const metadataValues = await getMetadataFromInventory(orderId);
+async function processMetadataBulk(orders: any[]) {
+  // Group orders by required metadata type, then set in bulk
+  const imeiOrders = [];
+  const sgtinOrders = [];
+  const uinOrders = [];
+  const gtinOrders = [];
+  const cdOrders = [];
 
-  for (const metaType of requiredMeta) {
-    switch (metaType) {
-      case 'imei':
-        if (metadataValues.imei) {
-          await sdk.ordersDBS.setImei(orderId, metadataValues.imei);
-        }
-        break;
-      case 'sgtin':
-        if (metadataValues.sgtins?.length) {
-          await sdk.ordersDBS.setSgtin(orderId, metadataValues.sgtins);
-        }
-        break;
-      case 'uin':
-        if (metadataValues.uin) {
-          await sdk.ordersDBS.setUin(orderId, metadataValues.uin);
-        }
-        break;
-      case 'gtin':
-        if (metadataValues.gtin) {
-          await sdk.ordersDBS.setGtin(orderId, metadataValues.gtin);
-        }
-        break;
-      case 'customsDeclaration':
-        if (metadataValues.customsDeclaration) {
-          await sdk.ordersDBS.setCustomsDeclaration(orderId, metadataValues.customsDeclaration);
-        }
-        break;
+  for (const order of orders) {
+    const meta = order.requiredMeta ?? [];
+    const values = await getMetadataFromInventory(order.id);
+
+    if (meta.includes('imei') && values.imei) {
+      imeiOrders.push({ orderId: order.id, imei: values.imei });
     }
+    if (meta.includes('sgtin') && values.sgtins?.length) {
+      sgtinOrders.push({ orderId: order.id, sgtins: values.sgtins });
+    }
+    if (meta.includes('uin') && values.uin) {
+      uinOrders.push({ orderId: order.id, uin: values.uin });
+    }
+    if (meta.includes('gtin') && values.gtin) {
+      gtinOrders.push({ orderId: order.id, gtin: values.gtin });
+    }
+    if (meta.includes('customsDeclaration') && values.customsDeclaration) {
+      cdOrders.push({ orderId: order.id, customsDeclaration: values.customsDeclaration });
+    }
+  }
+
+  // Set all metadata in bulk (one API call per type)
+  if (imeiOrders.length > 0) {
+    await sdk.ordersDBS.setImeiBulk({ orders: imeiOrders });
+  }
+  if (sgtinOrders.length > 0) {
+    await sdk.ordersDBS.setSgtinBulk({ orders: sgtinOrders });
+  }
+  if (uinOrders.length > 0) {
+    await sdk.ordersDBS.setUinBulk({ orders: uinOrders });
+  }
+  if (gtinOrders.length > 0) {
+    await sdk.ordersDBS.setGtinBulk({ orders: gtinOrders });
+  }
+  if (cdOrders.length > 0) {
+    await sdk.ordersDBS.setCustomsDeclarationBulk({ orders: cdOrders });
   }
 }
 ```
@@ -271,6 +280,93 @@ function groupByTimeSlot(orders: any[]): TimeSlot[] {
 }
 ```
 
+## Bulk Metadata Workflow
+
+The bulk metadata methods replace the deprecated single-order methods and allow you to set, retrieve, and delete metadata for multiple orders in a single API call.
+
+### Set-Verify-Confirm Pattern
+
+```typescript
+async function setVerifyConfirm(orders: any[]) {
+  const orderIds = orders.map(o => o.id!).filter(Boolean);
+
+  // 1. Set metadata in bulk (grouped by type)
+  await processMetadataBulk(orders);
+
+  // 2. Verify all metadata was set correctly
+  const metaResult = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+  const incomplete: number[] = [];
+
+  for (const orderMeta of metaResult.orders ?? []) {
+    const order = orders.find(o => o.id === orderMeta.orderId);
+    const required = order?.requiredMeta ?? [];
+
+    for (const metaType of required) {
+      if (!checkMetadataValue(orderMeta, metaType)) {
+        incomplete.push(orderMeta.orderId!);
+        console.warn(`Order ${orderMeta.orderId}: missing ${metaType}`);
+        break;
+      }
+    }
+  }
+
+  // 3. Confirm only orders with complete metadata
+  const readyIds = orderIds.filter(id => !incomplete.includes(id));
+  if (readyIds.length > 0) {
+    const result = await sdk.ordersDBS.confirmBulk(readyIds);
+    console.log(`Confirmed ${readyIds.length} orders`);
+  }
+
+  if (incomplete.length > 0) {
+    console.warn(`${incomplete.length} orders skipped (missing metadata)`);
+  }
+}
+```
+
+### Bulk Delete and Re-Set Metadata
+
+```typescript
+// Correct metadata for multiple orders at once
+async function correctMetadata(
+  orderIds: number[],
+  metaType: string,
+  newValues: Map<number, string>
+) {
+  // 1. Delete old metadata in bulk
+  await sdk.ordersDBS.deleteMetaBulk({
+    orders: orderIds,
+    key: metaType as any
+  });
+
+  // 2. Set corrected values in bulk
+  switch (metaType) {
+    case 'imei':
+      await sdk.ordersDBS.setImeiBulk({
+        orders: orderIds.map(id => ({
+          orderId: id,
+          imei: newValues.get(id)!
+        }))
+      });
+      break;
+    case 'gtin':
+      await sdk.ordersDBS.setGtinBulk({
+        orders: orderIds.map(id => ({
+          orderId: id,
+          gtin: newValues.get(id)!
+        }))
+      });
+      break;
+    // ... handle other types similarly
+  }
+
+  // 3. Verify corrections
+  const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+  for (const m of meta.orders ?? []) {
+    console.log(`Order ${m.orderId}: ${metaType} updated`);
+  }
+}
+```
+
 ## Metadata Compliance
 
 ### Automated Metadata Workflow
@@ -289,6 +385,12 @@ async function ensureMetadataCompliance(
 
   // Get current orders to check required metadata
   const { orders } = await sdk.ordersDBS.getNewOrders();
+
+  // Get metadata for all orders in one bulk call
+  const metaBulk = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+  const metaMap = new Map(
+    (metaBulk.orders ?? []).map(m => [m.orderId, m.meta])
+  );
 
   for (const orderId of orderIds) {
     const order = orders?.find(o => o.id === orderId);
@@ -310,10 +412,8 @@ async function ensureMetadataCompliance(
       continue;
     }
 
-    // Get current metadata
-    const { meta } = await sdk.ordersDBS.getMeta(orderId);
-
-    // Check each required type
+    // Check each required type using bulk-fetched metadata
+    const meta = metaMap.get(orderId);
     for (const metaType of required) {
       const hasValue = checkMetadataValue(meta, metaType);
 
@@ -337,18 +437,18 @@ async function ensureMetadataCompliance(
   return results;
 }
 
-function checkMetadataValue(meta: any, type: string): boolean {
+function checkMetadataValue(orderMeta: any, type: string): boolean {
   switch (type) {
     case 'imei':
-      return !!meta?.imei?.value;
+      return !!orderMeta?.imei;
     case 'sgtin':
-      return (meta?.sgtin?.value?.length ?? 0) > 0;
+      return (orderMeta?.sgtins?.length ?? 0) > 0;
     case 'uin':
-      return !!meta?.uin?.value;
+      return !!orderMeta?.uin;
     case 'gtin':
-      return !!meta?.gtin?.value;
+      return !!orderMeta?.gtin;
     case 'customsDeclaration':
-      return !!meta?.customsDeclaration?.value;
+      return !!orderMeta?.customsDeclaration;
     default:
       return false;
   }
@@ -378,26 +478,27 @@ function validateSgtin(sgtin: string): { valid: boolean; error?: string } {
 }
 
 async function setSgtinWithValidation(
-  orderId: number,
-  sgtins: string[]
+  orders: Array<{ orderId: number; sgtins: string[] }>
 ): Promise<void> {
-  // Validate all SGTINs first
-  const invalid = sgtins
-    .map(s => ({ sgtin: s, ...validateSgtin(s) }))
-    .filter(r => !r.valid);
+  // Validate all SGTINs for all orders first
+  for (const order of orders) {
+    const invalid = order.sgtins
+      .map(s => ({ sgtin: s, ...validateSgtin(s) }))
+      .filter(r => !r.valid);
 
-  if (invalid.length > 0) {
-    throw new Error(
-      `Invalid SGTINs: ${invalid.map(i => `${i.sgtin}: ${i.error}`).join(', ')}`
-    );
+    if (invalid.length > 0) {
+      throw new Error(
+        `Order ${order.orderId} invalid SGTINs: ${invalid.map(i => `${i.sgtin}: ${i.error}`).join(', ')}`
+      );
+    }
+
+    if (order.sgtins.length > 24) {
+      throw new Error(`Order ${order.orderId}: too many SGTINs (${order.sgtins.length}). Maximum is 24.`);
+    }
   }
 
-  // Check max count
-  if (sgtins.length > 24) {
-    throw new Error(`Too many SGTINs: ${sgtins.length}. Maximum is 24.`);
-  }
-
-  await sdk.ordersDBS.setSgtin(orderId, sgtins);
+  // Set all SGTINs in one bulk call
+  await sdk.ordersDBS.setSgtinBulk({ orders });
 }
 ```
 
@@ -733,6 +834,46 @@ function isTransientError(code?: number): boolean {
   return code ? transientCodes.includes(code) : false;
 }
 ```
+
+## Migrating from Deprecated Methods
+
+If your workflows still use the deprecated single-order methods (`getMeta`, `deleteMeta`, `setSgtin`, `setImei`, `setUin`, `setGtin`, `setCustomsDeclaration`), you need to migrate to bulk methods before **April 13, 2026**.
+
+### Quick Migration Summary
+
+| Old Pattern | New Pattern |
+|-------------|-------------|
+| `getMeta(orderId)` one at a time | `getMetaBulk({ orders: [id1, id2, ...] })` |
+| `deleteMeta(orderId, key)` one at a time | `deleteMetaBulk({ orders: [id1, id2], key })` |
+| `setImei(orderId, imei)` per order | `setImeiBulk({ orders: [{orderId, imei}, ...] })` |
+| `setSgtin(orderId, sgtins)` per order | `setSgtinBulk({ orders: [{orderId, sgtins}, ...] })` |
+| `setUin(orderId, uin)` per order | `setUinBulk({ orders: [{orderId, uin}, ...] })` |
+| `setGtin(orderId, gtin)` per order | `setGtinBulk({ orders: [{orderId, gtin}, ...] })` |
+| `setCustomsDeclaration(orderId, cd)` per order | `setCustomsDeclarationBulk({ orders: [{orderId, customsDeclaration}, ...] })` |
+
+### Before and After Example
+
+```typescript
+// BEFORE (deprecated -- will stop working April 13, 2026)
+for (const orderId of orderIds) {
+  const meta = await sdk.ordersDBS.getMeta(orderId);      // N API calls
+  if (!meta.meta?.imei?.value) {
+    await sdk.ordersDBS.setImei(orderId, getImei(orderId)); // N more calls
+  }
+}
+
+// AFTER (recommended -- fewer API calls, better performance)
+const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds }); // 1 call
+const needsImei = (meta.orders ?? [])
+  .filter(m => !m.imei)
+  .map(m => ({ orderId: m.orderId!, imei: getImei(m.orderId!) }));
+
+if (needsImei.length > 0) {
+  await sdk.ordersDBS.setImeiBulk({ orders: needsImei });           // 1 call
+}
+```
+
+For the complete migration guide with all method mappings, error handling changes, and a step-by-step checklist, see the [Migration Guide: Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk).
 
 ## See Also
 

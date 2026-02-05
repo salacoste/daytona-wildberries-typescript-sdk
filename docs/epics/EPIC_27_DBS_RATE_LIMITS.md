@@ -4,7 +4,7 @@
 
 **Target Completion**: Epic 27.x (Single story -- 27.1)
 **SDK Version**: 2.9.0
-**Status**: TO DO
+**Status**: DONE
 
 **Business Value**:
 - Fixes a critical bug: the rate limiter cannot find limits for most DBS methods due to key mismatches, so rate limiting is effectively disabled

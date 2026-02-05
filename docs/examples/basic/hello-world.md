@@ -34,7 +34,7 @@ async function testConnection() {
 
     console.log('Connection successful!');
     console.log('Server status:', response.Status);  // 'OK'
-    console.log('Server timestamp:', response.TS);   // Unix timestamp
+    console.log('Server timestamp:', response.TS);   // ISO datetime string
 
     return true;
   } catch (error) {
@@ -51,7 +51,7 @@ testConnection();
 ```json
 {
   "Status": "OK",
-  "TS": 1733234567890
+  "TS": "2024-12-03T15:22:47Z"
 }
 ```
 

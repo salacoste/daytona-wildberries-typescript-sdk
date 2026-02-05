@@ -9,7 +9,7 @@ type TableProductRequest = CommonProductFilters & {
 };
 ```
 
-Defined in: [types/analytics.types.ts:1385](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L1385)
+Defined in: [types/analytics.types.ts:1385](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L1385)
 
 Параметры запроса об остатках по товарам
 
@@ -17,5 +17,5 @@ Defined in: [types/analytics.types.ts:1385](https://github.com/salacoste/daytona
 
 | Name | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| `limit?` | `number` | Количество товаров в ответе | [types/analytics.types.ts:1387](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L1387) |
-| `offset` | `number` | После какого элемента выдавать данные | [types/analytics.types.ts:1389](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/types/analytics.types.ts#L1389) |
+| `limit?` | `number` | Количество товаров в ответе | [types/analytics.types.ts:1387](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L1387) |
+| `offset` | `number` | После какого элемента выдавать данные | [types/analytics.types.ts:1389](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/types/analytics.types.ts#L1389) |

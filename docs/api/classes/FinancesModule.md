@@ -2,7 +2,7 @@
 
 # Class: FinancesModule
 
-Defined in: [modules/finances/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L10)
+Defined in: [modules/finances/index.ts:19](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L19)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/finances/index.ts:10](https://github.com/salacoste/daytona-
 new FinancesModule(client: BaseClient): FinancesModule;
 ```
 
-Defined in: [modules/finances/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L11)
+Defined in: [modules/finances/index.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L20)
 
 #### Parameters
 
@@ -29,14 +29,10 @@ Defined in: [modules/finances/index.ts:11](https://github.com/salacoste/daytona-
 ### getAccountBalance()
 
 ```ts
-getAccountBalance(): Promise<{
-  currency?: string;
-  current?: number;
-  for_withdraw?: number;
-}>;
+getAccountBalance(): Promise<AccountBalanceResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L27)
+Defined in: [modules/finances/index.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L39)
 
 Получить баланс продавца
 
@@ -44,13 +40,9 @@ Defined in: [modules/finances/index.ts:27](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<\{
-  `currency?`: `string`;
-  `current?`: `number`;
-  `for_withdraw?`: `number`;
-\}\>
+`Promise`\<[`AccountBalanceResponse`](../-internal-/interfaces/AccountBalanceResponse.md)\>
 
-Успешно
+Account balance data including currency, current balance, and available withdrawal amount
 
 #### Throws
 
@@ -68,19 +60,23 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Balans](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Balans)
+
 #### Example
 
-```ts
-const result = await sdk.general.getAccountBalance();
+```typescript
+const result = await sdk.finances.getAccountBalance();
 console.log(result);
 ```
 
 ***
 
-### getSupplierReportdetailbyperiod()
+### getSupplierReportDetailByPeriod()
 
 ```ts
-getSupplierReportdetailbyperiod(options?: {
+getSupplierReportDetailByPeriod(options: {
   dateFrom: string;
   dateTo: string;
   limit?: number;
@@ -89,7 +85,7 @@ getSupplierReportdetailbyperiod(options?: {
 }): Promise<DetailReportItem[]>;
 ```
 
-Defined in: [modules/finances/index.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L46)
+Defined in: [modules/finances/index.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L68)
 
 Отчёт о продажах по реализации
 
@@ -99,9 +95,9 @@ Defined in: [modules/finances/index.ts:46](https://github.com/salacoste/daytona-
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `dateFrom`: `string`; `dateTo`: `string`; `limit?`: `number`; `rrdid?`: `number`; `period?`: `"weekly"` \| `"daily"`; \} | Query parameters |
-| `options.dateFrom?` | `string` | - |
-| `options.dateTo?` | `string` | - |
+| `options` | \{ `dateFrom`: `string`; `dateTo`: `string`; `limit?`: `number`; `rrdid?`: `number`; `period?`: `"weekly"` \| `"daily"`; \} | Query parameters including required dateFrom and dateTo |
+| `options.dateFrom` | `string` | - |
+| `options.dateTo` | `string` | - |
 | `options.limit?` | `number` | - |
 | `options.rrdid?` | `number` | - |
 | `options.period?` | `"weekly"` \| `"daily"` | - |
@@ -110,7 +106,7 @@ Defined in: [modules/finances/index.ts:46](https://github.com/salacoste/daytona-
 
 `Promise`\<[`DetailReportItem`](../-internal-/interfaces/DetailReportItem.md)[]\>
 
-Успешно
+Array of detailed report items for the specified period
 
 #### Throws
 
@@ -128,12 +124,55 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty)
+
 #### Example
 
-```ts
-const result = await sdk.general.getSupplierReportdetailbyperiod({});
+```typescript
+const result = await sdk.finances.getSupplierReportDetailByPeriod({
+  dateFrom: '2024-01-01',
+  dateTo: '2024-01-31',
+  period: 'weekly',
+});
 console.log(result);
 ```
+
+***
+
+### ~~getSupplierReportdetailbyperiod()~~
+
+```ts
+getSupplierReportdetailbyperiod(options: {
+  dateFrom: string;
+  dateTo: string;
+  limit?: number;
+  rrdid?: number;
+  period?: "weekly" | "daily";
+}): Promise<DetailReportItem[]>;
+```
+
+Defined in: [modules/finances/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L84)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `options` | \{ `dateFrom`: `string`; `dateTo`: `string`; `limit?`: `number`; `rrdid?`: `number`; `period?`: `"weekly"` \| `"daily"`; \} |
+| `options.dateFrom` | `string` |
+| `options.dateTo` | `string` |
+| `options.limit?` | `number` |
+| `options.rrdid?` | `number` |
+| `options.period?` | `"weekly"` \| `"daily"` |
+
+#### Returns
+
+`Promise`\<[`DetailReportItem`](../-internal-/interfaces/DetailReportItem.md)[]\>
+
+#### Deprecated
+
+Use getSupplierReportDetailByPeriod instead. Will be removed in v3.0.0.
 
 ***
 
@@ -141,11 +180,11 @@ console.log(result);
 
 ```ts
 getDocumentsCategories(options?: {
-  locale?: string;
+  locale?: DocumentsLocale;
 }): Promise<GetCategories>;
 ```
 
-Defined in: [modules/finances/index.ts:65](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L65)
+Defined in: [modules/finances/index.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L112)
 
 Категории документов
 
@@ -155,14 +194,14 @@ Defined in: [modules/finances/index.ts:65](https://github.com/salacoste/daytona-
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `locale?`: `string`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options?` | \{ `locale?`: [`DocumentsLocale`](../-internal-/type-aliases/DocumentsLocale.md); \} | Query parameters |
+| `options.locale?` | [`DocumentsLocale`](../-internal-/type-aliases/DocumentsLocale.md) | - |
 
 #### Returns
 
 `Promise`\<[`GetCategories`](../-internal-/interfaces/GetCategories.md)\>
 
-Успешно
+List of document categories available for the seller
 
 #### Throws
 
@@ -180,10 +219,14 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDocumentsCategories({});
+```typescript
+const result = await sdk.finances.getDocumentsCategories({ locale: 'ru' });
 console.log(result);
 ```
 
@@ -193,7 +236,7 @@ console.log(result);
 
 ```ts
 getDocumentsList(options?: {
-  locale?: string;
+  locale?: DocumentsLocale;
   beginTime?: string;
   endTime?: string;
   sort?: "date" | "category";
@@ -205,7 +248,7 @@ getDocumentsList(options?: {
 }): Promise<GetList>;
 ```
 
-Defined in: [modules/finances/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L84)
+Defined in: [modules/finances/index.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L143)
 
 Список документов
 
@@ -215,8 +258,8 @@ Defined in: [modules/finances/index.ts:84](https://github.com/salacoste/daytona-
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `locale?`: `string`; `beginTime?`: `string`; `endTime?`: `string`; `sort?`: `"date"` \| `"category"`; `order?`: `"desc"` \| `"asc"`; `category?`: `string`; `serviceName?`: `string`; `limit?`: `number`; `offset?`: `number`; \} | Query parameters |
-| `options.locale?` | `string` | - |
+| `options?` | \{ `locale?`: [`DocumentsLocale`](../-internal-/type-aliases/DocumentsLocale.md); `beginTime?`: `string`; `endTime?`: `string`; `sort?`: `"date"` \| `"category"`; `order?`: `"desc"` \| `"asc"`; `category?`: `string`; `serviceName?`: `string`; `limit?`: `number`; `offset?`: `number`; \} | Query parameters |
+| `options.locale?` | [`DocumentsLocale`](../-internal-/type-aliases/DocumentsLocale.md) | - |
 | `options.beginTime?` | `string` | - |
 | `options.endTime?` | `string` | - |
 | `options.sort?` | `"date"` \| `"category"` | - |
@@ -230,7 +273,7 @@ Defined in: [modules/finances/index.ts:84](https://github.com/salacoste/daytona-
 
 `Promise`\<[`GetList`](../-internal-/interfaces/GetList.md)\>
 
-Успешно
+Paginated list of seller documents with metadata
 
 #### Throws
 
@@ -248,10 +291,22 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### Remarks
+
+The `sort` and `order` parameters work together — specifying `order` without `sort` has no effect.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDocumentsList({});
+```typescript
+const result = await sdk.finances.getDocumentsList({
+  locale: 'ru',
+  sort: 'date',
+  order: 'desc',
+});
 console.log(result);
 ```
 
@@ -260,13 +315,13 @@ console.log(result);
 ### getDocumentsDownload()
 
 ```ts
-getDocumentsDownload(options?: {
+getDocumentsDownload(options: {
   serviceName: string;
   extension: string;
 }): Promise<GetDoc>;
 ```
 
-Defined in: [modules/finances/index.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L103)
+Defined in: [modules/finances/index.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L181)
 
 Получить документ
 
@@ -276,15 +331,15 @@ Defined in: [modules/finances/index.ts:103](https://github.com/salacoste/daytona
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `serviceName`: `string`; `extension`: `string`; \} | Query parameters |
-| `options.serviceName?` | `string` | - |
-| `options.extension?` | `string` | - |
+| `options` | \{ `serviceName`: `string`; `extension`: `string`; \} | Query parameters including required serviceName and extension |
+| `options.serviceName` | `string` | - |
+| `options.extension` | `string` | - |
 
 #### Returns
 
 `Promise`\<[`GetDoc`](../-internal-/interfaces/GetDoc.md)\>
 
-Успешно
+Document file data for the requested document
 
 #### Throws
 
@@ -302,10 +357,17 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty)
+
 #### Example
 
-```ts
-const result = await sdk.general.getDocumentsDownload({});
+```typescript
+const result = await sdk.finances.getDocumentsDownload({
+  serviceName: 'act',
+  extension: 'pdf',
+});
 console.log(result);
 ```
 
@@ -317,7 +379,7 @@ console.log(result);
 createDownloadAll(data?: RequestDownload): Promise<GetDocs>;
 ```
 
-Defined in: [modules/finances/index.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/8eaa0b564c7703a626d25dfa7f1acb8577621384/src/modules/finances/index.ts#L122)
+Defined in: [modules/finances/index.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/42b5681888bc6199eb6bb7e5ae1c5201dbe79356/src/modules/finances/index.ts#L208)
 
 Получить документы
 
@@ -333,7 +395,7 @@ Defined in: [modules/finances/index.ts:122](https://github.com/salacoste/daytona
 
 `Promise`\<[`GetDocs`](../-internal-/interfaces/GetDocs.md)\>
 
-Успешно
+Download details for the requested batch of documents
 
 #### Throws
 
@@ -351,9 +413,15 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### See
+
+[https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty)
+
 #### Example
 
-```ts
-const result = await sdk.general.createDownloadAll({});
+```typescript
+const result = await sdk.finances.createDownloadAll({
+  serviceNames: ['act', 'invoice'],
+});
 console.log(result);
 ```

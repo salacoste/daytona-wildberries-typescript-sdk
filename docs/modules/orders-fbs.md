@@ -63,7 +63,7 @@ Ensure your API key has the following permissions enabled:
 | `getOrdersReshipment()` | Get orders requiring reshipment | 300 req/min |
 | `createOrdersStatu(data)` | **@deprecated** Use `getOrderStatuses()` | 300 req/min |
 
-### Supplies (9 methods)
+### Supplies (10 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|

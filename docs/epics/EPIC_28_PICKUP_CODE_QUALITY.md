@@ -8,6 +8,7 @@
 | Module | in-store-pickup |
 | Priority | Medium |
 | Backlog Task | task-26 |
+| Status | DONE |
 | Target | SDK v2.7.x |
 | Source Swagger | `wildberries_api_doc/06-in-store-pickup.yaml` |
 | Audit Date | February 2026 |
