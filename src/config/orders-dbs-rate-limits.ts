@@ -34,6 +34,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Get completed DBS orders with pagination */
@@ -41,6 +42,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Get customer contact information */
@@ -48,6 +50,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Get status info for multiple orders (bulk) */
@@ -55,6 +58,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Get order statuses (legacy, deprecated 13.04.2026) */
@@ -62,6 +66,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Get B2B buyer information */
@@ -69,6 +74,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   // ============================================================================
@@ -81,6 +87,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Mark multiple orders as delivered (bulk) */
@@ -88,6 +95,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Complete handover for multiple orders (bulk) */
@@ -95,6 +103,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Reject multiple orders (bulk) */
@@ -102,6 +111,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Cancel multiple orders (bulk) */
@@ -109,6 +119,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Confirm single order (legacy, deprecated 13.04.2026) */
@@ -116,6 +127,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Mark single order as delivered (legacy, deprecated 13.04.2026) */
@@ -123,6 +135,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Complete handover for single order (legacy, deprecated 13.04.2026) */
@@ -130,6 +143,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Reject single order (legacy, deprecated 13.04.2026) */
@@ -137,6 +151,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   /** Cancel single order (legacy, deprecated 13.04.2026) */
@@ -144,6 +159,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 10,
+    penaltyMultiplier: 10,
   },
 
   // ============================================================================
@@ -156,6 +172,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 150,
     intervalSeconds: 0.4,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Delete order metadata */
@@ -163,6 +180,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 150,
     intervalSeconds: 0.4,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   // ============================================================================
@@ -176,6 +194,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 500,
     intervalSeconds: 0.12,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   // ============================================================================
@@ -187,6 +206,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Get delivery dates for orders */
@@ -194,6 +214,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   // ============================================================================
@@ -205,6 +226,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 150,
     intervalSeconds: 0.4,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Delete metadata bulk */
@@ -212,6 +234,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 150,
     intervalSeconds: 0.4,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   // ============================================================================
@@ -223,6 +246,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 500,
     intervalSeconds: 0.12,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Set UIN bulk */
@@ -230,6 +254,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 500,
     intervalSeconds: 0.12,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Set IMEI bulk */
@@ -237,6 +262,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 500,
     intervalSeconds: 0.12,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Set GTIN bulk */
@@ -244,6 +270,7 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 500,
     intervalSeconds: 0.12,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 
   /** Set customs declaration bulk */
@@ -251,5 +278,6 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 500,
     intervalSeconds: 0.12,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 };

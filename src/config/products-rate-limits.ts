@@ -222,52 +222,62 @@ export const productsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   /** PUT /api/v3/stocks/{warehouseId} — 409 response counts as 10 requests against rate limit */
   'products.putStocks': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   /** DELETE /api/v3/stocks/{warehouseId} — 409 response counts as 10 requests against rate limit */
   'products.deleteStocks': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
     burstLimit: 2,
+    penaltyMultiplier: 10,
   },
   'products.offices': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   'products.warehouses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   'products.postWarehouses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   'products.putWarehouses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   'products.deleteWarehouses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   'products.dbwWarehousesContacts': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
   'products.putDbwWarehousesContacts': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
+    penaltyMultiplier: 10,
   },
 };
