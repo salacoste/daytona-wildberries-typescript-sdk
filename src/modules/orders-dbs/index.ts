@@ -28,6 +28,20 @@ import type {
   BulkStatusChangeResponse,
   OrderCodeRequest,
   GetStatusResponseLegacy,
+  OrderGroupsRequest,
+  OrderGroupsResponse,
+  DeliveryDatesRequest,
+  DeliveryDatesInfoResponse,
+  GetMetaBulkRequest,
+  GetOrderMetaBulkResponse,
+  DeleteMetaBulkRequest,
+  DeleteMetaBulkResponse,
+  SetSgtinBulkRequest,
+  SetUinBulkRequest,
+  SetImeiBulkRequest,
+  SetGtinBulkRequest,
+  SetCustomsDeclarationBulkRequest,
+  SetMetaBulkResponse,
 } from '../../types/orders-dbs.types';
 
 /** Valid metadata keys for DBS orders */
@@ -284,6 +298,7 @@ export class OrdersDbsModule {
    * Returns metadata associated with an order including IMEI, UIN, GTIN,
    * SGTIN, and customs declaration information.
    *
+   * @deprecated Use {@link getMetaBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to get metadata for
    * @returns Promise resolving to order metadata
    * @throws {ValidationError} When orderId is not greater than 0
@@ -315,6 +330,7 @@ export class OrdersDbsModule {
    * Removes a metadata key from the order. Valid keys are:
    * imei, uin, gtin, sgtin, customsDeclaration
    *
+   * @deprecated Use {@link deleteMetaBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to delete metadata from
    * @param key - Metadata key to delete
    * @returns Promise resolving to void on success
@@ -350,6 +366,7 @@ export class OrdersDbsModule {
    * Sets one or more SGTIN (Serialized Global Trade Item Number) marking codes.
    * Each SGTIN must be 16-135 characters. Maximum 24 SGTINs per order.
    *
+   * @deprecated Use {@link setSgtinBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to set SGTIN for
    * @param sgtins - Array of SGTIN codes (1-24 items, each 16-135 characters)
    * @returns Promise resolving to void on success
@@ -392,6 +409,7 @@ export class OrdersDbsModule {
    * Sets the UIN (Unique Identification Number) for the order.
    * UIN must be exactly 16 characters.
    *
+   * @deprecated Use {@link setUinBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to set UIN for
    * @param uin - UIN code (exactly 16 characters)
    * @returns Promise resolving to void on success
@@ -428,6 +446,7 @@ export class OrdersDbsModule {
    * Sets the IMEI (International Mobile Equipment Identity) for the order.
    * IMEI must be exactly 15 characters.
    *
+   * @deprecated Use {@link setImeiBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to set IMEI for
    * @param imei - IMEI code (exactly 15 characters)
    * @returns Promise resolving to void on success
@@ -464,6 +483,7 @@ export class OrdersDbsModule {
    * Sets the GTIN (Global Trade Item Number) for the order.
    * GTIN must be exactly 13 characters.
    *
+   * @deprecated Use {@link setGtinBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to set GTIN for
    * @param gtin - GTIN code (exactly 13 characters)
    * @returns Promise resolving to void on success
@@ -500,6 +520,7 @@ export class OrdersDbsModule {
    * Sets the customs declaration number for the order.
    * Must be 1-50 characters.
    *
+   * @deprecated Use {@link setCustomsDeclarationBulk} instead. This endpoint will be removed on April 13, 2026.
    * @param orderId - Order ID to set customs declaration for
    * @param customsDeclaration - Customs declaration number (1-50 characters)
    * @returns Promise resolving to void on success
@@ -527,6 +548,216 @@ export class OrdersDbsModule {
       `${BASE_URL}/api/v3/dbs/orders/${orderId}/meta/customs-declaration`,
       { customsDeclaration },
       { rateLimitKey: 'orders-dbs.setMeta' }
+    );
+  }
+
+  // ==========================================================================
+  // New Info Endpoints (Story 26.1)
+  // ==========================================================================
+
+  /**
+   * Get paid delivery group information
+   *
+   * @param request - Request with order IDs
+   * @returns Promise resolving to order group information
+   *
+   * @example
+   * ```typescript
+   * const groups = await sdk.ordersDBS.getGroupsInfo({ orders: [123456] });
+   * ```
+   */
+  async getGroupsInfo(request: OrderGroupsRequest): Promise<OrderGroupsResponse> {
+    return this.client.post<OrderGroupsResponse>(
+      `${BASE_URL}/api/v3/dbs/groups/info`,
+      request,
+      { rateLimitKey: 'orders-dbs.getGroupsInfo' }
+    );
+  }
+
+  /**
+   * Get delivery dates for DBS orders
+   *
+   * @param request - Request with order IDs
+   * @returns Promise resolving to delivery date information
+   *
+   * @example
+   * ```typescript
+   * const dates = await sdk.ordersDBS.getDeliveryDates({ orders: [123456] });
+   * ```
+   */
+  async getDeliveryDates(request: DeliveryDatesRequest): Promise<DeliveryDatesInfoResponse> {
+    return this.client.post<DeliveryDatesInfoResponse>(
+      `${BASE_URL}/api/v3/dbs/orders/delivery-date`,
+      request,
+      { rateLimitKey: 'orders-dbs.getDeliveryDates' }
+    );
+  }
+
+  // ==========================================================================
+  // Bulk Metadata Endpoints (Story 26.2) - Replace deprecated single-order methods
+  // ==========================================================================
+
+  /**
+   * Get metadata for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order getMeta() method.
+   * Rate limit: 150 requests/min, 400ms interval, 20 burst
+   *
+   * @param request - Request with order IDs
+   * @returns Promise resolving to bulk metadata response
+   *
+   * @example
+   * ```typescript
+   * const meta = await sdk.ordersDBS.getMetaBulk({ orders: [123456, 234567] });
+   * ```
+   */
+  async getMetaBulk(request: GetMetaBulkRequest): Promise<GetOrderMetaBulkResponse> {
+    return this.client.post<GetOrderMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/info`,
+      request,
+      { rateLimitKey: 'orders-dbs.getMetaBulk' }
+    );
+  }
+
+  /**
+   * Delete metadata for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order deleteMeta() method.
+   * Rate limit: 150 requests/min, 400ms interval, 20 burst
+   *
+   * @param request - Request with order IDs and metadata key to delete
+   * @returns Promise resolving to bulk delete response
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.deleteMetaBulk({ orders: [123456], key: 'imei' });
+   * ```
+   */
+  async deleteMetaBulk(request: DeleteMetaBulkRequest): Promise<DeleteMetaBulkResponse> {
+    return this.client.post<DeleteMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/delete`,
+      request,
+      { rateLimitKey: 'orders-dbs.deleteMetaBulk' }
+    );
+  }
+
+  /**
+   * Set SGTIN codes for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order setSgtin() method.
+   * Rate limit: 500 requests/min, 120ms interval, 20 burst
+   *
+   * @param request - Request with order SGTIN data
+   * @returns Promise resolving to bulk set response
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.setSgtinBulk({
+   *   orders: [{ orderId: 123456, sgtins: ['1234567890123456'] }]
+   * });
+   * ```
+   */
+  async setSgtinBulk(request: SetSgtinBulkRequest): Promise<SetMetaBulkResponse> {
+    return this.client.post<SetMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/sgtin`,
+      request,
+      { rateLimitKey: 'orders-dbs.setSgtinBulk' }
+    );
+  }
+
+  /**
+   * Set UIN codes for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order setUin() method.
+   * Rate limit: 500 requests/min, 120ms interval, 20 burst
+   *
+   * @param request - Request with order UIN data
+   * @returns Promise resolving to bulk set response
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.setUinBulk({
+   *   orders: [{ orderId: 123456, uin: '1234567890123456' }]
+   * });
+   * ```
+   */
+  async setUinBulk(request: SetUinBulkRequest): Promise<SetMetaBulkResponse> {
+    return this.client.post<SetMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/uin`,
+      request,
+      { rateLimitKey: 'orders-dbs.setUinBulk' }
+    );
+  }
+
+  /**
+   * Set IMEI codes for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order setImei() method.
+   * Rate limit: 500 requests/min, 120ms interval, 20 burst
+   *
+   * @param request - Request with order IMEI data
+   * @returns Promise resolving to bulk set response
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.setImeiBulk({
+   *   orders: [{ orderId: 123456, imei: '123456789012345' }]
+   * });
+   * ```
+   */
+  async setImeiBulk(request: SetImeiBulkRequest): Promise<SetMetaBulkResponse> {
+    return this.client.post<SetMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/imei`,
+      request,
+      { rateLimitKey: 'orders-dbs.setImeiBulk' }
+    );
+  }
+
+  /**
+   * Set GTIN codes for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order setGtin() method.
+   * Rate limit: 500 requests/min, 120ms interval, 20 burst
+   *
+   * @param request - Request with order GTIN data
+   * @returns Promise resolving to bulk set response
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.setGtinBulk({
+   *   orders: [{ orderId: 123456, gtin: '1234567890123' }]
+   * });
+   * ```
+   */
+  async setGtinBulk(request: SetGtinBulkRequest): Promise<SetMetaBulkResponse> {
+    return this.client.post<SetMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/gtin`,
+      request,
+      { rateLimitKey: 'orders-dbs.setGtinBulk' }
+    );
+  }
+
+  /**
+   * Set customs declaration for multiple orders (bulk)
+   *
+   * Replaces the deprecated single-order setCustomsDeclaration() method.
+   * Rate limit: 500 requests/min, 120ms interval, 20 burst
+   *
+   * @param request - Request with order customs declaration data
+   * @returns Promise resolving to bulk set response
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.setCustomsDeclarationBulk({
+   *   orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789' }]
+   * });
+   * ```
+   */
+  async setCustomsDeclarationBulk(request: SetCustomsDeclarationBulkRequest): Promise<SetMetaBulkResponse> {
+    return this.client.post<SetMetaBulkResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/customs-declaration`,
+      request,
+      { rateLimitKey: 'orders-dbs.setCustomsDeclarationBulk' }
     );
   }
 

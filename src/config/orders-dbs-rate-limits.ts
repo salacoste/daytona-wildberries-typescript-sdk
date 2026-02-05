@@ -1,25 +1,32 @@
 /**
- * Auto-generated rate limit configuration for orders-dbs module
- * Generated from: wildberries_api_doc/04-orders-dbs.yaml
- * DO NOT EDIT MANUALLY - Changes will be overwritten on regeneration
+ * Rate limit configuration for orders-dbs module
+ * Source: wildberries_api_doc/04-orders-dbs/ (OpenAPI operation descriptions)
  *
- * This file contains rate limit configurations extracted from OpenAPI operation descriptions.
- * Rate limits are enforced by the RateLimiter (Story 1.4) using the token bucket algorithm.
+ * This file contains rate limit configurations for all DBS (Delivery by Seller)
+ * endpoints. Rate limits are enforced by the RateLimiter (Story 1.4) using
+ * the token bucket algorithm.
  *
- * DBS (Delivery by Seller) API Rate Limits:
- * - Most endpoints: 300 req/min, 200ms interval, 20 burst
- * - Same limits apply for both bulk and legacy methods
+ * DBS API uses a 4-tier rate limit system:
+ *
+ * | Tier | Name             | RPM     | Interval | Burst | Entries |
+ * |------|------------------|---------|----------|-------|---------|
+ * | T1   | Assembly Read    | 300/min | 200ms    | 20    | 6       |
+ * | T2   | Status Write     | 60/min  | 1s       | 10    | 10      |
+ * | T3   | Meta Read/Delete | 150/min | 400ms    | 20    | 2       |
+ * | T4   | Meta Set         | 500/min | 120ms    | 20    | 1       |
+ *
+ * Total entries: 19
  *
  * @see {@link ../../src/client/rate-limiter!RateLimiter RateLimiter Documentation}
  * @module config/orders-dbs-rate-limits
- * @generated
  */
 
 import type { RateLimitConfig } from '../client/rate-limiter';
 
 export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
   // ============================================================================
-  // Core Operations (Story 12.1)
+  // T1: Assembly Read (300 req/min, 200ms interval, burst 20)
+  // Core read operations, status queries, B2B info
   // ============================================================================
 
   /** Get new DBS orders awaiting delivery */
@@ -43,159 +50,206 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
   },
 
-  // ============================================================================
-  // Bulk Status Operations (Story 12.2) - New API from 14.01.2026
-  // ============================================================================
-
-  /** Get status info for multiple orders */
-  'orders-dbs.getStatusInfoBulk': {
+  /** Get status info for multiple orders (bulk) */
+  'orders-dbs.getStatusesBulk': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
   },
 
-  /** Confirm multiple orders (bulk) */
-  'orders-dbs.confirmOrdersBulk': {
+  /** Get order statuses (legacy, deprecated 13.04.2026) */
+  'orders-dbs.getStatuses': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,
   },
-
-  /** Mark multiple orders as delivered (bulk) */
-  'orders-dbs.deliverOrdersBulk': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Complete handover for multiple orders (bulk) */
-  'orders-dbs.receiveOrdersBulk': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Reject multiple orders (bulk) */
-  'orders-dbs.rejectOrdersBulk': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Cancel multiple orders (bulk) */
-  'orders-dbs.cancelOrdersBulk': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  // ============================================================================
-  // Legacy Status Operations (Story 12.2) - Deprecated, disabled 13.04.2026
-  // ============================================================================
-
-  /** @deprecated Get order statuses (legacy) */
-  'orders-dbs.getStatusLegacy': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** @deprecated Confirm single order (legacy) */
-  'orders-dbs.confirmOrderLegacy': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** @deprecated Mark single order as delivered (legacy) */
-  'orders-dbs.deliverOrderLegacy': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** @deprecated Complete handover for single order (legacy) */
-  'orders-dbs.receiveOrderLegacy': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** @deprecated Reject single order (legacy) */
-  'orders-dbs.rejectOrderLegacy': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** @deprecated Cancel single order (legacy) */
-  'orders-dbs.cancelOrderLegacy': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  // ============================================================================
-  // Metadata Operations (Story 12.3)
-  // ============================================================================
-
-  /** Get order metadata */
-  'orders-dbs.getOrderMeta': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Add metadata to order */
-  'orders-dbs.addOrderMeta': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Update order metadata */
-  'orders-dbs.updateOrderMeta': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Delete order metadata */
-  'orders-dbs.deleteOrderMeta': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Set SGTIN codes */
-  'orders-dbs.setSGTIN': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Set UIN code */
-  'orders-dbs.setUIN': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  /** Set IMEI code */
-  'orders-dbs.setIMEI': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 20,
-  },
-
-  // ============================================================================
-  // B2B Operations (Story 12.4)
-  // ============================================================================
 
   /** Get B2B buyer information */
   'orders-dbs.getB2BInfo': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
+    burstLimit: 20,
+  },
+
+  // ============================================================================
+  // T2: Status Write (60 req/min, 1s interval, burst 10)
+  // Bulk and legacy status mutation operations
+  // ============================================================================
+
+  /** Confirm multiple orders (bulk) */
+  'orders-dbs.confirmBulk': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Mark multiple orders as delivered (bulk) */
+  'orders-dbs.deliverBulk': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Complete handover for multiple orders (bulk) */
+  'orders-dbs.receiveBulk': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Reject multiple orders (bulk) */
+  'orders-dbs.rejectBulk': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Cancel multiple orders (bulk) */
+  'orders-dbs.cancelBulk': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Confirm single order (legacy, deprecated 13.04.2026) */
+  'orders-dbs.confirm': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Mark single order as delivered (legacy, deprecated 13.04.2026) */
+  'orders-dbs.deliver': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Complete handover for single order (legacy, deprecated 13.04.2026) */
+  'orders-dbs.receive': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Reject single order (legacy, deprecated 13.04.2026) */
+  'orders-dbs.reject': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  /** Cancel single order (legacy, deprecated 13.04.2026) */
+  'orders-dbs.cancel': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
+
+  // ============================================================================
+  // T3: Meta Read/Delete (150 req/min, 400ms interval, burst 20)
+  // Metadata retrieval and deletion operations
+  // ============================================================================
+
+  /** Get order metadata */
+  'orders-dbs.getMeta': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+  },
+
+  /** Delete order metadata */
+  'orders-dbs.deleteMeta': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+  },
+
+  // ============================================================================
+  // T4: Meta Set (500 req/min, 120ms interval, burst 20)
+  // Shared key for all metadata set operations:
+  //   setSgtin, setUin, setImei, setGtin, setCustomsDeclaration
+  // ============================================================================
+
+  /** Set order metadata (shared key for sgtin, uin, imei, gtin, customs declaration) */
+  'orders-dbs.setMeta': {
+    requestsPerMinute: 500,
+    intervalSeconds: 0.12,
+    burstLimit: 20,
+  },
+
+  // ============================================================================
+  // T5: New Info Endpoints (300 req/min, 200ms interval, burst 20) - Story 26.1
+  // ============================================================================
+
+  /** Get paid delivery groups info */
+  'orders-dbs.getGroupsInfo': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+  },
+
+  /** Get delivery dates for orders */
+  'orders-dbs.getDeliveryDates': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+  },
+
+  // ============================================================================
+  // T6: Bulk Metadata Read/Delete (150 req/min, 400ms interval, burst 20) - Story 26.2
+  // ============================================================================
+
+  /** Get metadata bulk */
+  'orders-dbs.getMetaBulk': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+  },
+
+  /** Delete metadata bulk */
+  'orders-dbs.deleteMetaBulk': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+  },
+
+  // ============================================================================
+  // T7: Bulk Metadata Set (500 req/min, 120ms interval, burst 20) - Story 26.2
+  // ============================================================================
+
+  /** Set SGTIN bulk */
+  'orders-dbs.setSgtinBulk': {
+    requestsPerMinute: 500,
+    intervalSeconds: 0.12,
+    burstLimit: 20,
+  },
+
+  /** Set UIN bulk */
+  'orders-dbs.setUinBulk': {
+    requestsPerMinute: 500,
+    intervalSeconds: 0.12,
+    burstLimit: 20,
+  },
+
+  /** Set IMEI bulk */
+  'orders-dbs.setImeiBulk': {
+    requestsPerMinute: 500,
+    intervalSeconds: 0.12,
+    burstLimit: 20,
+  },
+
+  /** Set GTIN bulk */
+  'orders-dbs.setGtinBulk': {
+    requestsPerMinute: 500,
+    intervalSeconds: 0.12,
+    burstLimit: 20,
+  },
+
+  /** Set customs declaration bulk */
+  'orders-dbs.setCustomsDeclarationBulk': {
+    requestsPerMinute: 500,
+    intervalSeconds: 0.12,
     burstLimit: 20,
   },
 };

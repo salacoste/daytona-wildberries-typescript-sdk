@@ -379,6 +379,198 @@ export interface GetStatusResponseLegacy {
 }
 
 // ============================================================================
+// Info Endpoint Types (EPIC 26)
+// ============================================================================
+
+/**
+ * Request body for getGroupsInfo
+ * Used to query order group information
+ */
+export interface OrderGroupsRequest {
+  /** Array of order IDs to query groups for */
+  orders: number[];
+}
+
+/**
+ * A single order group containing related orders
+ */
+export interface OrderGroup {
+  /** Group ID */
+  id: number;
+  /** Order IDs in this group */
+  orders: number[];
+  /** Group name */
+  name: string;
+}
+
+/**
+ * Response from getGroupsInfo
+ */
+export interface OrderGroupsResponse {
+  /** List of order groups */
+  groups: OrderGroup[];
+}
+
+/**
+ * Request body for getDeliveryDates
+ * Used to query delivery date information for orders
+ */
+export interface DeliveryDatesRequest {
+  /** Array of order IDs to query delivery dates for */
+  orders: number[];
+}
+
+/**
+ * Delivery date information for a single order
+ */
+export interface DeliveryDateInfo {
+  /** Order ID */
+  orderId: number;
+  /** Planned delivery date (ISO 8601) */
+  deliveryDate: string;
+  /** Maximum allowed delivery date (ISO 8601) */
+  maxDeliveryDate: string;
+}
+
+/**
+ * Response from getDeliveryDates
+ */
+export interface DeliveryDatesInfoResponse {
+  /** List of delivery date information per order */
+  orders: DeliveryDateInfo[];
+}
+
+// ============================================================================
+// Bulk Metadata Types (EPIC 26)
+// ============================================================================
+
+/**
+ * Request body for getMetaBulk
+ */
+export interface GetMetaBulkRequest {
+  /** Array of order IDs to get metadata for */
+  orders: number[];
+}
+
+/**
+ * Metadata for a single order in bulk response
+ */
+export interface BulkOrderMeta {
+  /** Order ID */
+  orderId: number;
+  /** IMEI code */
+  imei?: string;
+  /** UIN code */
+  uin?: string;
+  /** GTIN code */
+  gtin?: string;
+  /** SGTIN marking codes */
+  sgtins?: string[];
+  /** Customs declaration number */
+  customsDeclaration?: string;
+}
+
+/**
+ * Response from getMetaBulk
+ */
+export interface GetOrderMetaBulkResponse {
+  /** Metadata for each requested order */
+  orders: BulkOrderMeta[];
+}
+
+/**
+ * Request body for deleteMetaBulk
+ */
+export interface DeleteMetaBulkRequest {
+  /** Array of order IDs to delete metadata from */
+  orders: number[];
+  /** Metadata key to delete */
+  key: string;
+}
+
+/**
+ * Response from deleteMetaBulk
+ */
+export interface DeleteMetaBulkResponse {
+  /** Results for each order */
+  orders: { orderId: number; success: boolean; error?: string }[];
+}
+
+/**
+ * Request body for setSgtinBulk
+ */
+export interface SetSgtinBulkRequest {
+  /** Array of orders with SGTIN codes to set */
+  orders: { orderId: number; sgtins: string[] }[];
+}
+
+/**
+ * Request body for setUinBulk
+ */
+export interface SetUinBulkRequest {
+  /** Array of orders with UIN codes to set */
+  orders: { orderId: number; uin: string }[];
+}
+
+/**
+ * Request body for setImeiBulk
+ */
+export interface SetImeiBulkRequest {
+  /** Array of orders with IMEI codes to set */
+  orders: { orderId: number; imei: string }[];
+}
+
+/**
+ * Request body for setGtinBulk
+ */
+export interface SetGtinBulkRequest {
+  /** Array of orders with GTIN codes to set */
+  orders: { orderId: number; gtin: string }[];
+}
+
+/**
+ * Request body for setCustomsDeclarationBulk
+ */
+export interface SetCustomsDeclarationBulkRequest {
+  /** Array of orders with customs declaration numbers to set */
+  orders: { orderId: number; customsDeclaration: string }[];
+}
+
+/**
+ * Result item for a single order in bulk metadata set response
+ */
+export interface BulkMetaResultItem {
+  /** Order ID */
+  orderId: number;
+  /** Whether the operation succeeded */
+  success: boolean;
+  /** Error message if failed */
+  error?: string;
+}
+
+/**
+ * Error detail for a single order in bulk metadata operations
+ */
+export interface BulkMetaError {
+  /** Order ID that caused the error */
+  orderId: number;
+  /** Error message */
+  message: string;
+  /** Error code */
+  code: string;
+}
+
+/**
+ * Response from bulk metadata set operations (setSgtinBulk, setUinBulk, etc.)
+ */
+export interface SetMetaBulkResponse {
+  /** Results for each order */
+  orders: BulkMetaResultItem[];
+  /** Additional errors if any */
+  errors?: BulkMetaError[];
+}
+
+// ============================================================================
 // Error Types
 // ============================================================================
 
