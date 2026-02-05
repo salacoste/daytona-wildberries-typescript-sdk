@@ -1736,7 +1736,7 @@ export class ProductsModule {
   /**
    * Получить остатки товаров
    *
-   * Returns stock amounts for products at a seller's warehouse. A 409 response counts as 5 requests.
+   * Returns stock amounts for products at a seller's warehouse. A 409 response counts as 10 requests.
    *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
@@ -1780,7 +1780,7 @@ export class ProductsModule {
    * Обновить остатки товаров
    *
    * Updates stock amounts for products at a seller's warehouse. Parameter names are not validated;
-   * incorrect names return 204 but do not update stocks. A 409 response counts as 5 requests.
+   * incorrect names return 204 but do not update stocks. A 409 response counts as 10 requests.
    *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
@@ -1815,7 +1815,7 @@ export class ProductsModule {
    * Удалить остатки товаров
    *
    * Irreversibly deletes stock records. Must re-upload stocks to resume sales.
-   * A 409 response counts as 5 requests.
+   * A 409 response counts as 10 requests.
    *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
