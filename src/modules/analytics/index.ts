@@ -59,8 +59,9 @@ export class AnalyticsModule {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   async createNmReportDetail(data: NmReportDetailRequest): Promise<NmReportDetailResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createNmReportDetail() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getSalesFunnelProducts(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createNmReportDetail() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getSalesFunnelProducts(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     const page = data.page || 1;
     const v3Request: SalesFunnelProductsRequest = {
@@ -88,8 +89,9 @@ export class AnalyticsModule {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
   ): Promise<NmReportDetailHistoryResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createDetailHistory() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getSalesFunnelProductsHistory(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createDetailHistory() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getSalesFunnelProductsHistory(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     const v3Request: SalesFunnelProductsHistoryRequest = {
       selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
@@ -117,8 +119,9 @@ export class AnalyticsModule {
     data: NmReportGroupedHistoryRequest
   ): Promise<NmReportGroupedHistoryResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createGroupedHistory() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getSalesFunnelGroupedHistory(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createGroupedHistory() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getSalesFunnelGroupedHistory(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     const v3Request: SalesFunnelGroupedHistoryRequest = {
       selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },

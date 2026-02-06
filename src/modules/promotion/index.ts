@@ -65,7 +65,9 @@ export class PromotionModule {
   }> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getPromotionCount')) {
       console.warn(
-        '[WB SDK] getPromotionCount() is deprecated. Use GET /api/advert/v2/adverts instead.'
+        '[Wildberries SDK] FINAL WARNING: getPromotionCount() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to GET /api/advert/v2/adverts. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getPromotionCount');
     }

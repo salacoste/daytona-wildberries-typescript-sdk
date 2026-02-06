@@ -451,7 +451,9 @@ export class CommunicationsModule {
     if (!CommunicationsModule._deprecatedWarnings.has('supplierValuations')) {
       CommunicationsModule._deprecatedWarnings.add('supplierValuations');
       console.warn(
-        '[WB SDK] supplierValuations is deprecated and may be removed. This endpoint has been removed from the Wildberries API.'
+        '[Wildberries SDK] FINAL WARNING: supplierValuations() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
     }
     return this.client.get<{
@@ -510,7 +512,9 @@ export class CommunicationsModule {
     if (!CommunicationsModule._deprecatedWarnings.has('createFeedbacksAction')) {
       CommunicationsModule._deprecatedWarnings.add('createFeedbacksAction');
       console.warn(
-        '[WB SDK] createFeedbacksAction is deprecated and may be removed. This endpoint has been removed from the Wildberries API.'
+        '[Wildberries SDK] FINAL WARNING: createFeedbacksAction() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
     }
     return this.client.post('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/actions', data, {
@@ -754,7 +758,9 @@ export class CommunicationsModule {
     if (!CommunicationsModule._deprecatedWarnings.has('templates')) {
       CommunicationsModule._deprecatedWarnings.add('templates');
       console.warn(
-        '[WB SDK] templates is deprecated and may be removed. This endpoint has been removed from the Wildberries API.'
+        '[Wildberries SDK] FINAL WARNING: templates() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
     }
     return this.client.get<ResponseTemplate>(
@@ -789,7 +795,9 @@ export class CommunicationsModule {
     if (!CommunicationsModule._deprecatedWarnings.has('createTemplate')) {
       CommunicationsModule._deprecatedWarnings.add('createTemplate');
       console.warn(
-        '[WB SDK] createTemplate is deprecated and may be removed. This endpoint has been removed from the Wildberries API.'
+        '[Wildberries SDK] FINAL WARNING: createTemplate() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
     }
     return this.client.post<PostTemplate>(
@@ -825,7 +833,9 @@ export class CommunicationsModule {
     if (!CommunicationsModule._deprecatedWarnings.has('updateTemplate')) {
       CommunicationsModule._deprecatedWarnings.add('updateTemplate');
       console.warn(
-        '[WB SDK] updateTemplate is deprecated and may be removed. This endpoint has been removed from the Wildberries API.'
+        '[Wildberries SDK] FINAL WARNING: updateTemplate() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
     }
     return this.client.patch<PatchDelResp>(
@@ -857,7 +867,9 @@ export class CommunicationsModule {
     if (!CommunicationsModule._deprecatedWarnings.has('deleteTemplate')) {
       CommunicationsModule._deprecatedWarnings.add('deleteTemplate');
       console.warn(
-        '[WB SDK] deleteTemplate is deprecated and may be removed. This endpoint has been removed from the Wildberries API.'
+        '[Wildberries SDK] FINAL WARNING: deleteTemplate() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
     }
     return this.client.delete<PatchDelResp>(

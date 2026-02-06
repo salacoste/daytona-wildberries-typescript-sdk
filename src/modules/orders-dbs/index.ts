@@ -941,8 +941,9 @@ export class OrdersDbsModule {
   /** @deprecated Use deliverBulk instead */
   async deliver(orderId: number): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: deliver() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to deliverBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: deliver() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to deliverBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
@@ -955,8 +956,9 @@ export class OrdersDbsModule {
   /** @deprecated Use receiveBulk instead */
   async receive(orderId: number, code: string): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: receive() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to receiveBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: receive() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to receiveBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
@@ -974,8 +976,9 @@ export class OrdersDbsModule {
   /** @deprecated Use rejectBulk instead */
   async reject(orderId: number, code: string): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: reject() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to rejectBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: reject() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to rejectBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
@@ -993,8 +996,9 @@ export class OrdersDbsModule {
   /** @deprecated Use cancelBulk instead */
   async cancel(orderId: number): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: cancel() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to cancelBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: cancel() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to cancelBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');

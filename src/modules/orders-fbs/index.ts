@@ -270,8 +270,9 @@ export class OrdersFbsModule {
    */
   async createOrdersStatu(data?: OrderStatusRequest): Promise<OrderStatusResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createOrdersStatu() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getOrderStatuses(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createOrdersStatu() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getOrderStatuses(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.post<OrderStatusResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/orders/status',
@@ -390,8 +391,9 @@ export class OrdersFbsModule {
    */
   async getOrdersMeta(orderId: number): Promise<OrderMetaResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: getOrdersMeta() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getOrdersMetaBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: getOrdersMeta() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getOrdersMetaBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     const response = await this.getOrdersMetaBulk({ orders: [orderId] });
     const orderMeta = response.orders?.find((o) => o.id === orderId);
@@ -796,8 +798,9 @@ export class OrdersFbsModule {
    */
   async updateSuppliesOrder(supplyId: string, orderId: number): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: updateSuppliesOrder() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to addOrdersToSupply(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: updateSuppliesOrder() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to addOrdersToSupply(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.patch(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders/${orderId}`,
@@ -882,8 +885,9 @@ export class OrdersFbsModule {
    */
   async getSuppliesOrder(supplyId: string): Promise<SupplyOrdersResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: getSuppliesOrder() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getSupplyOrderIds(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: getSuppliesOrder() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getSupplyOrderIds(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.get<SupplyOrdersResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders`,

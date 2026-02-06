@@ -57,7 +57,9 @@ export class ReportsModule {
    */
   async getSupplierIncomes(options?: { dateFrom: string }): Promise<IncomesItem[]> {
     console.warn(
-      '[WB SDK] getSupplierIncomes() is deprecated and will be removed on 11 March 2026.'
+      '[Wildberries SDK] FINAL WARNING: getSupplierIncomes() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate - endpoint deprecated per swagger spec (removal date: 11 March 2026). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.get<IncomesItem[]>(
       'https://statistics-api.wildberries.ru/api/v1/supplier/incomes',
@@ -215,7 +217,9 @@ export class ReportsModule {
    */
   async getTasksStatu(task_id: string): Promise<GetTasksResponse> {
     console.warn(
-      '[WB SDK] getTasksStatu() is deprecated. Use getWarehouseRemainsTaskStatus() instead.'
+      '[Wildberries SDK] FINAL WARNING: getTasksStatu() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getWarehouseRemainsTaskStatus(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getWarehouseRemainsTaskStatus(task_id);
   }
@@ -245,7 +249,9 @@ export class ReportsModule {
    */
   async getTasksDownload(task_id: string): Promise<WarehouseRemainsDownloadItem[]> {
     console.warn(
-      '[WB SDK] getTasksDownload() is deprecated. Use downloadWarehouseRemainsReport() instead.'
+      '[Wildberries SDK] FINAL WARNING: getTasksDownload() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to downloadWarehouseRemainsReport(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.downloadWarehouseRemainsReport(task_id);
   }
@@ -274,8 +280,9 @@ export class ReportsModule {
     offset?: number;
   }): Promise<Penalty | Measurement> {
     console.warn(
-      '[WB SDK] getAnalyticsWarehouseMeasurements() is deprecated. ' +
-        'Use getMeasurementPenalties() or getWarehouseMeasurementsV2() instead.'
+      '[Wildberries SDK] FINAL WARNING: getAnalyticsWarehouseMeasurements() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getMeasurementPenalties() or getWarehouseMeasurementsV2(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.get<Penalty | Measurement>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/warehouse-measurements',
@@ -327,7 +334,9 @@ export class ReportsModule {
     dateTo: string;
   }): Promise<unknown> {
     console.warn(
-      '[WB SDK] getAnalyticsIncorrectAttachments() is deprecated. Use getDeductions() instead.'
+      '[Wildberries SDK] FINAL WARNING: getAnalyticsIncorrectAttachments() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getDeductions(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.get<unknown>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/incorrect-attachments',
@@ -377,8 +386,9 @@ export class ReportsModule {
     dateTo: string;
   }): Promise<unknown> {
     console.warn(
-      '[WB SDK] getAnalyticsCharacteristicsChange() is deprecated. ' +
-        'This endpoint has been removed from the API with no replacement.'
+      '[Wildberries SDK] FINAL WARNING: getAnalyticsCharacteristicsChange() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate - endpoint removed from API with no replacement. ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.client.get<unknown>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/characteristics-change',
@@ -436,7 +446,9 @@ export class ReportsModule {
    */
   async getTasksStatu2(task_id: string): Promise<GetTasksResponse> {
     console.warn(
-      '[WB SDK] getTasksStatu2() is deprecated. Use getAcceptanceReportTaskStatus() instead.'
+      '[Wildberries SDK] FINAL WARNING: getTasksStatu2() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getAcceptanceReportTaskStatus(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getAcceptanceReportTaskStatus(task_id);
   }
@@ -466,7 +478,9 @@ export class ReportsModule {
    */
   async getTasksDownload2(task_id: string): Promise<AcceptanceReportDownloadItem[]> {
     console.warn(
-      '[WB SDK] getTasksDownload2() is deprecated. Use downloadAcceptanceReport() instead.'
+      '[Wildberries SDK] FINAL WARNING: getTasksDownload2() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to downloadAcceptanceReport(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.downloadAcceptanceReport(task_id);
   }
@@ -518,7 +532,9 @@ export class ReportsModule {
    */
   async getTasksStatu3(task_id: string): Promise<GetTasksResponse> {
     console.warn(
-      '[WB SDK] getTasksStatu3() is deprecated. Use getPaidStorageTaskStatus() instead.'
+      '[Wildberries SDK] FINAL WARNING: getTasksStatu3() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getPaidStorageTaskStatus(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getPaidStorageTaskStatus(task_id);
   }
@@ -548,7 +564,9 @@ export class ReportsModule {
    */
   async getTasksDownload3(task_id: string): Promise<ResponsePaidStorage> {
     console.warn(
-      '[WB SDK] getTasksDownload3() is deprecated. Use downloadPaidStorageReport() instead.'
+      '[Wildberries SDK] FINAL WARNING: getTasksDownload3() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to downloadPaidStorageReport(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.downloadPaidStorageReport(task_id);
   }

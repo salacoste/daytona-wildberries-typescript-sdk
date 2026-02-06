@@ -213,8 +213,9 @@ export class InStorePickupModule {
    */
   async createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createOrdersStatu() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to createOrdersStatus(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createOrdersStatu() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to createOrdersStatus(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.createOrdersStatus(data);
   }

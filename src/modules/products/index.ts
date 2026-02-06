@@ -791,8 +791,9 @@ export class ProductsModule {
     cursor?: { updatedAt?: string; nmID?: number; total?: number };
   }> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createCardsList() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getCardsList(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createCardsList() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getCardsList(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getCardsList(data, options);
   }
@@ -1129,8 +1130,9 @@ export class ProductsModule {
     cursor?: { trashedAt?: string; nmID?: number; total?: number };
   }> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createCardsTrash() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getTrashedCards(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createCardsTrash() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getTrashedCards(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getTrashedCards(data, options);
   }
@@ -1608,8 +1610,9 @@ export class ProductsModule {
     uploadID: number;
   }): Promise<GoodsBufferResponse> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: getGoodsTask2() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getBufferGoodsTask(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: getGoodsTask2() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getBufferGoodsTask(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getBufferGoodsTask(options);
   }
@@ -1786,8 +1789,9 @@ export class ProductsModule {
     data: { skus: string[] }
   ): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createStock() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to getStocks(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createStock() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getStocks(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.getStocks(warehouseId, data);
   }
@@ -1944,8 +1948,9 @@ export class ProductsModule {
    */
   async createWarehous(data: { name: string; officeId: number }): Promise<{ id?: number }> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: createWarehous() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to createWarehouse(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: createWarehous() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to createWarehouse(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.createWarehouse(data);
   }
@@ -1992,8 +1997,9 @@ export class ProductsModule {
     data: { name: string; officeId: number }
   ): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: updateWarehous() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to updateWarehouse(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: updateWarehous() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to updateWarehouse(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.updateWarehouse(warehouseId, data);
   }
@@ -2030,8 +2036,9 @@ export class ProductsModule {
    */
   async deleteWarehous(warehouseId: number): Promise<void> {
     console.warn(
-      '[Wildberries SDK] DEPRECATION WARNING: deleteWarehous() is deprecated and will be removed in v3.0.0. ' +
-        'Please migrate to deleteWarehouse(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      '[Wildberries SDK] FINAL WARNING: deleteWarehous() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to deleteWarehouse(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
     return this.deleteWarehouse(warehouseId);
   }
