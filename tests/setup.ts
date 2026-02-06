@@ -1,35 +1,11 @@
 /**
- * Global localStorage polyfill for MSW v2.x compatibility
- * MUST be at the very top, before any imports
- *
- * MSW v2.x uses localStorage for cookie storage in Node.js environment.
- * This polyfill provides a minimal in-memory implementation.
- */
-if (typeof globalThis.localStorage === 'undefined') {
-  let store: Record<string, string> = {};
-  globalThis.localStorage = {
-    getItem: (key: string): string | null => store[key] ?? null,
-    setItem: (key: string, value: string): void => {
-      store[key] = value;
-    },
-    removeItem: (key: string): void => {
-      const { [key]: _, ...rest } = store;
-      store = rest;
-    },
-    clear: (): void => {
-      store = {};
-    },
-    key: (index: number): string | null => Object.keys(store)[index] ?? null,
-    get length(): number {
-      return Object.keys(store).length;
-    },
-  } as Storage;
-}
-
-/**
  * Global test setup file
  *
  * Configures global test environment settings and suppressions.
+ *
+ * Note: Integration tests with MSW use jsdom environment (set via environmentMatchGlobs
+ * in vitest.config.ts) which provides localStorage. MSW v2.12.9+ works correctly
+ * with jsdom environment.
  */
 
 // Suppress expected PromiseRejectionHandledWarning that occurs when testing

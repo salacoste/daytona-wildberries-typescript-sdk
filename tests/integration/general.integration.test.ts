@@ -1,24 +1,4 @@
 /**
- * @skip MSW v2.x localStorage compatibility issue
- *
- * These tests are skipped due to MSW v2.x requiring localStorage at module
- * initialization, which is not available in Node.js test environment.
- *
- * Issue: MSW's CookieStore accesses localStorage.getItem() during import,
- * before any test setup can polyfill it.
- *
- * Workarounds tried:
- * - setupFiles with polyfill (runs after imports)
- * - globalSetup (separate process, doesn't share globals)
- * - vitest.config.ts top-level polyfill (main process only)
- * - --require/--import preload (not inherited by workers)
- * - jsdom environment (still imports before environment setup)
- *
- * @see https://github.com/mswjs/msw/issues - MSW Node.js compatibility
- * @todo Re-enable when MSW v3 or Vitest provides a solution
- */
-
-/**
  * Integration tests for GeneralModule
  *
  * Tests the GeneralModule with real BaseClient and MSW-mocked HTTP layer to verify:
@@ -110,7 +90,7 @@ afterAll(() => {
   server.close();
 });
 
-describe.skip('GeneralModule Integration Tests', () => {
+describe('GeneralModule Integration Tests', () => {
   let generalModule: GeneralModule;
   let baseClient: BaseClient;
 
@@ -148,11 +128,9 @@ describe.skip('GeneralModule Integration Tests', () => {
       // Assert
       expect(result.data).toBeDefined();
       expect(Array.isArray(result.data)).toBe(true);
-      if (result.data && result.data.length > 0) {
-        expect(result.data.length).toBeGreaterThan(0);
-        expect(result.data[0].header).toBe('Test News Header');
-        expect(result.data[0].content).toContain('Integration test');
-      }
+      expect(result.data.length).toBeGreaterThan(0);
+      expect(result.data[0].header).toBe('Test News Header');
+      expect(result.data[0].content).toContain('Integration test');
     });
 
     it('should complete news() flow with query parameters', async () => {
@@ -164,12 +142,10 @@ describe.skip('GeneralModule Integration Tests', () => {
 
       // Assert
       expect(result.data).toBeDefined();
-      if (result.data && result.data.length > 0) {
-        expect(result.data.length).toBeGreaterThan(0);
-        // Verify parameters were passed through
-        expect(result.data[0].date).toBe('2024-06-01');
-        expect(result.data[0].id).toBe(42);
-      }
+      expect(result.data.length).toBeGreaterThan(0);
+      // Verify parameters were passed through
+      expect(result.data[0].date).toBe('2024-06-01');
+      expect(result.data[0].id).toBe(42);
     });
 
     it('should complete sellerInfo() flow successfully', async () => {

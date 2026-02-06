@@ -1,24 +1,4 @@
 /**
- * @skip MSW v2.x localStorage compatibility issue
- *
- * These tests are skipped due to MSW v2.x requiring localStorage at module
- * initialization, which is not available in Node.js test environment.
- *
- * Issue: MSW's CookieStore accesses localStorage.getItem() during import,
- * before any test setup can polyfill it.
- *
- * Workarounds tried:
- * - setupFiles with polyfill (runs after imports)
- * - globalSetup (separate process, doesn't share globals)
- * - vitest.config.ts top-level polyfill (main process only)
- * - --require/--import preload (not inherited by workers)
- * - jsdom environment (still imports before environment setup)
- *
- * @see https://github.com/mswjs/msw/issues - MSW Node.js compatibility
- * @todo Re-enable when MSW v3 or Vitest provides a solution
- */
-
-/**
  * Integration tests for PromotionModule
  *
  * Tests the PromotionModule with real BaseClient and MSW-mocked HTTP layer to verify:
@@ -31,6 +11,8 @@
  *
  * @see {@link ../../src/modules/promotion/index PromotionModule}
  */
+
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { describe, it, expect, beforeAll, afterEach, afterAll, beforeEach } from 'vitest';
 import { setupServer } from 'msw/node';
@@ -191,7 +173,7 @@ afterAll(() => {
   server.close();
 });
 
-describe.skip('PromotionModule Integration Tests', () => {
+describe('PromotionModule Integration Tests', () => {
   let promotionModule: PromotionModule;
   let baseClient: BaseClient;
 
@@ -270,7 +252,6 @@ describe.skip('PromotionModule Integration Tests', () => {
   describe('Configuration and Bid Operations', () => {
     it('should successfully get configuration values', async () => {
       // Act
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const result = await promotionModule.getAdvConfig();
 
       // Assert
@@ -376,6 +357,18 @@ describe.skip('PromotionModule Integration Tests', () => {
     });
 
     it('should throw RateLimitError on 429 response', async () => {
+      // Create a client with no retries for this test
+      const noRetryClient = new BaseClient({
+        apiKey: 'test-promotion-integration-key',
+        timeout: 5000,
+        retryConfig: {
+          maxRetries: 0,
+          retryDelay: 100,
+          exponentialBackoff: false,
+        },
+      });
+      const noRetryModule = new PromotionModule(noRetryClient);
+
       // Arrange
       server.use(
         http.get('https://advert-api.wildberries.ru/adv/v0/config', () => {
@@ -383,15 +376,14 @@ describe.skip('PromotionModule Integration Tests', () => {
             { error: 'Too Many Requests' },
             {
               status: 429,
-              headers: { 'Retry-After': '60' },
+              headers: { 'Retry-After': '1' },
             }
           );
         })
       );
 
       // Act & Assert
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await expect(promotionModule.getAdvConfig()).rejects.toThrow(RateLimitError);
+      await expect(noRetryModule.getAdvConfig()).rejects.toThrow(RateLimitError);
     });
 
     it('should throw NetworkError on 500 response', async () => {
@@ -411,7 +403,6 @@ describe.skip('PromotionModule Integration Tests', () => {
     it('should maintain type safety through entire request flow', async () => {
       // Act
       const countResult = await promotionModule.getPromotionCount();
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const configResult = await promotionModule.getAdvConfig();
 
       // Assert - TypeScript ensures correct types
@@ -440,7 +431,6 @@ describe.skip('PromotionModule Integration Tests', () => {
   describe('Real-World Scenarios', () => {
     it('should handle complete campaign creation workflow', async () => {
       // 1. Get configuration to check limits
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const config = await promotionModule.getAdvConfig();
       expect(config.config).toBeDefined();
 
