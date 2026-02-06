@@ -74,6 +74,7 @@
  * ```
  *
  * **Related Examples:**
+ * - promotion-search-clusters.ts - Search cluster (NormQuery) bid management (NEW Feb 2026)
  * - analytics-dashboard.ts - Sales funnel and conversion tracking
  * - tariffs-pricing-calculator.ts - Calculate profit margins for CPA analysis
  * - business-dashboard.ts - Integrated campaign performance dashboards
