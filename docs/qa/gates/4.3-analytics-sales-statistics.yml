@@ -5,9 +5,9 @@ schema: 1
 story: "4.3"
 story_title: "Analytics Module - Sales Performance & Statistics"
 gate: PASS
-status_reason: "Production-ready analytics module with 14 methods across 4 categories (Sales Funnel, CSV Export, Search Analytics, Stock History), 42 unit tests passing, comprehensive date range validation, and CSV async workflow implementation."
-reviewer: "Quinn (Test Architect)"
-updated: "2025-10-24T21:30:00Z"
+status_reason: "Production-ready analytics module with 16 methods across 4 categories (Sales Funnel, CSV Export, Search Analytics, Stock History), 24 unit tests passing, comprehensive date range validation, rate limit wiring complete (16/16), and CSV async workflow implementation."
+reviewer: "Claude Code"
+updated: "2026-02-06T19:30:00Z"
 
 # Waiver status
 waiver:
@@ -29,12 +29,12 @@ risk_summary:
 
 # Quality metrics
 quality_score: 96
-expires: "2025-11-07T21:30:00Z"
+expires: "2026-02-20T19:30:00Z"
 
 # Evidence collected
 evidence:
-  tests_reviewed: 66
-  unit_tests: 66
+  tests_reviewed: 24
+  unit_tests: 24
   integration_tests: 0
   test_status: "All passing"
   methods_implemented: 16
@@ -72,9 +72,9 @@ code_quality:
 # Test architecture details
 test_architecture:
   coverage_percentage: "100% of implemented methods"
-  test_design: "AAA pattern, comprehensive validation testing, async workflow testing"
+  test_design: "AAA pattern, comprehensive validation testing, rate limit key assertions"
   test_types:
-    unit: "42 tests covering all 14 methods + date validation + filtering"
+    unit: "24 tests covering all 16 methods + type validation + rate limit wiring"
     integration: "Covered by cross-module integration tests"
     csv_workflow: "CSV request → poll → download async pattern tested"
   edge_cases_covered: true
@@ -125,7 +125,7 @@ files_reviewed:
     purpose: "Analytics module with 14 methods across 4 categories"
     status: "clean"
   - path: "tests/unit/modules/analytics.test.ts"
-    lines: "66 tests"
+    lines: "24 tests"
     purpose: "Unit tests covering all 16 methods with rate limit key assertions"
     status: "all passing"
   - path: "src/types/analytics.types.ts"
@@ -341,7 +341,7 @@ february_2026_audit:
           files: ["src/modules/analytics/index.ts"]
           gap_resolved: "gap-1"
 
-        - title: "Fixed 13 @example blocks"
+        - title: "Fixed 16 @example blocks"
           description: "Corrected sdk.general.* → sdk.analytics.* in all JSDoc examples"
           files: ["src/modules/analytics/index.ts"]
           gap_resolved: "gap-4"
@@ -351,13 +351,13 @@ february_2026_audit:
           files: ["src/modules/analytics/index.ts"]
           gap_resolved: "gap-7"
 
-        - title: "Created 66 unit tests"
-          description: "Comprehensive test coverage for all 16 methods with rate limit key assertions"
+        - title: "Created 24 unit tests"
+          description: "Comprehensive test coverage for all 16 methods with rate limit key assertions and type validation"
           files: ["tests/unit/modules/analytics.test.ts"]
           gap_resolved: "gap-5"
 
     statistics:
-      unit_tests: 66
+      unit_tests: 24
       rate_limit_keys_wired: "16/16"
       jsdoc_examples_fixed: "16/16"
       types_added: 4
@@ -367,10 +367,15 @@ february_2026_audit:
       - "gap-1: rateLimitKey now wired to all 16 methods"
       - "gap-2: TableProductItem has full 18+ field definition"
       - "gap-3: AvailabilityFilters array type fixed"
-      - "gap-4: All 13 @example blocks corrected"
-      - "gap-5: 66 unit tests created (integration tests deferred)"
+      - "gap-4: All 16 @example blocks corrected"
+      - "gap-5: 24 unit tests created (integration tests deferred)"
       - "gap-7: getDownloadsFile returns ArrayBuffer"
       - "gap-8: ErrorObject and OrderByMainAndDetails types added"
 
     remaining_gaps:
       - "gap-6: v3 rate limit config entries (already exist, was false positive)"
+
+    typedoc_regeneration:
+      date: "2026-02-06"
+      commit: "84d1a7076"
+      note: "TypeDoc API documentation regenerated with fixed @example blocks"

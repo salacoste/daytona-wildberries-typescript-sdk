@@ -26,8 +26,10 @@ const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 
 // Get product card statistics (v3)
 const stats = await sdk.analytics.getSalesFunnelProducts({
-  dateFrom: '2026-01-01',
-  dateTo: '2026-01-31'
+  selectedPeriod: { start: '2026-01-01', end: '2026-01-31' },
+  orderBy: { field: 'orderCount', mode: 'desc' },
+  limit: 10,
+  offset: 0
 });
 
 // Get search query report
