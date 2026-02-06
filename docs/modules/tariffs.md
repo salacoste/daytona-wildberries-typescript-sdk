@@ -12,7 +12,7 @@ The **Tariffs** module provides information about Wildberries commission rates, 
 | **SDK Namespace** | `sdk.tariffs.*` |
 | **Base URL** | `https://common-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/10-tariffs/` |
-| **Methods** | 4 |
+| **Methods** | 5 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -27,14 +27,22 @@ const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 // Get commission rates by category
 const commissions = await sdk.tariffs.getTariffsCommission();
 
-// Get box delivery tariffs
-const boxTariffs = await sdk.tariffs.getTariffsBox();
+// Get box delivery tariffs (date required)
+const boxTariffs = await sdk.tariffs.getTariffsBox('2024-01-15');
 
-// Get pallet delivery tariffs
-const palletTariffs = await sdk.tariffs.getTariffsPallet();
+// Get pallet delivery tariffs (date required)
+const palletTariffs = await sdk.tariffs.getTariffsPallet('2024-01-15');
 
-// Get return tariffs
-const returnTariffs = await sdk.tariffs.getTariffsReturn();
+// Get return tariffs (date required)
+const returnTariffs = await sdk.tariffs.getTariffsReturn('2024-01-15');
+
+// Get supply acceptance coefficients for all warehouses
+const coefficients = await sdk.tariffs.getAcceptanceCoefficients();
+
+// Get coefficients for specific warehouses
+const specificCoefficients = await sdk.tariffs.getAcceptanceCoefficients({
+  warehouseIDs: '507,117501'
+});
 ```
 
 ---
@@ -43,10 +51,11 @@ const returnTariffs = await sdk.tariffs.getTariffsReturn();
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getTariffsCommission()` | GET | `/api/v1/tariffs/commission` | Get commission by product categories |
-| `getTariffsBox()` | GET | `/api/v1/tariffs/box` | Get tariffs for box delivery |
-| `getTariffsPallet()` | GET | `/api/v1/tariffs/pallet` | Get tariffs for pallet delivery |
-| `getTariffsReturn()` | GET | `/api/v1/tariffs/return` | Get return tariffs |
+| `getTariffsCommission(options?)` | GET | `/api/v1/tariffs/commission` | Get commission by product categories |
+| `getTariffsBox(date)` | GET | `/api/v1/tariffs/box` | Get tariffs for box delivery (date required) |
+| `getTariffsPallet(date)` | GET | `/api/v1/tariffs/pallet` | Get tariffs for pallet delivery (date required) |
+| `getTariffsReturn(date)` | GET | `/api/v1/tariffs/return` | Get return tariffs (date required) |
+| `getAcceptanceCoefficients(options?)` | GET | `/api/v1/tariffs/acceptance-coefficients` | Get supply acceptance coefficients |
 
 ---
 
@@ -56,6 +65,7 @@ const returnTariffs = await sdk.tariffs.getTariffsReturn();
 |-----------|-------|----------|
 | Commission rates | 1 req/min | 60s |
 | Box / Pallet / Return tariffs | 60 req/min | 1s |
+| Acceptance coefficients | 60 req/min | 1s |
 
 ---
 

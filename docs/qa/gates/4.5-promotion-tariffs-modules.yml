@@ -416,7 +416,7 @@ february_2026_audit_tariffs:
       description: "SDK has single kgvpUzbekistan field, swagger defines 3 fields (kgvpMarketplaceUz, kgvpPaidStorageUz, kgvpSupplierUz)"
       files: ["src/types/tariffs.types.ts"]
       epic: "EPIC 39 (task-39)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t2"
       severity: "high"
@@ -424,7 +424,7 @@ february_2026_audit_tariffs:
       description: "getTariffsBox, getTariffsPallet, getTariffsReturn have optional options wrapper for required date param, causing 400 errors"
       files: ["src/modules/tariffs/index.ts"]
       epic: "EPIC 39 (task-39)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t3"
       severity: "high"
@@ -432,7 +432,7 @@ february_2026_audit_tariffs:
       description: "GET /api/tariffs/v1/acceptance/coefficients not in TariffsModule (exists in OrdersFBW with wrong URL and path)"
       files: ["src/modules/tariffs/index.ts"]
       epic: "EPIC 40 (task-40)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t4"
       severity: "high"
@@ -440,7 +440,7 @@ february_2026_audit_tariffs:
       description: "tariffs-rate-limits.ts defines 4 entries but 0 methods pass rateLimitKey to BaseClient"
       files: ["src/modules/tariffs/index.ts", "src/config/tariffs-rate-limits.ts"]
       epic: "EPIC 40 (task-40)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t5"
       severity: "medium"
@@ -448,7 +448,7 @@ february_2026_audit_tariffs:
       description: "models.ErrorModel and models.AcceptanceCoefficient not in tariffs.types.ts (20 schemas vs 18 types)"
       files: ["src/types/tariffs.types.ts"]
       epic: "EPIC 39 (task-39)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t6"
       severity: "low"
@@ -456,7 +456,7 @@ february_2026_audit_tariffs:
       description: "All 4 methods reference sdk.general.* instead of sdk.tariffs.*"
       files: ["src/modules/tariffs/index.ts"]
       epic: "EPIC 40 (task-40)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t7"
       severity: "medium"
@@ -464,7 +464,7 @@ february_2026_audit_tariffs:
       description: "No config for acceptance/coefficients endpoint (6 rpm, 10s interval, burst 6)"
       files: ["src/config/tariffs-rate-limits.ts"]
       epic: "EPIC 40 (task-40)"
-      status: "PENDING"
+      status: "RESOLVED"
 
     - id: "gap-t8"
       severity: "medium"
@@ -472,21 +472,57 @@ february_2026_audit_tariffs:
       description: "0 integration tests exist, 6 unit tests skipped due to date validation issues"
       files: ["tests/integration/tariffs.integration.test.ts"]
       epic: "EPIC 40 (task-40)"
-      status: "PENDING"
+      status: "RESOLVED"
 
   follow_up_epics:
     - epic: 39
       task: "task-39"
       title: "Tariffs Type & Parameter Fixes — CommissionUzbekistan, missing types, date params"
       doc: "docs/epics/EPIC_39_TARIFFS_TYPE_PARAMETER_FIXES.md"
-      status: "PENDING"
+      status: "DONE"
 
     - epic: 40
       task: "task-40"
       title: "Tariffs Code Quality — JSDoc, Rate Limits, Acceptance Endpoint, Tests"
       doc: "docs/epics/EPIC_40_TARIFFS_CODE_QUALITY.md"
       depends_on: "task-39"
-      status: "PENDING"
+      status: "DONE"
 
   # Note: Tariffs EPICs (39-40) are separate from Promotion EPICs (33-35)
-  # Promotion module audit is RESOLVED, Tariffs module audit is PENDING
+  # Both Promotion module audit and Tariffs module audit are now RESOLVED
+
+february_2026_audit_tariffs_resolution:
+  date: "2026-02-06"
+  auditor: "Claude Orchestrator"
+  status: "RESOLVED"
+
+  summary: "All 8 gaps from February 2026 tariffs audit have been resolved through EPICs 39-40"
+
+  final_statistics:
+    methods_total: 5
+    methods_added: 1
+    types_total: 21
+    types_added: 2
+    rate_limit_keys_wired: 5
+    jsdoc_examples_fixed: 5
+    unit_tests_total: 45
+    unit_tests_added: 16
+    skipped_tests_fixed: 6
+
+  epic_completion:
+    EPIC_39:
+      title: "Tariffs Type & Parameter Fixes"
+      status: "DONE"
+      task: "task-39"
+      outcome: "CommissionUzbekistan fixed (3 fields), 2 types added, date params made required"
+    EPIC_40:
+      title: "Tariffs Code Quality"
+      status: "DONE"
+      task: "task-40"
+      outcome: "getAcceptanceCoefficients added, 5 rateLimitKeys wired, JSDoc fixed"
+
+  verification:
+    typescript: "npx tsc --noEmit: 0 errors"
+    unit_tests: "45/45 passed"
+    tdd_tests: "15/15 passed (EPIC 39 + 40)"
+    rate_limits: "5/5 configured and wired"

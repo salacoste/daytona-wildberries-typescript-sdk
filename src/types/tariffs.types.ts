@@ -128,91 +128,95 @@ export interface ReturnTariffsResponse {
 export interface Commission {
   /** Список комиссий */
   report?: {
-  /** Комиссия по модели «Бронирование», % */
-  kgvpBooking?: number;
-  /** Комиссия по модели «Маркетплейс» (`FBS`), % */
-  kgvpMarketplace?: number;
-  /** Комиссия по модели «Самовывоз из магазина продавца» (`C&C`), % */
-  kgvpPickup?: number;
-  /** Комиссия по моделям «Витрина» (`DBS`) и «Курьер WB» (`DBW`), % */
-  kgvpSupplier?: number;
-  /** Комиссия по модели «Витрина экспресс» (`EDBS`), % */
-  kgvpSupplierExpress?: number;
-  /** Комиссия по модели «Склад WB» (`FBW`), % */
-  paidStorageKgvp?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия по модели «Бронирование», % */
+    kgvpBooking?: number;
+    /** Комиссия по модели «Маркетплейс» (`FBS`), % */
+    kgvpMarketplace?: number;
+    /** Комиссия по модели «Самовывоз из магазина продавца» (`C&C`), % */
+    kgvpPickup?: number;
+    /** Комиссия по моделям «Витрина» (`DBS`) и «Курьер WB» (`DBW`), % */
+    kgvpSupplier?: number;
+    /** Комиссия по модели «Витрина экспресс» (`EDBS`), % */
+    kgvpSupplierExpress?: number;
+    /** Комиссия по модели «Склад WB» (`FBW`), % */
+    paidStorageKgvp?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionChina {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из Китая, % */
-  kgvpChina?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из Китая, % */
+    kgvpChina?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionTurkey {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из Турции, % */
-  kgvpTurkey?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из Турции, % */
+    kgvpTurkey?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionUzbekistan {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из Узбекистана, % */
-  kgvpUzbekistan?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия по модели «Маркетплейс» (FBS) для Узбекистана, % */
+    kgvpMarketplaceUz?: number;
+    /** Комиссия по модели «Склад WB» (FBW) для Узбекистана, % */
+    kgvpPaidStorageUz?: number;
+    /** Комиссия по модели «Витрина» (DBS) для Узбекистана, % */
+    kgvpSupplierUz?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface CommissionUAE {
   /** Список комиссий */
   report?: {
-  /** Комиссия для продавцов из ОАЭ, % */
-  kgvpUAE?: number;
-  /** ID родительской категории */
-  parentID?: number;
-  /** Название родительской категории */
-  parentName?: string;
-  /** ID предмета */
-  subjectID?: number;
-  /** Название предмета */
-  subjectName?: string;
-}[];
+    /** Комиссия для продавцов из ОАЭ, % */
+    kgvpUAE?: number;
+    /** ID родительской категории */
+    parentID?: number;
+    /** Название родительской категории */
+    parentName?: string;
+    /** ID предмета */
+    subjectID?: number;
+    /** Название предмета */
+    subjectName?: string;
+  }[];
 }
 
 export interface BadRequest {
@@ -225,3 +229,89 @@ export interface BadRequest {
   /** Заголовок ошибки */
   title?: string;
 }
+
+/**
+ * Error model for tariffs API responses
+ * Used by getAcceptanceCoefficients endpoint for 400 errors
+ */
+export interface ModelsErrorModel {
+  /** HTTP status code */
+  status?: number;
+  /** Error identifier */
+  title?: string;
+  /** Error description */
+  detail?: string;
+  /** Unique request ID */
+  requestId?: string;
+  /** WB internal service that returned the error */
+  origin?: string;
+}
+
+/**
+ * Acceptance coefficient for warehouse supplies
+ * Used by getAcceptanceCoefficients endpoint
+ * Returns tariffs for supplies to specific warehouses for the next 14 days
+ */
+export interface ModelsAcceptanceCoefficient {
+  /** Date when coefficient takes effect */
+  date?: string;
+  /**
+   * Acceptance coefficient:
+   * - `-1` — acceptance unavailable, regardless of allowUnload value
+   * - `0` — free acceptance
+   * - `1+` — acceptance cost multiplier
+   */
+  coefficient?: number;
+  /** Warehouse ID. Can be used to get warehouse info */
+  warehouseID?: number;
+  /** Warehouse name */
+  warehouseName?: string;
+  /**
+   * Acceptance availability for supplies of this type (see boxTypeID):
+   * - `true` — acceptance available
+   * - `false` — acceptance not available
+   */
+  allowUnload?: boolean;
+  /**
+   * Supply type ID:
+   * - `2` — Boxes
+   * - `5` — Monopallets
+   * - `6` — Supersafe
+   * For QR-supply with boxes, this field is not returned
+   */
+  boxTypeID?: number;
+  /** Storage coefficient */
+  storageCoef?: string | null;
+  /** Logistics coefficient */
+  deliveryCoef?: string | null;
+  /** Logistics cost for first liter */
+  deliveryBaseLiter?: string | null;
+  /** Logistics cost for each additional liter */
+  deliveryAdditionalLiter?: string | null;
+  /**
+   * Storage cost:
+   * - for pallets — cost per one pallet
+   * - for boxes — storage cost for the first liter
+   */
+  storageBaseLiter?: string | null;
+  /**
+   * Storage cost for each additional liter:
+   * - for pallets — always null, as storage cost per pallet unit is defined in storageBaseLiter
+   * - for boxes — storage cost for each additional liter
+   */
+  storageAdditionalLiter?: string | null;
+  /**
+   * Warehouse type:
+   * - `true` — sorting center (SC)
+   * - `false` — regular
+   */
+  isSortingCenter?: boolean;
+}
+
+// Type aliases for backward compatibility and convenience
+export type TariffItem = ModelsWarehouseBoxRates | ModelsWarehousePalletRates | ModelsWarehouseReturnRates;
+export type BoxTariffItem = ModelsWarehouseBoxRates;
+export type PalletTariffItem = ModelsWarehousePalletRates;
+
+/** Response type for getTariffsCommission method */
+export type TariffsCommissionResponse = Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE;

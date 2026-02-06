@@ -33,5 +33,10 @@ export const tariffsRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 5
+  },
+  'tariffs.acceptanceCoefficients': {
+    requestsPerMinute: 6,
+    intervalSeconds: 10,
+    burstLimit: 6
   }
 };

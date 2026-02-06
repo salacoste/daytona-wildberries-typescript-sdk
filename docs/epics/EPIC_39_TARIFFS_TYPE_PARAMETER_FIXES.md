@@ -1,5 +1,9 @@
 # EPIC 39: Tariffs Type & Parameter Fixes — CommissionUzbekistan fields, missing types, date param signatures
 
+## Status: ✅ COMPLETE
+**Completed**: 2026-02-06
+**Backlog Task**: task-39 (Done)
+
 ---
 
 ## Overview
@@ -110,13 +114,13 @@ Run `npx tsc --noEmit` to ensure zero type errors across the project and verify 
 
 ## Success Criteria
 
-- [ ] CommissionUzbekistan has 3 correct fields per swagger (`kgvpMarketplaceUz`, `kgvpPaidStorageUz`, `kgvpSupplierUz`)
-- [ ] `models.ErrorModel` type added to `tariffs.types.ts`
-- [ ] `models.AcceptanceCoefficient` type added to `tariffs.types.ts`
-- [ ] 3 method signatures require `date` parameter
-- [ ] 6 previously skipped tests now pass
-- [ ] TypeScript strict mode passes (`npx tsc --noEmit` exits 0)
-- [ ] No regressions in existing code importing tariffs types
+- [x] CommissionUzbekistan has 3 correct fields per swagger (`kgvpMarketplaceUz`, `kgvpPaidStorageUz`, `kgvpSupplierUz`)
+- [x] `models.ErrorModel` type added to `tariffs.types.ts`
+- [x] `models.AcceptanceCoefficient` type added to `tariffs.types.ts`
+- [x] 3 method signatures require `date` parameter
+- [x] 6 previously skipped tests now pass
+- [x] TypeScript strict mode passes (`npx tsc --noEmit` exits 0)
+- [x] No regressions in existing code importing tariffs types
 
 ---
 
@@ -144,3 +148,28 @@ Run `npx tsc --noEmit` to ensure zero type errors across the project and verify 
 | QA Gate 4.5 | `docs/qa/gates/4.5-promotion-tariffs-modules.yml` |
 | EPIC 40 (code quality) | `docs/epics/EPIC_40_TARIFFS_CODE_QUALITY.md` |
 | Backlog task | `backlog/tasks/task-39` |
+
+---
+
+## Implementation Notes
+
+**Completed by Orchestrator + 4 Dev Agents (2026-02-06)**
+
+### Changes Made:
+1. **CommissionUzbekistan** - Fixed from single `kgvpUzbekistan` field to correct 3 fields:
+   - `kgvpMarketplaceUz` (FBS commission)
+   - `kgvpPaidStorageUz` (FBW commission)
+   - `kgvpSupplierUz` (DBS commission)
+
+2. **ModelsErrorModel** - Added new type for acceptance/coefficients 400 error responses (5 fields)
+
+3. **ModelsAcceptanceCoefficient** - Added comprehensive type with 14 fields for warehouse acceptance coefficients
+
+4. **Method signatures** - Changed getTariffsBox, getTariffsPallet, getTariffsReturn to require `date: string` directly
+
+5. **Type aliases** - Added TariffItem, BoxTariffItem, PalletTariffItem, TariffsCommissionResponse
+
+### Verification:
+- npx tsc --noEmit: 0 errors
+- Unit tests: 45/45 passed
+- TDD EPIC 39: 10/10 passed
