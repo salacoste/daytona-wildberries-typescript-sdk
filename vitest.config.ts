@@ -69,6 +69,7 @@ export default defineConfig({
       'tests/integration/user-management.integration.test.ts',
       'tests/integration/finances.integration.test.ts',
       'tests/integration/orders-fbw.integration.test.ts',
+      'tests/integration/tariffs.integration.test.ts',
     ],
 
     // Coverage configuration
