@@ -1194,13 +1194,21 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const result = await sdk.promotion.getAutoStatWords({});
   console.log(result);
-   */
+
+   * @deprecated Use GET /adv/v3/fullstats instead. Will be removed February 2, 2026.*/
   async getAutoStatWords(options?: { id: number }): Promise<{
     excluded?: string[];
     clusters?: { cluster?: string; count?: number; keywords?: string[] }[];
   }> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('getAutoStatWords')) {
+      console.warn(
+        '[WB SDK] getAutoStatWords() is deprecated. Use GET /adv/v3/fullstats instead. Will be removed February 2, 2026.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getAutoStatWords');
+    }
     return this.client.get<{
       excluded?: string[];
       clusters?: { cluster?: string; count?: number; keywords?: string[] }[];
