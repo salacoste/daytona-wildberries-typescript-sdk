@@ -5,7 +5,281 @@
  * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  *
  * Generated: 2025-12-14T23:02:33.797Z
+ * Updated: 2026-02-06 - Added Pinned Reviews types from EPIC 36
  */
+
+// ============================================================================
+// Pinned Reviews Types (Закреплённые отзывы)
+// ============================================================================
+
+/**
+ * Method for pinning reviews
+ * - `subscription` - Jam subscription (подписка Джем)
+ * - `tariff` - Tariff option (тарифная опция)
+ */
+export type ReviewPinMethod = 'subscription' | 'tariff';
+
+/**
+ * Location where review is pinned
+ * - `nm` - Product card (карточка товара)
+ * - `imt` - Group of merged product cards (группа объединённых карточек товаров)
+ */
+export type ReviewPinOn = 'nm' | 'imt';
+
+/**
+ * State of pinned review
+ * - `pinned` - Review is pinned
+ * - `unpinned` - Review is unpinned
+ */
+export type ReviewState = 'pinned' | 'unpinned';
+
+/**
+ * Cause for review being unpinned automatically
+ */
+export type UnpinnedCause =
+  | 'sysTariffUnpinned' // Subscription or tariff option expired
+  | 'sysLimitReached' // General subscription limit reached
+  | 'sysNoratingUnpinned' // Review excluded from rating (deleted or banned)
+  | 'sysAdditionalSlot'; // Maximum pinned reviews for card/group reached
+
+/**
+ * Error status codes for pinned reviews operations
+ */
+export type PinnedReviewErrorStatus =
+  | 'feedbackNotFound'
+  | 'itemNotFound'
+  | 'feedbackMismatch'
+  | 'itemNoImages'
+  | 'feedbackExcluded'
+  | 'imtNotDisplayed'
+  | 'globalLimitReached'
+  | 'unitLimitReached'
+  | 'tariffRestriction'
+  | 'subscriptionRestriction'
+  | 'alreadyPinned'
+  | 'bodyNotValid';
+
+/**
+ * Error details for pinned reviews operations
+ */
+export interface PinnedReviewError {
+  /** Error status code */
+  status: PinnedReviewErrorStatus;
+  /** Error title */
+  title: string;
+  /** Error details */
+  detail?: string;
+  /** Request ID */
+  requestId: string;
+  /** Internal WB service ID */
+  origin: string;
+}
+
+/**
+ * Generic error response for pinned reviews API
+ */
+export interface RespondResultError {
+  /** HTTP status code */
+  status: number;
+  /** Error title */
+  title: string;
+  /** Error details */
+  detail?: string;
+  /** Request ID */
+  requestId: string;
+  /** Internal WB service ID */
+  origin: string;
+}
+
+/**
+ * Request item for pinning a review
+ */
+export interface PinReviewItem {
+  /**
+   * Pin method
+   * - `subscription` - Jam subscription
+   * - `tariff` - Tariff option
+   */
+  pinMethod: ReviewPinMethod;
+  /**
+   * Pin location
+   * - `nm` - Product card
+   * - `imt` - Group of merged product cards
+   */
+  pinOn: ReviewPinOn;
+  /** Review ID */
+  feedbackId: string;
+}
+
+/**
+ * Result item from pin operation
+ */
+export interface PinReviewItemResultData {
+  /** Review ID */
+  feedbackId: string;
+  /** Pin operation ID (absent if pinning failed) */
+  pinId?: number;
+  /** Pin method */
+  pinMethod: ReviewPinMethod;
+  /** Pin location */
+  pinOn: ReviewPinOn;
+  /** Whether there are errors */
+  isErrors: boolean;
+  /** Error details if any */
+  errors?: PinnedReviewError[];
+}
+
+/**
+ * Detailed information about a pinned/unpinned review
+ */
+export interface PinnedReviewItemResult {
+  /** Date and time of pin/unpin operation */
+  changeStateAt: string;
+  /** IMT ID for merged product cards */
+  imtId: number;
+  /** WB article number */
+  nmId: number;
+  /** Pin operation ID */
+  pinId: number;
+  /** Pin method */
+  pinMethod: ReviewPinMethod;
+  /** Pin location */
+  pinOn: ReviewPinOn;
+  /** Review ID */
+  feedbackId: string;
+  /** Review pin state */
+  state: ReviewState;
+  /** Cause for automatic unpinning (only for unpinned reviews) */
+  unpinnedCause?: UnpinnedCause;
+}
+
+/**
+ * Request body for pinning reviews (array of items, max 500)
+ */
+export type PinnedReviewsCreateRequest = PinReviewItem[];
+
+/**
+ * Response from pin reviews operation
+ */
+export interface PinnedReviewsCreateResponse {
+  data: PinReviewItemResultData[];
+}
+
+/**
+ * Request body for unpinning reviews (array of pin IDs, max 500)
+ */
+export type PinnedReviewsDeleteRequest = number[];
+
+/**
+ * Response from unpin reviews operation
+ */
+export interface PinnedReviewsDeleteResponse {
+  /** Array of successfully unpinned pin IDs */
+  data: number[];
+}
+
+/**
+ * Parameters for listing pinned/unpinned reviews
+ */
+export interface PinnedReviewsListParams {
+  /** Filter by pin state */
+  state?: ReviewState;
+  /** Filter by pin location */
+  pinOn?: ReviewPinOn;
+  /** Filter by IMT ID */
+  imtId?: number;
+  /** Filter by WB article number */
+  nmId?: number;
+  /** Filter by review ID */
+  feedbackId?: number;
+  /** Start date for filtering (ISO 8601 format) */
+  dateFrom?: string;
+  /** End date for filtering (ISO 8601 format) */
+  dateTo?: string;
+  /** Pagination cursor (last pin operation ID) */
+  next?: number;
+  /** Number of reviews per page (max 500, default 500) */
+  limit?: number;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}
+
+/**
+ * Response from list pinned/unpinned reviews
+ */
+export interface PinnedReviewsListResponse {
+  /** Array of pinned/unpinned review items */
+  data: PinnedReviewItemResult[];
+  /** Pagination cursor for next page (absent if all data received) */
+  next?: number;
+}
+
+/**
+ * Parameters for counting pinned/unpinned reviews
+ */
+export interface PinnedReviewsCountParams {
+  /** Filter by pin state */
+  state?: ReviewState;
+  /** Filter by pin location */
+  pinOn?: ReviewPinOn;
+  /** Filter by IMT ID */
+  imtId?: number;
+  /** Filter by WB article number */
+  nmId?: number;
+  /** Filter by review ID */
+  feedbackId?: number;
+  /** Start date for filtering (ISO 8601 format) */
+  dateFrom?: string;
+  /** End date for filtering (ISO 8601 format) */
+  dateTo?: string;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}
+
+/**
+ * Response from count pinned/unpinned reviews
+ */
+export interface PinnedReviewsCountResponse {
+  /** Number of reviews matching the filter */
+  data: number;
+}
+
+/**
+ * Seller limit details for pinned reviews
+ */
+export interface SellerLimit {
+  /** Max pinned reviews per product card or merged group */
+  perUnitLimit: number;
+  /** Remaining pinnable reviews */
+  remaining: number;
+  /** Total pin limit */
+  totalLimit: number;
+  /** Whether pinning is unlimited */
+  unlimited: boolean;
+  /** Current number of pinned reviews */
+  used: number;
+}
+
+/**
+ * Seller limits data for subscription and tariff
+ */
+export interface SellerLimitsData {
+  /** Subscription limits (null if no active subscription) */
+  subscription: SellerLimit | null;
+  /** Tariff limits (null if no active tariff option) */
+  tariff: SellerLimit | null;
+}
+
+/**
+ * Response from get pinned reviews limits
+ */
+export interface PinnedReviewsLimitsResponse {
+  data: SellerLimitsData;
+}
+
+// ============================================================================
+// Original Communications Types
+// ============================================================================
 
 export interface StandardizedFQError {
   /** Заголовок ошибки */
@@ -20,18 +294,20 @@ export interface StandardizedFQError {
 
 /**
  * Успешно
+ * @deprecated This type is for the removed "Шаблоны ответов" (Response Templates) tag.
+ * The templates endpoints have been removed from the Wildberries API.
  */
 export interface ResponseTemplate {
   data?: {
-  templates?: {
-  /** ID шаблона */
-  id?: string;
-  /** Название шаблона */
-  name?: string;
-  /** Текст шаблона */
-  text?: string;
-}[];
-};
+    templates?: {
+      /** ID шаблона */
+      id?: string;
+      /** Название шаблона */
+      name?: string;
+      /** Текст шаблона */
+      text?: string;
+    }[];
+  };
   /** Есть ли ошибка */
   error?: boolean;
   /** Описание ошибки */
@@ -40,11 +316,15 @@ export interface ResponseTemplate {
   additionalErrors?: string[];
 }
 
+/**
+ * @deprecated This type is for the removed "Шаблоны ответов" (Response Templates) tag.
+ * The templates endpoints have been removed from the Wildberries API.
+ */
 export interface PostTemplate {
   data?: {
-  /** ID шаблона */
-  id?: string;
-};
+    /** ID шаблона */
+    id?: string;
+  };
   /** Есть ли ошибка */
   error?: boolean;
   /** Описание ошибки */
@@ -53,6 +333,10 @@ export interface PostTemplate {
   additionalErrors?: string[];
 }
 
+/**
+ * @deprecated This type is for the removed "Шаблоны ответов" (Response Templates) tag.
+ * The templates endpoints have been removed from the Wildberries API.
+ */
 export interface PatchDelResp {
   data?: boolean;
   /** Есть ли ошибка */
@@ -92,48 +376,48 @@ export type ResponseFeedback = {
   createdDate?: string;
   /** Структура ответа */
   answer?: {
-  /** Текст ответа */
-  text?: string;
-  /** Статус: - `none` — новый - `wbRu` — отображается на сайте - `reviewRequired` — ответ проходит проверку - `rejected` — ответ отклонён */
-  state?: string;
-  /** Можно ли отредактировать ответ: - `false` — нет - `true` — да */
-  editable?: boolean;
-};
+    /** Текст ответа */
+    text?: string;
+    /** Статус: - `none` — новый - `wbRu` — отображается на сайте - `reviewRequired` — ответ проходит проверку - `rejected` — ответ отклонён */
+    state?: string;
+    /** Можно ли отредактировать ответ: - `false` — нет - `true` — да */
+    editable?: boolean;
+  };
   /** Статус отзыва: - `none` - не обработан (новый) - `wbRu` - обработан */
   state?: string;
   /** Информация о товаре */
   productDetails?: {
-  /** Артикул WB */
-  nmId?: number;
-  /** ID карточки товара */
-  imtId?: number;
-  /** Название товара */
-  productName?: string;
-  /** Артикул продавца */
-  supplierArticle?: string;
-  /** Имя продавца */
-  supplierName?: string;
-  /** Бренд товара */
-  brandName?: string;
-  /** Размер товара (`techSize` в КТ) */
-  size?: string;
-};
+    /** Артикул WB */
+    nmId?: number;
+    /** ID карточки товара */
+    imtId?: number;
+    /** Название товара */
+    productName?: string;
+    /** Артикул продавца */
+    supplierArticle?: string;
+    /** Имя продавца */
+    supplierName?: string;
+    /** Бренд товара */
+    brandName?: string;
+    /** Размер товара (`techSize` в КТ) */
+    size?: string;
+  };
   /** Массив структур фотографий */
   photoLinks?: {
-  /** Адрес фотографии полного размера */
-  fullSize?: string;
-  /** Адрес фотографии маленького размера */
-  miniSize?: string;
-}[];
+    /** Адрес фотографии полного размера */
+    fullSize?: string;
+    /** Адрес фотографии маленького размера */
+    miniSize?: string;
+  }[];
   /** Структура видео */
   video?: {
-  /** Ссылка на обложку видео */
-  previewImage?: string;
-  /** Ссылка на файл плейлиста видео (доступно по протоколу HLS) */
-  link?: string;
-  /** Общая продолжительность видео */
-  durationSec?: number;
-};
+    /** Ссылка на обложку видео */
+    previewImage?: string;
+    /** Ссылка на файл плейлиста видео (доступно по протоколу HLS) */
+    link?: string;
+    /** Общая продолжительность видео */
+    durationSec?: number;
+  };
   /** Просмотрен ли отзыв */
   wasViewed?: boolean;
   /** Имя автора отзыва */
@@ -185,7 +469,10 @@ export interface Chat {
   chatID?: string;
   /** Подпись чата. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
   replySign?: string;
-  /** ID покупателя */
+  /**
+   * ID покупателя
+   * @deprecated This field will be removed on February 2. See https://dev.wildberries.ru/release-notes?id=466
+   */
   clientID?: string;
   /** Имя покупателя */
   clientName?: string;
@@ -209,10 +496,10 @@ export interface Event {
   isNewChat?: boolean;
   /** Данные сообщения */
   message?: {
-  attachments?: EventAttachments;
-  /** Текст сообщения */
-  text?: string;
-};
+    attachments?: EventAttachments;
+    /** Текст сообщения */
+    text?: string;
+  };
   /** Источник отправки сообщения: - `seller-portal` — портал продавцов - `seller-public-api` — API Чата с покупателями - `rusite` — портал покупателей - `global` — портал `global.wildberries.ru` - `ios` — мобильная операционная система от **Apple** - `android` — операционная система **Android** от **Google** */
   source?: string;
   /** Время появления события на сервере. Формат Unix timestamp */
@@ -222,7 +509,10 @@ export interface Event {
   /** Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
   replySign?: string;
   sender?: Sender;
-  /** ID покупателя */
+  /**
+   * ID покупателя
+   * @deprecated This field will be removed on February 2. See https://dev.wildberries.ru/release-notes?id=466
+   */
   clientID?: string;
   /** Имя покупателя */
   clientName?: string;
@@ -267,7 +557,10 @@ export interface File {
 export interface GoodCard {
   /** Дата заказа */
   date?: string;
-  /** **Поле будет удалено 24 октября**.<br> Используйте отдельный метод для получения [заявок покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get). <br><br> Запрошен ли возврат товара: - `false` — не запрошен - `true` — запрошен */
+  /**
+   * Запрошен ли возврат товара
+   * @deprecated This field has been removed. Use the claims endpoint instead: /api/v1/claims
+   */
   needRefund?: boolean;
   /** Артикул WB */
   nmID?: number;
@@ -279,7 +572,10 @@ export interface GoodCard {
   rid?: string;
   /** Размер товара, соответствует `wbSize` в [карточке товара](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) */
   size?: string;
-  /** Статус товара: - `0` — Товар активный - `1` — Товар оформлен - `2` — Товар собирается - `3` — Товар в пути - `4` — Товар ожидает в ПВЗ - `5` — Товар у курьера - `10` — Товар в архиве - `11` — Товар выкуплен - `12` — Товар отменён - `13` — Оформлен возврат - `14` — Товар отменён (нет на складе) */
+  /**
+   * Статус товара
+   * @deprecated This field will be removed on February 10. See https://dev.wildberries.ru/release-notes?id=469
+   */
   statusID?: number;
 }
 
@@ -299,11 +595,11 @@ export interface MessageResponse {
   /** Ошибки загрузки файлов, если есть */
   errors?: string[];
   result?: {
-  /** Время загрузки */
-  addTime?: number;
-  /** ID чата */
-  chatID?: string;
-};
+    /** Время загрузки */
+    addTime?: number;
+    /** ID чата */
+    chatID?: string;
+  };
 }
 
 /**
@@ -330,4 +626,46 @@ export interface EventsResult {
   /** Количество событий */
   totalEvents?: number;
   events?: Event[];
+}
+
+// ============================================================================
+// Feedback and Questions Response Types
+// ============================================================================
+
+/**
+ * Response from the feedbacks() method - list of feedbacks
+ */
+export interface FeedbackListResponse {
+  data?: {
+    /** Count of unanswered feedbacks */
+    countUnanswered?: number;
+    /** Count of archived feedbacks */
+    countArchive?: number;
+    /** Array of feedback items */
+    feedbacks?: ResponseFeedback;
+  };
+  /** Whether there was an error */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+  /** Additional errors */
+  additionalErrors?: string[];
+}
+
+/**
+ * Response from the newFeedbacksQuestions() method - check for new feedbacks/questions
+ */
+export interface NewFeedbacksQuestionsResponse {
+  data?: {
+    /** Whether there are new questions */
+    hasNewQuestions?: boolean;
+    /** Whether there are new feedbacks */
+    hasNewFeedbacks?: boolean;
+  };
+  /** Whether there was an error */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+  /** Additional errors */
+  additionalErrors?: string[];
 }
