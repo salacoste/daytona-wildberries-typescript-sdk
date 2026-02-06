@@ -19,7 +19,6 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
-import { ValidationError } from '../../../src/errors/validation-error';
 
 describe('TariffsModule', () => {
   // Mock BaseClient with all HTTP methods
@@ -79,7 +78,7 @@ describe('TariffsModule', () => {
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/commission',
-          { params: undefined }
+          expect.objectContaining({ params: undefined })
         );
         expect(mockClient.get).toHaveBeenCalledTimes(1);
       });
@@ -94,7 +93,7 @@ describe('TariffsModule', () => {
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/commission',
-          { params: { locale: 'en' } }
+          expect.objectContaining({ params: { locale: 'en' } })
         );
       });
 
@@ -106,21 +105,21 @@ describe('TariffsModule', () => {
         await tariffsModule.getTariffsCommission({ locale: 'ru' });
         expect(mockClient.get).toHaveBeenLastCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/commission',
-          { params: { locale: 'ru' } }
+          expect.objectContaining({ params: { locale: 'ru' } })
         );
 
         // Act & Assert - English
         await tariffsModule.getTariffsCommission({ locale: 'en' });
         expect(mockClient.get).toHaveBeenLastCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/commission',
-          { params: { locale: 'en' } }
+          expect.objectContaining({ params: { locale: 'en' } })
         );
 
         // Act & Assert - Chinese
         await tariffsModule.getTariffsCommission({ locale: 'zh' });
         expect(mockClient.get).toHaveBeenLastCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/commission',
-          { params: { locale: 'zh' } }
+          expect.objectContaining({ params: { locale: 'zh' } })
         );
       });
 
@@ -199,12 +198,12 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(mockBoxTariffsResponse);
 
         // Act
-        await tariffsModule.getTariffsBox({ date: testDate });
+        await tariffsModule.getTariffsBox(testDate);
 
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/box',
-          { params: { date: testDate } }
+          expect.objectContaining({ params: { date: testDate } })
         );
         expect(mockClient.get).toHaveBeenCalledTimes(1);
       });
@@ -214,7 +213,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(mockBoxTariffsResponse);
 
         // Act
-        const result = await tariffsModule.getTariffsBox({ date: testDate });
+        const result = await tariffsModule.getTariffsBox(testDate);
 
         // Assert
         expect(result).toEqual(mockBoxTariffsResponse);
@@ -246,21 +245,43 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
         // Act
-        const result = await tariffsModule.getTariffsBox({ date: testDate });
+        const result = await tariffsModule.getTariffsBox(testDate);
 
         // Assert
         expect(result.response?.data?.warehouseList).toHaveLength(2);
       });
 
-      it.skip('should throw ValidationError when date is missing', async () => {
-        // Act & Assert
-        await expect(tariffsModule.getTariffsBox({} as any)).rejects.toThrow(ValidationError);
+      it('should pass date parameter to BaseClient correctly', async () => {
+        // Arrange
+        mockClient.get.mockResolvedValue(mockBoxTariffsResponse);
+        const date = '2025-01-15';
+
+        // Act
+        await tariffsModule.getTariffsBox(date);
+
+        // Assert
+        expect(mockClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('/tariffs/box'),
+          expect.objectContaining({ params: { date: '2025-01-15' } })
+        );
       });
 
-      it.skip('should throw ValidationError when date format is invalid', async () => {
-        // Act & Assert
-        await expect(tariffsModule.getTariffsBox({ date: '01-15-2024' })).rejects.toThrow(ValidationError);
-        await expect(tariffsModule.getTariffsBox({ date: '2024/01/15' })).rejects.toThrow(ValidationError);
+      it('should handle different date values correctly', async () => {
+        // Arrange
+        mockClient.get.mockResolvedValue(mockBoxTariffsResponse);
+
+        // Act & Assert - Test with different valid dates
+        await tariffsModule.getTariffsBox('2024-12-31');
+        expect(mockClient.get).toHaveBeenLastCalledWith(
+          'https://common-api.wildberries.ru/api/v1/tariffs/box',
+          expect.objectContaining({ params: { date: '2024-12-31' } })
+        );
+
+        await tariffsModule.getTariffsBox('2025-06-15');
+        expect(mockClient.get).toHaveBeenLastCalledWith(
+          'https://common-api.wildberries.ru/api/v1/tariffs/box',
+          expect.objectContaining({ params: { date: '2025-06-15' } })
+        );
       });
 
       it('should throw NetworkError on network failure', async () => {
@@ -268,7 +289,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new NetworkError('Network timeout', true));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox({ date: testDate })).rejects.toThrow(NetworkError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(NetworkError);
       });
     });
 
@@ -295,12 +316,12 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(mockPalletTariffsResponse);
 
         // Act
-        await tariffsModule.getTariffsPallet({ date: testDate });
+        await tariffsModule.getTariffsPallet(testDate);
 
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/pallet',
-          { params: { date: testDate } }
+          expect.objectContaining({ params: { date: testDate } })
         );
         expect(mockClient.get).toHaveBeenCalledTimes(1);
       });
@@ -310,7 +331,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(mockPalletTariffsResponse);
 
         // Act
-        const result = await tariffsModule.getTariffsPallet({ date: testDate });
+        const result = await tariffsModule.getTariffsPallet(testDate);
 
         // Assert
         expect(result).toEqual(mockPalletTariffsResponse);
@@ -335,21 +356,42 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
         // Act
-        const result = await tariffsModule.getTariffsPallet({ date: testDate });
+        const result = await tariffsModule.getTariffsPallet(testDate);
 
         // Assert
         expect(result.response?.data?.warehouseList).toHaveLength(3);
       });
 
-      it.skip('should throw ValidationError when date is missing', async () => {
-        // Act & Assert
-        await expect(tariffsModule.getTariffsPallet({} as any)).rejects.toThrow(ValidationError);
+      it('should pass date parameter to BaseClient correctly', async () => {
+        // Arrange
+        mockClient.get.mockResolvedValue(mockPalletTariffsResponse);
+        const date = '2025-01-15';
+
+        // Act
+        await tariffsModule.getTariffsPallet(date);
+
+        // Assert
+        expect(mockClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('/tariffs/pallet'),
+          expect.objectContaining({ params: { date: '2025-01-15' } })
+        );
       });
 
-      it.skip('should throw ValidationError when date format is invalid', async () => {
-        // Act & Assert
-        await expect(tariffsModule.getTariffsPallet({ date: 'invalid-date' })).rejects.toThrow(
-          ValidationError
+      it('should handle different date values correctly', async () => {
+        // Arrange
+        mockClient.get.mockResolvedValue(mockPalletTariffsResponse);
+
+        // Act & Assert - Test with different valid dates
+        await tariffsModule.getTariffsPallet('2024-12-31');
+        expect(mockClient.get).toHaveBeenLastCalledWith(
+          'https://common-api.wildberries.ru/api/v1/tariffs/pallet',
+          expect.objectContaining({ params: { date: '2024-12-31' } })
+        );
+
+        await tariffsModule.getTariffsPallet('2025-06-15');
+        expect(mockClient.get).toHaveBeenLastCalledWith(
+          'https://common-api.wildberries.ru/api/v1/tariffs/pallet',
+          expect.objectContaining({ params: { date: '2025-06-15' } })
         );
       });
 
@@ -358,7 +400,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new RateLimitError('Rate limit: 60 req/min', 1000));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsPallet({ date: testDate })).rejects.toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsPallet(testDate)).rejects.toThrow(RateLimitError);
       });
     });
   });
@@ -386,12 +428,12 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(mockReturnTariffsResponse);
 
         // Act
-        await tariffsModule.getTariffsReturn({ date: testDate });
+        await tariffsModule.getTariffsReturn(testDate);
 
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://common-api.wildberries.ru/api/v1/tariffs/return',
-          { params: { date: testDate } }
+          expect.objectContaining({ params: { date: testDate } })
         );
         expect(mockClient.get).toHaveBeenCalledTimes(1);
       });
@@ -401,7 +443,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(mockReturnTariffsResponse);
 
         // Act
-        const result = await tariffsModule.getTariffsReturn({ date: testDate });
+        const result = await tariffsModule.getTariffsReturn(testDate);
 
         // Assert
         expect(result).toEqual(mockReturnTariffsResponse);
@@ -432,21 +474,43 @@ describe('TariffsModule', () => {
         mockClient.get.mockResolvedValue(multiWarehouseResponse);
 
         // Act
-        const result = await tariffsModule.getTariffsReturn({ date: testDate });
+        const result = await tariffsModule.getTariffsReturn(testDate);
 
         // Assert
         expect(result.response?.data?.warehouseList).toHaveLength(2);
       });
 
-      it.skip('should throw ValidationError when date is missing', async () => {
-        // Act & Assert
-        await expect(tariffsModule.getTariffsReturn({} as any)).rejects.toThrow(ValidationError);
+      it('should pass date parameter to BaseClient correctly', async () => {
+        // Arrange
+        mockClient.get.mockResolvedValue(mockReturnTariffsResponse);
+        const date = '2025-01-15';
+
+        // Act
+        await tariffsModule.getTariffsReturn(date);
+
+        // Assert
+        expect(mockClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('/tariffs/return'),
+          expect.objectContaining({ params: { date: '2025-01-15' } })
+        );
       });
 
-      it.skip('should throw ValidationError when date format is invalid', async () => {
-        // Act & Assert
-        await expect(tariffsModule.getTariffsReturn({ date: '01-15-2024' })).rejects.toThrow(ValidationError);
-        await expect(tariffsModule.getTariffsReturn({ date: '2024/01/15' })).rejects.toThrow(ValidationError);
+      it('should handle different date values correctly', async () => {
+        // Arrange
+        mockClient.get.mockResolvedValue(mockReturnTariffsResponse);
+
+        // Act & Assert - Test with different valid dates
+        await tariffsModule.getTariffsReturn('2024-12-31');
+        expect(mockClient.get).toHaveBeenLastCalledWith(
+          'https://common-api.wildberries.ru/api/v1/tariffs/return',
+          expect.objectContaining({ params: { date: '2024-12-31' } })
+        );
+
+        await tariffsModule.getTariffsReturn('2025-06-15');
+        expect(mockClient.get).toHaveBeenLastCalledWith(
+          'https://common-api.wildberries.ru/api/v1/tariffs/return',
+          expect.objectContaining({ params: { date: '2025-06-15' } })
+        );
       });
 
       it('should throw AuthenticationError on invalid API key', async () => {
@@ -454,7 +518,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new AuthenticationError('Invalid or expired API key'));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsReturn({ date: testDate })).rejects.toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsReturn(testDate)).rejects.toThrow(AuthenticationError);
       });
     });
   });
@@ -476,7 +540,7 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(new NetworkError('Server error 500', false));
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox({ date: testDate })).rejects.toThrow(NetworkError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(NetworkError);
       });
     });
 
@@ -501,11 +565,11 @@ describe('TariffsModule', () => {
         mockClient.get.mockRejectedValue(rateLimitError);
 
         // Act & Assert
-        await expect(tariffsModule.getTariffsBox({ date: testDate })).rejects.toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(RateLimitError);
 
-        await expect(tariffsModule.getTariffsPallet({ date: testDate })).rejects.toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsPallet(testDate)).rejects.toThrow(RateLimitError);
 
-        await expect(tariffsModule.getTariffsReturn({ date: testDate })).rejects.toThrow(RateLimitError);
+        await expect(tariffsModule.getTariffsReturn(testDate)).rejects.toThrow(RateLimitError);
       });
     });
 
@@ -516,9 +580,9 @@ describe('TariffsModule', () => {
 
         // Act & Assert
         await expect(tariffsModule.getTariffsCommission()).rejects.toThrow(AuthenticationError);
-        await expect(tariffsModule.getTariffsBox({ date: testDate })).rejects.toThrow(AuthenticationError);
-        await expect(tariffsModule.getTariffsPallet({ date: testDate })).rejects.toThrow(AuthenticationError);
-        await expect(tariffsModule.getTariffsReturn({ date: testDate })).rejects.toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsBox(testDate)).rejects.toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsPallet(testDate)).rejects.toThrow(AuthenticationError);
+        await expect(tariffsModule.getTariffsReturn(testDate)).rejects.toThrow(AuthenticationError);
       });
 
       it('should handle expired API key', async () => {
@@ -563,7 +627,7 @@ describe('TariffsModule', () => {
       mockClient.get.mockResolvedValue(mockResponse);
 
       // Act
-      const result = await tariffsModule.getTariffsBox({ date: testDate });
+      const result = await tariffsModule.getTariffsBox(testDate);
 
       // Assert - TypeScript ensures type safety
       expect(result.response?.data?.dtNextBox).toBe('2024-02-01');
@@ -584,7 +648,7 @@ describe('TariffsModule', () => {
       mockClient.get.mockResolvedValue(mockResponse);
 
       // Act
-      const result = await tariffsModule.getTariffsPallet({ date: testDate });
+      const result = await tariffsModule.getTariffsPallet(testDate);
 
       // Assert
       expect(result.response?.data?.dtNextPallet).toBeDefined();
@@ -604,7 +668,7 @@ describe('TariffsModule', () => {
       mockClient.get.mockResolvedValue(mockResponse);
 
       // Act
-      const result = await tariffsModule.getTariffsReturn({ date: testDate });
+      const result = await tariffsModule.getTariffsReturn(testDate);
 
       // Assert
       expect(result).toBeDefined();
@@ -621,9 +685,9 @@ describe('TariffsModule', () => {
 
       // Act
       await tariffsModule.getTariffsCommission();
-      await tariffsModule.getTariffsBox({ date: testDate });
-      await tariffsModule.getTariffsPallet({ date: testDate });
-      await tariffsModule.getTariffsReturn({ date: testDate });
+      await tariffsModule.getTariffsBox(testDate);
+      await tariffsModule.getTariffsPallet(testDate);
+      await tariffsModule.getTariffsReturn(testDate);
 
       // Assert - All 4 methods should call BaseClient.get
       expect(mockClient.get).toHaveBeenCalledTimes(4);
@@ -635,9 +699,9 @@ describe('TariffsModule', () => {
 
       // Act
       await tariffsModule.getTariffsCommission();
-      await tariffsModule.getTariffsBox({ date: testDate });
-      await tariffsModule.getTariffsPallet({ date: testDate });
-      await tariffsModule.getTariffsReturn({ date: testDate });
+      await tariffsModule.getTariffsBox(testDate);
+      await tariffsModule.getTariffsPallet(testDate);
+      await tariffsModule.getTariffsReturn(testDate);
 
       // Assert - All should use common-api.wildberries.ru
       const calls = mockClient.get.mock.calls;
@@ -653,15 +717,90 @@ describe('TariffsModule', () => {
 
       // Act
       await tariffsModule.getTariffsCommission();
-      await tariffsModule.getTariffsBox({ date: testDate });
-      await tariffsModule.getTariffsPallet({ date: testDate });
-      await tariffsModule.getTariffsReturn({ date: testDate });
+      await tariffsModule.getTariffsBox(testDate);
+      await tariffsModule.getTariffsPallet(testDate);
+      await tariffsModule.getTariffsReturn(testDate);
 
       // Assert - TariffsModule is read-only, should only use GET
       expect(mockClient.post).not.toHaveBeenCalled();
       expect(mockClient.put).not.toHaveBeenCalled();
       expect(mockClient.patch).not.toHaveBeenCalled();
       expect(mockClient.delete).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('getAcceptanceCoefficients', () => {
+    it('should call correct URL for acceptance coefficients', async () => {
+      mockClient.get.mockResolvedValue([]);
+
+      await tariffsModule.getAcceptanceCoefficients();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/tariffs/v1/acceptance/coefficients',
+        expect.objectContaining({
+          rateLimitKey: 'tariffs.acceptanceCoefficients',
+        })
+      );
+    });
+
+    it('should pass warehouseIDs parameter', async () => {
+      mockClient.get.mockResolvedValue([]);
+
+      await tariffsModule.getAcceptanceCoefficients({ warehouseIDs: '507,117501' });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          params: { warehouseIDs: '507,117501' },
+        })
+      );
+    });
+  });
+
+  describe('rateLimitKey wiring', () => {
+    it('getTariffsCommission passes rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue({ report: [] });
+      await tariffsModule.getTariffsCommission();
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ rateLimitKey: 'tariffs.tariffsCommission' })
+      );
+    });
+
+    it('getTariffsBox passes rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue({});
+      await tariffsModule.getTariffsBox('2024-01-15');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ rateLimitKey: 'tariffs.tariffsBox' })
+      );
+    });
+
+    it('getTariffsPallet passes rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue({});
+      await tariffsModule.getTariffsPallet('2024-01-15');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ rateLimitKey: 'tariffs.tariffsPallet' })
+      );
+    });
+
+    it('getTariffsReturn passes rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue({});
+      await tariffsModule.getTariffsReturn('2024-01-15');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ rateLimitKey: 'tariffs.tariffsReturn' })
+      );
+    });
+
+    it('getAcceptanceCoefficients passes rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue([]);
+      await tariffsModule.getAcceptanceCoefficients();
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ rateLimitKey: 'tariffs.acceptanceCoefficients' })
+      );
     });
   });
 });

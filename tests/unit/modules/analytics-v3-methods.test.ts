@@ -108,7 +108,8 @@ describe('AnalyticsModule — v3 Sales Funnel Methods', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith(
         `${BASE_URL}/api/analytics/v3/sales-funnel/products`,
-        expect.any(Object)
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'analytics.postSalesFunnelProducts' })
       );
     });
 
@@ -132,7 +133,8 @@ describe('AnalyticsModule — v3 Sales Funnel Methods', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith(
         `${BASE_URL}/api/analytics/v3/sales-funnel/products`,
-        request
+        request,
+        expect.objectContaining({ rateLimitKey: 'analytics.postSalesFunnelProducts' })
       );
     });
 
@@ -192,7 +194,8 @@ describe('AnalyticsModule — v3 Sales Funnel Methods', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith(
         `${BASE_URL}/api/analytics/v3/sales-funnel/products/history`,
-        expect.any(Object)
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'analytics.postSalesFunnelProductsHistory' })
       );
     });
 
@@ -210,7 +213,8 @@ describe('AnalyticsModule — v3 Sales Funnel Methods', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith(
         `${BASE_URL}/api/analytics/v3/sales-funnel/products/history`,
-        request
+        request,
+        expect.objectContaining({ rateLimitKey: 'analytics.postSalesFunnelProductsHistory' })
       );
     });
 
@@ -271,7 +275,8 @@ describe('AnalyticsModule — v3 Sales Funnel Methods', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith(
         `${BASE_URL}/api/analytics/v3/sales-funnel/grouped/history`,
-        expect.any(Object)
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'analytics.postSalesFunnelGroupedHistory' })
       );
     });
 
@@ -291,7 +296,8 @@ describe('AnalyticsModule — v3 Sales Funnel Methods', () => {
 
       expect(mockClient.post).toHaveBeenCalledWith(
         `${BASE_URL}/api/analytics/v3/sales-funnel/grouped/history`,
-        request
+        request,
+        expect.objectContaining({ rateLimitKey: 'analytics.postSalesFunnelGroupedHistory' })
       );
     });
 
