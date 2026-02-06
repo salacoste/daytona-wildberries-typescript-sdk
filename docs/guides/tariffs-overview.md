@@ -181,7 +181,7 @@ for (const wh of sortedByCoef.slice(0, 5)) {
 
 | Характеристика | Тарифы на остаток | Тарифы на поставку |
 |----------------|-------------------|-------------------|
-| **API домен** | `common-api.wildberries.ru` | `marketplace-api.wildberries.ru` |
+| **API домен** | `common-api.wildberries.ru` | `supplies-api.wildberries.ru` |
 | **Модуль SDK** | `sdk.tariffs` | `sdk.ordersFBW` |
 | **Назначение** | Расчёт затрат текущих товаров | Планирование новых поставок |
 | **Временной горизонт** | Текущие/исторические данные | Прогноз до 14 дней |

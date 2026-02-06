@@ -55,7 +55,7 @@ const specificCoefficients = await sdk.tariffs.getAcceptanceCoefficients({
 | `getTariffsBox(date)` | GET | `/api/v1/tariffs/box` | Get tariffs for box delivery (date required) |
 | `getTariffsPallet(date)` | GET | `/api/v1/tariffs/pallet` | Get tariffs for pallet delivery (date required) |
 | `getTariffsReturn(date)` | GET | `/api/v1/tariffs/return` | Get return tariffs (date required) |
-| `getAcceptanceCoefficients(options?)` | GET | `/api/v1/tariffs/acceptance-coefficients` | Get supply acceptance coefficients |
+| `getAcceptanceCoefficients(options?)` | GET | `/api/tariffs/v1/acceptance/coefficients` | Get supply acceptance coefficients |
 
 ---
 
@@ -65,7 +65,7 @@ const specificCoefficients = await sdk.tariffs.getAcceptanceCoefficients({
 |-----------|-------|----------|
 | Commission rates | 1 req/min | 60s |
 | Box / Pallet / Return tariffs | 60 req/min | 1s |
-| Acceptance coefficients | 60 req/min | 1s |
+| Acceptance coefficients | 6 req/min | 10s |
 
 ---
 

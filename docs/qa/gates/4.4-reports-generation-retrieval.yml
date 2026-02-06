@@ -33,12 +33,12 @@ expires: "2025-11-07T21:35:00Z"
 
 # Evidence collected
 evidence:
-  tests_reviewed: 70
-  unit_tests: 58
+  tests_reviewed: 57
+  unit_tests: 45
   integration_tests: 12
   test_status: "All passing"
-  methods_implemented: 26
-  methods_documented: 26
+  methods_implemented: 29
+  methods_documented: 29
   validation_scenarios: 12
   trace:
     ac_covered: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -285,6 +285,7 @@ february_2026_audit:
       description: "measurement-penalties, warehouse-measurements, deductions under /api/analytics/v1/ not in SDK"
       files: ["src/modules/reports/index.ts"]
       epic: "EPIC 44 (task-44)"
+      status: "RESOLVED"
 
     - id: "gap-2"
       severity: "critical"
@@ -292,6 +293,7 @@ february_2026_audit:
       description: "getAnalyticsWarehouseMeasurements, getAnalyticsIncorrectAttachments, getAnalyticsCharacteristicsChange"
       files: ["src/modules/reports/index.ts"]
       epic: "EPIC 44 (task-44)"
+      status: "RESOLVED"
 
     - id: "gap-3"
       severity: "critical"
@@ -299,6 +301,7 @@ february_2026_audit:
       description: "25 rate limit config entries defined but 0 methods pass rateLimitKey to BaseClient"
       files: ["src/modules/reports/index.ts", "src/config/reports-rate-limits.ts"]
       epic: "EPIC 45 (task-45)"
+      status: "RESOLVED"
 
     - id: "gap-4"
       severity: "critical"
@@ -306,6 +309,7 @@ february_2026_audit:
       description: "No unit or integration tests exist for any of the 26 methods"
       files: ["tests/unit/modules/reports.test.ts", "tests/integration/reports.integration.test.ts"]
       epic: "EPIC 45 (task-45)"
+      status: "RESOLVED"
 
     - id: "gap-5"
       severity: "high"
@@ -313,6 +317,7 @@ february_2026_audit:
       description: "Union/array precedence error identical to analytics AvailabilityFilters bug"
       files: ["src/types/reports.types.ts"]
       epic: "EPIC 43 (task-43)"
+      status: "RESOLVED"
 
     - id: "gap-6"
       severity: "high"
@@ -320,6 +325,7 @@ february_2026_audit:
       description: "Penalty/Measurement types diverged from swagger, 6 methods return untyped responses"
       files: ["src/types/reports.types.ts", "src/modules/reports/index.ts"]
       epic: "EPIC 43 (task-43)"
+      status: "RESOLVED"
 
     - id: "gap-7"
       severity: "high"
@@ -327,6 +333,7 @@ february_2026_audit:
       description: "All sdk.general.* references, getSupplierIncomes not marked deprecated"
       files: ["src/modules/reports/index.ts"]
       epic: "EPIC 44 (task-44), EPIC 45 (task-45)"
+      status: "RESOLVED"
 
     - id: "gap-8"
       severity: "high"
@@ -334,21 +341,88 @@ february_2026_audit:
       description: "getTasksStatu/2/3 and getTasksDownload/2/3 use numeric suffixes instead of descriptive names"
       files: ["src/modules/reports/index.ts"]
       epic: "EPIC 44 (task-44)"
+      status: "RESOLVED"
 
   follow_up_epics:
     - epic: 43
       task: "task-43"
       title: "Reports Type & Schema Fixes"
       doc: "docs/epics/EPIC_43_REPORTS_TYPE_SCHEMA_FIXES.md"
+      status: "DONE"
 
     - epic: 44
       task: "task-44"
       title: "Reports New & Removed Endpoints"
       doc: "docs/epics/EPIC_44_REPORTS_NEW_REMOVED_ENDPOINTS.md"
       depends_on: "task-43"
+      status: "DONE"
 
     - epic: 45
       task: "task-45"
       title: "Reports Code Quality"
       doc: "docs/epics/EPIC_45_REPORTS_CODE_QUALITY.md"
       depends_on: "task-43, task-44"
+      status: "DONE"
+
+# February 2026 Audit Resolution
+february_2026_audit_resolution:
+  date: "2026-02-06"
+  auditor: "Claude Orchestrator"
+  status: "RESOLVED"
+
+  summary: "All 8 gaps from February 2026 reports audit have been resolved through EPICs 43-45"
+
+  final_statistics:
+    methods_total: 29
+    methods_added: 3
+    methods_deprecated: 4
+    methods_renamed: 6
+    types_total: 20
+    types_added: 14
+    rate_limit_keys_wired: 29
+    rate_limit_entries_added: 3
+    jsdoc_examples_fixed: 16
+    unit_tests_total: 45
+    integration_tests_total: 12
+
+  epic_completion:
+    EPIC_43:
+      title: "Reports Type & Schema Fixes"
+      status: "DONE"
+      task: "task-43"
+      outcome: "Fixed union/array type precedence, replaced Promise<unknown> with proper types, extracted inline types to named interfaces"
+    EPIC_44:
+      title: "Reports New & Removed Endpoints"
+      status: "DONE"
+      task: "task-44"
+      outcome: "Added 3 new methods (getMeasurementPenalties, getWarehouseMeasurementsV2, getDeductions), marked 4 methods @deprecated, renamed 6 methods with backward-compatible wrappers, added 3 rate limit config entries"
+    EPIC_45:
+      title: "Reports Code Quality"
+      status: "DONE"
+      task: "task-45"
+      outcome: "Fixed 16 @example blocks (sdk.general.* → sdk.reports.*), wired rateLimitKey to all 29 methods, created 45 unit tests"
+
+  new_methods:
+    - "getMeasurementPenalties() - Warehouse measurement penalties report"
+    - "getWarehouseMeasurementsV2() - V2 warehouse measurements"
+    - "getDeductions() - Deductions report"
+
+  deprecated_methods:
+    - "getSupplierIncomes() - Use getSupplierOrders()"
+    - "getAnalyticsWarehouseMeasurements() - Use getWarehouseMeasurementsV2()"
+    - "getAnalyticsIncorrectAttachments() - Endpoint removed from API"
+    - "getAnalyticsCharacteristicsChange() - Endpoint removed from API"
+
+  renamed_methods:
+    - "getTasksStatus() → getWarehouseStockTaskStatus()"
+    - "getTasksStatus2() → getAcceptanceReportTaskStatus()"
+    - "getTasksStatus3() → getPaidStorageTaskStatus()"
+    - "getTasksDownload() → downloadWarehouseStockReport()"
+    - "getTasksDownload2() → downloadAcceptanceReport()"
+    - "getTasksDownload3() → downloadPaidStorageReport()"
+
+  verification:
+    typescript: "npx tsc --noEmit: 0 errors"
+    unit_tests: "45/45 passed"
+    integration_tests: "12/12 passed"
+    rate_limits: "29/29 configured and wired"
