@@ -2,7 +2,7 @@
 
 # Class: TariffsModule
 
-Defined in: [modules/tariffs/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/tariffs/index.ts#L10)
+Defined in: [modules/tariffs/index.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L20)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/tariffs/index.ts:10](https://github.com/salacoste/daytona-w
 new TariffsModule(client: BaseClient): TariffsModule;
 ```
 
-Defined in: [modules/tariffs/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/tariffs/index.ts#L11)
+Defined in: [modules/tariffs/index.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L21)
 
 #### Parameters
 
@@ -39,7 +39,7 @@ getTariffsCommission(options?: {
 | CommissionUAE>;
 ```
 
-Defined in: [modules/tariffs/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/tariffs/index.ts#L28)
+Defined in: [modules/tariffs/index.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L44)
 
 Комиссия по категориям товаров
 
@@ -79,10 +79,17 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
-#### Example
+#### Examples
 
 ```ts
-const result = await sdk.general.getTariffsCommission({});
+// Get commission rates (default locale)
+const result = await sdk.tariffs.getTariffsCommission();
+console.log(result);
+```
+
+```ts
+// Get commission rates with English locale
+const result = await sdk.tariffs.getTariffsCommission({ locale: 'en' });
 console.log(result);
 ```
 
@@ -91,12 +98,10 @@ console.log(result);
 ### getTariffsBox()
 
 ```ts
-getTariffsBox(options?: {
-  date: string;
-}): Promise<TariffsBoxResponse>;
+getTariffsBox(date: string): Promise<TariffsBoxResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/tariffs/index.ts#L47)
+Defined in: [modules/tariffs/index.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L72)
 
 Тарифы для коробов
 
@@ -106,8 +111,7 @@ Defined in: [modules/tariffs/index.ts:47](https://github.com/salacoste/daytona-w
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `date`: `string`; \} | Query parameters |
-| `options.date?` | `string` | - |
+| `date` | `string` | Date for tariffs in YYYY-MM-DD format (required) |
 
 #### Returns
 
@@ -134,7 +138,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTariffsBox({});
+const result = await sdk.tariffs.getTariffsBox('2024-01-15');
 console.log(result);
 ```
 
@@ -143,12 +147,10 @@ console.log(result);
 ### getTariffsPallet()
 
 ```ts
-getTariffsPallet(options?: {
-  date: string;
-}): Promise<TariffsPalletResponse>;
+getTariffsPallet(date: string): Promise<TariffsPalletResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/tariffs/index.ts#L66)
+Defined in: [modules/tariffs/index.ts:94](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L94)
 
 Тарифы для монопаллет
 
@@ -158,8 +160,7 @@ Defined in: [modules/tariffs/index.ts:66](https://github.com/salacoste/daytona-w
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `date`: `string`; \} | Query parameters |
-| `options.date?` | `string` | - |
+| `date` | `string` | Date for tariffs in YYYY-MM-DD format (required) |
 
 #### Returns
 
@@ -186,7 +187,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTariffsPallet({});
+const result = await sdk.tariffs.getTariffsPallet('2024-01-15');
 console.log(result);
 ```
 
@@ -195,12 +196,10 @@ console.log(result);
 ### getTariffsReturn()
 
 ```ts
-getTariffsReturn(options?: {
-  date: string;
-}): Promise<ReturnTariffsResponse>;
+getTariffsReturn(date: string): Promise<ReturnTariffsResponse>;
 ```
 
-Defined in: [modules/tariffs/index.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/tariffs/index.ts#L85)
+Defined in: [modules/tariffs/index.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L116)
 
 Тарифы на возврат
 
@@ -210,8 +209,7 @@ Defined in: [modules/tariffs/index.ts:85](https://github.com/salacoste/daytona-w
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options?` | \{ `date`: `string`; \} | Query parameters |
-| `options.date?` | `string` | - |
+| `date` | `string` | Date for tariffs in YYYY-MM-DD format (required) |
 
 #### Returns
 
@@ -238,6 +236,71 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTariffsReturn({});
+const result = await sdk.tariffs.getTariffsReturn('2024-01-15');
 console.log(result);
+```
+
+***
+
+### getAcceptanceCoefficients()
+
+```ts
+getAcceptanceCoefficients(options?: {
+  warehouseIDs?: string;
+}): Promise<ModelsAcceptanceCoefficient[]>;
+```
+
+Defined in: [modules/tariffs/index.ts:151](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/tariffs/index.ts#L151)
+
+Тарифы на поставку
+
+Метод возвращает тарифы на поставку для конкретных складов на ближайшие 14 дней.
+
+Приёмка для поставки доступна только при сочетании:
+- `coefficient` — `0` или `1`
+- `allowUnload` — `true`
+
+Rate limit: 6 requests per minute, 10 second interval, burst 6
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `warehouseIDs?`: `string`; \} | Query parameters |
+| `options.warehouseIDs?` | `string` | Warehouse IDs, comma-separated. Returns all warehouses by default |
+
+#### Returns
+
+`Promise`\<[`ModelsAcceptanceCoefficient`](../-internal-/interfaces/ModelsAcceptanceCoefficient-1.md)[]\>
+
+Array of acceptance coefficients for the next 14 days
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### Examples
+
+```ts
+// Get coefficients for all warehouses
+const allCoeffs = await sdk.tariffs.getAcceptanceCoefficients();
+console.log(allCoeffs);
+```
+
+```ts
+// Get coefficients for specific warehouses
+const coeffs = await sdk.tariffs.getAcceptanceCoefficients({ warehouseIDs: '507,117501' });
+console.log(coeffs);
 ```

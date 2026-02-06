@@ -18,6 +18,6 @@ type PinnedReviewErrorStatus =
   | "bodyNotValid";
 ```
 
-Defined in: [types/communications.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L48)
+Defined in: [types/communications.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/communications.types.ts#L48)
 
 Error status codes for pinned reviews operations

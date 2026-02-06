@@ -347,6 +347,7 @@
 | [CommissionTurkey](interfaces/CommissionTurkey.md) | - |
 | [CommissionUzbekistan](interfaces/CommissionUzbekistan.md) | - |
 | [CommissionUAE](interfaces/CommissionUAE.md) | - |
+| [ModelsAcceptanceCoefficient](interfaces/ModelsAcceptanceCoefficient-1.md) | Acceptance coefficient for warehouse supplies Used by getAcceptanceCoefficients endpoint Returns tariffs for supplies to specific warehouses for the next 14 days |
 
 ## Type Aliases
 

@@ -2,7 +2,7 @@
 
 # Interface: GetDirectoryCountriesResponse
 
-Defined in: [types/products.types.ts:833](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/products.types.ts#L833)
+Defined in: [types/products.types.ts:833](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/products.types.ts#L833)
 
 Response for countries directory (GET /content/v2/directory/countries)
 
@@ -10,7 +10,7 @@ Response for countries directory (GET /content/v2/directory/countries)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`DirectoryCountry`](DirectoryCountry.md)[] | Массив стран | [types/products.types.ts:835](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/products.types.ts#L835) |
-| <a id="error"></a> `error?` | `boolean` | Флаг ошибки | [types/products.types.ts:837](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/products.types.ts#L837) |
-| <a id="errortext"></a> `errorText?` | `string` | Описание ошибки | [types/products.types.ts:839](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/products.types.ts#L839) |
-| <a id="additionalerrors"></a> `additionalErrors?` | `string` | Дополнительные ошибки | [types/products.types.ts:841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/products.types.ts#L841) |
+| <a id="data"></a> `data?` | [`DirectoryCountry`](DirectoryCountry.md)[] | Массив стран | [types/products.types.ts:835](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/products.types.ts#L835) |
+| <a id="error"></a> `error?` | `boolean` | Флаг ошибки | [types/products.types.ts:837](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/products.types.ts#L837) |
+| <a id="errortext"></a> `errorText?` | `string` | Описание ошибки | [types/products.types.ts:839](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/products.types.ts#L839) |
+| <a id="additionalerrors"></a> `additionalErrors?` | `string` | Дополнительные ошибки | [types/products.types.ts:841](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/products.types.ts#L841) |

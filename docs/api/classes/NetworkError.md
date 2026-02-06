@@ -2,7 +2,7 @@
 
 # Class: NetworkError
 
-Defined in: [errors/network-error.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L33)
+Defined in: [errors/network-error.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L33)
 
 Network error thrown for connection failures, timeouts, and server errors.
 
@@ -52,7 +52,7 @@ new NetworkError(
    requestId?: string): NetworkError;
 ```
 
-Defined in: [errors/network-error.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L54)
+Defined in: [errors/network-error.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L54)
 
 Creates a network error
 
@@ -79,13 +79,13 @@ Creates a network error
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/base-error.ts#L35) |
-| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/base-error.ts#L43) |
-| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/base-error.ts#L51) |
-| <a id="cause"></a> `cause?` | `readonly` | `Error` | Original error from the HTTP client | - | [errors/network-error.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L37) |
-| <a id="istimeout"></a> `isTimeout` | `readonly` | `boolean` | True if the error was caused by a timeout | - | [errors/network-error.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L42) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/base-error.ts#L35) |
+| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/base-error.ts#L43) |
+| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/base-error.ts#L51) |
+| <a id="cause"></a> `cause?` | `readonly` | `Error` | Original error from the HTTP client | - | [errors/network-error.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L37) |
+| <a id="istimeout"></a> `isTimeout` | `readonly` | `boolean` | True if the error was caused by a timeout | - | [errors/network-error.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L42) |
 
 ## Methods
 
@@ -95,7 +95,7 @@ Creates a network error
 getUserMessage(): string;
 ```
 
-Defined in: [errors/network-error.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L73)
+Defined in: [errors/network-error.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L73)
 
 Returns user-friendly error message with retry information and troubleshooting guidance
 
@@ -124,7 +124,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/network-error.ts:120](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L120)
+Defined in: [errors/network-error.ts:120](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L120)
 
 Custom JSON serialization to preserve isTimeout property
 
@@ -148,12 +148,12 @@ Object representation including timeout flag and status
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/network-error.ts:121](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L121) |
-| `message` | `string` | [errors/network-error.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L122) |
-| `isTimeout` | `boolean` | [errors/network-error.ts:123](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L123) |
-| `statusCode?` | `number` | [errors/network-error.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L124) |
-| `response?` | `unknown` | [errors/network-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L125) |
-| `requestId?` | `string` | [errors/network-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/errors/network-error.ts#L126) |
+| `name` | `string` | [errors/network-error.ts:121](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L121) |
+| `message` | `string` | [errors/network-error.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L122) |
+| `isTimeout` | `boolean` | [errors/network-error.ts:123](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L123) |
+| `statusCode?` | `number` | [errors/network-error.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L124) |
+| `response?` | `unknown` | [errors/network-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L125) |
+| `requestId?` | `string` | [errors/network-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/errors/network-error.ts#L126) |
 
 #### Overrides
 

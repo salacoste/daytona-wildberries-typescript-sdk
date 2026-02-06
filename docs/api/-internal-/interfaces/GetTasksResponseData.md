@@ -2,11 +2,11 @@
 
 # Interface: GetTasksResponseData
 
-Defined in: [types/reports.types.ts:454](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/reports.types.ts#L454)
+Defined in: [types/reports.types.ts:454](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L454)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `string` | ID задания | [types/reports.types.ts:456](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/reports.types.ts#L456) |
-| <a id="status"></a> `status?` | `string` | Статус задания: * `new` — новое * `processing` — обрабатывается * `done` — отчёт готов * `purged` — отчёт удалён * `canceled` — отклонено | [types/reports.types.ts:458](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/reports.types.ts#L458) |
+| <a id="id"></a> `id?` | `string` | ID задания | [types/reports.types.ts:456](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L456) |
+| <a id="status"></a> `status?` | `string` | Статус задания: * `new` — новое * `processing` — обрабатывается * `done` — отчёт готов * `purged` — отчёт удалён * `canceled` — отклонено | [types/reports.types.ts:458](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L458) |

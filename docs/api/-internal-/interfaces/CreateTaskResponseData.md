@@ -2,10 +2,10 @@
 
 # Interface: CreateTaskResponseData
 
-Defined in: [types/reports.types.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/reports.types.ts#L465)
+Defined in: [types/reports.types.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L465)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="taskid"></a> `taskId?` | `string` | ID задания на генерацию | [types/reports.types.ts:467](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/reports.types.ts#L467) |
+| <a id="taskid"></a> `taskId?` | `string` | ID задания на генерацию | [types/reports.types.ts:467](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L467) |

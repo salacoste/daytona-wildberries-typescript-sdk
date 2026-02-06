@@ -2,7 +2,7 @@
 
 # Interface: V0GetConfigCategoriesResponse
 
-Defined in: [types/promotion.types.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L45)
+Defined in: [types/promotion.types.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/promotion.types.ts#L45)
 
 ## Example
 
@@ -18,6 +18,6 @@ Defined in: [types/promotion.types.ts:45](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID категории товара | [types/promotion.types.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L47) |
-| <a id="name"></a> `name` | `string` | Название категории товара | [types/promotion.types.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L49) |
-| <a id="cpm_min"></a> `cpm_min` | `number` | Минимально допустимая ставка | [types/promotion.types.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L51) |
+| <a id="id"></a> `id` | `number` | ID категории товара | [types/promotion.types.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/promotion.types.ts#L47) |
+| <a id="name"></a> `name` | `string` | Название категории товара | [types/promotion.types.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/promotion.types.ts#L49) |
+| <a id="cpm_min"></a> `cpm_min` | `number` | Минимально допустимая ставка | [types/promotion.types.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/promotion.types.ts#L51) |
