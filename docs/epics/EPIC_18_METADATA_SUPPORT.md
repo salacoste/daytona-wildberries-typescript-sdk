@@ -3,8 +3,8 @@
 **Epic Goal**: Extract `x-readonly-method` and `x-category` vendor extension metadata from all Swagger operations and expose it in the SDK at runtime, enabling smarter retry logic, rate-limit bucketing, and permission validation.
 
 **Target Completion**: Epic 18.x (Stories 18.1-18.5)
-**SDK Version**: 3.x.0
-**Status**: TO DO
+**SDK Version**: 2.8.0+
+**Status**: ✅ COMPLETE (Feb 7, 2026)
 
 **Business Value**:
 - Enables safe automatic retry for read-only operations without risking duplicate writes

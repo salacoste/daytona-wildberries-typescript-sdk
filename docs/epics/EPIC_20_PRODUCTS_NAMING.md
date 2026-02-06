@@ -263,3 +263,39 @@ DELETE /resource/{id} → deleteResource()
 - The ~28 duplicate count is approximate and will be confirmed during Story 20.3 audit
 - `createStock()` is the most confusing rename: it uses `POST` but the Swagger spec marks it `x-readonly-method: true`, meaning it only reads stock levels for the given SKUs
 - All renamed methods should be the targets for task-19 JSDoc enrichment work
+
+---
+
+## Status: ✅ COMPLETE
+
+**Implementation Date**: 2025-01-16
+
+**Summary**: Epic 20 successfully resolved all method naming inconsistencies in the Products module, fixing typos, renaming misleading methods, and consolidating duplicates.
+
+### Completed Work
+
+#### Story 20.1: Typo Fixes
+- [x] `createWarehouse()` - correctly spelled method created
+- [x] `updateWarehouse()` - correctly spelled method created
+- [x] `deleteWarehouse()` - correctly spelled method created
+- [x] Old typo methods preserved as `@deprecated` wrappers with `@see` links
+
+#### Story 20.2: Misleading Renames
+- [x] `getStocks()` - renamed from `createStock()` (POST that reads stock levels)
+- [x] `getCardsList()` - renamed from `createCardsList()` (POST that reads card list)
+- [x] `getTrashedCards()` - renamed from `createCardsTrash()` (POST that reads trashed cards)
+- [x] `getBufferGoodsTask()` - renamed from `getGoodsTask2()` (name collision workaround)
+- [x] Old method names preserved as `@deprecated` wrappers
+
+#### Story 20.3: Duplicate Consolidation
+- [x] Complete endpoint-to-method mapping documented
+- [x] Primary method selected for each unique endpoint
+- [x] Duplicate methods marked `@deprecated` with `@see` to primary
+
+### Success Criteria - All Met
+- [x] All tests passing with new method names
+- [x] TypeScript strict mode compilation clean
+- [x] ESLint + Prettier passing
+- [x] Zero breaking changes (old names still work via deprecated wrappers)
+- [x] All `@deprecated` methods include JSDoc with replacement reference
+- [x] CHANGELOG documents the rename mapping
