@@ -28,10 +28,9 @@ import { financesRateLimits } from './finances-rate-limits';
 import { promotionRateLimits } from './promotion-rate-limits';
 import { tariffsRateLimits } from './tariffs-rate-limits';
 import { inStorePickupRateLimits } from './in-store-pickup-rate-limits';
-// Import additional module rate limits here as they are generated:
-// import { analyticsRateLimits } from './analytics-rate-limits';
-// import { reportsRateLimits } from './reports-rate-limits';
-// import { communicationsRateLimits } from './communications-rate-limits';
+import { analyticsRateLimits } from './analytics-rate-limits';
+import { reportsRateLimits } from './reports-rate-limits';
+import { communicationsRateLimits } from './communications-rate-limits';
 
 /**
  * Aggregated rate limit configuration for all SDK modules.
@@ -81,10 +80,9 @@ export const ALL_RATE_LIMITS = {
   ...promotionRateLimits,
   ...tariffsRateLimits,
   ...inStorePickupRateLimits,
-  // Spread additional module rate limits here as they are generated:
-  // ...analyticsRateLimits,
-  // ...reportsRateLimits,
-  // ...communicationsRateLimits,
+  ...analyticsRateLimits,
+  ...reportsRateLimits,
+  ...communicationsRateLimits,
 };
 
 /**

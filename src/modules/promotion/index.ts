@@ -5,9 +5,38 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import type { GetAuctionAdverts, PlacementType, RequestWithCampaignID, RequestWithDate, RequestWithInterval, ResponseFullStats, ResponseInfoAdvert, ResponseInfoAdvertType8, ResponseInfoAdvertType9, ResponseWithDate, ResponseWithInterval, ResponseWithReturn, Stat, StatDate, StatInterval, V0AdvertMultibid, V0GetConfigCategoriesResponse, V0KeywordsStatisticsResponse } from '../../types/promotion.types';
+import type {
+  GetAdverts,
+  GetAuctionAdverts,
+  PlacementType,
+  RequestWithCampaignID,
+  RequestWithDate,
+  RequestWithInterval,
+  ResponseFullStats,
+  ResponseInfoAdvert,
+  ResponseInfoAdvertType8,
+  ResponseInfoAdvertType9,
+  ResponseWithDate,
+  ResponseWithInterval,
+  ResponseWithReturn,
+  Stat,
+  StatDate,
+  StatInterval,
+  V0AdvertMultibid,
+  V0GetConfigCategoriesResponse,
+  V0GetNormQueryBidsRequest,
+  V0GetNormQueryBidsResponse,
+  V0GetNormQueryMinusRequest,
+  V0GetNormQueryMinusResponse,
+  V0GetNormQueryStatsRequest,
+  V0GetNormQueryStatsResponse,
+  V0KeywordsStatisticsResponse,
+  V0SetMinusNormQueryRequest,
+  V0SetNormQueryBidsRequest,
+} from '../../types/promotion.types';
 
 export class PromotionModule {
+  private static _deprecatedMethodsWarned = new Set<string>();
   constructor(private client: BaseClient) {}
 
   /**
@@ -21,11 +50,36 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getPromotionCount();
+  const result = await sdk.promotion.getPromotionCount();
   console.log(result);
-   */
-  async getPromotionCount(): Promise<{ adverts?: { type?: number; status?: number; count?: number; advert_list?: { advertId?: number; changeTime?: string }[] }[]; all?: number }> {
-    return this.client.get<{ adverts?: { type?: number; status?: number; count?: number; advert_list?: { advertId?: number; changeTime?: string }[] }[]; all?: number }>('https://advert-api.wildberries.ru/adv/v1/promotion/count');
+   
+   * @deprecated Use GET /api/advert/v2/adverts instead.*/
+  async getPromotionCount(): Promise<{
+    adverts?: {
+      type?: number;
+      status?: number;
+      count?: number;
+      advert_list?: { advertId?: number; changeTime?: string }[];
+    }[];
+    all?: number;
+  }> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('getPromotionCount')) {
+      console.warn(
+        '[WB SDK] getPromotionCount() is deprecated. Use GET /api/advert/v2/adverts instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getPromotionCount');
+    }
+    return this.client.get<{
+      adverts?: {
+        type?: number;
+        status?: number;
+        count?: number;
+        advert_list?: { advertId?: number; changeTime?: string }[];
+      }[];
+      all?: number;
+    }>('https://advert-api.wildberries.ru/adv/v1/promotion/count', {
+      rateLimitKey: 'promotion.advPromotionCount',
+    });
   }
 
   /**
@@ -41,11 +95,31 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createPromotionAdvert({}, {});
+  const result = await sdk.promotion.createPromotionAdvert({}, {});
   console.log(result);
-   */
-  async createPromotionAdvert(data: number[], options?: { status?: -1 | 4 | 7 | 8 | 9 | 11; type?: 4 | 5 | 6 | 7 | 8; order?: 'create' | 'change' | 'id'; direction?: 'desc' | 'asc' }): Promise<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]> {
-    return this.client.post<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]>('https://advert-api.wildberries.ru/adv/v1/promotion/adverts', data, { params: options });
+   
+   * @deprecated Use GET /api/advert/v2/adverts instead.*/
+  async createPromotionAdvert(
+    data: number[],
+    options?: {
+      status?: -1 | 4 | 7 | 8 | 9 | 11;
+      type?: 4 | 5 | 6 | 7 | 8;
+      order?: 'create' | 'change' | 'id';
+      direction?: 'desc' | 'asc';
+    }
+  ): Promise<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createPromotionAdvert')) {
+      console.warn(
+        '[WB SDK] createPromotionAdvert() is deprecated. Use GET /api/advert/v2/adverts instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createPromotionAdvert');
+    }
+    return this.client.post<
+      ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]
+    >('https://advert-api.wildberries.ru/adv/v1/promotion/adverts', data, {
+      params: options,
+      rateLimitKey: 'promotion.postAdvPromotionAdverts',
+    });
   }
 
   /**
@@ -60,11 +134,25 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAuctionAdverts({});
+  const result = await sdk.promotion.getAuctionAdverts({});
   console.log(result);
-   */
-  async getAuctionAdverts(options?: { ids?: string; statuses?: '-1' | '4' | '7' | '8' | '9' | '11'; payment_type?: 'cpm' | 'cpc' }): Promise<GetAuctionAdverts> {
-    return this.client.get<GetAuctionAdverts>('https://advert-api.wildberries.ru/adv/v0/auction/adverts', { params: options });
+   
+   * @deprecated Use the updated campaign management API instead.*/
+  async getAuctionAdverts(options?: {
+    ids?: string;
+    statuses?: '-1' | '4' | '7' | '8' | '9' | '11';
+    payment_type?: 'cpm' | 'cpc';
+  }): Promise<GetAuctionAdverts> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('getAuctionAdverts')) {
+      console.warn(
+        '[WB SDK] getAuctionAdverts() is deprecated. Use the updated campaign management API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getAuctionAdverts');
+    }
+    return this.client.get<GetAuctionAdverts>(
+      'https://advert-api.wildberries.ru/adv/v0/auction/adverts',
+      { params: options, rateLimitKey: 'promotion.advAuctionAdverts' }
+    );
   }
 
   /**
@@ -78,11 +166,24 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvConfig();
+  const result = await sdk.promotion.getAdvConfig();
   console.log(result);
-   */
-  async getAdvConfig(): Promise<{ categories?: V0GetConfigCategoriesResponse[]; config?: { description?: string; name?: string; value?: string }[] }> {
-    return this.client.get<{ categories?: V0GetConfigCategoriesResponse[]; config?: { description?: string; name?: string; value?: string }[] }>('https://advert-api.wildberries.ru/adv/v0/config');
+   
+   * @deprecated Use the updated configuration API instead.*/
+  async getAdvConfig(): Promise<{
+    categories?: V0GetConfigCategoriesResponse[];
+    config?: { description?: string; name?: string; value?: string }[];
+  }> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('getAdvConfig')) {
+      console.warn(
+        '[WB SDK] getAdvConfig() is deprecated. Use the updated configuration API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getAdvConfig');
+    }
+    return this.client.get<{
+      categories?: V0GetConfigCategoriesResponse[];
+      config?: { description?: string; name?: string; value?: string }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/config', { rateLimitKey: 'promotion.advConfig' });
   }
 
   /**
@@ -97,11 +198,27 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createBidsMin({});
+  const result = await sdk.promotion.createBidsMin({});
   console.log(result);
-   */
-  async createBidsMin(data: { advert_id: number; nm_ids: number[]; payment_type: 'cpm' | 'cpc'; placement_types: ('combined' | 'search' | 'recommendation')[] }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
-    return this.client.post<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }>('https://advert-api.wildberries.ru/adv/v0/bids/min', data);
+   
+   * @deprecated Use POST /api/advert/v1/bids/min instead.*/
+  async createBidsMin(data: {
+    advert_id: number;
+    nm_ids: number[];
+    payment_type: 'cpm' | 'cpc';
+    placement_types: ('combined' | 'search' | 'recommendation')[];
+  }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createBidsMin')) {
+      console.warn(
+        '[WB SDK] createBidsMin() is deprecated. Use POST /api/advert/v1/bids/min instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createBidsMin');
+    }
+    return this.client.post<{
+      bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/bids/min', data, {
+      rateLimitKey: 'promotion.postAdvBidsMin',
+    });
   }
 
   /**
@@ -116,11 +233,29 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAdvSaveAd({});
+  const result = await sdk.promotion.createAdvSaveAd({});
   console.log(result);
-   */
-  async createAdvSaveAd(data: { type?: number; name?: string; subjectId?: number; sum?: number; btype?: number; on_pause?: boolean; nms?: number[]; cpm?: number }): Promise<string> {
-    return this.client.post<string>('https://advert-api.wildberries.ru/adv/v1/save-ad', data);
+   
+   * @deprecated Use POST /adv/v2/seacat/save-ad. Note: This endpoint has been removed from the API instead.*/
+  async createAdvSaveAd(data: {
+    type?: number;
+    name?: string;
+    subjectId?: number;
+    sum?: number;
+    btype?: number;
+    on_pause?: boolean;
+    nms?: number[];
+    cpm?: number;
+  }): Promise<string> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createAdvSaveAd')) {
+      console.warn(
+        '[WB SDK] createAdvSaveAd() is deprecated. Use POST /adv/v2/seacat/save-ad. Note: This endpoint has been removed from the API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createAdvSaveAd');
+    }
+    return this.client.post<string>('https://advert-api.wildberries.ru/adv/v1/save-ad', data, {
+      rateLimitKey: 'promotion.postAdvSaveAd',
+    });
   }
 
   /**
@@ -135,11 +270,27 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSeacatSaveAd({});
+  const result = await sdk.promotion.createSeacatSaveAd({});
   console.log(result);
-   */
-  async createSeacatSaveAd(data?: { name?: string; nms?: number[]; bid_type?: 'manual' | 'unified'; placement_types?: ('search' | 'recommendations')[] }): Promise<number> {
-    return this.client.post<number>('https://advert-api.wildberries.ru/adv/v2/seacat/save-ad', data);
+   
+   * @deprecated Use the current campaign creation API instead.*/
+  async createSeacatSaveAd(data?: {
+    name?: string;
+    nms?: number[];
+    bid_type?: 'manual' | 'unified';
+    placement_types?: ('search' | 'recommendations')[];
+  }): Promise<number> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createSeacatSaveAd')) {
+      console.warn(
+        '[WB SDK] createSeacatSaveAd() is deprecated. Use the current campaign creation API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createSeacatSaveAd');
+    }
+    return this.client.post<number>(
+      'https://advert-api.wildberries.ru/adv/v2/seacat/save-ad',
+      data,
+      { rateLimitKey: 'promotion.postAdvSeacatSaveAd' }
+    );
   }
 
   /**
@@ -153,11 +304,21 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupplierSubjects();
+  const result = await sdk.promotion.getSupplierSubjects();
   console.log(result);
-   */
+   
+   * @deprecated Use the updated supplier API instead.*/
   async getSupplierSubjects(): Promise<{ id?: number; name?: string; count?: number }[]> {
-    return this.client.get<{ id?: number; name?: string; count?: number }[]>('https://advert-api.wildberries.ru/adv/v1/supplier/subjects');
+    if (!PromotionModule._deprecatedMethodsWarned.has('getSupplierSubjects')) {
+      console.warn(
+        '[WB SDK] getSupplierSubjects() is deprecated. Use the updated supplier API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getSupplierSubjects');
+    }
+    return this.client.get<{ id?: number; name?: string; count?: number }[]>(
+      'https://advert-api.wildberries.ru/adv/v1/supplier/subjects',
+      { rateLimitKey: 'promotion.advSupplierSubjects' }
+    );
   }
 
   /**
@@ -172,11 +333,24 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSupplierNm({});
+  const result = await sdk.promotion.createSupplierNm({});
   console.log(result);
-   */
-  async createSupplierNm(data?: number[]): Promise<{ title?: string; nm?: number; subjectId?: number }[]> {
-    return this.client.post<{ title?: string; nm?: number; subjectId?: number }[]>('https://advert-api.wildberries.ru/adv/v2/supplier/nms', data);
+   
+   * @deprecated Use the updated supplier API instead.*/
+  async createSupplierNm(
+    data?: number[]
+  ): Promise<{ title?: string; nm?: number; subjectId?: number }[]> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createSupplierNm')) {
+      console.warn(
+        '[WB SDK] createSupplierNm() is deprecated. Use the updated supplier API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createSupplierNm');
+    }
+    return this.client.post<{ title?: string; nm?: number; subjectId?: number }[]>(
+      'https://advert-api.wildberries.ru/adv/v2/supplier/nms',
+      data,
+      { rateLimitKey: 'promotion.postAdvSupplierNms' }
+    );
   }
 
   /**
@@ -191,11 +365,14 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvDelete({});
+  const result = await sdk.promotion.getAdvDelete({});
   console.log(result);
    */
   async getAdvDelete(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/delete', { params: options });
+    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/delete', {
+      params: options,
+      rateLimitKey: 'promotion.advDelete',
+    });
   }
 
   /**
@@ -210,11 +387,13 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAdvRename({});
+  const result = await sdk.promotion.createAdvRename({});
   console.log(result);
    */
   async createAdvRename(data?: { advertId: number; name: string }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v0/rename', data);
+    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v0/rename', data, {
+      rateLimitKey: 'promotion.postAdvRename',
+    });
   }
 
   /**
@@ -229,11 +408,21 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvStart({});
+  const result = await sdk.promotion.getAdvStart({});
   console.log(result);
-   */
+   
+   * @deprecated Use the updated campaign management API instead.*/
   async getAdvStart(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/start', { params: options });
+    if (!PromotionModule._deprecatedMethodsWarned.has('getAdvStart')) {
+      console.warn(
+        '[WB SDK] getAdvStart() is deprecated. Use the updated campaign management API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getAdvStart');
+    }
+    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/start', {
+      params: options,
+      rateLimitKey: 'promotion.advStart',
+    });
   }
 
   /**
@@ -248,11 +437,21 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvPause({});
+  const result = await sdk.promotion.getAdvPause({});
   console.log(result);
-   */
+   
+   * @deprecated Use the updated campaign management API instead.*/
   async getAdvPause(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/pause', { params: options });
+    if (!PromotionModule._deprecatedMethodsWarned.has('getAdvPause')) {
+      console.warn(
+        '[WB SDK] getAdvPause() is deprecated. Use the updated campaign management API instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getAdvPause');
+    }
+    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/pause', {
+      params: options,
+      rateLimitKey: 'promotion.advPause',
+    });
   }
 
   /**
@@ -267,11 +466,14 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvStop({});
+  const result = await sdk.promotion.getAdvStop({});
   console.log(result);
    */
   async getAdvStop(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/stop', { params: options });
+    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/stop', {
+      params: options,
+      rateLimitKey: 'promotion.advStop',
+    });
   }
 
   /**
@@ -286,10 +488,17 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateAdvBid({});
-   */
+  const result = await sdk.promotion.updateAdvBid({});
+   
+   * @deprecated Use PATCH /api/advert/v1/bids instead.*/
   async updateAdvBid(data: { bids: V0AdvertMultibid[] }): Promise<void> {
-    return this.client.patch('https://advert-api.wildberries.ru/adv/v0/bids', data);
+    if (!PromotionModule._deprecatedMethodsWarned.has('updateAdvBid')) {
+      console.warn('[WB SDK] updateAdvBid() is deprecated. Use PATCH /api/advert/v1/bids instead.');
+      PromotionModule._deprecatedMethodsWarned.add('updateAdvBid');
+    }
+    return this.client.patch('https://advert-api.wildberries.ru/adv/v0/bids', data, {
+      rateLimitKey: 'promotion.patchAdvBids',
+    });
   }
 
   /**
@@ -304,10 +513,14 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateAuctionPlacement({});
+  const result = await sdk.promotion.updateAuctionPlacement({});
    */
-  async updateAuctionPlacement(data: { placements: { advert_id: number; placements: { search: boolean; recommendations: boolean } }[] }): Promise<void> {
-    return this.client.put('https://advert-api.wildberries.ru/adv/v0/auction/placements', data);
+  async updateAuctionPlacement(data: {
+    placements: { advert_id: number; placements: { search: boolean; recommendations: boolean } }[];
+  }): Promise<void> {
+    return this.client.put('https://advert-api.wildberries.ru/adv/v0/auction/placements', data, {
+      rateLimitKey: 'promotion.putAdvAuctionPlacements',
+    });
   }
 
   /**
@@ -322,11 +535,26 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateAuctionBid({});
+  const result = await sdk.promotion.updateAuctionBid({});
   console.log(result);
    */
-  async updateAuctionBid(data: { bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: 'search' | 'recommendations' | 'combined' }[] }[] }): Promise<{ bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[] }> {
-    return this.client.patch<{ bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[] }>('https://advert-api.wildberries.ru/adv/v0/auction/bids', data);
+  async updateAuctionBid(data: {
+    bids: {
+      advert_id: number;
+      nm_bids: {
+        nm_id: number;
+        bid: number;
+        placement: 'search' | 'recommendations' | 'combined';
+      }[];
+    }[];
+  }): Promise<{
+    bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[];
+  }> {
+    return this.client.patch<{
+      bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/auction/bids', data, {
+      rateLimitKey: 'promotion.patchAdvAuctionBids',
+    });
   }
 
   /**
@@ -340,11 +568,23 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvBalance();
+  const result = await sdk.promotion.getAdvBalance();
   console.log(result);
    */
-  async getAdvBalance(): Promise<{ balance?: number; net?: number; bonus?: number; cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[] }> {
-    return this.client.get<{ balance?: number; net?: number; bonus?: number; cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[] }>('https://advert-api.wildberries.ru/adv/v1/balance');
+  async getAdvBalance(): Promise<{
+    balance?: number;
+    net?: number;
+    bonus?: number;
+    cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[];
+  }> {
+    return this.client.get<{
+      balance?: number;
+      net?: number;
+      bonus?: number;
+      cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[];
+    }>('https://advert-api.wildberries.ru/adv/v1/balance', {
+      rateLimitKey: 'promotion.advBalance',
+    });
   }
 
   /**
@@ -359,11 +599,16 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvBudget({});
+  const result = await sdk.promotion.getAdvBudget({});
   console.log(result);
    */
-  async getAdvBudget(options?: { id: number }): Promise<{ cash?: number; netting?: number; total?: number }> {
-    return this.client.get<{ cash?: number; netting?: number; total?: number }>('https://advert-api.wildberries.ru/adv/v1/budget', { params: options });
+  async getAdvBudget(options?: {
+    id: number;
+  }): Promise<{ cash?: number; netting?: number; total?: number }> {
+    return this.client.get<{ cash?: number; netting?: number; total?: number }>(
+      'https://advert-api.wildberries.ru/adv/v1/budget',
+      { params: options, rateLimitKey: 'promotion.advBudget' }
+    );
   }
 
   /**
@@ -379,11 +624,24 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createBudgetDeposit({}, {});
+  const result = await sdk.promotion.createBudgetDeposit({}, {});
   console.log(result);
    */
-  async createBudgetDeposit(data: { sum?: number; cashback_sum?: number; cashback_percent?: number; type?: number; return?: boolean }, options?: { id: number }): Promise<ResponseWithReturn> {
-    return this.client.post<ResponseWithReturn>('https://advert-api.wildberries.ru/adv/v1/budget/deposit', data, { params: options });
+  async createBudgetDeposit(
+    data: {
+      sum?: number;
+      cashback_sum?: number;
+      cashback_percent?: number;
+      type?: number;
+      return?: boolean;
+    },
+    options?: { id: number }
+  ): Promise<ResponseWithReturn> {
+    return this.client.post<ResponseWithReturn>(
+      'https://advert-api.wildberries.ru/adv/v1/budget/deposit',
+      data,
+      { params: options, rateLimitKey: 'promotion.postAdvBudgetDeposit' }
+    );
   }
 
   /**
@@ -398,11 +656,36 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvUpd({});
+  const result = await sdk.promotion.getAdvUpd({});
   console.log(result);
    */
-  async getAdvUpd(options?: { from: string; to: string }): Promise<{ updNum?: number; updTime?: string; updSum?: number; advertId?: number; campName?: string; advertType?: number; paymentType?: string; advertStatus?: number }[]> {
-    return this.client.get<{ updNum?: number; updTime?: string; updSum?: number; advertId?: number; campName?: string; advertType?: number; paymentType?: string; advertStatus?: number }[]>('https://advert-api.wildberries.ru/adv/v1/upd', { params: options });
+  async getAdvUpd(options?: { from: string; to: string }): Promise<
+    {
+      updNum?: number;
+      updTime?: string;
+      updSum?: number;
+      advertId?: number;
+      campName?: string;
+      advertType?: number;
+      paymentType?: string;
+      advertStatus?: number;
+    }[]
+  > {
+    return this.client.get<
+      {
+        updNum?: number;
+        updTime?: string;
+        updSum?: number;
+        advertId?: number;
+        campName?: string;
+        advertType?: number;
+        paymentType?: string;
+        advertStatus?: number;
+      }[]
+    >('https://advert-api.wildberries.ru/adv/v1/upd', {
+      params: options,
+      rateLimitKey: 'promotion.advUpd',
+    });
   }
 
   /**
@@ -417,11 +700,32 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvPayments({});
+  const result = await sdk.promotion.getAdvPayments({});
   console.log(result);
    */
-  async getAdvPayments(options?: { from?: string; to?: string }): Promise<{ id?: number; date?: string; sum?: number; type?: number; statusId?: number; cardStatus?: string }[]> {
-    return this.client.get<{ id?: number; date?: string; sum?: number; type?: number; statusId?: number; cardStatus?: string }[]>('https://advert-api.wildberries.ru/adv/v1/payments', { params: options });
+  async getAdvPayments(options?: { from?: string; to?: string }): Promise<
+    {
+      id?: number;
+      date?: string;
+      sum?: number;
+      type?: number;
+      statusId?: number;
+      cardStatus?: string;
+    }[]
+  > {
+    return this.client.get<
+      {
+        id?: number;
+        date?: string;
+        sum?: number;
+        type?: number;
+        statusId?: number;
+        cardStatus?: string;
+      }[]
+    >('https://advert-api.wildberries.ru/adv/v1/payments', {
+      params: options,
+      rateLimitKey: 'promotion.advPayments',
+    });
   }
 
   /**
@@ -436,11 +740,22 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSearchSetPlus({});
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const result = await sdk.promotion.getSearchSetPlus({});
   console.log(result);
-   */
+
+   * @deprecated This method will be removed on January 15, 2025.*/
   async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v1/search/set-plus', { params: options });
+    if (!PromotionModule._deprecatedMethodsWarned.has('getSearchSetPlus')) {
+      console.warn(
+        '[WB SDK] getSearchSetPlus() is deprecated and will be removed on January 15, 2025.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getSearchSetPlus');
+    }
+    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v1/search/set-plus', {
+      params: options,
+      rateLimitKey: 'promotion.advSearchSetPlus',
+    });
   }
 
   /**
@@ -456,11 +771,26 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSearchSetPlu({}, {});
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const result = await sdk.promotion.createSearchSetPlu({}, {});
   console.log(result);
-   */
-  async createSearchSetPlu(data: { pluse?: string[] }, options?: { id: number }): Promise<string[]> {
-    return this.client.post<string[]>('https://advert-api.wildberries.ru/adv/v1/search/set-plus', data, { params: options });
+
+   * @deprecated This method will be removed on January 15, 2025.*/
+  async createSearchSetPlu(
+    data: { pluse?: string[] },
+    options?: { id: number }
+  ): Promise<string[]> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createSearchSetPlu')) {
+      console.warn(
+        '[WB SDK] createSearchSetPlu() is deprecated and will be removed on January 15, 2025.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createSearchSetPlu');
+    }
+    return this.client.post<string[]>(
+      'https://advert-api.wildberries.ru/adv/v1/search/set-plus',
+      data,
+      { params: options, rateLimitKey: 'promotion.postAdvSearchSetPlus' }
+    );
   }
 
   /**
@@ -476,11 +806,26 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createSearchSetExcluded({}, {});
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const result = await sdk.promotion.createSearchSetExcluded({}, {});
   console.log(result);
-   */
-  async createSearchSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v1/search/set-excluded', data, { params: options });
+
+   * @deprecated This method will be removed on January 15, 2025.*/
+  async createSearchSetExcluded(
+    data: { excluded?: string[] },
+    options?: { id: number }
+  ): Promise<unknown> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createSearchSetExcluded')) {
+      console.warn(
+        '[WB SDK] createSearchSetExcluded() is deprecated and will be removed on January 15, 2025.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createSearchSetExcluded');
+    }
+    return this.client.post<unknown>(
+      'https://advert-api.wildberries.ru/adv/v1/search/set-excluded',
+      data,
+      { params: options, rateLimitKey: 'promotion.postAdvSearchSetExcluded' }
+    );
   }
 
   /**
@@ -496,11 +841,18 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAutoSetExcluded({}, {});
+  const result = await sdk.promotion.createAutoSetExcluded({}, {});
   console.log(result);
    */
-  async createAutoSetExcluded(data: { excluded?: string[] }, options?: { id: number }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, { params: options });
+  async createAutoSetExcluded(
+    data: { excluded?: string[] },
+    options?: { id: number }
+  ): Promise<unknown> {
+    return this.client.post<unknown>(
+      'https://advert-api.wildberries.ru/adv/v1/auto/set-excluded',
+      data,
+      { params: options, rateLimitKey: 'promotion.postAdvAutoSetExcluded' }
+    );
   }
 
   /**
@@ -515,11 +867,22 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAutoGetnmtoadd({});
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const result = await sdk.promotion.getAutoGetnmtoadd({});
   console.log(result);
-   */
+
+   * @deprecated Use GET /adv/v0/auction/adverts and PATCH /adv/v0/auction/nms for type 9 campaigns. Will be removed February 2, 2026.*/
   async getAutoGetnmtoadd(options?: { id: number }): Promise<number[]> {
-    return this.client.get<number[]>('https://advert-api.wildberries.ru/adv/v1/auto/getnmtoadd', { params: options });
+    if (!PromotionModule._deprecatedMethodsWarned.has('getAutoGetnmtoadd')) {
+      console.warn(
+        '[WB SDK] getAutoGetnmtoadd() is deprecated. Use GET /adv/v0/auction/adverts and PATCH /adv/v0/auction/nms for type 9 campaigns. Will be removed February 2, 2026.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getAutoGetnmtoadd');
+    }
+    return this.client.get<number[]>('https://advert-api.wildberries.ru/adv/v1/auto/getnmtoadd', {
+      params: options,
+      rateLimitKey: 'promotion.advAutoGetnmtoadd',
+    });
   }
 
   /**
@@ -535,11 +898,18 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAutoUpdatenm({}, {});
+  const result = await sdk.promotion.createAutoUpdatenm({}, {});
   console.log(result);
    */
-  async createAutoUpdatenm(data: { add?: number[]; delete?: number[] }, options?: { id: number }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, { params: options });
+  async createAutoUpdatenm(
+    data: { add?: number[]; delete?: number[] },
+    options?: { id: number }
+  ): Promise<unknown> {
+    return this.client.post<unknown>(
+      'https://advert-api.wildberries.ru/adv/v1/auto/updatenm',
+      data,
+      { params: options, rateLimitKey: 'promotion.postAdvAutoUpdatenm' }
+    );
   }
 
   /**
@@ -554,11 +924,17 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.updateAuctionNm({});
+  const result = await sdk.promotion.updateAuctionNm({});
   console.log(result);
    */
-  async updateAuctionNm(data: { nms: { advert_id: number; nms: { add?: unknown; delete?: number[] } }[] }): Promise<{ nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[] }> {
-    return this.client.patch<{ nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[] }>('https://advert-api.wildberries.ru/adv/v0/auction/nms', data);
+  async updateAuctionNm(data: {
+    nms: { advert_id: number; nms: { add?: unknown; delete?: number[] } }[];
+  }): Promise<{ nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[] }> {
+    return this.client.patch<{
+      nms: { advert_id: number; nms: { added: number[]; deleted: number[] } }[];
+    }>('https://advert-api.wildberries.ru/adv/v0/auction/nms', data, {
+      rateLimitKey: 'promotion.patchAdvAuctionNms',
+    });
   }
 
   /**
@@ -572,11 +948,19 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvCount();
+  const result = await sdk.promotion.getAdvCount();
   console.log(result);
    */
-  async getAdvCount(): Promise<{ all?: number; adverts?: { type?: number; status?: number; count?: number } }> {
-    return this.client.get<{ all?: number; adverts?: { type?: number; status?: number; count?: number } }>('https://advert-media-api.wildberries.ru/adv/v1/count');
+  async getAdvCount(): Promise<{
+    all?: number;
+    adverts?: { type?: number; status?: number; count?: number };
+  }> {
+    return this.client.get<{
+      all?: number;
+      adverts?: { type?: number; status?: number; count?: number };
+    }>('https://advert-media-api.wildberries.ru/adv/v1/count', {
+      rateLimitKey: 'promotion.advCount',
+    });
   }
 
   /**
@@ -591,11 +975,41 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvAdverts({});
+  const result = await sdk.promotion.getAdvAdverts({});
   console.log(result);
    */
-  async getAdvAdverts(options?: { status?: number; type?: number; limit?: number; offset?: number; order?: string; direction?: string }): Promise<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; endTime?: string }[]> {
-    return this.client.get<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; endTime?: string }[]>('https://advert-media-api.wildberries.ru/adv/v1/adverts', { params: options });
+  async getAdvAdverts(options?: {
+    status?: number;
+    type?: number;
+    limit?: number;
+    offset?: number;
+    order?: string;
+    direction?: string;
+  }): Promise<
+    {
+      advertId?: number;
+      name?: string;
+      brand?: string;
+      type?: number;
+      status?: number;
+      createTime?: string;
+      endTime?: string;
+    }[]
+  > {
+    return this.client.get<
+      {
+        advertId?: number;
+        name?: string;
+        brand?: string;
+        type?: number;
+        status?: number;
+        createTime?: string;
+        endTime?: string;
+      }[]
+    >('https://advert-media-api.wildberries.ru/adv/v1/adverts', {
+      params: options,
+      rateLimitKey: 'promotion.advAdverts',
+    });
   }
 
   /**
@@ -610,11 +1024,104 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvAdvert({});
+  const result = await sdk.promotion.getAdvAdvert({});
   console.log(result);
    */
-  async getAdvAdvert(options?: { id: number }): Promise<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; extended?: { reason?: string; expenses?: number; from?: string; to?: string; updated_at?: string; price?: number; budget?: number; operation?: number; contract_id?: number }; items?: { id?: number; name?: string; status?: number; place?: number; budget?: number; daily_limit?: number; category_name?: string; cpm?: number; url?: string; advert_type?: number; created_at?: string; updated_at?: string; date_from?: string; date_to?: string; nms?: number[]; bottomText1?: string; bottomText2?: string; message?: string; additionalSettings?: number; receiversCount?: number; subject_id?: number; subject_name?: string; action_name?: string; show_hours?: { From?: number; To?: number }[]; Erid?: string }[] }> {
-    return this.client.get<{ advertId?: number; name?: string; brand?: string; type?: number; status?: number; createTime?: string; extended?: { reason?: string; expenses?: number; from?: string; to?: string; updated_at?: string; price?: number; budget?: number; operation?: number; contract_id?: number }; items?: { id?: number; name?: string; status?: number; place?: number; budget?: number; daily_limit?: number; category_name?: string; cpm?: number; url?: string; advert_type?: number; created_at?: string; updated_at?: string; date_from?: string; date_to?: string; nms?: number[]; bottomText1?: string; bottomText2?: string; message?: string; additionalSettings?: number; receiversCount?: number; subject_id?: number; subject_name?: string; action_name?: string; show_hours?: { From?: number; To?: number }[]; Erid?: string }[] }>('https://advert-media-api.wildberries.ru/adv/v1/advert', { params: options });
+  async getAdvAdvert(options?: { id: number }): Promise<{
+    advertId?: number;
+    name?: string;
+    brand?: string;
+    type?: number;
+    status?: number;
+    createTime?: string;
+    extended?: {
+      reason?: string;
+      expenses?: number;
+      from?: string;
+      to?: string;
+      updated_at?: string;
+      price?: number;
+      budget?: number;
+      operation?: number;
+      contract_id?: number;
+    };
+    items?: {
+      id?: number;
+      name?: string;
+      status?: number;
+      place?: number;
+      budget?: number;
+      daily_limit?: number;
+      category_name?: string;
+      cpm?: number;
+      url?: string;
+      advert_type?: number;
+      created_at?: string;
+      updated_at?: string;
+      date_from?: string;
+      date_to?: string;
+      nms?: number[];
+      bottomText1?: string;
+      bottomText2?: string;
+      message?: string;
+      additionalSettings?: number;
+      receiversCount?: number;
+      subject_id?: number;
+      subject_name?: string;
+      action_name?: string;
+      show_hours?: { From?: number; To?: number }[];
+      Erid?: string;
+    }[];
+  }> {
+    return this.client.get<{
+      advertId?: number;
+      name?: string;
+      brand?: string;
+      type?: number;
+      status?: number;
+      createTime?: string;
+      extended?: {
+        reason?: string;
+        expenses?: number;
+        from?: string;
+        to?: string;
+        updated_at?: string;
+        price?: number;
+        budget?: number;
+        operation?: number;
+        contract_id?: number;
+      };
+      items?: {
+        id?: number;
+        name?: string;
+        status?: number;
+        place?: number;
+        budget?: number;
+        daily_limit?: number;
+        category_name?: string;
+        cpm?: number;
+        url?: string;
+        advert_type?: number;
+        created_at?: string;
+        updated_at?: string;
+        date_from?: string;
+        date_to?: string;
+        nms?: number[];
+        bottomText1?: string;
+        bottomText2?: string;
+        message?: string;
+        additionalSettings?: number;
+        receiversCount?: number;
+        subject_id?: number;
+        subject_name?: string;
+        action_name?: string;
+        show_hours?: { From?: number; To?: number }[];
+        Erid?: string;
+      }[];
+    }>('https://advert-media-api.wildberries.ru/adv/v1/advert', {
+      params: options,
+      rateLimitKey: 'promotion.advAdvert',
+    });
   }
 
   /**
@@ -629,11 +1136,24 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAdvFullstat({});
+  const result = await sdk.promotion.createAdvFullstat({});
   console.log(result);
-   */
-  async createAdvFullstat(data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]): Promise<ResponseWithDate | ResponseWithInterval> {
-    return this.client.post<ResponseWithDate | ResponseWithInterval>('https://advert-api.wildberries.ru/adv/v2/fullstats', data);
+   
+   * @deprecated Use GET /adv/v3/fullstats instead.*/
+  async createAdvFullstat(
+    data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]
+  ): Promise<ResponseWithDate | ResponseWithInterval> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('createAdvFullstat')) {
+      console.warn(
+        '[WB SDK] createAdvFullstat() is deprecated. Use GET /adv/v3/fullstats instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('createAdvFullstat');
+    }
+    return this.client.post<ResponseWithDate | ResponseWithInterval>(
+      'https://advert-api.wildberries.ru/adv/v2/fullstats',
+      data,
+      { rateLimitKey: 'promotion.postAdvFullstats' }
+    );
   }
 
   /**
@@ -648,11 +1168,18 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAdvFullstats({});
+  const result = await sdk.promotion.getAdvFullstats({});
   console.log(result);
    */
-  async getAdvFullstats(options?: { ids: string; beginDate: string; endDate: string }): Promise<ResponseFullStats> {
-    return this.client.get<ResponseFullStats>('https://advert-api.wildberries.ru/adv/v3/fullstats', { params: options });
+  async getAdvFullstats(options?: {
+    ids: string;
+    beginDate: string;
+    endDate: string;
+  }): Promise<ResponseFullStats> {
+    return this.client.get<ResponseFullStats>(
+      'https://advert-api.wildberries.ru/adv/v3/fullstats',
+      { params: options, rateLimitKey: 'promotion.advFullstats' }
+    );
   }
 
   /**
@@ -667,11 +1194,20 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAutoStatWords({});
+  const result = await sdk.promotion.getAutoStatWords({});
   console.log(result);
    */
-  async getAutoStatWords(options?: { id: number }): Promise<{ excluded?: string[]; clusters?: { cluster?: string; count?: number; keywords?: string[] }[] }> {
-    return this.client.get<{ excluded?: string[]; clusters?: { cluster?: string; count?: number; keywords?: string[] }[] }>('https://advert-api.wildberries.ru/adv/v2/auto/stat-words', { params: options });
+  async getAutoStatWords(options?: { id: number }): Promise<{
+    excluded?: string[];
+    clusters?: { cluster?: string; count?: number; keywords?: string[] }[];
+  }> {
+    return this.client.get<{
+      excluded?: string[];
+      clusters?: { cluster?: string; count?: number; keywords?: string[] }[];
+    }>('https://advert-api.wildberries.ru/adv/v2/auto/stat-words', {
+      params: options,
+      rateLimitKey: 'promotion.advAutoStatWords',
+    });
   }
 
   /**
@@ -686,11 +1222,69 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getStatWords({});
+  const result = await sdk.promotion.getStatWords({});
   console.log(result);
-   */
-  async getStatWords(options?: { id: number }): Promise<{ words?: { phrase?: string[]; strong?: string[]; excluded?: string[]; pluse?: string[]; keywords?: { keyword?: string; count?: number }[]; fixed?: boolean }; stat?: { advertId?: number; keyword?: string; advertName?: string; campaignName?: string; begin?: string; end?: string; views?: number; clicks?: number; frq?: number; ctr?: number; cpc?: number; duration?: number; sum?: number }[] }> {
-    return this.client.get<{ words?: { phrase?: string[]; strong?: string[]; excluded?: string[]; pluse?: string[]; keywords?: { keyword?: string; count?: number }[]; fixed?: boolean }; stat?: { advertId?: number; keyword?: string; advertName?: string; campaignName?: string; begin?: string; end?: string; views?: number; clicks?: number; frq?: number; ctr?: number; cpc?: number; duration?: number; sum?: number }[] }>('https://advert-api.wildberries.ru/adv/v1/stat/words', { params: options });
+   
+   * @deprecated Use GET /adv/v0/stats/keywords instead.*/
+  async getStatWords(options?: { id: number }): Promise<{
+    words?: {
+      phrase?: string[];
+      strong?: string[];
+      excluded?: string[];
+      pluse?: string[];
+      keywords?: { keyword?: string; count?: number }[];
+      fixed?: boolean;
+    };
+    stat?: {
+      advertId?: number;
+      keyword?: string;
+      advertName?: string;
+      campaignName?: string;
+      begin?: string;
+      end?: string;
+      views?: number;
+      clicks?: number;
+      frq?: number;
+      ctr?: number;
+      cpc?: number;
+      duration?: number;
+      sum?: number;
+    }[];
+  }> {
+    if (!PromotionModule._deprecatedMethodsWarned.has('getStatWords')) {
+      console.warn(
+        '[WB SDK] getStatWords() is deprecated. Use GET /adv/v0/stats/keywords instead.'
+      );
+      PromotionModule._deprecatedMethodsWarned.add('getStatWords');
+    }
+    return this.client.get<{
+      words?: {
+        phrase?: string[];
+        strong?: string[];
+        excluded?: string[];
+        pluse?: string[];
+        keywords?: { keyword?: string; count?: number }[];
+        fixed?: boolean;
+      };
+      stat?: {
+        advertId?: number;
+        keyword?: string;
+        advertName?: string;
+        campaignName?: string;
+        begin?: string;
+        end?: string;
+        views?: number;
+        clicks?: number;
+        frq?: number;
+        ctr?: number;
+        cpc?: number;
+        duration?: number;
+        sum?: number;
+      }[];
+    }>('https://advert-api.wildberries.ru/adv/v1/stat/words', {
+      params: options,
+      rateLimitKey: 'promotion.advStatWords',
+    });
   }
 
   /**
@@ -705,11 +1299,18 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getStatsKeywords({});
+  const result = await sdk.promotion.getStatsKeywords({});
   console.log(result);
    */
-  async getStatsKeywords(options?: { advert_id: number; from: string; to: string }): Promise<V0KeywordsStatisticsResponse> {
-    return this.client.get<V0KeywordsStatisticsResponse>('https://api.wildberries.ru/adv/v0/stats/keywords', { params: options });
+  async getStatsKeywords(options?: {
+    advert_id: number;
+    from: string;
+    to: string;
+  }): Promise<V0KeywordsStatisticsResponse> {
+    return this.client.get<V0KeywordsStatisticsResponse>(
+      'https://api.wildberries.ru/adv/v0/stats/keywords',
+      { params: options, rateLimitKey: 'promotion.advStatsKeywords' }
+    );
   }
 
   /**
@@ -724,11 +1325,17 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAdvStat({});
+  const result = await sdk.promotion.createAdvStat({});
   console.log(result);
    */
-  async createAdvStat(data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]): Promise<StatInterval | StatDate | Stat[]> {
-    return this.client.post<StatInterval | StatDate | Stat[]>('https://advert-media-api.wildberries.ru/adv/v1/stats', data);
+  async createAdvStat(
+    data: RequestWithDate | RequestWithInterval | RequestWithCampaignID[]
+  ): Promise<StatInterval | StatDate | Stat[]> {
+    return this.client.post<StatInterval | StatDate | Stat[]>(
+      'https://advert-media-api.wildberries.ru/adv/v1/stats',
+      data,
+      { rateLimitKey: 'promotion.postAdvStats' }
+    );
   }
 
   /**
@@ -743,11 +1350,20 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getCalendarPromotions({});
+  const result = await sdk.promotion.getCalendarPromotions({});
   console.log(result);
    */
-  async getCalendarPromotions(options?: { startDateTime: string; endDateTime: string; allPromo: boolean; limit?: number; offset?: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions', { params: options });
+  async getCalendarPromotions(options?: {
+    startDateTime: string;
+    endDateTime: string;
+    allPromo: boolean;
+    limit?: number;
+    offset?: number;
+  }): Promise<unknown> {
+    return this.client.get<unknown>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions',
+      { params: options, rateLimitKey: 'promotion.calendarPromotions' }
+    );
   }
 
   /**
@@ -762,11 +1378,14 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getPromotionsDetails({});
+  const result = await sdk.promotion.getPromotionsDetails({});
   console.log(result);
    */
   async getPromotionsDetails(options?: { promotionIDs: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/details', { params: options });
+    return this.client.get<unknown>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/details',
+      { params: options, rateLimitKey: 'promotion.calendarPromotionsDetails' }
+    );
   }
 
   /**
@@ -781,11 +1400,19 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getPromotionsNomenclatures({});
+  const result = await sdk.promotion.getPromotionsNomenclatures({});
   console.log(result);
    */
-  async getPromotionsNomenclatures(options?: { promotionID: number; inAction: boolean; limit?: number; offset?: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/nomenclatures', { params: options });
+  async getPromotionsNomenclatures(options?: {
+    promotionID: number;
+    inAction: boolean;
+    limit?: number;
+    offset?: number;
+  }): Promise<unknown> {
+    return this.client.get<unknown>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/nomenclatures',
+      { params: options, rateLimitKey: 'promotion.calendarPromotionsNomenclatures' }
+    );
   }
 
   /**
@@ -799,11 +1426,357 @@ export class PromotionModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createPromotionsUpload();
+  const result = await sdk.promotion.createPromotionsUpload();
   console.log(result);
    */
   async createPromotionsUpload(): Promise<unknown> {
-    return this.client.post<unknown>('https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/upload', undefined);
+    return this.client.post<unknown>(
+      'https://dp-calendar-api.wildberries.ru/api/v1/calendar/promotions/upload',
+      undefined,
+      { rateLimitKey: 'promotion.postCalendarPromotionsUpload' }
+    );
   }
 
+  // ============================================================================
+  // Search Clusters (NormQuery) Methods - NEW in Feb 2026
+  // ============================================================================
+
+  /**
+   * Статистика поисковых кластеров
+   *
+   * Метод возвращает статистику по поисковым кластерам за указанный период.
+   * Можно использовать только для кампаний с моделью оплаты `cpm` — за показы.
+   *
+   * Rate limit: 10 requests per minute, 6 second interval, burst 20
+   *
+   * @param data - Request body with date range and campaign/product items
+   * @returns Statistics for search clusters
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Statistika/paths/~1adv~1v0~1normquery~1stats/post}
+   * @example
+   * ```typescript
+   * const stats = await sdk.promotion.getNormqueryStats({
+   *   from: '2025-10-07',
+   *   to: '2025-10-08',
+   *   items: [{ advert_id: 1825035, nm_id: 983512347 }]
+   * });
+   * console.log(stats.stats);
+   * ```
+   */
+  async getNormqueryStats(data: V0GetNormQueryStatsRequest): Promise<V0GetNormQueryStatsResponse> {
+    return this.client.post<V0GetNormQueryStatsResponse>(
+      'https://advert-api.wildberries.ru/adv/v0/normquery/stats',
+      data,
+      { rateLimitKey: 'promotion.normqueryStats' }
+    );
+  }
+
+  /**
+   * Список ставок поисковых кластеров
+   *
+   * Метод возвращает список поисковых кластеров со ставками по ID кампаний и артикулам WB.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 10
+   *
+   * @param data - Request body with campaign/product items
+   * @returns List of search cluster bids
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery/paths/~1adv~1v0~1normquery~1get-bids/post}
+   * @example
+   * ```typescript
+   * const bids = await sdk.promotion.getNormqueryBids({
+   *   items: [{ advert_id: 1825035, nm_id: 983512347 }]
+   * });
+   * console.log(bids.bids);
+   * ```
+   */
+  async getNormqueryBids(data: V0GetNormQueryBidsRequest): Promise<V0GetNormQueryBidsResponse> {
+    return this.client.post<V0GetNormQueryBidsResponse>(
+      'https://advert-api.wildberries.ru/adv/v0/normquery/get-bids',
+      data,
+      { rateLimitKey: 'promotion.normqueryGetBids' }
+    );
+  }
+
+  /**
+   * Установить ставки для поисковых кластеров
+   *
+   * Метод устанавливает ставки на поисковые кластеры.
+   * Можно использовать только для кампаний с ручной ставкой и моделью оплаты `cpm` — за показы.
+   *
+   * Rate limit: 2 requests per second, 500ms interval, burst 4
+   *
+   * @param data - Request body with bids to set
+   * @returns void on success
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery/paths/~1adv~1v0~1normquery~1bids/post}
+   * @example
+   * ```typescript
+   * await sdk.promotion.setNormqueryBids({
+   *   bids: [{
+   *     advert_id: 1825035,
+   *     nm_id: 983512347,
+   *     norm_query: 'Фраза 1',
+   *     bid: 1000
+   *   }]
+   * });
+   * ```
+   */
+  async setNormqueryBids(data: V0SetNormQueryBidsRequest): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v0/normquery/bids', data, {
+      rateLimitKey: 'promotion.normquerySetBids',
+    });
+  }
+
+  /**
+   * Удалить ставки поисковых кластеров
+   *
+   * Метод удаляет ставки с поисковых кластеров.
+   * Можно использовать только для кампаний с ручной ставкой и моделью оплаты `cpm` — за показы.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 10
+   *
+   * @param data - Request body with bids to delete
+   * @returns void on success
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery/paths/~1adv~1v0~1normquery~1bids/delete}
+   * @example
+   * ```typescript
+   * await sdk.promotion.deleteNormqueryBids({
+   *   bids: [{
+   *     advert_id: 1825035,
+   *     nm_id: 983512347,
+   *     norm_query: 'Фраза 1',
+   *     bid: 1000
+   *   }]
+   * });
+   * ```
+   */
+  async deleteNormqueryBids(data: V0SetNormQueryBidsRequest): Promise<void> {
+    await this.client.delete('https://advert-api.wildberries.ru/adv/v0/normquery/bids', data, {
+      rateLimitKey: 'promotion.normqueryDeleteBids',
+    });
+  }
+
+  /**
+   * Список минус-фраз кампаний
+   *
+   * Метод возвращает список минус-фраз по ID кампаний и артикулам WB.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 10
+   *
+   * @param data - Request body with campaign/product items
+   * @returns List of minus-phrases
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery/paths/~1adv~1v0~1normquery~1get-minus/post}
+   * @example
+   * ```typescript
+   * const minusPhrases = await sdk.promotion.getNormqueryMinus({
+   *   items: [{ advert_id: 1825035, nm_id: 983512347 }]
+   * });
+   * console.log(minusPhrases.items);
+   * ```
+   */
+  async getNormqueryMinus(data: V0GetNormQueryMinusRequest): Promise<V0GetNormQueryMinusResponse> {
+    return this.client.post<V0GetNormQueryMinusResponse>(
+      'https://advert-api.wildberries.ru/adv/v0/normquery/get-minus',
+      data,
+      { rateLimitKey: 'promotion.normqueryGetMinus' }
+    );
+  }
+
+  /**
+   * Установка и удаление минус-фраз
+   *
+   * Метод устанавливает и удаляет минус-фразы в кампаниях с ручной ставкой и моделью оплаты `cpm` — за показы.
+   * Отправка пустого массива удаляет все минус-фразы.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 10
+   *
+   * @param data - Request body with minus-phrases to set
+   * @returns void on success
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery/paths/~1adv~1v0~1normquery~1set-minus/post}
+   * @example
+   * ```typescript
+   * await sdk.promotion.setNormqueryMinus({
+   *   advert_id: 1825035,
+   *   nm_id: 983512347,
+   *   norm_queries: ['Фраза 1', 'Фраза 2']
+   * });
+   * ```
+   */
+  async setNormqueryMinus(data: V0SetMinusNormQueryRequest): Promise<void> {
+    await this.client.post('https://advert-api.wildberries.ru/adv/v0/normquery/set-minus', data, {
+      rateLimitKey: 'promotion.normquerySetMinus',
+    });
+  }
+
+  // ============================================================================
+  // V2 Replacement Methods - NEW in Feb 2026
+  // ============================================================================
+
+  /**
+   * Информация о кампаниях (V2)
+   *
+   * Метод возвращает информацию о рекламных кампаниях с единой или ручной ставкой
+   * по их статусам, типам оплаты и ID. Replaces deprecated v1 endpoints.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 5
+   *
+   * @param options - Query parameters for filtering campaigns
+   * @returns List of campaigns with bid settings in kopecks
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get}
+   * @example
+   * ```typescript
+   * const campaigns = await sdk.promotion.getAdvertsV2({
+   *   ids: '12345,23456',
+   *   statuses: '9,11',
+   *   payment_type: 'cpm'
+   * });
+   * console.log(campaigns.adverts);
+   * ```
+   */
+  async getAdvertsV2(options?: {
+    ids?: string;
+    statuses?: string;
+    payment_type?: 'cpm' | 'cpc';
+  }): Promise<GetAdverts> {
+    return this.client.get<GetAdverts>('https://advert-api.wildberries.ru/api/advert/v2/adverts', {
+      params: options,
+      rateLimitKey: 'promotion.advertsV2',
+    });
+  }
+
+  /**
+   * Минимальные ставки для карточек товаров (V1 API)
+   *
+   * Метод возвращает минимальные ставки для карточек товаров в копейках
+   * по типу оплаты и местам размещения. Replaces deprecated v0 endpoint.
+   *
+   * Rate limit: 20 requests per minute, 3 second interval, burst 5
+   *
+   * @param data - Request body with campaign ID, product IDs, payment type, and placement types
+   * @returns Minimum bids for products by placement type (in kopecks)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Sozdanie-kampanij/paths/~1api~1advert~1v1~1bids~1min/post}
+   * @example
+   * ```typescript
+   * const minBids = await sdk.promotion.getBidsMinV2({
+   *   advert_id: 98765432,
+   *   nm_ids: [12345678, 87654321],
+   *   payment_type: 'cpm',
+   *   placement_types: ['combined', 'search', 'recommendation']
+   * });
+   * console.log(minBids.bids);
+   * ```
+   */
+  async getBidsMinV2(data: {
+    advert_id: number;
+    nm_ids: number[];
+    payment_type: 'cpm' | 'cpc';
+    placement_types: ('combined' | 'search' | 'recommendation')[];
+  }): Promise<{
+    bids: {
+      nm_id: number;
+      bids: { type: PlacementType; value: number }[];
+    }[];
+  }> {
+    return this.client.post<{
+      bids: {
+        nm_id: number;
+        bids: { type: PlacementType; value: number }[];
+      }[];
+    }>('https://advert-api.wildberries.ru/api/advert/v1/bids/min', data, {
+      rateLimitKey: 'promotion.bidsMinV1',
+    });
+  }
+
+  /**
+   * Изменение ставок в кампаниях (V1 API)
+   *
+   * Метод меняет ставки карточек товаров по артикулам WB в кампаниях с единой или ручной ставкой.
+   * Для кампаний в статусах 4, 9 и 11. Replaces deprecated v0 endpoint.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 5
+   *
+   * @param data - Request body with bids in kopecks
+   * @returns Updated bids
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1api~1advert~1v1~1bids/patch}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.updateBidsV2({
+   *   bids: [{
+   *     advert_id: 12345,
+   *     nm_bids: [{
+   *       nm_id: 13335157,
+   *       bid_kopecks: 250,
+   *       placement: 'recommendations'
+   *     }]
+   *   }]
+   * });
+   * console.log(result.bids);
+   * ```
+   */
+  async updateBidsV2(data: {
+    bids: {
+      advert_id: number;
+      nm_bids: {
+        nm_id: number;
+        bid_kopecks: number;
+        placement: 'search' | 'recommendations' | 'combined';
+      }[];
+    }[];
+  }): Promise<{
+    bids: {
+      advert_id: number;
+      nm_bids: {
+        nm_id: number;
+        bid_kopecks: number;
+        placement: string;
+      }[];
+    }[];
+  }> {
+    return this.client.patch<{
+      bids: {
+        advert_id: number;
+        nm_bids: {
+          nm_id: number;
+          bid_kopecks: number;
+          placement: string;
+        }[];
+      }[];
+    }>('https://advert-api.wildberries.ru/api/advert/v1/bids', data, {
+      rateLimitKey: 'promotion.bidsV1',
+    });
+  }
 }

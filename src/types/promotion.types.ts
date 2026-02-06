@@ -83,37 +83,37 @@ export interface ResponseInfoAdvert {
   name?: string;
   /** Параметры кампании */
   params?: {
-  /** Название предметной группы. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний**) */
-  subjectName?: string;
-  /** Флаг активности предметной группы: - `true` — активна - `false` — неактивна */
-  active?: boolean;
-  /** Временные интервалы показа кампании */
-  intervals?: {
-  /** Время начала показов */
-  begin?: number;
-  /** Время окончания показов */
-  end?: number;
-}[];
-  /** Текущая ставка */
-  price?: number;
-  /** ID меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
-  menuId?: number;
-  /** ID предметной группы, для которой создана кампания. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний** */
-  subjectId?: number;
-  /** ID сочетания предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
-  setId?: number;
-  /** Сочетание предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
-  setName?: string;
-  /** Название меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
-  menuName?: string;
-  /** Массив карточек товаров кампании */
-  nms?: {
-  /** Артикул WB */
-  nm?: number;
-  /** Состояние карточки товара: - `true` — активна - `false` — неактивна */
-  active?: boolean;
-}[];
-}[];
+    /** Название предметной группы. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний**) */
+    subjectName?: string;
+    /** Флаг активности предметной группы: - `true` — активна - `false` — неактивна */
+    active?: boolean;
+    /** Временные интервалы показа кампании */
+    intervals?: {
+      /** Время начала показов */
+      begin?: number;
+      /** Время окончания показов */
+      end?: number;
+    }[];
+    /** Текущая ставка */
+    price?: number;
+    /** ID меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
+    menuId?: number;
+    /** ID предметной группы, для которой создана кампания. Для кампаний в поиске и рекомендациях (**устаревшие типы кампаний** */
+    subjectId?: number;
+    /** ID сочетания предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
+    setId?: number;
+    /** Сочетание предмета и пола. Для кампаний в карточке товара (**устаревший тип кампании**) */
+    setName?: string;
+    /** Название меню, где размещается кампания. Для кампаний в каталоге (**устаревший тип кампании**) */
+    menuName?: string;
+    /** Массив карточек товаров кампании */
+    nms?: {
+      /** Артикул WB */
+      nm?: number;
+      /** Состояние карточки товара: - `true` — активна - `false` — неактивна */
+      active?: boolean;
+    }[];
+  }[];
   /** Дневной бюджет. Если не установлен, то `0` */
   dailyBudget?: number;
   /** ID кампании */
@@ -138,47 +138,47 @@ export interface ResponseInfoAdvertType8 {
   /** Дата последнего запуска кампании */
   startTime?: string;
   autoParams?: {
-  /** Продвигаемый предмет */
-  subject?: {
-  /** ID предмета */
-  id?: number;
-  /** Название предмета */
-  name?: string;
-};
-  /** Внутренняя (системная) сущность (пол + предмет) */
-  sets?: {
-  /** ID set */
-  id?: number;
-  /** Название set */
-  name?: string;
-}[];
-  menus?: {
-  /** ID меню */
-  id?: number;
-  /** Название меню */
-  name?: string;
-}[];
-  /** Места размещения */
-  active?: {
-  /** Карточка товара - `false` — отключено - `true` — включено */
-  carousel?: boolean;
-  /** Рекомендации на главной - `false` — отключено - `true` — включено */
-  recom?: boolean;
-  /** Ручная ставка - `false` — отключено - `true` — включено */
-  booster?: boolean;
-};
-  /** Ставки карточек товаров */
-  nmCPM?: {
-  /** Артикул WB */
-  nm?: number;
-  /** Ставка */
-  cpm?: number;
-}[];
-  /** Артикулы WB */
-  nms?: number[];
-  /** Ставка, указанная при создании кампании.<br> Поле актуально только для кампаний, созданных через API. */
-  cpm?: number;
-};
+    /** Продвигаемый предмет */
+    subject?: {
+      /** ID предмета */
+      id?: number;
+      /** Название предмета */
+      name?: string;
+    };
+    /** Внутренняя (системная) сущность (пол + предмет) */
+    sets?: {
+      /** ID set */
+      id?: number;
+      /** Название set */
+      name?: string;
+    }[];
+    menus?: {
+      /** ID меню */
+      id?: number;
+      /** Название меню */
+      name?: string;
+    }[];
+    /** Места размещения */
+    active?: {
+      /** Карточка товара - `false` — отключено - `true` — включено */
+      carousel?: boolean;
+      /** Рекомендации на главной - `false` — отключено - `true` — включено */
+      recom?: boolean;
+      /** Ручная ставка - `false` — отключено - `true` — включено */
+      booster?: boolean;
+    };
+    /** Ставки карточек товаров */
+    nmCPM?: {
+      /** Артикул WB */
+      nm?: number;
+      /** Ставка */
+      cpm?: number;
+    }[];
+    /** Артикулы WB */
+    nms?: number[];
+    /** Ставка, указанная при создании кампании.<br> Поле актуально только для кампаний, созданных через API. */
+    cpm?: number;
+  };
   /** Название кампании */
   name?: string;
   /** Не используется */
@@ -207,26 +207,26 @@ export interface ResponseInfoAdvertType9 {
   /** Название кампании */
   name?: string;
   unitedParams?: {
-  /** Продвигаемый предмет */
-  subject?: {
-  /** ID предмета */
-  id?: number;
-  /** Название предмета */
-  name?: string;
-};
-  menus?: {
-  /** ID меню */
-  id?: number;
-  /** Название меню */
-  name?: string;
-}[];
-  /** Артикулы WB */
-  nms?: number[];
-  /** Ставка в поиске */
-  searchCPM?: number;
-  /** Ставка в Каталоге */
-  catalogCPM?: number;
-}[];
+    /** Продвигаемый предмет */
+    subject?: {
+      /** ID предмета */
+      id?: number;
+      /** Название предмета */
+      name?: string;
+    };
+    menus?: {
+      /** ID меню */
+      id?: number;
+      /** Название меню */
+      name?: string;
+    }[];
+    /** Артикулы WB */
+    nms?: number[];
+    /** Ставка в поиске */
+    searchCPM?: number;
+    /** Ставка в Каталоге */
+    catalogCPM?: number;
+  }[];
   /** Не используется */
   dailyBudget?: number;
   /** ID кампании */
@@ -239,11 +239,11 @@ export interface ResponseInfoAdvertType9 {
   paymentType?: string;
   /** Ставки артикулов WB */
   auction_multibids?: {
-  /** Артикул WB */
-  nm?: number;
-  /** Ставка */
-  bid?: number;
-}[];
+    /** Артикул WB */
+    nm?: number;
+    /** Ставка */
+    bid?: number;
+  }[];
 }
 
 export interface ResponseAdvError1 {
@@ -270,17 +270,17 @@ export interface PromotionsGoodsList {
 export interface GetAuctionAdverts {
   /** Кампании */
   adverts: {
-  /** ID кампании */
-  id: number;
-  /** Настройки товаров */
-  nm_settings: AuctionAdvertNMsSettings[];
-  settings: AuctionAdvertSettings;
-  /** Статус кампании: - `-1` — удалена, процесс удаления будет завершён в течение 10 минут - `4` — готова к запуску - `7` — завершена - `8` — отменена - `9` — активна - `11` — на паузе */
-  status: -1 | 4 | 7 | 8 | 9 | 11;
-  timestamps: Timestamps;
-  /** Тип ставки: - `unified` — единая ставка - `manual` — ручная ставка */
-  bid_type: string;
-};
+    /** ID кампании */
+    id: number;
+    /** Настройки товаров */
+    nm_settings: AuctionAdvertNMsSettings[];
+    settings: AuctionAdvertSettings;
+    /** Статус кампании: - `-1` — удалена, процесс удаления будет завершён в течение 10 минут - `4` — готова к запуску - `7` — завершена - `8` — отменена - `9` — активна - `11` — на паузе */
+    status: -1 | 4 | 7 | 8 | 9 | 11;
+    timestamps: Timestamps;
+    /** Тип ставки: - `unified` — единая ставка - `manual` — ручная ставка */
+    bid_type: string;
+  };
 }
 
 export interface AuctionAdvertNMsSettings {
@@ -320,11 +320,11 @@ export interface AuctionAdvertSettings {
   name: string;
   /** Места размещения */
   placements: {
-  /** Размещение в поиске: - `false` — да - `true` — нет */
-  search: boolean;
-  /** Размещение в рекомендациях: - `false` — отключено - `true` — включено */
-  recommendations: boolean;
-};
+    /** Размещение в поиске: - `false` — да - `true` — нет */
+    search: boolean;
+    /** Размещение в рекомендациях: - `false` — отключено - `true` — включено */
+    recommendations: boolean;
+  };
 }
 
 /**
@@ -357,11 +357,11 @@ export interface Response400 {
 export interface StatInterval {
   /** Период */
   interval: {
-  /** Начало периода */
-  begin?: string;
-  /** Конец периода */
-  end?: string;
-};
+    /** Начало периода */
+    begin?: string;
+    /** Конец периода */
+    end?: string;
+  };
   /** Блок статистики */
   stats?: StatsBlok1[];
 }
@@ -427,10 +427,10 @@ export type DailyStats1 = {
   date?: string;
   /** Статистика по платформам */
   app_type_stats?: {
-  /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
-  app_type?: number;
-  stats?: Stats1;
-}[];
+    /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
+    app_type?: number;
+    stats?: Stats1;
+  }[];
 }[];
 
 export type Stats1 = {
@@ -493,10 +493,10 @@ export type DailyStats2 = {
   date?: string;
   /** Статистика по платформам */
   app_type_stats?: {
-  /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
-  app_type?: number;
-  stats?: Stats2;
-}[];
+    /** Тип платформы: - `1` — сайт - `32` — Android - `64` — IOS */
+    app_type?: number;
+    stats?: Stats2;
+  }[];
 }[];
 
 export type Stats2 = {
@@ -531,11 +531,11 @@ export interface RequestWithInterval {
   id: number;
   /** Временной диапазон, за который необходимо выдать данные */
   interval: {
-  /** Начало запрашиваемого периода */
-  begin?: string;
-  /** Конец запрашиваемого периода */
-  end?: string;
-};
+    /** Начало запрашиваемого периода */
+    begin?: string;
+    /** Конец запрашиваемого периода */
+    end?: string;
+  };
 }
 
 /**
@@ -566,56 +566,56 @@ export type Days = {
   sum_price?: number;
   /** Блок информации о платформе */
   apps?: {
-  /** Количество просмотров */
-  views?: number;
-  /** Количество кликов */
-  clicks?: number;
-  /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
-  ctr?: number;
-  /** Средняя стоимость клика, ₽ */
-  cpc?: number;
-  /** Затраты, ₽ */
-  sum?: number;
-  /** Количество добавлений товаров в корзину */
-  atbs?: number;
-  /** Количество заказов */
-  orders?: number;
-  /** CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании */
-  cr?: number;
-  /** Количество заказанных товаров, шт. */
-  shks?: number;
-  /** Заказов на сумму, ₽ */
-  sum_price?: number;
-  /** Блок статистики по артикулам WB */
-  nm?: {
-  /** Количество просмотров */
-  views?: number;
-  /** Количество кликов */
-  clicks?: number;
-  /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
-  ctr?: number;
-  /** Средняя стоимость клика, ₽ */
-  cpc?: number;
-  /** Затраты, ₽ */
-  sum?: number;
-  /** Количество добавлений товаров в корзину */
-  atbs?: number;
-  /** Количество заказов */
-  orders?: number;
-  /** CR(conversion rate) — отношение количества заказов к общему количеству посещений кампании */
-  cr?: number;
-  /** Количество заказанных товаров, шт. */
-  shks?: number;
-  /** Заказов на сумму, ₽ */
-  sum_price?: number;
-  /** Название товара */
-  name?: string;
-  /** ID артикула WB */
-  nmId?: number;
-}[];
-  /** Тип платформы (`1` — сайт, `32` — Android, `64` — IOS) */
-  appType?: number;
-}[];
+    /** Количество просмотров */
+    views?: number;
+    /** Количество кликов */
+    clicks?: number;
+    /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
+    ctr?: number;
+    /** Средняя стоимость клика, ₽ */
+    cpc?: number;
+    /** Затраты, ₽ */
+    sum?: number;
+    /** Количество добавлений товаров в корзину */
+    atbs?: number;
+    /** Количество заказов */
+    orders?: number;
+    /** CR(conversion rate) — это отношение количества заказов к общему количеству посещений кампании */
+    cr?: number;
+    /** Количество заказанных товаров, шт. */
+    shks?: number;
+    /** Заказов на сумму, ₽ */
+    sum_price?: number;
+    /** Блок статистики по артикулам WB */
+    nm?: {
+      /** Количество просмотров */
+      views?: number;
+      /** Количество кликов */
+      clicks?: number;
+      /** Показатель кликабельности, отношение числа кликов к количеству показов, % */
+      ctr?: number;
+      /** Средняя стоимость клика, ₽ */
+      cpc?: number;
+      /** Затраты, ₽ */
+      sum?: number;
+      /** Количество добавлений товаров в корзину */
+      atbs?: number;
+      /** Количество заказов */
+      orders?: number;
+      /** CR(conversion rate) — отношение количества заказов к общему количеству посещений кампании */
+      cr?: number;
+      /** Количество заказанных товаров, шт. */
+      shks?: number;
+      /** Заказов на сумму, ₽ */
+      sum_price?: number;
+      /** Название товара */
+      name?: string;
+      /** ID артикула WB */
+      nmId?: number;
+    }[];
+    /** Тип платформы (`1` — сайт, `32` — Android, `64` — IOS) */
+    appType?: number;
+  }[];
 }[];
 
 /**
@@ -636,11 +636,11 @@ export type BoosterStats = {
 export type ResponseWithInterval = {
   /** Период */
   interval?: {
-  /** Начало периода */
-  begin?: string;
-  /** Конец периода */
-  end?: string;
-};
+    /** Начало периода */
+    begin?: string;
+    /** Конец периода */
+    end?: string;
+  };
   /** Количество просмотров. <br> За все дни запрошенного диапазона, по всем артикулам WB и платформам */
   views?: number;
   /** Количество кликов.<br> За все дни запрошенного диапазона, по всем артикулам WB и платформам */
@@ -767,14 +767,584 @@ export interface FullStatsItem {
 }
 
 /**
- * Статистка по дням
+ * Статистка по дням (V3)
  */
-export type DaysV3 = unknown;
+export type DaysV3 = DaysV3Item[];
 
 /**
- * Статистика по средней позиции товара (для кампаний с единой ставкой)
+ * Элемент статистики по дням (V3)
  */
-export type BoosterStatsV3 = unknown;
+export interface DaysV3Item {
+  /** Дата, за которую представлены данные */
+  date: string;
+  /** Количество просмотров */
+  views: number;
+  /** Количество кликов */
+  clicks: number;
+  /** CTR (click-through rate) — отношение числа кликов к количеству показов в процентах */
+  ctr: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc: number;
+  /** Затраты, ₽ */
+  sum: number;
+  /** Количество добавлений товаров в корзину */
+  atbs: number;
+  /** Количество заказов */
+  orders: number;
+  /** CR (conversion rate) — отношение количества заказов к общему количеству посещений кампании */
+  cr: number;
+  /** Количество заказанных товаров, шт. */
+  shks: number;
+  /** Заказов на сумму, ₽ */
+  sum_price: number;
+  /** Отмены, шт. */
+  canceled: number;
+  /** Блок информации о платформе */
+  apps: DaysV3AppItem[];
+}
+
+/**
+ * Элемент статистики по платформе (V3)
+ */
+export interface DaysV3AppItem {
+  /** Тип платформы: 1 — сайт, 32 — Android, 64 — IOS */
+  appType: 1 | 32 | 64;
+  /** Количество просмотров */
+  views: number;
+  /** Количество кликов */
+  clicks: number;
+  /** CTR (click-through rate) — отношение числа кликов к количеству показов в процентах */
+  ctr: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc: number;
+  /** Затраты, ₽ */
+  sum: number;
+  /** Количество добавлений товаров в корзину */
+  atbs: number;
+  /** Количество заказов */
+  orders: number;
+  /** CR (conversion rate) — отношение количества заказов к общему количеству кликов */
+  cr: number;
+  /** Количество заказанных товаров, шт. */
+  shks: number;
+  /** Заказов на сумму, ₽ */
+  sum_price: number;
+  /** Отмены, шт. */
+  canceled: number;
+  /** Блок статистики по артикулам WB */
+  nms: DaysV3NmItem[];
+}
+
+/**
+ * Элемент статистики по артикулу WB (V3)
+ */
+export interface DaysV3NmItem {
+  /** Артикул WB */
+  nmId: number;
+  /** Название товара */
+  name: string;
+  /** Количество просмотров */
+  views: number;
+  /** Количество кликов */
+  clicks: number;
+  /** CTR (click-through rate) — отношение числа кликов к количеству показов в процентах */
+  ctr: number;
+  /** Средняя стоимость клика, ₽ */
+  cpc: number;
+  /** Затраты, ₽ */
+  sum: number;
+  /** Количество добавлений товаров в корзину */
+  atbs: number;
+  /** Количество заказов */
+  orders: number;
+  /** CR (conversion rate) — отношение количества заказов к общему количеству кликов */
+  cr: number;
+  /** Количество заказанных товаров, шт. */
+  shks: number;
+  /** Заказов на сумму, ₽ */
+  sum_price: number;
+  /** Отмены, шт. */
+  canceled: number;
+}
+
+/**
+ * Статистика по средней позиции товара (для кампаний с единой ставкой) (V3)
+ */
+export type BoosterStatsV3 = BoosterStatsV3Item[];
+
+/**
+ * Элемент статистики по средней позиции товара (V3)
+ */
+export interface BoosterStatsV3Item {
+  /** Дата, за которую предоставлены данные */
+  date: string;
+  /** Артикул WB */
+  nm: number;
+  /** Средняя позиция товара */
+  avg_position: number;
+}
+
+// ============================================================================
+// NormQuery (Search Cluster) Types
+// ============================================================================
+
+/**
+ * Запрос статистики по поисковым кластерам
+ */
+export interface V0GetNormQueryStatsRequest {
+  /** Дата начала периода */
+  from: string;
+  /** Дата окончания периода */
+  to: string;
+  /** Массив элементов запроса (макс. 100) */
+  items: V0GetNormQueryStatsRequestItem[];
+}
+
+/**
+ * Элемент запроса статистики по поисковым кластерам
+ */
+export interface V0GetNormQueryStatsRequestItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+}
+
+/**
+ * Статистика по поисковым кластерам
+ */
+export interface V0GetNormQueryStatsResponse {
+  /** Статистика */
+  stats: V0GetNormQueryStatsItem[];
+}
+
+/**
+ * Элемент статистики по поисковым кластерам
+ */
+export interface V0GetNormQueryStatsItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+  /** Статистика по поисковым кластерам */
+  stats?: V0GetNormQueryStatsItemStat[];
+}
+
+/**
+ * Статистика по конкретному поисковому кластеру
+ */
+export interface V0GetNormQueryStatsItemStat {
+  /** Поисковый кластер */
+  norm_query?: string;
+  /** Количество просмотров */
+  views?: number;
+  /** Количество кликов */
+  clicks?: number;
+  /** Количество добавлений товаров в корзину */
+  atbs?: number;
+  /** Количество заказов */
+  orders?: number;
+  /** Кликабельность — отношение числа кликов к количеству показов, % */
+  ctr?: number;
+  /** Стоимость одного клика, ₽ */
+  cpc?: number;
+  /** Средняя стоимость за тысячу показов, ₽ */
+  cpm?: number;
+  /** Средняя позиция товара на страницах поисковой выдачи */
+  avg_pos?: number;
+}
+
+/**
+ * Запрос на установку ставок для поисковых кластеров
+ */
+export interface V0SetNormQueryBidsRequest {
+  /** Массив ставок (макс. 100) */
+  bids: V0SetNormQueryBidsRequestItem[];
+}
+
+/**
+ * Элемент запроса на установку ставки
+ */
+export interface V0SetNormQueryBidsRequestItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+  /** Поисковый кластер */
+  norm_query: string;
+  /** Ставка за тысячу показов, ₽ */
+  bid: number;
+}
+
+/**
+ * Запрос на получение ставок поисковых кластеров
+ */
+export interface V0GetNormQueryBidsRequest {
+  /** Массив элементов запроса (макс. 100) */
+  items: V0GetNormQueryBidsRequestItem[];
+}
+
+/**
+ * Элемент запроса на получение ставок
+ */
+export interface V0GetNormQueryBidsRequestItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+}
+
+/**
+ * Ответ со списком ставок поисковых кластеров
+ */
+export interface V0GetNormQueryBidsResponse {
+  /** Массив ставок */
+  bids: V0GetNormQueryBidsItem[];
+}
+
+/**
+ * Элемент ставки поискового кластера
+ */
+export interface V0GetNormQueryBidsItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+  /** Поисковый кластер */
+  norm_query: string;
+  /** Текущая ставка за тысячу показов, ₽ */
+  bid: number;
+}
+
+/**
+ * Запрос на установку/удаление минус-фраз
+ */
+export interface V0SetMinusNormQueryRequest {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+  /** Поисковые кластеры (минус-фразы, макс. 1000). Пустой массив удаляет все минус-фразы */
+  norm_queries: string[];
+}
+
+/**
+ * Запрос на получение минус-фраз
+ */
+export interface V0GetNormQueryMinusRequest {
+  /** Массив элементов запроса (макс. 100) */
+  items: V0GetNormQueryMinusRequestItem[];
+}
+
+/**
+ * Элемент запроса на получение минус-фраз
+ */
+export interface V0GetNormQueryMinusRequestItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+}
+
+/**
+ * Ответ со списком минус-фраз
+ */
+export interface V0GetNormQueryMinusResponse {
+  /** Массив элементов */
+  items: V0GetNormQueryMinusResponseItem[];
+}
+
+/**
+ * Элемент ответа со списком минус-фраз
+ */
+export interface V0GetNormQueryMinusResponseItem {
+  /** ID кампании */
+  advert_id: number;
+  /** Артикул WB */
+  nm_id: number;
+  /** Список минус-фраз */
+  norm_queries?: string[];
+}
+
+// ============================================================================
+// GetAdverts Types (Non-Auction with Kopecks)
+// ============================================================================
+
+/**
+ * Ответ со списком кампаний (с ставками в копейках)
+ */
+export interface GetAdverts {
+  /** Кампании */
+  adverts: GetAdvertsItem[];
+}
+
+/**
+ * Элемент списка кампаний
+ */
+export interface GetAdvertsItem {
+  /** ID кампании */
+  id: number;
+  /** Настройки товаров */
+  nm_settings: AdvertNMsSettings[];
+  /** Настройки кампании */
+  settings: AdvertSettings;
+  /** Статус кампании */
+  status: -1 | 4 | 7 | 8 | 9 | 11;
+  /** Временные отметки */
+  timestamps: Timestamps;
+  /** Тип ставки: unified — единая ставка, manual — ручная ставка */
+  bid_type: string;
+}
+
+/**
+ * Настройки товаров кампании (с ставками в копейках)
+ */
+export interface AdvertNMsSettings {
+  /** Ставки в копейках */
+  bids_kopecks: AdvertBidsKopecks;
+  /** Предмет */
+  subject: AdvertSubject;
+  /** Артикул WB */
+  nm_id: number;
+}
+
+/**
+ * Ставки в копейках
+ */
+export interface AdvertBidsKopecks {
+  /** Ставка в поиске */
+  search: number;
+  /** Ставка в рекомендациях */
+  recommendations: number;
+}
+
+/**
+ * Предмет (для кампаний с копейками)
+ */
+export interface AdvertSubject {
+  /** ID предмета */
+  id: number;
+  /** Название предмета */
+  name: string;
+}
+
+/**
+ * Настройки кампании
+ */
+export interface AdvertSettings {
+  /** Тип оплаты: cpm — за показы, cpc — за клик */
+  payment_type: 'cpm' | 'cpc';
+  /** Название кампании */
+  name: string;
+  /** Места размещения */
+  placements: AdvertPlacements;
+}
+
+/**
+ * Места размещения кампании
+ */
+export interface AdvertPlacements {
+  /** Размещение в поиске */
+  search: boolean;
+  /** Размещение в рекомендациях */
+  recommendations: boolean;
+}
+
+// ============================================================================
+// Promotion Calendar Types
+// ============================================================================
+
+/**
+ * Данные ответа списка акций
+ */
+export interface PromotionsListResponseData {
+  /** Список акций */
+  promotions: PromotionItem[];
+}
+
+/**
+ * Элемент акции
+ */
+export interface PromotionItem {
+  /** ID акции */
+  id: number;
+  /** Название акции */
+  name: string;
+  /** Начало акции */
+  startDateTime: string;
+  /** Конец акции */
+  endDateTime: string;
+  /** Тип акции: regular — акция, auto — автоакция */
+  type: 'regular' | 'auto';
+}
+
+/**
+ * Детальная информация об акции
+ */
+export interface PromotionDetailItem {
+  /** ID акции */
+  id: number;
+  /** Название акции */
+  name: string;
+  /** Описание акции */
+  description?: string;
+  /** Преимущества акции */
+  advantages?: string[];
+  /** Начало акции */
+  startDateTime: string;
+  /** Конец акции */
+  endDateTime: string;
+  /** Количество товаров с остатками, участвующих в акции */
+  inPromoActionLeftovers?: number;
+  /** Общее количество товаров, участвующих в акции */
+  inPromoActionTotal?: number;
+  /** Количество товаров с остатками, не участвующих в акции */
+  notInPromoActionLeftovers?: number;
+  /** Общее количество товаров, не участвующих в акции */
+  notInPromoActionTotal?: number;
+  /** Уже участвующие в акции товары, % */
+  participationPercentage?: number;
+  /** Тип акции: regular — акция, auto — автоакция */
+  type: 'regular' | 'auto';
+  /** Количество товаров, исключенных из автоакции до её старта */
+  exceptionProductsCount?: number;
+  /** Ранжирование (если подключено) */
+  ranging?: PromotionRangingItem[];
+}
+
+/**
+ * Элемент ранжирования
+ */
+export interface PromotionRangingItem {
+  /** Тип ранжирования */
+  condition: 'productsInPromotion' | 'calculateProducts' | 'allProducts';
+  /** Количество товаров продавца для перехода на следующий уровень ранжирования, % */
+  participationRate: number;
+  /** Текущий уровень поднятия в поиске, % */
+  boost: number;
+}
+
+/**
+ * Запрос на добавление товаров в акцию
+ */
+export interface PromotionSupplierTaskRequestData {
+  /** ID акции */
+  promotionID: number;
+  /** Установить скидку: true — сейчас, false — в момент старта акции */
+  uploadNow: boolean;
+  /** Артикулы WB, которые можно добавить в акцию (макс. 1000) */
+  nomenclatures: number[];
+}
+
+/**
+ * Ответ на запрос добавления товаров в акцию
+ */
+export interface PromotionUploadResponseData {
+  /** Загрузка с такими данными уже существует */
+  alreadyExists: boolean;
+  /** ID загрузки */
+  uploadID: number;
+}
+
+// ============================================================================
+// Auto Campaign Stat Words Types (deprecated)
+// ============================================================================
+
+/**
+ * Ответ статистики по кластерам фраз для кампании с единой ставкой
+ */
+export interface AutoStatWordsResponse {
+  /** Исключения (минус-фразы) для товаров из кампании */
+  excluded?: string[];
+  /** Кластеры ключевых фраз */
+  clusters?: AutoStatWordsCluster[];
+}
+
+/**
+ * Кластер ключевых фраз
+ */
+export interface AutoStatWordsCluster {
+  /** Кластер — набор похожих ключевых фраз */
+  cluster: string;
+  /** Сколько раз товары показывались по всем фразам из кластера */
+  count: number;
+  /** Ключевые фразы из кластера, по которым товары показывались хотя бы один раз */
+  keywords: string[];
+}
+
+// ============================================================================
+// Manual Campaign Stat Words Types (deprecated)
+// ============================================================================
+
+/**
+ * Ответ статистики по ключевым фразам для кампании с ручной ставкой
+ */
+export interface ManualStatWordsResponse {
+  /** Блок информации по ключевым фразам */
+  words?: ManualStatWordsInfo;
+  /** Массив информации по статистике */
+  stat?: ManualStatWordsStatItem[];
+}
+
+/**
+ * Информация по ключевым фразам
+ */
+export interface ManualStatWordsInfo {
+  /** Фразовое соответствие (минус фразы) */
+  phrase?: string[];
+  /** Точное соответствие (минус фразы) */
+  strong?: string[];
+  /** Минус фразы из поиска */
+  excluded?: string[];
+  /** Фиксированные фразы */
+  pluse?: string[];
+  /** Блок со статистикой по ключевым фразам */
+  keywords?: ManualStatWordsKeyword[];
+  /** Фиксированные ключевые фразы включены */
+  fixed?: boolean;
+}
+
+/**
+ * Статистика по ключевой фразе
+ */
+export interface ManualStatWordsKeyword {
+  /** Ключевая фраза */
+  keyword: string;
+  /** Количество просмотров по ключевой фразе */
+  count: number;
+}
+
+/**
+ * Элемент статистики
+ */
+export interface ManualStatWordsStatItem {
+  /** ID кампании в системе WB */
+  advertId?: number;
+  /** Ключевая фраза */
+  keyword?: string;
+  /** Поле перманентно отключено */
+  advertName?: string;
+  /** Название кампании */
+  campaignName?: string;
+  /** Дата запуска кампании */
+  begin?: string;
+  /** Дата завершения кампании */
+  end?: string;
+  /** Количество просмотров */
+  views?: number;
+  /** Количество кликов */
+  clicks?: number;
+  /** Частота — отношение количества просмотров к количеству уникальных пользователей */
+  frq?: number;
+  /** Кликабельность — отношение числа кликов к количеству показов, % */
+  ctr?: number;
+  /** Стоимость клика, ₽ */
+  cpc?: number;
+  /** Длительность кампании, в секундах */
+  duration?: number;
+  /** Затраты, ₽ */
+  sum?: number;
+}
 
 /**
  * Ошибка

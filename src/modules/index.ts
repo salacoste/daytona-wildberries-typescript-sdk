@@ -43,3 +43,6 @@ export { InStorePickupModule } from './in-store-pickup';
 
 // Orders DBS Module (Epic 12)
 export { OrdersDbsModule } from './orders-dbs';
+
+// User Management Module (Story 14.4)
+export { UserManagementModule } from './user-management';

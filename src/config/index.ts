@@ -19,4 +19,7 @@ export { ordersDbsRateLimits } from './orders-dbs-rate-limits';
 export { userManagementRateLimits } from './user-management-rate-limits';
 export { productsRateLimits } from './products-rate-limits';
 export { financesRateLimits } from './finances-rate-limits';
+export { analyticsRateLimits } from './analytics-rate-limits';
+export { communicationsRateLimits } from './communications-rate-limits';
+export { reportsRateLimits } from './reports-rate-limits';
 export type { RateLimitConfig, EndpointLimits } from '../client/rate-limiter';

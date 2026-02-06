@@ -13,6 +13,9 @@
  * @see {@link ../../../src/modules/promotion/index PromotionModule}
  */
 
+/* eslint-disable @typescript-eslint/no-deprecated */
+// Tests intentionally call deprecated methods to verify backward compatibility
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { PromotionModule } from '../../../src/modules/promotion';
 import type { BaseClient } from '../../../src/client/base-client';
@@ -87,7 +90,8 @@ describe('PromotionModule', () => {
 
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
-          'https://advert-api.wildberries.ru/adv/v1/promotion/count'
+          'https://advert-api.wildberries.ru/adv/v1/promotion/count',
+          { rateLimitKey: 'promotion.advPromotionCount' }
         );
         expect(mockClient.get).toHaveBeenCalledTimes(1);
       });
@@ -167,7 +171,7 @@ describe('PromotionModule', () => {
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v1/promotion/adverts',
           mockAdvertIds,
-          { params: undefined }
+          { params: undefined, rateLimitKey: 'promotion.postAdvPromotionAdverts' }
         );
       });
 
@@ -183,7 +187,7 @@ describe('PromotionModule', () => {
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v1/promotion/adverts',
           mockAdvertIds,
-          { params: options }
+          { params: options, rateLimitKey: 'promotion.postAdvPromotionAdverts' }
         );
       });
 
@@ -231,7 +235,7 @@ describe('PromotionModule', () => {
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v0/auction/adverts',
-          { params: undefined }
+          { params: undefined, rateLimitKey: 'promotion.advAuctionAdverts' }
         );
       });
 
@@ -246,7 +250,7 @@ describe('PromotionModule', () => {
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v0/auction/adverts',
-          { params: options }
+          { params: options, rateLimitKey: 'promotion.advAuctionAdverts' }
         );
       });
 
@@ -287,7 +291,8 @@ describe('PromotionModule', () => {
         // Assert
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v1/save-ad',
-          mockCampaignData
+          mockCampaignData,
+          { rateLimitKey: 'promotion.postAdvSaveAd' }
         );
       });
 
@@ -350,7 +355,8 @@ describe('PromotionModule', () => {
         // Assert
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v2/seacat/save-ad',
-          mockCampaignData
+          mockCampaignData,
+          { rateLimitKey: 'promotion.postAdvSeacatSaveAd' }
         );
       });
 
@@ -377,7 +383,8 @@ describe('PromotionModule', () => {
         // Assert
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v2/seacat/save-ad',
-          undefined
+          undefined,
+          { rateLimitKey: 'promotion.postAdvSeacatSaveAd' }
         );
       });
     });
@@ -402,7 +409,8 @@ describe('PromotionModule', () => {
 
         // Assert
         expect(mockClient.get).toHaveBeenCalledWith(
-          'https://advert-api.wildberries.ru/adv/v0/config'
+          'https://advert-api.wildberries.ru/adv/v0/config',
+          { rateLimitKey: 'promotion.advConfig' }
         );
       });
 
@@ -451,7 +459,8 @@ describe('PromotionModule', () => {
         // Assert
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://advert-api.wildberries.ru/adv/v0/bids/min',
-          mockBidRequest
+          mockBidRequest,
+          { rateLimitKey: 'promotion.postAdvBidsMin' }
         );
       });
 
@@ -638,6 +647,348 @@ describe('PromotionModule', () => {
         expect(mockClient.post).toHaveBeenCalled();
         mockClient.post.mockClear();
       }
+    });
+  });
+
+  describe('New Endpoints (EPIC 34)', () => {
+    describe('getNormqueryStats() - Search cluster statistics', () => {
+      const mockRequest = {
+        from: '2025-10-07',
+        to: '2025-10-08',
+        items: [{ advert_id: 1825035, nm_id: 983512347 }],
+      };
+
+      const mockResponse = {
+        stats: [
+          {
+            advert_id: 1825035,
+            nm_id: 983512347,
+            normqueries: [{ normquery: 'test query', views: 100, clicks: 10, ctr: 10.0, cpc: 50 }],
+          },
+        ],
+      };
+
+      it('should call BaseClient.post with correct URL and rateLimitKey', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        await promotionModule.getNormqueryStats(mockRequest);
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v0/normquery/stats',
+          mockRequest,
+          { rateLimitKey: 'promotion.normqueryStats' }
+        );
+      });
+
+      it('should return expected response', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        const result = await promotionModule.getNormqueryStats(mockRequest);
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('getNormqueryBids() - Get search cluster bids', () => {
+      const mockRequest = {
+        items: [{ advert_id: 1825035, nm_id: 983512347 }],
+      };
+
+      const mockResponse = {
+        bids: [
+          {
+            advert_id: 1825035,
+            nm_id: 983512347,
+            normqueries: [{ normquery: 'test', bid: 1000 }],
+          },
+        ],
+      };
+
+      it('should call BaseClient.post with correct URL and rateLimitKey', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        await promotionModule.getNormqueryBids(mockRequest);
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v0/normquery/get-bids',
+          mockRequest,
+          { rateLimitKey: 'promotion.normqueryGetBids' }
+        );
+      });
+
+      it('should return expected response', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        const result = await promotionModule.getNormqueryBids(mockRequest);
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('setNormqueryBids() - Set search cluster bids', () => {
+      const mockRequest = {
+        bids: [
+          {
+            advert_id: 1825035,
+            nm_id: 983512347,
+            norm_query: 'Фраза 1',
+            bid: 1000,
+          },
+        ],
+      };
+
+      it('should call BaseClient.post with correct URL and rateLimitKey', async () => {
+        mockClient.post.mockResolvedValue(undefined);
+
+        await promotionModule.setNormqueryBids(mockRequest);
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v0/normquery/bids',
+          mockRequest,
+          { rateLimitKey: 'promotion.normquerySetBids' }
+        );
+      });
+
+      it('should complete without error on success', async () => {
+        mockClient.post.mockResolvedValue(undefined);
+
+        await expect(promotionModule.setNormqueryBids(mockRequest)).resolves.toBeUndefined();
+      });
+    });
+
+    describe('deleteNormqueryBids() - Delete search cluster bids', () => {
+      const mockRequest = {
+        bids: [
+          {
+            advert_id: 1825035,
+            nm_id: 983512347,
+            norm_query: 'Фраза 1',
+            bid: 1000,
+          },
+        ],
+      };
+
+      it('should call BaseClient.delete with correct URL and rateLimitKey', async () => {
+        mockClient.delete.mockResolvedValue(undefined);
+
+        await promotionModule.deleteNormqueryBids(mockRequest);
+
+        expect(mockClient.delete).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v0/normquery/bids',
+          mockRequest,
+          { rateLimitKey: 'promotion.normqueryDeleteBids' }
+        );
+      });
+
+      it('should complete without error on success', async () => {
+        mockClient.delete.mockResolvedValue(undefined);
+
+        await expect(promotionModule.deleteNormqueryBids(mockRequest)).resolves.toBeUndefined();
+      });
+    });
+
+    describe('getNormqueryMinus() - Get minus phrases', () => {
+      const mockRequest = {
+        items: [{ advert_id: 1825035, nm_id: 983512347 }],
+      };
+
+      const mockResponse = {
+        items: [
+          {
+            advert_id: 1825035,
+            nm_id: 983512347,
+            norm_queries: ['Фраза 1', 'Фраза 2'],
+          },
+        ],
+      };
+
+      it('should call BaseClient.post with correct URL and rateLimitKey', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        await promotionModule.getNormqueryMinus(mockRequest);
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v0/normquery/get-minus',
+          mockRequest,
+          { rateLimitKey: 'promotion.normqueryGetMinus' }
+        );
+      });
+
+      it('should return expected response', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        const result = await promotionModule.getNormqueryMinus(mockRequest);
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('setNormqueryMinus() - Set minus phrases', () => {
+      const mockRequest = {
+        advert_id: 1825035,
+        nm_id: 983512347,
+        norm_queries: ['Фраза 1', 'Фраза 2'],
+      };
+
+      it('should call BaseClient.post with correct URL and rateLimitKey', async () => {
+        mockClient.post.mockResolvedValue(undefined);
+
+        await promotionModule.setNormqueryMinus(mockRequest);
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v0/normquery/set-minus',
+          mockRequest,
+          { rateLimitKey: 'promotion.normquerySetMinus' }
+        );
+      });
+
+      it('should complete without error on success', async () => {
+        mockClient.post.mockResolvedValue(undefined);
+
+        await expect(promotionModule.setNormqueryMinus(mockRequest)).resolves.toBeUndefined();
+      });
+    });
+
+    describe('getAdvertsV2() - Get campaigns V2', () => {
+      const mockResponse = {
+        adverts: [
+          {
+            advertId: 12345,
+            name: 'Test Campaign',
+            type: 9,
+            status: 9,
+            paymentType: 'cpm',
+          },
+        ],
+      };
+
+      it('should call BaseClient.get with correct URL and rateLimitKey (no options)', async () => {
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        await promotionModule.getAdvertsV2();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/api/advert/v2/adverts',
+          { params: undefined, rateLimitKey: 'promotion.advertsV2' }
+        );
+      });
+
+      it('should pass filter parameters when provided', async () => {
+        mockClient.get.mockResolvedValue(mockResponse);
+        const options = { ids: '12345,23456', statuses: '9,11', payment_type: 'cpm' as const };
+
+        await promotionModule.getAdvertsV2(options);
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/api/advert/v2/adverts',
+          { params: options, rateLimitKey: 'promotion.advertsV2' }
+        );
+      });
+
+      it('should return expected response', async () => {
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await promotionModule.getAdvertsV2();
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('getBidsMinV2() - Get minimum bids V1 API', () => {
+      const mockRequest = {
+        advert_id: 98765432,
+        nm_ids: [12345678, 87654321],
+        payment_type: 'cpm' as 'cpm' | 'cpc',
+        placement_types: ['combined', 'search', 'recommendation'] as (
+          | 'combined'
+          | 'search'
+          | 'recommendation'
+        )[],
+      };
+
+      const mockResponse = {
+        bids: [
+          {
+            nm_id: 12345678,
+            bids: [
+              { type: 'combined' as const, value: 100 },
+              { type: 'search' as const, value: 150 },
+            ],
+          },
+        ],
+      };
+
+      it('should call BaseClient.post with correct URL and rateLimitKey', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        await promotionModule.getBidsMinV2(mockRequest);
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/api/advert/v1/bids/min',
+          mockRequest,
+          { rateLimitKey: 'promotion.bidsMinV1' }
+        );
+      });
+
+      it('should return expected response', async () => {
+        mockClient.post.mockResolvedValue(mockResponse);
+
+        const result = await promotionModule.getBidsMinV2(mockRequest);
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('updateBidsV2() - Update bids V1 API', () => {
+      const mockRequest = {
+        bids: [
+          {
+            advert_id: 12345,
+            nm_bids: [
+              {
+                nm_id: 13335157,
+                bid_kopecks: 250,
+                placement: 'recommendations' as const,
+              },
+            ],
+          },
+        ],
+      };
+
+      const mockResponse = {
+        bids: [
+          {
+            advert_id: 12345,
+            nm_bids: [
+              {
+                nm_id: 13335157,
+                bid_kopecks: 250,
+                placement: 'recommendations',
+              },
+            ],
+          },
+        ],
+      };
+
+      it('should call BaseClient.patch with correct URL and rateLimitKey', async () => {
+        mockClient.patch.mockResolvedValue(mockResponse);
+
+        await promotionModule.updateBidsV2(mockRequest);
+
+        expect(mockClient.patch).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/api/advert/v1/bids',
+          mockRequest,
+          { rateLimitKey: 'promotion.bidsV1' }
+        );
+      });
+
+      it('should return expected response', async () => {
+        mockClient.patch.mockResolvedValue(mockResponse);
+
+        const result = await promotionModule.updateBidsV2(mockRequest);
+
+        expect(result).toEqual(mockResponse);
+      });
     });
   });
 });

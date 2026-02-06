@@ -633,6 +633,9 @@ export {
   promotionRateLimits,
   tariffsRateLimits,
   inStorePickupRateLimits,
+  analyticsRateLimits,
+  communicationsRateLimits,
+  reportsRateLimits,
 } from './config';
 export type { RateLimitConfig, EndpointLimits } from './client/rate-limiter';
 
