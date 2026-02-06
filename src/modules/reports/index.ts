@@ -77,8 +77,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getSupplierStocks({});
-  console.log(result);
+   * const result = await sdk.reports.getSupplierStocks({});
+   * console.log(result);
    */
   async getSupplierStocks(options?: { dateFrom: string }): Promise<StocksItem[]> {
     return this.client.get<StocksItem[]>(
@@ -99,8 +99,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getSupplierOrders({});
-  console.log(result);
+   * const result = await sdk.reports.getSupplierOrders({});
+   * console.log(result);
    */
   async getSupplierOrders(options?: { dateFrom: string; flag?: number }): Promise<OrdersItem[]> {
     return this.client.get<OrdersItem[]>(
@@ -121,8 +121,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getSupplierSales({});
-  console.log(result);
+   * const result = await sdk.reports.getSupplierSales({});
+   * console.log(result);
    */
   async getSupplierSales(options?: { dateFrom: string; flag?: number }): Promise<SalesItem[]> {
     return this.client.get<SalesItem[]>(
@@ -144,8 +144,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.createAnalyticsExciseReport({}, {});
-  console.log(result);
+   * const result = await sdk.reports.createAnalyticsExciseReport({}, {});
+   * console.log(result);
    */
   async createAnalyticsExciseReport(
     options?: { dateFrom: string; dateTo: string },
@@ -170,8 +170,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.warehouseRemains({});
-  console.log(result);
+   * const result = await sdk.reports.warehouseRemains({});
+   * console.log(result);
    */
   async warehouseRemains(options?: {
     locale?: string;
@@ -295,8 +295,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getAnalyticsAntifraudDetails({});
-  console.log(result);
+   * const result = await sdk.reports.getAnalyticsAntifraudDetails({});
+   * console.log(result);
    */
   async getAnalyticsAntifraudDetails(options?: {
     date?: string;
@@ -347,8 +347,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getAnalyticsGoodsLabeling({});
-  console.log(result);
+   * const result = await sdk.reports.getAnalyticsGoodsLabeling({});
+   * console.log(result);
    */
   async getAnalyticsGoodsLabeling(options?: {
     dateFrom: string;
@@ -398,8 +398,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.acceptanceReport({});
-  console.log(result);
+   * const result = await sdk.reports.acceptanceReport({});
+   * console.log(result);
    */
   async acceptanceReport(options?: {
     dateFrom: string;
@@ -483,8 +483,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.paidStorage({});
-  console.log(result);
+   * const result = await sdk.reports.paidStorage({});
+   * console.log(result);
    */
   async paidStorage(options?: { dateFrom: string; dateTo: string }): Promise<CreateTaskResponse> {
     return this.client.get<CreateTaskResponse>(
@@ -565,8 +565,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getAnalyticsRegionSale({});
-  console.log(result);
+   * const result = await sdk.reports.getAnalyticsRegionSale({});
+   * console.log(result);
    */
   async getAnalyticsRegionSale(options?: {
     dateFrom: string;
@@ -589,8 +589,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getBrandShareBrands();
-  console.log(result);
+   * const result = await sdk.reports.getBrandShareBrands();
+   * console.log(result);
    */
   async getBrandShareBrands(): Promise<BrandShareBrandsResponse> {
     return this.client.get<BrandShareBrandsResponse>(
@@ -611,8 +611,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getBrandShareParentSubjects({});
-  console.log(result);
+   * const result = await sdk.reports.getBrandShareParentSubjects({});
+   * console.log(result);
    */
   async getBrandShareParentSubjects(options?: {
     locale?: string;
@@ -638,8 +638,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getAnalyticsBrandShare({});
-  console.log(result);
+   * const result = await sdk.reports.getAnalyticsBrandShare({});
+   * console.log(result);
    */
   async getAnalyticsBrandShare(options?: {
     parentId: number;
@@ -665,8 +665,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getBannedProductsBlocked({});
-  console.log(result);
+   * const result = await sdk.reports.getBannedProductsBlocked({});
+   * console.log(result);
    */
   async getBannedProductsBlocked(options?: {
     sort: 'brand' | 'nmId' | 'title' | 'vendorCode' | 'reason';
@@ -690,8 +690,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getBannedProductsShadowed({});
-  console.log(result);
+   * const result = await sdk.reports.getBannedProductsShadowed({});
+   * console.log(result);
    */
   async getBannedProductsShadowed(options?: {
     sort: 'brand' | 'nmId' | 'title' | 'vendorCode' | 'nmRating';
@@ -715,8 +715,8 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.reports.getAnalyticsGoodsReturn({});
-  console.log(result);
+   * const result = await sdk.reports.getAnalyticsGoodsReturn({});
+   * console.log(result);
    */
   async getAnalyticsGoodsReturn(options?: {
     dateFrom: string;

@@ -368,8 +368,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvDelete({});
   console.log(result);
    */
-  async getAdvDelete(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/delete', {
+  async getAdvDelete(options?: { id: number }): Promise<void> {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v0/delete', {
       params: options,
       rateLimitKey: 'promotion.advDelete',
     });
@@ -390,8 +390,8 @@ export class PromotionModule {
   const result = await sdk.promotion.createAdvRename({});
   console.log(result);
    */
-  async createAdvRename(data?: { advertId: number; name: string }): Promise<unknown> {
-    return this.client.post<unknown>('https://advert-api.wildberries.ru/adv/v0/rename', data, {
+  async createAdvRename(data?: { advertId: number; name: string }): Promise<void> {
+    return this.client.post('https://advert-api.wildberries.ru/adv/v0/rename', data, {
       rateLimitKey: 'promotion.postAdvRename',
     });
   }
@@ -412,14 +412,14 @@ export class PromotionModule {
   console.log(result);
    
    * @deprecated Use the updated campaign management API instead.*/
-  async getAdvStart(options?: { id: number }): Promise<unknown> {
+  async getAdvStart(options?: { id: number }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAdvStart')) {
       console.warn(
         '[WB SDK] getAdvStart() is deprecated. Use the updated campaign management API instead.'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAdvStart');
     }
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/start', {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v0/start', {
       params: options,
       rateLimitKey: 'promotion.advStart',
     });
@@ -441,14 +441,14 @@ export class PromotionModule {
   console.log(result);
    
    * @deprecated Use the updated campaign management API instead.*/
-  async getAdvPause(options?: { id: number }): Promise<unknown> {
+  async getAdvPause(options?: { id: number }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAdvPause')) {
       console.warn(
         '[WB SDK] getAdvPause() is deprecated. Use the updated campaign management API instead.'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAdvPause');
     }
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/pause', {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v0/pause', {
       params: options,
       rateLimitKey: 'promotion.advPause',
     });
@@ -469,8 +469,8 @@ export class PromotionModule {
   const result = await sdk.promotion.getAdvStop({});
   console.log(result);
    */
-  async getAdvStop(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v0/stop', {
+  async getAdvStop(options?: { id: number }): Promise<void> {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v0/stop', {
       params: options,
       rateLimitKey: 'promotion.advStop',
     });
@@ -745,14 +745,14 @@ export class PromotionModule {
   console.log(result);
 
    * @deprecated This method will be removed on January 15, 2025.*/
-  async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<unknown> {
+  async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getSearchSetPlus')) {
       console.warn(
         '[WB SDK] getSearchSetPlus() is deprecated and will be removed on January 15, 2025.'
       );
       PromotionModule._deprecatedMethodsWarned.add('getSearchSetPlus');
     }
-    return this.client.get<unknown>('https://advert-api.wildberries.ru/adv/v1/search/set-plus', {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v1/search/set-plus', {
       params: options,
       rateLimitKey: 'promotion.advSearchSetPlus',
     });
@@ -814,18 +814,17 @@ export class PromotionModule {
   async createSearchSetExcluded(
     data: { excluded?: string[] },
     options?: { id: number }
-  ): Promise<unknown> {
+  ): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createSearchSetExcluded')) {
       console.warn(
         '[WB SDK] createSearchSetExcluded() is deprecated and will be removed on January 15, 2025.'
       );
       PromotionModule._deprecatedMethodsWarned.add('createSearchSetExcluded');
     }
-    return this.client.post<unknown>(
-      'https://advert-api.wildberries.ru/adv/v1/search/set-excluded',
-      data,
-      { params: options, rateLimitKey: 'promotion.postAdvSearchSetExcluded' }
-    );
+    return this.client.post('https://advert-api.wildberries.ru/adv/v1/search/set-excluded', data, {
+      params: options,
+      rateLimitKey: 'promotion.postAdvSearchSetExcluded',
+    });
   }
 
   /**
@@ -847,12 +846,11 @@ export class PromotionModule {
   async createAutoSetExcluded(
     data: { excluded?: string[] },
     options?: { id: number }
-  ): Promise<unknown> {
-    return this.client.post<unknown>(
-      'https://advert-api.wildberries.ru/adv/v1/auto/set-excluded',
-      data,
-      { params: options, rateLimitKey: 'promotion.postAdvAutoSetExcluded' }
-    );
+  ): Promise<void> {
+    return this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, {
+      params: options,
+      rateLimitKey: 'promotion.postAdvAutoSetExcluded',
+    });
   }
 
   /**
@@ -904,12 +902,11 @@ export class PromotionModule {
   async createAutoUpdatenm(
     data: { add?: number[]; delete?: number[] },
     options?: { id: number }
-  ): Promise<unknown> {
-    return this.client.post<unknown>(
-      'https://advert-api.wildberries.ru/adv/v1/auto/updatenm',
-      data,
-      { params: options, rateLimitKey: 'promotion.postAdvAutoUpdatenm' }
-    );
+  ): Promise<void> {
+    return this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, {
+      params: options,
+      rateLimitKey: 'promotion.postAdvAutoUpdatenm',
+    });
   }
 
   /**

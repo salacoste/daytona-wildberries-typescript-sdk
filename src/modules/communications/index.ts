@@ -85,7 +85,7 @@ export class CommunicationsModule {
       errorText?: string;
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/questions/count-unanswered', {
-      rateLimitKey: 'communications.getQuestionsCountUnanswered',
+      rateLimitKey: 'communications.questionsCountUnanswered',
     });
   }
 
@@ -116,7 +116,7 @@ export class CommunicationsModule {
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/questions/count', {
       params: options,
-      rateLimitKey: 'communications.getQuestionsCount',
+      rateLimitKey: 'communications.questionsCount',
     });
   }
 
@@ -233,7 +233,7 @@ export class CommunicationsModule {
       errorText?: string;
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/questions', data, {
-      rateLimitKey: 'communications.updateQuestion',
+      rateLimitKey: 'communications.patchQuestions',
     });
   }
 
@@ -329,7 +329,7 @@ export class CommunicationsModule {
       errorText?: string;
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count-unanswered', {
-      rateLimitKey: 'communications.getFeedbacksCountUnanswered',
+      rateLimitKey: 'communications.feedbacksCountUnanswered',
     });
   }
 
@@ -360,7 +360,7 @@ export class CommunicationsModule {
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count', {
       params: options,
-      rateLimitKey: 'communications.getFeedbacksCount',
+      rateLimitKey: 'communications.feedbacksCount',
     });
   }
 
@@ -514,7 +514,7 @@ export class CommunicationsModule {
       );
     }
     return this.client.post('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/actions', data, {
-      rateLimitKey: 'communications.createFeedbacksAction',
+      rateLimitKey: 'communications.postFeedbacksActions',
     });
   }
 
@@ -534,7 +534,7 @@ export class CommunicationsModule {
    */
   async createFeedbacksAnswer(data?: { id: string; text: string }): Promise<void> {
     return this.client.post('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer', data, {
-      rateLimitKey: 'communications.createFeedbacksAnswer',
+      rateLimitKey: 'communications.postFeedbacksAnswer',
     });
   }
 
@@ -554,7 +554,7 @@ export class CommunicationsModule {
    */
   async updateFeedbacksAnswer(data?: { id: string; text: string }): Promise<void> {
     return this.client.patch('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer', data, {
-      rateLimitKey: 'communications.updateFeedbacksAnswer',
+      rateLimitKey: 'communications.patchFeedbacksAnswer',
     });
   }
 
@@ -585,7 +585,7 @@ export class CommunicationsModule {
       errorText?: string;
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/order/return', data, {
-      rateLimitKey: 'communications.createOrderReturn',
+      rateLimitKey: 'communications.postFeedbacksOrderReturn',
     });
   }
 
@@ -728,7 +728,7 @@ export class CommunicationsModule {
       additionalErrors?: string[];
     }>('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/archive', {
       params: options,
-      rateLimitKey: 'communications.getFeedbacksArchive',
+      rateLimitKey: 'communications.feedbacksArchive',
     });
   }
 
@@ -795,7 +795,7 @@ export class CommunicationsModule {
     return this.client.post<PostTemplate>(
       'https://feedbacks-api.wildberries.ru/api/v1/templates',
       data,
-      { rateLimitKey: 'communications.createTemplate' }
+      { rateLimitKey: 'communications.postTemplates' }
     );
   }
 
@@ -831,7 +831,7 @@ export class CommunicationsModule {
     return this.client.patch<PatchDelResp>(
       'https://feedbacks-api.wildberries.ru/api/v1/templates',
       data,
-      { rateLimitKey: 'communications.updateTemplate' }
+      { rateLimitKey: 'communications.patchTemplates' }
     );
   }
 
@@ -863,7 +863,7 @@ export class CommunicationsModule {
     return this.client.delete<PatchDelResp>(
       'https://feedbacks-api.wildberries.ru/api/v1/templates',
       data,
-      { rateLimitKey: 'communications.deleteTemplate' }
+      { rateLimitKey: 'communications.deleteTemplates' }
     );
   }
 
@@ -884,7 +884,7 @@ export class CommunicationsModule {
   async getSellerChats(): Promise<ChatsResponse> {
     return this.client.get<ChatsResponse>(
       'https://buyer-chat-api.wildberries.ru/api/v1/seller/chats',
-      { rateLimitKey: 'communications.getSellerChats' }
+      { rateLimitKey: 'communications.sellerChats' }
     );
   }
 
@@ -908,7 +908,7 @@ export class CommunicationsModule {
       'https://buyer-chat-api.wildberries.ru/api/v1/seller/events',
       {
         params: options,
-        rateLimitKey: 'communications.getSellerEvents',
+        rateLimitKey: 'communications.sellerEvents',
       }
     );
   }
@@ -931,7 +931,7 @@ export class CommunicationsModule {
     return this.client.post<MessageResponse>(
       'https://buyer-chat-api.wildberries.ru/api/v1/seller/message',
       undefined,
-      { rateLimitKey: 'communications.createSellerMessage' }
+      { rateLimitKey: 'communications.postSellerMessage' }
     );
   }
 
@@ -954,7 +954,7 @@ export class CommunicationsModule {
     return this.client.get<unknown>(
       `https://buyer-chat-api.wildberries.ru/api/v1/seller/download/${id}`,
       {
-        rateLimitKey: 'communications.getSellerDownload',
+        rateLimitKey: 'communications.sellerDownload',
       }
     );
   }
@@ -1006,7 +1006,7 @@ export class CommunicationsModule {
       'https://returns-api.wildberries.ru/api/v1/claim',
       undefined,
       {
-        rateLimitKey: 'communications.updateClaim',
+        rateLimitKey: 'communications.patchClaim',
       }
     );
   }

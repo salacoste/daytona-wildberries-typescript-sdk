@@ -242,7 +242,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://feedbacks-api.wildberries.ru/api/v1/questions/count',
-          { params: undefined, rateLimitKey: 'communications.getQuestionsCount' }
+          { params: undefined, rateLimitKey: 'communications.questionsCount' }
         );
       });
 
@@ -254,7 +254,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://feedbacks-api.wildberries.ru/api/v1/questions/count',
-          { params: options, rateLimitKey: 'communications.getQuestionsCount' }
+          { params: options, rateLimitKey: 'communications.questionsCount' }
         );
       });
     });
@@ -348,7 +348,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count',
-          { params: undefined, rateLimitKey: 'communications.getFeedbacksCount' }
+          { params: undefined, rateLimitKey: 'communications.feedbacksCount' }
         );
       });
     });
@@ -363,7 +363,7 @@ describe('CommunicationsModule', () => {
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer',
           data,
-          { rateLimitKey: 'communications.createFeedbacksAnswer' }
+          { rateLimitKey: 'communications.postFeedbacksAnswer' }
         );
       });
     });
@@ -406,7 +406,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://buyer-chat-api.wildberries.ru/api/v1/seller/chats',
-          { rateLimitKey: 'communications.getSellerChats' }
+          { rateLimitKey: 'communications.sellerChats' }
         );
       });
     });
@@ -421,7 +421,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://buyer-chat-api.wildberries.ru/api/v1/seller/events',
-          { params: undefined, rateLimitKey: 'communications.getSellerEvents' }
+          { params: undefined, rateLimitKey: 'communications.sellerEvents' }
         );
       });
 
@@ -432,7 +432,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://buyer-chat-api.wildberries.ru/api/v1/seller/events',
-          { params: { next: 12345 }, rateLimitKey: 'communications.getSellerEvents' }
+          { params: { next: 12345 }, rateLimitKey: 'communications.sellerEvents' }
         );
       });
     });
@@ -446,7 +446,7 @@ describe('CommunicationsModule', () => {
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://buyer-chat-api.wildberries.ru/api/v1/seller/message',
           undefined,
-          { rateLimitKey: 'communications.createSellerMessage' }
+          { rateLimitKey: 'communications.postSellerMessage' }
         );
       });
     });
@@ -636,7 +636,7 @@ describe('CommunicationsModule', () => {
         expect(mockClient.patch).toHaveBeenCalledWith(
           'https://feedbacks-api.wildberries.ru/api/v1/questions',
           data,
-          { rateLimitKey: 'communications.updateQuestion' }
+          { rateLimitKey: 'communications.patchQuestions' }
         );
       });
     });
@@ -649,7 +649,7 @@ describe('CommunicationsModule', () => {
 
         expect(mockClient.get).toHaveBeenCalledWith(
           'https://buyer-chat-api.wildberries.ru/api/v1/seller/download/file123',
-          { rateLimitKey: 'communications.getSellerDownload' }
+          { rateLimitKey: 'communications.sellerDownload' }
         );
       });
     });
@@ -663,7 +663,7 @@ describe('CommunicationsModule', () => {
         expect(mockClient.patch).toHaveBeenCalledWith(
           'https://returns-api.wildberries.ru/api/v1/claim',
           undefined,
-          { rateLimitKey: 'communications.updateClaim' }
+          { rateLimitKey: 'communications.patchClaim' }
         );
       });
     });
@@ -677,7 +677,7 @@ describe('CommunicationsModule', () => {
         expect(mockClient.post).toHaveBeenCalledWith(
           'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/order/return',
           { feedbackId: 'fb123' },
-          { rateLimitKey: 'communications.createOrderReturn' }
+          { rateLimitKey: 'communications.postFeedbacksOrderReturn' }
         );
       });
     });
