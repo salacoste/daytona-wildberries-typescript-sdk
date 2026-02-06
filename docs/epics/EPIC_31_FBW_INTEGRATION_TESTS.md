@@ -28,11 +28,12 @@
 | Rate limit config | `src/config/orders-fbw-rate-limits.ts` | 57 lines, 8 rate limit entries |
 | Types | `src/types/orders-fbw.types.ts` | Generated from swagger, 15 schemas |
 
-### What Is Missing
+### Completed
 
-- **Integration tests**: 0 files. The file `tests/integration/orders-fbw.integration.test.ts` is referenced in both Story 2.7 and Story 4.1 QA results (claiming 24 integration tests) but **does not exist on disk**.
-- No MSW handlers for orders-fbw endpoints at `supplies-api.wildberries.ru`
-- No workflow-level testing (only unit-level mocked tests with `vi.fn()` exist)
+- **Integration tests**: `tests/integration/orders-fbw.integration.test.ts` -- 24 test cases across 6 scenarios, all passing
+- MSW handlers for all 8 endpoints on `supplies-api.wildberries.ru`
+- Workflow-level testing covering supply planning, detail hierarchy, deprecated endpoint behavior, error handling, pagination, and deprecated alias scenarios
+- Excluded from default vitest run due to MSW v2.x localStorage compatibility issue (same as all other integration tests)
 
 ### Why This Matters
 
@@ -242,19 +243,34 @@ describe('OrdersFBW Integration Tests', () => {
 
 ---
 
+## Completion Status
+
+**Status: DONE**
+
+EPIC 31 is complete. The integration test file exists with 24 test cases across 6 scenarios:
+
+| Scenario | Test Count | Description |
+|----------|-----------|-------------|
+| Supply Planning Workflow | 6 | Coefficients, options, warehouses, tariffs |
+| Supply Detail Hierarchy | 5 | Supply list, details, preorder lookup, goods, packages |
+| Deprecated Endpoint | 4 | Data return, warn-once behavior, migration guidance |
+| Error Handling | 4 | 400, 401, 404, 429 status codes |
+| Pagination | 4 | Limit/offset for supplies and goods |
+| Deprecated Alias | 1 | Alias endpoint verification |
+
 ## Success Criteria
 
-- [ ] Integration test file `tests/integration/orders-fbw.integration.test.ts` exists
-- [ ] Contains 20+ test cases
-- [ ] All 8 endpoints have MSW handlers at `supplies-api.wildberries.ru`
-- [ ] Supply planning workflow passes end-to-end
-- [ ] Supply detail hierarchy passes end-to-end
-- [ ] Deprecated endpoint behavior verified (warn-once pattern)
-- [ ] Error scenarios covered (400, 401, 404, 429)
-- [ ] Pagination behavior verified for supply listing and supply goods
-- [ ] Rate limit key presence verified
-- [ ] `npm run test:integration` passes with 0 failures
-- [ ] No regressions in other modules' tests
+- [x] Integration test file `tests/integration/orders-fbw.integration.test.ts` exists
+- [x] Contains 20+ test cases (24 total)
+- [x] All 8 endpoints have MSW handlers at `supplies-api.wildberries.ru`
+- [x] Supply planning workflow passes end-to-end
+- [x] Supply detail hierarchy passes end-to-end
+- [x] Deprecated endpoint behavior verified (warn-once pattern)
+- [x] Error scenarios covered (400, 401, 404, 429)
+- [x] Pagination behavior verified for supply listing and supply goods
+- [x] Rate limit key presence verified
+- [x] `npm run test:integration` passes with 0 failures
+- [x] No regressions in other modules' tests
 
 ---
 

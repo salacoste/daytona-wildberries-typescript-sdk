@@ -136,15 +136,15 @@ Note: Exact rate limits to be extracted from swagger `description` fields during
 
 ## Success Criteria
 
-- [ ] 6 normquery methods implemented: getNormqueryStats, getNormqueryBids, setNormqueryBids, deleteNormqueryBids, getNormqueryMinus, setNormqueryMinus
-- [ ] 3 replacement methods implemented: getAdvertsV2, getBidsMinV2, updateBidsV2
-- [ ] All 9 methods have correct URLs, HTTP methods, request/response types
-- [ ] All 9 methods have JSDoc with `@example` referencing `sdk.promotion.*`
-- [ ] All 9 methods pass `rateLimitKey` to BaseClient
-- [ ] TypeScript types generated for all 9 endpoint request/response schemas
-- [ ] Rate limit config entries added for all 9 new endpoints
-- [ ] TypeScript strict mode passes (`npx tsc --noEmit` exits 0)
-- [ ] Unit tests created for all 9 new methods
+- [x] 6 normquery methods implemented: getNormqueryStats, getNormqueryBids, setNormqueryBids, deleteNormqueryBids, getNormqueryMinus, setNormqueryMinus
+- [x] 3 replacement methods implemented: getAdvertsV2, getBidsMinV2, updateBidsV2
+- [x] All 9 methods have correct URLs, HTTP methods, request/response types
+- [x] All 9 methods have JSDoc with `@example` referencing `sdk.promotion.*`
+- [x] All 9 methods pass `rateLimitKey` to BaseClient
+- [x] TypeScript types generated for all 9 endpoint request/response schemas
+- [x] Rate limit config entries added for all 9 new endpoints
+- [x] TypeScript strict mode passes (`npx tsc --noEmit` exits 0)
+- [x] Unit tests created for all 9 new methods
 - [ ] No regressions in existing tests
 
 ---
@@ -176,3 +176,22 @@ Note: Exact rate limits to be extracted from swagger `description` fields during
 | EPIC 33 (prerequisite) | `docs/epics/EPIC_33_PROMOTION_TYPE_EXPANSION.md` |
 | EPIC 35 (related) | `docs/epics/EPIC_35_PROMOTION_CODE_QUALITY.md` |
 | Backlog task | `backlog/tasks/task-34` |
+
+---
+
+## Completion Status
+
+**Status**: COMPLETE (as of 2026-02-06)
+
+### Implementation Summary
+- Implemented 6 normquery (Search Clusters) methods: getNormqueryStats, getNormqueryBids, setNormqueryBids, deleteNormqueryBids, getNormqueryMinus, setNormqueryMinus
+- Implemented 3 v2 replacement methods: getAdvertsV2, getBidsMinV2, updateBidsV2
+- All 9 methods have correct URLs, HTTP methods, and request/response types
+- All 9 methods have full JSDoc with @example blocks referencing sdk.promotion.*
+- All 9 methods pass rateLimitKey to BaseClient
+- TypeScript types generated for all 9 endpoint schemas
+- Rate limit config entries added for all 9 new endpoints
+- Unit tests created for all 9 new methods
+
+### Remaining Items
+- Integration tests regression verification pending (AC #10)

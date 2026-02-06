@@ -30,35 +30,35 @@ type ResponsePaidStorage = {
 }[];
 ```
 
-Defined in: [types/reports.types.ts:401](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L401)
+Defined in: [types/reports.types.ts:401](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L401)
 
 ## Type Declaration
 
 | Name | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| `date?` | `string` | Дата, за которую был расчёт или перерасчёт | [types/reports.types.ts:403](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L403) |
-| `logWarehouseCoef?` | `number` | Коэффициент логистики и хранения | [types/reports.types.ts:405](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L405) |
-| `officeId?` | `number` | ID склада | [types/reports.types.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L407) |
-| `warehouse?` | `string` | Название склада | [types/reports.types.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L409) |
-| `warehouseCoef?` | `number` | Коэффициент склада | [types/reports.types.ts:411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L411) |
-| `giId?` | `number` | ID поставки | [types/reports.types.ts:413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L413) |
-| `chrtId?` | `number` | ID размера для этого артикула WB | [types/reports.types.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L415) |
-| `size?` | `string` | Размер (`techSize` в карточке товара) | [types/reports.types.ts:417](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L417) |
-| `barcode?` | `string` | Баркод | [types/reports.types.ts:419](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L419) |
-| `subject?` | `string` | Предмет | [types/reports.types.ts:421](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L421) |
-| `brand?` | `string` | Бренд | [types/reports.types.ts:423](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L423) |
-| `vendorCode?` | `string` | Артикул продавца | [types/reports.types.ts:425](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L425) |
-| `nmId?` | `number` | Артикул WB | [types/reports.types.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L427) |
-| `volume?` | `number` | Объём товара | [types/reports.types.ts:429](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L429) |
-| `calcType?` | `string` | Способ расчёта | [types/reports.types.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L431) |
-| `warehousePrice?` | `number` | Сумма хранения | [types/reports.types.ts:433](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L433) |
-| `barcodesCount?` | `number` | Количество единиц товара (штук), подлежащих тарифицированию за расчётные сутки | [types/reports.types.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L435) |
-| `palletPlaceCode?` | `number` | Код паллетоместа | [types/reports.types.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L437) |
-| `palletCount?` | `number` | Количество паллет | [types/reports.types.ts:439](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L439) |
-| `originalDate?` | `string` | Если был перерасчёт, это дата первоначального расчёта. Если перерасчёта не было, совпадает с `date` | [types/reports.types.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L441) |
-| `loyaltyDiscount?` | `number` | Скидка программы лояльности, ₽ | [types/reports.types.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L443) |
-| `tariffFixDate?` | `string` | Дата фиксации тарифа | [types/reports.types.ts:445](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L445) |
-| `tariffLowerDate?` | `string` | Дата понижения тарифа | [types/reports.types.ts:447](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/reports.types.ts#L447) |
+| `date?` | `string` | Дата, за которую был расчёт или перерасчёт | [types/reports.types.ts:403](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L403) |
+| `logWarehouseCoef?` | `number` | Коэффициент логистики и хранения | [types/reports.types.ts:405](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L405) |
+| `officeId?` | `number` | ID склада | [types/reports.types.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L407) |
+| `warehouse?` | `string` | Название склада | [types/reports.types.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L409) |
+| `warehouseCoef?` | `number` | Коэффициент склада | [types/reports.types.ts:411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L411) |
+| `giId?` | `number` | ID поставки | [types/reports.types.ts:413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L413) |
+| `chrtId?` | `number` | ID размера для этого артикула WB | [types/reports.types.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L415) |
+| `size?` | `string` | Размер (`techSize` в карточке товара) | [types/reports.types.ts:417](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L417) |
+| `barcode?` | `string` | Баркод | [types/reports.types.ts:419](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L419) |
+| `subject?` | `string` | Предмет | [types/reports.types.ts:421](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L421) |
+| `brand?` | `string` | Бренд | [types/reports.types.ts:423](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L423) |
+| `vendorCode?` | `string` | Артикул продавца | [types/reports.types.ts:425](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L425) |
+| `nmId?` | `number` | Артикул WB | [types/reports.types.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L427) |
+| `volume?` | `number` | Объём товара | [types/reports.types.ts:429](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L429) |
+| `calcType?` | `string` | Способ расчёта | [types/reports.types.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L431) |
+| `warehousePrice?` | `number` | Сумма хранения | [types/reports.types.ts:433](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L433) |
+| `barcodesCount?` | `number` | Количество единиц товара (штук), подлежащих тарифицированию за расчётные сутки | [types/reports.types.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L435) |
+| `palletPlaceCode?` | `number` | Код паллетоместа | [types/reports.types.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L437) |
+| `palletCount?` | `number` | Количество паллет | [types/reports.types.ts:439](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L439) |
+| `originalDate?` | `string` | Если был перерасчёт, это дата первоначального расчёта. Если перерасчёта не было, совпадает с `date` | [types/reports.types.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L441) |
+| `loyaltyDiscount?` | `number` | Скидка программы лояльности, ₽ | [types/reports.types.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L443) |
+| `tariffFixDate?` | `string` | Дата фиксации тарифа | [types/reports.types.ts:445](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L445) |
+| `tariffLowerDate?` | `string` | Дата понижения тарифа | [types/reports.types.ts:447](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/reports.types.ts#L447) |
 
 ## Example
 

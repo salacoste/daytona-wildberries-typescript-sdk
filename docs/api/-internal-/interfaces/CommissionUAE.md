@@ -2,10 +2,10 @@
 
 # Interface: CommissionUAE
 
-Defined in: [types/tariffs.types.ts:202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/tariffs.types.ts#L202)
+Defined in: [types/tariffs.types.ts:202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/tariffs.types.ts#L202)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="report"></a> `report?` | \{ `kgvpUAE?`: `number`; `parentID?`: `number`; `parentName?`: `string`; `subjectID?`: `number`; `subjectName?`: `string`; \}[] | Список комиссий | [types/tariffs.types.ts:204](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/tariffs.types.ts#L204) |
+| <a id="report"></a> `report?` | \{ `kgvpUAE?`: `number`; `parentID?`: `number`; `parentName?`: `string`; `subjectID?`: `number`; `subjectName?`: `string`; \}[] | Список комиссий | [types/tariffs.types.ts:204](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/tariffs.types.ts#L204) |

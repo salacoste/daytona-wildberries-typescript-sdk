@@ -140,15 +140,15 @@ Run `npx tsc --noEmit` and `npm run lint` to ensure zero errors.
 
 ## Success Criteria
 
-- [ ] All 16 deprecated methods marked with `@deprecated` JSDoc tag and `console.warn` on first call
-- [ ] `createAdvSaveAd()` marked as `@deprecated` (endpoint removed from swagger)
-- [ ] All 42 JSDoc `@example` blocks reference `sdk.promotion.*` (not `sdk.general.*`)
-- [ ] All 42 methods pass correct `rateLimitKey` from promotion-rate-limits config to BaseClient
+- [x] All 16 deprecated methods marked with `@deprecated` JSDoc tag and `console.warn` on first call
+- [x] `createAdvSaveAd()` marked as `@deprecated` (endpoint removed from swagger)
+- [x] All 42 JSDoc `@example` blocks reference `sdk.promotion.*` (not `sdk.general.*`)
+- [x] All 42 methods pass correct `rateLimitKey` from promotion-rate-limits config to BaseClient
 - [ ] Rate limit config updated with 9 new entries for EPIC 34 endpoints (total ~51)
-- [ ] `npx tsc --noEmit` exits 0
-- [ ] `npm run lint` exits 0
-- [ ] All existing unit tests pass with zero regressions
-- [ ] New unit tests for rateLimitKey and deprecation pass
+- [x] `npx tsc --noEmit` exits 0
+- [x] `npm run lint` exits 0
+- [x] All existing unit tests pass with zero regressions
+- [x] New unit tests for rateLimitKey and deprecation pass
 
 ---
 
@@ -168,3 +168,22 @@ Run `npx tsc --noEmit` and `npm run lint` to ensure zero errors.
 | EPIC 33 (types) | `docs/epics/EPIC_33_PROMOTION_TYPE_EXPANSION.md` |
 | EPIC 34 (new endpoints) | `docs/epics/EPIC_34_PROMOTION_NEW_ENDPOINTS.md` |
 | Backlog task (code quality) | `backlog/tasks/task-35` |
+
+---
+
+## Completion Status
+
+**Status**: COMPLETE (as of 2026-02-06)
+
+### Implementation Summary
+- Marked all 16 deprecated methods with @deprecated JSDoc tag and console.warn (warn-once pattern)
+- Marked createAdvSaveAd() as deprecated (endpoint removed from swagger)
+- Fixed all 42 JSDoc @example blocks to reference sdk.promotion.* instead of sdk.general.*
+- Wired rateLimitKey to all 42 existing methods for proper rate limit enforcement
+- TypeScript strict mode passes
+- Linting passes
+- All existing unit tests pass with zero regressions
+- New unit tests added for rateLimitKey verification and deprecation warnings
+
+### Remaining Items
+- Rate limit config entries for EPIC 34's 9 new endpoints (AC #5) - to be completed as part of EPIC 34 implementation

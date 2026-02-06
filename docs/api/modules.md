@@ -78,6 +78,8 @@ Main entry point
 
 | Variable | Description |
 | ------ | ------ |
+| [analyticsRateLimits](variables/analyticsRateLimits.md) | - |
+| [communicationsRateLimits](variables/communicationsRateLimits.md) | - |
 | [financesRateLimits](variables/financesRateLimits.md) | - |
 | [generalRateLimits](variables/generalRateLimits.md) | - |
 | [inStorePickupRateLimits](variables/inStorePickupRateLimits.md) | - |
@@ -87,6 +89,7 @@ Main entry point
 | [productsRateLimits](variables/productsRateLimits.md) | - |
 | [promotionRateLimits](variables/promotionRateLimits.md) | - |
 | [ALL\_RATE\_LIMITS](variables/ALL_RATE_LIMITS.md) | Aggregated rate limit configuration for all SDK modules. |
+| [reportsRateLimits](variables/reportsRateLimits.md) | - |
 | [tariffsRateLimits](variables/tariffsRateLimits.md) | - |
 | [userManagementRateLimits](variables/userManagementRateLimits.md) | - |
 | [version](variables/version.md) | SDK version |

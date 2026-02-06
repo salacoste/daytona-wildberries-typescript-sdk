@@ -219,9 +219,11 @@ february_2026_audit:
 
     - id: "gap-5"
       severity: "high"
+      status: "RESOLVED"
       title: "Integration tests missing"
       description: "QA results reference 24 integration tests but file tests/integration/orders-fbw.integration.test.ts does not exist"
-      files: []
+      resolution: "EPIC 31 completed. File tests/integration/orders-fbw.integration.test.ts now exists with 24 MSW integration tests across 6 scenarios. Excluded from CI due to MSW v2.x localStorage issue (project-wide)."
+      files: ["tests/integration/orders-fbw.integration.test.ts"]
       epic: "EPIC 31 (task-31)"
 
   follow_up_epics:

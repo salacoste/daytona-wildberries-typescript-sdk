@@ -2,7 +2,7 @@
 
 # Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L10)
+Defined in: [modules/orders-fbw/index.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L26)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:10](https://github.com/salacoste/dayton
 new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L11)
+Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L29)
 
 #### Parameters
 
@@ -26,7 +26,7 @@ Defined in: [modules/orders-fbw/index.ts:11](https://github.com/salacoste/dayton
 
 ## Methods
 
-### getAcceptanceCoefficients()
+### ~~getAcceptanceCoefficients()~~
 
 ```ts
 getAcceptanceCoefficients(options?: {
@@ -34,7 +34,7 @@ getAcceptanceCoefficients(options?: {
 }): Promise<ModelsAcceptanceCoefficient[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L28)
+Defined in: [modules/orders-fbw/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L47)
 
 Коэффициенты приёмки
 
@@ -52,6 +52,10 @@ Defined in: [modules/orders-fbw/index.ts:28](https://github.com/salacoste/dayton
 `Promise`\<[`ModelsAcceptanceCoefficient`](../-internal-/interfaces/ModelsAcceptanceCoefficient.md)[]\>
 
 Успешно
+
+#### Deprecated
+
+Use tariffs module instead. This endpoint has been moved to common-api.wildberries.ru.
 
 #### Throws
 
@@ -72,7 +76,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAcceptanceCoefficients({});
+const result = await sdk.ordersFBW.getAcceptanceCoefficients({});
 console.log(result);
 ```
 
@@ -86,7 +90,7 @@ createAcceptanceOption(data: ModelsGood[], options?: {
 }): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L48)
+Defined in: [modules/orders-fbw/index.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L78)
 
 Опции приёмки
 
@@ -125,7 +129,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createAcceptanceOption({}, {});
+const result = await sdk.ordersFBW.createAcceptanceOption([{ barcode: '1234567891234', quantity: 10 }]);
 console.log(result);
 ```
 
@@ -137,7 +141,7 @@ console.log(result);
 warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L66)
+Defined in: [modules/orders-fbw/index.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L103)
 
 Список складов
 
@@ -168,7 +172,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.warehouses();
+const result = await sdk.ordersFBW.warehouses();
 console.log(result);
 ```
 
@@ -180,7 +184,7 @@ console.log(result);
 transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L84)
+Defined in: [modules/orders-fbw/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L124)
 
 Транзитные направления
 
@@ -211,22 +215,22 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.transitTariffs();
+const result = await sdk.ordersFBW.transitTariffs();
 console.log(result);
 ```
 
 ***
 
-### createSupply()
+### listSupplies()
 
 ```ts
-createSupply(data: ModelsSuppliesFiltersRequest, options?: {
+listSupplies(data: ModelsSuppliesFiltersRequest, options?: {
   limit?: number;
   offset?: number;
 }): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L104)
+Defined in: [modules/orders-fbw/index.ts:147](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L147)
 
 Список поставок
 
@@ -266,9 +270,39 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createSupply({}, {});
+const result = await sdk.ordersFBW.listSupplies({});
 console.log(result);
 ```
+
+***
+
+### ~~createSupply()~~
+
+```ts
+createSupply(data: ModelsSuppliesFiltersRequest, options?: {
+  limit?: number;
+  offset?: number;
+}): Promise<ModelsSupply[]>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L161)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `data` | [`ModelsSuppliesFiltersRequest`](../-internal-/interfaces/ModelsSuppliesFiltersRequest.md) |
+| `options?` | \{ `limit?`: `number`; `offset?`: `number`; \} |
+| `options.limit?` | `number` |
+| `options.offset?` | `number` |
+
+#### Returns
+
+`Promise`\<[`ModelsSupply`](../-internal-/interfaces/ModelsSupply.md)[]\>
+
+#### Deprecated
+
+Use [listSupplies](#listsupplies) instead. This method will be removed in v3.0.0.
 
 ***
 
@@ -280,7 +314,7 @@ getSupply(ID: number, options?: {
 }): Promise<ModelsSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L124)
+Defined in: [modules/orders-fbw/index.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L184)
 
 Детали поставки
 
@@ -319,7 +353,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSupply('ID-value', {});
+const result = await sdk.ordersFBW.getSupply(12345);
 console.log(result);
 ```
 
@@ -335,7 +369,7 @@ getSuppliesGood(ID: number, options?: {
 }): Promise<ModelsGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L144)
+Defined in: [modules/orders-fbw/index.ts:207](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L207)
 
 Товары поставки
 
@@ -376,7 +410,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSuppliesGood('ID-value', {});
+const result = await sdk.ordersFBW.getSuppliesGood(12345);
 console.log(result);
 ```
 
@@ -388,7 +422,7 @@ console.log(result);
 getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/modules/orders-fbw/index.ts#L163)
+Defined in: [modules/orders-fbw/index.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/orders-fbw/index.ts#L232)
 
 Упаковка поставки
 
@@ -425,6 +459,6 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSuppliesPackage('ID-value');
+const result = await sdk.ordersFBW.getSuppliesPackage(12345);
 console.log(result);
 ```

@@ -2,7 +2,7 @@
 
 # Interface: GetMetaBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/orders-dbs.types.ts#L450)
+Defined in: [types/orders-dbs.types.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/orders-dbs.types.ts#L450)
 
 Request body for getMetaBulk
 
@@ -10,4 +10,4 @@ Request body for getMetaBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to get metadata for | [types/orders-dbs.types.ts:452](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/orders-dbs.types.ts#L452) |
+| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to get metadata for | [types/orders-dbs.types.ts:452](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/orders-dbs.types.ts#L452) |

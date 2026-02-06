@@ -2,7 +2,7 @@
 
 # Interface: GetUsersParams
 
-Defined in: [types/user-management.types.ts:133](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/user-management.types.ts#L133)
+Defined in: [types/user-management.types.ts:133](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/user-management.types.ts#L133)
 
 Параметры запроса для получения списка пользователей
 
@@ -10,6 +10,6 @@ Defined in: [types/user-management.types.ts:133](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="limit"></a> `limit?` | `number` | Количество активных или приглашённых пользователей в ответе **Default** `100` **Maximum** 100 | [types/user-management.types.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/user-management.types.ts#L139) |
-| <a id="offset"></a> `offset?` | `number` | Сколько элементов пропустить. Например, для значения 10 ответ начнется с 11 элемента **Default** `0` | [types/user-management.types.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/user-management.types.ts#L144) |
-| <a id="isinviteonly"></a> `isInviteOnly?` | `boolean` | Фильтр по типу пользователей: - `true` — список приглашённых пользователей, которые ещё не активировали доступ - `false` или не указан — список активных пользователей профиля продавца **Default** `false` | [types/user-management.types.ts:151](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/user-management.types.ts#L151) |
+| <a id="limit"></a> `limit?` | `number` | Количество активных или приглашённых пользователей в ответе **Default** `100` **Maximum** 100 | [types/user-management.types.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/user-management.types.ts#L139) |
+| <a id="offset"></a> `offset?` | `number` | Сколько элементов пропустить. Например, для значения 10 ответ начнется с 11 элемента **Default** `0` | [types/user-management.types.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/user-management.types.ts#L144) |
+| <a id="isinviteonly"></a> `isInviteOnly?` | `boolean` | Фильтр по типу пользователей: - `true` — список приглашённых пользователей, которые ещё не активировали доступ - `false` или не указан — список активных пользователей профиля продавца **Default** `false` | [types/user-management.types.ts:151](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/user-management.types.ts#L151) |

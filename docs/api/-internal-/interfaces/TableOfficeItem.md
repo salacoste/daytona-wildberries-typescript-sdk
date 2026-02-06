@@ -2,7 +2,7 @@
 
 # Interface: TableOfficeItem
 
-Defined in: [types/analytics.types.ts:1462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1462)
+Defined in: [types/analytics.types.ts:1462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/analytics.types.ts#L1462)
 
 Данные по складу
 
@@ -10,7 +10,7 @@ Defined in: [types/analytics.types.ts:1462](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="regionname"></a> `regionName` | `string` | Регион отгрузки | [types/analytics.types.ts:1464](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1464) |
-| <a id="officeid"></a> `officeID` | `number` | ID склада | [types/analytics.types.ts:1466](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1466) |
-| <a id="officename"></a> `officeName` | `string` | Название склада | [types/analytics.types.ts:1468](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1468) |
-| <a id="metrics"></a> `metrics` | [`TableCommonMetrics`](TableCommonMetrics.md) | Метрики склада | [types/analytics.types.ts:1470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/67c91e2d737bf4501121eca5295b5314e3377bb5/src/types/analytics.types.ts#L1470) |
+| <a id="regionname"></a> `regionName` | `string` | Регион отгрузки | [types/analytics.types.ts:1464](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/analytics.types.ts#L1464) |
+| <a id="officeid"></a> `officeID` | `number` | ID склада | [types/analytics.types.ts:1466](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/analytics.types.ts#L1466) |
+| <a id="officename"></a> `officeName` | `string` | Название склада | [types/analytics.types.ts:1468](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/analytics.types.ts#L1468) |
+| <a id="metrics"></a> `metrics` | [`TableCommonMetrics`](TableCommonMetrics.md) | Метрики склада | [types/analytics.types.ts:1470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/analytics.types.ts#L1470) |
