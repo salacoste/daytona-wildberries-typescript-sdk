@@ -2,7 +2,7 @@
 
 # Interface: DirectoryColor
 
-Defined in: [types/products.types.ts:795](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/products.types.ts#L795)
+Defined in: [types/products.types.ts:795](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L795)
 
 Цвет из справочника
 
@@ -12,5 +12,5 @@ Returned by GET /content/v2/directory/colors
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name` | `string` | Наименование цвета (e.g., "персиковый мелок") | [types/products.types.ts:797](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/products.types.ts#L797) |
-| <a id="parentname"></a> `parentName` | `string` | Наименование родительского цвета (e.g., "оранжевый") | [types/products.types.ts:799](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/products.types.ts#L799) |
+| <a id="name"></a> `name` | `string` | Наименование цвета (e.g., "персиковый мелок") | [types/products.types.ts:797](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L797) |
+| <a id="parentname"></a> `parentName` | `string` | Наименование родительского цвета (e.g., "оранжевый") | [types/products.types.ts:799](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L799) |

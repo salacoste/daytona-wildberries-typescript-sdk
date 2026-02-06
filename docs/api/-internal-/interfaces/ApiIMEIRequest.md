@@ -2,7 +2,7 @@
 
 # Interface: ApiIMEIRequest
 
-Defined in: [types/in-store-pickup.types.ts:71](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L71)
+Defined in: [types/in-store-pickup.types.ts:71](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/in-store-pickup.types.ts#L71)
 
 ## Example
 
@@ -18,4 +18,4 @@ Defined in: [types/in-store-pickup.types.ts:71](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="imei"></a> `imei?` | `string` | IMEI | [types/in-store-pickup.types.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L73) |
+| <a id="imei"></a> `imei?` | `string` | IMEI | [types/in-store-pickup.types.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/in-store-pickup.types.ts#L73) |

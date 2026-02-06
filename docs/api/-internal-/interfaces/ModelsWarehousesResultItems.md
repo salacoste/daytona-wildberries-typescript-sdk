@@ -2,7 +2,7 @@
 
 # Interface: ModelsWarehousesResultItems
 
-Defined in: [types/orders-fbw.types.ts:297](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L297)
+Defined in: [types/orders-fbw.types.ts:297](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L297)
 
 ## Example
 
@@ -22,10 +22,10 @@ Defined in: [types/orders-fbw.types.ts:297](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `ID?` | `number` | ID склада | [types/orders-fbw.types.ts:299](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L299) |
-| <a id="name"></a> `name?` | `string` | Название склада | [types/orders-fbw.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L301) |
-| <a id="address"></a> `address?` | `string` | Адрес склада | [types/orders-fbw.types.ts:303](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L303) |
-| <a id="worktime"></a> `workTime?` | `string` | Режим работы склада | [types/orders-fbw.types.ts:305](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L305) |
-| <a id="acceptsqr"></a> `acceptsQR?` | `boolean` | Принимает ли склад QR-поставки: - `true` — да - `false` — нет | [types/orders-fbw.types.ts:307](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L307) |
-| <a id="isactive"></a> `isActive?` | `boolean` | Доступен ли в качестве склада назначения: - `true` — да - `false` — нет | [types/orders-fbw.types.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L309) |
-| <a id="istransitactive"></a> `isTransitActive?` | `boolean` | Доступен ли в качестве транзитного склада: - `true` — да - `false` — нет | [types/orders-fbw.types.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbw.types.ts#L311) |
+| <a id="id"></a> `ID?` | `number` | ID склада | [types/orders-fbw.types.ts:299](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L299) |
+| <a id="name"></a> `name?` | `string` | Название склада | [types/orders-fbw.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L301) |
+| <a id="address"></a> `address?` | `string` | Адрес склада | [types/orders-fbw.types.ts:303](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L303) |
+| <a id="worktime"></a> `workTime?` | `string` | Режим работы склада | [types/orders-fbw.types.ts:305](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L305) |
+| <a id="acceptsqr"></a> `acceptsQR?` | `boolean` | Принимает ли склад QR-поставки: - `true` — да - `false` — нет | [types/orders-fbw.types.ts:307](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L307) |
+| <a id="isactive"></a> `isActive?` | `boolean` | Доступен ли в качестве склада назначения: - `true` — да - `false` — нет | [types/orders-fbw.types.ts:309](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L309) |
+| <a id="istransitactive"></a> `isTransitActive?` | `boolean` | Доступен ли в качестве транзитного склада: - `true` — да - `false` — нет | [types/orders-fbw.types.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L311) |

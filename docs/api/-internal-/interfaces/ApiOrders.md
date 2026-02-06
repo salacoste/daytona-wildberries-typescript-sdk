@@ -2,11 +2,11 @@
 
 # Interface: ApiOrders
 
-Defined in: [types/in-store-pickup.types.ts:233](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L233)
+Defined in: [types/in-store-pickup.types.ts:233](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/in-store-pickup.types.ts#L233)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="next"></a> `next?` | `number` | Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных | [types/in-store-pickup.types.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L235) |
-| <a id="orders"></a> `orders?` | [`ApiOrder`](ApiOrder.md)[] | Список сборочных заданий | [types/in-store-pickup.types.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L237) |
+| <a id="next"></a> `next?` | `number` | Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных | [types/in-store-pickup.types.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/in-store-pickup.types.ts#L235) |
+| <a id="orders"></a> `orders?` | [`ApiOrder`](ApiOrder.md)[] | Список сборочных заданий | [types/in-store-pickup.types.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/in-store-pickup.types.ts#L237) |

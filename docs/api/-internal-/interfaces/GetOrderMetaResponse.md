@@ -2,7 +2,7 @@
 
 # Interface: GetOrderMetaResponse
 
-Defined in: [types/orders-dbs.types.ts:349](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-dbs.types.ts#L349)
+Defined in: [types/orders-dbs.types.ts:349](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-dbs.types.ts#L349)
 
 Response from getOrderMeta
 
@@ -10,4 +10,4 @@ Response from getOrderMeta
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="meta"></a> `meta?` | [`DBSOrderMeta`](DBSOrderMeta.md) | Metadata structure | [types/orders-dbs.types.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-dbs.types.ts#L351) |
+| <a id="meta"></a> `meta?` | [`DBSOrderMeta`](DBSOrderMeta.md) | Metadata structure | [types/orders-dbs.types.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-dbs.types.ts#L351) |

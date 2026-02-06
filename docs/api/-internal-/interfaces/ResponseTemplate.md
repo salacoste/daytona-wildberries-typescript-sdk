@@ -2,7 +2,7 @@
 
 # ~~Interface: ResponseTemplate~~
 
-Defined in: [types/communications.types.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L300)
+Defined in: [types/communications.types.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L300)
 
 Успешно
 
@@ -15,8 +15,8 @@ The templates endpoints have been removed from the Wildberries API.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> ~~`data?`~~ | \{ `templates?`: \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[]; \} | - | [types/communications.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L301) |
-| `data.templates?` | \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[] | - | [types/communications.types.ts:302](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L302) |
-| <a id="error"></a> ~~`error?`~~ | `boolean` | Есть ли ошибка | [types/communications.types.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L312) |
-| <a id="errortext"></a> ~~`errorText?`~~ | `string` | Описание ошибки | [types/communications.types.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L314) |
-| <a id="additionalerrors"></a> ~~`additionalErrors?`~~ | `string`[] | Дополнительные ошибки | [types/communications.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L316) |
+| <a id="data"></a> ~~`data?`~~ | \{ `templates?`: \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[]; \} | - | [types/communications.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L301) |
+| `data.templates?` | \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[] | - | [types/communications.types.ts:302](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L302) |
+| <a id="error"></a> ~~`error?`~~ | `boolean` | Есть ли ошибка | [types/communications.types.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L312) |
+| <a id="errortext"></a> ~~`errorText?`~~ | `string` | Описание ошибки | [types/communications.types.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L314) |
+| <a id="additionalerrors"></a> ~~`additionalErrors?`~~ | `string`[] | Дополнительные ошибки | [types/communications.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L316) |

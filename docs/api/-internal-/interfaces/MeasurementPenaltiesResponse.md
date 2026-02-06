@@ -2,7 +2,7 @@
 
 # Interface: MeasurementPenaltiesResponse
 
-Defined in: [types/reports.types.ts:937](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L937)
+Defined in: [types/reports.types.ts:937](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L937)
 
 Response for getMeasurementPenalties
 Uses the Penalty interface for report items
@@ -15,6 +15,6 @@ EPIC 44 - Response type for getMeasurementPenalties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `reports?`: [`Penalty`](Penalty.md)[]; `total?`: `number`; \} | [types/reports.types.ts:938](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L938) |
-| `data.reports?` | [`Penalty`](Penalty.md)[] | [types/reports.types.ts:939](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L939) |
-| `data.total?` | `number` | [types/reports.types.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L940) |
+| <a id="data"></a> `data?` | \{ `reports?`: [`Penalty`](Penalty.md)[]; `total?`: `number`; \} | [types/reports.types.ts:938](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L938) |
+| `data.reports?` | [`Penalty`](Penalty.md)[] | [types/reports.types.ts:939](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L939) |
+| `data.total?` | `number` | [types/reports.types.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L940) |

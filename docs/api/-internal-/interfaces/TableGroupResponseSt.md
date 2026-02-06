@@ -2,10 +2,10 @@
 
 # Interface: TableGroupResponseSt
 
-Defined in: [types/analytics.types.ts:1340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L1340)
+Defined in: [types/analytics.types.ts:1340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1340)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="groups"></a> `groups` | [`TableGroups`](../type-aliases/TableGroups.md) | [types/analytics.types.ts:1341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L1341) |
+| <a id="groups"></a> `groups` | [`TableGroups`](../type-aliases/TableGroups.md) | [types/analytics.types.ts:1341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1341) |

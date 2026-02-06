@@ -10,6 +10,6 @@ type UnpinnedCause =
   | "sysAdditionalSlot";
 ```
 
-Defined in: [types/communications.types.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L39)
+Defined in: [types/communications.types.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/communications.types.ts#L39)
 
 Cause for review being unpinned automatically
