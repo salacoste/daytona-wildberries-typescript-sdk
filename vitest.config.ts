@@ -1,27 +1,3 @@
-/**
- * Global localStorage polyfill for MSW v2.x compatibility
- * MUST be at the very top, before any imports
- */
-if (typeof globalThis.localStorage === 'undefined') {
-  let store: Record<string, string> = {};
-  globalThis.localStorage = {
-    getItem: (key: string): string | null => store[key] ?? null,
-    setItem: (key: string, value: string): void => {
-      store[key] = value;
-    },
-    removeItem: (key: string): void => {
-      delete store[key];
-    },
-    clear: (): void => {
-      store = {};
-    },
-    key: (index: number): string | null => Object.keys(store)[index] ?? null,
-    get length(): number {
-      return Object.keys(store).length;
-    },
-  } as Storage;
-}
-
 import { defineConfig } from 'vitest/config';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -33,6 +9,9 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
  *
  * Context7 Reference: /vitest-dev/vitest - "vitest configuration typescript coverage thresholds"
  * Configured for comprehensive unit and integration testing with coverage enforcement
+ *
+ * Integration tests with MSW require jsdom environment for localStorage support.
+ * MSW v2.12.9+ works correctly with jsdom environment.
  */
 export default defineConfig({
   test: {
@@ -55,21 +34,6 @@ export default defineConfig({
       // TDD test files - excluded from default runs (red-phase tests expected to fail)
       // Run separately via: npm run test:tdd
       'tests/tdd/**',
-      // MSW v2.x integration tests - skipped due to localStorage compatibility issue
-      // MSW's CookieStore accesses localStorage.getItem() during import,
-      // before any test setup can polyfill it.
-      // @see https://github.com/mswjs/msw/issues - MSW Node.js compatibility
-      // @todo Re-enable when MSW v3 or Vitest provides a solution
-      'tests/integration/base-client.integration.test.ts',
-      'tests/integration/general.integration.test.ts',
-      'tests/integration/products-categories.integration.test.ts',
-      'tests/integration/promotion.integration.test.ts',
-      'tests/integration/retry-handler.integration.test.ts',
-      'tests/integration/sdk-initialization.test.ts',
-      'tests/integration/user-management.integration.test.ts',
-      'tests/integration/finances.integration.test.ts',
-      'tests/integration/orders-fbw.integration.test.ts',
-      'tests/integration/tariffs.integration.test.ts',
     ],
 
     // Coverage configuration
