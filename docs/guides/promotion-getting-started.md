@@ -479,7 +479,11 @@ console.log('Campaign performance:', stats);
 
 ```typescript
 // Get keyword performance statistics
-const keywordStats = await sdk.promotion.getAdvStatsKeywords({ id: 12345 });
+const keywordStats = await sdk.promotion.getStatsKeywords({
+  advert_id: 12345,
+  from: '2025-01-01',
+  to: '2025-01-07'
+});
 
 for (const kw of keywordStats ?? []) {
   console.log(`Keyword: ${kw.keyword}`);

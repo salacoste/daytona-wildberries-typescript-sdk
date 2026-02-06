@@ -153,13 +153,13 @@ Reply to customer messages:
 
 ```typescript
 // Send text message
-await sdk.communications.postSellerMessage({
+await sdk.communications.createSellerMessage({
   replySign: chat.replySign!,  // From chat object
   text: 'Спасибо за ваш вопрос! Отвечаем...'
 });
 
 // Send message with file attachments
-await sdk.communications.postSellerMessage({
+await sdk.communications.createSellerMessage({
   replySign: chat.replySign!,
   text: 'Высылаем инструкцию по применению',
   parts: [
@@ -188,9 +188,9 @@ Retrieve unanswered questions about your products:
 
 ```typescript
 // Get all product questions
-const questions = await sdk.communications.getProductQuestions({
+const questions = await sdk.communications.questions({
   isAnswered: false,  // Only unanswered questions
-  take: 100,          // Max 5000
+  take: 100,          // Max 10000
   skip: 0
 });
 
@@ -217,7 +217,7 @@ Submit answers to customer questions:
 
 ```typescript
 // Answer a question
-await sdk.communications.patchProductQuestionAnswer({
+await sdk.communications.updateQuestion({
   id: question.id!,
   answer: {
     text: 'Да, этот товар подходит для использования на улице при температуре до -30°C.'
@@ -225,10 +225,9 @@ await sdk.communications.patchProductQuestionAnswer({
 });
 
 // Get question statistics
-const stats = await sdk.communications.getProductQuestionsStats();
-console.log(`Total questions: ${stats.data?.countUnanswered}`);
+const stats = await sdk.communications.getQuestionsCountUnanswered();
 console.log(`Unanswered: ${stats.data?.countUnanswered}`);
-console.log(`Awaiting publication: ${stats.data?.countUnansweredWbRu}`);
+console.log(`Unanswered today: ${stats.data?.countUnansweredToday}`);
 ```
 
 ---
@@ -241,7 +240,7 @@ Fetch customer reviews with filtering:
 
 ```typescript
 // Get all reviews
-const reviews = await sdk.communications.getNewFeedbacks({
+const reviews = await sdk.communications.feedbacks({
   isAnswered: false,  // Only unanswered reviews
   take: 100,
   skip: 0
@@ -274,13 +273,13 @@ Reply to customer feedback:
 
 ```typescript
 // Respond to positive review
-await sdk.communications.patchNewFeedbackAnswer({
+await sdk.communications.createFeedbacksAnswer({
   id: review.id!,
   text: 'Спасибо за ваш отзыв! Рады, что вам понравился товар. 😊'
 });
 
 // Respond to negative review
-await sdk.communications.patchNewFeedbackAnswer({
+await sdk.communications.createFeedbacksAnswer({
   id: negativeReview.id!,
   text: 'Приносим извинения за неудобства. Мы исправили эту проблему в новой партии товаров. Свяжитесь с нами для решения вашего вопроса.'
 });
@@ -288,23 +287,13 @@ await sdk.communications.patchNewFeedbackAnswer({
 
 ### Review Management
 
-Archive and manage reviews:
+Get archived reviews:
 
 ```typescript
-// Archive old reviews
-await sdk.communications.postNewFeedbacksArchive({
-  feedbacks: [review1.id!, review2.id!]
-});
-
 // Get archived reviews
-const archived = await sdk.communications.getArchivedFeedbacks({
+const archived = await sdk.communications.getFeedbacksArchive({
   take: 50,
   skip: 0
-});
-
-// Unarchive reviews
-await sdk.communications.postNewFeedbacksUnarchive({
-  feedbacks: [archivedReview.id!]
 });
 ```
 
@@ -314,24 +303,16 @@ Handle reviews with parent-child relationships:
 
 ```typescript
 // Get parent reviews with children
-const parents = await sdk.communications.getNewParentFeedbacks({
-  take: 100,
-  skip: 0
-});
+// Note: Use feedback() method to get a specific review with parent/child relationships
+const review = await sdk.communications.feedback({ id: reviewId });
 
-parents.data?.feedbacks?.forEach(parent => {
-  console.log(`Parent Review ID: ${parent.id}`);
-  console.log(`Rating: ${parent.productValuation} stars`);
+if (review.data?.parentFeedbackId) {
+  console.log(`This is a follow-up to parent review: ${review.data.parentFeedbackId}`);
+}
 
-  // Get child reviews (follow-ups)
-  if (parent.id) {
-    sdk.communications.getNewFeedbackChildren(parent.id).then(children => {
-      children.data?.feedbacks?.forEach(child => {
-        console.log(`  └─ Follow-up: ${child.text}`);
-      });
-    });
-  }
-});
+if (review.data?.childFeedbackId) {
+  console.log(`This has a follow-up child review: ${review.data.childFeedbackId}`);
+}
 ```
 
 ---
@@ -349,7 +330,7 @@ async function handleCustomerMessage(event: Event) {
 
   // Auto-reply patterns
   if (message?.includes('статус заказа')) {
-    await sdk.communications.postSellerMessage({
+    await sdk.communications.createSellerMessage({
       replySign: getReplySignForChat(event.chatID),
       text: 'Проверяю статус вашего заказа. Один момент...'
     });
@@ -371,7 +352,7 @@ async function handleCustomerMessage(event: Event) {
 
 ```typescript
 async function answerProductQuestions() {
-  const questions = await sdk.communications.getProductQuestions({
+  const questions = await sdk.communications.questions({
     isAnswered: false,
     take: 100
   });
@@ -380,7 +361,7 @@ async function answerProductQuestions() {
     // Generate comprehensive answer
     const answer = generateAnswer(q.text, q.productDetails);
 
-    await sdk.communications.patchProductQuestionAnswer({
+    await sdk.communications.updateQuestion({
       id: q.id!,
       answer: { text: answer }
     });
@@ -402,7 +383,7 @@ function generateAnswer(question: string, product: ProductDetails): string {
 
 ```typescript
 async function respondToReviews() {
-  const reviews = await sdk.communications.getNewFeedbacks({
+  const reviews = await sdk.communications.feedbacks({
     isAnswered: false,
     take: 100
   });
@@ -419,7 +400,7 @@ async function respondToReviews() {
       response = `Приносим извинения за неудобства. ${getIssueResolution(review.text)}`;
     }
 
-    await sdk.communications.patchNewFeedbackAnswer({
+    await sdk.communications.createFeedbacksAnswer({
       id: review.id!,
       text: response
     });
@@ -487,7 +468,7 @@ async function getChatDashboard(): Promise<ChatDashboard> {
 |----------|-----------|
 | `getSellerChats()` | 10 requests per 10 seconds |
 | `getSellerEvents()` | 10 requests per 10 seconds |
-| `postSellerMessage()` | 10 requests per 10 seconds |
+| `createSellerMessage()` | 10 requests per 10 seconds |
 | Q&A methods | 5 requests per 5 seconds |
 | Reviews methods | 1 request per 5 seconds |
 
@@ -503,7 +484,7 @@ async function getChatDashboard(): Promise<ChatDashboard> {
 import { RateLimitError, ValidationError, WBAPIError } from 'daytona-wildberries-typescript-sdk';
 
 try {
-  await sdk.communications.postSellerMessage({
+  await sdk.communications.createSellerMessage({
     replySign: chat.replySign!,
     text: 'Hello!'
   });
@@ -600,7 +581,7 @@ async function handleCustomerMessage(event: Event) {
   }
 
   if (response) {
-    await sdk.communications.postSellerMessage({
+    await sdk.communications.createSellerMessage({
       replySign: chat.replySign!,
       text: response
     });
@@ -618,7 +599,7 @@ customerSupportBot();
 ```typescript
 // Daily Q&A processing
 async function processUnansweredQuestions() {
-  const questions = await sdk.communications.getProductQuestions({
+  const questions = await sdk.communications.questions({
     isAnswered: false,
     take: 1000
   });
@@ -630,7 +611,7 @@ async function processUnansweredQuestions() {
     const answer = await generateProductAnswer(question);
 
     // Submit answer
-    await sdk.communications.patchProductQuestionAnswer({
+    await sdk.communications.updateQuestion({
       id: question.id!,
       answer: { text: answer }
     });
@@ -642,8 +623,8 @@ async function processUnansweredQuestions() {
   }
 
   // Get updated stats
-  const stats = await sdk.communications.getProductQuestionsStats();
-  console.log(`Remaining unanswered: ${stats.data?.countUnanswered}`);
+  const stats = await sdk.communications.getQuestionsCountUnanswered();
+  console.log(`Remaining unanswered: ${stats.data?.countUnanswered || 0}`);
 }
 
 async function generateProductAnswer(question: any): Promise<string> {
@@ -665,7 +646,7 @@ async function generateProductAnswer(question: any): Promise<string> {
 ```typescript
 // Automated review responses
 async function manageReviews() {
-  const reviews = await sdk.communications.getNewFeedbacks({
+  const reviews = await sdk.communications.feedbacks({
     isAnswered: false,
     take: 500
   });
@@ -673,7 +654,7 @@ async function manageReviews() {
   for (const review of reviews.data?.feedbacks || []) {
     const response = generateReviewResponse(review);
 
-    await sdk.communications.patchNewFeedbackAnswer({
+    await sdk.communications.createFeedbacksAnswer({
       id: review.id!,
       text: response
     });

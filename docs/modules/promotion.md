@@ -13,7 +13,7 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
 | **Total Methods** | 48 (29 active + 19 deprecated) |
-| **Total Types** | 83 interfaces |
+| **Total Types** | 83 TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
 
 ### What's New (February 2026)

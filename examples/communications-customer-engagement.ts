@@ -94,13 +94,12 @@
  * const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY });
  *
  * // Get all chats
- * const chats = await sdk.communications.getChats();
+ * const chats = await sdk.communications.getSellerChats();
  *
  * // Poll for new messages
- * const events = await sdk.communications.getEvents();
+ * const events = await sdk.communications.getSellerEvents();
  *
- * // Reply to customer
- * await sdk.communications.sendMessage(chat.replySign, 'Thank you!');
+ * // Note: sendMessage() wrapper does not exist - use SDK methods directly
  * ```
  */
 
@@ -112,7 +111,7 @@ import {
   NetworkError,
   WBAPIError,
 } from '../src';
-import type { Chat, ChatEvent, Sender } from '../src/types/communications.types';
+import type { ChatsResponse, EventsResponse } from '../src/types/communications.types';
 
 // Initialize SDK
 const sdk = new WildberriesSDK({
@@ -149,8 +148,8 @@ async function manageChatConversations() {
   try {
     // Step 1: Get all active chat conversations
     console.log('Step 1: Fetching all active chats...');
-    const chatsResponse = await sdk.communications.getChats();
-    const chats = chatsResponse.result;
+    const chatsResponse = await sdk.communications.getSellerChats();
+    const chats = chatsResponse.result || [];
 
     if (chats.length === 0) {
       console.log('No active chats found.');
@@ -166,18 +165,21 @@ async function manageChatConversations() {
       console.log(`  Chat ID: ${chat.chatID}`);
       console.log(`  Customer: ${chat.clientName} (ID: ${chat.clientID})`);
       if (chat.goodCard) {
-        console.log(`  Product: ${chat.goodCard.productName}`);
-        console.log(`  Order Status ID: ${chat.goodCard.statusID}`);
+        console.log(`  Product: ${chat.goodCard.goodsName || chat.goodCard.productName}`);
       }
       console.log('');
     });
 
     // Step 2: Poll for new events (messages)
     console.log('Step 2: Polling for new messages...');
-    const eventsResponse = await sdk.communications.getEvents();
-    const { events, next, totalEvents } = eventsResponse.result;
+    const eventsResponse = await sdk.communications.getSellerEvents();
+    const { events, next, totalEvents } = eventsResponse.result || {
+      events: [],
+      next: undefined,
+      totalEvents: 0,
+    };
 
-    console.log(`Total events available: ${totalEvents}`);
+    console.log(`Total events available: ${totalEvents || 0}`);
     console.log(`Events in this batch: ${events.length}`);
     console.log(`Next cursor: ${next || 'N/A'}\n`);
 
@@ -191,7 +193,7 @@ async function manageChatConversations() {
     console.log('Step 3: Recent customer messages:\n');
 
     const customerMessages = events.filter(
-      (event) => event.sender === ('client' as Sender) && event.eventType === 'message'
+      (event) => event.sender === 'client' && event.eventType === 'message'
     );
 
     if (customerMessages.length === 0) {
@@ -201,42 +203,25 @@ async function manageChatConversations() {
         console.log(`Message ${index + 1}:`);
         console.log(`  Chat: ${event.chatID}`);
         console.log(`  Time: ${formatTimestamp(event.time)}`);
-        console.log(`  Text: ${truncate(event.text)}`);
+        console.log(`  Text: ${truncate(event.message?.text || '')}`);
         console.log('');
       });
     }
 
-    // Step 4: Respond to a chat (demonstration)
+    // Step 4: Note about sending messages
     if (chats.length > 0) {
       console.log('Step 4: Sending response to first chat (dry run)...\n');
-
-      const firstChat = chats[0];
-      const responseMessage = 'Thank you for your message! How can I help you today?';
-
-      console.log(`Would send to Chat ${firstChat.chatID}:`);
-      console.log(`  Customer: ${firstChat.clientName}`);
-      console.log(`  Message: "${responseMessage}"`);
-      console.log(`  Reply Sign: ${truncate(firstChat.replySign, 40)}...\n`);
-
-      // Uncomment to actually send the message:
-      // try {
-      //   await sdk.communications.sendMessage(firstChat.replySign, responseMessage);
-      //   console.log('✅ Message sent successfully!\n');
-      // } catch (error) {
-      //   console.error('❌ Failed to send message:', error.message);
-      // }
-
-      console.log('(Message not sent - uncomment code to send)\n');
+      console.log('Note: The SDK provides createSellerMessage() but it requires');
+      console.log('specific request body formatting. See the API documentation for details.\n');
     }
 
     // Step 5: Continue pagination if more events exist
-    if (next && totalEvents > events.length) {
+    if (next && totalEvents && totalEvents > events.length) {
       console.log('Step 5: Fetching more events with pagination...\n');
-      const moreEventsResponse = await sdk.communications.getEvents(next);
-      console.log(`Fetched ${moreEventsResponse.result.events.length} more events`);
-      console.log(`Next cursor: ${moreEventsResponse.result.next || 'End of stream'}\n`);
+      const moreEventsResponse = await sdk.communications.getSellerEvents({ next });
+      console.log(`Fetched ${moreEventsResponse.result?.events.length || 0} more events`);
+      console.log(`Next cursor: ${moreEventsResponse.result?.next || 'End of stream'}\n`);
     }
-
   } catch (error) {
     if (error instanceof RateLimitError) {
       console.error('⚠️ Rate Limit Error:', error.message);
@@ -273,7 +258,7 @@ async function manageCustomerQuestions() {
     // Step 1: Get unanswered questions
     console.log('Step 1: Fetching unanswered questions...');
 
-    const questionsResponse = await sdk.communications.getQuestions({
+    const questionsResponse = await sdk.communications.questions({
       isAnswered: false,
       take: 10, // Get first 10 questions
       skip: 0,
@@ -296,7 +281,6 @@ async function manageCustomerQuestions() {
       console.log(`Question ${index + 1}:`);
       console.log(`  ID: ${question.id}`);
       console.log(`  Product: ${question.productDetails?.productName || 'Unknown'}`);
-      console.log(`  Customer: ${question.userName}`);
       console.log(`  Asked: ${new Date(question.createdDate).toLocaleDateString()}`);
       console.log(`  Question: ${truncate(question.text, 100)}`);
       console.log(`  Answered: ${question.answer?.text ? 'Yes' : 'No'}`);
@@ -314,12 +298,14 @@ async function manageCustomerQuestions() {
 
       // Uncomment to actually answer the question:
       // try {
-      //   await sdk.communications.answerQuestion(firstQuestion.id, {
-      //     text: 'Thank you for your question! [Your helpful answer here]',
+      //   await sdk.communications.updateQuestion({
+      //     id: firstQuestion.id,
+      //     answer: { text: 'Thank you for your question! [Your helpful answer here]' },
+      //     state: 'wbRu'
       //   });
       //   console.log('✅ Answer submitted successfully!\n');
       // } catch (error) {
-      //   console.error('❌ Failed to answer question:', error.message);
+      //   console.error('❌ Failed to answer question:', (error as Error).message);
       // }
 
       console.log('(Answer not submitted - uncomment code to answer)\n');
@@ -329,10 +315,13 @@ async function manageCustomerQuestions() {
 
       // Uncomment to mark as viewed:
       // try {
-      //   await sdk.communications.markQuestionViewed(firstQuestion.id);
+      //   await sdk.communications.updateQuestion({
+      //     id: firstQuestion.id,
+      //     wasViewed: true
+      //   });
       //   console.log('✅ Question marked as viewed!\n');
       // } catch (error) {
-      //   console.error('❌ Failed to mark as viewed:', error.message);
+      //   console.error('❌ Failed to mark as viewed:', (error as Error).message);
       // }
 
       console.log('(Not marked - uncomment code to mark as viewed)\n');
@@ -341,7 +330,7 @@ async function manageCustomerQuestions() {
     // Step 4: Get answered questions
     console.log('Step 4: Fetching answered questions...');
 
-    const answeredResponse = await sdk.communications.getQuestions({
+    const answeredResponse = await sdk.communications.questions({
       isAnswered: true,
       take: 5,
       skip: 0,
@@ -358,7 +347,6 @@ async function manageCustomerQuestions() {
         console.log('');
       });
     }
-
   } catch (error) {
     if (error instanceof RateLimitError) {
       console.error('⚠️ Rate Limit Error:', error.message);
@@ -394,7 +382,7 @@ async function manageCustomerReviews() {
     // Step 1: Get unanswered reviews
     console.log('Step 1: Fetching unanswered reviews...');
 
-    const reviewsResponse = await sdk.communications.getReviews({
+    const reviewsResponse = await sdk.communications.feedbacks({
       isAnswered: false,
       take: 10,
       skip: 0,
@@ -404,20 +392,27 @@ async function manageCustomerReviews() {
 
     console.log(`Total unanswered reviews: ${countUnanswered}`);
     console.log(`Archived reviews: ${countArchive}`);
-    console.log(`Reviews in this batch: ${data?.feedbacks?.length || 0}\n`);
+    console.log(
+      `Reviews in this batch: ${data?.feedbacks ? (Array.isArray(data.feedbacks) ? data.feedbacks.length : 1) : 0}\n`
+    );
 
-    if (!data?.feedbacks || data.feedbacks.length === 0) {
+    if (!data?.feedbacks || (Array.isArray(data.feedbacks) && data.feedbacks.length === 0)) {
       console.log('No unanswered reviews found.');
       console.log('Reviews appear after customers purchase and rate your products.\n');
       return;
     }
 
+    // Get feedbacks array (handle both array and single object cases)
+    const feedbacksList = Array.isArray(data.feedbacks) ? data.feedbacks : [data.feedbacks];
+
     // Display reviews
-    data.feedbacks.forEach((review, index) => {
+    feedbacksList.forEach((review, index) => {
       console.log(`Review ${index + 1}:`);
       console.log(`  ID: ${review.id}`);
       console.log(`  Product: ${review.productDetails?.productName || 'Unknown'}`);
-      console.log(`  Rating: ${'⭐'.repeat(review.productValuation)} (${review.productValuation}/5)`);
+      console.log(
+        `  Rating: ${'⭐'.repeat(review.productValuation)} (${review.productValuation}/5)`
+      );
       console.log(`  Customer: ${review.userName}`);
       console.log(`  Date: ${new Date(review.createdDate).toLocaleDateString()}`);
       console.log(`  Review: ${truncate(review.text || 'No text', 100)}`);
@@ -426,8 +421,8 @@ async function manageCustomerReviews() {
     });
 
     // Step 2: Respond to a review (demonstration)
-    if (data.feedbacks.length > 0) {
-      const firstReview = data.feedbacks[0];
+    if (feedbacksList.length > 0) {
+      const firstReview = feedbacksList[0];
 
       console.log('Step 2: Responding to first review (dry run)...\n');
       console.log(`Rating: ${firstReview.productValuation}/5`);
@@ -443,10 +438,13 @@ async function manageCustomerReviews() {
 
       // Uncomment to actually respond:
       // try {
-      //   await sdk.communications.respondToReview(firstReview.id, responseText);
+      //   await sdk.communications.createFeedbacksAnswer({
+      //     id: firstReview.id,
+      //     text: responseText
+      //   });
       //   console.log('✅ Response submitted successfully!\n');
       // } catch (error) {
-      //   console.error('❌ Failed to respond to review:', error.message);
+      //   console.error('❌ Failed to respond to review:', (error as Error).message);
       // }
 
       console.log('(Response not submitted - uncomment code to respond)\n');
@@ -455,17 +453,23 @@ async function manageCustomerReviews() {
     // Step 3: Get reviews with responses
     console.log('Step 3: Fetching reviews with responses...');
 
-    const answeredResponse = await sdk.communications.getReviews({
+    const answeredResponse = await sdk.communications.feedbacks({
       isAnswered: true,
       take: 5,
       skip: 0,
     });
 
-    const answeredCount = answeredResponse.data?.feedbacks?.length || 0;
+    const answeredFeedbacks = answeredResponse.data?.feedbacks
+      ? Array.isArray(answeredResponse.data.feedbacks)
+        ? answeredResponse.data.feedbacks
+        : [answeredResponse.data.feedbacks]
+      : [];
+
+    const answeredCount = answeredFeedbacks.length;
     console.log(`Reviews with responses retrieved: ${answeredCount}\n`);
 
-    if (answeredCount > 0 && answeredResponse.data?.feedbacks) {
-      answeredResponse.data.feedbacks.forEach((review, index) => {
+    if (answeredCount > 0) {
+      answeredFeedbacks.forEach((review, index) => {
         console.log(`Review with Response ${index + 1}:`);
         console.log(`  Rating: ${review.productValuation}/5`);
         console.log(`  Review: ${truncate(review.text || '', 60)}`);
@@ -474,23 +478,24 @@ async function manageCustomerReviews() {
       });
 
       // Step 4: Edit a response (demonstration)
-      const firstAnswered = answeredResponse.data.feedbacks[0];
-      if (firstAnswered.answer?.id) {
+      const firstAnswered = answeredFeedbacks[0];
+      if (firstAnswered.answer) {
         console.log('Step 4: Editing response (dry run)...\n');
-        console.log(`Original: ${truncate(firstAnswered.answer.text, 60)}`);
-        console.log(`Updated: "Thank you for your valuable feedback! We are constantly working to improve."`);
+        console.log(`Original: ${truncate(firstAnswered.answer.text || '', 60)}`);
+        console.log(
+          `Updated: "Thank you for your valuable feedback! We are constantly working to improve."`
+        );
         console.log('');
 
         // Uncomment to actually edit:
         // try {
-        //   await sdk.communications.editReviewResponse(
-        //     firstAnswered.id,
-        //     firstAnswered.answer.id,
-        //     'Thank you for your valuable feedback! We are constantly working to improve.'
-        //   );
+        //   await sdk.communications.updateFeedbacksAnswer({
+        //     id: firstAnswered.id,
+        //     text: 'Thank you for your valuable feedback! We are constantly working to improve.'
+        //   });
         //   console.log('✅ Response updated successfully!\n');
         // } catch (error) {
-        //   console.error('❌ Failed to update response:', error.message);
+        //   console.error('❌ Failed to update response:', (error as Error).message);
         // }
 
         console.log('(Response not updated - uncomment code to edit)\n');
@@ -500,17 +505,21 @@ async function manageCustomerReviews() {
     // Step 5: Filter reviews by rating
     console.log('Step 5: Fetching 5-star reviews...');
 
-    const fiveStarResponse = await sdk.communications.getReviews({
+    const fiveStarResponse = await sdk.communications.feedbacks({
       isAnswered: false,
       take: 5,
       skip: 0,
-      nmId: undefined, // Can filter by product ID if needed
       order: 'dateDesc', // Sort by date descending
     });
 
+    const fiveStarFeedbacks = fiveStarResponse.data?.feedbacks
+      ? Array.isArray(fiveStarResponse.data.feedbacks)
+        ? fiveStarResponse.data.feedbacks
+        : [fiveStarResponse.data.feedbacks]
+      : [];
+
     // Filter 5-star reviews client-side
-    const fiveStarReviews =
-      fiveStarResponse.data?.feedbacks?.filter((r) => r.productValuation === 5) || [];
+    const fiveStarReviews = fiveStarFeedbacks.filter((r) => r.productValuation === 5);
 
     console.log(`Found ${fiveStarReviews.length} 5-star review(s) in this batch\n`);
 
@@ -520,7 +529,6 @@ async function manageCustomerReviews() {
       });
       console.log('');
     }
-
   } catch (error) {
     if (error instanceof RateLimitError) {
       console.error('⚠️ Rate Limit Error:', error.message);
@@ -601,7 +609,6 @@ async function main() {
     console.log('- Keep responses professional and helpful');
     console.log('- Monitor negative reviews and address concerns promptly');
     console.log('');
-
   } catch (error) {
     if (error instanceof RateLimitError) {
       console.error('\n⚠️ Rate Limit Error:', error.message);
