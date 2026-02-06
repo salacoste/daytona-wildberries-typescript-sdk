@@ -212,7 +212,7 @@ export interface ResponseErrorStatistics2 {
  */
 export interface ExciseReportRequest {
   /** Код стран по стандарту ISO 3166-2. Чтобы получить данные по всем странам, оставьте параметр пустым */
-  countries?: 'AM' | 'BY' | 'KG' | 'KZ' | 'RU' | 'UZ'[];
+  countries?: ('AM' | 'BY' | 'KG' | 'KZ' | 'RU' | 'UZ')[];
 }
 
 export interface ExciseReportResponse {
@@ -250,96 +250,93 @@ export type ModelsExciseReportResponseData = {
   srid?: string;
 }[];
 
+/**
+ * MeasurementPenalties response type for penalty reports
+ * @see EPIC 43 - Updated to match swagger MeasurementPenalties schema
+ */
 export interface Penalty {
   /** Данные ответа */
   data: {
-  /** Удержания */
-  reports: {
-  /** Артикул WB */
-  nmId?: number;
-  /** ID замера */
-  dimId?: number;
-  /** Предмет */
-  subject?: string;
-  /** Разница в габаритах, % */
-  prcOver?: number;
-  /** Объём, л (фактические габариты) */
-  volume?: number;
-  /** Ширина, см (фактические габариты) */
-  width?: number;
-  /** Длина, см (фактические габариты) */
-  length?: number;
-  /** Высота, см (фактические габариты) */
-  height?: number;
-  /** Объём, л (габариты карточки товара) */
-  volumeSup?: number;
-  /** Ширина, см (габариты карточки товара) */
-  widthSup?: number;
-  /** Длина, см (габариты карточки товара) */
-  lengthSup?: number;
-  /** Высота, см (габариты карточки товара) */
-  heightSup?: number;
-  /** Фото замеров */
-  photoUrls?: string[];
-  /** Дата штрафа */
-  dtBonus?: string;
-  /** Статус обмера: - `false` — отменён - `true` — подтверждён */
-  isValid?: boolean;
-  /** Дата и время подтверждения или отмены обмера */
-  isValidDt?: string;
-  /** Сумма сторно */
-  reversalAmount?: number;
-  /** Сумма штрафа */
-  penaltyAmount?: number;
-}[];
-  /** Количество удержаний в отчёте */
-  totalCount: number;
-};
+    /** Удержания */
+    reports: {
+      /** Артикул WB */
+      nmId?: number;
+      /** ID замера */
+      dimId?: number;
+      /** Предмет */
+      subjectName?: string;
+      /** Разница в габаритах, % */
+      prcOver?: number;
+      /** Объём, л (фактические габариты) */
+      volume?: number;
+      /** Ширина, см (фактические габариты) */
+      width?: number;
+      /** Длина, см (фактические габариты) */
+      length?: number;
+      /** Высота, см (фактические габариты) */
+      height?: number;
+      /** Объём, л (габариты карточки товара) */
+      volumeSup?: number;
+      /** Ширина, см (габариты карточки товара) */
+      widthSup?: number;
+      /** Длина, см (габариты карточки товара) */
+      lengthSup?: number;
+      /** Высота, см (габариты карточки товара) */
+      heightSup?: number;
+      /** Фото замеров */
+      photoUrls?: string[];
+      /** Дата штрафа */
+      dtBonus?: string;
+      /** Статус обмера: - `false` — отменён - `true` — подтверждён */
+      isValid?: boolean;
+      /** Дата и время подтверждения или отмены обмера */
+      isValidDt?: string;
+      /** Сумма сторно */
+      reversalAmount?: number;
+      /** Сумма штрафа */
+      penaltyAmount?: number;
+    }[];
+    /** Количество удержаний в отчёте (без учёта limit/offset) */
+    total: number;
+  };
 }
 
+/**
+ * WHM (Warehouse Measurements) response type for warehouse measurement reports
+ * @see EPIC 43 - Updated to match swagger WHM schema (removed stale fields)
+ */
 export interface Measurement {
   /** Данные ответа */
   data: {
-  /** Замеры */
-  reports: {
-  /** Артикул WB */
-  nmId?: number;
-  /** Предмет */
-  subject?: string;
-  /** ID замера */
-  dimId?: number;
-  /** Разница в габаритах, % */
-  prcOver?: number;
-  /** Объём, л (фактические габариты) */
-  volume?: number;
-  /** Ширина, см (фактические габариты) */
-  width?: number;
-  /** Длина, см (фактические габариты) */
-  length?: number;
-  /** Высота, см (фактические габариты) */
-  height?: number;
-  /** Объём, л (габариты карточки товара) */
-  volumeSup?: number;
-  /** Ширина, см (габариты карточки товара) */
-  widthSup?: number;
-  /** Длина, см (габариты карточки товара) */
-  lengthSup?: number;
-  /** Высота, см (габариты карточки товара) */
-  heightSup?: number;
-  /** Фото замеров */
-  photoUrls?: string[];
-  /** Дата и время */
-  dt?: string;
-  /** Дата начала замера */
-  dateStart?: string;
-  /** Дата конца замера */
-  dateEnd?: string;
-}[];
-  /** Количество замеров в отчёте */
-  totalCount: number;
-};
+    /** Замеры */
+    reports: {
+      /** Артикул WB */
+      nmId?: number;
+      /** Предмет */
+      subjectName?: string;
+      /** ID замера */
+      dimId?: number;
+      /** Объём, л (фактические габариты) */
+      volume?: number;
+      /** Ширина, см (фактические габариты) */
+      width?: number;
+      /** Длина, см (фактические габариты) */
+      length?: number;
+      /** Высота, см (фактические габариты) */
+      height?: number;
+      /** Фото замеров */
+      photoUrls?: string[];
+      /** Дата и время замера */
+      dt?: string;
+    }[];
+    /** Количество замеров в отчёте (без учёта limit/offset) */
+    total: number;
+  };
 }
 
+/**
+ * @deprecated Use Response400Retentions instead. This type is no longer in the swagger spec.
+ */
 export interface Response400WHM {
   /** Заголовок ошибки */
   title?: string;
@@ -353,7 +350,44 @@ export interface Response400WHM {
   origin?: string;
 }
 
+/**
+ * @deprecated Use Response403Retentions instead. This type is no longer in the swagger spec.
+ */
 export interface Response403WHM {
+  /** Заголовок ошибки */
+  title?: string;
+  /** HTTP статус-код */
+  status?: number;
+  /** Детали ошибки */
+  detail?: string;
+  /** Уникальный ID запроса */
+  requestId?: string;
+  /** ID внутреннего сервиса WB */
+  origin?: string;
+}
+
+/**
+ * 400 error response for retentions endpoints (measurement-penalties, warehouse-measurements, deductions)
+ * @see EPIC 43 - Added per swagger Response400Retentions schema
+ */
+export interface Response400Retentions {
+  /** Заголовок ошибки */
+  title?: string;
+  /** HTTP статус-код */
+  status?: number;
+  /** Детали ошибки */
+  detail?: string;
+  /** Уникальный ID запроса */
+  requestId?: string;
+  /** ID внутреннего сервиса WB */
+  origin?: string;
+}
+
+/**
+ * 403 error response for retentions endpoints (measurement-penalties, warehouse-measurements, deductions)
+ * @see EPIC 43 - Added per swagger Response403Retentions schema
+ */
+export interface Response403Retentions {
   /** Заголовок ошибки */
   title?: string;
   /** HTTP статус-код */
@@ -476,4 +510,445 @@ export interface Response4xxResponse {
   requestId?: string;
   /** Заголовок ошибки */
   title?: string;
+}
+
+// ============================================================================
+// Response types for Promise<unknown> methods - EPIC 43 AC #4
+// ============================================================================
+
+/**
+ * Antifraud details report item
+ * @see EPIC 43 - Response type for getAnalyticsAntifraudDetails
+ */
+export interface AntifraudDetailsItem {
+  /** Артикул WB */
+  nmId?: number;
+  /** Дата недели отчёта */
+  weekDate?: string;
+  /** Сумма удержания */
+  amount?: number;
+  /** ID ПВЗ */
+  officeId?: number;
+  /** Название ПВЗ */
+  officeName?: string;
+  /** Количество единиц товара */
+  quantity?: number;
+}
+
+/**
+ * Response for getAnalyticsAntifraudDetails
+ * @see EPIC 43 - Response type for getAnalyticsAntifraudDetails
+ */
+export interface AntifraudDetailsResponse {
+  data?: AntifraudDetailsItem[];
+}
+
+/**
+ * Goods labeling report item
+ * @see EPIC 43 - Response type for getAnalyticsGoodsLabeling
+ */
+export interface GoodsLabelingItem {
+  /** Артикул WB */
+  nmId?: number;
+  /** Дата штрафа */
+  dtBonus?: string;
+  /** Сумма штрафа */
+  bonusSumm?: number;
+  /** Баркод */
+  barcode?: string;
+  /** Артикул продавца */
+  vendorCode?: string;
+  /** Фото товара без маркировки */
+  photoUrls?: string[];
+}
+
+/**
+ * Response for getAnalyticsGoodsLabeling
+ * @see EPIC 43 - Response type for getAnalyticsGoodsLabeling
+ */
+export interface GoodsLabelingResponse {
+  data?: {
+    reports?: GoodsLabelingItem[];
+    total?: number;
+  };
+}
+
+/**
+ * Region sale report item
+ * @see EPIC 43 - Response type for getAnalyticsRegionSale
+ */
+export interface RegionSaleItem {
+  /** Название региона */
+  regionName?: string;
+  /** ID региона */
+  regionId?: number;
+  /** Количество продаж */
+  salesCount?: number;
+  /** Сумма продаж */
+  salesSum?: number;
+  /** Количество возвратов */
+  returnsCount?: number;
+  /** Сумма возвратов */
+  returnsSum?: number;
+}
+
+/**
+ * Response for getAnalyticsRegionSale
+ * @see EPIC 43 - Response type for getAnalyticsRegionSale
+ */
+export interface RegionSaleResponse {
+  data?: RegionSaleItem[];
+}
+
+/**
+ * Brand share brands item
+ * @see EPIC 43 - Response type for getBrandShareBrands
+ */
+export interface BrandShareBrandsItem {
+  /** Название бренда */
+  brandName?: string;
+  /** ID бренда */
+  brandId?: number;
+}
+
+/**
+ * Response for getBrandShareBrands
+ * @see EPIC 43 - Response type for getBrandShareBrands
+ */
+export interface BrandShareBrandsResponse {
+  data?: BrandShareBrandsItem[];
+}
+
+/**
+ * Brand share parent subjects item
+ * @see EPIC 43 - Response type for getBrandShareParentSubjects
+ */
+export interface BrandShareParentSubjectsItem {
+  /** Название категории */
+  parentName?: string;
+  /** ID категории */
+  parentId?: number;
+}
+
+/**
+ * Response for getBrandShareParentSubjects
+ * @see EPIC 43 - Response type for getBrandShareParentSubjects
+ */
+export interface BrandShareParentSubjectsResponse {
+  data?: BrandShareParentSubjectsItem[];
+}
+
+/**
+ * Brand share report item
+ * @see EPIC 43 - Response type for getAnalyticsBrandShare
+ */
+export interface BrandShareItem {
+  /** Дата */
+  date?: string;
+  /** Доля бренда, % */
+  brandShare?: number;
+  /** Количество продаж бренда */
+  brandSalesCount?: number;
+  /** Количество продаж категории */
+  categorySalesCount?: number;
+}
+
+/**
+ * Response for getAnalyticsBrandShare
+ * @see EPIC 43 - Response type for getAnalyticsBrandShare
+ */
+export interface BrandShareResponse {
+  data?: BrandShareItem[];
+}
+
+// ============================================================================
+// Extracted inline types - EPIC 43 AC #7
+// ============================================================================
+
+/**
+ * Warehouse remains download item (extracted from getTasksDownload inline type)
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface WarehouseRemainsDownloadItem {
+  /** Бренд */
+  brand?: string;
+  /** Предмет */
+  subjectName?: string;
+  /** Артикул продавца */
+  vendorCode?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Баркод */
+  barcode?: string;
+  /** Размер */
+  techSize?: string;
+  /** Объём, л */
+  volume?: number;
+  /** Остатки по складам */
+  warehouses?: WarehouseQuantity[];
+}
+
+/**
+ * Warehouse quantity for remains report
+ */
+export interface WarehouseQuantity {
+  /** Название склада */
+  warehouseName?: string;
+  /** Количество */
+  quantity?: number;
+}
+
+/**
+ * Acceptance report download item (extracted from getTasksDownload2 inline type)
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface AcceptanceReportDownloadItem {
+  /** Количество */
+  count?: number;
+  /** Дата создания приёмки */
+  giCreateDate?: string;
+  /** ID поставки */
+  incomeId?: number;
+  /** Артикул WB */
+  nmID?: number;
+  /** Дата создания ШК */
+  shkCreateDate?: string;
+  /** Предмет */
+  subjectName?: string;
+  /** Сумма */
+  total?: number;
+}
+
+/**
+ * Banned product item for blocked products report
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface BannedProductBlockedItem {
+  /** Бренд */
+  brand?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Название товара */
+  title?: string;
+  /** Артикул продавца */
+  vendorCode?: string;
+  /** Причина блокировки */
+  reason?: string;
+}
+
+/**
+ * Response for getBannedProductsBlocked
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface BannedProductsBlockedResponse {
+  report?: BannedProductBlockedItem[];
+}
+
+/**
+ * Banned product item for shadowed products report
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface BannedProductShadowedItem {
+  /** Бренд */
+  brand?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Название товара */
+  title?: string;
+  /** Артикул продавца */
+  vendorCode?: string;
+  /** Рейтинг товара */
+  nmRating?: number;
+}
+
+/**
+ * Response for getBannedProductsShadowed
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface BannedProductsShadowedResponse {
+  report?: BannedProductShadowedItem[];
+}
+
+/**
+ * Goods return report item
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface GoodsReturnItem {
+  /** Баркод */
+  barcode?: string;
+  /** Бренд */
+  brand?: string;
+  /** Дата завершения */
+  completedDt?: string;
+  /** Адрес ПВЗ назначения */
+  dstOfficeAddress?: string;
+  /** ID ПВЗ назначения */
+  dstOfficeId?: number;
+  /** Дата истечения срока */
+  expiredDt?: string;
+  /** Статус активности: 0 — неактивен, 1 — активен */
+  isStatusActive?: 0 | 1;
+  /** Артикул WB */
+  nmId?: number;
+  /** Дата заказа */
+  orderDt?: string;
+  /** ID заказа */
+  orderId?: number;
+  /** Дата готовности к возврату */
+  readyToReturnDt?: string;
+  /** Причина возврата */
+  reason?: string;
+  /** Тип возврата */
+  returnType?: string;
+  /** ID ШК */
+  shkId?: number;
+  /** Srid */
+  srid?: string;
+  /** Статус */
+  status?: string;
+  /** ID стикера */
+  stickerId?: string;
+  /** Предмет */
+  subjectName?: string;
+  /** Размер */
+  techSize?: string;
+}
+
+/**
+ * Response for getAnalyticsGoodsReturn
+ * @see EPIC 43 - Extracted from inline type literal
+ */
+export interface GoodsReturnResponse {
+  report?: GoodsReturnItem[];
+}
+
+// ============================================================================
+// Request parameter types for new endpoints - EPIC 44 preparation
+// ============================================================================
+
+/**
+ * Parameters for getMeasurementPenalties
+ * @see EPIC 44 - Request params for new measurement-penalties endpoint
+ */
+export interface MeasurementPenaltiesParams {
+  /** Index signature for Record<string, unknown> compatibility */
+  [key: string]: string | number | undefined;
+  /** Дата начала периода (ISO 8601) */
+  dateFrom?: string;
+  /** Дата окончания периода (ISO 8601, обязательный) */
+  dateTo: string;
+  /** Количество записей в ответе (max 1000) */
+  limit: number;
+  /** Количество записей для пропуска (default 0) */
+  offset?: number;
+}
+
+/**
+ * Parameters for getWarehouseMeasurementsV2
+ * @see EPIC 44 - Request params for new warehouse-measurements endpoint
+ */
+export interface WarehouseMeasurementsV2Params {
+  /** Index signature for Record<string, unknown> compatibility */
+  [key: string]: string | number | undefined;
+  /** Дата начала периода (ISO 8601) */
+  dateFrom?: string;
+  /** Дата окончания периода (ISO 8601, обязательный) */
+  dateTo: string;
+  /** Количество записей в ответе (max 1000) */
+  limit: number;
+  /** Количество записей для пропуска (default 0) */
+  offset?: number;
+}
+
+/**
+ * Parameters for getDeductions
+ * @see EPIC 44 - Request params for new deductions endpoint
+ */
+export interface DeductionsParams {
+  /** Index signature for Record<string, unknown> compatibility */
+  [key: string]: string | number | undefined;
+  /** Дата начала периода (ISO 8601) */
+  dateFrom?: string;
+  /** Дата окончания периода (ISO 8601, обязательный) */
+  dateTo: string;
+  /** Поле сортировки */
+  sort?: 'nmId' | 'dtBonus' | 'bonusSumm';
+  /** Направление сортировки */
+  order?: 'desc' | 'asc';
+  /** Количество записей в ответе (max 1000) */
+  limit: number;
+  /** Количество записей для пропуска (default 0) */
+  offset?: number;
+}
+
+/**
+ * Deduction report item
+ * @see EPIC 44 - Response type for getDeductions
+ */
+export interface DeductionItem {
+  /** Дата штрафа */
+  dtBonus?: string;
+  /** Артикул WB */
+  nmId?: number;
+  /** Старый ID ШК */
+  oldShkId?: number;
+  /** Старый цвет */
+  oldColor?: string;
+  /** Старый размер */
+  oldSize?: string;
+  /** Старый артикул WB */
+  oldSku?: string;
+  /** Старый артикул продавца */
+  oldVendorCode?: string;
+  /** Новый ID ШК */
+  newShkId?: number;
+  /** Новый цвет */
+  newColor?: string;
+  /** Новый размер */
+  newSize?: string;
+  /** Новый артикул WB */
+  newSku?: string;
+  /** Новый артикул продавца */
+  newVendorCode?: string;
+  /** Сумма штрафа */
+  bonusSumm?: number;
+  /** Тип штрафа */
+  bonusType?: string;
+  /** Фото */
+  photoUrls?: string[];
+}
+
+/**
+ * Response for getDeductions
+ * @see EPIC 44 - Response type for getDeductions
+ */
+export interface DeductionsResponse {
+  data?: {
+    reports?: DeductionItem[];
+    total?: number;
+  };
+}
+
+/**
+ * Response for getMeasurementPenalties
+ * Uses the Penalty interface for report items
+ * @see EPIC 44 - Response type for getMeasurementPenalties
+ */
+export interface MeasurementPenaltiesResponse {
+  data?: {
+    reports?: Penalty[];
+    total?: number;
+  };
+}
+
+/**
+ * Response for getWarehouseMeasurementsV2
+ * Uses the Measurement interface for report items
+ * @see EPIC 44 - Response type for getWarehouseMeasurementsV2
+ */
+export interface WarehouseMeasurementsV2Response {
+  data?: {
+    reports?: Measurement[];
+    total?: number;
+  };
 }

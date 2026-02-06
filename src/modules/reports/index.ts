@@ -5,7 +5,36 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import type { CreateTaskResponse, ExciseReportRequest, ExciseReportResponse, GetTasksResponse, IncomesItem, Measurement, OrdersItem, Penalty, ResponsePaidStorage, SalesItem, StocksItem } from '../../types/reports.types';
+import type {
+  AcceptanceReportDownloadItem,
+  AntifraudDetailsResponse,
+  BannedProductsBlockedResponse,
+  BannedProductsShadowedResponse,
+  BrandShareBrandsResponse,
+  BrandShareParentSubjectsResponse,
+  BrandShareResponse,
+  CreateTaskResponse,
+  DeductionsParams,
+  DeductionsResponse,
+  ExciseReportRequest,
+  ExciseReportResponse,
+  GetTasksResponse,
+  GoodsLabelingResponse,
+  GoodsReturnResponse,
+  IncomesItem,
+  Measurement,
+  MeasurementPenaltiesParams,
+  MeasurementPenaltiesResponse,
+  OrdersItem,
+  Penalty,
+  RegionSaleResponse,
+  ResponsePaidStorage,
+  SalesItem,
+  StocksItem,
+  WarehouseMeasurementsV2Params,
+  WarehouseMeasurementsV2Response,
+  WarehouseRemainsDownloadItem,
+} from '../../types/reports.types';
 
 export class ReportsModule {
   constructor(private client: BaseClient) {}
@@ -13,8 +42,9 @@ export class ReportsModule {
   /**
    * Поставки
    *
-   * Метод возвращает количество поставок товаров для хранения на складах WB.<br>Данные обновляются раз в 30 минут. <br><br> Для одного ответа в системе установлено условное ограничение 100000 строк. Поэтому, чтобы получить все поставки, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom` используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все поставки уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+   * Метод возвращает количество поставок товаров для хранения на складах WB.
    *
+   * @deprecated This method is deprecated per swagger spec and will be removed on 11 March 2026.
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -22,11 +52,17 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupplierIncomes({});
-  console.log(result);
+   * const result = await sdk.reports.getSupplierIncomes({ dateFrom: '2026-01-01' });
+   * console.log(result);
    */
   async getSupplierIncomes(options?: { dateFrom: string }): Promise<IncomesItem[]> {
-    return this.client.get<IncomesItem[]>('https://statistics-api.wildberries.ru/api/v1/supplier/incomes', { params: options });
+    console.warn(
+      '[WB SDK] getSupplierIncomes() is deprecated and will be removed on 11 March 2026.'
+    );
+    return this.client.get<IncomesItem[]>(
+      'https://statistics-api.wildberries.ru/api/v1/supplier/incomes',
+      { params: options, rateLimitKey: 'reports.supplierIncomes' }
+    );
   }
 
   /**
@@ -41,11 +77,14 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupplierStocks({});
+  const result = await sdk.reports.getSupplierStocks({});
   console.log(result);
    */
   async getSupplierStocks(options?: { dateFrom: string }): Promise<StocksItem[]> {
-    return this.client.get<StocksItem[]>('https://statistics-api.wildberries.ru/api/v1/supplier/stocks', { params: options });
+    return this.client.get<StocksItem[]>(
+      'https://statistics-api.wildberries.ru/api/v1/supplier/stocks',
+      { params: options, rateLimitKey: 'reports.supplierStocks' }
+    );
   }
 
   /**
@@ -60,11 +99,14 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupplierOrders({});
+  const result = await sdk.reports.getSupplierOrders({});
   console.log(result);
    */
   async getSupplierOrders(options?: { dateFrom: string; flag?: number }): Promise<OrdersItem[]> {
-    return this.client.get<OrdersItem[]>('https://statistics-api.wildberries.ru/api/v1/supplier/orders', { params: options });
+    return this.client.get<OrdersItem[]>(
+      'https://statistics-api.wildberries.ru/api/v1/supplier/orders',
+      { params: options, rateLimitKey: 'reports.supplierOrders' }
+    );
   }
 
   /**
@@ -79,11 +121,14 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getSupplierSales({});
+  const result = await sdk.reports.getSupplierSales({});
   console.log(result);
    */
   async getSupplierSales(options?: { dateFrom: string; flag?: number }): Promise<SalesItem[]> {
-    return this.client.get<SalesItem[]>('https://statistics-api.wildberries.ru/api/v1/supplier/sales', { params: options });
+    return this.client.get<SalesItem[]>(
+      'https://statistics-api.wildberries.ru/api/v1/supplier/sales',
+      { params: options, rateLimitKey: 'reports.supplierSales' }
+    );
   }
 
   /**
@@ -99,11 +144,18 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.createAnalyticsExciseReport({}, {});
+  const result = await sdk.reports.createAnalyticsExciseReport({}, {});
   console.log(result);
    */
-  async createAnalyticsExciseReport(options?: { dateFrom: string; dateTo: string }, data?: ExciseReportRequest): Promise<ExciseReportResponse> {
-    return this.client.post<ExciseReportResponse>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/excise-report', data, { params: options });
+  async createAnalyticsExciseReport(
+    options?: { dateFrom: string; dateTo: string },
+    data?: ExciseReportRequest
+  ): Promise<ExciseReportResponse> {
+    return this.client.post<ExciseReportResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/excise-report',
+      data,
+      { params: options, rateLimitKey: 'reports.postAnalyticsExciseReport' }
+    );
   }
 
   /**
@@ -118,56 +170,91 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.warehouseRemains({});
+  const result = await sdk.reports.warehouseRemains({});
   console.log(result);
    */
-  async warehouseRemains(options?: { locale?: string; groupByBrand?: boolean; groupBySubject?: boolean; groupBySa?: boolean; groupByNm?: boolean; groupByBarcode?: boolean; groupBySize?: boolean; filterPics?: number; filterVolume?: number }): Promise<CreateTaskResponse> {
-    return this.client.get<CreateTaskResponse>('https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains', { params: options });
+  async warehouseRemains(options?: {
+    locale?: string;
+    groupByBrand?: boolean;
+    groupBySubject?: boolean;
+    groupBySa?: boolean;
+    groupByNm?: boolean;
+    groupByBarcode?: boolean;
+    groupBySize?: boolean;
+    filterPics?: number;
+    filterVolume?: number;
+  }): Promise<CreateTaskResponse> {
+    return this.client.get<CreateTaskResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains',
+      { params: options, rateLimitKey: 'reports.warehouse_remains' }
+    );
   }
 
   /**
-   * Проверить статус
-   *
-   * Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get) отчёта об [остатках на складах WB](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 5 запросов | </div>
+   * Проверить статус задания на генерацию отчёта об остатках на складах WB
    *
    * @param task_id - ID задания на генерацию
-   * @returns Успешно
+   * @returns Статус задания
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getTasksStatu('task_id-value');
-  console.log(result);
+   * const result = await sdk.reports.getWarehouseRemainsTaskStatus('task-uuid');
+   * console.log(result.data?.status);
+   */
+  async getWarehouseRemainsTaskStatus(task_id: string): Promise<GetTasksResponse> {
+    return this.client.get<GetTasksResponse>(
+      `https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/${task_id}/status`,
+      { rateLimitKey: 'reports.warehouse_remainsTasksStatus' }
+    );
+  }
+
+  /**
+   * @deprecated Use getWarehouseRemainsTaskStatus() instead.
    */
   async getTasksStatu(task_id: string): Promise<GetTasksResponse> {
-    return this.client.get<GetTasksResponse>(`https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/${task_id}/status`);
+    console.warn(
+      '[WB SDK] getTasksStatu() is deprecated. Use getWarehouseRemainsTaskStatus() instead.'
+    );
+    return this.getWarehouseRemainsTaskStatus(task_id);
   }
 
   /**
-   * Получить отчёт
-   *
-   * Метод возвращает отчёт об [остатках на складах WB](https://seller.wildberries.ru/analytics-reports/warehouse-remains) по ID [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+   * Получить отчёт об остатках на складах WB
    *
    * @param task_id - ID задания на генерацию
-   * @returns Успешно
+   * @returns Данные отчёта
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getTasksDownload('task_id-value');
-  console.log(result);
+   * const result = await sdk.reports.downloadWarehouseRemainsReport('task-uuid');
+   * console.log(result);
    */
-  async getTasksDownload(task_id: string): Promise<{ brand?: string; subjectName?: string; vendorCode?: string; nmId?: number; barcode?: string; techSize?: string; volume?: number; warehouses?: { warehouseName?: string; quantity?: number }[] }[]> {
-    return this.client.get<{ brand?: string; subjectName?: string; vendorCode?: string; nmId?: number; barcode?: string; techSize?: string; volume?: number; warehouses?: { warehouseName?: string; quantity?: number }[] }[]>(`https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/${task_id}/download`);
+  async downloadWarehouseRemainsReport(task_id: string): Promise<WarehouseRemainsDownloadItem[]> {
+    return this.client.get<WarehouseRemainsDownloadItem[]>(
+      `https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/${task_id}/download`,
+      { rateLimitKey: 'reports.warehouse_remainsTasksDownload' }
+    );
+  }
+
+  /**
+   * @deprecated Use downloadWarehouseRemainsReport() instead.
+   */
+  async getTasksDownload(task_id: string): Promise<WarehouseRemainsDownloadItem[]> {
+    console.warn(
+      '[WB SDK] getTasksDownload() is deprecated. Use downloadWarehouseRemainsReport() instead.'
+    );
+    return this.downloadWarehouseRemainsReport(task_id);
   }
 
   /**
    * Занижение габаритов упаковки
    *
-   * Метод возвращает отчёты об [удержаниях за занижение габаритов упаковки](https://seller.wildberries.ru/analytics-reports/dimensions-penalties) и [замерах склада](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/warehouse-measurements) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 5 запросов | 12 секунд | 1 запрос | </div>
-   *
+   * @deprecated This endpoint is removed from swagger. Use getMeasurementPenalties()
+   * for penalties or getWarehouseMeasurementsV2() for warehouse measurements instead.
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -175,11 +262,25 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsWarehouseMeasurements({});
-  console.log(result);
+   * // Use new methods instead:
+   * const penalties = await sdk.reports.getMeasurementPenalties({ dateTo: '2026-02-06', limit: 100 });
+   * const measurements = await sdk.reports.getWarehouseMeasurementsV2({ dateTo: '2026-02-06', limit: 100 });
    */
-  async getAnalyticsWarehouseMeasurements(options?: { dateFrom?: string; dateTo: string; tab: 'penalty' | 'measurement'; limit: number; offset?: number }): Promise<Penalty | Measurement> {
-    return this.client.get<Penalty | Measurement>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/warehouse-measurements', { params: options });
+  async getAnalyticsWarehouseMeasurements(options?: {
+    dateFrom?: string;
+    dateTo: string;
+    tab: 'penalty' | 'measurement';
+    limit: number;
+    offset?: number;
+  }): Promise<Penalty | Measurement> {
+    console.warn(
+      '[WB SDK] getAnalyticsWarehouseMeasurements() is deprecated. ' +
+        'Use getMeasurementPenalties() or getWarehouseMeasurementsV2() instead.'
+    );
+    return this.client.get<Penalty | Measurement>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/warehouse-measurements',
+      { params: options, rateLimitKey: 'reports.analyticsWarehouseMeasurements' }
+    );
   }
 
   /**
@@ -194,18 +295,23 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsAntifraudDetails({});
+  const result = await sdk.reports.getAnalyticsAntifraudDetails({});
   console.log(result);
    */
-  async getAnalyticsAntifraudDetails(options?: { date?: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/antifraud-details', { params: options });
+  async getAnalyticsAntifraudDetails(options?: {
+    date?: string;
+  }): Promise<AntifraudDetailsResponse> {
+    return this.client.get<AntifraudDetailsResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/antifraud-details',
+      { params: options, rateLimitKey: 'reports.analyticsAntifraudDetails' }
+    );
   }
 
   /**
    * Подмена товара
    *
-   * Метод возвращает отчёт об удержаниях за отправку ошибочных товаров, пустых коробок или коробок без товара, но с посторонними предметами. В таких случаях удерживается 100% от стоимости заказа.<br><br> Можно получить отчёт максимум за 31 день. Данные доступны с июня 2023. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
-   *
+   * @deprecated This endpoint is removed from swagger. Use getDeductions() instead
+   * which provides combined data for substitutions and incorrect attachments.
    * @param [options] - Query parameters
    * @returns Response data
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -213,11 +319,20 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsIncorrectAttachments({});
-  console.log(result);
+   * // Use getDeductions() instead:
+   * const deductions = await sdk.reports.getDeductions({ dateTo: '2026-02-06', limit: 100 });
    */
-  async getAnalyticsIncorrectAttachments(options?: { dateFrom: string; dateTo: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/incorrect-attachments', { params: options });
+  async getAnalyticsIncorrectAttachments(options?: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<unknown> {
+    console.warn(
+      '[WB SDK] getAnalyticsIncorrectAttachments() is deprecated. Use getDeductions() instead.'
+    );
+    return this.client.get<unknown>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/incorrect-attachments',
+      { params: options, rateLimitKey: 'reports.analyticsIncorrectAttachments' }
+    );
   }
 
   /**
@@ -232,30 +347,43 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsGoodsLabeling({});
+  const result = await sdk.reports.getAnalyticsGoodsLabeling({});
   console.log(result);
    */
-  async getAnalyticsGoodsLabeling(options?: { dateFrom: string; dateTo: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-labeling', { params: options });
+  async getAnalyticsGoodsLabeling(options?: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<GoodsLabelingResponse> {
+    return this.client.get<GoodsLabelingResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-labeling',
+      { params: options, rateLimitKey: 'reports.analyticsGoodsLabeling' }
+    );
   }
 
   /**
    * Смена характеристик
    *
-   * Метод возвращает отчёт об удержаниях за смену характеристик товара. Если товары после приёмки не соответствуют заявленным цветам и размерам, и на складе их перемаркировали с правильными характеристиками, по таким товарам назначается штраф.<br><br> Можно получить отчёт максимум за 31 день. Данные доступны с 28 декабря 2021. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 минут | 10 запросов | 1 минута | 10 запросов | </div>
-   *
+   * @deprecated This endpoint is removed from swagger with no replacement.
+   * The API may return errors for this endpoint.
    * @param [options] - Query parameters
    * @returns Response data
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.general.getAnalyticsCharacteristicsChange({});
-  console.log(result);
    */
-  async getAnalyticsCharacteristicsChange(options?: { dateFrom: string; dateTo: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://api.wildberries.ru/api/v1/analytics/characteristics-change', { params: options });
+  async getAnalyticsCharacteristicsChange(options?: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<unknown> {
+    console.warn(
+      '[WB SDK] getAnalyticsCharacteristicsChange() is deprecated. ' +
+        'This endpoint has been removed from the API with no replacement.'
+    );
+    return this.client.get<unknown>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/characteristics-change',
+      { params: options, rateLimitKey: 'reports.analyticsCharacteristicsChange' }
+    );
   }
 
   /**
@@ -270,49 +398,77 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.acceptanceReport({});
+  const result = await sdk.reports.acceptanceReport({});
   console.log(result);
    */
-  async acceptanceReport(options?: { dateFrom: string; dateTo: string }): Promise<CreateTaskResponse> {
-    return this.client.get<CreateTaskResponse>('https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report', { params: options });
+  async acceptanceReport(options?: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<CreateTaskResponse> {
+    return this.client.get<CreateTaskResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report',
+      { params: options, rateLimitKey: 'reports.acceptance_report' }
+    );
   }
 
   /**
-   * Проверить статус
-   *
-   * Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report/get) отчёта о [платной приёмке](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 1 запрос | </div>
+   * Проверить статус задания на генерацию отчёта о платной приёмке
    *
    * @param task_id - ID задания на генерацию
-   * @returns Успешно
+   * @returns Статус задания
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getTasksStatu('task_id-value');
-  console.log(result);
+   * const result = await sdk.reports.getAcceptanceReportTaskStatus('task-uuid');
+   * console.log(result.data?.status);
+   */
+  async getAcceptanceReportTaskStatus(task_id: string): Promise<GetTasksResponse> {
+    return this.client.get<GetTasksResponse>(
+      `https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/${task_id}/status`,
+      { rateLimitKey: 'reports.acceptance_reportTasksStatus' }
+    );
+  }
+
+  /**
+   * @deprecated Use getAcceptanceReportTaskStatus() instead.
    */
   async getTasksStatu2(task_id: string): Promise<GetTasksResponse> {
-    return this.client.get<GetTasksResponse>(`https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/${task_id}/status`);
+    console.warn(
+      '[WB SDK] getTasksStatu2() is deprecated. Use getAcceptanceReportTaskStatus() instead.'
+    );
+    return this.getAcceptanceReportTaskStatus(task_id);
   }
 
   /**
-   * Получить отчёт
-   *
-   * Метод возвращает отчёт о [платной приёмке](https://seller.wildberries.ru/analytics-reports/acceptance-report) по ID [задания на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+   * Получить отчёт о платной приёмке
    *
    * @param task_id - ID задания на генерацию
-   * @returns Успешно
+   * @returns Данные отчёта
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getTasksDownload('task_id-value');
-  console.log(result);
+   * const result = await sdk.reports.downloadAcceptanceReport('task-uuid');
+   * console.log(result);
    */
-  async getTasksDownload2(task_id: string): Promise<{ count?: number; giCreateDate?: string; incomeId?: number; nmID?: number; shkCreateDate?: string; subjectName?: string; total?: number }[]> {
-    return this.client.get<{ count?: number; giCreateDate?: string; incomeId?: number; nmID?: number; shkCreateDate?: string; subjectName?: string; total?: number }[]>(`https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/${task_id}/download`);
+  async downloadAcceptanceReport(task_id: string): Promise<AcceptanceReportDownloadItem[]> {
+    return this.client.get<AcceptanceReportDownloadItem[]>(
+      `https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/${task_id}/download`,
+      { rateLimitKey: 'reports.acceptance_reportTasksDownload' }
+    );
+  }
+
+  /**
+   * @deprecated Use downloadAcceptanceReport() instead.
+   */
+  async getTasksDownload2(task_id: string): Promise<AcceptanceReportDownloadItem[]> {
+    console.warn(
+      '[WB SDK] getTasksDownload2() is deprecated. Use downloadAcceptanceReport() instead.'
+    );
+    return this.downloadAcceptanceReport(task_id);
   }
 
   /**
@@ -327,49 +483,74 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.paidStorage({});
+  const result = await sdk.reports.paidStorage({});
   console.log(result);
    */
   async paidStorage(options?: { dateFrom: string; dateTo: string }): Promise<CreateTaskResponse> {
-    return this.client.get<CreateTaskResponse>('https://seller-analytics-api.wildberries.ru/api/v1/paid_storage', { params: options });
+    return this.client.get<CreateTaskResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/paid_storage',
+      { params: options, rateLimitKey: 'reports.paid_storage' }
+    );
   }
 
   /**
-   * Проверить статус
-   *
-   * Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage/get) отчёта о [платном хранении](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 5 запросов | </div>
+   * Проверить статус задания на генерацию отчёта о платном хранении
    *
    * @param task_id - ID задания на генерацию
-   * @returns Успешно
+   * @returns Статус задания
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getTasksStatu('task_id-value');
-  console.log(result);
+   * const result = await sdk.reports.getPaidStorageTaskStatus('task-uuid');
+   * console.log(result.data?.status);
+   */
+  async getPaidStorageTaskStatus(task_id: string): Promise<GetTasksResponse> {
+    return this.client.get<GetTasksResponse>(
+      `https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/${task_id}/status`,
+      { rateLimitKey: 'reports.paid_storageTasksStatus' }
+    );
+  }
+
+  /**
+   * @deprecated Use getPaidStorageTaskStatus() instead.
    */
   async getTasksStatu3(task_id: string): Promise<GetTasksResponse> {
-    return this.client.get<GetTasksResponse>(`https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/${task_id}/status`);
+    console.warn(
+      '[WB SDK] getTasksStatu3() is deprecated. Use getPaidStorageTaskStatus() instead.'
+    );
+    return this.getPaidStorageTaskStatus(task_id);
   }
 
   /**
-   * Получить отчёт
-   *
-   * Метод возвращает отчёт о [платном хранении](https://seller.wildberries.ru/analytics-reports/paid-storage/storage) по ID [задания на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+   * Получить отчёт о платном хранении
    *
    * @param task_id - ID задания на генерацию
-   * @returns Успешно
+   * @returns Данные отчёта
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getTasksDownload('task_id-value');
-  console.log(result);
+   * const result = await sdk.reports.downloadPaidStorageReport('task-uuid');
+   * console.log(result);
+   */
+  async downloadPaidStorageReport(task_id: string): Promise<ResponsePaidStorage> {
+    return this.client.get<ResponsePaidStorage>(
+      `https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/${task_id}/download`,
+      { rateLimitKey: 'reports.paid_storageTasksDownload' }
+    );
+  }
+
+  /**
+   * @deprecated Use downloadPaidStorageReport() instead.
    */
   async getTasksDownload3(task_id: string): Promise<ResponsePaidStorage> {
-    return this.client.get<ResponsePaidStorage>(`https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/${task_id}/download`);
+    console.warn(
+      '[WB SDK] getTasksDownload3() is deprecated. Use downloadPaidStorageReport() instead.'
+    );
+    return this.downloadPaidStorageReport(task_id);
   }
 
   /**
@@ -384,11 +565,17 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsRegionSale({});
+  const result = await sdk.reports.getAnalyticsRegionSale({});
   console.log(result);
    */
-  async getAnalyticsRegionSale(options?: { dateFrom: string; dateTo: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/region-sale', { params: options });
+  async getAnalyticsRegionSale(options?: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<RegionSaleResponse> {
+    return this.client.get<RegionSaleResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/region-sale',
+      { params: options, rateLimitKey: 'reports.analyticsRegionSale' }
+    );
   }
 
   /**
@@ -402,11 +589,14 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getBrandShareBrands();
+  const result = await sdk.reports.getBrandShareBrands();
   console.log(result);
    */
-  async getBrandShareBrands(): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share/brands');
+  async getBrandShareBrands(): Promise<BrandShareBrandsResponse> {
+    return this.client.get<BrandShareBrandsResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share/brands',
+      { rateLimitKey: 'reports.analyticsBrandShareBrands' }
+    );
   }
 
   /**
@@ -421,11 +611,19 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getBrandShareParentSubjects({});
+  const result = await sdk.reports.getBrandShareParentSubjects({});
   console.log(result);
    */
-  async getBrandShareParentSubjects(options?: { locale?: string; brand: string; dateFrom: string; dateTo: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share/parent-subjects', { params: options });
+  async getBrandShareParentSubjects(options?: {
+    locale?: string;
+    brand: string;
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<BrandShareParentSubjectsResponse> {
+    return this.client.get<BrandShareParentSubjectsResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share/parent-subjects',
+      { params: options, rateLimitKey: 'reports.analyticsBrandShareParentSubjects' }
+    );
   }
 
   /**
@@ -440,11 +638,19 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsBrandShare({});
+  const result = await sdk.reports.getAnalyticsBrandShare({});
   console.log(result);
    */
-  async getAnalyticsBrandShare(options?: { parentId: number; brand: string; dateFrom: string; dateTo: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share', { params: options });
+  async getAnalyticsBrandShare(options?: {
+    parentId: number;
+    brand: string;
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<BrandShareResponse> {
+    return this.client.get<BrandShareResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/brand-share',
+      { params: options, rateLimitKey: 'reports.analyticsBrandShare' }
+    );
   }
 
   /**
@@ -459,11 +665,17 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getBannedProductsBlocked({});
+  const result = await sdk.reports.getBannedProductsBlocked({});
   console.log(result);
    */
-  async getBannedProductsBlocked(options?: { sort: 'brand' | 'nmId' | 'title' | 'vendorCode' | 'reason'; order: 'desc' | 'asc' }): Promise<{ report?: { brand?: string; nmId?: number; title?: string; vendorCode?: string; reason?: string }[] }> {
-    return this.client.get<{ report?: { brand?: string; nmId?: number; title?: string; vendorCode?: string; reason?: string }[] }>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/banned-products/blocked', { params: options });
+  async getBannedProductsBlocked(options?: {
+    sort: 'brand' | 'nmId' | 'title' | 'vendorCode' | 'reason';
+    order: 'desc' | 'asc';
+  }): Promise<BannedProductsBlockedResponse> {
+    return this.client.get<BannedProductsBlockedResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/banned-products/blocked',
+      { params: options, rateLimitKey: 'reports.analyticsBannedProductsBlocked' }
+    );
   }
 
   /**
@@ -478,11 +690,17 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getBannedProductsShadowed({});
+  const result = await sdk.reports.getBannedProductsShadowed({});
   console.log(result);
    */
-  async getBannedProductsShadowed(options?: { sort: 'brand' | 'nmId' | 'title' | 'vendorCode' | 'nmRating'; order: 'desc' | 'asc' }): Promise<{ report?: { brand?: string; nmId?: number; title?: string; vendorCode?: string; nmRating?: number }[] }> {
-    return this.client.get<{ report?: { brand?: string; nmId?: number; title?: string; vendorCode?: string; nmRating?: number }[] }>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/banned-products/shadowed', { params: options });
+  async getBannedProductsShadowed(options?: {
+    sort: 'brand' | 'nmId' | 'title' | 'vendorCode' | 'nmRating';
+    order: 'desc' | 'asc';
+  }): Promise<BannedProductsShadowedResponse> {
+    return this.client.get<BannedProductsShadowedResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/banned-products/shadowed',
+      { params: options, rateLimitKey: 'reports.analyticsBannedProductsShadowed' }
+    );
   }
 
   /**
@@ -497,11 +715,125 @@ export class ReportsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.general.getAnalyticsGoodsReturn({});
+  const result = await sdk.reports.getAnalyticsGoodsReturn({});
   console.log(result);
    */
-  async getAnalyticsGoodsReturn(options?: { dateFrom: string; dateTo: string }): Promise<{ report?: { barcode?: string; brand?: string; completedDt?: string; dstOfficeAddress?: string; dstOfficeId?: number; expiredDt?: string; isStatusActive?: 0 | 1; nmId?: number; orderDt?: string; orderId?: number; readyToReturnDt?: string; reason?: string; returnType?: string; shkId?: number; srid?: string; status?: string; stickerId?: string; subjectName?: string; techSize?: string }[] }> {
-    return this.client.get<{ report?: { barcode?: string; brand?: string; completedDt?: string; dstOfficeAddress?: string; dstOfficeId?: number; expiredDt?: string; isStatusActive?: 0 | 1; nmId?: number; orderDt?: string; orderId?: number; readyToReturnDt?: string; reason?: string; returnType?: string; shkId?: number; srid?: string; status?: string; stickerId?: string; subjectName?: string; techSize?: string }[] }>('https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-return', { params: options });
+  async getAnalyticsGoodsReturn(options?: {
+    dateFrom: string;
+    dateTo: string;
+  }): Promise<GoodsReturnResponse> {
+    return this.client.get<GoodsReturnResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-return',
+      { params: options, rateLimitKey: 'reports.analyticsGoodsReturn' }
+    );
   }
 
+  // ==========================================================================
+  // New Deduction Endpoints - EPIC 44
+  // ==========================================================================
+
+  /**
+   * Занижение габаритов упаковки (штрафы)
+   *
+   * Метод возвращает отчёт об удержаниях за занижение габаритов упаковки.
+   *
+   * Rate limit: 1 req/min, 1 min interval, burst 1
+   *
+   * @param options - Query parameters
+   * @param options.dateFrom - Start of reporting period (ISO 8601)
+   * @param options.dateTo - End of reporting period (ISO 8601, required)
+   * @param options.limit - Number of items in response (max 1000, required)
+   * @param options.offset - Number of items to skip (default 0)
+   * @returns Penalty reports with total count
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see EPIC 44 - New endpoint replacing tab=penalty on old warehouse-measurements
+   * @example
+   * const result = await sdk.reports.getMeasurementPenalties({
+   *   dateTo: '2026-02-06',
+   *   limit: 100
+   * });
+   * console.log(result.data?.reports);
+   */
+  async getMeasurementPenalties(
+    options: MeasurementPenaltiesParams
+  ): Promise<MeasurementPenaltiesResponse> {
+    return this.client.get<MeasurementPenaltiesResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/measurement-penalties',
+      { params: options, rateLimitKey: 'reports.measurementPenalties' }
+    );
+  }
+
+  /**
+   * Замеры склада
+   *
+   * Метод возвращает отчёт о замерах склада.
+   *
+   * Rate limit: 1 req/min, 1 min interval, burst 1
+   *
+   * @param options - Query parameters
+   * @param options.dateFrom - Start of reporting period (ISO 8601)
+   * @param options.dateTo - End of reporting period (ISO 8601, required)
+   * @param options.limit - Number of items in response (max 1000, required)
+   * @param options.offset - Number of items to skip (default 0)
+   * @returns Measurement reports with total count
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see EPIC 44 - New endpoint replacing tab=measurement on old warehouse-measurements
+   * @example
+   * const result = await sdk.reports.getWarehouseMeasurementsV2({
+   *   dateTo: '2026-02-06',
+   *   limit: 100
+   * });
+   * console.log(result.data?.reports);
+   */
+  async getWarehouseMeasurementsV2(
+    options: WarehouseMeasurementsV2Params
+  ): Promise<WarehouseMeasurementsV2Response> {
+    return this.client.get<WarehouseMeasurementsV2Response>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/warehouse-measurements',
+      { params: options, rateLimitKey: 'reports.warehouseMeasurementsV2' }
+    );
+  }
+
+  /**
+   * Удержания за подмену и некорректные вложения
+   *
+   * Метод возвращает отчёт об удержаниях за подмену товара и некорректные вложения.
+   * Заменяет удалённый endpoint /api/v1/analytics/incorrect-attachments.
+   *
+   * Rate limit: 1 req/min, 1 min interval, burst 1
+   *
+   * @param options - Query parameters
+   * @param options.dateFrom - Start of reporting period (ISO 8601)
+   * @param options.dateTo - End of reporting period (ISO 8601, required)
+   * @param options.sort - Sort field: nmId, dtBonus, bonusSumm (default: dtBonus)
+   * @param options.order - Sort order: desc, asc (default: desc)
+   * @param options.limit - Number of items in response (max 1000, required)
+   * @param options.offset - Number of items to skip (default 0)
+   * @returns Deduction reports with total count
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see EPIC 44 - New endpoint replacing removed incorrect-attachments
+   * @example
+   * const result = await sdk.reports.getDeductions({
+   *   dateTo: '2026-02-06',
+   *   limit: 100,
+   *   sort: 'dtBonus',
+   *   order: 'desc'
+   * });
+   * console.log(result.data?.reports);
+   */
+  async getDeductions(options: DeductionsParams): Promise<DeductionsResponse> {
+    return this.client.get<DeductionsResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/deductions',
+      { params: options, rateLimitKey: 'reports.deductions' }
+    );
+  }
 }

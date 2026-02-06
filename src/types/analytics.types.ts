@@ -241,9 +241,88 @@ export interface TableGroupItem {
   items: TableProductItem[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+/**
+ * Товар в группе для отчёта по поисковым запросам
+ */
 export interface TableProductItem {
-  // API returns empty object, interface reserved for future expansion
+  /** Артикул WB */
+  nmId?: number;
+  /** Название товара */
+  name?: string;
+  /** Артикул продавца */
+  vendorCode?: string;
+  /** Название предмета */
+  subjectName?: string;
+  /** Бренд */
+  brandName?: string;
+  /** URL главного фото карточки товара */
+  mainPhoto?: string;
+  /** Находится ли товар в продвижении в Поисковой выдаче */
+  isAdvertised?: boolean;
+  /** Искали ли товар по подменному артикулу */
+  isSubstitutedSKU?: boolean;
+  /** Есть ли рейтинг у карточки товара */
+  isCardRated?: boolean;
+  /** Рейтинг карточки товара */
+  rating?: number;
+  /** Рейтинг по отзывам */
+  feedbackRating?: number;
+  /** Цена товара */
+  price?: {
+    /** Минимальная цена продавца со скидкой (без учёта скидки WB Клуба) */
+    minPrice: number;
+    /** Максимальная цена продавца со скидкой (без учёта скидки WB Клуба) */
+    maxPrice: number;
+  };
+  /** Средняя позиция товара в результатах поиска */
+  avgPosition?: {
+    /** Текущая средняя позиция */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
+  /** Количество переходов в карточку товара из поиска */
+  openCard?: {
+    /** Текущее количество переходов */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
+  /** Сколько раз товар из поиска добавили в корзину */
+  addToCart?: {
+    /** Текущее количество */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
+  /** Конверсия в корзину из поиска */
+  openToCart?: {
+    /** Текущая конверсия */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
+  /** Сколько раз товары из поиска заказали */
+  orders?: {
+    /** Текущее количество */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
+  /** Конверсия в заказ из поиска */
+  cartToOrder?: {
+    /** Текущая конверсия */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
+  /** Процент видимости товара в результатах поиска */
+  visibility?: {
+    /** Текущий процент видимости */
+    current: number;
+    /** Динамика по сравнению с предыдущим периодом, % */
+    dynamics?: number;
+  };
 }
 
 /**
@@ -408,6 +487,9 @@ export interface OrderBy {
   mode: 'asc' | 'desc';
 }
 
+/** Type alias for OrderByMainAndDetails schema */
+export type OrderByMainAndDetails = OrderBy;
+
 /**
  * Параметры сортировки
  */
@@ -517,6 +599,21 @@ export interface ErrorObject403 {
   origin: string;
 }
 
+/**
+ * Generic error object for v3 analytics endpoints
+ */
+export interface ErrorObject {
+  /** Error code */
+  code?: number;
+  /** Error message */
+  message?: string;
+}
+
+/**
+ * Internal response error format for v2 analytics endpoints.
+ * Not directly from swagger schema - used for internal error handling.
+ * @internal
+ */
 export interface ResponseError {
   data?: Record<string, never>[];
   /** Флаг ошибки */
@@ -1155,29 +1252,22 @@ export interface PeriodSt {
 export type StockType = '' | 'wb' | 'mp';
 
 /**
- * Доступность товара:
- *  - `deficient` — Дефицит
- *  - `actual` — Актуальный
- *  - `balanced` — Баланс
- *  - `nonActual` — Неактуальный
- *  - `nonLiquid` — Неликвид
- *  - `invalidData` — Не рассчитано
- *
- * @example
-```json
-[
-  "deficient",
-  "balanced"
-]
-```
+ * Доступность товара (массив фильтров):
+ * - `deficient` — Дефицит
+ * - `actual` — Актуальный
+ * - `balanced` — Баланс
+ * - `nonActual` — Неактуальный
+ * - `nonLiquid` — Неликвид
+ * - `invalidData` — Не рассчитано
  */
-export type AvailabilityFilters =
+export type AvailabilityFilters = (
   | 'deficient'
   | 'actual'
   | 'balanced'
   | 'nonActual'
   | 'nonLiquid'
-  | 'invalidData'[];
+  | 'invalidData'
+)[];
 
 /**
  * Вид сортировки данных
