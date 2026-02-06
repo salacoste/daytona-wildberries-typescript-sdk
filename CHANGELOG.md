@@ -5,6 +5,195 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0] - 2026-02-07
+
+### ⚠️ Final Deprecation Warnings
+
+This is the **last release** before v3.0.0. All deprecated methods now emit "FINAL WARNING" messages.
+
+**Action Required:** If you see any "FINAL WARNING" messages in your console, migrate to the recommended alternatives before upgrading to v3.0.0.
+
+See the [Migration Guide](docs/guides/migration-v3.md) for detailed instructions.
+
+### Changed
+
+- All 66 deprecated methods now emit "FINAL WARNING" instead of "DEPRECATION WARNING"
+- Warning message updated: "This is your last chance to migrate"
+
+### Timeline
+
+| Version | Status | Description |
+|---------|--------|-------------|
+| v2.8.0 | Released | Deprecation warnings added |
+| **v2.9.0** | **Current** | **Final warnings before removal** |
+| v3.0.0 | Upcoming | Deprecated methods removed |
+
+---
+
+## [2.8.0] - 2026-02-07
+
+### ⚠️ Deprecation Warnings
+
+This release adds runtime deprecation warnings for all methods that will be removed in v3.0.0.
+
+**Action Required**: If you see deprecation warnings in your console, please migrate your code before upgrading to v3.0.0.
+
+See the [Migration Guide](docs/guides/migration-v3.md) for detailed instructions.
+
+### Deprecated Methods (66 total)
+
+The following methods now emit console warnings and will be **removed in v3.0.0**:
+
+#### Promotion Module (19 methods)
+| Method | Alternative |
+|--------|-------------|
+| `getSearchSetPlus()` | Removed (no replacement) |
+| `createSearchSetPlu()` | Removed (no replacement) |
+| `createSearchSetExcluded()` | Removed (no replacement) |
+| `getAutoGetnmtoadd()` | Use `GET /api/advert/v2/adverts` and `PATCH /adv/v0/auction/nms` |
+| `getAutoStatWords()` | Use `GET /adv/v3/fullstats` |
+| `getPromotionCount()` | Use `GET /api/advert/v2/adverts` |
+| `createPromotionAdvert()` | Use `GET /api/advert/v2/adverts` |
+| `getAuctionAdverts()` | Use updated campaign management API |
+| `getAdvConfig()` | Use updated configuration API |
+| `createBidsMin()` | Use `POST /api/advert/v1/bids/min` |
+| `createAdvSaveAd()` | Use `POST /adv/v2/seacat/save-ad` |
+| `createSeacatSaveAd()` | Use current campaign creation API |
+| `getSupplierSubjects()` | Use updated supplier API |
+| `createSupplierNm()` | Use updated supplier API |
+| `getAdvStart()` | Use updated campaign management API |
+| `getAdvPause()` | Use updated campaign management API |
+| `updateAdvBid()` | Use `PATCH /api/advert/v1/bids` |
+| `createAdvFullstat()` | Use `GET /adv/v3/fullstats` |
+| `getStatWords()` | Use `GET /adv/v0/stats/keywords` |
+
+#### Orders DBS Module (13 methods)
+| Method | Alternative |
+|--------|-------------|
+| `getMeta()` | Use `getMetaBulk()` |
+| `deleteMeta()` | Use `deleteMetaBulk()` |
+| `setSgtin()` | Use `setSgtinBulk()` |
+| `setUin()` | Use `setUinBulk()` |
+| `setImei()` | Use `setImeiBulk()` |
+| `setGtin()` | Use `setGtinBulk()` |
+| `setCustomsDeclaration()` | Use `setCustomsDeclarationBulk()` |
+| `getStatuses()` | Use `getStatusesBulk()` |
+| `confirm()` | Use `confirmBulk()` |
+| `deliver()` | Use `deliverBulk()` |
+| `receive()` | Use `receiveBulk()` |
+| `reject()` | Use `rejectBulk()` |
+| `cancel()` | Use `cancelBulk()` |
+
+#### Reports Module (10 methods)
+| Method | Alternative |
+|--------|-------------|
+| `getSupplierIncomes()` | Removed on 11 March 2026 |
+| `getTasksStatu()` | Use `getWarehouseRemainsTaskStatus()` |
+| `getTasksDownload()` | Use `downloadWarehouseRemainsReport()` |
+| `getWarehouseMeasurements()` | Use `getMeasurementPenalties()` or `getWarehouseMeasurementsV2()` |
+| `getSubstitution()` | Use `getDeductions()` |
+| `getIncorrectAttachment()` | Removed (no replacement) |
+| `getTasksStatu2()` | Use `getAcceptanceReportTaskStatus()` |
+| `getTasksDownload2()` | Use `downloadAcceptanceReport()` |
+| `getTasksStatu3()` | Use `getPaidStorageTaskStatus()` |
+| `getTasksDownload3()` | Use `downloadPaidStorageReport()` |
+
+#### Communications Module (6 methods)
+| Method | Alternative |
+|--------|-------------|
+| `getTemplates()` | Removed (Response Templates tag removed from API) |
+| `createTemplates()` | Removed (Response Templates tag removed from API) |
+| `getTemplatesId()` | Removed (Response Templates tag removed from API) |
+| `updateTemplatesId()` | Removed (Response Templates tag removed from API) |
+| `deleteTemplatesId()` | Removed (Response Templates tag removed from API) |
+| `createReviewsGenerate()` | Removed (no replacement) |
+
+#### Orders FBS Module (5 methods)
+| Method | Alternative |
+|--------|-------------|
+| `createOrdersStatu()` | Use `getOrderStatuses()` |
+| `getOrderMeta()` | Use `getOrdersMetaBulk()` |
+| `getExternalStickersUrls()` | Use `createStickersCrossBorder()` |
+| `updateSuppliesOrder()` | Use `addOrdersToSupply()` |
+| `getSuppliesOrder()` | Use `getSupplyOrderIds()` |
+
+#### Products Module (7 methods)
+| Method | Alternative |
+|--------|-------------|
+| `createCardsList()` | Use `getCardsList()` |
+| `createCardsTrash()` | Use `getTrashedCards()` |
+| `getGoodsTask2()` | Use `getBufferGoodsTask()` |
+| `createStock()` | Use `getStocks()` |
+| `createWarehous()` | Use `createWarehouse()` |
+| `updateWarehous()` | Use `updateWarehouse()` |
+| `deleteWarehous()` | Use `deleteWarehouse()` |
+
+#### Analytics Module (3 methods)
+| Method | Alternative |
+|--------|-------------|
+| `createNmReportDetail()` | Use `getSalesFunnelProducts()` |
+| `createDetailHistory()` | Use `getSalesFunnelProductsHistory()` |
+| `createGroupedHistory()` | Use `getSalesFunnelGroupedHistory()` |
+
+#### Orders FBW Module (2 methods)
+| Method | Alternative |
+|--------|-------------|
+| `getAcceptance()` | Use tariffs module (moved to common-api) |
+| `createSupply()` | Use `listSupplies()` |
+
+#### In-Store Pickup Module (1 method)
+| Method | Alternative |
+|--------|-------------|
+| `createOrdersStatu()` | Use `createOrdersStatus()` |
+
+#### Finances Module (1 method)
+| Method | Alternative |
+|--------|-------------|
+| `getSupplierReportdetailbyperiod()` | Use `getSupplierReportDetailByPeriod()` |
+
+### Deprecated Types (14 total)
+
+| Type | Alternative |
+|------|-------------|
+| `DBSOrderStatusLegacy` | Use `DBSOrderStatusBulk` |
+| `GetStatusResponseLegacy` | Use `GetStatusInfoResponse` |
+| `NmReportDetailRequest` | Use `SalesFunnelProductsRequest` |
+| `NmReportDetailHistoryRequest` | Use `SalesFunnelProductsHistoryRequest` |
+| `NmReportGroupedHistoryRequest` | Use `SalesFunnelGroupedHistoryRequest` |
+| `NmReportDetailResponse` | Use `SalesFunnelProductsResponse` |
+| `NmReportDetailHistoryResponse` | Use `SalesFunnelProductsHistoryResponse` |
+| `NmReportGroupedHistoryResponse` | Use `SalesFunnelGroupedHistoryResponse` |
+| `Response400WHM` | Use `Response400Retentions` |
+| `Response403WHM` | Use `Response403Retentions` |
+| `TemplatesRequest` | Removed (Response Templates removed from API) |
+| `Template` | Removed (Response Templates removed from API) |
+| `TemplateDetailed` | Removed (Response Templates removed from API) |
+
+### Deprecated Fields (4 fields)
+
+| Type | Field | Note |
+|------|-------|------|
+| `Question` | `clientID` | Removed February 2, 2026 (Release #466) |
+| `Feedback` | `clientID` | Removed February 2, 2026 (Release #466) |
+| `Feedback` | `needRefund` | Use claims endpoint `/api/v1/claims` |
+| `Feedback` | `statusID` | Removed February 10, 2026 (Release #469) |
+
+### Timeline
+
+| Version | Date | Action |
+|---------|------|--------|
+| **v2.8.0** | February 2026 | Deprecation warnings added (current) |
+| **v2.9.0** | March 2026 | Final warnings |
+| **v3.0.0** | April 2026 | All deprecated methods removed |
+
+### Migration Resources
+
+- [v3 Migration Guide](docs/guides/migration-v3.md) - Complete migration instructions
+- [DBS Legacy to Bulk Migration](docs/guides/migration-dbs-legacy-to-bulk.md) - DBS-specific guide
+- [Promotion API Deprecation](docs/guides/migration-v2.4-promotion-deprecation.md) - Promotion-specific guide
+
+---
+
 ## [2.8.0] - 2026-02-04
 
 ### Products Module — Method Naming & Deprecated Wrappers (EPIC 20, task-17)
