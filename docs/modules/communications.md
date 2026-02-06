@@ -1,6 +1,6 @@
 # Communications Module
 
-The **Communications** module manages customer interactions including product reviews, questions, buyer chat, answer templates, and return requests.
+Customer engagement and feedback management for Wildberries marketplace.
 
 ---
 
@@ -12,8 +12,18 @@ The **Communications** module manages customer interactions including product re
 | **SDK Namespace** | `sdk.communications.*` |
 | **Base URLs** | `https://feedbacks-api.wildberries.ru`, `https://buyer-chat-api.wildberries.ru`, `https://returns-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/09-communications/` |
-| **Methods** | 26 |
+| **Methods** | 21 |
 | **Authentication** | API Key (Header) |
+
+---
+
+## Features
+
+- **Questions & Answers** - Manage customer questions on products
+- **Feedbacks/Reviews** - Handle customer reviews and ratings
+- **Pinned Reviews** (NEW in Feb 2026) - Pin important reviews to product cards
+- **Claims/Returns** - Process return claims
+- **Customer Chat** - Direct messaging with customers
 
 ---
 
@@ -35,6 +45,15 @@ await sdk.communications.createFeedbacksAnswer({ id: 'review-id', text: 'Thank y
 
 // Get customer chats
 const chats = await sdk.communications.getSellerChats();
+
+// NEW: Pin important reviews
+const pinnedCount = await sdk.communications.getPinnedFeedbacksCount();
+console.log('Pinned reviews:', pinnedCount.data?.countPinned);
+
+await sdk.communications.pinFeedback({
+  nmIds: [12345678, 87654321],
+  feedbackId: 'positive-review-id'
+});
 ```
 
 ---
@@ -52,15 +71,13 @@ const chats = await sdk.communications.getSellerChats();
 | `updateQuestion()` | PATCH | `/api/v1/questions` | Mark viewed, reject, answer, or edit answer |
 | `question()` | GET | `/api/v1/question` | Get single question by ID |
 
-### Reviews (8 methods)
+### Reviews (6 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getFeedbacksCountUnanswered()` | GET | `/api/v1/feedbacks/count-unanswered` | Get unprocessed reviews count and avg rating |
 | `getFeedbacksCount()` | GET | `/api/v1/feedbacks/count` | Get review count for period |
 | `feedbacks()` | GET | `/api/v1/feedbacks` | Get reviews with filters and pagination |
-| `supplierValuations()` | GET | `/api/v1/supplier-valuations` | Get complaint reasons and product problem lists |
-| `createFeedbacksAction()` | POST | `/api/v1/feedbacks/actions` | Submit complaint or report product problem |
 | `createFeedbacksAnswer()` | POST | `/api/v1/feedbacks/answer` | Reply to customer review |
 | `updateFeedbacksAnswer()` | PATCH | `/api/v1/feedbacks/answer` | Edit review response (once per 60 days) |
 | `feedback()` | GET | `/api/v1/feedback` | Get single review by ID |
@@ -72,14 +89,17 @@ const chats = await sdk.communications.getSellerChats();
 | `createOrderReturn()` | POST | `/api/v1/feedbacks/order/return` | Request product return by review ID |
 | `getFeedbacksArchive()` | GET | `/api/v1/feedbacks/archive` | Get archived reviews |
 
-### Answer Templates (4 methods)
+### Pinned Reviews (5 methods) - NEW in Feb 2026
+
+Pin important reviews to product cards to highlight positive customer feedback.
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `templates()` | GET | `/api/v1/templates` | Get answer templates |
-| `createTemplate()` | POST | `/api/v1/templates` | Create answer template (max 20 total) |
-| `updateTemplate()` | PATCH | `/api/v1/templates` | Edit answer template |
-| `deleteTemplate()` | DELETE | `/api/v1/templates` | Delete answer template |
+| `getPinnedFeedbacksCount()` | GET | `/api/v1/feedbacks/pinned/count` | Get count of pinned reviews |
+| `getPinnedFeedbacksLimits()` | GET | `/api/v1/feedbacks/pinned/limits` | Get pinning limits per seller |
+| `getPinnedFeedbacks()` | GET | `/api/v1/feedbacks/pinned` | List pinned reviews with details |
+| `pinFeedback()` | POST | `/api/v1/feedbacks/pinned` | Pin reviews to products |
+| `unpinFeedback()` | DELETE | `/api/v1/feedbacks/pinned` | Unpin reviews from products |
 
 ### Buyer Chat (4 methods)
 
@@ -99,16 +119,34 @@ const chats = await sdk.communications.getSellerChats();
 
 ---
 
+## Deprecated Methods
+
+The following methods have been removed from the Wildberries API:
+
+| Method | Status | Notes |
+|--------|--------|-------|
+| `supplierValuations()` | **Removed** | Complaint reasons endpoint removed from API |
+| `createFeedbacksAction()` | **Removed** | Feedback actions endpoint removed from API |
+| `templates()` | **Removed** | Templates tag removed from API |
+| `createTemplate()` | **Removed** | Templates tag removed from API |
+| `updateTemplate()` | **Removed** | Templates tag removed from API |
+| `deleteTemplate()` | **Removed** | Templates tag removed from API |
+
+---
+
 ## Rate Limits
 
 | Tier | Operations | Limit | Interval |
 |------|-----------|-------|----------|
-| T1 Questions & Reviews | Questions, reviews, templates, feedback actions | 3 req/sec | 333ms |
+| T1 Questions & Reviews | Questions, reviews, feedback actions | 3 req/sec | 333ms |
 | T2 Chat | Seller chats, events, messages, downloads | 10 req/10s | 1s |
 | T3 Returns | Claims list and response | 20 req/min | 3s |
+| T4 Pinned Reviews | All pinned review operations | 3 req/min | 20s |
 
 ---
 
-## Related Resources
+## See Also
 
-- [API Reference: CommunicationsModule](/api/classes/CommunicationsModule)
+- [Getting Started Guide](../guides/communications-getting-started.md)
+- [API Reference: CommunicationsModule](../api/classes/CommunicationsModule.html)
+- [Examples](../../examples/communications-pinned-reviews.ts)

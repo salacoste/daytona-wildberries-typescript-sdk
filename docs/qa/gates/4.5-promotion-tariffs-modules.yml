@@ -241,6 +241,7 @@ february_2026_audit:
       description: "6 normquery (search clusters) endpoints and 3 v2 replacement endpoints not implemented"
       files: ["src/modules/promotion/index.ts"]
       epic: "EPIC 34 (task-34)"
+      status: "RESOLVED"
 
     - id: "gap-2"
       severity: "high"
@@ -248,6 +249,7 @@ february_2026_audit:
       description: "16 endpoints deprecated in swagger but SDK has no @deprecated tags or console.warn"
       files: ["src/modules/promotion/index.ts"]
       epic: "EPIC 35 (task-35)"
+      status: "RESOLVED"
 
     - id: "gap-3"
       severity: "high"
@@ -255,6 +257,7 @@ february_2026_audit:
       description: "POST /adv/v1/save-ad removed from swagger but createAdvSaveAd() still exists"
       files: ["src/modules/promotion/index.ts"]
       epic: "EPIC 35 (task-35)"
+      status: "RESOLVED"
 
     - id: "gap-4"
       severity: "medium"
@@ -262,6 +265,7 @@ february_2026_audit:
       description: "All 42 @example blocks use sdk.general.* instead of sdk.promotion.*"
       files: ["src/modules/promotion/index.ts"]
       epic: "EPIC 35 (task-35)"
+      status: "RESOLVED"
 
     - id: "gap-5"
       severity: "high"
@@ -269,6 +273,7 @@ february_2026_audit:
       description: "promotion-rate-limits.ts defines 42 entries but module methods do not pass rateLimitKey to BaseClient"
       files: ["src/modules/promotion/index.ts", "src/config/promotion-rate-limits.ts"]
       epic: "EPIC 35 (task-35)"
+      status: "RESOLVED"
 
     - id: "gap-6"
       severity: "medium"
@@ -276,23 +281,73 @@ february_2026_audit:
       description: "44 types exist but swagger has 62 schemas including new normquery types"
       files: ["src/types/promotion.types.ts"]
       epic: "EPIC 33 (task-33)"
+      status: "RESOLVED"
 
   follow_up_epics:
     - epic: 33
       task: "task-33"
       title: "Promotion Type Expansion — Cover all 62 swagger schemas"
       doc: "docs/epics/EPIC_33_PROMOTION_TYPE_EXPANSION.md"
+      status: "DONE"
 
     - epic: 34
       task: "task-34"
       title: "Promotion New Endpoints — Search Clusters + v2 Replacements"
       doc: "docs/epics/EPIC_34_PROMOTION_NEW_ENDPOINTS.md"
       depends_on: "task-33"
+      status: "DONE"
 
     - epic: 35
       task: "task-35"
       title: "Promotion Code Quality — Deprecated Marking, JSDoc Fix, Rate Limit Wiring"
       doc: "docs/epics/EPIC_35_PROMOTION_CODE_QUALITY.md"
+      status: "DONE"
+
+# February 2026 Audit Resolution
+february_2026_audit_resolution:
+  date: "2026-02-06"
+  auditor: "Claude Orchestrator"
+  status: "RESOLVED"
+
+  final_statistics:
+    methods_total: 51
+    methods_added: 9
+    types_total: 83
+    types_added: 39
+    deprecated_methods_marked: 19
+    rate_limit_keys_wired: 51
+    jsdoc_examples_fixed: 51
+
+  epic_completion:
+    EPIC_33:
+      title: "Type Expansion"
+      status: "DONE"
+      outcome: "Added 39 new TypeScript types (44→83 total)"
+    EPIC_34:
+      title: "New Endpoints"
+      status: "DONE"
+      outcome: "Added 9 new methods (Search Clusters + v2 replacements)"
+    EPIC_35:
+      title: "Code Quality"
+      status: "DONE"
+      outcome: "19 deprecated tags, 51 rateLimitKey wired, 51 JSDoc fixed"
+
+  new_features:
+    search_clusters:
+      description: "New NormQuery (Search Clusters) advertising feature"
+      methods:
+        - "getNormqueryClusterStats()"
+        - "getNormqueryBids()"
+        - "setNormqueryBids()"
+        - "deleteNormqueryBids()"
+        - "getNormqueryMinusPhrases()"
+        - "setNormqueryMinusPhrases()"
+    v2_replacements:
+      description: "Modern v2 endpoints replacing deprecated v0/v1"
+      methods:
+        - "getAdvertsV2()"
+        - "getBidsMinV1()"
+        - "updateBidsV1()"
 
 # Review methodology
 review_process:
@@ -361,6 +416,7 @@ february_2026_audit_tariffs:
       description: "SDK has single kgvpUzbekistan field, swagger defines 3 fields (kgvpMarketplaceUz, kgvpPaidStorageUz, kgvpSupplierUz)"
       files: ["src/types/tariffs.types.ts"]
       epic: "EPIC 39 (task-39)"
+      status: "PENDING"
 
     - id: "gap-t2"
       severity: "high"
@@ -368,6 +424,7 @@ february_2026_audit_tariffs:
       description: "getTariffsBox, getTariffsPallet, getTariffsReturn have optional options wrapper for required date param, causing 400 errors"
       files: ["src/modules/tariffs/index.ts"]
       epic: "EPIC 39 (task-39)"
+      status: "PENDING"
 
     - id: "gap-t3"
       severity: "high"
@@ -375,6 +432,7 @@ february_2026_audit_tariffs:
       description: "GET /api/tariffs/v1/acceptance/coefficients not in TariffsModule (exists in OrdersFBW with wrong URL and path)"
       files: ["src/modules/tariffs/index.ts"]
       epic: "EPIC 40 (task-40)"
+      status: "PENDING"
 
     - id: "gap-t4"
       severity: "high"
@@ -382,6 +440,7 @@ february_2026_audit_tariffs:
       description: "tariffs-rate-limits.ts defines 4 entries but 0 methods pass rateLimitKey to BaseClient"
       files: ["src/modules/tariffs/index.ts", "src/config/tariffs-rate-limits.ts"]
       epic: "EPIC 40 (task-40)"
+      status: "PENDING"
 
     - id: "gap-t5"
       severity: "medium"
@@ -389,6 +448,7 @@ february_2026_audit_tariffs:
       description: "models.ErrorModel and models.AcceptanceCoefficient not in tariffs.types.ts (20 schemas vs 18 types)"
       files: ["src/types/tariffs.types.ts"]
       epic: "EPIC 39 (task-39)"
+      status: "PENDING"
 
     - id: "gap-t6"
       severity: "low"
@@ -396,6 +456,7 @@ february_2026_audit_tariffs:
       description: "All 4 methods reference sdk.general.* instead of sdk.tariffs.*"
       files: ["src/modules/tariffs/index.ts"]
       epic: "EPIC 40 (task-40)"
+      status: "PENDING"
 
     - id: "gap-t7"
       severity: "medium"
@@ -403,6 +464,7 @@ february_2026_audit_tariffs:
       description: "No config for acceptance/coefficients endpoint (6 rpm, 10s interval, burst 6)"
       files: ["src/config/tariffs-rate-limits.ts"]
       epic: "EPIC 40 (task-40)"
+      status: "PENDING"
 
     - id: "gap-t8"
       severity: "medium"
@@ -410,15 +472,21 @@ february_2026_audit_tariffs:
       description: "0 integration tests exist, 6 unit tests skipped due to date validation issues"
       files: ["tests/integration/tariffs.integration.test.ts"]
       epic: "EPIC 40 (task-40)"
+      status: "PENDING"
 
   follow_up_epics:
     - epic: 39
       task: "task-39"
       title: "Tariffs Type & Parameter Fixes — CommissionUzbekistan, missing types, date params"
       doc: "docs/epics/EPIC_39_TARIFFS_TYPE_PARAMETER_FIXES.md"
+      status: "PENDING"
 
     - epic: 40
       task: "task-40"
       title: "Tariffs Code Quality — JSDoc, Rate Limits, Acceptance Endpoint, Tests"
       doc: "docs/epics/EPIC_40_TARIFFS_CODE_QUALITY.md"
       depends_on: "task-39"
+      status: "PENDING"
+
+  # Note: Tariffs EPICs (39-40) are separate from Promotion EPICs (33-35)
+  # Promotion module audit is RESOLVED, Tariffs module audit is PENDING

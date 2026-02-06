@@ -171,7 +171,7 @@ All 11 Wildberries API modules are fully supported with 100% API coverage:
 | **Finances** | Balance, transactions, reports, payouts |
 | **Analytics** | Sales funnel, search queries, stock history, CSV reports |
 | **Reports** | Income reports, sales reports, data exports |
-| **Communications** | Customer chat with real-time messaging, product Q&A, reviews and ratings management, chat previews with last messages |
+| **Communications** | Customer chat with real-time messaging, product Q&A, reviews and ratings management, chat previews with last messages, **NEW:** pinned reviews for product cards |
 | **Promotion** | Campaigns, promo codes, advertising ⚠️ **[Migration Required](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 methods deprecated (Feb 2, 2026) |
 | **Tariffs** | Commission rates, fee schedules |
 | **In-Store Pickup** | Pickup point orders and management |
@@ -364,7 +364,7 @@ chats.result?.forEach(chat => {
 | **Finances** | Баланс, транзакции, отчеты, выплаты |
 | **Analytics** | Воронка продаж, поисковые запросы, история запасов, CSV отчеты |
 | **Reports** | Отчеты о доходах, отчеты о продажах, экспорт данных |
-| **Communications** | Чат с клиентами в реальном времени, вопросы-ответы по товарам, управление отзывами и рейтингами, предпросмотр чатов с последними сообщениями |
+| **Communications** | Чат с клиентами в реальном времени, вопросы-ответы по товарам, управление отзывами и рейтингами, предпросмотр чатов с последними сообщениями, **НОВОЕ:** закрепление отзывов на карточках товаров |
 | **Promotion** | Кампании, промокоды, реклама ⚠️ **[Требуется Миграция](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 метода устарели (2 февраля 2026) |
 | **Tariffs** | Ставки комиссий, тарифные планы |
 | **In-Store Pickup** | Заказы с самовывозом и управление |
