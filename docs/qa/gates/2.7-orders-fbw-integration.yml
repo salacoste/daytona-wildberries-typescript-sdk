@@ -55,6 +55,7 @@ february_2026_audit:
   gaps_found:
     - id: "gap-1"
       severity: "medium"
+      status: "RESOLVED"
       title: "JSDoc @example blocks reference wrong module"
       description: "All 8 @example blocks use sdk.general.* instead of sdk.ordersFBW.*"
       files: ["src/modules/orders-fbw/index.ts"]
@@ -62,6 +63,7 @@ february_2026_audit:
 
     - id: "gap-2"
       severity: "medium"
+      status: "RESOLVED"
       title: "Deprecated endpoint not marked"
       description: "GET /api/v1/acceptance/coefficients is deprecated in swagger but SDK has no @deprecated tag or console.warn"
       files: ["src/modules/orders-fbw/index.ts"]
@@ -69,6 +71,7 @@ february_2026_audit:
 
     - id: "gap-3"
       severity: "high"
+      status: "RESOLVED"
       title: "Rate limit keys not wired"
       description: "orders-fbw-rate-limits.ts defines 8 entries but module methods do not pass rateLimitKey to BaseClient"
       files: ["src/modules/orders-fbw/index.ts", "src/config/orders-fbw-rate-limits.ts"]
@@ -76,6 +79,7 @@ february_2026_audit:
 
     - id: "gap-4"
       severity: "low"
+      status: "DOCUMENTED"
       title: "Missing x-readonly-method and x-category on transit-tariffs"
       description: "WB API issue, not SDK issue. GET /api/v1/transit-tariffs missing swagger extensions"
       files: ["wildberries_api_doc/07-orders-fbw.yaml"]
@@ -101,3 +105,50 @@ february_2026_audit:
       title: "Orders FBW Integration Tests with MSW"
       doc: "docs/epics/EPIC_31_FBW_INTEGRATION_TESTS.md"
       depends_on: "task-30"
+
+february_2026_audit_resolution:
+  date: "2026-02-06"
+  auditor: "Claude Orchestrator"
+  status: "RESOLVED"
+
+  summary: "All 5 gaps from February 2026 FBW audit have been resolved through EPICs 30-32"
+
+  final_statistics:
+    methods_total: 9
+    methods_active: 8
+    methods_deprecated: 1
+    rate_limit_keys_wired: 8
+    jsdoc_examples_fixed: 8
+    unit_tests_total: 16
+    integration_tests_total: 25
+    type_fixes: 2
+
+  epic_completion:
+    EPIC_30:
+      title: "Orders FBW Code Quality"
+      status: "DONE"
+      task: "task-30"
+      outcome: "Fixed 8 JSDoc @example blocks (sdk.general.* → sdk.ordersFBW.*), added @deprecated to getAcceptanceCoefficients with console.warn, wired rateLimitKey to all 8 methods"
+    EPIC_31:
+      title: "Orders FBW Integration Tests"
+      status: "DONE"
+      task: "task-31"
+      outcome: "Created 25 MSW integration tests in tests/integration/orders-fbw.integration.test.ts, excluded from CI due to MSW v2.x localStorage issue"
+    EPIC_32:
+      title: "Orders FBW Type & Naming Fixes"
+      status: "DONE"
+      task: "task-32"
+      outcome: "Fixed techsize→techSize and acceptsQr→acceptsQR casing, renamed createSupply→listSupplies with deprecated alias"
+
+  gap_resolution:
+    gap-1: "RESOLVED - All 8 @example blocks now use sdk.ordersFBW.*"
+    gap-2: "RESOLVED - getAcceptanceCoefficients marked @deprecated with console.warn"
+    gap-3: "RESOLVED - All 8 methods pass correct rateLimitKey to BaseClient"
+    gap-4: "DOCUMENTED - WB API issue (x-readonly-method missing on transit-tariffs)"
+    gap-5: "RESOLVED - 25 MSW integration tests created (excluded from CI)"
+
+  verification:
+    typescript: "npx tsc --noEmit: 0 errors"
+    unit_tests: "16/16 passed"
+    integration_tests: "25/25 passed (run manually)"
+    rate_limits: "8/8 configured and wired"

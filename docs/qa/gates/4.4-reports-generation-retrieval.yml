@@ -5,7 +5,7 @@ schema: 1
 story: "4.4"
 story_title: "Reports Module - Comprehensive Business Reports"
 gate: PASS
-status_reason: "Exceptional reports module with 26 methods across 10+ categories, 70 tests passing (58 unit + 12 integration), 3 async task workflows, pagination helpers, and comprehensive compliance reporting capabilities."
+status_reason: "Exceptional reports module with 29 methods across 10+ categories, 45 unit tests passing, 3 async task workflows, pagination helpers, and comprehensive compliance reporting capabilities. Integration tests deferred (MSW v2.x)."
 reviewer: "Quinn (Test Architect)"
 updated: "2025-10-24T21:35:00Z"
 
@@ -33,9 +33,9 @@ expires: "2025-11-07T21:35:00Z"
 
 # Evidence collected
 evidence:
-  tests_reviewed: 57
+  tests_reviewed: 45
   unit_tests: 45
-  integration_tests: 12
+  integration_tests: 0                  # Integration tests deferred (MSW v2.x localStorage compatibility issue)
   test_status: "All passing"
   methods_implemented: 29
   methods_documented: 29
@@ -71,10 +71,10 @@ code_quality:
 # Test architecture details
 test_architecture:
   coverage_percentage: "100% of implemented methods"
-  test_design: "AAA pattern, async task testing, pagination testing, integration workflows"
+  test_design: "AAA pattern, async task testing, pagination testing"
   test_types:
-    unit: "58 tests covering 26 methods + validation + pagination + async tasks"
-    integration: "12 tests with MSW for async workflows + pagination"
+    unit: "45 tests covering 29 methods + validation + async tasks"
+    integration: "Deferred (MSW v2.x localStorage compatibility issue, see task-48)"
     async_workflows: "3 async task patterns tested (warehouse, acceptance, storage)"
   edge_cases_covered: true
   error_scenarios_covered: true
@@ -145,13 +145,13 @@ files_reviewed:
     purpose: "Reports module with 26 methods across 10+ categories"
     status: "clean"
   - path: "tests/unit/modules/reports.test.ts"
-    lines: "58 tests"
+    lines: "45 tests"
     purpose: "Unit tests covering all methods, validation, async tasks"
     status: "all passing"
   - path: "tests/integration/reports.integration.test.ts"
-    lines: "12 tests"
-    purpose: "Integration tests for async workflows and pagination"
-    status: "all passing"
+    lines: "N/A"
+    purpose: "Integration tests (deferred due to MSW v2.x localStorage compatibility issue)"
+    status: "deferred to task-48"
   - path: "src/types/reports.types.ts"
     lines: "generated"
     purpose: "TypeScript type definitions from Swagger"
@@ -383,7 +383,7 @@ february_2026_audit_resolution:
     rate_limit_entries_added: 3
     jsdoc_examples_fixed: 16
     unit_tests_total: 45
-    integration_tests_total: 12
+    integration_tests_total: 0          # Deferred to task-48 (MSW v2.x issue)
 
   epic_completion:
     EPIC_43:
@@ -424,5 +424,5 @@ february_2026_audit_resolution:
   verification:
     typescript: "npx tsc --noEmit: 0 errors"
     unit_tests: "45/45 passed"
-    integration_tests: "12/12 passed"
+    integration_tests: "Deferred to task-48 (MSW v2.x localStorage compatibility issue)"
     rate_limits: "29/29 configured and wired"

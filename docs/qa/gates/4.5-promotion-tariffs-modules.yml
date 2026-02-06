@@ -526,3 +526,98 @@ february_2026_audit_tariffs_resolution:
     unit_tests: "45/45 passed"
     tdd_tests: "15/15 passed (EPIC 39 + 40)"
     rate_limits: "5/5 configured and wired"
+
+# ================================================================================
+# PROMOTION MODULE RESOLUTION (EPICs 33, 34, 35)
+# ================================================================================
+february_2026_promotion_resolution:
+  date: "2026-02-06"
+  auditor: "Claude Orchestrator"
+  status: "RESOLVED"
+  summary: "All 6 promotion gaps from February 2026 audit have been resolved through EPICs 33-35"
+
+  final_statistics:
+    methods_total: 51
+    methods_original: 42
+    methods_added: 9
+    deprecated_methods_marked: 19
+    types_total: 83
+    types_added: 39
+    rate_limit_keys_wired: 51
+    jsdoc_examples_fixed: 51
+    unit_tests: 54
+
+  epic_completion:
+    EPIC_33:
+      title: "Promotion Type Expansion"
+      task: "task-33"
+      status: "DONE"
+      outcome: "Added 39 new TypeScript types (44→83 total), covering all swagger schemas including NormQuery types"
+      gaps_resolved: ["gap-6"]
+
+    EPIC_34:
+      title: "Promotion New Endpoints"
+      task: "task-34"
+      status: "DONE"
+      outcome: "Added 9 new methods: 6 NormQuery (search clusters) + 3 v2 replacements"
+      gaps_resolved: ["gap-1"]
+      new_methods:
+        normquery:
+          - "getNormqueryStats()"
+          - "getNormqueryBids()"
+          - "setNormqueryBids()"
+          - "deleteNormqueryBids()"
+          - "getNormqueryMinus()"
+          - "setNormqueryMinus()"
+        v2_replacements:
+          - "getAdvertsV2()"
+          - "getBidsMinV2()"
+          - "updateBidsV2()"
+
+    EPIC_35:
+      title: "Promotion Code Quality"
+      task: "task-35"
+      status: "DONE"
+      outcome: "19 deprecated tags added, 51 rateLimitKeys wired, 51 JSDoc examples fixed to sdk.promotion.*"
+      gaps_resolved: ["gap-2", "gap-3", "gap-4", "gap-5"]
+
+  deprecated_methods_list:
+    - "getCampaignsList() → Use getAdvertsV2()"
+    - "getCampaignInfo() → Use getAdvertsV2() with filter"
+    - "getCampaignCategories() → Use getSubjectStats() for active campaigns"
+    - "getCampaignsConfig() → Use getSubjectStats()"
+    - "startCampaign()"
+    - "pauseCampaign()"
+    - "stopCampaign()"
+    - "createSearchCampaign()"
+    - "createCatalogCampaign()"
+    - "createSearchCatalogCampaign()"
+    - "renameCampaign()"
+    - "updateCampaign()"
+    - "deleteCampaign()"
+    - "getProductsForPromotion()"
+    - "getBidsMin() → Use getBidsMinV2()"
+    - "updateBids() → Use updateBidsV2()"
+    - "getMinusPhrases()"
+    - "updateMinusPhrases()"
+    - "getCampaignsAuction()"
+
+  verification:
+    typescript: "npx tsc --noEmit: 0 errors"
+    unit_tests: "54/54 passed"
+    rate_limits: "51/51 configured and wired"
+    deprecated_warnings: "All 19 deprecated methods emit console.warn at runtime"
+
+  quality_improvements:
+    type_safety:
+      - "All swagger schemas now have TypeScript interfaces"
+      - "NormQuery types fully defined"
+      - "Enum types expanded for new API features"
+    developer_experience:
+      - "Deprecated methods clearly marked with @deprecated JSDoc"
+      - "Runtime deprecation warnings guide users to new APIs"
+      - "All JSDoc @example blocks reference correct sdk.promotion.* namespace"
+    api_compliance:
+      - "Rate limiting now enforced via BaseClient rateLimitKey"
+      - "Endpoint URLs match current swagger specification"
+      - "Removed createAdvSaveAd() for deleted endpoint"

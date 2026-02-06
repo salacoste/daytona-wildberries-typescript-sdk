@@ -62,3 +62,38 @@ history:
   - at: "2025-10-23T02:15:00Z"
     gate: PASS
     note: "Initial review - Excellent extension of Story 3.1. All ACs met. Proper async pattern implementation. No issues identified."
+
+# February 2026 Swagger Audit
+# NOTE: This story shares the same module as Story 3.1 (FinancesModule)
+# Full audit details are documented in 3.1-finances-balance-transactions.yml
+february_2026_audit:
+  date: "2026-02-04"
+  auditor: "Product Manager / Technical Writer"
+  swagger_file: "wildberries_api_doc/13-finances.yaml"
+  endpoint_coverage: "5/5 implemented for reports/payouts scope (from shared module)"
+  schemas_relevant: 4  # DetailReportItem, ReportResponse, DocumentItem, etc.
+  reference: "See 3.1-finances-balance-transactions.yml for full module audit"
+
+  gaps_applicable:
+    - gap_ref: "gap-3"
+      title: "5 DetailReportItem fields missing"
+      relevance: "Affects getDetailReportByPeriod response"
+      epic: "EPIC 46 (task-46)"
+    - gap_ref: "gap-4"
+      title: "Zero rateLimitKey wired"
+      relevance: "Affects all 5 methods in this story"
+      epic: "EPIC 47 (task-47)"
+    - gap_ref: "gap-5"
+      title: "No tests exist"
+      relevance: "0 unit tests for report methods"
+      epic: "EPIC 47 (task-47)"
+
+  follow_up_epics:
+    - epic: 46
+      task: "task-46"
+      title: "Finances Type & Parameter Fixes"
+      doc: "docs/epics/EPIC_46_FINANCES_TYPE_PARAMETER_FIXES.md"
+    - epic: 47
+      task: "task-47"
+      title: "Finances Code Quality — JSDoc, Rate Limits, Tests, Naming"
+      doc: "docs/epics/EPIC_47_FINANCES_CODE_QUALITY.md"
