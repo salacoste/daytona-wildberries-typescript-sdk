@@ -112,7 +112,9 @@ export class PromotionModule {
   ): Promise<ResponseInfoAdvertType8 | ResponseInfoAdvert | ResponseInfoAdvertType9[]> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createPromotionAdvert')) {
       console.warn(
-        '[WB SDK] createPromotionAdvert() is deprecated. Use GET /api/advert/v2/adverts instead.'
+        '[Wildberries SDK] FINAL WARNING: createPromotionAdvert() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to GET /api/advert/v2/adverts. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createPromotionAdvert');
     }
@@ -147,7 +149,9 @@ export class PromotionModule {
   }): Promise<GetAuctionAdverts> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAuctionAdverts')) {
       console.warn(
-        '[WB SDK] getAuctionAdverts() is deprecated. Use the updated campaign management API instead.'
+        '[Wildberries SDK] FINAL WARNING: getAuctionAdverts() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated campaign management API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAuctionAdverts');
     }
@@ -178,7 +182,9 @@ export class PromotionModule {
   }> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAdvConfig')) {
       console.warn(
-        '[WB SDK] getAdvConfig() is deprecated. Use the updated configuration API instead.'
+        '[Wildberries SDK] FINAL WARNING: getAdvConfig() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated configuration API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAdvConfig');
     }
@@ -212,7 +218,9 @@ export class PromotionModule {
   }): Promise<{ bids: { bids: { type: PlacementType; value: number }[]; nm_id: number }[] }> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createBidsMin')) {
       console.warn(
-        '[WB SDK] createBidsMin() is deprecated. Use POST /api/advert/v1/bids/min instead.'
+        '[Wildberries SDK] FINAL WARNING: createBidsMin() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to POST /api/advert/v1/bids/min. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createBidsMin');
     }
@@ -251,7 +259,9 @@ export class PromotionModule {
   }): Promise<string> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createAdvSaveAd')) {
       console.warn(
-        '[WB SDK] createAdvSaveAd() is deprecated. Use POST /adv/v2/seacat/save-ad. Note: This endpoint has been removed from the API instead.'
+        '[Wildberries SDK] FINAL WARNING: createAdvSaveAd() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to POST /adv/v2/seacat/save-ad (Note: This endpoint has been removed from the API). ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createAdvSaveAd');
     }
@@ -284,7 +294,9 @@ export class PromotionModule {
   }): Promise<number> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createSeacatSaveAd')) {
       console.warn(
-        '[WB SDK] createSeacatSaveAd() is deprecated. Use the current campaign creation API instead.'
+        '[Wildberries SDK] FINAL WARNING: createSeacatSaveAd() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the current campaign creation API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createSeacatSaveAd');
     }
@@ -313,7 +325,9 @@ export class PromotionModule {
   async getSupplierSubjects(): Promise<{ id?: number; name?: string; count?: number }[]> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getSupplierSubjects')) {
       console.warn(
-        '[WB SDK] getSupplierSubjects() is deprecated. Use the updated supplier API instead.'
+        '[Wildberries SDK] FINAL WARNING: getSupplierSubjects() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated supplier API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getSupplierSubjects');
     }
@@ -344,7 +358,9 @@ export class PromotionModule {
   ): Promise<{ title?: string; nm?: number; subjectId?: number }[]> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createSupplierNm')) {
       console.warn(
-        '[WB SDK] createSupplierNm() is deprecated. Use the updated supplier API instead.'
+        '[Wildberries SDK] FINAL WARNING: createSupplierNm() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated supplier API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createSupplierNm');
     }
@@ -417,7 +433,9 @@ export class PromotionModule {
   async getAdvStart(options?: { id: number }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAdvStart')) {
       console.warn(
-        '[WB SDK] getAdvStart() is deprecated. Use the updated campaign management API instead.'
+        '[Wildberries SDK] FINAL WARNING: getAdvStart() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated campaign management API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAdvStart');
     }
@@ -446,7 +464,9 @@ export class PromotionModule {
   async getAdvPause(options?: { id: number }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAdvPause')) {
       console.warn(
-        '[WB SDK] getAdvPause() is deprecated. Use the updated campaign management API instead.'
+        '[Wildberries SDK] FINAL WARNING: getAdvPause() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated campaign management API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAdvPause');
     }
@@ -495,7 +515,11 @@ export class PromotionModule {
    * @deprecated Use PATCH /api/advert/v1/bids instead.*/
   async updateAdvBid(data: { bids: V0AdvertMultibid[] }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('updateAdvBid')) {
-      console.warn('[WB SDK] updateAdvBid() is deprecated. Use PATCH /api/advert/v1/bids instead.');
+      console.warn(
+        '[Wildberries SDK] FINAL WARNING: updateAdvBid() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to PATCH /api/advert/v1/bids. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+      );
       PromotionModule._deprecatedMethodsWarned.add('updateAdvBid');
     }
     return this.client.patch('https://advert-api.wildberries.ru/adv/v0/bids', data, {
@@ -750,7 +774,9 @@ export class PromotionModule {
   async getSearchSetPlus(options?: { id: number; fixed?: boolean }): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getSearchSetPlus')) {
       console.warn(
-        '[WB SDK] getSearchSetPlus() is deprecated and will be removed on January 15, 2025.'
+        '[Wildberries SDK] FINAL WARNING: getSearchSetPlus() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated fixed phrases API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getSearchSetPlus');
     }
@@ -784,7 +810,9 @@ export class PromotionModule {
   ): Promise<string[]> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createSearchSetPlu')) {
       console.warn(
-        '[WB SDK] createSearchSetPlu() is deprecated and will be removed on January 15, 2025.'
+        '[Wildberries SDK] FINAL WARNING: createSearchSetPlu() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated fixed phrases API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createSearchSetPlu');
     }
@@ -819,7 +847,9 @@ export class PromotionModule {
   ): Promise<void> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createSearchSetExcluded')) {
       console.warn(
-        '[WB SDK] createSearchSetExcluded() is deprecated and will be removed on January 15, 2025.'
+        '[Wildberries SDK] FINAL WARNING: createSearchSetExcluded() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to the updated minus phrases API. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createSearchSetExcluded');
     }
@@ -875,7 +905,9 @@ export class PromotionModule {
   async getAutoGetnmtoadd(options?: { id: number }): Promise<number[]> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAutoGetnmtoadd')) {
       console.warn(
-        '[WB SDK] getAutoGetnmtoadd() is deprecated. Use GET /adv/v0/auction/adverts and PATCH /adv/v0/auction/nms for type 9 campaigns. Will be removed February 2, 2026.'
+        '[Wildberries SDK] FINAL WARNING: getAutoGetnmtoadd() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to GET /adv/v0/auction/adverts and PATCH /adv/v0/auction/nms for type 9 campaigns. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAutoGetnmtoadd');
     }
@@ -1144,7 +1176,9 @@ export class PromotionModule {
   ): Promise<ResponseWithDate | ResponseWithInterval> {
     if (!PromotionModule._deprecatedMethodsWarned.has('createAdvFullstat')) {
       console.warn(
-        '[WB SDK] createAdvFullstat() is deprecated. Use GET /adv/v3/fullstats instead.'
+        '[Wildberries SDK] FINAL WARNING: createAdvFullstat() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to GET /adv/v3/fullstats. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('createAdvFullstat');
     }
@@ -1204,7 +1238,9 @@ export class PromotionModule {
   }> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getAutoStatWords')) {
       console.warn(
-        '[WB SDK] getAutoStatWords() is deprecated. Use GET /adv/v3/fullstats instead. Will be removed February 2, 2026.'
+        '[Wildberries SDK] FINAL WARNING: getAutoStatWords() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to GET /adv/v3/fullstats. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getAutoStatWords');
     }
@@ -1260,7 +1296,9 @@ export class PromotionModule {
   }> {
     if (!PromotionModule._deprecatedMethodsWarned.has('getStatWords')) {
       console.warn(
-        '[WB SDK] getStatWords() is deprecated. Use GET /adv/v0/stats/keywords instead.'
+        '[Wildberries SDK] FINAL WARNING: getStatWords() will be REMOVED in the NEXT version (v3.0.0). ' +
+          'This is your last chance to migrate to GET /adv/v0/stats/keywords. ' +
+          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
       );
       PromotionModule._deprecatedMethodsWarned.add('getStatWords');
     }

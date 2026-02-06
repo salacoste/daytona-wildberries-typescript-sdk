@@ -464,9 +464,7 @@ describe('CommunicationsModule', () => {
 
         await communicationsModule.supplierValuations();
 
-        expect(warnSpy).toHaveBeenCalledWith(
-          expect.stringContaining('supplierValuations is deprecated')
-        );
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         warnSpy.mockRestore();
       });
 
@@ -501,9 +499,7 @@ describe('CommunicationsModule', () => {
 
         await communicationsModule.createFeedbacksAction({ id: 'fb1' });
 
-        expect(warnSpy).toHaveBeenCalledWith(
-          expect.stringContaining('createFeedbacksAction is deprecated')
-        );
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         warnSpy.mockRestore();
       });
     });
@@ -515,7 +511,7 @@ describe('CommunicationsModule', () => {
 
         await communicationsModule.templates({ templateType: 1 });
 
-        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('templates is deprecated'));
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         warnSpy.mockRestore();
       });
     });
@@ -527,9 +523,7 @@ describe('CommunicationsModule', () => {
 
         await communicationsModule.createTemplate({ name: 'Test', templateType: 1, text: 'Hi' });
 
-        expect(warnSpy).toHaveBeenCalledWith(
-          expect.stringContaining('createTemplate is deprecated')
-        );
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         warnSpy.mockRestore();
       });
     });
@@ -541,9 +535,7 @@ describe('CommunicationsModule', () => {
 
         await communicationsModule.updateTemplate({ name: 'Test', templateID: 't1', text: 'Hi' });
 
-        expect(warnSpy).toHaveBeenCalledWith(
-          expect.stringContaining('updateTemplate is deprecated')
-        );
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         warnSpy.mockRestore();
       });
     });
@@ -555,9 +547,7 @@ describe('CommunicationsModule', () => {
 
         await communicationsModule.deleteTemplate({ templateID: 't1' });
 
-        expect(warnSpy).toHaveBeenCalledWith(
-          expect.stringContaining('deleteTemplate is deprecated')
-        );
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         warnSpy.mockRestore();
       });
     });

@@ -144,9 +144,7 @@ describe('ReportsModule', () => {
 
         await module.getSupplierIncomes({ dateFrom: '2026-01-01' });
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getSupplierIncomes() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
 
       it('getAnalyticsWarehouseMeasurements shows deprecation warning', async () => {
@@ -158,9 +156,7 @@ describe('ReportsModule', () => {
           limit: 100,
         });
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getAnalyticsWarehouseMeasurements() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
 
       it('getAnalyticsIncorrectAttachments shows deprecation warning', async () => {
@@ -171,9 +167,7 @@ describe('ReportsModule', () => {
           dateTo: '2026-01-31',
         });
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getAnalyticsIncorrectAttachments() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
 
       it('getAnalyticsCharacteristicsChange shows deprecation warning', async () => {
@@ -184,9 +178,7 @@ describe('ReportsModule', () => {
           dateTo: '2026-01-31',
         });
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getAnalyticsCharacteristicsChange() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
     });
 
@@ -196,9 +188,7 @@ describe('ReportsModule', () => {
 
         await module.getTasksStatu('task-uuid');
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getTasksStatu() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         expect(mockClient.get).toHaveBeenCalledWith(
           expect.stringContaining('warehouse_remains/tasks/task-uuid/status'),
           expect.anything()
@@ -210,9 +200,7 @@ describe('ReportsModule', () => {
 
         await module.getTasksDownload('task-uuid');
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getTasksDownload() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
         expect(mockClient.get).toHaveBeenCalledWith(
           expect.stringContaining('warehouse_remains/tasks/task-uuid/download'),
           expect.anything()
@@ -224,9 +212,7 @@ describe('ReportsModule', () => {
 
         await module.getTasksStatu2('task-uuid');
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getTasksStatu2() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
 
       it('getTasksDownload2 calls downloadAcceptanceReport', async () => {
@@ -234,9 +220,7 @@ describe('ReportsModule', () => {
 
         await module.getTasksDownload2('task-uuid');
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getTasksDownload2() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
 
       it('getTasksStatu3 calls getPaidStorageTaskStatus', async () => {
@@ -244,9 +228,7 @@ describe('ReportsModule', () => {
 
         await module.getTasksStatu3('task-uuid');
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getTasksStatu3() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
 
       it('getTasksDownload3 calls downloadPaidStorageReport', async () => {
@@ -254,9 +236,7 @@ describe('ReportsModule', () => {
 
         await module.getTasksDownload3('task-uuid');
 
-        expect(console.warn).toHaveBeenCalledWith(
-          expect.stringContaining('getTasksDownload3() is deprecated')
-        );
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
       });
     });
   });
