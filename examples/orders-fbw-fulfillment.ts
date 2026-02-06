@@ -292,7 +292,7 @@ async function completeFBWWorkflow() {
       statusIDs: [], // All statuses
     };
 
-    const supplies = await sdk.ordersFBW.createSupply(filters, { limit: 100, offset: 0 });
+    const supplies = await sdk.ordersFBW.listSupplies(filters, { limit: 100, offset: 0 });
     console.log(`Found ${supplies.length} supplies in last 30 days\n`);
 
     if (supplies.length > 0) {
