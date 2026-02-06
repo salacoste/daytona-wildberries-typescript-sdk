@@ -8,6 +8,7 @@
  */
 
 import { AuthenticationError, ValidationError, RateLimitError, NetworkError } from '../errors';
+import { isOperationReadonly } from '../config/operation-metadata';
 
 /**
  * Configuration options for retry behavior
@@ -82,6 +83,55 @@ export interface RetryConfig {
    * ```
    */
   exponentialBackoff?: boolean;
+}
+
+/**
+ * Options for controlling retry behavior per-operation
+ *
+ * Allows callers to specify operation metadata for readonly-aware retry logic
+ * and to force retries even for write operations when explicitly intended.
+ *
+ * @example
+ * ```typescript
+ * // Retry with operation key lookup
+ * await handler.executeWithRetry(
+ *   () => api.getProducts(),
+ *   'getProducts',
+ *   { operationKey: 'products.getCardsList' }
+ * );
+ *
+ * // Force retry for write operation (use with caution)
+ * await handler.executeWithRetry(
+ *   () => api.createProduct(data),
+ *   'createProduct',
+ *   { operationKey: 'products.createCardsUpload', forceRetry: true }
+ * );
+ * ```
+ */
+export interface RetryOptions {
+  /**
+   * Operation key for metadata lookup (format: '{module}.{methodName}')
+   *
+   * Used to check if the operation is readonly (safe to retry).
+   * If the operation is NOT readonly (write operation), retries will be
+   * skipped unless `forceRetry` is true.
+   *
+   * @example 'products.getCardsList', 'products.createCardsUpload'
+   */
+  operationKey?: string;
+
+  /**
+   * Force retry even for write operations
+   *
+   * **Use with extreme caution!** Write operations may have side effects
+   * and retrying could cause duplicate data (e.g., duplicate product cards).
+   *
+   * Only set to true when you have idempotency guarantees or are certain
+   * the operation can be safely retried.
+   *
+   * @default false
+   */
+  forceRetry?: boolean;
 }
 
 /**
@@ -207,9 +257,27 @@ export class RetryHandler {
    *   () => fetch('https://api.example.com/data').then(r => r.json()),
    *   'fetch data'
    * );
+   *
+   * // With readonly-aware retry (recommended for SDK operations)
+   * const products = await handler.executeWithRetry(
+   *   () => api.getProducts(),
+   *   'getProducts',
+   *   { operationKey: 'products.getCardsList' }
+   * );
+   *
+   * // Force retry for write operation (use with caution)
+   * const created = await handler.executeWithRetry(
+   *   () => api.createProduct(data),
+   *   'createProduct',
+   *   { operationKey: 'products.createCardsUpload', forceRetry: true }
+   * );
    * ```
    */
-  async executeWithRetry<T>(operation: () => Promise<T>, operationName = 'operation'): Promise<T> {
+  async executeWithRetry<T>(
+    operation: () => Promise<T>,
+    operationName = 'operation',
+    options?: RetryOptions
+  ): Promise<T> {
     let lastError: Error | undefined;
 
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
@@ -228,7 +296,7 @@ export class RetryHandler {
         lastError = error as Error;
 
         // Check if we should retry this error
-        if (!this.shouldRetry(error, attempt)) {
+        if (!this.shouldRetry(error, attempt, options)) {
           throw error;
         }
 
@@ -277,14 +345,16 @@ export class RetryHandler {
    * - AuthenticationError (401, 403) - invalid credentials won't fix with retry
    * - ValidationError (400, 422) - bad request data won't fix with retry
    * - Other 4xx errors - client errors are permanent failures
+   * - Write operations (unless forceRetry is true) - may cause duplicate data
    *
    * @param error - The error to classify
    * @param attempt - Current attempt number (0-indexed)
+   * @param options - Optional retry options with operation metadata
    * @returns true if error should be retried, false otherwise
    *
    * @private
    */
-  private shouldRetry(error: unknown, attempt: number): boolean {
+  private shouldRetry(error: unknown, attempt: number, options?: RetryOptions): boolean {
     // Exhausted retries
     if (attempt >= this.config.maxRetries) {
       return false;
@@ -297,6 +367,20 @@ export class RetryHandler {
 
     if (error instanceof ValidationError) {
       return false; // Permanent failure - bad request data
+    }
+
+    // Check readonly safety for write operations
+    // This check happens BEFORE error type checks to prevent any retry of write operations
+    if (options?.operationKey) {
+      const isReadonly = isOperationReadonly(options.operationKey);
+      if (!isReadonly && !options.forceRetry) {
+        this.log('info', `Skipping retry for write operation: ${options.operationKey}`, {
+          operationKey: options.operationKey,
+          readonly: isReadonly,
+          forceRetry: options.forceRetry ?? false,
+        });
+        return false;
+      }
     }
 
     if (error instanceof RateLimitError) {

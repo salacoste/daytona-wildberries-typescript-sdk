@@ -23,3 +23,16 @@ export { analyticsRateLimits } from './analytics-rate-limits';
 export { communicationsRateLimits } from './communications-rate-limits';
 export { reportsRateLimits } from './reports-rate-limits';
 export type { RateLimitConfig, EndpointLimits } from '../client/rate-limiter';
+
+// Operation metadata (x-readonly-method, x-category from Swagger)
+export {
+  operationMetadata,
+  isOperationReadonly,
+  getOperationCategory,
+  getOperationRateLimitKey,
+  getOperationMetadata,
+  getOperationsByCategory,
+  getReadonlyOperations,
+  getWriteOperations,
+} from './operation-metadata';
+export type { OperationMetadata } from './operation-metadata';

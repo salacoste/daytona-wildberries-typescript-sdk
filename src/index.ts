@@ -636,8 +636,18 @@ export {
   analyticsRateLimits,
   communicationsRateLimits,
   reportsRateLimits,
+  // Operation metadata (x-readonly-method, x-category from Swagger)
+  operationMetadata,
+  isOperationReadonly,
+  getOperationCategory,
+  getOperationRateLimitKey,
+  getOperationMetadata,
+  getOperationsByCategory,
+  getReadonlyOperations,
+  getWriteOperations,
 } from './config';
 export type { RateLimitConfig, EndpointLimits } from './client/rate-limiter';
+export type { OperationMetadata } from './config';
 
 // Core infrastructure
 export { BaseClient } from './client/base-client';
