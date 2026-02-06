@@ -2,7 +2,7 @@
 
 # Interface: ApiCheckedIdentity
 
-Defined in: [types/in-store-pickup.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/in-store-pickup.types.ts#L10)
+Defined in: [types/in-store-pickup.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L10)
 
 Auto-generated TypeScript types for in-store-pickup module
 Generated from: wildberries_api_doc/06-in-store-pickup.yaml
@@ -15,4 +15,4 @@ Generated: 2025-12-14T23:02:33.784Z
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="ok"></a> `ok?` | `boolean` | Принадлежит ли заказ покупателю: - `true` — принадлежит - `false` — значение не применяется. Если заказ не принадлежит покупателю, вы получите ответ со статус-кодом `409` | [types/in-store-pickup.types.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/in-store-pickup.types.ts#L12) |
+| <a id="ok"></a> `ok?` | `boolean` | Принадлежит ли заказ покупателю: - `true` — принадлежит - `false` — значение не применяется. Если заказ не принадлежит покупателю, вы получите ответ со статус-кодом `409` | [types/in-store-pickup.types.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/in-store-pickup.types.ts#L12) |

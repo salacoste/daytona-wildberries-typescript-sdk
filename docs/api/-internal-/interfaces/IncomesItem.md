@@ -2,7 +2,7 @@
 
 # Interface: IncomesItem
 
-Defined in: [types/reports.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L10)
+Defined in: [types/reports.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L10)
 
 Auto-generated TypeScript types for reports module
 Generated from: wildberries_api_doc/12-reports.yaml
@@ -15,16 +15,16 @@ Generated: 2025-12-14T23:02:33.807Z
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="incomeid"></a> `incomeId?` | `number` | Номер поставки | [types/reports.types.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L12) |
-| <a id="number"></a> `number?` | `string` | Номер УПД | [types/reports.types.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L14) |
-| <a id="date"></a> `date?` | `string` | Дата поступления. Если часовой пояс не указан, то берётся Московское время UTC+3. | [types/reports.types.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L16) |
-| <a id="lastchangedate"></a> `lastChangeDate?` | `string` | Дата и время обновления информации в сервисе. Это поле соответствует параметру `dateFrom` в запросе. Если часовой пояс не указан, то берётся Московское время UTC+3. | [types/reports.types.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L18) |
-| <a id="supplierarticle"></a> `supplierArticle?` | `string` | Артикул продавца | [types/reports.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L20) |
-| <a id="techsize"></a> `techSize?` | `string` | Размер товара | [types/reports.types.ts:22](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L22) |
-| <a id="barcode"></a> `barcode?` | `string` | Баркод | [types/reports.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L24) |
-| <a id="quantity"></a> `quantity?` | `number` | Количество | [types/reports.types.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L26) |
-| <a id="totalprice"></a> `totalPrice?` | `number` | Цена из УПД | [types/reports.types.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L28) |
-| <a id="dateclose"></a> `dateClose?` | `string` | Дата принятия (закрытия) в WB. Если часовой пояс не указан, то берётся Московское время UTC+3 | [types/reports.types.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L30) |
-| <a id="warehousename"></a> `warehouseName?` | `string` | Название склада | [types/reports.types.ts:32](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L32) |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L34) |
-| <a id="status"></a> `status?` | `"Принято"` | Текущий статус поставки | [types/reports.types.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/reports.types.ts#L36) |
+| <a id="incomeid"></a> `incomeId?` | `number` | Номер поставки | [types/reports.types.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L12) |
+| <a id="number"></a> `number?` | `string` | Номер УПД | [types/reports.types.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L14) |
+| <a id="date"></a> `date?` | `string` | Дата поступления. Если часовой пояс не указан, то берётся Московское время UTC+3. | [types/reports.types.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L16) |
+| <a id="lastchangedate"></a> `lastChangeDate?` | `string` | Дата и время обновления информации в сервисе. Это поле соответствует параметру `dateFrom` в запросе. Если часовой пояс не указан, то берётся Московское время UTC+3. | [types/reports.types.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L18) |
+| <a id="supplierarticle"></a> `supplierArticle?` | `string` | Артикул продавца | [types/reports.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L20) |
+| <a id="techsize"></a> `techSize?` | `string` | Размер товара | [types/reports.types.ts:22](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L22) |
+| <a id="barcode"></a> `barcode?` | `string` | Баркод | [types/reports.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L24) |
+| <a id="quantity"></a> `quantity?` | `number` | Количество | [types/reports.types.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L26) |
+| <a id="totalprice"></a> `totalPrice?` | `number` | Цена из УПД | [types/reports.types.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L28) |
+| <a id="dateclose"></a> `dateClose?` | `string` | Дата принятия (закрытия) в WB. Если часовой пояс не указан, то берётся Московское время UTC+3 | [types/reports.types.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L30) |
+| <a id="warehousename"></a> `warehouseName?` | `string` | Название склада | [types/reports.types.ts:32](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L32) |
+| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L34) |
+| <a id="status"></a> `status?` | `"Принято"` | Текущий статус поставки | [types/reports.types.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/reports.types.ts#L36) |

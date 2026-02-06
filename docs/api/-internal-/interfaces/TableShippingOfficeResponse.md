@@ -2,10 +2,10 @@
 
 # Interface: TableShippingOfficeResponse
 
-Defined in: [types/analytics.types.ts:1496](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L1496)
+Defined in: [types/analytics.types.ts:1586](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L1586)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="regions"></a> `regions?` | [`TableShippingOfficeItem`](TableShippingOfficeItem.md)[] | Множество данных по регионам отгрузки | [types/analytics.types.ts:1498](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L1498) |
+| <a id="regions"></a> `regions?` | [`TableShippingOfficeItem`](TableShippingOfficeItem.md)[] | Множество данных по регионам отгрузки | [types/analytics.types.ts:1588](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L1588) |

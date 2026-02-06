@@ -3,30 +3,21 @@
 # Type Alias: AvailabilityFilters
 
 ```ts
-type AvailabilityFilters = 
+type AvailabilityFilters = (
   | "deficient"
   | "actual"
   | "balanced"
   | "nonActual"
   | "nonLiquid"
-  | "invalidData"[];
+  | "invalidData")[];
 ```
 
-Defined in: [types/analytics.types.ts:1174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L1174)
+Defined in: [types/analytics.types.ts:1263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L1263)
 
-Доступность товара:
- - `deficient` — Дефицит
- - `actual` — Актуальный
- - `balanced` — Баланс
- - `nonActual` — Неактуальный
- - `nonLiquid` — Неликвид
- - `invalidData` — Не рассчитано
-
-## Example
-
-```json
-[
- "deficient",
- "balanced"
-]
-```
+Доступность товара (массив фильтров):
+- `deficient` — Дефицит
+- `actual` — Актуальный
+- `balanced` — Баланс
+- `nonActual` — Неактуальный
+- `nonLiquid` — Неликвид
+- `invalidData` — Не рассчитано

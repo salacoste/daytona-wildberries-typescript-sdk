@@ -2,13 +2,13 @@
 
 # Interface: MainResponse
 
-Defined in: [types/analytics.types.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L38)
+Defined in: [types/analytics.types.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L38)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="commoninfo"></a> `commonInfo` | [`CommonInfo`](CommonInfo.md) | - | [types/analytics.types.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L39) |
-| <a id="positioninfo"></a> `positionInfo` | [`PositionInfo`](PositionInfo.md) | - | [types/analytics.types.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L40) |
-| <a id="visibilityinfo"></a> `visibilityInfo` | [`VisibilityInfo`](VisibilityInfo.md) | - | [types/analytics.types.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L41) |
-| <a id="groups"></a> `groups?` | [`TableGroupItem`](TableGroupItem.md)[] | Список элементов таблицы | [types/analytics.types.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/analytics.types.ts#L43) |
+| <a id="commoninfo"></a> `commonInfo` | [`CommonInfo`](CommonInfo.md) | - | [types/analytics.types.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L39) |
+| <a id="positioninfo"></a> `positionInfo` | [`PositionInfo`](PositionInfo.md) | - | [types/analytics.types.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L40) |
+| <a id="visibilityinfo"></a> `visibilityInfo` | [`VisibilityInfo`](VisibilityInfo.md) | - | [types/analytics.types.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L41) |
+| <a id="groups"></a> `groups?` | [`TableGroupItem`](TableGroupItem.md)[] | Список элементов таблицы | [types/analytics.types.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/analytics.types.ts#L43) |

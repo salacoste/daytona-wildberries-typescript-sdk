@@ -2,7 +2,7 @@
 
 # Class: ReportsModule
 
-Defined in: [modules/reports/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L10)
+Defined in: [modules/reports/index.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L39)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/reports/index.ts:10](https://github.com/salacoste/daytona-w
 new ReportsModule(client: BaseClient): ReportsModule;
 ```
 
-Defined in: [modules/reports/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L11)
+Defined in: [modules/reports/index.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L40)
 
 #### Parameters
 
@@ -26,7 +26,7 @@ Defined in: [modules/reports/index.ts:11](https://github.com/salacoste/daytona-w
 
 ## Methods
 
-### getSupplierIncomes()
+### ~~getSupplierIncomes()~~
 
 ```ts
 getSupplierIncomes(options?: {
@@ -34,11 +34,11 @@ getSupplierIncomes(options?: {
 }): Promise<IncomesItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L28)
+Defined in: [modules/reports/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L58)
 
 Поставки
 
-Метод возвращает количество поставок товаров для хранения на складах WB.<br>Данные обновляются раз в 30 минут. <br><br> Для одного ответа в системе установлено условное ограничение 100000 строк. Поэтому, чтобы получить все поставки, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom` используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все поставки уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+Метод возвращает количество поставок товаров для хранения на складах WB.
 
 #### Parameters
 
@@ -52,6 +52,10 @@ Defined in: [modules/reports/index.ts:28](https://github.com/salacoste/daytona-w
 `Promise`\<[`IncomesItem`](../-internal-/interfaces/IncomesItem.md)[]\>
 
 Успешно
+
+#### Deprecated
+
+This method is deprecated per swagger spec and will be removed on 11 March 2026.
 
 #### Throws
 
@@ -72,7 +76,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSupplierIncomes({});
+const result = await sdk.reports.getSupplierIncomes({ dateFrom: '2026-01-01' });
 console.log(result);
 ```
 
@@ -86,7 +90,7 @@ getSupplierStocks(options?: {
 }): Promise<StocksItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L47)
+Defined in: [modules/reports/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L83)
 
 Склады
 
@@ -124,7 +128,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSupplierStocks({});
+const result = await sdk.reports.getSupplierStocks({});
 console.log(result);
 ```
 
@@ -139,7 +143,7 @@ getSupplierOrders(options?: {
 }): Promise<OrdersItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L66)
+Defined in: [modules/reports/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L105)
 
 Заказы
 
@@ -178,7 +182,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSupplierOrders({});
+const result = await sdk.reports.getSupplierOrders({});
 console.log(result);
 ```
 
@@ -193,7 +197,7 @@ getSupplierSales(options?: {
 }): Promise<SalesItem[]>;
 ```
 
-Defined in: [modules/reports/index.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L85)
+Defined in: [modules/reports/index.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L127)
 
 Продажи
 
@@ -232,7 +236,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSupplierSales({});
+const result = await sdk.reports.getSupplierSales({});
 console.log(result);
 ```
 
@@ -247,7 +251,7 @@ createAnalyticsExciseReport(options?: {
 }, data?: ExciseReportRequest): Promise<ExciseReportResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L105)
+Defined in: [modules/reports/index.ts:150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L150)
 
 Получить отчёт
 
@@ -287,7 +291,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createAnalyticsExciseReport({}, {});
+const result = await sdk.reports.createAnalyticsExciseReport({}, {});
 console.log(result);
 ```
 
@@ -309,7 +313,7 @@ warehouseRemains(options?: {
 }): Promise<CreateTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L124)
+Defined in: [modules/reports/index.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L176)
 
 Создать отчёт
 
@@ -355,23 +359,21 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.warehouseRemains({});
+const result = await sdk.reports.warehouseRemains({});
 console.log(result);
 ```
 
 ***
 
-### getTasksStatu()
+### getWarehouseRemainsTaskStatus()
 
 ```ts
-getTasksStatu(task_id: string): Promise<GetTasksResponse>;
+getWarehouseRemainsTaskStatus(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L143)
+Defined in: [modules/reports/index.ts:206](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L206)
 
-Проверить статус
-
-Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get) отчёта об [остатках на складах WB](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 5 запросов | </div>
+Проверить статус задания на генерацию отчёта об остатках на складах WB
 
 #### Parameters
 
@@ -383,7 +385,7 @@ Defined in: [modules/reports/index.ts:143](https://github.com/salacoste/daytona-
 
 `Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
 
-Успешно
+Статус задания
 
 #### Throws
 
@@ -404,35 +406,45 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTasksStatu('task_id-value');
-console.log(result);
+const result = await sdk.reports.getWarehouseRemainsTaskStatus('task-uuid');
+console.log(result.data?.status);
 ```
 
 ***
 
-### getTasksDownload()
+### ~~getTasksStatu()~~
 
 ```ts
-getTasksDownload(task_id: string): Promise<{
-  brand?: string;
-  subjectName?: string;
-  vendorCode?: string;
-  nmId?: number;
-  barcode?: string;
-  techSize?: string;
-  volume?: number;
-  warehouses?: {
-     warehouseName?: string;
-     quantity?: number;
-  }[];
-}[]>;
+getTasksStatu(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:162](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L162)
+Defined in: [modules/reports/index.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L216)
 
-Получить отчёт
+#### Parameters
 
-Метод возвращает отчёт об [остатках на складах WB](https://seller.wildberries.ru/analytics-reports/warehouse-remains) по ID [задания на генерацию](/openapi/reports#tag/Otchyot-ob-ostatkah-na-skladah/paths/~1api~1v1~1warehouse_remains/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+| Parameter | Type |
+| ------ | ------ |
+| `task_id` | `string` |
+
+#### Returns
+
+`Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
+
+#### Deprecated
+
+Use getWarehouseRemainsTaskStatus() instead.
+
+***
+
+### downloadWarehouseRemainsReport()
+
+```ts
+downloadWarehouseRemainsReport(task_id: string): Promise<WarehouseRemainsDownloadItem[]>;
+```
+
+Defined in: [modules/reports/index.ts:236](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L236)
+
+Получить отчёт об остатках на складах WB
 
 #### Parameters
 
@@ -442,21 +454,9 @@ Defined in: [modules/reports/index.ts:162](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<\{
-  `brand?`: `string`;
-  `subjectName?`: `string`;
-  `vendorCode?`: `string`;
-  `nmId?`: `number`;
-  `barcode?`: `string`;
-  `techSize?`: `string`;
-  `volume?`: `number`;
-  `warehouses?`: \{
-     `warehouseName?`: `string`;
-     `quantity?`: `number`;
-  \}[];
-\}[]\>
+`Promise`\<[`WarehouseRemainsDownloadItem`](../-internal-/interfaces/WarehouseRemainsDownloadItem.md)[]\>
 
-Успешно
+Данные отчёта
 
 #### Throws
 
@@ -477,13 +477,37 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTasksDownload('task_id-value');
+const result = await sdk.reports.downloadWarehouseRemainsReport('task-uuid');
 console.log(result);
 ```
 
 ***
 
-### getAnalyticsWarehouseMeasurements()
+### ~~getTasksDownload()~~
+
+```ts
+getTasksDownload(task_id: string): Promise<WarehouseRemainsDownloadItem[]>;
+```
+
+Defined in: [modules/reports/index.ts:246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L246)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `task_id` | `string` |
+
+#### Returns
+
+`Promise`\<[`WarehouseRemainsDownloadItem`](../-internal-/interfaces/WarehouseRemainsDownloadItem.md)[]\>
+
+#### Deprecated
+
+Use downloadWarehouseRemainsReport() instead.
+
+***
+
+### ~~getAnalyticsWarehouseMeasurements()~~
 
 ```ts
 getAnalyticsWarehouseMeasurements(options?: {
@@ -497,11 +521,9 @@ getAnalyticsWarehouseMeasurements(options?: {
 | Measurement>;
 ```
 
-Defined in: [modules/reports/index.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L181)
+Defined in: [modules/reports/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L269)
 
 Занижение габаритов упаковки
-
-Метод возвращает отчёты об [удержаниях за занижение габаритов упаковки](https://seller.wildberries.ru/analytics-reports/dimensions-penalties) и [замерах склада](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/warehouse-measurements) <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 5 запросов | 12 секунд | 1 запрос | </div>
 
 #### Parameters
 
@@ -522,6 +544,11 @@ Defined in: [modules/reports/index.ts:181](https://github.com/salacoste/daytona-
 
 Успешно
 
+#### Deprecated
+
+This endpoint is removed from swagger. Use getMeasurementPenalties()
+for penalties or getWarehouseMeasurementsV2() for warehouse measurements instead.
+
 #### Throws
 
 When API key is invalid (401/403)
@@ -541,8 +568,9 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsWarehouseMeasurements({});
-console.log(result);
+// Use new methods instead:
+const penalties = await sdk.reports.getMeasurementPenalties({ dateTo: '2026-02-06', limit: 100 });
+const measurements = await sdk.reports.getWarehouseMeasurementsV2({ dateTo: '2026-02-06', limit: 100 });
 ```
 
 ***
@@ -552,10 +580,10 @@ console.log(result);
 ```ts
 getAnalyticsAntifraudDetails(options?: {
   date?: string;
-}): Promise<unknown>;
+}): Promise<AntifraudDetailsResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L200)
+Defined in: [modules/reports/index.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L301)
 
 Самовыкупы
 
@@ -570,7 +598,7 @@ Defined in: [modules/reports/index.ts:200](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`AntifraudDetailsResponse`](../-internal-/interfaces/AntifraudDetailsResponse.md)\>
 
 Response data
 
@@ -593,13 +621,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsAntifraudDetails({});
+const result = await sdk.reports.getAnalyticsAntifraudDetails({});
 console.log(result);
 ```
 
 ***
 
-### getAnalyticsIncorrectAttachments()
+### ~~getAnalyticsIncorrectAttachments()~~
 
 ```ts
 getAnalyticsIncorrectAttachments(options?: {
@@ -608,11 +636,9 @@ getAnalyticsIncorrectAttachments(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L219)
+Defined in: [modules/reports/index.ts:325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L325)
 
 Подмена товара
-
-Метод возвращает отчёт об удержаниях за отправку ошибочных товаров, пустых коробок или коробок без товара, но с посторонними предметами. В таких случаях удерживается 100% от стоимости заказа.<br><br> Можно получить отчёт максимум за 31 день. Данные доступны с июня 2023. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
 
 #### Parameters
 
@@ -628,6 +654,11 @@ Defined in: [modules/reports/index.ts:219](https://github.com/salacoste/daytona-
 
 Response data
 
+#### Deprecated
+
+This endpoint is removed from swagger. Use getDeductions() instead
+which provides combined data for substitutions and incorrect attachments.
+
 #### Throws
 
 When API key is invalid (401/403)
@@ -647,8 +678,8 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsIncorrectAttachments({});
-console.log(result);
+// Use getDeductions() instead:
+const deductions = await sdk.reports.getDeductions({ dateTo: '2026-02-06', limit: 100 });
 ```
 
 ***
@@ -659,10 +690,10 @@ console.log(result);
 getAnalyticsGoodsLabeling(options?: {
   dateFrom: string;
   dateTo: string;
-}): Promise<unknown>;
+}): Promise<GoodsLabelingResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L238)
+Defined in: [modules/reports/index.ts:353](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L353)
 
 Маркировка товара
 
@@ -678,7 +709,7 @@ Defined in: [modules/reports/index.ts:238](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`GoodsLabelingResponse`](../-internal-/interfaces/GoodsLabelingResponse.md)\>
 
 Response data
 
@@ -701,13 +732,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsGoodsLabeling({});
+const result = await sdk.reports.getAnalyticsGoodsLabeling({});
 console.log(result);
 ```
 
 ***
 
-### getAnalyticsCharacteristicsChange()
+### ~~getAnalyticsCharacteristicsChange()~~
 
 ```ts
 getAnalyticsCharacteristicsChange(options?: {
@@ -716,11 +747,9 @@ getAnalyticsCharacteristicsChange(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/reports/index.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L257)
+Defined in: [modules/reports/index.ts:375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L375)
 
 Смена характеристик
-
-Метод возвращает отчёт об удержаниях за смену характеристик товара. Если товары после приёмки не соответствуют заявленным цветам и размерам, и на складе их перемаркировали с правильными характеристиками, по таким товарам назначается штраф.<br><br> Можно получить отчёт максимум за 31 день. Данные доступны с 28 декабря 2021. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 минут | 10 запросов | 1 минута | 10 запросов | </div>
 
 #### Parameters
 
@@ -736,6 +765,11 @@ Defined in: [modules/reports/index.ts:257](https://github.com/salacoste/daytona-
 
 Response data
 
+#### Deprecated
+
+This endpoint is removed from swagger with no replacement.
+The API may return errors for this endpoint.
+
 #### Throws
 
 When API key is invalid (401/403)
@@ -752,13 +786,6 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
-#### Example
-
-```ts
-const result = await sdk.general.getAnalyticsCharacteristicsChange({});
-console.log(result);
-```
-
 ***
 
 ### acceptanceReport()
@@ -770,7 +797,7 @@ acceptanceReport(options?: {
 }): Promise<CreateTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L276)
+Defined in: [modules/reports/index.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L404)
 
 Создать отчёт
 
@@ -809,23 +836,21 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.acceptanceReport({});
+const result = await sdk.reports.acceptanceReport({});
 console.log(result);
 ```
 
 ***
 
-### getTasksStatu2()
+### getAcceptanceReportTaskStatus()
 
 ```ts
-getTasksStatu2(task_id: string): Promise<GetTasksResponse>;
+getAcceptanceReportTaskStatus(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:295](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L295)
+Defined in: [modules/reports/index.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L427)
 
-Проверить статус
-
-Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report/get) отчёта о [платной приёмке](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 1 запрос | </div>
+Проверить статус задания на генерацию отчёта о платной приёмке
 
 #### Parameters
 
@@ -837,7 +862,7 @@ Defined in: [modules/reports/index.ts:295](https://github.com/salacoste/daytona-
 
 `Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
 
-Успешно
+Статус задания
 
 #### Throws
 
@@ -858,31 +883,45 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTasksStatu('task_id-value');
-console.log(result);
+const result = await sdk.reports.getAcceptanceReportTaskStatus('task-uuid');
+console.log(result.data?.status);
 ```
 
 ***
 
-### getTasksDownload2()
+### ~~getTasksStatu2()~~
 
 ```ts
-getTasksDownload2(task_id: string): Promise<{
-  count?: number;
-  giCreateDate?: string;
-  incomeId?: number;
-  nmID?: number;
-  shkCreateDate?: string;
-  subjectName?: string;
-  total?: number;
-}[]>;
+getTasksStatu2(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L314)
+Defined in: [modules/reports/index.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L437)
 
-Получить отчёт
+#### Parameters
 
-Метод возвращает отчёт о [платной приёмке](https://seller.wildberries.ru/analytics-reports/acceptance-report) по ID [задания на генерацию](/openapi/reports#tag/Platnaya-priyomka/paths/~1api~1v1~1acceptance_report/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+| Parameter | Type |
+| ------ | ------ |
+| `task_id` | `string` |
+
+#### Returns
+
+`Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
+
+#### Deprecated
+
+Use getAcceptanceReportTaskStatus() instead.
+
+***
+
+### downloadAcceptanceReport()
+
+```ts
+downloadAcceptanceReport(task_id: string): Promise<AcceptanceReportDownloadItem[]>;
+```
+
+Defined in: [modules/reports/index.ts:457](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L457)
+
+Получить отчёт о платной приёмке
 
 #### Parameters
 
@@ -892,17 +931,9 @@ Defined in: [modules/reports/index.ts:314](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<\{
-  `count?`: `number`;
-  `giCreateDate?`: `string`;
-  `incomeId?`: `number`;
-  `nmID?`: `number`;
-  `shkCreateDate?`: `string`;
-  `subjectName?`: `string`;
-  `total?`: `number`;
-\}[]\>
+`Promise`\<[`AcceptanceReportDownloadItem`](../-internal-/interfaces/AcceptanceReportDownloadItem.md)[]\>
 
-Успешно
+Данные отчёта
 
 #### Throws
 
@@ -923,9 +954,33 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTasksDownload('task_id-value');
+const result = await sdk.reports.downloadAcceptanceReport('task-uuid');
 console.log(result);
 ```
+
+***
+
+### ~~getTasksDownload2()~~
+
+```ts
+getTasksDownload2(task_id: string): Promise<AcceptanceReportDownloadItem[]>;
+```
+
+Defined in: [modules/reports/index.ts:467](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L467)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `task_id` | `string` |
+
+#### Returns
+
+`Promise`\<[`AcceptanceReportDownloadItem`](../-internal-/interfaces/AcceptanceReportDownloadItem.md)[]\>
+
+#### Deprecated
+
+Use downloadAcceptanceReport() instead.
 
 ***
 
@@ -938,7 +993,7 @@ paidStorage(options?: {
 }): Promise<CreateTaskResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:333](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L333)
+Defined in: [modules/reports/index.ts:489](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L489)
 
 Создать отчёт
 
@@ -977,23 +1032,21 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.paidStorage({});
+const result = await sdk.reports.paidStorage({});
 console.log(result);
 ```
 
 ***
 
-### getTasksStatu3()
+### getPaidStorageTaskStatus()
 
 ```ts
-getTasksStatu3(task_id: string): Promise<GetTasksResponse>;
+getPaidStorageTaskStatus(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:352](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L352)
+Defined in: [modules/reports/index.ts:509](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L509)
 
-Проверить статус
-
-Метод возвращает статус [задания на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage/get) отчёта о [платном хранении](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage~1tasks~1%7Btask_id%7D~1download/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 5 секунд | 1 запрос | 5 секунд | 5 запросов | </div>
+Проверить статус задания на генерацию отчёта о платном хранении
 
 #### Parameters
 
@@ -1005,7 +1058,7 @@ Defined in: [modules/reports/index.ts:352](https://github.com/salacoste/daytona-
 
 `Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
 
-Успешно
+Статус задания
 
 #### Throws
 
@@ -1026,23 +1079,45 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTasksStatu('task_id-value');
-console.log(result);
+const result = await sdk.reports.getPaidStorageTaskStatus('task-uuid');
+console.log(result.data?.status);
 ```
 
 ***
 
-### getTasksDownload3()
+### ~~getTasksStatu3()~~
 
 ```ts
-getTasksDownload3(task_id: string): Promise<ResponsePaidStorage>;
+getTasksStatu3(task_id: string): Promise<GetTasksResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L371)
+Defined in: [modules/reports/index.ts:519](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L519)
 
-Получить отчёт
+#### Parameters
 
-Метод возвращает отчёт о [платном хранении](https://seller.wildberries.ru/analytics-reports/paid-storage/storage) по ID [задания на генерацию](/openapi/reports#tag/Platnoe-hranenie/paths/~1api~1v1~1paid_storage/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+| Parameter | Type |
+| ------ | ------ |
+| `task_id` | `string` |
+
+#### Returns
+
+`Promise`\<[`GetTasksResponse`](../-internal-/interfaces/GetTasksResponse.md)\>
+
+#### Deprecated
+
+Use getPaidStorageTaskStatus() instead.
+
+***
+
+### downloadPaidStorageReport()
+
+```ts
+downloadPaidStorageReport(task_id: string): Promise<ResponsePaidStorage>;
+```
+
+Defined in: [modules/reports/index.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L539)
+
+Получить отчёт о платном хранении
 
 #### Parameters
 
@@ -1054,7 +1129,7 @@ Defined in: [modules/reports/index.ts:371](https://github.com/salacoste/daytona-
 
 `Promise`\<[`ResponsePaidStorage`](../-internal-/type-aliases/ResponsePaidStorage.md)\>
 
-Успешно
+Данные отчёта
 
 #### Throws
 
@@ -1075,9 +1150,33 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getTasksDownload('task_id-value');
+const result = await sdk.reports.downloadPaidStorageReport('task-uuid');
 console.log(result);
 ```
+
+***
+
+### ~~getTasksDownload3()~~
+
+```ts
+getTasksDownload3(task_id: string): Promise<ResponsePaidStorage>;
+```
+
+Defined in: [modules/reports/index.ts:549](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L549)
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `task_id` | `string` |
+
+#### Returns
+
+`Promise`\<[`ResponsePaidStorage`](../-internal-/type-aliases/ResponsePaidStorage.md)\>
+
+#### Deprecated
+
+Use downloadPaidStorageReport() instead.
 
 ***
 
@@ -1087,10 +1186,10 @@ console.log(result);
 getAnalyticsRegionSale(options?: {
   dateFrom: string;
   dateTo: string;
-}): Promise<unknown>;
+}): Promise<RegionSaleResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L390)
+Defined in: [modules/reports/index.ts:571](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L571)
 
 Получить отчёт
 
@@ -1106,7 +1205,7 @@ Defined in: [modules/reports/index.ts:390](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`RegionSaleResponse`](../-internal-/interfaces/RegionSaleResponse.md)\>
 
 Response data
 
@@ -1129,7 +1228,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsRegionSale({});
+const result = await sdk.reports.getAnalyticsRegionSale({});
 console.log(result);
 ```
 
@@ -1138,10 +1237,10 @@ console.log(result);
 ### getBrandShareBrands()
 
 ```ts
-getBrandShareBrands(): Promise<unknown>;
+getBrandShareBrands(): Promise<BrandShareBrandsResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:408](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L408)
+Defined in: [modules/reports/index.ts:595](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L595)
 
 Бренды продавца
 
@@ -1149,7 +1248,7 @@ Defined in: [modules/reports/index.ts:408](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`BrandShareBrandsResponse`](../-internal-/interfaces/BrandShareBrandsResponse.md)\>
 
 Response data
 
@@ -1172,7 +1271,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getBrandShareBrands();
+const result = await sdk.reports.getBrandShareBrands();
 console.log(result);
 ```
 
@@ -1186,10 +1285,10 @@ getBrandShareParentSubjects(options?: {
   brand: string;
   dateFrom: string;
   dateTo: string;
-}): Promise<unknown>;
+}): Promise<BrandShareParentSubjectsResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L427)
+Defined in: [modules/reports/index.ts:617](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L617)
 
 Родительские категории бренда
 
@@ -1207,7 +1306,7 @@ Defined in: [modules/reports/index.ts:427](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`BrandShareParentSubjectsResponse`](../-internal-/interfaces/BrandShareParentSubjectsResponse.md)\>
 
 Response data
 
@@ -1230,7 +1329,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getBrandShareParentSubjects({});
+const result = await sdk.reports.getBrandShareParentSubjects({});
 console.log(result);
 ```
 
@@ -1244,10 +1343,10 @@ getAnalyticsBrandShare(options?: {
   brand: string;
   dateFrom: string;
   dateTo: string;
-}): Promise<unknown>;
+}): Promise<BrandShareResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:446](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L446)
+Defined in: [modules/reports/index.ts:644](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L644)
 
 Получить отчёт
 
@@ -1265,7 +1364,7 @@ Defined in: [modules/reports/index.ts:446](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<[`BrandShareResponse`](../-internal-/interfaces/BrandShareResponse.md)\>
 
 Response data
 
@@ -1288,7 +1387,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsBrandShare({});
+const result = await sdk.reports.getAnalyticsBrandShare({});
 console.log(result);
 ```
 
@@ -1300,18 +1399,10 @@ console.log(result);
 getBannedProductsBlocked(options?: {
   sort: "brand" | "nmId" | "title" | "vendorCode" | "reason";
   order: "desc" | "asc";
-}): Promise<{
-  report?: {
-     brand?: string;
-     nmId?: number;
-     title?: string;
-     vendorCode?: string;
-     reason?: string;
-  }[];
-}>;
+}): Promise<BannedProductsBlockedResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L465)
+Defined in: [modules/reports/index.ts:671](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L671)
 
 Заблокированные карточки
 
@@ -1327,15 +1418,7 @@ Defined in: [modules/reports/index.ts:465](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<\{
-  `report?`: \{
-     `brand?`: `string`;
-     `nmId?`: `number`;
-     `title?`: `string`;
-     `vendorCode?`: `string`;
-     `reason?`: `string`;
-  \}[];
-\}\>
+`Promise`\<[`BannedProductsBlockedResponse`](../-internal-/interfaces/BannedProductsBlockedResponse.md)\>
 
 Успешно
 
@@ -1358,7 +1441,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getBannedProductsBlocked({});
+const result = await sdk.reports.getBannedProductsBlocked({});
 console.log(result);
 ```
 
@@ -1370,18 +1453,10 @@ console.log(result);
 getBannedProductsShadowed(options?: {
   sort: "brand" | "nmId" | "title" | "vendorCode" | "nmRating";
   order: "desc" | "asc";
-}): Promise<{
-  report?: {
-     brand?: string;
-     nmId?: number;
-     title?: string;
-     vendorCode?: string;
-     nmRating?: number;
-  }[];
-}>;
+}): Promise<BannedProductsShadowedResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:484](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L484)
+Defined in: [modules/reports/index.ts:696](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L696)
 
 Скрытые из каталога
 
@@ -1397,15 +1472,7 @@ Defined in: [modules/reports/index.ts:484](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<\{
-  `report?`: \{
-     `brand?`: `string`;
-     `nmId?`: `number`;
-     `title?`: `string`;
-     `vendorCode?`: `string`;
-     `nmRating?`: `number`;
-  \}[];
-\}\>
+`Promise`\<[`BannedProductsShadowedResponse`](../-internal-/interfaces/BannedProductsShadowedResponse.md)\>
 
 Успешно
 
@@ -1428,7 +1495,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getBannedProductsShadowed({});
+const result = await sdk.reports.getBannedProductsShadowed({});
 console.log(result);
 ```
 
@@ -1440,32 +1507,10 @@ console.log(result);
 getAnalyticsGoodsReturn(options?: {
   dateFrom: string;
   dateTo: string;
-}): Promise<{
-  report?: {
-     barcode?: string;
-     brand?: string;
-     completedDt?: string;
-     dstOfficeAddress?: string;
-     dstOfficeId?: number;
-     expiredDt?: string;
-     isStatusActive?: 0 | 1;
-     nmId?: number;
-     orderDt?: string;
-     orderId?: number;
-     readyToReturnDt?: string;
-     reason?: string;
-     returnType?: string;
-     shkId?: number;
-     srid?: string;
-     status?: string;
-     stickerId?: string;
-     subjectName?: string;
-     techSize?: string;
-  }[];
-}>;
+}): Promise<GoodsReturnResponse>;
 ```
 
-Defined in: [modules/reports/index.ts:503](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/modules/reports/index.ts#L503)
+Defined in: [modules/reports/index.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L721)
 
 Получить отчёт
 
@@ -1481,29 +1526,7 @@ Defined in: [modules/reports/index.ts:503](https://github.com/salacoste/daytona-
 
 #### Returns
 
-`Promise`\<\{
-  `report?`: \{
-     `barcode?`: `string`;
-     `brand?`: `string`;
-     `completedDt?`: `string`;
-     `dstOfficeAddress?`: `string`;
-     `dstOfficeId?`: `number`;
-     `expiredDt?`: `string`;
-     `isStatusActive?`: `0` \| `1`;
-     `nmId?`: `number`;
-     `orderDt?`: `string`;
-     `orderId?`: `number`;
-     `readyToReturnDt?`: `string`;
-     `reason?`: `string`;
-     `returnType?`: `string`;
-     `shkId?`: `number`;
-     `srid?`: `string`;
-     `status?`: `string`;
-     `stickerId?`: `string`;
-     `subjectName?`: `string`;
-     `techSize?`: `string`;
-  \}[];
-\}\>
+`Promise`\<[`GoodsReturnResponse`](../-internal-/interfaces/GoodsReturnResponse.md)\>
 
 Успешно
 
@@ -1526,6 +1549,183 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getAnalyticsGoodsReturn({});
+const result = await sdk.reports.getAnalyticsGoodsReturn({});
 console.log(result);
+```
+
+***
+
+### getMeasurementPenalties()
+
+```ts
+getMeasurementPenalties(options: MeasurementPenaltiesParams): Promise<MeasurementPenaltiesResponse>;
+```
+
+Defined in: [modules/reports/index.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L760)
+
+Занижение габаритов упаковки (штрафы)
+
+Метод возвращает отчёт об удержаниях за занижение габаритов упаковки.
+
+Rate limit: 1 req/min, 1 min interval, burst 1
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | [`MeasurementPenaltiesParams`](../-internal-/interfaces/MeasurementPenaltiesParams.md) | Query parameters |
+
+#### Returns
+
+`Promise`\<[`MeasurementPenaltiesResponse`](../-internal-/interfaces/MeasurementPenaltiesResponse.md)\>
+
+Penalty reports with total count
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+EPIC 44 - New endpoint replacing tab=penalty on old warehouse-measurements
+
+#### Example
+
+```ts
+const result = await sdk.reports.getMeasurementPenalties({
+  dateTo: '2026-02-06',
+  limit: 100
+});
+console.log(result.data?.reports);
+```
+
+***
+
+### getWarehouseMeasurementsV2()
+
+```ts
+getWarehouseMeasurementsV2(options: WarehouseMeasurementsV2Params): Promise<WarehouseMeasurementsV2Response>;
+```
+
+Defined in: [modules/reports/index.ts:794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L794)
+
+Замеры склада
+
+Метод возвращает отчёт о замерах склада.
+
+Rate limit: 1 req/min, 1 min interval, burst 1
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | [`WarehouseMeasurementsV2Params`](../-internal-/interfaces/WarehouseMeasurementsV2Params.md) | Query parameters |
+
+#### Returns
+
+`Promise`\<[`WarehouseMeasurementsV2Response`](../-internal-/interfaces/WarehouseMeasurementsV2Response.md)\>
+
+Measurement reports with total count
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+EPIC 44 - New endpoint replacing tab=measurement on old warehouse-measurements
+
+#### Example
+
+```ts
+const result = await sdk.reports.getWarehouseMeasurementsV2({
+  dateTo: '2026-02-06',
+  limit: 100
+});
+console.log(result.data?.reports);
+```
+
+***
+
+### getDeductions()
+
+```ts
+getDeductions(options: DeductionsParams): Promise<DeductionsResponse>;
+```
+
+Defined in: [modules/reports/index.ts:833](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/modules/reports/index.ts#L833)
+
+Удержания за подмену и некорректные вложения
+
+Метод возвращает отчёт об удержаниях за подмену товара и некорректные вложения.
+Заменяет удалённый endpoint /api/v1/analytics/incorrect-attachments.
+
+Rate limit: 1 req/min, 1 min interval, burst 1
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options` | [`DeductionsParams`](../-internal-/interfaces/DeductionsParams.md) | Query parameters |
+
+#### Returns
+
+`Promise`\<[`DeductionsResponse`](../-internal-/interfaces/DeductionsResponse.md)\>
+
+Deduction reports with total count
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+EPIC 44 - New endpoint replacing removed incorrect-attachments
+
+#### Example
+
+```ts
+const result = await sdk.reports.getDeductions({
+  dateTo: '2026-02-06',
+  limit: 100,
+  sort: 'dtBonus',
+  order: 'desc'
+});
+console.log(result.data?.reports);
 ```

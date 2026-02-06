@@ -6,4 +6,4 @@
 const inStorePickupRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/in-store-pickup-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/config/in-store-pickup-rate-limits.ts#L16)
+Defined in: [config/in-store-pickup-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/config/in-store-pickup-rate-limits.ts#L16)

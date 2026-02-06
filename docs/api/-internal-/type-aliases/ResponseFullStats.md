@@ -6,6 +6,6 @@
 type ResponseFullStats = FullStatsItem[];
 ```
 
-Defined in: [types/promotion.types.ts:733](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/promotion.types.ts#L733)
+Defined in: [types/promotion.types.ts:733](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/promotion.types.ts#L733)
 
 Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам

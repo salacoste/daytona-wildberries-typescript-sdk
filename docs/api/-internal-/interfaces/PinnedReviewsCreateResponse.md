@@ -2,7 +2,7 @@
 
 # Interface: PinnedReviewsCreateResponse
 
-Defined in: [types/communications.types.ts:164](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/communications.types.ts#L164)
+Defined in: [types/communications.types.ts:164](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L164)
 
 Response from pin reviews operation
 
@@ -10,4 +10,4 @@ Response from pin reviews operation
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`PinReviewItemResultData`](PinReviewItemResultData.md)[] | [types/communications.types.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/communications.types.ts#L165) |
+| <a id="data"></a> `data` | [`PinReviewItemResultData`](PinReviewItemResultData.md)[] | [types/communications.types.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/communications.types.ts#L165) |

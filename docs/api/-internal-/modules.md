@@ -24,7 +24,7 @@
 | [SearchReportPositionClusters](interfaces/SearchReportPositionClusters.md) | Количество товаров со средней позицией в поиске: - `firstHundred` — от 1 до 100 - `secondHundred` — от 101 до 200 - `below` — от 201 и ниже |
 | [VisibilityInfo](interfaces/VisibilityInfo.md) | Видимость карточек и переходы в карточки. По дням, неделям, месяцам |
 | [TableGroupItem](interfaces/TableGroupItem.md) | К группе товаров относятся все карточки, подходящие хотя бы по одному из параметров: - `subjectName` — название предмета - `brandName` — бренд - `tagName` — название ярлыка |
-| [TableProductItem](interfaces/TableProductItem.md) | - |
+| [TableProductItem](interfaces/TableProductItem.md) | Товар в группе для отчёта по поисковым запросам |
 | [TableGroupRequest](interfaces/TableGroupRequest.md) | Параметры запроса для пагинации по группам: - `currentPeriod` — текущий период - `pastPeriod` — предыдущий период для сравнения |
 | [TableGroupResponse](interfaces/TableGroupResponse.md) | - |
 | [TableDetailsRequest](interfaces/TableDetailsRequest.md) | Параметры запроса для пагинации по товарам в группе: - `currentPeriod` — текущий период - `pastPeriod` — предыдущий период для сравнения |
@@ -324,12 +324,40 @@
 | [ExciseReportRequest](interfaces/ExciseReportRequest.md) | - |
 | [ExciseReportResponse](interfaces/ExciseReportResponse.md) | - |
 | [ModelsExciseReportResponse](interfaces/ModelsExciseReportResponse.md) | - |
-| [Penalty](interfaces/Penalty.md) | - |
-| [Measurement](interfaces/Measurement.md) | - |
+| [Penalty](interfaces/Penalty.md) | MeasurementPenalties response type for penalty reports |
+| [Measurement](interfaces/Measurement.md) | WHM (Warehouse Measurements) response type for warehouse measurement reports |
 | [GetTasksResponse](interfaces/GetTasksResponse.md) | - |
 | [GetTasksResponseData](interfaces/GetTasksResponseData.md) | - |
 | [CreateTaskResponse](interfaces/CreateTaskResponse.md) | - |
 | [CreateTaskResponseData](interfaces/CreateTaskResponseData.md) | - |
+| [AntifraudDetailsItem](interfaces/AntifraudDetailsItem.md) | Antifraud details report item |
+| [AntifraudDetailsResponse](interfaces/AntifraudDetailsResponse.md) | Response for getAnalyticsAntifraudDetails |
+| [GoodsLabelingItem](interfaces/GoodsLabelingItem.md) | Goods labeling report item |
+| [GoodsLabelingResponse](interfaces/GoodsLabelingResponse.md) | Response for getAnalyticsGoodsLabeling |
+| [RegionSaleItem](interfaces/RegionSaleItem.md) | Region sale report item |
+| [RegionSaleResponse](interfaces/RegionSaleResponse.md) | Response for getAnalyticsRegionSale |
+| [BrandShareBrandsItem](interfaces/BrandShareBrandsItem.md) | Brand share brands item |
+| [BrandShareBrandsResponse](interfaces/BrandShareBrandsResponse.md) | Response for getBrandShareBrands |
+| [BrandShareParentSubjectsItem](interfaces/BrandShareParentSubjectsItem.md) | Brand share parent subjects item |
+| [BrandShareParentSubjectsResponse](interfaces/BrandShareParentSubjectsResponse.md) | Response for getBrandShareParentSubjects |
+| [BrandShareItem](interfaces/BrandShareItem.md) | Brand share report item |
+| [BrandShareResponse](interfaces/BrandShareResponse.md) | Response for getAnalyticsBrandShare |
+| [WarehouseRemainsDownloadItem](interfaces/WarehouseRemainsDownloadItem.md) | Warehouse remains download item (extracted from getTasksDownload inline type) |
+| [WarehouseQuantity](interfaces/WarehouseQuantity.md) | Warehouse quantity for remains report |
+| [AcceptanceReportDownloadItem](interfaces/AcceptanceReportDownloadItem.md) | Acceptance report download item (extracted from getTasksDownload2 inline type) |
+| [BannedProductBlockedItem](interfaces/BannedProductBlockedItem.md) | Banned product item for blocked products report |
+| [BannedProductsBlockedResponse](interfaces/BannedProductsBlockedResponse.md) | Response for getBannedProductsBlocked |
+| [BannedProductShadowedItem](interfaces/BannedProductShadowedItem.md) | Banned product item for shadowed products report |
+| [BannedProductsShadowedResponse](interfaces/BannedProductsShadowedResponse.md) | Response for getBannedProductsShadowed |
+| [GoodsReturnItem](interfaces/GoodsReturnItem.md) | Goods return report item |
+| [GoodsReturnResponse](interfaces/GoodsReturnResponse.md) | Response for getAnalyticsGoodsReturn |
+| [MeasurementPenaltiesParams](interfaces/MeasurementPenaltiesParams.md) | Parameters for getMeasurementPenalties |
+| [WarehouseMeasurementsV2Params](interfaces/WarehouseMeasurementsV2Params.md) | Parameters for getWarehouseMeasurementsV2 |
+| [DeductionsParams](interfaces/DeductionsParams.md) | Parameters for getDeductions |
+| [DeductionItem](interfaces/DeductionItem.md) | Deduction report item |
+| [DeductionsResponse](interfaces/DeductionsResponse.md) | Response for getDeductions |
+| [MeasurementPenaltiesResponse](interfaces/MeasurementPenaltiesResponse.md) | Response for getMeasurementPenalties Uses the Penalty interface for report items |
+| [WarehouseMeasurementsV2Response](interfaces/WarehouseMeasurementsV2Response.md) | Response for getWarehouseMeasurementsV2 Uses the Measurement interface for report items |
 | [ModelsTariffsBoxResponse](interfaces/ModelsTariffsBoxResponse.md) | Auto-generated TypeScript types for tariffs module Generated from: wildberries_api_doc/10-tariffs.yaml |
 | [ModelsWarehousesBoxRates](interfaces/ModelsWarehousesBoxRates.md) | - |
 | [ModelsWarehouseBoxRates](interfaces/ModelsWarehouseBoxRates.md) | - |
@@ -356,7 +384,7 @@
 | [PositionCluster](type-aliases/PositionCluster.md) | Товары с какой средней позицией в поиске показывать в отчёте: - `all` — все - `firstHundred` — от 1 до 100 - `secondHundred` — от 101 до 200 - `below` — от 201 и ниже |
 | [TableGroupRequestSt](type-aliases/TableGroupRequestSt.md) | - |
 | [StockType](type-aliases/StockType.md) | Тип складов хранения товаров: - `""` — все - `wb` — Склады WB - `mp` — Склады Маркетплейс (FBS) |
-| [AvailabilityFilters](type-aliases/AvailabilityFilters.md) | Доступность товара: - `deficient` — Дефицит - `actual` — Актуальный - `balanced` — Баланс - `nonActual` — Неактуальный - `nonLiquid` — Неликвид - `invalidData` — Не рассчитано |
+| [AvailabilityFilters](type-aliases/AvailabilityFilters.md) | Доступность товара (массив фильтров): - `deficient` — Дефицит - `actual` — Актуальный - `balanced` — Баланс - `nonActual` — Неактуальный - `nonLiquid` — Неликвид - `invalidData` — Не рассчитано |
 | [TableGroupField](type-aliases/TableGroupField.md) | Cортировка по полю: - `ordersCount` — Заказы, шт. - `ordersSum` — Заказы, сумма - `avgOrders` — Среднее количество заказов в день - `buyoutCount` — Выкупы, шт. - `buyoutSum` — Выкупы, сумма - `buyoutPercent` — Процент выкупа - `stockCount` — Остатки на текущий день, шт. - `stockSum` — Стоимость остатков на текущий день - `saleRate` — Оборачиваемость текущих остатков - `avgStockTurnover` — Оборачиваемость средних остатков - `toClientCount` — В пути к клиенту, шт. - `fromClientCount` — В пути от клиента, шт. - `minPrice` — Минимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба) - `maxPrice` — Максимальная цена продавца со скидкой продавца (без учёта скидки WB Клуба) - `officeMissingTime` — Время отсутствия товара на складе - `lostOrdersCount` — Упущенные заказы, шт. - `lostOrdersSum` — Упущенные заказы, сумма - `lostBuyoutsCount` — Упущенные выкупы, шт. - `lostBuyoutsSum` — Упущенные выкупы, сумма |
 | [OrderByMode](type-aliases/OrderByMode.md) | Порядок сортировки: - asc — по возрастанию - desc — по убыванию |
 | [TableGroups](type-aliases/TableGroups.md) | Множество данных по группам |

@@ -2,7 +2,7 @@
 
 # ~~Interface: GetStatusResponseLegacy~~
 
-Defined in: [types/orders-dbs.types.ts:375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/orders-dbs.types.ts#L375)
+Defined in: [types/orders-dbs.types.ts:375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-dbs.types.ts#L375)
 
 ## Deprecated
 
@@ -13,4 +13,4 @@ Response from deprecated status endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> ~~`orders?`~~ | [`DBSOrderStatusLegacy`](DBSOrderStatusLegacy.md)[] | List of order statuses | [types/orders-dbs.types.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/orders-dbs.types.ts#L378) |
+| <a id="orders"></a> ~~`orders?`~~ | [`DBSOrderStatusLegacy`](DBSOrderStatusLegacy.md)[] | List of order statuses | [types/orders-dbs.types.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-dbs.types.ts#L378) |

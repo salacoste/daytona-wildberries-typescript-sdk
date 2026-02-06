@@ -2,7 +2,7 @@
 
 # Interface: SupplyTrbx
 
-Defined in: [types/orders-fbs.types.ts:599](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/orders-fbs.types.ts#L599)
+Defined in: [types/orders-fbs.types.ts:599](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbs.types.ts#L599)
 
 Supply box (transport box) entity
 
@@ -10,4 +10,4 @@ Supply box (transport box) entity
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `string` | Box ID | [types/orders-fbs.types.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/4fa0537d65f0b13a11a635a19a799d1d00470b89/src/types/orders-fbs.types.ts#L601) |
+| <a id="id"></a> `id?` | `string` | Box ID | [types/orders-fbs.types.ts:601](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e12d98723c7a4fdb8466d2e546014180e84b2188/src/types/orders-fbs.types.ts#L601) |
