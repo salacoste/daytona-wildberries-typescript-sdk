@@ -212,6 +212,10 @@ export class InStorePickupModule {
    * Renamed from createOrdersStatu to createOrdersStatus to fix the truncated method name.
    */
   async createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: createOrdersStatu() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to createOrdersStatus(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     return this.createOrdersStatus(data);
   }
 

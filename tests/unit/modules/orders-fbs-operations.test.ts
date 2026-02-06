@@ -314,44 +314,58 @@ describe('OrdersFbsModule — Passes, Metadata & Stickers', () => {
     // ========================================================================
 
     describe('getOrdersMeta()', () => {
-      const mockMetaResponse = {
-        meta: {
-          imei: { value: '123456789012345', isValid: true },
-          sgtin: { value: ['0104600000000001'], isValid: true },
-        },
+      const mockMeta = {
+        imei: { value: '123456789012345', isValid: true },
+        sgtin: { value: ['0104600000000001'], isValid: true },
+      };
+      const mockBulkResponse = {
+        orders: [{ id: orderId, meta: mockMeta }],
       };
 
-      it('should call GET with the correct URL including orderId', async () => {
-        mockClient.get.mockResolvedValue(mockMetaResponse);
+      it('should call POST bulk endpoint with the orderId wrapped in array', async () => {
+        mockClient.post.mockResolvedValue(mockBulkResponse);
 
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         await ordersFbs.getOrdersMeta(orderId);
 
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/orders/${orderId}/meta`,
+        expect(mockClient.post).toHaveBeenCalledWith(
+          `${BASE_URL}/api/marketplace/v3/orders/meta`,
+          { orders: [orderId] },
           expect.objectContaining({ rateLimitKey: expect.any(String) })
         );
       });
 
-      it('should return the meta response', async () => {
-        mockClient.get.mockResolvedValue(mockMetaResponse);
+      it('should return the meta response extracted from bulk response', async () => {
+        mockClient.post.mockResolvedValue(mockBulkResponse);
 
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         const result = await ordersFbs.getOrdersMeta(orderId);
 
-        expect(result).toEqual(mockMetaResponse);
+        expect(result).toEqual({ meta: mockMeta });
         expect(result.meta).toBeDefined();
       });
 
+      it('should return undefined meta when order not found in response', async () => {
+        mockClient.post.mockResolvedValue({ orders: [] });
+
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const result = await ordersFbs.getOrdersMeta(orderId);
+
+        expect(result).toEqual({ meta: undefined });
+      });
+
       it('should pass rateLimitKey in options', async () => {
-        mockClient.get.mockResolvedValue(mockMetaResponse);
+        mockClient.post.mockResolvedValue(mockBulkResponse);
 
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         await ordersFbs.getOrdersMeta(orderId);
 
-        expect(mockClient.get).toHaveBeenCalledWith(
+        expect(mockClient.post).toHaveBeenCalledWith(
           expect.any(String),
-          expect.objectContaining({ rateLimitKey: 'orders-fbs.ordersMeta' })
+          expect.any(Object),
+          expect.objectContaining({
+            rateLimitKey: 'orders-fbs.postMarketplaceOrdersMeta',
+          })
         );
       });
     });

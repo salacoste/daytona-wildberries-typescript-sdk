@@ -48,6 +48,8 @@ export interface GetOrdersParams {
   dateFrom?: number;
   /** End of date range (Unix timestamp) */
   dateTo?: number;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
 }
 
 /** Request body containing an array of order IDs for status lookup */
@@ -70,6 +72,8 @@ export interface StickerParams {
   width: number;
   /** Sticker height in mm (40 or 30) */
   height: number;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
 }
 
 /** Request body for cross-border order stickers */
@@ -129,7 +133,7 @@ export interface MetaCustomsDeclarationRequest {
 /** Request body for creating a new supply */
 export interface SupplyCreateRequest {
   /** Supply name */
-  name: string;
+  name?: string;
 }
 
 /** Request body for adding orders to a supply */
@@ -168,6 +172,30 @@ export interface PassCreateRequest {
   carNumber: string;
   /** Warehouse office ID */
   officeId: number;
+}
+
+/** Response after creating a seller pass */
+export interface PassCreateResponse {
+  /** Created pass ID */
+  id?: number;
+}
+
+/** Query parameters for fetching supplies list */
+export interface GetSuppliesParams {
+  /** Maximum number of items to return */
+  limit: number;
+  /** Pagination cursor; set to 0 for the first request */
+  next: number;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}
+
+/** Query parameters for sticker/barcode format */
+export interface BarcodeParams {
+  /** Output format */
+  type: StickerType;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
 }
 
 /** Request body for retrieving metadata of multiple orders (max 100) */
@@ -212,17 +240,20 @@ export interface OrdersResponse {
   orders?: Order[];
 }
 
+/** Individual order status entry */
+export interface OrderStatusItem {
+  /** Order ID */
+  id?: number;
+  /** Supplier-side status */
+  supplierStatus?: OrderSupplierStatus;
+  /** Wildberries system status */
+  wbStatus?: OrderWbStatus;
+}
+
 /** Response containing order statuses */
 export interface OrderStatusResponse {
   /** List of order status entries */
-  orders?: {
-    /** Order ID */
-    id?: number;
-    /** Supplier-side status */
-    supplierStatus?: OrderSupplierStatus;
-    /** Wildberries system status */
-    wbStatus?: OrderWbStatus;
-  }[];
+  orders?: OrderStatusItem[];
 }
 
 /** Response containing orders that require reshipment */
@@ -239,52 +270,80 @@ export interface ReshipmentOrder {
   orderID?: number;
 }
 
+/** Individual sticker data item */
+export interface StickerItem {
+  /** Order ID */
+  orderId?: number;
+  /** Sticker part A value */
+  partA?: string;
+  /** Sticker part B value */
+  partB?: string;
+  /** Encoded barcode value */
+  barcode?: string;
+  /** Base64-encoded sticker file */
+  file?: string;
+}
+
 /** Response containing order stickers */
 export interface StickerResponse {
   /** List of sticker data */
-  stickers?: {
-    /** Order ID */
-    orderId?: number;
-    /** Sticker part A value */
-    partA?: number;
-    /** Sticker part B value */
-    partB?: number;
-    /** Encoded barcode value */
-    barcode?: string;
-    /** Base64-encoded sticker file */
-    file?: string;
-  }[];
+  stickers?: StickerItem[];
+}
+
+/** Individual cross-border sticker data item */
+export interface CrossBorderStickerItem {
+  /** Base64-encoded sticker file */
+  file?: string;
+  /** Order ID */
+  orderId?: number;
+  /** Parcel ID */
+  parcelId?: string;
 }
 
 /** Response containing cross-border order stickers */
 export interface CrossBorderStickerResponse {
   /** List of cross-border sticker data */
-  stickers?: {
-    /** Base64-encoded sticker file */
-    file?: string;
-    /** Order ID */
-    orderId?: number;
-    /** Parcel ID */
-    parcelId?: string;
-  }[];
+  stickers?: CrossBorderStickerItem[];
+}
+
+/** Individual status entry in status history */
+export interface StatusHistoryEntry {
+  /** Status timestamp */
+  date?: string;
+  /** Status code */
+  code?: string;
+}
+
+/** Individual order status history item */
+export interface StatusHistoryItem {
+  /** Delivery date */
+  deliveryDate?: string;
+  /** List of status entries */
+  statuses?: StatusHistoryEntry[];
+  /** Order ID */
+  orderID?: number;
 }
 
 /** Response containing cross-border status history */
 export interface StatusHistoryResponse {
   /** List of order status histories */
-  orders?: {
-    /** Delivery date */
-    deliveryDate?: string;
-    /** List of status entries */
-    statuses?: {
-      /** Status timestamp */
-      date?: string;
-      /** Status code */
-      code?: string;
-    }[];
-    /** Order ID */
-    orderID?: number;
-  }[];
+  orders?: StatusHistoryItem[];
+}
+
+/** Individual external sticker item (deprecated endpoint) */
+export interface ExternalStickerItem {
+  /** Order ID */
+  orderID?: number;
+  /** Sticker URL */
+  url?: string;
+  /** Parcel ID */
+  parcelID?: string;
+}
+
+/** Response for external sticker URLs (deprecated endpoint) */
+export interface ExternalStickerResponse {
+  /** List of external sticker data */
+  stickers?: ExternalStickerItem[];
 }
 
 /** Response containing metadata for a single order */
@@ -703,4 +762,50 @@ export interface CrossborderTurkeyClientInfo {
 export interface CrossborderTurkeyClientInfoResp {
   /** Client info entries for cross-border orders from Turkey */
   orders?: CrossborderTurkeyClientInfo[];
+}
+
+// ============================================================================
+// API v3 Schema Types (from v3.* swagger schemas)
+// ============================================================================
+
+/**
+ * Order IDs within a supply (v3 schema)
+ * Maps to swagger schema: v3.SupplyOrderIDsAPI
+ */
+export interface SupplyOrderIDsAPI {
+  /** List of assembly order IDs */
+  orderIds?: number[];
+}
+
+/**
+ * Response containing metadata for multiple orders (v3 schema)
+ * Maps to swagger schema: v3.OrdersMetaAPI
+ */
+export interface OrdersMetaAPI {
+  /** List of order metadata entries */
+  orders?: OrderMetaAPI[];
+}
+
+/**
+ * Single order metadata entry (v3 schema)
+ * Maps to swagger schema: v3.OrderMetaAPI
+ */
+export interface OrderMetaAPI {
+  /** Assembly order ID */
+  id?: number;
+  /** Order metadata */
+  meta?: Meta;
+}
+
+/**
+ * API error response (v3 schema)
+ * Maps to swagger schema: v3.APIError
+ */
+export interface APIError {
+  /** Error code */
+  code?: string;
+  /** Error description */
+  message?: string;
+  /** Additional error data */
+  data?: Record<string, unknown>;
 }

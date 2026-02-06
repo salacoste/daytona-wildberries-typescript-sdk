@@ -315,6 +315,11 @@ export class OrdersDbsModule {
    * ```
    */
   async getMeta(orderId: number): Promise<GetOrderMetaResponse> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: getMeta() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getMetaBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -346,6 +351,11 @@ export class OrdersDbsModule {
    * ```
    */
   async deleteMeta(orderId: number, key: DBSMetadataKey): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: deleteMeta() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to deleteMetaBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -382,6 +392,11 @@ export class OrdersDbsModule {
    * ```
    */
   async setSgtin(orderId: number, sgtins: string[]): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: setSgtin() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to setSgtinBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -425,6 +440,11 @@ export class OrdersDbsModule {
    * ```
    */
   async setUin(orderId: number, uin: string): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: setUin() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to setUinBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -462,6 +482,11 @@ export class OrdersDbsModule {
    * ```
    */
   async setImei(orderId: number, imei: string): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: setImei() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to setImeiBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -499,6 +524,11 @@ export class OrdersDbsModule {
    * ```
    */
   async setGtin(orderId: number, gtin: string): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: setGtin() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to setGtinBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -536,6 +566,11 @@ export class OrdersDbsModule {
    * ```
    */
   async setCustomsDeclaration(orderId: number, customsDeclaration: string): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: setCustomsDeclaration() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to setCustomsDeclarationBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be greater than 0');
     }
@@ -567,11 +602,9 @@ export class OrdersDbsModule {
    * ```
    */
   async getGroupsInfo(request: OrderGroupsRequest): Promise<OrderGroupsResponse> {
-    return this.client.post<OrderGroupsResponse>(
-      `${BASE_URL}/api/v3/dbs/groups/info`,
-      request,
-      { rateLimitKey: 'orders-dbs.getGroupsInfo' }
-    );
+    return this.client.post<OrderGroupsResponse>(`${BASE_URL}/api/v3/dbs/groups/info`, request, {
+      rateLimitKey: 'orders-dbs.getGroupsInfo',
+    });
   }
 
   /**
@@ -753,7 +786,9 @@ export class OrdersDbsModule {
    * });
    * ```
    */
-  async setCustomsDeclarationBulk(request: SetCustomsDeclarationBulkRequest): Promise<SetMetaBulkResponse> {
+  async setCustomsDeclarationBulk(
+    request: SetCustomsDeclarationBulkRequest
+  ): Promise<SetMetaBulkResponse> {
     return this.client.post<SetMetaBulkResponse>(
       `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/customs-declaration`,
       request,
@@ -872,6 +907,11 @@ export class OrdersDbsModule {
   /** @deprecated Use getStatusesBulk instead */
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   async getStatuses(orderIds: number[]): Promise<GetStatusResponseLegacy> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: getStatuses() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to getStatusesBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderIds.length === 0) {
       throw new ValidationError('orderIds array cannot be empty');
     }
@@ -885,6 +925,11 @@ export class OrdersDbsModule {
 
   /** @deprecated Use confirmBulk instead */
   async confirm(orderId: number): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] FINAL WARNING: confirm() will be REMOVED in the NEXT version (v3.0.0). ' +
+        'This is your last chance to migrate to confirmBulk(). ' +
+        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
     }
@@ -895,6 +940,10 @@ export class OrdersDbsModule {
 
   /** @deprecated Use deliverBulk instead */
   async deliver(orderId: number): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: deliver() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to deliverBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
     }
@@ -905,6 +954,10 @@ export class OrdersDbsModule {
 
   /** @deprecated Use receiveBulk instead */
   async receive(orderId: number, code: string): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: receive() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to receiveBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
     }
@@ -920,6 +973,10 @@ export class OrdersDbsModule {
 
   /** @deprecated Use rejectBulk instead */
   async reject(orderId: number, code: string): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: reject() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to rejectBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
     }
@@ -935,6 +992,10 @@ export class OrdersDbsModule {
 
   /** @deprecated Use cancelBulk instead */
   async cancel(orderId: number): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: cancel() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to cancelBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     if (orderId <= 0) {
       throw new ValidationError('orderId must be a positive number');
     }

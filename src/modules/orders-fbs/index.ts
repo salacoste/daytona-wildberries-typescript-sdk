@@ -8,22 +8,50 @@ import { BaseClient } from '../../client/base-client';
 import type {
   PassOffice,
   Pass,
-  Order,
-  OrderNew,
-  Next,
+  PassCreateRequest,
+  PassCreateResponse,
+  OrdersNewResponse,
+  OrdersResponse,
+  GetOrdersParams,
+  OrderStatusRequest,
+  OrderStatusResponse,
   Supply,
-  SupplyOrder,
-  SupplyTrbx,
+  SupplyOrdersResponse,
+  SuppliesResponse,
+  GetSuppliesParams,
+  SupplyCreateRequest,
+  SupplyCreateResponse,
+  TrbxListResponse,
+  TrbxCreateRequest,
+  TrbxCreateResponse,
+  TrbxDeleteRequest,
   TrbxStickers,
-  Meta,
+  TrbxStickerRequest,
+  OrderMetaResponse,
+  DeleteMetaParams,
+  MetaSgtinRequest,
+  MetaUinRequest,
+  MetaImeiRequest,
+  MetaGtinRequest,
+  MetaExpirationRequest,
+  MetaCustomsDeclarationRequest,
+  StickerParams,
+  StickerRequest,
+  StickerResponse,
+  CrossBorderStickerRequest,
+  CrossBorderStickerResponse,
+  ExternalStickerResponse,
+  StatusHistoryRequest,
+  StatusHistoryResponse,
   OrdersRequestAPI,
   CrossborderTurkeyClientInfoResp,
-  OrderStatusResponse,
   GetMetaMultiRequest,
   OrdersMetaResponse,
   AddOrdersToSupplyRequest,
   SupplyOrderIdsResponse,
   ReshipmentResponse,
+  BarcodeParams,
+  BarcodeResponse,
 } from '../../types/orders-fbs.types';
 
 export class OrdersFbsModule {
@@ -104,14 +132,8 @@ export class OrdersFbsModule {
    * console.log(result.id);
    * ```
    */
-  async createPass(data: {
-    firstName: string;
-    lastName: string;
-    carModel: string;
-    carNumber: string;
-    officeId: number;
-  }): Promise<{ id?: number }> {
-    return this.client.post<{ id?: number }>(
+  async createPass(data: PassCreateRequest): Promise<PassCreateResponse> {
+    return this.client.post<PassCreateResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/passes',
       data,
       { rateLimitKey: 'orders-fbs.postPasses' }
@@ -143,16 +165,7 @@ export class OrdersFbsModule {
    * });
    * ```
    */
-  async updatePass(
-    passId: number,
-    data: {
-      firstName: string;
-      lastName: string;
-      carModel: string;
-      carNumber: string;
-      officeId: number;
-    }
-  ): Promise<void> {
+  async updatePass(passId: number, data: PassCreateRequest): Promise<void> {
     return this.client.put(`https://marketplace-api.wildberries.ru/api/v3/passes/${passId}`, data, {
       rateLimitKey: 'orders-fbs.putPasses',
     });
@@ -200,8 +213,8 @@ export class OrdersFbsModule {
    * console.log(result.orders);
    * ```
    */
-  async getOrdersNew(): Promise<{ orders?: OrderNew[] }> {
-    return this.client.get<{ orders?: OrderNew[] }>(
+  async getOrdersNew(): Promise<OrdersNewResponse> {
+    return this.client.get<OrdersNewResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/orders/new',
       { rateLimitKey: 'orders-fbs.ordersNew' }
     );
@@ -227,16 +240,11 @@ export class OrdersFbsModule {
    * console.log(result.orders);
    * ```
    */
-  async orders(options?: {
-    limit: number;
-    next: number;
-    dateFrom?: number;
-    dateTo?: number;
-  }): Promise<{ next?: Next; orders?: Order[] }> {
-    return this.client.get<{ next?: Next; orders?: Order[] }>(
-      'https://marketplace-api.wildberries.ru/api/v3/orders',
-      { params: options, rateLimitKey: 'orders-fbs.orders' }
-    );
+  async orders(options?: GetOrdersParams): Promise<OrdersResponse> {
+    return this.client.get<OrdersResponse>('https://marketplace-api.wildberries.ru/api/v3/orders', {
+      params: options,
+      rateLimitKey: 'orders-fbs.orders',
+    });
   }
 
   /**
@@ -260,40 +268,16 @@ export class OrdersFbsModule {
    * console.log(result.orders);
    * ```
    */
-  async createOrdersStatu(data?: { orders: number[] }): Promise<{
-    orders?: {
-      id?: number;
-      supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel';
-      wbStatus?:
-        | 'waiting'
-        | 'sorted'
-        | 'sold'
-        | 'canceled'
-        | 'canceled_by_client'
-        | 'declined_by_client'
-        | 'defect'
-        | 'ready_for_pickup'
-        | 'postponed_delivery';
-    }[];
-  }> {
-    return this.client.post<{
-      orders?: {
-        id?: number;
-        supplierStatus?: 'new' | 'confirm' | 'complete' | 'cancel';
-        wbStatus?:
-          | 'waiting'
-          | 'sorted'
-          | 'sold'
-          | 'canceled'
-          | 'canceled_by_client'
-          | 'declined_by_client'
-          | 'defect'
-          | 'ready_for_pickup'
-          | 'postponed_delivery';
-      }[];
-    }>('https://marketplace-api.wildberries.ru/api/v3/orders/status', data, {
-      rateLimitKey: 'orders-fbs.postOrdersStatus',
-    });
+  async createOrdersStatu(data?: OrderStatusRequest): Promise<OrderStatusResponse> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: createOrdersStatu() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to getOrderStatuses(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
+    return this.client.post<OrderStatusResponse>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/status',
+      data,
+      { rateLimitKey: 'orders-fbs.postOrdersStatus' }
+    );
   }
 
   /**
@@ -373,35 +357,20 @@ export class OrdersFbsModule {
    * ```
    */
   async createOrdersSticker(
-    options?: { type: 'svg' | 'zplv' | 'zplh' | 'png'; width: 58 | 40; height: 40 | 30 },
-    data?: { orders?: number[] }
-  ): Promise<{
-    stickers?: {
-      orderId?: number;
-      partA?: string;
-      partB?: string;
-      barcode?: string;
-      file?: string;
-    }[];
-  }> {
-    return this.client.post<{
-      stickers?: {
-        orderId?: number;
-        partA?: string;
-        partB?: string;
-        barcode?: string;
-        file?: string;
-      }[];
-    }>('https://marketplace-api.wildberries.ru/api/v3/orders/stickers', data, {
-      params: options,
-      rateLimitKey: 'orders-fbs.postOrdersStickers',
-    });
+    options?: StickerParams,
+    data?: StickerRequest
+  ): Promise<StickerResponse> {
+    return this.client.post<StickerResponse>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/stickers',
+      data,
+      { params: options, rateLimitKey: 'orders-fbs.postOrdersStickers' }
+    );
   }
 
   /**
    * Get metadata for an assembly task
    *
-   * @deprecated Use {@link getOrdersMetaBulk} for bulk metadata retrieval. This single-order endpoint may be removed in a future release.
+   * @deprecated Use {@link getOrdersMetaBulk} for bulk metadata retrieval. This method wraps the bulk endpoint internally.
    *
    * Returns metadata for a single assembly task (imei, uin, gtin, sgtin, expiration, customsDeclaration).
    *
@@ -411,7 +380,7 @@ export class OrdersFbsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1v3~1orders~1%7BorderId%7D~1meta/get}
+   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post}
    *
    * @example
    * ```typescript
@@ -419,11 +388,14 @@ export class OrdersFbsModule {
    * console.log(result.meta);
    * ```
    */
-  async getOrdersMeta(orderId: number): Promise<{ meta?: Meta }> {
-    return this.client.get<{ meta?: Meta }>(
-      `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`,
-      { rateLimitKey: 'orders-fbs.ordersMeta' }
+  async getOrdersMeta(orderId: number): Promise<OrderMetaResponse> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: getOrdersMeta() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to getOrdersMetaBulk(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
     );
+    const response = await this.getOrdersMetaBulk({ orders: [orderId] });
+    const orderMeta = response.orders?.find((o) => o.id === orderId);
+    return { meta: orderMeta?.meta };
   }
 
   /**
@@ -446,7 +418,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.deleteOrdersMeta(123456, { key: 'imei' });
    * ```
    */
-  async deleteOrdersMeta(orderId: number, options?: { key?: string }): Promise<void> {
+  async deleteOrdersMeta(orderId: number, options?: DeleteMetaParams): Promise<void> {
     return this.client.delete(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta`,
       { params: options, rateLimitKey: 'orders-fbs.deleteOrdersMeta' }
@@ -473,7 +445,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.updateMetaSgtin(123456, { sgtins: ['01046009544741002'] });
    * ```
    */
-  async updateMetaSgtin(orderId: number, data?: { sgtins?: string[] }): Promise<void> {
+  async updateMetaSgtin(orderId: number, data?: MetaSgtinRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/sgtin`,
       data,
@@ -501,7 +473,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.updateMetaUin(123456, { uin: 'UIN123456789' });
    * ```
    */
-  async updateMetaUin(orderId: number, data?: { uin: string }): Promise<void> {
+  async updateMetaUin(orderId: number, data?: MetaUinRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/uin`,
       data,
@@ -529,7 +501,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.updateMetaImei(123456, { imei: '354567890123456' });
    * ```
    */
-  async updateMetaImei(orderId: number, data?: { imei: string }): Promise<void> {
+  async updateMetaImei(orderId: number, data?: MetaImeiRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/imei`,
       data,
@@ -557,7 +529,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.updateMetaGtin(123456, { gtin: '4600000000001' });
    * ```
    */
-  async updateMetaGtin(orderId: number, data?: { gtin: string }): Promise<void> {
+  async updateMetaGtin(orderId: number, data?: MetaGtinRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/gtin`,
       data,
@@ -585,7 +557,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.updateMetaExpiration(123456, { expiration: '2025-12-31' });
    * ```
    */
-  async updateMetaExpiration(orderId: number, data?: { expiration?: string }): Promise<void> {
+  async updateMetaExpiration(orderId: number, data?: MetaExpirationRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/orders/${orderId}/meta/expiration`,
       data,
@@ -616,10 +588,7 @@ export class OrdersFbsModule {
    * });
    * ```
    */
-  async setCustomsDeclaration(
-    orderId: number,
-    data: { customsDeclaration: string }
-  ): Promise<void> {
+  async setCustomsDeclaration(orderId: number, data: MetaCustomsDeclarationRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/marketplace/v3/orders/${orderId}/meta/customs-declaration`,
       data,
@@ -647,10 +616,10 @@ export class OrdersFbsModule {
    * console.log(result.stickers);
    * ```
    */
-  async createStickersCrossBorder(data?: {
-    orders?: number[];
-  }): Promise<{ stickers?: { file?: string; orderId?: number }[] }> {
-    return this.client.post<{ stickers?: { file?: string; orderId?: number }[] }>(
+  async createStickersCrossBorder(
+    data?: CrossBorderStickerRequest
+  ): Promise<CrossBorderStickerResponse> {
+    return this.client.post<CrossBorderStickerResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/orders/stickers/cross-border',
       data,
       { rateLimitKey: 'orders-fbs.postOrdersStickersCrossBorder' }
@@ -658,9 +627,10 @@ export class OrdersFbsModule {
   }
 
   /**
-   * Get cross-border sticker links (deprecated)
+   * Get cross-border sticker links
    *
-   * @deprecated This method will be disabled by Wildberries. Use {@link createStickersCrossBorder} instead.
+   * @deprecated **ENDPOINT REMOVED**: The `/api/v3/files/orders/external-stickers` endpoint has been removed from the Wildberries API.
+   * Use {@link createStickersCrossBorder} instead, which returns stickers in PDF format.
    *
    * Returns a list of sticker links for cross-border assembly tasks.
    *
@@ -674,14 +644,20 @@ export class OrdersFbsModule {
    *
    * @example
    * ```typescript
-   * const result = await sdk.ordersFBS.createOrdersExternalSticker({ orders: [123] });
+   * // DEPRECATED - Use createStickersCrossBorder instead:
+   * const result = await sdk.ordersFBS.createStickersCrossBorder({ orders: [123] });
    * console.log(result.stickers);
    * ```
    */
-  async createOrdersExternalSticker(data?: {
-    orders?: number[];
-  }): Promise<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }> {
-    return this.client.post<{ stickers?: { orderID?: number; url?: string; parcelID?: string }[] }>(
+  async createOrdersExternalSticker(
+    data?: CrossBorderStickerRequest
+  ): Promise<ExternalStickerResponse> {
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[WB SDK DEPRECATION] createOrdersExternalSticker(): This endpoint has been REMOVED from the Wildberries API. ' +
+        'Use createStickersCrossBorder() instead.'
+    );
+    return this.client.post<ExternalStickerResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/files/orders/external-stickers',
       data,
       { rateLimitKey: 'orders-fbs.postFilesOrdersExternalStickers' }
@@ -707,22 +683,12 @@ export class OrdersFbsModule {
    * console.log(result.orders);
    * ```
    */
-  async createStatusHistory(data?: { orders?: number[] }): Promise<{
-    orders?: {
-      deliveryDate?: string;
-      statuses?: { date?: string; code?: string }[];
-      orderID?: number;
-    }[];
-  }> {
-    return this.client.post<{
-      orders?: {
-        deliveryDate?: string;
-        statuses?: { date?: string; code?: string }[];
-        orderID?: number;
-      }[];
-    }>('https://marketplace-api.wildberries.ru/api/v3/orders/status/history', data, {
-      rateLimitKey: 'orders-fbs.postOrdersStatusHistory',
-    });
+  async createStatusHistory(data?: StatusHistoryRequest): Promise<StatusHistoryResponse> {
+    return this.client.post<StatusHistoryResponse>(
+      'https://marketplace-api.wildberries.ru/api/v3/orders/status/history',
+      data,
+      { rateLimitKey: 'orders-fbs.postOrdersStatusHistory' }
+    );
   }
 
   /**
@@ -771,11 +737,8 @@ export class OrdersFbsModule {
    * console.log(result.supplies);
    * ```
    */
-  async supplies(options?: {
-    limit: number;
-    next: number;
-  }): Promise<{ next?: Next; supplies?: Supply[] }> {
-    return this.client.get<{ next?: Next; supplies?: Supply[] }>(
+  async supplies(options?: GetSuppliesParams): Promise<SuppliesResponse> {
+    return this.client.get<SuppliesResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/supplies',
       { params: options, rateLimitKey: 'orders-fbs.supplies' }
     );
@@ -801,8 +764,8 @@ export class OrdersFbsModule {
    * console.log(result.id);
    * ```
    */
-  async createSupply(data: { name?: string }): Promise<{ id?: string }> {
-    return this.client.post<{ id?: string }>(
+  async createSupply(data: SupplyCreateRequest): Promise<SupplyCreateResponse> {
+    return this.client.post<SupplyCreateResponse>(
       'https://marketplace-api.wildberries.ru/api/v3/supplies',
       data,
       { rateLimitKey: 'orders-fbs.postSupplies' }
@@ -832,6 +795,10 @@ export class OrdersFbsModule {
    * ```
    */
   async updateSuppliesOrder(supplyId: string, orderId: number): Promise<void> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: updateSuppliesOrder() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to addOrdersToSupply(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
     return this.client.patch(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders/${orderId}`,
       undefined,
@@ -913,8 +880,12 @@ export class OrdersFbsModule {
    * console.log(result.orders);
    * ```
    */
-  async getSuppliesOrder(supplyId: string): Promise<{ orders?: SupplyOrder[] }> {
-    return this.client.get<{ orders?: SupplyOrder[] }>(
+  async getSuppliesOrder(supplyId: string): Promise<SupplyOrdersResponse> {
+    console.warn(
+      '[Wildberries SDK] DEPRECATION WARNING: getSuppliesOrder() is deprecated and will be removed in v3.0.0. ' +
+        'Please migrate to getSupplyOrderIds(). See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
+    );
+    return this.client.get<SupplyOrdersResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders`,
       { rateLimitKey: 'orders-fbs.suppliesOrders' }
     );
@@ -968,11 +939,8 @@ export class OrdersFbsModule {
    * console.log(result.barcode);
    * ```
    */
-  async getSuppliesBarcode(
-    supplyId: string,
-    options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' }
-  ): Promise<{ barcode?: string; file?: string }> {
-    return this.client.get<{ barcode?: string; file?: string }>(
+  async getSuppliesBarcode(supplyId: string, options?: BarcodeParams): Promise<BarcodeResponse> {
+    return this.client.get<BarcodeResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/barcode`,
       { params: options, rateLimitKey: 'orders-fbs.suppliesBarcode' }
     );
@@ -997,8 +965,8 @@ export class OrdersFbsModule {
    * console.log(result.trbxes);
    * ```
    */
-  async getSuppliesTrbx(supplyId: string): Promise<{ trbxes?: SupplyTrbx[] }> {
-    return this.client.get<{ trbxes?: SupplyTrbx[] }>(
+  async getSuppliesTrbx(supplyId: string): Promise<TrbxListResponse> {
+    return this.client.get<TrbxListResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
       { rateLimitKey: 'orders-fbs.suppliesTrbx' }
     );
@@ -1027,9 +995,9 @@ export class OrdersFbsModule {
    */
   async createSuppliesTrbx(
     supplyId: string,
-    data?: { amount: number }
-  ): Promise<{ trbxIds?: string[] }> {
-    return this.client.post<{ trbxIds?: string[] }>(
+    data?: TrbxCreateRequest
+  ): Promise<TrbxCreateResponse> {
+    return this.client.post<TrbxCreateResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
       data,
       { rateLimitKey: 'orders-fbs.postSuppliesTrbx' }
@@ -1055,7 +1023,7 @@ export class OrdersFbsModule {
    * await sdk.ordersFBS.deleteSuppliesTrbx('WB-GI-1234', { trbxIds: ['trbx-1', 'trbx-2'] });
    * ```
    */
-  async deleteSuppliesTrbx(supplyId: string, data?: { trbxIds: string[] }): Promise<void> {
+  async deleteSuppliesTrbx(supplyId: string, data?: TrbxDeleteRequest): Promise<void> {
     return this.client.delete(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx`,
       data,
@@ -1090,8 +1058,8 @@ export class OrdersFbsModule {
    */
   async createTrbxSticker(
     supplyId: string,
-    options?: { type: 'svg' | 'zplv' | 'zplh' | 'png' },
-    data?: { trbxIds: string[] }
+    options?: BarcodeParams,
+    data?: TrbxStickerRequest
   ): Promise<{ stickers?: TrbxStickers[] }> {
     return this.client.post<{ stickers?: TrbxStickers[] }>(
       `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/trbx/stickers`,

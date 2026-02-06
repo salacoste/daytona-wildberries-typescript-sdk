@@ -238,10 +238,11 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
-  /** POST /api/marketplace/v3/orders/meta — Get metadata for assembly tasks (bulk) */
+  /** POST /api/marketplace/v3/orders/meta — Get metadata for assembly tasks (bulk)
+   * Same rate limit group as GET/DELETE metadata operations */
   'orders-fbs.postMarketplaceOrdersMeta': {
-    requestsPerMinute: 1000,
-    intervalSeconds: 0.06,
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
