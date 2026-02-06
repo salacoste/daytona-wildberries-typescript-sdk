@@ -2,11 +2,11 @@
 
 # Interface: EventsResponse
 
-Defined in: [types/communications.types.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L317)
+Defined in: [types/communications.types.ts:613](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L613)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="result"></a> `result?` | [`EventsResult`](EventsResult.md) | - | [types/communications.types.ts:318](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L318) |
-| <a id="errors"></a> `errors?` | `string`[] | Ошибки, если есть | [types/communications.types.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L320) |
+| <a id="result"></a> `result?` | [`EventsResult`](EventsResult.md) | - | [types/communications.types.ts:614](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L614) |
+| <a id="errors"></a> `errors?` | `string`[] | Ошибки, если есть | [types/communications.types.ts:616](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L616) |

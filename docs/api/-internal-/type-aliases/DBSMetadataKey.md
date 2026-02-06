@@ -6,6 +6,6 @@
 type DBSMetadataKey = "imei" | "uin" | "gtin" | "sgtin" | "customsDeclaration";
 ```
 
-Defined in: [types/orders-dbs.types.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/orders-dbs.types.ts#L256)
+Defined in: [types/orders-dbs.types.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/orders-dbs.types.ts#L256)
 
 Metadata key types

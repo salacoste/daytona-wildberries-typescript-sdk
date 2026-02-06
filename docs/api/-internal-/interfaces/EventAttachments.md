@@ -2,7 +2,7 @@
 
 # Interface: EventAttachments
 
-Defined in: [types/communications.types.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L234)
+Defined in: [types/communications.types.ts:524](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L524)
 
 Вложения
 
@@ -10,6 +10,6 @@ Defined in: [types/communications.types.ts:234](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="goodcard"></a> `goodCard?` | [`GoodCard`](GoodCard.md) | - | [types/communications.types.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L235) |
-| <a id="files"></a> `files?` | [`File`](File.md)[] | Файлы | [types/communications.types.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L237) |
-| <a id="images"></a> `images?` | [`Image`](Image.md)[] | Изображения | [types/communications.types.ts:239](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L239) |
+| <a id="goodcard"></a> `goodCard?` | [`GoodCard`](GoodCard.md) | - | [types/communications.types.ts:525](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L525) |
+| <a id="files"></a> `files?` | [`File`](File.md)[] | Файлы | [types/communications.types.ts:527](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L527) |
+| <a id="images"></a> `images?` | [`Image`](Image.md)[] | Изображения | [types/communications.types.ts:529](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L529) |

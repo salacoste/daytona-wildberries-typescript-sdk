@@ -6,7 +6,7 @@
 type StockType = "" | "wb" | "mp";
 ```
 
-Defined in: [types/analytics.types.ts:1155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/analytics.types.ts#L1155)
+Defined in: [types/analytics.types.ts:1155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/analytics.types.ts#L1155)
 
 Тип складов хранения товаров:
  - `""` — все

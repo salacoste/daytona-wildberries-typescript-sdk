@@ -2,10 +2,10 @@
 
 # Interface: TariffsBoxResponse
 
-Defined in: [types/tariffs.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/tariffs.types.ts#L116)
+Defined in: [types/tariffs.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/tariffs.types.ts#L116)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="response"></a> `response?` | [`ModelsTariffsBoxResponse`](ModelsTariffsBoxResponse.md) | [types/tariffs.types.ts:117](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/tariffs.types.ts#L117) |
+| <a id="response"></a> `response?` | [`ModelsTariffsBoxResponse`](ModelsTariffsBoxResponse.md) | [types/tariffs.types.ts:117](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/tariffs.types.ts#L117) |

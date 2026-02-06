@@ -1,17 +1,22 @@
 [Wildberries API TypeScript SDK](../../modules.md) / [\<internal\>](../modules.md) / ResponseTemplate
 
-# Interface: ResponseTemplate
+# ~~Interface: ResponseTemplate~~
 
-Defined in: [types/communications.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L24)
+Defined in: [types/communications.types.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L300)
 
 Успешно
+
+## Deprecated
+
+This type is for the removed "Шаблоны ответов" (Response Templates) tag.
+The templates endpoints have been removed from the Wildberries API.
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `templates?`: \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[]; \} | - | [types/communications.types.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L25) |
-| `data.templates?` | \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[] | - | [types/communications.types.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L26) |
-| <a id="error"></a> `error?` | `boolean` | Есть ли ошибка | [types/communications.types.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L36) |
-| <a id="errortext"></a> `errorText?` | `string` | Описание ошибки | [types/communications.types.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L38) |
-| <a id="additionalerrors"></a> `additionalErrors?` | `string`[] | Дополнительные ошибки | [types/communications.types.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L40) |
+| <a id="data"></a> ~~`data?`~~ | \{ `templates?`: \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[]; \} | - | [types/communications.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L301) |
+| `data.templates?` | \{ `id?`: `string`; `name?`: `string`; `text?`: `string`; \}[] | - | [types/communications.types.ts:302](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L302) |
+| <a id="error"></a> ~~`error?`~~ | `boolean` | Есть ли ошибка | [types/communications.types.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L312) |
+| <a id="errortext"></a> ~~`errorText?`~~ | `string` | Описание ошибки | [types/communications.types.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L314) |
+| <a id="additionalerrors"></a> ~~`additionalErrors?`~~ | `string`[] | Дополнительные ошибки | [types/communications.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L316) |

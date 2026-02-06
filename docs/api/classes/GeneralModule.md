@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/general/index.ts#L15)
+Defined in: [modules/general/index.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/general/index.ts#L15)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:15](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/general/index.ts#L16)
+Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/general/index.ts#L16)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-w
 ping(): Promise<PingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/general/index.ts#L61)
+Defined in: [modules/general/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/general/index.ts#L61)
 
 Проверка подключения к WB API
 
@@ -104,7 +104,7 @@ console.log(result.Status); // 'OK'
 news(options?: NewsRequestParams): Promise<NewsResponse>;
 ```
 
-Defined in: [modules/general/index.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/general/index.ts#L97)
+Defined in: [modules/general/index.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/general/index.ts#L97)
 
 Получение новостей портала продавцов
 
@@ -166,7 +166,7 @@ for (const item of result.data) {
 sellerInfo(): Promise<SellerInfoResponse>;
 ```
 
-Defined in: [modules/general/index.ts:131](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/general/index.ts#L131)
+Defined in: [modules/general/index.ts:131](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/general/index.ts#L131)
 
 Получение информации о продавце
 

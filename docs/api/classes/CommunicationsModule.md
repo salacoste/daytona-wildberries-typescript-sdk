@@ -2,7 +2,7 @@
 
 # Class: CommunicationsModule
 
-Defined in: [modules/communications/index.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L10)
+Defined in: [modules/communications/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L27)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/communications/index.ts:10](https://github.com/salacoste/da
 new CommunicationsModule(client: BaseClient): CommunicationsModule;
 ```
 
-Defined in: [modules/communications/index.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L11)
+Defined in: [modules/communications/index.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L30)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ newFeedbacksQuestions(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L27)
+Defined in: [modules/communications/index.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L46)
 
 Непросмотренные отзывы и вопросы
 
@@ -79,7 +79,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.newFeedbacksQuestions();
+const result = await sdk.communications.newFeedbacksQuestions();
 console.log(result);
 ```
 
@@ -99,7 +99,7 @@ getQuestionsCountUnanswered(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L45)
+Defined in: [modules/communications/index.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L76)
 
 Неотвеченные вопросы
 
@@ -138,7 +138,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getQuestionsCountUnanswered();
+const result = await sdk.communications.getQuestionsCountUnanswered();
 console.log(result);
 ```
 
@@ -159,7 +159,7 @@ getQuestionsCount(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L64)
+Defined in: [modules/communications/index.ts:107](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L107)
 
 Количество вопросов
 
@@ -204,7 +204,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getQuestionsCount({});
+const result = await sdk.communications.getQuestionsCount({});
 console.log(result);
 ```
 
@@ -254,7 +254,7 @@ questions(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L83)
+Defined in: [modules/communications/index.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L138)
 
 Список вопросов
 
@@ -328,7 +328,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.questions({});
+const result = await sdk.communications.questions({});
 console.log(result);
 ```
 
@@ -356,7 +356,7 @@ updateQuestion(data?:
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L102)
+Defined in: [modules/communications/index.ts:220](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L220)
 
 Работа с вопросами
 
@@ -398,7 +398,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateQuestion({});
+const result = await sdk.communications.updateQuestion({});
 console.log(result);
 ```
 
@@ -438,7 +438,7 @@ question(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:121](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L121)
+Defined in: [modules/communications/index.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L255)
 
 Получить вопрос по ID
 
@@ -502,7 +502,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.question({});
+const result = await sdk.communications.question({});
 console.log(result);
 ```
 
@@ -523,7 +523,7 @@ getFeedbacksCountUnanswered(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L139)
+Defined in: [modules/communications/index.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L320)
 
 Необработанные отзывы
 
@@ -563,7 +563,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getFeedbacksCountUnanswered();
+const result = await sdk.communications.getFeedbacksCountUnanswered();
 console.log(result);
 ```
 
@@ -584,7 +584,7 @@ getFeedbacksCount(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:158](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L158)
+Defined in: [modules/communications/index.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L351)
 
 Количество отзывов
 
@@ -629,7 +629,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getFeedbacksCount({});
+const result = await sdk.communications.getFeedbacksCount({});
 console.log(result);
 ```
 
@@ -658,7 +658,7 @@ feedbacks(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:177](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L177)
+Defined in: [modules/communications/index.ts:382](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L382)
 
 Список отзывов
 
@@ -711,13 +711,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.feedbacks({});
+const result = await sdk.communications.feedbacks({});
 console.log(result);
 ```
 
 ***
 
-### supplierValuations()
+### ~~supplierValuations()~~
 
 ```ts
 supplierValuations(): Promise<{
@@ -754,7 +754,7 @@ supplierValuations(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L195)
+Defined in: [modules/communications/index.ts:424](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L424)
 
 Получить списки причин жалоб на отзыв и проблем с товаром
 
@@ -797,6 +797,15 @@ Defined in: [modules/communications/index.ts:195](https://github.com/salacoste/d
 
 Успешно
 
+#### Deprecated
+
+This endpoint has been removed from the Wildberries API.
+Use alternative methods or contact Wildberries support.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/communications](https://dev.wildberries.ru/openapi/communications)
+
 #### Throws
 
 When API key is invalid (401/403)
@@ -816,13 +825,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.supplierValuations();
+const result = await sdk.communications.supplierValuations();
 console.log(result);
 ```
 
 ***
 
-### createFeedbacksAction()
+### ~~createFeedbacksAction()~~
 
 ```ts
 createFeedbacksAction(data?: {
@@ -832,7 +841,7 @@ createFeedbacksAction(data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L213)
+Defined in: [modules/communications/index.ts:505](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L505)
 
 Пожаловаться на отзыв, сообщить о проблеме с товаром
 
@@ -840,18 +849,27 @@ Defined in: [modules/communications/index.ts:213](https://github.com/salacoste/d
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data?` | \{ `id`: `string`; `supplierFeedbackValuation?`: `number`; `supplierProductValuation?`: `number`; \} | Request body data |
-| `data.id?` | `string` | - |
-| `data.supplierFeedbackValuation?` | `number` | - |
-| `data.supplierProductValuation?` | `number` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data?` | \{ `id`: `string`; `supplierFeedbackValuation?`: `number`; `supplierProductValuation?`: `number`; \} |
+| `data.id?` | `string` |
+| `data.supplierFeedbackValuation?` | `number` |
+| `data.supplierProductValuation?` | `number` |
 
 #### Returns
 
 `Promise`\<`void`\>
 
 Response data
+
+#### Deprecated
+
+This endpoint has been removed from the Wildberries API.
+Use alternative methods or contact Wildberries support.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/communications](https://dev.wildberries.ru/openapi/communications)
 
 #### Throws
 
@@ -872,7 +890,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createFeedbacksAction({});
+const result = await sdk.communications.createFeedbacksAction({});
 ```
 
 ***
@@ -886,7 +904,7 @@ createFeedbacksAnswer(data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L231)
+Defined in: [modules/communications/index.ts:535](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L535)
 
 Ответить на отзыв
 
@@ -925,7 +943,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createFeedbacksAnswer({});
+const result = await sdk.communications.createFeedbacksAnswer({});
 ```
 
 ***
@@ -939,7 +957,7 @@ updateFeedbacksAnswer(data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L249)
+Defined in: [modules/communications/index.ts:555](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L555)
 
 Отредактировать ответ на отзыв
 
@@ -978,7 +996,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateFeedbacksAnswer({});
+const result = await sdk.communications.updateFeedbacksAnswer({});
 ```
 
 ***
@@ -996,7 +1014,7 @@ createOrderReturn(data: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L268)
+Defined in: [modules/communications/index.ts:576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L576)
 
 Возврат товара по ID отзыва
 
@@ -1039,7 +1057,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createOrderReturn({});
+const result = await sdk.communications.createOrderReturn({});
 console.log(result);
 ```
 
@@ -1106,7 +1124,7 @@ feedback(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:287](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L287)
+Defined in: [modules/communications/index.ts:607](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L607)
 
 Получить отзыв по ID
 
@@ -1197,7 +1215,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.feedback({});
+const result = await sdk.communications.feedback({});
 console.log(result);
 ```
 
@@ -1221,7 +1239,7 @@ getFeedbacksArchive(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:306](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L306)
+Defined in: [modules/communications/index.ts:713](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L713)
 
 Список архивных отзывов
 
@@ -1269,13 +1287,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getFeedbacksArchive({});
+const result = await sdk.communications.getFeedbacksArchive({});
 console.log(result);
 ```
 
 ***
 
-### templates()
+### ~~templates()~~
 
 ```ts
 templates(options?: {
@@ -1283,7 +1301,7 @@ templates(options?: {
 }): Promise<ResponseTemplate>;
 ```
 
-Defined in: [modules/communications/index.ts:325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L325)
+Defined in: [modules/communications/index.ts:753](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L753)
 
 Получить шаблоны ответов на вопросы и отзывы
 
@@ -1291,16 +1309,25 @@ Defined in: [modules/communications/index.ts:325](https://github.com/salacoste/d
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `templateType`: `number`; \} | Query parameters |
-| `options.templateType?` | `number` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `options?` | \{ `templateType`: `number`; \} |
+| `options.templateType?` | `number` |
 
 #### Returns
 
 `Promise`\<[`ResponseTemplate`](../-internal-/interfaces/ResponseTemplate.md)\>
 
 Успешно
+
+#### Deprecated
+
+This endpoint has been removed from the Wildberries API.
+Use alternative methods or contact Wildberries support.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/communications](https://dev.wildberries.ru/openapi/communications)
 
 #### Throws
 
@@ -1321,13 +1348,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.templates({});
+const result = await sdk.communications.templates({});
 console.log(result);
 ```
 
 ***
 
-### createTemplate()
+### ~~createTemplate()~~
 
 ```ts
 createTemplate(data?: {
@@ -1337,7 +1364,7 @@ createTemplate(data?: {
 }): Promise<PostTemplate>;
 ```
 
-Defined in: [modules/communications/index.ts:344](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L344)
+Defined in: [modules/communications/index.ts:784](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L784)
 
 Создать шаблон
 
@@ -1345,18 +1372,27 @@ Defined in: [modules/communications/index.ts:344](https://github.com/salacoste/d
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data?` | \{ `name`: `string`; `templateType`: `number`; `text`: `string`; \} | Request body data |
-| `data.name?` | `string` | - |
-| `data.templateType?` | `number` | - |
-| `data.text?` | `string` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data?` | \{ `name`: `string`; `templateType`: `number`; `text`: `string`; \} |
+| `data.name?` | `string` |
+| `data.templateType?` | `number` |
+| `data.text?` | `string` |
 
 #### Returns
 
 `Promise`\<[`PostTemplate`](../-internal-/interfaces/PostTemplate.md)\>
 
 Успешно
+
+#### Deprecated
+
+This endpoint has been removed from the Wildberries API.
+Use alternative methods or contact Wildberries support.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/communications](https://dev.wildberries.ru/openapi/communications)
 
 #### Throws
 
@@ -1377,13 +1413,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createTemplate({});
+const result = await sdk.communications.createTemplate({});
 console.log(result);
 ```
 
 ***
 
-### updateTemplate()
+### ~~updateTemplate()~~
 
 ```ts
 updateTemplate(data?: {
@@ -1393,7 +1429,7 @@ updateTemplate(data?: {
 }): Promise<PatchDelResp>;
 ```
 
-Defined in: [modules/communications/index.ts:363](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L363)
+Defined in: [modules/communications/index.ts:820](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L820)
 
 Редактировать шаблон
 
@@ -1401,18 +1437,27 @@ Defined in: [modules/communications/index.ts:363](https://github.com/salacoste/d
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data?` | \{ `name`: `string`; `templateID`: `string`; `text`: `string`; \} | Request body data |
-| `data.name?` | `string` | - |
-| `data.templateID?` | `string` | - |
-| `data.text?` | `string` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data?` | \{ `name`: `string`; `templateID`: `string`; `text`: `string`; \} |
+| `data.name?` | `string` |
+| `data.templateID?` | `string` |
+| `data.text?` | `string` |
 
 #### Returns
 
 `Promise`\<[`PatchDelResp`](../-internal-/interfaces/PatchDelResp.md)\>
 
 Успешно
+
+#### Deprecated
+
+This endpoint has been removed from the Wildberries API.
+Use alternative methods or contact Wildberries support.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/communications](https://dev.wildberries.ru/openapi/communications)
 
 #### Throws
 
@@ -1433,13 +1478,13 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateTemplate({});
+const result = await sdk.communications.updateTemplate({});
 console.log(result);
 ```
 
 ***
 
-### deleteTemplate()
+### ~~deleteTemplate()~~
 
 ```ts
 deleteTemplate(data?: {
@@ -1447,7 +1492,7 @@ deleteTemplate(data?: {
 }): Promise<PatchDelResp>;
 ```
 
-Defined in: [modules/communications/index.ts:382](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L382)
+Defined in: [modules/communications/index.ts:856](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L856)
 
 Удалить шаблон
 
@@ -1455,16 +1500,25 @@ Defined in: [modules/communications/index.ts:382](https://github.com/salacoste/d
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data?` | \{ `templateID`: `string`; \} | Request body data |
-| `data.templateID?` | `string` | - |
+| Parameter | Type |
+| ------ | ------ |
+| `data?` | \{ `templateID`: `string`; \} |
+| `data.templateID?` | `string` |
 
 #### Returns
 
 `Promise`\<[`PatchDelResp`](../-internal-/interfaces/PatchDelResp.md)\>
 
 Успешно
+
+#### Deprecated
+
+This endpoint has been removed from the Wildberries API.
+Use alternative methods or contact Wildberries support.
+
+#### See
+
+[https://dev.wildberries.ru/openapi/communications](https://dev.wildberries.ru/openapi/communications)
 
 #### Throws
 
@@ -1485,7 +1539,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.deleteTemplate({});
+const result = await sdk.communications.deleteTemplate({});
 console.log(result);
 ```
 
@@ -1497,7 +1551,7 @@ console.log(result);
 getSellerChats(): Promise<ChatsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:400](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L400)
+Defined in: [modules/communications/index.ts:884](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L884)
 
 Список чатов
 
@@ -1528,7 +1582,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSellerChats();
+const result = await sdk.communications.getSellerChats();
 console.log(result);
 ```
 
@@ -1542,7 +1596,7 @@ getSellerEvents(options?: {
 }): Promise<EventsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:419](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L419)
+Defined in: [modules/communications/index.ts:906](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L906)
 
 События чатов
 
@@ -1580,7 +1634,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSellerEvents({});
+const result = await sdk.communications.getSellerEvents({});
 console.log(result);
 ```
 
@@ -1592,7 +1646,7 @@ console.log(result);
 createSellerMessage(): Promise<MessageResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L437)
+Defined in: [modules/communications/index.ts:930](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L930)
 
 Отправить сообщение
 
@@ -1623,7 +1677,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.createSellerMessage();
+const result = await sdk.communications.createSellerMessage();
 console.log(result);
 ```
 
@@ -1635,7 +1689,7 @@ console.log(result);
 getSellerDownload(id: string): Promise<unknown>;
 ```
 
-Defined in: [modules/communications/index.ts:456](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L456)
+Defined in: [modules/communications/index.ts:953](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L953)
 
 Получить файл из сообщения
 
@@ -1672,7 +1726,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.getSellerDownload('id-value');
+const result = await sdk.communications.getSellerDownload('id-value');
 console.log(result);
 ```
 
@@ -1690,7 +1744,7 @@ claims(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/communications/index.ts:475](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L475)
+Defined in: [modules/communications/index.ts:977](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L977)
 
 Заявки покупателей на возврат
 
@@ -1732,7 +1786,7 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.claims({});
+const result = await sdk.communications.claims({});
 console.log(result);
 ```
 
@@ -1744,7 +1798,7 @@ console.log(result);
 updateClaim(): Promise<unknown>;
 ```
 
-Defined in: [modules/communications/index.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/modules/communications/index.ts#L493)
+Defined in: [modules/communications/index.ts:1004](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L1004)
 
 Ответ на заявку покупателя
 
@@ -1775,6 +1829,331 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.general.updateClaim();
+const result = await sdk.communications.updateClaim();
 console.log(result);
+```
+
+***
+
+### getPinnedFeedbacksCount()
+
+```ts
+getPinnedFeedbacksCount(params?: PinnedReviewsCountParams): Promise<PinnedReviewsCountResponse>;
+```
+
+Defined in: [modules/communications/index.ts:1047](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L1047)
+
+Get count of pinned/unpinned reviews
+
+Returns the count of pinned and unpinned reviews for the given filters.
+Unpinned reviews are only those that were automatically unpinned due to reasons
+specified in the `unpinnedCause` field.
+
+Rate limit: 3 requests per second with 333ms interval, burst of 6 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params?` | [`PinnedReviewsCountParams`](../-internal-/interfaces/PinnedReviewsCountParams.md) | Optional filter parameters |
+
+#### Returns
+
+`Promise`\<[`PinnedReviewsCountResponse`](../-internal-/interfaces/PinnedReviewsCountResponse.md)\>
+
+Count of reviews matching the filter
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy](https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy)
+
+#### Example
+
+```typescript
+// Get count of all pinned reviews
+const count = await sdk.communications.getPinnedFeedbacksCount({ state: 'pinned' });
+console.log(`Pinned reviews: ${count.data}`);
+
+// Get count of pinned reviews on product cards
+const cardCount = await sdk.communications.getPinnedFeedbacksCount({
+  state: 'pinned',
+  pinOn: 'nm'
+});
+```
+
+***
+
+### getPinnedFeedbacksLimits()
+
+```ts
+getPinnedFeedbacksLimits(): Promise<PinnedReviewsLimitsResponse>;
+```
+
+Defined in: [modules/communications/index.ts:1080](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L1080)
+
+Get limits for pinning reviews
+
+Returns the limits for pinning reviews by subscription and tariff option.
+Shows total limits, used count, remaining slots, and per-unit limits.
+
+Rate limit: 3 requests per second with 333ms interval, burst of 6 requests.
+
+#### Returns
+
+`Promise`\<[`PinnedReviewsLimitsResponse`](../-internal-/interfaces/PinnedReviewsLimitsResponse.md)\>
+
+Limits data for subscription and tariff
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy](https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy)
+
+#### Example
+
+```typescript
+const limits = await sdk.communications.getPinnedFeedbacksLimits();
+if (limits.data.subscription) {
+  console.log(`Subscription remaining: ${limits.data.subscription.remaining}`);
+}
+if (limits.data.tariff) {
+  console.log(`Tariff remaining: ${limits.data.tariff.remaining}`);
+}
+```
+
+***
+
+### getPinnedFeedbacks()
+
+```ts
+getPinnedFeedbacks(params?: PinnedReviewsListParams): Promise<PinnedReviewsListResponse>;
+```
+
+Defined in: [modules/communications/index.ts:1121](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L1121)
+
+Get list of pinned/unpinned reviews
+
+Returns a list of pinned and unpinned reviews with pagination support.
+Unpinned reviews are only those that were automatically unpinned due to reasons
+specified in the `unpinnedCause` field.
+
+Rate limit: 3 requests per second with 333ms interval, burst of 6 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params?` | [`PinnedReviewsListParams`](../-internal-/interfaces/PinnedReviewsListParams.md) | Optional filter and pagination parameters |
+
+#### Returns
+
+`Promise`\<[`PinnedReviewsListResponse`](../-internal-/interfaces/PinnedReviewsListResponse.md)\>
+
+List of pinned/unpinned review items with pagination cursor
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy](https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy)
+
+#### Example
+
+```typescript
+// Get first page of pinned reviews
+const response = await sdk.communications.getPinnedFeedbacks({
+  state: 'pinned',
+  limit: 100
+});
+console.log(`Found ${response.data.length} pinned reviews`);
+
+// Get next page if available
+if (response.next) {
+  const nextPage = await sdk.communications.getPinnedFeedbacks({
+    state: 'pinned',
+    next: response.next
+  });
+}
+```
+
+***
+
+### pinFeedback()
+
+```ts
+pinFeedback(data: PinnedReviewsCreateRequest): Promise<PinnedReviewsCreateResponse>;
+```
+
+Defined in: [modules/communications/index.ts:1169](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L1169)
+
+Pin reviews to product cards or merged groups
+
+Pins reviews to a product card or group of merged product cards.
+Requires an active Jam subscription or tariff option for pinning reviews.
+Maximum 500 reviews can be pinned in a single request.
+
+Rate limit: 3 requests per second with 333ms interval, burst of 6 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`PinnedReviewsCreateRequest`](../-internal-/type-aliases/PinnedReviewsCreateRequest.md) | Array of reviews to pin (max 500 items) |
+
+#### Returns
+
+`Promise`\<[`PinnedReviewsCreateResponse`](../-internal-/interfaces/PinnedReviewsCreateResponse.md)\>
+
+Result of pin operations with success/error details per item
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When no active subscription or tariff (403)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy](https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy)
+
+#### Example
+
+```typescript
+const result = await sdk.communications.pinFeedback([
+  {
+    pinMethod: 'subscription',
+    pinOn: 'imt',
+    feedbackId: 'VlbkVVl7mtw37wyWkJZz'
+  },
+  {
+    pinMethod: 'tariff',
+    pinOn: 'nm',
+    feedbackId: 'DibuRAImknLyiqgzvGcU'
+  }
+]);
+
+result.data.forEach(item => {
+  if (item.isErrors) {
+    console.log(`Failed to pin ${item.feedbackId}:`, item.errors);
+  } else {
+    console.log(`Pinned ${item.feedbackId} with pinId: ${item.pinId}`);
+  }
+});
+```
+
+***
+
+### unpinFeedback()
+
+```ts
+unpinFeedback(data: PinnedReviewsDeleteRequest): Promise<PinnedReviewsDeleteResponse>;
+```
+
+Defined in: [modules/communications/index.ts:1204](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/modules/communications/index.ts#L1204)
+
+Unpin reviews from product cards or merged groups
+
+Unpins reviews using their pin operation IDs (pinId).
+Get pinId values from the getPinnedFeedbacks method.
+Maximum 500 pin IDs can be unpinned in a single request.
+
+Rate limit: 3 requests per second with 333ms interval, burst of 6 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`PinnedReviewsDeleteRequest`](../-internal-/type-aliases/PinnedReviewsDeleteRequest.md) | Array of pin IDs to unpin (max 500 items) |
+
+#### Returns
+
+`Promise`\<[`PinnedReviewsDeleteResponse`](../-internal-/interfaces/PinnedReviewsDeleteResponse.md)\>
+
+Array of successfully unpinned pin IDs
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy](https://dev.wildberries.ru/openapi/user-communication#tag/Zakreplyonnye-otzyvy)
+
+#### Example
+
+```typescript
+// Get pinned reviews first to obtain pinIds
+const pinned = await sdk.communications.getPinnedFeedbacks({ state: 'pinned' });
+const pinIdsToUnpin = pinned.data.slice(0, 3).map(item => item.pinId);
+
+// Unpin the reviews
+const result = await sdk.communications.unpinFeedback(pinIdsToUnpin);
+console.log(`Successfully unpinned: ${result.data.join(', ')}`);
 ```

@@ -2,11 +2,11 @@
 
 # Interface: V0AdvertMultiBidItem
 
-Defined in: [types/promotion.types.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/promotion.types.ts#L54)
+Defined in: [types/promotion.types.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L54)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nm"></a> `nm` | `number` | Артикул WB | [types/promotion.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/promotion.types.ts#L56) |
-| <a id="bid"></a> `bid` | `number` | Ставка. Минимально допустимые ставки вы можете получить в ответе метода [получения минимальных ставок для карточек товаров](./promotion#tag/Sozdanie-kampanij/paths/~1adv~1v0~1bids~1min/post) | [types/promotion.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/promotion.types.ts#L58) |
+| <a id="nm"></a> `nm` | `number` | Артикул WB | [types/promotion.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L56) |
+| <a id="bid"></a> `bid` | `number` | Ставка. Минимально допустимые ставки вы можете получить в ответе метода [получения минимальных ставок для карточек товаров](./promotion#tag/Sozdanie-kampanij/paths/~1adv~1v0~1bids~1min/post) | [types/promotion.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/promotion.types.ts#L58) |

@@ -92,9 +92,22 @@
 | [SalesFunnelStatistics](interfaces/SalesFunnelStatistics.md) | Статистика по периодам v3 (Swagger: Statistics) |
 | [SalesFunnelHistory](interfaces/SalesFunnelHistory.md) | Запись истории v3 (Swagger: History) — использует `date` вместо `dt` |
 | [SalesFunnelProductsResponse](interfaces/SalesFunnelProductsResponse.md) | Ответ списка товаров воронки продаж v3 (Swagger: ProductsResponse) |
-| [ResponseTemplate](interfaces/ResponseTemplate.md) | Успешно |
-| [PostTemplate](interfaces/PostTemplate.md) | - |
-| [PatchDelResp](interfaces/PatchDelResp.md) | - |
+| [PinnedReviewError](interfaces/PinnedReviewError.md) | Error details for pinned reviews operations |
+| [PinReviewItem](interfaces/PinReviewItem.md) | Request item for pinning a review |
+| [PinReviewItemResultData](interfaces/PinReviewItemResultData.md) | Result item from pin operation |
+| [PinnedReviewItemResult](interfaces/PinnedReviewItemResult.md) | Detailed information about a pinned/unpinned review |
+| [PinnedReviewsCreateResponse](interfaces/PinnedReviewsCreateResponse.md) | Response from pin reviews operation |
+| [PinnedReviewsDeleteResponse](interfaces/PinnedReviewsDeleteResponse.md) | Response from unpin reviews operation |
+| [PinnedReviewsListParams](interfaces/PinnedReviewsListParams.md) | Parameters for listing pinned/unpinned reviews |
+| [PinnedReviewsListResponse](interfaces/PinnedReviewsListResponse.md) | Response from list pinned/unpinned reviews |
+| [PinnedReviewsCountParams](interfaces/PinnedReviewsCountParams.md) | Parameters for counting pinned/unpinned reviews |
+| [PinnedReviewsCountResponse](interfaces/PinnedReviewsCountResponse.md) | Response from count pinned/unpinned reviews |
+| [SellerLimit](interfaces/SellerLimit.md) | Seller limit details for pinned reviews |
+| [SellerLimitsData](interfaces/SellerLimitsData.md) | Seller limits data for subscription and tariff |
+| [PinnedReviewsLimitsResponse](interfaces/PinnedReviewsLimitsResponse.md) | Response from get pinned reviews limits |
+| [~~ResponseTemplate~~](interfaces/ResponseTemplate.md) | Успешно |
+| [~~PostTemplate~~](interfaces/PostTemplate.md) | - |
+| [~~PatchDelResp~~](interfaces/PatchDelResp.md) | - |
 | [LastMessage](interfaces/LastMessage.md) | Информация о последнем сообщении в чате |
 | [Chat](interfaces/Chat.md) | - |
 | [ChatsResponse](interfaces/ChatsResponse.md) | - |
@@ -277,6 +290,33 @@
 | [V0KeywordsStatistics](interfaces/V0KeywordsStatistics.md) | - |
 | [V0KeywordsStatisticsResponse](interfaces/V0KeywordsStatisticsResponse.md) | - |
 | [FullStatsItem](interfaces/FullStatsItem.md) | Статистика по одной кампании за период, указанный в запросе. По всем артикулам WB и платформам |
+| [DaysV3Item](interfaces/DaysV3Item.md) | Элемент статистики по дням (V3) |
+| [DaysV3AppItem](interfaces/DaysV3AppItem.md) | Элемент статистики по платформе (V3) |
+| [DaysV3NmItem](interfaces/DaysV3NmItem.md) | Элемент статистики по артикулу WB (V3) |
+| [BoosterStatsV3Item](interfaces/BoosterStatsV3Item.md) | Элемент статистики по средней позиции товара (V3) |
+| [V0GetNormQueryStatsRequest](interfaces/V0GetNormQueryStatsRequest.md) | Запрос статистики по поисковым кластерам |
+| [V0GetNormQueryStatsRequestItem](interfaces/V0GetNormQueryStatsRequestItem.md) | Элемент запроса статистики по поисковым кластерам |
+| [V0GetNormQueryStatsResponse](interfaces/V0GetNormQueryStatsResponse.md) | Статистика по поисковым кластерам |
+| [V0GetNormQueryStatsItem](interfaces/V0GetNormQueryStatsItem.md) | Элемент статистики по поисковым кластерам |
+| [V0GetNormQueryStatsItemStat](interfaces/V0GetNormQueryStatsItemStat.md) | Статистика по конкретному поисковому кластеру |
+| [V0SetNormQueryBidsRequest](interfaces/V0SetNormQueryBidsRequest.md) | Запрос на установку ставок для поисковых кластеров |
+| [V0SetNormQueryBidsRequestItem](interfaces/V0SetNormQueryBidsRequestItem.md) | Элемент запроса на установку ставки |
+| [V0GetNormQueryBidsRequest](interfaces/V0GetNormQueryBidsRequest.md) | Запрос на получение ставок поисковых кластеров |
+| [V0GetNormQueryBidsRequestItem](interfaces/V0GetNormQueryBidsRequestItem.md) | Элемент запроса на получение ставок |
+| [V0GetNormQueryBidsResponse](interfaces/V0GetNormQueryBidsResponse.md) | Ответ со списком ставок поисковых кластеров |
+| [V0GetNormQueryBidsItem](interfaces/V0GetNormQueryBidsItem.md) | Элемент ставки поискового кластера |
+| [V0SetMinusNormQueryRequest](interfaces/V0SetMinusNormQueryRequest.md) | Запрос на установку/удаление минус-фраз |
+| [V0GetNormQueryMinusRequest](interfaces/V0GetNormQueryMinusRequest.md) | Запрос на получение минус-фраз |
+| [V0GetNormQueryMinusRequestItem](interfaces/V0GetNormQueryMinusRequestItem.md) | Элемент запроса на получение минус-фраз |
+| [V0GetNormQueryMinusResponse](interfaces/V0GetNormQueryMinusResponse.md) | Ответ со списком минус-фраз |
+| [V0GetNormQueryMinusResponseItem](interfaces/V0GetNormQueryMinusResponseItem.md) | Элемент ответа со списком минус-фраз |
+| [GetAdverts](interfaces/GetAdverts.md) | Ответ со списком кампаний (с ставками в копейках) |
+| [GetAdvertsItem](interfaces/GetAdvertsItem.md) | Элемент списка кампаний |
+| [AdvertNMsSettings](interfaces/AdvertNMsSettings.md) | Настройки товаров кампании (с ставками в копейках) |
+| [AdvertBidsKopecks](interfaces/AdvertBidsKopecks.md) | Ставки в копейках |
+| [AdvertSubject](interfaces/AdvertSubject.md) | Предмет (для кампаний с копейками) |
+| [AdvertSettings](interfaces/AdvertSettings.md) | Настройки кампании |
+| [AdvertPlacements](interfaces/AdvertPlacements.md) | Места размещения кампании |
 | [IncomesItem](interfaces/IncomesItem.md) | Auto-generated TypeScript types for reports module Generated from: wildberries_api_doc/12-reports.yaml |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
@@ -323,6 +363,13 @@
 | [AggregationLevel](type-aliases/AggregationLevel.md) | Тип агрегации: по дням или по неделям |
 | [SalesFunnelProductsHistoryResponse](type-aliases/SalesFunnelProductsHistoryResponse.md) | Ответ истории по товарам воронки продаж v3 (Swagger: ProductHistoryResponse) |
 | [SalesFunnelGroupedHistoryResponse](type-aliases/SalesFunnelGroupedHistoryResponse.md) | Ответ сгруппированной истории воронки продаж v3 (Swagger: GroupedHistoryResponse) |
+| [ReviewPinMethod](type-aliases/ReviewPinMethod.md) | Method for pinning reviews - `subscription` - Jam subscription (подписка Джем) - `tariff` - Tariff option (тарифная опция) |
+| [ReviewPinOn](type-aliases/ReviewPinOn.md) | Location where review is pinned - `nm` - Product card (карточка товара) - `imt` - Group of merged product cards (группа объединённых карточек товаров) |
+| [ReviewState](type-aliases/ReviewState.md) | State of pinned review - `pinned` - Review is pinned - `unpinned` - Review is unpinned |
+| [UnpinnedCause](type-aliases/UnpinnedCause.md) | Cause for review being unpinned automatically |
+| [PinnedReviewErrorStatus](type-aliases/PinnedReviewErrorStatus.md) | Error status codes for pinned reviews operations |
+| [PinnedReviewsCreateRequest](type-aliases/PinnedReviewsCreateRequest.md) | Request body for pinning reviews (array of items, max 500) |
+| [PinnedReviewsDeleteRequest](type-aliases/PinnedReviewsDeleteRequest.md) | Request body for unpinning reviews (array of pin IDs, max 500) |
 | [ResponseFeedback](type-aliases/ResponseFeedback.md) | Массив отзывов |
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
 | [DocumentsLocale](type-aliases/DocumentsLocale.md) | Supported locale values for document endpoints |
@@ -345,5 +392,7 @@
 | [ResponseWithInterval](type-aliases/ResponseWithInterval.md) | Ответ при запросе с interval |
 | [ResponseWithDate](type-aliases/ResponseWithDate.md) | Ответ при запросе с dates |
 | [ResponseFullStats](type-aliases/ResponseFullStats.md) | Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам |
+| [DaysV3](type-aliases/DaysV3.md) | Статистка по дням (V3) |
+| [BoosterStatsV3](type-aliases/BoosterStatsV3.md) | Статистика по средней позиции товара (для кампаний с единой ставкой) (V3) |
 | [ModelsExciseReportResponseData](type-aliases/ModelsExciseReportResponseData.md) | - |
 | [ResponsePaidStorage](type-aliases/ResponsePaidStorage.md) | - |

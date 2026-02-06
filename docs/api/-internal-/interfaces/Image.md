@@ -2,7 +2,7 @@
 
 # Interface: Image
 
-Defined in: [types/communications.types.ts:289](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L289)
+Defined in: [types/communications.types.ts:585](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L585)
 
 Изображение
 
@@ -10,6 +10,6 @@ Defined in: [types/communications.types.ts:289](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="date"></a> `date?` | `string` | Дата загрузки изображения | [types/communications.types.ts:291](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L291) |
-| <a id="downloadid"></a> `downloadID?` | `string` | ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) | [types/communications.types.ts:293](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L293) |
-| <a id="url"></a> `url?` | `string` | URL для получения изображения | [types/communications.types.ts:295](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/a8842306036e4c58024b1f08e30e731a3a667972/src/types/communications.types.ts#L295) |
+| <a id="date"></a> `date?` | `string` | Дата загрузки изображения | [types/communications.types.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L587) |
+| <a id="downloadid"></a> `downloadID?` | `string` | ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) | [types/communications.types.ts:589](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L589) |
+| <a id="url"></a> `url?` | `string` | URL для получения изображения | [types/communications.types.ts:591](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/65f92e97515b67789156305aa76517f94c34a324/src/types/communications.types.ts#L591) |
