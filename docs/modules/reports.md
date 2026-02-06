@@ -12,7 +12,7 @@ The **Reports** module provides access to supplier reports, warehouse stock repo
 | **SDK Namespace** | `sdk.reports.*` |
 | **Base URLs** | `https://statistics-api.wildberries.ru`, `https://seller-analytics-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/12-reports/` |
-| **Methods** | 26 |
+| **Methods** | 29 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -61,34 +61,36 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `warehouseRemains()` | GET | `/api/v1/warehouse_remains` | Create warehouse stock report task |
-| `getTasksStatu()` | GET | `/api/v1/warehouse_remains/tasks/{task_id}/status` | Check warehouse report task status |
-| `getTasksDownload()` | GET | `/api/v1/warehouse_remains/tasks/{task_id}/download` | Download warehouse report |
+| `getWarehouseRemainsTaskStatus()` | GET | `/api/v1/warehouse_remains/tasks/{task_id}/status` | Check warehouse report task status |
+| `downloadWarehouseRemainsReport()` | GET | `/api/v1/warehouse_remains/tasks/{task_id}/download` | Download warehouse report |
 
 ### Penalty Reports (5 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getAnalyticsWarehouseMeasurements()` | GET | `/api/v1/analytics/warehouse-measurements` | Get dimension penalties and measurements |
+| `getMeasurementPenalties()` | GET | `/api/analytics/v1/measurement-penalties` | Get dimension penalties report |
+| `getWarehouseMeasurementsV2()` | GET | `/api/analytics/v1/warehouse-measurements` | Get warehouse measurements (V2) |
 | `getAnalyticsAntifraudDetails()` | GET | `/api/v1/analytics/antifraud-details` | Get self-purchase penalties report |
-| `getAnalyticsIncorrectAttachments()` | GET | `/api/v1/analytics/incorrect-attachments` | Get goods substitution penalties |
 | `getAnalyticsGoodsLabeling()` | GET | `/api/v1/analytics/goods-labeling` | Get marking violations penalties |
-| `getAnalyticsCharacteristicsChange()` | GET | `/api/v1/analytics/characteristics-change` | Get characteristics change penalties |
+| `getDeductions()` | GET | `/api/analytics/v1/deductions` | Get substitution and attachment deductions |
+
+> **Note:** Methods `getAnalyticsWarehouseMeasurements()`, `getAnalyticsIncorrectAttachments()`, and `getAnalyticsCharacteristicsChange()` are deprecated. Use the new methods above.
 
 ### Paid Acceptance (3 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `acceptanceReport()` | GET | `/api/v1/acceptance_report` | Create paid acceptance report task |
-| `getTasksStatu2()` | GET | `/api/v1/acceptance_report/tasks/{task_id}/status` | Check acceptance report task status |
-| `getTasksDownload2()` | GET | `/api/v1/acceptance_report/tasks/{task_id}/download` | Download acceptance report |
+| `getAcceptanceReportTaskStatus()` | GET | `/api/v1/acceptance_report/tasks/{task_id}/status` | Check acceptance report task status |
+| `downloadAcceptanceReport()` | GET | `/api/v1/acceptance_report/tasks/{task_id}/download` | Download acceptance report |
 
 ### Paid Storage (3 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `paidStorage()` | GET | `/api/v1/paid_storage` | Create paid storage report task |
-| `getTasksStatu3()` | GET | `/api/v1/paid_storage/tasks/{task_id}/status` | Check paid storage task status |
-| `getTasksDownload3()` | GET | `/api/v1/paid_storage/tasks/{task_id}/download` | Download paid storage report |
+| `getPaidStorageTaskStatus()` | GET | `/api/v1/paid_storage/tasks/{task_id}/status` | Check paid storage task status |
+| `downloadPaidStorageReport()` | GET | `/api/v1/paid_storage/tasks/{task_id}/download` | Download paid storage report |
 
 ### Regional & Brand Analytics (4 methods)
 

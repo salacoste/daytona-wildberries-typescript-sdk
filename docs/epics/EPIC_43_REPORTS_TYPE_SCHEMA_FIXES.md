@@ -2,6 +2,10 @@
 
 ---
 
+## Status: ✅ COMPLETE
+
+---
+
 ## Overview
 
 | Field | Value |
@@ -239,14 +243,36 @@ Run `npx tsc --noEmit` to ensure zero TypeScript errors in strict mode across th
 
 ## Success Criteria
 
-- [ ] ExciseReportRequest.countries type fixed from malformed union to proper array: `('AM' | 'BY' | 'KG' | 'KZ' | 'RU' | 'UZ')[]`
-- [ ] Penalty interface updated to match MeasurementPenalties swagger schema (add `subjectName`, rename `totalCount` to `total`, remove stale `subject`, verify all fields)
-- [ ] Measurement interface updated to match WHM swagger schema (remove stale `dateStart`/`dateEnd`/`prcOver`/`volumeSup`/`widthSup`/`lengthSup`/`heightSup`/`subject`, add `subjectName`, rename `totalCount` to `total`)
-- [ ] 6 active methods with `Promise<unknown>` replaced with proper response types: `getAnalyticsAntifraudDetails`, `getAnalyticsGoodsLabeling`, `getAnalyticsRegionSale`, `getBrandShareBrands`, `getBrandShareParentSubjects`, `getAnalyticsBrandShare`
-- [ ] `Response400Retentions` and `Response403Retentions` error types added from swagger
-- [ ] Stale `Response400WHM` and `Response403WHM` types marked `@deprecated` with migration guidance
-- [ ] 5 methods using inline object type literals refactored to named interfaces (`getTasksDownload` variants, `getBannedProducts` variants, `getAnalyticsGoodsReturn`)
-- [ ] All type changes pass TypeScript strict compilation with zero errors
+- [x] ExciseReportRequest.countries type fixed from malformed union to proper array: `('AM' | 'BY' | 'KG' | 'KZ' | 'RU' | 'UZ')[]`
+- [x] Penalty interface updated to match MeasurementPenalties swagger schema (add `subjectName`, rename `totalCount` to `total`, remove stale `subject`, verify all fields)
+- [x] Measurement interface updated to match WHM swagger schema (remove stale `dateStart`/`dateEnd`/`prcOver`/`volumeSup`/`widthSup`/`lengthSup`/`heightSup`/`subject`, add `subjectName`, rename `totalCount` to `total`)
+- [x] 6 active methods with `Promise<unknown>` replaced with proper response types: `getAnalyticsAntifraudDetails`, `getAnalyticsGoodsLabeling`, `getAnalyticsRegionSale`, `getBrandShareBrands`, `getBrandShareParentSubjects`, `getAnalyticsBrandShare`
+- [x] `Response400Retentions` and `Response403Retentions` error types added from swagger
+- [x] Stale `Response400WHM` and `Response403WHM` types marked `@deprecated` with migration guidance
+- [x] 5 methods using inline object type literals refactored to named interfaces (`getTasksDownload` variants, `getBannedProducts` variants, `getAnalyticsGoodsReturn`)
+- [x] All type changes pass TypeScript strict compilation with zero errors
+
+---
+
+## Implementation Notes
+
+Completed on 2026-02-06.
+
+### Changes Made
+1. **ExciseReportRequest.countries** - Fixed malformed union/array precedence bug
+2. **Penalty/MeasurementPenalties** - Updated to match swagger schema, renamed totalCount→total
+3. **Measurement/WHM** - Removed stale fields, aligned with swagger
+4. **Promise\<unknown\>** - Replaced with 14 properly typed interfaces
+5. **Error types** - Added Response400Retentions, Response403Retentions
+6. **Inline types** - Extracted WarehouseRemainsDownloadItem, AcceptanceReportDownloadItem, etc.
+
+### Files Modified
+- `src/types/reports.types.ts`
+- `src/modules/reports/index.ts`
+
+### Verification
+- TypeScript compilation passes (npx tsc --noEmit)
+- All unit tests pass
 
 ---
 

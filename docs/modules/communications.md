@@ -50,10 +50,13 @@ const chats = await sdk.communications.getSellerChats();
 const pinnedCount = await sdk.communications.getPinnedFeedbacksCount();
 console.log('Pinned reviews:', pinnedCount.data?.countPinned);
 
-await sdk.communications.pinFeedback({
-  nmIds: [12345678, 87654321],
-  feedbackId: 'positive-review-id'
-});
+await sdk.communications.pinFeedback([
+  {
+    pinMethod: 'subscription',
+    pinOn: 'nm',
+    feedbackId: 'positive-review-id'
+  }
+]);
 ```
 
 ---
@@ -95,11 +98,11 @@ Pin important reviews to product cards to highlight positive customer feedback.
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getPinnedFeedbacksCount()` | GET | `/api/v1/feedbacks/pinned/count` | Get count of pinned reviews |
-| `getPinnedFeedbacksLimits()` | GET | `/api/v1/feedbacks/pinned/limits` | Get pinning limits per seller |
-| `getPinnedFeedbacks()` | GET | `/api/v1/feedbacks/pinned` | List pinned reviews with details |
-| `pinFeedback()` | POST | `/api/v1/feedbacks/pinned` | Pin reviews to products |
-| `unpinFeedback()` | DELETE | `/api/v1/feedbacks/pinned` | Unpin reviews from products |
+| `getPinnedFeedbacksCount()` | GET | `/api/feedbacks/v1/pins/count` | Get count of pinned reviews |
+| `getPinnedFeedbacksLimits()` | GET | `/api/feedbacks/v1/pins/limits` | Get pinning limits per seller |
+| `getPinnedFeedbacks()` | GET | `/api/feedbacks/v1/pins` | List pinned reviews with details |
+| `pinFeedback()` | POST | `/api/feedbacks/v1/pins` | Pin reviews to products |
+| `unpinFeedback()` | DELETE | `/api/feedbacks/v1/pins` | Unpin reviews from products |
 
 ### Buyer Chat (4 methods)
 

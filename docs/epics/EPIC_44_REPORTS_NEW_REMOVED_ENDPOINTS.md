@@ -2,6 +2,10 @@
 
 ---
 
+## Status: ✅ COMPLETE
+
+---
+
 ## Overview
 
 | Field | Value |
@@ -231,16 +235,39 @@ All 3 new endpoints share the same rate limit (extracted from swagger descriptio
 
 ## Success Criteria
 
-- [ ] `getMeasurementPenalties()` method added for `GET /api/analytics/v1/measurement-penalties` with proper typed params (dateFrom, dateTo, limit, offset) and response type
-- [ ] `getWarehouseMeasurementsV2()` method added for `GET /api/analytics/v1/warehouse-measurements` with proper typed params and response type
-- [ ] `getDeductions()` method added for `GET /api/analytics/v1/deductions` with proper typed params (dateFrom, dateTo, sort, order, limit, offset) and response type
-- [ ] `getAnalyticsWarehouseMeasurements()` marked `@deprecated` with `console.warn` and reference to new `getMeasurementPenalties` / `getWarehouseMeasurementsV2` / `getDeductions`
-- [ ] `getAnalyticsIncorrectAttachments()` marked `@deprecated` with `console.warn` (endpoint removed from swagger, replaced by `getDeductions`)
-- [ ] `getAnalyticsCharacteristicsChange()` marked `@deprecated` with `console.warn` AND base URL fixed from `api.wildberries.ru` to `seller-analytics-api.wildberries.ru`
-- [ ] `getSupplierIncomes()` marked `@deprecated` per swagger (`deprecated: true`; removal date: 11 March 2026)
-- [ ] Method naming improved: `getTasksStatu`/`2`/`3` renamed to `getWarehouseRemainsTaskStatus`/`getAcceptanceReportTaskStatus`/`getPaidStorageTaskStatus`; `getTasksDownload`/`2`/`3` renamed to `downloadWarehouseRemainsReport`/`downloadAcceptanceReport`/`downloadPaidStorageReport`
-- [ ] Backward compatibility maintained via `@deprecated` wrappers for all 6 renamed methods that delegate to the new names
-- [ ] All 3 new methods use correct base URL `https://seller-analytics-api.wildberries.ru` and pass `rateLimitKey` to BaseClient
+- [x] `getMeasurementPenalties()` method added for `GET /api/analytics/v1/measurement-penalties` with proper typed params (dateFrom, dateTo, limit, offset) and response type
+- [x] `getWarehouseMeasurementsV2()` method added for `GET /api/analytics/v1/warehouse-measurements` with proper typed params and response type
+- [x] `getDeductions()` method added for `GET /api/analytics/v1/deductions` with proper typed params (dateFrom, dateTo, sort, order, limit, offset) and response type
+- [x] `getAnalyticsWarehouseMeasurements()` marked `@deprecated` with `console.warn` and reference to new `getMeasurementPenalties` / `getWarehouseMeasurementsV2` / `getDeductions`
+- [x] `getAnalyticsIncorrectAttachments()` marked `@deprecated` with `console.warn` (endpoint removed from swagger, replaced by `getDeductions`)
+- [x] `getAnalyticsCharacteristicsChange()` marked `@deprecated` with `console.warn` AND base URL fixed from `api.wildberries.ru` to `seller-analytics-api.wildberries.ru`
+- [x] `getSupplierIncomes()` marked `@deprecated` per swagger (`deprecated: true`; removal date: 11 March 2026)
+- [x] Method naming improved: `getTasksStatu`/`2`/`3` renamed to `getWarehouseRemainsTaskStatus`/`getAcceptanceReportTaskStatus`/`getPaidStorageTaskStatus`; `getTasksDownload`/`2`/`3` renamed to `downloadWarehouseRemainsReport`/`downloadAcceptanceReport`/`downloadPaidStorageReport`
+- [x] Backward compatibility maintained via `@deprecated` wrappers for all 6 renamed methods that delegate to the new names
+- [x] All 3 new methods use correct base URL `https://seller-analytics-api.wildberries.ru` and pass `rateLimitKey` to BaseClient
+
+---
+
+## Implementation Notes
+
+Completed on 2026-02-06.
+
+### Changes Made
+1. **3 new methods added**: getMeasurementPenalties(), getWarehouseMeasurementsV2(), getDeductions()
+2. **4 deprecated methods**: getAnalyticsWarehouseMeasurements, getAnalyticsIncorrectAttachments, getAnalyticsCharacteristicsChange, getSupplierIncomes
+3. **6 renamed methods**: getTasksStatu→getWarehouseRemainsTaskStatus, getTasksDownload→downloadWarehouseRemainsReport, etc.
+4. **3 rate limit config entries** added for new endpoints
+5. **10 deprecated wrappers** created for backward compatibility
+
+### Files Modified
+- `src/modules/reports/index.ts` (~839 lines, 35 methods)
+- `src/types/reports.types.ts` (14 new types)
+- `src/config/reports-rate-limits.ts` (3 new entries)
+
+### Verification
+- TypeScript compilation passes
+- All 45 unit tests pass
+- Integration tests deferred to task-48 (MSW v2.x localStorage issue)
 
 ---
 
