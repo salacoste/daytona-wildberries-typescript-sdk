@@ -534,13 +534,5 @@ describe('SalesFunnelGroupedHistoryResponse', () => {
 });
 
 // ==========================================================================
-// Backward compatibility: old v2 types should still exist
+// Note: v2 deprecated types (NmReportDetailRequest, etc.) removed in v3.0.0
 // ==========================================================================
-
-describe('Backward compatibility — v2 types still exist', () => {
-  it('should still export NmReportDetailRequest', async () => {
-    const types = await import('../../../src/types/analytics.types');
-    // Just verify the type name is still exported (compile-time check via import above)
-    expect(types).toBeDefined();
-  });
-});

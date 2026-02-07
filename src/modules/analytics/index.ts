@@ -10,13 +10,7 @@ import type {
   MainRequest,
   MainResponse,
   NmReportCreateReportResponse,
-  NmReportDetailHistoryRequest,
-  NmReportDetailHistoryResponse,
-  NmReportDetailRequest,
-  NmReportDetailResponse,
   NmReportGetReportsResponse,
-  NmReportGroupedHistoryRequest,
-  NmReportGroupedHistoryResponse,
   NmReportRetryReportRequest,
   NmReportRetryReportResponse,
   ProductOrdersRequest,
@@ -51,95 +45,6 @@ import type {
 
 export class AnalyticsModule {
   constructor(private client: BaseClient) {}
-
-  /**
-   * @deprecated Use {@link getSalesFunnelProducts} instead. v2 endpoint is dead (404).
-   * Maps v2 parameters to v3 format and delegates to getSalesFunnelProducts.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  async createNmReportDetail(data: NmReportDetailRequest): Promise<NmReportDetailResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createNmReportDetail() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getSalesFunnelProducts(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    const page = data.page || 1;
-    const v3Request: SalesFunnelProductsRequest = {
-      selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
-      ...(data.nmIDs ? { nmIds: data.nmIDs } : {}),
-      ...(data.objectIDs ? { subjectIds: data.objectIDs } : {}),
-      ...(data.tagIDs ? { tagIds: data.tagIDs } : {}),
-      ...(data.brandNames ? { brandNames: data.brandNames } : {}),
-      ...(data.orderBy ? { orderBy: data.orderBy as SalesFunnelProductsRequest['orderBy'] } : {}),
-      limit: 50,
-      offset: (page - 1) * 50,
-    };
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    return this.getSalesFunnelProducts(v3Request) as unknown as Promise<NmReportDetailResponse>;
-  }
-
-  /**
-   * @deprecated Use {@link getSalesFunnelProductsHistory} instead. v2 endpoint is dead (404).
-   * Maps v2 parameters to v3 format and delegates to getSalesFunnelProductsHistory.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  async createDetailHistory(
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    data: NmReportDetailHistoryRequest
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-  ): Promise<NmReportDetailHistoryResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createDetailHistory() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getSalesFunnelProductsHistory(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    const v3Request: SalesFunnelProductsHistoryRequest = {
-      selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
-      nmIds: data.nmIDs,
-      ...(data.aggregationLevel
-        ? {
-            aggregationLevel:
-              data.aggregationLevel as SalesFunnelProductsHistoryRequest['aggregationLevel'],
-          }
-        : {}),
-    };
-    /* eslint-disable @typescript-eslint/no-deprecated */
-    return this.getSalesFunnelProductsHistory(
-      v3Request
-    ) as unknown as Promise<NmReportDetailHistoryResponse>;
-    /* eslint-enable @typescript-eslint/no-deprecated */
-  }
-
-  /**
-   * @deprecated Use {@link getSalesFunnelGroupedHistory} instead. v2 endpoint is dead (404).
-   * Maps v2 parameters to v3 format and delegates to getSalesFunnelGroupedHistory.
-   */
-  /* eslint-disable @typescript-eslint/no-deprecated */
-  async createGroupedHistory(
-    data: NmReportGroupedHistoryRequest
-  ): Promise<NmReportGroupedHistoryResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createGroupedHistory() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getSalesFunnelGroupedHistory(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    const v3Request: SalesFunnelGroupedHistoryRequest = {
-      selectedPeriod: { start: data.period.begin ?? '', end: data.period.end ?? '' },
-      ...(data.objectIDs ? { subjectIds: data.objectIDs } : {}),
-      ...(data.tagIDs ? { tagIds: data.tagIDs } : {}),
-      ...(data.brandNames ? { brandNames: data.brandNames } : {}),
-      ...(data.aggregationLevel
-        ? {
-            aggregationLevel:
-              data.aggregationLevel as SalesFunnelGroupedHistoryRequest['aggregationLevel'],
-          }
-        : {}),
-    };
-    return this.getSalesFunnelGroupedHistory(
-      v3Request
-    ) as unknown as Promise<NmReportGroupedHistoryResponse>;
-  }
-  /* eslint-enable @typescript-eslint/no-deprecated */
 
   /**
    * Получить список отчётов

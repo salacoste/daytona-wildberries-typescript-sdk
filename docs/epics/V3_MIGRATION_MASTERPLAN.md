@@ -200,12 +200,14 @@ To be planned after Wave 1-2 completion
 - [x] Helper functions: `isOperationReadonly()`, `getOperationCategory()`, etc.
 - [x] 69 unit tests for metadata registry
 
-### v3.0.0
-- [ ] All 66 deprecated methods removed
-- [ ] All 14 deprecated types removed
-- [ ] Zero deprecated warnings in codebase
-- [ ] All tests pass
-- [ ] Documentation updated
+### v3.0.0 ✅ COMPLETE (Wave 4 - Feb 7, 2026)
+- [x] All 66 deprecated methods removed
+- [x] All 14 deprecated types removed
+- [x] Zero deprecated warnings in codebase
+- [x] All tests pass
+- [x] Documentation updated
+- [x] CHANGELOG.md updated with v3.0.0 release notes
+- [x] package.json version bumped to 3.0.0
 
 ---
 
@@ -214,9 +216,8 @@ To be planned after Wave 1-2 completion
 ```
 Week 1 (Feb 7):     v2.8.0 - Wave 1 agents ✅ DONE
                     EPIC-18 - Wave 2 agents ✅ DONE (ahead of schedule!)
-Week 2 (Feb 14):    v2.9.0 - Final warnings (optional)
-Week 3-6:           Community feedback
-April 13+:          v3.0.0 release
+                    v2.9.0 - Wave 3 agents ✅ DONE (final warnings)
+                    v3.0.0 - Wave 4 release ✅ DONE (major release!)
 ```
 
 ---

@@ -352,32 +352,6 @@ export interface GetOrderMetaResponse {
 }
 
 // ============================================================================
-// Deprecated Types (for legacy methods, will be disabled 13.04.2026)
-// ============================================================================
-
-/**
- * @deprecated Use DBSOrderStatusBulk instead
- * Order status from deprecated status endpoint
- */
-export interface DBSOrderStatusLegacy {
-  /** Order ID */
-  id?: number;
-  /** Supplier status */
-  supplierStatus?: DBSSupplierStatus;
-  /** WB system status */
-  wbStatus?: string;
-}
-
-/**
- * @deprecated Use GetStatusInfoResponse instead
- * Response from deprecated status endpoint
- */
-export interface GetStatusResponseLegacy {
-  /** List of order statuses */
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  orders?: DBSOrderStatusLegacy[];
-}
-
 // ============================================================================
 // Info Endpoint Types (EPIC 26)
 // ============================================================================

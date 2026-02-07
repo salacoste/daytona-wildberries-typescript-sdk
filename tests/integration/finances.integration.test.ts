@@ -223,16 +223,6 @@ describe('Finances Integration Tests', () => {
       expect(result[0].date_from).toBe('2026-01-01');
       expect(result[0].date_to).toBe('2026-01-31');
     });
-
-    it('deprecated wrapper should return same result', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const result = await finances.getSupplierReportdetailbyperiod({
-        dateFrom: '2026-01-01',
-        dateTo: '2026-01-31',
-      });
-      expect(Array.isArray(result)).toBe(true);
-      expect(result[0].nm_id).toBe(12345678);
-    });
   });
 
   describe('Documents - Categories (documents-api domain)', () => {

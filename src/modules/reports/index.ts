@@ -21,12 +21,9 @@ import type {
   GetTasksResponse,
   GoodsLabelingResponse,
   GoodsReturnResponse,
-  IncomesItem,
-  Measurement,
   MeasurementPenaltiesParams,
   MeasurementPenaltiesResponse,
   OrdersItem,
-  Penalty,
   RegionSaleResponse,
   ResponsePaidStorage,
   SalesItem,
@@ -38,34 +35,6 @@ import type {
 
 export class ReportsModule {
   constructor(private client: BaseClient) {}
-
-  /**
-   * Поставки
-   *
-   * Метод возвращает количество поставок товаров для хранения на складах WB.
-   *
-   * @deprecated This method is deprecated per swagger spec and will be removed on 11 March 2026.
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * const result = await sdk.reports.getSupplierIncomes({ dateFrom: '2026-01-01' });
-   * console.log(result);
-   */
-  async getSupplierIncomes(options?: { dateFrom: string }): Promise<IncomesItem[]> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getSupplierIncomes() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate - endpoint deprecated per swagger spec (removal date: 11 March 2026). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.get<IncomesItem[]>(
-      'https://statistics-api.wildberries.ru/api/v1/supplier/incomes',
-      { params: options, rateLimitKey: 'reports.supplierIncomes' }
-    );
-  }
 
   /**
    * Склады
@@ -213,18 +182,6 @@ export class ReportsModule {
   }
 
   /**
-   * @deprecated Use getWarehouseRemainsTaskStatus() instead.
-   */
-  async getTasksStatu(task_id: string): Promise<GetTasksResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getTasksStatu() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getWarehouseRemainsTaskStatus(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getWarehouseRemainsTaskStatus(task_id);
-  }
-
-  /**
    * Получить отчёт об остатках на складах WB
    *
    * @param task_id - ID задания на генерацию
@@ -241,52 +198,6 @@ export class ReportsModule {
     return this.client.get<WarehouseRemainsDownloadItem[]>(
       `https://seller-analytics-api.wildberries.ru/api/v1/warehouse_remains/tasks/${task_id}/download`,
       { rateLimitKey: 'reports.warehouse_remainsTasksDownload' }
-    );
-  }
-
-  /**
-   * @deprecated Use downloadWarehouseRemainsReport() instead.
-   */
-  async getTasksDownload(task_id: string): Promise<WarehouseRemainsDownloadItem[]> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getTasksDownload() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to downloadWarehouseRemainsReport(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.downloadWarehouseRemainsReport(task_id);
-  }
-
-  /**
-   * Занижение габаритов упаковки
-   *
-   * @deprecated This endpoint is removed from swagger. Use getMeasurementPenalties()
-   * for penalties or getWarehouseMeasurementsV2() for warehouse measurements instead.
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * // Use new methods instead:
-   * const penalties = await sdk.reports.getMeasurementPenalties({ dateTo: '2026-02-06', limit: 100 });
-   * const measurements = await sdk.reports.getWarehouseMeasurementsV2({ dateTo: '2026-02-06', limit: 100 });
-   */
-  async getAnalyticsWarehouseMeasurements(options?: {
-    dateFrom?: string;
-    dateTo: string;
-    tab: 'penalty' | 'measurement';
-    limit: number;
-    offset?: number;
-  }): Promise<Penalty | Measurement> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getAnalyticsWarehouseMeasurements() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getMeasurementPenalties() or getWarehouseMeasurementsV2(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.get<Penalty | Measurement>(
-      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/warehouse-measurements',
-      { params: options, rateLimitKey: 'reports.analyticsWarehouseMeasurements' }
     );
   }
 
@@ -315,36 +226,6 @@ export class ReportsModule {
   }
 
   /**
-   * Подмена товара
-   *
-   * @deprecated This endpoint is removed from swagger. Use getDeductions() instead
-   * which provides combined data for substitutions and incorrect attachments.
-   * @param [options] - Query parameters
-   * @returns Response data
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * // Use getDeductions() instead:
-   * const deductions = await sdk.reports.getDeductions({ dateTo: '2026-02-06', limit: 100 });
-   */
-  async getAnalyticsIncorrectAttachments(options?: {
-    dateFrom: string;
-    dateTo: string;
-  }): Promise<unknown> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getAnalyticsIncorrectAttachments() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getDeductions(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.get<unknown>(
-      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/incorrect-attachments',
-      { params: options, rateLimitKey: 'reports.analyticsIncorrectAttachments' }
-    );
-  }
-
-  /**
    * Маркировка товара
    *
    * Метод возвращает отчёт о штрафах за отсутствие обязательной маркировки товаров.<br> В отчёте представлены фотографии товаров, на которых маркировка отсутствует либо не считывается.<br><br> Можно получить данные максимум за 31 день. Данные доступны с марта 2024. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 минут | 10 запросов | 1 минута | 10 запросов | </div>
@@ -366,33 +247,6 @@ export class ReportsModule {
     return this.client.get<GoodsLabelingResponse>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-labeling',
       { params: options, rateLimitKey: 'reports.analyticsGoodsLabeling' }
-    );
-  }
-
-  /**
-   * Смена характеристик
-   *
-   * @deprecated This endpoint is removed from swagger with no replacement.
-   * The API may return errors for this endpoint.
-   * @param [options] - Query parameters
-   * @returns Response data
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   */
-  async getAnalyticsCharacteristicsChange(options?: {
-    dateFrom: string;
-    dateTo: string;
-  }): Promise<unknown> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getAnalyticsCharacteristicsChange() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate - endpoint removed from API with no replacement. ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.get<unknown>(
-      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/characteristics-change',
-      { params: options, rateLimitKey: 'reports.analyticsCharacteristicsChange' }
     );
   }
 
@@ -442,18 +296,6 @@ export class ReportsModule {
   }
 
   /**
-   * @deprecated Use getAcceptanceReportTaskStatus() instead.
-   */
-  async getTasksStatu2(task_id: string): Promise<GetTasksResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getTasksStatu2() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getAcceptanceReportTaskStatus(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getAcceptanceReportTaskStatus(task_id);
-  }
-
-  /**
    * Получить отчёт о платной приёмке
    *
    * @param task_id - ID задания на генерацию
@@ -471,18 +313,6 @@ export class ReportsModule {
       `https://seller-analytics-api.wildberries.ru/api/v1/acceptance_report/tasks/${task_id}/download`,
       { rateLimitKey: 'reports.acceptance_reportTasksDownload' }
     );
-  }
-
-  /**
-   * @deprecated Use downloadAcceptanceReport() instead.
-   */
-  async getTasksDownload2(task_id: string): Promise<AcceptanceReportDownloadItem[]> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getTasksDownload2() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to downloadAcceptanceReport(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.downloadAcceptanceReport(task_id);
   }
 
   /**
@@ -528,18 +358,6 @@ export class ReportsModule {
   }
 
   /**
-   * @deprecated Use getPaidStorageTaskStatus() instead.
-   */
-  async getTasksStatu3(task_id: string): Promise<GetTasksResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getTasksStatu3() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getPaidStorageTaskStatus(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getPaidStorageTaskStatus(task_id);
-  }
-
-  /**
    * Получить отчёт о платном хранении
    *
    * @param task_id - ID задания на генерацию
@@ -557,18 +375,6 @@ export class ReportsModule {
       `https://seller-analytics-api.wildberries.ru/api/v1/paid_storage/tasks/${task_id}/download`,
       { rateLimitKey: 'reports.paid_storageTasksDownload' }
     );
-  }
-
-  /**
-   * @deprecated Use downloadPaidStorageReport() instead.
-   */
-  async getTasksDownload3(task_id: string): Promise<ResponsePaidStorage> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getTasksDownload3() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to downloadPaidStorageReport(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.downloadPaidStorageReport(task_id);
   }
 
   /**

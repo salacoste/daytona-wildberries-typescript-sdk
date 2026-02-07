@@ -292,61 +292,6 @@ export interface StandardizedFQError {
   detail?: string;
 }
 
-/**
- * Успешно
- * @deprecated This type is for the removed "Шаблоны ответов" (Response Templates) tag.
- * The templates endpoints have been removed from the Wildberries API.
- */
-export interface ResponseTemplate {
-  data?: {
-    templates?: {
-      /** ID шаблона */
-      id?: string;
-      /** Название шаблона */
-      name?: string;
-      /** Текст шаблона */
-      text?: string;
-    }[];
-  };
-  /** Есть ли ошибка */
-  error?: boolean;
-  /** Описание ошибки */
-  errorText?: string;
-  /** Дополнительные ошибки */
-  additionalErrors?: string[];
-}
-
-/**
- * @deprecated This type is for the removed "Шаблоны ответов" (Response Templates) tag.
- * The templates endpoints have been removed from the Wildberries API.
- */
-export interface PostTemplate {
-  data?: {
-    /** ID шаблона */
-    id?: string;
-  };
-  /** Есть ли ошибка */
-  error?: boolean;
-  /** Описание ошибки */
-  errorText?: string;
-  /** Дополнительные ошибки */
-  additionalErrors?: string[];
-}
-
-/**
- * @deprecated This type is for the removed "Шаблоны ответов" (Response Templates) tag.
- * The templates endpoints have been removed from the Wildberries API.
- */
-export interface PatchDelResp {
-  data?: boolean;
-  /** Есть ли ошибка */
-  error?: boolean;
-  /** Описание ошибки */
-  errorText?: string;
-  /** Дополнительные ошибки */
-  additionalErrors?: string[];
-}
-
 export interface ResponsefeedbackErr {
   data?: Record<string, never>;
   /** Есть ли ошибка */

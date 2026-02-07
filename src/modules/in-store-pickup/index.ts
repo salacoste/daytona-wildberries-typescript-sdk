@@ -208,19 +208,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * @deprecated Use {@link createOrdersStatus} instead. This alias will be removed in a future version.
-   * Renamed from createOrdersStatu to createOrdersStatus to fix the truncated method name.
-   */
-  async createOrdersStatu(data: ApiOrdersRequest): Promise<ApiOrderStatuses> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createOrdersStatu() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to createOrdersStatus(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.createOrdersStatus(data);
-  }
-
-  /**
    * Получить информацию о завершённых сборочных заданиях
    *
    * Метод возвращает информацию о завершённых сборочных заданиях после продажи или отмены заказа.

@@ -79,19 +79,6 @@ export class FinancesModule {
   }
 
   /**
-   * @deprecated Use getSupplierReportDetailByPeriod instead. Will be removed in v3.0.0.
-   */
-  async getSupplierReportdetailbyperiod(options: {
-    dateFrom: string;
-    dateTo: string;
-    limit?: number;
-    rrdid?: number;
-    period?: 'weekly' | 'daily';
-  }): Promise<DetailReportItem[]> {
-    return this.getSupplierReportDetailByPeriod(options);
-  }
-
-  /**
    * Категории документов
    *
    * Метод возвращает категории документов для получения [списка документов продавца](/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 5 запросов | </div>

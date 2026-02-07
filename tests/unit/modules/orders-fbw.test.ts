@@ -3,12 +3,10 @@
  *
  * Tests FBW (Fulfillment by Wildberries) module methods including:
  * - Warehouse information retrieval
- * - Acceptance coefficient checking
  * - Supply management and details
  * - Package information
  * - Transit tariff calculation
  * - Rate limit key wiring (EPIC 30)
- * - Deprecation warnings (EPIC 30)
  * - Method renaming and aliases (EPIC 32)
  *
  * @module tests/unit/modules/orders-fbw.test
@@ -30,10 +28,6 @@ describe('OrdersFbwModule', () => {
     };
 
     ordersFbw = new OrdersFbwModule(mockClient as unknown as BaseClient);
-
-    // Reset static deprecation flag between tests
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (OrdersFbwModule as any)._coefficientsDeprecationWarned = false;
   });
 
   // ============================================================================
@@ -63,90 +57,6 @@ describe('OrdersFbwModule', () => {
         { rateLimitKey: 'orders-fbw.warehouses' }
       );
       expect(result).toEqual(mockWarehouses);
-    });
-  });
-
-  // ============================================================================
-  // getAcceptanceCoefficients()
-  // ============================================================================
-
-  describe('getAcceptanceCoefficients', () => {
-    it('should fetch coefficients without warehouse filter', async () => {
-      const mockCoefficients = [
-        {
-          date: '2024-01-25',
-          coefficient: 0,
-          warehouseID: 507,
-          warehouseName: 'Коледино',
-          allowUnload: true,
-          boxTypeName: 'Короба',
-          boxTypeID: 1,
-          storageCoef: 1.0,
-          deliveryCoef: 1.0,
-          isSortingCenter: false,
-        },
-      ];
-
-      mockClient.get.mockResolvedValue(mockCoefficients);
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const result = await ordersFbw.getAcceptanceCoefficients();
-
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        { params: undefined, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
-      );
-      expect(result).toEqual(mockCoefficients);
-    });
-
-    it('should fetch coefficients with warehouse filter', async () => {
-      const mockCoefficients = [
-        {
-          date: '2024-01-25',
-          coefficient: 1,
-          warehouseID: 507,
-          warehouseName: 'Коледино',
-          allowUnload: true,
-          boxTypeName: 'Короба',
-          boxTypeID: 1,
-          storageCoef: 1.2,
-          deliveryCoef: 1.0,
-          isSortingCenter: false,
-        },
-      ];
-
-      mockClient.get.mockResolvedValue(mockCoefficients);
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const result = await ordersFbw.getAcceptanceCoefficients({ warehouseIDs: '507,117501' });
-
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-        {
-          params: { warehouseIDs: '507,117501' },
-          rateLimitKey: 'orders-fbw.acceptanceCoefficients',
-        }
-      );
-      expect(result).toEqual(mockCoefficients);
-    });
-
-    it('should emit deprecation warning on first call only', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      mockClient.get.mockResolvedValue([]);
-
-      /* eslint-disable @typescript-eslint/no-deprecated */
-      await ordersFbw.getAcceptanceCoefficients();
-      await ordersFbw.getAcceptanceCoefficients();
-      await ordersFbw.getAcceptanceCoefficients();
-      /* eslint-enable @typescript-eslint/no-deprecated */
-
-      expect(warnSpy).toHaveBeenCalledTimes(1);
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('getAcceptanceCoefficients() is deprecated')
-      );
-
-      warnSpy.mockRestore();
     });
   });
 
@@ -297,26 +207,6 @@ describe('OrdersFbwModule', () => {
 
   // ============================================================================
   // createSupply() - Deprecated alias for listSupplies
-  // ============================================================================
-
-  describe('createSupply (deprecated alias)', () => {
-    it('should delegate to listSupplies', async () => {
-      const filters: ModelsSuppliesFiltersRequest = { dates: [], statusIDs: [] };
-      const mockSupplies = [{ supplyID: 1 }];
-      mockClient.post.mockResolvedValue(mockSupplies);
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const result = await ordersFbw.createSupply(filters, { limit: 10 });
-
-      expect(mockClient.post).toHaveBeenCalledWith(
-        'https://supplies-api.wildberries.ru/api/v1/supplies',
-        filters,
-        { params: { limit: 10 }, rateLimitKey: 'orders-fbw.postSupplies' }
-      );
-      expect(result).toEqual(mockSupplies);
-    });
-  });
-
   // ============================================================================
   // getSupply() - Get single supply details by ID
   // ============================================================================

@@ -395,18 +395,6 @@ describe('OrdersFbsModule Integration Tests', () => {
       expect(result.file).toBeDefined();
     });
 
-    it('should get supply orders (legacy)', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const result = await ordersFbs.getSuppliesOrder('WB-GI-1234');
-
-      expect(result.orders).toBeDefined();
-    });
-
-    it('should add order to supply', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await expect(ordersFbs.updateSuppliesOrder('WB-GI-1234', 123456)).resolves.not.toThrow();
-    });
-
     it('should get supply order IDs (bulk)', async () => {
       const result = await ordersFbs.getSupplyOrderIds('WB-GI-1234');
 
@@ -471,13 +459,6 @@ describe('OrdersFbsModule Integration Tests', () => {
       expect(result.orders).toBeDefined();
       expect(result.orders).toHaveLength(2);
       expect(result.orders![0].meta?.imei).toBe('123456789012345');
-    });
-
-    it('should get single order metadata', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      const result = await ordersFbs.getOrdersMeta(123);
-
-      expect(result.meta).toBeDefined();
     });
 
     it('should delete metadata', async () => {

@@ -9,7 +9,6 @@ import type {
   ChatsResponse,
   EventsResponse,
   MessageResponse,
-  PatchDelResp,
   PinnedReviewsCountParams,
   PinnedReviewsCountResponse,
   PinnedReviewsCreateRequest,
@@ -19,14 +18,10 @@ import type {
   PinnedReviewsLimitsResponse,
   PinnedReviewsListParams,
   PinnedReviewsListResponse,
-  PostTemplate,
   ResponseFeedback,
-  ResponseTemplate,
 } from '../../types/communications.types';
 
 export class CommunicationsModule {
-  private static _deprecatedWarnings = new Set<string>();
-
   constructor(private client: BaseClient) {}
 
   /**
@@ -405,124 +400,6 @@ export class CommunicationsModule {
   }
 
   /**
-   * Получить списки причин жалоб на отзыв и проблем с товаром
-   *
-   * Метод возвращает списки причин [жалоб на отзыв и проблем с товаром](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks~1actions/post). <br> <br> <div class="description_important"> Списки причин жалоб на <a href='https://seller.wildberries.ru/feedbacks/feedbacks-tab/not-answered'>портале продавцов</a> и в API различаются. При этом подать жалобу по API по причине с портала продавца невозможно. <br> </div> Если жалоба подана через портал продавцов (например, `13` — Спам-реклама в тексте), в ответах методов получения [отзыва по ID](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedback/get), [списка отзывов](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get) и [списка архивных отзывов](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks~1archive/get) будет отображаться причина, указанная на портале (`13` — Спам-реклама в тексте). Если жалоба подана по API (например, с причиной `3` — Спам), в ответах тех же методов будет отображаться причина, переданная по API, а на портале продавцов отобразится соответствующая причина из списка портала (`13` — Спам-реклама в тексте). Сопоставление причин жалоб в API и на портале продавцов: | Причины в API | Причины на портале продавцов | Описание | |---|---|---| | `1` | `11` | Отзыв не относится к товару | | `2` | `12` | Отзыв оставили конкуренты | | `3` | `13` | • **API** — Спам <br> • **Портал продавцов** — Спам-реклама в тексте | | `4` | `15` | • **API** — Нецензурное содержимое в фото<br>• **Портал продавцов** — Нецензурное содержимое в фото или видео | | `5` | `16` | Нецензурная лексика | | `6` | `17` | • **API** — Фото не имеет отношения к товару <br> • **Портал продавцов** — Фото или видео не имеет отношения к товару | | `7` | `18` | Отзыв с политическим контекстом | |Нет аналога в API | `14` | Спам-реклама на фото или видео | |Нет аналога в API | `19` | Другое | |Нет аналога в API | `20` | Угрозы, оскорбления | <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
-   * @deprecated This endpoint has been removed from the Wildberries API.
-   * Use alternative methods or contact Wildberries support.
-   * @see {@link https://dev.wildberries.ru/openapi/communications}
-
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.communications.supplierValuations();
-  console.log(result);
-   */
-  async supplierValuations(): Promise<{
-    data?: {
-      feedbackValuations?: {
-        1?: string;
-        2?: string;
-        3?: string;
-        4?: string;
-        5?: string;
-        6?: string;
-        7?: string;
-        11?: string;
-        12?: string;
-        13?: string;
-        14?: string;
-        15?: string;
-        16?: string;
-        17?: string;
-        18?: string;
-        19?: string;
-        20?: string;
-      };
-      productValuations?: { 1?: string; 2?: string; 3?: string; 4?: string };
-    };
-    error?: boolean;
-    errorText?: string;
-    additionalErrors?: string[];
-  }> {
-    if (!CommunicationsModule._deprecatedWarnings.has('supplierValuations')) {
-      CommunicationsModule._deprecatedWarnings.add('supplierValuations');
-      console.warn(
-        '[Wildberries SDK] FINAL WARNING: supplierValuations() will be REMOVED in the NEXT version (v3.0.0). ' +
-          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
-          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-      );
-    }
-    return this.client.get<{
-      data?: {
-        feedbackValuations?: {
-          1?: string;
-          2?: string;
-          3?: string;
-          4?: string;
-          5?: string;
-          6?: string;
-          7?: string;
-          11?: string;
-          12?: string;
-          13?: string;
-          14?: string;
-          15?: string;
-          16?: string;
-          17?: string;
-          18?: string;
-          19?: string;
-          20?: string;
-        };
-        productValuations?: { 1?: string; 2?: string; 3?: string; 4?: string };
-      };
-      error?: boolean;
-      errorText?: string;
-      additionalErrors?: string[];
-    }>('https://feedbacks-api.wildberries.ru/api/v1/supplier-valuations', {
-      rateLimitKey: 'communications.supplierValuations',
-    });
-  }
-
-  /**
-   * Пожаловаться на отзыв, сообщить о проблеме с товаром
-   *
-   * Метод позволяет: - подать жалобу на отзыв - сообщить о проблеме с товаром из отзыва <div class="description_important"> ID отзыва не валидируется. Если в запросе вы передали некорректный ID, вы не получите ошибку. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
-   *
-   * @deprecated This endpoint has been removed from the Wildberries API.
-   * Use alternative methods or contact Wildberries support.
-   * @see {@link https://dev.wildberries.ru/openapi/communications}
-
-   * @returns Response data
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.communications.createFeedbacksAction({});
-   */
-  async createFeedbacksAction(data?: {
-    id: string;
-    supplierFeedbackValuation?: number;
-    supplierProductValuation?: number;
-  }): Promise<void> {
-    if (!CommunicationsModule._deprecatedWarnings.has('createFeedbacksAction')) {
-      CommunicationsModule._deprecatedWarnings.add('createFeedbacksAction');
-      console.warn(
-        '[Wildberries SDK] FINAL WARNING: createFeedbacksAction() will be REMOVED in the NEXT version (v3.0.0). ' +
-          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
-          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-      );
-    }
-    return this.client.post('https://feedbacks-api.wildberries.ru/api/v1/feedbacks/actions', data, {
-      rateLimitKey: 'communications.postFeedbacksActions',
-    });
-  }
-
-  /**
    * Ответить на отзыв
    *
    * Метод позволяет ответить на [отзыв](/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1feedbacks/get) покупателя. <div class="description_important"> ID отзыва не валидируется. Если в запросе вы передали некорректный ID, вы не получите ошибку. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
@@ -734,149 +611,6 @@ export class CommunicationsModule {
       params: options,
       rateLimitKey: 'communications.feedbacksArchive',
     });
-  }
-
-  /**
-   * Получить шаблоны ответов на вопросы и отзывы
-   *
-   * Метод возвращает список шаблонов ответов на [вопросы](/openapi/user-communication#tag/Voprosy) и [отзывы](/openapi/user-communication#tag/Otzyvy) покупателей. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
-   *
-   * @deprecated This endpoint has been removed from the Wildberries API.
-   * Use alternative methods or contact Wildberries support.
-   * @see {@link https://dev.wildberries.ru/openapi/communications}
-
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.communications.templates({});
-  console.log(result);
-   */
-  async templates(options?: { templateType: number }): Promise<ResponseTemplate> {
-    if (!CommunicationsModule._deprecatedWarnings.has('templates')) {
-      CommunicationsModule._deprecatedWarnings.add('templates');
-      console.warn(
-        '[Wildberries SDK] FINAL WARNING: templates() will be REMOVED in the NEXT version (v3.0.0). ' +
-          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
-          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-      );
-    }
-    return this.client.get<ResponseTemplate>(
-      'https://feedbacks-api.wildberries.ru/api/v1/templates',
-      { params: options, rateLimitKey: 'communications.templates' }
-    );
-  }
-
-  /**
-   * Создать шаблон
-   *
-   * Метод добавляет [шаблон](/openapi/user-communication#tag/Shablony-otvetov/paths/~1api~1v1~1templates/get) ответа на [вопрос](/openapi/user-communication#tag/Voprosy) или [отзыв](/openapi/user-communication#tag/Otzyvy) покупателя.<br><br> Можно создать максимум 20 шаблонов: 10 для отзывов и 10 для вопросов. В тексте шаблона можно использовать любые символы. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
-   *
-   * @deprecated This endpoint has been removed from the Wildberries API.
-   * Use alternative methods or contact Wildberries support.
-   * @see {@link https://dev.wildberries.ru/openapi/communications}
-
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.communications.createTemplate({});
-  console.log(result);
-   */
-  async createTemplate(data?: {
-    name: string;
-    templateType: number;
-    text: string;
-  }): Promise<PostTemplate> {
-    if (!CommunicationsModule._deprecatedWarnings.has('createTemplate')) {
-      CommunicationsModule._deprecatedWarnings.add('createTemplate');
-      console.warn(
-        '[Wildberries SDK] FINAL WARNING: createTemplate() will be REMOVED in the NEXT version (v3.0.0). ' +
-          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
-          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-      );
-    }
-    return this.client.post<PostTemplate>(
-      'https://feedbacks-api.wildberries.ru/api/v1/templates',
-      data,
-      { rateLimitKey: 'communications.postTemplates' }
-    );
-  }
-
-  /**
-   * Редактировать шаблон
-   *
-   * Метод редактирует [шаблон](/openapi/user-communication#tag/Shablony-otvetov/paths/~1api~1v1~1templates/get) ответа на [вопрос](/openapi/user-communication#tag/Voprosy) или [отзыв](/openapi/user-communication#tag/Otzyvy) покупателя.<br><br> В тексте шаблона можно использовать любые символы. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
-   *
-   * @deprecated This endpoint has been removed from the Wildberries API.
-   * Use alternative methods or contact Wildberries support.
-   * @see {@link https://dev.wildberries.ru/openapi/communications}
-
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.communications.updateTemplate({});
-  console.log(result);
-   */
-  async updateTemplate(data?: {
-    name: string;
-    templateID: string;
-    text: string;
-  }): Promise<PatchDelResp> {
-    if (!CommunicationsModule._deprecatedWarnings.has('updateTemplate')) {
-      CommunicationsModule._deprecatedWarnings.add('updateTemplate');
-      console.warn(
-        '[Wildberries SDK] FINAL WARNING: updateTemplate() will be REMOVED in the NEXT version (v3.0.0). ' +
-          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
-          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-      );
-    }
-    return this.client.patch<PatchDelResp>(
-      'https://feedbacks-api.wildberries.ru/api/v1/templates',
-      data,
-      { rateLimitKey: 'communications.patchTemplates' }
-    );
-  }
-
-  /**
-   * Удалить шаблон
-   *
-   * Метод редактирует [шаблон](/openapi/user-communication#tag/Shablony-otvetov/paths/~1api~1v1~1templates/get) ответа на [вопрос](/openapi/user-communication#tag/Voprosy) или [отзыв](/openapi/user-communication#tag/Otzyvy) покупателя. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов категории <strong>Вопросы и отзывы</strong>: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 3 запроса | 333 миллисекунды | 6 запросов | </div>
-   *
-   * @deprecated This endpoint has been removed from the Wildberries API.
-   * Use alternative methods or contact Wildberries support.
-   * @see {@link https://dev.wildberries.ru/openapi/communications}
-
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.communications.deleteTemplate({});
-  console.log(result);
-   */
-  async deleteTemplate(data?: { templateID: string }): Promise<PatchDelResp> {
-    if (!CommunicationsModule._deprecatedWarnings.has('deleteTemplate')) {
-      CommunicationsModule._deprecatedWarnings.add('deleteTemplate');
-      console.warn(
-        '[Wildberries SDK] FINAL WARNING: deleteTemplate() will be REMOVED in the NEXT version (v3.0.0). ' +
-          'This is your last chance to migrate - endpoint removed from Wildberries API. ' +
-          'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-      );
-    }
-    return this.client.delete<PatchDelResp>(
-      'https://feedbacks-api.wildberries.ru/api/v1/templates',
-      data,
-      { rateLimitKey: 'communications.deleteTemplates' }
-    );
   }
 
   /**

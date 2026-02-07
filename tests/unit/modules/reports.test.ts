@@ -137,108 +137,6 @@ describe('ReportsModule', () => {
         );
       });
     });
-
-    describe('Deprecated methods show warnings', () => {
-      it('getSupplierIncomes shows deprecation warning', async () => {
-        mockClient.get.mockResolvedValue([]);
-
-        await module.getSupplierIncomes({ dateFrom: '2026-01-01' });
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-
-      it('getAnalyticsWarehouseMeasurements shows deprecation warning', async () => {
-        mockClient.get.mockResolvedValue({});
-
-        await module.getAnalyticsWarehouseMeasurements({
-          dateTo: '2026-02-06',
-          tab: 'penalty',
-          limit: 100,
-        });
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-
-      it('getAnalyticsIncorrectAttachments shows deprecation warning', async () => {
-        mockClient.get.mockResolvedValue({});
-
-        await module.getAnalyticsIncorrectAttachments({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-
-      it('getAnalyticsCharacteristicsChange shows deprecation warning', async () => {
-        mockClient.get.mockResolvedValue({});
-
-        await module.getAnalyticsCharacteristicsChange({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-    });
-
-    describe('Renamed methods with deprecated wrappers', () => {
-      it('getTasksStatu calls getWarehouseRemainsTaskStatus', async () => {
-        mockClient.get.mockResolvedValue({ data: { status: 'done' } });
-
-        await module.getTasksStatu('task-uuid');
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-        expect(mockClient.get).toHaveBeenCalledWith(
-          expect.stringContaining('warehouse_remains/tasks/task-uuid/status'),
-          expect.anything()
-        );
-      });
-
-      it('getTasksDownload calls downloadWarehouseRemainsReport', async () => {
-        mockClient.get.mockResolvedValue([]);
-
-        await module.getTasksDownload('task-uuid');
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-        expect(mockClient.get).toHaveBeenCalledWith(
-          expect.stringContaining('warehouse_remains/tasks/task-uuid/download'),
-          expect.anything()
-        );
-      });
-
-      it('getTasksStatu2 calls getAcceptanceReportTaskStatus', async () => {
-        mockClient.get.mockResolvedValue({ data: { status: 'done' } });
-
-        await module.getTasksStatu2('task-uuid');
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-
-      it('getTasksDownload2 calls downloadAcceptanceReport', async () => {
-        mockClient.get.mockResolvedValue([]);
-
-        await module.getTasksDownload2('task-uuid');
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-
-      it('getTasksStatu3 calls getPaidStorageTaskStatus', async () => {
-        mockClient.get.mockResolvedValue({ data: { status: 'done' } });
-
-        await module.getTasksStatu3('task-uuid');
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-
-      it('getTasksDownload3 calls downloadPaidStorageReport', async () => {
-        mockClient.get.mockResolvedValue({});
-
-        await module.getTasksDownload3('task-uuid');
-
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('FINAL WARNING'));
-      });
-    });
   });
 
   // ==========================================================================
@@ -247,16 +145,6 @@ describe('ReportsModule', () => {
 
   describe('EPIC 45: Rate Limit Key Wiring', () => {
     describe('Statistics API methods', () => {
-      it('getSupplierIncomes passes rateLimitKey', async () => {
-        mockClient.get.mockResolvedValue([]);
-        await module.getSupplierIncomes({ dateFrom: '2026-01-01' });
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${STATISTICS_URL}/api/v1/supplier/incomes`,
-          expect.objectContaining({ rateLimitKey: 'reports.supplierIncomes' })
-        );
-      });
-
       it('getSupplierStocks passes rateLimitKey', async () => {
         mockClient.get.mockResolvedValue([]);
         await module.getSupplierStocks({ dateFrom: '2026-01-01' });
@@ -504,48 +392,6 @@ describe('ReportsModule', () => {
         );
       });
     });
-
-    describe('Deprecated methods still pass rateLimitKey', () => {
-      it('getAnalyticsWarehouseMeasurements passes rateLimitKey', async () => {
-        mockClient.get.mockResolvedValue({});
-        await module.getAnalyticsWarehouseMeasurements({
-          dateTo: '2026-02-06',
-          tab: 'penalty',
-          limit: 100,
-        });
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${ANALYTICS_URL}/api/v1/analytics/warehouse-measurements`,
-          expect.objectContaining({ rateLimitKey: 'reports.analyticsWarehouseMeasurements' })
-        );
-      });
-
-      it('getAnalyticsIncorrectAttachments passes rateLimitKey', async () => {
-        mockClient.get.mockResolvedValue({});
-        await module.getAnalyticsIncorrectAttachments({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${ANALYTICS_URL}/api/v1/analytics/incorrect-attachments`,
-          expect.objectContaining({ rateLimitKey: 'reports.analyticsIncorrectAttachments' })
-        );
-      });
-
-      it('getAnalyticsCharacteristicsChange passes rateLimitKey', async () => {
-        mockClient.get.mockResolvedValue({});
-        await module.getAnalyticsCharacteristicsChange({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${ANALYTICS_URL}/api/v1/analytics/characteristics-change`,
-          expect.objectContaining({ rateLimitKey: 'reports.analyticsCharacteristicsChange' })
-        );
-      });
-    });
   });
 
   // ==========================================================================
@@ -622,9 +468,8 @@ describe('ReportsModule', () => {
   // ==========================================================================
 
   describe('All module methods exist', () => {
-    it('should have all 35 methods (29 active + 6 deprecated wrappers)', () => {
-      // Statistics API (4)
-      expect(typeof module.getSupplierIncomes).toBe('function');
+    it('should have all 31 methods (27 active + 4 deprecated wrappers)', () => {
+      // Statistics API (3)
       expect(typeof module.getSupplierStocks).toBe('function');
       expect(typeof module.getSupplierOrders).toBe('function');
       expect(typeof module.getSupplierSales).toBe('function');
@@ -632,36 +477,25 @@ describe('ReportsModule', () => {
       // Excise report (1)
       expect(typeof module.createAnalyticsExciseReport).toBe('function');
 
-      // Warehouse remains (3 + 2 deprecated)
+      // Warehouse remains (3)
       expect(typeof module.warehouseRemains).toBe('function');
       expect(typeof module.getWarehouseRemainsTaskStatus).toBe('function');
       expect(typeof module.downloadWarehouseRemainsReport).toBe('function');
-      expect(typeof module.getTasksStatu).toBe('function');
-      expect(typeof module.getTasksDownload).toBe('function');
-
-      // Deprecated analytics (3)
-      expect(typeof module.getAnalyticsWarehouseMeasurements).toBe('function');
-      expect(typeof module.getAnalyticsIncorrectAttachments).toBe('function');
-      expect(typeof module.getAnalyticsCharacteristicsChange).toBe('function');
 
       // Active analytics (3)
       expect(typeof module.getAnalyticsAntifraudDetails).toBe('function');
       expect(typeof module.getAnalyticsGoodsLabeling).toBe('function');
       expect(typeof module.getAnalyticsRegionSale).toBe('function');
 
-      // Acceptance report (3 + 2 deprecated)
+      // Acceptance report (3)
       expect(typeof module.acceptanceReport).toBe('function');
       expect(typeof module.getAcceptanceReportTaskStatus).toBe('function');
       expect(typeof module.downloadAcceptanceReport).toBe('function');
-      expect(typeof module.getTasksStatu2).toBe('function');
-      expect(typeof module.getTasksDownload2).toBe('function');
 
-      // Paid storage (3 + 2 deprecated)
+      // Paid storage (3)
       expect(typeof module.paidStorage).toBe('function');
       expect(typeof module.getPaidStorageTaskStatus).toBe('function');
       expect(typeof module.downloadPaidStorageReport).toBe('function');
-      expect(typeof module.getTasksStatu3).toBe('function');
-      expect(typeof module.getTasksDownload3).toBe('function');
 
       // Brand share (3)
       expect(typeof module.getBrandShareBrands).toBe('function');

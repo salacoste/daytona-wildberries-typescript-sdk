@@ -16,8 +16,7 @@
  * @module tests/integration/orders-fbw.integration.test
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated */
-import { describe, it, expect, beforeAll, afterEach, afterAll, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeAll, afterEach, afterAll, beforeEach } from 'vitest';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { OrdersFbwModule } from '../../src/modules/orders-fbw';
@@ -360,9 +359,6 @@ describe('OrdersFBW Integration Tests', () => {
       retryConfig: { maxRetries: 0 },
     });
     ordersFbw = new OrdersFbwModule(client);
-    // Reset static deprecation flag between tests
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (OrdersFbwModule as any)._coefficientsDeprecationWarned = false;
   });
 
   afterEach(() => {
@@ -378,33 +374,6 @@ describe('OrdersFBW Integration Tests', () => {
   // ===========================================================================
 
   describe('Supply Planning Workflow', () => {
-    it('should fetch acceptance coefficients with mixed values', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      vi.spyOn(console, 'warn').mockImplementation(() => {});
-      const result = await ordersFbw.getAcceptanceCoefficients();
-
-      expect(Array.isArray(result)).toBe(true);
-      expect(result).toHaveLength(4);
-      // Verify mixed coefficient values: 0, -1, 2, 1
-      expect(result[0].coefficient).toBe(0);
-      expect(result[1].coefficient).toBe(-1);
-      expect(result[2].coefficient).toBe(2);
-      expect(result[3].coefficient).toBe(1);
-      vi.restoreAllMocks();
-    });
-
-    it('should filter coefficients by warehouseIDs query parameter', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      vi.spyOn(console, 'warn').mockImplementation(() => {});
-      const result = await ordersFbw.getAcceptanceCoefficients({
-        warehouseIDs: '507',
-      });
-
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.every((c) => c.warehouseID === 507)).toBe(true);
-      vi.restoreAllMocks();
-    });
-
     it('should get acceptance options for goods array', async () => {
       const goods = [
         { barcode: '1234567891234', quantity: 10 },
@@ -520,59 +489,7 @@ describe('OrdersFBW Integration Tests', () => {
   });
 
   // ===========================================================================
-  // Scenario 3: Deprecated Endpoint Behavior
-  // ===========================================================================
-
-  describe('Deprecated Endpoint', () => {
-    it('should return data from deprecated coefficients endpoint', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      vi.spyOn(console, 'warn').mockImplementation(() => {});
-      const result = await ordersFbw.getAcceptanceCoefficients();
-
-      expect(result).toHaveLength(4);
-      expect(result[0].date).toBe('2026-02-06');
-      vi.restoreAllMocks();
-    });
-
-    it('should emit console.warn on first call', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
-      await ordersFbw.getAcceptanceCoefficients();
-
-      expect(warnSpy).toHaveBeenCalledTimes(1);
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('getAcceptanceCoefficients() is deprecated')
-      );
-      vi.restoreAllMocks();
-    });
-
-    it('should not emit console.warn on subsequent calls (warn-once)', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
-      await ordersFbw.getAcceptanceCoefficients();
-      await ordersFbw.getAcceptanceCoefficients();
-      await ordersFbw.getAcceptanceCoefficients();
-
-      expect(warnSpy).toHaveBeenCalledTimes(1);
-      vi.restoreAllMocks();
-    });
-
-    it('should include migration guidance in warning message', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
-      await ordersFbw.getAcceptanceCoefficients();
-
-      const message = warnSpy.mock.calls[0][0] as string;
-      expect(message).toContain('tariffs module');
-      vi.restoreAllMocks();
-    });
-  });
-
-  // ===========================================================================
-  // Scenario 4: Error Handling
+  // Scenario 3: Error Handling
   // ===========================================================================
 
   describe('Error Handling', () => {
@@ -680,21 +597,6 @@ describe('OrdersFBW Integration Tests', () => {
 
       expect(Array.isArray(result)).toBe(true);
       expect(result).toHaveLength(0);
-    });
-  });
-
-  // ===========================================================================
-  // Scenario 6: createSupply deprecated alias
-  // ===========================================================================
-
-  describe('Deprecated Alias', () => {
-    it('createSupply should delegate to listSupplies and return same data', async () => {
-      const filters = { dates: [], statusIDs: [] as ModelsHandySupplyStatus[] };
-
-      const listResult = await ordersFbw.listSupplies(filters, { limit: 10 });
-      const aliasResult = await ordersFbw.createSupply(filters, { limit: 10 });
-
-      expect(aliasResult).toEqual(listResult);
     });
   });
 });

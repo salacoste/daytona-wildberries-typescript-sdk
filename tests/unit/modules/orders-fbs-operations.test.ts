@@ -11,7 +11,6 @@
  * - deletePass: Delete a seller pass
  *
  * METADATA:
- * - getOrdersMeta: Get order metadata (deprecated)
  * - deleteOrdersMeta: Delete order metadata
  * - updateMetaSgtin: Set SGTIN marking codes
  * - updateMetaUin: Set UIN code
@@ -23,7 +22,6 @@
  * STICKERS:
  * - createOrdersSticker: Get assembly task stickers
  * - createStickersCrossBorder: Get cross-border stickers
- * - createOrdersExternalSticker: Get external sticker links (deprecated)
  *
  * @see {@link ../../../src/modules/orders-fbs/index OrdersFbsModule}
  */
@@ -308,67 +306,6 @@ describe('OrdersFbsModule — Passes, Metadata & Stickers', () => {
 
   describe('Metadata', () => {
     const orderId = 98765432;
-
-    // ========================================================================
-    // getOrdersMeta()
-    // ========================================================================
-
-    describe('getOrdersMeta()', () => {
-      const mockMeta = {
-        imei: { value: '123456789012345', isValid: true },
-        sgtin: { value: ['0104600000000001'], isValid: true },
-      };
-      const mockBulkResponse = {
-        orders: [{ id: orderId, meta: mockMeta }],
-      };
-
-      it('should call POST bulk endpoint with the orderId wrapped in array', async () => {
-        mockClient.post.mockResolvedValue(mockBulkResponse);
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        await ordersFbs.getOrdersMeta(orderId);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          `${BASE_URL}/api/marketplace/v3/orders/meta`,
-          { orders: [orderId] },
-          expect.objectContaining({ rateLimitKey: expect.any(String) })
-        );
-      });
-
-      it('should return the meta response extracted from bulk response', async () => {
-        mockClient.post.mockResolvedValue(mockBulkResponse);
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const result = await ordersFbs.getOrdersMeta(orderId);
-
-        expect(result).toEqual({ meta: mockMeta });
-        expect(result.meta).toBeDefined();
-      });
-
-      it('should return undefined meta when order not found in response', async () => {
-        mockClient.post.mockResolvedValue({ orders: [] });
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const result = await ordersFbs.getOrdersMeta(orderId);
-
-        expect(result).toEqual({ meta: undefined });
-      });
-
-      it('should pass rateLimitKey in options', async () => {
-        mockClient.post.mockResolvedValue(mockBulkResponse);
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        await ordersFbs.getOrdersMeta(orderId);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          expect.any(String),
-          expect.any(Object),
-          expect.objectContaining({
-            rateLimitKey: 'orders-fbs.postMarketplaceOrdersMeta',
-          })
-        );
-      });
-    });
 
     // ========================================================================
     // deleteOrdersMeta()
@@ -812,64 +749,6 @@ describe('OrdersFbsModule — Passes, Metadata & Stickers', () => {
           expect.anything(),
           expect.objectContaining({
             rateLimitKey: 'orders-fbs.postOrdersStickersCrossBorder',
-          })
-        );
-      });
-    });
-
-    // ========================================================================
-    // createOrdersExternalSticker() (deprecated)
-    // ========================================================================
-
-    describe('createOrdersExternalSticker()', () => {
-      const externalStickerBody = { orders: [112233445] };
-      const mockExternalStickerResponse = {
-        stickers: [
-          {
-            orderID: 112233445,
-            url: 'https://cdn.wildberries.ru/stickers/112233445.pdf',
-            parcelID: 'PARCEL-001',
-          },
-        ],
-      };
-
-      it('should call POST with the correct URL (files/orders/external-stickers)', async () => {
-        mockClient.post.mockResolvedValue(mockExternalStickerResponse);
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        await ordersFbs.createOrdersExternalSticker(externalStickerBody);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/files/orders/external-stickers`,
-          externalStickerBody,
-          expect.objectContaining({ rateLimitKey: expect.any(String) })
-        );
-      });
-
-      it('should return the stickers response with url and parcelID', async () => {
-        mockClient.post.mockResolvedValue(mockExternalStickerResponse);
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const result = await ordersFbs.createOrdersExternalSticker(externalStickerBody);
-
-        expect(result.stickers).toBeDefined();
-        expect(result.stickers).toHaveLength(1);
-        expect(result.stickers![0].orderID).toBe(112233445);
-        expect(result.stickers![0].url).toBeDefined();
-        expect(result.stickers![0].parcelID).toBeDefined();
-      });
-
-      it('should pass rateLimitKey in options', async () => {
-        mockClient.post.mockResolvedValue(mockExternalStickerResponse);
-
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        await ordersFbs.createOrdersExternalSticker(externalStickerBody);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          expect.any(String),
-          expect.anything(),
-          expect.objectContaining({
-            rateLimitKey: 'orders-fbs.postFilesOrdersExternalStickers',
           })
         );
       });

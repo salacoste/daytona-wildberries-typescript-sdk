@@ -13,10 +13,8 @@ import type {
   OrdersNewResponse,
   OrdersResponse,
   GetOrdersParams,
-  OrderStatusRequest,
   OrderStatusResponse,
   Supply,
-  SupplyOrdersResponse,
   SuppliesResponse,
   GetSuppliesParams,
   SupplyCreateRequest,
@@ -27,7 +25,6 @@ import type {
   TrbxDeleteRequest,
   TrbxStickers,
   TrbxStickerRequest,
-  OrderMetaResponse,
   DeleteMetaParams,
   MetaSgtinRequest,
   MetaUinRequest,
@@ -40,7 +37,6 @@ import type {
   StickerResponse,
   CrossBorderStickerRequest,
   CrossBorderStickerResponse,
-  ExternalStickerResponse,
   StatusHistoryRequest,
   StatusHistoryResponse,
   OrdersRequestAPI,
@@ -248,40 +244,6 @@ export class OrdersFbsModule {
   }
 
   /**
-   * Get assembly task statuses
-   *
-   * @deprecated Use {@link getOrderStatuses} instead. This method has an incorrect name and will be removed in a future release.
-   *
-   * Returns statuses of assembly tasks by their IDs.
-   *
-   * @param data - Request body containing order IDs
-   * @returns Promise resolving to order statuses
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post}
-   *
-   * @example
-   * ```typescript
-   * const result = await sdk.ordersFBS.createOrdersStatu({ orders: [123, 456] });
-   * console.log(result.orders);
-   * ```
-   */
-  async createOrdersStatu(data?: OrderStatusRequest): Promise<OrderStatusResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createOrdersStatu() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getOrderStatuses(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.post<OrderStatusResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/orders/status',
-      data,
-      { rateLimitKey: 'orders-fbs.postOrdersStatus' }
-    );
-  }
-
-  /**
    * Get all assembly tasks requiring reshipment
    *
    * Returns all assembly tasks that require reshipment. Reshipment is needed when a supply was scanned
@@ -366,38 +328,6 @@ export class OrdersFbsModule {
       data,
       { params: options, rateLimitKey: 'orders-fbs.postOrdersStickers' }
     );
-  }
-
-  /**
-   * Get metadata for an assembly task
-   *
-   * @deprecated Use {@link getOrdersMetaBulk} for bulk metadata retrieval. This method wraps the bulk endpoint internally.
-   *
-   * Returns metadata for a single assembly task (imei, uin, gtin, sgtin, expiration, customsDeclaration).
-   *
-   * @param orderId - ID of the assembly task
-   * @returns Promise resolving to order metadata
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Metadannye-FBS/paths/~1api~1marketplace~1v3~1orders~1meta/post}
-   *
-   * @example
-   * ```typescript
-   * const result = await sdk.ordersFBS.getOrdersMeta(123456);
-   * console.log(result.meta);
-   * ```
-   */
-  async getOrdersMeta(orderId: number): Promise<OrderMetaResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getOrdersMeta() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getOrdersMetaBulk(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    const response = await this.getOrdersMetaBulk({ orders: [orderId] });
-    const orderMeta = response.orders?.find((o) => o.id === orderId);
-    return { meta: orderMeta?.meta };
   }
 
   /**
@@ -629,44 +559,6 @@ export class OrdersFbsModule {
   }
 
   /**
-   * Get cross-border sticker links
-   *
-   * @deprecated **ENDPOINT REMOVED**: The `/api/v3/files/orders/external-stickers` endpoint has been removed from the Wildberries API.
-   * Use {@link createStickersCrossBorder} instead, which returns stickers in PDF format.
-   *
-   * Returns a list of sticker links for cross-border assembly tasks.
-   *
-   * @param data - Request body containing order IDs
-   * @returns Promise resolving to sticker URLs response
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1files~1orders~1external-stickers/post}
-   *
-   * @example
-   * ```typescript
-   * // DEPRECATED - Use createStickersCrossBorder instead:
-   * const result = await sdk.ordersFBS.createStickersCrossBorder({ orders: [123] });
-   * console.log(result.stickers);
-   * ```
-   */
-  async createOrdersExternalSticker(
-    data?: CrossBorderStickerRequest
-  ): Promise<ExternalStickerResponse> {
-    // eslint-disable-next-line no-console
-    console.warn(
-      '[WB SDK DEPRECATION] createOrdersExternalSticker(): This endpoint has been REMOVED from the Wildberries API. ' +
-        'Use createStickersCrossBorder() instead.'
-    );
-    return this.client.post<ExternalStickerResponse>(
-      'https://marketplace-api.wildberries.ru/api/v3/files/orders/external-stickers',
-      data,
-      { rateLimitKey: 'orders-fbs.postFilesOrdersExternalStickers' }
-    );
-  }
-
-  /**
    * Get cross-border assembly task status history
    *
    * Returns the status history for cross-border assembly tasks.
@@ -775,41 +667,6 @@ export class OrdersFbsModule {
   }
 
   /**
-   * Add an assembly task to a supply
-   *
-   * @deprecated Use {@link addOrdersToSupply} for bulk order-to-supply assignment. This single-order endpoint may be removed in a future release.
-   *
-   * Adds an assembly task to a supply and sets its status to `confirm`.
-   * Can move tasks between active supplies or from closed to active supplies for reshipment.
-   *
-   * @param supplyId - ID of the supply
-   * @param orderId - ID of the assembly task to add
-   * @returns Promise resolving to void on success
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders~1%7BorderId%7D/patch}
-   *
-   * @example
-   * ```typescript
-   * await sdk.ordersFBS.updateSuppliesOrder('WB-GI-1234', 123456);
-   * ```
-   */
-  async updateSuppliesOrder(supplyId: string, orderId: number): Promise<void> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: updateSuppliesOrder() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to addOrdersToSupply(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.patch(
-      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders/${orderId}`,
-      undefined,
-      { rateLimitKey: 'orders-fbs.patchSuppliesOrders' }
-    );
-  }
-
-  /**
    * Get supply information
    *
    * Returns detailed information about a supply.
@@ -859,39 +716,6 @@ export class OrdersFbsModule {
       {
         rateLimitKey: 'orders-fbs.deleteSupplies',
       }
-    );
-  }
-
-  /**
-   * Get assembly tasks in a supply
-   *
-   * @deprecated Use {@link getSupplyOrderIds} for retrieving order IDs in a supply. This endpoint returns legacy format and may be removed in a future release.
-   *
-   * Returns assembly tasks assigned to a supply.
-   *
-   * @param supplyId - ID of the supply
-   * @returns Promise resolving to supply orders response
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1orders/get}
-   *
-   * @example
-   * ```typescript
-   * const result = await sdk.ordersFBS.getSuppliesOrder('WB-GI-1234');
-   * console.log(result.orders);
-   * ```
-   */
-  async getSuppliesOrder(supplyId: string): Promise<SupplyOrdersResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getSuppliesOrder() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getSupplyOrderIds(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.client.get<SupplyOrdersResponse>(
-      `https://marketplace-api.wildberries.ru/api/v3/supplies/${supplyId}/orders`,
-      { rateLimitKey: 'orders-fbs.suppliesOrders' }
     );
   }
 

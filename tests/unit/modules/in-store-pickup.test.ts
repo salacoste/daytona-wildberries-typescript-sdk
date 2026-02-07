@@ -61,7 +61,7 @@ describe('InStorePickupModule', () => {
       expect(module).toBeInstanceOf(InStorePickupModule);
     });
 
-    it('should expose all 17 methods (16 core + 1 deprecated alias)', () => {
+    it('should expose all 16 core methods', () => {
       expect(typeof module.getOrdersNew).toBe('function');
       expect(typeof module.updateOrdersConfirm).toBe('function');
       expect(typeof module.updateOrdersPrepare).toBe('function');
@@ -70,7 +70,6 @@ describe('InStorePickupModule', () => {
       expect(typeof module.updateOrdersCancel).toBe('function');
       expect(typeof module.getClickCollectOrders).toBe('function');
       expect(typeof module.createOrdersStatus).toBe('function');
-      expect(typeof module.createOrdersStatu).toBe('function');
       expect(typeof module.createOrdersClient).toBe('function');
       expect(typeof module.createClientIdentity).toBe('function');
       expect(typeof module.getOrdersMeta).toBe('function');
@@ -303,26 +302,6 @@ describe('InStorePickupModule', () => {
         );
         expect(result).toEqual(mockResponse);
         expect(result.orders).toHaveLength(2);
-      });
-    });
-
-    describe('createOrdersStatu (deprecated alias)', () => {
-      it('should delegate to createOrdersStatus', async () => {
-        const requestData = { orders: [12345] };
-        const mockResponse = {
-          orders: [{ id: 12345, supplierStatus: 'confirm', wbStatus: 'waiting' }],
-        };
-
-        mockClient.post.mockResolvedValue(mockResponse);
-
-        const result = await module.createOrdersStatu(requestData);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/status`,
-          requestData,
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.postClickCollectOrdersStatus' })
-        );
-        expect(result).toEqual(mockResponse);
       });
     });
   });

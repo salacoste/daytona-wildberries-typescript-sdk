@@ -735,70 +735,6 @@ export class ProductsModule {
   }
 
   /**
-   * @deprecated Use {@link getCardsList} instead. Will be removed in next major version.
-   */
-  async createCardsList(
-    data: {
-      settings?: {
-        sort?: { ascending?: boolean };
-        filter?: {
-          withPhoto?: number;
-          textSearch?: string;
-          tagIDs?: number[];
-          allowedCategoriesOnly?: boolean;
-          objectIDs?: number[];
-          brands?: string[];
-          imtID?: number;
-        };
-        cursor?: { limit?: number; updatedAt?: string; nmID?: number };
-      };
-    },
-    options?: { locale?: string }
-  ): Promise<{
-    cards?: {
-      nmID?: number;
-      imtID?: number;
-      nmUUID?: string;
-      subjectID?: number;
-      subjectName?: string;
-      vendorCode?: string;
-      brand?: string;
-      title?: string;
-      description?: string;
-      needKiz?: boolean;
-      photos?: {
-        big?: string;
-        c246x328?: string;
-        c516x688?: string;
-        square?: string;
-        tm?: string;
-      }[];
-      video?: string;
-      wholesale?: { enabled?: boolean; quantum?: number };
-      dimensions?: {
-        length?: number;
-        width?: number;
-        height?: number;
-        weightBrutto?: number;
-        isValid?: boolean;
-      };
-      characteristics?: { id?: number; name?: string; value?: unknown }[];
-      sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
-      tags?: { id?: number; name?: string; color?: string }[];
-      createdAt?: string;
-      updatedAt?: string;
-    }[];
-    cursor?: { updatedAt?: string; nmID?: number; total?: number };
-  }> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createCardsList() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getCardsList(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getCardsList(data, options);
-  }
-
-  /**
    * Список несозданных карточек товаров с ошибками
    *
    * Returns product cards (drafts) that failed during creation or editing, with error descriptions.
@@ -1086,55 +1022,6 @@ export class ProductsModule {
       params: options,
       rateLimitKey: 'products.postContentGetCardsTrash',
     });
-  }
-
-  /**
-   * @deprecated Use {@link getTrashedCards} instead. Will be removed in next major version.
-   */
-  async createCardsTrash(
-    data: {
-      settings?: {
-        sort?: { ascending?: boolean };
-        cursor?: { limit?: number; trashedAt?: string; nmID?: number };
-        filter?: { textSearch?: string };
-      };
-    },
-    options?: { locale?: 'ru' | 'en' | 'zh' }
-  ): Promise<{
-    cards?: {
-      nmID?: number;
-      vendorCode?: string;
-      subjectID?: number;
-      subjectName?: string;
-      photos?: {
-        big?: string;
-        c246x328?: string;
-        c516x688?: string;
-        square?: string;
-        tm?: string;
-      }[];
-      video?: string;
-      wholesale?: { enabled?: boolean; quantum?: number };
-      sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
-      dimensions?: {
-        length?: number;
-        width?: number;
-        height?: number;
-        weightBrutto?: number;
-        isValid?: boolean;
-      };
-      characteristics?: { id?: number; name?: string; value?: unknown }[];
-      createdAt?: string;
-      trashedAt?: string;
-    }[];
-    cursor?: { trashedAt?: string; nmID?: number; total?: number };
-  }> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createCardsTrash() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getTrashedCards(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getTrashedCards(data, options);
   }
 
   /**
@@ -1602,22 +1489,6 @@ export class ProductsModule {
   }
 
   /**
-   * @deprecated Use {@link getBufferGoodsTask} instead. Will be removed in next major version.
-   */
-  async getGoodsTask2(options?: {
-    limit: number;
-    offset?: number;
-    uploadID: number;
-  }): Promise<GoodsBufferResponse> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: getGoodsTask2() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getBufferGoodsTask(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getBufferGoodsTask(options);
-  }
-
-  /**
    * Получить товары с ценами
    *
    * Returns product pricing info: prices, currency, discounts, WB Club discounts.
@@ -1782,21 +1653,6 @@ export class ProductsModule {
   }
 
   /**
-   * @deprecated Use {@link getStocks} instead. Will be removed in next major version.
-   */
-  async createStock(
-    warehouseId: number,
-    data: { skus: string[] }
-  ): Promise<{ stocks?: { sku?: string; amount?: number }[] }> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createStock() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to getStocks(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.getStocks(warehouseId, data);
-  }
-
-  /**
    * Обновить остатки товаров
    *
    * Updates stock amounts for products at a seller's warehouse. Parameter names are not validated;
@@ -1944,18 +1800,6 @@ export class ProductsModule {
   }
 
   /**
-   * @deprecated Use {@link createWarehouse} instead. Will be removed in next major version.
-   */
-  async createWarehous(data: { name: string; officeId: number }): Promise<{ id?: number }> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: createWarehous() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to createWarehouse(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.createWarehouse(data);
-  }
-
-  /**
    * Обновить склад продавца
    *
    * Updates seller warehouse data. WB office binding can be changed once per day.
@@ -1990,21 +1834,6 @@ export class ProductsModule {
   }
 
   /**
-   * @deprecated Use {@link updateWarehouse} instead. Will be removed in next major version.
-   */
-  async updateWarehous(
-    warehouseId: number,
-    data: { name: string; officeId: number }
-  ): Promise<void> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: updateWarehous() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to updateWarehouse(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.updateWarehouse(warehouseId, data);
-  }
-
-  /**
    * Удалить склад продавца
    *
    * Deletes a seller warehouse from the list.
@@ -2029,18 +1858,6 @@ export class ProductsModule {
       undefined,
       { rateLimitKey: 'products.deleteWarehouses' }
     );
-  }
-
-  /**
-   * @deprecated Use {@link deleteWarehouse} instead. Will be removed in next major version.
-   */
-  async deleteWarehous(warehouseId: number): Promise<void> {
-    console.warn(
-      '[Wildberries SDK] FINAL WARNING: deleteWarehous() will be REMOVED in the NEXT version (v3.0.0). ' +
-        'This is your last chance to migrate to deleteWarehouse(). ' +
-        'See: https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/docs/guides/migration-v3.md'
-    );
-    return this.deleteWarehouse(warehouseId);
   }
 
   /**

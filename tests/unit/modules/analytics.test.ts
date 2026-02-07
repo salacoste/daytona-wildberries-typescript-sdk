@@ -428,10 +428,7 @@ describe('AnalyticsModule', () => {
       expect(typeof module.getSalesFunnelGroupedHistory).toBe('function');
     });
 
-    it('should have 3 deprecated wrapper methods', () => {
-      expect(typeof module.createNmReportDetail).toBe('function');
-      expect(typeof module.createDetailHistory).toBe('function');
-      expect(typeof module.createGroupedHistory).toBe('function');
-    });
+    // Note: Deprecated v2 wrapper methods (createNmReportDetail, createDetailHistory,
+    // createGroupedHistory) have been removed in v3.0.0
   });
 });

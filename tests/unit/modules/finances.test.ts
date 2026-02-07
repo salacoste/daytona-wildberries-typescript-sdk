@@ -309,68 +309,6 @@ describe('FinancesModule', () => {
   });
 
   // ──────────────────────────────────────────────────
-  // getSupplierReportdetailbyperiod() (deprecated)
-  // ──────────────────────────────────────────────────
-
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-  describe('getSupplierReportdetailbyperiod() (deprecated)', () => {
-    const requiredParams = {
-      dateFrom: '2024-01-01',
-      dateTo: '2024-01-31',
-    };
-
-    it('should exist as a method for backward compatibility', () => {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-      expect(typeof module.getSupplierReportdetailbyperiod).toBe('function');
-    });
-
-    it('should delegate to getSupplierReportDetailByPeriod', async () => {
-      mockClient.get.mockResolvedValue(mockDetailReportItems);
-
-      const spy = vi.spyOn(module, 'getSupplierReportDetailByPeriod');
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-      await module.getSupplierReportdetailbyperiod(requiredParams);
-
-      expect(spy).toHaveBeenCalledWith(requiredParams);
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should return same result as getSupplierReportDetailByPeriod', async () => {
-      mockClient.get.mockResolvedValue(mockDetailReportItems);
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-      const deprecatedResult = await module.getSupplierReportdetailbyperiod(requiredParams);
-      const canonicalResult = await module.getSupplierReportDetailByPeriod(requiredParams);
-
-      expect(deprecatedResult).toEqual(canonicalResult);
-    });
-
-    it('should forward all parameters to the canonical method', async () => {
-      mockClient.get.mockResolvedValue(mockDetailReportItems);
-
-      const fullParams = {
-        dateFrom: '2024-02-01',
-        dateTo: '2024-02-28',
-        limit: 50,
-        rrdid: 12345,
-        period: 'daily' as const,
-      };
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-      await module.getSupplierReportdetailbyperiod(fullParams);
-
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
-        expect.objectContaining({
-          params: expect.objectContaining(fullParams),
-          rateLimitKey: 'finances.supplierReportDetailByPeriod',
-        })
-      );
-    });
-  });
-
-  // ──────────────────────────────────────────────────
   // getDocumentsCategories()
   // ──────────────────────────────────────────────────
 

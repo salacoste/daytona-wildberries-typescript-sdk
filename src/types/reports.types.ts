@@ -335,38 +335,6 @@ export interface Measurement {
 }
 
 /**
- * @deprecated Use Response400Retentions instead. This type is no longer in the swagger spec.
- */
-export interface Response400WHM {
-  /** Заголовок ошибки */
-  title?: string;
-  /** HTTP статус-код */
-  status?: number;
-  /** Детали ошибки */
-  detail?: string;
-  /** Уникальный ID запроса */
-  requestId?: string;
-  /** ID внутреннего сервиса WB */
-  origin?: string;
-}
-
-/**
- * @deprecated Use Response403Retentions instead. This type is no longer in the swagger spec.
- */
-export interface Response403WHM {
-  /** Заголовок ошибки */
-  title?: string;
-  /** HTTP статус-код */
-  status?: number;
-  /** Детали ошибки */
-  detail?: string;
-  /** Уникальный ID запроса */
-  requestId?: string;
-  /** ID внутреннего сервиса WB */
-  origin?: string;
-}
-
-/**
  * 400 error response for retentions endpoints (measurement-penalties, warehouse-measurements, deductions)
  * @see EPIC 43 - Added per swagger Response400Retentions schema
  */

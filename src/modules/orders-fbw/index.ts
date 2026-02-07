@@ -11,7 +11,6 @@
 
 import { BaseClient } from '../../client/base-client';
 import type {
-  ModelsAcceptanceCoefficient,
   ModelsBox,
   ModelsGood,
   ModelsGoodInSupply,
@@ -24,40 +23,7 @@ import type {
 } from '../../types/orders-fbw.types';
 
 export class OrdersFbwModule {
-  private static _coefficientsDeprecationWarned = false;
-
   constructor(private client: BaseClient) {}
-
-  /**
-   * Коэффициенты приёмки
-   *
-   * Метод возвращает коэффициенты приёмки для конкретных складов на ближайшие 14 дней. <div class="description_important"> Приёмка для поставки доступна только при сочетании: <br> <code>coefficient</code> — <code>0</code> или <code>1</code> <br> и <code>allowUnload</code> — <code>true</code> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 6 запросов | </div>
-   *
-   * @deprecated Use tariffs module instead. This endpoint has been moved to common-api.wildberries.ru.
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.ordersFBW.getAcceptanceCoefficients({});
-  console.log(result);
-   */
-  async getAcceptanceCoefficients(options?: {
-    warehouseIDs?: string;
-  }): Promise<ModelsAcceptanceCoefficient[]> {
-    if (!OrdersFbwModule._coefficientsDeprecationWarned) {
-      console.warn(
-        '[WB SDK] getAcceptanceCoefficients() is deprecated. Use tariffs module instead. Endpoint moved to common-api.wildberries.ru.'
-      );
-      OrdersFbwModule._coefficientsDeprecationWarned = true;
-    }
-    return this.client.get<ModelsAcceptanceCoefficient[]>(
-      'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients',
-      { params: options, rateLimitKey: 'orders-fbw.acceptanceCoefficients' }
-    );
-  }
 
   /**
    * Опции приёмки
@@ -153,16 +119,6 @@ export class OrdersFbwModule {
       data,
       { params: options, rateLimitKey: 'orders-fbw.postSupplies' }
     );
-  }
-
-  /**
-   * @deprecated Use {@link listSupplies} instead. This method will be removed in v3.0.0.
-   */
-  async createSupply(
-    data: ModelsSuppliesFiltersRequest,
-    options?: { limit?: number; offset?: number }
-  ): Promise<ModelsSupply[]> {
-    return this.listSupplies(data, options);
   }
 
   /**
