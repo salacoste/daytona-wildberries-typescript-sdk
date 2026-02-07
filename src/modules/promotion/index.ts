@@ -327,6 +327,9 @@ export class PromotionModule {
    *
    * <div class="description_important"> ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br> **Обновление**: Дата отключения перенесена с 15 января на 2 февраля 2026.<br><br> **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br> **Альтернатива**: Для работы с минус-фразами в кампаниях type 9 используйте соответствующие методы управления кампаниями с ручной ставкой. </div> Метод устанавливает и удаляет минус-фразы для кампании [с единой ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v1~1save-ad/post).<br><br> Данные фразы можно выбрать из списка запросов, по которым покупатели находили ваш товар. Список запросов можно получить в [статистике ключевых фраз](/openapi/analytics#tag/Statistika-po-prodvizheniyu/paths/~1adv~1v0~1stats~1keywords/get).<br> Отправка пустого массива удаляет все минус-фразы из кампании. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 1 запрос | 6 секунд | 5 запросов | </div>
    *
+   * @deprecated This method will be disabled by Wildberries API on February 2, 2026.
+   * Use setNormqueryMinus() for type 9 campaigns with manual bidding instead.
+   *
    * @param data - Request body data
    * @param [options] - Query parameters
    * @returns Успешно
@@ -342,6 +345,10 @@ export class PromotionModule {
     data: { excluded?: string[] },
     options?: { id: number }
   ): Promise<void> {
+    console.warn(
+      '[DEPRECATED] createAutoSetExcluded() will be disabled by Wildberries API on February 2, 2026. ' +
+        'Use setNormqueryMinus() for type 9 campaigns with manual bidding instead.'
+    );
     return this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, {
       params: options,
       rateLimitKey: 'promotion.postAdvAutoSetExcluded',
@@ -352,6 +359,9 @@ export class PromotionModule {
    * Изменение списка карточек товаров в кампании с единой ставкой
    *
    * <div class="description_important"> ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br> **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br> **Альтернатива**: Для работы с товарами в кампаниях type 9 используйте метод [Управление товарами в кампаниях](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1nms/patch). </div> Метод добавляет и удаляет карточки товаров в кампании с единой ставкой.<br><br> <div class="description_important"> Добавить можно только те карточки товаров, которые вернутся в <a href="/openapi/promotion#tag/Parametry-avtomaticheskih-kampanij/paths/~1adv~1v1~1auto~1getnmtoadd/get">списке карточек товаров для кампании с единой ставкой</a>.<br>Удалить единственную карточку товара из кампании нельзя. </div> Проверки по параметру `delete` не предусмотрено. Если пришел ответ со статус-кодом `200`, а изменений не произошло, проверьте, чтобы запрос соответствовал документации. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
+   *
+   * @deprecated This method will be disabled by Wildberries API on February 2, 2026.
+   * Use updateAuctionNm() for type 9 campaigns instead.
    *
    * @param data - Request body data
    * @param [options] - Query parameters
@@ -368,6 +378,10 @@ export class PromotionModule {
     data: { add?: number[]; delete?: number[] },
     options?: { id: number }
   ): Promise<void> {
+    console.warn(
+      '[DEPRECATED] createAutoUpdatenm() will be disabled by Wildberries API on February 2, 2026. ' +
+        'Use updateAuctionNm() for type 9 campaigns instead.'
+    );
     return this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, {
       params: options,
       rateLimitKey: 'promotion.postAdvAutoUpdatenm',

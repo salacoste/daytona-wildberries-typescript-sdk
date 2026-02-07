@@ -6,6 +6,9 @@ layout: doc
 
 # Лучшие практики работы с рекламными кампаниями
 
+> ⚠️ **v3.0.0**: Это руководство обновлено для SDK v3.0.0.
+> Если вы используете v2.x, см. [руководство по миграции](./migration-v3.md).
+
 Полное руководство по эффективному управлению рекламными кампаниями на Wildberries через SDK.
 
 ## Целевая аудитория
@@ -87,15 +90,15 @@ enum PlacementType {
          v
     [READY (4)]
          |
-         +---> [createAdvStart] ---> [ACTIVE (9)]
+         +---> [startCampaign] ---> [ACTIVE (9)]
          |                               |
-         +---> [createAdvPause] -------->+---> [PAUSED (11)]
+         +---> [pauseCampaign] -------->+---> [PAUSED (11)]
                                          |         |
-                                         |         +---> [createAdvStart] ---> [ACTIVE (9)]
+                                         |         +---> [startCampaign] ---> [ACTIVE (9)]
                                          |
-                                         +---> [createAdvStop] ---> [COMPLETED (7)]
+                                         +---> [stopCampaign] ---> [COMPLETED (7)]
                                          |
-                                         +---> [createAdvDelete] ---> [DELETING (-1)]
+                                         +---> [Удаление через ЛК] ---> [DELETING (-1)]
 ```
 
 ::: warning Важно
@@ -180,10 +183,10 @@ async function launchCampaign(advertId: number) {
 
     // Шаг 3: Запуск кампании
     console.log('Запуск кампании...');
-    await sdk.promotion.createAdvStart({ id: advertId });
+    await sdk.promotion.startCampaign({ id: advertId });
 
     // Шаг 4: Проверка статуса
-    const campaigns = await sdk.promotion.getAdvCount();
+    const campaigns = await sdk.promotion.getCampaigns();
     const activeCampaign = campaigns.adverts.find(
       a => a.advertId === advertId
     );
@@ -204,7 +207,7 @@ async function launchCampaign(advertId: number) {
 ```
 
 ::: danger Критично
-После пополнения бюджета кампания автоматически переходит в статус PAUSED (11). Необходимо явно вызвать `createAdvStart()` для активации.
+После пополнения бюджета кампания автоматически переходит в статус PAUSED (11). Необходимо явно вызвать `startCampaign()` для активации.
 :::
 
 ### Мониторинг активной кампании
@@ -212,7 +215,7 @@ async function launchCampaign(advertId: number) {
 ```typescript
 async function monitorCampaign(advertId: number) {
   // Получение текущего состояния
-  const campaigns = await sdk.promotion.getAdvCount();
+  const campaigns = await sdk.promotion.getCampaigns();
   const campaign = campaigns.adverts.find(a => a.advertId === advertId);
 
   if (!campaign) {
@@ -260,30 +263,31 @@ async function monitorCampaign(advertId: number) {
 ```typescript
 async function manageCampaignLifecycle(advertId: number) {
   // Пауза (можно возобновить)
-  await sdk.promotion.createAdvPause({ id: advertId });
+  await sdk.promotion.pauseCampaign({ id: advertId });
   console.log('Кампания на паузе (статус 11)');
 
   // Возобновление с паузы
-  await sdk.promotion.createAdvStart({ id: advertId });
+  await sdk.promotion.startCampaign({ id: advertId });
   console.log('Кампания возобновлена (статус 9)');
 
   // Остановка (завершение кампании)
-  await sdk.promotion.createAdvStop({ id: advertId });
+  await sdk.promotion.stopCampaign({ id: advertId });
   console.log('Кампания остановлена (статус 7)');
 
   // Удаление (только для статуса 4 - READY)
   // Если кампания активна, сначала нужно остановить
-  const campaigns = await sdk.promotion.getAdvCount();
+  const campaigns = await sdk.promotion.getCampaigns();
   const campaign = campaigns.adverts.find(a => a.advertId === advertId);
 
   if (campaign?.status !== 4) {
     console.log('Сначала останавливаем кампанию...');
-    await sdk.promotion.createAdvStop({ id: advertId });
+    await sdk.promotion.stopCampaign({ id: advertId });
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
 
-  await sdk.promotion.createAdvDelete({ id: advertId });
-  console.log('Кампания удалена (статус -1)');
+  // Удаление кампаний через SDK недоступно в v3.0.0
+  // Используйте личный кабинет Wildberries для удаления кампаний
+  console.log('Для удаления кампании используйте личный кабинет WB');
 }
 ```
 
@@ -291,15 +295,15 @@ async function manageCampaignLifecycle(advertId: number) {
 
 | Текущий статус | Доступные действия |
 |----------------|-------------------|
-| **READY (4)** | `createAdvStart()` → ACTIVE<br>`createAdvDelete()` → DELETING |
-| **ACTIVE (9)** | `createAdvPause()` → PAUSED<br>`createAdvStop()` → COMPLETED<br>Добавление фраз (только в этом статусе) |
-| **PAUSED (11)** | `createAdvStart()` → ACTIVE<br>`createAdvStop()` → COMPLETED<br>Пополнение бюджета |
+| **READY (4)** | `startCampaign()` → ACTIVE<br>Удаление через личный кабинет |
+| **ACTIVE (9)** | `pauseCampaign()` → PAUSED<br>`stopCampaign()` → COMPLETED<br>Добавление фраз (только в этом статусе) |
+| **PAUSED (11)** | `startCampaign()` → ACTIVE<br>`stopCampaign()` → COMPLETED<br>Пополнение бюджета |
 | **COMPLETED (7)** | Только просмотр статистики |
 
 ::: warning Важные ограничения
 - **Добавление ключевых фраз** возможно только в статусе ACTIVE (9)
 - **Пополнение бюджета** переводит кампанию в статус PAUSED (11)
-- **Удаление** возможно только для статуса READY (4)
+- **Удаление** возможно только через личный кабинет Wildberries
 :::
 
 ---
@@ -354,7 +358,7 @@ async function depositToCampaign(
 
     console.log(`✓ Пополнено ${amount}₽`);
     console.log('⚠ Кампания переведена в статус PAUSED (11)');
-    console.log('💡 Вызовите createAdvStart() для возобновления');
+    console.log('💡 Вызовите startCampaign() для возобновления');
 
     // Проверка нового баланса кампании
     const budget = await sdk.promotion.getAdvBudget({ id: advertId });
@@ -448,7 +452,7 @@ async function manageBudgetStrategy(advertId: number) {
     console.log('Баланс низкий, требуется пополнение');
 
     // Ставим на паузу перед пополнением
-    await sdk.promotion.createAdvPause({ id: advertId });
+    await sdk.promotion.pauseCampaign({ id: advertId });
 
     // Пополняем на 2 недели работы
     const refillAmount = dailyBudget * 14;
@@ -458,7 +462,7 @@ async function manageBudgetStrategy(advertId: number) {
     );
 
     // Возобновляем кампанию
-    await sdk.promotion.createAdvStart({ id: advertId });
+    await sdk.promotion.startCampaign({ id: advertId });
 
     console.log('✓ Автопополнение выполнено');
   }
@@ -488,7 +492,7 @@ async function manageBudgetStrategy(advertId: number) {
 ```
 
 ::: tip Лучшая практика
-Всегда ставьте кампанию на паузу (`createAdvPause`) перед пополнением бюджета, даже если она уже активна. Это предотвращает потенциальные ошибки синхронизации.
+Всегда ставьте кампанию на паузу (`pauseCampaign`) перед пополнением бюджета, даже если она уже активна. Это предотвращает потенциальные ошибки синхронизации.
 :::
 
 ---
@@ -543,7 +547,7 @@ async function updateUnifiedBid(advertId: number, newBid: number) {
 
     // Проверка применения
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const campaigns = await sdk.promotion.getAdvCount();
+    const campaigns = await sdk.promotion.getCampaigns();
     const updated = campaigns.adverts.find(a => a.advertId === advertId);
 
     console.log('Текущая ставка кампании:', updated?.bid / 100, '₽');
@@ -675,7 +679,7 @@ async function optimizeBids(advertId: number) {
   console.log(`  ROI: ${roi.toFixed(2)}`);
 
   // Стратегия оптимизации
-  const campaigns = await sdk.promotion.getAdvCount();
+  const campaigns = await sdk.promotion.getCampaigns();
   const campaign = campaigns.adverts.find(a => a.advertId === advertId);
   const currentBid = campaign?.bid || 0;
 
@@ -731,7 +735,7 @@ async function addSearchExcludedKeywords(
 ) {
   try {
     // Важно: кампания должна быть в статусе ACTIVE (9)
-    const campaigns = await sdk.promotion.getAdvCount();
+    const campaigns = await sdk.promotion.getCampaigns();
     const campaign = campaigns.adverts.find(a => a.advertId === advertId);
 
     if (campaign?.status !== 9) {
@@ -1332,7 +1336,7 @@ async function participateInPromotion(promotionId: number) {
 | `createBudgetDeposit` | 10 зап/мин | 6 сек | 10 |
 | `updateAdvBid` | 60 зап/мин | 1 сек | 60 |
 | `createSearchSetExcluded` | 30 зап/мин | 2 сек | 30 |
-| `getAdvCount` | 60 зап/мин | 1 сек | 60 |
+| `getCampaigns` | 60 зап/мин | 1 сек | 60 |
 
 ### Обработка RateLimitError
 
@@ -1494,22 +1498,22 @@ const stats = await queue.add(
 ```typescript
 async function robustCampaignOperation(advertId: number) {
   try {
-    await sdk.promotion.createAdvStart({ id: advertId });
+    await sdk.promotion.startCampaign({ id: advertId });
 
   } catch (error: any) {
     // Ошибка 1: Неправильный статус
     if (error.message?.includes('status')) {
       console.error('Ошибка: Кампания не в нужном статусе');
-      console.log('Решение: Проверьте текущий статус через getAdvCount()');
+      console.log('Решение: Проверьте текущий статус через getCampaigns()');
 
-      const campaigns = await sdk.promotion.getAdvCount();
+      const campaigns = await sdk.promotion.getCampaigns();
       const campaign = campaigns.adverts.find(a => a.advertId === advertId);
       console.log('Текущий статус:', campaign?.status);
 
       // Автоматическое исправление
       if (campaign?.status === 11) {
         console.log('Кампания на паузе, возобновляем...');
-        await sdk.promotion.createAdvStart({ id: advertId });
+        await sdk.promotion.startCampaign({ id: advertId });
       }
     }
 
@@ -1594,7 +1598,7 @@ async function safePromotionOperation<T>(
 
 // Использование
 const result = await safePromotionOperation(
-  () => sdk.promotion.createAdvStart({ id: 123 }),
+  () => sdk.promotion.startCampaign({ id: 123 }),
   'Запуск кампании'
 );
 
@@ -1688,7 +1692,7 @@ async function fullCampaignLifecycle() {
 
   // ШАГ 6: Запуск кампании
   console.log('\n5. Запуск кампании...');
-  await sdk.promotion.createAdvStart({ id: advertId });
+  await sdk.promotion.startCampaign({ id: advertId });
   console.log('   ✓ Кампания запущена (статус ACTIVE - 9)');
 
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -1758,7 +1762,7 @@ async function fullCampaignLifecycle() {
   // ШАГ 11: Оптимизация ставок
   console.log('\n10. Оптимизация ставок...');
 
-  const campaigns = await sdk.promotion.getAdvCount();
+  const campaigns = await sdk.promotion.getCampaigns();
   const currentCampaign = campaigns.adverts.find(a => a.advertId === advertId);
   const currentBid = currentCampaign?.bid || 300;
 
@@ -1773,21 +1777,21 @@ async function fullCampaignLifecycle() {
 
   // ШАГ 12: Пауза кампании
   console.log('\n11. Приостановка кампании...');
-  await sdk.promotion.createAdvPause({ id: advertId });
+  await sdk.promotion.pauseCampaign({ id: advertId });
   console.log('   ✓ Кампания на паузе (статус PAUSED - 11)');
 
   await new Promise(resolve => setTimeout(resolve, 2000));
 
   // ШАГ 13: Возобновление
   console.log('\n12. Возобновление кампании...');
-  await sdk.promotion.createAdvStart({ id: advertId });
+  await sdk.promotion.startCampaign({ id: advertId });
   console.log('   ✓ Кампания возобновлена (статус ACTIVE - 9)');
 
   await new Promise(resolve => setTimeout(resolve, 2000));
 
   // ШАГ 14: Остановка
   console.log('\n13. Остановка кампании...');
-  await sdk.promotion.createAdvStop({ id: advertId });
+  await sdk.promotion.stopCampaign({ id: advertId });
   console.log('   ✓ Кампания остановлена (статус COMPLETED - 7)');
 
   console.log('\n=== Жизненный цикл завершен ===');

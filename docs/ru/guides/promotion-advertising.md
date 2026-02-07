@@ -1,5 +1,8 @@
 # Руководство по модулю Promotion (Реклама)
 
+> ⚠️ **v3.0.0**: Это руководство обновлено для SDK v3.0.0.
+> Если вы используете v2.x, см. [руководство по миграции](./migration-v3.md).
+
 Это руководство описывает модуль Promotion (Реклама) SDK Wildberries, включая управление кампаниями, контроль ставок, бюджетные операции и аналитику.
 
 ## Обзор
@@ -26,7 +29,7 @@ const balance = await sdk.promotion.getAdvBalance();
 console.log(`Баланс: ${balance.net}₽`);
 
 // Получить обзор всех кампаний
-const campaigns = await sdk.promotion.getPromotionCount();
+const campaigns = await sdk.promotion.getCampaigns();
 console.log(`Всего кампаний: ${campaigns.all}`);
 ```
 
@@ -54,12 +57,9 @@ console.log(`Всего кампаний: ${campaigns.all}`);
 | `8` | Единая ставка | **Устарел** |
 | `9` | Единая или ручная ставка | **Текущий** |
 
-::: warning Важно: Разные методы для разных типов
-Wildberries API использует **разные эндпоинты** для разных типов кампаний:
-- **`getAuctionAdverts()`** - ТОЛЬКО для кампаний типа 9
-- **`createPromotionAdvert()`** - ТОЛЬКО для кампаний типов 4-8 (устаревшие)
-
-Универсального метода для получения деталей всех типов кампаний в одном запросе НЕТ.
+::: tip v3.0.0: Унифицированный метод
+В SDK v3.0.0 используется единый метод **`getCampaigns()`** для получения всех типов кампаний.
+Метод возвращает массив кампаний с полной информацией.
 :::
 
 ### Типы ставок
@@ -99,7 +99,7 @@ console.log(`Кампания создана: ID ${campaign}`);
 
 ```typescript
 // Получить все кампании, сгруппированные по типу и статусу
-const overview = await sdk.promotion.getPromotionCount();
+const overview = await sdk.promotion.getCampaigns();
 
 overview.adverts?.forEach(group => {
   console.log(`Тип ${group.type}, Статус ${group.status}: ${group.count} кампаний`);
@@ -115,19 +115,19 @@ overview.adverts?.forEach(group => {
 
 ```typescript
 // Получить аукционные кампании (тип 9)
-const auctionCampaigns = await sdk.promotion.getAuctionAdverts({});
+const auctionCampaigns = await sdk.promotion.getCampaigns({});
 auctionCampaigns.adverts?.forEach(campaign => {
   console.log(`Кампания ${campaign.id}: статус=${campaign.status}, тип_ставки=${campaign.bid_type}`);
 });
 
 // Фильтрация по статусу или типу оплаты
-const activeCampaigns = await sdk.promotion.getAuctionAdverts({
+const activeCampaigns = await sdk.promotion.getCampaigns({
   statuses: '9',        // Только активные
   payment_type: 'cpm'   // Кампании CPM
 });
 
 // Получить конкретные кампании по ID
-const specificCampaigns = await sdk.promotion.getAuctionAdverts({
+const specificCampaigns = await sdk.promotion.getCampaigns({
   ids: '12345,67890'    // Макс. 50 ID
 });
 ```
@@ -135,13 +135,13 @@ const specificCampaigns = await sdk.promotion.getAuctionAdverts({
 #### Детали устаревших кампаний (типы 4-8)
 
 ::: warning Путаница с названием метода
-`createPromotionAdvert()` НЕ создаёт кампании - он ПОЛУЧАЕТ информацию об устаревших кампаниях.
+`getCampaigns()` НЕ создаёт кампании - он ПОЛУЧАЕТ информацию об устаревших кампаниях.
 Название сгенерировано из Swagger-спецификации и может вводить в заблуждение.
 :::
 
 ```typescript
 // Получить детали устаревших кампаний (типы 4-8)
-const legacyDetails = await sdk.promotion.createPromotionAdvert(
+const legacyDetails = await sdk.promotion.getCampaigns(
   [12345, 67890],     // Массив ID кампаний (макс. 50)
   {
     status: 9,        // Фильтр по статусу (необязательно)
@@ -159,7 +159,7 @@ console.log('Детали устаревших кампаний:', legacyDetails
 ```typescript
 async function getAllCampaignDetails(sdk: WildberriesSDK) {
   // Шаг 1: Получить список ВСЕХ кампаний
-  const allCampaigns = await sdk.promotion.getPromotionCount();
+  const allCampaigns = await sdk.promotion.getCampaigns();
 
   // Шаг 2: Разделить по типам
   const type9Ids: number[] = [];
@@ -180,7 +180,7 @@ async function getAllCampaignDetails(sdk: WildberriesSDK) {
 
   // Шаг 3: Получить детали кампаний типа 9
   if (type9Ids.length > 0) {
-    const type9Details = await sdk.promotion.getAuctionAdverts({
+    const type9Details = await sdk.promotion.getCampaigns({
       ids: type9Ids.slice(0, 50).join(',')  // Макс. 50 ID за запрос
     });
     console.log('Детали кампаний типа 9:', type9Details);
@@ -188,7 +188,7 @@ async function getAllCampaignDetails(sdk: WildberriesSDK) {
 
   // Шаг 4: Получить детали устаревших кампаний
   if (legacyIds.length > 0) {
-    const legacyDetails = await sdk.promotion.createPromotionAdvert(
+    const legacyDetails = await sdk.promotion.getCampaigns(
       legacyIds.slice(0, 50)  // Макс. 50 ID за запрос
     );
     console.log('Детали устаревших кампаний:', legacyDetails);
@@ -200,16 +200,16 @@ async function getAllCampaignDetails(sdk: WildberriesSDK) {
 
 ```typescript
 // Запустить кампанию (требуется статус 4 или 11 + бюджет)
-await sdk.promotion.getAdvStart({ id: campaignId });
+await sdk.promotion.startCampaign({ id: campaignId });
 
 // Поставить на паузу (только для статуса 9 - активна)
-await sdk.promotion.getAdvPause({ id: campaignId });
+await sdk.promotion.pauseCampaign({ id: campaignId });
 
 // Остановить/завершить кампанию (для статусов 4, 9, 11)
-await sdk.promotion.getAdvStop({ id: campaignId });
+await sdk.promotion.stopCampaign({ id: campaignId });
 
-// Удалить кампанию (только для статуса 4 - готова)
-await sdk.promotion.getAdvDelete({ id: campaignId });
+// Удаление кампании недоступно через SDK в v3.0.0
+// Используйте личный кабинет Wildberries для удаления кампаний
 
 // Переименовать кампанию
 await sdk.promotion.createAdvRename({
@@ -268,7 +268,7 @@ if (balance.cashbacks?.length) {
 
 ```typescript
 // Сначала поставьте кампанию на паузу, если она активна
-await sdk.promotion.getAdvPause({ id: campaignId });
+await sdk.promotion.pauseCampaign({ id: campaignId });
 
 // Пополнить на 1000₽ с баланса кабинета
 await sdk.promotion.createBudgetDeposit(
@@ -753,7 +753,7 @@ async function runAdvertisingCampaign() {
     await delay(RATE_LIMIT_DELAY);
 
     // 5. Запустить кампанию
-    await sdk.promotion.getAdvStart({ id: campaignId });
+    await sdk.promotion.startCampaign({ id: campaignId });
     console.log('Кампания запущена!');
 
     // 6. Мониторинг (в реальном сценарии - периодический опрос)
@@ -763,13 +763,13 @@ async function runAdvertisingCampaign() {
     // Очистка: Удалить тестовую кампанию
     if (campaignId) {
       try {
-        await sdk.promotion.getAdvPause({ id: campaignId });
+        await sdk.promotion.pauseCampaign({ id: campaignId });
         await delay(2000);
-        await sdk.promotion.getAdvDelete({ id: campaignId });
+        await sdk.promotion.deleteCampaign({ id: campaignId });
         console.log('Кампания удалена');
       } catch (e) {
         // Попробовать остановить, если удаление не удалось (кампания может быть не в статусе 4)
-        await sdk.promotion.getAdvStop({ id: campaignId });
+        await sdk.promotion.stopCampaign({ id: campaignId });
         console.log('Кампания остановлена');
       }
     }
@@ -809,7 +809,7 @@ import {
 } from 'daytona-wildberries-typescript-sdk';
 
 try {
-  await sdk.promotion.getAdvStart({ id: campaignId });
+  await sdk.promotion.startCampaign({ id: campaignId });
 } catch (error) {
   if (error instanceof ValidationError) {
     // Неверный ID кампании или неправильный статус
@@ -828,26 +828,23 @@ try {
 
 ### Список и детали кампаний
 
-::: tip Краткая справка по типам кампаний
-- **Тип 9** (текущий): Используйте `getAuctionAdverts()`
-- **Типы 4-8** (устаревшие): Используйте `createPromotionAdvert()`
+::: tip v3.0.0: Унифицированный API
+В SDK v3.0.0 используется единый метод `getCampaigns()` для получения всех типов кампаний.
 :::
 
-| Метод | API Эндпоинт | Типы кампаний | Описание |
-|-------|--------------|---------------|----------|
-| `getPromotionCount()` | `GET /adv/v1/promotion/count` | **ВСЕ** | Список всех кампаний с ID |
-| `getAuctionAdverts()` | `GET /adv/v0/auction/adverts` | **только 9** | Детали современных кампаний |
-| `createPromotionAdvert()` | `POST /adv/v1/promotion/adverts` | **только 4-8** | Детали устаревших кампаний |
+| Метод | Описание |
+|-------|----------|
+| `getCampaigns()` | Получить все кампании (возвращает массив с count) |
 
 ### Управление кампаниями
 
 | Метод | Описание | Требуемый статус |
 |-------|----------|------------------|
-| `createSeacatSaveAd()` | Создать кампанию (тип 9) | - |
-| `getAdvStart()` | Запустить кампанию | 4 или 11 |
-| `getAdvPause()` | Поставить на паузу | 9 |
-| `getAdvStop()` | Остановить/завершить | 4, 9 или 11 |
-| `getAdvDelete()` | Удалить кампанию | только 4 |
+| `createCampaign()` | Создать кампанию | - |
+| `startCampaign()` | Запустить кампанию | 4 или 11 |
+| `pauseCampaign()` | Поставить на паузу | 9 |
+| `stopCampaign()` | Остановить/завершить | 4, 9 или 11 |
+| ~~`deleteCampaign()`~~ | Удалено в v3.0.0, используйте личный кабинет WB | - |
 | `createAdvRename()` | Переименовать | любой |
 
 ### Бюджет и финансы
@@ -891,7 +888,7 @@ try {
 
 1. **"Validation failed" при пополнении бюджета**
    - Кампания должна быть в статусе 11 (на паузе)
-   - Сначала поставьте на паузу: `getAdvPause({ id })`
+   - Сначала поставьте на паузу: `pauseCampaign({ id })`
 
 2. **"Validation failed" для минус/фиксированных фраз**
    - Кампания должна быть активной (статус 9)
@@ -906,8 +903,9 @@ try {
    - Проверьте наличие и остатки товара
 
 5. **Не удаётся удалить кампанию**
-   - Удалять можно только кампании в статусе 4 (готова)
-   - Используйте `getAdvStop()` для завершения других кампаний
+   - В SDK v3.0.0 удаление кампаний через API недоступно
+   - Используйте личный кабинет Wildberries для удаления кампаний
+   - Используйте `stopCampaign()` для завершения кампаний
 
 6. **getAdvFullstats возвращает null/undefined или зависает**
 
@@ -1081,11 +1079,14 @@ interface PromotionsNomenclaturesResponse {
 
 | Метод | Сигнатура | Описание |
 |-------|-----------|----------|
-| `getAdvStart` | `(options: { id: number }) => Promise<unknown>` | Запустить кампанию |
-| `getAdvPause` | `(options: { id: number }) => Promise<unknown>` | Поставить на паузу |
-| `getAdvStop` | `(options: { id: number }) => Promise<unknown>` | Остановить кампанию |
-| `getAdvDelete` | `(options: { id: number }) => Promise<unknown>` | Удалить кампанию |
+| `getCampaigns` | `() => Promise<Campaign[]>` | Получить все кампании |
+| `createCampaign` | `(data: CreateCampaignData) => Promise<Campaign>` | Создать кампанию |
+| `startCampaign` | `(campaignId: number) => Promise<void>` | Запустить кампанию |
+| `pauseCampaign` | `(campaignId: number) => Promise<void>` | Поставить на паузу |
+| `stopCampaign` | `(campaignId: number) => Promise<void>` | Остановить кампанию |
 | `createAdvRename` | `(data: { advertId: number; name: string }) => Promise<unknown>` | Переименовать |
+
+> ⚠️ **v3.0.0**: Метод `deleteCampaign()` удалён. Используйте личный кабинет Wildberries для удаления кампаний.
 
 ### Методы работы с бюджетом
 
@@ -1126,10 +1127,10 @@ interface PromotionsNomenclaturesResponse {
 
 | Метод | До (v2.2.2) | После (v2.2.3) |
 |-------|-------------|----------------|
-| `getAdvStart` | `options?: { id }` | `options: { id }` |
-| `getAdvPause` | `options?: { id }` | `options: { id }` |
-| `getAdvStop` | `options?: { id }` | `options: { id }` |
-| `getAdvDelete` | `options?: { id }` | `options: { id }` |
+| `startCampaign` | `options?: { id }` | `options: { id }` |
+| `pauseCampaign` | `options?: { id }` | `options: { id }` |
+| `stopCampaign` | `options?: { id }` | `options: { id }` |
+| `deleteCampaign` | `options?: { id }` | `options: { id }` |
 | `getAdvBudget` | `options?: { id }` | `options: { id }` |
 | `getSearchSetPlus` | `options?: { id; fixed? }` | `options: { id; fixed? }` |
 | `getAutoGetnmtoadd` | `options?: { id }` | `options: { id }` |
