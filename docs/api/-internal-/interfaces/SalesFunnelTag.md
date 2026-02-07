@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelTag
 
-Defined in: [types/analytics.types.ts:1680](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1680)
+Defined in: [types/analytics.types.ts:1355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L1355)
 
 Ярлык товара (v3)
 
@@ -10,5 +10,5 @@ Defined in: [types/analytics.types.ts:1680](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID ярлыка | [types/analytics.types.ts:1682](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1682) |
-| <a id="name"></a> `name` | `string` | Название ярлыка | [types/analytics.types.ts:1684](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1684) |
+| <a id="id"></a> `id` | `number` | ID ярлыка | [types/analytics.types.ts:1357](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L1357) |
+| <a id="name"></a> `name` | `string` | Название ярлыка | [types/analytics.types.ts:1359](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L1359) |

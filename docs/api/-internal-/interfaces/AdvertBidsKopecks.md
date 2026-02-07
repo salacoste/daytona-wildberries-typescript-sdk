@@ -2,7 +2,7 @@
 
 # Interface: AdvertBidsKopecks
 
-Defined in: [types/promotion.types.ts:1114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/promotion.types.ts#L1114)
+Defined in: [types/promotion.types.ts:1114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/promotion.types.ts#L1114)
 
 Ставки в копейках
 
@@ -10,5 +10,5 @@ Defined in: [types/promotion.types.ts:1114](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="search"></a> `search` | `number` | Ставка в поиске | [types/promotion.types.ts:1116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/promotion.types.ts#L1116) |
-| <a id="recommendations"></a> `recommendations` | `number` | Ставка в рекомендациях | [types/promotion.types.ts:1118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/promotion.types.ts#L1118) |
+| <a id="search"></a> `search` | `number` | Ставка в поиске | [types/promotion.types.ts:1116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/promotion.types.ts#L1116) |
+| <a id="recommendations"></a> `recommendations` | `number` | Ставка в рекомендациях | [types/promotion.types.ts:1118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/promotion.types.ts#L1118) |

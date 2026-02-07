@@ -2,7 +2,7 @@
 
 # Class: FinancesModule
 
-Defined in: [modules/finances/index.ts:19](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L19)
+Defined in: [modules/finances/index.ts:19](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L19)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/finances/index.ts:19](https://github.com/salacoste/daytona-
 new FinancesModule(client: BaseClient): FinancesModule;
 ```
 
-Defined in: [modules/finances/index.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L20)
+Defined in: [modules/finances/index.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L20)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/finances/index.ts:20](https://github.com/salacoste/daytona-
 getAccountBalance(): Promise<AccountBalanceResponse>;
 ```
 
-Defined in: [modules/finances/index.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L39)
+Defined in: [modules/finances/index.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L39)
 
 Получить баланс продавца
 
@@ -85,7 +85,7 @@ getSupplierReportDetailByPeriod(options: {
 }): Promise<DetailReportItem[]>;
 ```
 
-Defined in: [modules/finances/index.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L68)
+Defined in: [modules/finances/index.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L68)
 
 Отчёт о продажах по реализации
 
@@ -141,41 +141,6 @@ console.log(result);
 
 ***
 
-### ~~getSupplierReportdetailbyperiod()~~
-
-```ts
-getSupplierReportdetailbyperiod(options: {
-  dateFrom: string;
-  dateTo: string;
-  limit?: number;
-  rrdid?: number;
-  period?: "weekly" | "daily";
-}): Promise<DetailReportItem[]>;
-```
-
-Defined in: [modules/finances/index.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L84)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `options` | \{ `dateFrom`: `string`; `dateTo`: `string`; `limit?`: `number`; `rrdid?`: `number`; `period?`: `"weekly"` \| `"daily"`; \} |
-| `options.dateFrom` | `string` |
-| `options.dateTo` | `string` |
-| `options.limit?` | `number` |
-| `options.rrdid?` | `number` |
-| `options.period?` | `"weekly"` \| `"daily"` |
-
-#### Returns
-
-`Promise`\<[`DetailReportItem`](../-internal-/interfaces/DetailReportItem.md)[]\>
-
-#### Deprecated
-
-Use getSupplierReportDetailByPeriod instead. Will be removed in v3.0.0.
-
-***
-
 ### getDocumentsCategories()
 
 ```ts
@@ -184,7 +149,7 @@ getDocumentsCategories(options?: {
 }): Promise<GetCategories>;
 ```
 
-Defined in: [modules/finances/index.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L112)
+Defined in: [modules/finances/index.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L99)
 
 Категории документов
 
@@ -248,7 +213,7 @@ getDocumentsList(options?: {
 }): Promise<GetList>;
 ```
 
-Defined in: [modules/finances/index.ts:143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L143)
+Defined in: [modules/finances/index.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L130)
 
 Список документов
 
@@ -321,7 +286,7 @@ getDocumentsDownload(options: {
 }): Promise<GetDoc>;
 ```
 
-Defined in: [modules/finances/index.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L181)
+Defined in: [modules/finances/index.ts:168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L168)
 
 Получить документ
 
@@ -379,7 +344,7 @@ console.log(result);
 createDownloadAll(data?: RequestDownload): Promise<GetDocs>;
 ```
 
-Defined in: [modules/finances/index.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/finances/index.ts#L208)
+Defined in: [modules/finances/index.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/finances/index.ts#L195)
 
 Получить документы
 

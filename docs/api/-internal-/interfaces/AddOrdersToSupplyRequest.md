@@ -2,7 +2,7 @@
 
 # Interface: AddOrdersToSupplyRequest
 
-Defined in: [types/orders-fbs.types.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbs.types.ts#L136)
+Defined in: [types/orders-fbs.types.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-fbs.types.ts#L140)
 
 Request body for adding orders to a supply
 
@@ -10,4 +10,4 @@ Request body for adding orders to a supply
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | List of order IDs to add | [types/orders-fbs.types.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbs.types.ts#L138) |
+| <a id="orders"></a> `orders` | `number`[] | List of order IDs to add | [types/orders-fbs.types.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-fbs.types.ts#L142) |

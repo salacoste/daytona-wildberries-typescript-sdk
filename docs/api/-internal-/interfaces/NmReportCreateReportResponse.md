@@ -2,10 +2,10 @@
 
 # Interface: NmReportCreateReportResponse
 
-Defined in: [types/analytics.types.ts:1117](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1117)
+Defined in: [types/analytics.types.ts:792](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L792)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | `string` | Уведомление, что началась генерация отчёта | [types/analytics.types.ts:1119](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1119) |
+| <a id="data"></a> `data` | `string` | Уведомление, что началась генерация отчёта | [types/analytics.types.ts:794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L794) |

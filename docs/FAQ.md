@@ -17,7 +17,7 @@ layout: doc
 Install via npm:
 
 ```bash
-npm install @daytona/wildberries-typescript-sdk
+npm install daytona-wildberries-typescript-sdk
 ```
 
 For TypeScript projects, ensure you have TypeScript ≥5.0 installed:
@@ -56,7 +56,7 @@ npm install --save-dev typescript@^5.0.0
 ### 4. How do I initialize the SDK?
 
 ```typescript
-import { WildberriesSDK } from '@daytona/wildberries-typescript-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY // or your API key
@@ -78,7 +78,7 @@ console.log(ping); // { Status: 'OK', TS: '2024-12-03T15:22:47Z' }
 Yes! The SDK works with plain JavaScript:
 
 ```javascript
-const { WildberriesSDK } = require('@daytona/wildberries-typescript-sdk');
+const { WildberriesSDK } = require('daytona-wildberries-typescript-sdk');
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -181,7 +181,7 @@ console.log(categories.data); // Array of category objects
 ### 12. How do I create a new product?
 
 ```typescript
-import type { CreateProductRequest } from '@daytona/wildberries-typescript-sdk';
+import type { CreateProductRequest } from 'daytona-wildberries-typescript-sdk';
 
 const newProduct: CreateProductRequest = {
   brandName: 'MyBrand',
@@ -375,7 +375,7 @@ import {
   RateLimitError,
   ValidationError,
   NetworkError
-} from '@daytona/wildberries-typescript-sdk';
+} from 'daytona-wildberries-typescript-sdk';
 
 try {
   await sdk.products.createCardsUpload(data);

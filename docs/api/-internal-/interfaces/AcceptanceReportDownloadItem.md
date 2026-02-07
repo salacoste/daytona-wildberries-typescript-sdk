@@ -2,7 +2,7 @@
 
 # Interface: AcceptanceReportDownloadItem
 
-Defined in: [types/reports.types.ts:705](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L705)
+Defined in: [types/reports.types.ts:673](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L673)
 
 Acceptance report download item (extracted from getTasksDownload2 inline type)
 
@@ -14,10 +14,10 @@ EPIC 43 - Extracted from inline type literal
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="count"></a> `count?` | `number` | Количество | [types/reports.types.ts:707](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L707) |
-| <a id="gicreatedate"></a> `giCreateDate?` | `string` | Дата создания приёмки | [types/reports.types.ts:709](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L709) |
-| <a id="incomeid"></a> `incomeId?` | `number` | ID поставки | [types/reports.types.ts:711](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L711) |
-| <a id="nmid"></a> `nmID?` | `number` | Артикул WB | [types/reports.types.ts:713](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L713) |
-| <a id="shkcreatedate"></a> `shkCreateDate?` | `string` | Дата создания ШК | [types/reports.types.ts:715](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L715) |
-| <a id="subjectname"></a> `subjectName?` | `string` | Предмет | [types/reports.types.ts:717](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L717) |
-| <a id="total"></a> `total?` | `number` | Сумма | [types/reports.types.ts:719](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L719) |
+| <a id="count"></a> `count?` | `number` | Количество | [types/reports.types.ts:675](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L675) |
+| <a id="gicreatedate"></a> `giCreateDate?` | `string` | Дата создания приёмки | [types/reports.types.ts:677](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L677) |
+| <a id="incomeid"></a> `incomeId?` | `number` | ID поставки | [types/reports.types.ts:679](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L679) |
+| <a id="nmid"></a> `nmID?` | `number` | Артикул WB | [types/reports.types.ts:681](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L681) |
+| <a id="shkcreatedate"></a> `shkCreateDate?` | `string` | Дата создания ШК | [types/reports.types.ts:683](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L683) |
+| <a id="subjectname"></a> `subjectName?` | `string` | Предмет | [types/reports.types.ts:685](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L685) |
+| <a id="total"></a> `total?` | `number` | Сумма | [types/reports.types.ts:687](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L687) |

@@ -2,10 +2,10 @@
 
 # Interface: NmReportRetryReportRequest
 
-Defined in: [types/analytics.types.ts:1112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1112)
+Defined in: [types/analytics.types.ts:787](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L787)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="downloadid"></a> `downloadId?` | `string` | ID отчёта | [types/analytics.types.ts:1114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1114) |
+| <a id="downloadid"></a> `downloadId?` | `string` | ID отчёта | [types/analytics.types.ts:789](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L789) |

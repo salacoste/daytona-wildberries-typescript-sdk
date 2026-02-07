@@ -680,7 +680,7 @@ JavaScript runtime для серверной разработки. SDK треб�
 ### npm (Node Package Manager)
 Менеджер пакетов для JavaScript. SDK распространяется через реестр npm.
 
-**Команда:** `npm install @daytona/wildberries-typescript-sdk`
+**Команда:** `npm install daytona-wildberries-typescript-sdk`
 
 ---
 

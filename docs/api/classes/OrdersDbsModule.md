@@ -2,7 +2,7 @@
 
 # Class: OrdersDbsModule
 
-Defined in: [modules/orders-dbs/index.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L81)
+Defined in: [modules/orders-dbs/index.ts:69](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L69)
 
 Orders DBS Module for managing Delivery by Seller orders
 
@@ -31,7 +31,7 @@ const clientInfo = await sdk.ordersDBS.getClientInfo([123456]);
 new OrdersDbsModule(client: BaseClient): OrdersDbsModule;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L82)
+Defined in: [modules/orders-dbs/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L70)
 
 #### Parameters
 
@@ -51,7 +51,7 @@ Defined in: [modules/orders-dbs/index.ts:82](https://github.com/salacoste/dayton
 getNewOrders(): Promise<GetNewOrdersResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:115](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L115)
+Defined in: [modules/orders-dbs/index.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L103)
 
 Get list of new DBS assembly tasks
 
@@ -107,7 +107,7 @@ for (const order of newOrders.orders ?? []) {
 getOrders(params: GetOrdersParams): Promise<GetOrdersResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:162](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L162)
+Defined in: [modules/orders-dbs/index.ts:150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L150)
 
 Get completed DBS orders with pagination and date filtering
 
@@ -177,7 +177,7 @@ do {
 getClientInfo(orderIds: number[]): Promise<GetClientInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L223)
+Defined in: [modules/orders-dbs/index.ts:211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L211)
 
 Get customer contact information for DBS orders
 
@@ -242,7 +242,7 @@ for (const client of clientInfo.orders ?? []) {
 getB2BInfo(orderIds: number[]): Promise<GetB2BInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L273)
+Defined in: [modules/orders-dbs/index.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L261)
 
 Get B2B buyer information for DBS orders
 
@@ -306,399 +306,13 @@ for (const result of b2bInfo.results ?? []) {
 
 ***
 
-### ~~getMeta()~~
-
-```ts
-getMeta(orderId: number): Promise<GetOrderMetaResponse>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L317)
-
-Get order metadata
-
-Returns metadata associated with an order including IMEI, UIN, GTIN,
-SGTIN, and customs declaration information.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to get metadata for |
-
-#### Returns
-
-`Promise`\<[`GetOrderMetaResponse`](../-internal-/interfaces/GetOrderMetaResponse.md)\>
-
-Promise resolving to order metadata
-
-#### Deprecated
-
-Use [getMetaBulk](#getmetabulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId is not greater than 0
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-const meta = await sdk.ordersDBS.getMeta(123456);
-if (meta.meta?.imei?.value) {
-  console.log(`IMEI: ${meta.meta.imei.value}`);
-}
-```
-
-***
-
-### ~~deleteMeta()~~
-
-```ts
-deleteMeta(orderId: number, key: DBSMetadataKey): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:348](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L348)
-
-Delete specific metadata from an order
-
-Removes a metadata key from the order. Valid keys are:
-imei, uin, gtin, sgtin, customsDeclaration
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to delete metadata from |
-| `key` | [`DBSMetadataKey`](../-internal-/type-aliases/DBSMetadataKey.md) | Metadata key to delete |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise resolving to void on success
-
-#### Deprecated
-
-Use [deleteMetaBulk](#deletemetabulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId is not greater than 0 or key is invalid
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-await sdk.ordersDBS.deleteMeta(123456, 'imei');
-console.log('IMEI metadata deleted');
-```
-
-***
-
-### ~~setSgtin()~~
-
-```ts
-setSgtin(orderId: number, sgtins: string[]): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:384](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L384)
-
-Set SGTIN marking codes for an order
-
-Sets one or more SGTIN (Serialized Global Trade Item Number) marking codes.
-Each SGTIN must be 16-135 characters. Maximum 24 SGTINs per order.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to set SGTIN for |
-| `sgtins` | `string`[] | Array of SGTIN codes (1-24 items, each 16-135 characters) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise resolving to void on success
-
-#### Deprecated
-
-Use [setSgtinBulk](#setsgtinbulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId, sgtins array, or individual sgtin is invalid
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-await sdk.ordersDBS.setSgtin(123456, ['1234567890123456']);
-console.log('SGTIN set successfully');
-```
-
-***
-
-### ~~setUin()~~
-
-```ts
-setUin(orderId: number, uin: string): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L427)
-
-Set UIN code for an order
-
-Sets the UIN (Unique Identification Number) for the order.
-UIN must be exactly 16 characters.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to set UIN for |
-| `uin` | `string` | UIN code (exactly 16 characters) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise resolving to void on success
-
-#### Deprecated
-
-Use [setUinBulk](#setuinbulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId or uin is invalid
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-await sdk.ordersDBS.setUin(123456, '1234567890123456');
-console.log('UIN set successfully');
-```
-
-***
-
-### ~~setImei()~~
-
-```ts
-setImei(orderId: number, imei: string): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:464](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L464)
-
-Set IMEI code for an order
-
-Sets the IMEI (International Mobile Equipment Identity) for the order.
-IMEI must be exactly 15 characters.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to set IMEI for |
-| `imei` | `string` | IMEI code (exactly 15 characters) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise resolving to void on success
-
-#### Deprecated
-
-Use [setImeiBulk](#setimeibulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId or imei is invalid
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-await sdk.ordersDBS.setImei(123456, '123456789012345');
-console.log('IMEI set successfully');
-```
-
-***
-
-### ~~setGtin()~~
-
-```ts
-setGtin(orderId: number, gtin: string): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L501)
-
-Set GTIN code for an order
-
-Sets the GTIN (Global Trade Item Number) for the order.
-GTIN must be exactly 13 characters.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to set GTIN for |
-| `gtin` | `string` | GTIN code (exactly 13 characters) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise resolving to void on success
-
-#### Deprecated
-
-Use [setGtinBulk](#setgtinbulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId or gtin is invalid
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-await sdk.ordersDBS.setGtin(123456, '1234567890123');
-console.log('GTIN set successfully');
-```
-
-***
-
-### ~~setCustomsDeclaration()~~
-
-```ts
-setCustomsDeclaration(orderId: number, customsDeclaration: string): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:538](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L538)
-
-Set customs declaration for an order
-
-Sets the customs declaration number for the order.
-Must be 1-50 characters.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `orderId` | `number` | Order ID to set customs declaration for |
-| `customsDeclaration` | `string` | Customs declaration number (1-50 characters) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Promise resolving to void on success
-
-#### Deprecated
-
-Use [setCustomsDeclarationBulk](#setcustomsdeclarationbulk) instead. This endpoint will be removed on April 13, 2026.
-
-#### Throws
-
-When orderId or customsDeclaration is invalid
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When network request fails
-
-#### Example
-
-```typescript
-await sdk.ordersDBS.setCustomsDeclaration(123456, 'CD-123456789');
-console.log('Customs declaration set successfully');
-```
-
-***
-
 ### getGroupsInfo()
 
 ```ts
 getGroupsInfo(request: OrderGroupsRequest): Promise<OrderGroupsResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:569](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L569)
+Defined in: [modules/orders-dbs/index.ts:294](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L294)
 
 Get paid delivery group information
 
@@ -728,7 +342,7 @@ const groups = await sdk.ordersDBS.getGroupsInfo({ orders: [123456] });
 getDeliveryDates(request: DeliveryDatesRequest): Promise<DeliveryDatesInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:588](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L588)
+Defined in: [modules/orders-dbs/index.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L311)
 
 Get delivery dates for DBS orders
 
@@ -758,7 +372,7 @@ const dates = await sdk.ordersDBS.getDeliveryDates({ orders: [123456] });
 getMetaBulk(request: GetMetaBulkRequest): Promise<GetOrderMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:614](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L614)
+Defined in: [modules/orders-dbs/index.ts:337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L337)
 
 Get metadata for multiple orders (bulk)
 
@@ -791,7 +405,7 @@ const meta = await sdk.ordersDBS.getMetaBulk({ orders: [123456, 234567] });
 deleteMetaBulk(request: DeleteMetaBulkRequest): Promise<DeleteMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:636](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L636)
+Defined in: [modules/orders-dbs/index.ts:359](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L359)
 
 Delete metadata for multiple orders (bulk)
 
@@ -824,7 +438,7 @@ const result = await sdk.ordersDBS.deleteMetaBulk({ orders: [123456], key: 'imei
 setSgtinBulk(request: SetSgtinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:660](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L660)
+Defined in: [modules/orders-dbs/index.ts:383](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L383)
 
 Set SGTIN codes for multiple orders (bulk)
 
@@ -859,7 +473,7 @@ const result = await sdk.ordersDBS.setSgtinBulk({
 setUinBulk(request: SetUinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:684](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L684)
+Defined in: [modules/orders-dbs/index.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L407)
 
 Set UIN codes for multiple orders (bulk)
 
@@ -894,7 +508,7 @@ const result = await sdk.ordersDBS.setUinBulk({
 setImeiBulk(request: SetImeiBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:708](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L708)
+Defined in: [modules/orders-dbs/index.ts:431](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L431)
 
 Set IMEI codes for multiple orders (bulk)
 
@@ -929,7 +543,7 @@ const result = await sdk.ordersDBS.setImeiBulk({
 setGtinBulk(request: SetGtinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:732](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L732)
+Defined in: [modules/orders-dbs/index.ts:455](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L455)
 
 Set GTIN codes for multiple orders (bulk)
 
@@ -964,7 +578,7 @@ const result = await sdk.ordersDBS.setGtinBulk({
 setCustomsDeclarationBulk(request: SetCustomsDeclarationBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:756](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L756)
+Defined in: [modules/orders-dbs/index.ts:479](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L479)
 
 Set customs declaration for multiple orders (bulk)
 
@@ -999,7 +613,7 @@ const result = await sdk.ordersDBS.setCustomsDeclarationBulk({
 getStatusesBulk(orderIds: number[]): Promise<GetStatusInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:768](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L768)
+Defined in: [modules/orders-dbs/index.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L493)
 
 #### Parameters
 
@@ -1019,7 +633,7 @@ Defined in: [modules/orders-dbs/index.ts:768](https://github.com/salacoste/dayto
 confirmBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L782)
+Defined in: [modules/orders-dbs/index.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L507)
 
 #### Parameters
 
@@ -1039,7 +653,7 @@ Defined in: [modules/orders-dbs/index.ts:782](https://github.com/salacoste/dayto
 deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:796](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L796)
+Defined in: [modules/orders-dbs/index.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L521)
 
 #### Parameters
 
@@ -1059,7 +673,7 @@ Defined in: [modules/orders-dbs/index.ts:796](https://github.com/salacoste/dayto
 receiveBulk(orders: OrderCodeRequest[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:810](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L810)
+Defined in: [modules/orders-dbs/index.ts:535](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L535)
 
 #### Parameters
 
@@ -1079,7 +693,7 @@ Defined in: [modules/orders-dbs/index.ts:810](https://github.com/salacoste/dayto
 rejectBulk(orders: OrderCodeRequest[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:832](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L832)
+Defined in: [modules/orders-dbs/index.ts:557](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L557)
 
 #### Parameters
 
@@ -1099,7 +713,7 @@ Defined in: [modules/orders-dbs/index.ts:832](https://github.com/salacoste/dayto
 cancelBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:854](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L854)
+Defined in: [modules/orders-dbs/index.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-dbs/index.ts#L579)
 
 #### Parameters
 
@@ -1110,149 +724,3 @@ Defined in: [modules/orders-dbs/index.ts:854](https://github.com/salacoste/dayto
 #### Returns
 
 `Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
-
-***
-
-### ~~getStatuses()~~
-
-```ts
-getStatuses(orderIds: number[]): Promise<GetStatusResponseLegacy>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:874](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L874)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `orderIds` | `number`[] |
-
-#### Returns
-
-`Promise`\<[`GetStatusResponseLegacy`](../-internal-/interfaces/GetStatusResponseLegacy.md)\>
-
-#### Deprecated
-
-Use getStatusesBulk instead
-
-***
-
-### ~~confirm()~~
-
-```ts
-confirm(orderId: number): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:887](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L887)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `orderId` | `number` |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Deprecated
-
-Use confirmBulk instead
-
-***
-
-### ~~deliver()~~
-
-```ts
-deliver(orderId: number): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:897](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L897)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `orderId` | `number` |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Deprecated
-
-Use deliverBulk instead
-
-***
-
-### ~~receive()~~
-
-```ts
-receive(orderId: number, code: string): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:907](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L907)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `orderId` | `number` |
-| `code` | `string` |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Deprecated
-
-Use receiveBulk instead
-
-***
-
-### ~~reject()~~
-
-```ts
-reject(orderId: number, code: string): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:922](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L922)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `orderId` | `number` |
-| `code` | `string` |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Deprecated
-
-Use rejectBulk instead
-
-***
-
-### ~~cancel()~~
-
-```ts
-cancel(orderId: number): Promise<void>;
-```
-
-Defined in: [modules/orders-dbs/index.ts:937](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-dbs/index.ts#L937)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `orderId` | `number` |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Deprecated
-
-Use cancelBulk instead

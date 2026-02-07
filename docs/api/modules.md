@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v2.7.0
+# Wildberries API TypeScript SDK v3.0.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -47,6 +47,7 @@ Main entry point
 | Interface | Description |
 | ------ | ------ |
 | [RateLimitConfig](interfaces/RateLimitConfig.md) | Configuration for rate limiting a specific endpoint. |
+| [OperationMetadata](interfaces/OperationMetadata.md) | Metadata for a single SDK operation |
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
 | [AccessItem](interfaces/AccessItem.md) | Элемент настройки доступа к разделу профиля продавца |
@@ -83,6 +84,7 @@ Main entry point
 | [financesRateLimits](variables/financesRateLimits.md) | - |
 | [generalRateLimits](variables/generalRateLimits.md) | - |
 | [inStorePickupRateLimits](variables/inStorePickupRateLimits.md) | - |
+| [operationMetadata](variables/operationMetadata.md) | Registry of operation metadata for all SDK operations |
 | [ordersDbsRateLimits](variables/ordersDbsRateLimits.md) | - |
 | [ordersFbsRateLimits](variables/ordersFbsRateLimits.md) | - |
 | [ordersFbwRateLimits](variables/ordersFbwRateLimits.md) | - |
@@ -98,6 +100,13 @@ Main entry point
 
 | Function | Description |
 | ------ | ------ |
+| [isOperationReadonly](functions/isOperationReadonly.md) | Check if an operation is readonly (safe to retry) |
+| [getOperationCategory](functions/getOperationCategory.md) | Get the API category for an operation |
+| [getOperationRateLimitKey](functions/getOperationRateLimitKey.md) | Get the rate limit key for an operation |
+| [getOperationMetadata](functions/getOperationMetadata.md) | Get full metadata for an operation |
+| [getOperationsByCategory](functions/getOperationsByCategory.md) | Get all operations for a specific category |
+| [getReadonlyOperations](functions/getReadonlyOperations.md) | Get all readonly operations |
+| [getWriteOperations](functions/getWriteOperations.md) | Get all write operations (not readonly) |
 | [calculateSupplyCost](functions/calculateSupplyCost.md) | Calculates the total supply cost including acceptance, storage, and logistics |
 | [compareTariffs](functions/compareTariffs.md) | Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs |
 

@@ -16,6 +16,7 @@
 | ------ | ------ |
 | [ProblemJsonFields](interfaces/ProblemJsonFields.md) | Parsed fields from an RFC 7807 problem+json error response. |
 | [RetryConfig](interfaces/RetryConfig.md) | Configuration options for retry behavior |
+| [RetryOptions](interfaces/RetryOptions.md) | Options for controlling retry behavior per-operation |
 | [MainRequest](interfaces/MainRequest.md) | Параметры запроса для формирования главной страницы: - `currentPeriod` — текущий период - `pastPeriod` — предыдущий период для сравнения |
 | [MainResponse](interfaces/MainResponse.md) | - |
 | [CommonInfo](interfaces/CommonInfo.md) | - |
@@ -42,12 +43,6 @@
 | [Period](interfaces/Period.md) | Текущий период |
 | [PastPeriod](interfaces/PastPeriod.md) | Прошлый период для сравнения. Количество дней — меньше или равно `currentPeriod` |
 | [CommonResponseProperties](interfaces/CommonResponseProperties.md) | Результат запроса |
-| [~~NmReportDetailRequest~~](interfaces/NmReportDetailRequest.md) | - |
-| [~~NmReportDetailHistoryRequest~~](interfaces/NmReportDetailHistoryRequest.md) | - |
-| [~~NmReportGroupedHistoryRequest~~](interfaces/NmReportGroupedHistoryRequest.md) | - |
-| [~~NmReportDetailResponse~~](interfaces/NmReportDetailResponse.md) | - |
-| [~~NmReportDetailHistoryResponse~~](interfaces/NmReportDetailHistoryResponse.md) | - |
-| [~~NmReportGroupedHistoryResponse~~](interfaces/NmReportGroupedHistoryResponse.md) | - |
 | [SalesFunnelProductReq](interfaces/SalesFunnelProductReq.md) | - |
 | [SalesFunnelGroupReq](interfaces/SalesFunnelGroupReq.md) | - |
 | [SearchReportGroupReq](interfaces/SearchReportGroupReq.md) | - |
@@ -105,9 +100,6 @@
 | [SellerLimit](interfaces/SellerLimit.md) | Seller limit details for pinned reviews |
 | [SellerLimitsData](interfaces/SellerLimitsData.md) | Seller limits data for subscription and tariff |
 | [PinnedReviewsLimitsResponse](interfaces/PinnedReviewsLimitsResponse.md) | Response from get pinned reviews limits |
-| [~~ResponseTemplate~~](interfaces/ResponseTemplate.md) | Успешно |
-| [~~PostTemplate~~](interfaces/PostTemplate.md) | - |
-| [~~PatchDelResp~~](interfaces/PatchDelResp.md) | - |
 | [LastMessage](interfaces/LastMessage.md) | Информация о последнем сообщении в чате |
 | [Chat](interfaces/Chat.md) | - |
 | [ChatsResponse](interfaces/ChatsResponse.md) | - |
@@ -157,7 +149,6 @@
 | [StatusSetResponse](interfaces/StatusSetResponse.md) | Response item for bulk status change operations |
 | [OrderCodeRequest](interfaces/OrderCodeRequest.md) | Request item for receive/reject operations requiring confirmation code |
 | [B2BInfoResult](interfaces/B2BInfoResult.md) | B2B buyer information result |
-| [DBSOrderMeta](interfaces/DBSOrderMeta.md) | Order metadata structure |
 | [GetNewOrdersResponse](interfaces/GetNewOrdersResponse.md) | Response from getNewOrders |
 | [GetOrdersParams](interfaces/GetOrdersParams.md) | Parameters for getOrders |
 | [GetOrdersResponse](interfaces/GetOrdersResponse.md) | Response from getOrders |
@@ -165,9 +156,6 @@
 | [GetStatusInfoResponse](interfaces/GetStatusInfoResponse.md) | Response from bulk status info endpoint |
 | [BulkStatusChangeResponse](interfaces/BulkStatusChangeResponse.md) | Response from bulk status change operations |
 | [GetB2BInfoResponse](interfaces/GetB2BInfoResponse.md) | Response from B2B info endpoint |
-| [GetOrderMetaResponse](interfaces/GetOrderMetaResponse.md) | Response from getOrderMeta |
-| [~~DBSOrderStatusLegacy~~](interfaces/DBSOrderStatusLegacy.md) | - |
-| [~~GetStatusResponseLegacy~~](interfaces/GetStatusResponseLegacy.md) | - |
 | [OrderGroupsRequest](interfaces/OrderGroupsRequest.md) | Request body for getGroupsInfo Used to query order group information |
 | [OrderGroup](interfaces/OrderGroup.md) | A single order group containing related orders |
 | [OrderGroupsResponse](interfaces/OrderGroupsResponse.md) | Response from getGroupsInfo |
@@ -187,19 +175,53 @@
 | [BulkMetaResultItem](interfaces/BulkMetaResultItem.md) | Result item for a single order in bulk metadata set response |
 | [BulkMetaError](interfaces/BulkMetaError.md) | Error detail for a single order in bulk metadata operations |
 | [SetMetaBulkResponse](interfaces/SetMetaBulkResponse.md) | Response from bulk metadata set operations (setSgtinBulk, setUinBulk, etc.) |
+| [GetOrdersParams](interfaces/GetOrdersParams-1.md) | Parameters for paginated order listing |
+| [StickerRequest](interfaces/StickerRequest.md) | Request body for retrieving order stickers |
+| [StickerParams](interfaces/StickerParams.md) | Query parameters for sticker format and dimensions |
+| [CrossBorderStickerRequest](interfaces/CrossBorderStickerRequest.md) | Request body for cross-border order stickers |
+| [StatusHistoryRequest](interfaces/StatusHistoryRequest.md) | Request body for cross-border status history lookup |
+| [DeleteMetaParams](interfaces/DeleteMetaParams.md) | Query parameters for deleting order metadata by key |
+| [MetaSgtinRequest](interfaces/MetaSgtinRequest.md) | Request body for attaching SGTIN marking codes to an order |
+| [MetaUinRequest](interfaces/MetaUinRequest.md) | Request body for attaching a UIN to an order |
+| [MetaImeiRequest](interfaces/MetaImeiRequest.md) | Request body for attaching an IMEI to an order |
+| [MetaGtinRequest](interfaces/MetaGtinRequest.md) | Request body for attaching a GTIN to an order |
+| [MetaExpirationRequest](interfaces/MetaExpirationRequest.md) | Request body for attaching an expiration date to an order |
+| [MetaCustomsDeclarationRequest](interfaces/MetaCustomsDeclarationRequest.md) | Request body for attaching a customs declaration number to an order |
+| [SupplyCreateRequest](interfaces/SupplyCreateRequest.md) | Request body for creating a new supply |
 | [AddOrdersToSupplyRequest](interfaces/AddOrdersToSupplyRequest.md) | Request body for adding orders to a supply |
+| [TrbxCreateRequest](interfaces/TrbxCreateRequest.md) | Request body for creating boxes (trbx) in a supply |
+| [TrbxDeleteRequest](interfaces/TrbxDeleteRequest.md) | Request body for deleting boxes from a supply |
+| [TrbxStickerRequest](interfaces/TrbxStickerRequest.md) | Request body for retrieving box stickers |
+| [PassCreateRequest](interfaces/PassCreateRequest.md) | Request body for creating a seller pass |
+| [PassCreateResponse](interfaces/PassCreateResponse.md) | Response after creating a seller pass |
+| [GetSuppliesParams](interfaces/GetSuppliesParams.md) | Query parameters for fetching supplies list |
+| [BarcodeParams](interfaces/BarcodeParams.md) | Query parameters for sticker/barcode format |
 | [GetMetaMultiRequest](interfaces/GetMetaMultiRequest.md) | Request body for retrieving metadata of multiple orders (max 100) |
 | [OrdersRequestAPI](interfaces/OrdersRequestAPI.md) | Generic order IDs request body used across multiple endpoints |
+| [OrdersNewResponse](interfaces/OrdersNewResponse.md) | Response containing a list of new (unprocessed) orders |
+| [OrdersResponse](interfaces/OrdersResponse.md) | Paginated response containing orders |
+| [OrderStatusItem](interfaces/OrderStatusItem.md) | Individual order status entry |
 | [OrderStatusResponse](interfaces/OrderStatusResponse.md) | Response containing order statuses |
 | [ReshipmentResponse](interfaces/ReshipmentResponse.md) | Response containing orders that require reshipment |
 | [ReshipmentOrder](interfaces/ReshipmentOrder.md) | An order that requires reshipment |
+| [StickerItem](interfaces/StickerItem.md) | Individual sticker data item |
+| [StickerResponse](interfaces/StickerResponse.md) | Response containing order stickers |
+| [CrossBorderStickerItem](interfaces/CrossBorderStickerItem.md) | Individual cross-border sticker data item |
+| [CrossBorderStickerResponse](interfaces/CrossBorderStickerResponse.md) | Response containing cross-border order stickers |
+| [StatusHistoryEntry](interfaces/StatusHistoryEntry.md) | Individual status entry in status history |
+| [StatusHistoryItem](interfaces/StatusHistoryItem.md) | Individual order status history item |
+| [StatusHistoryResponse](interfaces/StatusHistoryResponse.md) | Response containing cross-border status history |
 | [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
 | [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
+| [SupplyCreateResponse](interfaces/SupplyCreateResponse.md) | Response after creating a new supply |
+| [SuppliesResponse](interfaces/SuppliesResponse.md) | Paginated response containing supplies |
 | [SupplyOrderIdsResponse](interfaces/SupplyOrderIdsResponse.md) | Response containing order IDs within a supply |
+| [BarcodeResponse](interfaces/BarcodeResponse.md) | Response containing a supply barcode / QR code |
+| [TrbxListResponse](interfaces/TrbxListResponse.md) | Response containing a list of supply boxes |
+| [TrbxCreateResponse](interfaces/TrbxCreateResponse.md) | Response after creating boxes in a supply |
 | [Order](interfaces/Order.md) | Assembly order (sborochnoe zadanie) with full details |
 | [Supply](interfaces/Supply.md) | Supply (postavka) entity representing a shipment batch |
 | [OrderNew](interfaces/OrderNew.md) | New (unprocessed) assembly order with additional pricing and metadata fields |
-| [SupplyOrder](interfaces/SupplyOrder.md) | Order within a supply (legacy response format) |
 | [SupplyTrbx](interfaces/SupplyTrbx.md) | Supply box (transport box) entity |
 | [TrbxStickers](interfaces/TrbxStickers.md) | Box sticker data with encoded barcode and file content |
 | [Meta](interfaces/Meta.md) | Order metadata containing various identification and tracking codes |
@@ -265,18 +287,7 @@
 | [GetDirectoryCountriesResponse](interfaces/GetDirectoryCountriesResponse.md) | Response for countries directory (GET /content/v2/directory/countries) |
 | [ContentTag](interfaces/ContentTag.md) | Ярлык (тег контента) |
 | [GetContentTagsResponse](interfaces/GetContentTagsResponse.md) | Response for content tags (GET /content/v2/tags) |
-| [V0GetConfigCategoriesResponse](interfaces/V0GetConfigCategoriesResponse.md) | - |
-| [V0AdvertMultiBidItem](interfaces/V0AdvertMultiBidItem.md) | - |
-| [V0AdvertMultibid](interfaces/V0AdvertMultibid.md) | - |
 | [ResponseWithReturn](interfaces/ResponseWithReturn.md) | - |
-| [ResponseInfoAdvert](interfaces/ResponseInfoAdvert.md) | - |
-| [ResponseInfoAdvertType8](interfaces/ResponseInfoAdvertType8.md) | - |
-| [ResponseInfoAdvertType9](interfaces/ResponseInfoAdvertType9.md) | - |
-| [GetAuctionAdverts](interfaces/GetAuctionAdverts.md) | - |
-| [AuctionAdvertNMsSettings](interfaces/AuctionAdvertNMsSettings.md) | - |
-| [AuctionAdvertSubject](interfaces/AuctionAdvertSubject.md) | Предмет |
-| [AuctionAdvertBids](interfaces/AuctionAdvertBids.md) | Ставки |
-| [AuctionAdvertSettings](interfaces/AuctionAdvertSettings.md) | Настройки кампании |
 | [Timestamps](interfaces/Timestamps.md) | Временные отметки |
 | [StatInterval](interfaces/StatInterval.md) | - |
 | [StatDate](interfaces/StatDate.md) | - |
@@ -317,7 +328,6 @@
 | [AdvertSubject](interfaces/AdvertSubject.md) | Предмет (для кампаний с копейками) |
 | [AdvertSettings](interfaces/AdvertSettings.md) | Настройки кампании |
 | [AdvertPlacements](interfaces/AdvertPlacements.md) | Места размещения кампании |
-| [IncomesItem](interfaces/IncomesItem.md) | Auto-generated TypeScript types for reports module Generated from: wildberries_api_doc/12-reports.yaml |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
 | [SalesItem](interfaces/SalesItem.md) | - |
@@ -403,10 +413,10 @@
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
 | [DocumentsLocale](type-aliases/DocumentsLocale.md) | Supported locale values for document endpoints |
 | [DBSSupplierStatus](type-aliases/DBSSupplierStatus.md) | DBS supplier status Triggered by seller actions |
-| [DBSMetadataKey](type-aliases/DBSMetadataKey.md) | Metadata key types |
 | [OrderSupplierStatus](type-aliases/OrderSupplierStatus.md) | Supplier-side order status |
 | [OrderWbStatus](type-aliases/OrderWbStatus.md) | Wildberries system order status |
 | [CargoType](type-aliases/CargoType.md) | Cargo type: 1 = small, 2 = oversized, 3 = large |
+| [StickerType](type-aliases/StickerType.md) | Sticker output format |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |
 | [SizeGoodsBody](type-aliases/SizeGoodsBody.md) | Размеры и цены для них. Максимум 1 000 размеров. |
@@ -416,10 +426,6 @@
 | [Stats1](type-aliases/Stats1.md) | - |
 | [DailyStats2](type-aliases/DailyStats2.md) | - |
 | [Stats2](type-aliases/Stats2.md) | - |
-| [Days](type-aliases/Days.md) | Статистка по дням |
-| [BoosterStats](type-aliases/BoosterStats.md) | Статистика по средней позиции товара на страницах поисковой выдачи и каталога (для кампаний с единой ставкой) |
-| [ResponseWithInterval](type-aliases/ResponseWithInterval.md) | Ответ при запросе с interval |
-| [ResponseWithDate](type-aliases/ResponseWithDate.md) | Ответ при запросе с dates |
 | [ResponseFullStats](type-aliases/ResponseFullStats.md) | Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам |
 | [DaysV3](type-aliases/DaysV3.md) | Статистка по дням (V3) |
 | [BoosterStatsV3](type-aliases/BoosterStatsV3.md) | Статистика по средней позиции товара (для кампаний с единой ставкой) (V3) |

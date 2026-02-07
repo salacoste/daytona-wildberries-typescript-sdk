@@ -2,10 +2,10 @@
 
 # Interface: ModelsReturnTariffsResponse
 
-Defined in: [types/tariffs.types.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/tariffs.types.ts#L76)
+Defined in: [types/tariffs.types.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/tariffs.types.ts#L76)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`ModelsWarehousesReturnRates`](ModelsWarehousesReturnRates.md) | [types/tariffs.types.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/tariffs.types.ts#L77) |
+| <a id="data"></a> `data?` | [`ModelsWarehousesReturnRates`](ModelsWarehousesReturnRates.md) | [types/tariffs.types.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/tariffs.types.ts#L77) |

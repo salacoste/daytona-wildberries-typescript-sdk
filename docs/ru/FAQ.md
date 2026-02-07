@@ -17,7 +17,7 @@ layout: doc
 Установите через npm:
 
 ```bash
-npm install @daytona/wildberries-typescript-sdk
+npm install daytona-wildberries-typescript-sdk
 ```
 
 Для TypeScript проектов убедитесь, что у вас установлен TypeScript ≥5.0:
@@ -56,7 +56,7 @@ npm install --save-dev typescript@^5.0.0
 ### 4. Как инициализировать SDK?
 
 ```typescript
-import { WildberriesSDK } from '@daytona/wildberries-typescript-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 // Инициализация SDK с API ключом
 const sdk = new WildberriesSDK({
@@ -79,7 +79,7 @@ console.log(ping); // { Status: 'OK', TS: '2024-12-03T15:22:47Z' }
 Да! SDK работает с обычным JavaScript:
 
 ```javascript
-const { WildberriesSDK } = require('@daytona/wildberries-typescript-sdk');
+const { WildberriesSDK } = require('daytona-wildberries-typescript-sdk');
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY
@@ -182,7 +182,7 @@ console.log(categories.data); // Массив объектов категори�
 ### 12. Как создать новый товар?
 
 ```typescript
-import type { CreateProductRequest } from '@daytona/wildberries-typescript-sdk';
+import type { CreateProductRequest } from 'daytona-wildberries-typescript-sdk';
 
 const newProduct: CreateProductRequest = {
   brandName: 'MyBrand',
@@ -384,7 +384,7 @@ import {
   RateLimitError,
   ValidationError,
   NetworkError
-} from '@daytona/wildberries-typescript-sdk';
+} from 'daytona-wildberries-typescript-sdk';
 
 try {
   await sdk.products.createCardsUpload(data);

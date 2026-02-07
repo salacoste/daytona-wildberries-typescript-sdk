@@ -2,7 +2,7 @@
 
 # Interface: WarehouseQuantity
 
-Defined in: [types/reports.types.ts:694](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L694)
+Defined in: [types/reports.types.ts:662](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L662)
 
 Warehouse quantity for remains report
 
@@ -10,5 +10,5 @@ Warehouse quantity for remains report
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="warehousename"></a> `warehouseName?` | `string` | Название склада | [types/reports.types.ts:696](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L696) |
-| <a id="quantity"></a> `quantity?` | `number` | Количество | [types/reports.types.ts:698](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L698) |
+| <a id="warehousename"></a> `warehouseName?` | `string` | Название склада | [types/reports.types.ts:664](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L664) |
+| <a id="quantity"></a> `quantity?` | `number` | Количество | [types/reports.types.ts:666](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L666) |

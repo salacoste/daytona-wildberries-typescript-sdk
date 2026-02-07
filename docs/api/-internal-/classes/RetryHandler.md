@@ -2,7 +2,7 @@
 
 # Class: RetryHandler
 
-Defined in: [client/retry-handler.ts:150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/client/retry-handler.ts#L150)
+Defined in: [client/retry-handler.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/client/retry-handler.ts#L200)
 
 RetryHandler - Automatic retry with exponential backoff
 
@@ -41,7 +41,7 @@ const result = await handler.executeWithRetry(
 new RetryHandler(config?: RetryConfig): RetryHandler;
 ```
 
-Defined in: [client/retry-handler.ts:171](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/client/retry-handler.ts#L171)
+Defined in: [client/retry-handler.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/client/retry-handler.ts#L221)
 
 Creates a new RetryHandler instance
 
@@ -74,10 +74,13 @@ const handler = new RetryHandler({
 ### executeWithRetry()
 
 ```ts
-executeWithRetry<T>(operation: () => Promise<T>, operationName: string): Promise<T>;
+executeWithRetry<T>(
+   operation: () => Promise<T>, 
+   operationName: string, 
+options?: RetryOptions): Promise<T>;
 ```
 
-Defined in: [client/retry-handler.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/client/retry-handler.ts#L212)
+Defined in: [client/retry-handler.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/client/retry-handler.ts#L276)
 
 Executes an async operation with automatic retry on transient failures
 
@@ -102,6 +105,7 @@ are likely to be transient (network errors, server errors, rate limits).
 | ------ | ------ | ------ | ------ |
 | `operation` | () => `Promise`\<`T`\> | `undefined` | Async function to execute (and retry on failure) |
 | `operationName` | `string` | `'operation'` | Description of operation for logging (optional) |
+| `options?` | [`RetryOptions`](../interfaces/RetryOptions.md) | `undefined` | - |
 
 #### Returns
 
@@ -126,5 +130,19 @@ const data = await handler.executeWithRetry(
 const result = await handler.executeWithRetry(
   () => fetch('https://api.example.com/data').then(r => r.json()),
   'fetch data'
+);
+
+// With readonly-aware retry (recommended for SDK operations)
+const products = await handler.executeWithRetry(
+  () => api.getProducts(),
+  'getProducts',
+  { operationKey: 'products.getCardsList' }
+);
+
+// Force retry for write operation (use with caution)
+const created = await handler.executeWithRetry(
+  () => api.createProduct(data),
+  'createProduct',
+  { operationKey: 'products.createCardsUpload', forceRetry: true }
 );
 ```

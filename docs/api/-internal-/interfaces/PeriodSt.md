@@ -2,7 +2,7 @@
 
 # Interface: PeriodSt
 
-Defined in: [types/analytics.types.ts:1234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1234)
+Defined in: [types/analytics.types.ts:909](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L909)
 
 Период
 
@@ -10,5 +10,5 @@ Defined in: [types/analytics.types.ts:1234](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="start"></a> `start` | `string` | Дата начала периода. Не позднее `end`. Не ранее 3 месяцев от текущей даты | [types/analytics.types.ts:1236](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1236) |
-| <a id="end"></a> `end` | `string` | Дата окончания периода. Не ранее 3 месяцев от текущей даты | [types/analytics.types.ts:1238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/analytics.types.ts#L1238) |
+| <a id="start"></a> `start` | `string` | Дата начала периода. Не позднее `end`. Не ранее 3 месяцев от текущей даты | [types/analytics.types.ts:911](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L911) |
+| <a id="end"></a> `end` | `string` | Дата окончания периода. Не ранее 3 месяцев от текущей даты | [types/analytics.types.ts:913](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/analytics.types.ts#L913) |

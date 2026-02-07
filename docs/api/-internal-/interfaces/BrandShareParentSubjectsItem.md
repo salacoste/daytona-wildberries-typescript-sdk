@@ -2,7 +2,7 @@
 
 # Interface: BrandShareParentSubjectsItem
 
-Defined in: [types/reports.types.ts:626](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L626)
+Defined in: [types/reports.types.ts:594](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L594)
 
 Brand share parent subjects item
 
@@ -14,5 +14,5 @@ EPIC 43 - Response type for getBrandShareParentSubjects
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="parentname"></a> `parentName?` | `string` | Название категории | [types/reports.types.ts:628](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L628) |
-| <a id="parentid"></a> `parentId?` | `number` | ID категории | [types/reports.types.ts:630](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/reports.types.ts#L630) |
+| <a id="parentname"></a> `parentName?` | `string` | Название категории | [types/reports.types.ts:596](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L596) |
+| <a id="parentid"></a> `parentId?` | `number` | ID категории | [types/reports.types.ts:598](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L598) |

@@ -680,7 +680,7 @@ JavaScript runtime for server-side development. SDK requires Node.js 18.x, 20.x,
 ### npm (Node Package Manager)
 Package manager for JavaScript. SDK distributed via npm registry.
 
-**Command:** `npm install @daytona/wildberries-typescript-sdk`
+**Command:** `npm install daytona-wildberries-typescript-sdk`
 
 ---
 
@@ -766,5 +766,5 @@ Typed superset of JavaScript adding static type checking. SDK written in TypeScr
 
 ---
 
-**Last Updated:** 2025-10-27
-**SDK Version:** 1.0.0
+**Last Updated:** 2026-02-07
+**SDK Version:** 3.0.0

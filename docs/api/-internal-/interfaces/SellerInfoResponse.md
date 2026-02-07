@@ -2,7 +2,7 @@
 
 # Interface: SellerInfoResponse
 
-Defined in: [types/general.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/general.types.ts#L64)
+Defined in: [types/general.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/general.types.ts#L64)
 
 Response structure for seller info endpoint
 
@@ -10,6 +10,6 @@ Response structure for seller info endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name?` | `string` | Наименование продавца | [types/general.types.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/general.types.ts#L66) |
-| <a id="sid"></a> `sid?` | `string` | Уникальный ID продавца на Wildberries | [types/general.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/general.types.ts#L68) |
-| <a id="trademark"></a> `tradeMark?` | `string` | Торговое наименование продавца | [types/general.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/general.types.ts#L70) |
+| <a id="name"></a> `name?` | `string` | Наименование продавца | [types/general.types.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/general.types.ts#L66) |
+| <a id="sid"></a> `sid?` | `string` | Уникальный ID продавца на Wildberries | [types/general.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/general.types.ts#L68) |
+| <a id="trademark"></a> `tradeMark?` | `string` | Торговое наименование продавца | [types/general.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/general.types.ts#L70) |

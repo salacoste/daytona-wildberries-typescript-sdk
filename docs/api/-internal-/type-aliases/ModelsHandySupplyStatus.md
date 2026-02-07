@@ -6,4 +6,4 @@
 type ModelsHandySupplyStatus = 1 | 2 | 3 | 4 | 5 | 6;
 ```
 
-Defined in: [types/orders-fbw.types.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-fbw.types.ts#L223)
+Defined in: [types/orders-fbw.types.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-fbw.types.ts#L223)

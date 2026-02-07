@@ -2,7 +2,7 @@
 
 # Class: PromotionModule
 
-Defined in: [modules/promotion/index.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L38)
+Defined in: [modules/promotion/index.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L30)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/promotion/index.ts:38](https://github.com/salacoste/daytona
 new PromotionModule(client: BaseClient): PromotionModule;
 ```
 
-Defined in: [modules/promotion/index.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L40)
+Defined in: [modules/promotion/index.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L31)
 
 #### Parameters
 
@@ -26,600 +26,15 @@ Defined in: [modules/promotion/index.ts:40](https://github.com/salacoste/daytona
 
 ## Methods
 
-### ~~getPromotionCount()~~
-
-```ts
-getPromotionCount(): Promise<{
-  adverts?: {
-     type?: number;
-     status?: number;
-     count?: number;
-     advert_list?: {
-        advertId?: number;
-        changeTime?: string;
-     }[];
-  }[];
-  all?: number;
-}>;
-```
-
-Defined in: [modules/promotion/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L57)
-
-Списки кампаний
-
-Метод возвращает списки всех [рекламных кампаний](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) продавца с их ID. Кампании сгруппированы по типу и статусу, у каждой указана дата последнего изменения. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-
-#### Returns
-
-`Promise`\<\{
-  `adverts?`: \{
-     `type?`: `number`;
-     `status?`: `number`;
-     `count?`: `number`;
-     `advert_list?`: \{
-        `advertId?`: `number`;
-        `changeTime?`: `string`;
-     \}[];
-  \}[];
-  `all?`: `number`;
-\}\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getPromotionCount();
-console.log(result);
-```
-
-#### Deprecated
-
-Use GET /api/advert/v2/adverts instead.
-
-***
-
-### ~~createPromotionAdvert()~~
-
-```ts
-createPromotionAdvert(data: number[], options?: {
-  status?: -1 | 4 | 7 | 8 | 9 | 11;
-  type?: 4 | 7 | 8 | 5 | 6;
-  order?: "create" | "change" | "id";
-  direction?: "desc" | "asc";
-}): Promise<
-  | ResponseInfoAdvertType8
-  | ResponseInfoAdvert
-| ResponseInfoAdvertType9[]>;
-```
-
-Defined in: [modules/promotion/index.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L102)
-
-Информация о кампаниях
-
-Метод возвращает информацию о рекламных кампаниях с устаревшими типами (4-8) по их статусам, типам и ID. <br><br> Для получения информации о кампаниях с типом 9 используйте [отдельный метод](/openapi/promotion#tag/Kampanii/paths/~1adv~1v0~1auction~1adverts/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | `number`[] | Request body data |
-| `options?` | \{ `status?`: `-1` \| `4` \| `7` \| `8` \| `9` \| `11`; `type?`: `4` \| `7` \| `8` \| `5` \| `6`; `order?`: `"create"` \| `"change"` \| `"id"`; `direction?`: `"desc"` \| `"asc"`; \} | Query parameters |
-| `options.status?` | `-1` \| `4` \| `7` \| `8` \| `9` \| `11` | - |
-| `options.type?` | `4` \| `7` \| `8` \| `5` \| `6` | - |
-| `options.order?` | `"create"` \| `"change"` \| `"id"` | - |
-| `options.direction?` | `"desc"` \| `"asc"` | - |
-
-#### Returns
-
-`Promise`\<
-  \| [`ResponseInfoAdvertType8`](../-internal-/interfaces/ResponseInfoAdvertType8.md)
-  \| [`ResponseInfoAdvert`](../-internal-/interfaces/ResponseInfoAdvert.md)
-  \| [`ResponseInfoAdvertType9`](../-internal-/interfaces/ResponseInfoAdvertType9.md)[]\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.createPromotionAdvert({}, {});
-console.log(result);
-```
-
-#### Deprecated
-
-Use GET /api/advert/v2/adverts instead.
-
-***
-
-### ~~getAuctionAdverts()~~
-
-```ts
-getAuctionAdverts(options?: {
-  ids?: string;
-  statuses?: "-1" | "4" | "7" | "8" | "9" | "11";
-  payment_type?: "cpm" | "cpc";
-}): Promise<GetAuctionAdverts>;
-```
-
-Defined in: [modules/promotion/index.ts:141](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L141)
-
-Информация о кампаниях с ручной ставкой
-
-Метод возвращает информацию о рекламных кампаниях с ручной ставкой по их статусам, типам оплаты и ID. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `ids?`: `string`; `statuses?`: `"-1"` \| `"4"` \| `"7"` \| `"8"` \| `"9"` \| `"11"`; `payment_type?`: `"cpm"` \| `"cpc"`; \} | Query parameters |
-| `options.ids?` | `string` | - |
-| `options.statuses?` | `"-1"` \| `"4"` \| `"7"` \| `"8"` \| `"9"` \| `"11"` | - |
-| `options.payment_type?` | `"cpm"` \| `"cpc"` | - |
-
-#### Returns
-
-`Promise`\<[`GetAuctionAdverts`](../-internal-/interfaces/GetAuctionAdverts.md)\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getAuctionAdverts({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use the updated campaign management API instead.
-
-***
-
-### ~~getAdvConfig()~~
-
-```ts
-getAdvConfig(): Promise<{
-  categories?: V0GetConfigCategoriesResponse[];
-  config?: {
-     description?: string;
-     name?: string;
-     value?: string;
-  }[];
-}>;
-```
-
-Defined in: [modules/promotion/index.ts:173](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L173)
-
-Конфигурационные значения Продвижения
-
-Метод возвращает допустимые значения основных параметров конфигурации [кампаний](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post): например, минимальные ставки, доступные категории и максимальное количество товаров, которые можно добавить в кампанию. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
-
-#### Returns
-
-`Promise`\<\{
-  `categories?`: [`V0GetConfigCategoriesResponse`](../-internal-/interfaces/V0GetConfigCategoriesResponse.md)[];
-  `config?`: \{
-     `description?`: `string`;
-     `name?`: `string`;
-     `value?`: `string`;
-  \}[];
-\}\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getAdvConfig();
-console.log(result);
-```
-
-#### Deprecated
-
-Use the updated configuration API instead.
-
-***
-
-### ~~createBidsMin()~~
-
-```ts
-createBidsMin(data: {
-  advert_id: number;
-  nm_ids: number[];
-  payment_type: "cpm" | "cpc";
-  placement_types: ("combined" | "search" | "recommendation")[];
-}): Promise<{
-  bids: {
-     bids: {
-        type: PlacementType;
-        value: number;
-     }[];
-     nm_id: number;
-  }[];
-}>;
-```
-
-Defined in: [modules/promotion/index.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L205)
-
-Минимальные ставки для карточек товаров
-
-Метод возвращает минимальные ставки для карточек товаров по типу оплаты и местам размещения. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 20 запросов | 3 секунды | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `advert_id`: `number`; `nm_ids`: `number`[]; `payment_type`: `"cpm"` \| `"cpc"`; `placement_types`: (`"combined"` \| `"search"` \| `"recommendation"`)[]; \} | Request body data |
-| `data.advert_id` | `number` | - |
-| `data.nm_ids` | `number`[] | - |
-| `data.payment_type` | `"cpm"` \| `"cpc"` | - |
-| `data.placement_types` | (`"combined"` \| `"search"` \| `"recommendation"`)[] | - |
-
-#### Returns
-
-`Promise`\<\{
-  `bids`: \{
-     `bids`: \{
-        `type`: [`PlacementType`](../-internal-/type-aliases/PlacementType.md);
-        `value`: `number`;
-     \}[];
-     `nm_id`: `number`;
-  \}[];
-\}\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.createBidsMin({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use POST /api/advert/v1/bids/min instead.
-
-***
-
-### ~~createAdvSaveAd()~~
-
-```ts
-createAdvSaveAd(data: {
-  type?: number;
-  name?: string;
-  subjectId?: number;
-  sum?: number;
-  btype?: number;
-  on_pause?: boolean;
-  nms?: number[];
-  cpm?: number;
-}): Promise<string>;
-```
-
-Defined in: [modules/promotion/index.ts:240](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L240)
-
-Создать кампанию с единой ставкой
-
-Метод создаёт кампанию [с единой ставкой](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) для продвижения товаров в: - каталоге - поиске - карточках товаров - рекомендациях на главной странице WB <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 20 секунд | 1 запрос | 20 секунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `type?`: `number`; `name?`: `string`; `subjectId?`: `number`; `sum?`: `number`; `btype?`: `number`; `on_pause?`: `boolean`; `nms?`: `number`[]; `cpm?`: `number`; \} | Request body data |
-| `data.type?` | `number` | - |
-| `data.name?` | `string` | - |
-| `data.subjectId?` | `number` | - |
-| `data.sum?` | `number` | - |
-| `data.btype?` | `number` | - |
-| `data.on_pause?` | `boolean` | - |
-| `data.nms?` | `number`[] | - |
-| `data.cpm?` | `number` | - |
-
-#### Returns
-
-`Promise`\<`string`\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.createAdvSaveAd({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use POST /adv/v2/seacat/save-ad. Note: This endpoint has been removed from the API instead.
-
-***
-
-### ~~createSeacatSaveAd()~~
-
-```ts
-createSeacatSaveAd(data?: {
-  name?: string;
-  nms?: number[];
-  bid_type?: "manual" | "unified";
-  placement_types?: ("search" | "recommendations")[];
-}): Promise<number>;
-```
-
-Defined in: [modules/promotion/index.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L277)
-
-Создать кампанию
-
-Метод создаёт кампанию: - с ручной ставкой для продвижения товаров в поиске и/или рекомендациях - с единой ставкой для продвижения товаров одновременно в поиске и рекомендациях Тип всех созданных этим методом кампаний — `9`. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 5 запросов | 12 секунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data?` | \{ `name?`: `string`; `nms?`: `number`[]; `bid_type?`: `"manual"` \| `"unified"`; `placement_types?`: (`"search"` \| `"recommendations"`)[]; \} | Request body data |
-| `data.name?` | `string` | - |
-| `data.nms?` | `number`[] | - |
-| `data.bid_type?` | `"manual"` \| `"unified"` | - |
-| `data.placement_types?` | (`"search"` \| `"recommendations"`)[] | - |
-
-#### Returns
-
-`Promise`\<`number`\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.createSeacatSaveAd({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use the current campaign creation API instead.
-
-***
-
-### ~~getSupplierSubjects()~~
-
-```ts
-getSupplierSubjects(): Promise<{
-  id?: number;
-  name?: string;
-  count?: number;
-}[]>;
-```
-
-Defined in: [modules/promotion/index.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L311)
-
-Предметы для кампаний
-
-Метод возвращает список [предметов](/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1all/get), которые можно добавить в рекламную [кампанию](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 12 секунд | 1 запрос | 12 секунд | 5 запросов | </div>
-
-#### Returns
-
-`Promise`\<\{
-  `id?`: `number`;
-  `name?`: `string`;
-  `count?`: `number`;
-\}[]\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getSupplierSubjects();
-console.log(result);
-```
-
-#### Deprecated
-
-Use the updated supplier API instead.
-
-***
-
-### ~~createSupplierNm()~~
-
-```ts
-createSupplierNm(data?: number[]): Promise<{
-  title?: string;
-  nm?: number;
-  subjectId?: number;
-}[]>;
-```
-
-Defined in: [modules/promotion/index.ts:340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L340)
-
-Карточки товаров для кампаний
-
-Метод возвращает список [карточек товаров](/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post), которые можно добавить в рекламную [кампанию](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post). Для получения карточек необходимы ID [предметов](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v1~1supplier~1subjects/get), также доступных для добавления в кампанию. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 5 запросов | 12 секунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data?` | `number`[] | ID предметов, для которых нужно получить карточки товаров |
-
-#### Returns
-
-`Promise`\<\{
-  `title?`: `string`;
-  `nm?`: `number`;
-  `subjectId?`: `number`;
-\}[]\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.createSupplierNm({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use the updated supplier API instead.
-
-***
-
 ### getAdvDelete()
 
 ```ts
 getAdvDelete(options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L371)
+Defined in: [modules/promotion/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L48)
 
 Удаление кампании
 
@@ -634,7 +49,7 @@ Defined in: [modules/promotion/index.ts:371](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -669,10 +84,10 @@ console.log(result);
 createAdvRename(data?: {
   advertId: number;
   name: string;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:393](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L393)
+Defined in: [modules/promotion/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L70)
 
 Переименование кампании
 
@@ -688,7 +103,7 @@ Defined in: [modules/promotion/index.ts:393](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -717,127 +132,15 @@ console.log(result);
 
 ***
 
-### ~~getAdvStart()~~
-
-```ts
-getAdvStart(options?: {
-  id: number;
-}): Promise<unknown>;
-```
-
-Defined in: [modules/promotion/index.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L415)
-
-Запуск кампании
-
-Метод запускает [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) в статусах `4` — готово к запуску — или `11` — пауза. Чтобы запустить кампанию со статусом `4`, необходимо выполнить два условия: 1. После создания кампании в кабинете **WB. Продвижение** нажать кнопку **Применить изменения**. 2. Установить бюджет — максимальную сумму затрат на кампанию. Чтобы запустить кампанию со статусом `11`, проверьте ее бюджет. Если бюджета недостаточно, [пополните его](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<`unknown`\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getAdvStart({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use the updated campaign management API instead.
-
-***
-
-### ~~getAdvPause()~~
-
-```ts
-getAdvPause(options?: {
-  id: number;
-}): Promise<unknown>;
-```
-
-Defined in: [modules/promotion/index.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L444)
-
-Пауза кампании
-
-Метод ставит [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) в статусе `9` — активна — на паузу. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<`unknown`\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getAdvPause({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use the updated campaign management API instead.
-
-***
-
 ### getAdvStop()
 
 ```ts
 getAdvStop(options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:472](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L472)
+Defined in: [modules/promotion/index.ts:91](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L91)
 
 Завершение кампании
 
@@ -852,7 +155,7 @@ Defined in: [modules/promotion/index.ts:472](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -881,61 +184,6 @@ console.log(result);
 
 ***
 
-### ~~updateAdvBid()~~
-
-```ts
-updateAdvBid(data: {
-  bids: V0AdvertMultibid[];
-}): Promise<void>;
-```
-
-Defined in: [modules/promotion/index.ts:494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L494)
-
-Изменение ставок
-
-Метод меняет ставки карточек товаров по артикулам WB в кампаниях с единой ставкой. <br><br> Для кампаний в статусах `4`, `9` и `11`. <br><br> Для изменения ставок в кампаниях с ручной ставкой используйте [отдельный метод](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1bids/patch). <br><br> Минимально допустимые ставки вы можете получить в ответе метода [получения минимальных ставок для карточек товаров](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v0~1bids~1min/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `bids`: [`V0AdvertMultibid`](../-internal-/interfaces/V0AdvertMultibid.md)[]; \} | Request body data |
-| `data.bids` | [`V0AdvertMultibid`](../-internal-/interfaces/V0AdvertMultibid.md)[] | - |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-Response data
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.updateAdvBid({});
-```
-
-#### Deprecated
-
-Use PATCH /api/advert/v1/bids instead.
-
-***
-
 ### updateAuctionPlacement()
 
 ```ts
@@ -950,7 +198,7 @@ updateAuctionPlacement(data: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L518)
+Defined in: [modules/promotion/index.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L112)
 
 Изменение мест размещения в кампаниях с ручной ставкой
 
@@ -1002,7 +250,7 @@ updateAuctionBid(data: {
      nm_bids: {
         nm_id: number;
         bid: number;
-        placement: "combined" | "search" | "recommendations";
+        placement: "search" | "recommendations" | "combined";
      }[];
   }[];
 }): Promise<{
@@ -1017,7 +265,7 @@ updateAuctionBid(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L541)
+Defined in: [modules/promotion/index.ts:135](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L135)
 
 Изменение ставок в кампаниях
 
@@ -1027,8 +275,8 @@ Defined in: [modules/promotion/index.ts:541](https://github.com/salacoste/dayton
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `bids`: \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid`: `number`; `placement`: `"combined"` \| `"search"` \| `"recommendations"`; \}[]; \}[]; \} | Request body data |
-| `data.bids` | \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid`: `number`; `placement`: `"combined"` \| `"search"` \| `"recommendations"`; \}[]; \}[] | - |
+| `data` | \{ `bids`: \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid`: `number`; `placement`: `"search"` \| `"recommendations"` \| `"combined"`; \}[]; \}[]; \} | Request body data |
+| `data.bids` | \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid`: `number`; `placement`: `"search"` \| `"recommendations"` \| `"combined"`; \}[]; \}[] | - |
 
 #### Returns
 
@@ -1085,7 +333,7 @@ getAdvBalance(): Promise<{
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:574](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L574)
+Defined in: [modules/promotion/index.ts:168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L168)
 
 Баланс
 
@@ -1143,7 +391,7 @@ getAdvBudget(options?: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:605](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L605)
+Defined in: [modules/promotion/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L199)
 
 Бюджет кампании
 
@@ -1205,7 +453,7 @@ createBudgetDeposit(data: {
 }): Promise<ResponseWithReturn>;
 ```
 
-Defined in: [modules/promotion/index.ts:630](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L630)
+Defined in: [modules/promotion/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L224)
 
 Пополнение бюджета кампании
 
@@ -1273,7 +521,7 @@ getAdvUpd(options?: {
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:662](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L662)
+Defined in: [modules/promotion/index.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L256)
 
 Получение истории затрат
 
@@ -1343,7 +591,7 @@ getAdvPayments(options?: {
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:706](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L706)
+Defined in: [modules/promotion/index.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L300)
 
 Получение истории пополнений счёта
 
@@ -1395,187 +643,6 @@ console.log(result);
 
 ***
 
-### ~~getSearchSetPlus()~~
-
-```ts
-getSearchSetPlus(options?: {
-  id: number;
-  fixed?: boolean;
-}): Promise<unknown>;
-```
-
-Defined in: [modules/promotion/index.ts:748](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L748)
-
-Управление активностью фиксированных фраз
-
-Метод делает активными или неактивными фиксированные фразы в кампаниях [с ручной ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1seacat~1save-ad/post). Фиксированные фразы нужны, чтобы товар отображался в поиске только по определенным поисковым запросам.<br><br> Установить или удалить фиксированные фразы можно через [отдельный метод](/openapi/promotion#tag/Parametry-kampanij/paths/~1adv~1v1~1search~1set-plus/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 500 миллисекунд | 1 запрос | 500 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `id`: `number`; `fixed?`: `boolean`; \} | Query parameters |
-| `options.id?` | `number` | - |
-| `options.fixed?` | `boolean` | - |
-
-#### Returns
-
-`Promise`\<`unknown`\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-const result = await sdk.promotion.getSearchSetPlus({});
-console.log(result);
-```
-
-#### Deprecated
-
-This method will be removed on January 15, 2025.
-
-***
-
-### ~~createSearchSetPlu()~~
-
-```ts
-createSearchSetPlu(data: {
-  pluse?: string[];
-}, options?: {
-  id: number;
-}): Promise<string[]>;
-```
-
-Defined in: [modules/promotion/index.ts:779](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L779)
-
-Установка/удаление фиксированных фраз
-
-Метод устанавливает и удаляет фиксированные фразы в кампаниях [с ручной ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1seacat~1save-ad/post). Фиксированные фразы можно выбрать в списке ключевых фраз кампании, который формируется после запуска.<br><br> Отправка пустого массива в методе удаляет все фиксированные фразы и отключает [активность](/openapi/promotion#tag/Parametry-kampanij/paths/~1adv~1v1~1search~1set-plus/get) всех фиксированных фраз кампании. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 500 миллисекунд | 1 запрос | 500 миллисекунд | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `pluse?`: `string`[]; \} | Request body data |
-| `data.pluse?` | `string`[] | - |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<`string`[]\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-const result = await sdk.promotion.createSearchSetPlu({}, {});
-console.log(result);
-```
-
-#### Deprecated
-
-This method will be removed on January 15, 2025.
-
-***
-
-### ~~createSearchSetExcluded()~~
-
-```ts
-createSearchSetExcluded(data: {
-  excluded?: string[];
-}, options?: {
-  id: number;
-}): Promise<unknown>;
-```
-
-Defined in: [modules/promotion/index.ts:814](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L814)
-
-Установка/удаление минус-фраз в поиске
-
-Метод устанавливает и удаляет минус-фразы в поиске, в кампаниях [с ручной ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1seacat~1save-ad/post).<br><br> Данные фразы можно выбрать из списка запросов, по которым покупатели находили ваш товар. Список запросов можно получить в [статистике ключевых фраз](/openapi/analytics#tag/Statistika-po-prodvizheniyu/paths/~1adv~1v0~1stats~1keywords/get).<br>Максимально допустимое количество минус-фраз в кампании — 1000.<br> Отправка пустого массива удаляет все минус-фразы из поиска из кампании. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 2 запроса | 500 миллисекунд | 2 запроса | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \{ `excluded?`: `string`[]; \} | Request body data |
-| `data.excluded?` | `string`[] | - |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<`unknown`\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-const result = await sdk.promotion.createSearchSetExcluded({}, {});
-console.log(result);
-```
-
-#### Deprecated
-
-This method will be removed on January 15, 2025.
-
-***
-
 ### createAutoSetExcluded()
 
 ```ts
@@ -1583,10 +650,10 @@ createAutoSetExcluded(data: {
   excluded?: string[];
 }, options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:847](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L847)
+Defined in: [modules/promotion/index.ts:341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L341)
 
 Установка/удаление минус-фраз для кампании с единой ставкой
 
@@ -1603,7 +670,7 @@ Defined in: [modules/promotion/index.ts:847](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -1632,63 +699,6 @@ console.log(result);
 
 ***
 
-### ~~getAutoGetnmtoadd()~~
-
-```ts
-getAutoGetnmtoadd(options?: {
-  id: number;
-}): Promise<number[]>;
-```
-
-Defined in: [modules/promotion/index.ts:875](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L875)
-
-Список карточек товаров для кампании с единой ставкой
-
-<div class="description_important"> ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br> **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br> **Альтернатива**: Для работы с кампаниями type 9 используйте метод [Информация о кампаниях с ручной ставкой](/openapi/promotion#tag/Kampanii/paths/~1adv~1v0~1auction~1adverts/get) и [Управление товарами в кампаниях](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1nms/patch). </div> Метод формирует [список карточек товаров](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v2~1supplier~1nms/post), которые можно добавить в кампанию с единой ставкой.<br><br> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 1 запрос | 1 секунда | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<`number`[]\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-const result = await sdk.promotion.getAutoGetnmtoadd({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use GET /adv/v0/auction/adverts and PATCH /adv/v0/auction/nms for type 9 campaigns. Will be removed February 2, 2026.
-
-***
-
 ### createAutoUpdatenm()
 
 ```ts
@@ -1697,10 +707,10 @@ createAutoUpdatenm(data: {
   delete?: number[];
 }, options?: {
   id: number;
-}): Promise<unknown>;
+}): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:904](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L904)
+Defined in: [modules/promotion/index.ts:367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L367)
 
 Изменение списка карточек товаров в кампании с единой ставкой
 
@@ -1718,7 +728,7 @@ Defined in: [modules/promotion/index.ts:904](https://github.com/salacoste/dayton
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`void`\>
 
 Успешно
 
@@ -1769,7 +779,7 @@ updateAuctionNm(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:930](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L930)
+Defined in: [modules/promotion/index.ts:392](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L392)
 
 Изменение списка карточек товаров в кампаниях
 
@@ -1834,7 +844,7 @@ getAdvCount(): Promise<{
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:954](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L954)
+Defined in: [modules/promotion/index.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L416)
 
 Количество медиакампаний
 
@@ -1899,7 +909,7 @@ getAdvAdverts(options?: {
 }[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:981](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L981)
+Defined in: [modules/promotion/index.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L443)
 
 Список медиакампаний
 
@@ -2012,7 +1022,7 @@ getAdvAdvert(options?: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:1030](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1030)
+Defined in: [modules/promotion/index.ts:492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L492)
 
 Информация о медиакампании
 
@@ -2104,66 +1114,6 @@ console.log(result);
 
 ***
 
-### ~~createAdvFullstat()~~
-
-```ts
-createAdvFullstat(data: 
-  | RequestWithDate
-  | RequestWithInterval
-  | RequestWithCampaignID[]): Promise<
-  | ResponseWithDate
-| ResponseWithInterval>;
-```
-
-Defined in: [modules/promotion/index.ts:1143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1143)
-
-Статистика кампаний
-
-Метод будет отключён 30 сентября. Используйте [актуальный метод](/openapi/promotion#tag/Statistika/paths/~1adv~1v3~1fullstats/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 5 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `data` | \| [`RequestWithDate`](../-internal-/interfaces/RequestWithDate.md) \| [`RequestWithInterval`](../-internal-/interfaces/RequestWithInterval.md) \| [`RequestWithCampaignID`](../-internal-/interfaces/RequestWithCampaignID.md)[] | Request body data |
-
-#### Returns
-
-`Promise`\<
-  \| [`ResponseWithDate`](../-internal-/type-aliases/ResponseWithDate.md)
-  \| [`ResponseWithInterval`](../-internal-/type-aliases/ResponseWithInterval.md)\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.createAdvFullstat({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use GET /adv/v3/fullstats instead.
-
-***
-
 ### getAdvFullstats()
 
 ```ts
@@ -2174,7 +1124,7 @@ getAdvFullstats(options?: {
 }): Promise<ResponseFullStats>;
 ```
 
-Defined in: [modules/promotion/index.ts:1174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1174)
+Defined in: [modules/promotion/index.ts:604](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L604)
 
 Статистика кампаний
 
@@ -2220,187 +1170,6 @@ console.log(result);
 
 ***
 
-### ~~getAutoStatWords()~~
-
-```ts
-getAutoStatWords(options?: {
-  id: number;
-}): Promise<{
-  excluded?: string[];
-  clusters?: {
-     cluster?: string;
-     count?: number;
-     keywords?: string[];
-  }[];
-}>;
-```
-
-Defined in: [modules/promotion/index.ts:1202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1202)
-
-Статистика кампании с единой ставкой по кластерам фраз
-
-<div class="description_important"> ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br> **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br> **Альтернатива**: Для получения статистики всех типов кампаний (включая type 9) используйте универсальный метод [Полная статистика кампаний](/openapi/promotion#tag/Statistika/paths/~1adv~1v3~1fullstats/get). Он предоставляет более подробную статистику для всех типов кампаний. </div> Метод формирует кластеры ключевых — то есть, наборы похожих — фраз из поисковой строки, если по ним хотя бы один раз были показаны товары из кампании. В ответе метода также указано количество показов этих товаров. <br><br> Информация обновляется каждые 15 минут. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<\{
-  `excluded?`: `string`[];
-  `clusters?`: \{
-     `cluster?`: `string`;
-     `count?`: `number`;
-     `keywords?`: `string`[];
-  \}[];
-\}\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-const result = await sdk.promotion.getAutoStatWords({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use GET /adv/v3/fullstats instead. Will be removed February 2, 2026.
-
-***
-
-### ~~getStatWords()~~
-
-```ts
-getStatWords(options?: {
-  id: number;
-}): Promise<{
-  words?: {
-     phrase?: string[];
-     strong?: string[];
-     excluded?: string[];
-     pluse?: string[];
-     keywords?: {
-        keyword?: string;
-        count?: number;
-     }[];
-     fixed?: boolean;
-  };
-  stat?: {
-     advertId?: number;
-     keyword?: string;
-     advertName?: string;
-     campaignName?: string;
-     begin?: string;
-     end?: string;
-     views?: number;
-     clicks?: number;
-     frq?: number;
-     ctr?: number;
-     cpc?: number;
-     duration?: number;
-     sum?: number;
-  }[];
-}>;
-```
-
-Defined in: [modules/promotion/index.ts:1237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1237)
-
-Статистика кампании c ручной ставкой по ключевым фразам
-
-Метод формирует статистику кампании c ручной ставкой по ключевым фразам из поисковой строки: количество просмотров товара и затраты по одной ключевой фразе. <br><br> Информация обновляется каждые 30 минут. <div class="description_important"> Тип рекламных кампаний <strong>Поиск</strong> устарел. </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `id`: `number`; \} | Query parameters |
-| `options.id?` | `number` | - |
-
-#### Returns
-
-`Promise`\<\{
-  `words?`: \{
-     `phrase?`: `string`[];
-     `strong?`: `string`[];
-     `excluded?`: `string`[];
-     `pluse?`: `string`[];
-     `keywords?`: \{
-        `keyword?`: `string`;
-        `count?`: `number`;
-     \}[];
-     `fixed?`: `boolean`;
-  \};
-  `stat?`: \{
-     `advertId?`: `number`;
-     `keyword?`: `string`;
-     `advertName?`: `string`;
-     `campaignName?`: `string`;
-     `begin?`: `string`;
-     `end?`: `string`;
-     `views?`: `number`;
-     `clicks?`: `number`;
-     `frq?`: `number`;
-     `ctr?`: `number`;
-     `cpc?`: `number`;
-     `duration?`: `number`;
-     `sum?`: `number`;
-  \}[];
-\}\>
-
-Успешно
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.promotion.getStatWords({});
-console.log(result);
-```
-
-#### Deprecated
-
-Use GET /adv/v0/stats/keywords instead.
-
-***
-
 ### getStatsKeywords()
 
 ```ts
@@ -2411,7 +1180,7 @@ getStatsKeywords(options?: {
 }): Promise<V0KeywordsStatisticsResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:1313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1313)
+Defined in: [modules/promotion/index.ts:630](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L630)
 
 Статистика по ключевым фразам
 
@@ -2469,7 +1238,7 @@ createAdvStat(data:
 | Stat[]>;
 ```
 
-Defined in: [modules/promotion/index.ts:1339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1339)
+Defined in: [modules/promotion/index.ts:656](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L656)
 
 Статистика медиакампаний
 
@@ -2527,7 +1296,7 @@ getCalendarPromotions(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/promotion/index.ts:1364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1364)
+Defined in: [modules/promotion/index.ts:681](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L681)
 
 Список акций
 
@@ -2583,7 +1352,7 @@ getPromotionsDetails(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/promotion/index.ts:1392](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1392)
+Defined in: [modules/promotion/index.ts:709](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L709)
 
 Детальная информация об акциях
 
@@ -2638,7 +1407,7 @@ getPromotionsNomenclatures(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/promotion/index.ts:1414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1414)
+Defined in: [modules/promotion/index.ts:731](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L731)
 
 Список товаров для участия в акции
 
@@ -2691,7 +1460,7 @@ console.log(result);
 createPromotionsUpload(): Promise<unknown>;
 ```
 
-Defined in: [modules/promotion/index.ts:1440](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1440)
+Defined in: [modules/promotion/index.ts:757](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L757)
 
 Добавить товар в акцию
 
@@ -2734,7 +1503,7 @@ console.log(result);
 getNormqueryStats(data: V0GetNormQueryStatsRequest): Promise<V0GetNormQueryStatsResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:1477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1477)
+Defined in: [modules/promotion/index.ts:794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L794)
 
 Статистика поисковых кластеров
 
@@ -2794,7 +1563,7 @@ console.log(stats.stats);
 getNormqueryBids(data: V0GetNormQueryBidsRequest): Promise<V0GetNormQueryBidsResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:1507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1507)
+Defined in: [modules/promotion/index.ts:824](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L824)
 
 Список ставок поисковых кластеров
 
@@ -2851,7 +1620,7 @@ console.log(bids.bids);
 setNormqueryBids(data: V0SetNormQueryBidsRequest): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:1542](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1542)
+Defined in: [modules/promotion/index.ts:859](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L859)
 
 Установить ставки для поисковых кластеров
 
@@ -2913,7 +1682,7 @@ await sdk.promotion.setNormqueryBids({
 deleteNormqueryBids(data: V0SetNormQueryBidsRequest): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:1575](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1575)
+Defined in: [modules/promotion/index.ts:892](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L892)
 
 Удалить ставки поисковых кластеров
 
@@ -2975,7 +1744,7 @@ await sdk.promotion.deleteNormqueryBids({
 getNormqueryMinus(data: V0GetNormQueryMinusRequest): Promise<V0GetNormQueryMinusResponse>;
 ```
 
-Defined in: [modules/promotion/index.ts:1603](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1603)
+Defined in: [modules/promotion/index.ts:920](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L920)
 
 Список минус-фраз кампаний
 
@@ -3032,7 +1801,7 @@ console.log(minusPhrases.items);
 setNormqueryMinus(data: V0SetMinusNormQueryRequest): Promise<void>;
 ```
 
-Defined in: [modules/promotion/index.ts:1635](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1635)
+Defined in: [modules/promotion/index.ts:952](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L952)
 
 Установка и удаление минус-фраз
 
@@ -3095,7 +1864,7 @@ getAdvertsV2(options?: {
 }): Promise<GetAdverts>;
 ```
 
-Defined in: [modules/promotion/index.ts:1670](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1670)
+Defined in: [modules/promotion/index.ts:987](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L987)
 
 Информация о кампаниях (V2)
 
@@ -3159,7 +1928,7 @@ getBidsMinV2(data: {
   advert_id: number;
   nm_ids: number[];
   payment_type: "cpm" | "cpc";
-  placement_types: ("combined" | "search" | "recommendation")[];
+  placement_types: ("search" | "combined" | "recommendation")[];
 }): Promise<{
   bids: {
      nm_id: number;
@@ -3171,7 +1940,7 @@ getBidsMinV2(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:1707](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1707)
+Defined in: [modules/promotion/index.ts:1024](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L1024)
 
 Минимальные ставки для карточек товаров (V1 API)
 
@@ -3184,11 +1953,11 @@ Rate limit: 20 requests per minute, 3 second interval, burst 5
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `advert_id`: `number`; `nm_ids`: `number`[]; `payment_type`: `"cpm"` \| `"cpc"`; `placement_types`: (`"combined"` \| `"search"` \| `"recommendation"`)[]; \} | Request body with campaign ID, product IDs, payment type, and placement types |
+| `data` | \{ `advert_id`: `number`; `nm_ids`: `number`[]; `payment_type`: `"cpm"` \| `"cpc"`; `placement_types`: (`"search"` \| `"combined"` \| `"recommendation"`)[]; \} | Request body with campaign ID, product IDs, payment type, and placement types |
 | `data.advert_id` | `number` | - |
 | `data.nm_ids` | `number`[] | - |
 | `data.payment_type` | `"cpm"` \| `"cpc"` | - |
-| `data.placement_types` | (`"combined"` \| `"search"` \| `"recommendation"`)[] | - |
+| `data.placement_types` | (`"search"` \| `"combined"` \| `"recommendation"`)[] | - |
 
 #### Returns
 
@@ -3247,7 +2016,7 @@ updateBidsV2(data: {
      nm_bids: {
         nm_id: number;
         bid_kopecks: number;
-        placement: "combined" | "search" | "recommendations";
+        placement: "search" | "recommendations" | "combined";
      }[];
   }[];
 }): Promise<{
@@ -3262,7 +2031,7 @@ updateBidsV2(data: {
 }>;
 ```
 
-Defined in: [modules/promotion/index.ts:1758](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/promotion/index.ts#L1758)
+Defined in: [modules/promotion/index.ts:1075](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/promotion/index.ts#L1075)
 
 Изменение ставок в кампаниях (V1 API)
 
@@ -3275,8 +2044,8 @@ Rate limit: 5 requests per second, 200ms interval, burst 5
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | \{ `bids`: \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid_kopecks`: `number`; `placement`: `"combined"` \| `"search"` \| `"recommendations"`; \}[]; \}[]; \} | Request body with bids in kopecks |
-| `data.bids` | \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid_kopecks`: `number`; `placement`: `"combined"` \| `"search"` \| `"recommendations"`; \}[]; \}[] | - |
+| `data` | \{ `bids`: \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid_kopecks`: `number`; `placement`: `"search"` \| `"recommendations"` \| `"combined"`; \}[]; \}[]; \} | Request body with bids in kopecks |
+| `data.bids` | \{ `advert_id`: `number`; `nm_bids`: \{ `nm_id`: `number`; `bid_kopecks`: `number`; `placement`: `"search"` \| `"recommendations"` \| `"combined"`; \}[]; \}[] | - |
 
 #### Returns
 

@@ -2,7 +2,7 @@
 
 # Interface: DeliveryDateInfo
 
-Defined in: [types/orders-dbs.types.ts:426](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-dbs.types.ts#L426)
+Defined in: [types/orders-dbs.types.ts:400](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-dbs.types.ts#L400)
 
 Delivery date information for a single order
 
@@ -10,6 +10,6 @@ Delivery date information for a single order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:428](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-dbs.types.ts#L428) |
-| <a id="deliverydate"></a> `deliveryDate` | `string` | Planned delivery date (ISO 8601) | [types/orders-dbs.types.ts:430](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-dbs.types.ts#L430) |
-| <a id="maxdeliverydate"></a> `maxDeliveryDate` | `string` | Maximum allowed delivery date (ISO 8601) | [types/orders-dbs.types.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/orders-dbs.types.ts#L432) |
+| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-dbs.types.ts#L402) |
+| <a id="deliverydate"></a> `deliveryDate` | `string` | Planned delivery date (ISO 8601) | [types/orders-dbs.types.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-dbs.types.ts#L404) |
+| <a id="maxdeliverydate"></a> `maxDeliveryDate` | `string` | Maximum allowed delivery date (ISO 8601) | [types/orders-dbs.types.ts:406](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-dbs.types.ts#L406) |

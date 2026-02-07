@@ -2,7 +2,7 @@
 
 # Class: AnalyticsModule
 
-Defined in: [modules/analytics/index.ts:52](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L52)
+Defined in: [modules/analytics/index.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L46)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/analytics/index.ts:52](https://github.com/salacoste/daytona
 new AnalyticsModule(client: BaseClient): AnalyticsModule;
 ```
 
-Defined in: [modules/analytics/index.ts:53](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L53)
+Defined in: [modules/analytics/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L47)
 
 #### Parameters
 
@@ -26,81 +26,6 @@ Defined in: [modules/analytics/index.ts:53](https://github.com/salacoste/daytona
 
 ## Methods
 
-### ~~createNmReportDetail()~~
-
-```ts
-createNmReportDetail(data: NmReportDetailRequest): Promise<NmReportDetailResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:60](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L60)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `data` | [`NmReportDetailRequest`](../-internal-/interfaces/NmReportDetailRequest.md) |
-
-#### Returns
-
-`Promise`\<[`NmReportDetailResponse`](../-internal-/interfaces/NmReportDetailResponse.md)\>
-
-#### Deprecated
-
-Use [getSalesFunnelProducts](#getsalesfunnelproducts) instead. v2 endpoint is dead (404).
-Maps v2 parameters to v3 format and delegates to getSalesFunnelProducts.
-
-***
-
-### ~~createDetailHistory()~~
-
-```ts
-createDetailHistory(data: NmReportDetailHistoryRequest): Promise<NmReportDetailHistoryResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L81)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `data` | [`NmReportDetailHistoryRequest`](../-internal-/interfaces/NmReportDetailHistoryRequest.md) |
-
-#### Returns
-
-`Promise`\<[`NmReportDetailHistoryResponse`](../-internal-/interfaces/NmReportDetailHistoryResponse.md)\>
-
-#### Deprecated
-
-Use [getSalesFunnelProductsHistory](#getsalesfunnelproductshistory) instead. v2 endpoint is dead (404).
-Maps v2 parameters to v3 format and delegates to getSalesFunnelProductsHistory.
-
-***
-
-### ~~createGroupedHistory()~~
-
-```ts
-createGroupedHistory(data: NmReportGroupedHistoryRequest): Promise<NmReportGroupedHistoryResponse>;
-```
-
-Defined in: [modules/analytics/index.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L108)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `data` | [`NmReportGroupedHistoryRequest`](../-internal-/interfaces/NmReportGroupedHistoryRequest.md) |
-
-#### Returns
-
-`Promise`\<[`NmReportGroupedHistoryResponse`](../-internal-/interfaces/NmReportGroupedHistoryResponse.md)\>
-
-#### Deprecated
-
-Use [getSalesFunnelGroupedHistory](#getsalesfunnelgroupedhistory) instead. v2 endpoint is dead (404).
-Maps v2 parameters to v3 format and delegates to getSalesFunnelGroupedHistory.
-
-***
-
 ### getNmReportDownloads()
 
 ```ts
@@ -109,7 +34,7 @@ getNmReportDownloads(options?: {
 }): Promise<NmReportGetReportsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:147](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L147)
+Defined in: [modules/analytics/index.ts:67](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L67)
 
 Получить список отчётов
 
@@ -171,7 +96,7 @@ createNmReportDownload(data?:
 | StocksReportReq): Promise<NmReportCreateReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:178](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L178)
+Defined in: [modules/analytics/index.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L98)
 
 Создать отчёт
 
@@ -233,7 +158,7 @@ console.log(result);
 createDownloadsRetry(data: NmReportRetryReportRequest): Promise<NmReportRetryReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L213)
+Defined in: [modules/analytics/index.ts:133](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L133)
 
 Сгенерировать отчёт повторно
 
@@ -289,7 +214,7 @@ console.log(result);
 getDownloadsFile(downloadId: string): Promise<ArrayBuffer>;
 ```
 
-Defined in: [modules/analytics/index.ts:243](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L243)
+Defined in: [modules/analytics/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L163)
 
 Получить отчёт
 
@@ -348,7 +273,7 @@ createSearchReportReport(data: MainRequest): Promise<CommonResponseProperties & 
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L269)
+Defined in: [modules/analytics/index.ts:189](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L189)
 
 Основная страница
 
@@ -408,7 +333,7 @@ createTableGroup(data: TableGroupRequest): Promise<CommonResponseProperties & {
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:299](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L299)
+Defined in: [modules/analytics/index.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L219)
 
 Пагинация по группам
 
@@ -469,7 +394,7 @@ createTableDetail(data: TableDetailsRequest): Promise<CommonResponseProperties &
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:329](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L329)
+Defined in: [modules/analytics/index.ts:249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L249)
 
 Пагинация по товарам в группе
 
@@ -530,7 +455,7 @@ createProductSearchText(data: ProductSearchTextsRequest): Promise<CommonResponse
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L358)
+Defined in: [modules/analytics/index.ts:278](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L278)
 
 Поисковые запросы по товару
 
@@ -590,7 +515,7 @@ createProductOrder(data: ProductOrdersRequest): Promise<CommonResponseProperties
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:386](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L386)
+Defined in: [modules/analytics/index.ts:306](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L306)
 
 Заказы и позиции по поисковым запросам товара
 
@@ -649,7 +574,7 @@ createProductsGroup(data: TableGroupRequestSt): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L415)
+Defined in: [modules/analytics/index.ts:335](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L335)
 
 Данные по группам
 
@@ -709,7 +634,7 @@ createProductsProduct(data: TableProductRequest): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L442)
+Defined in: [modules/analytics/index.ts:362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L362)
 
 Данные по товарам
 
@@ -769,7 +694,7 @@ createProductsSize(data: CommonSizeFilters): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L470)
+Defined in: [modules/analytics/index.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L390)
 
 Данные по размерам
 
@@ -830,7 +755,7 @@ createStocksReportOffice(data: CommonShippingOfficeFilters): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L497)
+Defined in: [modules/analytics/index.ts:417](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L417)
 
 Данные по складам
 
@@ -888,7 +813,7 @@ console.log(result);
 getSalesFunnelProducts(data: SalesFunnelProductsRequest): Promise<SalesFunnelProductsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:533](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L533)
+Defined in: [modules/analytics/index.ts:453](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L453)
 
 Статистика карточек товаров за период (v3)
 
@@ -949,7 +874,7 @@ console.log(result.products);
 getSalesFunnelProductsHistory(data: SalesFunnelProductsHistoryRequest): Promise<SalesFunnelProductsHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:565](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L565)
+Defined in: [modules/analytics/index.ts:485](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L485)
 
 Статистика карточек товаров по дням (v3)
 
@@ -1008,7 +933,7 @@ console.log(result);
 getSalesFunnelGroupedHistory(data: SalesFunnelGroupedHistoryRequest): Promise<SalesFunnelGroupedHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:596](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/analytics/index.ts#L596)
+Defined in: [modules/analytics/index.ts:516](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/analytics/index.ts#L516)
 
 Статистика групп карточек товаров по дням (v3)
 

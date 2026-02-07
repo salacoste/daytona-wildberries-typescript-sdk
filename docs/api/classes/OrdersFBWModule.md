@@ -2,7 +2,7 @@
 
 # Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L26)
+Defined in: [modules/orders-fbw/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L25)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:26](https://github.com/salacoste/dayton
 new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L29)
+Defined in: [modules/orders-fbw/index.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L26)
 
 #### Parameters
 
@@ -26,62 +26,6 @@ Defined in: [modules/orders-fbw/index.ts:29](https://github.com/salacoste/dayton
 
 ## Methods
 
-### ~~getAcceptanceCoefficients()~~
-
-```ts
-getAcceptanceCoefficients(options?: {
-  warehouseIDs?: string;
-}): Promise<ModelsAcceptanceCoefficient[]>;
-```
-
-Defined in: [modules/orders-fbw/index.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L47)
-
-Коэффициенты приёмки
-
-Метод возвращает коэффициенты приёмки для конкретных складов на ближайшие 14 дней. <div class="description_important"> Приёмка для поставки доступна только при сочетании: <br> <code>coefficient</code> — <code>0</code> или <code>1</code> <br> и <code>allowUnload</code> — <code>true</code> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 6 запросов | 10 секунд | 6 запросов | </div>
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `options?` | \{ `warehouseIDs?`: `string`; \} | Query parameters |
-| `options.warehouseIDs?` | `string` | - |
-
-#### Returns
-
-`Promise`\<[`ModelsAcceptanceCoefficient`](../-internal-/interfaces/ModelsAcceptanceCoefficient.md)[]\>
-
-Успешно
-
-#### Deprecated
-
-Use tariffs module instead. This endpoint has been moved to common-api.wildberries.ru.
-
-#### Throws
-
-When API key is invalid (401/403)
-
-#### Throws
-
-When rate limit exceeded (429)
-
-#### Throws
-
-When request data is invalid (400/422)
-
-#### Throws
-
-When network request fails or times out
-
-#### Example
-
-```ts
-const result = await sdk.ordersFBW.getAcceptanceCoefficients({});
-console.log(result);
-```
-
-***
-
 ### createAcceptanceOption()
 
 ```ts
@@ -90,7 +34,7 @@ createAcceptanceOption(data: ModelsGood[], options?: {
 }): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L78)
+Defined in: [modules/orders-fbw/index.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L44)
 
 Опции приёмки
 
@@ -141,7 +85,7 @@ console.log(result);
 warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L103)
+Defined in: [modules/orders-fbw/index.ts:69](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L69)
 
 Список складов
 
@@ -184,7 +128,7 @@ console.log(result);
 transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L124)
+Defined in: [modules/orders-fbw/index.ts:90](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L90)
 
 Транзитные направления
 
@@ -230,7 +174,7 @@ listSupplies(data: ModelsSuppliesFiltersRequest, options?: {
 }): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:147](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L147)
+Defined in: [modules/orders-fbw/index.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L113)
 
 Список поставок
 
@@ -276,36 +220,6 @@ console.log(result);
 
 ***
 
-### ~~createSupply()~~
-
-```ts
-createSupply(data: ModelsSuppliesFiltersRequest, options?: {
-  limit?: number;
-  offset?: number;
-}): Promise<ModelsSupply[]>;
-```
-
-Defined in: [modules/orders-fbw/index.ts:161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L161)
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `data` | [`ModelsSuppliesFiltersRequest`](../-internal-/interfaces/ModelsSuppliesFiltersRequest.md) |
-| `options?` | \{ `limit?`: `number`; `offset?`: `number`; \} |
-| `options.limit?` | `number` |
-| `options.offset?` | `number` |
-
-#### Returns
-
-`Promise`\<[`ModelsSupply`](../-internal-/interfaces/ModelsSupply.md)[]\>
-
-#### Deprecated
-
-Use [listSupplies](#listsupplies) instead. This method will be removed in v3.0.0.
-
-***
-
 ### getSupply()
 
 ```ts
@@ -314,7 +228,7 @@ getSupply(ID: number, options?: {
 }): Promise<ModelsSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L184)
+Defined in: [modules/orders-fbw/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L140)
 
 Детали поставки
 
@@ -369,7 +283,7 @@ getSuppliesGood(ID: number, options?: {
 }): Promise<ModelsGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:207](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L207)
+Defined in: [modules/orders-fbw/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L163)
 
 Товары поставки
 
@@ -422,7 +336,7 @@ console.log(result);
 getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/modules/orders-fbw/index.ts#L232)
+Defined in: [modules/orders-fbw/index.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/orders-fbw/index.ts#L188)
 
 Упаковка поставки
 

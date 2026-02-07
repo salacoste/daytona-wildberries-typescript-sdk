@@ -5,6 +5,148 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-02-07
+
+### Breaking Changes
+
+This is a **major release** with breaking changes. All deprecated methods and types from v2.x have been removed.
+
+**Action Required:** Review the [Migration Guide](docs/guides/migration-v3.md) before upgrading.
+
+### Removed
+
+#### Deprecated Methods (66 total)
+
+**Promotion Module (19 methods):**
+- `getSearchSetPlus()` - Removed (no replacement)
+- `createSearchSetPlu()` - Removed (no replacement)
+- `createSearchSetExcluded()` - Removed (no replacement)
+- `getAutoGetnmtoadd()` - Use `GET /api/advert/v2/adverts` and `PATCH /adv/v0/auction/nms`
+- `getAutoStatWords()` - Use `GET /adv/v3/fullstats`
+- `getPromotionCount()` - Use `GET /api/advert/v2/adverts`
+- `createPromotionAdvert()` - Use `GET /api/advert/v2/adverts`
+- `getAuctionAdverts()` - Use updated campaign management API
+- `getAdvConfig()` - Use updated configuration API
+- `createBidsMin()` - Use `POST /api/advert/v1/bids/min`
+- `createAdvSaveAd()` - Use `POST /adv/v2/seacat/save-ad`
+- `createSeacatSaveAd()` - Use current campaign creation API
+- `getSupplierSubjects()` - Use updated supplier API
+- `createSupplierNm()` - Use updated supplier API
+- `getAdvStart()` - Use updated campaign management API
+- `getAdvPause()` - Use updated campaign management API
+- `updateAdvBid()` - Use `PATCH /api/advert/v1/bids`
+- `createAdvFullstat()` - Use `GET /adv/v3/fullstats`
+- `getStatWords()` - Use `GET /adv/v0/stats/keywords`
+
+**Orders DBS Module (13 methods):**
+- `getMeta()` → Use `getMetaBulk()`
+- `deleteMeta()` → Use `deleteMetaBulk()`
+- `setSgtin()` → Use `setSgtinBulk()`
+- `setUin()` → Use `setUinBulk()`
+- `setImei()` → Use `setImeiBulk()`
+- `setGtin()` → Use `setGtinBulk()`
+- `setCustomsDeclaration()` → Use `setCustomsDeclarationBulk()`
+- `getStatuses()` → Use `getStatusesBulk()`
+- `confirm()` → Use `confirmBulk()`
+- `deliver()` → Use `deliverBulk()`
+- `receive()` → Use `receiveBulk()`
+- `reject()` → Use `rejectBulk()`
+- `cancel()` → Use `cancelBulk()`
+
+**Reports Module (10 methods):**
+- `getSupplierIncomes()` - Removed on 11 March 2026
+- `getTasksStatu()` → Use `getWarehouseRemainsTaskStatus()`
+- `getTasksDownload()` → Use `downloadWarehouseRemainsReport()`
+- `getWarehouseMeasurements()` → Use `getMeasurementPenalties()` or `getWarehouseMeasurementsV2()`
+- `getSubstitution()` → Use `getDeductions()`
+- `getIncorrectAttachment()` - Removed (no replacement)
+- `getTasksStatu2()` → Use `getAcceptanceReportTaskStatus()`
+- `getTasksDownload2()` → Use `downloadAcceptanceReport()`
+- `getTasksStatu3()` → Use `getPaidStorageTaskStatus()`
+- `getTasksDownload3()` → Use `downloadPaidStorageReport()`
+
+**Communications Module (6 methods):**
+- `getTemplates()` - Removed (Response Templates tag removed from API)
+- `createTemplates()` - Removed (Response Templates tag removed from API)
+- `getTemplatesId()` - Removed (Response Templates tag removed from API)
+- `updateTemplatesId()` - Removed (Response Templates tag removed from API)
+- `deleteTemplatesId()` - Removed (Response Templates tag removed from API)
+- `createReviewsGenerate()` - Removed (no replacement)
+
+**Orders FBS Module (5 methods):**
+- `createOrdersStatu()` → Use `getOrderStatuses()`
+- `getOrderMeta()` → Use `getOrdersMetaBulk()`
+- `getExternalStickersUrls()` → Use `createStickersCrossBorder()`
+- `updateSuppliesOrder()` → Use `addOrdersToSupply()`
+- `getSuppliesOrder()` → Use `getSupplyOrderIds()`
+
+**Products Module (7 methods):**
+- `createCardsList()` → Use `getCardsList()`
+- `createCardsTrash()` → Use `getTrashedCards()`
+- `getGoodsTask2()` → Use `getBufferGoodsTask()`
+- `createStock()` → Use `getStocks()`
+- `createWarehous()` → Use `createWarehouse()`
+- `updateWarehous()` → Use `updateWarehouse()`
+- `deleteWarehous()` → Use `deleteWarehouse()`
+
+**Analytics Module (3 methods):**
+- `createNmReportDetail()` → Use `getSalesFunnelProducts()`
+- `createDetailHistory()` → Use `getSalesFunnelProductsHistory()`
+- `createGroupedHistory()` → Use `getSalesFunnelGroupedHistory()`
+
+**Orders FBW Module (2 methods):**
+- `getAcceptance()` → Use tariffs module (moved to common-api)
+- `createSupply()` → Use `listSupplies()`
+
+**In-Store Pickup Module (1 method):**
+- `createOrdersStatu()` → Use `createOrdersStatus()`
+
+**Finances Module (1 method):**
+- `getSupplierReportdetailbyperiod()` → Use `getSupplierReportDetailByPeriod()`
+
+#### Deprecated Types (14 total)
+
+| Type | Alternative |
+|------|-------------|
+| `DBSOrderStatusLegacy` | Use `DBSOrderStatusBulk` |
+| `GetStatusResponseLegacy` | Use `GetStatusInfoResponse` |
+| `NmReportDetailRequest` | Use `SalesFunnelProductsRequest` |
+| `NmReportDetailHistoryRequest` | Use `SalesFunnelProductsHistoryRequest` |
+| `NmReportGroupedHistoryRequest` | Use `SalesFunnelGroupedHistoryRequest` |
+| `NmReportDetailResponse` | Use `SalesFunnelProductsResponse` |
+| `NmReportDetailHistoryResponse` | Use `SalesFunnelProductsHistoryResponse` |
+| `NmReportGroupedHistoryResponse` | Use `SalesFunnelGroupedHistoryResponse` |
+| `Response400WHM` | Use `Response400Retentions` |
+| `Response403WHM` | Use `Response403Retentions` |
+| `TemplatesRequest` | Removed (Response Templates removed from API) |
+| `Template` | Removed (Response Templates removed from API) |
+| `TemplateDetailed` | Removed (Response Templates removed from API) |
+
+### Added
+
+- **EPIC-18: Operation Metadata Support**
+  - `OperationMetadata` interface for operation introspection
+  - 296 operations with metadata (readonly, category, rateLimitKey)
+  - `isOperationReadonly()`, `getOperationCategory()` helper functions
+  - Readonly-aware retry logic in RetryHandler
+
+### Changed
+
+- SDK now exports only non-deprecated APIs
+- Cleaner, smaller bundle size
+- All modules updated to use new API naming conventions
+
+### Migration
+
+| From v2.x | To v3.0.0 |
+|-----------|-----------|
+| Deprecated methods | Use recommended alternatives |
+| Deprecated types | Use new type definitions |
+
+See [Migration Guide](docs/guides/migration-v3.md) for complete instructions with code examples.
+
+---
+
 ## [2.9.0] - 2026-02-07
 
 ### ⚠️ Final Deprecation Warnings

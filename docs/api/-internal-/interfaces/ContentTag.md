@@ -2,7 +2,7 @@
 
 # Interface: ContentTag
 
-Defined in: [types/products.types.ts:849](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L849)
+Defined in: [types/products.types.ts:849](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/products.types.ts#L849)
 
 Ярлык (тег контента)
 
@@ -12,6 +12,6 @@ Returned by GET /content/v2/tags
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | Числовой ID ярлыка | [types/products.types.ts:851](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L851) |
-| <a id="color"></a> `color` | `string` | Цвет ярлыка (e.g., "D1CFD7") | [types/products.types.ts:853](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L853) |
-| <a id="name"></a> `name` | `string` | Имя ярлыка (e.g., "Sale") | [types/products.types.ts:855](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/84d1a707640855c1ed182491beac41440c7153ad/src/types/products.types.ts#L855) |
+| <a id="id"></a> `id` | `number` | Числовой ID ярлыка | [types/products.types.ts:851](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/products.types.ts#L851) |
+| <a id="color"></a> `color` | `string` | Цвет ярлыка (e.g., "D1CFD7") | [types/products.types.ts:853](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/products.types.ts#L853) |
+| <a id="name"></a> `name` | `string` | Имя ярлыка (e.g., "Sale") | [types/products.types.ts:855](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/products.types.ts#L855) |
