@@ -490,6 +490,36 @@ export class OrdersDbsModule {
   // Bulk Status Management Methods (Story 12.2)
   // ==========================================================================
 
+  /**
+   * Get status information for multiple DBS orders (bulk)
+   *
+   * Retrieves the current status and tracking information for up to 1000 orders
+   * in a single request. This is more efficient than individual status queries
+   * for batch processing scenarios.
+   *
+   * Rate limit: Standard DBS rate limits apply
+   *
+   * @param orderIds - Array of order IDs to get status for (1-1000 items)
+   * @returns Promise resolving to status information for each order
+   * @throws {ValidationError} When orderIds array is empty or exceeds 1000 items
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbs#tag/Status-DBS}
+   *
+   * @example
+   * ```typescript
+   * // Get status for multiple orders
+   * const statuses = await sdk.ordersDBS.getStatusesBulk([123456, 234567, 345678]);
+   *
+   * for (const order of statuses.orders ?? []) {
+   *   console.log(`Order ${order.orderId}: ${order.wbStatus}`);
+   *   console.log(`  Seller status: ${order.supplierStatus}`);
+   *   console.log(`  Updated: ${order.changedAt}`);
+   * }
+   * ```
+   */
   async getStatusesBulk(orderIds: number[]): Promise<GetStatusInfoResponse> {
     if (orderIds.length === 0) {
       throw new ValidationError('orderIds array cannot be empty');
@@ -504,6 +534,38 @@ export class OrdersDbsModule {
     );
   }
 
+  /**
+   * Confirm multiple DBS orders for assembly (bulk)
+   *
+   * Moves up to 1000 orders from "new" to "confirmed" status in a single request.
+   * This indicates the seller has acknowledged the orders and will begin
+   * preparing them for delivery.
+   *
+   * Rate limit: Standard DBS rate limits apply
+   *
+   * @param orderIds - Array of order IDs to confirm (1-1000 items)
+   * @returns Promise resolving to confirmation results for each order
+   * @throws {ValidationError} When orderIds array is empty or exceeds 1000 items
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbs#tag/Status-DBS}
+   *
+   * @example
+   * ```typescript
+   * // Confirm multiple orders at once
+   * const result = await sdk.ordersDBS.confirmBulk([123456, 234567, 345678]);
+   *
+   * for (const order of result.orders ?? []) {
+   *   if (order.isError) {
+   *     console.log(`Order ${order.orderId} failed: ${order.errorText}`);
+   *   } else {
+   *     console.log(`Order ${order.orderId} confirmed successfully`);
+   *   }
+   * }
+   * ```
+   */
   async confirmBulk(orderIds: number[]): Promise<BulkStatusChangeResponse> {
     if (orderIds.length === 0) {
       throw new ValidationError('orderIds array cannot be empty');
@@ -518,6 +580,38 @@ export class OrdersDbsModule {
     );
   }
 
+  /**
+   * Mark multiple DBS orders as delivered (bulk)
+   *
+   * Moves up to 1000 orders to "delivered" status in a single request.
+   * Use this when the seller has handed over the packages for delivery
+   * to the customer. This triggers the delivery tracking process.
+   *
+   * Rate limit: Standard DBS rate limits apply
+   *
+   * @param orderIds - Array of order IDs to mark as delivered (1-1000 items)
+   * @returns Promise resolving to delivery status results for each order
+   * @throws {ValidationError} When orderIds array is empty or exceeds 1000 items
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbs#tag/Status-DBS}
+   *
+   * @example
+   * ```typescript
+   * // Mark multiple orders as delivered to carrier
+   * const result = await sdk.ordersDBS.deliverBulk([123456, 234567, 345678]);
+   *
+   * for (const order of result.orders ?? []) {
+   *   if (order.isError) {
+   *     console.log(`Order ${order.orderId} failed: ${order.errorText}`);
+   *   } else {
+   *     console.log(`Order ${order.orderId} marked as delivered`);
+   *   }
+   * }
+   * ```
+   */
   async deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse> {
     if (orderIds.length === 0) {
       throw new ValidationError('orderIds array cannot be empty');
@@ -532,6 +626,42 @@ export class OrdersDbsModule {
     );
   }
 
+  /**
+   * Confirm customer receipt for multiple DBS orders (bulk)
+   *
+   * Moves up to 1000 orders to "received" status in a single request.
+   * Use this when the customer has received and accepted the delivery.
+   * Requires the customer confirmation code for each order.
+   *
+   * Rate limit: Standard DBS rate limits apply
+   *
+   * @param orders - Array of orders with IDs and customer confirmation codes (1-1000 items)
+   * @returns Promise resolving to receive confirmation results for each order
+   * @throws {ValidationError} When orders array is empty, exceeds 1000 items, contains invalid orderId, or missing code
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbs#tag/Status-DBS}
+   *
+   * @example
+   * ```typescript
+   * // Confirm receipt for multiple orders with customer codes
+   * const result = await sdk.ordersDBS.receiveBulk([
+   *   { orderId: 123456, code: 'ABC123' },
+   *   { orderId: 234567, code: 'DEF456' },
+   *   { orderId: 345678, code: 'GHI789' }
+   * ]);
+   *
+   * for (const order of result.orders ?? []) {
+   *   if (order.isError) {
+   *     console.log(`Order ${order.orderId} failed: ${order.errorText}`);
+   *   } else {
+   *     console.log(`Order ${order.orderId} receipt confirmed`);
+   *   }
+   * }
+   * ```
+   */
   async receiveBulk(orders: OrderCodeRequest[]): Promise<BulkStatusChangeResponse> {
     if (orders.length === 0) {
       throw new ValidationError('orders array cannot be empty');
@@ -554,6 +684,43 @@ export class OrdersDbsModule {
     );
   }
 
+  /**
+   * Reject delivery for multiple DBS orders (bulk)
+   *
+   * Moves up to 1000 orders to "rejected" status in a single request.
+   * Use this when the customer has refused to accept the delivery
+   * (e.g., wrong product, damaged package, changed mind).
+   * Requires the rejection code for each order.
+   *
+   * Rate limit: Standard DBS rate limits apply
+   *
+   * @param orders - Array of orders with IDs and rejection codes (1-1000 items)
+   * @returns Promise resolving to rejection results for each order
+   * @throws {ValidationError} When orders array is empty, exceeds 1000 items, contains invalid orderId, or missing code
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbs#tag/Status-DBS}
+   *
+   * @example
+   * ```typescript
+   * // Reject delivery for multiple orders with rejection codes
+   * const result = await sdk.ordersDBS.rejectBulk([
+   *   { orderId: 123456, code: 'DAMAGED' },
+   *   { orderId: 234567, code: 'WRONG_ITEM' },
+   *   { orderId: 345678, code: 'CUSTOMER_REFUSED' }
+   * ]);
+   *
+   * for (const order of result.orders ?? []) {
+   *   if (order.isError) {
+   *     console.log(`Order ${order.orderId} rejection failed: ${order.errorText}`);
+   *   } else {
+   *     console.log(`Order ${order.orderId} rejected successfully`);
+   *   }
+   * }
+   * ```
+   */
   async rejectBulk(orders: OrderCodeRequest[]): Promise<BulkStatusChangeResponse> {
     if (orders.length === 0) {
       throw new ValidationError('orders array cannot be empty');
@@ -576,6 +743,38 @@ export class OrdersDbsModule {
     );
   }
 
+  /**
+   * Cancel multiple DBS orders (bulk)
+   *
+   * Cancels up to 1000 orders in a single request. Use this when the seller
+   * cannot fulfill the orders (e.g., out of stock, unable to deliver).
+   * Orders can only be cancelled before they are delivered.
+   *
+   * Rate limit: Standard DBS rate limits apply
+   *
+   * @param orderIds - Array of order IDs to cancel (1-1000 items)
+   * @returns Promise resolving to cancellation results for each order
+   * @throws {ValidationError} When orderIds array is empty or exceeds 1000 items
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails
+   *
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbs#tag/Status-DBS}
+   *
+   * @example
+   * ```typescript
+   * // Cancel multiple orders that cannot be fulfilled
+   * const result = await sdk.ordersDBS.cancelBulk([123456, 234567, 345678]);
+   *
+   * for (const order of result.orders ?? []) {
+   *   if (order.isError) {
+   *     console.log(`Order ${order.orderId} cancellation failed: ${order.errorText}`);
+   *   } else {
+   *     console.log(`Order ${order.orderId} cancelled successfully`);
+   *   }
+   * }
+   * ```
+   */
   async cancelBulk(orderIds: number[]): Promise<BulkStatusChangeResponse> {
     if (orderIds.length === 0) {
       throw new ValidationError('orderIds array cannot be empty');

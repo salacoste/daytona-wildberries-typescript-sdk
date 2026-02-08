@@ -570,5 +570,146 @@ describe('CommunicationsModule', () => {
         );
       });
     });
+
+    describe('updateFeedbacksAnswer() - Update feedback answer', () => {
+      it('should call correct URL with rateLimitKey', async () => {
+        mockClient.patch.mockResolvedValue(undefined);
+
+        await communicationsModule.updateFeedbacksAnswer({ id: 'fb123', text: 'Updated answer' });
+
+        expect(mockClient.patch).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer',
+          { id: 'fb123', text: 'Updated answer' },
+          { rateLimitKey: 'communications.patchFeedbacksAnswer' }
+        );
+      });
+
+      it('should allow calling without data', async () => {
+        mockClient.patch.mockResolvedValue(undefined);
+
+        await communicationsModule.updateFeedbacksAnswer();
+
+        expect(mockClient.patch).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/answer',
+          undefined,
+          { rateLimitKey: 'communications.patchFeedbacksAnswer' }
+        );
+      });
+    });
+
+    describe('getFeedbacksArchive() - Get archived feedbacks', () => {
+      it('should call correct URL with rateLimitKey', async () => {
+        mockClient.get.mockResolvedValue({
+          data: { feedbacks: [] },
+          error: false,
+        });
+
+        await communicationsModule.getFeedbacksArchive({ take: 10, skip: 0 });
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/archive',
+          {
+            params: { take: 10, skip: 0 },
+            rateLimitKey: 'communications.feedbacksArchive',
+          }
+        );
+      });
+
+      it('should pass all filter parameters', async () => {
+        mockClient.get.mockResolvedValue({
+          data: { feedbacks: [] },
+          error: false,
+        });
+
+        await communicationsModule.getFeedbacksArchive({
+          nmId: 123456,
+          take: 20,
+          skip: 10,
+          order: 'dateDesc',
+        });
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/archive',
+          {
+            params: { nmId: 123456, take: 20, skip: 10, order: 'dateDesc' },
+            rateLimitKey: 'communications.feedbacksArchive',
+          }
+        );
+      });
+
+      it('should return archived feedbacks data', async () => {
+        const mockResponse = {
+          data: { feedbacks: { id: 'fb1', text: 'Archived feedback' } },
+          error: false,
+          errorText: '',
+          additionalErrors: [],
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getFeedbacksArchive({ take: 10, skip: 0 });
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('getQuestionsCountUnanswered() - Unanswered questions count', () => {
+      it('should call correct URL with rateLimitKey', async () => {
+        mockClient.get.mockResolvedValue({
+          data: { countUnanswered: 5, countUnansweredToday: 2 },
+          error: false,
+        });
+
+        await communicationsModule.getQuestionsCountUnanswered();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/questions/count-unanswered',
+          { rateLimitKey: 'communications.questionsCountUnanswered' }
+        );
+      });
+
+      it('should return unanswered count data', async () => {
+        const mockResponse = {
+          data: { countUnanswered: 10, countUnansweredToday: 3 },
+          error: false,
+          errorText: '',
+          additionalErrors: [],
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getQuestionsCountUnanswered();
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
+
+    describe('getFeedbacksCountUnanswered() - Unanswered feedbacks count', () => {
+      it('should call correct URL with rateLimitKey', async () => {
+        mockClient.get.mockResolvedValue({
+          data: { countUnanswered: 8, countUnansweredToday: 4, valuation: '4.5' },
+          error: false,
+        });
+
+        await communicationsModule.getFeedbacksCountUnanswered();
+
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://feedbacks-api.wildberries.ru/api/v1/feedbacks/count-unanswered',
+          { rateLimitKey: 'communications.feedbacksCountUnanswered' }
+        );
+      });
+
+      it('should return unanswered count with valuation', async () => {
+        const mockResponse = {
+          data: { countUnanswered: 15, countUnansweredToday: 5, valuation: '4.2' },
+          error: false,
+          errorText: '',
+          additionalErrors: [],
+        };
+        mockClient.get.mockResolvedValue(mockResponse);
+
+        const result = await communicationsModule.getFeedbacksCountUnanswered();
+
+        expect(result).toEqual(mockResponse);
+      });
+    });
   });
 });
