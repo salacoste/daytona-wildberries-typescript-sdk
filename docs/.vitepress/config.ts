@@ -23,12 +23,6 @@ export default defineConfig({
   // Output directory for production build (relative to docs/)
   outDir: './.vitepress/dist',
 
-  // Rewrites to fix localization issues
-  // API docs are only in English, so redirect Russian API URLs to English
-  rewrites: {
-    'ru/api/:path*': 'api/:path*',
-  },
-
   // Markdown configuration
   // Configure markdown-it to properly handle TypeDoc's escaped angle brackets
   markdown: {
