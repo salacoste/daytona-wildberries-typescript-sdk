@@ -2,11 +2,11 @@
 
 # Interface: ModelsGoodInBox
 
-Defined in: [types/orders-fbw.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-fbw.types.ts#L56)
+Defined in: [types/orders-fbw.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/orders-fbw.types.ts#L56)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="barcode"></a> `barcode?` | `string` | Баркод | [types/orders-fbw.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-fbw.types.ts#L58) |
-| <a id="quantity"></a> `quantity?` | `number` | Количество, шт | [types/orders-fbw.types.ts:60](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/orders-fbw.types.ts#L60) |
+| <a id="barcode"></a> `barcode?` | `string` | Баркод | [types/orders-fbw.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/orders-fbw.types.ts#L58) |
+| <a id="quantity"></a> `quantity?` | `number` | Количество, шт | [types/orders-fbw.types.ts:60](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/orders-fbw.types.ts#L60) |

@@ -2,7 +2,7 @@
 
 # Interface: ApiSGTINsRequest
 
-Defined in: [types/in-store-pickup.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/in-store-pickup.types.ts#L270)
+Defined in: [types/in-store-pickup.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/in-store-pickup.types.ts#L270)
 
 ## Example
 
@@ -18,4 +18,4 @@ Defined in: [types/in-store-pickup.types.ts:270](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="sgtins"></a> `sgtins?` | `string`[] | Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки | [types/in-store-pickup.types.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/in-store-pickup.types.ts#L272) |
+| <a id="sgtins"></a> `sgtins?` | `string`[] | Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки | [types/in-store-pickup.types.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/in-store-pickup.types.ts#L272) |

@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/general/index.ts#L15)
+Defined in: [modules/general/index.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L20)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:15](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/general/index.ts#L16)
+Defined in: [modules/general/index.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L21)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/general/index.ts:16](https://github.com/salacoste/daytona-w
 ping(): Promise<PingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/general/index.ts#L61)
+Defined in: [modules/general/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L66)
 
 Проверка подключения к WB API
 
@@ -104,7 +104,7 @@ console.log(result.Status); // 'OK'
 news(options?: NewsRequestParams): Promise<NewsResponse>;
 ```
 
-Defined in: [modules/general/index.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/general/index.ts#L97)
+Defined in: [modules/general/index.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L102)
 
 Получение новостей портала продавцов
 
@@ -166,7 +166,7 @@ for (const item of result.data) {
 sellerInfo(): Promise<SellerInfoResponse>;
 ```
 
-Defined in: [modules/general/index.ts:131](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/modules/general/index.ts#L131)
+Defined in: [modules/general/index.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L136)
 
 Получение информации о продавце
 
@@ -209,4 +209,257 @@ When network request fails or times out
 ```typescript
 const seller = await sdk.general.sellerInfo();
 console.log(seller.name, seller.sid);
+```
+
+***
+
+### createInvite()
+
+```ts
+createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>;
+```
+
+Defined in: [modules/general/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L175)
+
+Создание приглашения для нового пользователя
+
+Метод создаёт приглашение для нового пользователя с настройкой доступов к разделам профиля продавца.
+Приглашение действительно в течение ограниченного времени, указанного в ответе.
+
+Rate limit:
+| Период | Лимит | Интервал | Всплеск |
+| --- | --- | --- | --- |
+| 1 сек | 1 запрос | 1 сек | 5 запросов |
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`CreateInviteRequest`](../-internal-/interfaces/CreateInviteRequest.md) | Данные для создания приглашения |
+
+#### Returns
+
+`Promise`\<[`CreateInviteResponse`](../-internal-/interfaces/CreateInviteResponse.md)\>
+
+Информация о созданном приглашении
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca](https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca)
+
+#### Example
+
+```typescript
+const result = await sdk.general.createInvite({
+  invite: { phoneNumber: '79999999999', position: 'Менеджер' },
+  access: [
+    { code: 'balance', disabled: false },
+    { code: 'finance', disabled: true }
+  ]
+});
+console.log(result.inviteUrl);
+```
+
+***
+
+### getUsers()
+
+```ts
+getUsers(params?: GetUsersParams): Promise<GetUsersResponse>;
+```
+
+Defined in: [modules/general/index.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L214)
+
+Получение списка пользователей продавца
+
+Возвращает список пользователей профиля продавца с их правами доступа.
+Можно фильтровать по активным пользователям или только приглашённым.
+
+Rate limit:
+| Период | Лимит | Интервал | Всплеск |
+| --- | --- | --- | --- |
+| 1 сек | 1 запрос | 1 сек | 5 запросов |
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params?` | [`GetUsersParams`](../-internal-/interfaces/GetUsersParams.md) | Параметры запроса |
+
+#### Returns
+
+`Promise`\<[`GetUsersResponse`](../-internal-/interfaces/GetUsersResponse.md)\>
+
+Список пользователей с общим количеством
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca](https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca)
+
+#### Example
+
+```typescript
+const result = await sdk.general.getUsers({ limit: 50 });
+console.log(`Total users: ${result.total}`);
+for (const user of result.users) {
+  console.log(user.firstName, user.email);
+}
+```
+
+***
+
+### updateUserAccess()
+
+```ts
+updateUserAccess(data: UpdateUserAccessRequest): Promise<void>;
+```
+
+Defined in: [modules/general/index.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L257)
+
+Изменение доступов пользователей
+
+Обновляет права доступа для одного или нескольких пользователей профиля продавца.
+Можно изменить доступ к различным разделам: баланс, финансы, документы и др.
+
+Rate limit:
+| Период | Лимит | Интервал | Всплеск |
+| --- | --- | --- | --- |
+| 1 сек | 1 запрос | 1 сек | 5 запросов |
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`UpdateUserAccessRequest`](../-internal-/interfaces/UpdateUserAccessRequest.md) | Данные для обновления доступов |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+void
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca](https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca)
+
+#### Example
+
+```typescript
+await sdk.general.updateUserAccess({
+  usersAccesses: [
+    {
+      userId: 12345,
+      access: [
+        { code: 'balance', disabled: true },
+        { code: 'finance', disabled: false }
+      ]
+    }
+  ]
+});
+```
+
+***
+
+### deleteUser()
+
+```ts
+deleteUser(deletedUserID: number): Promise<void>;
+```
+
+Defined in: [modules/general/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/modules/general/index.ts#L288)
+
+Удаление пользователя
+
+Удаляет пользователя из профиля продавца по его ID.
+Удалённый пользователь теряет доступ ко всем разделам профиля.
+
+Rate limit:
+| Период | Лимит | Интервал | Всплеск |
+| --- | --- | --- | --- |
+| 1 сек | 1 запрос | 1 сек | 10 запросов |
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `deletedUserID` | `number` | ID пользователя для удаления |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+void
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca](https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca)
+
+#### Example
+
+```typescript
+await sdk.general.deleteUser(12345);
 ```

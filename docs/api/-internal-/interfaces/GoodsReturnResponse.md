@@ -2,7 +2,7 @@
 
 # Interface: GoodsReturnResponse
 
-Defined in: [types/reports.types.ts:789](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L789)
+Defined in: [types/reports.types.ts:789](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/reports.types.ts#L789)
 
 Response for getAnalyticsGoodsReturn
 
@@ -14,4 +14,4 @@ EPIC 43 - Extracted from inline type literal
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="report"></a> `report?` | [`GoodsReturnItem`](GoodsReturnItem.md)[] | [types/reports.types.ts:790](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/reports.types.ts#L790) |
+| <a id="report"></a> `report?` | [`GoodsReturnItem`](GoodsReturnItem.md)[] | [types/reports.types.ts:790](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/reports.types.ts#L790) |

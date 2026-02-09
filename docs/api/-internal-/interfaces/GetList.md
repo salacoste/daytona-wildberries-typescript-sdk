@@ -2,11 +2,11 @@
 
 # Interface: GetList
 
-Defined in: [types/finances.types.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/finances.types.ts#L44)
+Defined in: [types/finances.types.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/finances.types.ts#L44)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `documents?`: \{ `serviceName?`: `string`; `name?`: `string`; `category?`: `string`; `extensions?`: `string`[]; `creationTime?`: `string`; `viewed?`: `boolean`; \}[]; \} | - | [types/finances.types.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/finances.types.ts#L45) |
-| `data.documents?` | \{ `serviceName?`: `string`; `name?`: `string`; `category?`: `string`; `extensions?`: `string`[]; `creationTime?`: `string`; `viewed?`: `boolean`; \}[] | Категории документов | [types/finances.types.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/78738509e2ed1dae9297c4199278cfbc419b5742/src/types/finances.types.ts#L47) |
+| <a id="data"></a> `data?` | \{ `documents?`: \{ `serviceName?`: `string`; `name?`: `string`; `category?`: `string`; `extensions?`: `string`[]; `creationTime?`: `string`; `viewed?`: `boolean`; \}[]; \} | - | [types/finances.types.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/finances.types.ts#L45) |
+| `data.documents?` | \{ `serviceName?`: `string`; `name?`: `string`; `category?`: `string`; `extensions?`: `string`[]; `creationTime?`: `string`; `viewed?`: `boolean`; \}[] | Категории документов | [types/finances.types.ts:47](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/finances.types.ts#L47) |

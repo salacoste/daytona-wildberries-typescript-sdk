@@ -124,6 +124,16 @@
 | [NewsResponse](interfaces/NewsResponse.md) | Response structure for news endpoint |
 | [NewsRequestParams](interfaces/NewsRequestParams.md) | Parameters for news endpoint request |
 | [SellerInfoResponse](interfaces/SellerInfoResponse.md) | Response structure for seller info endpoint |
+| [AccessItem](interfaces/AccessItem.md) | Access permission item |
+| [InviteInfo](interfaces/InviteInfo.md) | Invite information |
+| [CreateInviteRequest](interfaces/CreateInviteRequest.md) | Request to create user invitation |
+| [CreateInviteResponse](interfaces/CreateInviteResponse.md) | Response from create invitation endpoint |
+| [InviteeInfo](interfaces/InviteeInfo.md) | Invitee information (for invited users) |
+| [UserInfo](interfaces/UserInfo.md) | User information |
+| [GetUsersParams](interfaces/GetUsersParams.md) | Parameters for getting users list |
+| [GetUsersResponse](interfaces/GetUsersResponse.md) | Response from get users endpoint |
+| [UserAccessUpdate](interfaces/UserAccessUpdate.md) | User access update item |
+| [UpdateUserAccessRequest](interfaces/UpdateUserAccessRequest.md) | Request to update user access |
 | [ApiCheckedIdentity](interfaces/ApiCheckedIdentity.md) | Auto-generated TypeScript types for in-store-pickup module Generated from: wildberries_api_doc/06-in-store-pickup.yaml |
 | [ApiCheckIdentityRequest](interfaces/ApiCheckIdentityRequest.md) | - |
 | [ApiGTINRequest](interfaces/ApiGTINRequest.md) | - |
@@ -328,6 +338,13 @@
 | [AdvertSubject](interfaces/AdvertSubject.md) | Предмет (для кампаний с копейками) |
 | [AdvertSettings](interfaces/AdvertSettings.md) | Настройки кампании |
 | [AdvertPlacements](interfaces/AdvertPlacements.md) | Места размещения кампании |
+| [CampaignListItem](interfaces/CampaignListItem.md) | Campaign list item in count response |
+| [CampaignGroup](interfaces/CampaignGroup.md) | Campaign group by type/status in count response |
+| [GetCampaignCountResponse](interfaces/GetCampaignCountResponse.md) | Response from campaign count endpoint |
+| [CreateCampaignRequest](interfaces/CreateCampaignRequest.md) | Request to create a campaign |
+| [SupplierSubject](interfaces/SupplierSubject.md) | Subject item for campaigns |
+| [GetSupplierSubjectsParams](interfaces/GetSupplierSubjectsParams.md) | Parameters for getting supplier subjects |
+| [SupplierNmItem](interfaces/SupplierNmItem.md) | Product card item for campaigns |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
 | [SalesItem](interfaces/SalesItem.md) | - |
@@ -412,6 +429,7 @@
 | [ResponseFeedback](type-aliases/ResponseFeedback.md) | Массив отзывов |
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
 | [DocumentsLocale](type-aliases/DocumentsLocale.md) | Supported locale values for document endpoints |
+| [AccessCode](type-aliases/AccessCode.md) | Access code for user permissions Determines which sections of the seller profile the user can access |
 | [DBSSupplierStatus](type-aliases/DBSSupplierStatus.md) | DBS supplier status Triggered by seller actions |
 | [OrderSupplierStatus](type-aliases/OrderSupplierStatus.md) | Supplier-side order status |
 | [OrderWbStatus](type-aliases/OrderWbStatus.md) | Wildberries system order status |
@@ -429,5 +447,7 @@
 | [ResponseFullStats](type-aliases/ResponseFullStats.md) | Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам |
 | [DaysV3](type-aliases/DaysV3.md) | Статистка по дням (V3) |
 | [BoosterStatsV3](type-aliases/BoosterStatsV3.md) | Статистика по средней позиции товара (для кампаний с единой ставкой) (V3) |
+| [BidType](type-aliases/BidType.md) | Bid type for campaign creation |
+| [CampaignPlacementType](type-aliases/CampaignPlacementType.md) | Campaign placement types |
 | [ModelsExciseReportResponseData](type-aliases/ModelsExciseReportResponseData.md) | - |
 | [ResponsePaidStorage](type-aliases/ResponsePaidStorage.md) | - |
