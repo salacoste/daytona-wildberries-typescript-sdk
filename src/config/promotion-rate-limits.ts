@@ -295,4 +295,50 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.2,
     burstLimit: 5,
   },
+
+  // ============================================================================
+  // Campaign Management Rate Limits - NEW
+  // ============================================================================
+
+  /** GET /adv/v1/promotion/count - Get campaign count and list */
+  'promotion.getCampaignCount': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 5,
+  },
+
+  /** POST /adv/v2/seacat/save-ad - Create campaign */
+  'promotion.createCampaign': {
+    requestsPerMinute: 5,
+    intervalSeconds: 12,
+    burstLimit: 5,
+  },
+
+  /** GET /adv/v1/supplier/subjects - Get supplier subjects */
+  'promotion.getSupplierSubjects': {
+    requestsPerMinute: 5,
+    intervalSeconds: 12,
+    burstLimit: 5,
+  },
+
+  /** POST /adv/v2/supplier/nms - Get supplier product cards */
+  'promotion.getSupplierNms': {
+    requestsPerMinute: 5,
+    intervalSeconds: 12,
+    burstLimit: 5,
+  },
+
+  /** GET /adv/v0/start - Start campaign */
+  'promotion.startCampaign': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 5,
+  },
+
+  /** GET /adv/v0/pause - Pause campaign */
+  'promotion.pauseCampaign': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 5,
+  },
 };

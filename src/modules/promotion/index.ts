@@ -6,7 +6,10 @@
 
 import { BaseClient } from '../../client/base-client';
 import type {
+  CreateCampaignRequest,
   GetAdverts,
+  GetCampaignCountResponse,
+  GetSupplierSubjectsParams,
   PlacementType,
   RequestWithCampaignID,
   RequestWithDate,
@@ -16,6 +19,8 @@ import type {
   Stat,
   StatDate,
   StatInterval,
+  SupplierNmItem,
+  SupplierSubject,
   V0GetNormQueryBidsRequest,
   V0GetNormQueryBidsResponse,
   V0GetNormQueryMinusRequest,
@@ -1118,6 +1123,206 @@ export class PromotionModule {
       }[];
     }>('https://advert-api.wildberries.ru/api/advert/v1/bids', data, {
       rateLimitKey: 'promotion.bidsV1',
+    });
+  }
+
+  // ============================================================================
+  // Campaign Management Methods - NEW
+  // ============================================================================
+
+  /**
+   * Получение списков кампаний
+   *
+   * Возвращает списки всех рекламных кампаний продавца с их ID.
+   * Кампании сгруппированы по типу и статусу, у каждой указана дата последнего изменения.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 5 запросов | 200 мс | 5 запросов |
+   *
+   * @readonly
+   * @returns Списки кампаний по типам и статусам
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Kampanii}
+   * @example
+   * ```typescript
+   * const campaigns = await sdk.promotion.getCampaignCount();
+   * console.log(`Total campaigns: ${campaigns.all}`);
+   * for (const group of campaigns.adverts || []) {
+   *   console.log(`Type ${group.type}, Status ${group.status}: ${group.count} campaigns`);
+   * }
+   * ```
+   */
+  async getCampaignCount(): Promise<GetCampaignCountResponse> {
+    return this.client.get<GetCampaignCountResponse>(
+      'https://advert-api.wildberries.ru/adv/v1/promotion/count',
+      { rateLimitKey: 'promotion.getCampaignCount' }
+    );
+  }
+
+  /**
+   * Создание кампании
+   *
+   * Метод создаёт рекламную кампанию с единой или ручной ставкой.
+   * Возвращает ID созданной кампании.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 мин | 5 запросов | 12 сек | 5 запросов |
+   *
+   * @param data - Данные для создания кампании
+   * @returns ID созданной кампании
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Sozdanie-kampanij}
+   * @example
+   * ```typescript
+   * const campaignId = await sdk.promotion.createCampaign({
+   *   name: 'My Campaign',
+   *   nms: [12345678, 87654321],
+   *   bid_type: 'manual',
+   *   payment_type: 'cpm',
+   *   placement_types: ['search', 'recommendations']
+   * });
+   * console.log(`Created campaign with ID: ${campaignId}`);
+   * ```
+   */
+  async createCampaign(data: CreateCampaignRequest): Promise<number> {
+    return this.client.post<number>(
+      'https://advert-api.wildberries.ru/adv/v2/seacat/save-ad',
+      data,
+      { rateLimitKey: 'promotion.createCampaign' }
+    );
+  }
+
+  /**
+   * Список предметов продавца
+   *
+   * Метод возвращает список предметов, для которых можно создать кампанию.
+   * Возвращает null, если нет товаров для создания кампаний.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 мин | 5 запросов | 12 сек | 5 запросов |
+   *
+   * @param params - Параметры фильтрации
+   * @returns Список предметов или null
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Sozdanie-kampanij}
+   * @example
+   * ```typescript
+   * const subjects = await sdk.promotion.getSupplierSubjects({ payment_type: 'cpm' });
+   * if (subjects) {
+   *   for (const subject of subjects) {
+   *     console.log(`${subject.name}: ${subject.count} products`);
+   *   }
+   * }
+   * ```
+   */
+  async getSupplierSubjects(params?: GetSupplierSubjectsParams): Promise<SupplierSubject[] | null> {
+    return this.client.get<SupplierSubject[] | null>(
+      'https://advert-api.wildberries.ru/adv/v1/supplier/subjects',
+      { params: params ? { ...params } : undefined, rateLimitKey: 'promotion.getSupplierSubjects' }
+    );
+  }
+
+  /**
+   * Список карточек товаров продавца
+   *
+   * Метод возвращает список карточек товаров по указанным предметам.
+   * Используется для получения артикулов WB для добавления в кампанию.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 мин | 5 запросов | 12 сек | 5 запросов |
+   *
+   * @param subjectIds - Массив ID предметов
+   * @returns Список карточек товаров
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Sozdanie-kampanij}
+   * @example
+   * ```typescript
+   * const products = await sdk.promotion.getSupplierNms([123, 456]);
+   * for (const product of products) {
+   *   console.log(`${product.title} (nmId: ${product.nm})`);
+   * }
+   * ```
+   */
+  async getSupplierNms(subjectIds: number[]): Promise<SupplierNmItem[]> {
+    return this.client.post<SupplierNmItem[]>(
+      'https://advert-api.wildberries.ru/adv/v2/supplier/nms',
+      subjectIds,
+      { rateLimitKey: 'promotion.getSupplierNms' }
+    );
+  }
+
+  /**
+   * Запуск кампании
+   *
+   * Метод запускает кампании в статусах:
+   * - `4` — готова к запуску
+   * - `11` — на паузе
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 5 запросов | 200 мс | 5 запросов |
+   *
+   * @param id - ID кампании
+   * @returns void
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When campaign is in wrong status (400)
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Upravlenie-kampaniyami}
+   * @example
+   * ```typescript
+   * await sdk.promotion.startCampaign(12345);
+   * console.log('Campaign started successfully');
+   * ```
+   */
+  async startCampaign(id: number): Promise<void> {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v0/start', {
+      params: { id },
+      rateLimitKey: 'promotion.startCampaign',
+    });
+  }
+
+  /**
+   * Пауза кампании
+   *
+   * Метод ставит кампании на паузу. Работает только для кампаний в статусе:
+   * - `9` — активна
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 5 запросов | 200 мс | 5 запросов |
+   *
+   * @param id - ID кампании
+   * @returns void
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When campaign is in wrong status (400)
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Upravlenie-kampaniyami}
+   * @example
+   * ```typescript
+   * await sdk.promotion.pauseCampaign(12345);
+   * console.log('Campaign paused successfully');
+   * ```
+   */
+  async pauseCampaign(id: number): Promise<void> {
+    return this.client.get('https://advert-api.wildberries.ru/adv/v0/pause', {
+      params: { id },
+      rateLimitKey: 'promotion.pauseCampaign',
     });
   }
 }

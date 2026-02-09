@@ -1361,3 +1361,139 @@ export interface FullStatsError {
   /** Заголовок ошибки */
   title: string;
 }
+
+// ============================================================================
+// Campaign Count/List Types
+// ============================================================================
+
+/**
+ * Campaign list item in count response
+ */
+export interface CampaignListItem {
+  /** Campaign ID */
+  advertId: number;
+  /** Last change date/time */
+  changeTime: string;
+}
+
+/**
+ * Campaign group by type/status in count response
+ */
+export interface CampaignGroup {
+  /** Campaign type: 8 - unified bid (deprecated), 9 - manual/unified bid */
+  type: 8 | 9;
+  /** Campaign status: -1, 4, 7, 8, 9, 11 */
+  status: -1 | 4 | 7 | 8 | 9 | 11;
+  /** Number of campaigns in this group */
+  count: number;
+  /** List of campaigns */
+  advert_list: CampaignListItem[];
+}
+
+/**
+ * Response from campaign count endpoint
+ */
+export interface GetCampaignCountResponse {
+  /** Campaign groups by type/status */
+  adverts: CampaignGroup[] | null;
+  /** Total number of campaigns */
+  all: number;
+}
+
+// ============================================================================
+// Campaign Creation Types
+// ============================================================================
+
+/**
+ * Bid type for campaign creation
+ */
+export type BidType = 'manual' | 'unified';
+
+/**
+ * Campaign placement types
+ */
+export type CampaignPlacementType = 'search' | 'recommendations';
+
+/**
+ * Request to create a campaign
+ */
+export interface CreateCampaignRequest {
+  /** Campaign name */
+  name: string;
+  /** WB article IDs (nmId), max 50 */
+  nms: number[];
+  /** Bid type: manual or unified */
+  bid_type?: BidType;
+  /** Payment type: cpm or cpc */
+  payment_type?: 'cpm' | 'cpc';
+  /** Placement types (only for manual bid campaigns) */
+  placement_types?: CampaignPlacementType[];
+}
+
+// ============================================================================
+// Supplier Subjects Types
+// ============================================================================
+
+/**
+ * Subject item for campaigns
+ */
+export interface SupplierSubject {
+  /** Subject ID */
+  id: number;
+  /** Subject name */
+  name: string;
+  /** Number of WB articles (nmId) with this subject */
+  count: number;
+}
+
+/**
+ * Parameters for getting supplier subjects
+ */
+export interface GetSupplierSubjectsParams {
+  /** Payment type: cpm or cpc */
+  payment_type?: 'cpm' | 'cpc';
+}
+
+// ============================================================================
+// Supplier Product Cards Types
+// ============================================================================
+
+/**
+ * Product card item for campaigns
+ */
+export interface SupplierNmItem {
+  /** Product title */
+  title: string;
+  /** WB article (nmId) */
+  nm: number;
+  /** Subject ID */
+  subjectId: number;
+}
+
+// ============================================================================
+// Campaign Control Response Types
+// ============================================================================
+
+/**
+ * Error response for campaign control operations
+ */
+export interface CampaignControlError {
+  /** Error message */
+  error?: string;
+}
+
+/**
+ * Campaign 400 error response
+ */
+export interface Campaign400Response {
+  /** Error details */
+  detail?: string;
+  /** Internal service name */
+  origin?: string;
+  /** Request ID */
+  request_id?: string;
+  /** HTTP status code */
+  status?: number;
+  /** Error title */
+  title?: string;
+}

@@ -13,6 +13,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { PromotionModule } from '../../../src/modules/promotion';
 import type { BaseClient } from '../../../src/client/base-client';
+import { AuthenticationError } from '../../../src/errors/auth-error';
+import { RateLimitError } from '../../../src/errors/rate-limit-error';
 
 describe('PromotionModule', () => {
   let mockClient: {
@@ -446,6 +448,209 @@ describe('PromotionModule', () => {
         },
         expect.objectContaining({ rateLimitKey: 'promotion.bidsV1' })
       );
+    });
+  });
+
+  // ==========================================================================
+  // Campaign Count Tests
+  // ==========================================================================
+
+  describe('getCampaignCount()', () => {
+    const mockResponse = {
+      adverts: [
+        {
+          type: 9,
+          status: 9,
+          count: 3,
+          advert_list: [{ advertId: 123, changeTime: '2025-01-01' }],
+        },
+      ],
+      all: 3,
+    };
+
+    it('should call correct endpoint with GET method', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      await module.getCampaignCount();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v1/promotion/count',
+        { rateLimitKey: 'promotion.getCampaignCount' }
+      );
+    });
+
+    it('should return campaign groups', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getCampaignCount();
+
+      expect(result.all).toBe(3);
+      expect(result.adverts).toHaveLength(1);
+    });
+  });
+
+  // ==========================================================================
+  // Create Campaign Tests
+  // ==========================================================================
+
+  describe('createCampaign()', () => {
+    it('should call correct endpoint with POST method', async () => {
+      mockClient.post.mockResolvedValue(1234567);
+
+      const request = {
+        name: 'Test Campaign',
+        nms: [146168367, 200425104],
+        bid_type: 'manual' as const,
+        placement_types: ['search' as const, 'recommendations' as const],
+      };
+
+      await module.createCampaign(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v2/seacat/save-ad',
+        request,
+        { rateLimitKey: 'promotion.createCampaign' }
+      );
+    });
+
+    it('should return campaign ID', async () => {
+      mockClient.post.mockResolvedValue(1234567);
+
+      const result = await module.createCampaign({ name: 'Test', nms: [123] });
+
+      expect(result).toBe(1234567);
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+
+      await expect(module.createCampaign({ name: 'Test', nms: [123] })).rejects.toThrow(
+        AuthenticationError
+      );
+    });
+  });
+
+  // ==========================================================================
+  // Supplier Subjects Tests
+  // ==========================================================================
+
+  describe('getSupplierSubjects()', () => {
+    const mockResponse = [{ id: 2560, name: '3D очки', count: 1899 }];
+
+    it('should call correct endpoint with GET method', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      await module.getSupplierSubjects();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v1/supplier/subjects',
+        { rateLimitKey: 'promotion.getSupplierSubjects' }
+      );
+    });
+
+    it('should pass payment_type param', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      await module.getSupplierSubjects({ payment_type: 'cpm' });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v1/supplier/subjects',
+        { params: { payment_type: 'cpm' }, rateLimitKey: 'promotion.getSupplierSubjects' }
+      );
+    });
+
+    it('should return subjects array', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getSupplierSubjects();
+
+      expect(result).toHaveLength(1);
+      expect(result![0].name).toBe('3D очки');
+    });
+
+    it('should return null when no subjects', async () => {
+      mockClient.get.mockResolvedValue(null);
+
+      const result = await module.getSupplierSubjects();
+
+      expect(result).toBeNull();
+    });
+  });
+
+  // ==========================================================================
+  // Supplier NMs Tests
+  // ==========================================================================
+
+  describe('getSupplierNms()', () => {
+    const mockResponse = [{ title: 'Плед', nm: 146168367, subjectId: 765 }];
+
+    it('should call correct endpoint with POST method', async () => {
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      await module.getSupplierNms([123, 456]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v2/supplier/nms',
+        [123, 456],
+        { rateLimitKey: 'promotion.getSupplierNms' }
+      );
+    });
+
+    it('should return product cards', async () => {
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getSupplierNms([765]);
+
+      expect(result).toHaveLength(1);
+      expect(result[0].title).toBe('Плед');
+    });
+  });
+
+  // ==========================================================================
+  // Start/Pause Campaign Tests
+  // ==========================================================================
+
+  describe('startCampaign()', () => {
+    it('should call correct endpoint with GET method', async () => {
+      mockClient.get.mockResolvedValue(undefined);
+
+      await module.startCampaign(1234);
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v0/start',
+        {
+          params: { id: 1234 },
+          rateLimitKey: 'promotion.startCampaign',
+        }
+      );
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+
+      await expect(module.startCampaign(1234)).rejects.toThrow(RateLimitError);
+    });
+  });
+
+  describe('pauseCampaign()', () => {
+    it('should call correct endpoint with GET method', async () => {
+      mockClient.get.mockResolvedValue(undefined);
+
+      await module.pauseCampaign(1234);
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v0/pause',
+        {
+          params: { id: 1234 },
+          rateLimitKey: 'promotion.pauseCampaign',
+        }
+      );
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.get.mockRejectedValue(new AuthenticationError('Invalid API key'));
+
+      await expect(module.pauseCampaign(1234)).rejects.toThrow(AuthenticationError);
     });
   });
 });
