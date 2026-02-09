@@ -363,6 +363,7 @@ export class PromotionModule {
     data: { excluded?: string[] },
     options?: { id: number }
   ): Promise<void> {
+    // eslint-disable-next-line no-console -- Intentional deprecation warning
     console.warn(
       '[DEPRECATED] createAutoSetExcluded() will be disabled by Wildberries API on February 2, 2026. ' +
         'Use setNormqueryMinus() for type 9 campaigns with manual bidding instead.'
@@ -398,6 +399,7 @@ export class PromotionModule {
     data: { add?: number[]; delete?: number[] },
     options?: { id: number }
   ): Promise<void> {
+    // eslint-disable-next-line no-console -- Intentional deprecation warning
     console.warn(
       '[DEPRECATED] createAutoUpdatenm() will be disabled by Wildberries API on February 2, 2026. ' +
         'Use updateAuctionNm() for type 9 campaigns instead.'
@@ -823,6 +825,7 @@ export class PromotionModule {
    * ```
    */
   async getPromotionAdverts(ids: number[]): Promise<GetAdverts> {
+    // eslint-disable-next-line no-console -- Intentional deprecation warning
     console.warn(
       '[DEPRECATED] getPromotionAdverts() будет удалён 2 февраля 2026. Используйте getAdvertsV2().'
     );
@@ -855,6 +858,7 @@ export class PromotionModule {
    * ```
    */
   async getAuctionAdverts(params?: { status?: number; type?: number }): Promise<GetAdverts> {
+    // eslint-disable-next-line no-console -- Intentional deprecation warning
     console.warn(
       '[DEPRECATED] getAuctionAdverts() будет удалён 2 февраля 2026. Используйте getAdvertsV2().'
     );

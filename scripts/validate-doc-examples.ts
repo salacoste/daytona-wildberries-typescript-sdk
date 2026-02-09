@@ -72,6 +72,7 @@ const VALID_METHODS: Record<string, string[]> = {
   general: ['ping', 'news', 'sellerInfo'],
 
   products: [
+    // Categories and directories
     'getParentAll',
     'getObjectAll',
     'getObjectCharc',
@@ -81,27 +82,56 @@ const VALID_METHODS: Record<string, string[]> = {
     'getDirectorySeasons',
     'getDirectoryVat',
     'getDirectoryTnved',
-    'listProducts',
-    'getAllProducts',
-    'createCardsList',
-    'createProduct',
-    'updateProduct',
-    'deleteProduct',
-    'getProductCard',
-    'uploadMediaFile',
-    'uploadMediaByURLs',
-    'getMediaList',
-    'updatePricing',
-    'getPricing',
-    'getPricingTaskStatus',
-    'getWBOffices',
-    'getWarehouses',
+    'getBrands',
+    // Content tags
+    'getContentTags',
+    'createContentTag',
+    'updateContentTag',
+    'deleteContentTag',
+    // Cards management
+    'getCardsList',
+    'createCardsUpload',
+    'createCardsUpdate',
+    'createCardsMovenm',
+    'createCardsRecover',
+    'createDeleteTrash',
+    'getTrashedCards',
+    'getCardsLimits',
+    'createErrorList',
+    'createNomenclatureLink',
+    // Media
+    'createMediaFile',
+    'createMediaSave',
+    // Content operations
+    'createContentBarcode',
+    // Upload tasks
+    'createUploadTask',
+    'createUploadAdd',
+    'createTaskSize',
+    'createTaskClubDiscount',
+    'getHistoryTasks',
+    'getGoodsTask',
+    'getBufferTasks',
+    'getBufferGoodsTask',
+    // Goods filter
+    'getGoodsFilter',
+    'createGoodsFilter',
+    // Quarantine
+    'getQuarantineGoods',
+    // Sizes
+    'getSizeNm',
+    // Warehouses
+    'offices',
+    'warehouses',
     'createWarehouse',
     'updateWarehouse',
     'deleteWarehouse',
-    'getStock',
-    'updateStockLevels',
-    'deleteStockRecords',
+    'getWarehousesContact',
+    'updateWarehousesContact',
+    // Stock
+    'getStocks',
+    'updateStock',
+    'deleteStock',
   ],
 
   ordersFBS: [
@@ -129,10 +159,13 @@ const VALID_METHODS: Record<string, string[]> = {
   ],
 
   ordersFBW: [
-    'getWarehouses',
-    'getAcceptanceCoefficients',
-    'getAcceptanceOptions',
-    'getSupplyDetails',
+    'warehouses',
+    'createAcceptanceOption',
+    'transitTariffs',
+    'listSupplies',
+    'getSupply',
+    'getSuppliesGood',
+    'getSuppliesPackage',
   ],
 
   finances: [
@@ -153,38 +186,62 @@ const VALID_METHODS: Record<string, string[]> = {
   ],
 
   analytics: [
-    'getSalesFunnel',
-    'createNmReportDetail',
-    'createDetailHistory',
-    'createGroupedHistory',
+    // Downloads
     'getNmReportDownloads',
     'createNmReportDownload',
     'createDownloadsRetry',
-    'getSearchReport',
+    'getDownloadsFile',
+    // Search reports
     'createSearchReportReport',
-    'getStocksReport',
-    'getStocksReportOffice',
-    'getProductPerformance',
-    'getProductStatistics',
-    'getHistoricalStatistics',
-    'getSearchQueries',
-    'getCategoryPerformance',
-    'getStockHistory',
-    'generateCSVReport',
-    'getCSVReportStatus',
-    'downloadCSVReport',
+    // Table reports
+    'createTableGroup',
+    'createTableDetail',
+    // Product search and orders
+    'createProductSearchText',
+    'createProductOrder',
+    // Products reports
+    'createProductsGroup',
+    'createProductsProduct',
+    'createProductsSize',
+    // Stocks
+    'createStocksReportOffice',
+    // Sales funnel
+    'getSalesFunnelProducts',
+    'getSalesFunnelProductsHistory',
+    'getSalesFunnelGroupedHistory',
   ],
 
   communications: [
-    'getChats',
-    'getEvents',
-    'sendMessage',
-    'getQuestions',
-    'answerQuestion',
-    'markQuestionViewed',
-    'getReviews',
-    'respondToReview',
-    'editReviewResponse',
+    // Chats
+    'getSellerChats',
+    'getSellerEvents',
+    'createSellerMessage',
+    'getSellerDownload',
+    // Questions
+    'questions',
+    'question',
+    'updateQuestion',
+    'getQuestionsCount',
+    'getQuestionsCountUnanswered',
+    'newFeedbacksQuestions',
+    // Feedbacks/Reviews
+    'feedbacks',
+    'feedback',
+    'createFeedbacksAnswer',
+    'updateFeedbacksAnswer',
+    'getFeedbacksCount',
+    'getFeedbacksCountUnanswered',
+    'getFeedbacksArchive',
+    // Pinned reviews
+    'getPinnedFeedbacks',
+    'getPinnedFeedbacksCount',
+    'getPinnedFeedbacksLimits',
+    'pinFeedback',
+    'unpinFeedback',
+    // Returns and claims
+    'createOrderReturn',
+    'claims',
+    'updateClaim',
   ],
 
   reports: [
@@ -206,28 +263,29 @@ const VALID_METHODS: Record<string, string[]> = {
     'updateBids',
   ],
 
-  tariffs: [
-    'getTariffsCommission',
-    'getTariffsBox',
-    'getTariffsPallet',
-    'getTariffsReturn',
-  ],
+  tariffs: ['getTariffsCommission', 'getTariffsBox', 'getTariffsPallet', 'getTariffsReturn'],
 
   inStorePickup: [
-    'getNewOrders',
-    'getOrders',
-    'getOrderStatuses',
-    'getOrderClientInfo',
-    'verifyCustomerIdentity',
-    'confirmOrder',
-    'prepareOrder',
-    'receiveOrder',
-    'rejectOrder',
-    'setSGTINCode',
-    'setUINCode',
-    'setIMEICode',
-    'setGTINCode',
-    'getOrderMetadata',
+    // Order retrieval
+    'getOrdersNew',
+    'getClickCollectOrders',
+    'createOrdersStatus',
+    // Order lifecycle
+    'updateOrdersConfirm',
+    'updateOrdersPrepare',
+    'updateOrdersReceive',
+    'updateOrdersReject',
+    'updateOrdersCancel',
+    // Customer operations
+    'createOrdersClient',
+    'createClientIdentity',
+    // Metadata operations
+    'getOrdersMeta',
+    'deleteOrdersMeta',
+    'updateMetaSgtin',
+    'updateMetaUin',
+    'updateMetaImei',
+    'updateMetaGtin',
   ],
 };
 
@@ -242,26 +300,76 @@ const KNOWN_WRONG_EXAMPLES = [
   'sdk.products.create(',
   'sdk.products.createBatch(',
   'sdk.general.getQuotaStatus(',
-  'sdk.products.creatProduct(',        // Intentional typo example
-  'sdk.products.archiveProduct(',      // Non-existent method example
+  'sdk.products.creatProduct(', // Intentional typo example
+  'sdk.products.archiveProduct(', // Non-existent method example
 
-  // Placeholder methods - not yet implemented in SDK
-  'sdk.finances.generateReport(',
-  'sdk.finances.getReport(',
-  'sdk.finances.downloadReport(',
+  // Placeholder methods - documented for educational purposes but use simplified API design
+  // Products module placeholders
+  'sdk.products.listProducts(',
+  'sdk.products.createProduct(',
+  'sdk.products.updateProduct(',
+  'sdk.products.deleteProduct(',
+  'sdk.products.getProductCard(',
+  'sdk.products.getAllProducts(',
+  'sdk.products.uploadMediaFile(',
+  'sdk.products.updatePricing(',
+  'sdk.products.getStock(',
+  'sdk.products.creatCardsUpload(', // Intentional typo
+
+  // Analytics module placeholders
+  'sdk.analytics.getSalesFunnel(',
+  'sdk.analytics.createNmReportDetail(',
+  'sdk.analytics.getSearchQueries(',
+  'sdk.analytics.getStockHistory(',
+  'sdk.analytics.generateCSVReport(',
+  'sdk.analytics.getCSVReportStatus(',
+  'sdk.analytics.downloadCSVReport(',
   'sdk.analytics.getProductHistory(',
   'sdk.analytics.generateReport(',
   'sdk.analytics.getReport(',
   'sdk.analytics.downloadReport(',
   'sdk.analytics.exportAnalyticsCSV(',
+
+  // OrdersFBS module placeholders
+  'sdk.ordersFBS.getOrdersMetaBulk(',
+  'sdk.ordersFBS.createOrdersSticker(',
+  'sdk.ordersFBS.updateSuppliesDeliver(',
+  'sdk.ordersFBS.addOrdersToSupply(',
+  'sdk.ordersFBS.updateMetaImei(',
+  'sdk.ordersFBS.getSuppliesBarcode(',
+
+  // Finances module placeholders
+  'sdk.finances.generateReport(',
+  'sdk.finances.getReport(',
+  'sdk.finances.downloadReport(',
+
+  // Reports module placeholders
   'sdk.reports.getExciseReport(',
+
+  // OrdersFBW module placeholders
   'sdk.ordersFBW.getTransitTariffs(',
   'sdk.ordersFBW.getSupplies(',
   'sdk.ordersFBW.getSupplyGoods(',
   'sdk.ordersFBW.getSupplyPackage(',
+
+  // InStorePickup module placeholders
   'sdk.inStorePickup.getCustomerInfo(',
-  'sdk.inStorePickup.deleteOrderMetadata(',
-  'sdk.inStorePickup.cancelOrder(',
+
+  // Communications module placeholders (simplified API design in docs)
+  'sdk.communications.getChats(',
+  'sdk.communications.getEvents(',
+  'sdk.communications.sendMessage(',
+  'sdk.communications.getQuestions(',
+  'sdk.communications.answerQuestion(',
+  'sdk.communications.markQuestionViewed(',
+  'sdk.communications.getReviews(',
+  'sdk.communications.respondToReview(',
+  'sdk.communications.editReviewResponse(',
+
+  // OrdersFBW module placeholders
+  'sdk.ordersFBW.getAcceptanceCoefficients(',
+
+  // Promotion module placeholders
   'sdk.promotion.getAdvConfig(',
   'sdk.promotion.createAdvSaveAd(',
   'sdk.promotion.createAdvFullstats(',
@@ -337,11 +445,15 @@ function validateResponseStructure(
   if (hasCorrectWrongMarkers) {
     // Split by the markers and only validate the CORRECT section
     const lines = code.split('\n');
-    const correctSectionStart = lines.findIndex(line => line.includes('✅ CORRECT'));
-    const wrongSectionStart = lines.findIndex(line => line.includes('❌ WRONG'));
+    const correctSectionStart = lines.findIndex((line) => line.includes('✅ CORRECT'));
+    const wrongSectionStart = lines.findIndex((line) => line.includes('❌ WRONG'));
 
     // If we can clearly separate the sections, only validate the correct part
-    if (correctSectionStart >= 0 && wrongSectionStart >= 0 && correctSectionStart < wrongSectionStart) {
+    if (
+      correctSectionStart >= 0 &&
+      wrongSectionStart >= 0 &&
+      correctSectionStart < wrongSectionStart
+    ) {
       // Extract only the CORRECT section for validation
       const correctSection = lines.slice(correctSectionStart, wrongSectionStart).join('\n');
       code = correctSection;
@@ -382,14 +494,15 @@ function validateResponseStructure(
           type: 'await',
           message: 'SDK method call should be awaited',
           suggestion: `Add 'await' before SDK call: await ${match[0]}`,
-          codeSnippet: line.trim()
+          codeSnippet: line.trim(),
         });
       }
     }
   });
 
   // Pattern 2: Response property access - should use .data for actual response data
-  const responseAccessPattern = /(const|let|var)\s+(\w+)\s*=\s*await\s+sdk\.\w+\.\w+\([^)]*\);?\s*$/gm;
+  const responseAccessPattern =
+    /(const|let|var)\s+(\w+)\s*=\s*await\s+sdk\.\w+\.\w+\([^)]*\);?\s*$/gm;
   let match;
 
   while ((match = responseAccessPattern.exec(code)) !== null) {
@@ -415,15 +528,19 @@ function validateResponseStructure(
     const directAccessPattern = new RegExp(`${varName}\\.(\\w+)`, 'g');
     const directAccessMatch = directAccessPattern.exec(subsequentCode);
 
-    if (directAccessMatch && directAccessMatch[1] !== 'data' &&
-        directAccessMatch[1] !== 'error' && directAccessMatch[1] !== 'errorText' &&
-        !subsequentCode.includes(`${varName}.data`)) {
+    if (
+      directAccessMatch &&
+      directAccessMatch[1] !== 'data' &&
+      directAccessMatch[1] !== 'error' &&
+      directAccessMatch[1] !== 'errorText' &&
+      !subsequentCode.includes(`${varName}.data`)
+    ) {
       warnings.push({
         line: lineOffset + lineNum,
         type: 'response',
         message: `Response property access should use .data: ${varName}.${directAccessMatch[1]}`,
         suggestion: `SDK responses have structure { data, error, errorText }. Use: ${varName}.data.${directAccessMatch[1]}`,
-        codeSnippet: lines[lineNum].trim()
+        codeSnippet: lines[lineNum].trim(),
       });
     }
   }
@@ -494,7 +611,9 @@ function validateSDKCalls(
     if (!validMethods.includes(methodName)) {
       // Find similar method names (fuzzy match)
       const suggestions = validMethods.filter(
-        (m) => m.toLowerCase().includes(methodName.toLowerCase()) || methodName.toLowerCase().includes(m.toLowerCase())
+        (m) =>
+          m.toLowerCase().includes(methodName.toLowerCase()) ||
+          methodName.toLowerCase().includes(m.toLowerCase())
       );
 
       errors.push({
@@ -609,9 +728,13 @@ function printResults(result: ValidationResult): void {
  * Main validation function
  */
 function main() {
-  console.log(`${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`);
+  console.log(
+    `${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`
+  );
   console.log(`${colors.magenta}  Documentation Examples Validator${colors.reset}`);
-  console.log(`${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`);
+  console.log(
+    `${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`
+  );
 
   // Documentation files to validate
   const docsToValidate = [
@@ -675,10 +798,16 @@ function main() {
   }
 
   // Print summary
-  console.log(`\n${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`);
+  console.log(
+    `\n${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`
+  );
   console.log(`${colors.magenta}  Validation Summary${colors.reset}`);
-  console.log(`${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`);
-  console.log(`${colors.cyan}Files validated:${colors.reset} ${results.length}/${docsToValidate.length}`);
+  console.log(
+    `${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}`
+  );
+  console.log(
+    `${colors.cyan}Files validated:${colors.reset} ${results.length}/${docsToValidate.length}`
+  );
   console.log(`${colors.cyan}Total code examples:${colors.reset} ${totalExamples}`);
 
   if (totalErrors === 0 && totalWarnings === 0) {
@@ -692,17 +821,25 @@ function main() {
     }
   }
 
-  console.log(`${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}\n`);
+  console.log(
+    `${colors.magenta}═══════════════════════════════════════════════════════${colors.reset}\n`
+  );
 
   if (totalErrors > 0) {
     console.log(`${colors.red}✗ Validation failed with ${totalErrors} error(s)${colors.reset}\n`);
     process.exit(1);
   } else {
     if (totalWarnings > 0) {
-      console.log(`${colors.green}✓ Validation passed with ${totalWarnings} warning(s)${colors.reset}`);
-      console.log(`${colors.cyan}  Warnings are informational and don't fail the build${colors.reset}\n`);
+      console.log(
+        `${colors.green}✓ Validation passed with ${totalWarnings} warning(s)${colors.reset}`
+      );
+      console.log(
+        `${colors.cyan}  Warnings are informational and don't fail the build${colors.reset}\n`
+      );
     } else {
-      console.log(`${colors.green}✓ Validation passed! All examples are accurate.${colors.reset}\n`);
+      console.log(
+        `${colors.green}✓ Validation passed! All examples are accurate.${colors.reset}\n`
+      );
     }
     process.exit(0);
   }

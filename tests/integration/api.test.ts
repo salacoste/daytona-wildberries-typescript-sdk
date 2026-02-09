@@ -57,6 +57,7 @@ describe.skipIf(!apiKey)('Wildberries API Integration Tests', () => {
       const response = await client.get('https://advert-api.wildberries.ru/adv/v0/config');
       // Handle rate limiting gracefully - this endpoint has strict limits
       if (response.status === 429) {
+        // eslint-disable-next-line no-console -- Test diagnostic message
         console.log('Skipping /adv/v0/config test - rate limited (429)');
         return; // Graceful skip, test passes
       }
