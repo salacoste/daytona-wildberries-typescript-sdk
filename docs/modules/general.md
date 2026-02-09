@@ -8,10 +8,10 @@ The General module provides essential utility endpoints for API connectivity tes
 |----------|-------|
 | **Module Name** | `general` |
 | **SDK Namespace** | `sdk.general.*` |
-| **Base URL** | `https://common-api.wildberries.ru` |
+| **Base URLs** | `https://common-api.wildberries.ru`, `https://user-management-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/01-general.yaml` |
-| **Methods** | 3 |
-| **Swagger Endpoints** | 7 (3 implemented, 4 User Management planned) |
+| **Methods** | 7 |
+| **Swagger Endpoints** | 7 (all implemented) |
 | **Authentication** | API Key (Header) |
 
 ### Purpose
@@ -22,6 +22,7 @@ The General module is designed to:
 - **Verify API key validity** - Confirm the token is not expired or revoked
 - **Retrieve marketplace news** - Get announcements and updates from the Wildberries seller portal
 - **Fetch seller information** - Retrieve authenticated seller's account details
+- **Manage seller users** - Create invitations, list users, update permissions, and delete users
 
 This module is typically the first one developers use when integrating with the Wildberries SDK, as `ping()` provides a quick health check for both connectivity and authentication.
 
@@ -486,24 +487,183 @@ demonstrateGeneralModule().catch(console.error);
 
 ---
 
-## Not Yet Implemented
+## User Management (4 methods)
 
-The following endpoints from the Swagger specification are not yet implemented in this SDK version. They are planned for a future release.
+These methods manage seller account users and permissions. They use the base URL `https://user-management-api.wildberries.ru`.
 
-### User Management (4 endpoints)
+| Method | HTTP | Endpoint | Description | Rate Limit |
+|--------|------|----------|-------------|------------|
+| [`createInvite(data)`](#createinvite) | POST | `/api/v1/invite` | Create user invitation | 60 req/min |
+| [`getUsers(params?)`](#getusers) | GET | `/api/v1/users` | Get list of active/invited users | 60 req/min |
+| [`updateUserAccess(data)`](#updateuseraccess) | PUT | `/api/v1/users/access` | Update user access rights | 60 req/min |
+| [`deleteUser(userId)`](#deleteuser) | DELETE | `/api/v1/user` | Delete user | 60 req/min |
 
-These endpoints use a different base URL (`https://user-management-api.wildberries.ru`) and are tracked in [EPIC 14](/docs/epics/EPIC_14_USER_MANAGEMENT.md).
+---
 
-| Endpoint | Method | Description | Status |
-|----------|--------|-------------|--------|
-| `/api/v1/invite` | POST | Create user invitation | Planned |
-| `/api/v1/users` | GET | Get list of active/invited users | Planned |
-| `/api/v1/users/access` | PUT | Update user access rights | Planned |
-| `/api/v1/user` | DELETE | Delete user | Planned |
+### `createInvite()`
+
+Create an invitation for a new user with configured access permissions.
+
+**Signature:**
+```typescript
+createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `data.invite` | `InviteInfo` | Yes | Invitation details |
+| `data.invite.phoneNumber` | `string` | Yes | User phone number |
+| `data.invite.position` | `string` | No | User position/role |
+| `data.access` | `AccessItem[]` | No | Access permissions |
+
+**Returns:** `Promise<CreateInviteResponse>`
+
+```typescript
+interface CreateInviteResponse {
+  inviteID: string;
+  expiredAt: string;
+  isSuccess: boolean;
+  inviteUrl: string;
+}
+```
+
+**Example:**
+```typescript
+const result = await sdk.general.createInvite({
+  invite: { phoneNumber: '79999999999', position: 'Менеджер' },
+  access: [
+    { code: 'balance', disabled: false },
+    { code: 'finance', disabled: true }
+  ]
+});
+console.log(result.inviteUrl);
+```
+
+---
+
+### `getUsers()`
+
+Get list of users associated with the seller account.
+
+**Signature:**
+```typescript
+getUsers(params?: GetUsersParams): Promise<GetUsersResponse>
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `params.limit` | `number` | No | Max users to return (default: 100, max: 100) |
+| `params.offset` | `number` | No | Number of items to skip (default: 0) |
+| `params.isInviteOnly` | `boolean` | No | true = invited only, false = active only |
+
+**Returns:** `Promise<GetUsersResponse>`
+
+```typescript
+interface GetUsersResponse {
+  total: number;
+  users: UserInfo[];
+}
+```
+
+**Example:**
+```typescript
+const result = await sdk.general.getUsers({ limit: 50 });
+console.log(`Total users: ${result.total}`);
+for (const user of result.users) {
+  console.log(user.firstName, user.email);
+}
+```
+
+---
+
+### `updateUserAccess()`
+
+Update access permissions for one or more users.
+
+**Signature:**
+```typescript
+updateUserAccess(data: UpdateUserAccessRequest): Promise<void>
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `data.usersAccesses` | `UserAccessUpdate[]` | Yes | Array of user access updates |
+| `data.usersAccesses[].userId` | `number` | Yes | User ID |
+| `data.usersAccesses[].access` | `AccessItem[]` | Yes | New access permissions |
+
+**Example:**
+```typescript
+await sdk.general.updateUserAccess({
+  usersAccesses: [
+    {
+      userId: 12345,
+      access: [
+        { code: 'balance', disabled: true },
+        { code: 'finance', disabled: false }
+      ]
+    }
+  ]
+});
+```
+
+---
+
+### `deleteUser()`
+
+Delete a user from the seller account.
+
+**Signature:**
+```typescript
+deleteUser(deletedUserID: number): Promise<void>
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `deletedUserID` | `number` | Yes | ID of the user to delete |
+
+**Example:**
+```typescript
+await sdk.general.deleteUser(12345);
+```
+
+---
+
+### Access Codes Reference
+
+Available access codes for user permissions:
+
+| Code | Description |
+|------|-------------|
+| `balance` | Balance information |
+| `brands` | Brand management |
+| `changeJam` | Jam changes |
+| `discountPrice` | Discount and pricing |
+| `finance` | Financial information |
+| `showcase` | Showcase management |
+| `suppliersDocuments` | Supplier documents |
+| `supply` | Supply management |
+| `feedbacksQuestions` | Feedbacks and questions |
+| `questions` | Questions only |
+| `pinFeedbacks` | Pin feedbacks |
+| `pointsForReviews` | Points for reviews |
+| `feedbacks` | Feedbacks only |
+| `wbPoint` | WB Points |
 
 ---
 
 ## Related Documentation
+
+### Guides
+
+- [User Management](#user-management-4-methods) - Team management with invitations, permissions, and user lifecycle (documented in this module)
 
 ### EPICs
 
@@ -518,6 +678,11 @@ These endpoints use a different base URL (`https://user-management-api.wildberri
 
 - [GeneralModule Class](/docs/api/classes/GeneralModule.html) - TypeDoc generated reference
 - [Wildberries API Information](https://dev.wildberries.ru/openapi/api-information) - Official API documentation
+
+### Related Modules
+
+- [Finances Module](/modules/finances) - Financial operations and balance management
+- [Analytics Module](/modules/analytics) - Seller analytics and statistics
 
 ---
 

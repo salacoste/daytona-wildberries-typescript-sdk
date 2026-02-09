@@ -156,6 +156,7 @@ export default defineConfig({
                   { text: '🎯 Advertising Campaign Best Practices', link: '/guides/best-practices-advertising' },
                   { text: '📈 Sales Funnel Analytics Best Practices', link: '/guides/best-practices-sales-funnel' },
                   { text: '📋 Promotion Module Guide', link: '/guides/promotion-advertising' },
+                  { text: '👥 User Management Guide', link: '/guides/user-management' },
                   { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' }
                 ]
               }
@@ -342,6 +343,7 @@ export default defineConfig({
                   { text: '🎯 Лучшие практики рекламных кампаний', link: '/ru/guides/best-practices-advertising' },
                   { text: '📈 Аналитика воронки продаж', link: '/ru/guides/best-practices-sales-funnel' },
                   { text: '📋 Руководство по модулю Promotion', link: '/guides/promotion-advertising' },
+                  { text: '👥 Управление пользователями', link: '/guides/user-management' },
                   { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' }
                 ]
               }

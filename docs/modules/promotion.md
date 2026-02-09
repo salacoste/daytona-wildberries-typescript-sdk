@@ -13,12 +13,13 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
 | **Swagger Endpoints** | 50 (34 active + 16 deprecated) |
-| **Implemented Methods** | 33 (31 active + 2 deprecated) |
+| **Implemented Methods** | 39 (37 active + 2 deprecated) |
 | **Total Types** | 83 TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
 
 ### What's New (February 2026)
 
+- **Campaign Creation & Lifecycle**: 6 new methods for campaign creation, product selection, and state control
 - **Search Clusters (NormQuery) API**: 6 new methods for managing search cluster targeting and bids
 - **V2 API Replacements**: 3 new methods replacing deprecated v0/v1 endpoints with improved functionality
 - **19 Deprecated Methods**: Legacy endpoints marked for removal with migration paths
@@ -161,6 +162,21 @@ Use `setNormqueryMinus()` and `updateAuctionNm()` instead.
 | `getPromotionsNomenclatures()` | GET | `/api/v1/calendar/promotions/nomenclatures` | Get eligible products for promotion |
 | `createPromotionsUpload()` | POST | `/api/v1/calendar/promotions/upload` | Add product to promotion |
 
+### Campaign Creation & Lifecycle (6 methods)
+
+| Method | HTTP | Endpoint | Description | Rate Limit |
+|--------|------|----------|-------------|------------|
+| `getCampaignCount()` | GET | `/adv/v1/promotion/count` | Get campaign counts by type/status | 300 req/min |
+| `createCampaign(data)` | POST | `/adv/v2/seacat/save-ad` | Create campaign with manual/single bid | 5 req/min |
+| `getSupplierSubjects(params?)` | GET | `/adv/v1/supplier/subjects` | Get product subjects for campaigns | 5 req/min |
+| `getSupplierNms(subjectIds)` | POST | `/adv/v2/supplier/nms` | Get product cards for campaigns | 5 req/min |
+| `startCampaign(id)` | GET | `/adv/v0/start` | Start/resume campaign | 300 req/min |
+| `pauseCampaign(id)` | GET | `/adv/v0/pause` | Pause active campaign | 300 req/min |
+
+::: warning Deprecated Endpoint
+`/adv/v1/auto/getnmtoadd` is deprecated and will be removed February 2, 2026. It is intentionally not implemented.
+:::
+
 ---
 
 ## Deprecated Methods (Implemented)
@@ -178,19 +194,7 @@ The following 4 methods are deprecated but still available in the SDK with depre
 
 ## Not Yet Implemented
 
-The following endpoints from the Swagger specification are not yet implemented in this SDK version. They are tracked for future implementation.
-
-### Campaign Creation & Lifecycle (7 endpoints)
-
-| Endpoint | Method | Description | Status |
-|----------|--------|-------------|--------|
-| `/adv/v1/promotion/count` | GET | Get campaign counts by type/status | Planned |
-| `/adv/v2/seacat/save-ad` | POST | Create campaign with manual/single bid | Planned |
-| `/adv/v1/supplier/subjects` | GET | Get product subjects for campaigns | Planned |
-| `/adv/v2/supplier/nms` | POST | Get product cards for campaigns | Planned |
-| `/adv/v0/start` | GET | Start/resume campaign | Planned |
-| `/adv/v0/pause` | GET | Pause active campaign | Planned |
-| `/adv/v1/auto/getnmtoadd` | GET | Get available products for unified bid | Planned |
+All endpoints from the Swagger specification are now implemented. Only deprecated endpoints remain intentionally unimplemented:
 
 ### Deprecated in Swagger (Not Implemented)
 
@@ -350,11 +354,66 @@ const products = await sdk.promotion.getPromotionsNomenclatures({
 });
 ```
 
+### Campaign Creation & Lifecycle
+
+```typescript
+// Get campaign counts grouped by type and status
+const counts = await sdk.promotion.getCampaignCount();
+console.log(`Total campaigns: ${counts.all}`);
+if (counts.adverts) {
+  for (const group of counts.adverts) {
+    console.log(`Type ${group.type}: ${group.count} campaigns`);
+  }
+}
+
+// Get available product subjects for campaigns
+const subjects = await sdk.promotion.getSupplierSubjects();
+if (subjects) {
+  for (const subject of subjects) {
+    console.log(`${subject.id}: ${subject.name} (${subject.count} products)`);
+  }
+}
+
+// Get product cards for specific subjects
+const products = await sdk.promotion.getSupplierNms([123, 456]);
+for (const product of products) {
+  console.log(`NM: ${product.nm}, Name: ${product.name}`);
+}
+
+// Create a new CPM campaign
+const campaignId = await sdk.promotion.createCampaign({
+  name: 'Summer Sale Campaign',
+  nms: [12345678, 87654321],
+  bid_type: 'manual',
+  payment_type: 'cpm',
+  placement_types: ['search', 'recommendations']
+});
+console.log(`Created campaign: ${campaignId}`);
+
+// Control campaign state
+await sdk.promotion.startCampaign(campaignId);   // Start/resume
+await sdk.promotion.pauseCampaign(campaignId);   // Pause
+```
+
 ---
 
 ## Related Resources
 
-- [API Reference: PromotionModule](/api/classes/PromotionModule)
-- [Promotion Module Guide](/guides/promotion-advertising)
-- [Advertising Statistics Guide](/guides/advertising-statistics-guide)
-- [Advertising Best Practices](/guides/best-practices-advertising)
+### Guides
+
+- [Promotion Getting Started](/guides/promotion-getting-started) - Quick start guide for the Promotion module
+- [Promotion Module Guide](/guides/promotion-advertising) - Comprehensive advertising guide
+- [Advertising Campaigns](/guides/advertising-campaigns) - Campaign creation and management
+- [Advertising Statistics Guide](/guides/advertising-statistics-guide) - Statistics and analytics for advertising
+- [Advertising Best Practices](/guides/best-practices-advertising) - Optimization and best practices
+- [Migration Guide: v2.4 Promotion Deprecation](/guides/migration-v2.4-promotion-deprecation) - Migrating from deprecated endpoints
+
+### API Reference
+
+- [PromotionModule Class](/api/classes/PromotionModule) - TypeDoc generated reference
+- [Wildberries Advertising API](https://dev.wildberries.ru/openapi/work-with-advertising-campaigns) - Official API documentation
+
+### Related Modules
+
+- [Analytics Module](/modules/analytics) - Sales analytics and statistics
+- [Finances Module](/modules/finances) - Budget and payment tracking
