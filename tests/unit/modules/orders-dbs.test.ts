@@ -579,6 +579,298 @@ describe('OrdersDbsModule', () => {
   });
 
   // ==========================================================================
+  // getGroupsInfo() Tests
+  // ==========================================================================
+
+  describe('getGroupsInfo()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ groups: [] });
+      const request = { orders: [123456] };
+
+      await ordersDbsModule.getGroupsInfo(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(`${BASE_URL}/api/v3/dbs/groups/info`, request, {
+        rateLimitKey: 'orders-dbs.getGroupsInfo',
+      });
+    });
+
+    it('should return groups info response', async () => {
+      const mockResponse = { groups: [{ groupId: 1, orders: [123456] }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.getGroupsInfo({ orders: [123456] });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // getDeliveryDates() Tests
+  // ==========================================================================
+
+  describe('getDeliveryDates()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [123456] };
+
+      await ordersDbsModule.getDeliveryDates(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/v3/dbs/orders/delivery-date`,
+        request,
+        { rateLimitKey: 'orders-dbs.getDeliveryDates' }
+      );
+    });
+
+    it('should return delivery dates response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, deliveryDate: '2026-02-10' }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.getDeliveryDates({ orders: [123456] });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // getMetaBulk() Tests
+  // ==========================================================================
+
+  describe('getMetaBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [123456] };
+
+      await ordersDbsModule.getMetaBulk(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/info`,
+        request,
+        { rateLimitKey: 'orders-dbs.getMetaBulk' }
+      );
+    });
+
+    it('should return metadata response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, imei: '123' }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.getMetaBulk({ orders: [123456] });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // deleteMetaBulk() Tests
+  // ==========================================================================
+
+  describe('deleteMetaBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [123456], key: 'imei' as const };
+
+      await ordersDbsModule.deleteMetaBulk(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/delete`,
+        request,
+        { rateLimitKey: 'orders-dbs.deleteMetaBulk' }
+      );
+    });
+
+    it('should return delete response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, deleted: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.deleteMetaBulk({ orders: [123456], key: 'imei' });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // setSgtinBulk() Tests
+  // ==========================================================================
+
+  describe('setSgtinBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [{ orderId: 123456, sgtins: ['sgtin123'] }] };
+
+      await ordersDbsModule.setSgtinBulk(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/sgtin`,
+        request,
+        { rateLimitKey: 'orders-dbs.setSgtinBulk' }
+      );
+    });
+
+    it('should return bulk set response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.setSgtinBulk({
+        orders: [{ orderId: 123456, sgtins: ['sgtin123'] }],
+      });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // setUinBulk() Tests
+  // ==========================================================================
+
+  describe('setUinBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [{ orderId: 123456, uin: 'uin123' }] };
+
+      await ordersDbsModule.setUinBulk(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/uin`,
+        request,
+        { rateLimitKey: 'orders-dbs.setUinBulk' }
+      );
+    });
+
+    it('should return bulk set response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.setUinBulk({
+        orders: [{ orderId: 123456, uin: 'uin123' }],
+      });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // setImeiBulk() Tests
+  // ==========================================================================
+
+  describe('setImeiBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [{ orderId: 123456, imei: '123456789012345' }] };
+
+      await ordersDbsModule.setImeiBulk(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/imei`,
+        request,
+        { rateLimitKey: 'orders-dbs.setImeiBulk' }
+      );
+    });
+
+    it('should return bulk set response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersDbsModule.setImeiBulk({
+        orders: [{ orderId: 123456, imei: '123456789012345' }],
+      });
+
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  // ==========================================================================
+  // setGtinBulk() Tests
+  // ==========================================================================
+
+  describe('setGtinBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [{ orderId: 123456, gtin: '1234567890123' }] };
+
+      // Act
+      await ordersDbsModule.setGtinBulk(request);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/gtin`,
+        request,
+        { rateLimitKey: 'orders-dbs.setGtinBulk' }
+      );
+    });
+
+    it('should return bulk set response', async () => {
+      // Arrange
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+      const request = { orders: [{ orderId: 123456, gtin: '1234567890123' }] };
+
+      // Act
+      const result = await ordersDbsModule.setGtinBulk(request);
+
+      // Assert
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should propagate AuthenticationError from BaseClient', async () => {
+      // Arrange
+      const error = new AuthenticationError('Invalid API key');
+      mockClient.post.mockRejectedValue(error);
+      const request = { orders: [{ orderId: 123456, gtin: '1234567890123' }] };
+
+      // Act & Assert
+      await expect(ordersDbsModule.setGtinBulk(request)).rejects.toThrow(AuthenticationError);
+    });
+  });
+
+  // ==========================================================================
+  // setCustomsDeclarationBulk() Tests
+  // ==========================================================================
+
+  describe('setCustomsDeclarationBulk()', () => {
+    it('should call correct endpoint with rateLimitKey', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue({ orders: [] });
+      const request = { orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789' }] };
+
+      // Act
+      await ordersDbsModule.setCustomsDeclarationBulk(request);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/customs-declaration`,
+        request,
+        { rateLimitKey: 'orders-dbs.setCustomsDeclarationBulk' }
+      );
+    });
+
+    it('should return bulk set response', async () => {
+      // Arrange
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+      const request = { orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789' }] };
+
+      // Act
+      const result = await ordersDbsModule.setCustomsDeclarationBulk(request);
+
+      // Assert
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should propagate RateLimitError from BaseClient', async () => {
+      // Arrange
+      const error = new RateLimitError('Rate limit exceeded', 60000);
+      mockClient.post.mockRejectedValue(error);
+      const request = { orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789' }] };
+
+      // Act & Assert
+      await expect(ordersDbsModule.setCustomsDeclarationBulk(request)).rejects.toThrow(
+        RateLimitError
+      );
+    });
+  });
+
+  // ==========================================================================
   // Module Instantiation Tests
   // ==========================================================================
 
