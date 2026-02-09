@@ -12,7 +12,8 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **SDK Namespace** | `sdk.promotion.*` |
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
-| **Total Methods** | 48 (29 active + 19 deprecated) |
+| **Swagger Endpoints** | 50 (34 active + 16 deprecated) |
+| **Implemented Methods** | 33 (31 active + 2 deprecated) |
 | **Total Types** | 83 TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
 
@@ -69,35 +70,13 @@ await sdk.promotion.setNormqueryBids({
 
 ## Methods Reference
 
-### Campaign Information (4 methods)
+### Campaign Management (5 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
-| `getPromotionCount()` | GET | `/adv/v1/promotion/count` | Get campaign counts by type and status | Deprecated |
-| `createPromotionAdvert()` | POST | `/adv/v1/promotion/adverts` | Get campaigns info by status, type and ID | Deprecated |
-| `getAuctionAdverts()` | GET | `/adv/v0/auction/adverts` | Get manual bid campaigns by status | Deprecated |
-| `getAdvConfig()` | GET | `/adv/v0/config` | Get allowed config parameters | Deprecated |
-
-### Campaign Creation (4 methods)
-
-| Method | HTTP | Endpoint | Description | Status |
-|--------|------|----------|-------------|--------|
-| `createBidsMin()` | POST | `/adv/v0/bids/min` | Get minimum bids for product cards | Deprecated |
-| `createAdvSaveAd()` | POST | `/adv/v1/save-ad` | Create campaign with single bid | Deprecated |
-| `createSeacatSaveAd()` | POST | `/adv/v2/seacat/save-ad` | Create campaign with manual or single bid | Deprecated |
-| `getSupplierSubjects()` | GET | `/adv/v1/supplier/subjects` | Get product items for campaigns | Deprecated |
-
-### Campaign Management (9 methods)
-
-| Method | HTTP | Endpoint | Description | Status |
-|--------|------|----------|-------------|--------|
-| `createSupplierNm()` | POST | `/adv/v2/supplier/nms` | Get product cards for campaigns | Deprecated |
 | `getAdvDelete()` | GET | `/adv/v0/delete` | Delete campaigns in "ready to launch" status | Active |
 | `createAdvRename()` | POST | `/adv/v0/rename` | Rename a campaign | Active |
-| `getAdvStart()` | GET | `/adv/v0/start` | Launch campaigns (ready or paused) | Deprecated |
-| `getAdvPause()` | GET | `/adv/v0/pause` | Pause active campaigns | Deprecated |
 | `getAdvStop()` | GET | `/adv/v0/stop` | Complete campaigns | Active |
-| `updateAdvBid()` | PATCH | `/adv/v0/bids` | Change bids for single bid campaigns | Deprecated |
 | `updateAuctionPlacement()` | PUT | `/adv/v0/auction/placements` | Change placement locations | Active |
 | `updateAuctionNm()` | PATCH | `/adv/v0/auction/nms` | Add/remove product cards in campaigns | Active |
 
@@ -105,7 +84,7 @@ await sdk.promotion.setNormqueryBids({
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
-| `updateAuctionBid()` | PATCH | `/adv/v0/auction/bids` | Change bids for type 9 campaigns | Active |
+| `updateAuctionBid()` | PATCH | `/adv/v0/auction/bids` | Change bids for type 9 campaigns | Deprecated |
 | `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | **NEW**: Change bids (kopecks) - replaces v0 | Active |
 
 ### Search Clusters / NormQuery (6 methods) - NEW
@@ -145,22 +124,17 @@ These methods replace deprecated endpoints with improved functionality.
 | `getAdvUpd()` | GET | `/adv/v1/upd` | Get actual campaign spending history |
 | `getAdvPayments()` | GET | `/adv/v1/payments` | Get account replenishment history |
 
-### Keyword Management (5 methods)
+### Unified Bid Methods (2 methods - Deprecated)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
-| `getSearchSetPlus()` | GET | `/adv/v1/search/set-plus` | Get fixed phrases activity status | Deprecated |
-| `createSearchSetPlu()` | POST | `/adv/v1/search/set-plus` | Set/remove fixed phrases | Deprecated |
-| `createSearchSetExcluded()` | POST | `/adv/v1/search/set-excluded` | Set/remove negative phrases | Deprecated |
-| `createAutoSetExcluded()` | POST | `/adv/v1/auto/set-excluded` | Set/remove minus-phrases (unified bid) | Active |
-| `createAutoUpdatenm()` | POST | `/adv/v1/auto/updatenm` | Change product cards (unified bid) | Active |
+| `createAutoSetExcluded()` | POST | `/adv/v1/auto/set-excluded` | Set/remove minus-phrases (unified bid) | Deprecated |
+| `createAutoUpdatenm()` | POST | `/adv/v1/auto/updatenm` | Change product cards (unified bid) | Deprecated |
 
-### Legacy Unified Bid Methods (2 methods)
-
-| Method | HTTP | Endpoint | Description | Status |
-|--------|------|----------|-------------|--------|
-| `getAutoGetnmtoadd()` | GET | `/adv/v1/auto/getnmtoadd` | Get available products for unified bid campaign | Deprecated |
-| `getAutoStatWords()` | GET | `/adv/v2/auto/stat-words` | Get cluster stats for unified bid campaign | Deprecated |
+::: warning Deprecated Methods
+The unified bid methods `createAutoSetExcluded()` and `createAutoUpdatenm()` are deprecated and will be removed on February 2, 2026.
+Use `setNormqueryMinus()` and `updateAuctionNm()` instead.
+:::
 
 ### Media Campaigns (3 methods)
 
@@ -170,14 +144,12 @@ These methods replace deprecated endpoints with improved functionality.
 | `getAdvAdverts()` | GET | `/adv/v1/adverts` | Get all media campaigns |
 | `getAdvAdvert()` | GET | `/adv/v1/advert` | Get WB Media campaign info |
 
-### Statistics (5 methods)
+### Statistics (3 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
-| `createAdvFullstat()` | POST | `/adv/v2/fullstats` | Get campaign statistics (v2) | Deprecated |
 | `getAdvFullstats()` | GET | `/adv/v3/fullstats` | Get full statistics for all campaign types | Active |
-| `getStatWords()` | GET | `/adv/v1/stat/words` | Get manual bid campaign keyword stats | Deprecated |
-| `getStatsKeywords()` | GET | `/adv/v0/stats/keywords` | Get keyword stats for all campaign types | Active |
+| `getStatsKeywords()` | GET | `/adv/v0/stats/keywords` | Get keyword stats for all campaign types | Deprecated |
 | `createAdvStat()` | POST | `/adv/v1/stats` | Get WB Media campaign statistics | Active |
 
 ### Calendar Promotions (4 methods)
@@ -191,31 +163,49 @@ These methods replace deprecated endpoints with improved functionality.
 
 ---
 
-## Deprecated Methods
+## Deprecated Methods (Implemented)
 
-The following 19 methods are deprecated and will be removed in future versions. Use the recommended replacements.
+The following 4 methods are deprecated but still available in the SDK with deprecation warnings.
 
-| Deprecated Method | Replacement | Removal Date |
-|------------------|-------------|--------------|
-| `getPromotionCount()` | `getAdvertsV2()` | TBD |
-| `createPromotionAdvert()` | `getAdvertsV2()` | TBD |
-| `getAuctionAdverts()` | `getAdvertsV2()` | TBD |
-| `getAdvConfig()` | Updated configuration API | TBD |
-| `createBidsMin()` | `getBidsMinV2()` | TBD |
-| `createAdvSaveAd()` | Current campaign creation API | Removed |
-| `createSeacatSaveAd()` | Current campaign creation API | TBD |
-| `getSupplierSubjects()` | Updated supplier API | TBD |
-| `createSupplierNm()` | Updated supplier API | TBD |
-| `getAdvStart()` | Updated campaign management API | TBD |
-| `getAdvPause()` | Updated campaign management API | TBD |
-| `updateAdvBid()` | `updateBidsV2()` | TBD |
-| `getSearchSetPlus()` | N/A | January 15, 2025 |
-| `createSearchSetPlu()` | N/A | January 15, 2025 |
-| `createSearchSetExcluded()` | `setNormqueryMinus()` | January 15, 2025 |
-| `getAutoGetnmtoadd()` | `getAuctionAdverts()` + `updateAuctionNm()` | February 2, 2026 |
-| `getAutoStatWords()` | `getAdvFullstats()` | February 2, 2026 |
-| `createAdvFullstat()` | `getAdvFullstats()` | September 30, 2025 |
-| `getStatWords()` | `getStatsKeywords()` | TBD |
+| Deprecated Method | Replacement | Scheduled Removal |
+|------------------|-------------|-------------------|
+| `updateAuctionBid()` | `updateBidsV2()` | TBD |
+| `getStatsKeywords()` | `getAdvFullstats()` | TBD |
+| `createAutoSetExcluded()` | `setNormqueryMinus()` | February 2, 2026 |
+| `createAutoUpdatenm()` | `updateAuctionNm()` | February 2, 2026 |
+
+---
+
+## Not Yet Implemented
+
+The following endpoints from the Swagger specification are not yet implemented in this SDK version. They are tracked for future implementation.
+
+### Campaign Creation & Lifecycle (7 endpoints)
+
+| Endpoint | Method | Description | Status |
+|----------|--------|-------------|--------|
+| `/adv/v1/promotion/count` | GET | Get campaign counts by type/status | Planned |
+| `/adv/v2/seacat/save-ad` | POST | Create campaign with manual/single bid | Planned |
+| `/adv/v1/supplier/subjects` | GET | Get product subjects for campaigns | Planned |
+| `/adv/v2/supplier/nms` | POST | Get product cards for campaigns | Planned |
+| `/adv/v0/start` | GET | Start/resume campaign | Planned |
+| `/adv/v0/pause` | GET | Pause active campaign | Planned |
+| `/adv/v1/auto/getnmtoadd` | GET | Get available products for unified bid | Planned |
+
+### Deprecated in Swagger (Not Implemented)
+
+These endpoints are deprecated in the Swagger spec and intentionally not implemented:
+
+- `/adv/v1/promotion/adverts` (POST) - Use `getAdvertsV2()` instead
+- `/adv/v0/auction/adverts` (GET) - Use `getAdvertsV2()` instead
+- `/adv/v0/config` (GET) - Configuration endpoint deprecated
+- `/adv/v0/bids/min` (POST) - Use `getBidsMinV2()` instead
+- `/adv/v0/bids` (PATCH) - Use `updateBidsV2()` instead
+- `/adv/v1/search/set-plus` (GET/POST) - Removed January 15, 2025
+- `/adv/v1/search/set-excluded` (POST) - Use `setNormqueryMinus()` instead
+- `/adv/v2/fullstats` (POST) - Use `getAdvFullstats()` instead
+- `/adv/v2/auto/stat-words` (GET) - Use `getAdvFullstats()` instead
+- `/adv/v1/stat/words` (GET) - Use `getStatsKeywords()` instead
 
 ---
 

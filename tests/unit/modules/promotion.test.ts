@@ -78,13 +78,14 @@ describe('PromotionModule', () => {
       );
     });
 
-    it('updateAuctionBid - should update bids', async () => {
+    it('updateAuctionBid - should update bids (deprecated)', async () => {
       mockClient.patch.mockResolvedValue({ bids: [] });
       const data = {
         bids: [
           { advert_id: 123, nm_bids: [{ nm_id: 456, bid: 100, placement: 'search' as const }] },
         ],
       };
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       await module.updateAuctionBid(data);
       expect(mockClient.patch).toHaveBeenCalledWith(
         'https://advert-api.wildberries.ru/adv/v0/auction/bids',
@@ -247,11 +248,12 @@ describe('PromotionModule', () => {
       );
     });
 
-    it('getStatsKeywords - should get keyword statistics', async () => {
+    it('getStatsKeywords - should get keyword statistics (deprecated)', async () => {
       mockClient.get.mockResolvedValue({});
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       await module.getStatsKeywords({ advert_id: 123, from: '2025-01-01', to: '2025-01-07' });
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://api.wildberries.ru/adv/v0/stats/keywords',
+        'https://advert-api.wildberries.ru/adv/v0/stats/keywords',
         expect.objectContaining({
           params: { advert_id: 123, from: '2025-01-01', to: '2025-01-07' },
           rateLimitKey: 'promotion.advStatsKeywords',

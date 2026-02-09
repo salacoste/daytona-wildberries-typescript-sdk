@@ -122,6 +122,7 @@ export class PromotionModule {
    *
    * Метод меняет ставки карточек товаров по артикулам WB в кампаниях типа `9` с единой или ручной ставкой. <br><br> Для кампаний в статусах `4`, `9` и `11`. <br><br> В запросе укажите место размещения в параметре `placement`: - `combined` — в поиске и рекомендациях для кампаний с единой ставкой - `search `или `recommendations` — в поиске или рекомендациях для кампаний с ручной ставкой <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
    *
+   * @deprecated Use updateBidsV2() instead for kopeck-based bidding.
    * @param data - Request body data
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -631,6 +632,7 @@ export class PromotionModule {
    *
    * Метод формирует статистику по ключевым фразам из поисковой строки: количество просмотров товара и затраты по одной ключевой фразе. Подходит для кампаний c единой и ручной ставкой. <br><br> Статистика формируется за каждый день, когда кампания была активна. В одном запросе можно получить данные максимум за 7 дней. <br> Данные обновляются каждый час. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
    *
+   * @deprecated This endpoint is deprecated. Use alternative methods for keyword statistics.
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -647,7 +649,7 @@ export class PromotionModule {
     to: string;
   }): Promise<V0KeywordsStatisticsResponse> {
     return this.client.get<V0KeywordsStatisticsResponse>(
-      'https://api.wildberries.ru/adv/v0/stats/keywords',
+      'https://advert-api.wildberries.ru/adv/v0/stats/keywords',
       { params: options, rateLimitKey: 'promotion.advStatsKeywords' }
     );
   }

@@ -11,6 +11,7 @@ The General module provides essential utility endpoints for API connectivity tes
 | **Base URL** | `https://common-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/01-general.yaml` |
 | **Methods** | 3 |
+| **Swagger Endpoints** | 7 (3 implemented, 4 User Management planned) |
 | **Authentication** | API Key (Header) |
 
 ### Purpose
@@ -482,6 +483,23 @@ async function demonstrateGeneralModule() {
 
 demonstrateGeneralModule().catch(console.error);
 ```
+
+---
+
+## Not Yet Implemented
+
+The following endpoints from the Swagger specification are not yet implemented in this SDK version. They are planned for a future release.
+
+### User Management (4 endpoints)
+
+These endpoints use a different base URL (`https://user-management-api.wildberries.ru`) and are tracked in [EPIC 14](/docs/epics/EPIC_14_USER_MANAGEMENT.md).
+
+| Endpoint | Method | Description | Status |
+|----------|--------|-------------|--------|
+| `/api/v1/invite` | POST | Create user invitation | Planned |
+| `/api/v1/users` | GET | Get list of active/invited users | Planned |
+| `/api/v1/users/access` | PUT | Update user access rights | Planned |
+| `/api/v1/user` | DELETE | Delete user | Planned |
 
 ---
 
