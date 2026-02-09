@@ -14,10 +14,10 @@ export interface Response400 {
 /**
  * Места размещения:
  *  - `search` — поиск
- *  - `recommendation` — рекомендации
+ *  - `recommendations` — рекомендации
  *  - `combined` — поиск и рекомендации
  */
-export type PlacementType = 'combined' | 'search' | 'recommendation';
+export type PlacementType = 'combined' | 'search' | 'recommendations';
 
 export interface StandardizedBatchError {
   /** Детали ошибки */
@@ -1092,8 +1092,8 @@ export interface GetAdvertsItem {
   status: -1 | 4 | 7 | 8 | 9 | 11;
   /** Временные отметки */
   timestamps: Timestamps;
-  /** Тип ставки: unified — единая ставка, manual — ручная ставка */
-  bid_type: string;
+  /** Тип ставки: auto — автоматическая ставка, manual — ручная ставка */
+  bid_type: BidType;
 }
 
 /**
@@ -1148,6 +1148,107 @@ export interface AdvertPlacements {
   search: boolean;
   /** Размещение в рекомендациях */
   recommendations: boolean;
+}
+
+// ============================================================================
+// V2 API Types (with bid_kopecks)
+// ============================================================================
+
+/**
+ * Ставки в копейках для поиска и рекомендаций.
+ * Ставка в копейках (например, 250 = 2.50 RUB)
+ */
+export interface BidsKopecks {
+  /**
+   * Ставка для поиска в копейках.
+   * Например, 1100 = 11.00 RUB
+   */
+  search: number;
+  /**
+   * Ставка для рекомендаций в копейках.
+   * Например, 2500 = 25.00 RUB
+   */
+  recommendations: number;
+}
+
+/**
+ * Предмет/категория товара
+ */
+export interface Subject {
+  /** ID предмета */
+  id: number;
+  /** Название предмета */
+  name: string;
+}
+
+/**
+ * Настройки артикула для V2 API.
+ * Использует ставки в копейках (bids_kopecks) вместо устаревшего bid.
+ */
+export interface NmSettingV2 {
+  /**
+   * Ставки в копейках.
+   * Ставка в копейках (например, 250 = 2.50 RUB)
+   */
+  bids_kopecks: BidsKopecks;
+  /** Артикул WB */
+  nm_id: number;
+  /** Предмет/категория */
+  subject: Subject;
+}
+
+/**
+ * Временные метки кампании
+ */
+export interface AdvertTimestamps {
+  /** Время создания кампании */
+  created: string;
+  /** Время последнего изменения кампании */
+  updated: string;
+  /** Время последнего запуска кампании (null если не запускалась) */
+  started: string | null;
+  /** Время удаления кампании. Если кампания не удалена, время указывается в будущем */
+  deleted: string;
+}
+
+/**
+ * Информация о кампании из V2 API.
+ * Использует bid_type: 'auto' | 'manual' и ставки в копейках.
+ */
+export interface AdvertV2 {
+  /**
+   * Тип ставки:
+   * - `auto` — автоматическая ставка (Type 8)
+   * - `manual` — ручная ставка (Type 9)
+   */
+  bid_type: BidType;
+  /** ID кампании */
+  id: number;
+  /** Настройки артикулов (с ставками в копейках) */
+  nm_settings: NmSettingV2[];
+  /** Настройки кампании */
+  settings: AdvertSettings;
+  /**
+   * Статус кампании:
+   * - `-1` — удалена
+   * - `4` — готова к запуску
+   * - `7` — завершена
+   * - `8` — отменена
+   * - `9` — активна
+   * - `11` — на паузе
+   */
+  status: -1 | 4 | 7 | 8 | 9 | 11;
+  /** Временные метки */
+  timestamps: AdvertTimestamps;
+}
+
+/**
+ * Ответ метода getAdvertsV2 (GET /adv/v2/adverts).
+ * Содержит список кампаний с типизированным bid_type и ставками в копейках.
+ */
+export interface GetAdvertsV2Response {
+  /** Список кампаний */
+  adverts: AdvertV2[];
 }
 
 // ============================================================================
@@ -1405,9 +1506,11 @@ export interface GetCampaignCountResponse {
 // ============================================================================
 
 /**
- * Bid type for campaign creation
+ * Bid type for campaign
+ * - `auto` — автоматическая ставка (Type 8)
+ * - `manual` — ручная ставка (Type 9)
  */
-export type BidType = 'manual' | 'unified';
+export type BidType = 'auto' | 'manual';
 
 /**
  * Campaign placement types
@@ -1496,4 +1599,291 @@ export interface Campaign400Response {
   status?: number;
   /** Error title */
   title?: string;
+}
+
+// ============================================================================
+// UpdateBids Types (V1 API with bid_kopecks)
+// ============================================================================
+
+/**
+ * Request for updating bids in campaigns (V1 API)
+ *
+ * @description Uses bid_kopecks instead of bid for ставки в копейках.
+ * Max 50 campaigns, max 50 articles per campaign.
+ */
+export interface UpdateBidsRequest {
+  /**
+   * Bids in campaigns
+   * @maxItems 50
+   */
+  bids: UpdateBidsCampaign[];
+}
+
+/**
+ * Campaign bid configuration
+ */
+export interface UpdateBidsCampaign {
+  /** Campaign ID */
+  advert_id: number;
+  /**
+   * Article bids in kopecks
+   * @maxItems 50
+   */
+  nm_bids: UpdateBidsArticle[];
+}
+
+/**
+ * Article bid configuration in kopecks
+ */
+export interface UpdateBidsArticle {
+  /** WB Article ID (nm_id) */
+  nm_id: number;
+  /**
+   * Bid amount in KOPECKS (not rubles!)
+   *
+   * Ставка в копейках. Пример: 250 = 2.50 RUB
+   *
+   * Conversion examples:
+   * - 1.00 RUB = 100 kopecks
+   * - 2.50 RUB = 250 kopecks
+   * - 15.00 RUB = 1500 kopecks
+   */
+  bid_kopecks: number;
+  /**
+   * Placement type:
+   * - "search" - for search placement (manual bidding campaigns)
+   * - "recommendations" - for recommendations placement (manual bidding campaigns)
+   * - "combined" - for both search and recommendations (unified bidding campaigns)
+   */
+  placement: 'search' | 'recommendations' | 'combined';
+}
+
+/**
+ * Response from updateBids (V1 API)
+ */
+export interface UpdateBidsResponse {
+  /** Results of bid updates */
+  bids: UpdateBidsResultCampaign[];
+}
+
+/**
+ * Result of bid update for a campaign
+ */
+export interface UpdateBidsResultCampaign {
+  /** Campaign ID */
+  advert_id: number;
+  /** Updated bids */
+  nm_bids: UpdateBidsResultArticle[];
+}
+
+/**
+ * Result of bid update for an article
+ */
+export interface UpdateBidsResultArticle {
+  /** WB Article ID */
+  nm_id: number;
+  /** Updated bid in kopecks */
+  bid_kopecks: number;
+  /** Placement where bid was applied */
+  placement: string;
+}
+
+// ============================================================================
+// UpdateCampaignProducts Types (PATCH /adv/v0/auction/nms)
+// ============================================================================
+
+/**
+ * Request for adding/removing products from campaigns
+ *
+ * @description Only for Type 9 campaigns.
+ * Max 20 campaigns, max 50 products per campaign.
+ */
+export interface UpdateCampaignProductsRequest {
+  /**
+   * Campaigns to update
+   * @maxItems 20
+   */
+  campaigns: CampaignProductsUpdate[];
+}
+
+/**
+ * Single campaign update item
+ */
+export interface CampaignProductsUpdate {
+  /** Campaign ID */
+  advert_id: number;
+  /**
+   * WB article IDs to add
+   * For added products, the current minimum bid is set.
+   * @maxItems 50
+   */
+  add_nms?: number[];
+  /**
+   * WB article IDs to delete
+   * @maxItems 50
+   */
+  delete_nms?: number[];
+}
+
+/**
+ * Response from updateCampaignProducts
+ */
+export interface UpdateCampaignProductsResponse {
+  /** Results of product updates */
+  nms: CampaignProductsResult[];
+}
+
+/**
+ * Result for a single campaign update
+ */
+export interface CampaignProductsResult {
+  /** Campaign ID */
+  advert_id: number;
+  /** Product cards result */
+  nms: {
+    /** Successfully added product cards */
+    added: number[];
+    /** Successfully deleted product cards */
+    deleted: number[];
+  };
+}
+
+// ============================================================================
+// Minus Phrases Types (task-54)
+// ============================================================================
+
+/**
+ * Request to get minus phrases for campaigns
+ */
+export interface GetMinusPhrasesRequest {
+  /** Array of campaign/product items (max 100) */
+  items: GetMinusPhrasesRequestItem[];
+}
+
+/**
+ * Item in get minus phrases request
+ */
+export interface GetMinusPhrasesRequestItem {
+  /** Campaign ID */
+  advert_id: number;
+  /**
+   * WB Article ID
+   * - Type 8 campaigns: use nm_id=0 for campaign-wide settings
+   * - Type 9 campaigns: use actual WB article ID
+   */
+  nm_id: number;
+}
+
+/**
+ * Response with minus phrases
+ */
+export interface GetMinusPhrasesResponse {
+  /** Array of items with minus phrases */
+  items: GetMinusPhrasesResponseItem[];
+}
+
+/**
+ * Item in get minus phrases response
+ */
+export interface GetMinusPhrasesResponseItem {
+  /** Campaign ID */
+  advert_id: number;
+  /** WB Article ID */
+  nm_id: number;
+  /** List of minus phrases (may be empty or undefined) */
+  norm_queries?: string[];
+}
+
+/**
+ * Request to set minus phrases for a campaign
+ * WARNING: Sending an empty norm_queries array REMOVES ALL minus phrases!
+ */
+export interface SetMinusPhrasesRequest {
+  /** Campaign ID */
+  advert_id: number;
+  /**
+   * WB Article ID
+   * - Type 8 campaigns: use nm_id=0 for campaign-wide settings
+   * - Type 9 campaigns: use actual WB article ID
+   */
+  nm_id: number;
+  /**
+   * Minus phrases (max 1000)
+   * WARNING: Empty array removes ALL minus phrases!
+   */
+  norm_queries: string[];
+}
+
+// ============================================================================
+// Search Cluster Statistics Types (task-55)
+// ============================================================================
+
+/**
+ * Request to get search cluster statistics
+ */
+export interface GetSearchClusterStatsRequest {
+  /** Start date in YYYY-MM-DD format */
+  from: string;
+  /** End date in YYYY-MM-DD format */
+  to: string;
+  /** Array of campaign/product items (max 100) */
+  items: GetSearchClusterStatsRequestItem[];
+}
+
+/**
+ * Item in search cluster stats request
+ */
+export interface GetSearchClusterStatsRequestItem {
+  /** Campaign ID */
+  advert_id: number;
+  /**
+   * WB Article ID
+   * - Type 8 campaigns: use nm_id=0 for aggregate statistics
+   * - Type 9 campaigns: use actual WB article ID
+   */
+  nm_id: number;
+}
+
+/**
+ * Response with search cluster statistics
+ */
+export interface GetSearchClusterStatsResponse {
+  /** Array of statistics per campaign/product */
+  stats: GetSearchClusterStatsItem[];
+}
+
+/**
+ * Statistics item for a campaign/product
+ */
+export interface GetSearchClusterStatsItem {
+  /** Campaign ID */
+  advert_id: number;
+  /** WB Article ID */
+  nm_id: number;
+  /** Array of statistics per search cluster */
+  stats: SearchClusterStatEntry[];
+}
+
+/**
+ * Statistics entry for a single search cluster
+ */
+export interface SearchClusterStatEntry {
+  /** Search cluster (normalized query) */
+  norm_query: string;
+  /** Number of views */
+  views: number;
+  /** Number of clicks */
+  clicks: number;
+  /** Number of add-to-basket actions */
+  atbs: number;
+  /** Number of orders */
+  orders: number;
+  /** Click-through rate (%) */
+  ctr: number;
+  /** Cost per click (RUB) */
+  cpc: number;
+  /** Cost per mille - cost per 1000 impressions (RUB) */
+  cpm: number;
+  /** Average position on search results page */
+  avg_pos: number;
 }

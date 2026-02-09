@@ -293,7 +293,7 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
   'promotion.bidsV1': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
-    burstLimit: 5,
+    burstLimit: 10,
   },
 
   // ============================================================================
@@ -340,5 +340,48 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 5,
+  },
+
+  // ============================================================================
+  // New Methods Rate Limits - Feb 2026
+  // ============================================================================
+
+  /** PATCH /api/advert/v1/bids - Update bids with bid_kopecks */
+  'promotion.updateBids': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 10,
+  },
+
+  /** PATCH /adv/v0/auction/nms - Add/remove products from campaigns */
+  'promotion.updateCampaignProducts': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 1,
+  },
+
+  // ============================================================================
+  // Aliases for New Method Names (task-54, task-55)
+  // ============================================================================
+
+  /** POST /adv/v0/normquery/get-minus - Alias for getMinusPhrases() */
+  'promotion.getMinusPhrases': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 10,
+  },
+
+  /** POST /adv/v0/normquery/set-minus - Alias for setMinusPhrases() */
+  'promotion.setMinusPhrases': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 10,
+  },
+
+  /** POST /adv/v0/normquery/stats - Alias for getSearchClusterStats() */
+  'promotion.getSearchClusterStats': {
+    requestsPerMinute: 10,
+    intervalSeconds: 6,
+    burstLimit: 20,
   },
 };
