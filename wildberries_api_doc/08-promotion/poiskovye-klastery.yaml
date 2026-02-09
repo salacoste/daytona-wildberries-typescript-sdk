@@ -204,6 +204,22 @@ paths:
           - ID кампаний
           - артикулам WB
 
+        <div class="description_note">
+        **Использование nm_id по типу кампании:**
+        - Тип 8 (Автоматическая кампания, устаревший): `nm_id = 0` — минус-фразы для всей кампании
+        - Тип 9 (Аукционная кампания, актуальный): `nm_id` = реальный артикул WB — минус-фразы для конкретного товара
+
+        Тип ставки (`bid_type`) можно получить через `GET /api/advert/v2/adverts`.
+
+        **Type 8 campaigns (legacy):** Use `nm_id = 0` for campaign-wide minus-phrases
+        **Type 9 campaigns (current):** Use actual WB article IDs for per-article minus-phrases
+        </div>
+
+        **Связанные методы / Related endpoints:**
+        - `POST /adv/v0/normquery/set-minus` — Установка и удаление минус-фраз
+        - `POST /adv/v0/normquery/get-bids` — Список ставок поисковых кластеров
+        - `POST /adv/v0/normquery/bids` — Установить ставки для поисковых кластеров
+        - `DELETE /adv/v0/normquery/bids` — Удалить ставки поисковых кластеров
 
         <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
@@ -269,6 +285,15 @@ paths:
 
         <div class="description_important">
           Отправка пустого массива удаляет все минус-фразы
+        </div>
+
+        <div class="description_note">
+        **Использование nm_id по типу кампании:**
+        - Тип 8 (Автоматическая кампания): `nm_id = 0` — настройки применяются ко всей кампании
+        - Тип 9 (Аукционная кампания): `nm_id` = реальный артикул WB — настройки применяются к конкретному товару
+
+        **Type 8 campaigns:** Use `nm_id = 0` for campaign-wide settings
+        **Type 9 campaigns:** Use actual WB article IDs for per-article settings
         </div>
 
         <div class="description_limit">

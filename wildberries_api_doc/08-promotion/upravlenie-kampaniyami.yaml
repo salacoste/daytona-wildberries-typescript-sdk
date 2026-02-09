@@ -786,9 +786,12 @@ paths:
                               bid_kopecks:
                                 type: integer
                                 format: int64
-                                description: Ставка
+                                description: Ставка, копейки (например, 250 = 2.50 руб)
                               placement:
                                 type: string
+                                enum:
+                                  - search
+                                  - recommendations
                                 description: |
                                   Место размещения:
                                     - `search` — в поиске
@@ -798,7 +801,7 @@ paths:
                   - advert_id: 12345
                     nm_bids:
                       - nm_id: 13335157
-                        bid: 250
+                        bid_kopecks: 250
                         placement: recommendations
         "400":
           description: Неправильный запрос
@@ -816,3 +819,44 @@ paths:
           $ref: "#/components/responses/401"
         "429":
           $ref: "#/components/responses/429"
+
+# ==============================================================================
+# IMPORTANT MIGRATION NOTES FOR SDK DEVELOPERS
+# ==============================================================================
+#
+# CAMPAIGN STATUSES FOR BID OPERATIONS:
+#   - 4: Готово к запуску (Ready to launch)
+#   - 9: Активна (Active)
+#   - 11: Пауза (Paused)
+#
+# PLACEMENT TYPES:
+#   - "combined" - for campaigns with unified bidding (единая ставка)
+#   - "search" / "recommendations" - for campaigns with manual bidding (ручная ставка)
+#
+# BID VALUES:
+#   - v1 endpoint uses `bid_kopecks` (kopecks, NOT rubles!)
+#   - Example: 250 kopecks = 2.50 rubles, 15000 kopecks = 150.00 rubles
+#   - v0 endpoints (DEPRECATED) used `bid` field with unclear units
+#
+# REQUEST LIMITS:
+#   - Max 50 campaigns per request
+#   - Max 50 articles per campaign
+#   - Total max: 2,500 article bids per request (50 x 50)
+#
+# RATE LIMITS:
+#   - 5 requests per second
+#   - 200ms interval between requests
+#   - Burst limit: 5 requests
+#
+# DEPRECATED ENDPOINTS (will be removed February 2, 2025):
+#   - PATCH /adv/v0/bids - old format with `nm` and `bid` fields
+#   - PATCH /adv/v0/auction/bids - uses `bid` instead of `bid_kopecks`
+#
+# MIGRATION FROM v0 TO v1:
+#   - Field `nm` → `nm_id`
+#   - Field `bid` → `bid_kopecks`
+#   - Field `placement` is now REQUIRED in v1
+#   - Response changed from 204 No Content to 200 with body
+#
+# Use PATCH /api/advert/v1/bids for all new implementations
+# ==============================================================================

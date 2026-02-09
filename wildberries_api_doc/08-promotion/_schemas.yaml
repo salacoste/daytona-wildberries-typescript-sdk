@@ -147,6 +147,10 @@ components:
             $ref: "#/components/schemas/V0SetNormQueryBidsRequestItem"
     V0SetMinusNormQueryRequest:
       type: object
+      description: |
+        Запрос на установку минус-фраз.
+        Требования: ручная ставка + модель оплаты CPM (за показы).
+        Отправка пустого массива norm_queries удаляет все минус-фразы.
       required:
         - advert_id
         - nm_id
@@ -157,13 +161,19 @@ components:
           description: ID кампании
         nm_id:
           type: integer
-          description: Артикул WB
+          description: |
+            Артикул WB.
+            Для кампаний типа 8 (автоматическая): nm_id = 0 (настройки на уровне кампании).
+            Для кампаний типа 9 (аукционная): nm_id = реальный артикул WB (настройки на уровне товара).
         norm_queries:
           type: array
           maxItems: 1000
+          description: |
+            Список минус-фраз (поисковых кластеров для исключения).
+            Пустой массив удаляет все минус-фразы.
           items:
             type: string
-            description: Поисковый кластер
+            description: Поисковый кластер (минус-фраза)
     V0GetNormQueryBidsRequestItem:
       type: object
       required:
@@ -569,10 +579,13 @@ components:
                 $ref: "#/components/schemas/Timestamps"
               bid_type:
                 type: string
+                enum:
+                  - auto
+                  - manual
                 description: |
                   Тип ставки:
-                    - `unified` — единая ставка
-                    - `manual` — ручная ставка
+                    - `auto` — единая/автоматическая ставка (unified bidding, соответствует type 8)
+                    - `manual` — ручная ставка (соответствует type 9)
     GetAdverts:
       type: object
       required:
@@ -593,10 +606,13 @@ components:
             properties:
               bid_type:
                 type: string
+                enum:
+                  - auto
+                  - manual
                 description: |
                   Тип ставки:
-                    - `unified` — единая ставка
-                    - `manual` — ручная ставка
+                    - `auto` — единая/автоматическая ставка (unified bidding, соответствует type 8)
+                    - `manual` — ручная ставка (соответствует type 9)
               id:
                 type: integer
                 format: int64

@@ -342,15 +342,30 @@ paths:
     patch:
       x-readonly-method: false
       x-category: advert
+      x-campaign-types: [9]
+      x-notes: |
+        This endpoint is for unified campaigns (type 9). Replaces deprecated type 8 endpoints.
+        Type 8 → Type 9 migration: Use this endpoint instead of /adv/v1/auto/updatenm (deprecated, removed Feb 2).
+        Related deprecated endpoints:
+        - POST /adv/v1/auto/updatenm - Update products in type 8 campaigns (deprecated, removed Feb 2)
+        - GET /adv/v1/auto/getnmtoadd - Get products list for type 8 campaigns (deprecated, removed Feb 2)
       security:
         - HeaderApiKey: []
       summary: Изменение списка карточек товаров в кампаниях
       description: |
         Метод добавляет и удаляет карточки товаров в кампаниях.
         <br><br>
-        Для кампаний в статусах `4`, `9` и `11`.
+        Для кампаний в статусах `4`, `9` и `11`:
+        - `4` — Готова к запуску (Ready to start)
+        - `9` — Активна (Active)
+        - `11` — Приостановлена (Paused)
         <br><br>
         Для добавляемых товаров устанавливается текущая минимальная ставка.
+        <br><br>
+        **Ограничения:**
+        - Максимум 20 кампаний в одном запросе
+        - Максимум 50 товаров для одной кампании
+        - Нельзя добавлять и удалять один и тот же товар в одном запросе
 
          <div class="description_limit">
         <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
@@ -371,7 +386,7 @@ paths:
                 - nms
               properties:
                 nms:
-                  description: Карточки товаров в кампаниях
+                  description: Карточки товаров в кампаниях. Максимум 20 кампаний в запросе.
                   type: array
                   maxItems: 20
                   items:
@@ -385,11 +400,12 @@ paths:
                         type: integer
                         format: int64
                       nms:
-                        description: Карточки товаров. Максимум 50 товаров для одной кампании
+                        description: Карточки товаров. Максимум 50 товаров для одной кампании.
                         type: object
                         properties:
                           add:
-                            description: Карточки товаров, которые необходимо добавить
+                            description: Карточки товаров, которые необходимо добавить. Для добавленных товаров устанавливается текущая минимальная ставка.
+                            type: array
                             items:
                               type: integer
                           delete:
