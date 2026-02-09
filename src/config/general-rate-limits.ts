@@ -29,4 +29,24 @@ export const generalRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 10,
   },
+  'general.createInvite': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 5,
+  },
+  'general.getUsers': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 5,
+  },
+  'general.updateUserAccess': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 5,
+  },
+  'general.deleteUser': {
+    requestsPerMinute: 60,
+    intervalSeconds: 1,
+    burstLimit: 10,
+  },
 };

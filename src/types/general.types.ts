@@ -69,3 +69,177 @@ export interface SellerInfoResponse {
   /** Торговое наименование продавца */
   tradeMark?: string;
 }
+
+// ============================================================================
+// User Management Types
+// ============================================================================
+
+/**
+ * Access code for user permissions
+ * Determines which sections of the seller profile the user can access
+ */
+export type AccessCode =
+  | 'balance' // View balance and withdraw funds
+  | 'brands' // Brand management
+  | 'changeJam' // Jam subscription access
+  | 'discountPrice' // Price changes, discounts, promotions
+  | 'finance' // Financial analytics
+  | 'showcase' // Store showcase management
+  | 'suppliersDocuments' // Documents viewing and downloading
+  | 'supply' // FBW supply creation and management
+  | 'feedbacksQuestions' // View and respond to questions and reviews
+  | 'questions' // View and respond to questions
+  | 'pinFeedbacks' // Pin/unpin reviews
+  | 'pointsForReviews' // Points for reviews
+  | 'feedbacks' // View and respond to reviews
+  | 'wbPoint'; // WB Point
+
+/**
+ * Access permission item
+ */
+export interface AccessItem {
+  /** Section code */
+  code: AccessCode;
+  /** true - access denied, false - access allowed */
+  disabled: boolean;
+}
+
+/**
+ * Invite information
+ */
+export interface InviteInfo {
+  /** Phone number to invite */
+  phoneNumber: string;
+  /** User position (max 150 chars) */
+  position?: string;
+}
+
+/**
+ * Request to create user invitation
+ */
+export interface CreateInviteRequest {
+  /** Access permissions for the user */
+  access?: AccessItem[];
+  /** Invitation details */
+  invite: InviteInfo;
+}
+
+/**
+ * Response from create invitation endpoint
+ */
+export interface CreateInviteResponse {
+  /** Invitation ID (UUID) */
+  inviteID: string;
+  /** Invitation expiration date/time */
+  expiredAt: string;
+  /** Whether invitation was created successfully */
+  isSuccess: boolean;
+  /** URL for the user to accept the invitation */
+  inviteUrl: string;
+}
+
+/**
+ * Invitee information (for invited users)
+ */
+export interface InviteeInfo {
+  /** Phone number of invited user */
+  phoneNumber: string;
+  /** User position */
+  position: string;
+  /** Invitation UUID */
+  inviteUuid: string;
+  /** Invitation expiration date/time */
+  expiredAt: string;
+  /** Whether invitation is active */
+  isActive: boolean;
+}
+
+/**
+ * User information
+ */
+export interface UserInfo {
+  /** User ID */
+  id: number;
+  /** User role: "user" for activated users, "" for non-activated */
+  role: 'user' | '';
+  /** User position */
+  position: string;
+  /** Phone number */
+  phone: string;
+  /** Email */
+  email: string;
+  /** Whether user is the profile owner */
+  isOwner: boolean;
+  /** First name */
+  firstName: string;
+  /** Last name */
+  secondName: string;
+  /** Patronymic */
+  patronymic: string;
+  /** Whether user can approve goods returns */
+  goodsReturn: boolean;
+  /** Whether user was invited */
+  isInvitee: boolean;
+  /** Invitation info (null if not invited) */
+  inviteeInfo: InviteeInfo | null;
+  /** Access permissions */
+  access: AccessItem[];
+}
+
+/**
+ * Parameters for getting users list
+ */
+export interface GetUsersParams {
+  /** Number of users in response (max 100, default 100) */
+  limit?: number;
+  /** Number of elements to skip (default 0) */
+  offset?: number;
+  /** true - invited users only, false - active users only */
+  isInviteOnly?: boolean;
+}
+
+/**
+ * Response from get users endpoint
+ */
+export interface GetUsersResponse {
+  /** Total number of users */
+  total: number;
+  /** Number of users in current response */
+  countInResponse: number;
+  /** Users list */
+  users: UserInfo[];
+}
+
+/**
+ * User access update item
+ */
+export interface UserAccessUpdate {
+  /** User ID to update */
+  userId: number;
+  /** New access permissions */
+  access: AccessItem[];
+}
+
+/**
+ * Request to update user access
+ */
+export interface UpdateUserAccessRequest {
+  /** Array of user access updates */
+  usersAccesses: UserAccessUpdate[];
+}
+
+/**
+ * User Management error response
+ */
+export interface UserManagementErrorResponse {
+  /** Error title */
+  title: string;
+  /** Error details */
+  detail: string;
+  /** Request ID */
+  requestId: string;
+  /** Internal service name */
+  origin: string;
+  /** HTTP status code */
+  status: number;
+}

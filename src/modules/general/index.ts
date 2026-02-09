@@ -10,6 +10,11 @@ import type {
   NewsResponse,
   NewsRequestParams,
   SellerInfoResponse,
+  CreateInviteRequest,
+  CreateInviteResponse,
+  GetUsersParams,
+  GetUsersResponse,
+  UpdateUserAccessRequest,
 } from '../../types/general.types';
 
 export class GeneralModule {
@@ -133,6 +138,160 @@ export class GeneralModule {
       'https://common-api.wildberries.ru/api/v1/seller-info',
       {
         rateLimitKey: 'general.sellerInfo',
+      }
+    );
+  }
+
+  /**
+   * Создание приглашения для нового пользователя
+   *
+   * Метод создаёт приглашение для нового пользователя с настройкой доступов к разделам профиля продавца.
+   * Приглашение действительно в течение ограниченного времени, указанного в ответе.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 1 запрос | 1 сек | 5 запросов |
+   *
+   * @param data - Данные для создания приглашения
+   * @returns Информация о созданном приглашении
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca}
+   * @example
+   * ```typescript
+   * const result = await sdk.general.createInvite({
+   *   invite: { phoneNumber: '79999999999', position: 'Менеджер' },
+   *   access: [
+   *     { code: 'balance', disabled: false },
+   *     { code: 'finance', disabled: true }
+   *   ]
+   * });
+   * console.log(result.inviteUrl);
+   * ```
+   */
+  async createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse> {
+    return this.client.post<CreateInviteResponse>(
+      'https://user-management-api.wildberries.ru/api/v1/invite',
+      data,
+      { rateLimitKey: 'general.createInvite' }
+    );
+  }
+
+  /**
+   * Получение списка пользователей продавца
+   *
+   * Возвращает список пользователей профиля продавца с их правами доступа.
+   * Можно фильтровать по активным пользователям или только приглашённым.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 1 запрос | 1 сек | 5 запросов |
+   *
+   * @readonly
+   * @param [params] - Параметры запроса
+   * @param [params.limit] - Количество пользователей в ответе (макс. 100, по умолчанию 100)
+   * @param [params.offset] - Количество элементов для пропуска (по умолчанию 0)
+   * @param [params.isInviteOnly] - true - только приглашённые, false - только активные
+   * @returns Список пользователей с общим количеством
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca}
+   * @example
+   * ```typescript
+   * const result = await sdk.general.getUsers({ limit: 50 });
+   * console.log(`Total users: ${result.total}`);
+   * for (const user of result.users) {
+   *   console.log(user.firstName, user.email);
+   * }
+   * ```
+   */
+  async getUsers(params?: GetUsersParams): Promise<GetUsersResponse> {
+    return this.client.get<GetUsersResponse>(
+      'https://user-management-api.wildberries.ru/api/v1/users',
+      {
+        params: params ? { ...params } : undefined,
+        rateLimitKey: 'general.getUsers',
+      }
+    );
+  }
+
+  /**
+   * Изменение доступов пользователей
+   *
+   * Обновляет права доступа для одного или нескольких пользователей профиля продавца.
+   * Можно изменить доступ к различным разделам: баланс, финансы, документы и др.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 1 запрос | 1 сек | 5 запросов |
+   *
+   * @param data - Данные для обновления доступов
+   * @returns void
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca}
+   * @example
+   * ```typescript
+   * await sdk.general.updateUserAccess({
+   *   usersAccesses: [
+   *     {
+   *       userId: 12345,
+   *       access: [
+   *         { code: 'balance', disabled: true },
+   *         { code: 'finance', disabled: false }
+   *       ]
+   *     }
+   *   ]
+   * });
+   * ```
+   */
+  async updateUserAccess(data: UpdateUserAccessRequest): Promise<void> {
+    await this.client.put<undefined>(
+      'https://user-management-api.wildberries.ru/api/v1/users/access',
+      data,
+      { rateLimitKey: 'general.updateUserAccess' }
+    );
+  }
+
+  /**
+   * Удаление пользователя
+   *
+   * Удаляет пользователя из профиля продавца по его ID.
+   * Удалённый пользователь теряет доступ ко всем разделам профиля.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 сек | 1 запрос | 1 сек | 10 запросов |
+   *
+   * @param deletedUserID - ID пользователя для удаления
+   * @returns void
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/api-information#tag/Upravlenie-polzovatelyami-prodavca}
+   * @example
+   * ```typescript
+   * await sdk.general.deleteUser(12345);
+   * ```
+   */
+  async deleteUser(deletedUserID: number): Promise<void> {
+    await this.client.delete<undefined>(
+      'https://user-management-api.wildberries.ru/api/v1/user',
+      {},
+      {
+        params: { deletedUserID },
+        rateLimitKey: 'general.deleteUser',
       }
     );
   }

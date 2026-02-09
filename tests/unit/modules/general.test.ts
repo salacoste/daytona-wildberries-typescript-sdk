@@ -16,6 +16,7 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
+import { ValidationError } from '../../../src/errors/validation-error';
 
 describe('GeneralModule', () => {
   // Mock BaseClient with all HTTP methods
@@ -304,6 +305,269 @@ describe('GeneralModule', () => {
 
       // Act & Assert
       await expect(generalModule.sellerInfo()).rejects.toThrow(NetworkError);
+    });
+  });
+
+  // ============================================================================
+  // User Management Methods
+  // ============================================================================
+
+  const USER_MGMT_BASE_URL = 'https://user-management-api.wildberries.ru';
+
+  describe('createInvite()', () => {
+    const mockResponse = {
+      inviteID: '741b8aa6-08ac-4782-8a9d-d931bcbbf608',
+      expiredAt: '2025-10-06T10:56:04.335060746Z',
+      isSuccess: true,
+      inviteUrl: 'https://seller.wildberries.ru/supplier-settings/supplier-card?inviteId=xxx',
+    };
+
+    it('should call correct endpoint with POST method', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockResponse);
+      const request = {
+        invite: { phoneNumber: '79999999999', position: 'Manager' },
+        access: [{ code: 'balance' as const, disabled: false }],
+      };
+
+      // Act
+      await generalModule.createInvite(request);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(`${USER_MGMT_BASE_URL}/api/v1/invite`, request, {
+        rateLimitKey: 'general.createInvite',
+      });
+    });
+
+    it('should return invite response with all fields', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      // Act
+      const result = await generalModule.createInvite({
+        invite: { phoneNumber: '79999999999' },
+      });
+
+      // Assert
+      expect(result.isSuccess).toBe(true);
+      expect(result.inviteID).toBe('741b8aa6-08ac-4782-8a9d-d931bcbbf608');
+      expect(result.inviteUrl).toContain('https://');
+      expect(result.expiredAt).toBeDefined();
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      // Arrange
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+
+      // Act & Assert
+      await expect(
+        generalModule.createInvite({ invite: { phoneNumber: '79999999999' } })
+      ).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      // Arrange
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+
+      // Act & Assert
+      await expect(
+        generalModule.createInvite({ invite: { phoneNumber: '79999999999' } })
+      ).rejects.toThrow(RateLimitError);
+    });
+
+    it('should propagate ValidationError on bad request', async () => {
+      // Arrange
+      mockClient.post.mockRejectedValue(new ValidationError('Invalid phone number format'));
+
+      // Act & Assert
+      await expect(
+        generalModule.createInvite({ invite: { phoneNumber: 'invalid' } })
+      ).rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getUsers()', () => {
+    const mockResponse = {
+      total: 2,
+      countInResponse: 2,
+      users: [
+        {
+          id: 1001,
+          role: 'user' as const,
+          position: 'Analyst',
+          phone: '79999999999',
+          email: 'test@example.com',
+          isOwner: true,
+          firstName: 'Ivan',
+          secondName: 'Ivanov',
+          patronymic: '',
+          goodsReturn: true,
+          isInvitee: false,
+          inviteeInfo: null,
+          access: [],
+        },
+      ],
+    };
+
+    it('should call correct endpoint with GET method (no params)', async () => {
+      // Arrange
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      // Act
+      await generalModule.getUsers();
+
+      // Assert
+      expect(mockClient.get).toHaveBeenCalledWith(`${USER_MGMT_BASE_URL}/api/v1/users`, {
+        rateLimitKey: 'general.getUsers',
+      });
+    });
+
+    it('should pass query params correctly', async () => {
+      // Arrange
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      // Act
+      await generalModule.getUsers({ limit: 50, offset: 10, isInviteOnly: true });
+
+      // Assert
+      expect(mockClient.get).toHaveBeenCalledWith(`${USER_MGMT_BASE_URL}/api/v1/users`, {
+        params: { limit: 50, offset: 10, isInviteOnly: true },
+        rateLimitKey: 'general.getUsers',
+      });
+    });
+
+    it('should return users list with correct structure', async () => {
+      // Arrange
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      // Act
+      const result = await generalModule.getUsers();
+
+      // Assert
+      expect(result.total).toBe(2);
+      expect(result.countInResponse).toBe(2);
+      expect(result.users).toHaveLength(1);
+      expect(result.users[0].id).toBe(1001);
+      expect(result.users[0].isOwner).toBe(true);
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      // Arrange
+      mockClient.get.mockRejectedValue(new AuthenticationError('Invalid API key'));
+
+      // Act & Assert
+      await expect(generalModule.getUsers()).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      // Arrange
+      mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+
+      // Act & Assert
+      await expect(generalModule.getUsers()).rejects.toThrow(RateLimitError);
+    });
+  });
+
+  describe('updateUserAccess()', () => {
+    it('should call correct endpoint with PUT method', async () => {
+      // Arrange
+      mockClient.put.mockResolvedValue(undefined);
+      const request = {
+        usersAccesses: [
+          { userId: 42334965, access: [{ code: 'balance' as const, disabled: false }] },
+        ],
+      };
+
+      // Act
+      await generalModule.updateUserAccess(request);
+
+      // Assert
+      expect(mockClient.put).toHaveBeenCalledWith(
+        `${USER_MGMT_BASE_URL}/api/v1/users/access`,
+        request,
+        { rateLimitKey: 'general.updateUserAccess' }
+      );
+    });
+
+    it('should handle successful response (void return)', async () => {
+      // Arrange
+      mockClient.put.mockResolvedValue(undefined);
+
+      // Act & Assert - should not throw
+      await expect(
+        generalModule.updateUserAccess({
+          usersAccesses: [{ userId: 123, access: [{ code: 'balance' as const, disabled: true }] }],
+        })
+      ).resolves.toBeUndefined();
+    });
+
+    it('should propagate ValidationError on bad request', async () => {
+      // Arrange
+      mockClient.put.mockRejectedValue(new ValidationError('Invalid user ID'));
+
+      // Act & Assert
+      await expect(generalModule.updateUserAccess({ usersAccesses: [] })).rejects.toThrow(
+        ValidationError
+      );
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      // Arrange
+      mockClient.put.mockRejectedValue(new AuthenticationError('Invalid API key'));
+
+      // Act & Assert
+      await expect(generalModule.updateUserAccess({ usersAccesses: [] })).rejects.toThrow(
+        AuthenticationError
+      );
+    });
+  });
+
+  describe('deleteUser()', () => {
+    it('should call correct endpoint with DELETE method', async () => {
+      // Arrange
+      mockClient.delete.mockResolvedValue(undefined);
+
+      // Act
+      await generalModule.deleteUser(12345);
+
+      // Assert
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        `${USER_MGMT_BASE_URL}/api/v1/user`,
+        {},
+        { params: { deletedUserID: 12345 }, rateLimitKey: 'general.deleteUser' }
+      );
+    });
+
+    it('should handle successful deletion (void return)', async () => {
+      // Arrange
+      mockClient.delete.mockResolvedValue(undefined);
+
+      // Act & Assert - should not throw
+      await expect(generalModule.deleteUser(12345)).resolves.toBeUndefined();
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      // Arrange
+      mockClient.delete.mockRejectedValue(new AuthenticationError('Invalid API key'));
+
+      // Act & Assert
+      await expect(generalModule.deleteUser(12345)).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      // Arrange
+      mockClient.delete.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+
+      // Act & Assert
+      await expect(generalModule.deleteUser(12345)).rejects.toThrow(RateLimitError);
+    });
+
+    it('should propagate ValidationError for invalid user ID', async () => {
+      // Arrange
+      mockClient.delete.mockRejectedValue(new ValidationError('User not found'));
+
+      // Act & Assert
+      await expect(generalModule.deleteUser(99999)).rejects.toThrow(ValidationError);
     });
   });
 });
