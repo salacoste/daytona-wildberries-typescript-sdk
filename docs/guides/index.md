@@ -19,9 +19,13 @@ In-depth guides for production deployment and advanced SDK usage.
 
 ## Migration Guides
 
+::: warning IMPORTANT
+If you're using Promotion module Type 8 campaigns, migrate to Type 9 before **February 2, 2026**.
+:::
+
 - **[Migration v3.0.0 - Complete Deprecation Guide](/guides/migration-v3)** - Comprehensive guide for migrating to v3.0.0 (62 removed methods, 14 removed types)
 - **[Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3)** - Migrate from deprecated v2 Sales Funnel methods to new v3 endpoints
-- **[Migration v2.4 - Promotion API Deprecation](/guides/migration-v2.4-promotion-deprecation)** - Type 8 campaign method deprecation
+- **[Type 8 → Type 9 Campaign Migration](/guides/migration-v2.4-promotion-deprecation)** - Migrate from standard bid campaigns (type 8) to custom/standard bid campaigns (type 9)
 - **[Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3)** - Breaking changes in Promotion module method signatures
 - **[Migration DBS Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk)** - Migrate from deprecated single-order DBS methods to bulk APIs
 

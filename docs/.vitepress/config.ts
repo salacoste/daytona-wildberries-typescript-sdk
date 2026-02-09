@@ -128,8 +128,9 @@ export default defineConfig({
             text: 'Guides',
             items: [
               { text: 'Overview', link: '/guides/' },
+              { text: '🔄 Migration v3.0 - Complete Guide', link: '/guides/migration-v3' },
               { text: '⚠️ Migration v2.7 - Analytics v3 Sales Funnel', link: '/guides/migration-v2.7-analytics-v3' },
-              { text: '⚠️ Migration v2.4 - Promotion API Deprecation', link: '/guides/migration-v2.4-promotion-deprecation' },
+              { text: '⚠️ Type 8 → Type 9 Campaign Migration', link: '/guides/migration-type8-to-type9' },
               { text: 'Migration v2.2 → v2.3', link: '/guides/migration-v2.3' },
               { text: 'Best Practices', link: '/guides/best-practices' },
               { text: 'Performance Tuning', link: '/guides/performance' },
@@ -320,8 +321,9 @@ export default defineConfig({
             text: 'Руководства',
             items: [
               { text: 'Обзор', link: '/ru/guides/' },
+              { text: '🔄 Миграция v3.0 - Полное руководство', link: '/guides/migration-v3' },
               { text: '⚠️ Миграция v2.7 - Аналитика v3 (Воронка продаж)', link: '/guides/migration-v2.7-analytics-v3' },
-              { text: '⚠️ Миграция v2.4 - Устаревание Promotion API', link: '/guides/migration-v2.4-promotion-deprecation' },
+              { text: '⚠️ Миграция Type 8 → Type 9 кампаний', link: '/guides/migration-type8-to-type9' },
               { text: 'Миграция v2.2 → v2.3', link: '/ru/guides/migration-v2.3' },
               { text: 'Лучшие практики', link: '/ru/guides/best-practices' },
               { text: 'Настройка производительности', link: '/ru/guides/performance' },

@@ -12,17 +12,21 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **SDK Namespace** | `sdk.promotion.*` |
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
-| **Swagger Endpoints** | 50 (34 active + 16 deprecated) |
-| **Implemented Methods** | 39 (37 active + 2 deprecated) |
-| **Total Types** | 83 TypeScript interfaces/types |
+| **Swagger Endpoints** | 50+ (34 active + 16 deprecated) |
+| **Implemented Methods** | 45 (41 active + 4 deprecated) |
+| **Total Types** | 95+ TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
 
 ### What's New (February 2026)
 
-- **Campaign Creation & Lifecycle**: 6 new methods for campaign creation, product selection, and state control
-- **Search Clusters (NormQuery) API**: 6 new methods for managing search cluster targeting and bids
-- **V2 API Replacements**: 3 new methods replacing deprecated v0/v1 endpoints with improved functionality
-- **19 Deprecated Methods**: Legacy endpoints marked for removal with migration paths
+- **Unified Bid API (V1)**: New `updateBids()` method with kopecks-based bidding replacing v0 endpoint
+- **Campaign Products Management**: New `updateCampaignProducts()` for adding/removing products from Type 9 campaigns
+- **Minus Phrases API**: New `getMinusPhrases()` and `setMinusPhrases()` methods with clear naming
+- **Search Cluster Statistics**: New `getSearchClusterStats()` method for CPM campaign analytics
+- **Campaign Creation & Lifecycle**: Methods for campaign creation, product selection, and state control
+- **V2 API Replacements**: New methods replacing deprecated v0/v1 endpoints with improved functionality
+- **Deprecated Methods**: Legacy endpoints marked for removal February 2, 2026
+- **Migration Guide**: See [Type 8 to Type 9 Migration Guide](/guides/migration-type8-to-type9) for detailed migration instructions
 
 ---
 
@@ -71,7 +75,7 @@ await sdk.promotion.setNormqueryBids({
 
 ## Methods Reference
 
-### Campaign Management (5 methods)
+### Campaign Management (6 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
@@ -80,29 +84,47 @@ await sdk.promotion.setNormqueryBids({
 | `getAdvStop()` | GET | `/adv/v0/stop` | Complete campaigns | Active |
 | `updateAuctionPlacement()` | PUT | `/adv/v0/auction/placements` | Change placement locations | Active |
 | `updateAuctionNm()` | PATCH | `/adv/v0/auction/nms` | Add/remove product cards in campaigns | Active |
+| `updateCampaignProducts()` | PATCH | `/adv/v0/auction/nms` | **NEW**: Add/remove products (cleaner API) | Active |
 
-### Bidding (2 methods)
+::: tip updateCampaignProducts vs updateAuctionNm
+Both methods use the same endpoint. `updateCampaignProducts()` provides a cleaner interface:
+- Uses `add_nms` and `delete_nms` arrays instead of nested `nms.add/delete`
+- Returns structured `CampaignProductsResult` objects
+- Only works with Type 9 campaigns
+:::
+
+### Bidding (3 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
+| `updateBids()` | PATCH | `/api/advert/v1/bids` | **NEW**: Change bids in kopecks (recommended) | Active |
+| `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | Alias for updateBids() | Active |
 | `updateAuctionBid()` | PATCH | `/adv/v0/auction/bids` | Change bids for type 9 campaigns | Deprecated |
-| `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | **NEW**: Change bids (kopecks) - replaces v0 | Active |
 
-### Search Clusters / NormQuery (6 methods) - NEW
+::: tip Bid Units
+The new `updateBids()` method uses **kopecks** (100 kopecks = 1 RUB) for bid values via `bid_kopecks` field.
+Example: `bid_kopecks: 250` = 2.50 RUB
+:::
 
-These methods enable advanced search cluster targeting for CPM campaigns.
+### Search Clusters / NormQuery (9 methods) - NEW
 
-| Method | HTTP | Endpoint | Description |
-|--------|------|----------|-------------|
-| `getNormqueryStats()` | POST | `/adv/v0/normquery/stats` | Get search cluster statistics for date range |
-| `getNormqueryBids()` | POST | `/adv/v0/normquery/get-bids` | Get list of search cluster bids |
-| `setNormqueryBids()` | POST | `/adv/v0/normquery/bids` | Set bids for search clusters |
-| `deleteNormqueryBids()` | DELETE | `/adv/v0/normquery/bids` | Remove bids from search clusters |
-| `getNormqueryMinus()` | POST | `/adv/v0/normquery/get-minus` | Get minus-phrases for campaigns |
-| `setNormqueryMinus()` | POST | `/adv/v0/normquery/set-minus` | Set/remove minus-phrases |
+These methods enable advanced search cluster targeting for CPM campaigns. The SDK provides both original NormQuery naming and clearer alternative names.
+
+| Method | Alternative Name | HTTP | Endpoint | Description |
+|--------|-----------------|------|----------|-------------|
+| `getSearchClusterStats()` | `getNormqueryStats()` | POST | `/adv/v0/normquery/stats` | Get search cluster statistics for date range |
+| `getNormqueryBids()` | - | POST | `/adv/v0/normquery/get-bids` | Get list of search cluster bids |
+| `setNormqueryBids()` | - | POST | `/adv/v0/normquery/bids` | Set bids for search clusters |
+| `deleteNormqueryBids()` | - | DELETE | `/adv/v0/normquery/bids` | Remove bids from search clusters |
+| `getMinusPhrases()` | `getNormqueryMinus()` | POST | `/adv/v0/normquery/get-minus` | Get minus-phrases for campaigns |
+| `setMinusPhrases()` | `setNormqueryMinus()` | POST | `/adv/v0/normquery/set-minus` | Set/remove minus-phrases |
 
 ::: tip NormQuery API
 Search Clusters (NormQuery) methods work only with CPM campaigns (cost per thousand impressions) and manual bid campaigns.
+:::
+
+::: warning Empty Array Behavior
+Calling `setMinusPhrases()` or `setNormqueryMinus()` with an **empty `norm_queries` array will DELETE ALL minus-phrases** from the campaign!
 :::
 
 ### V2 API Replacements (3 methods) - NEW
@@ -181,14 +203,16 @@ Use `setNormqueryMinus()` and `updateAuctionNm()` instead.
 
 ## Deprecated Methods (Implemented)
 
-The following 4 methods are deprecated but still available in the SDK with deprecation warnings.
+The following 6 methods are deprecated but still available in the SDK with deprecation warnings.
 
 | Deprecated Method | Replacement | Scheduled Removal |
 |------------------|-------------|-------------------|
-| `updateAuctionBid()` | `updateBidsV2()` | TBD |
+| `getPromotionAdverts()` | `getAdvertsV2()` | February 2, 2026 |
+| `getAuctionAdverts()` | `getAdvertsV2()` | February 2, 2026 |
+| `updateAuctionBid()` | `updateBids()` / `updateBidsV2()` | TBD |
 | `getStatsKeywords()` | `getAdvFullstats()` | TBD |
-| `createAutoSetExcluded()` | `setNormqueryMinus()` | February 2, 2026 |
-| `createAutoUpdatenm()` | `updateAuctionNm()` | February 2, 2026 |
+| `createAutoSetExcluded()` | `setMinusPhrases()` / `setNormqueryMinus()` | February 2, 2026 |
+| `createAutoUpdatenm()` | `updateCampaignProducts()` / `updateAuctionNm()` | February 2, 2026 |
 
 ---
 
@@ -228,25 +252,213 @@ These endpoints are deprecated in the Swagger spec and intentionally not impleme
 | T9 Extremely Low | Campaign creation | 5 req/min | 12s |
 | T10 Single | Config, full statistics | 1-3 req/min | 20-60s |
 
-### NormQuery Rate Limits
+### NormQuery / Search Clusters Rate Limits
+
+| Method | Alternative Name | Limit | Interval | Burst |
+|--------|-----------------|-------|----------|-------|
+| `getSearchClusterStats()` | `getNormqueryStats()` | 10 req/min | 6s | 20 |
+| `getNormqueryBids()` | - | 300 req/min | 200ms | 10 |
+| `setNormqueryBids()` | - | 120 req/min | 500ms | 4 |
+| `deleteNormqueryBids()` | - | 300 req/min | 200ms | 10 |
+| `getMinusPhrases()` | `getNormqueryMinus()` | 300 req/min | 200ms | 10 |
+| `setMinusPhrases()` | `setNormqueryMinus()` | 300 req/min | 200ms | 10 |
+
+### V1 API Rate Limits (NEW)
 
 | Method | Limit | Interval | Burst |
 |--------|-------|----------|-------|
-| `getNormqueryStats()` | 10 req/min | 6s | 20 |
-| `getNormqueryBids()` | 300 req/min | 200ms | 10 |
-| `setNormqueryBids()` | 120 req/min | 500ms | 4 |
-| `deleteNormqueryBids()` | 300 req/min | 200ms | 10 |
-| `getNormqueryMinus()` | 300 req/min | 200ms | 10 |
-| `setNormqueryMinus()` | 300 req/min | 200ms | 10 |
+| `updateBids()` | 300 req/min | 200ms | 5 |
+| `updateCampaignProducts()` | 60 req/min | 1s | 1 |
 
 ---
 
 ## Usage Examples
 
-### Search Cluster Targeting
+### updateBids() - Update Bids in Kopecks (NEW)
+
+Updates bids for product cards in campaigns with unified or manual bidding.
+
+**Endpoint:** `PATCH /api/advert/v1/bids`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| bids | UpdateBidsCampaign[] | Yes | Array of campaigns with bid updates (max 50) |
+| bids[].advert_id | number | Yes | Campaign ID |
+| bids[].nm_bids | NmBid[] | Yes | Array of product bids (max 100 per campaign) |
+| bids[].nm_bids[].nm_id | number | Yes | WB Article ID |
+| bids[].nm_bids[].bid_kopecks | number | Yes | Bid in kopecks (100 kop = 1 RUB) |
+| bids[].nm_bids[].placement | string | Yes | "search", "recommendations", or "combined" |
+
+**Rate Limit:** 300 requests/minute (5 req/sec, 200ms interval)
 
 ```typescript
-// Get statistics for search clusters
+// Update bids using the new V1 API with kopecks
+const result = await sdk.promotion.updateBids({
+  bids: [{
+    advert_id: 12345,
+    nm_bids: [{
+      nm_id: 98765432,
+      bid_kopecks: 1500,  // 15.00 RUB
+      placement: 'search'
+    }, {
+      nm_id: 87654321,
+      bid_kopecks: 250,   // 2.50 RUB
+      placement: 'recommendations'
+    }]
+  }]
+});
+
+console.log('Updated bids:', result.bids);
+```
+
+---
+
+### updateCampaignProducts() - Manage Campaign Products (NEW)
+
+Adds and removes product cards from Type 9 campaigns.
+
+**Endpoint:** `PATCH /adv/v0/auction/nms`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| campaigns | CampaignProductsUpdate[] | Yes | Array of campaigns to update (max 20) |
+| campaigns[].advert_id | number | Yes | Campaign ID |
+| campaigns[].add_nms | number[] | No | Product IDs to add (max 50) |
+| campaigns[].delete_nms | number[] | No | Product IDs to remove |
+
+**Rate Limit:** 60 requests/minute (1 req/sec)
+
+```typescript
+// Add and remove products from a Type 9 campaign
+const result = await sdk.promotion.updateCampaignProducts({
+  campaigns: [{
+    advert_id: 12345,
+    add_nms: [111222333, 444555666],    // Products to add
+    delete_nms: [777888999]              // Products to remove
+  }]
+});
+
+console.log('Added:', result.nms[0].nms.added);
+console.log('Deleted:', result.nms[0].nms.deleted);
+```
+
+---
+
+### getMinusPhrases() - Get Minus Phrases (NEW)
+
+Returns the list of minus phrases for campaigns by campaign ID and WB article.
+
+**Endpoint:** `POST /adv/v0/normquery/get-minus`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| items | GetMinusPhrasesRequestItem[] | Yes | Array of campaign/product pairs (max 100) |
+| items[].advert_id | number | Yes | Campaign ID |
+| items[].nm_id | number | Yes | WB Article ID (use 0 for Type 8 campaign-wide) |
+
+**Rate Limit:** 300 requests/minute (5 req/sec, 200ms interval)
+
+```typescript
+// Get current minus phrases for a campaign
+const result = await sdk.promotion.getMinusPhrases({
+  items: [{ advert_id: 123456, nm_id: 789012 }]
+});
+
+for (const item of result.items) {
+  console.log(`Campaign ${item.advert_id}, Product ${item.nm_id}:`);
+  console.log('  Minus phrases:', item.norm_queries || []);
+}
+```
+
+---
+
+### setMinusPhrases() - Set Minus Phrases (NEW)
+
+Sets minus phrases for campaigns with manual bidding and CPM payment type.
+
+**Endpoint:** `POST /adv/v0/normquery/set-minus`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| advert_id | number | Yes | Campaign ID |
+| nm_id | number | Yes | WB Article ID (use 0 for Type 8 campaign-wide) |
+| norm_queries | string[] | Yes | Minus phrases (max 1000). **Empty array DELETES ALL!** |
+
+**Rate Limit:** 300 requests/minute (5 req/sec, 200ms interval)
+
+::: danger Empty Array Warning
+Sending an **empty `norm_queries` array will DELETE ALL minus phrases** from the campaign! This is by design in the Wildberries API.
+:::
+
+```typescript
+// Set new minus phrases (replaces existing)
+await sdk.promotion.setMinusPhrases({
+  advert_id: 123456,
+  nm_id: 789012,
+  norm_queries: ['unwanted phrase 1', 'competitor brand', 'irrelevant term']
+});
+
+// WARNING: This DELETES ALL minus phrases!
+await sdk.promotion.setMinusPhrases({
+  advert_id: 123456,
+  nm_id: 789012,
+  norm_queries: []  // Danger: removes everything!
+});
+```
+
+---
+
+### getSearchClusterStats() - Search Cluster Statistics (NEW)
+
+Returns statistics for search clusters over a date range. **Only works with CPM campaigns.**
+
+**Endpoint:** `POST /adv/v0/normquery/stats`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| from | string | Yes | Start date (YYYY-MM-DD) |
+| to | string | Yes | End date (YYYY-MM-DD) |
+| items | GetSearchClusterStatsRequestItem[] | Yes | Campaign/product pairs (max 100) |
+| items[].advert_id | number | Yes | Campaign ID |
+| items[].nm_id | number | Yes | WB Article ID (use 0 for Type 8 aggregate) |
+
+**Rate Limit:** 10 requests/minute (6 second interval)
+
+```typescript
+// Get search cluster statistics for CPM campaigns
+const stats = await sdk.promotion.getSearchClusterStats({
+  from: '2026-02-01',
+  to: '2026-02-09',
+  items: [{ advert_id: 123456, nm_id: 789012 }]
+});
+
+for (const item of stats.stats) {
+  console.log(`Campaign ${item.advert_id}, Product ${item.nm_id}:`);
+  for (const cluster of item.stats) {
+    console.log(`  Cluster: "${cluster.norm_query}"`);
+    console.log(`    Views: ${cluster.views}, Clicks: ${cluster.clicks}`);
+    console.log(`    CTR: ${cluster.ctr}%, CPC: ${cluster.cpc} kop`);
+    console.log(`    Orders: ${cluster.orders}, Sum: ${cluster.sum} kop`);
+  }
+}
+```
+
+---
+
+### Search Cluster Targeting (Legacy Naming)
+
+```typescript
+// Get statistics for search clusters (legacy method name)
 const stats = await sdk.promotion.getNormqueryStats({
   from: '2025-01-01',
   to: '2025-01-07',
@@ -271,7 +483,7 @@ await sdk.promotion.setNormqueryBids({
   ]
 });
 
-// Add minus-phrases to exclude unwanted traffic
+// Add minus-phrases to exclude unwanted traffic (legacy method name)
 await sdk.promotion.setNormqueryMinus({
   advert_id: 12345,
   nm_id: 98765432,

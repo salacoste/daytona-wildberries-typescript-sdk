@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-02-09
+
+### Added - Promotion Module Enhancements
+
+#### New Methods
+- `updateBids()` - Update campaign bids in kopecks (PATCH /api/advert/v1/bids)
+- `updateCampaignProducts()` - Add/remove products from campaigns (PATCH /adv/v0/auction/nms)
+- `getMinusPhrases()` - Get minus phrases for campaigns (POST /adv/v0/normquery/get-minus)
+- `setMinusPhrases()` - Set minus phrases for campaigns (POST /adv/v0/normquery/set-minus)
+- `getSearchClusterStats()` - Get search cluster statistics (POST /adv/v0/normquery/stats)
+
+#### New Types
+- `BidsKopecks` - Bid values in kopecks for search and recommendations
+- `NmSettingV2` - Article settings with bids_kopecks
+- `AdvertV2` - Campaign info from V2 API
+- `GetAdvertsV2Response` - Response type for getAdvertsV2
+- `UpdateBidsRequest`, `UpdateBidsResponse`
+- `UpdateCampaignProductsRequest`, `UpdateCampaignProductsResponse`
+- `GetMinusPhrasesRequest`, `GetMinusPhrasesResponse`
+- `SetMinusPhrasesRequest`
+- `GetSearchClusterStatsRequest`, `GetSearchClusterStatsResponse`
+
+### Changed
+
+#### Type Changes (Breaking)
+- `BidType` enum: `'unified'` → `'auto'` (Type 8 campaigns)
+- `PlacementType` enum: `'recommendation'` → `'recommendations'` (plural)
+- Bid values now use `bid_kopecks` instead of `bid` (kopecks, not rubles)
+
+#### API Migration Notes
+- Type 8 campaigns use `bid_type: 'auto'`
+- Type 9 campaigns use `bid_type: 'manual'`
+- For Type 8: `nm_id = 0` for campaign-wide settings
+- For Type 9: `nm_id` must be real WB article ID
+
+### Deprecated
+
+The following methods will be removed on **February 2, 2026**:
+- `getPromotionAdverts()` → use `getAdvertsV2()` instead
+- `getAuctionAdverts()` → use `getAdvertsV2()` instead
+
+See [Release Notes](https://dev.wildberries.ru/release-notes?id=388) for details.
+
+### Documentation
+- Added migration guide: `docs/guides/migration-type8-to-type9.md`
+- Updated Promotion module API reference
+
+---
+
 ## [3.0.0] - 2026-02-07
 
 ### Breaking Changes
