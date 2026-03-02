@@ -2,7 +2,7 @@
 
 # Interface: ProblemJsonFields
 
-Defined in: [client/base-client.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L28)
+Defined in: [client/base-client.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L28)
 
 Parsed fields from an RFC 7807 problem+json error response.
 
@@ -14,11 +14,11 @@ Parsed fields from an RFC 7807 problem+json error response.
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="title"></a> `title?` | `string` | [client/base-client.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L29) |
-| <a id="detail"></a> `detail?` | `string` | [client/base-client.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L30) |
-| <a id="code"></a> `code?` | `string` | [client/base-client.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L31) |
-| <a id="requestid"></a> `requestId?` | `string` | [client/base-client.ts:32](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L32) |
-| <a id="origin"></a> `origin?` | `string` | [client/base-client.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L33) |
-| <a id="status"></a> `status?` | `number` | [client/base-client.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L34) |
-| <a id="statustext"></a> `statusText?` | `string` | [client/base-client.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L35) |
-| <a id="timestamp"></a> `timestamp?` | `string` | [client/base-client.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/client/base-client.ts#L36) |
+| <a id="title"></a> `title?` | `string` | [client/base-client.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L29) |
+| <a id="detail"></a> `detail?` | `string` | [client/base-client.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L30) |
+| <a id="code"></a> `code?` | `string` | [client/base-client.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L31) |
+| <a id="requestid"></a> `requestId?` | `string` | [client/base-client.ts:32](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L32) |
+| <a id="origin"></a> `origin?` | `string` | [client/base-client.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L33) |
+| <a id="status"></a> `status?` | `number` | [client/base-client.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L34) |
+| <a id="statustext"></a> `statusText?` | `string` | [client/base-client.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L35) |
+| <a id="timestamp"></a> `timestamp?` | `string` | [client/base-client.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L36) |

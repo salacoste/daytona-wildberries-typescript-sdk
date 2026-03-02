@@ -321,9 +321,9 @@ export default defineConfig({
             text: 'Руководства',
             items: [
               { text: 'Обзор', link: '/ru/guides/' },
-              { text: '🔄 Миграция v3.0 - Полное руководство', link: '/guides/migration-v3' },
-              { text: '⚠️ Миграция v2.7 - Аналитика v3 (Воронка продаж)', link: '/guides/migration-v2.7-analytics-v3' },
-              { text: '⚠️ Миграция Type 8 → Type 9 кампаний', link: '/guides/migration-type8-to-type9' },
+              { text: '🔄 Миграция v3.0 - Полное руководство', link: '/ru/guides/migration-v3' },
+              { text: '⚠️ Миграция v2.7 - Аналитика v3 (Воронка продаж)', link: '/ru/guides/migration-v2.7-analytics-v3' },
+              { text: '⚠️ Миграция Type 8 → Type 9 кампаний', link: '/ru/guides/migration-type8-to-type9' },
               { text: 'Миграция v2.2 → v2.3', link: '/ru/guides/migration-v2.3' },
               { text: 'Лучшие практики', link: '/ru/guides/best-practices' },
               { text: 'Настройка производительности', link: '/ru/guides/performance' },
@@ -341,10 +341,10 @@ export default defineConfig({
                   { text: 'Управление остатками', link: '/ru/guides/stock-management' },
                   { text: 'Возвраты и отмены', link: '/ru/guides/returns-handling' },
                   { text: 'Платное хранение', link: '/ru/guides/storage-fees-integration' },
-                  { text: '📊 Рекламная статистика', link: '/guides/advertising-statistics-guide' },
+                  { text: '📊 Рекламная статистика', link: '/ru/guides/advertising-statistics-guide' },
                   { text: '🎯 Лучшие практики рекламных кампаний', link: '/ru/guides/best-practices-advertising' },
                   { text: '📈 Аналитика воронки продаж', link: '/ru/guides/best-practices-sales-funnel' },
-                  { text: '📋 Руководство по модулю Promotion', link: '/guides/promotion-advertising' },
+                  { text: '📋 Руководство по модулю Promotion', link: '/ru/guides/promotion-advertising' },
                   { text: '👥 Управление пользователями', link: '/guides/user-management' },
                   { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' }
                 ]

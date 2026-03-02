@@ -2,11 +2,11 @@
 
 # Interface: V0KeywordsStatistics
 
-Defined in: [types/promotion.types.ts:715](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/promotion.types.ts#L715)
+Defined in: [types/promotion.types.ts:715](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L715)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="date"></a> `date` | `string` | Дата | [types/promotion.types.ts:717](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/promotion.types.ts#L717) |
-| <a id="stats"></a> `stats` | [`V0KeywordsStatistic`](V0KeywordsStatistic.md)[] | - | [types/promotion.types.ts:718](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/promotion.types.ts#L718) |
+| <a id="date"></a> `date` | `string` | Дата | [types/promotion.types.ts:717](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L717) |
+| <a id="stats"></a> `stats` | [`V0KeywordsStatistic`](V0KeywordsStatistic.md)[] | - | [types/promotion.types.ts:718](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L718) |

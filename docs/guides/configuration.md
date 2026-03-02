@@ -18,7 +18,6 @@ Comprehensive guide to configuring the Wildberries TypeScript SDK for different 
 - [Rate Limiting Configuration](#rate-limiting-configuration)
 - [Retry Configuration](#retry-configuration)
 - [Logging Configuration](#logging-configuration)
-- [Custom HTTP Client](#custom-http-client)
 - [Configuration Best Practices](#configuration-best-practices)
 
 ## Overview
@@ -33,12 +32,11 @@ interface SDKConfig {
   apiKey: string;
 
   // Optional overrides
-  baseUrls?: Partial<Record<APIModule, string>>;
+  baseUrls?: Partial<Record<string, string>>;
   timeout?: number;
   retryConfig?: RetryConfig;
   rateLimitConfig?: RateLimitConfig;
   logLevel?: 'debug' | 'info' | 'warn' | 'error';
-  httpClient?: AxiosInstance;
 }
 ```
 
@@ -304,19 +302,17 @@ The default timeout is **30 seconds** (30000ms). Increase it for environments wi
 Override the global timeout for individual requests that need more (or less) time:
 
 ```typescript
-// Long-running report generation — 2 minute timeout
-const report = await sdk.analytics.getReportDetail(
-  { id: reportId },
-  { timeout: 120000 }
-);
+// For long-running operations, increase the global timeout:
+const sdkForReports = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 120000, // 2 minutes for report generation
+});
 
-// Quick health check — 5 second timeout
-const ping = await sdk.general.ping(
-  { timeout: 5000 }
-);
+// Download a generated analytics report file
+const reportFile = await sdkForReports.analytics.getDownloadsFile(downloadId);
 ```
 
-Per-request timeout overrides the global `SDKConfig.timeout` for that single call. Each retry attempt uses the per-request timeout individually (not cumulative).
+The `timeout` in `SDKConfig` applies to all requests made by that SDK instance. Each retry attempt uses the timeout individually (not cumulative).
 
 ### Timeout and Retry Interaction
 
@@ -344,28 +340,22 @@ The SDK provides flexible rate limiting configuration to prevent API quota exhau
 
 **API Reference:** See [RateLimitConfig](/api/interfaces/RateLimitConfig) for complete rate limiting configuration options.
 
-### Module-Specific Limits
+### Global Rate Limits
+
+The `rateLimitConfig` accepts two flat options that apply globally across all endpoints. Per-endpoint rate limits are automatically enforced by the SDK based on the OpenAPI specifications.
 
 ```typescript
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
 
   rateLimitConfig: {
-    // Global limits
     requestsPerSecond: 10,
     requestsPerMinute: 100,
-
-    // Module-specific overrides (if supported)
-    products: {
-      requestsPerMinute: 3, // Products module is more restrictive
-      intervalSeconds: 20,
-    },
-    finances: {
-      requestsPerMinute: 1000, // Finances module allows more
-    }
   }
 });
 ```
+
+> **Note:** Per-endpoint rate limits (e.g., 3 requests/minute for product creation) are extracted from the OpenAPI specs and enforced automatically via `rateLimitKey` in each module method. The global `rateLimitConfig` sets an upper bound across all endpoints.
 
 ### Custom Rate Limiter
 
@@ -405,13 +395,13 @@ const sdk = new WildberriesSDK({
 
 ### Custom Retry Logic
 
+The SDK's `retryConfig` supports three fields: `maxRetries`, `retryDelay`, and `exponentialBackoff`. The SDK automatically retries on transient failures (network errors, 5xx, 429) and never retries on authentication (401/403) or validation errors (400/422).
+
 ```typescript
-interface CustomRetryConfig {
+interface RetryConfig {
   maxRetries: number;
   retryDelay: number;
   exponentialBackoff: boolean;
-  retryableStatusCodes?: number[];
-  onRetry?: (attempt: number, error: Error) => void;
 }
 
 const sdk = new WildberriesSDK({
@@ -421,17 +411,11 @@ const sdk = new WildberriesSDK({
     maxRetries: 5,
     retryDelay: 2000,
     exponentialBackoff: true,
-
-    // Only retry on specific errors
-    retryableStatusCodes: [408, 429, 500, 502, 503, 504],
-
-    // Log retry attempts
-    onRetry: (attempt, error) => {
-      console.warn(`Retry attempt ${attempt}:`, error.message);
-    }
   }
 });
 ```
+
+> **Note:** Set `logLevel: 'info'` to see retry attempts in the console, or `logLevel: 'debug'` for full retry context including error type and status code.
 
 ### Conditional Retry
 
@@ -499,101 +483,24 @@ const sdk = new WildberriesSDK({
 
 > **Tip:** Use `logLevel: 'info'` to see retry attempts and timeout warnings without the noise of debug-level output. Use `logLevel: 'debug'` when troubleshooting `ETIMEDOUT` errors to see the full error context for each retry.
 
-### Custom Logger Integration
+### Logging Integration
+
+The SDK uses its own internal Axios instance managed by `BaseClient`. Use the `logLevel` option to control SDK logging output:
 
 ```typescript
-import winston from 'winston';
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' })
-  ]
-});
-
-class LoggingSDK {
-  private sdk: WildberriesSDK;
-
-  constructor(config: SDKConfig) {
-    this.sdk = new WildberriesSDK({
-      ...config,
-      // Custom logging interceptor
-      httpClient: axios.create({
-        interceptors: {
-          request: (config) => {
-            logger.info('API Request', {
-              method: config.method,
-              url: config.url,
-            });
-            return config;
-          },
-          response: (response) => {
-            logger.info('API Response', {
-              status: response.status,
-              duration: response.config.metadata?.duration,
-            });
-            return response;
-          }
-        }
-      })
-    });
-  }
-}
-```
-
-## Custom HTTP Client
-
-### Axios Configuration
-
-```typescript
-import axios from 'axios';
-import https from 'https';
-
-const customHttpClient = axios.create({
-  // Timeout
-  timeout: 30000,
-
-  // HTTP/2 support
-  httpAgent: new http.Agent({ keepAlive: true }),
-  httpsAgent: new https.Agent({
-    keepAlive: true,
-    rejectUnauthorized: true,
-  }),
-
-  // Connection pooling
-  maxSockets: 50,
-  maxFreeSockets: 10,
-
-  // Headers
-  headers: {
-    'User-Agent': 'WildberriesSDK/1.0.0',
-    'Accept': 'application/json',
-  }
-});
-
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
-  httpClient: customHttpClient
+  logLevel: 'debug', // See all requests, responses, and retry context
 });
 ```
 
-### Proxy Configuration
+> **Note:** The SDK does not support injecting a custom `httpClient`. `BaseClient` manages its own Axios instance internally. Use `logLevel` for observability into SDK operations.
 
-```typescript
-import { HttpsProxyAgent } from 'https-proxy-agent';
+## HTTP Client
 
-const proxyAgent = new HttpsProxyAgent(process.env.HTTP_PROXY!);
+The SDK manages its own internal Axios instance via `BaseClient`. There is no `httpClient` option on `SDKConfig` -- the HTTP client is not user-replaceable. The SDK handles connection management, authentication headers, timeout, retry, and rate limiting internally.
 
-const sdk = new WildberriesSDK({
-  apiKey: process.env.WB_API_KEY!,
-  httpClient: axios.create({
-    httpsAgent: proxyAgent,
-    proxy: false, // Disable axios proxy to use agent
-  })
-});
-```
+> **Note:** If you need proxy support or custom TLS configuration, configure it at the OS/environment level (e.g., `HTTP_PROXY` / `HTTPS_PROXY` environment variables) rather than via the SDK.
 
 ## Configuration Best Practices
 
@@ -656,10 +563,6 @@ WB_API_LOG_LEVEL=warn
 # Rate Limiting
 WB_RATE_LIMIT_PER_SECOND=10
 WB_RATE_LIMIT_PER_MINUTE=100
-
-# HTTP Configuration
-HTTP_PROXY=http://proxy.example.com:8080
-HTTPS_PROXY=https://proxy.example.com:8080
 ```
 
 ## Related Documentation

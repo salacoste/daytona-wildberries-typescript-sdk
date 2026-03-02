@@ -102,20 +102,20 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-**Per-request timeout** — override global timeout for individual calls:
+**Per-request timeout** — the SDK's `BaseClient` supports per-request timeout via `RequestOptions`. Module methods use the global timeout by default. For operations that may take longer, increase the global timeout:
 
 ```typescript
-// Long-running report — 2 minute timeout
-const report = await sdk.analytics.getReportDetail(
-  { id: reportId },
-  { timeout: 120000 }
-);
+// For long-running operations, use a higher global timeout
+const sdkWithLongTimeout = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY,
+  timeout: 120000 // 2 minutes for slow report generation
+});
 
-// Quick health check — 5 second timeout
-const ping = await sdk.general.ping({ timeout: 5000 });
+// Quick health check uses the default timeout
+const ping = await sdk.general.ping();
 ```
 
-Per-request timeout overrides the global `timeout` for that single call. Each retry attempt uses the per-request timeout individually (not cumulative).
+Each retry attempt uses the configured timeout individually (not cumulative).
 
 **See also:** [Configuration Guide — Timeout Configuration](guides/configuration.md#timeout-configuration)
 
@@ -187,7 +187,7 @@ const sellerAccount2 = new WildberriesSDK({ apiKey: KEY_2 });
 ### 11. How do I fetch product categories?
 
 ```typescript
-const categories = await sdk.products.getParentCategories();
+const categories = await sdk.products.getParentAll();
 console.log(categories.data); // Array of category objects
 ```
 
@@ -254,7 +254,7 @@ result.orders?.forEach(order => {
 ### 15. How do I check my account balance?
 
 ```typescript
-const balance = await sdk.finances.getBalance();
+const balance = await sdk.finances.getAccountBalance();
 console.log(`Current balance: ${balance.amount} RUB`);
 ```
 
@@ -286,27 +286,27 @@ result.products?.forEach(p => {
 
 ### 17. How do I generate and download reports?
 
-Reports use an async pattern (request → poll → download):
+Reports use an async pattern (request → poll → download). Here is an example using the warehouse remains report:
 
 ```typescript
 // Step 1: Request report generation
-const task = await sdk.reports.generateReport({
-  reportType: 'sales',
-  dateFrom: '2024-01-01',
-  dateTo: '2024-12-31'
+const task = await sdk.reports.warehouseRemains({
+  groupByBrand: true,
+  groupBySubject: true
 });
+const taskId = task.data?.taskId;
 
 // Step 2: Poll for completion
-let report = await sdk.reports.getReportStatus(task.taskId);
-while (report.status === 'processing') {
+let status = await sdk.reports.getWarehouseRemainsTaskStatus(taskId);
+while (status.data?.status === 'new') {
   await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5s
-  report = await sdk.reports.getReportStatus(task.taskId);
+  status = await sdk.reports.getWarehouseRemainsTaskStatus(taskId);
 }
 
 // Step 3: Download completed report
-if (report.status === 'completed') {
-  const data = await sdk.reports.downloadReport(task.taskId);
-  console.log(data); // Report data
+if (status.data?.status === 'done') {
+  const data = await sdk.reports.downloadWarehouseRemainsReport(taskId);
+  console.log(data); // Array of warehouse remain items
 }
 ```
 
@@ -318,19 +318,24 @@ if (report.status === 'completed') {
 
 ```typescript
 // Fetch unanswered questions
-const questions = await sdk.communications.getQuestions({
-  state: 'unanswered'
+const questions = await sdk.communications.questions({
+  isAnswered: false,
+  take: 10,
+  skip: 0
 });
 
 // Answer a question
-await sdk.communications.answerQuestion({
-  questionId: '12345',
-  answer: 'Thank you for your question...'
+await sdk.communications.updateQuestion({
+  id: '12345',
+  answer: { text: 'Thank you for your question...' },
+  state: 'wbRu'
 });
 
 // Fetch reviews
-const reviews = await sdk.communications.getReviews({
-  state: 'active'
+const reviews = await sdk.communications.feedbacks({
+  isAnswered: false,
+  take: 10,
+  skip: 0
 });
 ```
 
@@ -344,10 +349,10 @@ Yes, all SDK methods return Promises and work with async/await:
 
 ```typescript
 // Async/await (recommended)
-const balance = await sdk.finances.getBalance();
+const balance = await sdk.finances.getAccountBalance();
 
 // Promise chains
-sdk.finances.getBalance()
+sdk.finances.getAccountBalance()
   .then(balance => console.log(balance))
   .catch(error => console.error(error));
 ```
@@ -358,14 +363,16 @@ sdk.finances.getBalance()
 
 Different APIs use different pagination methods:
 
-**Offset-based:**
+**Cursor-based (products):**
 ```typescript
-const products = await sdk.products.getProductList({
-  limit: 100,
-  offset: 0
+const products = await sdk.products.getCardsList({
+  settings: {
+    cursor: { limit: 100 },
+    sort: { ascending: false }
+  }
 });
 
-console.log(`Total: ${products.total}, Has more: ${products.hasMore}`);
+console.log(`Total: ${products.cursor?.total}`);
 ```
 
 **Cursor-based:**
@@ -505,13 +512,13 @@ Rate limits vary by endpoint:
 **Example:**
 ```typescript
 // ❌ Bad: Sequential requests
-const categories = await sdk.products.getParentCategories();
-const balance = await sdk.finances.getBalance();
+const categories = await sdk.products.getParentAll();
+const balance = await sdk.finances.getAccountBalance();
 
 // ✅ Good: Parallel requests
 const [categories, balance] = await Promise.all([
-  sdk.products.getParentCategories(),
-  sdk.finances.getBalance()
+  sdk.products.getParentAll(),
+  sdk.finances.getAccountBalance()
 ]);
 ```
 
@@ -573,12 +580,12 @@ import { vi } from 'vitest';
 
 const mockSDK = {
   products: {
-    getProductList: vi.fn().mockResolvedValue({ data: [], total: 0 })
+    getCardsList: vi.fn().mockResolvedValue({ data: [], total: 0 })
   }
 };
 
 // In your test
-const result = await mockSDK.products.getProductList();
+const result = await mockSDK.products.getCardsList();
 expect(result.data).toEqual([]);
 ```
 
@@ -654,12 +661,13 @@ app.post('/webhooks/wildberries', async (req, res) => {
    });
    ```
 
-2. **Use per-request timeout for specific slow operations:**
+2. **Create a separate SDK instance for slow operations:**
    ```typescript
-   const report = await sdk.analytics.getReportDetail(
-     { id: reportId },
-     { timeout: 120000 } // 2 minutes for this call only
-   );
+   const sdkSlow = new WildberriesSDK({
+     apiKey: process.env.WB_API_KEY,
+     timeout: 120000 // 2 minutes for slow report calls
+   });
+   const report = await sdkSlow.analytics.getNmReportDownloads();
    ```
 
 3. **Enable info-level logging to see retry attempts:**
@@ -687,7 +695,7 @@ const sdk = new WildberriesSDK({
   logLevel: 'debug'
 });
 
-await sdk.products.getProductList(); // Check console for timing logs
+await sdk.products.getCardsList(); // Check console for timing logs
 ```
 
 **Common Causes:**

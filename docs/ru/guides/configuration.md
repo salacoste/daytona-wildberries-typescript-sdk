@@ -18,7 +18,6 @@ layout: doc
 - [Конфигурация лимита запросов](#конфигурация-лимита-запросов)
 - [Конфигурация повторных попыток](#конфигурация-повторных-попыток)
 - [Конфигурация логирования](#конфигурация-логирования)
-- [Пользовательский HTTP клиент](#пользовательский-http-клиент)
 - [Лучшие практики конфигурации](#лучшие-практики-конфигурации)
 
 ## Обзор
@@ -33,12 +32,11 @@ interface SDKConfig {
   apiKey: string;
 
   // Опциональные переопределения
-  baseUrls?: Partial<Record<APIModule, string>>;
+  baseUrls?: Partial<Record<string, string>>;
   timeout?: number;
   retryConfig?: RetryConfig;
   rateLimitConfig?: RateLimitConfig;
   logLevel?: 'debug' | 'info' | 'warn' | 'error';
-  httpClient?: AxiosInstance;
 }
 ```
 
@@ -304,19 +302,17 @@ const sdk = new WildberriesSDK({
 Переопределите глобальный таймаут для отдельных запросов, которым нужно больше (или меньше) времени:
 
 ```typescript
-// Генерация отчета — таймаут 2 минуты
-const report = await sdk.analytics.getReportDetail(
-  { id: reportId },
-  { timeout: 120000 }
-);
+// Для длительных операций увеличьте глобальный таймаут:
+const sdkForReports = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 120000, // 2 минуты для генерации отчетов
+});
 
-// Быстрая проверка — таймаут 5 секунд
-const ping = await sdk.general.ping(
-  { timeout: 5000 }
-);
+// Скачивание сгенерированного файла аналитического отчета
+const reportFile = await sdkForReports.analytics.getDownloadsFile(downloadId);
 ```
 
-Таймаут для отдельного запроса переопределяет глобальный `SDKConfig.timeout` для данного вызова. Каждая попытка повтора использует таймаут запроса индивидуально (не кумулятивно).
+`timeout` в `SDKConfig` применяется ко всем запросам данного экземпляра SDK. Каждая попытка повтора использует таймаут индивидуально (не кумулятивно).
 
 ### Взаимодействие таймаута и повторов
 
@@ -344,28 +340,22 @@ SDK предоставляет гибкую конфигурацию лимит�
 
 **Справочник API:** См. [RateLimitConfig](/api/interfaces/RateLimitConfig) для полных опций конфигурации лимита запросов.
 
-### Лимиты для конкретных модулей
+### Глобальные лимиты запросов
+
+`rateLimitConfig` принимает два параметра, которые применяются глобально ко всем эндпоинтам. Лимиты для конкретных эндпоинтов автоматически применяются SDK на основе OpenAPI спецификаций.
 
 ```typescript
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
 
   rateLimitConfig: {
-    // Глобальные лимиты
     requestsPerSecond: 10,
     requestsPerMinute: 100,
-
-    // Переопределения для конкретных модулей (если поддерживается)
-    products: {
-      requestsPerMinute: 3, // Модуль products более строгий
-      intervalSeconds: 20,
-    },
-    finances: {
-      requestsPerMinute: 1000, // Модуль finances позволяет больше
-    }
   }
 });
 ```
+
+> **Примечание:** Лимиты для конкретных эндпоинтов (например, 3 запроса/минуту для создания товара) извлекаются из OpenAPI спецификаций и применяются автоматически через `rateLimitKey` в каждом методе модуля. Глобальный `rateLimitConfig` устанавливает верхнюю границу для всех эндпоинтов.
 
 ### Пользовательский ограничитель запросов
 
@@ -405,13 +395,13 @@ const sdk = new WildberriesSDK({
 
 ### Пользовательская логика повторов
 
+`retryConfig` SDK поддерживает три поля: `maxRetries`, `retryDelay` и `exponentialBackoff`. SDK автоматически повторяет запросы при временных сбоях (ошибки сети, 5xx, 429) и никогда не повторяет при ошибках аутентификации (401/403) или валидации (400/422).
+
 ```typescript
-interface CustomRetryConfig {
+interface RetryConfig {
   maxRetries: number;
   retryDelay: number;
   exponentialBackoff: boolean;
-  retryableStatusCodes?: number[];
-  onRetry?: (attempt: number, error: Error) => void;
 }
 
 const sdk = new WildberriesSDK({
@@ -421,17 +411,11 @@ const sdk = new WildberriesSDK({
     maxRetries: 5,
     retryDelay: 2000,
     exponentialBackoff: true,
-
-    // Повторять только при конкретных ошибках
-    retryableStatusCodes: [408, 429, 500, 502, 503, 504],
-
-    // Логировать попытки повтора
-    onRetry: (attempt, error) => {
-      console.warn(`Попытка повтора ${attempt}:`, error.message);
-    }
   }
 });
 ```
+
+> **Примечание:** Установите `logLevel: 'info'` для просмотра попыток повтора в консоли, или `logLevel: 'debug'` для полного контекста повторов, включая тип ошибки и статус-код.
 
 ### Условный повтор
 
@@ -499,101 +483,24 @@ const sdk = new WildberriesSDK({
 
 > **Совет:** Используйте `logLevel: 'info'` для просмотра попыток повтора и предупреждений о таймауте без шума debug-уровня. Используйте `logLevel: 'debug'` при диагностике ошибок `ETIMEDOUT` для полного контекста каждого повтора.
 
-### Интеграция пользовательского логгера
+### Интеграция логирования
+
+SDK использует собственный внутренний экземпляр Axios, управляемый `BaseClient`. Используйте опцию `logLevel` для управления выводом логов SDK:
 
 ```typescript
-import winston from 'winston';
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' })
-  ]
-});
-
-class LoggingSDK {
-  private sdk: WildberriesSDK;
-
-  constructor(config: SDKConfig) {
-    this.sdk = new WildberriesSDK({
-      ...config,
-      // Пользовательский интерцептор логирования
-      httpClient: axios.create({
-        interceptors: {
-          request: (config) => {
-            logger.info('API запрос', {
-              method: config.method,
-              url: config.url,
-            });
-            return config;
-          },
-          response: (response) => {
-            logger.info('API ответ', {
-              status: response.status,
-              duration: response.config.metadata?.duration,
-            });
-            return response;
-          }
-        }
-      })
-    });
-  }
-}
-```
-
-## Пользовательский HTTP клиент
-
-### Конфигурация Axios
-
-```typescript
-import axios from 'axios';
-import https from 'https';
-
-const customHttpClient = axios.create({
-  // Таймаут
-  timeout: 30000,
-
-  // Поддержка HTTP/2
-  httpAgent: new http.Agent({ keepAlive: true }),
-  httpsAgent: new https.Agent({
-    keepAlive: true,
-    rejectUnauthorized: true,
-  }),
-
-  // Пул соединений
-  maxSockets: 50,
-  maxFreeSockets: 10,
-
-  // Заголовки
-  headers: {
-    'User-Agent': 'WildberriesSDK/1.0.0',
-    'Accept': 'application/json',
-  }
-});
-
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
-  httpClient: customHttpClient
+  logLevel: 'debug', // Видеть все запросы, ответы и контекст повторов
 });
 ```
 
-### Конфигурация прокси
+> **Примечание:** SDK не поддерживает внедрение пользовательского `httpClient`. `BaseClient` управляет собственным экземпляром Axios внутренне. Используйте `logLevel` для наблюдения за операциями SDK.
 
-```typescript
-import { HttpsProxyAgent } from 'https-proxy-agent';
+## HTTP клиент
 
-const proxyAgent = new HttpsProxyAgent(process.env.HTTP_PROXY!);
+SDK управляет собственным внутренним экземпляром Axios через `BaseClient`. Опция `httpClient` в `SDKConfig` отсутствует -- HTTP клиент не заменяется пользователем. SDK обрабатывает управление соединениями, заголовки аутентификации, таймаут, повторы и лимиты запросов внутренне.
 
-const sdk = new WildberriesSDK({
-  apiKey: process.env.WB_API_KEY!,
-  httpClient: axios.create({
-    httpsAgent: proxyAgent,
-    proxy: false, // Отключить прокси axios для использования агента
-  })
-});
-```
+> **Примечание:** Если вам нужна поддержка прокси или пользовательская конфигурация TLS, настройте это на уровне ОС/окружения (например, переменные окружения `HTTP_PROXY` / `HTTPS_PROXY`) вместо SDK.
 
 ## Лучшие практики конфигурации
 
@@ -656,10 +563,6 @@ WB_API_LOG_LEVEL=warn
 # Лимит запросов
 WB_RATE_LIMIT_PER_SECOND=10
 WB_RATE_LIMIT_PER_MINUTE=100
-
-# HTTP конфигурация
-HTTP_PROXY=http://proxy.example.com:8080
-HTTPS_PROXY=https://proxy.example.com:8080
 ```
 
 ## Связанная документация

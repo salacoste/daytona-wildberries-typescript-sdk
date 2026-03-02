@@ -234,7 +234,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
   <div class="use-case-card">
     <h3>📊 Аналитика и отчетность</h3>
     <p>Генерация отчетов о продажах, анализ эффективности, экспорт данных для BI инструментов.</p>
-    <a href="/getting-started/tutorials/analytics-dashboard">Смотреть руководство →</a>
+    <a href="/ru/getting-started/tutorials/analytics-dashboard">Смотреть руководство →</a>
   </div>
 
   <div class="use-case-card">
@@ -252,7 +252,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
   <div class="use-case-card">
     <h3>🔄 Мультиканальная интеграция</h3>
     <p>Связывание товаров → заказов → финансов → аналитики для полной автоматизации.</p>
-    <a href="/getting-started/tutorials/multi-module-integration">Смотреть руководство →</a>
+    <a href="/ru/getting-started/tutorials/multi-module-integration">Смотреть руководство →</a>
   </div>
 </div>
 

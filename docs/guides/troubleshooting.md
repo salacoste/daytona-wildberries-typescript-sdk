@@ -799,11 +799,16 @@ RateLimitError: Too many concurrent requests (max: 10)
 
 **Solution:**
 
-1. **Check rate limits programmatically:**
+1. **Configure rate limits via SDKConfig:**
    ```typescript
-   const rateLimits = sdk.getRateLimits();
-   console.log('Products.create:', rateLimits['products.create']);
-   // Output: { limit: 1, interval: '10s', burst: 1 }
+   // Rate limits are configured when initializing the SDK
+   const sdk = new WildberriesSDK({
+     apiKey: 'your-api-key',
+     rateLimitConfig: {
+       requestsPerSecond: 10,
+       requestsPerMinute: 100,
+     },
+   });
    ```
 
 2. **Review documentation:**
@@ -1743,7 +1748,7 @@ Quick reference for all error codes returned by the API.
 | 400 | Bad Request | Validation | No | Fix request data |
 | 401 | Unauthorized | Auth | No | Check API key |
 | 403 | Forbidden | Auth | No | Check permissions |
-| 404 | Not Found | Validation | No | Check resource ID |
+| 404 | Not Found | Generic (WBAPIError) | No | Check resource ID |
 | 422 | Unprocessable Entity | Validation | No | Fix request format |
 | 429 | Too Many Requests | Rate Limit | Yes | SDK auto-retries |
 | 500 | Internal Server Error | Server | Yes | SDK auto-retries |
@@ -1756,7 +1761,7 @@ Quick reference for all error codes returned by the API.
 | Error Class | When Thrown | Properties | Recovery |
 |-------------|------------|------------|----------|
 | `AuthenticationError` | 401, 403, invalid key | `statusCode`, `message` | Check API key, verify permissions |
-| `RateLimitError` | 429, quota exceeded | `retryAfter`, `quotaReset` | Wait for retry, SDK handles automatically |
+| `RateLimitError` | 429, quota exceeded | `retryAfter`, `statusCode`, `response`, `requestId`, `origin`, `timestamp` | Wait for retry, SDK handles automatically |
 | `ValidationError` | 400, 422, invalid data | `fieldErrors`, `statusCode` | Fix request data per field errors |
 | `NetworkError` | Timeouts, 5xx, connection errors | `cause`, `isTimeout` | Check network, SDK auto-retries |
 | `WBAPIError` | All other errors | `statusCode`, `response` | Check error message and documentation |

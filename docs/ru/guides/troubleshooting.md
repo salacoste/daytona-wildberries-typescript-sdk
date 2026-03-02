@@ -796,11 +796,16 @@ RateLimitError: Too many concurrent requests (max: 10)
 
 **Решение:**
 
-1. **Проверить лимиты запросов программно:**
+1. **Настроить лимиты запросов через SDKConfig:**
    ```typescript
-   const rateLimits = sdk.getRateLimits();
-   console.log('Products.create:', rateLimits['products.create']);
-   // Вывод: { limit: 1, interval: '10s', burst: 1 }
+   // Лимиты запросов настраиваются при инициализации SDK
+   const sdk = new WildberriesSDK({
+     apiKey: 'your-api-key',
+     rateLimitConfig: {
+       requestsPerSecond: 10,
+       requestsPerMinute: 100,
+     },
+   });
    ```
 
 2. **Просмотреть документацию:**
@@ -1618,7 +1623,7 @@ TypeError: sdk.products.createCardsUpload is not a function
 | 400 | Bad Request | Валидация | Нет | Исправить данные запроса |
 | 401 | Unauthorized | Аутентификация | Нет | Проверить API ключ |
 | 403 | Forbidden | Аутентификация | Нет | Проверить разрешения |
-| 404 | Not Found | Валидация | Нет | Проверить ID ресурса |
+| 404 | Not Found | Общая (WBAPIError) | Нет | Проверить ID ресурса |
 | 422 | Unprocessable Entity | Валидация | Нет | Исправить формат запроса |
 | 429 | Too Many Requests | Лимит запросов | Да | SDK автоматически повторяет |
 | 500 | Internal Server Error | Сервер | Да | SDK автоматически повторяет |
@@ -1631,7 +1636,7 @@ TypeError: sdk.products.createCardsUpload is not a function
 | Класс ошибки | Когда выбрасывается | Свойства | Восстановление |
 |--------------|-------------------|----------|---------------|
 | `AuthenticationError` | 401, 403, недействительный ключ | `statusCode`, `message` | Проверить API ключ, проверить разрешения |
-| `RateLimitError` | 429, квота исчерпана | `retryAfter`, `quotaReset` | Ждать повтора, SDK обрабатывает автоматически |
+| `RateLimitError` | 429, квота исчерпана | `retryAfter`, `statusCode`, `response`, `requestId`, `origin`, `timestamp` | Ждать повтора, SDK обрабатывает автоматически |
 | `ValidationError` | 400, 422, неверные данные | `fieldErrors`, `statusCode` | Исправить данные запроса по ошибкам полей |
 | `NetworkError` | Тайм-ауты, 5xx, ошибки соединения | `cause`, `isTimeout` | Проверить сеть, SDK автоматически повторяет |
 | `WBAPIError` | Все другие ошибки | `statusCode`, `response` | Проверить сообщение об ошибке и документацию |

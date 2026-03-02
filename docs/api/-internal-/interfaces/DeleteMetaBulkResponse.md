@@ -2,7 +2,7 @@
 
 # Interface: DeleteMetaBulkResponse
 
-Defined in: [types/orders-dbs.types.ts:468](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/orders-dbs.types.ts#L468)
+Defined in: [types/orders-dbs.types.ts:468](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/orders-dbs.types.ts#L468)
 
 Response from deleteMetaBulk
 
@@ -10,4 +10,4 @@ Response from deleteMetaBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `success`: `boolean`; `error?`: `string`; \}[] | Results for each order | [types/orders-dbs.types.ts:470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/orders-dbs.types.ts#L470) |
+| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `success`: `boolean`; `error?`: `string`; \}[] | Results for each order | [types/orders-dbs.types.ts:470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/orders-dbs.types.ts#L470) |

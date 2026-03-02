@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.0.0
+# Wildberries API TypeScript SDK v3.1.0
 
 Wildberries API TypeScript SDK
 Main entry point

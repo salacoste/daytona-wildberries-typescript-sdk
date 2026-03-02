@@ -345,6 +345,26 @@
 | [SupplierSubject](interfaces/SupplierSubject.md) | Subject item for campaigns |
 | [GetSupplierSubjectsParams](interfaces/GetSupplierSubjectsParams.md) | Parameters for getting supplier subjects |
 | [SupplierNmItem](interfaces/SupplierNmItem.md) | Product card item for campaigns |
+| [UpdateBidsRequest](interfaces/UpdateBidsRequest.md) | Request for updating bids in campaigns (V1 API) |
+| [UpdateBidsCampaign](interfaces/UpdateBidsCampaign.md) | Campaign bid configuration |
+| [UpdateBidsArticle](interfaces/UpdateBidsArticle.md) | Article bid configuration in kopecks |
+| [UpdateBidsResponse](interfaces/UpdateBidsResponse.md) | Response from updateBids (V1 API) |
+| [UpdateBidsResultCampaign](interfaces/UpdateBidsResultCampaign.md) | Result of bid update for a campaign |
+| [UpdateBidsResultArticle](interfaces/UpdateBidsResultArticle.md) | Result of bid update for an article |
+| [UpdateCampaignProductsRequest](interfaces/UpdateCampaignProductsRequest.md) | Request for adding/removing products from campaigns |
+| [CampaignProductsUpdate](interfaces/CampaignProductsUpdate.md) | Single campaign update item |
+| [UpdateCampaignProductsResponse](interfaces/UpdateCampaignProductsResponse.md) | Response from updateCampaignProducts |
+| [CampaignProductsResult](interfaces/CampaignProductsResult.md) | Result for a single campaign update |
+| [GetMinusPhrasesRequest](interfaces/GetMinusPhrasesRequest.md) | Request to get minus phrases for campaigns |
+| [GetMinusPhrasesRequestItem](interfaces/GetMinusPhrasesRequestItem.md) | Item in get minus phrases request |
+| [GetMinusPhrasesResponse](interfaces/GetMinusPhrasesResponse.md) | Response with minus phrases |
+| [GetMinusPhrasesResponseItem](interfaces/GetMinusPhrasesResponseItem.md) | Item in get minus phrases response |
+| [SetMinusPhrasesRequest](interfaces/SetMinusPhrasesRequest.md) | Request to set minus phrases for a campaign WARNING: Sending an empty norm_queries array REMOVES ALL minus phrases! |
+| [GetSearchClusterStatsRequest](interfaces/GetSearchClusterStatsRequest.md) | Request to get search cluster statistics |
+| [GetSearchClusterStatsRequestItem](interfaces/GetSearchClusterStatsRequestItem.md) | Item in search cluster stats request |
+| [GetSearchClusterStatsResponse](interfaces/GetSearchClusterStatsResponse.md) | Response with search cluster statistics |
+| [GetSearchClusterStatsItem](interfaces/GetSearchClusterStatsItem.md) | Statistics item for a campaign/product |
+| [SearchClusterStatEntry](interfaces/SearchClusterStatEntry.md) | Statistics entry for a single search cluster |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
 | [SalesItem](interfaces/SalesItem.md) | - |
@@ -439,7 +459,7 @@
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |
 | [SizeGoodsBody](type-aliases/SizeGoodsBody.md) | Размеры и цены для них. Максимум 1 000 размеров. |
 | [ClubDisc](type-aliases/ClubDisc.md) | Товары и скидки WB Клуба для них. Максимум 1 000 товаров. |
-| [PlacementType](type-aliases/PlacementType.md) | Места размещения: - `search` — поиск - `recommendation` — рекомендации - `combined` — поиск и рекомендации |
+| [PlacementType](type-aliases/PlacementType.md) | Места размещения: - `search` — поиск - `recommendations` — рекомендации - `combined` — поиск и рекомендации |
 | [DailyStats1](type-aliases/DailyStats1.md) | - |
 | [Stats1](type-aliases/Stats1.md) | - |
 | [DailyStats2](type-aliases/DailyStats2.md) | - |
@@ -447,7 +467,7 @@
 | [ResponseFullStats](type-aliases/ResponseFullStats.md) | Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам |
 | [DaysV3](type-aliases/DaysV3.md) | Статистка по дням (V3) |
 | [BoosterStatsV3](type-aliases/BoosterStatsV3.md) | Статистика по средней позиции товара (для кампаний с единой ставкой) (V3) |
-| [BidType](type-aliases/BidType.md) | Bid type for campaign creation |
+| [BidType](type-aliases/BidType.md) | Bid type for campaign - `auto` — автоматическая ставка (Type 8) - `manual` — ручная ставка (Type 9) |
 | [CampaignPlacementType](type-aliases/CampaignPlacementType.md) | Campaign placement types |
 | [ModelsExciseReportResponseData](type-aliases/ModelsExciseReportResponseData.md) | - |
 | [ResponsePaidStorage](type-aliases/ResponsePaidStorage.md) | - |

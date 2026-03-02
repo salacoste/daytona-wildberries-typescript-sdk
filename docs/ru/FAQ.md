@@ -103,20 +103,20 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-**Таймаут для отдельного запроса** — переопределение глобального таймаута для конкретных вызовов:
+**Таймаут для отдельного запроса** — `BaseClient` SDK поддерживает таймаут для каждого запроса через `RequestOptions`. Методы модулей используют глобальный таймаут по умолчанию. Для операций, которые могут занять больше времени, увеличьте глобальный таймаут:
 
 ```typescript
-// Долгий отчет — таймаут 2 минуты
-const report = await sdk.analytics.getReportDetail(
-  { id: reportId },
-  { timeout: 120000 }
-);
+// Для длительных операций используйте увеличенный глобальный таймаут
+const sdkWithLongTimeout = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY,
+  timeout: 120000 // 2 минуты для медленной генерации отчетов
+});
 
-// Быстрая проверка — таймаут 5 секунд
-const ping = await sdk.general.ping({ timeout: 5000 });
+// Быстрая проверка использует таймаут по умолчанию
+const ping = await sdk.general.ping();
 ```
 
-Таймаут для отдельного запроса переопределяет глобальный `timeout` для данного вызова. Каждая попытка повтора использует таймаут запроса индивидуально (не кумулятивно).
+Каждая попытка повтора использует настроенный таймаут индивидуально (не кумулятивно).
 
 **Смотрите также:** [Руководство по конфигурации — Настройка таймаута](/ru/guides/configuration.md#конфигурация-таймаута)
 
@@ -188,7 +188,7 @@ const sellerAccount2 = new WildberriesSDK({ apiKey: KEY_2 });
 ### 11. Как получить категории товаров?
 
 ```typescript
-const categories = await sdk.products.getParentCategories();
+const categories = await sdk.products.getParentAll();
 console.log(categories.data); // Массив объектов категорий
 ```
 
@@ -257,7 +257,7 @@ result.orders?.forEach(order => {
 ### 15. Как проверить баланс моего счета?
 
 ```typescript
-const balance = await sdk.finances.getBalance();
+const balance = await sdk.finances.getAccountBalance();
 console.log(`Текущий баланс: ${balance.amount} RUB`);
 ```
 
@@ -289,27 +289,27 @@ result.products?.forEach(p => {
 
 ### 17. Как сгенерировать и скачать отчеты?
 
-Отчеты используют асинхронный паттерн (запрос → опрос → загрузка):
+Отчеты используют асинхронный паттерн (запрос → опрос → загрузка). Пример с отчетом об остатках на складах:
 
 ```typescript
 // Шаг 1: Запросить генерацию отчета
-const task = await sdk.reports.generateReport({
-  reportType: 'sales',
-  dateFrom: '2024-01-01',
-  dateTo: '2024-12-31'
+const task = await sdk.reports.warehouseRemains({
+  groupByBrand: true,
+  groupBySubject: true
 });
+const taskId = task.data?.taskId;
 
-// Шаг 2: Опросить для завершения
-let report = await sdk.reports.getReportStatus(task.taskId);
-while (report.status === 'processing') {
+// Шаг 2: Опросить статус выполнения
+let status = await sdk.reports.getWarehouseRemainsTaskStatus(taskId);
+while (status.data?.status === 'new') {
   await new Promise(resolve => setTimeout(resolve, 5000)); // Ждать 5с
-  report = await sdk.reports.getReportStatus(task.taskId);
+  status = await sdk.reports.getWarehouseRemainsTaskStatus(taskId);
 }
 
 // Шаг 3: Скачать завершенный отчет
-if (report.status === 'completed') {
-  const data = await sdk.reports.downloadReport(task.taskId);
-  console.log(data); // Данные отчета
+if (status.data?.status === 'done') {
+  const data = await sdk.reports.downloadWarehouseRemainsReport(taskId);
+  console.log(data); // Массив элементов остатков на складах
 }
 ```
 
@@ -321,19 +321,24 @@ if (report.status === 'completed') {
 
 ```typescript
 // Получить неотвеченные вопросы
-const questions = await sdk.communications.getQuestions({
-  state: 'unanswered'
+const questions = await sdk.communications.questions({
+  isAnswered: false,
+  take: 10,
+  skip: 0
 });
 
 // Ответить на вопрос
-await sdk.communications.answerQuestion({
-  questionId: '12345',
-  answer: 'Спасибо за ваш вопрос...'
+await sdk.communications.updateQuestion({
+  id: '12345',
+  answer: { text: 'Спасибо за ваш вопрос...' },
+  state: 'wbRu'
 });
 
 // Получить отзывы
-const reviews = await sdk.communications.getReviews({
-  state: 'active'
+const reviews = await sdk.communications.feedbacks({
+  isAnswered: false,
+  take: 10,
+  skip: 0
 });
 ```
 
@@ -347,10 +352,10 @@ const reviews = await sdk.communications.getReviews({
 
 ```typescript
 // Async/await (рекомендуется)
-const balance = await sdk.finances.getBalance();
+const balance = await sdk.finances.getAccountBalance();
 
 // Цепочки Promise
-sdk.finances.getBalance()
+sdk.finances.getAccountBalance()
   .then(balance => console.log(balance))
   .catch(error => console.error(error));
 ```
@@ -361,14 +366,16 @@ sdk.finances.getBalance()
 
 Разные API используют разные методы пагинации:
 
-**На основе смещения:**
+**На основе курсора (товары):**
 ```typescript
-const products = await sdk.products.getProductList({
-  limit: 100,
-  offset: 0
+const products = await sdk.products.getCardsList({
+  settings: {
+    cursor: { limit: 100 },
+    sort: { ascending: false }
+  }
 });
 
-console.log(`Всего: ${products.total}, Есть еще: ${products.hasMore}`);
+console.log(`Всего: ${products.cursor?.total}`);
 ```
 
 **На основе курсора (FBS заказы):**
@@ -514,13 +521,13 @@ try {
 **Пример:**
 ```typescript
 // ❌ Плохо: Последовательные запросы
-const categories = await sdk.products.getParentCategories();
-const balance = await sdk.finances.getBalance();
+const categories = await sdk.products.getParentAll();
+const balance = await sdk.finances.getAccountBalance();
 
 // ✅ Хорошо: Параллельные запросы
 const [categories, balance] = await Promise.all([
-  sdk.products.getParentCategories(),
-  sdk.finances.getBalance()
+  sdk.products.getParentAll(),
+  sdk.finances.getAccountBalance()
 ]);
 ```
 
@@ -582,12 +589,12 @@ import { vi } from 'vitest';
 
 const mockSDK = {
   products: {
-    getProductList: vi.fn().mockResolvedValue({ data: [], total: 0 })
+    getCardsList: vi.fn().mockResolvedValue({ data: [], total: 0 })
   }
 };
 
 // В вашем тесте
-const result = await mockSDK.products.getProductList();
+const result = await mockSDK.products.getCardsList();
 expect(result.data).toEqual([]);
 ```
 
@@ -665,12 +672,13 @@ app.post('/webhooks/wildberries', async (req, res) => {
    });
    ```
 
-2. **Используйте таймаут для конкретных медленных операций:**
+2. **Создайте отдельный экземпляр SDK для медленных операций:**
    ```typescript
-   const report = await sdk.analytics.getReportDetail(
-     { id: reportId },
-     { timeout: 120000 } // 2 минуты только для этого вызова
-   );
+   const sdkSlow = new WildberriesSDK({
+     apiKey: process.env.WB_API_KEY,
+     timeout: 120000 // 2 минуты для медленных вызовов отчетов
+   });
+   const report = await sdkSlow.analytics.getNmReportDownloads();
    ```
 
 3. **Включите info-уровень логирования для просмотра попыток повтора:**
@@ -698,7 +706,7 @@ const sdk = new WildberriesSDK({
   logLevel: 'debug'
 });
 
-await sdk.products.getProductList(); // Проверьте консоль для логов времени
+await sdk.products.getCardsList(); // Проверьте консоль для логов времени
 ```
 
 **Распространенные причины:**

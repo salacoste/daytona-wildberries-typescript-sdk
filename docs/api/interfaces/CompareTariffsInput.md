@@ -2,7 +2,7 @@
 
 # Interface: CompareTariffsInput
 
-Defined in: [utils/compareTariffs.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/utils/compareTariffs.ts#L15)
+Defined in: [utils/compareTariffs.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/utils/compareTariffs.ts#L15)
 
 Input parameters for tariff comparison
 
@@ -10,5 +10,5 @@ Input parameters for tariff comparison
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="warehousename"></a> `warehouseName` | `string` | Warehouse name to search for (supports partial matching) | [utils/compareTariffs.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/utils/compareTariffs.ts#L17) |
-| <a id="date"></a> `date` | `string` | Date for the comparison (ISO format: YYYY-MM-DD) | [utils/compareTariffs.ts:19](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/utils/compareTariffs.ts#L19) |
+| <a id="warehousename"></a> `warehouseName` | `string` | Warehouse name to search for (supports partial matching) | [utils/compareTariffs.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/utils/compareTariffs.ts#L17) |
+| <a id="date"></a> `date` | `string` | Date for the comparison (ISO format: YYYY-MM-DD) | [utils/compareTariffs.ts:19](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/utils/compareTariffs.ts#L19) |

@@ -6,6 +6,6 @@
 type PinnedReviewsDeleteRequest = number[];
 ```
 
-Defined in: [types/communications.types.ts:171](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/communications.types.ts#L171)
+Defined in: [types/communications.types.ts:171](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/communications.types.ts#L171)
 
 Request body for unpinning reviews (array of pin IDs, max 500)

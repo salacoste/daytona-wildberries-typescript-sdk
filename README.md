@@ -93,7 +93,7 @@ const balance = await sdk.finances.getAccountBalance();
 console.log('Balance:', balance.for_withdraw, balance.currency);
 
 // Get advertising campaigns overview
-const campaigns = await sdk.promotion.getPromotionCount();
+const campaigns = await sdk.promotion.getCampaignCount();
 console.log('Total campaigns:', campaigns.all);
 
 // Get advertising balance
@@ -130,11 +130,12 @@ const sdk = new WildberriesSDK({
   },
 });
 
-// Per-request timeout for slow operations
-const report = await sdk.analytics.getReportDetail(
-  { id: reportId },
-  { timeout: 120000 }               // 2 min for this call only
-);
+// For slow operations, create an SDK instance with a longer timeout
+const longTimeoutSdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 120000,                   // 2 min for report downloads
+});
+const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 ```
 
 **👉 [Configuration Guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/configuration)**
@@ -311,7 +312,7 @@ const balance = await sdk.finances.getAccountBalance();
 console.log('Баланс:', balance.for_withdraw, balance.currency);
 
 // Обзор рекламных кампаний
-const campaigns = await sdk.promotion.getPromotionCount();
+const campaigns = await sdk.promotion.getCampaignCount();
 console.log('Всего кампаний:', campaigns.all);
 
 // Баланс рекламного кабинета
@@ -348,11 +349,12 @@ const sdk = new WildberriesSDK({
   },
 });
 
-// Таймаут для конкретного медленного запроса
-const report = await sdk.analytics.getReportDetail(
-  { id: reportId },
-  { timeout: 120000 }               // 2 мин только для этого вызова
-);
+// Для медленных операций создайте экземпляр SDK с увеличенным таймаутом
+const longTimeoutSdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 120000,                   // 2 мин для скачивания отчетов
+});
+const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 ```
 
 **👉 [Руководство по конфигурации](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/configuration)**

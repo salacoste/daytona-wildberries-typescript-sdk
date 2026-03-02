@@ -3,9 +3,11 @@
 # Type Alias: BidType
 
 ```ts
-type BidType = "manual" | "unified";
+type BidType = "auto" | "manual";
 ```
 
-Defined in: [types/promotion.types.ts:1410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/promotion.types.ts#L1410)
+Defined in: [types/promotion.types.ts:1513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L1513)
 
-Bid type for campaign creation
+Bid type for campaign
+- `auto` — автоматическая ставка (Type 8)
+- `manual` — ручная ставка (Type 9)

@@ -2,7 +2,7 @@
 
 # Interface: NewsRequestParams
 
-Defined in: [types/general.types.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/general.types.ts#L54)
+Defined in: [types/general.types.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/general.types.ts#L54)
 
 Parameters for news endpoint request
 
@@ -10,5 +10,5 @@ Parameters for news endpoint request
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="from"></a> `from?` | `string` | Дата, от которой необходимо выдать новости (format: YYYY-MM-DD) | [types/general.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/general.types.ts#L56) |
-| <a id="fromid"></a> `fromID?` | `number` | ID новости, начиная с которой нужно получить список | [types/general.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/general.types.ts#L58) |
+| <a id="from"></a> `from?` | `string` | Дата, от которой необходимо выдать новости (format: YYYY-MM-DD) | [types/general.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/general.types.ts#L56) |
+| <a id="fromid"></a> `fromID?` | `number` | ID новости, начиная с которой нужно получить список | [types/general.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/general.types.ts#L58) |

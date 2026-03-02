@@ -6,6 +6,6 @@
 type PinnedReviewsCreateRequest = PinReviewItem[];
 ```
 
-Defined in: [types/communications.types.ts:159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/dadfc21bcd5b45d945fa8d2e5b25e28d68d7d579/src/types/communications.types.ts#L159)
+Defined in: [types/communications.types.ts:159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/communications.types.ts#L159)
 
 Request body for pinning reviews (array of items, max 500)

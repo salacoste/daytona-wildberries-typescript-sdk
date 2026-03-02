@@ -53,7 +53,7 @@ async function typedErrorHandling() {
       console.error(`   → Retry after ${error.retryAfter}ms`);
     } else if (error instanceof ValidationError) {
       console.error('❌ Validation error:', error.message);
-      console.error('   → Details:', error.details);
+      console.error('   → Details:', error.fieldErrors);
     } else if (error instanceof NetworkError) {
       console.error('❌ Network error:', error.message);
       console.error('   → Check your internet connection');
@@ -102,10 +102,7 @@ async function rateLimitRetryExample() {
   console.log('\n📋 Rate Limit Retry Example\n');
 
   try {
-    const products = await retryOnRateLimit(
-      () => sdk.products.getProductList({ limit: 100 }),
-      5
-    );
+    const products = await retryOnRateLimit(() => sdk.products.getProductList({ limit: 100 }), 5);
     console.log(`✅ Fetched ${products.data.length} products after retry logic`);
   } catch (error) {
     console.error('❌ Failed after all retries:', error);
@@ -147,7 +144,7 @@ class ErrorRecoveryManager {
 
       if (error instanceof ValidationError && recoveryStrategies.onValidationError) {
         console.log('🔄 Attempting recovery from validation error...');
-        return await recoveryStrategies.onValidationError(error.details);
+        return await recoveryStrategies.onValidationError(error.fieldErrors);
       }
 
       if (recoveryStrategies.onOtherError) {
@@ -288,9 +285,7 @@ async function circuitBreakerExample() {
 
   for (let i = 0; i < 5; i++) {
     try {
-      const products = await breaker.execute(() =>
-        sdk.products.getProductList({ limit: 10 })
-      );
+      const products = await breaker.execute(() => sdk.products.getProductList({ limit: 10 }));
       console.log(`✅ Request ${i + 1}: Fetched ${products.data.length} products`);
     } catch (error) {
       if (error instanceof Error && error.message.includes('Circuit breaker is OPEN')) {
@@ -393,7 +388,7 @@ async function errorLoggingExample() {
 // ============================================================================
 
 function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Simple in-memory cache for examples
@@ -419,7 +414,7 @@ const cache = {
 
 async function main() {
   console.log('🚀 Wildberries SDK - Error Handling Examples\n');
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
 
   try {
     // Run examples
