@@ -5,6 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-03-03
+
+### Added
+
+#### Per-Request Timeout (EPIC-48)
+- `RequestOptions.timeout` — override global timeout for individual API calls
+- Useful for long-running operations (analytics reports, bulk product updates) without changing SDK-wide settings
+- Each retry attempt respects the per-request timeout independently
+
+#### Retry & Timeout Logging (EPIC-48)
+- `RetryHandler` now logs every retry attempt with details: attempt number, error type, delay until next retry
+- Log visibility controlled by `logLevel` in SDK config:
+  - `error` — only final failures after all retries exhausted
+  - `warn` — retry warnings, timeouts, rate limit hits
+  - `info` — each retry attempt with HTTP status, delay, error classification
+  - `debug` — full request/response details including URLs and headers
+
+#### Documentation
+- New Timeout Configuration guide section (EN + RU) with global, per-request, and retry interaction examples
+- Log level visibility table showing which events appear at each `logLevel`
+- New `examples/custom-timeout-configuration.ts` with 6 usage scenarios
+- Advanced Configuration section added to README (EN + RU)
+
+### Fixed
+
+#### Documentation Audit — 40+ factual errors corrected
+All documentation validated against actual source code:
+
+**Wrong method names in FAQ (12 fixes, EN + RU):**
+- `getParentCategories()` → `getParentAll()`
+- `getBalance()` → `getAccountBalance()`
+- `getProductList()` → `getCardsList()`
+- `generateReport()` → `warehouseRemains()`
+- `getReportStatus()` → `getWarehouseRemainsTaskStatus()`
+- `downloadReport()` → `downloadWarehouseRemainsReport()`
+- `getQuestions()` → `questions()`
+- `answerQuestion()` → `updateQuestion()`
+- `getReviews()` → `feedbacks()`
+- `getReportDetail()` → `getDownloadsFile()` / `getNmReportDownloads()`
+- `getPromotionCount()` → `getCampaignCount()`
+- `ping({ timeout })` → `ping()` (no arguments)
+
+**Phantom SDKConfig fields removed (EN + RU config guide):**
+- `httpClient` — SDK manages its own Axios instance internally
+- `retryableStatusCodes` — not a config option
+- `onRetry` callback — not a config option
+- `APIModule` type → `string` for `baseUrls`
+- Module-specific `rateLimitConfig` → flat `requestsPerSecond`/`requestsPerMinute`
+- Custom HTTP Client and Proxy sections replaced with accurate SDK behavior notes
+
+**Error handling docs (EN + RU):**
+- `error.details` → `error.fieldErrors` on `ValidationError`
+- Removed non-existent `quotaReset` from `RateLimitError`
+- Removed non-existent `sdk.getRateLimits()` method
+- 404 status correctly mapped to `WBAPIError` (was wrongly shown as `ValidationError`)
+
+**RU navigation fixes:**
+- 5 sidebar links in VitePress config pointed to EN pages instead of `/ru/`
+- 2 tutorial links on RU landing page pointed to EN pages
+
+---
+
 ## [3.1.0] - 2026-02-09
 
 ### Added - Promotion Module Enhancements
