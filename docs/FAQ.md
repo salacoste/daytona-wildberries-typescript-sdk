@@ -93,6 +93,8 @@ const sdk = new WildberriesSDK({
 
 ### 6. How do I configure custom timeouts?
 
+**Global timeout** — applies to all requests:
+
 ```typescript
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY,
@@ -100,7 +102,22 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-**See also:** [SDKConfig Reference](guides/best-practices.md#configuration)
+**Per-request timeout** — override global timeout for individual calls:
+
+```typescript
+// Long-running report — 2 minute timeout
+const report = await sdk.analytics.getReportDetail(
+  { id: reportId },
+  { timeout: 120000 }
+);
+
+// Quick health check — 5 second timeout
+const ping = await sdk.general.ping({ timeout: 5000 });
+```
+
+Per-request timeout overrides the global `timeout` for that single call. Each retry attempt uses the per-request timeout individually (not cumulative).
+
+**See also:** [Configuration Guide — Timeout Configuration](guides/configuration.md#timeout-configuration)
 
 ---
 
@@ -620,25 +637,43 @@ app.post('/webhooks/wildberries', async (req, res) => {
 
 ## Troubleshooting
 
-### 32. Why am I getting "Network timeout" errors?
+### 32. Why am I getting "Network timeout" or ETIMEDOUT errors?
 
 **Causes:**
 - Slow network connection
 - Wildberries API experiencing high load
-- Timeout configured too low
+- Timeout configured too low (default is 30 seconds)
 
 **Solutions:**
-1. Increase timeout in SDK config:
+
+1. **Increase global timeout:**
    ```typescript
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY,
      timeout: 60000 // 60 seconds
    });
    ```
-2. Check network connectivity
-3. Retry with exponential backoff (SDK handles this automatically)
 
-**See also:** [Network Errors](guides/troubleshooting.md#network-errors)
+2. **Use per-request timeout for specific slow operations:**
+   ```typescript
+   const report = await sdk.analytics.getReportDetail(
+     { id: reportId },
+     { timeout: 120000 } // 2 minutes for this call only
+   );
+   ```
+
+3. **Enable info-level logging to see retry attempts:**
+   ```typescript
+   const sdk = new WildberriesSDK({
+     apiKey: process.env.WB_API_KEY,
+     logLevel: 'info' // Shows retry attempts and timeout warnings
+   });
+   ```
+
+4. Check network connectivity
+5. Retry with exponential backoff (SDK handles this automatically)
+
+**See also:** [Configuration Guide — Timeout Configuration](guides/configuration.md#timeout-configuration) | [Network Errors](guides/troubleshooting.md#network-errors)
 
 ---
 

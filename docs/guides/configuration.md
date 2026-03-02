@@ -14,6 +14,7 @@ Comprehensive guide to configuring the Wildberries TypeScript SDK for different 
 - [Basic Configuration](#basic-configuration)
 - [Environment-Specific Configuration](#environment-specific-configuration)
 - [Advanced Configuration](#advanced-configuration)
+- [Timeout Configuration](#timeout-configuration)
 - [Rate Limiting Configuration](#rate-limiting-configuration)
 - [Retry Configuration](#retry-configuration)
 - [Logging Configuration](#logging-configuration)
@@ -283,6 +284,60 @@ class MultiTenantSDK {
 }
 ```
 
+## Timeout Configuration
+
+### Global Timeout
+
+Set a default timeout for all requests:
+
+```typescript
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 60000, // 60 seconds for all requests
+});
+```
+
+The default timeout is **30 seconds** (30000ms). Increase it for environments with slow network or when working with large datasets.
+
+### Per-Request Timeout
+
+Override the global timeout for individual requests that need more (or less) time:
+
+```typescript
+// Long-running report generation — 2 minute timeout
+const report = await sdk.analytics.getReportDetail(
+  { id: reportId },
+  { timeout: 120000 }
+);
+
+// Quick health check — 5 second timeout
+const ping = await sdk.general.ping(
+  { timeout: 5000 }
+);
+```
+
+Per-request timeout overrides the global `SDKConfig.timeout` for that single call. Each retry attempt uses the per-request timeout individually (not cumulative).
+
+### Timeout and Retry Interaction
+
+When a request times out, the SDK automatically retries it (up to `maxRetries` times). Each retry attempt gets the full timeout duration:
+
+```typescript
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 30000,        // 30s per attempt
+  retryConfig: {
+    maxRetries: 3,        // Up to 3 retries after initial attempt
+    retryDelay: 1000,     // 1s base delay between retries
+    exponentialBackoff: true,
+  },
+});
+
+// Worst case: 30s + 1s + 30s + 2s + 30s + 4s + 30s = ~127 seconds total
+```
+
+> **Tip:** If you see `ETIMEDOUT` errors, increase the global timeout or use per-request timeout for specific slow operations. Set `logLevel: 'info'` to see retry attempts in the console.
+
 ## Rate Limiting Configuration
 
 The SDK provides flexible rate limiting configuration to prevent API quota exhaustion and ensure reliable operation.
@@ -421,9 +476,9 @@ class SmartRetrySDK {
 ### Log Levels
 
 ```typescript
-// debug: All SDK operations
-// info: Important operations only
-// warn: Warnings and errors (recommended for production)
+// debug: All SDK operations, full retry context
+// info: Retry attempts, important operations
+// warn: Timeouts, retries exhausted, warnings (recommended for production)
 // error: Errors only
 
 const sdk = new WildberriesSDK({
@@ -431,6 +486,18 @@ const sdk = new WildberriesSDK({
   logLevel: process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error' || 'warn'
 });
 ```
+
+### What Each Log Level Shows
+
+| Event | `debug` | `info` | `warn` | `error` |
+|-------|---------|--------|--------|---------|
+| Retry attempt (URL, attempt #, delay) | Yes | Yes | — | — |
+| Full retry context (error type, status code, isTimeout) | Yes | — | — | — |
+| Request timed out (URL, timeout duration) | Yes | Yes | Yes | — |
+| All retries exhausted | Yes | Yes | Yes | — |
+| Network errors | Yes | Yes | Yes | Yes |
+
+> **Tip:** Use `logLevel: 'info'` to see retry attempts and timeout warnings without the noise of debug-level output. Use `logLevel: 'debug'` when troubleshooting `ETIMEDOUT` errors to see the full error context for each retry.
 
 ### Custom Logger Integration
 

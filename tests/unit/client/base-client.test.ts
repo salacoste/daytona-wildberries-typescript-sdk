@@ -460,6 +460,84 @@ describe('BaseClient', () => {
     });
   });
 
+  describe('Per-Request Timeout', () => {
+    const testUrl = 'https://api.example.com/test';
+
+    it('should pass per-request timeout to GET request', async () => {
+      mockAxios.onGet(testUrl).reply((config) => {
+        expect(config.timeout).toBe(60000);
+        return [200, { success: true }];
+      });
+
+      await client.get(testUrl, { timeout: 60000 });
+    });
+
+    it('should pass per-request timeout to POST request', async () => {
+      mockAxios.onPost(testUrl).reply((config) => {
+        expect(config.timeout).toBe(90000);
+        return [200, { success: true }];
+      });
+
+      await client.post(testUrl, { data: 'test' }, { timeout: 90000 });
+    });
+
+    it('should pass per-request timeout to PUT request', async () => {
+      mockAxios.onPut(testUrl).reply((config) => {
+        expect(config.timeout).toBe(120000);
+        return [200, { success: true }];
+      });
+
+      await client.put(testUrl, { data: 'test' }, { timeout: 120000 });
+    });
+
+    it('should pass per-request timeout to PATCH request', async () => {
+      mockAxios.onPatch(testUrl).reply((config) => {
+        expect(config.timeout).toBe(45000);
+        return [200, { success: true }];
+      });
+
+      await client.patch(testUrl, { data: 'test' }, { timeout: 45000 });
+    });
+
+    it('should pass per-request timeout to DELETE request', async () => {
+      mockAxios.onDelete(testUrl).reply((config) => {
+        expect(config.timeout).toBe(15000);
+        return [200, { deleted: true }];
+      });
+
+      await client.delete(testUrl, undefined, { timeout: 15000 });
+    });
+
+    it('should use global timeout when per-request timeout is not provided', async () => {
+      mockAxios.onGet(testUrl).reply((config) => {
+        // Global timeout from testConfig is 5000
+        expect(config.timeout).toBe(5000);
+        return [200, { success: true }];
+      });
+
+      await client.get(testUrl);
+    });
+
+    it('should override global timeout with per-request timeout', async () => {
+      // Global timeout is 5000ms (from testConfig), per-request is 120000ms
+      mockAxios.onGet(testUrl).reply((config) => {
+        expect(config.timeout).toBe(120000);
+        return [200, { success: true }];
+      });
+
+      await client.get(testUrl, { timeout: 120000 });
+    });
+
+    it('should allow per-request timeout of 0 (no timeout)', async () => {
+      mockAxios.onGet(testUrl).reply((config) => {
+        expect(config.timeout).toBe(0);
+        return [200, { success: true }];
+      });
+
+      await client.get(testUrl, { timeout: 0 });
+    });
+  });
+
   describe('Debug Logging', () => {
     it('should not log when logLevel is error', async () => {
       const consoleSpy = vi.spyOn(console, 'debug');

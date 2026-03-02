@@ -199,11 +199,13 @@ export interface RetryContext {
  */
 export class RetryHandler {
   private config: Required<RetryConfig>;
+  private logLevel: 'debug' | 'info' | 'warn' | 'error';
 
   /**
    * Creates a new RetryHandler instance
    *
    * @param config - Optional retry configuration (uses defaults if not provided)
+   * @param logLevel - Log level to control retry log verbosity (inherits from SDKConfig)
    *
    * @example
    * ```typescript
@@ -218,12 +220,13 @@ export class RetryHandler {
    * });
    * ```
    */
-  constructor(config?: RetryConfig) {
+  constructor(config?: RetryConfig, logLevel?: 'debug' | 'info' | 'warn' | 'error') {
     this.config = {
       maxRetries: config?.maxRetries ?? 3,
       retryDelay: config?.retryDelay ?? 1000,
       exponentialBackoff: config?.exponentialBackoff ?? true,
     };
+    this.logLevel = logLevel ?? 'warn';
   }
 
   /**
@@ -297,21 +300,47 @@ export class RetryHandler {
 
         // Check if we should retry this error
         if (!this.shouldRetry(error, attempt, options)) {
+          if (attempt > 0) {
+            this.log(
+              'warn',
+              `All retries exhausted for ${operationName} after ${String(attempt)} attempts`,
+              {
+                operationName,
+                attempts: attempt,
+                maxRetries: this.config.maxRetries,
+                finalError: error instanceof Error ? error.message : String(error),
+              }
+            );
+          }
           throw error;
         }
 
         // Calculate delay for next retry
         const delay = this.calculateDelay(attempt);
 
+        // Info-level: concise retry status for users
         this.log(
-          'debug',
-          `Retry attempt ${String(attempt + 1)}/${String(this.config.maxRetries)}`,
+          'info',
+          `Retrying ${operationName} (attempt ${String(attempt + 1)}/${String(this.config.maxRetries)}, waiting ${String(Math.round(delay))}ms)`,
           {
             operationName,
-            delay,
-            error: error instanceof Error ? error.message : String(error),
+            attempt: attempt + 1,
+            maxRetries: this.config.maxRetries,
+            delay: Math.round(delay),
           }
         );
+
+        // Debug-level: full error context for developers
+        this.log('debug', `Retry context for ${operationName}`, {
+          operationName,
+          attempt: attempt + 1,
+          maxRetries: this.config.maxRetries,
+          delay: Math.round(delay),
+          errorMessage: error instanceof Error ? error.message : String(error),
+          errorType: error instanceof Error ? error.constructor.name : typeof error,
+          statusCode: error instanceof NetworkError ? error.statusCode : undefined,
+          isTimeout: error instanceof NetworkError ? error.isTimeout : undefined,
+        });
 
         await this.sleep(delay);
       }
@@ -476,37 +505,44 @@ export class RetryHandler {
   }
 
   /**
-   * Logs retry-related messages
+   * Logs retry-related messages respecting SDK logLevel configuration
    *
-   * Uses structured logging format for consistency with BaseClient.
-   * Debug logs are skipped by default to reduce noise.
+   * Uses structured JSON logging format consistent with BaseClient.
+   * Only emits logs when the message level meets or exceeds the configured threshold.
    *
-   * @param level - Log level (debug, info, warn, error)
-   * @param message - Log message
-   * @param meta - Optional metadata to include in log
+   * @param level - Log level for this message
+   * @param message - Human-readable log message
+   * @param meta - Optional structured metadata to include
    *
    * @private
    */
-  private log(level: string, message: string, meta?: unknown): void {
-    // Skip debug logs by default (reduce noise)
-    if (level === 'debug') return;
+  private log(
+    level: 'debug' | 'info' | 'warn' | 'error',
+    message: string,
+    meta?: Record<string, unknown>
+  ): void {
+    const levels = { debug: 0, info: 1, warn: 2, error: 3 };
+    if (levels[level] < levels[this.logLevel]) return;
 
-    // Simple console logging - integrate with BaseClient logger in production
-    // eslint-disable-next-line no-console
-    const logMethod = console[level as 'info' | 'warn' | 'error'];
-
-    const logData: Record<string, unknown> = {
-      timestamp: new Date().toISOString(),
-      level,
-      service: 'RetryHandler',
-      message,
+    const consoleMethods = {
+      // eslint-disable-next-line no-console
+      debug: console.debug,
+      // eslint-disable-next-line no-console
+      info: console.info,
+      // eslint-disable-next-line no-console
+      warn: console.warn,
+      // eslint-disable-next-line no-console
+      error: console.error,
     };
 
-    // Safely merge meta if it's an object
-    if (meta && typeof meta === 'object') {
-      Object.assign(logData, meta);
-    }
-
-    logMethod(logData);
+    consoleMethods[level](
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        level,
+        service: 'RetryHandler',
+        message,
+        ...(meta ?? {}),
+      })
+    );
   }
 }

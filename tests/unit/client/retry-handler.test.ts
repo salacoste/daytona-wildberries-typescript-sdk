@@ -352,6 +352,147 @@ describe('RetryHandler', () => {
     });
   });
 
+  describe('Log level filtering', () => {
+    it('should log retry attempts at info level when logLevel=info', async () => {
+      const handler = new RetryHandler({ maxRetries: 1, retryDelay: 10 }, 'info');
+      const infoSpy = vi
+        .spyOn(console, 'info')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const operation = vi
+        .fn()
+        .mockRejectedValueOnce(new NetworkError('Server error', false, 500))
+        .mockResolvedValueOnce('success');
+
+      const promise = handler.executeWithRetry(operation, 'GET /api/test');
+      await vi.runAllTimersAsync();
+      await promise;
+
+      const infoLogs = infoSpy.mock.calls.map((c) => c[0] as string);
+      const retryLog = infoLogs.find((l) => l.includes('Retrying'));
+      expect(retryLog).toBeDefined();
+      expect(retryLog).toContain('GET /api/test');
+      expect(retryLog).toContain('attempt 1/1');
+
+      infoSpy.mockRestore();
+    });
+
+    it('should NOT log retry info when logLevel=warn', async () => {
+      const handler = new RetryHandler({ maxRetries: 1, retryDelay: 10 }, 'warn');
+      const infoSpy = vi
+        .spyOn(console, 'info')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const operation = vi
+        .fn()
+        .mockRejectedValueOnce(new NetworkError('Server error', false, 500))
+        .mockResolvedValueOnce('success');
+
+      const promise = handler.executeWithRetry(operation, 'GET /api/test');
+      await vi.runAllTimersAsync();
+      await promise;
+
+      // info-level retry messages should be suppressed at warn level
+      const retryLogs = infoSpy.mock.calls.filter((c) => (c[0] as string).includes('Retrying'));
+      expect(retryLogs).toHaveLength(0);
+
+      infoSpy.mockRestore();
+    });
+
+    it('should NOT log retry info when logLevel=error', async () => {
+      const handler = new RetryHandler({ maxRetries: 1, retryDelay: 10 }, 'error');
+      const infoSpy = vi
+        .spyOn(console, 'info')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const warnSpy = vi
+        .spyOn(console, 'warn')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const operation = vi
+        .fn()
+        .mockImplementation(() => Promise.reject(new NetworkError('Error', false, 500)));
+
+      const promise = handler.executeWithRetry(operation, 'testOp');
+      await Promise.all([vi.runAllTimersAsync(), expect(promise).rejects.toThrow()]);
+
+      // Both info and warn should be suppressed at error level
+      expect(infoSpy).not.toHaveBeenCalled();
+      expect(warnSpy).not.toHaveBeenCalled();
+
+      infoSpy.mockRestore();
+      warnSpy.mockRestore();
+    });
+
+    it('should log debug context when logLevel=debug', async () => {
+      const handler = new RetryHandler({ maxRetries: 1, retryDelay: 10 }, 'debug');
+      const debugSpy = vi
+        .spyOn(console, 'debug')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const operation = vi
+        .fn()
+        .mockRejectedValueOnce(new NetworkError('Server error', false, 500))
+        .mockResolvedValueOnce('success');
+
+      const promise = handler.executeWithRetry(operation, 'GET /api/test');
+      await vi.runAllTimersAsync();
+      await promise;
+
+      const debugLogs = debugSpy.mock.calls.map((c) => c[0] as string);
+      const contextLog = debugLogs.find((l) => l.includes('Retry context'));
+      expect(contextLog).toBeDefined();
+      expect(contextLog).toContain('NetworkError');
+      expect(contextLog).toContain('"statusCode":500');
+
+      debugSpy.mockRestore();
+    });
+
+    it('should include error details in debug log for timeout errors', async () => {
+      const handler = new RetryHandler({ maxRetries: 1, retryDelay: 10 }, 'debug');
+      const debugSpy = vi
+        .spyOn(console, 'debug')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const operation = vi
+        .fn()
+        .mockRejectedValueOnce(new NetworkError('Request timeout', true, 0))
+        .mockResolvedValueOnce('success');
+
+      const promise = handler.executeWithRetry(operation, 'GET /api/slow');
+      await vi.runAllTimersAsync();
+      await promise;
+
+      const debugLogs = debugSpy.mock.calls.map((c) => c[0] as string);
+      const contextLog = debugLogs.find((l) => l.includes('Retry context'));
+      expect(contextLog).toBeDefined();
+      expect(contextLog).toContain('"isTimeout":true');
+
+      debugSpy.mockRestore();
+    });
+
+    it('should log warn when all retries exhausted', async () => {
+      const handler = new RetryHandler({ maxRetries: 1, retryDelay: 10 }, 'warn');
+      const warnSpy = vi
+        .spyOn(console, 'warn')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .mockImplementation(() => {});
+      const operation = vi
+        .fn()
+        .mockImplementation(() => Promise.reject(new NetworkError('Error', false, 500)));
+
+      const promise = handler.executeWithRetry(operation, 'GET /api/fail');
+      await Promise.all([vi.runAllTimersAsync(), expect(promise).rejects.toThrow()]);
+
+      const warnLogs = warnSpy.mock.calls.map((c) => c[0] as string);
+      const exhaustedLog = warnLogs.find((l) => l.includes('All retries exhausted'));
+      expect(exhaustedLog).toBeDefined();
+      expect(exhaustedLog).toContain('GET /api/fail');
+
+      warnSpy.mockRestore();
+    });
+  });
+
   describe('Generic type support', () => {
     it('should preserve return type for string', async () => {
       const handler = new RetryHandler();

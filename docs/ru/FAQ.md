@@ -94,6 +94,8 @@ const sdk = new WildberriesSDK({
 
 ### 6. Как настроить пользовательские таймауты?
 
+**Глобальный таймаут** — применяется ко всем запросам:
+
 ```typescript
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY,
@@ -101,7 +103,22 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-**Смотрите также:** [Справочник SDKConfig](/ru/guides/best-practices.md#configuration)
+**Таймаут для отдельного запроса** — переопределение глобального таймаута для конкретных вызовов:
+
+```typescript
+// Долгий отчет — таймаут 2 минуты
+const report = await sdk.analytics.getReportDetail(
+  { id: reportId },
+  { timeout: 120000 }
+);
+
+// Быстрая проверка — таймаут 5 секунд
+const ping = await sdk.general.ping({ timeout: 5000 });
+```
+
+Таймаут для отдельного запроса переопределяет глобальный `timeout` для данного вызова. Каждая попытка повтора использует таймаут запроса индивидуально (не кумулятивно).
+
+**Смотрите также:** [Руководство по конфигурации — Настройка таймаута](/ru/guides/configuration.md#конфигурация-таймаута)
 
 ---
 
@@ -631,25 +648,43 @@ app.post('/webhooks/wildberries', async (req, res) => {
 
 ## Устранение неполадок
 
-### 32. Почему я получаю ошибки "Network timeout"?
+### 32. Почему я получаю ошибки "Network timeout" или ETIMEDOUT?
 
 **Причины:**
 - Медленное сетевое соединение
 - API Wildberries испытывает высокую нагрузку
-- Таймаут настроен слишком низко
+- Таймаут настроен слишком низко (по умолчанию 30 секунд)
 
 **Решения:**
-1. Увеличьте таймаут в конфигурации SDK:
+
+1. **Увеличьте глобальный таймаут:**
    ```typescript
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY,
      timeout: 60000 // 60 секунд
    });
    ```
-2. Проверьте сетевое подключение
-3. Повторите с экспоненциальной задержкой (SDK обрабатывает это автоматически)
 
-**Смотрите также:** [Ошибки сети](/ru/guides/troubleshooting.md#network-errors)
+2. **Используйте таймаут для конкретных медленных операций:**
+   ```typescript
+   const report = await sdk.analytics.getReportDetail(
+     { id: reportId },
+     { timeout: 120000 } // 2 минуты только для этого вызова
+   );
+   ```
+
+3. **Включите info-уровень логирования для просмотра попыток повтора:**
+   ```typescript
+   const sdk = new WildberriesSDK({
+     apiKey: process.env.WB_API_KEY,
+     logLevel: 'info' // Показывает попытки повтора и предупреждения о таймауте
+   });
+   ```
+
+4. Проверьте сетевое подключение
+5. Повторите с экспоненциальной задержкой (SDK обрабатывает это автоматически)
+
+**Смотрите также:** [Руководство по конфигурации — Настройка таймаута](/ru/guides/configuration.md#конфигурация-таймаута) | [Ошибки сети](/ru/guides/troubleshooting.md#network-errors)
 
 ---
 

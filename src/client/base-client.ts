@@ -115,8 +115,8 @@ export class BaseClient {
     // Initialize rate limiter with predefined limits
     this.rateLimiter = new RateLimiter(ALL_RATE_LIMITS);
 
-    // Initialize retry handler with configuration
-    this.retryHandler = new RetryHandler(config.retryConfig);
+    // Initialize retry handler with configuration and log level
+    this.retryHandler = new RetryHandler(config.retryConfig, this.logLevel);
   }
 
   /**
@@ -162,6 +162,7 @@ export class BaseClient {
           headers: options?.headers,
           params: options?.params,
           responseType: options?.responseType,
+          ...(options?.timeout !== undefined && { timeout: options.timeout }),
         });
 
         this.log('debug', 'GET response', {
@@ -223,6 +224,7 @@ export class BaseClient {
         const response = await this.axios.post<T>(url, data, {
           headers: options?.headers,
           params: options?.params,
+          ...(options?.timeout !== undefined && { timeout: options.timeout }),
         });
 
         this.log('debug', 'POST response', {
@@ -275,6 +277,7 @@ export class BaseClient {
         const response = await this.axios.put<T>(url, data, {
           headers: options?.headers,
           params: options?.params,
+          ...(options?.timeout !== undefined && { timeout: options.timeout }),
         });
 
         this.log('debug', 'PUT response', {
@@ -327,6 +330,7 @@ export class BaseClient {
         const response = await this.axios.patch<T>(url, data, {
           headers: options?.headers,
           params: options?.params,
+          ...(options?.timeout !== undefined && { timeout: options.timeout }),
         });
 
         this.log('debug', 'PATCH response', {
@@ -386,6 +390,7 @@ export class BaseClient {
           headers: options?.headers,
           params: options?.params,
           data,
+          ...(options?.timeout !== undefined && { timeout: options.timeout }),
         });
 
         this.log('debug', 'DELETE response', {
@@ -454,11 +459,20 @@ export class BaseClient {
     if (!axiosError.response) {
       const isTimeout = axiosError.code === 'ECONNABORTED' || axiosError.code === 'ETIMEDOUT';
 
-      this.log('error', 'Network error', {
-        code: axiosError.code,
-        isTimeout,
-        message: axiosError.message,
-      });
+      if (isTimeout) {
+        const url = axiosError.config?.url ?? 'unknown';
+        const timeoutMs = axiosError.config?.timeout ?? 'unknown';
+        this.log('warn', `Request timed out: ${url} after ${String(timeoutMs)}ms`, {
+          url,
+          timeout: timeoutMs,
+          code: axiosError.code,
+        });
+      } else {
+        this.log('error', 'Network error', {
+          code: axiosError.code,
+          message: axiosError.message,
+        });
+      }
 
       throw new NetworkError(
         isTimeout ? 'Request timed out' : 'Network error occurred',

@@ -114,6 +114,31 @@ chats.result?.forEach(chat => {
 
 **👉 [Complete Quickstart Guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/getting-started/quickstart)**
 
+### Advanced Configuration
+
+The SDK accepts much more than just `apiKey`. Customize timeout, retry logic, rate limiting, and logging:
+
+```typescript
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 60000,                    // Global timeout (default: 30000ms)
+  logLevel: 'info',                  // 'debug' | 'info' | 'warn' | 'error'
+  retryConfig: {
+    maxRetries: 5,
+    retryDelay: 2000,
+    exponentialBackoff: true,
+  },
+});
+
+// Per-request timeout for slow operations
+const report = await sdk.analytics.getReportDetail(
+  { id: reportId },
+  { timeout: 120000 }               // 2 min for this call only
+);
+```
+
+**👉 [Configuration Guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/configuration)**
+
 ---
 
 ## 📊 Project Status & Development
@@ -306,6 +331,31 @@ chats.result?.forEach(chat => {
 **Время до первого API вызова:** <5 минут 🚀
 
 **👉 [Полное Руководство по Быстрому Старту](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/getting-started/quickstart)**
+
+### Расширенная конфигурация
+
+SDK принимает не только `apiKey`. Настройте таймаут, логику повторов, лимиты запросов и логирование:
+
+```typescript
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY!,
+  timeout: 60000,                    // Глобальный таймаут (по умолчанию: 30000мс)
+  logLevel: 'info',                  // 'debug' | 'info' | 'warn' | 'error'
+  retryConfig: {
+    maxRetries: 5,
+    retryDelay: 2000,
+    exponentialBackoff: true,
+  },
+});
+
+// Таймаут для конкретного медленного запроса
+const report = await sdk.analytics.getReportDetail(
+  { id: reportId },
+  { timeout: 120000 }               // 2 мин только для этого вызова
+);
+```
+
+**👉 [Руководство по конфигурации](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/configuration)**
 
 ---
 

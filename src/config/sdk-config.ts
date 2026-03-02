@@ -169,6 +169,14 @@ export interface SDKConfig {
  *
  * await client.get<ProductResponse>(url, options);
  * ```
+ *
+ * @example Per-request timeout for long-running operations
+ * ```typescript
+ * // Override global timeout for a single slow request
+ * await client.get<ReportResponse>(url, {
+ *   timeout: 120000 // 2 minutes for report generation
+ * });
+ * ```
  */
 export interface RequestOptions {
   /**
@@ -215,6 +223,25 @@ export interface RequestOptions {
    * This is automatically set by API module methods. Manual override is rare.
    */
   rateLimitKey?: string;
+
+  /**
+   * Per-request timeout in milliseconds
+   *
+   * Overrides the global `SDKConfig.timeout` for this single request.
+   * Useful for long-running operations (e.g., report generation, large data sync)
+   * that need more time than the default 30-second timeout.
+   *
+   * Each retry attempt uses this timeout individually (not cumulative).
+   *
+   * @example
+   * ```typescript
+   * // 2-minute timeout for large order sync
+   * await sdk.ordersFBS.getOrders(params, {
+   *   timeout: 120000
+   * });
+   * ```
+   */
+  timeout?: number;
 
   /**
    * Response type for special handling
