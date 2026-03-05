@@ -5,6 +5,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { ValidationError } from '../../errors/validation-error';
 import type {
   PingResponse,
   NewsResponse,
@@ -15,6 +16,9 @@ import type {
   GetUsersParams,
   GetUsersResponse,
   UpdateUserAccessRequest,
+  GetJamSubscriptionStatusParams,
+  JamSubscriptionStatus,
+  JamSubscriptionTier,
 } from '../../types/general.types';
 
 export class GeneralModule {
@@ -294,5 +298,112 @@ export class GeneralModule {
         rateLimitKey: 'general.deleteUser',
       }
     );
+  }
+
+  /**
+   * Определение тарифа подписки Джем (Jam)
+   *
+   * Wildberries не предоставляет прямого эндпоинта для проверки тарифа Джем.
+   * Этот метод определяет тариф через пробные запросы к аналитическому эндпоинту
+   * поисковых запросов товара (`/api/v2/search-report/product/search-texts`),
+   * используя разные значения `limit`:
+   *
+   * 1. Запрос с `limit: 31` (выше лимита стандартного тарифа = 30)
+   *    - **200** → тариф «Продвинутый» (advanced)
+   *    - **400** → не продвинутый → продолжаем
+   * 2. Запрос с `limit: 1`
+   *    - **200** → тариф «Стандартный» (standard)
+   *    - **400** → подписка Джем отсутствует (none)
+   *
+   * Ошибки аутентификации, превышения лимитов и сетевые ошибки не перехватываются
+   * и пробрасываются вызывающему коду.
+   *
+   * Rate limit: Uses the same quota as `analytics.createProductSearchText`
+   * (3 requests/minute, 20-second interval, burst 3).
+   * Each call makes 1–2 probe requests.
+   *
+   * @param params - Parameters containing nmIds for the probe
+   * @param params.nmIds - One or more WB article IDs to use in the probe
+   * @returns Jam subscription status with detected tier and metadata
+   * @throws {ValidationError} When nmIds array is empty
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   *
+   * @example
+   * ```typescript
+   * const status = await sdk.general.getJamSubscriptionStatus({ nmIds: [12345678] });
+   *
+   * switch (status.tier) {
+   *   case 'advanced':
+   *     console.log('Advanced Jam — limit up to 50');
+   *     break;
+   *   case 'standard':
+   *     console.log('Standard Jam — limit up to 30');
+   *     break;
+   *   case 'none':
+   *     console.log('No Jam subscription');
+   *     break;
+   * }
+   * ```
+   */
+  async getJamSubscriptionStatus(
+    params: GetJamSubscriptionStatusParams
+  ): Promise<JamSubscriptionStatus> {
+    if (params.nmIds.length === 0) {
+      throw new ValidationError('nmIds must be a non-empty array');
+    }
+
+    const probeUrl =
+      'https://seller-analytics-api.wildberries.ru/api/v2/search-report/product/search-texts';
+    const rateLimitKey = 'analytics.postSearchReportProductSearchTexts';
+
+    // Build yesterday's date for the probe period
+    const yesterday = new Date(Date.now() - 86_400_000);
+    const dateStr = yesterday.toISOString().slice(0, 10);
+
+    const buildPayload = (limit: number) => ({
+      currentPeriod: { start: dateStr, end: dateStr },
+      nmIds: params.nmIds,
+      topOrderBy: 'openCard' as const,
+      orderBy: { field: 'avgPosition' as const, mode: 'asc' as const },
+      limit,
+    });
+
+    let probeCallsMade = 0;
+
+    // Probe 1: limit=31 (above Standard max of 30)
+    try {
+      probeCallsMade++;
+      await this.client.post(probeUrl, buildPayload(31), { rateLimitKey });
+      return this.buildResult('advanced', probeCallsMade);
+    } catch (error: unknown) {
+      if (!(error instanceof ValidationError)) {
+        throw error;
+      }
+      // ValidationError (400) → not advanced, continue probing
+    }
+
+    // Probe 2: limit=1
+    try {
+      probeCallsMade++;
+      await this.client.post(probeUrl, buildPayload(1), { rateLimitKey });
+      return this.buildResult('standard', probeCallsMade);
+    } catch (error: unknown) {
+      if (!(error instanceof ValidationError)) {
+        throw error;
+      }
+      // ValidationError (400) → no Jam subscription
+      return this.buildResult('none', probeCallsMade);
+    }
+  }
+
+  /** Build a JamSubscriptionStatus result */
+  private buildResult(tier: JamSubscriptionTier, probeCallsMade: number): JamSubscriptionStatus {
+    return {
+      tier,
+      checkedAt: new Date().toISOString(),
+      probeCallsMade,
+    };
   }
 }
