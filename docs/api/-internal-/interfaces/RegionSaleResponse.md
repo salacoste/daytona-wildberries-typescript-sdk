@@ -2,7 +2,7 @@
 
 # Interface: RegionSaleResponse
 
-Defined in: [types/reports.types.ts:567](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/reports.types.ts#L567)
+Defined in: [types/reports.types.ts:567](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/reports.types.ts#L567)
 
 Response for getAnalyticsRegionSale
 
@@ -14,4 +14,4 @@ EPIC 43 - Response type for getAnalyticsRegionSale
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`RegionSaleItem`](RegionSaleItem.md)[] | [types/reports.types.ts:568](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/reports.types.ts#L568) |
+| <a id="data"></a> `data?` | [`RegionSaleItem`](RegionSaleItem.md)[] | [types/reports.types.ts:568](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/reports.types.ts#L568) |

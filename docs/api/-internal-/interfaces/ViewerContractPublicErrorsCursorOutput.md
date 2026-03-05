@@ -2,7 +2,7 @@
 
 # Interface: ViewerContractPublicErrorsCursorOutput
 
-Defined in: [types/products.types.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/products.types.ts#L539)
+Defined in: [types/products.types.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L539)
 
 Пагинатор
 
@@ -10,6 +10,6 @@ Defined in: [types/products.types.ts:539](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="next"></a> `next` | `boolean` | Есть ли ещё черновики: - `false` — нет - `true` — да | [types/products.types.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/products.types.ts#L541) |
-| <a id="updatedat"></a> `updatedAt` | `string` | Дата и время формирования последнего пакета в ответе | [types/products.types.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/products.types.ts#L543) |
-| <a id="batchuuid"></a> `batchUUID` | `string` | ID последнего пакета в ответе | [types/products.types.ts:545](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/products.types.ts#L545) |
+| <a id="next"></a> `next` | `boolean` | Есть ли ещё черновики: - `false` — нет - `true` — да | [types/products.types.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L541) |
+| <a id="updatedat"></a> `updatedAt` | `string` | Дата и время формирования последнего пакета в ответе | [types/products.types.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L543) |
+| <a id="batchuuid"></a> `batchUUID` | `string` | ID последнего пакета в ответе | [types/products.types.ts:545](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L545) |

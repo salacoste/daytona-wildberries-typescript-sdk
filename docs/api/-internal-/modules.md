@@ -134,6 +134,8 @@
 | [GetUsersResponse](interfaces/GetUsersResponse.md) | Response from get users endpoint |
 | [UserAccessUpdate](interfaces/UserAccessUpdate.md) | User access update item |
 | [UpdateUserAccessRequest](interfaces/UpdateUserAccessRequest.md) | Request to update user access |
+| [JamSubscriptionStatus](interfaces/JamSubscriptionStatus.md) | Result of a Jam subscription status probe |
+| [GetJamSubscriptionStatusParams](interfaces/GetJamSubscriptionStatusParams.md) | Parameters for the Jam subscription status check |
 | [ApiCheckedIdentity](interfaces/ApiCheckedIdentity.md) | Auto-generated TypeScript types for in-store-pickup module Generated from: wildberries_api_doc/06-in-store-pickup.yaml |
 | [ApiCheckIdentityRequest](interfaces/ApiCheckIdentityRequest.md) | - |
 | [ApiGTINRequest](interfaces/ApiGTINRequest.md) | - |
@@ -450,6 +452,7 @@
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
 | [DocumentsLocale](type-aliases/DocumentsLocale.md) | Supported locale values for document endpoints |
 | [AccessCode](type-aliases/AccessCode.md) | Access code for user permissions Determines which sections of the seller profile the user can access |
+| [JamSubscriptionTier](type-aliases/JamSubscriptionTier.md) | Jam (Джем) subscription tier |
 | [DBSSupplierStatus](type-aliases/DBSSupplierStatus.md) | DBS supplier status Triggered by seller actions |
 | [OrderSupplierStatus](type-aliases/OrderSupplierStatus.md) | Supplier-side order status |
 | [OrderWbStatus](type-aliases/OrderWbStatus.md) | Wildberries system order status |

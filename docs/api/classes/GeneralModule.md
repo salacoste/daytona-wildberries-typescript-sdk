@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L20)
+Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L24)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:20](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L21)
+Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L25)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/general/index.ts:21](https://github.com/salacoste/daytona-w
 ping(): Promise<PingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L66)
+Defined in: [modules/general/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L70)
 
 Проверка подключения к WB API
 
@@ -104,7 +104,7 @@ console.log(result.Status); // 'OK'
 news(options?: NewsRequestParams): Promise<NewsResponse>;
 ```
 
-Defined in: [modules/general/index.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L102)
+Defined in: [modules/general/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L106)
 
 Получение новостей портала продавцов
 
@@ -166,7 +166,7 @@ for (const item of result.data) {
 sellerInfo(): Promise<SellerInfoResponse>;
 ```
 
-Defined in: [modules/general/index.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L136)
+Defined in: [modules/general/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L140)
 
 Получение информации о продавце
 
@@ -219,7 +219,7 @@ console.log(seller.name, seller.sid);
 createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>;
 ```
 
-Defined in: [modules/general/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L175)
+Defined in: [modules/general/index.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L179)
 
 Создание приглашения для нового пользователя
 
@@ -284,7 +284,7 @@ console.log(result.inviteUrl);
 getUsers(params?: GetUsersParams): Promise<GetUsersResponse>;
 ```
 
-Defined in: [modules/general/index.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L214)
+Defined in: [modules/general/index.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L218)
 
 Получение списка пользователей продавца
 
@@ -346,7 +346,7 @@ for (const user of result.users) {
 updateUserAccess(data: UpdateUserAccessRequest): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L257)
+Defined in: [modules/general/index.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L261)
 
 Изменение доступов пользователей
 
@@ -414,7 +414,7 @@ await sdk.general.updateUserAccess({
 deleteUser(deletedUserID: number): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/modules/general/index.ts#L288)
+Defined in: [modules/general/index.ts:292](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L292)
 
 Удаление пользователя
 
@@ -462,4 +462,81 @@ When network request fails or times out
 
 ```typescript
 await sdk.general.deleteUser(12345);
+```
+
+***
+
+### getJamSubscriptionStatus()
+
+```ts
+getJamSubscriptionStatus(params: GetJamSubscriptionStatusParams): Promise<JamSubscriptionStatus>;
+```
+
+Defined in: [modules/general/index.ts:350](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L350)
+
+Определение тарифа подписки Джем (Jam)
+
+Wildberries не предоставляет прямого эндпоинта для проверки тарифа Джем.
+Этот метод определяет тариф через пробные запросы к аналитическому эндпоинту
+поисковых запросов товара (`/api/v2/search-report/product/search-texts`),
+используя разные значения `limit`:
+
+1. Запрос с `limit: 31` (выше лимита стандартного тарифа = 30)
+   - **200** → тариф «Продвинутый» (advanced)
+   - **400** → не продвинутый → продолжаем
+2. Запрос с `limit: 1`
+   - **200** → тариф «Стандартный» (standard)
+   - **400** → подписка Джем отсутствует (none)
+
+Ошибки аутентификации, превышения лимитов и сетевые ошибки не перехватываются
+и пробрасываются вызывающему коду.
+
+Rate limit: Uses the same quota as `analytics.createProductSearchText`
+(3 requests/minute, 20-second interval, burst 3).
+Each call makes 1–2 probe requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params` | [`GetJamSubscriptionStatusParams`](../-internal-/interfaces/GetJamSubscriptionStatusParams.md) | Parameters containing nmIds for the probe |
+
+#### Returns
+
+`Promise`\<[`JamSubscriptionStatus`](../-internal-/interfaces/JamSubscriptionStatus.md)\>
+
+Jam subscription status with detected tier and metadata
+
+#### Throws
+
+When nmIds array is empty
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Example
+
+```typescript
+const status = await sdk.general.getJamSubscriptionStatus({ nmIds: [12345678] });
+
+switch (status.tier) {
+  case 'advanced':
+    console.log('Advanced Jam — limit up to 50');
+    break;
+  case 'standard':
+    console.log('Standard Jam — limit up to 30');
+    break;
+  case 'none':
+    console.log('No Jam subscription');
+    break;
+}
 ```

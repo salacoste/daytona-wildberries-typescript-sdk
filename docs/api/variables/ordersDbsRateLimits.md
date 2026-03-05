@@ -6,4 +6,4 @@
 const ordersDbsRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/orders-dbs-rate-limits.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/config/orders-dbs-rate-limits.ts#L26)
+Defined in: [config/orders-dbs-rate-limits.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/config/orders-dbs-rate-limits.ts#L26)

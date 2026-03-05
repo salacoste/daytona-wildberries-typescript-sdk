@@ -6,7 +6,7 @@
 type BidType = "auto" | "manual";
 ```
 
-Defined in: [types/promotion.types.ts:1513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L1513)
+Defined in: [types/promotion.types.ts:1513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/promotion.types.ts#L1513)
 
 Bid type for campaign
 - `auto` — автоматическая ставка (Type 8)

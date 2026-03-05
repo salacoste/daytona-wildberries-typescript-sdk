@@ -2,7 +2,7 @@
 
 # Interface: AdvertSubject
 
-Defined in: [types/promotion.types.ts:1124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L1124)
+Defined in: [types/promotion.types.ts:1124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/promotion.types.ts#L1124)
 
 Предмет (для кампаний с копейками)
 
@@ -10,5 +10,5 @@ Defined in: [types/promotion.types.ts:1124](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID предмета | [types/promotion.types.ts:1126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L1126) |
-| <a id="name"></a> `name` | `string` | Название предмета | [types/promotion.types.ts:1128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/types/promotion.types.ts#L1128) |
+| <a id="id"></a> `id` | `number` | ID предмета | [types/promotion.types.ts:1126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/promotion.types.ts#L1126) |
+| <a id="name"></a> `name` | `string` | Название предмета | [types/promotion.types.ts:1128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/promotion.types.ts#L1128) |

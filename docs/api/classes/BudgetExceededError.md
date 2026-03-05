@@ -2,7 +2,7 @@
 
 # Class: BudgetExceededError
 
-Defined in: [errors/promotion-errors.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L231)
+Defined in: [errors/promotion-errors.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L231)
 
 Error thrown when campaign budget is exceeded or insufficient.
 
@@ -45,7 +45,7 @@ new BudgetExceededError(
    requestId?: string): BudgetExceededError;
 ```
 
-Defined in: [errors/promotion-errors.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L250)
+Defined in: [errors/promotion-errors.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L250)
 
 Creates a BudgetExceededError
 
@@ -72,13 +72,13 @@ Creates a BudgetExceededError
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/base-error.ts#L35) |
-| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/base-error.ts#L43) |
-| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/base-error.ts#L51) |
-| <a id="availablebudget"></a> `availableBudget?` | `readonly` | `number` | Available budget amount | - | [errors/promotion-errors.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L235) |
-| <a id="requiredbudget"></a> `requiredBudget?` | `readonly` | `number` | Required budget amount for the operation | - | [errors/promotion-errors.ts:240](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L240) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/base-error.ts#L35) |
+| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/base-error.ts#L43) |
+| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/base-error.ts#L51) |
+| <a id="availablebudget"></a> `availableBudget?` | `readonly` | `number` | Available budget amount | - | [errors/promotion-errors.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L235) |
+| <a id="requiredbudget"></a> `requiredBudget?` | `readonly` | `number` | Required budget amount for the operation | - | [errors/promotion-errors.ts:240](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L240) |
 
 ## Methods
 
@@ -88,7 +88,7 @@ Creates a BudgetExceededError
 getUserMessage(): string;
 ```
 
-Defined in: [errors/promotion-errors.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L270)
+Defined in: [errors/promotion-errors.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L270)
 
 Returns user-friendly error message with budget details
 
@@ -118,7 +118,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/promotion-errors.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L310)
+Defined in: [errors/promotion-errors.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L310)
 
 Custom JSON serialization
 
@@ -138,13 +138,13 @@ Custom JSON serialization
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/promotion-errors.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L311) |
-| `message` | `string` | [errors/promotion-errors.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L312) |
-| `statusCode` | `number` | [errors/promotion-errors.ts:313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L313) |
-| `availableBudget?` | `number` | [errors/promotion-errors.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L314) |
-| `requiredBudget?` | `number` | [errors/promotion-errors.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L315) |
-| `response?` | `unknown` | [errors/promotion-errors.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L316) |
-| `requestId?` | `string` | [errors/promotion-errors.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/errors/promotion-errors.ts#L317) |
+| `name` | `string` | [errors/promotion-errors.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L311) |
+| `message` | `string` | [errors/promotion-errors.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L312) |
+| `statusCode` | `number` | [errors/promotion-errors.ts:313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L313) |
+| `availableBudget?` | `number` | [errors/promotion-errors.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L314) |
+| `requiredBudget?` | `number` | [errors/promotion-errors.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L315) |
+| `response?` | `unknown` | [errors/promotion-errors.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L316) |
+| `requestId?` | `string` | [errors/promotion-errors.ts:317](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/errors/promotion-errors.ts#L317) |
 
 #### Overrides
 

@@ -2,7 +2,7 @@
 
 # Class: BaseClient
 
-Defined in: [client/base-client.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L76)
+Defined in: [client/base-client.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L76)
 
 Base HTTP client for all Wildberries API modules
 
@@ -48,7 +48,7 @@ const data = await client.post<CreateProductResponse>(
 new BaseClient(config: SDKConfig): BaseClient;
 ```
 
-Defined in: [client/base-client.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L99)
+Defined in: [client/base-client.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L99)
 
 Creates a new BaseClient instance
 
@@ -84,7 +84,7 @@ const client = new BaseClient({
 get<T>(url: string, options?: RequestOptions): Promise<T>;
 ```
 
-Defined in: [client/base-client.ts:151](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L151)
+Defined in: [client/base-client.ts:151](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L151)
 
 Make a GET request with automatic retry on transient failures
 
@@ -151,7 +151,7 @@ post<T>(
 options?: RequestOptions): Promise<T>;
 ```
 
-Defined in: [client/base-client.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L214)
+Defined in: [client/base-client.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L214)
 
 Make a POST request with automatic retry on transient failures
 
@@ -223,7 +223,7 @@ put<T>(
 options?: RequestOptions): Promise<T>;
 ```
 
-Defined in: [client/base-client.ts:267](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L267)
+Defined in: [client/base-client.ts:267](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L267)
 
 Make a PUT request with automatic retry on transient failures
 
@@ -286,7 +286,7 @@ patch<T>(
 options?: RequestOptions): Promise<T>;
 ```
 
-Defined in: [client/base-client.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L320)
+Defined in: [client/base-client.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L320)
 
 Make a PATCH request with automatic retry on transient failures
 
@@ -349,7 +349,7 @@ delete<T>(
 options?: RequestOptions): Promise<T>;
 ```
 
-Defined in: [client/base-client.ts:379](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ad67de0cfda3f04b67ec440b3ad6fdcd2b037cbc/src/client/base-client.ts#L379)
+Defined in: [client/base-client.ts:379](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/client/base-client.ts#L379)
 
 Make a DELETE request with automatic retry on transient failures
 
