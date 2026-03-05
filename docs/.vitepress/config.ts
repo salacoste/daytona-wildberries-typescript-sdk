@@ -158,7 +158,8 @@ export default defineConfig({
                   { text: '📈 Sales Funnel Analytics Best Practices', link: '/guides/best-practices-sales-funnel' },
                   { text: '📋 Promotion Module Guide', link: '/guides/promotion-advertising' },
                   { text: '👥 User Management Guide', link: '/guides/user-management' },
-                  { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' }
+                  { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' },
+                  { text: '🎫 Jam Subscription Detection', link: '/guides/jam-subscription' }
                 ]
               }
             ]
@@ -346,7 +347,8 @@ export default defineConfig({
                   { text: '📈 Аналитика воронки продаж', link: '/ru/guides/best-practices-sales-funnel' },
                   { text: '📋 Руководство по модулю Promotion', link: '/ru/guides/promotion-advertising' },
                   { text: '👥 Управление пользователями', link: '/guides/user-management' },
-                  { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' }
+                  { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' },
+                  { text: '🎫 Определение подписки Джем', link: '/ru/guides/jam-subscription' }
                 ]
               }
             ]

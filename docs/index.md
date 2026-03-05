@@ -114,7 +114,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
     <div class="stat-label">Test Coverage</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">2011</div>
+    <div class="stat-number">2041</div>
     <div class="stat-label">Tests</div>
   </div>
   <div class="stat-card">
@@ -175,7 +175,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
 
 ### 🎯 Production Ready
 
-Battle-tested with 98% test coverage and 2011 tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
+Battle-tested with 98% test coverage and 2041 tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
 
 ### ⚡ Time Savings
 
@@ -200,7 +200,7 @@ All 11 Wildberries API modules fully supported:
 
 | Module | Coverage | Key Features |
 |--------|----------|--------------|
-| **General** | 100% | Ping, connectivity testing, seller info, **user management** |
+| **General** | 100% | Ping, connectivity testing, seller info, **user management**, **[Jam detection](/guides/jam-subscription)** |
 | **Products** | 100% | Catalog CRUD, pricing, media, inventory |
 | **Orders FBS** | 100% | Seller fulfillment, order status, supplies |
 | **Orders FBW** | 100% | WB warehouse fulfillment, supply planning, acceptance coefficients, cost calculator |

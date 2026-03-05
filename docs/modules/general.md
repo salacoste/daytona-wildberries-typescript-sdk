@@ -10,7 +10,7 @@ The General module provides essential utility endpoints for API connectivity tes
 | **SDK Namespace** | `sdk.general.*` |
 | **Base URLs** | `https://common-api.wildberries.ru`, `https://user-management-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/01-general.yaml` |
-| **Methods** | 7 |
+| **Methods** | 8 |
 | **Swagger Endpoints** | 7 (all implemented) |
 | **Authentication** | API Key (Header) |
 
@@ -75,6 +75,7 @@ const general = new GeneralModule(client);
 | [`ping()`](#ping) | GET | `/ping` | Test API connectivity and token validity | 3 req/30s |
 | [`news(options?)`](#news) | GET | `/api/communications/v2/news` | Retrieve seller portal news | 1 req/min |
 | [`sellerInfo()`](#sellerinfo) | GET | `/api/v1/seller-info` | Get authenticated seller information | 1 req/min |
+| [`getJamSubscriptionStatus(params)`](#getjamsubscriptionstatus) | POST | `/api/v2/search-report/product/search-texts` | Detect Jam subscription tier | Shared with Analytics |
 
 ---
 
@@ -270,6 +271,72 @@ try {
 
 ---
 
+### `getJamSubscriptionStatus()`
+
+Detect the seller's Jam (Джем) subscription tier by probing the analytics search-texts endpoint.
+
+Since Wildberries does not provide a direct API for checking Jam status, this method uses a probe strategy — sending requests with specific `limit` values and interpreting the responses.
+
+**Signature:**
+```typescript
+getJamSubscriptionStatus(params: GetJamSubscriptionStatusParams): Promise<JamSubscriptionStatus>
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `params.nmIds` | `number[]` | Yes | One or more WB article IDs (must belong to the seller) |
+
+**Returns:** `Promise<JamSubscriptionStatus>`
+
+```typescript
+type JamSubscriptionTier = 'none' | 'standard' | 'advanced';
+
+interface JamSubscriptionStatus {
+  /** Detected subscription tier */
+  tier: JamSubscriptionTier;
+  /** ISO 8601 timestamp when the check was performed */
+  checkedAt: string;
+  /** Number of probe API calls made (1 for advanced, 2 for standard/none) */
+  probeCallsMade: number;
+}
+```
+
+**Probe Strategy:**
+
+| Step | Request | 200 Response | 400 Response |
+|------|---------|-------------|-------------|
+| 1 | `limit: 31` | Advanced tier detected | Continue to step 2 |
+| 2 | `limit: 1` | Standard tier detected | No Jam subscription |
+
+**Rate Limit:** Shares quota with `analytics.createProductSearchText` (3 req/min, 20s interval, burst 3)
+
+> **Tip:** Cache the result — subscription tier changes infrequently. See the [Jam Subscription Guide](/guides/jam-subscription) for caching patterns.
+
+**Example:**
+```typescript
+const status = await sdk.general.getJamSubscriptionStatus({
+  nmIds: [12345678]
+});
+
+switch (status.tier) {
+  case 'advanced':
+    console.log('Advanced Jam — limit up to 50');
+    break;
+  case 'standard':
+    console.log('Standard Jam — limit up to 30');
+    break;
+  case 'none':
+    console.log('No Jam subscription');
+    break;
+}
+```
+
+**See Also:** [Jam Subscription Detection Guide](/guides/jam-subscription) | [Analytics Module](/modules/analytics)
+
+---
+
 ## Types
 
 All types are exported from the SDK and can be imported directly:
@@ -282,6 +349,9 @@ import type {
   NewsTag,
   NewsRequestParams,
   SellerInfoResponse,
+  JamSubscriptionTier,
+  JamSubscriptionStatus,
+  GetJamSubscriptionStatusParams,
 } from 'daytona-wildberries-typescript-sdk';
 ```
 
@@ -438,6 +508,7 @@ const result = await sdk.general.ping();
 | `ping()` | 6 | 10 seconds | 3 |
 | `news()` | 1 | 60 seconds | 10 |
 | `sellerInfo()` | 1 | 60 seconds | 10 |
+| `getJamSubscriptionStatus()` | 3 (shared) | 20 seconds | 3 |
 
 > **Note:** Rate limits are enforced per API key, not per SDK instance. Multiple SDK instances using the same API key share the same rate limit quota.
 
@@ -664,6 +735,7 @@ Available access codes for user permissions:
 ### Guides
 
 - [User Management](#user-management-4-methods) - Team management with invitations, permissions, and user lifecycle (documented in this module)
+- [Jam Subscription Detection](/guides/jam-subscription) - Detect and use Jam tier for analytics limit optimization
 
 ### EPICs
 
@@ -692,3 +764,4 @@ Available access codes for user permissions:
 |---------|---------|
 | 1.0.0 | Initial release with `ping()`, `news()`, `sellerInfo()` methods |
 | 2.8.0 | Rate limit values corrected per EPIC 15; JSDoc enriched |
+| 3.3.0 | Added `getJamSubscriptionStatus()` for Jam tier detection via probe strategy |

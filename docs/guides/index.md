@@ -50,7 +50,8 @@ If you're using Promotion module Type 8 campaigns, migrate to Type 9 before **Fe
 - **[Returns Handling](/guides/returns-handling)** - Returns processing
 - **[Supplies Planning](/guides/supplies-planning)** - Planning supplies to WB warehouses, acceptance coefficients, and FBW vs FBS strategy
 
-### Tariffs & Costs
+### Subscription & Tariffs
+- **[Jam Subscription Detection](/guides/jam-subscription)** - Detect Jam (Джем) subscription tier to optimize analytics limits
 - **[Tariffs Overview](/guides/tariffs-overview)** - Understanding inventory vs supply tariffs
 - **[Supplies & Tariffs (EN)](/guides/supplies-tariffs)** - Supply acceptance coefficients, cost calculations, and tariff comparisons
 
