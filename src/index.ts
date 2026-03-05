@@ -614,7 +614,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.2.0';
+export const version = '3.3.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
