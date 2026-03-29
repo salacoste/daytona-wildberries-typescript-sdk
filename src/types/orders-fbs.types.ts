@@ -298,6 +298,8 @@ export interface CrossBorderStickerItem {
   orderId?: number;
   /** Parcel ID */
   parcelId?: string;
+  /** Sticker generation status. Stickers may generate with delay — poll until 'ready'. */
+  status?: 'awaitingTrackNumber' | 'ready';
 }
 
 /** Response containing cross-border order stickers */
@@ -530,6 +532,8 @@ export interface Supply {
   crossBorderType?: 0 | 1 | null;
   /** Destination warehouse ID; null if not specified */
   destinationOfficeId?: number;
+  /** Whether this supply contains B2B orders. Once the first order is added, the supply inherits its B2B flag. Since March 19, 2026 mixing B2B and non-B2B orders in one supply is rejected. */
+  isB2b?: boolean;
 }
 
 /**

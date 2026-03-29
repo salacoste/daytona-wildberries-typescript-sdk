@@ -51,3 +51,9 @@ logs/
 
 # AI Agent working directory (BMAD framework)
 .ai/
+# BMad v4 legacy (removed)
+.bmad-core/
+# BMad v6 working output (ephemeral, not version-controlled)
+_bmad-output/
+# BMad v6 memory (session-specific)
+_bmad/_memory/

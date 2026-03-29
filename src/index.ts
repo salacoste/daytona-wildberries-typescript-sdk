@@ -566,6 +566,17 @@ export class WildberriesSDK {
     // Create shared BaseClient instance
     this.client = new BaseClient(config);
 
+    // Warn about reduced rate limits for Basic/Test tokens
+    const tokenType = config.tokenType ?? 'personal';
+    if (tokenType === 'basic' || tokenType === 'test') {
+      // eslint-disable-next-line no-console -- One-time init warning for token type awareness
+      console.warn(
+        `[WildberriesSDK] ${tokenType.charAt(0).toUpperCase() + tokenType.slice(1)} token detected. ` +
+          'Reduced rate limits apply. Consider upgrading to a Personal or Service token. ' +
+          'See https://dev.wildberries.ru/news/281'
+      );
+    }
+
     // Initialize General module (Story 1.9 - implemented)
     this.general = new GeneralModule(this.client);
 

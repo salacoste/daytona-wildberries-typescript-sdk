@@ -68,6 +68,8 @@ export interface SellerInfoResponse {
   sid?: string;
   /** Торговое наименование продавца */
   tradeMark?: string;
+  /** ИНН продавца (Taxpayer Identification Number) */
+  tin?: string;
 }
 
 // ============================================================================

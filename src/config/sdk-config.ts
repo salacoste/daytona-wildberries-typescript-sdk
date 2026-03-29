@@ -150,6 +150,24 @@ export interface SDKConfig {
    * API keys and PII are automatically sanitized from logs at all levels.
    */
   logLevel?: 'debug' | 'info' | 'warn' | 'error';
+
+  /**
+   * Wildberries API token type
+   *
+   * Different token types have different rate limits.
+   * Personal and Service tokens have full rate limits.
+   * Basic and Test tokens have significantly reduced rate limits (enforced since March 30, 2026).
+   *
+   * - `'personal'` — For proprietary software, on-premise solutions. Full limits.
+   * - `'service'` — For third-party SaaS services from WB Catalog. Full limits.
+   * - `'basic'` — Auxiliary token. Reduced rate limits.
+   * - `'test'` — For testing. Reduced rate limits.
+   *
+   * @defaultValue 'personal'
+   *
+   * @see {@link https://dev.wildberries.ru/news/281 WB API Rate Limits by Token Type}
+   */
+  tokenType?: 'personal' | 'service' | 'basic' | 'test';
 }
 
 /**

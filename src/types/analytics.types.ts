@@ -1647,6 +1647,8 @@ export interface SalesFunnelProductsResponse {
     /** Статистика */
     statistic: SalesFunnelStatistics;
   }[];
+  /** Валюта (например, "RUB") */
+  currency?: string;
 }
 
 /** Ответ истории по товарам воронки продаж v3 (Swagger: ProductHistoryResponse) */
@@ -1655,6 +1657,8 @@ export type SalesFunnelProductsHistoryResponse = {
   product: SalesFunnelHistoryProduct;
   /** Статистика за период */
   history: SalesFunnelHistory[];
+  /** Валюта (например, "RUB") */
+  currency?: string;
 }[];
 
 /** Ответ сгруппированной истории воронки продаж v3 (Swagger: GroupedHistoryResponse) */
@@ -1663,4 +1667,6 @@ export type SalesFunnelGroupedHistoryResponse = {
   product: SalesFunnelHistoryProduct;
   /** Статистика за период */
   history: SalesFunnelHistory[];
+  /** Валюта (например, "RUB") */
+  currency?: string;
 }[];

@@ -27,14 +27,7 @@ export interface ResponseCardCreate {
   /** Описание ошибки */
   errorText?: string;
   /** Дополнительные ошибки */
-  additionalErrors?:
-    | {
-        string?: string;
-      }
-    | string
-    | {
-        error: string;
-      };
+  additionalErrors?: Record<string, string> | string | { error: string };
 }
 
 export interface RequestMoveNmsImtConn {
@@ -61,7 +54,7 @@ export interface ResponseBodyContentError400 {
   /** Текст ошибки */
   errorText?: string;
   /** Дополнительные ошибки */
-  additionalErrors?: Record<string, never>;
+  additionalErrors?: Record<string, string>;
 }
 
 /**
@@ -121,7 +114,7 @@ export interface ResponseContentError {
  */
 export interface MediaErrors {
   /** Дополнительные ошибки */
-  additionalErrors?: Record<string, never>;
+  additionalErrors?: Record<string, string>;
   /** Данные ошибки */
   data?: Record<string, never>;
   /** Флаг ошибки */

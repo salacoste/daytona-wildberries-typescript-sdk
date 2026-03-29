@@ -587,11 +587,16 @@ export class OrdersDbsModule {
    * Use this when the seller has handed over the packages for delivery
    * to the customer. This triggers the delivery tracking process.
    *
+   * **Important:** Orders requiring IMEI must have it attached before calling this method.
+   * Check `requiredMeta` array in `getNewOrders()` response — if it contains `"imei"`,
+   * call `setImei()` first. Otherwise this method returns 409 with `"detail":"ImeiIsNotFilled"`.
+   *
    * Rate limit: Standard DBS rate limits apply
    *
    * @param orderIds - Array of order IDs to mark as delivered (1-1000 items)
    * @returns Promise resolving to delivery status results for each order
    * @throws {ValidationError} When orderIds array is empty or exceeds 1000 items
+   * @throws {WBAPIError} 409 — ImeiIsNotFilled: mandatory IMEI not attached to order
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {NetworkError} When network request fails
