@@ -50,6 +50,14 @@ If you're using Promotion module Type 8 campaigns, migrate to Type 9 before **Fe
 - **[Returns Handling](/guides/returns-handling)** - Returns processing
 - **[Supplies Planning](/guides/supplies-planning)** - Planning supplies to WB warehouses, acceptance coefficients, and FBW vs FBS strategy
 
+### Analytics & Data
+- **[Sales Funnel Analytics](/guides/sales-funnel-analytics)** - Funnel metrics, period comparison, daily trends
+- **[Search Queries Analytics](/guides/search-queries-analytics)** - SEO optimization, search positions, keyword performance
+- **[Seller Analytics CSV](/guides/seller-analytics-csv)** - Long-term CSV reports with polling workflow (requires Jam)
+
+### Customer Interaction
+- **[Customer Communication](/guides/customer-communication)** - Questions, reviews, pinned feedback, buyer chat, returns
+
 ### Subscription & Tariffs
 - **[Jam Subscription Detection](/guides/jam-subscription)** - Detect Jam (Джем) subscription tier to optimize analytics limits
 - **[Tariffs Overview](/guides/tariffs-overview)** - Understanding inventory vs supply tariffs

@@ -161,6 +161,22 @@ export default defineConfig({
                   { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' },
                   { text: '🎫 Jam Subscription Detection', link: '/guides/jam-subscription' }
                 ]
+              },
+              {
+                text: 'Analytics Guides',
+                collapsed: true,
+                items: [
+                  { text: 'Sales Funnel Analytics', link: '/guides/sales-funnel-analytics' },
+                  { text: 'Search Queries Analytics', link: '/guides/search-queries-analytics' },
+                  { text: 'Seller Analytics CSV', link: '/guides/seller-analytics-csv' }
+                ]
+              },
+              {
+                text: 'Customer Interaction',
+                collapsed: true,
+                items: [
+                  { text: 'Customer Communication', link: '/guides/customer-communication' }
+                ]
               }
             ]
           },
@@ -349,6 +365,22 @@ export default defineConfig({
                   { text: '👥 Управление пользователями', link: '/guides/user-management' },
                   { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' },
                   { text: '🎫 Определение подписки Джем', link: '/ru/guides/jam-subscription' }
+                ]
+              },
+              {
+                text: 'Руководства по аналитике',
+                collapsed: true,
+                items: [
+                  { text: 'Воронка продаж', link: '/guides/sales-funnel-analytics' },
+                  { text: 'Поисковые запросы', link: '/guides/search-queries-analytics' },
+                  { text: 'CSV-отчёты аналитики', link: '/guides/seller-analytics-csv' }
+                ]
+              },
+              {
+                text: 'Работа с покупателями',
+                collapsed: true,
+                items: [
+                  { text: 'Общение с покупателями', link: '/guides/customer-communication' }
                 ]
               }
             ]
