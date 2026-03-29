@@ -2,7 +2,7 @@
 
 # Interface: QuarantineGoodsResponse
 
-Defined in: [types/products.types.ts:751](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L751)
+Defined in: [types/products.types.ts:744](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L744)
 
 Response for quarantine goods (GET /api/v2/list/goods/quarantine)
 
@@ -10,6 +10,6 @@ Response for quarantine goods (GET /api/v2/list/goods/quarantine)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`QuarantineGoods`](QuarantineGoods.md)[] | Quarantine goods items | [types/products.types.ts:753](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L753) |
-| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:755](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L755) |
-| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:757](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L757) |
+| <a id="data"></a> `data?` | [`QuarantineGoods`](QuarantineGoods.md)[] | Quarantine goods items | [types/products.types.ts:746](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L746) |
+| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:748](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L748) |
+| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:750](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L750) |

@@ -2,7 +2,7 @@
 
 # Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L25)
+Defined in: [modules/orders-fbw/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L27)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:25](https://github.com/salacoste/dayton
 new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L26)
+Defined in: [modules/orders-fbw/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L28)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ createAcceptanceOption(data: ModelsGood[], options?: {
 }): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L44)
+Defined in: [modules/orders-fbw/index.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L46)
 
 Опции приёмки
 
@@ -85,7 +85,7 @@ console.log(result);
 warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:69](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L69)
+Defined in: [modules/orders-fbw/index.ts:71](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L71)
 
 Список складов
 
@@ -128,7 +128,7 @@ console.log(result);
 transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:90](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L90)
+Defined in: [modules/orders-fbw/index.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L92)
 
 Транзитные направления
 
@@ -174,7 +174,7 @@ listSupplies(data: ModelsSuppliesFiltersRequest, options?: {
 }): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L113)
+Defined in: [modules/orders-fbw/index.ts:115](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L115)
 
 Список поставок
 
@@ -228,7 +228,7 @@ getSupply(ID: number, options?: {
 }): Promise<ModelsSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L140)
+Defined in: [modules/orders-fbw/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L142)
 
 Детали поставки
 
@@ -283,7 +283,7 @@ getSuppliesGood(ID: number, options?: {
 }): Promise<ModelsGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:163](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L163)
+Defined in: [modules/orders-fbw/index.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L165)
 
 Товары поставки
 
@@ -336,7 +336,7 @@ console.log(result);
 getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/orders-fbw/index.ts#L188)
+Defined in: [modules/orders-fbw/index.ts:190](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L190)
 
 Упаковка поставки
 
@@ -375,4 +375,69 @@ When network request fails or times out
 ```ts
 const result = await sdk.ordersFBW.getSuppliesPackage(12345);
 console.log(result);
+```
+
+***
+
+### getClientInfo()
+
+```ts
+getClientInfo(orderIds: number[]): Promise<GetDBWClientInfoResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/orders-fbw/index.ts#L224)
+
+Получение информации о покупателе для заказов DBW
+
+Возвращает данные покупателя (имя, телефон, код) по ID заказов модели DBW.
+
+**Важно:** Этот метод использует домен `marketplace-api.wildberries.ru`,
+а не `supplies-api.wildberries.ru` как остальные методы FBW.
+
+Rate limit: 300 requests per minute, 200ms interval, burst 20.
+Один запрос с кодом 409 считается за 10 запросов.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `orderIds` | `number`[] | Array of assembly order IDs (no documented max limit) |
+
+#### Returns
+
+`Promise`\<[`GetDBWClientInfoResponse`](../-internal-/interfaces/GetDBWClientInfoResponse.md)\>
+
+Buyer information for each order
+
+#### Throws
+
+When orderIds array is empty
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.4.0
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-dbw#tag/Sborochnye-zadaniya-DBW](https://dev.wildberries.ru/docs/openapi/orders-dbw#tag/Sborochnye-zadaniya-DBW)
+
+#### Example
+
+```typescript
+const result = await sdk.ordersFBW.getClientInfo([987654321, 123456789]);
+for (const order of result.orders ?? []) {
+  console.log(`Order ${order.orderID}: ${order.firstName}, phone: +${order.phoneCode}${order.phone}`);
+}
 ```

@@ -6,6 +6,6 @@
 type StickerType = "svg" | "zplv" | "zplh" | "png";
 ```
 
-Defined in: [types/orders-fbs.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/orders-fbs.types.ts#L35)
+Defined in: [types/orders-fbs.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L35)
 
 Sticker output format

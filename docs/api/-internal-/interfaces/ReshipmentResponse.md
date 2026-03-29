@@ -2,7 +2,7 @@
 
 # Interface: ReshipmentResponse
 
-Defined in: [types/orders-fbs.types.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/orders-fbs.types.ts#L260)
+Defined in: [types/orders-fbs.types.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L260)
 
 Response containing orders that require reshipment
 
@@ -10,4 +10,4 @@ Response containing orders that require reshipment
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`ReshipmentOrder`](ReshipmentOrder.md)[] | List of reshipment orders | [types/orders-fbs.types.ts:262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/orders-fbs.types.ts#L262) |
+| <a id="orders"></a> `orders?` | [`ReshipmentOrder`](ReshipmentOrder.md)[] | List of reshipment orders | [types/orders-fbs.types.ts:262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L262) |

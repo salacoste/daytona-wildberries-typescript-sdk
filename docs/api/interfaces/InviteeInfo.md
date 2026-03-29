@@ -2,7 +2,7 @@
 
 # Interface: InviteeInfo
 
-Defined in: [types/user-management.types.ts:62](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/user-management.types.ts#L62)
+Defined in: [types/user-management.types.ts:62](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L62)
 
 Информация о приглашении пользователя
 
@@ -10,8 +10,8 @@ Defined in: [types/user-management.types.ts:62](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="phonenumber"></a> `phoneNumber?` | `string` | Номер телефона приглашённого пользователя | [types/user-management.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/user-management.types.ts#L64) |
-| <a id="position"></a> `position?` | `string` | Должность приглашённого пользователя | [types/user-management.types.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/user-management.types.ts#L66) |
-| <a id="inviteuuid"></a> `inviteUuid?` | `string` | ID приглашения (UUID) | [types/user-management.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/user-management.types.ts#L68) |
-| <a id="expiredat"></a> `expiredAt?` | `string` | Дата и время окончания срока действия приглашения **Format** date-time | [types/user-management.types.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/user-management.types.ts#L73) |
-| <a id="isactive"></a> `isActive?` | `boolean` | Статус приглашения: - `true` — приглашение активно - `false` — приглашение неактивно | [types/user-management.types.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/user-management.types.ts#L79) |
+| <a id="phonenumber"></a> `phoneNumber?` | `string` | Номер телефона приглашённого пользователя | [types/user-management.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L64) |
+| <a id="position"></a> `position?` | `string` | Должность приглашённого пользователя | [types/user-management.types.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L66) |
+| <a id="inviteuuid"></a> `inviteUuid?` | `string` | ID приглашения (UUID) | [types/user-management.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L68) |
+| <a id="expiredat"></a> `expiredAt?` | `string` | Дата и время окончания срока действия приглашения **Format** date-time | [types/user-management.types.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L73) |
+| <a id="isactive"></a> `isActive?` | `boolean` | Статус приглашения: - `true` — приглашение активно - `false` — приглашение неактивно | [types/user-management.types.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L79) |

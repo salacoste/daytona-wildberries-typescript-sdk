@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L24)
+Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L24)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L25)
+Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L25)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-w
 ping(): Promise<PingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L70)
+Defined in: [modules/general/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L70)
 
 Проверка подключения к WB API
 
@@ -104,7 +104,7 @@ console.log(result.Status); // 'OK'
 news(options?: NewsRequestParams): Promise<NewsResponse>;
 ```
 
-Defined in: [modules/general/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L106)
+Defined in: [modules/general/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L106)
 
 Получение новостей портала продавцов
 
@@ -166,7 +166,7 @@ for (const item of result.data) {
 sellerInfo(): Promise<SellerInfoResponse>;
 ```
 
-Defined in: [modules/general/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L140)
+Defined in: [modules/general/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L140)
 
 Получение информации о продавце
 
@@ -219,12 +219,15 @@ console.log(seller.name, seller.sid);
 createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>;
 ```
 
-Defined in: [modules/general/index.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L179)
+Defined in: [modules/general/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L182)
 
 Создание приглашения для нового пользователя
 
 Метод создаёт приглашение для нового пользователя с настройкой доступов к разделам профиля продавца.
 Приглашение действительно в течение ограниченного времени, указанного в ответе.
+
+**Авторизация:** Требуется Персональный токен (категория: Пользователи) от активного владельца профиля.
+Доступно для всех стран продавцов.
 
 Rate limit:
 | Период | Лимит | Интервал | Всплеск |
@@ -284,12 +287,15 @@ console.log(result.inviteUrl);
 getUsers(params?: GetUsersParams): Promise<GetUsersResponse>;
 ```
 
-Defined in: [modules/general/index.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L218)
+Defined in: [modules/general/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L224)
 
 Получение списка пользователей продавца
 
 Возвращает список пользователей профиля продавца с их правами доступа.
 Можно фильтровать по активным пользователям или только приглашённым.
+
+**Авторизация:** Требуется Персональный токен (категория: Пользователи) от активного владельца профиля.
+Доступно для всех стран продавцов.
 
 Rate limit:
 | Период | Лимит | Интервал | Всплеск |
@@ -346,12 +352,15 @@ for (const user of result.users) {
 updateUserAccess(data: UpdateUserAccessRequest): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L261)
+Defined in: [modules/general/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L270)
 
 Изменение доступов пользователей
 
 Обновляет права доступа для одного или нескольких пользователей профиля продавца.
 Можно изменить доступ к различным разделам: баланс, финансы, документы и др.
+
+**Авторизация:** Требуется Персональный токен (категория: Пользователи) от активного владельца профиля.
+Доступно для всех стран продавцов.
 
 Rate limit:
 | Период | Лимит | Интервал | Всплеск |
@@ -414,12 +423,15 @@ await sdk.general.updateUserAccess({
 deleteUser(deletedUserID: number): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:292](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L292)
+Defined in: [modules/general/index.ts:304](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L304)
 
 Удаление пользователя
 
 Удаляет пользователя из профиля продавца по его ID.
 Удалённый пользователь теряет доступ ко всем разделам профиля.
+
+**Авторизация:** Требуется Персональный токен (категория: Пользователи) от активного владельца профиля.
+Доступно для всех стран продавцов.
 
 Rate limit:
 | Период | Лимит | Интервал | Всплеск |
@@ -472,7 +484,7 @@ await sdk.general.deleteUser(12345);
 getJamSubscriptionStatus(params: GetJamSubscriptionStatusParams): Promise<JamSubscriptionStatus>;
 ```
 
-Defined in: [modules/general/index.ts:350](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/modules/general/index.ts#L350)
+Defined in: [modules/general/index.ts:362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L362)
 
 Определение тарифа подписки Джем (Jam)
 

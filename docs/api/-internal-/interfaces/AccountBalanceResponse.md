@@ -2,7 +2,7 @@
 
 # Interface: AccountBalanceResponse
 
-Defined in: [types/finances.types.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/finances.types.ts#L11)
+Defined in: [types/finances.types.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/finances.types.ts#L11)
 
 Response from the balance endpoint
 
@@ -10,6 +10,6 @@ Response from the balance endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="currency"></a> `currency?` | `string` | Валюта (currency code) | [types/finances.types.ts:13](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/finances.types.ts#L13) |
-| <a id="current"></a> `current?` | `number` | Текущий баланс | [types/finances.types.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/finances.types.ts#L15) |
-| <a id="for_withdraw"></a> `for_withdraw?` | `number` | Доступно для вывода | [types/finances.types.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/finances.types.ts#L17) |
+| <a id="currency"></a> `currency?` | `string` | Валюта (currency code) | [types/finances.types.ts:13](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/finances.types.ts#L13) |
+| <a id="current"></a> `current?` | `number` | Текущий баланс | [types/finances.types.ts:15](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/finances.types.ts#L15) |
+| <a id="for_withdraw"></a> `for_withdraw?` | `number` | Доступно для вывода | [types/finances.types.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/finances.types.ts#L17) |

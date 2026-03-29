@@ -2,7 +2,7 @@
 
 # Interface: ReshipmentOrder
 
-Defined in: [types/orders-fbs.types.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/orders-fbs.types.ts#L266)
+Defined in: [types/orders-fbs.types.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L266)
 
 An order that requires reshipment
 
@@ -10,5 +10,5 @@ An order that requires reshipment
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="supplyid"></a> `supplyID?` | `string` | Supply ID the order belongs to | [types/orders-fbs.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/orders-fbs.types.ts#L268) |
-| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbs.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/orders-fbs.types.ts#L270) |
+| <a id="supplyid"></a> `supplyID?` | `string` | Supply ID the order belongs to | [types/orders-fbs.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L268) |
+| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbs.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L270) |

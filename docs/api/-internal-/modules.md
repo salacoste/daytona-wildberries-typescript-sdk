@@ -87,6 +87,9 @@
 | [SalesFunnelStatistics](interfaces/SalesFunnelStatistics.md) | Статистика по периодам v3 (Swagger: Statistics) |
 | [SalesFunnelHistory](interfaces/SalesFunnelHistory.md) | Запись истории v3 (Swagger: History) — использует `date` вместо `dt` |
 | [SalesFunnelProductsResponse](interfaces/SalesFunnelProductsResponse.md) | Ответ списка товаров воронки продаж v3 (Swagger: ProductsResponse) |
+| [WbWarehousesStockRequest](interfaces/WbWarehousesStockRequest.md) | Request for WB warehouses current inventory |
+| [WbWarehouseStockItem](interfaces/WbWarehouseStockItem.md) | Single inventory item — 1 size in 1 WB warehouse |
+| [WbWarehousesStockResponse](interfaces/WbWarehousesStockResponse.md) | Response from POST /api/analytics/v1/stocks-report/wb-warehouses |
 | [PinnedReviewError](interfaces/PinnedReviewError.md) | Error details for pinned reviews operations |
 | [PinReviewItem](interfaces/PinReviewItem.md) | Request item for pinning a review |
 | [PinReviewItemResultData](interfaces/PinReviewItemResultData.md) | Result item from pin operation |
@@ -254,6 +257,8 @@
 | [ModelsWarehousesResultItems](interfaces/ModelsWarehousesResultItems.md) | - |
 | [ModelsGood](interfaces/ModelsGood.md) | - |
 | [ModelsOptionsResultModel](interfaces/ModelsOptionsResultModel.md) | - |
+| [DBWClientInfo](interfaces/DBWClientInfo.md) | Buyer information for a DBW order |
+| [GetDBWClientInfoResponse](interfaces/GetDBWClientInfoResponse.md) | Response from POST /api/marketplace/v3/dbw/orders/client |
 | [StoreContactRequestBody](interfaces/StoreContactRequestBody.md) | Контакты склада продавца |
 | [ResponseCardCreate](interfaces/ResponseCardCreate.md) | - |
 | [RequestMoveNmsImtConn](interfaces/RequestMoveNmsImtConn.md) | - |
@@ -340,6 +345,12 @@
 | [AdvertSubject](interfaces/AdvertSubject.md) | Предмет (для кампаний с копейками) |
 | [AdvertSettings](interfaces/AdvertSettings.md) | Настройки кампании |
 | [AdvertPlacements](interfaces/AdvertPlacements.md) | Места размещения кампании |
+| [BidsKopecks](interfaces/BidsKopecks.md) | Ставки в копейках для поиска и рекомендаций. Ставка в копейках (например, 250 = 2.50 RUB) |
+| [Subject](interfaces/Subject.md) | Предмет/категория товара |
+| [NmSettingV2](interfaces/NmSettingV2.md) | Настройки артикула для V2 API. Использует ставки в копейках (bids_kopecks) вместо устаревшего bid. |
+| [AdvertTimestamps](interfaces/AdvertTimestamps.md) | Временные метки кампании |
+| [AdvertV2](interfaces/AdvertV2.md) | Информация о кампании из V2 API. Использует bid_type: 'auto' | 'manual' и ставки в копейках. |
+| [GetAdvertsV2Response](interfaces/GetAdvertsV2Response.md) | Ответ метода getAdvertsV2 (GET /adv/v2/adverts). Содержит список кампаний с типизированным bid_type и ставками в копейках. |
 | [CampaignListItem](interfaces/CampaignListItem.md) | Campaign list item in count response |
 | [CampaignGroup](interfaces/CampaignGroup.md) | Campaign group by type/status in count response |
 | [GetCampaignCountResponse](interfaces/GetCampaignCountResponse.md) | Response from campaign count endpoint |
@@ -367,6 +378,11 @@
 | [GetSearchClusterStatsResponse](interfaces/GetSearchClusterStatsResponse.md) | Response with search cluster statistics |
 | [GetSearchClusterStatsItem](interfaces/GetSearchClusterStatsItem.md) | Statistics item for a campaign/product |
 | [SearchClusterStatEntry](interfaces/SearchClusterStatEntry.md) | Statistics entry for a single search cluster |
+| [GetBidsRecommendationsParams](interfaces/GetBidsRecommendationsParams.md) | Parameters for the bid recommendations endpoint |
+| [ReachBid](interfaces/ReachBid.md) | Bid value in kopecks |
+| [NormQueryBidRecommendation](interfaces/NormQueryBidRecommendation.md) | Recommended bids for a search cluster (norm query) |
+| [BaseBidRecommendation](interfaces/BaseBidRecommendation.md) | Recommended base bids for the product card |
+| [BidsRecommendationsResponse](interfaces/BidsRecommendationsResponse.md) | Response from GET /api/advert/v0/bids/recommendations |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
 | [SalesItem](interfaces/SalesItem.md) | - |

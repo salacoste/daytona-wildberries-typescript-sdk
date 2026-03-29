@@ -2,13 +2,13 @@
 
 # Interface: ResponsePublicViewerPublicErrorsTableListV2
 
-Defined in: [types/products.types.ts:504](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L504)
+Defined in: [types/products.types.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L497)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`ModelsErrorTableListPublicRespV2`](ModelsErrorTableListPublicRespV2.md) | - | [types/products.types.ts:505](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L505) |
-| <a id="error"></a> `error` | `boolean` | Флаг ошибки | [types/products.types.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L507) |
-| <a id="errortext"></a> `errorText` | `string` | Описание ошибки | [types/products.types.ts:509](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L509) |
-| <a id="additionalerrors"></a> `additionalErrors` | `Record`\<`string`, `never`\> | Дополнительные ошибки | [types/products.types.ts:511](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f33cca8a1792d786fe787b1fb250794525b23c92/src/types/products.types.ts#L511) |
+| <a id="data"></a> `data` | [`ModelsErrorTableListPublicRespV2`](ModelsErrorTableListPublicRespV2.md) | - | [types/products.types.ts:498](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L498) |
+| <a id="error"></a> `error` | `boolean` | Флаг ошибки | [types/products.types.ts:500](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L500) |
+| <a id="errortext"></a> `errorText` | `string` | Описание ошибки | [types/products.types.ts:502](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L502) |
+| <a id="additionalerrors"></a> `additionalErrors` | `Record`\<`string`, `never`\> | Дополнительные ошибки | [types/products.types.ts:504](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L504) |
