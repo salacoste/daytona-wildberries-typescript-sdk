@@ -41,6 +41,8 @@ import type {
   TableShippingOfficeResponse,
   TableSizeRequest,
   TableSizeResponse,
+  WbWarehousesStockRequest,
+  WbWarehousesStockResponse,
 } from '../../types/analytics.types';
 
 export class AnalyticsModule {
@@ -520,6 +522,56 @@ export class AnalyticsModule {
       'https://seller-analytics-api.wildberries.ru/api/analytics/v3/sales-funnel/grouped/history',
       data,
       { rateLimitKey: 'analytics.postSalesFunnelGroupedHistory' }
+    );
+  }
+
+  /**
+   * Текущие остатки на складах WB
+   *
+   * Возвращает актуальные остатки товаров на складах Wildberries.
+   * Данные обновляются раз в 30 минут. Одна строка = один размер на одном складе.
+   * Результаты отсортированы по возрастанию nmId.
+   *
+   * Доступен только для токенов типа Personal и Service.
+   *
+   * **Заменяет устаревший метод** `GET /api/v1/supplier/stocks`,
+   * который будет отключён 23 июня 2026.
+   *
+   * Rate limit: 3 requests per minute, 20-second interval, burst 1
+   *
+   * @param data - Filter and pagination parameters (all optional)
+   * @param data.nmIds - WB articles to filter (0-1000, empty = all)
+   * @param data.chrtIds - Size IDs (only for articles in nmIds)
+   * @param data.limit - Rows in response (max 250000, default 250000)
+   * @param data.offset - Skip N results for pagination (default 0)
+   * @returns Current inventory with warehouse IDs, region names, quantities
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.4.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/Istoriya-ostatkov/operation/postV1StocksReportWbWarehouses}
+   * @example
+   * ```typescript
+   * // Get all inventory
+   * const stock = await sdk.analytics.getWbWarehousesStock();
+   * for (const item of stock.data.items) {
+   *   console.log(`${item.warehouseName} (${item.regionName}): ${item.quantity} шт.`);
+   * }
+   *
+   * // With filters and pagination
+   * const page = await sdk.analytics.getWbWarehousesStock({
+   *   nmIds: [395996251],
+   *   limit: 100,
+   *   offset: 0,
+   * });
+   * ```
+   */
+  async getWbWarehousesStock(data?: WbWarehousesStockRequest): Promise<WbWarehousesStockResponse> {
+    return this.client.post<WbWarehousesStockResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/stocks-report/wb-warehouses',
+      data ?? {},
+      { rateLimitKey: 'analytics.postStocksReportWbWarehouses' }
     );
   }
 }

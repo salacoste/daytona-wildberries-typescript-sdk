@@ -2,7 +2,7 @@
  * Unit Tests for Analytics Module (EPIC 41 & 42)
  *
  * Tests cover:
- * - rateLimitKey wiring for all 16 active methods
+ * - rateLimitKey wiring for all 17 active methods
  * - Type fixes (AvailabilityFilters, TableProductItem)
  * - Return type fixes (getDownloadsFile → ArrayBuffer)
  *
@@ -16,6 +16,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AnalyticsModule } from '../../../src/modules/analytics';
 import type { BaseClient } from '../../../src/client/base-client';
+import { AuthenticationError } from '../../../src/errors/auth-error';
+import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import type {
   AvailabilityFilters,
   TableProductItem,
@@ -402,7 +404,7 @@ describe('AnalyticsModule', () => {
   // ==========================================================================
 
   describe('All module methods exist', () => {
-    it('should have all 16 active methods', () => {
+    it('should have all 17 active methods', () => {
       // CSV Export (4)
       expect(typeof module.getNmReportDownloads).toBe('function');
       expect(typeof module.createNmReportDownload).toBe('function');
@@ -426,9 +428,90 @@ describe('AnalyticsModule', () => {
       expect(typeof module.getSalesFunnelProducts).toBe('function');
       expect(typeof module.getSalesFunnelProductsHistory).toBe('function');
       expect(typeof module.getSalesFunnelGroupedHistory).toBe('function');
+
+      // v1 WB Warehouses Inventory (1)
+      expect(typeof module.getWbWarehousesStock).toBe('function');
     });
 
     // Note: Deprecated v2 wrapper methods (createNmReportDetail, createDetailHistory,
     // createGroupedHistory) have been removed in v3.0.0
+  });
+
+  // ============================================================================
+  // getWbWarehousesStock (v1 WB Warehouses Inventory)
+  // ============================================================================
+
+  describe('getWbWarehousesStock()', () => {
+    const WB_WAREHOUSES_URL = `${BASE_URL}/api/analytics/v1/stocks-report/wb-warehouses`;
+
+    it('should return inventory items with warehouse and region data', async () => {
+      const mockResponse = {
+        data: {
+          items: [
+            {
+              nmId: 395996251,
+              chrtId: 572682891,
+              warehouseId: 130744,
+              warehouseName: 'Краснодар',
+              regionName: 'Южный + Северо-Кавказский',
+              quantity: 10,
+              inWayToClient: 3,
+              inWayFromClient: 0,
+            },
+          ],
+        },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getWbWarehousesStock({ nmIds: [395996251] });
+
+      expect(result.data.items).toHaveLength(1);
+      expect(result.data.items[0].warehouseId).toBe(130744);
+      expect(result.data.items[0].warehouseName).toBe('Краснодар');
+      expect(result.data.items[0].regionName).toBe('Южный + Северо-Кавказский');
+      expect(result.data.items[0].quantity).toBe(10);
+    });
+
+    it('should call correct URL and rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ data: { items: [] } });
+
+      await module.getWbWarehousesStock({ nmIds: [123], limit: 100, offset: 50 });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        WB_WAREHOUSES_URL,
+        { nmIds: [123], limit: 100, offset: 50 },
+        { rateLimitKey: 'analytics.postStocksReportWbWarehouses' }
+      );
+    });
+
+    it('should send empty object when no params provided', async () => {
+      mockClient.post.mockResolvedValue({ data: { items: [] } });
+
+      await module.getWbWarehousesStock();
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        WB_WAREHOUSES_URL,
+        {},
+        { rateLimitKey: 'analytics.postStocksReportWbWarehouses' }
+      );
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+      await expect(module.getWbWarehousesStock()).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(module.getWbWarehousesStock()).rejects.toThrow(RateLimitError);
+    });
+
+    it('should handle empty items array', async () => {
+      mockClient.post.mockResolvedValue({ data: { items: [] } });
+
+      const result = await module.getWbWarehousesStock({ nmIds: [999999] });
+
+      expect(result.data.items).toEqual([]);
+    });
   });
 });

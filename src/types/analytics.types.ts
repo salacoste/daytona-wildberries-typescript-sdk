@@ -1670,3 +1670,49 @@ export type SalesFunnelGroupedHistoryResponse = {
   /** Валюта (например, "RUB") */
   currency?: string;
 }[];
+
+// ============================================================================
+// WB Warehouses Inventory Types (v1)
+// ============================================================================
+
+/** Request for WB warehouses current inventory
+ * @since 3.4.0 */
+export interface WbWarehousesStockRequest {
+  /** WB articles (0-1000 items). Empty = all products */
+  nmIds?: number[];
+  /** Size IDs. Only used for articles specified in nmIds */
+  chrtIds?: number[];
+  /** Number of rows in response (max 250000, default 250000) */
+  limit?: number;
+  /** How many results to skip (default 0) */
+  offset?: number;
+}
+
+/** Single inventory item — 1 size in 1 WB warehouse
+ * @since 3.4.0 */
+export interface WbWarehouseStockItem {
+  /** WB article ID */
+  nmId: number;
+  /** Size ID */
+  chrtId: number;
+  /** WB warehouse ID */
+  warehouseId: number;
+  /** WB warehouse name */
+  warehouseName: string;
+  /** Region name */
+  regionName: string;
+  /** Current quantity in warehouse */
+  quantity: number;
+  /** Quantity in transit to client */
+  inWayToClient: number;
+  /** Quantity in transit from client (returns) */
+  inWayFromClient: number;
+}
+
+/** Response from POST /api/analytics/v1/stocks-report/wb-warehouses
+ * @since 3.4.0 */
+export interface WbWarehousesStockResponse {
+  data: {
+    items: WbWarehouseStockItem[];
+  };
+}

@@ -103,6 +103,12 @@ export const analyticsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 20,
     burstLimit: 3,
   },
+  // v1 WB Warehouses Inventory (new endpoint, replaces deprecated /api/v1/supplier/stocks)
+  'analytics.postStocksReportWbWarehouses': {
+    requestsPerMinute: 3,
+    intervalSeconds: 20,
+    burstLimit: 1,
+  },
   // v3 Sales Funnel endpoints
   'analytics.postSalesFunnelProducts': {
     requestsPerMinute: 3,
