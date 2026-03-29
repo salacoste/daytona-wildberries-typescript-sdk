@@ -10,7 +10,9 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { ValidationError } from '../../errors/validation-error';
 import type {
+  GetDBWClientInfoResponse,
   ModelsBox,
   ModelsGood,
   ModelsGoodInSupply,
@@ -189,6 +191,44 @@ export class OrdersFbwModule {
     return this.client.get<ModelsBox[]>(
       `https://supplies-api.wildberries.ru/api/v1/supplies/${ID}/package`,
       { rateLimitKey: 'orders-fbw.suppliesPackage' }
+    );
+  }
+
+  /**
+   * Получение информации о покупателе для заказов DBW
+   *
+   * Возвращает данные покупателя (имя, телефон, код) по ID заказов модели DBW.
+   *
+   * **Важно:** Этот метод использует домен `marketplace-api.wildberries.ru`,
+   * а не `supplies-api.wildberries.ru` как остальные методы FBW.
+   *
+   * Rate limit: 300 requests per minute, 200ms interval, burst 20.
+   * Один запрос с кодом 409 считается за 10 запросов.
+   *
+   * @param orderIds - Array of assembly order IDs (no documented max limit)
+   * @returns Buyer information for each order
+   * @throws {ValidationError} When orderIds array is empty
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.4.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-dbw#tag/Sborochnye-zadaniya-DBW}
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBW.getClientInfo([987654321, 123456789]);
+   * for (const order of result.orders ?? []) {
+   *   console.log(`Order ${order.orderID}: ${order.firstName}, phone: +${order.phoneCode}${order.phone}`);
+   * }
+   * ```
+   */
+  async getClientInfo(orderIds: number[]): Promise<GetDBWClientInfoResponse> {
+    if (orderIds.length === 0) {
+      throw new ValidationError('orderIds array cannot be empty');
+    }
+    return this.client.post<GetDBWClientInfoResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/client',
+      { orders: orderIds },
+      { rateLimitKey: 'orders-fbw.getClientInfo' }
     );
   }
 }

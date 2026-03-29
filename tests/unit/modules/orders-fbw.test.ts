@@ -16,6 +16,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbwModule } from '../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../src/client/base-client';
 import type { ModelsGood, ModelsSuppliesFiltersRequest } from '../../../src/types/orders-fbw.types';
+import { AuthenticationError } from '../../../src/errors/auth-error';
+import { RateLimitError } from '../../../src/errors/rate-limit-error';
+import { ValidationError } from '../../../src/errors/validation-error';
 
 describe('OrdersFbwModule', () => {
   let mockClient: { get: ReturnType<typeof vi.fn>; post: ReturnType<typeof vi.fn> };
@@ -354,6 +357,76 @@ describe('OrdersFbwModule', () => {
         { rateLimitKey: 'orders-fbw.suppliesPackage' }
       );
       expect(result).toEqual(mockBoxes);
+    });
+  });
+
+  // ============================================================================
+  // getClientInfo (DBW buyer info)
+  // ============================================================================
+
+  describe('getClientInfo()', () => {
+    const DBW_CLIENT_URL =
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/client';
+
+    it('should return buyer info for DBW orders', async () => {
+      const mockResponse = {
+        orders: [
+          {
+            orderID: 987654321,
+            firstName: 'Иван',
+            phone: '1234567',
+            phoneCode: 7,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.getClientInfo([987654321]);
+
+      expect(result.orders).toHaveLength(1);
+      expect(result.orders![0].orderID).toBe(987654321);
+      expect(result.orders![0].firstName).toBe('Иван');
+      expect(result.orders![0].phoneCode).toBe(7);
+    });
+
+    it('should call correct URL with marketplace-api domain', async () => {
+      mockClient.post.mockResolvedValue({ orders: null });
+
+      await ordersFbw.getClientInfo([123]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        DBW_CLIENT_URL,
+        { orders: [123] },
+        { rateLimitKey: 'orders-fbw.getClientInfo' }
+      );
+    });
+
+    it('should send orderIds in request body as { orders: [...] }', async () => {
+      mockClient.post.mockResolvedValue({ orders: null });
+
+      await ordersFbw.getClientInfo([111, 222, 333]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        DBW_CLIENT_URL,
+        { orders: [111, 222, 333] },
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.getClientInfo' })
+      );
+    });
+
+    it('should throw ValidationError for empty orderIds', async () => {
+      await expect(ordersFbw.getClientInfo([])).rejects.toThrow(ValidationError);
+      await expect(ordersFbw.getClientInfo([])).rejects.toThrow('orderIds array cannot be empty');
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+      await expect(ordersFbw.getClientInfo([123])).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(ordersFbw.getClientInfo([123])).rejects.toThrow(RateLimitError);
     });
   });
 });

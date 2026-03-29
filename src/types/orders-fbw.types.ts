@@ -367,3 +367,31 @@ export interface ModelsOptionsResultModel {
   /** ID запроса при наличии ошибок */
   requestId?: string;
 }
+
+// ============================================================================
+// DBW Client Info Types
+// ============================================================================
+
+/** Buyer information for a DBW order
+ * @since 3.4.0 */
+export interface DBWClientInfo {
+  /** Order ID */
+  orderID?: number;
+  /** Customer first name */
+  firstName?: string;
+  /** Customer full name */
+  fullName?: string;
+  /** Phone number (without country code) */
+  phone?: string;
+  /** Phone country code */
+  phoneCode?: number;
+  /** Additional phone country codes */
+  additionalPhoneCodes?: number[];
+}
+
+/** Response from POST /api/marketplace/v3/dbw/orders/client
+ * @since 3.4.0 */
+export interface GetDBWClientInfoResponse {
+  /** List of buyer information by order (null when no matching orders) */
+  orders?: DBWClientInfo[] | null;
+}
