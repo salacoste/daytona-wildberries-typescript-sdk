@@ -6,9 +6,12 @@
 
 import { BaseClient } from '../../client/base-client';
 import type {
+  BidsRecommendationsResponse,
   CampaignProductsUpdate,
   CreateCampaignRequest,
   GetAdverts,
+  GetAdvertsV2Response,
+  GetBidsRecommendationsParams,
   GetCampaignCountResponse,
   GetMinusPhrasesRequest,
   GetMinusPhrasesResponse,
@@ -1071,34 +1074,49 @@ export class PromotionModule {
    * Метод возвращает информацию о рекламных кампаниях с единой или ручной ставкой
    * по их статусам, типам оплаты и ID. Replaces deprecated v1 endpoints.
    *
+   * Данные синхронизируются с базой раз в 3 минуты. Статусы кампаний меняются раз в минуту.
+   * Ставки кампаний меняются раз в 30 секунд.
+   *
    * Rate limit: 5 requests per second, 200ms interval, burst 5
    *
    * @param options - Query parameters for filtering campaigns
-   * @returns List of campaigns with bid settings in kopecks
+   * @param options.ids - Campaign IDs, comma-separated (max 50)
+   * @param options.statuses - Campaign statuses: -1 (deleted), 4 (ready), 7 (finished), 8 (cancelled), 9 (active), 11 (paused)
+   * @param options.payment_type - Payment type: cpm (per impressions) or cpc (per click)
+   * @returns List of campaigns with bid_type (auto/manual) and bids in kopecks
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get}
+   * @since 3.4.0 — Return type changed from GetAdverts to GetAdvertsV2Response
+   * @see {@link https://dev.wildberries.ru/docs/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get}
    * @example
    * ```typescript
    * const campaigns = await sdk.promotion.getAdvertsV2({
    *   ids: '12345,23456',
    *   statuses: '9,11',
-   *   payment_type: 'cpm'
+   *   payment_type: 'cpm',
    * });
-   * console.log(campaigns.adverts);
+   * for (const advert of campaigns.adverts) {
+   *   console.log(advert.id, advert.bid_type, advert.status);
+   *   for (const nm of advert.nm_settings) {
+   *     console.log(`  nmId=${nm.nm_id} search=${nm.bids_kopecks.search} reco=${nm.bids_kopecks.recommendations}`);
+   *   }
+   * }
    * ```
    */
   async getAdvertsV2(options?: {
     ids?: string;
     statuses?: string;
     payment_type?: 'cpm' | 'cpc';
-  }): Promise<GetAdverts> {
-    return this.client.get<GetAdverts>('https://advert-api.wildberries.ru/api/advert/v2/adverts', {
-      params: options,
-      rateLimitKey: 'promotion.advertsV2',
-    });
+  }): Promise<GetAdvertsV2Response> {
+    return this.client.get<GetAdvertsV2Response>(
+      'https://advert-api.wildberries.ru/api/advert/v2/adverts',
+      {
+        params: options,
+        rateLimitKey: 'promotion.advertsV2',
+      }
+    );
   }
 
   /**
@@ -1146,6 +1164,50 @@ export class PromotionModule {
     }>('https://advert-api.wildberries.ru/api/advert/v1/bids/min', data, {
       rateLimitKey: 'promotion.bidsMinV1',
     });
+  }
+
+  /**
+   * Рекомендуемые ставки для карточек товаров и поисковых кластеров
+   *
+   * Метод возвращает рекомендуемые ставки для карточек товаров и поисковых кластеров кампании.
+   * Только для кампаний с типом оплаты cpm (за показы).
+   *
+   * Данные синхронизируются с базой раз в 3 минуты.
+   * Для приостановленных кампаний `normQueries` может быть пустым массивом.
+   *
+   * Rate limit: 5 requests per minute, 12-second interval, burst 5
+   *
+   * @param params - Campaign ID and WB article ID
+   * @param params.advertId - Campaign ID
+   * @param params.nmId - WB article ID (must belong to the campaign)
+   * @returns Recommended bids: base (card-level) and normQueries (per search cluster)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When nmId does not belong to campaign or params invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.4.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1api~1advert~1v0~1bids~1recommendations/get}
+   * @example
+   * ```typescript
+   * const reco = await sdk.promotion.getBidsRecommendations({
+   *   advertId: 29081652,
+   *   nmId: 148190095,
+   * });
+   * for (const nq of reco.normQueries) {
+   *   console.log(`${nq.normQuery}: min=${nq.reachMin.bidKopecks} med=${nq.reachMedium.bidKopecks} max=${nq.reachMax.bidKopecks}`);
+   * }
+   * ```
+   */
+  async getBidsRecommendations(
+    params: GetBidsRecommendationsParams
+  ): Promise<BidsRecommendationsResponse> {
+    return this.client.get<BidsRecommendationsResponse>(
+      'https://advert-api.wildberries.ru/api/advert/v0/bids/recommendations',
+      {
+        params: { advertId: params.advertId, nmId: params.nmId },
+        rateLimitKey: 'promotion.getBidsRecommendations',
+      }
+    );
   }
 
   /**

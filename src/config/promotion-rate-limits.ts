@@ -99,6 +99,12 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.2,
     burstLimit: 5,
   },
+  // GET /api/advert/v0/bids/recommendations — recommended bids for product cards and search clusters (cpm only)
+  'promotion.getBidsRecommendations': {
+    requestsPerMinute: 5,
+    intervalSeconds: 12,
+    burstLimit: 5,
+  },
   'promotion.advBalance': {
     requestsPerMinute: 60,
     intervalSeconds: 1,

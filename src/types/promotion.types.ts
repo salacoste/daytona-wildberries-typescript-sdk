@@ -1887,3 +1887,57 @@ export interface SearchClusterStatEntry {
   /** Average position on search results page */
   avg_pos: number;
 }
+
+// ============================================================================
+// Bid Recommendations Types
+// ============================================================================
+
+/** Parameters for the bid recommendations endpoint
+ * @since 3.4.0 */
+export interface GetBidsRecommendationsParams {
+  /** Campaign ID */
+  advertId: number;
+  /** WB article ID */
+  nmId: number;
+}
+
+/** Bid value in kopecks */
+export interface ReachBid {
+  /** Bid amount in kopecks */
+  bidKopecks: number;
+}
+
+/** Recommended bids for a search cluster (norm query) */
+export interface NormQueryBidRecommendation {
+  /** Normalized search query text */
+  normQuery: string;
+  /** Bid for maximum reach */
+  reachMax: ReachBid;
+  /** Bid for medium reach */
+  reachMedium: ReachBid;
+  /** Bid for minimum reach */
+  reachMin: ReachBid;
+}
+
+/** Recommended base bids for the product card */
+export interface BaseBidRecommendation {
+  /** Competitive bid level */
+  competitiveBid?: ReachBid;
+  /** Leaders bid level */
+  leadersBid?: ReachBid;
+  /** Top-2 position bid level */
+  top2?: ReachBid;
+}
+
+/** Response from GET /api/advert/v0/bids/recommendations
+ * @since 3.4.0 */
+export interface BidsRecommendationsResponse {
+  /** Campaign ID */
+  advertId: number;
+  /** WB article ID */
+  nmId: number;
+  /** Recommended base bids for the product card */
+  base?: BaseBidRecommendation;
+  /** Recommended bids per search cluster */
+  normQueries: NormQueryBidRecommendation[];
+}

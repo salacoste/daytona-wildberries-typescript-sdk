@@ -15,6 +15,7 @@ import { PromotionModule } from '../../../src/modules/promotion';
 import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
+import { ValidationError } from '../../../src/errors/validation-error';
 
 describe('PromotionModule', () => {
   let mockClient: {
@@ -395,8 +396,41 @@ describe('PromotionModule', () => {
 
   describe('V2 API Methods', () => {
     it('getAdvertsV2 - should get campaigns with V2 API', async () => {
-      mockClient.get.mockResolvedValue({ adverts: [] });
-      await module.getAdvertsV2({ ids: '123,456', statuses: '9,11', payment_type: 'cpm' });
+      const mockResponse = {
+        adverts: [
+          {
+            id: 567456457,
+            bid_type: 'manual' as const,
+            status: 9 as const,
+            timestamps: {
+              created: '2024-06-28T15:49:02Z',
+              updated: '2025-07-30T10:23:55Z',
+              started: '2024-07-01T23:32:09Z',
+              deleted: '2099-01-01T00:00:00Z',
+            },
+            settings: {
+              name: 'Campaign 34',
+              payment_type: 'cpc' as const,
+              placements: { recommendations: false, search: true },
+            },
+            nm_settings: [
+              {
+                bids_kopecks: { search: 15000, recommendations: 0 },
+                nm_id: 139312996,
+                subject: { id: 69, name: 'платья' },
+              },
+            ],
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getAdvertsV2({
+        ids: '123,456',
+        statuses: '9,11',
+        payment_type: 'cpm',
+      });
+
       expect(mockClient.get).toHaveBeenCalledWith(
         'https://advert-api.wildberries.ru/api/advert/v2/adverts',
         expect.objectContaining({
@@ -404,6 +438,9 @@ describe('PromotionModule', () => {
           rateLimitKey: 'promotion.advertsV2',
         })
       );
+      expect(result.adverts).toHaveLength(1);
+      expect(result.adverts[0].bid_type).toBe('manual');
+      expect(result.adverts[0].nm_settings[0].bids_kopecks.search).toBe(15000);
     });
 
     it('getBidsMinV2 - should get minimum bids with V1 API', async () => {
@@ -423,6 +460,99 @@ describe('PromotionModule', () => {
           placement_types: ['combined', 'search'],
         },
         expect.objectContaining({ rateLimitKey: 'promotion.bidsMinV1' })
+      );
+    });
+
+    // ================================================================
+    // getBidsRecommendations
+    // ================================================================
+
+    it('getBidsRecommendations - should return recommended bids for cpm campaign', async () => {
+      const mockResponse = {
+        advertId: 29081652,
+        nmId: 148190095,
+        base: {
+          competitiveBid: { bidKopecks: 50000 },
+          leadersBid: { bidKopecks: 75000 },
+          top2: { bidKopecks: 90000 },
+        },
+        normQueries: [
+          {
+            normQuery: 'жидкость для дым машины',
+            reachMax: { bidKopecks: 89000 },
+            reachMedium: { bidKopecks: 40500 },
+            reachMin: { bidKopecks: 70800 },
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getBidsRecommendations({ advertId: 29081652, nmId: 148190095 });
+
+      expect(result.advertId).toBe(29081652);
+      expect(result.nmId).toBe(148190095);
+      expect(result.base?.competitiveBid?.bidKopecks).toBe(50000);
+      expect(result.normQueries).toHaveLength(1);
+      expect(result.normQueries[0].normQuery).toBe('жидкость для дым машины');
+      expect(result.normQueries[0].reachMax.bidKopecks).toBe(89000);
+    });
+
+    it('getBidsRecommendations - should call correct URL with query params', async () => {
+      mockClient.get.mockResolvedValue({ advertId: 123, nmId: 456, normQueries: [] });
+
+      await module.getBidsRecommendations({ advertId: 123, nmId: 456 });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v0/bids/recommendations',
+        expect.objectContaining({
+          params: { advertId: 123, nmId: 456 },
+          rateLimitKey: 'promotion.getBidsRecommendations',
+        })
+      );
+    });
+
+    it('getBidsRecommendations - should propagate AuthenticationError', async () => {
+      mockClient.get.mockRejectedValue(new AuthenticationError('Invalid API key'));
+      await expect(module.getBidsRecommendations({ advertId: 123, nmId: 456 })).rejects.toThrow(
+        AuthenticationError
+      );
+    });
+
+    it('getBidsRecommendations - should propagate RateLimitError', async () => {
+      mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(module.getBidsRecommendations({ advertId: 123, nmId: 456 })).rejects.toThrow(
+        RateLimitError
+      );
+    });
+
+    it('getBidsRecommendations - should handle response without base field', async () => {
+      const mockResponse = {
+        advertId: 29081652,
+        nmId: 148190095,
+        normQueries: [
+          {
+            normQuery: 'test query',
+            reachMax: { bidKopecks: 10000 },
+            reachMedium: { bidKopecks: 5000 },
+            reachMin: { bidKopecks: 7000 },
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getBidsRecommendations({ advertId: 29081652, nmId: 148190095 });
+
+      expect(result.base).toBeUndefined();
+      expect(result.normQueries).toHaveLength(1);
+    });
+
+    it('getBidsRecommendations - should propagate ValidationError for invalid nm', async () => {
+      mockClient.get.mockRejectedValue(new ValidationError('nm does not belong to advert'));
+      await expect(module.getBidsRecommendations({ advertId: 123, nmId: 999 })).rejects.toThrow(
+        ValidationError
+      );
+      await expect(module.getBidsRecommendations({ advertId: 123, nmId: 999 })).rejects.toThrow(
+        'nm does not belong to advert'
       );
     });
 
