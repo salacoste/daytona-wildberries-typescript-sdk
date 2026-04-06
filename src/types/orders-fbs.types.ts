@@ -350,8 +350,11 @@ export interface ExternalStickerResponse {
 
 /** Response containing metadata for a single order */
 export interface OrderMetaResponse {
-  /** Order metadata */
+  /** @deprecated Will be removed April 30, 2026. Use metaDetails instead. */
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   meta?: Meta;
+  /** Metadata details with validation status */
+  metaDetails?: MetaDetail[];
 }
 
 /** Response containing metadata for multiple orders */
@@ -364,8 +367,11 @@ export interface OrdersMetaResponse {
 export interface OrderMetaItem {
   /** Order ID */
   id?: number;
-  /** Order metadata */
+  /** @deprecated Will be removed April 30, 2026. Use metaDetails instead. */
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   meta?: Meta;
+  /** Metadata details with validation status */
+  metaDetails?: MetaDetail[];
 }
 
 /** Response after creating a new supply */
@@ -675,7 +681,21 @@ export interface TrbxStickers {
 }
 
 /**
- * Order metadata containing various identification and tracking codes
+ * Metadata detail item with validation status
+ * Replaces the deprecated `meta` object. Use with `/api/marketplace/v3/orders/meta` endpoint.
+ * @since 3.5.0
+ */
+export interface MetaDetail {
+  /** Metadata type: imei, uin, sgtin, gtin, expiration, customsDeclaration */
+  key: string;
+  /** Metadata value (empty string if not filled) */
+  value: string;
+  /** Validation decision. Known values: 'filled' (value set), 'optional' (not required), 'required' (must fill before deliver), 'invalid' (value failed validation) */
+  decision: string;
+}
+
+/**
+ * @deprecated Will be removed April 30, 2026. Use `metaDetails` (MetaDetail[]) instead.
  */
 export interface Meta {
   /** IMEI */
@@ -797,8 +817,11 @@ export interface OrdersMetaAPI {
 export interface OrderMetaAPI {
   /** Assembly order ID */
   id?: number;
-  /** Order metadata */
+  /** @deprecated Will be removed April 30, 2026. Use metaDetails instead. */
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   meta?: Meta;
+  /** Metadata details with validation status */
+  metaDetails?: MetaDetail[];
 }
 
 /**

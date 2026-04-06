@@ -725,17 +725,33 @@ export class OrdersFbsModule {
    * Closes a supply and sets all assembly tasks in it to `complete` status.
    * After closing, no new tasks can be added. The supply must have at least one task.
    *
+   * **Important: Metadata validation.** Returns 409 if order metadata is invalid:
+   * - IMEI validation (enforced since March 31, 2026)
+   * - UIN validation (enforced since April 7, 2026)
+   * - Marking code for B2B orders (enforced since April 9, 2026)
+   *
+   * Check `metaDetails` via `getOrdersMetaBulk()` before calling deliver.
+   * Each metaDetail has `key`, `value`, and `decision` (filled/optional/required/invalid).
+   *
    * @param supplyId - ID of the supply to deliver
    * @returns Promise resolving to void on success
+   * @throws {WBAPIError} 409 — Metadata validation failed. Response contains details of invalid metadata.
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies~1%7BsupplyId%7D~1deliver/patch}
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/Postavki-FBS}
    *
    * @example
    * ```typescript
-   * await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-1234');
+   * // Check metadata before deliver
+   * const meta = await sdk.ordersFBS.getOrdersMetaBulk({ orders: [orderId] });
+   * const invalid = meta.orders?.[0]?.metaDetails?.filter(d => d.decision === 'required' && !d.value);
+   * if (invalid?.length) {
+   *   console.log('Fix metadata first:', invalid.map(d => d.key));
+   * } else {
+   *   await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-1234');
+   * }
    * ```
    */
   async updateSuppliesDeliver(supplyId: string): Promise<void> {

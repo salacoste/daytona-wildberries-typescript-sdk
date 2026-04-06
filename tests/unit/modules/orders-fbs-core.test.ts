@@ -19,6 +19,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbsModule } from '../../../src/modules/orders-fbs';
 import type { BaseClient } from '../../../src/client/base-client';
+import { WBAPIError } from '../../../src/errors/base-error';
 
 describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
   let mockClient: {
@@ -410,6 +411,19 @@ describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
         expect.any(String),
         undefined,
         expect.objectContaining({ rateLimitKey: 'orders-fbs.patchSuppliesDeliver' })
+      );
+    });
+
+    it('should propagate 409 error for invalid metadata', async () => {
+      const error = new WBAPIError('Metadata validation failed', 409, {
+        detail: 'ImeiIsNotFilled',
+        orders: [{ id: 123, meta: { imei: { status: 'invalid' } } }],
+      });
+      mockClient.patch.mockRejectedValue(error);
+
+      await expect(ordersFbs.updateSuppliesDeliver('WB-GI-12345')).rejects.toThrow(WBAPIError);
+      await expect(ordersFbs.updateSuppliesDeliver('WB-GI-12345')).rejects.toThrow(
+        'Metadata validation failed'
       );
     });
   });
