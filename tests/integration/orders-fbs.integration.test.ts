@@ -458,6 +458,7 @@ describe('OrdersFbsModule Integration Tests', () => {
 
       expect(result.orders).toBeDefined();
       expect(result.orders).toHaveLength(2);
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- testing legacy meta field
       expect(result.orders![0].meta?.imei).toBe('123456789012345');
     });
 
