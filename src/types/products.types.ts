@@ -524,6 +524,8 @@ export interface ModelsErrorTableListPublicRespV2Item {
   vendorCodes: string[];
   /** Ошибки. Разбивка по `vendorCodes` */
   errors: Record<string, string[]>;
+  /** Дата и время создания или изменения пакета (когда карточка попала в черновики) */
+  updatedAt?: string;
 }
 
 /**

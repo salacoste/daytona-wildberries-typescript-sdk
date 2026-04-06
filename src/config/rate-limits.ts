@@ -18,6 +18,7 @@
  * @see {@link https://dev.wildberries.ru/openapi Wildberries API Documentation}
  */
 
+import type { RateLimitConfig } from '../client/rate-limiter';
 import { generalRateLimits } from './general-rate-limits';
 import { productsRateLimits } from './products-rate-limits';
 import { ordersFbsRateLimits } from './orders-fbs-rate-limits';
@@ -104,3 +105,66 @@ export type EndpointKey = keyof typeof ALL_RATE_LIMITS;
  * @deprecated Use ALL_RATE_LIMITS instead
  */
 export const DEFAULT_RATE_LIMITS = ALL_RATE_LIMITS;
+
+/**
+ * Category-level rate limit multipliers for Basic/Test tokens.
+ *
+ * WB enforces significantly reduced limits for Basic and Test tokens since March 30, 2026.
+ * These multipliers approximate the reduction per API category.
+ * WB defines limits per-endpoint, but most endpoints within a category share
+ * similar ratios. Category-level multipliers are a pragmatic approximation.
+ *
+ * @see {@link https://dev.wildberries.ru/news/281}
+ * @since 3.5.0
+ */
+const BASIC_TOKEN_CATEGORY_MULTIPLIERS: Record<string, number> = {
+  general: 0.001, // ~1/24h vs 1/min
+  products: 0.01, // ~1-10/hour vs 100/min
+  'orders-fbs': 0.003, // ~10-50/hour vs 300/min
+  'orders-dbw': 0.003,
+  'orders-dbs': 0.003,
+  'click-collect': 0.003,
+  'in-store-pickup': 0.003,
+  'orders-fbw': 0.01,
+  promotion: 0.02, // ~1-5/hour vs 5/min
+  communications: 0.05,
+  tariffs: 0.01,
+  analytics: 0.05, // ~1-10/hour vs 3/min
+  reports: 0.01,
+  documents: 0.01,
+  finances: 0.01,
+  'user-management': 0.01,
+};
+
+/** Default multiplier for categories not in the map */
+const DEFAULT_BASIC_MULTIPLIER = 0.01;
+
+/**
+ * Applies Basic/Test token rate limit multipliers to all endpoint configs.
+ *
+ * For each endpoint, determines its category from the rateLimitKey prefix
+ * (e.g., 'orders-fbs.xxx' → 'orders-fbs') and reduces requestsPerMinute
+ * accordingly. Burst limit is set to 1 for all endpoints.
+ *
+ * @param limits - Original rate limit configs (for Personal/Service tokens)
+ * @returns New config object with reduced limits for Basic/Test tokens
+ * @since 3.5.0
+ */
+export function applyBasicTokenMultipliers(
+  limits: Record<string, RateLimitConfig>
+): Record<string, RateLimitConfig> {
+  const result: Record<string, RateLimitConfig> = {};
+
+  for (const [key, config] of Object.entries(limits)) {
+    const category = key.split('.')[0];
+    const multiplier = BASIC_TOKEN_CATEGORY_MULTIPLIERS[category] ?? DEFAULT_BASIC_MULTIPLIER;
+
+    result[key] = {
+      ...config,
+      requestsPerMinute: Math.max(1, Math.ceil(config.requestsPerMinute * multiplier)),
+      burstLimit: 1,
+    };
+  }
+
+  return result;
+}

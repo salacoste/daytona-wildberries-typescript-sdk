@@ -18,7 +18,7 @@ import {
 } from '../errors';
 import { RateLimiter } from './rate-limiter';
 import { RetryHandler } from './retry-handler';
-import { ALL_RATE_LIMITS } from '../config/rate-limits';
+import { ALL_RATE_LIMITS, applyBasicTokenMultipliers } from '../config/rate-limits';
 
 /**
  * Parsed fields from an RFC 7807 problem+json error response.
@@ -112,8 +112,13 @@ export class BaseClient {
     // Set up request interceptor for authentication
     this.setupRequestInterceptor();
 
-    // Initialize rate limiter with predefined limits
-    this.rateLimiter = new RateLimiter(ALL_RATE_LIMITS);
+    // Initialize rate limiter with predefined limits, adjusted for token type
+    const tokenType = config.tokenType ?? 'personal';
+    const effectiveLimits =
+      tokenType === 'basic' || tokenType === 'test'
+        ? applyBasicTokenMultipliers(ALL_RATE_LIMITS)
+        : ALL_RATE_LIMITS;
+    this.rateLimiter = new RateLimiter(effectiveLimits);
 
     // Initialize retry handler with configuration and log level
     this.retryHandler = new RetryHandler(config.retryConfig, this.logLevel);

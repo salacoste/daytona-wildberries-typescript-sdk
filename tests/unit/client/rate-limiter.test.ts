@@ -371,3 +371,87 @@ describe('RateLimiter', () => {
     });
   });
 });
+
+// ============================================================================
+// applyBasicTokenMultipliers
+// ============================================================================
+
+import { applyBasicTokenMultipliers } from '../../../src/config/rate-limits';
+
+describe('applyBasicTokenMultipliers', () => {
+  const sampleLimits = {
+    'general.ping': { requestsPerMinute: 6, intervalSeconds: 10, burstLimit: 3 },
+    'orders-fbs.getOrders': { requestsPerMinute: 300, intervalSeconds: 0.2, burstLimit: 20 },
+    'analytics.postReport': { requestsPerMinute: 3, intervalSeconds: 20, burstLimit: 3 },
+    'promotion.getCampaigns': { requestsPerMinute: 5, intervalSeconds: 12, burstLimit: 5 },
+  };
+
+  it('should reduce requestsPerMinute by category multiplier', () => {
+    const result = applyBasicTokenMultipliers(sampleLimits);
+
+    // general: 6 * 0.001 = 0.006 → ceil → 1 (min 1)
+    expect(result['general.ping'].requestsPerMinute).toBe(1);
+
+    // orders-fbs: 300 * 0.003 = 0.9 → ceil → 1
+    expect(result['orders-fbs.getOrders'].requestsPerMinute).toBe(1);
+
+    // analytics: 3 * 0.05 = 0.15 → ceil → 1
+    expect(result['analytics.postReport'].requestsPerMinute).toBe(1);
+
+    // promotion: 5 * 0.02 = 0.1 → ceil → 1
+    expect(result['promotion.getCampaigns'].requestsPerMinute).toBe(1);
+  });
+
+  it('should set burst limit to 1 for all endpoints', () => {
+    const result = applyBasicTokenMultipliers(sampleLimits);
+
+    expect(result['general.ping'].burstLimit).toBe(1);
+    expect(result['orders-fbs.getOrders'].burstLimit).toBe(1);
+    expect(result['analytics.postReport'].burstLimit).toBe(1);
+    expect(result['promotion.getCampaigns'].burstLimit).toBe(1);
+  });
+
+  it('should preserve intervalSeconds and penaltyMultiplier', () => {
+    const limitsWithPenalty = {
+      'orders-fbw.getClientInfo': {
+        requestsPerMinute: 300,
+        intervalSeconds: 0.2,
+        burstLimit: 20,
+        penaltyMultiplier: 10,
+      },
+    };
+    const result = applyBasicTokenMultipliers(limitsWithPenalty);
+
+    expect(result['orders-fbw.getClientInfo'].intervalSeconds).toBe(0.2);
+    expect(result['orders-fbw.getClientInfo'].penaltyMultiplier).toBe(10);
+  });
+
+  it('should use default multiplier for unknown categories', () => {
+    const unknownLimits = {
+      'unknown-module.method': { requestsPerMinute: 100, burstLimit: 10 },
+    };
+    const result = applyBasicTokenMultipliers(unknownLimits);
+
+    // default: 100 * 0.01 = 1
+    expect(result['unknown-module.method'].requestsPerMinute).toBe(1);
+    expect(result['unknown-module.method'].burstLimit).toBe(1);
+  });
+
+  it('should not modify the original limits object', () => {
+    const original = { 'general.ping': { requestsPerMinute: 6, burstLimit: 3 } };
+    applyBasicTokenMultipliers(original);
+
+    expect(original['general.ping'].requestsPerMinute).toBe(6);
+    expect(original['general.ping'].burstLimit).toBe(3);
+  });
+
+  it('should guarantee minimum 1 requestsPerMinute', () => {
+    const tinyLimits = {
+      'general.sellerInfo': { requestsPerMinute: 1, burstLimit: 10 },
+    };
+    const result = applyBasicTokenMultipliers(tinyLimits);
+
+    // 1 * 0.001 = 0.001 → ceil → 1 (Math.max(1, ...))
+    expect(result['general.sellerInfo'].requestsPerMinute).toBe(1);
+  });
+});
