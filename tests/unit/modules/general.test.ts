@@ -10,6 +10,8 @@
  * @see {@link ../../../src/modules/general/index GeneralModule}
  */
 
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { GeneralModule } from '../../../src/modules/general';
 import type { BaseClient } from '../../../src/client/base-client';
@@ -572,7 +574,7 @@ describe('GeneralModule', () => {
   });
 
   // ============================================================================
-  // Jam Subscription Status
+  // Jam Subscription Status (deprecated — probe-based, kept as fallback)
   // ============================================================================
 
   describe('getJamSubscriptionStatus()', () => {
@@ -785,6 +787,98 @@ describe('GeneralModule', () => {
       // Assert
       const payload = mockClient.post.mock.calls[0][1];
       expect(payload.nmIds).toEqual(multipleNmIds);
+    });
+  });
+
+  // ============================================================================
+  // Jam Subscription Direct API
+  // ============================================================================
+
+  describe('getJamSubscription()', () => {
+    it('should return Jam subscription details for active subscription', async () => {
+      const mockResponse = {
+        state: 'active',
+        activationSource: 'jam',
+        level: 'premium',
+        since: '2026-03-16T08:38:08.056406Z',
+        till: '2026-04-25T14:44:28.393587Z',
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await generalModule.getJamSubscription();
+
+      expect(result.state).toBe('active');
+      expect(result.activationSource).toBe('jam');
+      expect(result.level).toBe('premium');
+      expect(result.since).toBeDefined();
+      expect(result.till).toBeDefined();
+    });
+
+    it('should call correct URL and rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue({});
+
+      await generalModule.getJamSubscription();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/common/v1/subscriptions',
+        { rateLimitKey: 'general.getJamSubscription' }
+      );
+    });
+
+    it('should handle empty response for never-subscribed seller', async () => {
+      mockClient.get.mockResolvedValue({});
+
+      const result = await generalModule.getJamSubscription();
+
+      expect(result.state).toBeUndefined();
+      expect(result.level).toBeUndefined();
+    });
+
+    it('should propagate AuthenticationError for non-Service token', async () => {
+      mockClient.get.mockRejectedValue(new AuthenticationError('personal token is not allowed'));
+      await expect(generalModule.getJamSubscription()).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(generalModule.getJamSubscription()).rejects.toThrow(RateLimitError);
+    });
+  });
+
+  // ============================================================================
+  // Seller Rating
+  // ============================================================================
+
+  describe('getSellerRating()', () => {
+    it('should return seller rating and review count', async () => {
+      const mockResponse = { feedbackCount: 12355, valuation: 4.55 };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await generalModule.getSellerRating();
+
+      expect(result.feedbackCount).toBe(12355);
+      expect(result.valuation).toBe(4.55);
+    });
+
+    it('should call correct URL and rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue({});
+
+      await generalModule.getSellerRating();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/common/v1/rating',
+        { rateLimitKey: 'general.getSellerRating' }
+      );
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.get.mockRejectedValue(new AuthenticationError('Invalid token category'));
+      await expect(generalModule.getSellerRating()).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(generalModule.getSellerRating()).rejects.toThrow(RateLimitError);
     });
   });
 });

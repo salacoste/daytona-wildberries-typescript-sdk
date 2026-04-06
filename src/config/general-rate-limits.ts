@@ -49,4 +49,16 @@ export const generalRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 1,
     burstLimit: 10,
   },
+  // GET /api/common/v1/subscriptions — Jam subscription details
+  'general.getJamSubscription': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
+  },
+  // GET /api/common/v1/rating — seller rating and review count
+  'general.getSellerRating': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
 };

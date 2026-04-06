@@ -19,6 +19,8 @@ import type {
   GetJamSubscriptionStatusParams,
   JamSubscriptionStatus,
   JamSubscriptionTier,
+  JamSubscriptionDetails,
+  SellerRatingResponse,
 } from '../../types/general.types';
 
 export class GeneralModule {
@@ -313,10 +315,13 @@ export class GeneralModule {
   }
 
   /**
-   * Определение тарифа подписки Джем (Jam)
+   * Определение тарифа подписки Джем (Jam) через пробные запросы
    *
-   * Wildberries не предоставляет прямого эндпоинта для проверки тарифа Джем.
-   * Этот метод определяет тариф через пробные запросы к аналитическому эндпоинту
+   * @deprecated Используйте {@link getJamSubscription} вместо этого метода.
+   * Прямой API `GET /api/common/v1/subscriptions` не требует nmIds и не тратит квоту аналитики.
+   * Этот probe-метод сохранён как fallback для случаев, когда нет Сервисного токена.
+   *
+   * Определяет тариф через пробные запросы к аналитическому эндпоинту
    * поисковых запросов товара (`/api/v2/search-report/product/search-texts`),
    * используя разные значения `limit`:
    *
@@ -417,5 +422,71 @@ export class GeneralModule {
       checkedAt: new Date().toISOString(),
       probeCallsMade,
     };
+  }
+
+  /**
+   * Получение информации о подписке Джем (Jam)
+   *
+   * Возвращает подробную информацию о подписке Джем продавца:
+   * даты активации и окончания, уровень подписки, способ оформления и статус.
+   *
+   * Если продавец никогда не подключал подписку, возвращается пустой объект (200).
+   *
+   * **Авторизация:** Сервисный токен любой категории.
+   *
+   * Rate limit: 1 request per minute, 1 min interval, burst 10
+   *
+   * @returns Jam subscription details (empty object if never subscribed)
+   * @throws {AuthenticationError} When API key is invalid or not a Service token (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.5.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Subscriptions}
+   * @example
+   * ```typescript
+   * const jam = await sdk.general.getJamSubscription();
+   * if (jam.state === 'active') {
+   *   console.log(`Jam ${jam.level} active until ${jam.till}`);
+   *   console.log(`Source: ${jam.activationSource}, since: ${jam.since}`);
+   * } else if (jam.state) {
+   *   console.log(`Jam inactive (state: ${jam.state})`);
+   * } else {
+   *   console.log('Never subscribed to Jam');
+   * }
+   * ```
+   */
+  async getJamSubscription(): Promise<JamSubscriptionDetails> {
+    return this.client.get<JamSubscriptionDetails>(
+      'https://common-api.wildberries.ru/api/common/v1/subscriptions',
+      { rateLimitKey: 'general.getJamSubscription' }
+    );
+  }
+
+  /**
+   * Получить рейтинг продавца и количество отзывов
+   *
+   * Возвращает пользовательский рейтинг продавца и общее количество отзывов.
+   *
+   * **Авторизация:** Сервисный токен категории **Вопросы и отзывы**.
+   *
+   * Rate limit: 1 request per minute, 1 min interval, burst 1
+   *
+   * @returns Seller rating and review count
+   * @throws {AuthenticationError} When API key is invalid or wrong token category (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.5.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Rating}
+   * @example
+   * ```typescript
+   * const rating = await sdk.general.getSellerRating();
+   * console.log(`Rating: ${rating.valuation} (${rating.feedbackCount} reviews)`);
+   * ```
+   */
+  async getSellerRating(): Promise<SellerRatingResponse> {
+    return this.client.get<SellerRatingResponse>(
+      'https://common-api.wildberries.ru/api/common/v1/rating',
+      { rateLimitKey: 'general.getSellerRating' }
+    );
   }
 }

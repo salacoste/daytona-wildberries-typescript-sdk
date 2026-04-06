@@ -281,3 +281,37 @@ export interface GetJamSubscriptionStatusParams {
   /** One or more WB article IDs (nmIds) to use in the probe request */
   nmIds: number[];
 }
+
+/**
+ * Detailed Jam subscription information from GET /api/common/v1/subscriptions
+ *
+ * - If seller never subscribed: empty 200 response (all fields undefined)
+ * - If active: state='active', since/till populated
+ * - If expired/cancelled then resubscribed: since = first activation, till = current period end
+ * - If inactive: since = first activation, till = last paid period end
+ *
+ * @since 3.5.0
+ */
+export interface JamSubscriptionDetails {
+  /** Subscription state: 'active' or other values when inactive */
+  state?: string;
+  /** How the subscription was activated (e.g., 'jam') */
+  activationSource?: string;
+  /** Subscription level (e.g., 'premium', 'standard') */
+  level?: string;
+  /** Date of first subscription activation (ISO 8601) */
+  since?: string;
+  /** End date of current/last paid period (ISO 8601) */
+  till?: string;
+}
+
+/**
+ * Seller rating and review count from GET /api/common/v1/rating
+ * @since 3.5.0
+ */
+export interface SellerRatingResponse {
+  /** Total number of customer reviews */
+  feedbackCount?: number;
+  /** Seller rating (e.g., 4.55) */
+  valuation?: number;
+}
