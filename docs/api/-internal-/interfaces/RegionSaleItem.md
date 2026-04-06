@@ -2,7 +2,7 @@
 
 # Interface: RegionSaleItem
 
-Defined in: [types/reports.types.ts:548](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L548)
+Defined in: [types/reports.types.ts:548](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L548)
 
 Region sale report item
 
@@ -14,9 +14,9 @@ EPIC 43 - Response type for getAnalyticsRegionSale
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="regionname"></a> `regionName?` | `string` | Название региона | [types/reports.types.ts:550](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L550) |
-| <a id="regionid"></a> `regionId?` | `number` | ID региона | [types/reports.types.ts:552](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L552) |
-| <a id="salescount"></a> `salesCount?` | `number` | Количество продаж | [types/reports.types.ts:554](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L554) |
-| <a id="salessum"></a> `salesSum?` | `number` | Сумма продаж | [types/reports.types.ts:556](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L556) |
-| <a id="returnscount"></a> `returnsCount?` | `number` | Количество возвратов | [types/reports.types.ts:558](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L558) |
-| <a id="returnssum"></a> `returnsSum?` | `number` | Сумма возвратов | [types/reports.types.ts:560](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L560) |
+| <a id="regionname"></a> `regionName?` | `string` | Название региона | [types/reports.types.ts:550](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L550) |
+| <a id="regionid"></a> `regionId?` | `number` | ID региона | [types/reports.types.ts:552](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L552) |
+| <a id="salescount"></a> `salesCount?` | `number` | Количество продаж | [types/reports.types.ts:554](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L554) |
+| <a id="salessum"></a> `salesSum?` | `number` | Сумма продаж | [types/reports.types.ts:556](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L556) |
+| <a id="returnscount"></a> `returnsCount?` | `number` | Количество возвратов | [types/reports.types.ts:558](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L558) |
+| <a id="returnssum"></a> `returnsSum?` | `number` | Сумма возвратов | [types/reports.types.ts:560](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L560) |

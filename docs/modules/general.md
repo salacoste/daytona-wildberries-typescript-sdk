@@ -1,6 +1,6 @@
 # General Module
 
-The General module provides essential utility endpoints for API connectivity testing, marketplace news retrieval, and seller account information. It serves as the foundation for validating SDK setup and API key configuration before using other modules.
+The General module provides essential utility endpoints for API connectivity testing, marketplace news retrieval, seller account information, subscription status, and user management. It serves as the foundation for validating SDK setup and API key configuration before using other modules.
 
 ## Overview
 
@@ -10,9 +10,9 @@ The General module provides essential utility endpoints for API connectivity tes
 | **SDK Namespace** | `sdk.general.*` |
 | **Base URLs** | `https://common-api.wildberries.ru`, `https://user-management-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/01-general.yaml` |
-| **Methods** | 8 |
-| **Swagger Endpoints** | 7 (all implemented) |
-| **Authentication** | API Key (Header) |
+| **Methods** | 10 (including 1 deprecated) |
+| **Swagger Endpoints** | 9 (all implemented) |
+| **Authentication** | API Key (Header) — see [Token Types](#token-types) for details |
 
 ### Purpose
 
@@ -21,10 +21,32 @@ The General module is designed to:
 - **Validate API connectivity** - Test that requests reach the Wildberries API successfully
 - **Verify API key validity** - Confirm the token is not expired or revoked
 - **Retrieve marketplace news** - Get announcements and updates from the Wildberries seller portal
-- **Fetch seller information** - Retrieve authenticated seller's account details
+- **Fetch seller information** - Retrieve authenticated seller's account details (including TIN)
+- **Check Jam subscription** - Query subscription state, level, and active period directly via the API
+- **Retrieve seller rating** - Get seller rating and review count
 - **Manage seller users** - Create invitations, list users, update permissions, and delete users
 
 This module is typically the first one developers use when integrating with the Wildberries SDK, as `ping()` provides a quick health check for both connectivity and authentication.
+
+### Token Types
+
+Some methods require specific token types:
+
+| Token Type | Description | SDKConfig Value |
+|------------|-------------|-----------------|
+| **Personal** | Proprietary software, on-premise solutions. Full rate limits. | `'personal'` (default) |
+| **Service** | Third-party SaaS services from WB Catalog. Full rate limits. | `'service'` |
+| **Basic** | Auxiliary token. Reduced rate limits. | `'basic'` |
+| **Test** | Testing token. Reduced rate limits. | `'test'` |
+
+Configure via `SDKConfig.tokenType`:
+
+```typescript
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_API_KEY || 'your-api-key-here',
+  tokenType: 'service', // default: 'personal'
+});
+```
 
 ---
 
@@ -43,6 +65,8 @@ const sdk = new WildberriesSDK({
 const pingResult = await sdk.general.ping();
 const news = await sdk.general.news();
 const seller = await sdk.general.sellerInfo();
+const jam = await sdk.general.getJamSubscription();
+const rating = await sdk.general.getSellerRating();
 ```
 
 ### Manual Module Initialization (Advanced)
@@ -75,7 +99,9 @@ const general = new GeneralModule(client);
 | [`ping()`](#ping) | GET | `/ping` | Test API connectivity and token validity | 3 req/30s |
 | [`news(options?)`](#news) | GET | `/api/communications/v2/news` | Retrieve seller portal news | 1 req/min |
 | [`sellerInfo()`](#sellerinfo) | GET | `/api/v1/seller-info` | Get authenticated seller information | 1 req/min |
-| [`getJamSubscriptionStatus(params)`](#getjamsubscriptionstatus) | POST | `/api/v2/search-report/product/search-texts` | Detect Jam subscription tier | Shared with Analytics |
+| [`getJamSubscription()`](#getjamsubscription) | GET | `/api/common/v1/subscriptions` | Get Jam subscription details | 1 req/min |
+| [`getSellerRating()`](#getsellerrating) | GET | `/api/common/v1/rating` | Get seller rating and review count | 1 req/min |
+| [`getJamSubscriptionStatus(params)`](#getjamsubscriptionstatus-deprecated) | POST | `/api/v2/search-report/...` | **Deprecated.** Detect Jam tier via probe | Shared with Analytics |
 
 ---
 
@@ -244,6 +270,8 @@ interface SellerInfoResponse {
   sid?: string;
   /** Seller's trade mark / brand name */
   tradeMark?: string;
+  /** Seller's Taxpayer Identification Number (INN) */
+  tin?: string;
 }
 ```
 
@@ -260,6 +288,9 @@ try {
   console.log(`  Name: ${seller.name}`);
   console.log(`  Seller ID: ${seller.sid}`);
   console.log(`  Trade Mark: ${seller.tradeMark}`);
+  if (seller.tin) {
+    console.log(`  TIN (INN): ${seller.tin}`);
+  }
 } catch (error) {
   if (error instanceof AuthenticationError) {
     console.error('API key is invalid or expired');
@@ -271,11 +302,110 @@ try {
 
 ---
 
-### `getJamSubscriptionStatus()`
+### `getJamSubscription()`
 
-Detect the seller's Jam (Джем) subscription tier by probing the analytics search-texts endpoint.
+Retrieve detailed information about the seller's Jam subscription directly from the API.
 
-Since Wildberries does not provide a direct API for checking Jam status, this method uses a probe strategy — sending requests with specific `limit` values and interpreting the responses.
+Returns the subscription state, level, activation source, and active period dates. If the seller has never subscribed, the API returns an empty 200 response (all fields undefined).
+
+**Added in:** v3.5.0
+
+**Signature:**
+```typescript
+getJamSubscription(): Promise<JamSubscriptionDetails>
+```
+
+**Returns:** `Promise<JamSubscriptionDetails>`
+
+```typescript
+interface JamSubscriptionDetails {
+  /** Subscription state: 'active' or other values when inactive */
+  state?: string;
+  /** How the subscription was activated (e.g., 'jam') */
+  activationSource?: string;
+  /** Subscription level (e.g., 'premium', 'standard') */
+  level?: string;
+  /** Date of first subscription activation (ISO 8601) */
+  since?: string;
+  /** End date of current/last paid period (ISO 8601) */
+  till?: string;
+}
+```
+
+**Authorization:** Service token of any category.
+
+**Rate Limit:** 1 request per minute, burst limit 10
+
+**Behavior by subscription state:**
+
+| Scenario | `state` | `since` | `till` |
+|----------|---------|---------|--------|
+| Never subscribed | `undefined` | `undefined` | `undefined` |
+| Active subscription | `'active'` | First activation date | Current period end |
+| Expired/cancelled, then resubscribed | `'active'` | First activation date | Current period end |
+| Inactive (expired) | Present (non-active) | First activation date | Last paid period end |
+
+**Example:**
+```typescript
+const jam = await sdk.general.getJamSubscription();
+
+if (jam.state === 'active') {
+  console.log(`Jam ${jam.level} active until ${jam.till}`);
+  console.log(`Source: ${jam.activationSource}, since: ${jam.since}`);
+} else if (jam.state) {
+  console.log(`Jam inactive (state: ${jam.state})`);
+} else {
+  console.log('Never subscribed to Jam');
+}
+```
+
+**See Also:** [Official API Documentation](https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Subscriptions) | [Jam Subscription Detection Guide](/guides/jam-subscription)
+
+---
+
+### `getSellerRating()`
+
+Retrieve the seller's user rating and total review count.
+
+**Added in:** v3.5.0
+
+**Signature:**
+```typescript
+getSellerRating(): Promise<SellerRatingResponse>
+```
+
+**Returns:** `Promise<SellerRatingResponse>`
+
+```typescript
+interface SellerRatingResponse {
+  /** Total number of customer reviews */
+  feedbackCount?: number;
+  /** Seller rating (e.g., 4.55) */
+  valuation?: number;
+}
+```
+
+**Authorization:** Service token with the **"Feedbacks and Questions"** (Voprosy i otzyvy) category.
+
+**Rate Limit:** 1 request per minute, burst limit 1
+
+**Example:**
+```typescript
+const rating = await sdk.general.getSellerRating();
+console.log(`Rating: ${rating.valuation} (${rating.feedbackCount} reviews)`);
+```
+
+**See Also:** [Official API Documentation](https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Rating)
+
+---
+
+### `getJamSubscriptionStatus()` (Deprecated)
+
+> **Deprecated since v3.5.0.** Use [`getJamSubscription()`](#getjamsubscription) instead. The direct API endpoint does not require `nmIds` and does not consume analytics quota. This probe method is retained as a fallback for cases where a Service token is not available.
+
+Detect the seller's Jam subscription tier by probing the analytics search-texts endpoint.
+
+Since Wildberries did not originally provide a direct API for checking Jam status, this method uses a probe strategy -- sending requests with specific `limit` values and interpreting the responses.
 
 **Signature:**
 ```typescript
@@ -312,10 +442,11 @@ interface JamSubscriptionStatus {
 
 **Rate Limit:** Shares quota with `analytics.createProductSearchText` (3 req/min, 20s interval, burst 3)
 
-> **Tip:** Cache the result — subscription tier changes infrequently. See the [Jam Subscription Guide](/guides/jam-subscription) for caching patterns.
+> **Tip:** Cache the result -- subscription tier changes infrequently. See the [Jam Subscription Guide](/guides/jam-subscription) for caching patterns.
 
 **Example:**
 ```typescript
+// Prefer getJamSubscription() for new code. Use this only as fallback.
 const status = await sdk.general.getJamSubscriptionStatus({
   nmIds: [12345678]
 });
@@ -351,11 +482,26 @@ import type {
   SellerInfoResponse,
   JamSubscriptionTier,
   JamSubscriptionStatus,
+  JamSubscriptionDetails,
   GetJamSubscriptionStatusParams,
+  SellerRatingResponse,
+  // User Management types
+  AccessCode,
+  AccessItem,
+  InviteInfo,
+  CreateInviteRequest,
+  CreateInviteResponse,
+  InviteeInfo,
+  UserInfo,
+  GetUsersParams,
+  GetUsersResponse,
+  UserAccessUpdate,
+  UpdateUserAccessRequest,
+  UserManagementErrorResponse,
 } from 'daytona-wildberries-typescript-sdk';
 ```
 
-### Type Definitions
+### Core Type Definitions
 
 ```typescript
 /**
@@ -422,6 +568,65 @@ export interface SellerInfoResponse {
   sid?: string;
   /** Registered trade mark or brand name */
   tradeMark?: string;
+  /** Seller's Taxpayer Identification Number (INN) */
+  tin?: string;
+}
+```
+
+### Jam Subscription Types
+
+```typescript
+/**
+ * Jam subscription tier (used by the deprecated probe method)
+ */
+export type JamSubscriptionTier = 'none' | 'standard' | 'advanced';
+
+/**
+ * Result of a Jam subscription status probe (deprecated)
+ */
+export interface JamSubscriptionStatus {
+  tier: JamSubscriptionTier;
+  checkedAt: string;
+  probeCallsMade: number;
+}
+
+/**
+ * Parameters for the Jam subscription status probe (deprecated)
+ */
+export interface GetJamSubscriptionStatusParams {
+  nmIds: number[];
+}
+
+/**
+ * Detailed Jam subscription information from GET /api/common/v1/subscriptions
+ * Added in v3.5.0
+ */
+export interface JamSubscriptionDetails {
+  /** Subscription state: 'active' or other values when inactive */
+  state?: string;
+  /** How the subscription was activated (e.g., 'jam') */
+  activationSource?: string;
+  /** Subscription level (e.g., 'premium', 'standard') */
+  level?: string;
+  /** Date of first subscription activation (ISO 8601) */
+  since?: string;
+  /** End date of current/last paid period (ISO 8601) */
+  till?: string;
+}
+```
+
+### Seller Rating Types
+
+```typescript
+/**
+ * Seller rating and review count from GET /api/common/v1/rating
+ * Added in v3.5.0
+ */
+export interface SellerRatingResponse {
+  /** Total number of customer reviews */
+  feedbackCount?: number;
+  /** Seller rating (e.g., 4.55) */
+  valuation?: number;
 }
 ```
 
@@ -508,7 +713,13 @@ const result = await sdk.general.ping();
 | `ping()` | 6 | 10 seconds | 3 |
 | `news()` | 1 | 60 seconds | 10 |
 | `sellerInfo()` | 1 | 60 seconds | 10 |
+| `getJamSubscription()` | 1 | 60 seconds | 10 |
+| `getSellerRating()` | 1 | 60 seconds | 1 |
 | `getJamSubscriptionStatus()` | 3 (shared) | 20 seconds | 3 |
+| `createInvite()` | 60 | 1 second | 5 |
+| `getUsers()` | 60 | 1 second | 5 |
+| `updateUserAccess()` | 60 | 1 second | 5 |
+| `deleteUser()` | 60 | 1 second | 10 |
 
 > **Note:** Rate limits are enforced per API key, not per SDK instance. Multiple SDK instances using the same API key share the same rate limit quota.
 
@@ -542,8 +753,25 @@ async function demonstrateGeneralModule() {
   console.log('\nFetching seller info...');
   const seller = await sdk.general.sellerInfo();
   console.log(`Seller: ${seller.name} (ID: ${seller.sid})`);
+  if (seller.tin) {
+    console.log(`TIN (INN): ${seller.tin}`);
+  }
 
-  // Step 3: Get recent news
+  // Step 3: Get Jam subscription details
+  console.log('\nChecking Jam subscription...');
+  const jam = await sdk.general.getJamSubscription();
+  if (jam.state === 'active') {
+    console.log(`Jam ${jam.level} active until ${jam.till}`);
+  } else {
+    console.log('No active Jam subscription');
+  }
+
+  // Step 4: Get seller rating
+  console.log('\nFetching seller rating...');
+  const rating = await sdk.general.getSellerRating();
+  console.log(`Rating: ${rating.valuation} (${rating.feedbackCount} reviews)`);
+
+  // Step 5: Get recent news
   console.log('\nFetching recent news...');
   const news = await sdk.general.news({ from: '2024-01-01' });
   console.log(`Found ${news.data.length} news items`);
@@ -561,6 +789,8 @@ demonstrateGeneralModule().catch(console.error);
 ## User Management (4 methods)
 
 These methods manage seller account users and permissions. They use the base URL `https://user-management-api.wildberries.ru`.
+
+**Authorization:** All User Management methods require a **Personal Token** (category: Users) from the active profile owner. Available for sellers in all countries.
 
 | Method | HTTP | Endpoint | Description | Rate Limit |
 |--------|------|----------|-------------|------------|
@@ -586,7 +816,7 @@ createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>
 |-----------|------|----------|-------------|
 | `data.invite` | `InviteInfo` | Yes | Invitation details |
 | `data.invite.phoneNumber` | `string` | Yes | User phone number |
-| `data.invite.position` | `string` | No | User position/role |
+| `data.invite.position` | `string` | No | User position/role (max 150 chars) |
 | `data.access` | `AccessItem[]` | No | Access permissions |
 
 **Returns:** `Promise<CreateInviteResponse>`
@@ -636,6 +866,7 @@ getUsers(params?: GetUsersParams): Promise<GetUsersResponse>
 ```typescript
 interface GetUsersResponse {
   total: number;
+  countInResponse: number;
   users: UserInfo[];
 }
 ```
@@ -755,6 +986,7 @@ Available access codes for user permissions:
 
 - [Finances Module](/modules/finances) - Financial operations and balance management
 - [Analytics Module](/modules/analytics) - Seller analytics and statistics
+- [Communications Module](/modules/communications) - Customer reviews, Q&A, and feedback management
 
 ---
 
@@ -765,3 +997,5 @@ Available access codes for user permissions:
 | 1.0.0 | Initial release with `ping()`, `news()`, `sellerInfo()` methods |
 | 2.8.0 | Rate limit values corrected per EPIC 15; JSDoc enriched |
 | 3.3.0 | Added `getJamSubscriptionStatus()` for Jam tier detection via probe strategy |
+| 3.4.0 | Added `tin` (INN) field to `SellerInfoResponse`; added `SDKConfig.tokenType` for token type awareness; User Management methods note Personal Token requirement |
+| 3.5.0 | Added `getJamSubscription()` direct API method and `getSellerRating()`; deprecated `getJamSubscriptionStatus()` in favor of `getJamSubscription()` |

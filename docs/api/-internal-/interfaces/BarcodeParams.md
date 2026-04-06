@@ -2,7 +2,7 @@
 
 # Interface: BarcodeParams
 
-Defined in: [types/orders-fbs.types.ts:194](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L194)
+Defined in: [types/orders-fbs.types.ts:194](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L194)
 
 Query parameters for sticker/barcode format
 
@@ -18,4 +18,4 @@ Index signature for compatibility with Record<string, unknown>
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="type"></a> `type` | [`StickerType`](../type-aliases/StickerType.md) | Output format | [types/orders-fbs.types.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L196) |
+| <a id="type"></a> `type` | [`StickerType`](../type-aliases/StickerType.md) | Output format | [types/orders-fbs.types.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L196) |

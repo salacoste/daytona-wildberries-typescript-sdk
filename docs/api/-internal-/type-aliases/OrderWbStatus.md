@@ -17,6 +17,6 @@ type OrderWbStatus =
   | "sent_to_carrier";
 ```
 
-Defined in: [types/orders-fbs.types.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L18)
+Defined in: [types/orders-fbs.types.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L18)
 
 Wildberries system order status

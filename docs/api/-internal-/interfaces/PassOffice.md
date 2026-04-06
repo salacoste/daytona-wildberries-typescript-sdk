@@ -2,7 +2,7 @@
 
 # Interface: PassOffice
 
-Defined in: [types/orders-fbs.types.ts:710](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L710)
+Defined in: [types/orders-fbs.types.ts:730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L730)
 
 Warehouse office data for seller pass registration
 
@@ -10,6 +10,6 @@ Warehouse office data for seller pass registration
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name?` | `string` | Office name | [types/orders-fbs.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L712) |
-| <a id="address"></a> `address?` | `string` | Office address | [types/orders-fbs.types.ts:714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L714) |
-| <a id="id"></a> `id?` | `number` | Office ID | [types/orders-fbs.types.ts:716](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L716) |
+| <a id="name"></a> `name?` | `string` | Office name | [types/orders-fbs.types.ts:732](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L732) |
+| <a id="address"></a> `address?` | `string` | Office address | [types/orders-fbs.types.ts:734](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L734) |
+| <a id="id"></a> `id?` | `number` | Office ID | [types/orders-fbs.types.ts:736](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L736) |

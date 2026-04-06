@@ -1,6 +1,6 @@
 ---
 title: Configuration Guide
-description: Configure the Wildberries SDK for different environments - basic config, rate limiting, retry logic, logging, and custom clients
+description: Configure the Wildberries SDK for different environments - basic config, token types, rate limiting, retry logic, logging, and custom clients
 layout: doc
 ---
 
@@ -12,6 +12,7 @@ Comprehensive guide to configuring the Wildberries TypeScript SDK for different 
 
 - [Overview](#overview)
 - [Basic Configuration](#basic-configuration)
+- [Token Types and Rate Limits](#token-types-and-rate-limits)
 - [Environment-Specific Configuration](#environment-specific-configuration)
 - [Advanced Configuration](#advanced-configuration)
 - [Timeout Configuration](#timeout-configuration)
@@ -34,6 +35,7 @@ interface SDKConfig {
   // Optional overrides
   baseUrls?: Partial<Record<string, string>>;
   timeout?: number;
+  tokenType?: 'personal' | 'service' | 'basic' | 'test';
   retryConfig?: RetryConfig;
   rateLimitConfig?: RateLimitConfig;
   logLevel?: 'debug' | 'info' | 'warn' | 'error';
@@ -70,6 +72,9 @@ const sdk = new WildberriesSDK({
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
 
+  // Token type (affects rate limits)
+  tokenType: 'service',
+
   // Timeout configuration
   timeout: 30000,
 
@@ -91,6 +96,105 @@ const sdk = new WildberriesSDK({
 });
 ```
 
+## Token Types and Rate Limits
+
+*Since v3.5.0*
+
+Wildberries issues different types of API tokens with different rate limit allowances. Since March 30, 2026, Basic and Test tokens have significantly reduced rate limits compared to Personal and Service tokens.
+
+### Token Types
+
+| Token Type | Purpose | Rate Limits |
+|------------|---------|-------------|
+| `'personal'` | Proprietary software, on-premise solutions | **Full limits** |
+| `'service'` | Third-party SaaS services from WB Catalog | **Full limits** |
+| `'basic'` | Auxiliary token for limited integrations | **Reduced limits** |
+| `'test'` | Testing and development | **Reduced limits** |
+
+### Configuring Token Type
+
+Pass the `tokenType` option when creating the SDK instance. The SDK will automatically apply the correct rate limit multipliers:
+
+```typescript
+// Personal token (default) -- full rate limits
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_PERSONAL_TOKEN!,
+});
+
+// Service token -- full rate limits
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_SERVICE_TOKEN!,
+  tokenType: 'service',
+});
+
+// Basic token -- reduced rate limits applied automatically
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_BASIC_TOKEN!,
+  tokenType: 'basic',
+});
+
+// Test token -- reduced rate limits applied automatically
+const sdk = new WildberriesSDK({
+  apiKey: process.env.WB_TEST_TOKEN!,
+  tokenType: 'test',
+});
+```
+
+::: warning Startup Warning
+When you initialize the SDK with `tokenType: 'basic'` or `tokenType: 'test'`, a `console.warn` message is emitted once:
+
+```
+[WildberriesSDK] Basic token detected. Reduced rate limits apply.
+Consider upgrading to a Personal or Service token.
+See https://dev.wildberries.ru/news/281
+```
+
+This is informational only and does not affect functionality.
+:::
+
+### Category-Level Rate Limit Multipliers
+
+For Basic and Test tokens, the SDK applies category-level multipliers to reduce the standard rate limits. The burst limit is set to 1 for all endpoints.
+
+| Category | Multiplier | Approximate Effective Limit |
+|----------|------------|----------------------------|
+| `general` | 0.001 | ~1 request per day |
+| `products` | 0.01 | ~1-10 requests per hour |
+| `orders-fbs` | 0.003 | ~10-50 requests per hour |
+| `orders-dbw` | 0.003 | ~10-50 requests per hour |
+| `orders-dbs` | 0.003 | ~10-50 requests per hour |
+| `click-collect` | 0.003 | ~10-50 requests per hour |
+| `in-store-pickup` | 0.003 | ~10-50 requests per hour |
+| `orders-fbw` | 0.01 | ~1-10 requests per hour |
+| `promotion` | 0.02 | ~1-5 requests per hour |
+| `communications` | 0.05 | ~3-10 requests per hour |
+| `tariffs` | 0.01 | ~1-10 requests per hour |
+| `analytics` | 0.05 | ~1-10 requests per hour |
+| `reports` | 0.01 | ~1-10 requests per hour |
+| `documents` | 0.01 | ~1-10 requests per hour |
+| `finances` | 0.01 | ~1-10 requests per hour |
+| `user-management` | 0.01 | ~1-10 requests per hour |
+
+Categories not listed above use a default multiplier of **0.01**.
+
+The "Approximate Effective Limit" column shows the practical throughput after applying the multiplier to each category's standard rate limits. Actual values depend on the specific endpoint's base `requestsPerMinute`.
+
+### How It Works Internally
+
+When `tokenType` is `'basic'` or `'test'`, the SDK calls `applyBasicTokenMultipliers()` on the built-in rate limit configuration. For each endpoint:
+
+1. The endpoint's category is determined from its rate limit key prefix (e.g., `orders-fbs.getOrders` belongs to the `orders-fbs` category)
+2. The category multiplier is applied to `requestsPerMinute`: `Math.max(1, Math.ceil(original * multiplier))`
+3. The burst limit is set to 1
+
+Personal and Service tokens use the full, unmodified rate limits extracted from the OpenAPI specifications.
+
+### Traffic Identification for Third-Party Services
+
+If you are building a third-party service (SaaS) that integrates with Wildberries, you must use a **Service token** from the WB Catalog. Service tokens identify your application's traffic to Wildberries.
+
+For questions about Service tokens or third-party integration, contact Wildberries at **business-solutions@rwb.ru**.
+
 ## Environment-Specific Configuration
 
 ### Development Environment
@@ -99,6 +203,7 @@ const sdk = new WildberriesSDK({
 // config/development.ts
 export const developmentConfig = {
   apiKey: process.env.WB_API_KEY!,
+  tokenType: 'test' as const,
   timeout: 60000, // Longer timeout for debugging
   logLevel: 'debug' as const,
   retryConfig: {
@@ -115,6 +220,7 @@ export const developmentConfig = {
 // config/production.ts
 export const productionConfig = {
   apiKey: process.env.WB_API_KEY!,
+  tokenType: 'service' as const,
   timeout: 30000,
   logLevel: 'warn' as const,
 
@@ -137,6 +243,7 @@ export const productionConfig = {
 // config/test.ts
 export const testConfig = {
   apiKey: 'test-api-key',
+  tokenType: 'test' as const,
   timeout: 5000, // Short timeout for tests
   logLevel: 'error' as const,
 
@@ -275,6 +382,7 @@ class MultiTenantSDK {
   private getConfigForTenant(tenantId: string): SDKConfig {
     return {
       apiKey: process.env[`WB_API_KEY_${tenantId}`]!,
+      tokenType: (process.env[`WB_TOKEN_TYPE_${tenantId}`] as SDKConfig['tokenType']) ?? 'personal',
       timeout: 30000,
       logLevel: 'warn',
     };
@@ -355,7 +463,7 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-> **Note:** Per-endpoint rate limits (e.g., 3 requests/minute for product creation) are extracted from the OpenAPI specs and enforced automatically via `rateLimitKey` in each module method. The global `rateLimitConfig` sets an upper bound across all endpoints.
+> **Note:** Per-endpoint rate limits (e.g., 3 requests/minute for product creation) are extracted from the OpenAPI specs and enforced automatically via `rateLimitKey` in each module method. The global `rateLimitConfig` sets an upper bound across all endpoints. When `tokenType` is `'basic'` or `'test'`, per-endpoint limits are automatically reduced (see [Token Types and Rate Limits](#token-types-and-rate-limits)).
 
 ### Custom Rate Limiter
 
@@ -475,11 +583,12 @@ const sdk = new WildberriesSDK({
 
 | Event | `debug` | `info` | `warn` | `error` |
 |-------|---------|--------|--------|---------|
-| Retry attempt (URL, attempt #, delay) | Yes | Yes | — | — |
-| Full retry context (error type, status code, isTimeout) | Yes | — | — | — |
-| Request timed out (URL, timeout duration) | Yes | Yes | Yes | — |
-| All retries exhausted | Yes | Yes | Yes | — |
+| Retry attempt (URL, attempt #, delay) | Yes | Yes | -- | -- |
+| Full retry context (error type, status code, isTimeout) | Yes | -- | -- | -- |
+| Request timed out (URL, timeout duration) | Yes | Yes | Yes | -- |
+| All retries exhausted | Yes | Yes | Yes | -- |
 | Network errors | Yes | Yes | Yes | Yes |
+| Basic/Test token warning (on init) | Yes | Yes | Yes | -- |
 
 > **Tip:** Use `logLevel: 'info'` to see retry attempts and timeout warnings without the noise of debug-level output. Use `logLevel: 'debug'` when troubleshooting `ETIMEDOUT` errors to see the full error context for each retry.
 
@@ -507,6 +616,7 @@ The SDK manages its own internal Axios instance via `BaseClient`. There is no `h
 ### ✅ Do
 
 - Store API keys in environment variables
+- Set `tokenType` to match your actual token type
 - Use different configurations for different environments
 - Set appropriate timeouts for your use case
 - Enable retry logic for production
@@ -519,6 +629,7 @@ The SDK manages its own internal Axios instance via `BaseClient`. There is no `h
 
 - Hardcode API keys in configuration
 - Use development config in production
+- Use `tokenType: 'personal'` with a Basic or Test token (causes rate limit violations)
 - Disable retry logic to "improve speed"
 - Set timeouts too low (causes false failures)
 - Ignore rate limits
@@ -533,6 +644,7 @@ import { z } from 'zod';
 
 const ConfigSchema = z.object({
   apiKey: z.string().min(10),
+  tokenType: z.enum(['personal', 'service', 'basic', 'test']).optional(),
   timeout: z.number().min(1000).max(120000),
   retryConfig: z.object({
     maxRetries: z.number().min(0).max(10),
@@ -555,6 +667,7 @@ function createSDK(config: unknown): WildberriesSDK {
 WB_API_KEY=your_api_key_here
 
 # Optional
+WB_TOKEN_TYPE=personal          # personal | service | basic | test
 WB_API_TIMEOUT=30000
 WB_API_MAX_RETRIES=3
 WB_API_RETRY_DELAY=1000
@@ -572,6 +685,7 @@ WB_RATE_LIMIT_PER_MINUTE=100
   - [RetryConfig](/api/-internal-/interfaces/RetryConfig) - Retry configuration
   - [RateLimitConfig](/api/interfaces/RateLimitConfig) - Rate limiting configuration
   - [WildberriesSDK](/api/classes/WildberriesSDK) - Main SDK class
+- **[Jam Subscription Guide](./jam-subscription.md)** - Jam subscription detection (uses Service token)
 - **[Best Practices Guide](./best-practices.md)** - Production deployment patterns
 - **[Security Guide](./security.md)** - Secure configuration practices
 - **[Performance Guide](./performance.md)** - Performance optimization

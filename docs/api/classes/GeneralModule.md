@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L24)
+Defined in: [modules/general/index.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L26)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L25)
+Defined in: [modules/general/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L27)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-w
 ping(): Promise<PingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L70)
+Defined in: [modules/general/index.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L72)
 
 Проверка подключения к WB API
 
@@ -104,7 +104,7 @@ console.log(result.Status); // 'OK'
 news(options?: NewsRequestParams): Promise<NewsResponse>;
 ```
 
-Defined in: [modules/general/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L106)
+Defined in: [modules/general/index.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L108)
 
 Получение новостей портала продавцов
 
@@ -166,7 +166,7 @@ for (const item of result.data) {
 sellerInfo(): Promise<SellerInfoResponse>;
 ```
 
-Defined in: [modules/general/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L140)
+Defined in: [modules/general/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L142)
 
 Получение информации о продавце
 
@@ -219,7 +219,7 @@ console.log(seller.name, seller.sid);
 createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>;
 ```
 
-Defined in: [modules/general/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L182)
+Defined in: [modules/general/index.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L184)
 
 Создание приглашения для нового пользователя
 
@@ -287,7 +287,7 @@ console.log(result.inviteUrl);
 getUsers(params?: GetUsersParams): Promise<GetUsersResponse>;
 ```
 
-Defined in: [modules/general/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L224)
+Defined in: [modules/general/index.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L226)
 
 Получение списка пользователей продавца
 
@@ -352,7 +352,7 @@ for (const user of result.users) {
 updateUserAccess(data: UpdateUserAccessRequest): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L270)
+Defined in: [modules/general/index.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L272)
 
 Изменение доступов пользователей
 
@@ -423,7 +423,7 @@ await sdk.general.updateUserAccess({
 deleteUser(deletedUserID: number): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:304](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L304)
+Defined in: [modules/general/index.ts:306](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L306)
 
 Удаление пользователя
 
@@ -478,18 +478,35 @@ await sdk.general.deleteUser(12345);
 
 ***
 
-### getJamSubscriptionStatus()
+### ~~getJamSubscriptionStatus()~~
 
 ```ts
 getJamSubscriptionStatus(params: GetJamSubscriptionStatusParams): Promise<JamSubscriptionStatus>;
 ```
 
-Defined in: [modules/general/index.ts:362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/modules/general/index.ts#L362)
+Defined in: [modules/general/index.ts:367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L367)
 
-Определение тарифа подписки Джем (Jam)
+Определение тарифа подписки Джем (Jam) через пробные запросы
 
-Wildberries не предоставляет прямого эндпоинта для проверки тарифа Джем.
-Этот метод определяет тариф через пробные запросы к аналитическому эндпоинту
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params` | [`GetJamSubscriptionStatusParams`](../-internal-/interfaces/GetJamSubscriptionStatusParams.md) | Parameters containing nmIds for the probe |
+
+#### Returns
+
+`Promise`\<[`JamSubscriptionStatus`](../-internal-/interfaces/JamSubscriptionStatus.md)\>
+
+Jam subscription status with detected tier and metadata
+
+#### Deprecated
+
+Используйте [getJamSubscription](#getjamsubscription) вместо этого метода.
+Прямой API `GET /api/common/v1/subscriptions` не требует nmIds и не тратит квоту аналитики.
+Этот probe-метод сохранён как fallback для случаев, когда нет Сервисного токена.
+
+Определяет тариф через пробные запросы к аналитическому эндпоинту
 поисковых запросов товара (`/api/v2/search-report/product/search-texts`),
 используя разные значения `limit`:
 
@@ -506,18 +523,6 @@ Wildberries не предоставляет прямого эндпоинта д
 Rate limit: Uses the same quota as `analytics.createProductSearchText`
 (3 requests/minute, 20-second interval, burst 3).
 Each call makes 1–2 probe requests.
-
-#### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `params` | [`GetJamSubscriptionStatusParams`](../-internal-/interfaces/GetJamSubscriptionStatusParams.md) | Parameters containing nmIds for the probe |
-
-#### Returns
-
-`Promise`\<[`JamSubscriptionStatus`](../-internal-/interfaces/JamSubscriptionStatus.md)\>
-
-Jam subscription status with detected tier and metadata
 
 #### Throws
 
@@ -551,4 +556,116 @@ switch (status.tier) {
     console.log('No Jam subscription');
     break;
 }
+```
+
+***
+
+### getJamSubscription()
+
+```ts
+getJamSubscription(): Promise<JamSubscriptionDetails>;
+```
+
+Defined in: [modules/general/index.ts:458](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L458)
+
+Получение информации о подписке Джем (Jam)
+
+Возвращает подробную информацию о подписке Джем продавца:
+даты активации и окончания, уровень подписки, способ оформления и статус.
+
+Если продавец никогда не подключал подписку, возвращается пустой объект (200).
+
+**Авторизация:** Сервисный токен любой категории.
+
+Rate limit: 1 request per minute, 1 min interval, burst 10
+
+#### Returns
+
+`Promise`\<[`JamSubscriptionDetails`](../-internal-/interfaces/JamSubscriptionDetails.md)\>
+
+Jam subscription details (empty object if never subscribed)
+
+#### Throws
+
+When API key is invalid or not a Service token (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.5.0
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Subscriptions](https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Subscriptions)
+
+#### Example
+
+```typescript
+const jam = await sdk.general.getJamSubscription();
+if (jam.state === 'active') {
+  console.log(`Jam ${jam.level} active until ${jam.till}`);
+  console.log(`Source: ${jam.activationSource}, since: ${jam.since}`);
+} else if (jam.state) {
+  console.log(`Jam inactive (state: ${jam.state})`);
+} else {
+  console.log('Never subscribed to Jam');
+}
+```
+
+***
+
+### getSellerRating()
+
+```ts
+getSellerRating(): Promise<SellerRatingResponse>;
+```
+
+Defined in: [modules/general/index.ts:486](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/modules/general/index.ts#L486)
+
+Получить рейтинг продавца и количество отзывов
+
+Возвращает пользовательский рейтинг продавца и общее количество отзывов.
+
+**Авторизация:** Сервисный токен категории **Вопросы и отзывы**.
+
+Rate limit: 1 request per minute, 1 min interval, burst 1
+
+#### Returns
+
+`Promise`\<[`SellerRatingResponse`](../-internal-/interfaces/SellerRatingResponse.md)\>
+
+Seller rating and review count
+
+#### Throws
+
+When API key is invalid or wrong token category (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.5.0
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Rating](https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1Rating)
+
+#### Example
+
+```typescript
+const rating = await sdk.general.getSellerRating();
+console.log(`Rating: ${rating.valuation} (${rating.feedbackCount} reviews)`);
 ```

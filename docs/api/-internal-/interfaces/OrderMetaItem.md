@@ -2,7 +2,7 @@
 
 # Interface: OrderMetaItem
 
-Defined in: [types/orders-fbs.types.ts:364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L364)
+Defined in: [types/orders-fbs.types.ts:367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L367)
 
 A single order's metadata entry (used in bulk metadata responses)
 
@@ -10,5 +10,6 @@ A single order's metadata entry (used in bulk metadata responses)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | Order ID | [types/orders-fbs.types.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L366) |
-| <a id="meta"></a> `meta?` | [`Meta`](Meta.md) | Order metadata | [types/orders-fbs.types.ts:368](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L368) |
+| <a id="id"></a> `id?` | `number` | Order ID | [types/orders-fbs.types.ts:369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L369) |
+| <a id="meta"></a> ~~`meta?`~~ | [`Meta`](Meta.md) | **Deprecated** Will be removed April 30, 2026. Use metaDetails instead. | [types/orders-fbs.types.ts:372](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L372) |
+| <a id="metadetails"></a> `metaDetails?` | [`MetaDetail`](MetaDetail.md)[] | Metadata details with validation status | [types/orders-fbs.types.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L374) |

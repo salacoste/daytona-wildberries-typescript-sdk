@@ -2,7 +2,7 @@
 
 # Interface: ApiOrderStatus
 
-Defined in: [types/in-store-pickup.types.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/in-store-pickup.types.ts#L205)
+Defined in: [types/in-store-pickup.types.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/in-store-pickup.types.ts#L205)
 
 ## Example
 
@@ -18,6 +18,6 @@ Defined in: [types/in-store-pickup.types.ts:205](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | ID сборочного задания | [types/in-store-pickup.types.ts:207](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/in-store-pickup.types.ts#L207) |
-| <a id="supplierstatus"></a> `supplierStatus?` | \| `"new"` \| `"confirm"` \| `"cancel"` \| `"prepare"` \| `"receive"` \| `"reject"` \| `"cancel_shelf_life"` | Статус сборочного задания, установленный продавцом | [types/in-store-pickup.types.ts:209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/in-store-pickup.types.ts#L209) |
-| <a id="wbstatus"></a> `wbStatus?` | \| `"waiting"` \| `"sold"` \| `"canceled"` \| `"canceled_by_client"` \| `"declined_by_client"` \| `"defect"` \| `"ready_for_pickup"` | Статус сборочного задания в системе WB | [types/in-store-pickup.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/in-store-pickup.types.ts#L218) |
+| <a id="id"></a> `id?` | `number` | ID сборочного задания | [types/in-store-pickup.types.ts:207](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/in-store-pickup.types.ts#L207) |
+| <a id="supplierstatus"></a> `supplierStatus?` | \| `"new"` \| `"confirm"` \| `"cancel"` \| `"prepare"` \| `"receive"` \| `"reject"` \| `"cancel_shelf_life"` | Статус сборочного задания, установленный продавцом | [types/in-store-pickup.types.ts:209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/in-store-pickup.types.ts#L209) |
+| <a id="wbstatus"></a> `wbStatus?` | \| `"waiting"` \| `"sold"` \| `"canceled"` \| `"canceled_by_client"` \| `"declined_by_client"` \| `"defect"` \| `"ready_for_pickup"` | Статус сборочного задания в системе WB | [types/in-store-pickup.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/in-store-pickup.types.ts#L218) |

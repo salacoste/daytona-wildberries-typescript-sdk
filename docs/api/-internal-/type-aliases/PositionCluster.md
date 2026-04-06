@@ -6,7 +6,7 @@
 type PositionCluster = "all" | "firstHundred" | "secondHundred" | "below";
 ```
 
-Defined in: [types/analytics.types.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/analytics.types.ts#L469)
+Defined in: [types/analytics.types.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L469)
 
 Товары с какой средней позицией в поиске показывать в отчёте:
  - `all` — все

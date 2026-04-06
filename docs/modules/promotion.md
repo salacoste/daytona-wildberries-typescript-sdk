@@ -13,9 +13,16 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
 | **Swagger Endpoints** | 50+ (34 active + 16 deprecated) |
-| **Implemented Methods** | 45 (41 active + 4 deprecated) |
-| **Total Types** | 95+ TypeScript interfaces/types |
+| **Implemented Methods** | 46 (42 active + 4 deprecated) |
+| **Total Types** | 101+ TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
+
+### What's New (v3.4.0 - March 2026)
+
+- **`getAdvertsV2()` return type changed**: Now returns `GetAdvertsV2Response` (was `GetAdverts`). Includes `bid_type` (auto/manual), `bids_kopecks` per product, and data sync timing notes.
+- **NEW `getBidsRecommendations()`**: Get recommended bids for product cards and search clusters (CPM only). Returns `reachMin`/`reachMedium`/`reachMax` per norm query plus optional `base` card-level bids.
+- **NormQuery/stats CPC support**: `getSearchClusterStats()` and `getNormqueryStats()` now support CPC campaigns. For CPC campaigns, `views`, `ctr`, and `cpm` fields are absent from the response.
+- **6 new types**: `GetBidsRecommendationsParams`, `ReachBid`, `NormQueryBidRecommendation`, `BaseBidRecommendation`, `BidsRecommendationsResponse`, `GetAdvertsV2Response`
 
 ### What's New (February 2026)
 
@@ -42,6 +49,10 @@ const campaigns = await sdk.promotion.getAdvertsV2({
   statuses: '9,11',
   payment_type: 'cpm'
 });
+// Response now includes bid_type and bids_kopecks per product
+for (const advert of campaigns.adverts) {
+  console.log(advert.id, advert.bid_type, advert.status);
+}
 
 // Get account balance
 const balance = await sdk.promotion.getAdvBalance();
@@ -53,14 +64,23 @@ const stats = await sdk.promotion.getAdvFullstats({
   endDate: '2025-01-31'
 });
 
-// NEW: Get search cluster statistics
+// NEW: Get bid recommendations for a product in a CPM campaign
+const reco = await sdk.promotion.getBidsRecommendations({
+  advertId: 29081652,
+  nmId: 148190095,
+});
+for (const nq of reco.normQueries) {
+  console.log(`${nq.normQuery}: min=${nq.reachMin.bidKopecks} med=${nq.reachMedium.bidKopecks} max=${nq.reachMax.bidKopecks}`);
+}
+
+// Get search cluster statistics (supports CPM and CPC)
 const clusterStats = await sdk.promotion.getNormqueryStats({
   from: '2025-01-01',
   to: '2025-01-07',
   items: [{ advert_id: 12345, nm_id: 98765432 }]
 });
 
-// NEW: Set bids for search clusters
+// Set bids for search clusters
 await sdk.promotion.setNormqueryBids({
   bids: [{
     advert_id: 12345,
@@ -93,12 +113,13 @@ Both methods use the same endpoint. `updateCampaignProducts()` provides a cleane
 - Only works with Type 9 campaigns
 :::
 
-### Bidding (3 methods)
+### Bidding (4 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
-| `updateBids()` | PATCH | `/api/advert/v1/bids` | **NEW**: Change bids in kopecks (recommended) | Active |
+| `updateBids()` | PATCH | `/api/advert/v1/bids` | Change bids in kopecks (recommended) | Active |
 | `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | Alias for updateBids() | Active |
+| `getBidsRecommendations()` | GET | `/api/advert/v0/bids/recommendations` | **NEW**: Get recommended bids per search cluster (CPM only) | Active |
 | `updateAuctionBid()` | PATCH | `/adv/v0/auction/bids` | Change bids for type 9 campaigns | Deprecated |
 
 ::: tip Bid Units
@@ -119,8 +140,10 @@ These methods enable advanced search cluster targeting for CPM campaigns. The SD
 | `getMinusPhrases()` | `getNormqueryMinus()` | POST | `/adv/v0/normquery/get-minus` | Get minus-phrases for campaigns |
 | `setMinusPhrases()` | `setNormqueryMinus()` | POST | `/adv/v0/normquery/set-minus` | Set/remove minus-phrases |
 
-::: tip NormQuery API
-Search Clusters (NormQuery) methods work only with CPM campaigns (cost per thousand impressions) and manual bid campaigns.
+::: tip NormQuery API and CPC Support
+Search Clusters (NormQuery) stats methods now support both **CPM** and **CPC** campaigns.
+For CPC campaigns, the `views`, `ctr`, and `cpm` fields are absent from the response.
+Bidding and minus-phrase methods still require CPM campaigns with manual bidding.
 :::
 
 ::: warning Empty Array Behavior
@@ -133,9 +156,13 @@ These methods replace deprecated endpoints with improved functionality.
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getAdvertsV2()` | GET | `/api/advert/v2/adverts` | Get campaigns info (replaces v1) |
+| `getAdvertsV2()` | GET | `/api/advert/v2/adverts` | Get campaigns info (replaces v1). Returns `GetAdvertsV2Response` with `bid_type` and `bids_kopecks`. |
 | `getBidsMinV2()` | POST | `/api/advert/v1/bids/min` | Get minimum bids in kopecks (replaces v0) |
 | `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | Update bids in kopecks (replaces v0) |
+
+::: info getAdvertsV2() Data Sync
+Data is synchronized with the database every 3 minutes. Campaign statuses update every minute. Campaign bids update every 30 seconds.
+:::
 
 ### Budget & Finance (5 methods)
 
@@ -249,7 +276,7 @@ These endpoints are deprecated in the Swagger spec and intentionally not impleme
 | T6 Low | Balance, placements, spending history | 60 req/min | 1s |
 | T7 Very Low | Minimum bids | 20 req/min | 3s |
 | T8 Minimal | Fixed/negative phrases, NormQuery | 10 req/min | 600ms |
-| T9 Extremely Low | Campaign creation | 5 req/min | 12s |
+| T9 Extremely Low | Campaign creation, bid recommendations | 5 req/min | 12s |
 | T10 Single | Config, full statistics | 1-3 req/min | 20-60s |
 
 ### NormQuery / Search Clusters Rate Limits
@@ -269,10 +296,112 @@ These endpoints are deprecated in the Swagger spec and intentionally not impleme
 |--------|-------|----------|-------|
 | `updateBids()` | 300 req/min | 200ms | 5 |
 | `updateCampaignProducts()` | 60 req/min | 1s | 1 |
+| `getBidsRecommendations()` | 5 req/min | 12s | 5 |
 
 ---
 
 ## Usage Examples
+
+### getBidsRecommendations() - Get Bid Recommendations (NEW in v3.4.0)
+
+Returns recommended bids for a product card and its search clusters in a CPM campaign. Useful for optimizing bid strategy.
+
+**Endpoint:** `GET /api/advert/v0/bids/recommendations`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| advertId | number | Yes | Campaign ID |
+| nmId | number | Yes | WB article ID (must belong to the campaign) |
+
+**Response types:**
+
+| Type | Description |
+|------|-------------|
+| `BidsRecommendationsResponse` | Top-level response with `base` and `normQueries` |
+| `NormQueryBidRecommendation` | Per-cluster: `normQuery`, `reachMin`, `reachMedium`, `reachMax` |
+| `BaseBidRecommendation` | Card-level: `competitiveBid`, `leadersBid`, `top2` (all optional) |
+| `ReachBid` | `{ bidKopecks: number }` |
+
+**Rate Limit:** 5 requests/minute (12-second interval)
+
+::: info CPM Only
+This method only works with campaigns that use the `cpm` payment type (cost per thousand impressions). For paused campaigns, `normQueries` may be an empty array.
+:::
+
+::: info Data Sync
+Data is synchronized with the database every 3 minutes.
+:::
+
+```typescript
+const reco = await sdk.promotion.getBidsRecommendations({
+  advertId: 29081652,
+  nmId: 148190095,
+});
+
+// Card-level recommendations (optional)
+if (reco.base) {
+  console.log('Card-level bids:');
+  if (reco.base.competitiveBid) console.log(`  Competitive: ${reco.base.competitiveBid.bidKopecks} kop`);
+  if (reco.base.leadersBid) console.log(`  Leaders: ${reco.base.leadersBid.bidKopecks} kop`);
+  if (reco.base.top2) console.log(`  Top-2: ${reco.base.top2.bidKopecks} kop`);
+}
+
+// Per-cluster recommendations
+for (const nq of reco.normQueries) {
+  console.log(`Cluster "${nq.normQuery}":`);
+  console.log(`  Min reach: ${nq.reachMin.bidKopecks} kop`);
+  console.log(`  Medium reach: ${nq.reachMedium.bidKopecks} kop`);
+  console.log(`  Max reach: ${nq.reachMax.bidKopecks} kop`);
+}
+```
+
+---
+
+### getAdvertsV2() - Get Campaigns Info (Updated in v3.4.0)
+
+Returns campaign information with improved typing. Now returns `GetAdvertsV2Response` (was `GetAdverts`).
+
+**Endpoint:** `GET /api/advert/v2/adverts`
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| ids | string | No | Campaign IDs, comma-separated (max 50) |
+| statuses | string | No | Status codes: -1 (deleted), 4 (ready), 7 (finished), 8 (cancelled), 9 (active), 11 (paused) |
+| payment_type | 'cpm' \| 'cpc' | No | Payment type filter |
+
+**Response includes:**
+- `bid_type`: `'auto'` or `'manual'` per campaign
+- `bids_kopecks`: bid values in kopecks per product and placement
+- `nm_settings`: product-level configuration
+
+**Rate Limit:** 5 requests/second (200ms interval)
+
+::: info Data Sync Timing
+- Campaign data syncs every **3 minutes**
+- Campaign statuses update every **1 minute**
+- Campaign bids update every **30 seconds**
+:::
+
+```typescript
+const campaigns = await sdk.promotion.getAdvertsV2({
+  ids: '12345,23456',
+  statuses: '9,11',
+  payment_type: 'cpm',
+});
+
+for (const advert of campaigns.adverts) {
+  console.log(`Campaign ${advert.id}: bid_type=${advert.bid_type}, status=${advert.status}`);
+  for (const nm of advert.nm_settings) {
+    console.log(`  nmId=${nm.nm_id} search=${nm.bids_kopecks.search} reco=${nm.bids_kopecks.recommendations}`);
+  }
+}
+```
+
+---
 
 ### updateBids() - Update Bids in Kopecks (NEW)
 
@@ -418,7 +547,7 @@ await sdk.promotion.setMinusPhrases({
 
 ### getSearchClusterStats() - Search Cluster Statistics (NEW)
 
-Returns statistics for search clusters over a date range. **Only works with CPM campaigns.**
+Returns statistics for search clusters over a date range. Supports both **CPM** and **CPC** campaigns.
 
 **Endpoint:** `POST /adv/v0/normquery/stats`
 
@@ -431,6 +560,20 @@ Returns statistics for search clusters over a date range. **Only works with CPM 
 | items | GetSearchClusterStatsRequestItem[] | Yes | Campaign/product pairs (max 100) |
 | items[].advert_id | number | Yes | Campaign ID |
 | items[].nm_id | number | Yes | WB Article ID (use 0 for Type 8 aggregate) |
+
+**Response fields per cluster (`V0GetNormQueryStatsItemStat`):**
+
+| Field | Type | CPM | CPC | Description |
+|-------|------|-----|-----|-------------|
+| `norm_query` | string | Yes | Yes | Search cluster text |
+| `views` | number | Yes | **absent** | Number of impressions |
+| `clicks` | number | Yes | Yes | Number of clicks |
+| `atbs` | number | Yes | Yes | Add-to-basket count |
+| `orders` | number | Yes | Yes | Order count |
+| `ctr` | number | Yes | **absent** | Click-through rate, % |
+| `cpc` | number | Yes | Yes | Cost per click, RUB |
+| `cpm` | number | Yes | **absent** | Cost per 1000 impressions, RUB |
+| `avg_pos` | number | Yes | Yes | Average search position |
 
 **Rate Limit:** 10 requests/minute (6 second interval)
 
@@ -446,8 +589,11 @@ for (const item of stats.stats) {
   console.log(`Campaign ${item.advert_id}, Product ${item.nm_id}:`);
   for (const cluster of item.stats) {
     console.log(`  Cluster: "${cluster.norm_query}"`);
-    console.log(`    Views: ${cluster.views}, Clicks: ${cluster.clicks}`);
-    console.log(`    CTR: ${cluster.ctr}%, CPC: ${cluster.cpc} kop`);
+    console.log(`    Clicks: ${cluster.clicks}, CPC: ${cluster.cpc} RUB`);
+    // For CPM campaigns only:
+    if (cluster.views !== undefined) {
+      console.log(`    Views: ${cluster.views}, CTR: ${cluster.ctr}%, CPM: ${cluster.cpm} RUB`);
+    }
     console.log(`    Orders: ${cluster.orders}, Sum: ${cluster.sum} kop`);
   }
 }
@@ -467,8 +613,8 @@ const stats = await sdk.promotion.getNormqueryStats({
 
 for (const stat of stats.stats) {
   console.log(`Cluster: ${stat.norm_query}`);
-  console.log(`Views: ${stat.views}, Clicks: ${stat.clicks}`);
-  console.log(`CTR: ${stat.ctr}%, CPC: ${stat.cpc}`);
+  console.log(`Clicks: ${stat.clicks}, CPC: ${stat.cpc}`);
+  // views/ctr/cpm only present for CPM campaigns
 }
 
 // Set custom bids for high-performing clusters

@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelConversions
 
-Defined in: [types/analytics.types.ts:1373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/analytics.types.ts#L1373)
+Defined in: [types/analytics.types.ts:1373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1373)
 
 Конверсии
 
@@ -10,6 +10,6 @@ Defined in: [types/analytics.types.ts:1373](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="addtocartpercent"></a> `addToCartPercent` | `number` | Конверсия в корзину, % | [types/analytics.types.ts:1375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/analytics.types.ts#L1375) |
-| <a id="carttoorderpercent"></a> `cartToOrderPercent` | `number` | Конверсия в заказ, % | [types/analytics.types.ts:1377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/analytics.types.ts#L1377) |
-| <a id="buyoutpercent"></a> `buyoutPercent` | `number` | Процент выкупа, % | [types/analytics.types.ts:1379](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/analytics.types.ts#L1379) |
+| <a id="addtocartpercent"></a> `addToCartPercent` | `number` | Конверсия в корзину, % | [types/analytics.types.ts:1375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1375) |
+| <a id="carttoorderpercent"></a> `cartToOrderPercent` | `number` | Конверсия в заказ, % | [types/analytics.types.ts:1377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1377) |
+| <a id="buyoutpercent"></a> `buyoutPercent` | `number` | Процент выкупа, % | [types/analytics.types.ts:1379](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1379) |

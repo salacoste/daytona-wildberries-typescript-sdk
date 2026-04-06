@@ -542,6 +542,35 @@ Card creation/update and pricing operations are processed asynchronously. A 200 
 - Office binding can only be changed once per 24 hours
 - Deleting a warehouse frees the office for reuse
 
+## Type Notes
+
+### Error List Response (`ModelsErrorTableListPublicRespV2Item`)
+
+The `updatedAt` field was added to `ModelsErrorTableListPublicRespV2Item`, representing the date and time when the card batch was created or last modified (i.e., when the card entered drafts). This field is used for cursor-based pagination when calling `createErrorList()`.
+
+### `additionalErrors` Union Type (`ContentErrorResp`)
+
+The `additionalErrors` field on `ContentErrorResp` uses a union type to handle inconsistent API responses across different Wildberries API endpoints (notably Beauty and Chemicals category merging scenarios):
+
+```typescript
+additionalErrors?: Record<string, string> | string | { error: string };
+```
+
+When handling errors from `createCardsUpload` or `createCardsUpdate`, check the type at runtime:
+
+```typescript
+if (typeof response.additionalErrors === 'string') {
+  console.error('Error:', response.additionalErrors);
+} else if (response.additionalErrors && 'error' in response.additionalErrors) {
+  console.error('Error:', response.additionalErrors.error);
+} else if (response.additionalErrors) {
+  // Record<string, string> — field-level errors
+  for (const [field, msg] of Object.entries(response.additionalErrors)) {
+    console.error(`${field}: ${msg}`);
+  }
+}
+```
+
 ## Deprecated Methods
 
 The following methods are deprecated and will be removed in a future version. Use the recommended replacements:

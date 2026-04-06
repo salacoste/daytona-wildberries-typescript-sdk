@@ -2,7 +2,7 @@
 
 # Interface: Brand
 
-Defined in: [types/products.types.ts:583](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L583)
+Defined in: [types/products.types.ts:585](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L585)
 
 Бренд
 
@@ -10,6 +10,6 @@ Defined in: [types/products.types.ts:583](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID бренда | [types/products.types.ts:585](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L585) |
-| <a id="logourl"></a> `logoUrl` | `string` | URL логотипа бренда | [types/products.types.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L587) |
-| <a id="name"></a> `name` | `string` | Название бренда | [types/products.types.ts:589](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/products.types.ts#L589) |
+| <a id="id"></a> `id` | `number` | ID бренда | [types/products.types.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L587) |
+| <a id="logourl"></a> `logoUrl` | `string` | URL логотипа бренда | [types/products.types.ts:589](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L589) |
+| <a id="name"></a> `name` | `string` | Название бренда | [types/products.types.ts:591](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L591) |

@@ -2,7 +2,7 @@
 
 # Interface: BarcodeResponse
 
-Defined in: [types/orders-fbs.types.ts:398](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L398)
+Defined in: [types/orders-fbs.types.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L404)
 
 Response containing a supply barcode / QR code
 
@@ -10,5 +10,5 @@ Response containing a supply barcode / QR code
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="barcode"></a> `barcode?` | `string` | Encoded barcode value | [types/orders-fbs.types.ts:400](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L400) |
-| <a id="file"></a> `file?` | `string` | Base64-encoded barcode file | [types/orders-fbs.types.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-fbs.types.ts#L402) |
+| <a id="barcode"></a> `barcode?` | `string` | Encoded barcode value | [types/orders-fbs.types.ts:406](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L406) |
+| <a id="file"></a> `file?` | `string` | Base64-encoded barcode file | [types/orders-fbs.types.ts:408](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-fbs.types.ts#L408) |

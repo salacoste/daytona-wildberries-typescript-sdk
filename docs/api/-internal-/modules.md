@@ -139,6 +139,8 @@
 | [UpdateUserAccessRequest](interfaces/UpdateUserAccessRequest.md) | Request to update user access |
 | [JamSubscriptionStatus](interfaces/JamSubscriptionStatus.md) | Result of a Jam subscription status probe |
 | [GetJamSubscriptionStatusParams](interfaces/GetJamSubscriptionStatusParams.md) | Parameters for the Jam subscription status check |
+| [JamSubscriptionDetails](interfaces/JamSubscriptionDetails.md) | Detailed Jam subscription information from GET /api/common/v1/subscriptions |
+| [SellerRatingResponse](interfaces/SellerRatingResponse.md) | Seller rating and review count from GET /api/common/v1/rating |
 | [ApiCheckedIdentity](interfaces/ApiCheckedIdentity.md) | Auto-generated TypeScript types for in-store-pickup module Generated from: wildberries_api_doc/06-in-store-pickup.yaml |
 | [ApiCheckIdentityRequest](interfaces/ApiCheckIdentityRequest.md) | - |
 | [ApiGTINRequest](interfaces/ApiGTINRequest.md) | - |
@@ -239,7 +241,8 @@
 | [OrderNew](interfaces/OrderNew.md) | New (unprocessed) assembly order with additional pricing and metadata fields |
 | [SupplyTrbx](interfaces/SupplyTrbx.md) | Supply box (transport box) entity |
 | [TrbxStickers](interfaces/TrbxStickers.md) | Box sticker data with encoded barcode and file content |
-| [Meta](interfaces/Meta.md) | Order metadata containing various identification and tracking codes |
+| [MetaDetail](interfaces/MetaDetail.md) | Metadata detail item with validation status Replaces the deprecated `meta` object. Use with `/api/marketplace/v3/orders/meta` endpoint. |
+| [~~Meta~~](interfaces/Meta.md) | - |
 | [PassOffice](interfaces/PassOffice.md) | Warehouse office data for seller pass registration |
 | [Pass](interfaces/Pass.md) | Seller pass for warehouse access |
 | [CrossborderTurkeyClientInfo](interfaces/CrossborderTurkeyClientInfo.md) | Client information for cross-border orders from Turkey |

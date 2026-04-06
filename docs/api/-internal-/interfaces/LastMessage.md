@@ -2,7 +2,7 @@
 
 # Interface: LastMessage
 
-Defined in: [types/communications.types.ts:405](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/communications.types.ts#L405)
+Defined in: [types/communications.types.ts:405](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/communications.types.ts#L405)
 
 Информация о последнем сообщении в чате
 
@@ -10,5 +10,5 @@ Defined in: [types/communications.types.ts:405](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="text"></a> `text?` | `string` | Текст сообщения | [types/communications.types.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/communications.types.ts#L407) |
-| <a id="addtimestamp"></a> `addTimestamp?` | `number` | Время сообщения в формате Unix timestamp (миллисекунды) | [types/communications.types.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/communications.types.ts#L409) |
+| <a id="text"></a> `text?` | `string` | Текст сообщения | [types/communications.types.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/communications.types.ts#L407) |
+| <a id="addtimestamp"></a> `addTimestamp?` | `number` | Время сообщения в формате Unix timestamp (миллисекунды) | [types/communications.types.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/communications.types.ts#L409) |

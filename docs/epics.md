@@ -385,3 +385,123 @@ So that I can automate report generation and download.
 **When** the user navigates to guides
 **Then** they find "Seller Analytics CSV" covering 4 methods, 3-step workflow, report types, Jam requirement
 **And** the guide exists in EN and RU
+
+---
+
+# Sprint 5-6 Epics (v3.5.0 — April 2026)
+
+## Epic 7: FBS Metadata Validation & Deprecation
+
+SDK consumers get accurate metadata validation feedback when delivering FBS supplies, with migration path from deprecated `meta` to `metaDetails`.
+
+### Story 7.1: Add metaDetails Field and Deliver 409 Validation
+
+As an SDK consumer managing FBS supplies,
+I want to see metaDetails for each order and understand delivery validation errors,
+so that I can fix metadata issues before they block supply delivery.
+
+**Acceptance Criteria:**
+
+**Given** FBS order types in orders-fbs.types.ts
+**When** API returns metaDetails array
+**Then** the type includes metaDetails with validation status per metadata type
+
+**Given** a call to `updateSuppliesDeliver(supplyId)`
+**When** metadata is invalid (IMEI since Mar 31, UIN since Apr 7, marking code since Apr 9)
+**Then** a 409 error is returned with details of which metadata failed validation
+
+**Given** the `meta` object in order responses
+**When** developer reads JSDoc
+**Then** they see `@deprecated` with "Will be removed April 30, 2026. Use metaDetails instead."
+
+---
+
+## Epic 8: Seller Information Expansion
+
+SDK consumers can query Jam subscription details directly and retrieve seller rating/reviews without workarounds.
+
+### Story 8.1: Implement Jam Subscription Direct API
+
+As an SDK consumer,
+I want to get Jam subscription details via a direct API call,
+so that I don't need probe-based detection consuming analytics quota.
+
+**Acceptance Criteria:**
+
+**Given** a valid Service token of any category
+**When** the developer calls `sdk.general.getJamSubscription()`
+**Then** the response includes activation date, expiration date, subscription level, method, and active status
+
+**Given** the existing `getJamSubscriptionStatus()` method
+**When** developer reads its JSDoc
+**Then** they see `@deprecated` recommending `getJamSubscription()` instead
+
+**Given** docs/guides/jam-subscription.md
+**When** a user reads the guide
+**Then** the new direct API is presented as the primary method
+
+### Story 8.2: Implement Seller Rating Method
+
+As an SDK consumer,
+I want to get the seller's user rating and review count,
+so that I can display reputation data in my dashboard.
+
+**Acceptance Criteria:**
+
+**Given** a Service token with "Feedbacks and Questions" category
+**When** the developer calls `sdk.general.getSellerRating()`
+**Then** the response includes seller rating and review count
+
+**Given** the rate limit config
+**When** the method is called
+**Then** it uses the correct rateLimitKey
+
+---
+
+## Epic 9: Rate Limit Intelligence Phase B
+
+SDK consumers on Basic/Test tokens get correct rate limiting automatically via category-level multipliers.
+
+### Story 9.1: Implement Category-Level Rate Limit Multipliers
+
+As an SDK consumer using a Basic or Test token,
+I want the SDK to apply correct reduced rate limits per API category,
+so that I don't hit 429 errors from exceeding WB's token-specific quotas.
+
+**Acceptance Criteria:**
+
+**Given** SDK initialized with `tokenType: 'basic'` or `'test'`
+**When** the rate limiter applies limits
+**Then** category-level multipliers reduce limits (e.g., general: 0.001, orders: 0.003, analytics: 0.05)
+**And** burst limits are set to 1 for all endpoints
+
+**Given** SDK initialized with `tokenType: 'personal'` or `'service'`
+**When** the rate limiter applies limits
+**Then** standard rate limits are unchanged
+
+**Given** the configuration guide
+**When** a developer reads token type documentation
+**Then** they find rate limit tables per category for Basic/Test tokens
+**And** traffic identification info for third-party services (business-solutions@rwb.ru)
+
+---
+
+## Epic 10: API Compliance Housekeeping
+
+SDK types stay accurate with latest WB API changes.
+
+### Story 10.1: Batch Type and JSDoc Fixes (April)
+
+As an SDK consumer,
+I want types to reflect latest WB API behavior,
+so that I get correct autocomplete and no runtime surprises.
+
+**Acceptance Criteria:**
+
+**Given** normquery/stats response for cpc campaigns
+**When** views, ctr, cpm are absent
+**Then** these fields are typed as optional in `V0GetNormQueryStatsItemStat`
+
+**Given** product cards error list response
+**When** API returns updatedAt per batch item
+**Then** `ModelsErrorTableListPublicRespV2Item` includes `updatedAt?: string`

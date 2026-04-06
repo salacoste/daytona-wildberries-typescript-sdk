@@ -2,7 +2,7 @@
 
 # Interface: CreateInviteResponse
 
-Defined in: [types/user-management.types.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L175)
+Defined in: [types/user-management.types.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/user-management.types.ts#L175)
 
 Ответ на запрос создания приглашения
 
@@ -10,7 +10,7 @@ Defined in: [types/user-management.types.ts:175](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="inviteid"></a> `inviteID` | `string` | ID приглашения **Format** uuid | [types/user-management.types.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L180) |
-| <a id="expiredat"></a> `expiredAt` | `string` | Дата и время окончания срока действия приглашения **Format** date-time | [types/user-management.types.ts:185](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L185) |
-| <a id="issuccess"></a> `isSuccess` | `boolean` | Результат создания приглашения: - `true` — приглашение создано успешно - `false` — повторите запрос | [types/user-management.types.ts:191](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L191) |
-| <a id="inviteurl"></a> `inviteUrl` | `string` | URL приглашения, по которому должен перейти пользователь **Format** uri | [types/user-management.types.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/user-management.types.ts#L196) |
+| <a id="inviteid"></a> `inviteID` | `string` | ID приглашения **Format** uuid | [types/user-management.types.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/user-management.types.ts#L180) |
+| <a id="expiredat"></a> `expiredAt` | `string` | Дата и время окончания срока действия приглашения **Format** date-time | [types/user-management.types.ts:185](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/user-management.types.ts#L185) |
+| <a id="issuccess"></a> `isSuccess` | `boolean` | Результат создания приглашения: - `true` — приглашение создано успешно - `false` — повторите запрос | [types/user-management.types.ts:191](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/user-management.types.ts#L191) |
+| <a id="inviteurl"></a> `inviteUrl` | `string` | URL приглашения, по которому должен перейти пользователь **Format** uri | [types/user-management.types.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/user-management.types.ts#L196) |

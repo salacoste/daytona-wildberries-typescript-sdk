@@ -2,7 +2,7 @@
 
 # Interface: GetNewOrdersResponse
 
-Defined in: [types/orders-dbs.types.ts:281](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-dbs.types.ts#L281)
+Defined in: [types/orders-dbs.types.ts:281](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-dbs.types.ts#L281)
 
 Response from getNewOrders
 
@@ -10,4 +10,4 @@ Response from getNewOrders
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`DBSOrderNew`](DBSOrderNew.md)[] | List of new orders | [types/orders-dbs.types.ts:283](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-dbs.types.ts#L283) |
+| <a id="orders"></a> `orders?` | [`DBSOrderNew`](DBSOrderNew.md)[] | List of new orders | [types/orders-dbs.types.ts:283](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-dbs.types.ts#L283) |

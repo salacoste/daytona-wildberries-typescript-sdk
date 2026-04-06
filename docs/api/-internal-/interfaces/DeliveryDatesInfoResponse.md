@@ -2,7 +2,7 @@
 
 # Interface: DeliveryDatesInfoResponse
 
-Defined in: [types/orders-dbs.types.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-dbs.types.ts#L412)
+Defined in: [types/orders-dbs.types.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-dbs.types.ts#L412)
 
 Response from getDeliveryDates
 
@@ -10,4 +10,4 @@ Response from getDeliveryDates
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | [`DeliveryDateInfo`](DeliveryDateInfo.md)[] | List of delivery date information per order | [types/orders-dbs.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/orders-dbs.types.ts#L414) |
+| <a id="orders"></a> `orders` | [`DeliveryDateInfo`](DeliveryDateInfo.md)[] | List of delivery date information per order | [types/orders-dbs.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/orders-dbs.types.ts#L414) |

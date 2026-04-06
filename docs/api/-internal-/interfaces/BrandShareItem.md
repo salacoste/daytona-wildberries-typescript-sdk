@@ -2,7 +2,7 @@
 
 # Interface: BrandShareItem
 
-Defined in: [types/reports.types.ts:613](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L613)
+Defined in: [types/reports.types.ts:613](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L613)
 
 Brand share report item
 
@@ -14,7 +14,7 @@ EPIC 43 - Response type for getAnalyticsBrandShare
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="date"></a> `date?` | `string` | Дата | [types/reports.types.ts:615](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L615) |
-| <a id="brandshare"></a> `brandShare?` | `number` | Доля бренда, % | [types/reports.types.ts:617](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L617) |
-| <a id="brandsalescount"></a> `brandSalesCount?` | `number` | Количество продаж бренда | [types/reports.types.ts:619](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L619) |
-| <a id="categorysalescount"></a> `categorySalesCount?` | `number` | Количество продаж категории | [types/reports.types.ts:621](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b2f9d17827bf5ad646628b55ed6f80450116a4ca/src/types/reports.types.ts#L621) |
+| <a id="date"></a> `date?` | `string` | Дата | [types/reports.types.ts:615](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L615) |
+| <a id="brandshare"></a> `brandShare?` | `number` | Доля бренда, % | [types/reports.types.ts:617](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L617) |
+| <a id="brandsalescount"></a> `brandSalesCount?` | `number` | Количество продаж бренда | [types/reports.types.ts:619](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L619) |
+| <a id="categorysalescount"></a> `categorySalesCount?` | `number` | Количество продаж категории | [types/reports.types.ts:621](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L621) |
