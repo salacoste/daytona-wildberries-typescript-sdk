@@ -289,6 +289,31 @@ describe('FinancesModule', () => {
       expect(result).toHaveLength(0);
     });
 
+    // Regression test for v3.6.0 — substitute article and wholesale discount fields.
+    // Source: WB news id=11270 (substitute articles) and id=11226 (wholesale discount).
+    // This test will FAIL if any of the 4 fields is renamed or removed from DetailReportItem,
+    // catching silent type rot. Quinn's rule: every type change ships with at least one test
+    // that would fail if the type is removed.
+    it('should expose substitute article and wholesale discount fields on DetailReportItem (v3.6.0)', async () => {
+      const mockItemWithNewFields = [
+        {
+          ...mockDetailReportItems[0],
+          article_substitution: 'SUB-CAMPAIGN-001',
+          sale_price_affiliated_discount_prc: 10,
+          agency_vat: 0,
+          sale_price_wholesale_discount_prc: 5,
+        },
+      ];
+      mockClient.get.mockResolvedValue(mockItemWithNewFields);
+
+      const result = await module.getSupplierReportDetailByPeriod(requiredParams);
+
+      expect(result[0].article_substitution).toBe('SUB-CAMPAIGN-001');
+      expect(result[0].sale_price_affiliated_discount_prc).toBe(10);
+      expect(result[0].agency_vat).toBe(0);
+      expect(result[0].sale_price_wholesale_discount_prc).toBe(5);
+    });
+
     it('should propagate AuthenticationError (401)', async () => {
       const error = new AuthenticationError('Invalid API key');
       mockClient.get.mockRejectedValue(error);

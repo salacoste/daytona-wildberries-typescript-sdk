@@ -173,6 +173,7 @@ const VALID_METHODS: Record<string, string[]> = {
     'getBalance',
     'getTransactions',
     'getTransactionDetail',
+    'getSupplierReportDetailByPeriod',
     'getSupplierReportdetailbyperiod',
     'getDocumentCategories',
     'getDocumentsCategories',
@@ -741,6 +742,13 @@ function main() {
     // Guides
     join(__dirname, '..', 'docs', 'guides', 'troubleshooting.md'),
     join(__dirname, '..', 'docs', 'guides', 'best-practices.md'),
+    join(
+      __dirname,
+      '..',
+      'docs',
+      'guides',
+      'tracking-promotion-channels-with-substitute-articles.md'
+    ),
 
     // Getting Started
     join(__dirname, '..', 'docs', 'getting-started', 'quickstart.md'),

@@ -177,6 +177,13 @@ export default defineConfig({
                 items: [
                   { text: 'Customer Communication', link: '/guides/customer-communication' }
                 ]
+              },
+              {
+                text: 'Finance Reconciliation',
+                collapsed: true,
+                items: [
+                  { text: 'Tracking Promotion Channels with Substitute Articles', link: '/guides/tracking-promotion-channels-with-substitute-articles' }
+                ]
               }
             ]
           },

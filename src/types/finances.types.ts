@@ -258,4 +258,60 @@ export interface DetailReportItem {
   uuid_promocode?: string;
   /** Скидка за промокод, % */
   sale_price_promocode_discount_prc?: number;
+  /**
+   * ID подменного артикула / Substitute article ID.
+   *
+   * Substitute articles (подменные артикулы) are alternate product identifiers used for external
+   * promotion campaigns. Each substitute article can carry its own discount (3%–50%) on top of the
+   * seller's existing discount, allowing sellers to attribute sales to specific marketing channels.
+   *
+   * Empty string `""` indicates no substitute article was used for this transaction.
+   *
+   * Added in WB API update on 2026-04-06 (news id=11270).
+   *
+   * @example "SUB-CAMPAIGN-001"
+   * @see {@link https://seller.wildberries.ru/news-v2/news-details?id=11270}
+   * @since v3.6.0
+   */
+  article_substitution?: string;
+  /**
+   * Скидка по подменному артикулу, % / Substitute article discount, percent.
+   *
+   * The additional discount applied via the substitute article (3–50%). Layered on top of any
+   * existing seller discount and shown to buyers as e.g. "Вам -10%".
+   *
+   * Added in WB API update on 2026-04-06 (news id=11270).
+   *
+   * @example 10
+   * @see {@link https://seller.wildberries.ru/news-v2/news-details?id=11270}
+   * @since v3.6.0
+   */
+  sale_price_affiliated_discount_prc?: number;
+  /**
+   * Agency VAT (semantics undocumented by WB as of 2026-04-08).
+   *
+   * Field present in the WB OpenAPI spec example response for `/api/v5/supplier/reportDetailByPeriod`
+   * but NOT in the public WB news announcements (id=11270, id=11226). Local spec
+   * `wildberries_api_doc/13-finances.yaml` does not document this field either. Semantics, units, and
+   * rollout date are unknown. SDK exposes the field as `number` for type safety; consumers should
+   * verify with WB before relying on its value.
+   *
+   * @example 0
+   * @since v3.6.0
+   */
+  agency_vat?: number;
+  /**
+   * Оптовая скидка для бизнеса, % / Wholesale business discount, percent.
+   *
+   * The new "Оптовая скидка для бизнеса" column added on 2026-04-06 in preparation for the upcoming
+   * **прогрессирующая скидка для юрлиц и ИП** (progressive wholesale discount for legal entities and
+   * individual entrepreneurs) tool. Currently always returns `0`; will populate with non-zero values
+   * once WB launches the tool. Daily reports include this field from the 2026-04-06 report onwards;
+   * weekly reports from the 2026-04-06 to 2026-04-12 report onwards.
+   *
+   * @example 5
+   * @see {@link https://seller.wildberries.ru/news-v2/news-details?id=11226}
+   * @since v3.6.0
+   */
+  sale_price_wholesale_discount_prc?: number;
 }
