@@ -200,3 +200,18 @@ export class FinancesModule {
     );
   }
 }
+
+// Re-export all finances types from the subpath import 'daytona-wildberries-typescript-sdk/finances'.
+// Without these, consumers can import the FinancesModule class but cannot access type definitions
+// like DetailReportItem, AccountBalanceResponse, etc. — caught by DX integration test for v3.6.0.
+// @since v3.6.1
+export type {
+  AccountBalanceResponse,
+  DetailReportItem,
+  DocumentsLocale,
+  RequestDownload,
+  GetCategories,
+  GetList,
+  GetDoc,
+  GetDocs,
+} from '../../types/finances.types';

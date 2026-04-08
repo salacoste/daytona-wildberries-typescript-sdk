@@ -955,3 +955,49 @@ export class CommunicationsModule {
     );
   }
 }
+// Re-export all communications types from the subpath import 'daytona-wildberries-typescript-sdk/communications'.
+// Without these, consumers can import the module class but cannot access type definitions.
+// Caught by DX integration test for v3.6.0; generated as explicit list because `export type *`
+// did not propagate through the build chain in v3.6.1.
+// @since v3.6.1
+export type {
+  ReviewPinMethod,
+  ReviewPinOn,
+  ReviewState,
+  UnpinnedCause,
+  PinnedReviewErrorStatus,
+  PinnedReviewError,
+  RespondResultError,
+  PinReviewItem,
+  PinReviewItemResultData,
+  PinnedReviewItemResult,
+  PinnedReviewsCreateRequest,
+  PinnedReviewsCreateResponse,
+  PinnedReviewsDeleteRequest,
+  PinnedReviewsDeleteResponse,
+  PinnedReviewsListParams,
+  PinnedReviewsListResponse,
+  PinnedReviewsCountParams,
+  PinnedReviewsCountResponse,
+  SellerLimit,
+  SellerLimitsData,
+  PinnedReviewsLimitsResponse,
+  StandardizedFQError,
+  ResponsefeedbackErr,
+  ResponseFeedback,
+  LastMessage,
+  Chat,
+  ChatsResponse,
+  Event,
+  EventAttachments,
+  EventType,
+  File,
+  GoodCard,
+  Image,
+  MessageResponse,
+  Sender,
+  EventsResponse,
+  EventsResult,
+  FeedbackListResponse,
+  NewFeedbacksQuestionsResponse,
+} from '../../types/communications.types';

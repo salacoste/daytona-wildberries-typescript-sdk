@@ -661,3 +661,58 @@ export class ReportsModule {
     );
   }
 }
+// Re-export all reports types from the subpath import 'daytona-wildberries-typescript-sdk/reports'.
+// Without these, consumers can import the module class but cannot access type definitions.
+// Caught by DX integration test for v3.6.0; generated as explicit list because `export type *`
+// did not propagate through the build chain in v3.6.1.
+// @since v3.6.1
+export type {
+  IncomesItem,
+  StocksItem,
+  OrdersItem,
+  SalesItem,
+  ResponseErrorStatistics,
+  ResponseErrorStatistics2,
+  ExciseReportRequest,
+  ExciseReportResponse,
+  ModelsExciseReportResponse,
+  ModelsExciseReportResponseData,
+  Penalty,
+  Measurement,
+  Response400Retentions,
+  Response403Retentions,
+  ResponsePaidStorage,
+  GetTasksResponse,
+  GetTasksResponseData,
+  CreateTaskResponse,
+  CreateTaskResponseData,
+  Response4xxResponse,
+  AntifraudDetailsItem,
+  AntifraudDetailsResponse,
+  GoodsLabelingItem,
+  GoodsLabelingResponse,
+  RegionSaleItem,
+  RegionSaleResponse,
+  BrandShareBrandsItem,
+  BrandShareBrandsResponse,
+  BrandShareParentSubjectsItem,
+  BrandShareParentSubjectsResponse,
+  BrandShareItem,
+  BrandShareResponse,
+  WarehouseRemainsDownloadItem,
+  WarehouseQuantity,
+  AcceptanceReportDownloadItem,
+  BannedProductBlockedItem,
+  BannedProductsBlockedResponse,
+  BannedProductShadowedItem,
+  BannedProductsShadowedResponse,
+  GoodsReturnItem,
+  GoodsReturnResponse,
+  MeasurementPenaltiesParams,
+  WarehouseMeasurementsV2Params,
+  DeductionsParams,
+  DeductionItem,
+  DeductionsResponse,
+  MeasurementPenaltiesResponse,
+  WarehouseMeasurementsV2Response,
+} from '../../types/reports.types';

@@ -625,7 +625,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.6.0';
+export const version = '3.6.1';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -679,13 +679,18 @@ export { OrdersDbsModule } from './modules/orders-dbs';
 export { UserManagementModule } from './modules/user-management';
 
 // Type definitions
-// NOTE: Types are NOT re-exported from main entry to avoid name conflicts (Error, Date, etc.)
-// Import types directly from the specific type modules:
-//   import type { ProductCard } from 'daytona-wildberries-typescript-sdk/types/products.types';
-//   import type { Order } from 'daytona-wildberries-typescript-sdk/types/orders-fbs.types';
+// NOTE: Types are NOT re-exported from the main entry to avoid name conflicts (Error, Date, etc.)
 //
-// Or import everything from a specific module:
-//   import * as ProductTypes from 'daytona-wildberries-typescript-sdk/types/products.types';
+// To import types, use the module subpath import for any module that has one
+// (since v3.6.1 — finances, analytics, communications, reports re-export their types):
+//   import type { DetailReportItem } from 'daytona-wildberries-typescript-sdk/finances';
+//   import type { MainResponse } from 'daytona-wildberries-typescript-sdk/analytics';
+//   import type { PinReviewItem } from 'daytona-wildberries-typescript-sdk/communications';
+//   import type { IncomesItem } from 'daytona-wildberries-typescript-sdk/reports';
+//
+// Modules without subpath exports (products, orders-fbs, orders-fbw, orders-dbs,
+// promotion, tariffs, in-store-pickup, general, user-management) currently have no public
+// type access path — track via WL-4.
 
 // User Management types (no name conflicts with global types)
 export type {
