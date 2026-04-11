@@ -501,50 +501,11 @@ function validateResponseStructure(
     }
   });
 
-  // Pattern 2: Response property access - should use .data for actual response data
-  const responseAccessPattern =
-    /(const|let|var)\s+(\w+)\s*=\s*await\s+sdk\.\w+\.\w+\([^)]*\);?\s*$/gm;
-  let match;
-
-  while ((match = responseAccessPattern.exec(code)) !== null) {
-    const varName = match[2];
-    const matchIndex = match.index;
-
-    // Find line number
-    let currentPos = 0;
-    let lineNum = 0;
-    for (let i = 0; i < lines.length; i++) {
-      const lineLength = lines[i].length + 1;
-      if (currentPos + lineLength > matchIndex) {
-        lineNum = i;
-        break;
-      }
-      currentPos += lineLength;
-    }
-
-    // Check if .data is accessed in subsequent lines (basic check)
-    const subsequentCode = lines.slice(lineNum + 1, lineNum + 10).join('\n');
-
-    // Look for direct property access without .data
-    const directAccessPattern = new RegExp(`${varName}\\.(\\w+)`, 'g');
-    const directAccessMatch = directAccessPattern.exec(subsequentCode);
-
-    if (
-      directAccessMatch &&
-      directAccessMatch[1] !== 'data' &&
-      directAccessMatch[1] !== 'error' &&
-      directAccessMatch[1] !== 'errorText' &&
-      !subsequentCode.includes(`${varName}.data`)
-    ) {
-      warnings.push({
-        line: lineOffset + lineNum,
-        type: 'response',
-        message: `Response property access should use .data: ${varName}.${directAccessMatch[1]}`,
-        suggestion: `SDK responses have structure { data, error, errorText }. Use: ${varName}.data.${directAccessMatch[1]}`,
-        codeSnippet: lines[lineNum].trim(),
-      });
-    }
-  }
+  // Pattern 2 REMOVED (Sprint 9, task-99): The .data wrapper heuristic generated 25 false positives
+  // because the SDK's BaseClient returns response.data (Axios unwrap) — most methods return the raw
+  // API body directly, NOT wrapped in { data, error, errorText }. Only some Products endpoints use
+  // that wrapper. The false positives masked 18 real bugs in example files. Removing this pattern
+  // makes the validator output clean and actionable.
 
   return { errors, warnings };
 }
