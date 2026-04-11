@@ -710,7 +710,7 @@ await sdk.products.getCardsList(); // Check console for timing logs
 
 ### 34. How do I report bugs or request features?
 
-1. **Check existing issues:** [GitHub Issues](https://github.com/daytona/wildberries-typescript-sdk/issues)
+1. **Check existing issues:** [GitHub Issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 2. **Create new issue:** Use issue templates
 3. **Provide details:**
    - SDK version
@@ -747,5 +747,5 @@ await sdk.products.getCardsList(); // Check console for timing logs
 
 **Need more help?**
 - 📖 [Documentation](README.md)
-- 🐛 [Report an Issue](https://github.com/daytona/wildberries-typescript-sdk/issues)
-- 💬 [Discussions](https://github.com/daytona/wildberries-typescript-sdk/discussions)
+- 🐛 [Report an Issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
+- 💬 [Discussions](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)

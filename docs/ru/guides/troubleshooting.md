@@ -1597,7 +1597,7 @@ TypeError: sdk.products.createCardsUpload is not a function
    ```
 
 5. **Сообщить о проблеме:**
-   - Открыть [GitHub Issue](https://github.com/daytona/wildberries-sdk/issues)
+   - Открыть [GitHub Issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
    - Включить код воспроизведения
    - Предоставить версию SDK, версию Node
    - Включить логи отладки
@@ -1835,19 +1835,19 @@ try {
 
 ### 1. Поиск в существующих ресурсах
 
-- **GitHub Issues**: [Поиск закрытых и открытых issues](https://github.com/daytona/wildberries-sdk/issues)
+- **GitHub Issues**: [Поиск закрытых и открытых issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 - **FAQ**: Проверить [Часто задаваемые вопросы](/ru/FAQ.md)
 - **Справочник API**: Просмотреть [Документацию API](../api/modules.html)
 - **Примеры**: Посмотреть [рабочие примеры](../../examples/)
 
 ### 2. Спросить сообщество
 
-- **GitHub Discussions**: [Задавать вопросы и делиться знаниями](https://github.com/daytona/wildberries-sdk/discussions)
+- **GitHub Discussions**: [Задавать вопросы и делиться знаниями](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)
 - **Stack Overflow**: Отмечать вопросы тегом `wildberries-sdk`
 
 ### 3. Сообщить о баге
 
-Если вы нашли баг, [откройте GitHub issue](https://github.com/daytona/wildberries-sdk/issues/new).
+Если вы нашли баг, [откройте GitHub issue](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues/new).
 
 **Включить в отчет:**
 
@@ -1922,4 +1922,4 @@ try {
 **Версия документа**: 1.0
 **Версия SDK**: 1.0.0
 
-Для последней версии этого руководства посетите [GitHub репозиторий](https://github.com/daytona/wildberries-sdk).
+Для последней версии этого руководства посетите [GitHub репозиторий](https://github.com/salacoste/daytona-wildberries-typescript-sdk).

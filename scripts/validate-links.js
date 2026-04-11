@@ -22,7 +22,7 @@ import { join } from 'path';
 function findMarkdownFiles(dir, fileList = []) {
   const files = readdirSync(dir);
 
-  files.forEach(file => {
+  files.forEach((file) => {
     const filePath = join(dir, file);
 
     // Skip hidden directories, node_modules, and dist
@@ -50,12 +50,12 @@ let checkedFiles = 0;
 let totalLinks = 0;
 let brokenLinks = 0;
 
-markdownFiles.forEach(file => {
+markdownFiles.forEach((file) => {
   console.log(`Checking links in ${file}...`);
   try {
     const output = execSync(`npx markdown-link-check "${file}"`, {
       stdio: 'pipe',
-      encoding: 'utf8'
+      encoding: 'utf8',
     });
 
     // Count links
@@ -71,11 +71,20 @@ markdownFiles.forEach(file => {
       hasErrors = true;
     }
   } catch (error) {
-    // Log error but continue checking other files
-    console.warn(`⚠️  Warning: Could not check ${file}`);
-    if (error.stdout && error.stdout.includes('[✖]')) {
-      hasErrors = true;
-      console.error(error.stdout);
+    // markdown-link-check exits non-zero when broken links are found.
+    // The broken link output is in error.stdout, not the try block.
+    // Bug fix (Sprint 9 task-100): count broken links from catch block too.
+    if (error.stdout) {
+      const catchBrokenMatches = error.stdout.match(/\[✖\]/g) || [];
+      const catchLinkMatches = error.stdout.match(/\[✓\]/g) || [];
+      brokenLinks += catchBrokenMatches.length;
+      totalLinks += catchBrokenMatches.length + catchLinkMatches.length;
+      if (catchBrokenMatches.length > 0) {
+        hasErrors = true;
+        console.error(error.stdout);
+      }
+    } else {
+      console.warn(`⚠️  Warning: Could not check ${file}`);
     }
     checkedFiles++;
   }

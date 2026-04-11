@@ -550,7 +550,7 @@ For production deployments, monitor:
 - **Changelog**: See `CHANGELOG.md` for detailed version history
 
 ### Links
-- **Repository**: [GitHub](https://github.com/yourusername/wb-api-sdk)
+- **Repository**: [GitHub](https://github.com/salacoste/daytona-wildberries-typescript-sdk)
 - **NPM Package**: [npm](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)
 - **Wildberries API Docs**: [Official API](https://dev.wildberries.ru/)
 

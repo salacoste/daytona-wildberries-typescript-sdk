@@ -43,7 +43,7 @@ Perfect for getting started with the SDK and understanding basic concepts.
 | [finances-balance-transactions.ts](#finances-balance-transactionsts---balance--transaction-management) | Finances | 10 min | Check balance and transaction history |
 | [customer-support.ts](#customer-supportts---customer-support-workflows) | Communications | 15 min | Basic customer chat management |
 | [supply-cost-calculator.ts](#supply-cost-calculatorts---supply-cost-calculator) | Supply Planning | 10 min | Calculate FBW supply costs |
-| [tariff-comparison.ts](#tariff-comparisont---tariff-comparison-tool) | Supply Planning | 10 min | Compare inventory vs supply tariffs |
+| [tariff-comparison.ts](#tariff-comparison---tariff-comparison-tool) | Supply Planning | 10 min | Compare inventory vs supply tariffs |
 
 #### 🟡 Intermediate (15-30 minutes)
 Build on basic knowledge with more complex workflows and multi-step processes.
@@ -62,7 +62,7 @@ Build on basic knowledge with more complex workflows and multi-step processes.
 | [reports-analytics.ts](#reports-analyticsts---advanced-analytics-reports) | Reports | 20 min | Generate advanced analytics reports |
 | [customer-engagement.ts](#customer-engagementts---customer-engagement-workflows) | Communications | 25 min | Manage reviews, questions, and feedback |
 | [tariffs-pricing-calculator.ts](#tariffs-pricing-calculatorts---pricing-calculator) | Tariffs | 20 min | Calculate costs and seller payouts |
-| [promotion-campaign-automation.ts](#promotion-campaign-automationt---promotion-campaign-automation) | Promotion | 25 min | Automate advertising campaign management |
+| [promotion-campaign-automation.ts](#promotion-campaign-automation---promotion-campaign-automation) | Promotion | 25 min | Automate advertising campaign management |
 | [communications-customer-engagement.ts](#communications-customer-engagementts---complete-communications-workflow) | Communications | 30 min | Complete customer communications workflow |
 
 #### 🔴 Advanced (30-60 minutes)
@@ -72,7 +72,7 @@ Complex multi-module integrations and comprehensive business workflows.
 |---------|--------|------|-------------|
 | [integration-product-order-finance.ts](#integration-product-order-financets---multi-module-integration) | Multi-Module | 45 min | Product → Order → Finance integration |
 | [business-dashboard.ts](#business-dashboardts---business-intelligence-dashboard) | Multi-Module | 50 min | Real-time business intelligence dashboard |
-| [financial-reconciliation.ts](#financial-reconciliationt---financial-reconciliation-workflow) | Multi-Module | 40 min | Reconcile sales, returns, and payments |
+| [financial-reconciliation.ts](#financial-reconciliation---financial-reconciliation-workflow) | Multi-Module | 40 min | Reconcile sales, returns, and payments |
 | [export-to-bi.ts](#export-to-bits---export-data-to-bi-tools) | Multi-Module | 60 min | Export data to external BI platforms |
 
 ---
@@ -92,7 +92,7 @@ Complex multi-module integrations and comprehensive business workflows.
 #### 📦 Supply Planning & Cost Optimization
 - [supplies-planning.ts](#supplies-planningts---complete-supply-planning-workflow) - Complete supply workflow (🟡 25 min)
 - [supply-cost-calculator.ts](#supply-cost-calculatorts---supply-cost-calculator) - Calculate supply costs (🟢 10 min)
-- [tariff-comparison.ts](#tariff-comparisont---tariff-comparison-tool) - Compare tariff types (🟢 10 min)
+- [tariff-comparison.ts](#tariff-comparison---tariff-comparison-tool) - Compare tariff types (🟢 10 min)
 
 #### 🚚 Order Fulfillment
 - [orders-fbs-processing.ts](#orders-fbs-processingts---fbs-order-processing) - FBS order processing (🟢 10 min)
@@ -103,7 +103,7 @@ Complex multi-module integrations and comprehensive business workflows.
 #### 💰 Financial Management
 - [finances-balance-transactions.ts](#finances-balance-transactionsts---balance--transaction-management) - Balance and transactions (🟢 10 min)
 - [finances-reports-payouts.ts](#finances-reports-payoutsts---financial-reports--payouts) - Reports and payouts (🟡 20 min)
-- [financial-reconciliation.ts](#financial-reconciliationt---financial-reconciliation-workflow) - Financial reconciliation (🔴 40 min)
+- [financial-reconciliation.ts](#financial-reconciliation---financial-reconciliation-workflow) - Financial reconciliation (🔴 40 min)
 - [tariffs-pricing-calculator.ts](#tariffs-pricing-calculatorts---pricing-calculator) - Cost calculation (🟡 20 min)
 
 #### 📈 Analytics & Reporting
@@ -118,12 +118,12 @@ Complex multi-module integrations and comprehensive business workflows.
 - [communications-customer-engagement.ts](#communications-customer-engagementts---complete-communications-workflow) - Complete communications (🟡 30 min)
 
 #### 🎯 Marketing & Promotion
-- [promotion-campaign-automation.ts](#promotion-campaign-automationt---promotion-campaign-automation) - Campaign automation (🟡 25 min)
+- [promotion-campaign-automation.ts](#promotion-campaign-automation---promotion-campaign-automation) - Campaign automation (🟡 25 min)
 
 #### 🔗 Multi-Module Integration
 - [integration-product-order-finance.ts](#integration-product-order-financets---multi-module-integration) - Product-Order-Finance flow (🔴 45 min)
 - [business-dashboard.ts](#business-dashboardts---business-intelligence-dashboard) - Business dashboard (🔴 50 min)
-- [financial-reconciliation.ts](#financial-reconciliationt---financial-reconciliation-workflow) - Financial reconciliation (🔴 40 min)
+- [financial-reconciliation.ts](#financial-reconciliation---financial-reconciliation-workflow) - Financial reconciliation (🔴 40 min)
 - [export-to-bi.ts](#export-to-bits---export-data-to-bi-tools) - BI export (🔴 60 min)
 
 ---

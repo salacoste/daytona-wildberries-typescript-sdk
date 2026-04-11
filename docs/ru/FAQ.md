@@ -721,7 +721,7 @@ await sdk.products.getCardsList(); // Проверьте консоль для �
 
 ### 34. Как сообщить об ошибках или запросить функции?
 
-1. **Проверьте существующие проблемы:** [GitHub Issues](https://github.com/daytona/wildberries-typescript-sdk/issues)
+1. **Проверьте существующие проблемы:** [GitHub Issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 2. **Создайте новую проблему:** Используйте шаблоны проблем
 3. **Предоставьте детали:**
    - Версия SDK
@@ -758,5 +758,5 @@ await sdk.products.getCardsList(); // Проверьте консоль для �
 
 **Нужна дополнительная помощь?**
 - 📖 [Документация](README.md)
-- 🐛 [Сообщить о проблеме](https://github.com/daytona/wildberries-typescript-sdk/issues)
-- 💬 [Обсуждения](https://github.com/daytona/wildberries-typescript-sdk/discussions)
+- 🐛 [Сообщить о проблеме](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
+- 💬 [Обсуждения](https://github.com/salacoste/daytona-wildberries-typescript-sdk/discussions)

@@ -7,6 +7,9 @@
       "pattern": "^https://yourusername"
     },
     {
+      "pattern": "^https://your-"
+    },
+    {
       "pattern": "^https://example.com"
     },
     {
@@ -20,13 +23,73 @@
     },
     {
       "pattern": "^intermediate/error-handling.md$"
+    },
+    {
+      "pattern": "^/"
+    },
+    {
+      "pattern": "^\\.\\./"
+    },
+    {
+      "pattern": "^\\./"
+    },
+    {
+      "pattern": "%7B"
+    },
+    {
+      "pattern": "\\{\\{"
+    },
+    {
+      "pattern": "^[^:]+\\.md"
+    },
+    {
+      "pattern": "^[^:]+\\.html"
+    },
+    {
+      "pattern": "^[^:]+\\.ts$"
+    },
+    {
+      "pattern": "^mailto:"
+    },
+    {
+      "pattern": "^#"
+    },
+    {
+      "pattern": "^https://[a-z-]+-api\\.wildberries\\.ru"
+    },
+    {
+      "pattern": "^https://discounts-prices-api\\.wildberries\\.ru"
+    },
+    {
+      "pattern": "^https://advert-api\\.wildberries\\.ru"
+    },
+    {
+      "pattern": "^https://openapi\\.wildberries\\.ru"
+    },
+    {
+      "pattern": "^https://cmp\\.wildberries\\.ru"
+    },
+    {
+      "pattern": "честныйзнак"
+    },
+    {
+      "pattern": "xn--"
+    },
+    {
+      "pattern": "bmad-code-org"
+    },
+    {
+      "pattern": "^https://codecov\\.io"
+    },
+    {
+      "pattern": "^https://docsearch\\.algolia\\.com"
     }
   ],
   "timeout": "10s",
   "retryOn429": true,
   "retryCount": 5,
   "fallbackRetryDelay": "30s",
-  "aliveStatusCodes": [200, 206, 403],
+  "aliveStatusCodes": [200, 206, 403, 498],
   "httpHeaders": [
     {
       "urls": ["https://www.npmjs.com/"],

@@ -257,7 +257,7 @@ for (const order of result.orders ?? []) {
 
 ## Нужна помощь?
 
-- **Проблемы SDK**: [GitHub Issues](https://github.com/your-org/wb-api-sdk/issues)
+- **Проблемы SDK**: [GitHub Issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 - **Документация API**: [Портал разработчика Wildberries](https://dev.wildberries.ru/openapi)
 - **Сообщество**: [Telegram-канал](https://t.me/wb_api_community)
 

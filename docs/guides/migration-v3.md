@@ -607,7 +607,7 @@ A: v2.x will receive security patches until v3.0.0 is released. New features wil
 
 ## Need Help?
 
-- **SDK Issues**: [GitHub Issues](https://github.com/your-org/wb-api-sdk/issues)
+- **SDK Issues**: [GitHub Issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 - **API Documentation**: [Wildberries Developer Portal](https://dev.wildberries.ru/openapi)
 - **API Changelog**: [Release Notes](https://dev.wildberries.ru/release-notes)
 - **Community**: [Telegram Channel](https://t.me/wb_api_community)
