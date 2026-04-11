@@ -1181,4 +1181,126 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       ).rejects.toThrow(AuthenticationError);
     });
   });
+
+  // ============================================================================
+  // v3.6.2 Regression: kizMarked marking code field
+  // Source: WB API update 2026-04-09 — mandatory marking code confirmation
+  // Quinn's rule: every type change ships with a test that fails if the type is removed
+  // ============================================================================
+
+  describe('kizMarked marking code field (v3.6.2)', () => {
+    it('should accept kizMarked: true in createCardsUpload request', async () => {
+      mockClient.post.mockResolvedValue({ data: {}, error: false, errorText: '' });
+
+      await productsModule.createCardsUpload([
+        {
+          subjectID: 105,
+          variants: [
+            {
+              vendorCode: 'KIZ-001',
+              sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+              characteristics: [{ id: 1, value: 'Test' }],
+              kizMarked: true,
+            },
+          ],
+        },
+      ]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v2/cards/upload',
+        expect.arrayContaining([
+          expect.objectContaining({
+            variants: expect.arrayContaining([expect.objectContaining({ kizMarked: true })]),
+          }),
+        ]),
+        expect.anything()
+      );
+    });
+
+    it('should accept kizMarked: true in createCardsUpdate request', async () => {
+      mockClient.post.mockResolvedValue({ data: {}, error: false, errorText: '' });
+
+      await productsModule.createCardsUpdate([
+        {
+          nmID: 12345,
+          vendorCode: 'KIZ-UPD',
+          sizes: [{ techSize: '42' }],
+          kizMarked: true,
+        },
+      ]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v2/cards/update',
+        expect.arrayContaining([expect.objectContaining({ kizMarked: true })]),
+        expect.anything()
+      );
+    });
+
+    it('should accept kizMarked: true in createUploadAdd request', async () => {
+      mockClient.post.mockResolvedValue({ data: {}, error: false, errorText: '' });
+
+      await productsModule.createUploadAdd({
+        imtID: 98765,
+        cardsToAdd: [
+          {
+            vendorCode: 'KIZ-ADD',
+            sizes: [{ techSize: '44', skus: ['9999999999999'] }],
+            characteristics: [{ id: 1, value: 'Test' }],
+            kizMarked: true,
+          },
+        ],
+      });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v2/cards/upload/add',
+        expect.objectContaining({
+          cardsToAdd: expect.arrayContaining([expect.objectContaining({ kizMarked: true })]),
+        }),
+        expect.anything()
+      );
+    });
+
+    it('should expose kizMarked and needKiz on getCardsList response', async () => {
+      const mockResponse = {
+        cards: [
+          {
+            nmID: 12345,
+            vendorCode: 'KIZ-001',
+            needKiz: true,
+            kizMarked: true,
+          },
+        ],
+        cursor: { total: 1 },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await productsModule.getCardsList({
+        settings: { cursor: { limit: 10 } },
+      });
+
+      expect(result.cards?.[0].needKiz).toBe(true);
+      expect(result.cards?.[0].kizMarked).toBe(true);
+    });
+
+    it('should expose kizMarked and needKiz on getTrashedCards response', async () => {
+      const mockResponse = {
+        cards: [
+          {
+            nmID: 99999,
+            vendorCode: 'TRASHED-001',
+            needKiz: false,
+            kizMarked: true,
+            trashedAt: '2026-04-09T00:00:00Z',
+          },
+        ],
+        cursor: { total: 1 },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await productsModule.getTrashedCards({});
+
+      expect(result.cards?.[0].needKiz).toBe(false);
+      expect(result.cards?.[0].kizMarked).toBe(true);
+    });
+  });
 });

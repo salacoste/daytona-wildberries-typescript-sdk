@@ -646,6 +646,8 @@ export class ProductsModule {
       title?: string;
       description?: string;
       needKiz?: boolean;
+      /** Confirmed mandatory marking code (Честный ЗНАК) applied to product @since v3.6.2 */
+      kizMarked?: boolean;
       photos?: {
         big?: string;
         c246x328?: string;
@@ -705,6 +707,8 @@ export class ProductsModule {
         title?: string;
         description?: string;
         needKiz?: boolean;
+        /** Confirmed mandatory marking code (Честный ЗНАК) applied to product @since v3.6.2 */
+        kizMarked?: boolean;
         photos?: {
           big?: string;
           c246x328?: string;
@@ -809,6 +813,8 @@ export class ProductsModule {
       dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
       characteristics?: { id: number; value: unknown }[];
       sizes: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
+      /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
+      kizMarked?: boolean;
     }[]
   ): Promise<ResponseCardCreate> {
     return this.client.post<ResponseCardCreate>(
@@ -985,6 +991,10 @@ export class ProductsModule {
         isValid?: boolean;
       };
       characteristics?: { id?: number; name?: string; value?: unknown }[];
+      /** Whether a mandatory marking code (Честный ЗНАК) is required for this product */
+      needKiz?: boolean;
+      /** Confirmed mandatory marking code (Честный ЗНАК) applied to product @since v3.6.2 */
+      kizMarked?: boolean;
       createdAt?: string;
       trashedAt?: string;
     }[];
@@ -1014,6 +1024,8 @@ export class ProductsModule {
           isValid?: boolean;
         };
         characteristics?: { id?: number; name?: string; value?: unknown }[];
+        needKiz?: boolean;
+        kizMarked?: boolean;
         createdAt?: string;
         trashedAt?: string;
       }[];
@@ -1136,6 +1148,8 @@ export class ProductsModule {
         dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
         sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
         characteristics?: { id: number; value: unknown }[];
+        /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
+        kizMarked?: boolean;
       }[];
     }[]
   ): Promise<ResponseCardCreate> {
@@ -1185,6 +1199,8 @@ export class ProductsModule {
       dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
       sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
       characteristics?: { id: number; value: unknown }[];
+      /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
+      kizMarked?: boolean;
     }[];
   }): Promise<ResponseCardCreate> {
     return this.client.post<ResponseCardCreate>(
