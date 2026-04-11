@@ -67,7 +67,13 @@
       "pattern": "^https://openapi\\.wildberries\\.ru"
     },
     {
-      "pattern": "^https://dev\\.wildberries\\.ru/openapi/"
+      "pattern": "^https://dev\\.wildberries\\.ru/openapi"
+    },
+    {
+      "pattern": "^[a-z].*/$"
+    },
+    {
+      "pattern": "^\\.\\.\\.$"
     },
     {
       "pattern": "^https://cmp\\.wildberries\\.ru"
