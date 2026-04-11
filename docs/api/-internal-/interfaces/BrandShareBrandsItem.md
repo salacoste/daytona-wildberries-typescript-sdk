@@ -2,7 +2,7 @@
 
 # Interface: BrandShareBrandsItem
 
-Defined in: [types/reports.types.ts:575](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L575)
+Defined in: [types/reports.types.ts:575](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L575)
 
 Brand share brands item
 
@@ -14,5 +14,5 @@ EPIC 43 - Response type for getBrandShareBrands
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="brandname"></a> `brandName?` | `string` | Название бренда | [types/reports.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L577) |
-| <a id="brandid"></a> `brandId?` | `number` | ID бренда | [types/reports.types.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L579) |
+| <a id="brandname"></a> `brandName?` | `string` | Название бренда | [types/reports.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L577) |
+| <a id="brandid"></a> `brandId?` | `number` | ID бренда | [types/reports.types.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L579) |

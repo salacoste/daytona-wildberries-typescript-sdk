@@ -2,7 +2,7 @@
 
 # Interface: DeductionsResponse
 
-Defined in: [types/reports.types.ts:893](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L893)
+Defined in: [types/reports.types.ts:893](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L893)
 
 Response for getDeductions
 
@@ -14,6 +14,6 @@ EPIC 44 - Response type for getDeductions
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `reports?`: [`DeductionItem`](DeductionItem.md)[]; `total?`: `number`; \} | [types/reports.types.ts:894](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L894) |
-| `data.reports?` | [`DeductionItem`](DeductionItem.md)[] | [types/reports.types.ts:895](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L895) |
-| `data.total?` | `number` | [types/reports.types.ts:896](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L896) |
+| <a id="data"></a> `data?` | \{ `reports?`: [`DeductionItem`](DeductionItem.md)[]; `total?`: `number`; \} | [types/reports.types.ts:894](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L894) |
+| `data.reports?` | [`DeductionItem`](DeductionItem.md)[] | [types/reports.types.ts:895](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L895) |
+| `data.total?` | `number` | [types/reports.types.ts:896](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L896) |

@@ -2,13 +2,13 @@
 
 # Interface: StocksReportReq
 
-Defined in: [types/analytics.types.ts:776](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/analytics.types.ts#L776)
+Defined in: [types/analytics.types.ts:776](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L776)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `string` | ID отчёта в UUID-формате. Генерируется продавцом самостоятельно | [types/analytics.types.ts:778](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/analytics.types.ts#L778) |
-| <a id="reporttype"></a> `reportType` | `string` | Тип отчёта — `STOCK_HISTORY_REPORT_CSV` | [types/analytics.types.ts:780](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/analytics.types.ts#L780) |
-| <a id="userreportname"></a> `userReportName?` | `string` | Название отчёта. Если не указано, сформируется автоматически | [types/analytics.types.ts:782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/analytics.types.ts#L782) |
-| <a id="params"></a> `params` | [`CommonReportFilters`](CommonReportFilters.md) | Параметры отчёта | [types/analytics.types.ts:784](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/analytics.types.ts#L784) |
+| <a id="id"></a> `id` | `string` | ID отчёта в UUID-формате. Генерируется продавцом самостоятельно | [types/analytics.types.ts:778](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L778) |
+| <a id="reporttype"></a> `reportType` | `string` | Тип отчёта — `STOCK_HISTORY_REPORT_CSV` | [types/analytics.types.ts:780](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L780) |
+| <a id="userreportname"></a> `userReportName?` | `string` | Название отчёта. Если не указано, сформируется автоматически | [types/analytics.types.ts:782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L782) |
+| <a id="params"></a> `params` | [`CommonReportFilters`](CommonReportFilters.md) | Параметры отчёта | [types/analytics.types.ts:784](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L784) |

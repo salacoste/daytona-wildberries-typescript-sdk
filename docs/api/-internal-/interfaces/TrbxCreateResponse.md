@@ -2,7 +2,7 @@
 
 # Interface: TrbxCreateResponse
 
-Defined in: [types/orders-fbs.types.ts:418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/orders-fbs.types.ts#L418)
+Defined in: [types/orders-fbs.types.ts:418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-fbs.types.ts#L418)
 
 Response after creating boxes in a supply
 
@@ -10,4 +10,4 @@ Response after creating boxes in a supply
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="trbxids"></a> `trbxIds?` | `string`[] | List of created box IDs | [types/orders-fbs.types.ts:420](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/orders-fbs.types.ts#L420) |
+| <a id="trbxids"></a> `trbxIds?` | `string`[] | List of created box IDs | [types/orders-fbs.types.ts:420](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-fbs.types.ts#L420) |

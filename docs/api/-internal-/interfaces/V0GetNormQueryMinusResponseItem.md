@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryMinusResponseItem
 
-Defined in: [types/promotion.types.ts:1060](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1060)
+Defined in: [types/promotion.types.ts:1060](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1060)
 
 Элемент ответа со списком минус-фраз
 
@@ -10,6 +10,6 @@ Defined in: [types/promotion.types.ts:1060](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:1062](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1062) |
-| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:1064](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1064) |
-| <a id="norm_queries"></a> `norm_queries?` | `string`[] | Список минус-фраз | [types/promotion.types.ts:1066](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1066) |
+| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:1062](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1062) |
+| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:1064](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1064) |
+| <a id="norm_queries"></a> `norm_queries?` | `string`[] | Список минус-фраз | [types/promotion.types.ts:1066](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1066) |

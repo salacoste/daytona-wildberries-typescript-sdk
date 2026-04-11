@@ -2,7 +2,7 @@
 
 # Interface: GoodsLabelingResponse
 
-Defined in: [types/reports.types.ts:537](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L537)
+Defined in: [types/reports.types.ts:537](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L537)
 
 Response for getAnalyticsGoodsLabeling
 
@@ -14,6 +14,6 @@ EPIC 43 - Response type for getAnalyticsGoodsLabeling
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `reports?`: [`GoodsLabelingItem`](GoodsLabelingItem.md)[]; `total?`: `number`; \} | [types/reports.types.ts:538](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L538) |
-| `data.reports?` | [`GoodsLabelingItem`](GoodsLabelingItem.md)[] | [types/reports.types.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L539) |
-| `data.total?` | `number` | [types/reports.types.ts:540](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/reports.types.ts#L540) |
+| <a id="data"></a> `data?` | \{ `reports?`: [`GoodsLabelingItem`](GoodsLabelingItem.md)[]; `total?`: `number`; \} | [types/reports.types.ts:538](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L538) |
+| `data.reports?` | [`GoodsLabelingItem`](GoodsLabelingItem.md)[] | [types/reports.types.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L539) |
+| `data.total?` | `number` | [types/reports.types.ts:540](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/reports.types.ts#L540) |

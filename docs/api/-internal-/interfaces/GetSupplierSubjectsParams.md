@@ -2,7 +2,7 @@
 
 # Interface: GetSupplierSubjectsParams
 
-Defined in: [types/promotion.types.ts:1555](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1555)
+Defined in: [types/promotion.types.ts:1555](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1555)
 
 Parameters for getting supplier subjects
 
@@ -10,4 +10,4 @@ Parameters for getting supplier subjects
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="payment_type"></a> `payment_type?` | `"cpm"` \| `"cpc"` | Payment type: cpm or cpc | [types/promotion.types.ts:1557](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1557) |
+| <a id="payment_type"></a> `payment_type?` | `"cpm"` \| `"cpc"` | Payment type: cpm or cpc | [types/promotion.types.ts:1557](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1557) |

@@ -2,7 +2,7 @@
 
 # Interface: TrbxCreateRequest
 
-Defined in: [types/orders-fbs.types.ts:146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/orders-fbs.types.ts#L146)
+Defined in: [types/orders-fbs.types.ts:146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-fbs.types.ts#L146)
 
 Request body for creating boxes (trbx) in a supply
 
@@ -10,4 +10,4 @@ Request body for creating boxes (trbx) in a supply
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="amount"></a> `amount` | `number` | Number of boxes to create | [types/orders-fbs.types.ts:148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/orders-fbs.types.ts#L148) |
+| <a id="amount"></a> `amount` | `number` | Number of boxes to create | [types/orders-fbs.types.ts:148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-fbs.types.ts#L148) |
