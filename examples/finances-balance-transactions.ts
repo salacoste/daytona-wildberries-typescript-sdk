@@ -124,17 +124,20 @@ async function main() {
     console.log('Step 2: Fetching account balance...');
 
     try {
-      const balance = await sdk.finances.getBalance();
+      const balance = await sdk.finances.getAccountBalance();
 
       console.log('✅ Balance retrieved successfully:');
-      console.log(`   Currency: ${balance.currency}`);
-      console.log(`   Current Balance: ${balance.current.toFixed(2)} ${balance.currency}`);
+      console.log(`   Currency: ${balance.currency ?? 'N/A'}`);
       console.log(
-        `   Available for Withdrawal: ${balance.for_withdraw.toFixed(2)} ${balance.currency}`
+        `   Current Balance: ${(balance.current ?? 0).toFixed(2)} ${balance.currency ?? ''}`
+      );
+      console.log(
+        `   Available for Withdrawal: ${(balance.for_withdraw ?? 0).toFixed(2)} ${balance.currency ?? ''}`
       );
 
-      const percentAvailable =
-        ((balance.for_withdraw / balance.current) * 100).toFixed(1);
+      const current = balance.current ?? 0;
+      const forWithdraw = balance.for_withdraw ?? 0;
+      const percentAvailable = current > 0 ? ((forWithdraw / current) * 100).toFixed(1) : '0.0';
       console.log(`   (${percentAvailable}% available for withdrawal)\n`);
     } catch (error) {
       if (error instanceof RateLimitError) {
@@ -166,22 +169,22 @@ async function main() {
 
       console.log(`   Date range: ${dateFrom} to ${dateTo}`);
 
-      const transactions = await sdk.finances.getTransactions({
+      const transactions = await sdk.finances.getSupplierReportDetailByPeriod({
         dateFrom,
         dateTo,
-        limit: 10, // Get first 10 transactions
+        limit: 10, // Get first 10 rows
         period: 'weekly',
       });
 
-      console.log(`✅ Retrieved ${transactions.length} transactions\n`);
+      console.log(`✅ Retrieved ${transactions.length} report detail rows\n`);
 
       if (transactions.length > 0) {
-        console.log('   Recent transactions:');
+        console.log('   Recent report rows:');
         transactions.slice(0, 5).forEach((txn, index) => {
           console.log(`   ${index + 1}. ID: ${txn.rrd_id}`);
           console.log(`      Brand: ${txn.brand_name} (${txn.sa_name})`);
           console.log(`      Type: ${txn.doc_type_name}`);
-          console.log(`      Amount: ${txn.ppvz_for_pay} ${txn.currency_name}`);
+          console.log(`      Amount: ${txn.ppvz_for_pay ?? 0} ${txn.currency_name ?? 'руб'}`);
           console.log(`      Sale Date: ${txn.sale_dt}`);
           console.log('');
         });
@@ -205,7 +208,7 @@ async function main() {
     }
 
     // ============================================================================
-    // Step 4: Pagination Example - Fetch All Transactions
+    // Step 4: Pagination Example - Fetch All Report Detail Rows
     // ============================================================================
 
     console.log('Step 4: Demonstrating pagination for large datasets...');
@@ -214,15 +217,18 @@ async function main() {
       const dateFrom = '2024-01-01';
       const dateTo = '2024-01-31';
 
-      console.log(`   Fetching all transactions from ${dateFrom} to ${dateTo}...`);
+      console.log(`   Fetching all report rows from ${dateFrom} to ${dateTo}...`);
 
-      let allTransactions: typeof transactions = [];
+      type DetailRow = Awaited<
+        ReturnType<typeof sdk.finances.getSupplierReportDetailByPeriod>
+      >[number];
+      let allRows: DetailRow[] = [];
       let rrdid = 0;
       let pageNumber = 1;
       let hasMore = true;
 
       while (hasMore) {
-        const page = await sdk.finances.getTransactions({
+        const page = await sdk.finances.getSupplierReportDetailByPeriod({
           dateFrom,
           dateTo,
           rrdid,
@@ -232,11 +238,11 @@ async function main() {
         if (page.length === 0) {
           hasMore = false;
         } else {
-          console.log(`   ✓ Page ${pageNumber}: ${page.length} transactions`);
-          allTransactions = allTransactions.concat(page);
+          console.log(`   ✓ Page ${pageNumber}: ${page.length} rows`);
+          allRows = allRows.concat(page);
 
-          // Use the last transaction's rrd_id for next page
-          rrdid = page[page.length - 1].rrd_id;
+          // Use the last row's rrd_id for next page
+          rrdid = page[page.length - 1].rrd_id ?? 0;
           pageNumber++;
         }
 
@@ -247,15 +253,12 @@ async function main() {
         }
       }
 
-      console.log(`✅ Total transactions fetched: ${allTransactions.length}\n`);
+      console.log(`✅ Total rows fetched: ${allRows.length}\n`);
 
       // Calculate summary statistics
-      if (allTransactions.length > 0) {
-        const totalAmount = allTransactions.reduce(
-          (sum, txn) => sum + txn.ppvz_for_pay,
-          0
-        );
-        const avgAmount = totalAmount / allTransactions.length;
+      if (allRows.length > 0) {
+        const totalAmount = allRows.reduce((sum, row) => sum + (row.ppvz_for_pay ?? 0), 0);
+        const avgAmount = totalAmount / allRows.length;
 
         console.log('   Transaction Summary:');
         console.log(`   Total Amount: ${totalAmount.toFixed(2)} руб`);
@@ -275,41 +278,49 @@ async function main() {
     // Step 5: Find Specific Transaction by ID
     // ============================================================================
 
-    console.log('Step 5: Searching for specific transaction...');
+    console.log('Step 5: Searching for specific row by rrd_id...');
 
     try {
-      // This will search for a transaction with ID 1232610467
-      // In a real scenario, you'd use an actual transaction ID from your data
-      const transactionId = 1232610467;
+      // Use rrdid parameter to start fetching from a specific row.
+      // The API doesn't have a "get single row by ID" method — use rrdid-based pagination
+      // to start from the row AFTER a known rrd_id and fetch a small batch.
+      const targetRrdId = 1232610467;
       const searchDateFrom = '2024-01-01';
       const searchDateTo = '2024-01-31';
 
-      console.log(`   Searching for transaction ID: ${transactionId}...`);
+      console.log(`   Starting from rrd_id: ${targetRrdId}...`);
 
-      const transaction = await sdk.finances.getTransactionDetail(transactionId, {
+      const rows = await sdk.finances.getSupplierReportDetailByPeriod({
         dateFrom: searchDateFrom,
         dateTo: searchDateTo,
+        rrdid: targetRrdId,
+        limit: 1,
       });
 
-      console.log('✅ Transaction found:');
-      console.log(`   ID: ${transaction.rrd_id}`);
-      console.log(`   Brand: ${transaction.brand_name}`);
-      console.log(`   Article: ${transaction.sa_name}`);
-      console.log(`   WB Article: ${transaction.nm_id}`);
-      console.log(`   Type: ${transaction.doc_type_name}`);
-      console.log(`   Quantity: ${transaction.quantity}`);
-      console.log(
-        `   Payment to Supplier: ${transaction.ppvz_for_pay} ${transaction.currency_name}`
-      );
-      console.log(`   Sale Date: ${transaction.sale_dt}\n`);
+      if (rows.length > 0) {
+        const row = rows[0];
+        console.log('✅ Row found:');
+        console.log(`   ID: ${row.rrd_id ?? 'N/A'}`);
+        console.log(`   Brand: ${row.brand_name ?? 'N/A'}`);
+        console.log(`   Article: ${row.sa_name ?? 'N/A'}`);
+        console.log(`   WB Article: ${row.nm_id ?? 'N/A'}`);
+        console.log(`   Type: ${row.doc_type_name ?? 'N/A'}`);
+        console.log(`   Quantity: ${row.quantity ?? 0}`);
+        console.log(
+          `   Payment to Supplier: ${row.ppvz_for_pay ?? 0} ${row.currency_name ?? 'руб'}`
+        );
+        console.log(`   Sale Date: ${row.sale_dt ?? 'N/A'}\n`);
+      } else {
+        console.log('   No rows found after the specified rrd_id\n');
+      }
     } catch (error) {
       if (error instanceof RateLimitError) {
         console.error('⚠️ Rate Limit Error:', error.message);
         console.log(`   Retry after: ${error.retryAfter}ms`);
       } else if (error instanceof ValidationError) {
-        console.log('⚠️  Transaction not found in the specified date range\n');
+        console.log('⚠️  No data found in the specified date range\n');
       } else {
-        console.error('❌ Transaction search failed:', error);
+        console.error('❌ Search failed:', error);
       }
     }
 

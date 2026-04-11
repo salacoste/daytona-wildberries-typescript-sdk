@@ -82,7 +82,9 @@ import {
   NetworkError,
   WBAPIError,
 } from '../src';
-import type { PickupNewOrder, PickupOrderStatus, CheckedIdentity, OrderMetadata } from '../src';
+// Note: In-store pickup types (ApiNewOrder, ApiOrdersMeta, etc.) are not exported
+// from the main SDK entry point. Type inference handles the typing automatically.
+// If you need explicit types, a future SDK version may add a ./in-store-pickup subpath.
 
 // ============================================================================
 // SETUP
@@ -149,7 +151,7 @@ async function completeOrderWorkflow() {
 
     // Step 6: Verify customer identity
     console.log('→ Verifying customer identity...');
-    const verification: CheckedIdentity = await sdk.inStorePickup.createClientIdentity({
+    const verification = await sdk.inStorePickup.createClientIdentity({
       orderCode: order.orderCode,
       passcode: '1234', // Customer provides this from their app
     });
@@ -198,8 +200,8 @@ async function customerVerificationWorkflow() {
       passcode,
     });
 
-    if (result.checked) {
-      console.log(`✓ Identity verified for order ${result.orderId}`);
+    if (result.ok) {
+      console.log('✓ Identity verified');
       console.log('→ You can now hand over the order');
     }
   } catch (error) {
@@ -219,13 +221,13 @@ async function metadataManagementWorkflow() {
   try {
     // Step 1: Get current metadata
     console.log('→ Fetching order metadata...');
-    const metadata: OrderMetadata = await sdk.inStorePickup.getOrdersMeta(orderId);
+    const metadata = await sdk.inStorePickup.getOrdersMeta(orderId);
 
     console.log('\nCurrent metadata:');
-    console.log(`  SGTIN codes: ${metadata.sgtin.length} items`);
-    console.log(`  UIN codes: ${metadata.uin.length} items`);
-    console.log(`  IMEI codes: ${metadata.imei.length} items`);
-    console.log(`  GTIN codes: ${metadata.gtin.length} items`);
+    console.log(`  SGTIN codes: ${metadata.meta?.sgtin?.value?.length ?? 0} items`);
+    console.log(`  UIN codes: ${metadata.meta?.uin?.value ? 1 : 0} items`);
+    console.log(`  IMEI codes: ${metadata.meta?.imei?.value ? 1 : 0} items`);
+    console.log(`  GTIN codes: ${metadata.meta?.gtin?.value ? 1 : 0} items`);
 
     // Step 2: Set SGTIN codes (Честный знак) for regulated products
     console.log('\n→ Setting SGTIN codes...');
@@ -257,10 +259,10 @@ async function metadataManagementWorkflow() {
     // Step 6: Verify updated metadata
     const updatedMetadata = await sdk.inStorePickup.getOrdersMeta(orderId);
     console.log('\n✓ All metadata updated successfully');
-    console.log(`  SGTIN: ${updatedMetadata.sgtin.length} codes`);
-    console.log(`  UIN: ${updatedMetadata.uin.length} codes`);
-    console.log(`  IMEI: ${updatedMetadata.imei.length} codes`);
-    console.log(`  GTIN: ${updatedMetadata.gtin.length} codes`);
+    console.log(`  SGTIN: ${updatedMetadata.meta?.sgtin?.value?.length ?? 0} codes`);
+    console.log(`  UIN: ${updatedMetadata.meta?.uin?.value ? 1 : 0} codes`);
+    console.log(`  IMEI: ${updatedMetadata.meta?.imei?.value ? 1 : 0} codes`);
+    console.log(`  GTIN: ${updatedMetadata.meta?.gtin?.value ? 1 : 0} codes`);
 
     // Step 7: Delete metadata if needed (before assembly completion)
     console.log('\n→ Deleting SGTIN codes...');
@@ -303,7 +305,7 @@ async function orderStatusTracking() {
       const statuses = await sdk.inStorePickup.createOrdersStatus({ orders: orderIds });
 
       console.log('\nOrder statuses:');
-      statuses.orders.forEach((status: PickupOrderStatus) => {
+      statuses.orders?.forEach((status) => {
         console.log(`\nOrder ${status.id}:`);
         console.log(`  Supplier Status: ${status.supplierStatus}`);
         console.log(`  WB Status: ${status.wbStatus}`);

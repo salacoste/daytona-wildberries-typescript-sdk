@@ -148,7 +148,7 @@ async function wait(ms: number, message?: string) {
   if (message) {
     console.log(`⏳ ${message}`);
   }
-  await new Promise(resolve => setTimeout(resolve, ms));
+  await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -290,7 +290,8 @@ async function main() {
 
     console.log('📍 Step 2.1: Checking for new orders...\n');
 
-    const newOrders = await sdk.ordersFBS.getOrdersNew();
+    const newOrdersResponse = await sdk.ordersFBS.getOrdersNew();
+    const newOrders = newOrdersResponse.orders ?? [];
 
     console.log(`✅ Found ${newOrders.length} new orders awaiting processing`);
 
@@ -313,22 +314,26 @@ async function main() {
     const sevenDaysAgo = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60;
     const now = Math.floor(Date.now() / 1000);
 
-    const ordersResponse = await sdk.ordersFBS.getOrders({
+    const ordersResponse = await sdk.ordersFBS.orders({
       dateFrom: sevenDaysAgo,
       dateTo: now,
       limit: 10,
       next: 0,
     });
+    const recentOrders = ordersResponse.orders ?? [];
 
-    console.log(`✅ Retrieved ${ordersResponse.orders.length} orders from last 7 days`);
+    console.log(`✅ Retrieved ${recentOrders.length} orders from last 7 days`);
 
-    if (ordersResponse.orders.length > 0) {
+    if (recentOrders.length > 0) {
       console.log('\n   Order Breakdown:');
-      const statuses = ordersResponse.orders.reduce((acc, order) => {
-        const status = order.address ? 'Delivery' : 'Pickup';
-        acc[status] = (acc[status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const statuses = recentOrders.reduce(
+        (acc, order) => {
+          const status = order.address ? 'Delivery' : 'Pickup';
+          acc[status] = (acc[status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
       Object.entries(statuses).forEach(([status, count]) => {
         console.log(`   ${status}: ${count} orders`);
@@ -342,12 +347,13 @@ async function main() {
 
     console.log('📍 Step 2.3: Checking order statuses...\n');
 
-    if (ordersResponse.orders.length > 0) {
-      const orderIds = ordersResponse.orders.slice(0, 3).map(o => o.id);
-      const statuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
+    if (recentOrders.length > 0) {
+      const orderIds = recentOrders.slice(0, 3).map((o) => o.id);
+      const statusResponse = await sdk.ordersFBS.getOrderStatuses({ orders: orderIds });
+      const orderStatuses = statusResponse.orders ?? [];
 
-      console.log(`✅ Checked ${statuses.length} order statuses:\n`);
-      statuses.forEach(status => {
+      console.log(`✅ Checked ${orderStatuses.length} order statuses:\n`);
+      orderStatuses.forEach((status) => {
         console.log(`   Order ${status.id}:`);
         console.log(`     Supplier Status: ${status.supplierStatus}`);
         console.log(`     WB Status: ${status.wbStatus}`);
@@ -371,17 +377,13 @@ async function main() {
 
     console.log('📍 Step 3.1: Checking account balance...\n');
 
-    const balance = await sdk.finances.getBalance();
+    const balance = await sdk.finances.getAccountBalance();
 
     console.log('✅ Account Balance:');
-    if (typeof balance === 'object' && 'balances' in balance && Array.isArray(balance.balances)) {
-      balance.balances.forEach((b: any) => {
-        console.log(`   Currency: ${b.currency || 'RUB'}`);
-        console.log(`   Available: ${b.balance || 0}₽`);
-        console.log(`   Blocked: ${b.blockedBalance || 0}₽`);
-      });
-    } else {
-      console.log('   Balance information not available');
+    console.log(`   Currency: ${balance.currency ?? 'RUB'}`);
+    console.log(`   Current Balance: ${(balance.current ?? 0).toFixed(2)}₽`);
+    console.log(`   Available for Withdrawal: ${(balance.for_withdraw ?? 0).toFixed(2)}₽`);
+    {
     }
     console.log('');
 
@@ -499,7 +501,6 @@ async function main() {
     console.log('   → Allow time for data synchronization (minutes to hours)');
     console.log('   → Use consistent identifiers (nmID, vendor code)');
     console.log('   → Verify API key has access to all modules\n');
-
   } catch (error) {
     // ============================================================================
     // Error Handling with cross-module considerations
@@ -523,7 +524,7 @@ async function main() {
     } else if (error instanceof ValidationError) {
       console.error('❌ Validation Error:', error.message);
       console.log('   Common cross-module validation issues:');
-      console.log('   - Product IDs don\'t exist in Orders');
+      console.log("   - Product IDs don't exist in Orders");
       console.log('   - Date ranges invalid for Finances queries');
       console.log('   - Missing required fields for product creation');
     } else if (error instanceof NetworkError) {

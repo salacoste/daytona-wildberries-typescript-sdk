@@ -80,7 +80,7 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src';
 import { writeFileSync } from 'fs';
 
@@ -94,7 +94,8 @@ async function completeFBSFulfillment() {
     // Step 1: Get new orders awaiting processing
     // ============================================================================
     console.log('Step 1: Fetching new FBS orders...');
-    const newOrders = await sdk.ordersFBS.getOrdersNew();
+    const newOrdersResponse = await sdk.ordersFBS.getOrdersNew();
+    const newOrders = newOrdersResponse.orders ?? [];
     console.log(`Found ${newOrders.length} new orders awaiting processing\n`);
 
     if (newOrders.length === 0) {
@@ -120,7 +121,7 @@ async function completeFBSFulfillment() {
     // ============================================================================
     console.log('Step 2: Creating supply...');
     const supplyName = `FBS Supply ${new Date().toISOString().split('T')[0]}`;
-    const supply = await sdk.ordersFBS.createSupply(supplyName);
+    const supply = await sdk.ordersFBS.createSupply({ name: supplyName });
     console.log(`Supply created: ${supply.id}\n`);
 
     // ============================================================================
@@ -134,8 +135,10 @@ async function completeFBSFulfillment() {
 
     for (const order of ordersToAdd) {
       try {
-        await sdk.ordersFBS.addOrderToSupply(supply.id, order.id);
-        console.log(`  ✅ Added order ${order.id} (article: ${order.article}, cargoType: ${order.cargoType})`);
+        await sdk.ordersFBS.addOrdersToSupply(supply.id, { orders: [order.id] });
+        console.log(
+          `  ✅ Added order ${order.id} (article: ${order.article}, cargoType: ${order.cargoType})`
+        );
         addedCount++;
       } catch (error) {
         if (error instanceof Error) {
@@ -159,7 +162,8 @@ async function completeFBSFulfillment() {
     // ============================================================================
     console.log('Step 4: Verifying order statuses...');
     const orderIds = ordersToAdd.slice(0, addedCount).map((o) => o.id);
-    const statuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
+    const statusResponse = await sdk.ordersFBS.getOrderStatuses({ orders: orderIds });
+    const statuses = statusResponse.orders ?? [];
 
     console.log('Order status breakdown:');
     statuses.forEach((status) => {
@@ -175,11 +179,11 @@ async function completeFBSFulfillment() {
     const confirmedOrders = statuses.filter((s) => s.supplierStatus === 'confirm').map((s) => s.id);
 
     if (confirmedOrders.length > 0) {
-      const stickers = await sdk.ordersFBS.getOrderStickers(confirmedOrders, {
-        type: 'png',
-        width: 58,
-        height: 40,
-      });
+      const stickerResponse = await sdk.ordersFBS.createOrdersSticker(
+        { type: 'png', width: 58, height: 40 },
+        { orders: confirmedOrders }
+      );
+      const stickers = stickerResponse.stickers ?? [];
 
       console.log(`Generated ${stickers.length} shipping labels`);
 
@@ -195,14 +199,16 @@ async function completeFBSFulfillment() {
       }
 
       // Also demonstrate SVG format
-      const svgStickers = await sdk.ordersFBS.getOrderStickers([confirmedOrders[0]], {
-        type: 'svg',
-        width: 58,
-        height: 40,
-      });
-      const svgData = Buffer.from(svgStickers[0].file, 'base64');
-      writeFileSync('order-sticker.svg', svgData);
-      console.log(`  ✅ Saved SVG sticker to order-sticker.svg\n`);
+      const svgResponse = await sdk.ordersFBS.createOrdersSticker(
+        { type: 'svg', width: 58, height: 40 },
+        { orders: [confirmedOrders[0]] }
+      );
+      const svgStickers = svgResponse.stickers ?? [];
+      if (svgStickers.length > 0) {
+        const svgData = Buffer.from(svgStickers[0].file, 'base64');
+        writeFileSync('order-sticker.svg', svgData);
+        console.log(`  ✅ Saved SVG sticker to order-sticker.svg\n`);
+      }
     } else {
       console.log('No orders in "confirm" status, skipping sticker generation\n');
     }
@@ -211,7 +217,7 @@ async function completeFBSFulfillment() {
     // Step 6: Deliver supply (changes status confirm → complete)
     // ============================================================================
     console.log('Step 6: Marking supply as delivered...');
-    await sdk.ordersFBS.deliverSupply(supply.id);
+    await sdk.ordersFBS.updateSuppliesDeliver(supply.id);
     console.log(`Supply ${supply.id} delivered successfully`);
     console.log('All orders transitioned to "complete" status\n');
 
@@ -219,17 +225,20 @@ async function completeFBSFulfillment() {
     // Step 7: Get supply QR code (only available after delivery)
     // ============================================================================
     console.log('Step 7: Generating supply QR code...');
-    const qrCode = await sdk.ordersFBS.getSupplyBarcode(supply.id, 'png');
-    const qrData = Buffer.from(qrCode.file, 'base64');
-    writeFileSync('supply-qrcode.png', qrData);
-    console.log(`  ✅ QR code saved to supply-qrcode.png`);
-    console.log(`     Barcode value: ${qrCode.barcode}\n`);
+    const qrCode = await sdk.ordersFBS.getSuppliesBarcode(supply.id, { type: 'png' });
+    if (qrCode.file) {
+      const qrData = Buffer.from(qrCode.file, 'base64');
+      writeFileSync('supply-qrcode.png', qrData);
+      console.log(`  ✅ QR code saved to supply-qrcode.png`);
+      console.log(`     Barcode value: ${qrCode.barcode ?? 'N/A'}\n`);
+    }
 
     // ============================================================================
     // Step 8: Verify final order statuses
     // ============================================================================
     console.log('Step 8: Verifying final order statuses...');
-    const finalStatuses = await sdk.ordersFBS.getOrderStatuses(orderIds);
+    const finalStatusResponse = await sdk.ordersFBS.getOrderStatuses({ orders: orderIds });
+    const finalStatuses = finalStatusResponse.orders ?? [];
 
     console.log('Final status breakdown:');
     finalStatuses.forEach((status) => {
@@ -241,9 +250,9 @@ async function completeFBSFulfillment() {
     // Step 9: List recent supplies
     // ============================================================================
     console.log('Step 9: Listing recent supplies...');
-    const supplies = await sdk.ordersFBS.getSupplies({ limit: 10, next: 0 });
-    console.log(`Total supplies: ${supplies.supplies.length}`);
-    supplies.supplies.slice(0, 5).forEach((s) => {
+    const supplies = await sdk.ordersFBS.supplies({ limit: 10, next: 0 });
+    console.log(`Total supplies: ${supplies.supplies?.length ?? 0}`);
+    (supplies.supplies ?? []).slice(0, 5).forEach((s) => {
       const status = s.done ? 'Closed' : 'Open';
       const closedInfo = s.closedAt ? ` (closed: ${s.closedAt})` : '';
       console.log(`  ${s.id}: ${s.name} - ${status}${closedInfo}`);
