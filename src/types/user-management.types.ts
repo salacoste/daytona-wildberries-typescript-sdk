@@ -68,7 +68,7 @@ export interface InviteeInfo {
   inviteUuid?: string;
   /**
    * Дата и время окончания срока действия приглашения
-   * @format date-time
+   * Format: date-time
    */
   expiredAt?: string;
   /**
@@ -134,7 +134,7 @@ export interface GetUsersParams {
   /**
    * Количество активных или приглашённых пользователей в ответе
    * @default 100
-   * @maximum 100
+   * Maximum: 100
    */
   limit?: number;
   /**
@@ -163,7 +163,7 @@ export interface CreateInviteRequest {
     phoneNumber: string;
     /**
      * Должность пользователя
-     * @maxLength 150
+     * Max length: 150
      */
     position?: string;
   };
@@ -175,12 +175,12 @@ export interface CreateInviteRequest {
 export interface CreateInviteResponse {
   /**
    * ID приглашения
-   * @format uuid
+   * Format: uuid
    */
   inviteID: string;
   /**
    * Дата и время окончания срока действия приглашения
-   * @format date-time
+   * Format: date-time
    */
   expiredAt: string;
   /**
@@ -191,7 +191,7 @@ export interface CreateInviteResponse {
   isSuccess: boolean;
   /**
    * URL приглашения, по которому должен перейти пользователь
-   * @format uri
+   * Format: uri
    */
   inviteUrl: string;
 }

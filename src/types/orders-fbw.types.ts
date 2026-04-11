@@ -95,7 +95,7 @@ export interface ModelsGoodInSupply {
   nmID?: number;
   /** Нужен ли [код маркировки](https://честныйзнак.рф/) для этого товара: - `false` — не нужен - `true` — нужен */
   needKiz?: boolean;
-  /** Код ТНВЭД. <br> Если `"needKIZ":true`, а `"tnved":null`, нужно заполнить характеристику товара **ТН ВЭД** в [личном кабинете](https://seller.wildberries.ru/new-goods) или по [API](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) */
+  /** Код ТНВЭД. <br> Если `"needKIZ":true`, а `"tnved":null`, нужно заполнить характеристику товара **ТН ВЭД** в [личном кабинете](https://seller.wildberries.ru/new-goods) или по [API](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1cards~1update/post) */
   tnved?: string;
   /** Размер товара, указанный продавцом */
   techSize?: string;
@@ -260,7 +260,7 @@ export interface ModelsAcceptanceCoefficient {
   date?: string;
   /** Коэффициент приёмки: - `-1` — приёмка недоступна, вне зависимости от значения поля `allowUnload` - `0` — бесплатная приёмка - от `1` — множитель стоимости приёмки */
   coefficient?: number;
-  /** ID склада. По нему можно получить [информацию о складе](./orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get) */
+  /** ID склада. По нему можно получить [информацию о складе](https://dev.wildberries.ru/openapi/orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get) */
   warehouseID?: number;
   /** Название склада */
   warehouseName?: string;
@@ -352,7 +352,7 @@ export interface ModelsOptionsResultModel {
     isError?: boolean;
     /** Список складов. При наличии ошибки будет `null` */
     warehouses?: {
-      /** ID склада. По нему можно получить [информацию о складе](./orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get) */
+      /** ID склада. По нему можно получить [информацию о складе](https://dev.wildberries.ru/openapi/orders-fbw#tag/Informaciya-dlya-formirovaniya-postavok/paths/~1api~1v1~1warehouses/get) */
       warehouseID?: number;
       /** Тип упаковки **Короб**: - `true` — доступен - `false` — недоступен */
       canBox?: boolean;

@@ -33,9 +33,9 @@ export interface GetCategories {
   data?: {
     /** Категории документов */
     categories?: {
-      /** ID категории документа из параметра [запроса](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category` */
+      /** ID категории документа из параметра [запроса](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1list/get) `category` */
       name?: string;
-      /** Название категории документа из поля [ответа](./financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category` */
+      /** Название категории документа из поля [ответа](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty/~1api~1v1~1documents~1list/get) `category` */
       title?: string;
     }[];
   };
@@ -49,7 +49,7 @@ export interface GetList {
       serviceName?: string;
       /** Название документа */
       name?: string;
-      /** Название [категории документов](./financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля ответа `title` */
+      /** Название [категории документов](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty/paths/~1api~1v1~1documents~1categories/get) из поля ответа `title` */
       category?: string;
       /** Форматы документа */
       extensions?: string[];

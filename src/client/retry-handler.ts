@@ -41,7 +41,7 @@ export interface RetryConfig {
    * Maximum number of retry attempts after initial failure
    *
    * @default 3
-   * @minimum 0
+   * Minimum: 0
    * @example
    * ```typescript
    * maxRetries: 3  // Initial attempt + 3 retries = 4 total attempts
@@ -57,7 +57,7 @@ export interface RetryConfig {
    * `retryDelay * 2^attempt * jitter`
    *
    * @default 1000 (1 second)
-   * @minimum 0
+   * Minimum: 0
    * @example
    * ```typescript
    * retryDelay: 1000  // 1s, 2s, 4s, 8s with exponential backoff
@@ -149,7 +149,7 @@ export interface RetryContext {
    * - Attempt 2: Second retry
    * - etc.
    *
-   * @minimum 0
+   * Minimum: 0
    */
   attempt: number;
 

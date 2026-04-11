@@ -686,7 +686,7 @@ export class CommunicationsModule {
    *
    * Метод возвращает файл или изображение из сообщения по его ID. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 10 запросов | 1 секунда | 10 запросов | </div>
    *
-   * @param id - ID файла, см. значение поля `downloadID` в методе [События чатов](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get)
+   * @param id - ID файла, см. значение поля `downloadID` в методе [События чатов](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get)
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)

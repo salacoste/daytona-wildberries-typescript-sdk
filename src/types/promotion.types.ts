@@ -1608,13 +1608,13 @@ export interface Campaign400Response {
 /**
  * Request for updating bids in campaigns (V1 API)
  *
- * @description Uses bid_kopecks instead of bid for ставки в копейках.
+Description: Uses bid_kopecks instead of bid for ставки в копейках.
  * Max 50 campaigns, max 50 articles per campaign.
  */
 export interface UpdateBidsRequest {
   /**
    * Bids in campaigns
-   * @maxItems 50
+   * Max items: 50
    */
   bids: UpdateBidsCampaign[];
 }
@@ -1627,7 +1627,7 @@ export interface UpdateBidsCampaign {
   advert_id: number;
   /**
    * Article bids in kopecks
-   * @maxItems 50
+   * Max items: 50
    */
   nm_bids: UpdateBidsArticle[];
 }
@@ -1695,13 +1695,13 @@ export interface UpdateBidsResultArticle {
 /**
  * Request for adding/removing products from campaigns
  *
- * @description Only for Type 9 campaigns.
+Description: Only for Type 9 campaigns.
  * Max 20 campaigns, max 50 products per campaign.
  */
 export interface UpdateCampaignProductsRequest {
   /**
    * Campaigns to update
-   * @maxItems 20
+   * Max items: 20
    */
   campaigns: CampaignProductsUpdate[];
 }
@@ -1715,12 +1715,12 @@ export interface CampaignProductsUpdate {
   /**
    * WB article IDs to add
    * For added products, the current minimum bid is set.
-   * @maxItems 50
+   * Max items: 50
    */
   add_nms?: number[];
   /**
    * WB article IDs to delete
-   * @maxItems 50
+   * Max items: 50
    */
   delete_nms?: number[];
 }

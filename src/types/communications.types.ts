@@ -371,11 +371,11 @@ export type ResponseFeedback = {
   matchingSize?: string;
   /** Доступна ли продавцу возможность оставить жалобу на отзыв (`true` - доступна, `false` - не доступна) */
   isAbleSupplierFeedbackValuation?: boolean;
-  /** Ключ причины жалобы на отзыв <br> (Значения см. в примерах ответа метода получения <a href="./user-communication#tag/Otzyvy/paths/~1api~1v1~1supplier-valuations/get"> списков причин жалоб и проблем с товаром</a>, поле `feedbackValuations` ) */
+  /** Ключ причины жалобы на отзыв <br> (Значения см. в примерах ответа метода получения <a href="https://dev.wildberries.ru/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1supplier-valuations/get"> списков причин жалоб и проблем с товаром</a>, поле `feedbackValuations` ) */
   supplierFeedbackValuation?: number;
   /** Доступна ли продавцу возможность сообщить о проблеме с товаром: - `true` — да - `false` — нет */
   isAbleSupplierProductValuation?: boolean;
-  /** Ключ проблемы с товаром <br> (Значения см. в примерах ответа метода получения [списков причин жалоб и проблем с товаром](./user-communication#tag/Otzyvy/paths/~1api~1v1~1supplier-valuations/get), поле `supplierProductValuation`) */
+  /** Ключ проблемы с товаром <br> (Значения см. в примерах ответа метода получения [списков причин жалоб и проблем с товаром](https://dev.wildberries.ru/openapi/user-communication#tag/Otzyvy/paths/~1api~1v1~1supplier-valuations/get), поле `supplierProductValuation`) */
   supplierProductValuation?: number;
   /** Опция возврата товара: - `true` — доступна - `false` — недоступна */
   isAbleReturnProductOrders?: boolean;
@@ -412,7 +412,7 @@ export interface LastMessage {
 export interface Chat {
   /** ID чата */
   chatID?: string;
-  /** Подпись чата. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
+  /** Подпись чата. Требуется при [отправке сообщения](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
   replySign?: string;
   /**
    * ID покупателя
@@ -451,7 +451,7 @@ export interface Event {
   addTimestamp?: number;
   /** Время появления события на сервере в UTC */
   addTime?: string;
-  /** Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
+  /** Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
   replySign?: string;
   sender?: Sender;
   /**
@@ -486,7 +486,7 @@ export interface File {
   contentType?: string;
   /** Дата загрузки файла */
   date?: string;
-  /** ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) */
+  /** ID файла. [Получить файл](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) */
   downloadID?: string;
   /** Название файла */
   name?: string;
@@ -513,9 +513,9 @@ export interface GoodCard {
   price?: number;
   /** Валюта */
   priceCurrency?: string;
-  /** Уникальный ID заказа. <br> Примечание: `rid` — это `srid` в ответах методов: - [Заявки покупателей на возврат](./user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](./reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](./reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](./financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
+  /** Уникальный ID заказа. <br> Примечание: `rid` — это `srid` в ответах методов: - [Заявки покупателей на возврат](https://dev.wildberries.ru/openapi/user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) - [Заказы](https://dev.wildberries.ru/openapi/reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1orders/get) - [Продажи](https://dev.wildberries.ru/openapi/reports#tag/Osnovnye-otchyoty/paths/~1api~1v1~1supplier~1sales/get) - [Отчет о возвратах и перемещении товаров](https://dev.wildberries.ru/openapi/reports#tag/Otchyot-o-vozvratah-i-peremeshenii-tovarov) - [Отчет о продажах по реализации](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get) */
   rid?: string;
-  /** Размер товара, соответствует `wbSize` в [карточке товара](./work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) */
+  /** Размер товара, соответствует `wbSize` в [карточке товара](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) */
   size?: string;
   /**
    * Статус товара
@@ -530,7 +530,7 @@ export interface GoodCard {
 export interface Image {
   /** Дата загрузки изображения */
   date?: string;
-  /** ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) */
+  /** ID файла. [Получить файл](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) */
   downloadID?: string;
   /** URL для получения изображения */
   url?: string;

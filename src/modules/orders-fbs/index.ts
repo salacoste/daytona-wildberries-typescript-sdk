@@ -920,7 +920,7 @@ export class OrdersFbsModule {
    * Get assembly task statuses
    *
    * Returns statuses of assembly tasks by their IDs.
-   * Replacement for {@link createOrdersStatu} with a corrected method name.
+   * Replacement for the deprecated createOrdersStatus method with a corrected name.
    *
    * @param data - Request body containing order IDs
    * @returns Promise resolving to order statuses

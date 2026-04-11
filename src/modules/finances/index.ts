@@ -114,8 +114,7 @@ export class FinancesModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
-   * @remarks The `sort` and `order` parameters work together — specifying `order` without `sort` has no effect.
-   * @remarks The `beginTime` and `endTime` parameters define a date range and should be used as a pair.
+   * @remarks The `sort` and `order` parameters work together — specifying `order` without `sort` has no effect. The `beginTime` and `endTime` parameters define a date range and should be used as a pair.
    * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Dokumenty}
    * @example
    * ```typescript
