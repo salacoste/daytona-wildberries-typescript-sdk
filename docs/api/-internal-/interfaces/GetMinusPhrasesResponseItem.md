@@ -2,7 +2,7 @@
 
 # Interface: GetMinusPhrasesResponseItem
 
-Defined in: [types/promotion.types.ts:1788](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L1788)
+Defined in: [types/promotion.types.ts:1788](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1788)
 
 Item in get minus phrases response
 
@@ -10,6 +10,6 @@ Item in get minus phrases response
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1790](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L1790) |
-| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID | [types/promotion.types.ts:1792](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L1792) |
-| <a id="norm_queries"></a> `norm_queries?` | `string`[] | List of minus phrases (may be empty or undefined) | [types/promotion.types.ts:1794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L1794) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1790](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1790) |
+| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID | [types/promotion.types.ts:1792](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1792) |
+| <a id="norm_queries"></a> `norm_queries?` | `string`[] | List of minus phrases (may be empty or undefined) | [types/promotion.types.ts:1794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/promotion.types.ts#L1794) |

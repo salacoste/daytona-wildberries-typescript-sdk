@@ -2,15 +2,15 @@
 
 # Interface: File
 
-Defined in: [types/communications.types.ts:484](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L484)
+Defined in: [types/communications.types.ts:484](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L484)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="contenttype"></a> `contentType?` | `string` | Тип файла | [types/communications.types.ts:486](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L486) |
-| <a id="date"></a> `date?` | `string` | Дата загрузки файла | [types/communications.types.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L488) |
-| <a id="downloadid"></a> `downloadID?` | `string` | ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) | [types/communications.types.ts:490](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L490) |
-| <a id="name"></a> `name?` | `string` | Название файла | [types/communications.types.ts:492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L492) |
-| <a id="url"></a> `url?` | `string` | URL для получения файла | [types/communications.types.ts:494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L494) |
-| <a id="size"></a> `size?` | `number` | Размер файла в байтах | [types/communications.types.ts:496](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L496) |
+| <a id="contenttype"></a> `contentType?` | `string` | Тип файла | [types/communications.types.ts:486](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L486) |
+| <a id="date"></a> `date?` | `string` | Дата загрузки файла | [types/communications.types.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L488) |
+| <a id="downloadid"></a> `downloadID?` | `string` | ID файла. [Получить файл](./user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get) | [types/communications.types.ts:490](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L490) |
+| <a id="name"></a> `name?` | `string` | Название файла | [types/communications.types.ts:492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L492) |
+| <a id="url"></a> `url?` | `string` | URL для получения файла | [types/communications.types.ts:494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L494) |
+| <a id="size"></a> `size?` | `number` | Размер файла в байтах | [types/communications.types.ts:496](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L496) |

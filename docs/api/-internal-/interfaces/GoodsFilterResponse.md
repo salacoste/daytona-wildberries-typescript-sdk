@@ -2,7 +2,7 @@
 
 # Interface: GoodsFilterResponse
 
-Defined in: [types/products.types.ts:703](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L703)
+Defined in: [types/products.types.ts:703](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/products.types.ts#L703)
 
 Response for goods list with prices (GET /api/v2/list/goods/filter)
 
@@ -10,7 +10,7 @@ Response for goods list with prices (GET /api/v2/list/goods/filter)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `listGoods?`: [`GoodsList`](GoodsList.md)[]; \} | Goods list with pricing | [types/products.types.ts:705](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L705) |
-| `data.listGoods?` | [`GoodsList`](GoodsList.md)[] | Cursor for next offset | [types/products.types.ts:707](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L707) |
-| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:710](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L710) |
-| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L712) |
+| <a id="data"></a> `data?` | \{ `listGoods?`: [`GoodsList`](GoodsList.md)[]; \} | Goods list with pricing | [types/products.types.ts:705](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/products.types.ts#L705) |
+| `data.listGoods?` | [`GoodsList`](GoodsList.md)[] | Cursor for next offset | [types/products.types.ts:707](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/products.types.ts#L707) |
+| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:710](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/products.types.ts#L710) |
+| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/products.types.ts#L712) |

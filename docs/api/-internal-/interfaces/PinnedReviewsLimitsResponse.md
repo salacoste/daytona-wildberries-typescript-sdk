@@ -2,7 +2,7 @@
 
 # Interface: PinnedReviewsLimitsResponse
 
-Defined in: [types/communications.types.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L276)
+Defined in: [types/communications.types.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L276)
 
 Response from get pinned reviews limits
 
@@ -10,4 +10,4 @@ Response from get pinned reviews limits
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`SellerLimitsData`](SellerLimitsData.md) | [types/communications.types.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/communications.types.ts#L277) |
+| <a id="data"></a> `data` | [`SellerLimitsData`](SellerLimitsData.md) | [types/communications.types.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/communications.types.ts#L277) |

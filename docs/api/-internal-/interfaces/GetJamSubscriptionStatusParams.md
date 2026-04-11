@@ -2,7 +2,7 @@
 
 # Interface: GetJamSubscriptionStatusParams
 
-Defined in: [types/general.types.ts:280](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/general.types.ts#L280)
+Defined in: [types/general.types.ts:280](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/general.types.ts#L280)
 
 Parameters for the Jam subscription status check
 
@@ -10,4 +10,4 @@ Parameters for the Jam subscription status check
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmids"></a> `nmIds` | `number`[] | One or more WB article IDs (nmIds) to use in the probe request | [types/general.types.ts:282](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/general.types.ts#L282) |
+| <a id="nmids"></a> `nmIds` | `number`[] | One or more WB article IDs (nmIds) to use in the probe request | [types/general.types.ts:282](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d563cecd0407cbbf0c5e21396eafb316296c02c3/src/types/general.types.ts#L282) |
