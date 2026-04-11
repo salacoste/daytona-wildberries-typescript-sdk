@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelOrderBy
 
-Defined in: [types/analytics.types.ts:1323](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1323)
+Defined in: [types/analytics.types.ts:1323](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/analytics.types.ts#L1323)
 
 Параметры сортировки для v3 Sales Funnel
 
@@ -10,5 +10,5 @@ Defined in: [types/analytics.types.ts:1323](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="field"></a> `field` | \| `"openCard"` \| `"addToCart"` \| `"buyoutCount"` \| `"buyoutSum"` \| `"orderCount"` \| `"orderSum"` \| `"cancelCount"` \| `"cancelSum"` \| `"avgPrice"` \| `"stockMpQty"` \| `"stockWbQty"` \| `"shareOrderPercent"` \| `"addToWishlist"` \| `"timeToReady"` \| `"localizationPercent"` \| `"wbClub.orderCount"` \| `"wbClub.orderSum"` \| `"wbClub.buyoutSum"` \| `"wbClub.cancelSum"` \| `"wbClub.buyoutCount"` \| `"wbClub.avgPrice"` \| `"wbClub.buyoutPercent"` \| `"wbClub.avgOrderCountPerDay"` \| `"wbClub.cancelCount"` | Поле для сортировки | [types/analytics.types.ts:1325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1325) |
-| <a id="mode"></a> `mode` | `"desc"` \| `"asc"` | Порядок сортировки | [types/analytics.types.ts:1351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/analytics.types.ts#L1351) |
+| <a id="field"></a> `field` | \| `"openCard"` \| `"addToCart"` \| `"buyoutCount"` \| `"buyoutSum"` \| `"orderCount"` \| `"orderSum"` \| `"cancelCount"` \| `"cancelSum"` \| `"avgPrice"` \| `"stockMpQty"` \| `"stockWbQty"` \| `"shareOrderPercent"` \| `"addToWishlist"` \| `"timeToReady"` \| `"localizationPercent"` \| `"wbClub.orderCount"` \| `"wbClub.orderSum"` \| `"wbClub.buyoutSum"` \| `"wbClub.cancelSum"` \| `"wbClub.buyoutCount"` \| `"wbClub.avgPrice"` \| `"wbClub.buyoutPercent"` \| `"wbClub.avgOrderCountPerDay"` \| `"wbClub.cancelCount"` | Поле для сортировки | [types/analytics.types.ts:1325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/analytics.types.ts#L1325) |
+| <a id="mode"></a> `mode` | `"desc"` \| `"asc"` | Порядок сортировки | [types/analytics.types.ts:1351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/analytics.types.ts#L1351) |

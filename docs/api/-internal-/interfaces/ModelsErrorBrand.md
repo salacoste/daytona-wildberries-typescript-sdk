@@ -2,11 +2,11 @@
 
 # Interface: ModelsErrorBrand
 
-Defined in: [types/products.types.ts:550](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L550)
+Defined in: [types/products.types.ts:550](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L550)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | ID бренда | [types/products.types.ts:552](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L552) |
-| <a id="name"></a> `name?` | `string` | Бренд | [types/products.types.ts:554](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/products.types.ts#L554) |
+| <a id="id"></a> `id?` | `number` | ID бренда | [types/products.types.ts:552](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L552) |
+| <a id="name"></a> `name?` | `string` | Бренд | [types/products.types.ts:554](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/products.types.ts#L554) |

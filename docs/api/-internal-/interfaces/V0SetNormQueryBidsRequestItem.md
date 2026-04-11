@@ -2,7 +2,7 @@
 
 # Interface: V0SetNormQueryBidsRequestItem
 
-Defined in: [types/promotion.types.ts:968](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/promotion.types.ts#L968)
+Defined in: [types/promotion.types.ts:968](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L968)
 
 Элемент запроса на установку ставки
 
@@ -10,7 +10,7 @@ Defined in: [types/promotion.types.ts:968](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:970](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/promotion.types.ts#L970) |
-| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:972](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/promotion.types.ts#L972) |
-| <a id="norm_query"></a> `norm_query` | `string` | Поисковый кластер | [types/promotion.types.ts:974](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/promotion.types.ts#L974) |
-| <a id="bid"></a> `bid` | `number` | Ставка за тысячу показов, ₽ | [types/promotion.types.ts:976](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/promotion.types.ts#L976) |
+| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:970](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L970) |
+| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:972](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L972) |
+| <a id="norm_query"></a> `norm_query` | `string` | Поисковый кластер | [types/promotion.types.ts:974](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L974) |
+| <a id="bid"></a> `bid` | `number` | Ставка за тысячу показов, ₽ | [types/promotion.types.ts:976](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/promotion.types.ts#L976) |

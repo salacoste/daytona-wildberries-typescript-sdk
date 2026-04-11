@@ -2,7 +2,7 @@
 
 # Interface: Penalty
 
-Defined in: [types/reports.types.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L257)
+Defined in: [types/reports.types.ts:257](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/reports.types.ts#L257)
 
 MeasurementPenalties response type for penalty reports
 
@@ -14,6 +14,6 @@ EPIC 43 - Updated to match swagger MeasurementPenalties schema
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | \{ `reports`: \{ `nmId?`: `number`; `dimId?`: `number`; `subjectName?`: `string`; `prcOver?`: `number`; `volume?`: `number`; `width?`: `number`; `length?`: `number`; `height?`: `number`; `volumeSup?`: `number`; `widthSup?`: `number`; `lengthSup?`: `number`; `heightSup?`: `number`; `photoUrls?`: `string`[]; `dtBonus?`: `string`; `isValid?`: `boolean`; `isValidDt?`: `string`; `reversalAmount?`: `number`; `penaltyAmount?`: `number`; \}[]; `total`: `number`; \} | Данные ответа | [types/reports.types.ts:259](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L259) |
-| `data.reports` | \{ `nmId?`: `number`; `dimId?`: `number`; `subjectName?`: `string`; `prcOver?`: `number`; `volume?`: `number`; `width?`: `number`; `length?`: `number`; `height?`: `number`; `volumeSup?`: `number`; `widthSup?`: `number`; `lengthSup?`: `number`; `heightSup?`: `number`; `photoUrls?`: `string`[]; `dtBonus?`: `string`; `isValid?`: `boolean`; `isValidDt?`: `string`; `reversalAmount?`: `number`; `penaltyAmount?`: `number`; \}[] | Удержания | [types/reports.types.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L261) |
-| `data.total` | `number` | Количество удержаний в отчёте (без учёта limit/offset) | [types/reports.types.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2534cb811e3d958649e0527320bb5088941bd6b2/src/types/reports.types.ts#L300) |
+| <a id="data"></a> `data` | \{ `reports`: \{ `nmId?`: `number`; `dimId?`: `number`; `subjectName?`: `string`; `prcOver?`: `number`; `volume?`: `number`; `width?`: `number`; `length?`: `number`; `height?`: `number`; `volumeSup?`: `number`; `widthSup?`: `number`; `lengthSup?`: `number`; `heightSup?`: `number`; `photoUrls?`: `string`[]; `dtBonus?`: `string`; `isValid?`: `boolean`; `isValidDt?`: `string`; `reversalAmount?`: `number`; `penaltyAmount?`: `number`; \}[]; `total`: `number`; \} | Данные ответа | [types/reports.types.ts:259](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/reports.types.ts#L259) |
+| `data.reports` | \{ `nmId?`: `number`; `dimId?`: `number`; `subjectName?`: `string`; `prcOver?`: `number`; `volume?`: `number`; `width?`: `number`; `length?`: `number`; `height?`: `number`; `volumeSup?`: `number`; `widthSup?`: `number`; `lengthSup?`: `number`; `heightSup?`: `number`; `photoUrls?`: `string`[]; `dtBonus?`: `string`; `isValid?`: `boolean`; `isValidDt?`: `string`; `reversalAmount?`: `number`; `penaltyAmount?`: `number`; \}[] | Удержания | [types/reports.types.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/reports.types.ts#L261) |
+| `data.total` | `number` | Количество удержаний в отчёте (без учёта limit/offset) | [types/reports.types.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/47e6cd0a15f4afb7e933a7645f2e21ec9e1ab7ba/src/types/reports.types.ts#L300) |

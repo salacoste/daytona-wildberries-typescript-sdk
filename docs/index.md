@@ -114,7 +114,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
     <div class="stat-label">Test Coverage</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">2075</div>
+    <div class="stat-number">2080</div>
     <div class="stat-label">Tests</div>
   </div>
   <div class="stat-card">
@@ -175,7 +175,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
 
 ### 🎯 Production Ready
 
-Battle-tested with 98% test coverage and 2075 tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
+Battle-tested with 98% test coverage and 2080 tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
 
 ### ⚡ Time Savings
 
