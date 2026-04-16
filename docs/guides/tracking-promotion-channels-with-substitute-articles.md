@@ -17,6 +17,10 @@ keywords:
 # Tracking Promotion Channels with Substitute Articles
 
 > **Use case**: Finance reconciliation. After-the-fact attribution of settled revenue to specific external marketing campaigns using substitute article IDs from the Wildberries financial report.
+
+::: warning v5 endpoint will be disabled 2026-07-15
+The examples below use `getSupplierReportDetailByPeriod()` (v5), which Wildberries will disable on **2026-07-15**. For new code, use the v1 replacement `getSalesReportsDetailed()` which returns the same substitute article data (`articleSubstitution`, `salePriceAffiliatedDiscountPrc`) in camelCase with string money amounts. See the [v5→v1 migration guide](/guides/migration-finance-reports-v5-to-v1) for the complete field mapping and code examples.
+:::
 >
 > **Not for**: Real-time marketing analytics. If you need live campaign metrics during a campaign, use the analytics module's search query data (`includeSubstitutedSKUs` parameter on `getSearchQueriesV3`) — that's the marketing-team-facing tool. This guide is for finance teams matching marketing spend to actual paid revenue *after* the reporting period closes.
 

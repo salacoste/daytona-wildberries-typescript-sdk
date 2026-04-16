@@ -44,4 +44,36 @@ export const financesRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 300,
     burstLimit: 5,
   },
+  // v1 Sales Reports (since v3.7.0) — 1 req/min per WB spec
+  'finances.salesReportsList': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
+  'finances.salesReportsDetailed': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
+  'finances.salesReportsDetailedByReportId': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
+  // v1 Acquiring Reports (since v3.7.0) — RU-only, 1 req/min per WB spec
+  'finances.acquiringReportsList': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
+  'finances.acquiringReportsDetailed': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
+  'finances.acquiringReportsDetailedByReportId': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
 };

@@ -4,6 +4,11 @@
  * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  */
 
+/* eslint-disable @typescript-eslint/no-deprecated -- This module imports, defines, and re-exports
+   DetailReportItem and getSupplierReportDetailByPeriod(), which are deprecated per Sprint 10 task-103.
+   Self-references to deprecated symbols are unavoidable here — consumers will see the deprecation
+   warnings when THEY import or call these. The method remains functional until 2026-07-15. */
+
 import { BaseClient } from '../../client/base-client';
 import type {
   AccountBalanceResponse,
@@ -14,9 +19,28 @@ import type {
   GetDocs,
   GetList,
   RequestDownload,
+  SalesReportListRequest,
+  SalesReportListItem,
+  SalesReportDetailedRequest,
+  SalesReportDetailedByIdRequest,
+  SalesReportDetailedItem,
+  AcquiringReportListRequest,
+  AcquiringReportListItem,
+  AcquiringReportDetailedRequest,
+  AcquiringReportDetailedByIdRequest,
+  AcquiringReportDetailedItem,
 } from '../../types/finances.types';
 
 export class FinancesModule {
+  /**
+   * Module-level flag: true after the first deprecation warning for
+   * `getSupplierReportDetailByPeriod()` has been emitted. Ensures warning fires once per process
+   * (not every call) and reduces log noise. Reset in tests via:
+   * `(FinancesModule as unknown as { _supplierReportDetailByPeriodWarned: boolean })
+   *   ._supplierReportDetailByPeriodWarned = false`
+   */
+  private static _supplierReportDetailByPeriodWarned = false;
+
   constructor(private client: BaseClient) {}
 
   /**
@@ -44,7 +68,20 @@ export class FinancesModule {
   }
 
   /**
-   * Отчёт о продажах по реализации
+   * Отчёт о продажах по реализации (v5, **deprecated**)
+   *
+   * @deprecated **This method will be disabled by Wildberries on 2026-07-15.**
+   * Migrate to {@link getSalesReportsDetailed} (v1) before that date.
+   *
+   * **Key migration differences (v5 → v1)**:
+   * - HTTP method: GET → POST
+   * - Field names: `snake_case` → `camelCase` (e.g., `ppvz_for_pay` → `forPay`)
+   * - Money amounts: `number` → `string` (use `parseMoneyAmount()` helper)
+   * - Domain: `statistics-api.wildberries.ru` → `finance-api.wildberries.ru`
+   * - New `fields[]` parameter for selective field loading
+   *
+   * See the [migration guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1)
+   * for complete field mapping and code examples.
    *
    * Метод возвращает детализации к [отчётам реализации](https://seller.wildberries.ru/suppliers-mutual-settlements). <br><br> Данные доступны с 29 января 2024 года. <div class="description_important"> Вы можете выгрузить данные в <a href="https://dev.wildberries.ru/ru/cases/1">Google Таблицы</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
    *
@@ -57,6 +94,7 @@ export class FinancesModule {
    * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty}
    * @example
    * ```typescript
+   * // DEPRECATED — migrate to getSalesReportsDetailed() before 2026-07-15
    * const result = await sdk.finances.getSupplierReportDetailByPeriod({
    *   dateFrom: '2024-01-01',
    *   dateTo: '2024-01-31',
@@ -72,6 +110,18 @@ export class FinancesModule {
     rrdid?: number;
     period?: 'weekly' | 'daily';
   }): Promise<DetailReportItem[]> {
+    // Runtime deprecation warning — once per process (Sprint 10 task-103).
+    // The static flag pattern mirrors other _*Warned flags in the SDK.
+    // Tests should reset via: (FinancesModule as unknown as { _supplierReportDetailByPeriodWarned: boolean })._supplierReportDetailByPeriodWarned = false
+    if (!FinancesModule._supplierReportDetailByPeriodWarned) {
+      FinancesModule._supplierReportDetailByPeriodWarned = true;
+      // eslint-disable-next-line no-console -- Intentional deprecation warning (once per process)
+      console.warn(
+        '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated and will be removed after 2026-07-15. ' +
+          'Migrate to getSalesReportsDetailed(). See migration guide: ' +
+          'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1'
+      );
+    }
     return this.client.get<DetailReportItem[]>(
       'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
       { params: options, rateLimitKey: 'finances.supplierReportDetailByPeriod' }
@@ -198,6 +248,244 @@ export class FinancesModule {
       { rateLimitKey: 'finances.createDownloadAll' }
     );
   }
+
+  // ==========================================================================
+  // v1 Sales Reports (since v3.7.0)
+  // Replaces deprecated GET /api/v5/supplier/reportDetailByPeriod (disabled 2026-07-15)
+  // All money amounts are string (not number) — use parseMoneyAmount() helper for math.
+  // ==========================================================================
+
+  /**
+   * Список отчётов реализации (v1)
+   *
+   * Returns list of sales reports by report format. Data available from 2025-01-01.
+   *
+   * **Available token types**: Personal, Service (NOT Basic or Test)
+   *
+   * Rate limit: 1 req/min, 1 minute interval, burst 1
+   *
+   * @param data - Request body with dateFrom, dateTo, limit, offset, period
+   * @returns Array of SalesReportListItem (money sums as string — use parseMoneyAmount helper)
+   * @throws {AuthenticationError} When API key is invalid (401) or token type is Basic/Test
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1SalesReportsList}
+   * @since v3.7.0
+   * @example
+   * ```typescript
+   * import { parseMoneyAmount } from 'daytona-wildberries-typescript-sdk';
+   *
+   * const reports = await sdk.finances.getSalesReportsList({
+   *   dateFrom: '2026-03-17',
+   *   dateTo: '2026-03-20',
+   *   period: 'weekly',
+   * });
+   * console.log(parseMoneyAmount(reports[0].forPaySum));
+   * ```
+   */
+  async getSalesReportsList(data: SalesReportListRequest): Promise<SalesReportListItem[]> {
+    return this.client.post<SalesReportListItem[]>(
+      'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/list',
+      data,
+      { rateLimitKey: 'finances.salesReportsList' }
+    );
+  }
+
+  /**
+   * Детализации к отчётам реализации за период (v1)
+   *
+   * Returns detailed rows for sales reports within a date range. Replaces the deprecated v5 method.
+   * Data available from 2024-01-29. Supports selective field loading via `fields` parameter.
+   *
+   * **Available token types**: Personal, Service (NOT Basic or Test)
+   *
+   * Rate limit: 1 req/min, 1 minute interval, burst 1
+   *
+   * @param data - Request body with dateFrom, dateTo, limit, rrdId, period, fields
+   * @returns Array of SalesReportDetailedItem (~70 fields, money amounts as string — use parseMoneyAmount)
+   * @throws {AuthenticationError} When API key is invalid (401) or token type is Basic/Test
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1SalesReportsDetailed}
+   * @since v3.7.0
+   * @example
+   * ```typescript
+   * import { parseMoneyAmount } from 'daytona-wildberries-typescript-sdk';
+   *
+   * const rows = await sdk.finances.getSalesReportsDetailed({
+   *   dateFrom: '2026-03-17',
+   *   dateTo: '2026-03-20',
+   *   limit: 100000,
+   *   rrdId: 0,
+   *   fields: ['rrdId', 'nmId', 'forPay'],  // Optional: load only specific fields
+   * });
+   * const totalPayout = rows.reduce((sum, r) => sum + parseMoneyAmount(r.forPay), 0);
+   * ```
+   */
+  async getSalesReportsDetailed(
+    data: SalesReportDetailedRequest
+  ): Promise<SalesReportDetailedItem[]> {
+    return this.client.post<SalesReportDetailedItem[]>(
+      'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed',
+      data,
+      { rateLimitKey: 'finances.salesReportsDetailed' }
+    );
+  }
+
+  /**
+   * Детализации к отчётам реализации по ID отчёта (v1)
+   *
+   * Returns detailed rows for a specific report by its ID. Data available from 2025-01-01.
+   *
+   * **BigInt precision note**: For daily reports, `reportId` may exceed `Number.MAX_SAFE_INTEGER` (2^53).
+   * If you obtained the ID from `getSalesReportsList()` response (which returns `number`),
+   * standard JSON parsing may already have truncated precision. For precision-safe handling,
+   * fetch the ID via a custom BigInt-aware parser and pass it as `bigint` or `string`.
+   *
+   * **Available token types**: Personal, Service (NOT Basic or Test)
+   *
+   * Rate limit: 1 req/min, 1 minute interval, burst 1
+   *
+   * @param reportId - Report ID (number for typical use, bigint/string for BigInt precision on daily reports)
+   * @param data - Request body with optional limit, rrdId, fields
+   * @returns Array of SalesReportDetailedItem
+   * @throws {AuthenticationError} When API key is invalid (401) or token type is Basic/Test
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1SalesReportsDetailedReportId}
+   * @since v3.7.0
+   * @example
+   * ```typescript
+   * // Typical weekly report usage:
+   * const rows = await sdk.finances.getSalesReportsDetailedByReportId(307401554);
+   *
+   * // Daily report with BigInt precision:
+   * const rows = await sdk.finances.getSalesReportsDetailedByReportId('9007199254740993', {
+   *   fields: ['rrdId', 'nmId', 'retailAmount'],
+   * });
+   * ```
+   */
+  async getSalesReportsDetailedByReportId(
+    reportId: number | bigint | string,
+    data: SalesReportDetailedByIdRequest = {}
+  ): Promise<SalesReportDetailedItem[]> {
+    return this.client.post<SalesReportDetailedItem[]>(
+      `https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed/${String(reportId)}`,
+      data,
+      { rateLimitKey: 'finances.salesReportsDetailedByReportId' }
+    );
+  }
+
+  // ==========================================================================
+  // v1 Acquiring Reports (since v3.7.0) — payment acquisition costs (эквайринг)
+  // Available ONLY for Russian sellers. Personal/Service tokens only.
+  // ==========================================================================
+
+  /**
+   * Список отчётов об издержках на приём платежей (v1)
+   *
+   * Returns list of acquiring reports. **Available only to Russian sellers.**
+   *
+   * **Available token types**: Personal, Service (NOT Basic or Test)
+   *
+   * Rate limit: 1 req/min, 1 minute interval, burst 1
+   *
+   * @param data - Request body with dateFrom, dateTo, limit, offset
+   * @returns Array of AcquiringReportListItem (money sums as string — use parseMoneyAmount helper)
+   * @throws {AuthenticationError} When token type is Basic or Test — this endpoint requires Personal or Service token
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1AcquiringList}
+   * @since v3.7.0
+   * @example
+   * ```typescript
+   * import { parseMoneyAmount } from 'daytona-wildberries-typescript-sdk';
+   *
+   * const reports = await sdk.finances.getAcquiringReportsList({
+   *   dateFrom: '2026-03-17',
+   *   dateTo: '2026-03-20',
+   * });
+   * const totalFees = reports.reduce(
+   *   (sum, r) => sum + parseMoneyAmount(r.acquiringFeeSum), 0
+   * );
+   * ```
+   */
+  async getAcquiringReportsList(
+    data: AcquiringReportListRequest
+  ): Promise<AcquiringReportListItem[]> {
+    return this.client.post<AcquiringReportListItem[]>(
+      'https://finance-api.wildberries.ru/api/finance/v1/acquiring/list',
+      data,
+      { rateLimitKey: 'finances.acquiringReportsList' }
+    );
+  }
+
+  /**
+   * Детализации к отчётам об издержках на приём платежей за период (v1)
+   *
+   * Returns detailed rows for acquiring reports within a date range.
+   * **Available only to Russian sellers.** Supports selective field loading via `fields` parameter.
+   *
+   * **Available token types**: Personal, Service (NOT Basic or Test)
+   *
+   * Rate limit: 1 req/min, 1 minute interval, burst 1
+   *
+   * @param data - Request body with dateFrom, dateTo, limit, rrdId, fields
+   * @returns Array of AcquiringReportDetailedItem (money amounts as string — use parseMoneyAmount)
+   * @throws {AuthenticationError} When token type is Basic or Test — this endpoint requires Personal or Service token
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1AcquiringDetailed}
+   * @since v3.7.0
+   */
+  async getAcquiringReportsDetailed(
+    data: AcquiringReportDetailedRequest
+  ): Promise<AcquiringReportDetailedItem[]> {
+    return this.client.post<AcquiringReportDetailedItem[]>(
+      'https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed',
+      data,
+      { rateLimitKey: 'finances.acquiringReportsDetailed' }
+    );
+  }
+
+  /**
+   * Детализации к отчётам об издержках на приём платежей по ID отчёта (v1)
+   *
+   * Returns detailed rows for a specific acquiring report by ID.
+   * **Available only to Russian sellers.**
+   *
+   * **BigInt precision note**: For daily reports, `reportId` may exceed `Number.MAX_SAFE_INTEGER`.
+   * Pass as `bigint` or `string` for precision-safe handling.
+   *
+   * **Available token types**: Personal, Service (NOT Basic or Test)
+   *
+   * Rate limit: 1 req/min, 1 minute interval, burst 1
+   *
+   * @param reportId - Report ID (number/bigint/string)
+   * @param data - Request body with optional limit, rrdId, fields
+   * @returns Array of AcquiringReportDetailedItem
+   * @throws {AuthenticationError} When token type is Basic or Test — this endpoint requires Personal or Service token
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1AcquiringDetailedReportId}
+   * @since v3.7.0
+   */
+  async getAcquiringReportsDetailedByReportId(
+    reportId: number | bigint | string,
+    data: AcquiringReportDetailedByIdRequest = {}
+  ): Promise<AcquiringReportDetailedItem[]> {
+    return this.client.post<AcquiringReportDetailedItem[]>(
+      `https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed/${String(reportId)}`,
+      data,
+      { rateLimitKey: 'finances.acquiringReportsDetailedByReportId' }
+    );
+  }
 }
 
 // Re-export all finances types from the subpath import 'daytona-wildberries-typescript-sdk/finances'.
@@ -213,4 +501,16 @@ export type {
   GetList,
   GetDoc,
   GetDocs,
+  // v1 Sales Reports types (since v3.7.0)
+  SalesReportListRequest,
+  SalesReportListItem,
+  SalesReportDetailedRequest,
+  SalesReportDetailedByIdRequest,
+  SalesReportDetailedItem,
+  // v1 Acquiring Reports types (since v3.7.0)
+  AcquiringReportListRequest,
+  AcquiringReportListItem,
+  AcquiringReportDetailedRequest,
+  AcquiringReportDetailedByIdRequest,
+  AcquiringReportDetailedItem,
 } from '../../types/finances.types';

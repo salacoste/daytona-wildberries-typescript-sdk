@@ -21,3 +21,5 @@ export {
   type TariffDifference,
   type TariffRecommendation,
 } from './compareTariffs';
+
+export { parseMoneyAmount } from './parseMoneyAmount';

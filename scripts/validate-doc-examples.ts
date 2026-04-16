@@ -175,6 +175,14 @@ const VALID_METHODS: Record<string, string[]> = {
     'getTransactionDetail',
     'getSupplierReportDetailByPeriod',
     'getSupplierReportdetailbyperiod',
+    // v1 Sales Reports (since v3.7.0)
+    'getSalesReportsList',
+    'getSalesReportsDetailed',
+    'getSalesReportsDetailedByReportId',
+    // v1 Acquiring Reports (since v3.7.0)
+    'getAcquiringReportsList',
+    'getAcquiringReportsDetailed',
+    'getAcquiringReportsDetailedByReportId',
     'getDocumentCategories',
     'getDocumentsCategories',
     'getDocumentsList',
@@ -710,6 +718,7 @@ function main() {
       'guides',
       'tracking-promotion-channels-with-substitute-articles.md'
     ),
+    join(__dirname, '..', 'docs', 'guides', 'migration-finance-reports-v5-to-v1.md'),
 
     // Getting Started
     join(__dirname, '..', 'docs', 'getting-started', 'quickstart.md'),

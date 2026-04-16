@@ -182,7 +182,8 @@ export default defineConfig({
                 text: 'Finance Reconciliation',
                 collapsed: true,
                 items: [
-                  { text: 'Tracking Promotion Channels with Substitute Articles', link: '/guides/tracking-promotion-channels-with-substitute-articles' }
+                  { text: 'Tracking Promotion Channels with Substitute Articles', link: '/guides/tracking-promotion-channels-with-substitute-articles' },
+                  { text: '⚠️ Finance Reports v5 → v1 Migration', link: '/guides/migration-finance-reports-v5-to-v1' }
                 ]
               }
             ]

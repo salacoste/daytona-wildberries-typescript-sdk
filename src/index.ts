@@ -625,7 +625,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.6.2';
+export const version = '3.7.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -730,6 +730,7 @@ export {
 export {
   calculateSupplyCost,
   compareTariffs,
+  parseMoneyAmount,
   type SupplyCostInput,
   type SupplyCostResult,
   type CompareTariffsInput,

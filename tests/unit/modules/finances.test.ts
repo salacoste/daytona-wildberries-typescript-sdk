@@ -11,6 +11,10 @@
  * @see {@link ../../../src/modules/finances/index FinancesModule}
  */
 
+/* eslint-disable @typescript-eslint/no-deprecated -- This file intentionally tests the deprecated
+   getSupplierReportDetailByPeriod() method to verify its behavior + deprecation warning (task-103,
+   Sprint 10). The method remains functional until WB disables it on 2026-07-15. */
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FinancesModule } from '../../../src/modules/finances';
 import type { BaseClient } from '../../../src/client/base-client';
@@ -187,7 +191,41 @@ describe('FinancesModule', () => {
   // getSupplierReportDetailByPeriod()
   // ──────────────────────────────────────────────────
 
-  describe('getSupplierReportDetailByPeriod()', () => {
+  describe('getSupplierReportDetailByPeriod() — deprecated (v5)', () => {
+    // Reset the module-level deprecation flag before each test to prevent pollution
+    // (Quinn's rule: the once-per-process flag landmine — Sprint 10 task-103).
+    beforeEach(() => {
+      (
+        FinancesModule as unknown as { _supplierReportDetailByPeriodWarned: boolean }
+      )._supplierReportDetailByPeriodWarned = false;
+    });
+
+    it('should log deprecation warning on FIRST call only (once per process)', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      mockClient.get.mockResolvedValue([]);
+
+      await module.getSupplierReportDetailByPeriod({
+        dateFrom: '2024-01-01',
+        dateTo: '2024-01-31',
+      });
+      await module.getSupplierReportDetailByPeriod({
+        dateFrom: '2024-01-01',
+        dateTo: '2024-01-31',
+      });
+      await module.getSupplierReportDetailByPeriod({
+        dateFrom: '2024-01-01',
+        dateTo: '2024-01-31',
+      });
+
+      // Warning should fire exactly ONCE across 3 invocations
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('[DEPRECATED]');
+      expect(warnSpy.mock.calls[0][0]).toContain('2026-07-15');
+      expect(warnSpy.mock.calls[0][0]).toContain('getSalesReportsDetailed');
+
+      warnSpy.mockRestore();
+    });
+
     const requiredParams = {
       dateFrom: '2024-01-01',
       dateTo: '2024-01-31',
@@ -737,6 +775,209 @@ describe('FinancesModule', () => {
 
       await expect(module.createDownloadAll(requestBody)).rejects.toThrow(ValidationError);
       await expect(module.createDownloadAll(requestBody)).rejects.toThrow('Invalid request body');
+    });
+  });
+
+  // ──────────────────────────────────────────────────
+  // v1 Sales Reports (since v3.7.0) — regression tests
+  // Replaces deprecated v5 method, uses POST + camelCase + string money amounts
+  // ──────────────────────────────────────────────────
+
+  describe('getSalesReportsList() (v1)', () => {
+    it('should POST to finance-api with correct URL, body, and rateLimitKey', async () => {
+      const mockResponse = [
+        {
+          reportId: 307401554,
+          sellerFinanceName: 'ИП Кружинин В. Р.',
+          currency: 'RUB',
+          forPaySum: '183.79',
+          retailAmountSum: '258',
+        },
+      ];
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getSalesReportsList({
+        dateFrom: '2026-03-17',
+        dateTo: '2026-03-20',
+        limit: 100,
+        period: 'weekly',
+      });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/list',
+        expect.objectContaining({
+          dateFrom: '2026-03-17',
+          dateTo: '2026-03-20',
+          limit: 100,
+          period: 'weekly',
+        }),
+        { rateLimitKey: 'finances.salesReportsList' }
+      );
+      expect(result[0].forPaySum).toBe('183.79');
+      expect(typeof result[0].forPaySum).toBe('string');
+    });
+  });
+
+  describe('getSalesReportsDetailed() (v1)', () => {
+    it('should POST to finance-api with fields array and preserve string money amounts', async () => {
+      const mockResponse = [
+        {
+          reportId: 1234567,
+          rrdId: 1232610467,
+          nmId: 1234567,
+          vendorCode: 'MAB123',
+          forPay: '376.99',
+          retailAmount: '367',
+          paidStorage: '12647.29',
+        },
+      ];
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getSalesReportsDetailed({
+        dateFrom: '2026-03-17',
+        dateTo: '2026-03-20',
+        limit: 100000,
+        rrdId: 0,
+        period: 'daily',
+        fields: ['rrdId', 'nmId', 'forPay'],
+      });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed',
+        expect.objectContaining({
+          fields: ['rrdId', 'nmId', 'forPay'],
+        }),
+        { rateLimitKey: 'finances.salesReportsDetailed' }
+      );
+      expect(result[0].forPay).toBe('376.99');
+      expect(result[0].paidStorage).toBe('12647.29');
+      expect(typeof result[0].forPay).toBe('string');
+    });
+  });
+
+  describe('getSalesReportsDetailedByReportId() (v1)', () => {
+    it('should interpolate reportId into URL and accept number/bigint/string', async () => {
+      mockClient.post.mockResolvedValue([]);
+
+      // Typical number reportId — default body is {} (not undefined) since WB requires a body
+      await module.getSalesReportsDetailedByReportId(307401554);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed/307401554',
+        {},
+        { rateLimitKey: 'finances.salesReportsDetailedByReportId' }
+      );
+
+      // String reportId (BigInt-safe for daily reports)
+      await module.getSalesReportsDetailedByReportId('9007199254740993', {
+        fields: ['rrdId', 'nmId'],
+      });
+      expect(mockClient.post).toHaveBeenLastCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed/9007199254740993',
+        expect.objectContaining({ fields: ['rrdId', 'nmId'] }),
+        { rateLimitKey: 'finances.salesReportsDetailedByReportId' }
+      );
+
+      // bigint reportId — default body {}
+      await module.getSalesReportsDetailedByReportId(9007199254740993n);
+      expect(mockClient.post).toHaveBeenLastCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed/9007199254740993',
+        {},
+        { rateLimitKey: 'finances.salesReportsDetailedByReportId' }
+      );
+    });
+  });
+
+  // ──────────────────────────────────────────────────
+  // v1 Acquiring Reports (since v3.7.0) — RU-only regression tests
+  // ──────────────────────────────────────────────────
+
+  describe('getAcquiringReportsList() (v1)', () => {
+    it('should POST to finance-api with correct URL, body, and rateLimitKey', async () => {
+      const mockResponse = [
+        {
+          reportId: 307401554,
+          sellerFinanceName: 'ИП Кружинин В. Р.',
+          currency: 'RUB',
+          acquiringFeeSum: '258',
+          acquiringFeeVatSum: '83.79',
+        },
+      ];
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getAcquiringReportsList({
+        dateFrom: '2026-03-17',
+        dateTo: '2026-03-20',
+        limit: 100,
+      });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/acquiring/list',
+        expect.objectContaining({
+          dateFrom: '2026-03-17',
+          dateTo: '2026-03-20',
+          limit: 100,
+        }),
+        { rateLimitKey: 'finances.acquiringReportsList' }
+      );
+      expect(result[0].acquiringFeeSum).toBe('258');
+      expect(typeof result[0].acquiringFeeSum).toBe('string');
+    });
+  });
+
+  describe('getAcquiringReportsDetailed() (v1)', () => {
+    it('should POST to finance-api with fields array and preserve string money amounts', async () => {
+      const mockResponse = [
+        {
+          rrdId: 1232610467,
+          reportId: 1234567,
+          acquiringBank: 'Тинькофф',
+          tin: '010101010101',
+          retailAmount: '367',
+          acquiringFee: '14.89',
+          acquiringFeeVat: '4.06',
+        },
+      ];
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getAcquiringReportsDetailed({
+        dateFrom: '2026-03-17',
+        dateTo: '2026-03-20',
+        limit: 100000,
+        rrdId: 0,
+        fields: ['rrdId', 'nmId', 'acquiringFee'],
+      });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed',
+        expect.objectContaining({
+          fields: ['rrdId', 'nmId', 'acquiringFee'],
+        }),
+        { rateLimitKey: 'finances.acquiringReportsDetailed' }
+      );
+      expect(result[0].acquiringFee).toBe('14.89');
+      expect(typeof result[0].acquiringFeeVat).toBe('string');
+    });
+  });
+
+  describe('getAcquiringReportsDetailedByReportId() (v1)', () => {
+    it('should interpolate reportId into URL and accept number/bigint/string', async () => {
+      mockClient.post.mockResolvedValue([]);
+
+      await module.getAcquiringReportsDetailedByReportId(307401554);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed/307401554',
+        {},
+        { rateLimitKey: 'finances.acquiringReportsDetailedByReportId' }
+      );
+
+      await module.getAcquiringReportsDetailedByReportId('9007199254740993', {
+        fields: ['rrdId', 'acquiringFee'],
+      });
+      expect(mockClient.post).toHaveBeenLastCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed/9007199254740993',
+        expect.objectContaining({ fields: ['rrdId', 'acquiringFee'] }),
+        { rateLimitKey: 'finances.acquiringReportsDetailedByReportId' }
+      );
     });
   });
 });
