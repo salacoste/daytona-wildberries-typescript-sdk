@@ -266,7 +266,7 @@ export class FinancesModule {
    *
    * @param data - Request body with dateFrom, dateTo, limit, offset, period
    * @returns Array of SalesReportListItem (money sums as string — use parseMoneyAmount helper)
-   * @throws {AuthenticationError} When API key is invalid (401) or token type is Basic/Test
+   * @throws {AuthenticationError} When token type is Basic or Test — this endpoint requires Personal or Service token (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400)
    * @throws {NetworkError} When network request fails or times out
@@ -304,7 +304,7 @@ export class FinancesModule {
    *
    * @param data - Request body with dateFrom, dateTo, limit, rrdId, period, fields
    * @returns Array of SalesReportDetailedItem (~70 fields, money amounts as string — use parseMoneyAmount)
-   * @throws {AuthenticationError} When API key is invalid (401) or token type is Basic/Test
+   * @throws {AuthenticationError} When token type is Basic or Test — this endpoint requires Personal or Service token (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400)
    * @throws {NetworkError} When network request fails or times out
@@ -351,7 +351,7 @@ export class FinancesModule {
    * @param reportId - Report ID (number for typical use, bigint/string for BigInt precision on daily reports)
    * @param data - Request body with optional limit, rrdId, fields
    * @returns Array of SalesReportDetailedItem
-   * @throws {AuthenticationError} When API key is invalid (401) or token type is Basic/Test
+   * @throws {AuthenticationError} When token type is Basic or Test — this endpoint requires Personal or Service token (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400)
    * @throws {NetworkError} When network request fails or times out
@@ -442,6 +442,21 @@ export class FinancesModule {
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1AcquiringDetailed}
    * @since v3.7.0
+   * @example
+   * ```typescript
+   * import { parseMoneyAmount } from 'daytona-wildberries-typescript-sdk';
+   *
+   * const rows = await sdk.finances.getAcquiringReportsDetailed({
+   *   dateFrom: '2026-03-17',
+   *   dateTo: '2026-03-20',
+   *   limit: 100000,
+   *   rrdId: 0,
+   *   fields: ['rrdId', 'acquiringBank', 'acquiringFee'],
+   * });
+   * const totalFees = rows.reduce(
+   *   (sum, r) => sum + parseMoneyAmount(r.acquiringFee), 0
+   * );
+   * ```
    */
   async getAcquiringReportsDetailed(
     data: AcquiringReportDetailedRequest
@@ -475,6 +490,19 @@ export class FinancesModule {
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/operation/postV1AcquiringDetailedReportId}
    * @since v3.7.0
+   * @example
+   * ```typescript
+   * import { parseMoneyAmount } from 'daytona-wildberries-typescript-sdk';
+   *
+   * // Typical number reportId
+   * const rows = await sdk.finances.getAcquiringReportsDetailedByReportId(307401554);
+   *
+   * // BigInt precision for daily reports — pass as string or bigint
+   * const rows = await sdk.finances.getAcquiringReportsDetailedByReportId(
+   *   '9007199254740993',
+   *   { fields: ['rrdId', 'acquiringFee'] }
+   * );
+   * ```
    */
   async getAcquiringReportsDetailedByReportId(
     reportId: number | bigint | string,
