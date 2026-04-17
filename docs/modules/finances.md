@@ -17,6 +17,13 @@ The **Finances** module provides access to seller account balance, detailed sale
 
 ### What's New
 
+#### v3.8.0
+
+- **`SalesReportDetailedField` union type**: New string literal union type for the `fields` parameter on `getSalesReportsDetailed()` and `getSalesReportsDetailedByReportId()`. Provides autocomplete for all ~70 available field names.
+- **`AcquiringReportDetailedField` union type**: New string literal union type for the `fields` parameter on `getAcquiringReportsDetailed()` and `getAcquiringReportsDetailedByReportId()`. Provides autocomplete for available field names.
+- **`warnOnce()` for deprecated method**: `getSupplierReportDetailByPeriod()` now uses the shared `warnOnce()` utility (replacing the previous static flag pattern). Deprecation warning is still emitted once per process on first call.
+- **New exports**: `warnOnce()` and `resetDeprecationWarnings()` are now exported from the SDK for use in tests and custom deprecation patterns.
+
 #### v3.7.0 (Sprint 10)
 
 - **6 new v1 report methods**: Sales Reports (`getSalesReportsList`, `getSalesReportsDetailed`, `getSalesReportsDetailedByReportId`) and Acquiring Reports (`getAcquiringReportsList`, `getAcquiringReportsDetailed`, `getAcquiringReportsDetailedByReportId`)
@@ -397,6 +404,13 @@ const batch = await sdk.finances.createDownloadAll({
 | `SalesReportDetailedRequest` | Request body for `getSalesReportsDetailed()`: `dateFrom`, `dateTo`, `limit`, `rrdId`, `period`, `fields` |
 | `SalesReportDetailedByIdRequest` | Request body for `getSalesReportsDetailedByReportId()`: `limit`, `rrdId`, `fields` |
 | `SalesReportDetailedItem` | Detailed report row (~70 fields). camelCase names, money amounts as strings. Maps 1:1 to `DetailReportItem` fields with v5 equivalents noted in JSDoc |
+
+### v1 Field Union Types (v3.8.0)
+
+| Type | Description |
+|------|-------------|
+| `SalesReportDetailedField` | String literal union of all valid field names for the `fields` parameter on `getSalesReportsDetailed()` and `getSalesReportsDetailedByReportId()`. Enables IDE autocomplete for selective field loading. |
+| `AcquiringReportDetailedField` | String literal union of all valid field names for the `fields` parameter on `getAcquiringReportsDetailed()` and `getAcquiringReportsDetailedByReportId()`. Enables IDE autocomplete for selective field loading. |
 
 ### v1 Acquiring Reports (v3.7.0)
 

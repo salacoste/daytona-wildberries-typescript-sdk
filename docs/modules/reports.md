@@ -12,7 +12,7 @@ The **Reports** module provides access to supplier reports, warehouse stock repo
 | **SDK Namespace** | `sdk.reports.*` |
 | **Base URLs** | `https://statistics-api.wildberries.ru`, `https://seller-analytics-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/12-reports/` |
-| **Methods** | 29 |
+| **Methods** | 25 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -41,11 +41,10 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 
 ## Methods Reference
 
-### Core Supplier Reports (4 methods)
+### Core Supplier Reports (3 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getSupplierIncomes()` | GET | `/api/v1/supplier/incomes` | Get supplier deliveries |
 | `getSupplierStocks()` | GET | `/api/v1/supplier/stocks` | Get warehouse stock balance |
 | `getSupplierOrders()` | GET | `/api/v1/supplier/orders` | Get all orders |
 | `getSupplierSales()` | GET | `/api/v1/supplier/sales` | Get sales and returns |
@@ -74,7 +73,7 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 | `getAnalyticsGoodsLabeling()` | GET | `/api/v1/analytics/goods-labeling` | Get marking violations penalties |
 | `getDeductions()` | GET | `/api/analytics/v1/deductions` | Get substitution and attachment deductions |
 
-> **Note:** Methods `getAnalyticsWarehouseMeasurements()`, `getAnalyticsIncorrectAttachments()`, and `getAnalyticsCharacteristicsChange()` are deprecated. Use the new methods above.
+> **Note:** Methods `getAnalyticsWarehouseMeasurements()`, `getAnalyticsIncorrectAttachments()`, and `getAnalyticsCharacteristicsChange()` have been removed. Use the new methods above.
 
 ### Paid Acceptance (3 methods)
 
@@ -115,7 +114,7 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 
 | Tier | Operations | Limit | Interval |
 |------|-----------|-------|----------|
-| T1 Standard | Supplier reports (incomes, stocks, orders, sales) | 1 req/min | 60s |
+| T1 Standard | Supplier reports (stocks, orders, sales) | 1 req/min | 60s |
 | T2 Task Status | Report task status checks | 12 req/5s | ~420ms |
 | T3 Downloads | Report downloads | 1 req/min | 60s |
 | T4 Penalties | Measurement, labeling, characteristics penalties | 1-5 req/min | 12-60s |

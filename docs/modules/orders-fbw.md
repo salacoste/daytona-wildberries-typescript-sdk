@@ -13,7 +13,7 @@ The **Orders FBW (Fulfillment by Wildberries)** module manages supply creation a
 | **Base URL** | `https://supplies-api.wildberries.ru` (most methods) |
 | **Alt Base URL** | `https://marketplace-api.wildberries.ru` (`getClientInfo` only) |
 | **Source Swagger** | `wildberries_api_doc/07-orders-fbw.yaml` |
-| **Methods** | 10 (8 active + 2 deprecated) |
+| **Methods** | 8 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -72,14 +72,14 @@ const clientInfo = await sdk.ordersFBW.getClientInfo([987654321]);
 
 > **Note**: `getClientInfo()` uses the `marketplace-api.wildberries.ru` domain, not `supplies-api.wildberries.ru` like the other FBW methods.
 
-### Deprecated Methods (2 methods)
+### Previously Deprecated Methods (Removed)
 
-> These methods are deprecated and will be removed in a future release. Use the replacements listed below.
+> These methods were deprecated and have been removed from the module source.
 
 | Method | Replacement | Notes |
 |--------|-------------|-------|
-| `getAcceptanceCoefficients(options?)` | Use tariffs module | Endpoint moved to `common-api.wildberries.ru`. Emits a console warning on first call. |
-| `createSupply(data)` | `listSupplies(data)` | Renamed for clarity. Delegates to `listSupplies` internally. Will be removed in v3.0.0. |
+| `getAcceptanceCoefficients(options?)` | `sdk.tariffs.getAcceptanceCoefficients()` | Moved to Tariffs module. |
+| `createSupply(data)` | `listSupplies(data)` | Renamed for clarity. |
 
 ---
 

@@ -13,9 +13,13 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
 | **Swagger Endpoints** | 50+ (34 active + 16 deprecated) |
-| **Implemented Methods** | 46 (42 active + 4 deprecated) |
+| **Implemented Methods** | 46 (40 active + 6 deprecated) |
 | **Total Types** | 101+ TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
+
+### What's New (v3.8.0)
+
+- **Deprecation warnings now use `warnOnce()`**: The 4 deprecated methods `createAutoSetExcluded()`, `createAutoUpdatenm()`, `getPromotionAdverts()`, and `getAuctionAdverts()` now emit their deprecation warning only **once per process** instead of on every call. This uses the shared `warnOnce()` utility exported from the SDK. Use `resetDeprecationWarnings()` to re-enable warnings (useful in tests).
 
 ### What's New (v3.4.0 - March 2026)
 
@@ -240,6 +244,10 @@ The following 6 methods are deprecated but still available in the SDK with depre
 | `getStatsKeywords()` | `getAdvFullstats()` | TBD |
 | `createAutoSetExcluded()` | `setMinusPhrases()` / `setNormqueryMinus()` | February 2, 2026 |
 | `createAutoUpdatenm()` | `updateCampaignProducts()` / `updateAuctionNm()` | February 2, 2026 |
+
+::: info Warn-Once Behavior (v3.8.0)
+Since v3.8.0, `createAutoSetExcluded()`, `createAutoUpdatenm()`, `getPromotionAdverts()`, and `getAuctionAdverts()` use `warnOnce()` to emit their deprecation warning **only once per process**. Previous versions emitted a warning on every call. Call `resetDeprecationWarnings()` from the SDK to re-enable warnings (e.g., in test suites).
+:::
 
 ---
 

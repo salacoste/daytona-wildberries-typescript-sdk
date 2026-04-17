@@ -9,7 +9,7 @@ The **Orders FBS (Fulfillment by Seller)** module provides comprehensive order m
 **Module Name**: `ordersFBS`
 **Source**: Generated from `wildberries_api_doc/03-orders-fbs.yaml`
 **Base URL**: `https://marketplace-api.wildberries.ru`
-**Total Methods**: 39 methods across 7 functional areas
+**Total Methods**: 34 methods across 7 functional areas
 
 ### FBS vs FBW
 
@@ -52,7 +52,7 @@ Ensure your API key has the following permissions enabled:
 
 ## Methods Reference
 
-### Orders (6 methods)
+### Orders (5 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
@@ -61,9 +61,8 @@ Ensure your API key has the following permissions enabled:
 | `getOrderStatuses(data)` | Get statuses for multiple orders (bulk) | 300 req/min |
 | `updateOrdersCancel(orderId)` | Cancel an order | 100 req/min |
 | `getOrdersReshipment()` | Get orders requiring reshipment | 300 req/min |
-| `createOrdersStatu(data)` | **@deprecated** Use `getOrderStatuses()` | 300 req/min |
 
-### Supplies (10 methods)
+### Supplies (8 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
@@ -75,8 +74,6 @@ Ensure your API key has the following permissions enabled:
 | `getSuppliesBarcode(supplyId, options?)` | Get supply QR code | 300 req/min |
 | `addOrdersToSupply(supplyId, data)` | Add multiple orders to supply (bulk) | 300 req/min |
 | `getSupplyOrderIds(supplyId)` | Get order IDs in a supply | 300 req/min |
-| `updateSuppliesOrder(supplyId, orderId)` | **@deprecated** Use `addOrdersToSupply()` | 1000 req/min |
-| `getSuppliesOrder(supplyId)` | **@deprecated** Use `getSupplyOrderIds()` | 300 req/min |
 
 ### Passes (5 methods)
 
@@ -100,15 +97,13 @@ Ensure your API key has the following permissions enabled:
 | `updateMetaGtin(orderId, data)` | Attach GTIN code | 1000 req/min |
 | `updateMetaExpiration(orderId, data)` | Set expiration date | 1000 req/min |
 | `setCustomsDeclaration(orderId, data)` | Set customs declaration number | 1000 req/min |
-| `getOrdersMeta(orderId)` | **@deprecated** Use `getOrdersMetaBulk()` | 300 req/min |
 
-### Stickers (3 methods)
+### Stickers (2 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
 | `createOrdersSticker(options?, data?)` | Generate order stickers (SVG/PNG/ZPL) | 300 req/min |
 | `createStickersCrossBorder(data?)` | Get cross-border stickers (PDF) | 300 req/min |
-| `createOrdersExternalSticker(data?)` | **@deprecated** Will be removed | 10 req/min |
 
 ### Cross-Border (2 methods)
 

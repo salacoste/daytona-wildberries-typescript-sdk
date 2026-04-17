@@ -25,19 +25,33 @@
 
 # English Version
 
-Transform 11 OpenAPI specifications into a production-ready SDK with complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
+Transform 11 OpenAPI specifications into a production-ready SDK with 13 modules, complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
 
 ## ✨ Features
 
-- **🔐 Complete Type Safety** - Auto-generated TypeScript types from OpenAPI specifications for all 11 API modules
-- **⚡ Automatic Rate Limiting** - Built-in enforcement of per-endpoint rate limits with intelligent queuing
-- **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures
+- **🔐 Complete Type Safety** - Auto-generated TypeScript types from OpenAPI specifications for all 13 API modules
+- **⚡ Automatic Rate Limiting** - Built-in enforcement of per-endpoint rate limits with intelligent queuing and Basic/Test token multipliers
+- **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures with per-request timeout support
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 98% test coverage with 950+ tests across all modules
-- **🎯 100% API Coverage** - All 229 YAML endpoints implemented (v2.2.0)
-- **📚 Comprehensive Documentation** - Complete API reference, tutorials, and working examples in English and Russian
+- **✅ Battle-Tested** - 2,100+ tests passing across all modules
+- **🎯 100% API Coverage** - All YAML endpoints implemented including v1 Finance Reports and Acquiring Reports
+- **📚 Comprehensive Documentation** - Complete API reference, 44 guides, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
+- **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
+- **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
+
+## 🆕 What's New in v3.8.0
+
+- **Field union types** for v1 Finance Reports -- `SalesReportDetailedField` and `AcquiringReportDetailedField` provide autocomplete and type safety for the `fields[]` parameter
+- **`warnOnce()` and `resetDeprecationWarnings()`** -- centralized deprecation warning utilities exported from the main SDK entry point
+- **Documentation overhaul** -- finances module docs rewritten with all 13 methods, 10 missing guides added to EN sidebar, RU guides index updated with 10 guides and 4 new sections
+- **v1 Finance Reports** (v3.7.0) -- 6 new methods for Sales Reports and Acquiring Reports, `parseMoneyAmount()` helper, migration guide from deprecated v5 endpoint
+- **13 modules** -- Orders DBS and User Management fully integrated
+
+See [CHANGELOG.md](CHANGELOG.md) for the complete release history.
+
+---
 
 ## ⚠️ Critical API Update
 
@@ -100,7 +114,7 @@ console.log('Total campaigns:', campaigns.all);
 const advBalance = await sdk.promotion.getAdvBalance();
 console.log('Ad cabinet balance:', advBalance.net);
 
-// Get customer chat list with last messages (NEW in v2.3.2)
+// Get customer chat list with last messages
 const chats = await sdk.communications.getSellerChats();
 console.log('Active chats:', chats.result?.length);
 chats.result?.forEach(chat => {
@@ -144,7 +158,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Project Status & Development
 
-**Current Status:** 🟢 Production Ready | **SDK Version:** 1.0.0
+**Current Status:** 🟢 Production Ready | **SDK Version:** 3.8.0
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Comprehensive overview of all epics, stories, and implementation status.
 
@@ -152,18 +166,11 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 | Metric | Value |
 |--------|-------|
-| **API Modules** | 11/11 (100%) |
-| **API Endpoints** | 200+ implemented |
-| **Test Suite** | 5,219 tests passing (100%) |
-| **Quality Score** | 96.1/100 |
-| **Documentation** | 73 files, 22 examples |
-| **Bundle Size** | 567KB gzipped |
-
-### Epic Progress
-
-- ✅ **5 epics completed** (Foundation, Products/Orders, Extended Modules, Integration, Testing)
-- 🔄 **2 epics in progress** (Documentation, Code Quality)
-- 📝 **3 epics planned** (Documentation Site, Web API Module)
+| **API Modules** | 13 (100%) |
+| **API Endpoints** | 240+ implemented |
+| **Test Suite** | 2,111 tests passing (100%) |
+| **Documentation** | 44 guides, 22 examples |
+| **Bundle Size** | ~91KB gzipped (ESM) |
 
 > **⚠️ For Contributors:** When creating or completing epics/stories, **update [PROJECT_STATUS_SUMMARY.md](PROJECT_STATUS_SUMMARY.md)** to keep the project status current. This file is automatically generated and should reflect the latest implementation state.
 
@@ -186,22 +193,23 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 🎯 Supported API Modules
 
-All 11 Wildberries API modules are fully supported with 100% API coverage:
+All 13 Wildberries API modules are fully supported with 100% API coverage:
 
 | Module | Description |
 |--------|-------------|
-| **General** | Ping, news, seller info, connectivity testing |
-| **Products** | Categories, CRUD, media, pricing, warehouse, stock |
-| **Orders FBS** | Seller fulfillment, order status, shipping, supplies |
-| **Orders FBW** | WB warehouse fulfillment, supply planning |
-| **Finances** | Balance, transactions, reports, payouts |
-| **Analytics** | Sales funnel, search queries, stock history, CSV reports |
+| **General** | Ping, news, seller info, Jam subscription, seller rating |
+| **Products** | Categories, CRUD, media, pricing, warehouse, stock, kizMarked support |
+| **Orders FBS** | Seller fulfillment, order status, shipping, supplies, metadata validation |
+| **Orders FBW** | WB warehouse fulfillment, supply planning, buyer info |
+| **Orders DBS** | Delivery by Seller - bulk operations, B2B support, product marking (SGTIN, IMEI) |
+| **Finances** | Balance, transactions, v1 Sales Reports, Acquiring Reports, `parseMoneyAmount()`, field union types |
+| **Analytics** | Sales funnel, search queries, stock history, WB warehouse stock, CSV reports |
 | **Reports** | Income reports, sales reports, data exports |
-| **Communications** | Customer chat with real-time messaging, product Q&A, reviews and ratings management, chat previews with last messages, **NEW:** pinned reviews for product cards |
-| **Promotion** | Campaigns, promo codes, advertising ⚠️ **[Migration Required](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 methods deprecated (Feb 2, 2026) |
+| **Communications** | Customer chat, product Q&A, reviews, pinned reviews for product cards |
+| **Promotion** | Campaigns, bids, minus phrases, advertising |
 | **Tariffs** | Commission rates, fee schedules |
 | **In-Store Pickup** | Pickup point orders and management |
-| **Orders DBS** | Delivery by Seller orders - seller handles storage AND delivery directly to customers, B2B support, product marking (SGTIN, IMEI) |
+| **User Management** | Seller profile user management |
 
 ## 📄 License
 
@@ -244,19 +252,33 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 
 # Русская Версия
 
-Преобразуйте 11 OpenAPI спецификаций в production-готовый SDK с полной типобезопасностью, автоматическими лимитами запросов, механизмами повторных попыток и комплексной обработкой ошибок. Сократите время интеграции с недель до часов.
+Преобразуйте 11 OpenAPI спецификаций в production-готовый SDK с 13 модулями, полной типобезопасностью, автоматическими лимитами запросов, механизмами повторных попыток и комплексной обработкой ошибок. Сократите время интеграции с недель до часов.
 
 ## ✨ Возможности
 
-- **🔐 Полная Типобезопасность** - Автоматически генерируемые TypeScript типы из OpenAPI для всех 11 модулей
-- **⚡ Автоматические Лимиты Запросов** - Встроенное соблюдение лимитов для каждой конечной точки с умной очередью
-- **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев
+- **🔐 Полная Типобезопасность** - Автоматически генерируемые TypeScript типы из OpenAPI для всех 13 модулей
+- **⚡ Автоматические Лимиты Запросов** - Встроенное соблюдение лимитов для каждой конечной точки с умной очередью и множителями для Basic/Test токенов
+- **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев с поддержкой таймаута для каждого запроса
 - **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
 - **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
-- **✅ Проверено в Бою** - 98% покрытие тестами, 950+ тестов для всех модулей
-- **🎯 100% Покрытие API** - Все 229 эндпоинтов YAML реализованы (v2.2.0)
-- **📚 Полная Документация** - Справочник API, учебные руководства и примеры на английском и русском
+- **✅ Проверено в Бою** - 2,100+ тестов для всех модулей
+- **🎯 100% Покрытие API** - Все эндпоинты YAML реализованы, включая Финансовые Отчеты v1 и Эквайринг
+- **📚 Полная Документация** - Справочник API, 44 руководства, примеры на английском и русском
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
+- **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
+- **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## 🆕 Что Нового в v3.8.0
+
+- **Union-типы полей** для Финансовых Отчетов v1 -- `SalesReportDetailedField` и `AcquiringReportDetailedField` обеспечивают автодополнение и типобезопасность параметра `fields[]`
+- **`warnOnce()` и `resetDeprecationWarnings()`** -- централизованные утилиты для предупреждений об устаревших методах, экспортируемые из главной точки входа SDK
+- **Обновление документации** -- документация модуля финансов переписана со всеми 13 методами, 10 руководств добавлено в EN боковую панель, обновлен RU индекс руководств
+- **Финансовые Отчеты v1** (v3.7.0) -- 6 новых методов для Отчетов о Продажах и Эквайринга, хелпер `parseMoneyAmount()`, руководство по миграции с устаревшего v5 эндпоинта
+- **13 модулей** -- Orders DBS и User Management полностью интегрированы
+
+Полная история изменений: [CHANGELOG.md](CHANGELOG.md)
+
+---
 
 ## ⚠️ Критическое Обновление API
 
@@ -319,7 +341,7 @@ console.log('Всего кампаний:', campaigns.all);
 const advBalance = await sdk.promotion.getAdvBalance();
 console.log('Баланс рекл. кабинета:', advBalance.net);
 
-// Список чатов с клиентами и последними сообщениями (НОВОЕ в v2.3.2)
+// Список чатов с клиентами и последними сообщениями
 const chats = await sdk.communications.getSellerChats();
 console.log('Активные чаты:', chats.result?.length);
 chats.result?.forEach(chat => {
@@ -363,7 +385,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Статус Проекта и Разработка
 
-**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 1.0.0
+**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 3.8.0
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Комплексный обзор всех эпиков, историй и статуса реализации.
 
@@ -371,18 +393,11 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 | Метрика | Значение |
 |---------|----------|
-| **API модули** | 11/11 (100%) |
-| **API эндпоинты** | 200+ реализовано |
-| **Тесты** | 5,219 тестов проходят (100%) |
-| **Оценка качества** | 96.1/100 |
-| **Документация** | 73 файла, 22 примера |
-| **Размер бандла** | 567KB gzipped |
-
-### Прогресс по Эпикам
-
-- ✅ **5 эпиков завершено** (Foundation, Products/Orders, Extended Modules, Integration, Testing)
-- 🔄 **2 эпика в работе** (Documentation, Code Quality)
-- 📝 **3 эпика запланировано** (Documentation Site, Web API Module)
+| **API модули** | 13 (100%) |
+| **API эндпоинты** | 240+ реализовано |
+| **Тесты** | 2,111 тестов проходят (100%) |
+| **Документация** | 44 руководства, 22 примера |
+| **Размер бандла** | ~91KB gzipped (ESM) |
 
 > **⚠️ Для контрибьюторов:** При создании или завершении эпиков/историй **обновляйте [PROJECT_STATUS_SUMMARY.md](PROJECT_STATUS_SUMMARY.md)**, чтобы статус проекта оставался актуальным. Этот файл автоматически генерируется и должен отражать последнее состояние реализации.
 
@@ -405,22 +420,23 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 🎯 Поддерживаемые Модули API
 
-Все 11 модулей Wildberries API полностью поддерживаются со 100% покрытием API:
+Все 13 модулей Wildberries API полностью поддерживаются со 100% покрытием API:
 
 | Модуль | Описание |
 |--------|----------|
-| **General** | Ping, новости, информация о продавце, проверка подключения |
-| **Products** | Категории, CRUD, медиа, ценообразование, склад, запасы |
-| **Orders FBS** | Выполнение продавцом, статус заказа, доставка, поставки |
-| **Orders FBW** | Выполнение складом WB, планирование поставок |
-| **Finances** | Баланс, транзакции, отчеты, выплаты |
-| **Analytics** | Воронка продаж, поисковые запросы, история запасов, CSV отчеты |
+| **General** | Ping, новости, информация о продавце, Jam-подписка, рейтинг продавца |
+| **Products** | Категории, CRUD, медиа, ценообразование, склад, запасы, поддержка kizMarked |
+| **Orders FBS** | Выполнение продавцом, статус заказа, доставка, поставки, валидация метаданных |
+| **Orders FBW** | Выполнение складом WB, планирование поставок, информация о покупателе |
+| **Orders DBS** | Доставка Продавцом - массовые операции, поддержка B2B, маркировка (SGTIN, IMEI) |
+| **Finances** | Баланс, транзакции, Отчеты о Продажах v1, Эквайринг, `parseMoneyAmount()`, union-типы полей |
+| **Analytics** | Воронка продаж, поисковые запросы, история запасов, запасы на складах WB, CSV отчеты |
 | **Reports** | Отчеты о доходах, отчеты о продажах, экспорт данных |
-| **Communications** | Чат с клиентами в реальном времени, вопросы-ответы по товарам, управление отзывами и рейтингами, предпросмотр чатов с последними сообщениями, **НОВОЕ:** закрепление отзывов на карточках товаров |
-| **Promotion** | Кампании, промокоды, реклама ⚠️ **[Требуется Миграция](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)** - 4 метода устарели (2 февраля 2026) |
+| **Communications** | Чат с клиентами, вопросы-ответы по товарам, управление отзывами, закреплённые отзывы |
+| **Promotion** | Кампании, ставки, минус-фразы, реклама |
 | **Tariffs** | Ставки комиссий, тарифные планы |
 | **In-Store Pickup** | Заказы с самовывозом и управление |
-| **Orders DBS** | Заказы DBS (Доставка Продавцом) - продавец хранит и доставляет товар напрямую покупателю, поддержка B2B, маркировка (SGTIN, IMEI) |
+| **User Management** | Управление пользователями профиля продавца |
 
 ## 📄 Лицензия
 

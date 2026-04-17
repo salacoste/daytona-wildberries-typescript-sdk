@@ -12,7 +12,7 @@ Customer engagement and feedback management for Wildberries marketplace.
 | **SDK Namespace** | `sdk.communications.*` |
 | **Base URLs** | `https://feedbacks-api.wildberries.ru`, `https://buyer-chat-api.wildberries.ru`, `https://returns-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/09-communications/` |
-| **Methods** | 21 |
+| **Methods** | 25 |
 | **Authentication** | API Key (Header) |
 
 ---

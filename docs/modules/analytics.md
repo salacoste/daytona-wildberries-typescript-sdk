@@ -12,7 +12,7 @@ The **Analytics** module provides access to sales funnel analytics, search query
 | **SDK Namespace** | `sdk.analytics.*` |
 | **Base URL** | `https://seller-analytics-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/11-analytics/` |
-| **Methods** | 20 (17 active + 3 deprecated) |
+| **Methods** | 17 |
 | **Authentication** | API Key (Header) |
 
 ### What's New (v3.4.0 - March 2026)
@@ -114,12 +114,12 @@ All three Sales Funnel v3 responses now include an optional `currency` field (e.
 |--------|------|----------|-------------|
 | `getWbWarehousesStock()` | POST | `/api/analytics/v1/stocks-report/wb-warehouses` | Get current inventory on WB warehouses |
 
-### Deprecated v2 (3 methods)
+### Previously Deprecated v2 (removed from source)
 
-> Use v3 Sales Funnel methods instead.
+> These methods were deprecated and have been removed. Use v3 Sales Funnel methods instead.
 
-| Method | Replacement |
-|--------|-------------|
+| Removed Method | Replacement |
+|----------------|-------------|
 | `createNmReportDetail()` | `getSalesFunnelProducts()` |
 | `createDetailHistory()` | `getSalesFunnelProductsHistory()` |
 | `createGroupedHistory()` | `getSalesFunnelGroupedHistory()` |

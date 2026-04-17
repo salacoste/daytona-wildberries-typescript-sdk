@@ -2,7 +2,7 @@
 
 # Interface: UpdateBidsResultArticle
 
-Defined in: [types/promotion.types.ts:1682](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1682)
+Defined in: [types/promotion.types.ts:1682](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1682)
 
 Result of bid update for an article
 
@@ -10,6 +10,6 @@ Result of bid update for an article
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID | [types/promotion.types.ts:1684](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1684) |
-| <a id="bid_kopecks"></a> `bid_kopecks` | `number` | Updated bid in kopecks | [types/promotion.types.ts:1686](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1686) |
-| <a id="placement"></a> `placement` | `string` | Placement where bid was applied | [types/promotion.types.ts:1688](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1688) |
+| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID | [types/promotion.types.ts:1684](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1684) |
+| <a id="bid_kopecks"></a> `bid_kopecks` | `number` | Updated bid in kopecks | [types/promotion.types.ts:1686](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1686) |
+| <a id="placement"></a> `placement` | `string` | Placement where bid was applied | [types/promotion.types.ts:1688](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1688) |

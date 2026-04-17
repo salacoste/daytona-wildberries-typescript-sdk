@@ -2,7 +2,7 @@
 
 # Interface: DeleteMetaBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:458](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-dbs.types.ts#L458)
+Defined in: [types/orders-dbs.types.ts:458](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L458)
 
 Request body for deleteMetaBulk
 
@@ -10,5 +10,5 @@ Request body for deleteMetaBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to delete metadata from | [types/orders-dbs.types.ts:460](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-dbs.types.ts#L460) |
-| <a id="key"></a> `key` | `string` | Metadata key to delete | [types/orders-dbs.types.ts:462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-dbs.types.ts#L462) |
+| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to delete metadata from | [types/orders-dbs.types.ts:460](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L460) |
+| <a id="key"></a> `key` | `string` | Metadata key to delete | [types/orders-dbs.types.ts:462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L462) |

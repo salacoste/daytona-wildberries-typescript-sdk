@@ -6,7 +6,7 @@
 type ReviewPinOn = "nm" | "imt";
 ```
 
-Defined in: [types/communications.types.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/communications.types.ts#L27)
+Defined in: [types/communications.types.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/communications.types.ts#L27)
 
 Location where review is pinned
 - `nm` - Product card (карточка товара)

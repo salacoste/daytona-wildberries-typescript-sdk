@@ -2,7 +2,7 @@
 
 # Interface: MetaSgtinRequest
 
-Defined in: [types/orders-fbs.types.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L98)
+Defined in: [types/orders-fbs.types.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-fbs.types.ts#L98)
 
 Request body for attaching SGTIN marking codes to an order
 
@@ -10,4 +10,4 @@ Request body for attaching SGTIN marking codes to an order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="sgtins"></a> `sgtins` | `string`[] | List of SGTIN marking codes | [types/orders-fbs.types.ts:100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L100) |
+| <a id="sgtins"></a> `sgtins` | `string`[] | List of SGTIN marking codes | [types/orders-fbs.types.ts:100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-fbs.types.ts#L100) |

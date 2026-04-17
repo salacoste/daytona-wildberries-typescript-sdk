@@ -2,7 +2,7 @@
 
 # Interface: UpdateBidsResultCampaign
 
-Defined in: [types/promotion.types.ts:1672](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1672)
+Defined in: [types/promotion.types.ts:1672](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1672)
 
 Result of bid update for a campaign
 
@@ -10,5 +10,5 @@ Result of bid update for a campaign
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1674](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1674) |
-| <a id="nm_bids"></a> `nm_bids` | [`UpdateBidsResultArticle`](UpdateBidsResultArticle.md)[] | Updated bids | [types/promotion.types.ts:1676](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1676) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1674](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1674) |
+| <a id="nm_bids"></a> `nm_bids` | [`UpdateBidsResultArticle`](UpdateBidsResultArticle.md)[] | Updated bids | [types/promotion.types.ts:1676](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1676) |

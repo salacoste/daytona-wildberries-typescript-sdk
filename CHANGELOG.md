@@ -5,6 +5,179 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - 2026-04-17
+
+### Added
+
+#### Field Union Types for Finance Reports
+- `SalesReportDetailedField` union type -- narrows `fields[]` from `string[]` to specific valid field names with IDE autocomplete
+- `AcquiringReportDetailedField` union type -- same for Acquiring Reports
+- Both types exported from `/finances` subpath
+- 6 regression tests for field union types
+
+#### Deprecation Utilities (post-release, task-107)
+- `warnOnce(key, message)` -- centralized deprecation warning that fires once per process
+- `resetDeprecationWarnings()` -- reset all warnings (useful in tests)
+- Both exported from main SDK entry point
+- Replaces ad-hoc static boolean flags in FinancesModule and PromotionModule
+
+### Changed (Type-Only Breaking)
+- `fields[]` parameter in `SalesReportDetailedRequest`, `SalesReportDetailedByIdRequest`, `AcquiringReportDetailedRequest`, `AcquiringReportDetailedByIdRequest` narrowed from `string[]` to union types
+- Consumers passing arbitrary strings to `fields[]` will get TypeScript errors -- use valid field names from the union type (no runtime changes)
+
+### Documentation
+- Rewrite finances module docs with all 13 methods, v1/v5 comparison table, `parseMoneyAmount()` examples
+- Add 10 missing guides to EN sidebar (products, communications, promotion, tariffs, and more)
+- Add 7 new sections to RU sidebar
+- Update guides index with all 44 guides linked
+- Update RU guides index with 10 missing guides and 4 new sections
+- Translate 18 EN guides to Russian (task-105)
+- Update getting-started quickstart to reference 13 modules including DBS and User Management
+- Fix migration guide missing `await`
+
+---
+
+## [3.7.0] - 2026-04-15
+
+### Added
+
+#### v1 Finance Reports Migration (6 new methods)
+- `getSalesReportsList()` -- list Sales Reports via POST /api/finance/v1/sales-reports/list
+- `getSalesReportsDetailed()` -- detailed Sales Report data
+- `getSalesReportsDetailedByReportId(id, data)` -- detailed data for a specific report (supports BigInt-safe reportId)
+- `getAcquiringReportsList()` -- list Acquiring Reports (RU-only)
+- `getAcquiringReportsDetailed()` -- detailed Acquiring Report data (RU-only)
+- `getAcquiringReportsDetailedByReportId(id, data)` -- detailed data for a specific acquiring report (RU-only)
+
+All v1 methods:
+- Use finance-api.wildberries.ru (not statistics-api)
+- POST with JSON body (not GET with query params)
+- Return money amounts as `string` (was `number` in v5)
+- Accept optional `fields?: string[]` for selective field loading
+- Rate limit: 1 req/min each
+- Require Personal or Service tokens (NOT Basic/Test)
+
+#### parseMoneyAmount Helper
+- `parseMoneyAmount(value?: string | null): number` -- parses v1 money strings to JS number with null/undefined/NaN guards
+- Re-exported from main SDK entry point
+- 8 unit tests covering edge cases
+
+#### New Types
+- `SalesReportListRequest`, `SalesReportListItem` (20 fields with money as string)
+- `SalesReportDetailedRequest`, `SalesReportDetailedByIdRequest`
+- `SalesReportDetailedItem` (~70 camelCase fields, each JSDoc-mapped to v5 snake_case)
+- `AcquiringReportListRequest`, `AcquiringReportListItem` (8 fields)
+- `AcquiringReportDetailedRequest`, `AcquiringReportDetailedByIdRequest`
+- `AcquiringReportDetailedItem` (17 fields)
+- All types re-exported from `/finances` subpath
+
+### Deprecated
+- `getSupplierReportDetailByPeriod()` -- WB disabling v5 endpoint on July 15, 2026; runtime warning fires once per process
+- `DetailReportItem` type marked `@deprecated`
+
+### Documentation
+- New migration guide: `docs/guides/migration-finance-reports-v5-to-v1.md`
+- Searchable field mapping table (old + new names in same row)
+- Migration checklist with grep commands for finding call sites
+- String money amounts explained with `parseMoneyAmount()` examples
+
+---
+
+## [3.6.2] - 2026-04-12
+
+### Added
+- `kizMarked?: boolean` field on product card create/update/list/trash methods for mandatory marking code confirmation
+- `needKiz?: boolean` added to `getCardsTrash` response (pre-existing gap)
+
+---
+
+## [3.6.1] - 2026-04-11
+
+### Fixed
+- Re-export types from `/finances`, `/analytics`, `/communications`, `/reports` subpath imports -- consumers can now `import type { DetailReportItem } from 'daytona-wildberries-typescript-sdk/finances'`
+- 192 types added across 4 module index files (8 finances, 97 analytics, 39 communications, 48 reports)
+
+---
+
+## [3.6.0] - 2026-04-10
+
+### Added
+
+#### Substitute Article Fields (Finance)
+- `article_substitution` -- substitute article ID in `DetailReportItem`
+- `sale_price_affiliated_discount_prc` -- substitute article discount percentage
+- `agency_vat` -- agency VAT field (present in WB spec, semantics undocumented)
+- `sale_price_wholesale_discount_prc` -- wholesale business discount percentage
+
+#### Documentation
+- New guide: `docs/guides/tracking-promotion-channels-with-substitute-articles.md` with Mermaid data-flow diagram and production aggregation pattern
+
+---
+
+## [3.5.1] - 2026-04-07
+
+### Fixed
+- Suppress eslint `no-deprecated` error in integration test for legacy `meta` field (CI fix only)
+
+---
+
+## [3.5.0] - 2026-04-06
+
+### Added
+
+#### New Methods
+- `getJamSubscription()` -- direct Jam subscription API via GET /api/common/v1/subscriptions (replaces probe-based detection)
+- `getSellerRating()` -- seller rating and review count via GET /api/common/v1/rating
+
+#### Infrastructure
+- `applyBasicTokenMultipliers()` -- rate limit multipliers for Basic/Test tokens (16 categories)
+- FBS `MetaDetail` type with key/value/decision fields for metadata validation status
+- `updateSuppliesDeliver()` JSDoc with 409 metadata validation guidance (IMEI/UIN/marking)
+- normquery/stats now supports CPC campaigns (views/ctr/cpm absent)
+- `updatedAt` field added to product error list items
+
+### Deprecated
+- `getJamSubscriptionStatus()` -- use `getJamSubscription()` instead
+- `Meta` interface -- removal April 30, 2026; use `metaDetails` instead
+
+### Documentation
+- 8 module/guide pages fully updated for v3.5.0 features
+- Jam subscription guide updated with direct API as primary, probe as legacy fallback
+- Configuration guide updated with token types section and rate limit multiplier tables
+
+---
+
+## [3.4.0] - 2026-03-25
+
+### Added
+
+#### New Methods
+- `getBidsRecommendations({advertId, nmId})` -- recommended CPM bids (base, per-normQuery)
+- `getClientInfo(orderIds)` -- DBW buyer info (name, phone, phoneCode) via marketplace-api
+- `getWbWarehousesStock()` -- current inventory across all WB warehouses with offset pagination (replaces deprecated GET /api/v1/supplier/stocks, disabled June 23, 2026)
+
+#### Type Fixes (Sprint 1 + 3)
+- `SDKConfig.tokenType` -- awareness for Basic/Test tokens with init warning
+- `additionalErrors` narrowed to `Record<string, string>` (products)
+- `currency` field added to 3 Sales Funnel analytics responses
+- `isBoxOnPallet`, `boxTypeID` corrected types (orders-fbw)
+- `Supply.isB2b`, `CrossBorderStickerItem.status` corrected types (orders-fbs)
+- `SellerInfoResponse.tin` field added (general)
+
+### Changed
+- `getAdvertsV2()` return type fixed from `GetAdverts` to `GetAdvertsV2Response`
+
+---
+
+## [3.3.0] - 2026-03-09
+
+### Added
+- `getJamSubscriptionStatus()` -- Jam (Djam) subscription tier detection via probe strategy
+- New guide: Jam subscription detection (EN + RU)
+- TypeDoc API reference regenerated
+
+---
+
 ## [3.2.0] - 2026-03-03
 
 ### Added

@@ -2,7 +2,7 @@
 
 # Interface: OrderStatusItem
 
-Defined in: [types/orders-fbs.types.ts:244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L244)
+Defined in: [types/orders-fbs.types.ts:244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-fbs.types.ts#L244)
 
 Individual order status entry
 
@@ -10,6 +10,6 @@ Individual order status entry
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | Order ID | [types/orders-fbs.types.ts:246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L246) |
-| <a id="supplierstatus"></a> `supplierStatus?` | [`OrderSupplierStatus`](../type-aliases/OrderSupplierStatus.md) | Supplier-side status | [types/orders-fbs.types.ts:248](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L248) |
-| <a id="wbstatus"></a> `wbStatus?` | [`OrderWbStatus`](../type-aliases/OrderWbStatus.md) | Wildberries system status | [types/orders-fbs.types.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L250) |
+| <a id="id"></a> `id?` | `number` | Order ID | [types/orders-fbs.types.ts:246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-fbs.types.ts#L246) |
+| <a id="supplierstatus"></a> `supplierStatus?` | [`OrderSupplierStatus`](../type-aliases/OrderSupplierStatus.md) | Supplier-side status | [types/orders-fbs.types.ts:248](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-fbs.types.ts#L248) |
+| <a id="wbstatus"></a> `wbStatus?` | [`OrderWbStatus`](../type-aliases/OrderWbStatus.md) | Wildberries system status | [types/orders-fbs.types.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-fbs.types.ts#L250) |

@@ -2,7 +2,7 @@
 
 # Interface: UpdateBidsResponse
 
-Defined in: [types/promotion.types.ts:1664](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1664)
+Defined in: [types/promotion.types.ts:1664](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1664)
 
 Response from updateBids (V1 API)
 
@@ -10,4 +10,4 @@ Response from updateBids (V1 API)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="bids"></a> `bids` | [`UpdateBidsResultCampaign`](UpdateBidsResultCampaign.md)[] | Results of bid updates | [types/promotion.types.ts:1666](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/promotion.types.ts#L1666) |
+| <a id="bids"></a> `bids` | [`UpdateBidsResultCampaign`](UpdateBidsResultCampaign.md)[] | Results of bid updates | [types/promotion.types.ts:1666](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1666) |

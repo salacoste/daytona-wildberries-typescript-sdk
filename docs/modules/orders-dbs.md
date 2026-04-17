@@ -12,7 +12,7 @@ The **Orders DBS (Delivery by Seller)** module manages orders where the seller h
 | **SDK Namespace** | `sdk.ordersDBS.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/04-orders-dbs/` |
-| **Methods** | 32 (19 active + 13 deprecated) |
+| **Methods** | 19 |
 | **Authentication** | API Key (Header) |
 | **409 Penalty** | 10x rate limit multiplier |
 
@@ -83,9 +83,9 @@ await sdk.ordersDBS.setImeiBulk({
 | `setGtinBulk(data)` | POST | `/api/marketplace/v3/dbs/orders/meta/gtin` | Set GTIN codes (bulk) |
 | `setCustomsDeclarationBulk(data)` | POST | `/api/marketplace/v3/dbs/orders/meta/customs-declaration` | Set customs declarations (bulk) |
 
-### Deprecated Methods (13 methods)
+### Previously Deprecated Methods (13 methods, removed from source)
 
-> These methods will stop working on **April 13, 2026**. Use bulk replacements above.
+> These methods were deprecated and have been removed from the module source. The Wildberries API endpoints will stop working on **April 13, 2026**.
 
 | Method | Replacement |
 |--------|-------------|

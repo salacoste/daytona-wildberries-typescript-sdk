@@ -109,6 +109,8 @@ Main entry point
 | [getWriteOperations](functions/getWriteOperations.md) | Get all write operations (not readonly) |
 | [calculateSupplyCost](functions/calculateSupplyCost.md) | Calculates the total supply cost including acceptance, storage, and logistics |
 | [compareTariffs](functions/compareTariffs.md) | Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs |
+| [warnOnce](functions/warnOnce.md) | Emit a deprecation warning for a method, at most once per process. |
+| [resetDeprecationWarnings](functions/resetDeprecationWarnings.md) | Reset all deprecation warning flags. **Test helper only.** |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
 
 ## References

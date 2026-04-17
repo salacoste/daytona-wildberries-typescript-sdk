@@ -13,7 +13,7 @@ type DBSSupplierStatus =
   | "canceled_by_missed_call";
 ```
 
-Defined in: [types/orders-dbs.types.ts:154](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-dbs.types.ts#L154)
+Defined in: [types/orders-dbs.types.ts:154](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L154)
 
 DBS supplier status
 Triggered by seller actions
