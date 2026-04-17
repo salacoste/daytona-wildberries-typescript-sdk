@@ -21,6 +21,7 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 
 describe('FinancesModule', () => {
   let mockClient: {
@@ -192,12 +193,9 @@ describe('FinancesModule', () => {
   // ──────────────────────────────────────────────────
 
   describe('getSupplierReportDetailByPeriod() — deprecated (v5)', () => {
-    // Reset the module-level deprecation flag before each test to prevent pollution
-    // (Quinn's rule: the once-per-process flag landmine — Sprint 10 task-103).
+    // Reset centralized deprecation warnings before each test (task-107).
     beforeEach(() => {
-      (
-        FinancesModule as unknown as { _supplierReportDetailByPeriodWarned: boolean }
-      )._supplierReportDetailByPeriodWarned = false;
+      resetDeprecationWarnings();
     });
 
     it('should log deprecation warning on FIRST call only (once per process)', async () => {

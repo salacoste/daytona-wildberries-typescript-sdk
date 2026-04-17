@@ -23,3 +23,5 @@ export {
 } from './compareTariffs';
 
 export { parseMoneyAmount } from './parseMoneyAmount';
+
+export { warnOnce, resetDeprecationWarnings } from './deprecation';

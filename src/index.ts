@@ -731,6 +731,8 @@ export {
   calculateSupplyCost,
   compareTariffs,
   parseMoneyAmount,
+  warnOnce,
+  resetDeprecationWarnings,
   type SupplyCostInput,
   type SupplyCostResult,
   type CompareTariffsInput,

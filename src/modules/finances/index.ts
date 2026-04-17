@@ -10,6 +10,7 @@
    warnings when THEY import or call these. The method remains functional until 2026-07-15. */
 
 import { BaseClient } from '../../client/base-client';
+import { warnOnce } from '../../utils/deprecation';
 import type {
   AccountBalanceResponse,
   DetailReportItem,
@@ -32,15 +33,6 @@ import type {
 } from '../../types/finances.types';
 
 export class FinancesModule {
-  /**
-   * Module-level flag: true after the first deprecation warning for
-   * `getSupplierReportDetailByPeriod()` has been emitted. Ensures warning fires once per process
-   * (not every call) and reduces log noise. Reset in tests via:
-   * `(FinancesModule as unknown as { _supplierReportDetailByPeriodWarned: boolean })
-   *   ._supplierReportDetailByPeriodWarned = false`
-   */
-  private static _supplierReportDetailByPeriodWarned = false;
-
   constructor(private client: BaseClient) {}
 
   /**
@@ -110,18 +102,12 @@ export class FinancesModule {
     rrdid?: number;
     period?: 'weekly' | 'daily';
   }): Promise<DetailReportItem[]> {
-    // Runtime deprecation warning — once per process (Sprint 10 task-103).
-    // The static flag pattern mirrors other _*Warned flags in the SDK.
-    // Tests should reset via: (FinancesModule as unknown as { _supplierReportDetailByPeriodWarned: boolean })._supplierReportDetailByPeriodWarned = false
-    if (!FinancesModule._supplierReportDetailByPeriodWarned) {
-      FinancesModule._supplierReportDetailByPeriodWarned = true;
-      // eslint-disable-next-line no-console -- Intentional deprecation warning (once per process)
-      console.warn(
-        '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated and will be removed after 2026-07-15. ' +
-          'Migrate to getSalesReportsDetailed(). See migration guide: ' +
-          'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1'
-      );
-    }
+    warnOnce(
+      'FinancesModule.getSupplierReportDetailByPeriod',
+      '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated and will be removed after 2026-07-15. ' +
+        'Migrate to getSalesReportsDetailed(). See migration guide: ' +
+        'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1'
+    );
     return this.client.get<DetailReportItem[]>(
       'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
       { params: options, rateLimitKey: 'finances.supplierReportDetailByPeriod' }

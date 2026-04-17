@@ -5,6 +5,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { warnOnce } from '../../utils/deprecation';
 import type {
   BidsRecommendationsResponse,
   CampaignProductsUpdate,
@@ -366,8 +367,8 @@ export class PromotionModule {
     data: { excluded?: string[] },
     options?: { id: number }
   ): Promise<void> {
-    // eslint-disable-next-line no-console -- Intentional deprecation warning
-    console.warn(
+    warnOnce(
+      'PromotionModule.createAutoSetExcluded',
       '[DEPRECATED] createAutoSetExcluded() will be disabled by Wildberries API on February 2, 2026. ' +
         'Use setNormqueryMinus() for type 9 campaigns with manual bidding instead.'
     );
@@ -402,8 +403,8 @@ export class PromotionModule {
     data: { add?: number[]; delete?: number[] },
     options?: { id: number }
   ): Promise<void> {
-    // eslint-disable-next-line no-console -- Intentional deprecation warning
-    console.warn(
+    warnOnce(
+      'PromotionModule.createAutoUpdatenm',
       '[DEPRECATED] createAutoUpdatenm() will be disabled by Wildberries API on February 2, 2026. ' +
         'Use updateAuctionNm() for type 9 campaigns instead.'
     );
@@ -828,8 +829,8 @@ export class PromotionModule {
    * ```
    */
   async getPromotionAdverts(ids: number[]): Promise<GetAdverts> {
-    // eslint-disable-next-line no-console -- Intentional deprecation warning
-    console.warn(
+    warnOnce(
+      'PromotionModule.getPromotionAdverts',
       '[DEPRECATED] getPromotionAdverts() будет удалён 2 февраля 2026. Используйте getAdvertsV2().'
     );
     return this.client.post<GetAdverts>(
@@ -861,8 +862,8 @@ export class PromotionModule {
    * ```
    */
   async getAuctionAdverts(params?: { status?: number; type?: number }): Promise<GetAdverts> {
-    // eslint-disable-next-line no-console -- Intentional deprecation warning
-    console.warn(
+    warnOnce(
+      'PromotionModule.getAuctionAdverts',
       '[DEPRECATED] getAuctionAdverts() будет удалён 2 февраля 2026. Используйте getAdvertsV2().'
     );
     return this.client.get<GetAdverts>('https://advert-api.wildberries.ru/adv/v0/auction/adverts', {
