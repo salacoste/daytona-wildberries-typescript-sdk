@@ -22,28 +22,48 @@ layout: doc
 
 ### Управление Товарами
 - **[Склейка Карточек и Аналитика](/ru/guides/product-card-merging)** - Склейки карточек, распределение рекламного трафика и кросс-аналитика по вариантам
+- **[Работа с карточками товаров](/ru/guides/working-with-product-cards)** - Создание, обновление, фильтрация и восстановление карточек товаров
+
+### Заказы и Логистика
+- **[Начало работы с DBS](/ru/guides/orders-dbs-getting-started)** - Управление заказами DBS (курьерская доставка продавца)
+- **[DBS рабочие процессы](/ru/guides/orders-dbs-workflows)** - Жизненный цикл заказов DBS и бизнес-процессы
+- **[Миграция DBS с legacy на bulk](/ru/guides/migration-dbs-legacy-to-bulk)** - Переход на bulk-методы DBS API
+- **[Начало работы с FBW](/ru/guides/orders-fbw-getting-started)** - Управление поставками и складами FBW
+- **[Самовывоз (In-Store Pickup)](/ru/guides/in-store-pickup-getting-started)** - Управление заказами самовывоза
 
 ### Реклама и Маркетинг
 - **[Реклама (Promotion)](/ru/guides/promotion-advertising)** - Управление кампаниями, ставки, бюджет и аналитика
+- **[Начало работы с Promotion](/ru/guides/promotion-getting-started)** - Полное руководство по модулю рекламы
+- **[Рекламные кампании](/ru/guides/advertising-campaigns)** - Создание и управление рекламными кампаниями
 
 ### Финансовые операции
 - **[Комиссии и Сборы](/ru/guides/commissions-fees)** - Тарифы и расчёт комиссий
 - **[Отчёты о реализации](/ru/guides/realization-report)** - Отчёты о продажах и реализации
 - **[Модуль отчётов](/ru/guides/reports-module)** - Финансовая отчётность
 
+### Финансовая сверка
+- **[Отслеживание каналов продвижения через подменные артикулы](/ru/guides/tracking-promotion-channels-with-substitute-articles)** - Финансовая сверка по подменным артикулам
+- **[Миграция финансовых отчётов v5 к v1](/ru/guides/migration-finance-reports-v5-to-v1)** - Переход на новый API v1 (дедлайн: 2026-07-15)
+
 ### Инвентарь и Логистика
 - **[Управление остатками](/ru/guides/stock-management)** - Контроль и отслеживание запасов
 - **[Сборы за хранение](/ru/guides/storage-fees-integration)** - Интеграция складских расходов
 - **[Обработка возвратов](/ru/guides/returns-handling)** - Работа с возвратами
 - **[Планирование поставок](/ru/guides/supplies-planning)** - Коэффициенты приёмки, расчёт затрат, выбор FBW vs FBS
+- **[Тарифы на поставки](/ru/guides/supplies-tariffs)** - Расчёт затрат на поставку, коэффициенты приёмки и сравнение тарифов
 
 ### Работа с покупателями
 - **[Коммуникации](/ru/guides/communications)** - Чат, вопросы-ответы и управление отзывами
+- **[Начало работы с коммуникациями](/ru/guides/communications-getting-started)** - Полное руководство по модулю коммуникаций
+- **[Общение с покупателями](/ru/guides/customer-communication)** - Вопросы, отзывы, чат и обработка обращений
+
+### Управление пользователями
+- **[Управление пользователями](/ru/guides/user-management)** - Управление доступом и пользователями аккаунта
 
 ### Тарифы и Затраты
 - **[Обзор тарифов](/ru/guides/tariffs-overview)** - Различия между тарифами на остаток и поставку
 
-### Подписки и тарифы
+### Подписки
 - **[Определение подписки Джем](/ru/guides/jam-subscription)** - Определение тарифа подписки Джем через пробные запросы
 
 ## Аналитика и данные
@@ -51,13 +71,18 @@ layout: doc
 - **[Статистика рекламы](/ru/guides/advertising-statistics-guide)** - Получение и анализ статистики рекламных кампаний
 - **[Лучшие практики воронки продаж](/ru/guides/best-practices-sales-funnel)** - Анализ воронок продаж, органическая конверсия и стратегии оптимизации
 - **[Лучшие практики рекламных кампаний](/ru/guides/best-practices-advertising)** - Управление кампаниями, оптимизация бюджета, стратегии ставок и мониторинг
+- **[Аналитика воронки продаж](/ru/guides/sales-funnel-analytics)** - Работа с воронкой продаж: стадии, метрики и практические сценарии
+- **[Аналитика поисковых запросов](/ru/guides/search-queries-analytics)** - Иерархия отчётов, drill-down, влияние подписки Джем
+- **[CSV-отчёты аналитики продавца](/ru/guides/seller-analytics-csv)** - Асинхронный экспорт отчётов: создание, polling, скачивание
 
 ## Руководства по миграции
 
-- **[Миграция v2.x → v3.0.0](/ru/guides/migration-v3)** - Полное руководство по миграции на v3.0.0
+- **[Миграция финансовых отчётов v5 к v1](/ru/guides/migration-finance-reports-v5-to-v1)** - Переход на новый API v1 (дедлайн: 2026-07-15)
+- **[Миграция v2.x к v3.0.0](/ru/guides/migration-v3)** - Полное руководство по миграции на v3.0.0
 - **[Миграция v2.7 — Analytics v3 API](/ru/guides/migration-v2.7-analytics-v3)** - Переход на новый Analytics v3 API (воронка продаж)
-- **[Миграция v2.2 → v2.3](/ru/guides/migration-v2.3)** - Улучшение типобезопасности и соответствие контракту API
-- **[Миграция Type 8 → Type 9 кампаний](/ru/guides/migration-type8-to-type9)** - Переход с Type 8 (unified bid) на Type 9 (manual bid)
+- **[Миграция v2.4 — Deprecation Promotion](/ru/guides/migration-v2.4-promotion-deprecation)** - Переход с type 8 на type 9 кампаний
+- **[Миграция v2.2 к v2.3](/ru/guides/migration-v2.3)** - Улучшение типобезопасности и соответствие контракту API
+- **[Миграция Type 8 к Type 9 кампаний](/ru/guides/migration-type8-to-type9)** - Переход с Type 8 (unified bid) на Type 9 (manual bid)
 
 ---
 

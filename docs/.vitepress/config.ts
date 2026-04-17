@@ -404,16 +404,27 @@ export default defineConfig({
                   { text: '🎯 Лучшие практики рекламных кампаний', link: '/ru/guides/best-practices-advertising' },
                   { text: '📈 Аналитика воронки продаж', link: '/ru/guides/best-practices-sales-funnel' },
                   { text: '📋 Руководство по модулю Promotion', link: '/ru/guides/promotion-advertising' },
-                  { text: '👥 Управление пользователями', link: '/guides/user-management' },
-                  { text: '📢 Рекламные кампании', link: '/guides/advertising-campaigns' },
+                  { text: '👥 Управление пользователями', link: '/ru/guides/user-management' },
+                  { text: '📢 Рекламные кампании', link: '/ru/guides/advertising-campaigns' },
                   { text: '🎫 Определение подписки Джем', link: '/ru/guides/jam-subscription' }
+                ]
+              },
+              {
+                text: 'Заказы и Логистика',
+                collapsed: true,
+                items: [
+                  { text: 'Начало работы с DBS', link: '/ru/guides/orders-dbs-getting-started' },
+                  { text: 'DBS рабочие процессы', link: '/ru/guides/orders-dbs-workflows' },
+                  { text: 'Миграция DBS legacy → bulk', link: '/ru/guides/migration-dbs-legacy-to-bulk' },
+                  { text: 'Начало работы с FBW', link: '/ru/guides/orders-fbw-getting-started' },
+                  { text: 'Самовывоз (In-Store Pickup)', link: '/ru/guides/in-store-pickup-getting-started' }
                 ]
               },
               {
                 text: 'Руководства по товарам',
                 collapsed: true,
                 items: [
-                  { text: 'Работа с карточками товаров', link: '/guides/working-with-product-cards' },
+                  { text: 'Работа с карточками товаров', link: '/ru/guides/working-with-product-cards' },
                   { text: 'Объединение карточек товаров', link: '/ru/guides/product-card-merging' }
                 ]
               },
@@ -422,16 +433,16 @@ export default defineConfig({
                 collapsed: true,
                 items: [
                   { text: 'Обзор коммуникаций', link: '/ru/guides/communications' },
-                  { text: 'Начало работы с коммуникациями', link: '/guides/communications-getting-started' },
-                  { text: 'Общение с покупателями', link: '/guides/customer-communication' }
+                  { text: 'Начало работы с коммуникациями', link: '/ru/guides/communications-getting-started' },
+                  { text: 'Общение с покупателями', link: '/ru/guides/customer-communication' }
                 ]
               },
               {
                 text: 'Продвижение',
                 collapsed: true,
                 items: [
-                  { text: 'Начало работы с продвижением', link: '/guides/promotion-getting-started' },
-                  { text: '⚠️ Миграция v2.4 - Устаревшие методы Promotion', link: '/guides/migration-v2.4-promotion-deprecation' }
+                  { text: 'Начало работы с продвижением', link: '/ru/guides/promotion-getting-started' },
+                  { text: '⚠️ Миграция v2.4 - Устаревшие методы Promotion', link: '/ru/guides/migration-v2.4-promotion-deprecation' }
                 ]
               },
               {
@@ -440,24 +451,24 @@ export default defineConfig({
                 items: [
                   { text: 'Обзор тарифов', link: '/ru/guides/tariffs-overview' },
                   { text: 'Планирование поставок', link: '/ru/guides/supplies-planning' },
-                  { text: 'Тарифы на поставки', link: '/guides/supplies-tariffs' }
+                  { text: 'Тарифы на поставки', link: '/ru/guides/supplies-tariffs' }
                 ]
               },
               {
                 text: 'Руководства по аналитике',
                 collapsed: true,
                 items: [
-                  { text: 'Воронка продаж', link: '/guides/sales-funnel-analytics' },
-                  { text: 'Поисковые запросы', link: '/guides/search-queries-analytics' },
-                  { text: 'CSV-отчёты аналитики', link: '/guides/seller-analytics-csv' }
+                  { text: 'Воронка продаж', link: '/ru/guides/sales-funnel-analytics' },
+                  { text: 'Поисковые запросы', link: '/ru/guides/search-queries-analytics' },
+                  { text: 'CSV-отчёты аналитики', link: '/ru/guides/seller-analytics-csv' }
                 ]
               },
               {
                 text: 'Финансовая сверка',
                 collapsed: true,
                 items: [
-                  { text: 'Отслеживание каналов продвижения', link: '/guides/tracking-promotion-channels-with-substitute-articles' },
-                  { text: '⚠️ Миграция финансовых отчётов v5 → v1', link: '/guides/migration-finance-reports-v5-to-v1' }
+                  { text: 'Отслеживание каналов продвижения', link: '/ru/guides/tracking-promotion-channels-with-substitute-articles' },
+                  { text: '⚠️ Миграция финансовых отчётов v5 → v1', link: '/ru/guides/migration-finance-reports-v5-to-v1' }
                 ]
               },
               {
