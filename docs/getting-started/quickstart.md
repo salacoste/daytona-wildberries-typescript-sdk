@@ -134,12 +134,14 @@ Now that you've made your first API call, explore:
 
 1. **[Tutorials](/getting-started/tutorials/)** - Step-by-step guides for common workflows
 2. **[API Reference](/api/)** - Complete method documentation
-   - [All SDK Modules](/api/#sdk-modules) - 11 specialized modules
+   - [All SDK Modules](/api/#sdk-modules) - 13 specialized modules
    - [WildberriesSDK](/api/classes/WildberriesSDK) - Main SDK class
    - [ProductsModule](/api/classes/ProductsModule) - Product management
-   - [OrdersFbsModule](/api/classes/OrdersFbsModule) - Order fulfillment
-   - [FinancesModule](/api/classes/FinancesModule) - Financial data
+   - [OrdersFbsModule](/api/classes/OrdersFbsModule) - FBS order fulfillment
+   - [OrdersDbsModule](/api/classes/OrdersDbsModule) - DBS delivery-by-seller orders
+   - [FinancesModule](/api/classes/FinancesModule) - Financial data (v1 Sales Reports, Acquiring Reports)
    - [AnalyticsModule](/api/classes/AnalyticsModule) - Performance metrics
+   - [UserManagementModule](/api/classes/UserManagementModule) - Seller profile user management
 3. **[Configuration Guide](/guides/configuration)** - Configure SDK for your environment
 4. **[Best Practices](/guides/best-practices)** - Production-ready patterns and error handling
 

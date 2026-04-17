@@ -417,7 +417,7 @@ async function fetchAcquiring(sdk: WildberriesSDK, isRussianSeller: boolean) {
   if (!isRussianSeller) {
     return []; // Skip for non-RU sellers
   }
-  return sdk.finances.getAcquiringReportsDetailed({ dateFrom, dateTo });
+  return await sdk.finances.getAcquiringReportsDetailed({ dateFrom, dateTo });
 }
 ```
 

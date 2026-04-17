@@ -2,12 +2,12 @@
 
 # Interface: ProductOrdersRequest
 
-Defined in: [types/analytics.types.ts:424](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L424)
+Defined in: [types/analytics.types.ts:424](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L424)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="period"></a> `period` | [`PeriodOrdersRequest`](PeriodOrdersRequest.md) | - | [types/analytics.types.ts:425](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L425) |
-| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/analytics.types.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L427) |
-| <a id="searchtexts"></a> `searchTexts` | `string`[] | Поисковые запросы. Для тарифа [Продвинутый](https://seller.wildberries.ru/monetization/tariffs) максимум — 100 | [types/analytics.types.ts:429](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/analytics.types.ts#L429) |
+| <a id="period"></a> `period` | [`PeriodOrdersRequest`](PeriodOrdersRequest.md) | - | [types/analytics.types.ts:425](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L425) |
+| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/analytics.types.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L427) |
+| <a id="searchtexts"></a> `searchTexts` | `string`[] | Поисковые запросы. Для тарифа [Продвинутый](https://seller.wildberries.ru/monetization/tariffs) максимум — 100 | [types/analytics.types.ts:429](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L429) |

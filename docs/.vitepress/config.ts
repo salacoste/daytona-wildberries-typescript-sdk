@@ -163,6 +163,40 @@ export default defineConfig({
                 ]
               },
               {
+                text: 'Product Guides',
+                collapsed: true,
+                items: [
+                  { text: 'Working with Product Cards', link: '/guides/working-with-product-cards' },
+                  { text: 'Product Card Merging', link: '/guides/product-card-merging' }
+                ]
+              },
+              {
+                text: 'Communications Guides',
+                collapsed: true,
+                items: [
+                  { text: 'Communications Overview', link: '/guides/communications' },
+                  { text: 'Communications Getting Started', link: '/guides/communications-getting-started' },
+                  { text: 'Customer Communication', link: '/guides/customer-communication' }
+                ]
+              },
+              {
+                text: 'Promotion Guides',
+                collapsed: true,
+                items: [
+                  { text: 'Promotion Getting Started', link: '/guides/promotion-getting-started' },
+                  { text: '⚠️ Migration v2.4 - Promotion Deprecation', link: '/guides/migration-v2.4-promotion-deprecation' }
+                ]
+              },
+              {
+                text: 'Tariffs & Supplies',
+                collapsed: true,
+                items: [
+                  { text: 'Tariffs Overview', link: '/guides/tariffs-overview' },
+                  { text: 'Supplies Planning', link: '/guides/supplies-planning' },
+                  { text: 'Supplies Tariffs', link: '/guides/supplies-tariffs' }
+                ]
+              },
+              {
                 text: 'Analytics Guides',
                 collapsed: true,
                 items: [
@@ -172,18 +206,18 @@ export default defineConfig({
                 ]
               },
               {
-                text: 'Customer Interaction',
-                collapsed: true,
-                items: [
-                  { text: 'Customer Communication', link: '/guides/customer-communication' }
-                ]
-              },
-              {
                 text: 'Finance Reconciliation',
                 collapsed: true,
                 items: [
                   { text: 'Tracking Promotion Channels with Substitute Articles', link: '/guides/tracking-promotion-channels-with-substitute-articles' },
                   { text: '⚠️ Finance Reports v5 → v1 Migration', link: '/guides/migration-finance-reports-v5-to-v1' }
+                ]
+              },
+              {
+                text: 'Performance',
+                collapsed: true,
+                items: [
+                  { text: 'Performance Tuning Guide', link: '/guides/performance-tuning' }
                 ]
               }
             ]
@@ -376,6 +410,40 @@ export default defineConfig({
                 ]
               },
               {
+                text: 'Руководства по товарам',
+                collapsed: true,
+                items: [
+                  { text: 'Работа с карточками товаров', link: '/guides/working-with-product-cards' },
+                  { text: 'Объединение карточек товаров', link: '/ru/guides/product-card-merging' }
+                ]
+              },
+              {
+                text: 'Коммуникации',
+                collapsed: true,
+                items: [
+                  { text: 'Обзор коммуникаций', link: '/ru/guides/communications' },
+                  { text: 'Начало работы с коммуникациями', link: '/guides/communications-getting-started' },
+                  { text: 'Общение с покупателями', link: '/guides/customer-communication' }
+                ]
+              },
+              {
+                text: 'Продвижение',
+                collapsed: true,
+                items: [
+                  { text: 'Начало работы с продвижением', link: '/guides/promotion-getting-started' },
+                  { text: '⚠️ Миграция v2.4 - Устаревшие методы Promotion', link: '/guides/migration-v2.4-promotion-deprecation' }
+                ]
+              },
+              {
+                text: 'Тарифы и поставки',
+                collapsed: true,
+                items: [
+                  { text: 'Обзор тарифов', link: '/ru/guides/tariffs-overview' },
+                  { text: 'Планирование поставок', link: '/ru/guides/supplies-planning' },
+                  { text: 'Тарифы на поставки', link: '/guides/supplies-tariffs' }
+                ]
+              },
+              {
                 text: 'Руководства по аналитике',
                 collapsed: true,
                 items: [
@@ -385,10 +453,18 @@ export default defineConfig({
                 ]
               },
               {
-                text: 'Работа с покупателями',
+                text: 'Финансовая сверка',
                 collapsed: true,
                 items: [
-                  { text: 'Общение с покупателями', link: '/guides/customer-communication' }
+                  { text: 'Отслеживание каналов продвижения', link: '/guides/tracking-promotion-channels-with-substitute-articles' },
+                  { text: '⚠️ Миграция финансовых отчётов v5 → v1', link: '/guides/migration-finance-reports-v5-to-v1' }
+                ]
+              },
+              {
+                text: 'Производительность',
+                collapsed: true,
+                items: [
+                  { text: 'Руководство по оптимизации', link: '/ru/guides/performance-tuning' }
                 ]
               }
             ]

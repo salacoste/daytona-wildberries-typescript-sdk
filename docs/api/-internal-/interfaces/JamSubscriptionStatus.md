@@ -2,7 +2,7 @@
 
 # Interface: JamSubscriptionStatus
 
-Defined in: [types/general.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/general.types.ts#L268)
+Defined in: [types/general.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/general.types.ts#L268)
 
 Result of a Jam subscription status probe
 
@@ -10,6 +10,6 @@ Result of a Jam subscription status probe
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="tier"></a> `tier` | [`JamSubscriptionTier`](../type-aliases/JamSubscriptionTier.md) | Detected subscription tier | [types/general.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/general.types.ts#L270) |
-| <a id="checkedat"></a> `checkedAt` | `string` | ISO 8601 timestamp when the check was performed | [types/general.types.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/general.types.ts#L272) |
-| <a id="probecallsmade"></a> `probeCallsMade` | `number` | Number of probe API calls made (1 for advanced, 2 for standard/none) | [types/general.types.ts:274](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/general.types.ts#L274) |
+| <a id="tier"></a> `tier` | [`JamSubscriptionTier`](../type-aliases/JamSubscriptionTier.md) | Detected subscription tier | [types/general.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/general.types.ts#L270) |
+| <a id="checkedat"></a> `checkedAt` | `string` | ISO 8601 timestamp when the check was performed | [types/general.types.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/general.types.ts#L272) |
+| <a id="probecallsmade"></a> `probeCallsMade` | `number` | Number of probe API calls made (1 for advanced, 2 for standard/none) | [types/general.types.ts:274](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/general.types.ts#L274) |

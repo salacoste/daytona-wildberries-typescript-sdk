@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.6.2
+# Wildberries API TypeScript SDK v3.7.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -109,6 +109,7 @@ Main entry point
 | [getWriteOperations](functions/getWriteOperations.md) | Get all write operations (not readonly) |
 | [calculateSupplyCost](functions/calculateSupplyCost.md) | Calculates the total supply cost including acceptance, storage, and logistics |
 | [compareTariffs](functions/compareTariffs.md) | Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs |
+| [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
 
 ## References
 

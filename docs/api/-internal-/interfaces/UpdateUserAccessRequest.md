@@ -2,7 +2,7 @@
 
 # Interface: UpdateUserAccessRequest
 
-Defined in: [types/general.types.ts:228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/general.types.ts#L228)
+Defined in: [types/general.types.ts:228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/general.types.ts#L228)
 
 Request to update user access
 
@@ -10,4 +10,4 @@ Request to update user access
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="usersaccesses"></a> `usersAccesses` | [`UserAccessUpdate`](UserAccessUpdate.md)[] | Array of user access updates | [types/general.types.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/general.types.ts#L230) |
+| <a id="usersaccesses"></a> `usersAccesses` | [`UserAccessUpdate`](UserAccessUpdate.md)[] | Array of user access updates | [types/general.types.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/general.types.ts#L230) |

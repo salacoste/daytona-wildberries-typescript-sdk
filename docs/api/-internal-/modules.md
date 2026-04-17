@@ -120,7 +120,17 @@
 | [GetList](interfaces/GetList.md) | - |
 | [GetDoc](interfaces/GetDoc.md) | - |
 | [GetDocs](interfaces/GetDocs.md) | - |
-| [DetailReportItem](interfaces/DetailReportItem.md) | - |
+| [~~DetailReportItem~~](interfaces/DetailReportItem.md) | Response item from `getSupplierReportDetailByPeriod()` (v5, **deprecated**). |
+| [SalesReportListRequest](interfaces/SalesReportListRequest.md) | Request body for `getSalesReportsList()` (v1). |
+| [SalesReportDetailedRequest](interfaces/SalesReportDetailedRequest.md) | Request body for `getSalesReportsDetailed()` (v1). |
+| [SalesReportDetailedByIdRequest](interfaces/SalesReportDetailedByIdRequest.md) | Request body for `getSalesReportsDetailedByReportId()` (v1). |
+| [SalesReportListItem](interfaces/SalesReportListItem.md) | Item returned by `getSalesReportsList()` — metadata for a single sales report. All money amounts are `string` (not number) to preserve precision. Use `parseMoneyAmount()` helper for math. |
+| [SalesReportDetailedItem](interfaces/SalesReportDetailedItem.md) | Item returned by `getSalesReportsDetailed()` and `getSalesReportsDetailedByReportId()`. |
+| [AcquiringReportListRequest](interfaces/AcquiringReportListRequest.md) | Request body for `getAcquiringReportsList()` (v1). |
+| [AcquiringReportDetailedRequest](interfaces/AcquiringReportDetailedRequest.md) | Request body for `getAcquiringReportsDetailed()` (v1). |
+| [AcquiringReportDetailedByIdRequest](interfaces/AcquiringReportDetailedByIdRequest.md) | Request body for `getAcquiringReportsDetailedByReportId()` (v1). |
+| [AcquiringReportListItem](interfaces/AcquiringReportListItem.md) | Item returned by `getAcquiringReportsList()` — metadata for a single acquiring report. All money sums are `string` (not number) — use `parseMoneyAmount()` helper for math. |
+| [AcquiringReportDetailedItem](interfaces/AcquiringReportDetailedItem.md) | Item returned by `getAcquiringReportsDetailed()` and `getAcquiringReportsDetailedByReportId()`. Detailed row for acquiring (payment acquisition) fees. |
 | [PingResponse](interfaces/PingResponse.md) | Response structure for ping endpoint |
 | [NewsItem](interfaces/NewsItem.md) | News item structure from news endpoint |
 | [NewsTag](interfaces/NewsTag.md) | News tag structure |

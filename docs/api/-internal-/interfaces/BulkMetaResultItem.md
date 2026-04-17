@@ -2,7 +2,7 @@
 
 # Interface: BulkMetaResultItem
 
-Defined in: [types/orders-dbs.types.ts:516](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-dbs.types.ts#L516)
+Defined in: [types/orders-dbs.types.ts:516](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/orders-dbs.types.ts#L516)
 
 Result item for a single order in bulk metadata set response
 
@@ -10,6 +10,6 @@ Result item for a single order in bulk metadata set response
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-dbs.types.ts#L518) |
-| <a id="success"></a> `success` | `boolean` | Whether the operation succeeded | [types/orders-dbs.types.ts:520](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-dbs.types.ts#L520) |
-| <a id="error"></a> `error?` | `string` | Error message if failed | [types/orders-dbs.types.ts:522](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/orders-dbs.types.ts#L522) |
+| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/orders-dbs.types.ts#L518) |
+| <a id="success"></a> `success` | `boolean` | Whether the operation succeeded | [types/orders-dbs.types.ts:520](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/orders-dbs.types.ts#L520) |
+| <a id="error"></a> `error?` | `string` | Error message if failed | [types/orders-dbs.types.ts:522](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/orders-dbs.types.ts#L522) |

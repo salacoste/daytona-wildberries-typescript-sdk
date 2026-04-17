@@ -2,7 +2,7 @@
 
 # Class: UserManagementModule
 
-Defined in: [modules/user-management/index.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/modules/user-management/index.ts#L16)
+Defined in: [modules/user-management/index.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/modules/user-management/index.ts#L16)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/user-management/index.ts:16](https://github.com/salacoste/d
 new UserManagementModule(client: BaseClient): UserManagementModule;
 ```
 
-Defined in: [modules/user-management/index.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/modules/user-management/index.ts#L17)
+Defined in: [modules/user-management/index.ts:17](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/modules/user-management/index.ts#L17)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/user-management/index.ts:17](https://github.com/salacoste/d
 createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>;
 ```
 
-Defined in: [modules/user-management/index.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/modules/user-management/index.ts#L55)
+Defined in: [modules/user-management/index.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/modules/user-management/index.ts#L55)
 
 Создание приглашения для пользователя
 
@@ -103,7 +103,7 @@ console.log(result.inviteID);
 getUsers(params?: GetUsersParams): Promise<GetUsersResponse>;
 ```
 
-Defined in: [modules/user-management/index.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/modules/user-management/index.ts#L98)
+Defined in: [modules/user-management/index.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/modules/user-management/index.ts#L98)
 
 Получение списка пользователей профиля продавца
 
@@ -167,7 +167,7 @@ for (const user of result.users) {
 updateUserAccess(data: UpdateUserAccessRequest): Promise<void>;
 ```
 
-Defined in: [modules/user-management/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/modules/user-management/index.ts#L142)
+Defined in: [modules/user-management/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/modules/user-management/index.ts#L142)
 
 Обновление настроек доступа пользователей
 
@@ -236,7 +236,7 @@ await sdk.userManagement.updateUserAccess({
 deleteUser(deletedUserID: number): Promise<void>;
 ```
 
-Defined in: [modules/user-management/index.ts:172](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/modules/user-management/index.ts#L172)
+Defined in: [modules/user-management/index.ts:172](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/modules/user-management/index.ts#L172)
 
 Удаление пользователя из профиля продавца
 

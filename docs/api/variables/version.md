@@ -3,9 +3,9 @@
 # Variable: version
 
 ```ts
-const version: "3.6.2" = '3.6.2';
+const version: "3.7.0" = '3.7.0';
 ```
 
-Defined in: [index.ts:628](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/index.ts#L628)
+Defined in: [index.ts:628](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/index.ts#L628)
 
 SDK version

@@ -2,7 +2,7 @@
 
 # Interface: BidsKopecks
 
-Defined in: [types/promotion.types.ts:1161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1161)
+Defined in: [types/promotion.types.ts:1161](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1161)
 
 Ставки в копейках для поиска и рекомендаций.
 Ставка в копейках (например, 250 = 2.50 RUB)
@@ -11,5 +11,5 @@ Defined in: [types/promotion.types.ts:1161](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="search"></a> `search` | `number` | Ставка для поиска в копейках. Например, 1100 = 11.00 RUB | [types/promotion.types.ts:1166](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1166) |
-| <a id="recommendations"></a> `recommendations` | `number` | Ставка для рекомендаций в копейках. Например, 2500 = 25.00 RUB | [types/promotion.types.ts:1171](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fa2eeff4a4600dc237ae164c9dba54e88f9f9de8/src/types/promotion.types.ts#L1171) |
+| <a id="search"></a> `search` | `number` | Ставка для поиска в копейках. Например, 1100 = 11.00 RUB | [types/promotion.types.ts:1166](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1166) |
+| <a id="recommendations"></a> `recommendations` | `number` | Ставка для рекомендаций в копейках. Например, 2500 = 25.00 RUB | [types/promotion.types.ts:1171](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1171) |
