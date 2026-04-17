@@ -2,11 +2,11 @@
 
 # Interface: GetCategories
 
-Defined in: [types/finances.types.ts:32](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/finances.types.ts#L32)
+Defined in: [types/finances.types.ts:32](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/finances.types.ts#L32)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `categories?`: \{ `name?`: `string`; `title?`: `string`; \}[]; \} | - | [types/finances.types.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/finances.types.ts#L33) |
-| `data.categories?` | \{ `name?`: `string`; `title?`: `string`; \}[] | Категории документов | [types/finances.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/finances.types.ts#L35) |
+| <a id="data"></a> `data?` | \{ `categories?`: \{ `name?`: `string`; `title?`: `string`; \}[]; \} | - | [types/finances.types.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/finances.types.ts#L33) |
+| `data.categories?` | \{ `name?`: `string`; `title?`: `string`; \}[] | Категории документов | [types/finances.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/finances.types.ts#L35) |

@@ -2,7 +2,7 @@
 
 # Interface: CrossBorderStickerResponse
 
-Defined in: [types/orders-fbs.types.ts:306](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/orders-fbs.types.ts#L306)
+Defined in: [types/orders-fbs.types.ts:306](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L306)
 
 Response containing cross-border order stickers
 
@@ -10,4 +10,4 @@ Response containing cross-border order stickers
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stickers"></a> `stickers?` | [`CrossBorderStickerItem`](CrossBorderStickerItem.md)[] | List of cross-border sticker data | [types/orders-fbs.types.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/orders-fbs.types.ts#L308) |
+| <a id="stickers"></a> `stickers?` | [`CrossBorderStickerItem`](CrossBorderStickerItem.md)[] | List of cross-border sticker data | [types/orders-fbs.types.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/orders-fbs.types.ts#L308) |

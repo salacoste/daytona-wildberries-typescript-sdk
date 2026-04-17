@@ -2,7 +2,7 @@
 
 # Interface: TariffData
 
-Defined in: [utils/compareTariffs.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/utils/compareTariffs.ts#L25)
+Defined in: [utils/compareTariffs.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/utils/compareTariffs.ts#L25)
 
 Tariff data from a single source
 
@@ -10,8 +10,8 @@ Tariff data from a single source
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="deliverybase"></a> `deliveryBase` | `number` | Base delivery cost per liter | [utils/compareTariffs.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/utils/compareTariffs.ts#L27) |
-| <a id="deliverycoef"></a> `deliveryCoef` | `number` | Delivery coefficient (percentage) | [utils/compareTariffs.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/utils/compareTariffs.ts#L29) |
-| <a id="storagebase"></a> `storageBase` | `number` | Base storage cost per liter per day | [utils/compareTariffs.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/utils/compareTariffs.ts#L31) |
-| <a id="storagecoef"></a> `storageCoef` | `number` | Storage coefficient (percentage) | [utils/compareTariffs.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/utils/compareTariffs.ts#L33) |
-| <a id="found"></a> `found` | `boolean` | Whether the warehouse was found in this API | [utils/compareTariffs.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/utils/compareTariffs.ts#L35) |
+| <a id="deliverybase"></a> `deliveryBase` | `number` | Base delivery cost per liter | [utils/compareTariffs.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/utils/compareTariffs.ts#L27) |
+| <a id="deliverycoef"></a> `deliveryCoef` | `number` | Delivery coefficient (percentage) | [utils/compareTariffs.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/utils/compareTariffs.ts#L29) |
+| <a id="storagebase"></a> `storageBase` | `number` | Base storage cost per liter per day | [utils/compareTariffs.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/utils/compareTariffs.ts#L31) |
+| <a id="storagecoef"></a> `storageCoef` | `number` | Storage coefficient (percentage) | [utils/compareTariffs.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/utils/compareTariffs.ts#L33) |
+| <a id="found"></a> `found` | `boolean` | Whether the warehouse was found in this API | [utils/compareTariffs.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/utils/compareTariffs.ts#L35) |

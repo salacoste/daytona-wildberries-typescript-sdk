@@ -2,10 +2,10 @@
 
 # Interface: ModelsExciseReportResponse
 
-Defined in: [types/reports.types.ts:222](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L222)
+Defined in: [types/reports.types.ts:222](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/reports.types.ts#L222)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`ModelsExciseReportResponseData`](../type-aliases/ModelsExciseReportResponseData.md) | [types/reports.types.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L223) |
+| <a id="data"></a> `data?` | [`ModelsExciseReportResponseData`](../type-aliases/ModelsExciseReportResponseData.md) | [types/reports.types.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/reports.types.ts#L223) |

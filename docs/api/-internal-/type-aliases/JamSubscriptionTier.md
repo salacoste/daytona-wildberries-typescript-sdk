@@ -6,7 +6,7 @@
 type JamSubscriptionTier = "none" | "standard" | "advanced";
 ```
 
-Defined in: [types/general.types.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/general.types.ts#L263)
+Defined in: [types/general.types.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/general.types.ts#L263)
 
 Jam (Джем) subscription tier
 

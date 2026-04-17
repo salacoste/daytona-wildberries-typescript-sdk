@@ -2,7 +2,7 @@
 
 # Interface: SellerInfoResponse
 
-Defined in: [types/general.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/general.types.ts#L64)
+Defined in: [types/general.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/general.types.ts#L64)
 
 Response structure for seller info endpoint
 
@@ -10,7 +10,7 @@ Response structure for seller info endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name?` | `string` | Наименование продавца | [types/general.types.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/general.types.ts#L66) |
-| <a id="sid"></a> `sid?` | `string` | Уникальный ID продавца на Wildberries | [types/general.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/general.types.ts#L68) |
-| <a id="trademark"></a> `tradeMark?` | `string` | Торговое наименование продавца | [types/general.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/general.types.ts#L70) |
-| <a id="tin"></a> `tin?` | `string` | ИНН продавца (Taxpayer Identification Number) | [types/general.types.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/general.types.ts#L72) |
+| <a id="name"></a> `name?` | `string` | Наименование продавца | [types/general.types.ts:66](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/general.types.ts#L66) |
+| <a id="sid"></a> `sid?` | `string` | Уникальный ID продавца на Wildberries | [types/general.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/general.types.ts#L68) |
+| <a id="trademark"></a> `tradeMark?` | `string` | Торговое наименование продавца | [types/general.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/general.types.ts#L70) |
+| <a id="tin"></a> `tin?` | `string` | ИНН продавца (Taxpayer Identification Number) | [types/general.types.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/general.types.ts#L72) |

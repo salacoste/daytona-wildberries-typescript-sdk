@@ -2,7 +2,7 @@
 
 # Interface: PinReviewItem
 
-Defined in: [types/communications.types.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/communications.types.ts#L97)
+Defined in: [types/communications.types.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/communications.types.ts#L97)
 
 Request item for pinning a review
 
@@ -10,6 +10,6 @@ Request item for pinning a review
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="pinmethod"></a> `pinMethod` | [`ReviewPinMethod`](../type-aliases/ReviewPinMethod.md) | Pin method - `subscription` - Jam subscription - `tariff` - Tariff option | [types/communications.types.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/communications.types.ts#L103) |
-| <a id="pinon"></a> `pinOn` | [`ReviewPinOn`](../type-aliases/ReviewPinOn.md) | Pin location - `nm` - Product card - `imt` - Group of merged product cards | [types/communications.types.ts:109](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/communications.types.ts#L109) |
-| <a id="feedbackid"></a> `feedbackId` | `string` | Review ID | [types/communications.types.ts:111](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/communications.types.ts#L111) |
+| <a id="pinmethod"></a> `pinMethod` | [`ReviewPinMethod`](../type-aliases/ReviewPinMethod.md) | Pin method - `subscription` - Jam subscription - `tariff` - Tariff option | [types/communications.types.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/communications.types.ts#L103) |
+| <a id="pinon"></a> `pinOn` | [`ReviewPinOn`](../type-aliases/ReviewPinOn.md) | Pin location - `nm` - Product card - `imt` - Group of merged product cards | [types/communications.types.ts:109](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/communications.types.ts#L109) |
+| <a id="feedbackid"></a> `feedbackId` | `string` | Review ID | [types/communications.types.ts:111](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/b093609f1118d81fd917e81c75e22fd1efd4f0a3/src/types/communications.types.ts#L111) |
