@@ -2,7 +2,7 @@
 
 # Interface: CampaignProductsUpdate
 
-Defined in: [types/promotion.types.ts:1712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1712)
+Defined in: [types/promotion.types.ts:1712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L1712)
 
 Single campaign update item
 
@@ -10,6 +10,6 @@ Single campaign update item
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1714) |
-| <a id="add_nms"></a> `add_nms?` | `number`[] | WB article IDs to add For added products, the current minimum bid is set. Max items: 50 | [types/promotion.types.ts:1720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1720) |
-| <a id="delete_nms"></a> `delete_nms?` | `number`[] | WB article IDs to delete Max items: 50 | [types/promotion.types.ts:1725](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L1725) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L1714) |
+| <a id="add_nms"></a> `add_nms?` | `number`[] | WB article IDs to add For added products, the current minimum bid is set. Max items: 50 | [types/promotion.types.ts:1720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L1720) |
+| <a id="delete_nms"></a> `delete_nms?` | `number`[] | WB article IDs to delete Max items: 50 | [types/promotion.types.ts:1725](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L1725) |

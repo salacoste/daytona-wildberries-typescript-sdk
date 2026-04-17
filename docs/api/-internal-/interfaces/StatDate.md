@@ -2,11 +2,11 @@
 
 # Interface: StatDate
 
-Defined in: [types/promotion.types.ts:369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L369)
+Defined in: [types/promotion.types.ts:369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L369)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="dates"></a> `dates` | `string`[] | Даты, за которые нужно получить информацию | [types/promotion.types.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L371) |
-| <a id="stats"></a> `stats?` | [`StatsBlok2`](StatsBlok2.md)[] | Блок статистики | [types/promotion.types.ts:373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/promotion.types.ts#L373) |
+| <a id="dates"></a> `dates` | `string`[] | Даты, за которые нужно получить информацию | [types/promotion.types.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L371) |
+| <a id="stats"></a> `stats?` | [`StatsBlok2`](StatsBlok2.md)[] | Блок статистики | [types/promotion.types.ts:373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/promotion.types.ts#L373) |

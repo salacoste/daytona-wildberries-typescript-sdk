@@ -2,7 +2,7 @@
 
 # Interface: AntifraudDetailsItem
 
-Defined in: [types/reports.types.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L491)
+Defined in: [types/reports.types.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L491)
 
 Antifraud details report item
 
@@ -14,9 +14,9 @@ EPIC 43 - Response type for getAnalyticsAntifraudDetails
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L493) |
-| <a id="weekdate"></a> `weekDate?` | `string` | Дата недели отчёта | [types/reports.types.ts:495](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L495) |
-| <a id="amount"></a> `amount?` | `number` | Сумма удержания | [types/reports.types.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L497) |
-| <a id="officeid"></a> `officeId?` | `number` | ID ПВЗ | [types/reports.types.ts:499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L499) |
-| <a id="officename"></a> `officeName?` | `string` | Название ПВЗ | [types/reports.types.ts:501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L501) |
-| <a id="quantity"></a> `quantity?` | `number` | Количество единиц товара | [types/reports.types.ts:503](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/reports.types.ts#L503) |
+| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L493) |
+| <a id="weekdate"></a> `weekDate?` | `string` | Дата недели отчёта | [types/reports.types.ts:495](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L495) |
+| <a id="amount"></a> `amount?` | `number` | Сумма удержания | [types/reports.types.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L497) |
+| <a id="officeid"></a> `officeId?` | `number` | ID ПВЗ | [types/reports.types.ts:499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L499) |
+| <a id="officename"></a> `officeName?` | `string` | Название ПВЗ | [types/reports.types.ts:501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L501) |
+| <a id="quantity"></a> `quantity?` | `number` | Количество единиц товара | [types/reports.types.ts:503](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/reports.types.ts#L503) |

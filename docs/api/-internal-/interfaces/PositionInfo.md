@@ -2,7 +2,7 @@
 
 # Interface: PositionInfo
 
-Defined in: [types/analytics.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L68)
+Defined in: [types/analytics.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L68)
 
 Информация о позиции товара
 
@@ -10,11 +10,11 @@ Defined in: [types/analytics.types.ts:68](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="average"></a> `average` | \{ `current`: `number`; `dynamics?`: `number`; \} | Средняя позиция товара в результатах поиска | [types/analytics.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L70) |
-| `average.current` | `number` | Текущая средняя позиция товара | [types/analytics.types.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L72) |
-| `average.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:74](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L74) |
-| <a id="median"></a> `median` | \{ `current`: `number`; `dynamics?`: `number`; \} | Медианная позиция товара в результатах поиска | [types/analytics.types.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L77) |
-| `median.current` | `number` | Текущая медианная позиция товара | [types/analytics.types.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L79) |
-| `median.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L81) |
-| <a id="chartitems"></a> `chartItems` | [`SearchReportPositionChartItem`](SearchReportPositionChartItem.md)[] | Данные для чарта по средней и медианной позиции товара в результатах поиска | [types/analytics.types.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L84) |
-| <a id="clusters"></a> `clusters` | [`SearchReportPositionClusters`](SearchReportPositionClusters.md) | - | [types/analytics.types.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L85) |
+| <a id="average"></a> `average` | \{ `current`: `number`; `dynamics?`: `number`; \} | Средняя позиция товара в результатах поиска | [types/analytics.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L70) |
+| `average.current` | `number` | Текущая средняя позиция товара | [types/analytics.types.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L72) |
+| `average.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:74](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L74) |
+| <a id="median"></a> `median` | \{ `current`: `number`; `dynamics?`: `number`; \} | Медианная позиция товара в результатах поиска | [types/analytics.types.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L77) |
+| `median.current` | `number` | Текущая медианная позиция товара | [types/analytics.types.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L79) |
+| `median.dynamics?` | `number` | Динамика по сравнению с предыдущим периодом, % | [types/analytics.types.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L81) |
+| <a id="chartitems"></a> `chartItems` | [`SearchReportPositionChartItem`](SearchReportPositionChartItem.md)[] | Данные для чарта по средней и медианной позиции товара в результатах поиска | [types/analytics.types.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L84) |
+| <a id="clusters"></a> `clusters` | [`SearchReportPositionClusters`](SearchReportPositionClusters.md) | - | [types/analytics.types.ts:85](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L85) |

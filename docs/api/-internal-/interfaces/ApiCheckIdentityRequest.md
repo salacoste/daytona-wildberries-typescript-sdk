@@ -2,7 +2,7 @@
 
 # Interface: ApiCheckIdentityRequest
 
-Defined in: [types/in-store-pickup.types.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/in-store-pickup.types.ts#L33)
+Defined in: [types/in-store-pickup.types.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/in-store-pickup.types.ts#L33)
 
 ## Example
 
@@ -17,5 +17,5 @@ Defined in: [types/in-store-pickup.types.ts:33](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="ordercode"></a> `orderCode?` | `string` | Уникальный ID заказа покупателя | [types/in-store-pickup.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/in-store-pickup.types.ts#L35) |
-| <a id="passcode"></a> `passcode?` | `string` | Код подтверждения | [types/in-store-pickup.types.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/in-store-pickup.types.ts#L37) |
+| <a id="ordercode"></a> `orderCode?` | `string` | Уникальный ID заказа покупателя | [types/in-store-pickup.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/in-store-pickup.types.ts#L35) |
+| <a id="passcode"></a> `passcode?` | `string` | Код подтверждения | [types/in-store-pickup.types.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/in-store-pickup.types.ts#L37) |

@@ -535,6 +535,9 @@ export type {
   SalesReportDetailedRequest,
   SalesReportDetailedByIdRequest,
   SalesReportDetailedItem,
+  // v1 Field union types for selective loading (since v3.8.0)
+  SalesReportDetailedField,
+  AcquiringReportDetailedField,
   // v1 Acquiring Reports types (since v3.7.0)
   AcquiringReportListRequest,
   AcquiringReportListItem,

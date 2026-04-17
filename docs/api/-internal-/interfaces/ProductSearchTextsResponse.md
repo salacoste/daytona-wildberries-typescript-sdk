@@ -2,10 +2,10 @@
 
 # Interface: ProductSearchTextsResponse
 
-Defined in: [types/analytics.types.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L415)
+Defined in: [types/analytics.types.ts:415](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L415)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`TableSearchTextItem`](TableSearchTextItem.md)[] | [types/analytics.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/analytics.types.ts#L416) |
+| <a id="items"></a> `items` | [`TableSearchTextItem`](TableSearchTextItem.md)[] | [types/analytics.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/analytics.types.ts#L416) |

@@ -2,11 +2,11 @@
 
 # Interface: RequestMoveNmsImtConn
 
-Defined in: [types/products.types.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/products.types.ts#L33)
+Defined in: [types/products.types.ts:33](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/products.types.ts#L33)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="targetimt"></a> `targetIMT` | `number` | Существующий у продавца `imtID`, под которым необходимо объединить карточки товаров | [types/products.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/products.types.ts#L35) |
-| <a id="nmids"></a> `nmIDs` | `number`[] | `nmID`, которые необходимо объединить (максимум 30) | [types/products.types.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/types/products.types.ts#L37) |
+| <a id="targetimt"></a> `targetIMT` | `number` | Существующий у продавца `imtID`, под которым необходимо объединить карточки товаров | [types/products.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/products.types.ts#L35) |
+| <a id="nmids"></a> `nmIDs` | `number`[] | `nmID`, которые необходимо объединить (максимум 30) | [types/products.types.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/types/products.types.ts#L37) |

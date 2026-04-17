@@ -6,7 +6,7 @@
 function getOperationMetadata(operationKey: string): OperationMetadata | undefined;
 ```
 
-Defined in: [config/operation-metadata.ts:3262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1b2eb977a4deb73a698f11980c1f6ecce708d74d/src/config/operation-metadata.ts#L3262)
+Defined in: [config/operation-metadata.ts:3262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/54d155526a7c3dc6476601220c51980b6a81acba/src/config/operation-metadata.ts#L3262)
 
 Get full metadata for an operation
 

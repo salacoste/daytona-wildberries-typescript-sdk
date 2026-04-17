@@ -980,4 +980,133 @@ describe('FinancesModule', () => {
       );
     });
   });
+
+  // ──────────────────────────────────────────────────
+  // v1 Field Union Types (since v3.8.0)
+  // ──────────────────────────────────────────────────
+
+  describe('v1 Field Union Types (since v3.8.0)', () => {
+    it('SalesReportDetailedField should accept valid field names from SalesReportDetailedItem', () => {
+      // These compile-time type assertions verify the union type is correctly derived
+      // from keyof SalesReportDetailedItem. If any field name is wrong, TypeScript will
+      // report a compile error before the test even runs.
+      const validFields: import('../../../src/types/finances.types').SalesReportDetailedField[] = [
+        'rrdId',
+        'dateFrom',
+        'dateTo',
+        'reportId',
+        'nmId',
+        'forPay',
+        'retailAmount',
+        'brandName',
+        'subjectName',
+        'currency',
+        'srid',
+        'orderUid',
+      ];
+      expect(validFields).toHaveLength(12);
+      expect(validFields).toContain('rrdId');
+      expect(validFields).toContain('forPay');
+    });
+
+    it('AcquiringReportDetailedField should accept valid field names from AcquiringReportDetailedItem', () => {
+      const validFields: import('../../../src/types/finances.types').AcquiringReportDetailedField[] =
+        [
+          'rrdId',
+          'reportId',
+          'acquiringBank',
+          'acquiringFee',
+          'acquiringFeeVat',
+          'nmId',
+          'retailAmount',
+          'srid',
+          'currency',
+        ];
+      expect(validFields).toHaveLength(9);
+      expect(validFields).toContain('acquiringBank');
+      expect(validFields).toContain('acquiringFee');
+    });
+
+    it('SalesReportDetailedRequest.fields should accept SalesReportDetailedField values', async () => {
+      mockClient.post.mockResolvedValue([]);
+
+      // Build a request using the typed fields parameter
+      const request: import('../../../src/types/finances.types').SalesReportDetailedRequest = {
+        dateFrom: '2026-03-17',
+        dateTo: '2026-03-20',
+        limit: 100000,
+        rrdId: 0,
+        fields: ['rrdId', 'nmId', 'forPay', 'retailAmount'],
+      };
+
+      await module.getSalesReportsDetailed(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed',
+        expect.objectContaining({
+          fields: ['rrdId', 'nmId', 'forPay', 'retailAmount'],
+        }),
+        { rateLimitKey: 'finances.salesReportsDetailed' }
+      );
+    });
+
+    it('AcquiringReportDetailedRequest.fields should accept AcquiringReportDetailedField values', async () => {
+      mockClient.post.mockResolvedValue([]);
+
+      const request: import('../../../src/types/finances.types').AcquiringReportDetailedRequest = {
+        dateFrom: '2026-03-17',
+        dateTo: '2026-03-20',
+        limit: 100000,
+        rrdId: 0,
+        fields: ['rrdId', 'acquiringBank', 'acquiringFee'],
+      };
+
+      await module.getAcquiringReportsDetailed(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed',
+        expect.objectContaining({
+          fields: ['rrdId', 'acquiringBank', 'acquiringFee'],
+        }),
+        { rateLimitKey: 'finances.acquiringReportsDetailed' }
+      );
+    });
+
+    it('SalesReportDetailedByIdRequest.fields should accept SalesReportDetailedField values', async () => {
+      mockClient.post.mockResolvedValue([]);
+
+      const request: import('../../../src/types/finances.types').SalesReportDetailedByIdRequest = {
+        fields: ['rrdId', 'nmId', 'retailPrice'],
+      };
+
+      await module.getSalesReportsDetailedByReportId(307401554, request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/sales-reports/detailed/307401554',
+        expect.objectContaining({
+          fields: ['rrdId', 'nmId', 'retailPrice'],
+        }),
+        { rateLimitKey: 'finances.salesReportsDetailedByReportId' }
+      );
+    });
+
+    it('AcquiringReportDetailedByIdRequest.fields should accept AcquiringReportDetailedField values', async () => {
+      mockClient.post.mockResolvedValue([]);
+
+      const request: import('../../../src/types/finances.types').AcquiringReportDetailedByIdRequest =
+        {
+          fields: ['rrdId', 'acquiringFee', 'currency'],
+        };
+
+      await module.getAcquiringReportsDetailedByReportId(307401554, request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://finance-api.wildberries.ru/api/finance/v1/acquiring/detailed/307401554',
+        expect.objectContaining({
+          fields: ['rrdId', 'acquiringFee', 'currency'],
+        }),
+        { rateLimitKey: 'finances.acquiringReportsDetailedByReportId' }
+      );
+    });
+  });
 });

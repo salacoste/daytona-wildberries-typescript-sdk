@@ -357,8 +357,8 @@ export interface SalesReportDetailedRequest {
   rrdId?: number;
   /** Периодичность: weekly (default) или daily */
   period?: 'weekly' | 'daily';
-  /** Список полей, которые вернутся в ответе. Если параметр не указан, возвращаются все поля. Пример: ["rrdId", "nmId", "forPay"] */
-  fields?: string[];
+  /** Список полей, которые вернутся в ответе. Если параметр не указан, возвращаются все поля. Пример: ["rrdId", "nmId", "forPay"]. @since v3.8.0 — narrowed from `string[]` to `SalesReportDetailedField[]` for autocomplete and type safety. */
+  fields?: SalesReportDetailedField[];
 }
 
 /** Request body for `getSalesReportsDetailedByReportId()` (v1). @since v3.7.0 */
@@ -367,8 +367,8 @@ export interface SalesReportDetailedByIdRequest {
   limit?: number;
   /** ID строки ответа для пагинации. Начинайте с 0, затем передавайте rrdId последней строки предыдущего ответа. */
   rrdId?: number;
-  /** Список полей в ответе. Если не указан, возвращаются все поля. */
-  fields?: string[];
+  /** Список полей в ответе. Если не указан, возвращаются все поля. @since v3.8.0 — narrowed from `string[]` to `SalesReportDetailedField[]`. */
+  fields?: SalesReportDetailedField[];
 }
 
 /**
@@ -623,6 +623,27 @@ export interface SalesReportDetailedItem {
   srid?: string;
 }
 
+/**
+ * Valid field names for selective loading in `getSalesReportsDetailed()` and
+ * `getSalesReportsDetailedByReportId()`. Derived from `keyof SalesReportDetailedItem`.
+ *
+ * Pass an array of these values as the `fields` parameter to load only specific columns
+ * instead of the full ~70-field response.
+ *
+ * @since v3.8.0
+ * @example
+ * ```typescript
+ * const rows = await sdk.finances.getSalesReportsDetailed({
+ *   dateFrom: '2026-03-17',
+ *   dateTo: '2026-03-20',
+ *   limit: 100000,
+ *   rrdId: 0,
+ *   fields: ['rrdId', 'nmId', 'forPay', 'retailAmount'],
+ * });
+ * ```
+ */
+export type SalesReportDetailedField = keyof SalesReportDetailedItem;
+
 // ============================================================================
 // v1 Acquiring Reports (since v3.7.0) — payment acquisition costs (эквайринг)
 // Available ONLY for Russian sellers. Personal/Service tokens only.
@@ -651,8 +672,8 @@ export interface AcquiringReportDetailedRequest {
   limit?: number;
   /** ID строки для пагинации. Начинайте с 0, повторяйте до ответа 204. */
   rrdId?: number;
-  /** Список полей в ответе. Если не указан, возвращаются все поля. */
-  fields?: string[];
+  /** Список полей в ответе. Если не указан, возвращаются все поля. @since v3.8.0 — narrowed from `string[]` to `AcquiringReportDetailedField[]`. */
+  fields?: AcquiringReportDetailedField[];
 }
 
 /** Request body for `getAcquiringReportsDetailedByReportId()` (v1). @since v3.7.0 */
@@ -661,8 +682,8 @@ export interface AcquiringReportDetailedByIdRequest {
   limit?: number;
   /** ID строки для пагинации */
   rrdId?: number;
-  /** Список полей в ответе. Если не указан, возвращаются все поля. */
-  fields?: string[];
+  /** Список полей в ответе. Если не указан, возвращаются все поля. @since v3.8.0 — narrowed from `string[]` to `AcquiringReportDetailedField[]`. */
+  fields?: AcquiringReportDetailedField[];
 }
 
 /**
@@ -740,3 +761,23 @@ export interface AcquiringReportDetailedItem {
   /** Валюта */
   currency?: string;
 }
+
+/**
+ * Valid field names for selective loading in `getAcquiringReportsDetailed()` and
+ * `getAcquiringReportsDetailedByReportId()`. Derived from `keyof AcquiringReportDetailedItem`.
+ *
+ * Pass an array of these values as the `fields` parameter to load only specific columns.
+ *
+ * @since v3.8.0
+ * @example
+ * ```typescript
+ * const rows = await sdk.finances.getAcquiringReportsDetailed({
+ *   dateFrom: '2026-03-17',
+ *   dateTo: '2026-03-20',
+ *   limit: 100000,
+ *   rrdId: 0,
+ *   fields: ['rrdId', 'acquiringBank', 'acquiringFee'],
+ * });
+ * ```
+ */
+export type AcquiringReportDetailedField = keyof AcquiringReportDetailedItem;
