@@ -25,3 +25,5 @@ export {
 export { parseMoneyAmount } from './parseMoneyAmount';
 
 export { warnOnce, resetDeprecationWarnings } from './deprecation';
+
+export { validateRequiredCharacteristics } from './validateRequiredCharacteristics';

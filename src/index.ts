@@ -731,6 +731,7 @@ export {
   calculateSupplyCost,
   compareTariffs,
   parseMoneyAmount,
+  validateRequiredCharacteristics,
   warnOnce,
   resetDeprecationWarnings,
   type SupplyCostInput,
