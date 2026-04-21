@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelTimeToReady
 
-Defined in: [types/analytics.types.ts:1363](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1363)
+Defined in: [types/analytics.types.ts:1363](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1363)
 
 Среднее время доставки
 
@@ -10,6 +10,6 @@ Defined in: [types/analytics.types.ts:1363](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="days"></a> `days` | `number` | Дни | [types/analytics.types.ts:1365](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1365) |
-| <a id="hours"></a> `hours` | `number` | Часы | [types/analytics.types.ts:1367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1367) |
-| <a id="mins"></a> `mins` | `number` | Минуты | [types/analytics.types.ts:1369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1369) |
+| <a id="days"></a> `days` | `number` | Дни | [types/analytics.types.ts:1365](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1365) |
+| <a id="hours"></a> `hours` | `number` | Часы | [types/analytics.types.ts:1367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1367) |
+| <a id="mins"></a> `mins` | `number` | Минуты | [types/analytics.types.ts:1369](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1369) |

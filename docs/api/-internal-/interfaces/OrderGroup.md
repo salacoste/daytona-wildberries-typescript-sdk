@@ -2,7 +2,7 @@
 
 # Interface: OrderGroup
 
-Defined in: [types/orders-dbs.types.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L371)
+Defined in: [types/orders-dbs.types.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-dbs.types.ts#L371)
 
 A single order group containing related orders
 
@@ -10,6 +10,6 @@ A single order group containing related orders
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | Group ID | [types/orders-dbs.types.ts:373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L373) |
-| <a id="orders"></a> `orders` | `number`[] | Order IDs in this group | [types/orders-dbs.types.ts:375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L375) |
-| <a id="name"></a> `name` | `string` | Group name | [types/orders-dbs.types.ts:377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/orders-dbs.types.ts#L377) |
+| <a id="id"></a> `id` | `number` | Group ID | [types/orders-dbs.types.ts:373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-dbs.types.ts#L373) |
+| <a id="orders"></a> `orders` | `number`[] | Order IDs in this group | [types/orders-dbs.types.ts:375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-dbs.types.ts#L375) |
+| <a id="name"></a> `name` | `string` | Group name | [types/orders-dbs.types.ts:377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-dbs.types.ts#L377) |

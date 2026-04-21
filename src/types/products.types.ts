@@ -863,3 +863,83 @@ export interface GetContentTagsResponse {
   /** Дополнительные ошибки */
   additionalErrors?: string;
 }
+
+// ──────────────────────────────────────────────────────────────
+// Characteristic types (extracted from inline types — task-109/110, v3.9.0)
+// ──────────────────────────────────────────────────────────────
+
+/**
+ * Characteristic metadata for a product category (subject).
+ * Returned by `getObjectCharc()`.
+ *
+ * @since v3.9.0
+ * @see {@link https://dev.wildberries.ru/docs/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki}
+ */
+export interface SubjectCharacteristic {
+  /** Characteristic ID */
+  charcID?: number;
+  /** Subject (category) name */
+  subjectName?: string;
+  /** Subject (category) ID */
+  subjectID?: number;
+  /** Characteristic name */
+  name?: string;
+  /** Whether this characteristic is required in product cards */
+  required?: boolean;
+  /**
+   * Whether this characteristic is mandatory when **creating** a product card.
+   * Enforced by WB starting April 29, 2026 for select categories.
+   *
+   * Affected categories include: flash drives (1260), fitness bracelets (1514),
+   * hair straighteners (2314), blenders (614), nettops/mini PCs (8992),
+   * photo frames (28), calculators (977), lids (819), pillowcases (605),
+   * cleaning wipes (1202).
+   *
+   * @since v3.9.0
+   */
+  isRequiredForCreate?: boolean;
+  /** Unit name (e.g., "см", "г") */
+  unitName?: string;
+  /** Maximum number of values for this characteristic */
+  maxCount?: number;
+  /** Whether this is a popular/frequently used characteristic */
+  popular?: boolean;
+  /** Characteristic value type: 0=string, 1=number, 4=array */
+  charcType?: number;
+}
+
+/**
+ * Characteristic value for card create/update requests.
+ * Used in `createCardsUpload()`, `createUploadAdd()`, `createCardsUpdate()`.
+ *
+ * @since v3.9.0
+ */
+export interface CardCharacteristicInput {
+  /** Characteristic ID (from {@link SubjectCharacteristic.charcID}) */
+  id: number;
+  /**
+   * Characteristic value. Expected type depends on `charcType`:
+   * - `0` → `string` (text value)
+   * - `1` → `number` (numeric value)
+   * - `4` → `string[]` (array of text values)
+   *
+   * Typed as union for DX; WB API accepts any JSON-serializable value.
+   */
+  value: string | number | string[];
+}
+
+/**
+ * Characteristic value returned in card listing responses.
+ * Includes the characteristic name in addition to id and value.
+ * Returned by `getCardsList()`, `getCardsCursorList()`.
+ *
+ * @since v3.9.0
+ */
+export interface CardCharacteristicOutput {
+  /** Characteristic ID */
+  id?: number;
+  /** Characteristic name */
+  name?: string;
+  /** Characteristic value */
+  value?: unknown;
+}

@@ -2,13 +2,13 @@
 
 # Interface: MessageResponse
 
-Defined in: [types/communications.types.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/communications.types.ts#L539)
+Defined in: [types/communications.types.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/communications.types.ts#L539)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="errors"></a> `errors?` | `string`[] | Ошибки загрузки файлов, если есть | [types/communications.types.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/communications.types.ts#L541) |
-| <a id="result"></a> `result?` | \{ `addTime?`: `number`; `chatID?`: `string`; \} | - | [types/communications.types.ts:542](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/communications.types.ts#L542) |
-| `result.addTime?` | `number` | Время загрузки | [types/communications.types.ts:544](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/communications.types.ts#L544) |
-| `result.chatID?` | `string` | ID чата | [types/communications.types.ts:546](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/communications.types.ts#L546) |
+| <a id="errors"></a> `errors?` | `string`[] | Ошибки загрузки файлов, если есть | [types/communications.types.ts:541](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/communications.types.ts#L541) |
+| <a id="result"></a> `result?` | \{ `addTime?`: `number`; `chatID?`: `string`; \} | - | [types/communications.types.ts:542](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/communications.types.ts#L542) |
+| `result.addTime?` | `number` | Время загрузки | [types/communications.types.ts:544](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/communications.types.ts#L544) |
+| `result.chatID?` | `string` | ID чата | [types/communications.types.ts:546](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/communications.types.ts#L546) |

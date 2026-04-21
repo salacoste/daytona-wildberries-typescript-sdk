@@ -167,7 +167,8 @@ export default defineConfig({
                 collapsed: true,
                 items: [
                   { text: 'Working with Product Cards', link: '/guides/working-with-product-cards' },
-                  { text: 'Product Card Merging', link: '/guides/product-card-merging' }
+                  { text: 'Product Card Merging', link: '/guides/product-card-merging' },
+                  { text: '⚠️ Mandatory Characteristics (Apr 29)', link: '/guides/mandatory-product-characteristics' }
                 ]
               },
               {
@@ -425,7 +426,8 @@ export default defineConfig({
                 collapsed: true,
                 items: [
                   { text: 'Работа с карточками товаров', link: '/ru/guides/working-with-product-cards' },
-                  { text: 'Объединение карточек товаров', link: '/ru/guides/product-card-merging' }
+                  { text: 'Объединение карточек товаров', link: '/ru/guides/product-card-merging' },
+                  { text: '⚠️ Обязательные характеристики (29 апр)', link: '/ru/guides/mandatory-product-characteristics' }
                 ]
               },
               {

@@ -8,11 +8,13 @@ layout: doc
 
 In-depth guides for production deployment and advanced SDK usage.
 
-::: tip New in v3.7.0
-Two new guides have been added for finance reconciliation workflows:
+::: warning New in v3.9.0 — Deadline April 29, 2026
+**[Mandatory Product Characteristics](/guides/mandatory-product-characteristics)** -- WB now requires mandatory characteristics when creating product cards in 10+ categories. Check `isRequiredForCreate` in `getObjectCharc()` response and include required characteristics in create/update requests.
+:::
 
-- **[Finance Reports v5 to v1 Migration](/guides/migration-finance-reports-v5-to-v1)** -- The v5 `getSupplierReportDetailByPeriod()` endpoint will be **disabled on 2026-07-15**. Migrate to `getSalesReportsDetailed()` now. The guide covers full field mapping, string money amounts, and the `parseMoneyAmount` helper.
-- **[Tracking Promotion Channels with Substitute Articles](/guides/tracking-promotion-channels-with-substitute-articles)** -- Reconcile external marketing spend against settled revenue using substitute article fields from the Wildberries financial report.
+::: tip New in v3.7.0
+- **[Finance Reports v5 to v1 Migration](/guides/migration-finance-reports-v5-to-v1)** -- The v5 `getSupplierReportDetailByPeriod()` endpoint will be **disabled on 2026-07-15**. Migrate to `getSalesReportsDetailed()` now.
+- **[Tracking Promotion Channels with Substitute Articles](/guides/tracking-promotion-channels-with-substitute-articles)** -- Reconcile external marketing spend against settled revenue using substitute article fields.
 :::
 
 ---
@@ -52,6 +54,7 @@ Two new guides have been added for finance reconciliation workflows:
 
 - **[Working with Product Cards](/guides/working-with-product-cards)** - Complete guide to fetching, filtering, and paginating product cards
 - **[Product Card Merging & Analytics](/guides/product-card-merging)** - Merged cards, advertising traffic distribution, and cross-variant analytics
+- **[Mandatory Product Characteristics](/guides/mandatory-product-characteristics)** - Required characteristics for card creation (April 29, 2026 enforcement)
 
 ### Orders & Logistics
 

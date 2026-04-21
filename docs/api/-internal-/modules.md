@@ -317,6 +317,9 @@
 | [GetDirectoryCountriesResponse](interfaces/GetDirectoryCountriesResponse.md) | Response for countries directory (GET /content/v2/directory/countries) |
 | [ContentTag](interfaces/ContentTag.md) | Ярлык (тег контента) |
 | [GetContentTagsResponse](interfaces/GetContentTagsResponse.md) | Response for content tags (GET /content/v2/tags) |
+| [SubjectCharacteristic](interfaces/SubjectCharacteristic.md) | Characteristic metadata for a product category (subject). Returned by `getObjectCharc()`. |
+| [CardCharacteristicInput](interfaces/CardCharacteristicInput.md) | Characteristic value for card create/update requests. Used in `createCardsUpload()`, `createUploadAdd()`, `createCardsUpdate()`. |
+| [CardCharacteristicOutput](interfaces/CardCharacteristicOutput.md) | Characteristic value returned in card listing responses. Includes the characteristic name in addition to id and value. Returned by `getCardsList()`, `getCardsCursorList()`. |
 | [ResponseWithReturn](interfaces/ResponseWithReturn.md) | - |
 | [Timestamps](interfaces/Timestamps.md) | Временные отметки |
 | [StatInterval](interfaces/StatInterval.md) | - |

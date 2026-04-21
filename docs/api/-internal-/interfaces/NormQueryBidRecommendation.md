@@ -2,7 +2,7 @@
 
 # Interface: NormQueryBidRecommendation
 
-Defined in: [types/promotion.types.ts:1911](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1911)
+Defined in: [types/promotion.types.ts:1911](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1911)
 
 Recommended bids for a search cluster (norm query)
 
@@ -10,7 +10,7 @@ Recommended bids for a search cluster (norm query)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="normquery"></a> `normQuery` | `string` | Normalized search query text | [types/promotion.types.ts:1913](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1913) |
-| <a id="reachmax"></a> `reachMax` | [`ReachBid`](ReachBid.md) | Bid for maximum reach | [types/promotion.types.ts:1915](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1915) |
-| <a id="reachmedium"></a> `reachMedium` | [`ReachBid`](ReachBid.md) | Bid for medium reach | [types/promotion.types.ts:1917](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1917) |
-| <a id="reachmin"></a> `reachMin` | [`ReachBid`](ReachBid.md) | Bid for minimum reach | [types/promotion.types.ts:1919](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L1919) |
+| <a id="normquery"></a> `normQuery` | `string` | Normalized search query text | [types/promotion.types.ts:1913](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1913) |
+| <a id="reachmax"></a> `reachMax` | [`ReachBid`](ReachBid.md) | Bid for maximum reach | [types/promotion.types.ts:1915](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1915) |
+| <a id="reachmedium"></a> `reachMedium` | [`ReachBid`](ReachBid.md) | Bid for medium reach | [types/promotion.types.ts:1917](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1917) |
+| <a id="reachmin"></a> `reachMin` | [`ReachBid`](ReachBid.md) | Bid for minimum reach | [types/promotion.types.ts:1919](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1919) |

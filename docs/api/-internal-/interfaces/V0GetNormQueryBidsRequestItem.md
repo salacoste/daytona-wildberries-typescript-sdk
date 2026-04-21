@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryBidsRequestItem
 
-Defined in: [types/promotion.types.ts:990](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L990)
+Defined in: [types/promotion.types.ts:990](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L990)
 
 Элемент запроса на получение ставок
 
@@ -10,5 +10,5 @@ Defined in: [types/promotion.types.ts:990](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:992](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L992) |
-| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:994](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/promotion.types.ts#L994) |
+| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:992](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L992) |
+| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:994](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L994) |

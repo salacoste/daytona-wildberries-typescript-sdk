@@ -9,11 +9,11 @@ type TableGroupRequestSt = CommonReportFilters & {
 };
 ```
 
-Defined in: [types/analytics.types.ts:879](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L879)
+Defined in: [types/analytics.types.ts:879](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L879)
 
 ## Type Declaration
 
 | Name | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| `limit?` | `number` | Количество групп в ответе | [types/analytics.types.ts:881](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L881) |
-| `offset` | `number` | После какого элемента выдавать данные | [types/analytics.types.ts:883](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L883) |
+| `limit?` | `number` | Количество групп в ответе | [types/analytics.types.ts:881](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L881) |
+| `offset` | `number` | После какого элемента выдавать данные | [types/analytics.types.ts:883](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L883) |

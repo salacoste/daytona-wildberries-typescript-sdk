@@ -32,6 +32,9 @@ import type {
   TaskHistoryResponse,
   UploadTaskResponse,
   Warehouse,
+  SubjectCharacteristic,
+  CardCharacteristicInput,
+  CardCharacteristicOutput,
 } from '../../types/products.types';
 
 export class ProductsModule {
@@ -143,33 +146,13 @@ export class ProductsModule {
     subjectId: number,
     options?: { locale?: string }
   ): Promise<{
-    data?: {
-      charcID?: number;
-      subjectName?: string;
-      subjectID?: number;
-      name?: string;
-      required?: boolean;
-      unitName?: string;
-      maxCount?: number;
-      popular?: boolean;
-      charcType?: number;
-    }[];
+    data?: SubjectCharacteristic[];
     error?: boolean;
     errorText?: string;
     additionalErrors?: string;
   }> {
     return this.client.get<{
-      data?: {
-        charcID?: number;
-        subjectName?: string;
-        subjectID?: number;
-        name?: string;
-        required?: boolean;
-        unitName?: string;
-        maxCount?: number;
-        popular?: boolean;
-        charcType?: number;
-      }[];
+      data?: SubjectCharacteristic[];
       error?: boolean;
       errorText?: string;
       additionalErrors?: string;
@@ -664,7 +647,7 @@ export class ProductsModule {
         weightBrutto?: number;
         isValid?: boolean;
       };
-      characteristics?: { id?: number; name?: string; value?: unknown }[];
+      characteristics?: CardCharacteristicOutput[];
       sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
       tags?: { id?: number; name?: string; color?: string }[];
       createdAt?: string;
@@ -725,7 +708,7 @@ export class ProductsModule {
           weightBrutto?: number;
           isValid?: boolean;
         };
-        characteristics?: { id?: number; name?: string; value?: unknown }[];
+        characteristics?: CardCharacteristicOutput[];
         sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
         tags?: { id?: number; name?: string; color?: string }[];
         createdAt?: string;
@@ -811,7 +794,7 @@ export class ProductsModule {
       title?: string;
       description?: string;
       dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
-      characteristics?: { id: number; value: unknown }[];
+      characteristics?: CardCharacteristicInput[];
       sizes: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
       /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
       kizMarked?: boolean;
@@ -990,7 +973,7 @@ export class ProductsModule {
         weightBrutto?: number;
         isValid?: boolean;
       };
-      characteristics?: { id?: number; name?: string; value?: unknown }[];
+      characteristics?: CardCharacteristicOutput[];
       /** Whether a mandatory marking code (Честный ЗНАК) is required for this product */
       needKiz?: boolean;
       /** Confirmed mandatory marking code (Честный ЗНАК) applied to product @since v3.6.2 */
@@ -1023,7 +1006,7 @@ export class ProductsModule {
           weightBrutto?: number;
           isValid?: boolean;
         };
-        characteristics?: { id?: number; name?: string; value?: unknown }[];
+        characteristics?: CardCharacteristicOutput[];
         needKiz?: boolean;
         kizMarked?: boolean;
         createdAt?: string;
@@ -1147,7 +1130,7 @@ export class ProductsModule {
         wholesale?: { enabled?: boolean; quantum?: number };
         dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
         sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
-        characteristics?: { id: number; value: unknown }[];
+        characteristics?: CardCharacteristicInput[];
         /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
         kizMarked?: boolean;
       }[];
@@ -1198,7 +1181,7 @@ export class ProductsModule {
       description?: string;
       dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
       sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
-      characteristics?: { id: number; value: unknown }[];
+      characteristics?: CardCharacteristicInput[];
       /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
       kizMarked?: boolean;
     }[];
@@ -1936,3 +1919,10 @@ export class ProductsModule {
     );
   }
 }
+
+// Re-export characteristic types for subpath consumers (since v3.9.0)
+export type {
+  SubjectCharacteristic,
+  CardCharacteristicInput,
+  CardCharacteristicOutput,
+} from '../../types/products.types';

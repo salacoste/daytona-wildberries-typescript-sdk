@@ -149,6 +149,40 @@ describe('ProductsModule - Content, Directories & Tags', () => {
       mockClient.get.mockRejectedValue(new RateLimitError('Too many requests', 10000));
       await expect(productsModule.getObjectCharc(1)).rejects.toThrow(RateLimitError);
     });
+
+    it('should accept isRequiredForCreate field in response (v3.9.0)', async () => {
+      const mockResponse = {
+        data: [
+          {
+            charcID: 101,
+            name: 'Объём памяти',
+            required: true,
+            isRequiredForCreate: true,
+            charcType: 1,
+          },
+          {
+            charcID: 102,
+            name: 'Цвет',
+            required: false,
+            isRequiredForCreate: false,
+            charcType: 0,
+          },
+          {
+            charcID: 103,
+            name: 'Бренд',
+            required: true,
+            // isRequiredForCreate omitted — backwards compatible
+            charcType: 0,
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+      const result = await productsModule.getObjectCharc(1260);
+      expect(result.data).toHaveLength(3);
+      expect(result.data![0].isRequiredForCreate).toBe(true);
+      expect(result.data![1].isRequiredForCreate).toBe(false);
+      expect(result.data![2].isRequiredForCreate).toBeUndefined();
+    });
   });
 
   // =========================================================================

@@ -2,7 +2,7 @@
 
 # Interface: WbWarehousesStockResponse
 
-Defined in: [types/analytics.types.ts:1714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1714)
+Defined in: [types/analytics.types.ts:1714](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1714)
 
 Response from POST /api/analytics/v1/stocks-report/wb-warehouses
 
@@ -14,5 +14,5 @@ Response from POST /api/analytics/v1/stocks-report/wb-warehouses
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data` | \{ `items`: [`WbWarehouseStockItem`](WbWarehouseStockItem.md)[]; \} | [types/analytics.types.ts:1715](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1715) |
-| `data.items` | [`WbWarehouseStockItem`](WbWarehouseStockItem.md)[] | [types/analytics.types.ts:1716](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0912eeca65155dd0ee8d9313738fde42af8bd829/src/types/analytics.types.ts#L1716) |
+| <a id="data"></a> `data` | \{ `items`: [`WbWarehouseStockItem`](WbWarehouseStockItem.md)[]; \} | [types/analytics.types.ts:1715](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1715) |
+| `data.items` | [`WbWarehouseStockItem`](WbWarehouseStockItem.md)[] | [types/analytics.types.ts:1716](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/analytics.types.ts#L1716) |
