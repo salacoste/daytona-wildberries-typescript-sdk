@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryBidsResponse
 
-Defined in: [types/promotion.types.ts:1000](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1000)
+Defined in: [types/promotion.types.ts:1000](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1000)
 
 Ответ со списком ставок поисковых кластеров
 
@@ -10,4 +10,4 @@ Defined in: [types/promotion.types.ts:1000](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="bids"></a> `bids` | [`V0GetNormQueryBidsItem`](V0GetNormQueryBidsItem.md)[] | Массив ставок | [types/promotion.types.ts:1002](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1002) |
+| <a id="bids"></a> `bids` | [`V0GetNormQueryBidsItem`](V0GetNormQueryBidsItem.md)[] | Массив ставок | [types/promotion.types.ts:1002](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1002) |

@@ -2,7 +2,7 @@
 
 # Interface: SupplyCostInput
 
-Defined in: [utils/calculateSupplyCost.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/utils/calculateSupplyCost.ts#L21)
+Defined in: [utils/calculateSupplyCost.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/utils/calculateSupplyCost.ts#L21)
 
 Input parameters for supply cost calculation
 
@@ -10,7 +10,7 @@ Input parameters for supply cost calculation
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="volume"></a> `volume` | `number` | Volume of goods in liters | [utils/calculateSupplyCost.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/utils/calculateSupplyCost.ts#L23) |
-| <a id="warehouseid"></a> `warehouseID` | `number` | Warehouse ID | [utils/calculateSupplyCost.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/utils/calculateSupplyCost.ts#L25) |
-| <a id="days"></a> `days` | `number` | Number of storage days | [utils/calculateSupplyCost.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/utils/calculateSupplyCost.ts#L27) |
-| <a id="boxtype"></a> `boxType?` | `"box"` \| `"pallet"` \| `"supersafe"` | Box type: 'box' | 'pallet' | 'supersafe' | [utils/calculateSupplyCost.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/utils/calculateSupplyCost.ts#L29) |
+| <a id="volume"></a> `volume` | `number` | Volume of goods in liters | [utils/calculateSupplyCost.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/utils/calculateSupplyCost.ts#L23) |
+| <a id="warehouseid"></a> `warehouseID` | `number` | Warehouse ID | [utils/calculateSupplyCost.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/utils/calculateSupplyCost.ts#L25) |
+| <a id="days"></a> `days` | `number` | Number of storage days | [utils/calculateSupplyCost.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/utils/calculateSupplyCost.ts#L27) |
+| <a id="boxtype"></a> `boxType?` | `"box"` \| `"pallet"` \| `"supersafe"` | Box type: 'box' | 'pallet' | 'supersafe' | [utils/calculateSupplyCost.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/utils/calculateSupplyCost.ts#L29) |

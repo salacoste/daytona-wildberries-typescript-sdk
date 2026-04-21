@@ -2,7 +2,7 @@
 
 # Interface: BannedProductsShadowedResponse
 
-Defined in: [types/reports.types.ts:736](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L736)
+Defined in: [types/reports.types.ts:736](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/reports.types.ts#L736)
 
 Response for getBannedProductsShadowed
 
@@ -14,4 +14,4 @@ EPIC 43 - Extracted from inline type literal
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="report"></a> `report?` | [`BannedProductShadowedItem`](BannedProductShadowedItem.md)[] | [types/reports.types.ts:737](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L737) |
+| <a id="report"></a> `report?` | [`BannedProductShadowedItem`](BannedProductShadowedItem.md)[] | [types/reports.types.ts:737](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/reports.types.ts#L737) |

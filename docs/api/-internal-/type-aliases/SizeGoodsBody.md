@@ -6,7 +6,7 @@
 type SizeGoodsBody = SizeGoodReq[];
 ```
 
-Defined in: [types/products.types.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/products.types.ts#L195)
+Defined in: [types/products.types.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L195)
 
 Размеры и цены для них. Максимум 1 000 размеров.
 

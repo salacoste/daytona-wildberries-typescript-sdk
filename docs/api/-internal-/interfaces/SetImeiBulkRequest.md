@@ -2,7 +2,7 @@
 
 # Interface: SetImeiBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/orders-dbs.types.ts#L492)
+Defined in: [types/orders-dbs.types.ts:492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-dbs.types.ts#L492)
 
 Request body for setImeiBulk
 
@@ -10,4 +10,4 @@ Request body for setImeiBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `imei`: `string`; \}[] | Array of orders with IMEI codes to set | [types/orders-dbs.types.ts:494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/orders-dbs.types.ts#L494) |
+| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `imei`: `string`; \}[] | Array of orders with IMEI codes to set | [types/orders-dbs.types.ts:494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-dbs.types.ts#L494) |

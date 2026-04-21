@@ -2,7 +2,7 @@
 
 # Interface: BrandShareBrandsResponse
 
-Defined in: [types/reports.types.ts:586](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L586)
+Defined in: [types/reports.types.ts:586](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/reports.types.ts#L586)
 
 Response for getBrandShareBrands
 
@@ -14,4 +14,4 @@ EPIC 43 - Response type for getBrandShareBrands
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`BrandShareBrandsItem`](BrandShareBrandsItem.md)[] | [types/reports.types.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L587) |
+| <a id="data"></a> `data?` | [`BrandShareBrandsItem`](BrandShareBrandsItem.md)[] | [types/reports.types.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/reports.types.ts#L587) |

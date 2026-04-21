@@ -2,7 +2,7 @@
 
 # Interface: CardCharacteristicOutput
 
-Defined in: [types/products.types.ts:938](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/products.types.ts#L938)
+Defined in: [types/products.types.ts:938](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L938)
 
 Characteristic value returned in card listing responses.
 Includes the characteristic name in addition to id and value.
@@ -16,6 +16,6 @@ v3.9.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | Characteristic ID | [types/products.types.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/products.types.ts#L940) |
-| <a id="name"></a> `name?` | `string` | Characteristic name | [types/products.types.ts:942](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/products.types.ts#L942) |
-| <a id="value"></a> `value?` | `unknown` | Characteristic value | [types/products.types.ts:944](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/products.types.ts#L944) |
+| <a id="id"></a> `id?` | `number` | Characteristic ID | [types/products.types.ts:940](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L940) |
+| <a id="name"></a> `name?` | `string` | Characteristic name | [types/products.types.ts:942](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L942) |
+| <a id="value"></a> `value?` | `unknown` | Characteristic value | [types/products.types.ts:944](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L944) |

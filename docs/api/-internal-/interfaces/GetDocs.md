@@ -2,13 +2,13 @@
 
 # Interface: GetDocs
 
-Defined in: [types/finances.types.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/finances.types.ts#L75)
+Defined in: [types/finances.types.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/finances.types.ts#L75)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `fileName?`: `string`; `extension?`: `string`; `document?`: `string`; \} | - | [types/finances.types.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/finances.types.ts#L76) |
-| `data.fileName?` | `string` | Название документа | [types/finances.types.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/finances.types.ts#L78) |
-| `data.extension?` | `string` | Формат документа | [types/finances.types.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/finances.types.ts#L80) |
-| `data.document?` | `string` | Документ в кодировке base64 | [types/finances.types.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/finances.types.ts#L82) |
+| <a id="data"></a> `data?` | \{ `fileName?`: `string`; `extension?`: `string`; `document?`: `string`; \} | - | [types/finances.types.ts:76](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/finances.types.ts#L76) |
+| `data.fileName?` | `string` | Название документа | [types/finances.types.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/finances.types.ts#L78) |
+| `data.extension?` | `string` | Формат документа | [types/finances.types.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/finances.types.ts#L80) |
+| `data.document?` | `string` | Документ в кодировке base64 | [types/finances.types.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/finances.types.ts#L82) |

@@ -6,7 +6,7 @@
 const operationMetadata: Record<string, OperationMetadata>;
 ```
 
-Defined in: [config/operation-metadata.ts:89](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/config/operation-metadata.ts#L89)
+Defined in: [config/operation-metadata.ts:89](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/config/operation-metadata.ts#L89)
 
 Registry of operation metadata for all SDK operations
 

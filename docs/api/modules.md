@@ -112,6 +112,7 @@ Main entry point
 | [warnOnce](functions/warnOnce.md) | Emit a deprecation warning for a method, at most once per process. |
 | [resetDeprecationWarnings](functions/resetDeprecationWarnings.md) | Reset all deprecation warning flags. **Test helper only.** |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
+| [validateRequiredCharacteristics](functions/validateRequiredCharacteristics.md) | Validates that all mandatory characteristics are present in a card creation request. Returns the list of missing mandatory characteristics. |
 
 ## References
 

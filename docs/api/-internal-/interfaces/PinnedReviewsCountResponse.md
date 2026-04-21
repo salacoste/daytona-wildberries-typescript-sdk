@@ -2,7 +2,7 @@
 
 # Interface: PinnedReviewsCountResponse
 
-Defined in: [types/communications.types.ts:242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/communications.types.ts#L242)
+Defined in: [types/communications.types.ts:242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/communications.types.ts#L242)
 
 Response from count pinned/unpinned reviews
 
@@ -10,4 +10,4 @@ Response from count pinned/unpinned reviews
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | `number` | Number of reviews matching the filter | [types/communications.types.ts:244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/communications.types.ts#L244) |
+| <a id="data"></a> `data` | `number` | Number of reviews matching the filter | [types/communications.types.ts:244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/communications.types.ts#L244) |
