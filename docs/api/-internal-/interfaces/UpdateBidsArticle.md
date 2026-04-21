@@ -2,7 +2,7 @@
 
 # Interface: UpdateBidsArticle
 
-Defined in: [types/promotion.types.ts:1638](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1638)
+Defined in: [types/promotion.types.ts:1638](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1638)
 
 Article bid configuration in kopecks
 
@@ -10,6 +10,6 @@ Article bid configuration in kopecks
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID (nm_id) | [types/promotion.types.ts:1640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1640) |
-| <a id="bid_kopecks"></a> `bid_kopecks` | `number` | Bid amount in KOPECKS (not rubles!) Ставка в копейках. Пример: 250 = 2.50 RUB Conversion examples: - 1.00 RUB = 100 kopecks - 2.50 RUB = 250 kopecks - 15.00 RUB = 1500 kopecks | [types/promotion.types.ts:1651](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1651) |
-| <a id="placement"></a> `placement` | `"search"` \| `"recommendations"` \| `"combined"` | Placement type: - "search" - for search placement (manual bidding campaigns) - "recommendations" - for recommendations placement (manual bidding campaigns) - "combined" - for both search and recommendations (unified bidding campaigns) | [types/promotion.types.ts:1658](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1658) |
+| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID (nm_id) | [types/promotion.types.ts:1640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1640) |
+| <a id="bid_kopecks"></a> `bid_kopecks` | `number` | Bid amount in KOPECKS (not rubles!) Ставка в копейках. Пример: 250 = 2.50 RUB Conversion examples: - 1.00 RUB = 100 kopecks - 2.50 RUB = 250 kopecks - 15.00 RUB = 1500 kopecks | [types/promotion.types.ts:1651](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1651) |
+| <a id="placement"></a> `placement` | `"search"` \| `"recommendations"` \| `"combined"` | Placement type: - "search" - for search placement (manual bidding campaigns) - "recommendations" - for recommendations placement (manual bidding campaigns) - "combined" - for both search and recommendations (unified bidding campaigns) | [types/promotion.types.ts:1658](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1658) |

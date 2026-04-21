@@ -9,7 +9,7 @@ function compareTariffs(
 getAcceptanceCoefficients: () => Promise<ModelsAcceptanceCoefficient[]>): Promise<TariffComparison>;
 ```
 
-Defined in: [utils/compareTariffs.ts:283](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/utils/compareTariffs.ts#L283)
+Defined in: [utils/compareTariffs.ts:283](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/utils/compareTariffs.ts#L283)
 
 Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs
 

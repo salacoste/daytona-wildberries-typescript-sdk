@@ -2,7 +2,7 @@
 
 # Interface: GetMinusPhrasesResponse
 
-Defined in: [types/promotion.types.ts:1780](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1780)
+Defined in: [types/promotion.types.ts:1780](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1780)
 
 Response with minus phrases
 
@@ -10,4 +10,4 @@ Response with minus phrases
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`GetMinusPhrasesResponseItem`](GetMinusPhrasesResponseItem.md)[] | Array of items with minus phrases | [types/promotion.types.ts:1782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1782) |
+| <a id="items"></a> `items` | [`GetMinusPhrasesResponseItem`](GetMinusPhrasesResponseItem.md)[] | Array of items with minus phrases | [types/promotion.types.ts:1782](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1782) |

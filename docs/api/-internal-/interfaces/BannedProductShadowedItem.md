@@ -2,7 +2,7 @@
 
 # Interface: BannedProductShadowedItem
 
-Defined in: [types/reports.types.ts:719](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/reports.types.ts#L719)
+Defined in: [types/reports.types.ts:719](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L719)
 
 Banned product item for shadowed products report
 
@@ -14,8 +14,8 @@ EPIC 43 - Extracted from inline type literal
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="brand"></a> `brand?` | `string` | Бренд | [types/reports.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/reports.types.ts#L721) |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:723](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/reports.types.ts#L723) |
-| <a id="title"></a> `title?` | `string` | Название товара | [types/reports.types.ts:725](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/reports.types.ts#L725) |
-| <a id="vendorcode"></a> `vendorCode?` | `string` | Артикул продавца | [types/reports.types.ts:727](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/reports.types.ts#L727) |
-| <a id="nmrating"></a> `nmRating?` | `number` | Рейтинг товара | [types/reports.types.ts:729](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/reports.types.ts#L729) |
+| <a id="brand"></a> `brand?` | `string` | Бренд | [types/reports.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L721) |
+| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:723](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L723) |
+| <a id="title"></a> `title?` | `string` | Название товара | [types/reports.types.ts:725](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L725) |
+| <a id="vendorcode"></a> `vendorCode?` | `string` | Артикул продавца | [types/reports.types.ts:727](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L727) |
+| <a id="nmrating"></a> `nmRating?` | `number` | Рейтинг товара | [types/reports.types.ts:729](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/reports.types.ts#L729) |

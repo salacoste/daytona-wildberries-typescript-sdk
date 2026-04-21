@@ -19,6 +19,15 @@ The Products module (`sdk.products`) is one of the most feature-rich modules in 
 - Pricing API: `https://discounts-prices-api.wildberries.ru`
 - Marketplace API: `https://marketplace-api.wildberries.ru`
 
+## What's New (v3.9.0)
+
+- **`SubjectCharacteristic` type**: Dedicated interface for the category characteristics returned by `getObjectCharc()`. Includes the new `isRequiredForCreate` field that indicates whether a characteristic is mandatory when creating product cards (enforced by WB starting April 29, 2026 for select categories).
+- **`CardCharacteristicInput` type**: Typed characteristic value for card create/update requests (`createCardsUpload`, `createUploadAdd`, `createCardsUpdate`). Replaces the previous inline `{ id: number; value: unknown }` shape.
+- **`CardCharacteristicOutput` type**: Typed characteristic value returned in card listing responses (`getCardsList`, `getTrashedCards`). Includes `name` in addition to `id` and `value`.
+- **DRY refactor**: 9 inline type definitions across card CRUD methods were replaced with these three shared interfaces, improving consistency and discoverability.
+
+See the [Mandatory Product Characteristics guide](/guides/mandatory-product-characteristics) for details on the `isRequiredForCreate` enforcement and affected categories.
+
 ## Installation & Setup
 
 ```typescript
@@ -42,7 +51,7 @@ Methods for navigating the Wildberries product taxonomy.
 |--------|-------------|------------|
 | `getParentAll(options?)` | Get all parent categories (e.g., Electronics, Household) | 100 req/min |
 | `getObjectAll(options?)` | Get categories/subjects with optional filtering | 100 req/min |
-| `getObjectCharc(subjectId, options?)` | Get characteristics for a specific category | 100 req/min |
+| `getObjectCharc(subjectId, options?)` | Get characteristics for a category (returns `SubjectCharacteristic[]` with `isRequiredForCreate`) | 100 req/min |
 | `getBrands(subjectId, next?)` | Get brands available for a subject (paginated) | 1 req/sec |
 
 ### Directory Values
@@ -156,10 +165,14 @@ const subjects = await sdk.products.getObjectAll({
 });
 console.log('Subjects:', subjects.data);
 
-// 3. Get characteristics for a specific subject
+// 3. Get characteristics for a specific subject (returns SubjectCharacteristic[])
 const characteristics = await sdk.products.getObjectCharc(105, { locale: 'ru' });
 const required = characteristics.data?.filter(c => c.required);
 console.log('Required characteristics:', required);
+
+// 3b. Check which characteristics are mandatory for card creation (v3.9.0)
+const mandatoryForCreate = characteristics.data?.filter(c => c.isRequiredForCreate);
+console.log('Mandatory for creation:', mandatoryForCreate);
 
 // 4. Get brands for product creation
 const brands = await sdk.products.getBrands(105);
@@ -374,6 +387,37 @@ await sdk.products.deleteStock(newWarehouse.id!, {
 
 ## Key Types
 
+### Characteristic Types (v3.9.0)
+
+```typescript
+// Returned by getObjectCharc() — metadata for a category's characteristics
+interface SubjectCharacteristic {
+  charcID?: number;              // Characteristic ID
+  subjectName?: string;          // Category name
+  subjectID?: number;            // Category ID
+  name?: string;                 // Characteristic name
+  required?: boolean;            // Required in product cards
+  isRequiredForCreate?: boolean; // Mandatory for card creation (enforced Apr 29 2026)
+  unitName?: string;             // Unit (e.g., "cm", "g")
+  maxCount?: number;             // Max values allowed
+  popular?: boolean;             // Frequently used characteristic
+  charcType?: number;            // 0=string, 1=number, 4=array
+}
+
+// Used in createCardsUpload(), createUploadAdd(), createCardsUpdate()
+interface CardCharacteristicInput {
+  id: number;                           // From SubjectCharacteristic.charcID
+  value: string | number | string[];    // Type depends on charcType
+}
+
+// Returned by getCardsList(), getTrashedCards()
+interface CardCharacteristicOutput {
+  id?: number;                   // Characteristic ID
+  name?: string;                 // Characteristic name
+  value?: unknown;               // Characteristic value
+}
+```
+
 ### Product Card Types
 
 ```typescript
@@ -390,7 +434,7 @@ interface ProductCard {
   photos?: PhotoUrl[];        // Photo URLs
   video?: string;             // Video URL
   dimensions?: ProductDimensions;
-  characteristics?: ProductCharacteristic[];
+  characteristics?: CardCharacteristicOutput[];  // v3.9.0: was inline type
   sizes?: ProductSize[];
   tags?: ProductTag[];
   createdAt?: string;         // ISO 8601

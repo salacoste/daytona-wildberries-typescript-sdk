@@ -2,7 +2,7 @@
 
 # Interface: GetSearchClusterStatsRequestItem
 
-Defined in: [types/promotion.types.ts:1836](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1836)
+Defined in: [types/promotion.types.ts:1836](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1836)
 
 Item in search cluster stats request
 
@@ -10,5 +10,5 @@ Item in search cluster stats request
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1838](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1838) |
-| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID - Type 8 campaigns: use nm_id=0 for aggregate statistics - Type 9 campaigns: use actual WB article ID | [types/promotion.types.ts:1844](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/promotion.types.ts#L1844) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1838](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1838) |
+| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID - Type 8 campaigns: use nm_id=0 for aggregate statistics - Type 9 campaigns: use actual WB article ID | [types/promotion.types.ts:1844](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/promotion.types.ts#L1844) |

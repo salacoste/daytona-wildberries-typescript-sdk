@@ -12,7 +12,7 @@ The **Finances** module provides access to seller account balance, detailed sale
 | **SDK Namespace** | `sdk.finances.*` |
 | **Base URLs** | `https://finance-api.wildberries.ru`, `https://statistics-api.wildberries.ru`, `https://documents-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/13-finances/` |
-| **Methods** | 13 (11 active + 1 deprecated + 1 legacy alias) |
+| **Methods** | 12 (11 active + 1 deprecated) |
 | **Authentication** | API Key (Header) |
 
 ### What's New
@@ -156,12 +156,11 @@ Acquiring report methods are available **only to Russian sellers**. Requires Per
 | `getDocumentsDownload(options)` | GET | `/api/v1/documents/download` | Download single document |
 | `createDownloadAll(data?)` | POST | `/api/v1/documents/download/all` | Download multiple documents |
 
-### Deprecated (2 methods)
+### Deprecated (1 method)
 
 | Method | Status | Replacement | Deadline |
 |--------|--------|-------------|----------|
 | `getSupplierReportDetailByPeriod(options)` | **Deprecated** | `getSalesReportsDetailed()` | 2026-07-15 |
-| `getSupplierReportdetailbyperiod()` | Legacy alias | `getSupplierReportDetailByPeriod()` | 2026-07-15 |
 
 ::: danger Migration Required
 `getSupplierReportDetailByPeriod()` will be **disabled by Wildberries on 2026-07-15**. A runtime deprecation warning is emitted once per process on first call. Migrate to `getSalesReportsDetailed()` before that date. See the [migration guide](/guides/migration-finance-reports-v5-to-v1).

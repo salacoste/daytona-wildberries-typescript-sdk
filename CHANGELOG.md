@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.0] - 2026-04-21
+
+### Added
+
+#### Mandatory Product Characteristics Support
+- `SubjectCharacteristic` interface with `isRequiredForCreate` field -- indicates which characteristics Wildberries will require for product card creation (enforcement deadline: April 29, 2026)
+- `CardCharacteristicInput` type -- typed characteristic input supporting `string | number | string[]` value variants
+- `CardCharacteristicOutput` type -- typed characteristic output returned from API responses
+- All 3 types exported from `/products` module subpath
+- 1 regression test for `isRequiredForCreate` field presence
+
+#### DRY Refactor -- Products Types
+- 9 inline type duplications replaced with named interfaces in `products.types.ts`
+- Reduces maintenance surface and improves IDE navigation
+
+### Documentation
+- New EN guide: `docs/guides/mandatory-product-characteristics.md` -- covers 10 affected categories, code examples, filtering by `isRequiredForCreate`
+- New RU guide: `docs/ru/guides/mandatory-product-characteristics.md` -- full Russian translation
+- Both guides added to EN+RU sidebars and guides indexes
+- v3.9.0 warning callout added to guides index
+
+---
+
 ## [3.8.0] - 2026-04-17
 
 ### Added

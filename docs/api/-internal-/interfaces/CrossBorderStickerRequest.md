@@ -2,7 +2,7 @@
 
 # Interface: CrossBorderStickerRequest
 
-Defined in: [types/orders-fbs.types.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-fbs.types.ts#L80)
+Defined in: [types/orders-fbs.types.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/orders-fbs.types.ts#L80)
 
 Request body for cross-border order stickers
 
@@ -10,4 +10,4 @@ Request body for cross-border order stickers
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | `number`[] | List of order IDs | [types/orders-fbs.types.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-fbs.types.ts#L82) |
+| <a id="orders"></a> `orders?` | `number`[] | List of order IDs | [types/orders-fbs.types.ts:82](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/orders-fbs.types.ts#L82) |

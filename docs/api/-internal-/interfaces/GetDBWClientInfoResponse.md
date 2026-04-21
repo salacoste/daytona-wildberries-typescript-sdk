@@ -2,7 +2,7 @@
 
 # Interface: GetDBWClientInfoResponse
 
-Defined in: [types/orders-fbw.types.ts:394](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-fbw.types.ts#L394)
+Defined in: [types/orders-fbw.types.ts:394](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/orders-fbw.types.ts#L394)
 
 Response from POST /api/marketplace/v3/dbw/orders/client
 
@@ -14,4 +14,4 @@ Response from POST /api/marketplace/v3/dbw/orders/client
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`DBWClientInfo`](DBWClientInfo.md)[] \| `null` | List of buyer information by order (null when no matching orders) | [types/orders-fbw.types.ts:396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ec2f28a75e97950479f60007499d084aae8ea15/src/types/orders-fbw.types.ts#L396) |
+| <a id="orders"></a> `orders?` | [`DBWClientInfo`](DBWClientInfo.md)[] \| `null` | List of buyer information by order (null when no matching orders) | [types/orders-fbw.types.ts:396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/40854491c098fd9c2bdad3e364f150bbb7e8739a/src/types/orders-fbw.types.ts#L396) |
