@@ -2,7 +2,7 @@
 
 # Interface: ParentCategory
 
-Defined in: [types/products.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L762)
+Defined in: [types/products.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L762)
 
 Родительская категория
 
@@ -12,6 +12,6 @@ Returned by GET /content/v2/object/parent/all
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID родительской категории | [types/products.types.ts:764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L764) |
-| <a id="name"></a> `name` | `string` | Название категории (e.g., "Электроника") | [types/products.types.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L766) |
-| <a id="isvisible"></a> `isVisible` | `boolean` | Виден на сайте | [types/products.types.ts:768](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L768) |
+| <a id="id"></a> `id` | `number` | ID родительской категории | [types/products.types.ts:764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L764) |
+| <a id="name"></a> `name` | `string` | Название категории (e.g., "Электроника") | [types/products.types.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L766) |
+| <a id="isvisible"></a> `isVisible` | `boolean` | Виден на сайте | [types/products.types.ts:768](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L768) |

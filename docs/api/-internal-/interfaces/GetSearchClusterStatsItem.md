@@ -2,7 +2,7 @@
 
 # Interface: GetSearchClusterStatsItem
 
-Defined in: [types/promotion.types.ts:1858](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1858)
+Defined in: [types/promotion.types.ts:1858](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1858)
 
 Statistics item for a campaign/product
 
@@ -10,6 +10,6 @@ Statistics item for a campaign/product
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1860) |
-| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID | [types/promotion.types.ts:1862](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1862) |
-| <a id="stats"></a> `stats` | [`SearchClusterStatEntry`](SearchClusterStatEntry.md)[] | Array of statistics per search cluster | [types/promotion.types.ts:1864](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1864) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1860) |
+| <a id="nm_id"></a> `nm_id` | `number` | WB Article ID | [types/promotion.types.ts:1862](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1862) |
+| <a id="stats"></a> `stats` | [`SearchClusterStatEntry`](SearchClusterStatEntry.md)[] | Array of statistics per search cluster | [types/promotion.types.ts:1864](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1864) |

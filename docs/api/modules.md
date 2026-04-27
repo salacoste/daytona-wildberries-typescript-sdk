@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.9.0
+# Wildberries API TypeScript SDK v3.9.2
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -66,6 +66,8 @@ Main entry point
 | [TariffData](interfaces/TariffData.md) | Tariff data from a single source |
 | [TariffDifference](interfaces/TariffDifference.md) | Percentage differences between inventory and supply tariffs |
 | [TariffComparison](interfaces/TariffComparison.md) | Complete tariff comparison result |
+| [MergedCardVariant](interfaces/MergedCardVariant.md) | A single product variant within a merged card. |
+| [MergedCardValidationResult](interfaces/MergedCardValidationResult.md) | Result of merged card variant validation. |
 
 ## Type Aliases
 
@@ -112,6 +114,7 @@ Main entry point
 | [warnOnce](functions/warnOnce.md) | Emit a deprecation warning for a method, at most once per process. |
 | [resetDeprecationWarnings](functions/resetDeprecationWarnings.md) | Reset all deprecation warning flags. **Test helper only.** |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
+| [validateMergedCardVariants](functions/validateMergedCardVariants.md) | Client-side validator for merged product card variants. |
 | [validateRequiredCharacteristics](functions/validateRequiredCharacteristics.md) | Validates that all mandatory characteristics are present in a card creation request. Returns the list of missing mandatory characteristics. |
 
 ## References

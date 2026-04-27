@@ -93,6 +93,49 @@ const invalidMerge = {
 
 ---
 
+## Варьируемые и фиксированные характеристики (v3.9.2+)
+
+В объединённой карточке каждая характеристика относится к одному из двух типов — определяется полем `isVariable` в `SubjectCharacteristic` (возвращается методом `getObjectCharc()`):
+
+- **Варьируемая** (`isVariable: true`) — варианты МОГУТ иметь разные значения (это «ось различия»: цвет, размер, объём, аромат)
+- **Фиксированная** (`isVariable: false`) — все варианты в объединённой карточке ДОЛЖНЫ иметь одинаковое значение (бренд, состав, страна происхождения)
+
+Если фиксированная характеристика отличается между вариантами, WB отклонит объединение.
+
+### Предварительная проверка перед созданием объединённой карточки
+
+```typescript
+import { validateMergedCardVariants } from 'daytona-wildberries-typescript-sdk';
+
+// 1. Получаем характеристики категории
+const charcs = await sdk.products.getObjectCharc(subjectId);
+
+// 2. Собираем варианты
+const variants = [
+  { characteristics: [{ id: 91, value: 'Acme' }, { id: 14177449, value: 'Red' }] },
+  { characteristics: [{ id: 91, value: 'Acme' }, { id: 14177449, value: 'Blue' }] },
+];
+
+// 3. Валидация перед отправкой
+const result = validateMergedCardVariants(charcs.data ?? [], variants);
+
+if (result.divergentFixedChars.length > 0) {
+  // У двух вариантов разный бренд/состав и т.п. — WB отклонит
+  throw new Error(`Различаются фиксированные характеристики: ${result.divergentFixedChars.map(c => c.name).join(', ')}`);
+}
+if (result.duplicateVariants) {
+  // Два варианта имеют идентичную комбинацию варьируемых значений — дубликат
+  throw new Error('Два варианта имеют идентичные варьируемые значения');
+}
+
+// 4. Можно отправлять
+await sdk.products.createCardsUpload([{ subjectID: subjectId, variants: /* ... */ }]);
+```
+
+См. [Руководство по обязательным характеристикам](/ru/guides/mandatory-product-characteristics#варьируемые-и-фиксированные-характеристики-v392) для правил по конкретным категориям.
+
+---
+
 ## Управление Склеенными Карточками
 
 ### Идентификация Склеенных Карточек

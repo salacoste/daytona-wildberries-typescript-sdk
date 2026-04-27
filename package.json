@@ -1,6 +1,6 @@
 {
   "name": "daytona-wildberries-typescript-sdk",
-  "version": "3.9.1",
+  "version": "3.9.2",
   "description": "Full-featured TypeScript SDK providing type-safe access to all Wildberries marketplace API methods",
   "keywords": [
     "wildberries",

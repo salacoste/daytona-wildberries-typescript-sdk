@@ -93,6 +93,49 @@ const invalidMerge = {
 
 ---
 
+## Variable vs Fixed Characteristics (v3.9.2+)
+
+Within a merged card, each characteristic belongs to one of two categories — exposed via the `isVariable` field on `SubjectCharacteristic` (returned by `getObjectCharc()`):
+
+- **Variable** (`isVariable: true`) — variants CAN have different values (this is the "varying axis": color, size, volume, scent)
+- **Fixed** (`isVariable: false`) — all variants in the merged card MUST share the same value (brand, composition, country of origin)
+
+If a fixed characteristic differs between variants, WB will reject the merge.
+
+### Pre-flight check before creating a merged card
+
+```typescript
+import { validateMergedCardVariants } from 'daytona-wildberries-typescript-sdk';
+
+// 1. Fetch characteristics for the category
+const charcs = await sdk.products.getObjectCharc(subjectId);
+
+// 2. Build your variants
+const variants = [
+  { characteristics: [{ id: 91, value: 'Acme' }, { id: 14177449, value: 'Red' }] },
+  { characteristics: [{ id: 91, value: 'Acme' }, { id: 14177449, value: 'Blue' }] },
+];
+
+// 3. Validate before submission
+const result = validateMergedCardVariants(charcs.data ?? [], variants);
+
+if (result.divergentFixedChars.length > 0) {
+  // Two variants have different brand/composition/etc — WB will reject
+  throw new Error(`Fixed chars differ: ${result.divergentFixedChars.map(c => c.name).join(', ')}`);
+}
+if (result.duplicateVariants) {
+  // Two variants share the exact same combination of variable values — duplicate
+  throw new Error('Two variants share identical variable values');
+}
+
+// 4. Safe to submit
+await sdk.products.createCardsUpload([{ subjectID: subjectId, variants: /* ... */ }]);
+```
+
+See the [Mandatory Product Characteristics Guide](/guides/mandatory-product-characteristics#variable-vs-fixed-characteristics-v392) for category-specific rules.
+
+---
+
 ## Managing Merged Cards
 
 ### Identifying Merged Cards

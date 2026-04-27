@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.2] - 2026-04-21
+
+### Added
+- `isVariable?: boolean` field on `SubjectCharacteristic` — indicates whether merged card variants can differ on this characteristic (returned by `getObjectCharc()`)
+- `validateMergedCardVariants()` helper — pure client-side validator detecting divergent fixed chars, identical variable chars, and duplicate variants before submission
+- `MergedCardVariant`, `MergedCardValidationResult` types exported from main SDK
+- 8 new tests (7 helper + 1 isVariable regression)
+
+### Documentation
+- Updated `mandatory-product-characteristics.md` (EN + RU) — new "Variable vs Fixed Characteristics" section with category-specific rules
+- Updated `product-card-merging.md` (EN + RU) — pre-flight check section with `validateMergedCardVariants()` example
+
+### Source
+- WB API announcement: `isVariable` field added for merged card creation flow
+- Reference: https://seller.wildberries.ru/instructions/ru/ru/material/cards-merging
+
+---
+
 ## [3.9.0] - 2026-04-21
 
 ### Added

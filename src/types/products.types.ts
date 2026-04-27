@@ -898,6 +898,15 @@ export interface SubjectCharacteristic {
    * @since v3.9.0
    */
   isRequiredForCreate?: boolean;
+  /**
+   * Whether product variants within a merged card can differ by this characteristic.
+   * Use when creating merged cards (`createCardsUpload()`) or attaching to existing
+   * merged cards (`createUploadAdd()`) — characteristics with `isVariable: true`
+   * can have different values across variants of the same merged card.
+   *
+   * @since v3.9.2
+   */
+  isVariable?: boolean;
   /** Unit name (e.g., "см", "г") */
   unitName?: string;
   /** Maximum number of values for this characteristic */

@@ -27,3 +27,9 @@ export { parseMoneyAmount } from './parseMoneyAmount';
 export { warnOnce, resetDeprecationWarnings } from './deprecation';
 
 export { validateRequiredCharacteristics } from './validateRequiredCharacteristics';
+
+export {
+  validateMergedCardVariants,
+  type MergedCardVariant,
+  type MergedCardValidationResult,
+} from './validateMergedCardVariants';

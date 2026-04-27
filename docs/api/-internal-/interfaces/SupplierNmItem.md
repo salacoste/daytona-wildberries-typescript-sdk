@@ -2,7 +2,7 @@
 
 # Interface: SupplierNmItem
 
-Defined in: [types/promotion.types.ts:1567](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1567)
+Defined in: [types/promotion.types.ts:1567](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1567)
 
 Product card item for campaigns
 
@@ -10,6 +10,6 @@ Product card item for campaigns
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="title"></a> `title` | `string` | Product title | [types/promotion.types.ts:1569](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1569) |
-| <a id="nm"></a> `nm` | `number` | WB article (nmId) | [types/promotion.types.ts:1571](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1571) |
-| <a id="subjectid"></a> `subjectId` | `number` | Subject ID | [types/promotion.types.ts:1573](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L1573) |
+| <a id="title"></a> `title` | `string` | Product title | [types/promotion.types.ts:1569](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1569) |
+| <a id="nm"></a> `nm` | `number` | WB article (nmId) | [types/promotion.types.ts:1571](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1571) |
+| <a id="subjectid"></a> `subjectId` | `number` | Subject ID | [types/promotion.types.ts:1573](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1573) |

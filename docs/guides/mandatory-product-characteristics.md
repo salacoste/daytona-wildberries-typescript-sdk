@@ -32,6 +32,73 @@ The SDK added the `SubjectCharacteristic` interface (v3.9.0) with full type supp
 This list may expand over time. Always check `isRequiredForCreate` for your specific category before creating cards.
 :::
 
+## Variable vs Fixed Characteristics (v3.9.2)
+
+When creating **merged cards** (multiple variants under one listing — e.g. the same dress in different colors), each characteristic is either:
+
+- **Variable** (`isVariable: true`) — variants CAN differ on this characteristic (color, volume, scent)
+- **Fixed** (`isVariable: false`) — all variants MUST share the same value (brand, composition, country)
+
+The `isVariable` field is returned by `getObjectCharc()` alongside `isRequiredForCreate`. Use it to validate merged card variants before submission.
+
+### Filter by isVariable
+
+```typescript
+const charcs = await sdk.products.getObjectCharc(2314); // Hair straighteners
+
+const variableChars = charcs.data?.filter((c) => c.isVariable === true) ?? [];
+const fixedChars = charcs.data?.filter((c) => c.isVariable === false) ?? [];
+
+console.log('Variants can differ by:', variableChars.map((c) => c.name));
+console.log('Variants must share:', fixedChars.map((c) => c.name));
+```
+
+### Validate Merged Card Variants
+
+The SDK provides `validateMergedCardVariants()` to catch errors before submitting to WB:
+
+```typescript
+import { validateMergedCardVariants } from 'daytona-wildberries-typescript-sdk';
+
+const charcs = await sdk.products.getObjectCharc(2314);
+const result = validateMergedCardVariants(charcs.data ?? [], [
+  {
+    characteristics: [
+      { id: 91, value: 'Acme' },        // Brand (fixed)
+      { id: 14177449, value: 'Red' },   // Color (variable)
+    ],
+  },
+  {
+    characteristics: [
+      { id: 91, value: 'Acme' },        // Same brand (correct)
+      { id: 14177449, value: 'Blue' },  // Different color (correct)
+    ],
+  },
+]);
+
+if (result.divergentFixedChars.length > 0) {
+  throw new Error(
+    `Fixed chars differ between variants: ${result.divergentFixedChars.map((c) => c.name).join(', ')}`
+  );
+}
+if (result.duplicateVariants) {
+  throw new Error('Two variants share identical variable values');
+}
+```
+
+### Category-Specific Rules
+
+For some categories, WB requires **specific pairs** of variable characteristics. Two variants cannot share identical values for both required pairs:
+
+| Category | Required Variable Pair |
+|----------|------------------------|
+| Cosmetic oils | Volume + Aroma |
+| Hygiene pads | Drop count + Quantity |
+| Laundry powder | Volume + Weight |
+| Hair spray | Volume + Hold strength |
+
+Source: [Wildberries Seller Help — Product Card Merging](https://seller.wildberries.ru/instructions/ru/ru/material/cards-merging)
+
 ## Checking Mandatory Characteristics
 
 Use `getObjectCharc()` to fetch characteristics for a category and filter by `isRequiredForCreate`:
@@ -129,9 +196,12 @@ Use this checklist to prepare before the April 29 deadline:
 - [ ] **Update card creation code** — Ensure all mandatory characteristics are included in create/update requests
 - [ ] **Update SDK** — Upgrade to `daytona-wildberries-typescript-sdk@^3.9.0` for `SubjectCharacteristic` type support
 - [ ] **Test** — Create test cards in affected categories to verify before the deadline
+- [ ] **Check `isVariable`** for merged cards — variants must share fixed chars and differ on variable ones
+- [ ] **Use `validateMergedCardVariants()`** before submitting merged cards to catch divergent fixed chars and duplicate variants
 
 ## Related Resources
 
 - [Working with Product Cards](/guides/working-with-product-cards) — Complete product card management guide
 - [API Reference: ProductsModule](/api/classes/ProductsModule) — Full method documentation
 - [WB API: Product Characteristics](https://dev.wildberries.ru/docs/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki) — Official WB documentation
+- [Product Card Merging Guide](/guides/product-card-merging) — Complete guide to merged cards (imtID, variants, traffic distribution)

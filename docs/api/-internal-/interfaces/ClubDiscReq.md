@@ -2,11 +2,11 @@
 
 # Interface: ClubDiscReq
 
-Defined in: [types/products.types.ts:211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L211)
+Defined in: [types/products.types.ts:211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L211)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmID` | `number` | Артикул WB | [types/products.types.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L213) |
-| <a id="clubdiscount"></a> `clubDiscount` | `number` | Скидка WB Клуба, % | [types/products.types.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L215) |
+| <a id="nmid"></a> `nmID` | `number` | Артикул WB | [types/products.types.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L213) |
+| <a id="clubdiscount"></a> `clubDiscount` | `number` | Скидка WB Клуба, % | [types/products.types.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L215) |

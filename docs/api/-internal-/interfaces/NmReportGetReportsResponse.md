@@ -2,10 +2,10 @@
 
 # Interface: NmReportGetReportsResponse
 
-Defined in: [types/analytics.types.ts:797](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/analytics.types.ts#L797)
+Defined in: [types/analytics.types.ts:797](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/analytics.types.ts#L797)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data` | \{ `id`: `string`; `createdAt`: `string`; `status`: `string`; `name`: `string`; `size`: `number`; `startDate`: `string`; `endDate`: `string`; \}[] | [types/analytics.types.ts:798](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/analytics.types.ts#L798) |
+| <a id="data"></a> `data` | \{ `id`: `string`; `createdAt`: `string`; `status`: `string`; `name`: `string`; `size`: `number`; `startDate`: `string`; `endDate`: `string`; \}[] | [types/analytics.types.ts:798](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/analytics.types.ts#L798) |

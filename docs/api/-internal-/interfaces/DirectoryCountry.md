@@ -2,7 +2,7 @@
 
 # Interface: DirectoryCountry
 
-Defined in: [types/products.types.ts:816](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L816)
+Defined in: [types/products.types.ts:816](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L816)
 
 Страна из справочника
 
@@ -12,6 +12,6 @@ Returned by GET /content/v2/directory/countries
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID страны | [types/products.types.ts:818](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L818) |
-| <a id="name"></a> `name` | `string` | Значение характеристики Страны (e.g., "Китай") | [types/products.types.ts:820](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L820) |
-| <a id="fullname"></a> `fullName` | `string` | Полное название страны (e.g., "Китайская Народная Республика") | [types/products.types.ts:822](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/products.types.ts#L822) |
+| <a id="id"></a> `id` | `number` | ID страны | [types/products.types.ts:818](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L818) |
+| <a id="name"></a> `name` | `string` | Значение характеристики Страны (e.g., "Китай") | [types/products.types.ts:820](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L820) |
+| <a id="fullname"></a> `fullName` | `string` | Полное название страны (e.g., "Китайская Народная Республика") | [types/products.types.ts:822](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/products.types.ts#L822) |

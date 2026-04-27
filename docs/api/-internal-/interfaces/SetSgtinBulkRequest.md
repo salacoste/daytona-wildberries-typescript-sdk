@@ -2,7 +2,7 @@
 
 # Interface: SetSgtinBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:476](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-dbs.types.ts#L476)
+Defined in: [types/orders-dbs.types.ts:476](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L476)
 
 Request body for setSgtinBulk
 
@@ -10,4 +10,4 @@ Request body for setSgtinBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `sgtins`: `string`[]; \}[] | Array of orders with SGTIN codes to set | [types/orders-dbs.types.ts:478](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-dbs.types.ts#L478) |
+| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `sgtins`: `string`[]; \}[] | Array of orders with SGTIN codes to set | [types/orders-dbs.types.ts:478](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L478) |

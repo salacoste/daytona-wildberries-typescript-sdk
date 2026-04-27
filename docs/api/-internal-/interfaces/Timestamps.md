@@ -2,7 +2,7 @@
 
 # Interface: Timestamps
 
-Defined in: [types/promotion.types.ts:333](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L333)
+Defined in: [types/promotion.types.ts:333](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L333)
 
 Временные отметки
 
@@ -10,7 +10,7 @@ Defined in: [types/promotion.types.ts:333](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="created"></a> `created` | `string` | Время создания кампании | [types/promotion.types.ts:335](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L335) |
-| <a id="updated"></a> `updated` | `string` | Время последнего изменения кампании | [types/promotion.types.ts:337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L337) |
-| <a id="started"></a> `started` | `string` | Время последнего запуска кампании | [types/promotion.types.ts:339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L339) |
-| <a id="deleted"></a> `deleted` | `string` | Время удаления кампании. Если кампания не удалена, время указывается в будущем | [types/promotion.types.ts:341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/promotion.types.ts#L341) |
+| <a id="created"></a> `created` | `string` | Время создания кампании | [types/promotion.types.ts:335](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L335) |
+| <a id="updated"></a> `updated` | `string` | Время последнего изменения кампании | [types/promotion.types.ts:337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L337) |
+| <a id="started"></a> `started` | `string` | Время последнего запуска кампании | [types/promotion.types.ts:339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L339) |
+| <a id="deleted"></a> `deleted` | `string` | Время удаления кампании. Если кампания не удалена, время указывается в будущем | [types/promotion.types.ts:341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L341) |

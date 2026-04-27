@@ -28,6 +28,37 @@ The Products module (`sdk.products`) is one of the most feature-rich modules in 
 
 See the [Mandatory Product Characteristics guide](/guides/mandatory-product-characteristics) for details on the `isRequiredForCreate` enforcement and affected categories.
 
+## What's New (v3.9.2)
+
+- **`isVariable` field on `SubjectCharacteristic`**: New optional boolean that marks a characteristic as a variation axis for merged product cards. When `true`, the characteristic differentiates variants within a merged card (e.g., color or size). When `false` or absent, the value must be identical across all variants.
+- **`MergedCardVariant` type**: Represents a single variant entry when building a merged-card payload, carrying its `vendorCode` and the characteristic values specific to that variant.
+- **`MergedCardValidationResult` type**: Result shape returned by `validateMergedCardVariants()` — contains `valid: boolean`, an array of `errors` (field + message pairs), and a `summary` string.
+- **`validateMergedCardVariants()` helper** (exported from main SDK): Pre-flight validation for merged card payloads. Checks that every variable characteristic (`isVariable: true`) has distinct values across variants and that fixed characteristics are consistent.
+
+```typescript
+import { WildberriesSDK, validateMergedCardVariants } from '@anthropic/wildberries-sdk';
+
+// Fetch characteristics and identify variable ones
+const charcs = await sdk.products.getObjectCharc(105, { locale: 'ru' });
+const variableCharcs = charcs.data?.filter(c => c.isVariable) ?? [];
+
+// Build variant payloads
+const variants: MergedCardVariant[] = [
+  { vendorCode: 'ART-001-RED', characteristics: [{ id: 14, value: 'Red' }] },
+  { vendorCode: 'ART-001-BLU', characteristics: [{ id: 14, value: 'Blue' }] },
+];
+
+// Validate before submitting
+const result = validateMergedCardVariants(variants, charcs.data ?? []);
+if (!result.valid) {
+  console.error('Validation failed:', result.errors);
+} else {
+  await sdk.products.createCardsUpload([{ subjectID: 105, variants }]);
+}
+```
+
+See the [Mandatory Product Characteristics guide](/guides/mandatory-product-characteristics) (Variable vs Fixed section) and the [Product Card Merging guide](/guides/product-card-merging) (Pre-flight check section) for full details.
+
 ## Installation & Setup
 
 ```typescript
@@ -398,6 +429,7 @@ interface SubjectCharacteristic {
   name?: string;                 // Characteristic name
   required?: boolean;            // Required in product cards
   isRequiredForCreate?: boolean; // Mandatory for card creation (enforced Apr 29 2026)
+  isVariable?: boolean;          // Variation axis for merged cards (v3.9.2)
   unitName?: string;             // Unit (e.g., "cm", "g")
   maxCount?: number;             // Max values allowed
   popular?: boolean;             // Frequently used characteristic

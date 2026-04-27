@@ -34,20 +34,21 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 13 modules,
 - **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures with per-request timeout support
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 2,112 tests passing across all modules
+- **✅ Battle-Tested** - 2,129 tests passing across all modules
 - **🎯 100% API Coverage** - All YAML endpoints implemented including v1 Finance Reports and Acquiring Reports
 - **📚 Comprehensive Documentation** - Complete API reference, 44 guides, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
-## 🆕 What's New in v3.9.0
+## 🆕 What's New in v3.9.2
 
-- **Mandatory product characteristics** -- `SubjectCharacteristic` interface with `isRequiredForCreate` field for WB's upcoming mandatory characteristic enforcement (deadline: Apr 29, 2026)
-- **Characteristic input/output types** -- `CardCharacteristicInput` (accepts `string | number | string[]` value) and `CardCharacteristicOutput` for typed card characteristic handling
-- **DRY refactor** -- 9 inline type duplications replaced with named interfaces in Products types
-- **New guide** -- EN+RU "Mandatory Product Characteristics" guide covering 10 affected categories with code examples
-- **v3.8.0** -- Field union types for Finance Reports, `warnOnce()`/`resetDeprecationWarnings()` utilities, documentation overhaul
+- **`isVariable` field on `SubjectCharacteristic`** -- indicates whether merged card variants can differ on this characteristic (returned by `getObjectCharc()`)
+- **`validateMergedCardVariants()` helper** -- pure client-side validator detecting divergent fixed characteristics, identical variable characteristics, and duplicate variants before submission
+- **New types** -- `MergedCardVariant`, `MergedCardValidationResult` exported from main SDK
+- **Updated guides** -- EN+RU "Mandatory Product Characteristics" and "Product Card Merging" guides with new variable/fixed section and pre-flight check examples
+- **v3.9.1** -- `validateRequiredCharacteristics()` helper for required-field pre-flight checks
+- **v3.9.0** -- Mandatory product characteristics support (`isRequiredForCreate`), characteristic input/output types, DRY refactor
 
 See [CHANGELOG.md](CHANGELOG.md) for the complete release history.
 
@@ -158,7 +159,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Project Status & Development
 
-**Current Status:** 🟢 Production Ready | **SDK Version:** 3.9.0
+**Current Status:** 🟢 Production Ready | **SDK Version:** 3.9.2
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Comprehensive overview of all epics, stories, and implementation status.
 
@@ -168,7 +169,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 |--------|-------|
 | **API Modules** | 13 (100%) |
 | **API Endpoints** | 240+ implemented |
-| **Test Suite** | 2,112 tests passing (100%) |
+| **Test Suite** | 2,129 tests passing (100%) |
 | **Documentation** | 44 guides, 22 examples |
 | **Bundle Size** | ~91KB gzipped (ESM) |
 
@@ -261,20 +262,21 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев с поддержкой таймаута для каждого запроса
 - **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
 - **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
-- **✅ Проверено в Бою** - 2,112 тестов для всех модулей
+- **✅ Проверено в Бою** - 2,129 тестов для всех модулей
 - **🎯 100% Покрытие API** - Все эндпоинты YAML реализованы, включая Финансовые Отчеты v1 и Эквайринг
 - **📚 Полная Документация** - Справочник API, 44 руководства, примеры на английском и русском
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
 
-## 🆕 Что Нового в v3.9.0
+## 🆕 Что Нового в v3.9.2
 
-- **Обязательные характеристики товаров** -- интерфейс `SubjectCharacteristic` с полем `isRequiredForCreate` для предстоящего требования WB по обязательным характеристикам (дедлайн: 29 апреля 2026)
-- **Типы ввода/вывода характеристик** -- `CardCharacteristicInput` (принимает `string | number | string[]`) и `CardCharacteristicOutput` для типизированной работы с характеристиками карточек
-- **DRY рефакторинг** -- 9 дублированных inline-типов заменены именованными интерфейсами в типах Products
-- **Новое руководство** -- EN+RU руководство "Обязательные характеристики товаров" с 10 затронутыми категориями и примерами кода
-- **v3.8.0** -- Union-типы полей для Финансовых Отчетов, утилиты `warnOnce()`/`resetDeprecationWarnings()`, обновление документации
+- **Поле `isVariable` в `SubjectCharacteristic`** -- указывает, могут ли варианты объединённой карточки отличаться по этой характеристике (возвращается `getObjectCharc()`)
+- **Хелпер `validateMergedCardVariants()`** -- клиентская валидация вариантов объединённой карточки: обнаруживает расходящиеся фиксированные характеристики, одинаковые вариативные и дублирующиеся варианты до отправки
+- **Новые типы** -- `MergedCardVariant`, `MergedCardValidationResult` экспортируются из основного SDK
+- **Обновлённые руководства** -- EN+RU "Обязательные характеристики товаров" и "Объединение карточек товаров" с новыми разделами о переменных/фиксированных характеристиках и примером предполётной проверки
+- **v3.9.1** -- хелпер `validateRequiredCharacteristics()` для предварительной проверки обязательных полей
+- **v3.9.0** -- поддержка обязательных характеристик товаров (`isRequiredForCreate`), типы ввода/вывода характеристик, DRY-рефакторинг
 
 Полная история изменений: [CHANGELOG.md](CHANGELOG.md)
 
@@ -385,7 +387,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Статус Проекта и Разработка
 
-**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 3.9.0
+**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 3.9.2
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Комплексный обзор всех эпиков, историй и статуса реализации.
 
@@ -395,7 +397,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 |---------|----------|
 | **API модули** | 13 (100%) |
 | **API эндпоинты** | 240+ реализовано |
-| **Тесты** | 2,112 тестов проходят (100%) |
+| **Тесты** | 2,129 тестов проходят (100%) |
 | **Документация** | 44 руководства, 22 примера |
 | **Размер бандла** | ~91KB gzipped (ESM) |
 

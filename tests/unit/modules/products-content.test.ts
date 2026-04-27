@@ -183,6 +183,37 @@ describe('ProductsModule - Content, Directories & Tags', () => {
       expect(result.data![1].isRequiredForCreate).toBe(false);
       expect(result.data![2].isRequiredForCreate).toBeUndefined();
     });
+
+    it('should accept isVariable field in response (v3.9.2)', async () => {
+      const mockResponse = {
+        data: [
+          {
+            charcID: 14177449,
+            name: 'Цвет',
+            isVariable: true,
+            charcType: 4,
+          },
+          {
+            charcID: 91,
+            name: 'Бренд',
+            isVariable: false,
+            charcType: 0,
+          },
+          {
+            charcID: 92,
+            name: 'Артикул производителя',
+            // isVariable omitted — backwards compatible
+            charcType: 0,
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+      const result = await productsModule.getObjectCharc(2314);
+      expect(result.data).toHaveLength(3);
+      expect(result.data![0].isVariable).toBe(true);
+      expect(result.data![1].isVariable).toBe(false);
+      expect(result.data![2].isVariable).toBeUndefined();
+    });
   });
 
   // =========================================================================

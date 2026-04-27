@@ -2,11 +2,11 @@
 
 # Interface: ModelsGood
 
-Defined in: [types/orders-fbw.types.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-fbw.types.ts#L320)
+Defined in: [types/orders-fbw.types.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbw.types.ts#L320)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="quantity"></a> `quantity?` | `number` | Суммарное количество товаров, планируемых для поставки. <br> **Максимум 999999** | [types/orders-fbw.types.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-fbw.types.ts#L322) |
-| <a id="barcode"></a> `barcode?` | `string` | Баркод из карточки товара | [types/orders-fbw.types.ts:324](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2c3103bc8c72dbfd45427aef4c8972a33b078bca/src/types/orders-fbw.types.ts#L324) |
+| <a id="quantity"></a> `quantity?` | `number` | Суммарное количество товаров, планируемых для поставки. <br> **Максимум 999999** | [types/orders-fbw.types.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbw.types.ts#L322) |
+| <a id="barcode"></a> `barcode?` | `string` | Баркод из карточки товара | [types/orders-fbw.types.ts:324](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbw.types.ts#L324) |
