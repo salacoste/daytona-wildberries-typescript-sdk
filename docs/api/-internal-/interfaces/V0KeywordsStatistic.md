@@ -2,14 +2,14 @@
 
 # Interface: V0KeywordsStatistic
 
-Defined in: [types/promotion.types.ts:702](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L702)
+Defined in: [types/promotion.types.ts:702](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L702)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="clicks"></a> `clicks` | `number` | Количество кликов | [types/promotion.types.ts:704](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L704) |
-| <a id="ctr"></a> `ctr` | `number` | CTR (Click-Through Rate) — показатель кликабельности | [types/promotion.types.ts:706](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L706) |
-| <a id="keyword"></a> `keyword` | `string` | Ключевая фраза | [types/promotion.types.ts:708](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L708) |
-| <a id="sum"></a> `sum` | `number` | Сумма затрат по ключевой фразе | [types/promotion.types.ts:710](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L710) |
-| <a id="views"></a> `views` | `number` | Количество показов | [types/promotion.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L712) |
+| <a id="clicks"></a> `clicks` | `number` | Количество кликов | [types/promotion.types.ts:704](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L704) |
+| <a id="ctr"></a> `ctr` | `number` | CTR (Click-Through Rate) — показатель кликабельности | [types/promotion.types.ts:706](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L706) |
+| <a id="keyword"></a> `keyword` | `string` | Ключевая фраза | [types/promotion.types.ts:708](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L708) |
+| <a id="sum"></a> `sum` | `number` | Сумма затрат по ключевой фразе | [types/promotion.types.ts:710](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L710) |
+| <a id="views"></a> `views` | `number` | Количество показов | [types/promotion.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L712) |

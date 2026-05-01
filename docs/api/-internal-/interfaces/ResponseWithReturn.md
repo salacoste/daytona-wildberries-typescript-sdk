@@ -2,10 +2,10 @@
 
 # Interface: ResponseWithReturn
 
-Defined in: [types/promotion.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L68)
+Defined in: [types/promotion.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L68)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="total"></a> `total?` | `number` | Размер обновлённого бюджета | [types/promotion.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L70) |
+| <a id="total"></a> `total?` | `number` | Размер обновлённого бюджета | [types/promotion.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L70) |

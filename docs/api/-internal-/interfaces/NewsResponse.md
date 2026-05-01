@@ -2,7 +2,7 @@
 
 # Interface: NewsResponse
 
-Defined in: [types/general.types.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/general.types.ts#L46)
+Defined in: [types/general.types.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L46)
 
 Response structure for news endpoint
 
@@ -10,4 +10,4 @@ Response structure for news endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`NewsItem`](NewsItem.md)[] | Массив новостей | [types/general.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/general.types.ts#L48) |
+| <a id="data"></a> `data` | [`NewsItem`](NewsItem.md)[] | Массив новостей | [types/general.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L48) |

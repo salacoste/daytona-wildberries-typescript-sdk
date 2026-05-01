@@ -2,7 +2,7 @@
 
 # Interface: BulkOrderMeta
 
-Defined in: [types/orders-dbs.types.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L432)
+Defined in: [types/orders-dbs.types.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L432)
 
 Metadata for a single order in bulk response
 
@@ -10,9 +10,9 @@ Metadata for a single order in bulk response
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:434](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L434) |
-| <a id="imei"></a> `imei?` | `string` | IMEI code | [types/orders-dbs.types.ts:436](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L436) |
-| <a id="uin"></a> `uin?` | `string` | UIN code | [types/orders-dbs.types.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L438) |
-| <a id="gtin"></a> `gtin?` | `string` | GTIN code | [types/orders-dbs.types.ts:440](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L440) |
-| <a id="sgtins"></a> `sgtins?` | `string`[] | SGTIN marking codes | [types/orders-dbs.types.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L442) |
-| <a id="customsdeclaration"></a> `customsDeclaration?` | `string` | Customs declaration number | [types/orders-dbs.types.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-dbs.types.ts#L444) |
+| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:434](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L434) |
+| <a id="imei"></a> `imei?` | `string` | IMEI code | [types/orders-dbs.types.ts:436](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L436) |
+| <a id="uin"></a> `uin?` | `string` | UIN code | [types/orders-dbs.types.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L438) |
+| <a id="gtin"></a> `gtin?` | `string` | GTIN code | [types/orders-dbs.types.ts:440](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L440) |
+| <a id="sgtins"></a> `sgtins?` | `string`[] | SGTIN marking codes | [types/orders-dbs.types.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L442) |
+| <a id="customsdeclaration"></a> `customsDeclaration?` | `string` | Customs declaration number | [types/orders-dbs.types.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-dbs.types.ts#L444) |

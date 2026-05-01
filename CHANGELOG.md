@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.3] - 2026-05-01
+
+### Added
+
+#### Returns Reconciliation Utilities (Client request: wb-repricer-system-new)
+- `classifyReturnReason(reason)` — pure helper that maps free-text Russian return reason strings to standardized `ReturnReasonCode` enum (`damage`, `defect`, `wrong_size`, `wrong_item`, `customer_refused`, `expired`, `not_as_described`, `other`)
+- `enrichReturnsWithType(fboReturns, fbsReturns?)` — combines FBO returns from `getAnalyticsGoodsReturn()` with optional FBS returns into unified `WbReturn[]` with explicit `orderType: 'fbo' | 'fbs'`, `reasonCode`, `quantity`
+- `reconcileBuyoutsAndReturns(buyouts, returns, options?)` — per-nmId reconciliation with anomaly detection (`return_without_buyout`, `orphan_buyout`)
+- New types: `WbReturn`, `FbsReturnInput`, `BuyoutInput`, `ReconciliationResult`, `ReconciliationAnomaly`, `ReconcileOptions`, `ReturnReasonCode`
+- All helpers are pure (no network calls, no SDK instance required) — composable into analytics pipelines
+- 24 new unit tests (16 + 15 + 9) — total **2169 tests**
+
+### Documentation
+- New guide: `docs/guides/buyout-return-reconciliation.md` (EN+RU) covering all three helpers with end-to-end example
+- Sidebar entries added under "Finance Reconciliation" / "Финансовая сверка"
+- Guides indexes updated with v3.9.3 tags
+
+---
+
 ## [3.9.2] - 2026-04-21
 
 ### Added

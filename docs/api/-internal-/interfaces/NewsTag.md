@@ -2,7 +2,7 @@
 
 # Interface: NewsTag
 
-Defined in: [types/general.types.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/general.types.ts#L36)
+Defined in: [types/general.types.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L36)
 
 News tag structure
 
@@ -10,5 +10,5 @@ News tag structure
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID тега | [types/general.types.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/general.types.ts#L38) |
-| <a id="name"></a> `name` | `string` | Название тега | [types/general.types.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/general.types.ts#L40) |
+| <a id="id"></a> `id` | `number` | ID тега | [types/general.types.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L38) |
+| <a id="name"></a> `name` | `string` | Название тега | [types/general.types.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L40) |

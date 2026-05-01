@@ -33,3 +33,15 @@ export {
   type MergedCardVariant,
   type MergedCardValidationResult,
 } from './validateMergedCardVariants';
+
+export { classifyReturnReason, type ReturnReasonCode } from './classifyReturnReason';
+
+export { enrichReturnsWithType, type WbReturn, type FbsReturnInput } from './enrichReturnsWithType';
+
+export {
+  reconcileBuyoutsAndReturns,
+  type BuyoutInput,
+  type ReconciliationAnomaly,
+  type ReconciliationResult,
+  type ReconcileOptions,
+} from './reconcileBuyoutsAndReturns';

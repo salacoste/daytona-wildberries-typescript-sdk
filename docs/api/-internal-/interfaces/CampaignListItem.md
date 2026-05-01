@@ -2,7 +2,7 @@
 
 # Interface: CampaignListItem
 
-Defined in: [types/promotion.types.ts:1473](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1473)
+Defined in: [types/promotion.types.ts:1473](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1473)
 
 Campaign list item in count response
 
@@ -10,5 +10,5 @@ Campaign list item in count response
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advertid"></a> `advertId` | `number` | Campaign ID | [types/promotion.types.ts:1475](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1475) |
-| <a id="changetime"></a> `changeTime` | `string` | Last change date/time | [types/promotion.types.ts:1477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/promotion.types.ts#L1477) |
+| <a id="advertid"></a> `advertId` | `number` | Campaign ID | [types/promotion.types.ts:1475](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1475) |
+| <a id="changetime"></a> `changeTime` | `string` | Last change date/time | [types/promotion.types.ts:1477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1477) |

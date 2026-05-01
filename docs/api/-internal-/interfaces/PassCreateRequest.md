@@ -2,7 +2,7 @@
 
 # Interface: PassCreateRequest
 
-Defined in: [types/orders-fbs.types.ts:164](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L164)
+Defined in: [types/orders-fbs.types.ts:164](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L164)
 
 Request body for creating a seller pass
 
@@ -10,8 +10,8 @@ Request body for creating a seller pass
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="firstname"></a> `firstName` | `string` | Driver first name | [types/orders-fbs.types.ts:166](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L166) |
-| <a id="lastname"></a> `lastName` | `string` | Driver last name | [types/orders-fbs.types.ts:168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L168) |
-| <a id="carmodel"></a> `carModel` | `string` | Car model | [types/orders-fbs.types.ts:170](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L170) |
-| <a id="carnumber"></a> `carNumber` | `string` | Car number (letters and digits only) | [types/orders-fbs.types.ts:172](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L172) |
-| <a id="officeid"></a> `officeId` | `number` | Warehouse office ID | [types/orders-fbs.types.ts:174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L174) |
+| <a id="firstname"></a> `firstName` | `string` | Driver first name | [types/orders-fbs.types.ts:166](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L166) |
+| <a id="lastname"></a> `lastName` | `string` | Driver last name | [types/orders-fbs.types.ts:168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L168) |
+| <a id="carmodel"></a> `carModel` | `string` | Car model | [types/orders-fbs.types.ts:170](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L170) |
+| <a id="carnumber"></a> `carNumber` | `string` | Car number (letters and digits only) | [types/orders-fbs.types.ts:172](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L172) |
+| <a id="officeid"></a> `officeId` | `number` | Warehouse office ID | [types/orders-fbs.types.ts:174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L174) |

@@ -2,7 +2,7 @@
 
 # Interface: BannedProductsBlockedResponse
 
-Defined in: [types/reports.types.ts:711](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/reports.types.ts#L711)
+Defined in: [types/reports.types.ts:711](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/reports.types.ts#L711)
 
 Response for getBannedProductsBlocked
 
@@ -14,4 +14,4 @@ EPIC 43 - Extracted from inline type literal
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="report"></a> `report?` | [`BannedProductBlockedItem`](BannedProductBlockedItem.md)[] | [types/reports.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/reports.types.ts#L712) |
+| <a id="report"></a> `report?` | [`BannedProductBlockedItem`](BannedProductBlockedItem.md)[] | [types/reports.types.ts:712](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/reports.types.ts#L712) |

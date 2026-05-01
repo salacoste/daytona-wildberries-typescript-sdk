@@ -2,7 +2,7 @@
 
 # Interface: GetSuppliesParams
 
-Defined in: [types/orders-fbs.types.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L184)
+Defined in: [types/orders-fbs.types.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L184)
 
 Query parameters for fetching supplies list
 
@@ -18,5 +18,5 @@ Index signature for compatibility with Record<string, unknown>
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="limit"></a> `limit` | `number` | Maximum number of items to return | [types/orders-fbs.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L186) |
-| <a id="next"></a> `next` | `number` | Pagination cursor; set to 0 for the first request | [types/orders-fbs.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/orders-fbs.types.ts#L188) |
+| <a id="limit"></a> `limit` | `number` | Maximum number of items to return | [types/orders-fbs.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L186) |
+| <a id="next"></a> `next` | `number` | Pagination cursor; set to 0 for the first request | [types/orders-fbs.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/orders-fbs.types.ts#L188) |

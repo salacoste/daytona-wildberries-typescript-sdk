@@ -20,7 +20,7 @@ type AccessCode =
   | "wbPoint";
 ```
 
-Defined in: [types/user-management.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/types/user-management.types.ts#L29)
+Defined in: [types/user-management.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/user-management.types.ts#L29)
 
 Код раздела профиля продавца, к которому пользователь получит доступ.
 

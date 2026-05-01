@@ -34,19 +34,22 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 13 modules,
 - **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures with per-request timeout support
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 2,129 tests passing across all modules
+- **✅ Battle-Tested** - 2,169 tests passing across all modules
 - **🎯 100% API Coverage** - All YAML endpoints implemented including v1 Finance Reports and Acquiring Reports
 - **📚 Comprehensive Documentation** - Complete API reference, 44 guides, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
-## 🆕 What's New in v3.9.2
+## 🆕 What's New in v3.9.3
 
-- **`isVariable` field on `SubjectCharacteristic`** -- indicates whether merged card variants can differ on this characteristic (returned by `getObjectCharc()`)
-- **`validateMergedCardVariants()` helper** -- pure client-side validator detecting divergent fixed characteristics, identical variable characteristics, and duplicate variants before submission
-- **New types** -- `MergedCardVariant`, `MergedCardValidationResult` exported from main SDK
-- **Updated guides** -- EN+RU "Mandatory Product Characteristics" and "Product Card Merging" guides with new variable/fixed section and pre-flight check examples
+- **`classifyReturnReason(reason)`** -- pure helper mapping free-text Russian return reasons to standardized `ReturnReasonCode` enum (`damage`, `defect`, `wrong_size`, `wrong_item`, `customer_refused`, `expired`, `not_as_described`, `other`)
+- **`enrichReturnsWithType(fboReturns, fbsReturns?)`** -- combines FBO returns from `getAnalyticsGoodsReturn()` with optional FBS returns into unified `WbReturn[]` with explicit `orderType: 'fbo' | 'fbs'`, `reasonCode`, `quantity`
+- **`reconcileBuyoutsAndReturns(buyouts, returns, options?)`** -- per-nmId reconciliation with anomaly detection (`return_without_buyout`, `orphan_buyout`)
+- **New types** -- `WbReturn`, `FbsReturnInput`, `BuyoutInput`, `ReconciliationResult`, `ReconciliationAnomaly`, `ReconcileOptions`, `ReturnReasonCode` exported from main SDK
+- **New guide** -- EN+RU [Buyout & Return Reconciliation](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/buyout-return-reconciliation) with end-to-end example
+- **2169 tests** passing (+24 new)
+- **v3.9.2** -- `isVariable` field + `validateMergedCardVariants()` helper
 - **v3.9.1** -- `validateRequiredCharacteristics()` helper for required-field pre-flight checks
 - **v3.9.0** -- Mandatory product characteristics support (`isRequiredForCreate`), characteristic input/output types, DRY refactor
 
@@ -169,7 +172,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 |--------|-------|
 | **API Modules** | 13 (100%) |
 | **API Endpoints** | 240+ implemented |
-| **Test Suite** | 2,129 tests passing (100%) |
+| **Test Suite** | 2,169 tests passing (100%) |
 | **Documentation** | 44 guides, 22 examples |
 | **Bundle Size** | ~91KB gzipped (ESM) |
 
@@ -262,19 +265,22 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев с поддержкой таймаута для каждого запроса
 - **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
 - **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
-- **✅ Проверено в Бою** - 2,129 тестов для всех модулей
+- **✅ Проверено в Бою** - 2,169 тестов для всех модулей
 - **🎯 100% Покрытие API** - Все эндпоинты YAML реализованы, включая Финансовые Отчеты v1 и Эквайринг
 - **📚 Полная Документация** - Справочник API, 44 руководства, примеры на английском и русском
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
 
-## 🆕 Что Нового в v3.9.2
+## 🆕 Что Нового в v3.9.3
 
-- **Поле `isVariable` в `SubjectCharacteristic`** -- указывает, могут ли варианты объединённой карточки отличаться по этой характеристике (возвращается `getObjectCharc()`)
-- **Хелпер `validateMergedCardVariants()`** -- клиентская валидация вариантов объединённой карточки: обнаруживает расходящиеся фиксированные характеристики, одинаковые вариативные и дублирующиеся варианты до отправки
-- **Новые типы** -- `MergedCardVariant`, `MergedCardValidationResult` экспортируются из основного SDK
-- **Обновлённые руководства** -- EN+RU "Обязательные характеристики товаров" и "Объединение карточек товаров" с новыми разделами о переменных/фиксированных характеристиках и примером предполётной проверки
+- **`classifyReturnReason(reason)`** -- чистый хелпер для перевода свободного текста причин возврата (на русском) в стандартизированный enum `ReturnReasonCode` (`damage`, `defect`, `wrong_size`, `wrong_item`, `customer_refused`, `expired`, `not_as_described`, `other`)
+- **`enrichReturnsWithType(fboReturns, fbsReturns?)`** -- объединяет FBO-возвраты из `getAnalyticsGoodsReturn()` с необязательными FBS-возвратами в единый `WbReturn[]` с явным `orderType: 'fbo' | 'fbs'`, `reasonCode`, `quantity`
+- **`reconcileBuyoutsAndReturns(buyouts, returns, options?)`** -- сверка по nmId с обнаружением аномалий (`return_without_buyout`, `orphan_buyout`)
+- **Новые типы** -- `WbReturn`, `FbsReturnInput`, `BuyoutInput`, `ReconciliationResult`, `ReconciliationAnomaly`, `ReconcileOptions`, `ReturnReasonCode` экспортируются из основного SDK
+- **Новое руководство** -- EN+RU [Сверка Выкупов и Возвратов](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/buyout-return-reconciliation) с примером от начала до конца
+- **2169 тестов** проходят (+24 новых)
+- **v3.9.2** -- поле `isVariable` + хелпер `validateMergedCardVariants()`
 - **v3.9.1** -- хелпер `validateRequiredCharacteristics()` для предварительной проверки обязательных полей
 - **v3.9.0** -- поддержка обязательных характеристик товаров (`isRequiredForCreate`), типы ввода/вывода характеристик, DRY-рефакторинг
 
@@ -397,7 +403,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 |---------|----------|
 | **API модули** | 13 (100%) |
 | **API эндпоинты** | 240+ реализовано |
-| **Тесты** | 2,129 тестов проходят (100%) |
+| **Тесты** | 2,169 тестов проходят (100%) |
 | **Документация** | 44 руководства, 22 примера |
 | **Размер бандла** | ~91KB gzipped (ESM) |
 

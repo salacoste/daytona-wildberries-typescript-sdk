@@ -6,7 +6,7 @@
 function calculateSupplyCost(input: SupplyCostInput, getCoefficients: () => Promise<ModelsAcceptanceCoefficient[]>): Promise<SupplyCostResult>;
 ```
 
-Defined in: [utils/calculateSupplyCost.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/72436104934707822141cfa3bef6a4f92cd36fd1/src/utils/calculateSupplyCost.ts#L221)
+Defined in: [utils/calculateSupplyCost.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/utils/calculateSupplyCost.ts#L221)
 
 Calculates the total supply cost including acceptance, storage, and logistics
 

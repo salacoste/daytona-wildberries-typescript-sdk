@@ -625,7 +625,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.9.2';
+export const version = '3.9.3';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -733,6 +733,9 @@ export {
   parseMoneyAmount,
   validateRequiredCharacteristics,
   validateMergedCardVariants,
+  classifyReturnReason,
+  enrichReturnsWithType,
+  reconcileBuyoutsAndReturns,
   warnOnce,
   resetDeprecationWarnings,
   type SupplyCostInput,
@@ -744,4 +747,11 @@ export {
   type TariffRecommendation,
   type MergedCardVariant,
   type MergedCardValidationResult,
+  type ReturnReasonCode,
+  type WbReturn,
+  type FbsReturnInput,
+  type BuyoutInput,
+  type ReconciliationAnomaly,
+  type ReconciliationResult,
+  type ReconcileOptions,
 } from './utils';
