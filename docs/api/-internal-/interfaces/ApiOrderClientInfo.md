@@ -2,7 +2,7 @@
 
 # Interface: ApiOrderClientInfo
 
-Defined in: [types/in-store-pickup.types.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/in-store-pickup.types.ts#L180)
+Defined in: [types/in-store-pickup.types.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/in-store-pickup.types.ts#L180)
 
 ## Example
 
@@ -19,7 +19,7 @@ Defined in: [types/in-store-pickup.types.ts:180](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="phone"></a> `phone?` | `string` | Телефон для связи с покупателем. Чтобы связаться с покупателем наберите этот номер и введите добавочный код. Данный номер не является прямым номером покупателя. | [types/in-store-pickup.types.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/in-store-pickup.types.ts#L182) |
-| <a id="firstname"></a> `firstName?` | `string` | Имя покупателя | [types/in-store-pickup.types.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/in-store-pickup.types.ts#L184) |
-| <a id="orderid"></a> `orderID?` | `number` | ID сборочного задания | [types/in-store-pickup.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/in-store-pickup.types.ts#L186) |
-| <a id="phonecode"></a> `phoneCode?` | `number` | Добавочный код | [types/in-store-pickup.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/in-store-pickup.types.ts#L188) |
+| <a id="phone"></a> `phone?` | `string` | Телефон для связи с покупателем. Чтобы связаться с покупателем наберите этот номер и введите добавочный код. Данный номер не является прямым номером покупателя. | [types/in-store-pickup.types.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/in-store-pickup.types.ts#L182) |
+| <a id="firstname"></a> `firstName?` | `string` | Имя покупателя | [types/in-store-pickup.types.ts:184](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/in-store-pickup.types.ts#L184) |
+| <a id="orderid"></a> `orderID?` | `number` | ID сборочного задания | [types/in-store-pickup.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/in-store-pickup.types.ts#L186) |
+| <a id="phonecode"></a> `phoneCode?` | `number` | Добавочный код | [types/in-store-pickup.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/in-store-pickup.types.ts#L188) |

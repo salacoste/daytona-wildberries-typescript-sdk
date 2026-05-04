@@ -140,5 +140,6 @@ These helpers don't make any network calls. They take data you've already fetche
 
 ## Related
 
+- [Returns Module (v3.10.0)](/guides/returns-module) — high-level aggregator (`sdk.returns`) that calls `classifyReturnReason()` internally and unifies FBO, FBS, and Finance sources into a single `ReturnItem[]`. Use when you want a single source of truth instead of managing joins yourself.
 - [Mandatory Product Characteristics](/guides/mandatory-product-characteristics) — v3.9.0/3.9.2 type updates
 - [WB API: Goods Return Report](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Otchyot-o-vozvratah-i-peremeshchenii-tovarov)

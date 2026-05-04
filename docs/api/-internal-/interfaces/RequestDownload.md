@@ -2,10 +2,10 @@
 
 # Interface: RequestDownload
 
-Defined in: [types/finances.types.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/finances.types.ts#L23)
+Defined in: [types/finances.types.ts:23](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/finances.types.ts#L23)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="params"></a> `params?` | \{ `extension?`: `string`; `serviceName?`: `string`; \}[] | [types/finances.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/finances.types.ts#L24) |
+| <a id="params"></a> `params?` | \{ `extension?`: `string`; `serviceName?`: `string`; \}[] | [types/finances.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/finances.types.ts#L24) |

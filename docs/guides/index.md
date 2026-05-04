@@ -8,6 +8,10 @@ layout: doc
 
 In-depth guides for production deployment and advanced SDK usage.
 
+::: tip New in v3.10.0
+**[Returns Module (`sdk.returns`)](/guides/returns-module)** — Unified aggregator combining FBO analytics, FBS order history, and Finance reports into a single `ReturnItem[]`. One method call replaces your own join logic across three endpoints with different update cadences. Includes `classifyReturnReason()`, partial-failure transparency, and `getReturnStats()` for per-SKU/category aggregation.
+:::
+
 ::: warning New in v3.9.0 — Deadline April 29, 2026
 **[Mandatory Product Characteristics](/guides/mandatory-product-characteristics)** -- WB now requires mandatory characteristics when creating product cards in 10+ categories. Check `isRequiredForCreate` in `getObjectCharc()` response and include required characteristics in create/update requests.
 :::

@@ -214,11 +214,12 @@ await sdk.analytics.createSearchReportReport({
 
 ## Связанные ресурсы
 
+- [Миграция финансовых отчётов v5 → v1](/ru/guides/migration-finance-reports-v5-to-v1) — полное сопоставление полей (snake_case v5 → camelCase v1), использование `parseMoneyAmount` и примеры замены. Примеры в данном руководстве используют устаревший endpoint v5; руководство по миграции показывает эквиваленты для v1.
 - Новость WB (подменные артикулы, 06.04.2026): https://seller.wildberries.ru/news-v2/news-details?id=11270
 - Новость WB (оптовая скидка, 02.04.2026): https://seller.wildberries.ru/news-v2/news-details?id=11226
 - Документация WB API: https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get
 - Справочник модуля финансов SDK: [/api/classes/FinancesModule](/api/classes/FinancesModule)
-- Аналитика поисковых запросов SDK (дополнительно): [Аналитика поисковых запросов](/guides/search-queries-analytics)
+- Аналитика поисковых запросов SDK (дополнительно): [Аналитика поисковых запросов](/ru/guides/search-queries-analytics)
 
 ---
 

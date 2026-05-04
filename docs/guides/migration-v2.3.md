@@ -338,3 +338,10 @@ Please report issues at: https://github.com/salacoste/daytona-wildberries-typesc
 - [Promotion API Reference](/api/promotion-api-reference) - Full API reference
 - [Story 9.9: SDK Parameter Fixes](/docs/stories/9.9.promotion-sdk-type-fixes.md) - Technical details
 - [Troubleshooting Guide](/guides/troubleshooting) - Common issues and solutions
+
+## Related Migration Guides
+
+- [Migration v2.4 - Promotion Deprecation](/guides/migration-v2.4-promotion-deprecation) — next step: Type 8 campaign deprecation notice
+- [Type 8 → Type 9 Campaign Migration](/guides/migration-type8-to-type9) — migrate to Type 9 campaigns (deadline: February 2, 2026)
+- [Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3) — Analytics module v3 endpoint migration
+- [Migration v3.0 - Complete Guide](/guides/migration-v3) — all breaking changes in v3.0.0

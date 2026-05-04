@@ -2,7 +2,7 @@
 
 # Interface: SupplyOrderIdsResponse
 
-Defined in: [types/orders-fbs.types.ts:398](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-fbs.types.ts#L398)
+Defined in: [types/orders-fbs.types.ts:398](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-fbs.types.ts#L398)
 
 Response containing order IDs within a supply
 
@@ -10,4 +10,4 @@ Response containing order IDs within a supply
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderids"></a> `orderIds?` | `number`[] | List of order IDs in the supply | [types/orders-fbs.types.ts:400](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-fbs.types.ts#L400) |
+| <a id="orderids"></a> `orderIds?` | `number`[] | List of order IDs in the supply | [types/orders-fbs.types.ts:400](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-fbs.types.ts#L400) |

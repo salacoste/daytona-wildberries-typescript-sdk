@@ -2,7 +2,7 @@
 
 # Class: ReturnsModule
 
-Defined in: modules/returns/index.ts:199
+Defined in: [modules/returns/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/modules/returns/index.ts#L199)
 
 Returns aggregator module — combines FBO, FBS, and Finance sources into a
 unified `ReturnItem[]` with full partial-failure tolerance.
@@ -34,7 +34,7 @@ new ReturnsModule(
    finances: FinancesModule): ReturnsModule;
 ```
 
-Defined in: modules/returns/index.ts:209
+Defined in: [modules/returns/index.ts:209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/modules/returns/index.ts#L209)
 
 Constructor parameters `_client` and `_ordersFBS` are reserved for
 v3.10.1 FBS status history implementation. The `_` prefix satisfies
@@ -62,7 +62,7 @@ documented in story 13.2.
 getReturns(params: ReturnsApiRequest): Promise<ReturnsApiResponse>;
 ```
 
-Defined in: modules/returns/index.ts:288
+Defined in: [modules/returns/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/modules/returns/index.ts#L288)
 
 Unified return analytics aggregator.
 
@@ -115,7 +115,7 @@ v3.10.0
 getReturnByOrderId(orderId: string, params: ReturnByOrderIdParams): Promise<ReturnItem | null>;
 ```
 
-Defined in: modules/returns/index.ts:428
+Defined in: [modules/returns/index.ts:428](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/modules/returns/index.ts#L428)
 
 Convenience: fetch a single return record by WB orderId.
 
@@ -166,7 +166,7 @@ v3.10.0
 getReturnStats(params: ReturnStatsParams): Promise<ReturnStatsResult>;
 ```
 
-Defined in: modules/returns/index.ts:478
+Defined in: [modules/returns/index.ts:478](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/modules/returns/index.ts#L478)
 
 Convenience: aggregate return statistics grouped by nmId / category / orderType.
 

@@ -614,6 +614,15 @@ A: v2.x will receive security patches until v3.0.0 is released. New features wil
 
 ---
 
+## Related Migration Guides
+
+- [Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3) — migrate from deprecated v2 Sales Funnel methods to new v3 endpoints
+- [Type 8 → Type 9 Campaign Migration](/guides/migration-type8-to-type9) — migrate standard bid campaigns to custom/standard bid campaigns
+- [Migration v2.4 - Promotion Deprecation](/guides/migration-v2.4-promotion-deprecation) — original deprecation notice for Type 8 campaign removal
+- [Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3) — breaking changes in Promotion module method signatures
+- [Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1) — migrate `getSupplierReportDetailByPeriod()` before the 2026-07-15 deadline
+- [Migration DBS Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk) — migrate from deprecated single-order DBS methods to bulk APIs
+
 ## Changelog
 
 ### v3.0.0 (April 2026)

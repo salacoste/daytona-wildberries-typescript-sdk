@@ -2,7 +2,7 @@
 
 # Interface: GetB2BInfoResponse
 
-Defined in: [types/orders-dbs.types.ts:339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-dbs.types.ts#L339)
+Defined in: [types/orders-dbs.types.ts:339](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L339)
 
 Response from B2B info endpoint
 
@@ -10,5 +10,5 @@ Response from B2B info endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="requestid"></a> `requestId?` | `string` | Unique request ID | [types/orders-dbs.types.ts:341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-dbs.types.ts#L341) |
-| <a id="results"></a> `results?` | [`B2BInfoResult`](B2BInfoResult.md)[] | Results for each order | [types/orders-dbs.types.ts:343](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-dbs.types.ts#L343) |
+| <a id="requestid"></a> `requestId?` | `string` | Unique request ID | [types/orders-dbs.types.ts:341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L341) |
+| <a id="results"></a> `results?` | [`B2BInfoResult`](B2BInfoResult.md)[] | Results for each order | [types/orders-dbs.types.ts:343](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L343) |

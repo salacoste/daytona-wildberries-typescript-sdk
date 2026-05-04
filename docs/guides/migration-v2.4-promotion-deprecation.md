@@ -609,6 +609,13 @@ console.log('Full statistics:', fullStats);
 - **[SDK Promotion Module](https://salacoste.github.io/daytona-wildberries-typescript-sdk/api/classes/PromotionModule.html)** - TypeDoc reference
 - **[Promotion Guide](./promotion-advertising.md)** - SDK usage guide
 
+## Related Migration Guides
+
+- [Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3) — earlier breaking changes that led to this deprecation
+- [Type 8 → Type 9 Campaign Migration](/guides/migration-type8-to-type9) — the definitive step-by-step guide for this same migration
+- [Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3) — Analytics module v3 endpoint migration
+- [Migration v3.0 - Complete Guide](/guides/migration-v3) — all breaking changes in v3.0.0
+
 ---
 
 ## Need Help?

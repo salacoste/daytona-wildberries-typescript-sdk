@@ -507,6 +507,8 @@ async function analyzeCampaigns() {
 
 - [Promotion Module Getting Started Guide](/guides/promotion-getting-started) - Complete module documentation
 - [Promotion API Deprecation Notice](/guides/migration-v2.4-promotion-deprecation) - February 2, 2026 deadline
+- [Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3) - earlier breaking changes in Promotion
+- [Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3) - Analytics module v3 endpoint migration
 - [v3 Migration Guide](/guides/migration-v3) - Complete SDK v3 migration
 - [Advertising Statistics Guide](/guides/advertising-statistics-guide) - Statistics and analytics
 - [Best Practices for Advertising](/guides/best-practices-advertising) - Optimization tips

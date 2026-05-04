@@ -301,6 +301,13 @@ sdk.analytics.createNmReportDetail({ ... });
 
 ---
 
+## Related Migration Guides
+
+- [Migration v3.0 - Complete Guide](/guides/migration-v3) — all breaking changes in v3.0.0 (62 removed methods, 14 removed types)
+- [Type 8 → Type 9 Campaign Migration](/guides/migration-type8-to-type9) — migrate Promotion campaigns before February 2, 2026
+- [Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3) — earlier breaking changes in v2.3
+- [Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1) — migrate Finance Reports before July 15, 2026
+
 ## Additional Resources
 
 - **[CHANGELOG v2.7.0](/CHANGELOG.md)** -- Full list of changes

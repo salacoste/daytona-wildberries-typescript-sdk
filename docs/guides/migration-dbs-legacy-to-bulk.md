@@ -390,3 +390,10 @@ If you encounter issues during migration:
 - [DBS B2B Example](../../examples/orders-dbs-b2b.ts)
 - [DBS Metadata Example](../../examples/orders-dbs-metadata.ts)
 - [Official WB DBS API Docs](https://dev.wildberries.ru/openapi/orders-dbs)
+
+## Related Migration Guides
+
+- [Migration v3.0 - Complete Guide](/guides/migration-v3) — all breaking changes in v3.0.0
+- [Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1) — migrate Finance Reports before July 15, 2026
+- [Type 8 → Type 9 Campaign Migration](/guides/migration-type8-to-type9) — Promotion module campaign migration
+- [Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3) — Analytics module v3 endpoint migration

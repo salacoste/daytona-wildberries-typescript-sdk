@@ -239,7 +239,8 @@ export default defineConfig({
               { text: 'Tariffs', link: '/modules/tariffs' },
               { text: 'Analytics', link: '/modules/analytics' },
               { text: 'Reports', link: '/modules/reports' },
-              { text: 'Finances', link: '/modules/finances' }
+              { text: 'Finances', link: '/modules/finances' },
+              { text: '🆕 Returns (v3.10.0)', link: '/modules/returns' }
             ]
           },
           {
@@ -500,7 +501,8 @@ export default defineConfig({
               { text: 'Tariffs', link: '/modules/tariffs' },
               { text: 'Analytics', link: '/modules/analytics' },
               { text: 'Reports', link: '/modules/reports' },
-              { text: 'Finances', link: '/modules/finances' }
+              { text: 'Finances', link: '/modules/finances' },
+              { text: '🆕 Returns (v3.10.0)', link: '/modules/returns' }
             ]
           },
           {

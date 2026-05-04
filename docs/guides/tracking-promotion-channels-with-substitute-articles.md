@@ -214,6 +214,7 @@ The two views serve different audiences:
 
 ## Related resources
 
+- [Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1) — full field mapping (snake_case v5 → camelCase v1), `parseMoneyAmount` usage, and drop-in replacement examples. The examples in this guide use the deprecated v5 endpoint; the migration guide shows the v1 equivalents.
 - WB news (substitute articles, 2026-04-06): https://seller.wildberries.ru/news-v2/news-details?id=11270
 - WB news (wholesale discount, 2026-04-02): https://seller.wildberries.ru/news-v2/news-details?id=11226
 - WB API docs: https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get

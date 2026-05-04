@@ -477,3 +477,10 @@ If you're on v3.6.x or earlier, **upgrade immediately** — these versions do NO
 - [API docs — v1 Sales Reports](https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty)
 - [API docs — v5 Sales Reports (deprecated)](https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get)
 - [Substitute article tracking guide](/guides/tracking-promotion-channels-with-substitute-articles) — updated to mention v1 methods
+
+## Related Migration Guides
+
+- [Migration v3.0 - Complete Guide](/guides/migration-v3) — all breaking changes in v3.0.0, including Finance module removals
+- [Migration v2.7 - Analytics v3 Sales Funnel](/guides/migration-v2.7-analytics-v3) — Analytics module v3 endpoint migration
+- [Type 8 → Type 9 Campaign Migration](/guides/migration-type8-to-type9) — Promotion module campaign migration (deadline: February 2, 2026)
+- [Migration DBS Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk) — Orders DBS bulk API migration

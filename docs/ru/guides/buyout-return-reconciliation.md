@@ -140,5 +140,6 @@ async function buildReturnsDashboard(sdk: WildberriesSDK, dateFrom: string, date
 
 ## Связанные руководства
 
+- [Модуль возвратов (v3.10.0)](/ru/guides/returns-module) — высокоуровневый агрегатор (`sdk.returns`), который вызывает `classifyReturnReason()` внутри и объединяет источники FBO, FBS и Finance в единый массив `ReturnItem[]`. Используйте, когда нужен единый источник данных без ручного объединения.
 - [Обязательные характеристики товаров](/ru/guides/mandatory-product-characteristics) — обновления типов v3.9.0/3.9.2
 - [WB API: Отчёт о возвратах товаров](https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Otchyot-o-vozvratah-i-peremeshchenii-tovarov)

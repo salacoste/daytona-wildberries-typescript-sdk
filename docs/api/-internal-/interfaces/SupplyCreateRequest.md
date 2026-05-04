@@ -2,7 +2,7 @@
 
 # Interface: SupplyCreateRequest
 
-Defined in: [types/orders-fbs.types.ts:134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-fbs.types.ts#L134)
+Defined in: [types/orders-fbs.types.ts:134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-fbs.types.ts#L134)
 
 Request body for creating a new supply
 
@@ -10,4 +10,4 @@ Request body for creating a new supply
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="name"></a> `name?` | `string` | Supply name | [types/orders-fbs.types.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/orders-fbs.types.ts#L136) |
+| <a id="name"></a> `name?` | `string` | Supply name | [types/orders-fbs.types.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-fbs.types.ts#L136) |

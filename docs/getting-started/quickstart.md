@@ -141,6 +141,7 @@ Now that you've made your first API call, explore:
    - [OrdersDbsModule](/api/classes/OrdersDbsModule) - DBS delivery-by-seller orders
    - [FinancesModule](/api/classes/FinancesModule) - Financial data (v1 Sales Reports, Acquiring Reports)
    - [AnalyticsModule](/api/classes/AnalyticsModule) - Performance metrics
+   - [ReturnsModule](/api/classes/ReturnsModule) - Unified return analytics (`sdk.returns`, new in v3.10.0)
    - [UserManagementModule](/api/classes/UserManagementModule) - Seller profile user management
 3. **[Configuration Guide](/guides/configuration)** - Configure SDK for your environment
 4. **[Best Practices](/guides/best-practices)** - Production-ready patterns and error handling

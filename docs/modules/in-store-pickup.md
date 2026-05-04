@@ -12,7 +12,7 @@ The **In-Store Pickup** module manages click-and-collect orders where customers 
 | **SDK Namespace** | `sdk.inStorePickup.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/06-in-store-pickup.yaml` |
-| **Methods** | 16 (+1 deprecated alias) |
+| **Methods** | 16 |
 | **Authentication** | API Key (Header) |
 | **409 Penalty** | 10x rate limit multiplier |
 
@@ -77,12 +77,6 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 | `updateMetaUin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/uin` | Set UIN code |
 | `updateMetaImei(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/imei` | Set IMEI code |
 | `updateMetaGtin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/gtin` | Set GTIN code |
-
-### Deprecated
-
-| Method | Replacement |
-|--------|-------------|
-| `createOrdersStatu(data)` | `createOrdersStatus(data)` |
 
 ---
 

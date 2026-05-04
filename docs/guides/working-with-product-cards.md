@@ -876,6 +876,7 @@ const nikeCards = allCards.filter(c => c.brand === 'Nike');
 
 ## Related Resources
 
+- **[Mandatory Product Characteristics](/guides/mandatory-product-characteristics)** - Required characteristics for card creation in 10+ categories — enforcement began April 29, 2026. Check `isRequiredForCreate` on `getObjectCharc()` before creating cards.
 - **[Product Catalog Use Case](/examples/use-cases/product-catalog)** - Complete product catalog sync examples
 - **[Stock Management Guide](/guides/stock-management)** - Managing inventory with fetched cards
 - **[Best Practices Guide](/guides/best-practices)** - General SDK best practices

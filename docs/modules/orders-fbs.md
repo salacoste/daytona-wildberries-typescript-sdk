@@ -771,12 +771,12 @@ async function processOrdersBatched(orderIds: number[]) {
 
 ---
 
-## Deprecated Methods
+## Previously Deprecated Methods (Removed)
 
-The following methods are deprecated and will be removed in future versions:
+The following methods were deprecated and have been removed from the module source. Use the recommended replacements:
 
-| Method | Replacement | Reason |
-|--------|-------------|--------|
+| Removed Method | Replacement | Reason |
+|----------------|-------------|--------|
 | `createOrdersStatu(data)` | `getOrderStatuses(data)` | Incorrect method name (typo) |
 | `getOrdersMeta(orderId)` | `getOrdersMetaBulk(data)` | Single-order endpoint removed; use bulk |
 | `updateSuppliesOrder(supplyId, orderId)` | `addOrdersToSupply(supplyId, data)` | Single-order endpoint removed; use bulk |

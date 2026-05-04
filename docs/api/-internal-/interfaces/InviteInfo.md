@@ -2,7 +2,7 @@
 
 # Interface: InviteInfo
 
-Defined in: [types/general.types.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/general.types.ts#L112)
+Defined in: [types/general.types.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/general.types.ts#L112)
 
 Invite information
 
@@ -10,5 +10,5 @@ Invite information
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="phonenumber"></a> `phoneNumber` | `string` | Phone number to invite | [types/general.types.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/general.types.ts#L114) |
-| <a id="position"></a> `position?` | `string` | User position (max 150 chars) | [types/general.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/general.types.ts#L116) |
+| <a id="phonenumber"></a> `phoneNumber` | `string` | Phone number to invite | [types/general.types.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/general.types.ts#L114) |
+| <a id="position"></a> `position?` | `string` | User position (max 150 chars) | [types/general.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/general.types.ts#L116) |
