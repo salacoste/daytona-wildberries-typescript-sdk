@@ -38,6 +38,8 @@ export { classifyReturnReason, type ReturnReasonCode } from './classifyReturnRea
 
 export { enrichReturnsWithType, type WbReturn, type FbsReturnInput } from './enrichReturnsWithType';
 
+export { classifyFbsReturnCategory, type FbsStatusEvent } from './classifyFbsReturnCategory';
+
 export {
   reconcileBuyoutsAndReturns,
   type BuyoutInput,

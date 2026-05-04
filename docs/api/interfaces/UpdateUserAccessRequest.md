@@ -2,7 +2,7 @@
 
 # Interface: UpdateUserAccessRequest
 
-Defined in: [types/user-management.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/user-management.types.ts#L212)
+Defined in: [types/user-management.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/user-management.types.ts#L212)
 
 Запрос на обновление настроек доступа пользователей
 
@@ -10,4 +10,4 @@ Defined in: [types/user-management.types.ts:212](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="usersaccesses"></a> `usersAccesses` | [`UserAccess`](UserAccess.md)[] | Настройки доступа для пользователей | [types/user-management.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/user-management.types.ts#L214) |
+| <a id="usersaccesses"></a> `usersAccesses` | [`UserAccess`](UserAccess.md)[] | Настройки доступа для пользователей | [types/user-management.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/user-management.types.ts#L214) |

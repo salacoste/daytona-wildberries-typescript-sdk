@@ -25,30 +25,36 @@
 
 # English Version
 
-Transform 11 OpenAPI specifications into a production-ready SDK with 13 modules, complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
+Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules, complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling. Reduce integration time from weeks to hours.
 
 ## ✨ Features
 
-- **🔐 Complete Type Safety** - Auto-generated TypeScript types from OpenAPI specifications for all 13 API modules
+- **🔐 Complete Type Safety** - Auto-generated TypeScript types from OpenAPI specifications for all 14 API modules
 - **⚡ Automatic Rate Limiting** - Built-in enforcement of per-endpoint rate limits with intelligent queuing and Basic/Test token multipliers
 - **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures with per-request timeout support
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 2,169 tests passing across all modules
+- **✅ Battle-Tested** - 2,207 tests passing across all modules
 - **🎯 100% API Coverage** - All YAML endpoints implemented including v1 Finance Reports and Acquiring Reports
 - **📚 Comprehensive Documentation** - Complete API reference, 44 guides, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
-## 🆕 What's New in v3.9.3
+## What's New (v3.10.0) — May 2026
 
-- **`classifyReturnReason(reason)`** -- pure helper mapping free-text Russian return reasons to standardized `ReturnReasonCode` enum (`damage`, `defect`, `wrong_size`, `wrong_item`, `customer_refused`, `expired`, `not_as_described`, `other`)
-- **`enrichReturnsWithType(fboReturns, fbsReturns?)`** -- combines FBO returns from `getAnalyticsGoodsReturn()` with optional FBS returns into unified `WbReturn[]` with explicit `orderType: 'fbo' | 'fbs'`, `reasonCode`, `quantity`
-- **`reconcileBuyoutsAndReturns(buyouts, returns, options?)`** -- per-nmId reconciliation with anomaly detection (`return_without_buyout`, `orphan_buyout`)
-- **New types** -- `WbReturn`, `FbsReturnInput`, `BuyoutInput`, `ReconciliationResult`, `ReconciliationAnomaly`, `ReconcileOptions`, `ReturnReasonCode` exported from main SDK
-- **New guide** -- EN+RU [Buyout & Return Reconciliation](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/buyout-return-reconciliation) with end-to-end example
-- **2169 tests** passing (+24 new)
+🆕 **`sdk.returns` aggregator module** — single source of truth for return analytics. Combines FBO + FBS + Finance sources via `Promise.allSettled` with srid-based deduplication and per-source telemetry. Three methods:
+- `sdk.returns.getReturns({ dateFrom, dateTo, ... })` — primary aggregator with partial-failure tolerance
+- `sdk.returns.getReturnByOrderId(orderId, ...)` — single-record lookup
+- `sdk.returns.getReturnStats({ groupBy: 'nmId' | 'category' | 'orderType' })` — aggregation buckets
+
+🆕 **`classifyFbsReturnCategory()`** — heuristic FBS status history → return category enum
+
+📚 **New EN+RU guide**: [Returns Module](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/returns-module) with Mermaid diagram, limitations table, and 4 copy-paste recipes
+
+✅ **2207 tests passing**, 25 code review findings fixed (all severities)
+
+- **v3.9.3** -- `classifyReturnReason()`, `enrichReturnsWithType()`, `reconcileBuyoutsAndReturns()` helpers + new guide
 - **v3.9.2** -- `isVariable` field + `validateMergedCardVariants()` helper
 - **v3.9.1** -- `validateRequiredCharacteristics()` helper for required-field pre-flight checks
 - **v3.9.0** -- Mandatory product characteristics support (`isRequiredForCreate`), characteristic input/output types, DRY refactor
@@ -162,7 +168,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Project Status & Development
 
-**Current Status:** 🟢 Production Ready | **SDK Version:** 3.9.2
+**Current Status:** 🟢 Production Ready | **SDK Version:** 3.10.0
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Comprehensive overview of all epics, stories, and implementation status.
 
@@ -170,9 +176,9 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 | Metric | Value |
 |--------|-------|
-| **API Modules** | 13 (100%) |
+| **API Modules** | 14 (100%) |
 | **API Endpoints** | 240+ implemented |
-| **Test Suite** | 2,169 tests passing (100%) |
+| **Test Suite** | 2,207 tests passing (100%) |
 | **Documentation** | 44 guides, 22 examples |
 | **Bundle Size** | ~91KB gzipped (ESM) |
 
@@ -197,7 +203,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 🎯 Supported API Modules
 
-All 13 Wildberries API modules are fully supported with 100% API coverage:
+All 14 Wildberries API modules are fully supported with 100% API coverage:
 
 | Module | Description |
 |--------|-------------|
@@ -214,6 +220,7 @@ All 13 Wildberries API modules are fully supported with 100% API coverage:
 | **Tariffs** | Commission rates, fee schedules |
 | **In-Store Pickup** | Pickup point orders and management |
 | **User Management** | Seller profile user management |
+| **Returns** | Unified return analytics aggregator (FBO + FBS + Finance), `getReturns()`, `getReturnByOrderId()`, `getReturnStats()` |
 
 ## 📄 License
 
@@ -256,30 +263,36 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 
 # Русская Версия
 
-Преобразуйте 11 OpenAPI спецификаций в production-готовый SDK с 13 модулями, полной типобезопасностью, автоматическими лимитами запросов, механизмами повторных попыток и комплексной обработкой ошибок. Сократите время интеграции с недель до часов.
+Преобразуйте 11 OpenAPI спецификаций в production-готовый SDK с 14 модулями, полной типобезопасностью, автоматическими лимитами запросов, механизмами повторных попыток и комплексной обработкой ошибок. Сократите время интеграции с недель до часов.
 
 ## ✨ Возможности
 
-- **🔐 Полная Типобезопасность** - Автоматически генерируемые TypeScript типы из OpenAPI для всех 13 модулей
+- **🔐 Полная Типобезопасность** - Автоматически генерируемые TypeScript типы из OpenAPI для всех 14 модулей
 - **⚡ Автоматические Лимиты Запросов** - Встроенное соблюдение лимитов для каждой конечной точки с умной очередью и множителями для Basic/Test токенов
 - **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев с поддержкой таймаута для каждого запроса
 - **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
 - **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
-- **✅ Проверено в Бою** - 2,169 тестов для всех модулей
+- **✅ Проверено в Бою** - 2,207 тестов для всех модулей
 - **🎯 100% Покрытие API** - Все эндпоинты YAML реализованы, включая Финансовые Отчеты v1 и Эквайринг
 - **📚 Полная Документация** - Справочник API, 44 руководства, примеры на английском и русском
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
 
-## 🆕 Что Нового в v3.9.3
+## Что Нового (v3.10.0) — Май 2026
 
-- **`classifyReturnReason(reason)`** -- чистый хелпер для перевода свободного текста причин возврата (на русском) в стандартизированный enum `ReturnReasonCode` (`damage`, `defect`, `wrong_size`, `wrong_item`, `customer_refused`, `expired`, `not_as_described`, `other`)
-- **`enrichReturnsWithType(fboReturns, fbsReturns?)`** -- объединяет FBO-возвраты из `getAnalyticsGoodsReturn()` с необязательными FBS-возвратами в единый `WbReturn[]` с явным `orderType: 'fbo' | 'fbs'`, `reasonCode`, `quantity`
-- **`reconcileBuyoutsAndReturns(buyouts, returns, options?)`** -- сверка по nmId с обнаружением аномалий (`return_without_buyout`, `orphan_buyout`)
-- **Новые типы** -- `WbReturn`, `FbsReturnInput`, `BuyoutInput`, `ReconciliationResult`, `ReconciliationAnomaly`, `ReconcileOptions`, `ReturnReasonCode` экспортируются из основного SDK
-- **Новое руководство** -- EN+RU [Сверка Выкупов и Возвратов](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/buyout-return-reconciliation) с примером от начала до конца
-- **2169 тестов** проходят (+24 новых)
+🆕 **Агрегаторный модуль `sdk.returns`** — единый источник истины для аналитики возвратов. Объединяет источники FBO + FBS + Finance через `Promise.allSettled` с дедупликацией по srid и телеметрией по каждому источнику. Три метода:
+- `sdk.returns.getReturns({ dateFrom, dateTo, ... })` — основной агрегатор с устойчивостью к частичным сбоям
+- `sdk.returns.getReturnByOrderId(orderId, ...)` — поиск одной записи
+- `sdk.returns.getReturnStats({ groupBy: 'nmId' | 'category' | 'orderType' })` — агрегация по группам
+
+🆕 **`classifyFbsReturnCategory()`** — эвристический хелпер: история статусов FBS → enum категории возврата
+
+📚 **Новое руководство EN+RU**: [Модуль Returns](https://salacoste.github.io/daytona-wildberries-typescript-sdk/ru/guides/returns-module) с диаграммой Mermaid, таблицей ограничений и 4 готовыми рецептами
+
+✅ **2207 тестов проходят**, исправлено 25 замечаний по code review (все уровни серьёзности)
+
+- **v3.9.3** -- хелперы `classifyReturnReason()`, `enrichReturnsWithType()`, `reconcileBuyoutsAndReturns()` + новое руководство
 - **v3.9.2** -- поле `isVariable` + хелпер `validateMergedCardVariants()`
 - **v3.9.1** -- хелпер `validateRequiredCharacteristics()` для предварительной проверки обязательных полей
 - **v3.9.0** -- поддержка обязательных характеристик товаров (`isRequiredForCreate`), типы ввода/вывода характеристик, DRY-рефакторинг
@@ -393,7 +406,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Статус Проекта и Разработка
 
-**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 3.9.2
+**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 3.10.0
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Комплексный обзор всех эпиков, историй и статуса реализации.
 
@@ -401,9 +414,9 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 | Метрика | Значение |
 |---------|----------|
-| **API модули** | 13 (100%) |
+| **API модули** | 14 (100%) |
 | **API эндпоинты** | 240+ реализовано |
-| **Тесты** | 2,169 тестов проходят (100%) |
+| **Тесты** | 2,207 тестов проходят (100%) |
 | **Документация** | 44 руководства, 22 примера |
 | **Размер бандла** | ~91KB gzipped (ESM) |
 
@@ -428,7 +441,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 🎯 Поддерживаемые Модули API
 
-Все 13 модулей Wildberries API полностью поддерживаются со 100% покрытием API:
+Все 14 модулей Wildberries API полностью поддерживаются со 100% покрытием API:
 
 | Модуль | Описание |
 |--------|----------|
@@ -445,6 +458,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 | **Tariffs** | Ставки комиссий, тарифные планы |
 | **In-Store Pickup** | Заказы с самовывозом и управление |
 | **User Management** | Управление пользователями профиля продавца |
+| **Returns** | Агрегатор возвратов (FBO + FBS + Finance), `getReturns()`, `getReturnByOrderId()`, `getReturnStats()` |
 
 ## 📄 Лицензия
 

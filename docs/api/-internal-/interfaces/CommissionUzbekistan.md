@@ -2,10 +2,10 @@
 
 # Interface: CommissionUzbekistan
 
-Defined in: [types/tariffs.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/tariffs.types.ts#L186)
+Defined in: [types/tariffs.types.ts:186](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/tariffs.types.ts#L186)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="report"></a> `report?` | \{ `kgvpMarketplaceUz?`: `number`; `kgvpPaidStorageUz?`: `number`; `kgvpSupplierUz?`: `number`; `parentID?`: `number`; `parentName?`: `string`; `subjectID?`: `number`; `subjectName?`: `string`; \}[] | Список комиссий | [types/tariffs.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/tariffs.types.ts#L188) |
+| <a id="report"></a> `report?` | \{ `kgvpMarketplaceUz?`: `number`; `kgvpPaidStorageUz?`: `number`; `kgvpSupplierUz?`: `number`; `parentID?`: `number`; `parentName?`: `string`; `subjectID?`: `number`; `subjectName?`: `string`; \}[] | Список комиссий | [types/tariffs.types.ts:188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/tariffs.types.ts#L188) |

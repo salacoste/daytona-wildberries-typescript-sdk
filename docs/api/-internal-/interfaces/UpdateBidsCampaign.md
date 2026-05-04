@@ -2,7 +2,7 @@
 
 # Interface: UpdateBidsCampaign
 
-Defined in: [types/promotion.types.ts:1625](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1625)
+Defined in: [types/promotion.types.ts:1625](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1625)
 
 Campaign bid configuration
 
@@ -10,5 +10,5 @@ Campaign bid configuration
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1627](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1627) |
-| <a id="nm_bids"></a> `nm_bids` | [`UpdateBidsArticle`](UpdateBidsArticle.md)[] | Article bids in kopecks Max items: 50 | [types/promotion.types.ts:1632](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1632) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1627](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1627) |
+| <a id="nm_bids"></a> `nm_bids` | [`UpdateBidsArticle`](UpdateBidsArticle.md)[] | Article bids in kopecks Max items: 50 | [types/promotion.types.ts:1632](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1632) |

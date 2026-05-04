@@ -6,7 +6,7 @@
 function enrichReturnsWithType(fboReturns: GoodsReturnItem[], fbsReturns: FbsReturnInput[]): WbReturn[];
 ```
 
-Defined in: utils/enrichReturnsWithType.ts:73
+Defined in: [utils/enrichReturnsWithType.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/utils/enrichReturnsWithType.ts#L73)
 
 Builds a unified WbReturn[] from FBO returns (sdk.reports.getAnalyticsGoodsReturn)
 and optional FBS returns (derived from sdk.ordersFBS status history).

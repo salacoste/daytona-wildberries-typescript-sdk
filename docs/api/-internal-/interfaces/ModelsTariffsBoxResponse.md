@@ -2,7 +2,7 @@
 
 # Interface: ModelsTariffsBoxResponse
 
-Defined in: [types/tariffs.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/tariffs.types.ts#L10)
+Defined in: [types/tariffs.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/tariffs.types.ts#L10)
 
 Auto-generated TypeScript types for tariffs module
 Generated from: wildberries_api_doc/10-tariffs.yaml
@@ -15,4 +15,4 @@ Generated: 2025-12-14T23:02:33.799Z
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`ModelsWarehousesBoxRates`](ModelsWarehousesBoxRates.md) | [types/tariffs.types.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/tariffs.types.ts#L11) |
+| <a id="data"></a> `data?` | [`ModelsWarehousesBoxRates`](ModelsWarehousesBoxRates.md) | [types/tariffs.types.ts:11](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/tariffs.types.ts#L11) |

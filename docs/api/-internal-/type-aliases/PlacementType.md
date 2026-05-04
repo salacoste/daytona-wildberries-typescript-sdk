@@ -6,7 +6,7 @@
 type PlacementType = "combined" | "search" | "recommendations";
 ```
 
-Defined in: [types/promotion.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L20)
+Defined in: [types/promotion.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L20)
 
 Места размещения:
  - `search` — поиск

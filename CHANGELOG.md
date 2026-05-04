@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.0] - 2026-05-04
+
+### Added (Major Feature: WB Returns API Aggregator)
+
+#### sdk.returns module — unified Returns API
+- New `ReturnsModule` class registered as `sdk.returns` — orchestrates 3 underlying WB sources (FBO analytics, FBS order history, Finance reports) into a single unified `ReturnItem[]`
+- `sdk.returns.getReturns(params)` — primary aggregator with `Promise.allSettled` parallel fetch, srid-based finance enrichment, partial-failure tolerance, per-source telemetry
+- `sdk.returns.getReturnByOrderId(orderId, params)` — convenience single-record lookup with optional orderType pre-filter
+- `sdk.returns.getReturnStats(params)` — in-memory aggregation by `nmId` / `category` / `orderType` with `pendingFinanceCount` for finance-not-yet-published records
+
+#### New types (12 total)
+- `ReturnItem`, `ReturnStatus`, `ReturnCategory` — unified record shape
+- `ReturnsApiRequest`, `ReturnsApiResponse`, `PartialFailure`, `ReturnsMeta` — request/response contract with telemetry
+- `ReturnByOrderIdParams`, `ReturnStatsParams`, `ReturnStatsResult`, `ReturnStatsBucket` — convenience method signatures
+- `FbsStatusEvent` — input shape for the FBS status classifier helper
+
+#### New utility
+- `classifyFbsReturnCategory(statuses)` — heuristic helper that maps FBS order status transitions to `ReturnCategory` enum (`cancel_before_shipment` / `refusal_at_pvz` / `return_after_receipt` / `unknown`). Pure function.
+
+### Documentation
+- New EN guide: `docs/guides/returns-module.md` (Mermaid diagram, limitations table, 4 copy-paste recipes, full method reference, telemetry contract)
+- New RU guide: `docs/ru/guides/returns-module.md` (full translation)
+- Sidebar entries added under "Finance Reconciliation" / "Финансовая сверка" in both locales
+- Guides indexes updated with `(New in v3.10.0)` / `(Новое в v3.10.0)` tags
+
+### Honest WB API limitations (documented, not silently dropped)
+- No webhooks → consumer polls
+- No `'in_transit'` return status for FBO → only initiated/received/processed
+- No machine-readable reason codes → solved by `classifyReturnReason()` (v3.9.3)
+- Weekly finance cadence → `returnAmount` may be `undefined` for recent returns
+- `returnCategory: 'unknown'` for FBO → FBS implementation deferred to v3.10.1
+- No `vendorCode` for FBO → always undefined
+- 31-day max date range → throws clear error; consumer chunks via Recipe 4
+
+### Tests
+- 38 new tests (2169 → 2207 total)
+- 25 code review findings fixed across 4 stories (all severities, both EN+RU)
+
+### Source: client request wb-repricer-system-new (HIGH, 2026-05-04, Request #155)
+Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Product Data API v2, Sales Funnel cancellations, ad-hoc reconciliation) with a single SDK-managed aggregator.
+
+---
+
 ## [3.9.3] - 2026-05-01
 
 ### Added

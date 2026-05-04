@@ -1,0 +1,24 @@
+[Wildberries API TypeScript SDK](../modules.md) / ReturnsApiResponse
+
+# Interface: ReturnsApiResponse
+
+Defined in: types/returns.types.ts:139
+
+Response from `sdk.returns.getReturns()`.
+
+Aggregates FBO + FBS + Finance sources with full transparency about which
+sources succeeded, were skipped, or failed.
+
+## Since
+
+v3.10.0
+
+## Properties
+
+| Property | Type | Description | Defined in |
+| ------ | ------ | ------ | ------ |
+| <a id="data"></a> `data` | [`ReturnItem`](ReturnItem.md)[] | Unified return records, sorted by returnDate descending. | types/returns.types.ts:141 |
+| <a id="total"></a> `total` | `number` | Total count BEFORE pagination (limit/offset). | types/returns.types.ts:143 |
+| <a id="warnings"></a> `warnings` | `string`[] | Non-fatal warnings (e.g., FBS skipped due to opt-out). | types/returns.types.ts:145 |
+| <a id="partialfailures"></a> `partialFailures` | [`PartialFailure`](PartialFailure.md)[] | Per-source failures (one source down, others succeed). | types/returns.types.ts:147 |
+| <a id="_meta"></a> `_meta` | [`ReturnsMeta`](ReturnsMeta.md) | Per-source telemetry. | types/returns.types.ts:149 |

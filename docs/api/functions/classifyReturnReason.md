@@ -6,7 +6,7 @@
 function classifyReturnReason(reason: string | null | undefined): ReturnReasonCode;
 ```
 
-Defined in: utils/classifyReturnReason.ts:31
+Defined in: [utils/classifyReturnReason.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/utils/classifyReturnReason.ts#L31)
 
 Classifies a Wildberries return reason string into a standardized enum code.
 

@@ -9,7 +9,7 @@ function reconcileBuyoutsAndReturns(
    options: ReconcileOptions): ReconciliationResult[];
 ```
 
-Defined in: utils/reconcileBuyoutsAndReturns.ts:94
+Defined in: [utils/reconcileBuyoutsAndReturns.ts:94](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/utils/reconcileBuyoutsAndReturns.ts#L94)
 
 Reconciles buyouts and returns per nmId for unified analytics.
 

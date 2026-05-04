@@ -210,6 +210,7 @@ export default defineConfig({
                 text: 'Finance Reconciliation',
                 collapsed: true,
                 items: [
+                  { text: '🆕 Returns Module (v3.10.0)', link: '/guides/returns-module' },
                   { text: 'Buyout & Return Reconciliation', link: '/guides/buyout-return-reconciliation' },
                   { text: 'Tracking Promotion Channels with Substitute Articles', link: '/guides/tracking-promotion-channels-with-substitute-articles' },
                   { text: '⚠️ Finance Reports v5 → v1 Migration', link: '/guides/migration-finance-reports-v5-to-v1' }
@@ -470,6 +471,7 @@ export default defineConfig({
                 text: 'Финансовая сверка',
                 collapsed: true,
                 items: [
+                  { text: '🆕 Модуль возвратов (v3.10.0)', link: '/ru/guides/returns-module' },
                   { text: 'Сверка выкупов и возвратов', link: '/ru/guides/buyout-return-reconciliation' },
                   { text: 'Отслеживание каналов продвижения', link: '/ru/guides/tracking-promotion-channels-with-substitute-articles' },
                   { text: '⚠️ Миграция финансовых отчётов v5 → v1', link: '/ru/guides/migration-finance-reports-v5-to-v1' }

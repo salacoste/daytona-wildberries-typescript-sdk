@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryStatsRequest
 
-Defined in: [types/promotion.types.ts:894](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L894)
+Defined in: [types/promotion.types.ts:894](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L894)
 
 Запрос статистики по поисковым кластерам
 
@@ -10,6 +10,6 @@ Defined in: [types/promotion.types.ts:894](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="from"></a> `from` | `string` | Дата начала периода | [types/promotion.types.ts:896](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L896) |
-| <a id="to"></a> `to` | `string` | Дата окончания периода | [types/promotion.types.ts:898](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L898) |
-| <a id="items"></a> `items` | [`V0GetNormQueryStatsRequestItem`](V0GetNormQueryStatsRequestItem.md)[] | Массив элементов запроса (макс. 100) | [types/promotion.types.ts:900](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L900) |
+| <a id="from"></a> `from` | `string` | Дата начала периода | [types/promotion.types.ts:896](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L896) |
+| <a id="to"></a> `to` | `string` | Дата окончания периода | [types/promotion.types.ts:898](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L898) |
+| <a id="items"></a> `items` | [`V0GetNormQueryStatsRequestItem`](V0GetNormQueryStatsRequestItem.md)[] | Массив элементов запроса (макс. 100) | [types/promotion.types.ts:900](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L900) |

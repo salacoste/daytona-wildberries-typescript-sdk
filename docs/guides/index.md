@@ -84,6 +84,7 @@ In-depth guides for production deployment and advanced SDK usage.
 
 ### Finance Reconciliation
 
+- **[Returns Module](/guides/returns-module)** - Unified `sdk.returns` aggregator combining FBO, FBS, and Finance sources into a single ReturnItem array with full transparency about source health and limitations. **(New in v3.10.0)**
 - **[Buyout & Return Reconciliation](/guides/buyout-return-reconciliation)** - Classify FBO/FBS return reasons, enrich returns with `orderType`, and reconcile against buyout counts per nmId using three pure client-side helpers. **(New in v3.9.3)**
 - **[Tracking Promotion Channels with Substitute Articles](/guides/tracking-promotion-channels-with-substitute-articles)** - Reconcile external marketing spend against settled revenue using substitute article fields from the Wildberries financial report. Uses `parseMoneyAmount` when working with the v1 endpoint. **(New in v3.7.0)**
 - **[Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1)** - Full field mapping from snake_case (v5) to camelCase (v1), string money amounts with the `parseMoneyAmount` helper, and drop-in code examples **(deadline: 2026-07-15)**

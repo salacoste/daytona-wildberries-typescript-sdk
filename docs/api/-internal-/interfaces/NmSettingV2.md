@@ -2,7 +2,7 @@
 
 # Interface: NmSettingV2
 
-Defined in: [types/promotion.types.ts:1188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1188)
+Defined in: [types/promotion.types.ts:1188](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1188)
 
 Настройки артикула для V2 API.
 Использует ставки в копейках (bids_kopecks) вместо устаревшего bid.
@@ -11,6 +11,6 @@ Defined in: [types/promotion.types.ts:1188](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="bids_kopecks"></a> `bids_kopecks` | [`BidsKopecks`](BidsKopecks.md) | Ставки в копейках. Ставка в копейках (например, 250 = 2.50 RUB) | [types/promotion.types.ts:1193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1193) |
-| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:1195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1195) |
-| <a id="subject"></a> `subject` | [`Subject`](Subject.md) | Предмет/категория | [types/promotion.types.ts:1197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/promotion.types.ts#L1197) |
+| <a id="bids_kopecks"></a> `bids_kopecks` | [`BidsKopecks`](BidsKopecks.md) | Ставки в копейках. Ставка в копейках (например, 250 = 2.50 RUB) | [types/promotion.types.ts:1193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1193) |
+| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:1195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1195) |
+| <a id="subject"></a> `subject` | [`Subject`](Subject.md) | Предмет/категория | [types/promotion.types.ts:1197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/promotion.types.ts#L1197) |

@@ -8,7 +8,7 @@ describe('SDK Index', () => {
     expect(version).toMatch(/^\d+\.\d+\.\d+$/);
   });
 
-  it('should have version 3.9.3', () => {
-    expect(version).toBe('3.9.3');
+  it('should have version 3.10.0', () => {
+    expect(version).toBe('3.10.0');
   });
 });

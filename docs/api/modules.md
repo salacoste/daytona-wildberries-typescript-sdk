@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.9.3
+# Wildberries API TypeScript SDK v3.10.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -39,6 +39,7 @@ Main entry point
 | [ProductsModule](classes/ProductsModule.md) | - |
 | [PromotionModule](classes/PromotionModule.md) | - |
 | [ReportsModule](classes/ReportsModule.md) | - |
+| [ReturnsModule](classes/ReturnsModule.md) | Returns aggregator module — combines FBO, FBS, and Finance sources into a unified `ReturnItem[]` with full partial-failure tolerance. |
 | [TariffsModule](classes/TariffsModule.md) | - |
 | [UserManagementModule](classes/UserManagementModule.md) | - |
 
@@ -50,6 +51,15 @@ Main entry point
 | [OperationMetadata](interfaces/OperationMetadata.md) | Metadata for a single SDK operation |
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
+| [ReturnItem](interfaces/ReturnItem.md) | Unified return record across FBO and FBS sources. |
+| [ReturnsApiRequest](interfaces/ReturnsApiRequest.md) | Request parameters for `sdk.returns.getReturns()`. |
+| [PartialFailure](interfaces/PartialFailure.md) | Per-source failure record returned in ReturnsApiResponse. |
+| [ReturnsMeta](interfaces/ReturnsMeta.md) | Per-source telemetry — surfaces what was fetched/skipped. |
+| [ReturnsApiResponse](interfaces/ReturnsApiResponse.md) | Response from `sdk.returns.getReturns()`. |
+| [ReturnByOrderIdParams](interfaces/ReturnByOrderIdParams.md) | Parameters for `sdk.returns.getReturnByOrderId()`. Date window is required because WB API requires it. |
+| [ReturnStatsParams](interfaces/ReturnStatsParams.md) | Parameters for `sdk.returns.getReturnStats()`. |
+| [ReturnStatsBucket](interfaces/ReturnStatsBucket.md) | Single bucket in a return statistics aggregation. |
+| [ReturnStatsResult](interfaces/ReturnStatsResult.md) | Aggregated return statistics returned by `sdk.returns.getReturnStats()`. Surfaces underlying getReturns() telemetry transparently. |
 | [AccessItem](interfaces/AccessItem.md) | Элемент настройки доступа к разделу профиля продавца |
 | [InviteeInfo](interfaces/InviteeInfo.md) | Информация о приглашении пользователя |
 | [UserInfo](interfaces/UserInfo.md) | Информация о пользователе профиля продавца |
@@ -62,6 +72,7 @@ Main entry point
 | [UserManagementErrorResponse](interfaces/UserManagementErrorResponse.md) | Ответ с информацией об ошибке от User Management API |
 | [SupplyCostInput](interfaces/SupplyCostInput.md) | Input parameters for supply cost calculation |
 | [SupplyCostResult](interfaces/SupplyCostResult.md) | Result of supply cost calculation |
+| [FbsStatusEvent](interfaces/FbsStatusEvent.md) | Single FBS status event from order status history. Consumer shapes this from their `order_wb_status_history` table or SDK call. |
 | [CompareTariffsInput](interfaces/CompareTariffsInput.md) | Input parameters for tariff comparison |
 | [TariffData](interfaces/TariffData.md) | Tariff data from a single source |
 | [TariffDifference](interfaces/TariffDifference.md) | Percentage differences between inventory and supply tariffs |
@@ -80,6 +91,8 @@ Main entry point
 | Type Alias | Description |
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
+| [ReturnStatus](type-aliases/ReturnStatus.md) | Current state of a return. |
+| [ReturnCategory](type-aliases/ReturnCategory.md) | Categorized return type, derived from order fulfillment path and status history. |
 | [AccessCode](type-aliases/AccessCode.md) | Код раздела профиля продавца, к которому пользователь получит доступ. |
 | [ReturnReasonCode](type-aliases/ReturnReasonCode.md) | Standardized return reason codes derived from Wildberries free-text reason strings. |
 | [TariffRecommendation](type-aliases/TariffRecommendation.md) | Recommendation based on tariff comparison |
@@ -117,6 +130,7 @@ Main entry point
 | [getReadonlyOperations](functions/getReadonlyOperations.md) | Get all readonly operations |
 | [getWriteOperations](functions/getWriteOperations.md) | Get all write operations (not readonly) |
 | [calculateSupplyCost](functions/calculateSupplyCost.md) | Calculates the total supply cost including acceptance, storage, and logistics |
+| [classifyFbsReturnCategory](functions/classifyFbsReturnCategory.md) | Classifies an FBS order's return category by analyzing its status history. |
 | [classifyReturnReason](functions/classifyReturnReason.md) | Classifies a Wildberries return reason string into a standardized enum code. |
 | [compareTariffs](functions/compareTariffs.md) | Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs |
 | [warnOnce](functions/warnOnce.md) | Emit a deprecation warning for a method, at most once per process. |

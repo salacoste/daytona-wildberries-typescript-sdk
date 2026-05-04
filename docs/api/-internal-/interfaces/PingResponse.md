@@ -2,7 +2,7 @@
 
 # Interface: PingResponse
 
-Defined in: [types/general.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L10)
+Defined in: [types/general.types.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/general.types.ts#L10)
 
 Response structure for ping endpoint
 
@@ -10,5 +10,5 @@ Response structure for ping endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="ts"></a> `TS?` | `string` | Timestamp запроса | [types/general.types.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L12) |
-| <a id="status"></a> `Status?` | `"OK"` | Статус подключения | [types/general.types.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/99103155f37b34643c595b7593fc47851a35dfc9/src/types/general.types.ts#L14) |
+| <a id="ts"></a> `TS?` | `string` | Timestamp запроса | [types/general.types.ts:12](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/general.types.ts#L12) |
+| <a id="status"></a> `Status?` | `"OK"` | Статус подключения | [types/general.types.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/064cd941fae2c874fb9153979979d4bb4873bbc5/src/types/general.types.ts#L14) |

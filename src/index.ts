@@ -19,6 +19,7 @@ import { TariffsModule } from './modules/tariffs';
 import { InStorePickupModule } from './modules/in-store-pickup';
 import { OrdersDbsModule } from './modules/orders-dbs';
 import { UserManagementModule } from './modules/user-management';
+import { ReturnsModule } from './modules/returns';
 import { AuthenticationError } from './errors/auth-error';
 import type { SDKConfig } from './config/sdk-config';
 
@@ -536,6 +537,29 @@ export class WildberriesSDK {
   public readonly userManagement: UserManagementModule;
 
   /**
+   * Returns aggregator module (since v3.10.0)
+   *
+   * Unified return analytics across FBO + FBS + Finance sources:
+   * - Fetches FBO returns via `sdk.reports.getAnalyticsGoodsReturn()`
+   * - Enriches records with financial amounts from `sdk.finances.getSalesReportsDetailed()`
+   * - Partial-failure tolerant: one source failing does not abort the response
+   *
+   * @see {@link ReturnsModule} for available methods
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.returns.getReturns({
+   *   dateFrom: '2026-04-01',
+   *   dateTo: '2026-04-30',
+   * });
+   * console.log(result.data);           // ReturnItem[]
+   * console.log(result.partialFailures); // per-source failures
+   * console.log(result._meta.sources);  // telemetry
+   * ```
+   */
+  public readonly returns: ReturnsModule;
+
+  /**
    * Initialize the Wildberries SDK with configuration
    *
    * Creates a new SDK instance with the provided configuration.
@@ -615,6 +639,10 @@ export class WildberriesSDK {
 
     // Initialize User Management module (Story 14.4 - implemented)
     this.userManagement = new UserManagementModule(this.client);
+
+    // Initialize Returns aggregator module (Story 13.2 - implemented)
+    // Must be last — depends on this.reports, this.ordersFBS, this.finances
+    this.returns = new ReturnsModule(this.client, this.reports, this.ordersFBS, this.finances);
   }
 }
 
@@ -625,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.9.3';
+export const version = '3.10.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -736,6 +764,7 @@ export {
   classifyReturnReason,
   enrichReturnsWithType,
   reconcileBuyoutsAndReturns,
+  classifyFbsReturnCategory,
   warnOnce,
   resetDeprecationWarnings,
   type SupplyCostInput,
@@ -754,4 +783,19 @@ export {
   type ReconciliationAnomaly,
   type ReconciliationResult,
   type ReconcileOptions,
+  type FbsStatusEvent,
 } from './utils';
+
+// Returns module types (since v3.10.0 — populated by sdk.returns module in story 13.2)
+export type { ReturnItem, ReturnStatus, ReturnCategory } from './types/returns.types';
+export { ReturnsModule } from './modules/returns';
+export type {
+  ReturnsApiRequest,
+  ReturnsApiResponse,
+  PartialFailure,
+  ReturnsMeta,
+  ReturnByOrderIdParams,
+  ReturnStatsParams,
+  ReturnStatsResult,
+  ReturnStatsBucket,
+} from './types/returns.types';
