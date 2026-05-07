@@ -974,6 +974,23 @@ components:
         orgName:
           type: string
           description: Наименование организации
+    api.MetaValidationDetail:
+      type: object
+      description: Результат проверки метаданных маркировки для одного заказа. Возвращается в теле ответа 409 MetaValidationFail (DBS deliverBulk / DBW deliverBulk) и в 200-ответе предварительной проверки (DBW checkMetaValidation).
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID заказа, к которому относится результат проверки
+          example: 4299281547
+        status:
+          type: string
+          description: "Результат проверки: 'valid' | 'invalid' | описание ошибки"
+          example: invalid
+        message:
+          type: string
+          description: Опциональное человекочитаемое описание причины ошибки
+          example: SGTIN код маркировки не прошёл проверку
   responses:
     "401":
       description: Не авторизован

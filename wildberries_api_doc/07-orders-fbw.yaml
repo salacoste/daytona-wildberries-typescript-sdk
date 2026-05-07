@@ -18,6 +18,8 @@ tags:
     description: ''
   - name: Информация о поставках
     description: ''
+  - name: Сборочные задания DBW
+    description: 'Методы управления сборочными заданиями DBW (Delivery by Wildberries). Пять эндпоинтов: получение данных покупателя, управление метаданными маркировки и перевод заказов в статус доставки.'
 paths:
   /api/v1/acceptance/coefficients:
     servers:
@@ -523,6 +525,312 @@ paths:
                   $ref: '#/components/examples/BadID'
         '401':
           $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/dbw/orders/client:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBW
+      summary: Получение информации о покупателе для заказов DBW
+      description: |
+        Метод возвращает информацию о покупателе (имя, телефон) для указанных DBW-заказов.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+
+        **Примечание:** Лимиты в этой таблице являются оценочными — WB не публиковал явные значения для DBW-эндпоинтов на момент написания SDK (2026-05-06). Числа унаследованы от существующего эндпоинта `getClientInfo`. Уточнятся при следующем апдейте Swagger от WB.
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2DBW'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.GetDBWClientInfoResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/dbw/orders/meta/delete:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBW
+      summary: Массовое удаление метаданных DBW-заказов
+      description: |
+        Массовое удаление метаданных маркировки (SGTIN/IMEI/UIN и т.д.) для DBW-заказов.
+
+        **Примечание о пути:** В оригинальном анонсе WB от 2026-05-06 этот эндпоинт описан с префиксом `/api/v3/public/dbw/...`. SDK использует канонический префикс `/api/marketplace/v3/dbw/...` (см. Phase 0 research) — путь `/public/` интерпретируется как артефакт черновика документации.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 150 запросов | 400 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+
+        **Примечание:** Лимиты в этой таблице являются оценочными — WB не публиковал явные значения для DBW-эндпоинтов на момент написания SDK (2026-05-06). Числа унаследованы от существующего эндпоинта `getClientInfo`. Уточнятся при следующем апдейте Swagger от WB.
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.DBWDeleteMetaBulkRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWDeleteMetaBulkResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWBatchError'
+              example:
+                detail: {}
+                origin: dbw-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/dbw/orders/meta/sgtin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBW
+      summary: Массовая установка кодов маркировки SGTIN для DBW-заказов
+      description: |
+        Массовая установка кодов маркировки Честного знака (SGTIN) для DBW-заказов. Используйте этот метод для исправления метаданных перед повторным вызовом deliverBulk после ошибки 409 MetaValidationFail.
+
+        **Примечание о пути:** В оригинальном анонсе WB от 2026-05-06 этот эндпоинт описан с префиксом `/api/v3/public/dbw/...`. SDK использует канонический префикс `/api/marketplace/v3/dbw/...` (см. Phase 0 research) — путь `/public/` интерпретируется как артефакт черновика документации.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 500 запросов | 120 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+
+        **Примечание:** Лимиты в этой таблице являются оценочными — WB не публиковал явные значения для DBW-эндпоинтов на момент написания SDK (2026-05-06). Числа унаследованы от существующего эндпоинта `getClientInfo`. Уточнятся при следующем апдейте Swagger от WB.
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.DBWSetSgtinBulkRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWSetMetaBulkResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWBatchError'
+              example:
+                detail: {}
+                origin: dbw-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/dbw/orders/status/deliver:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBW
+      summary: Перевести DBW-заказы в статус доставки
+      description: |
+        Метод переводит DBW-заказы из статуса `confirm` в статус `deliver` — в доставке. Перед вызовом рекомендуется проверить метаданные маркировки через `/api/marketplace/v3/dbw/orders/meta/details`.
+
+        **Примечание о пути:** В оригинальном анонсе WB от 2026-05-06 этот эндпоинт описан с префиксом `/api/v3/public/dbw/...`. SDK использует канонический префикс `/api/marketplace/v3/dbw/...` (см. Phase 0 research) — путь `/public/` интерпретируется как артефакт черновика документации.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+
+        **Примечание:** Лимиты в этой таблице являются оценочными — WB не публиковал явные значения для DBW-эндпоинтов на момент написания SDK (2026-05-06). Числа унаследованы от существующего эндпоинта `getClientInfo`. Уточнятся при следующем апдейте Swagger от WB.
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2DBW'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWStatusSetResponses'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWBatchError'
+              example:
+                detail: {}
+                origin: dbw-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+        '409':
+          description: Метаданные маркировки (SGTIN/IMEI) не прошли проверку. Используйте /api/marketplace/v3/dbw/orders/meta/details для предварительной проверки или исправьте метаданные через /api/marketplace/v3/dbw/orders/meta/sgtin перед повторной попыткой.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    description: Список ошибок валидации метаданных по заказам
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 409
+                          description: Код ошибки
+                        detail:
+                          type: string
+                          example: MetaValidationFail
+                          description: Тип ошибки
+                        metaDetails:
+                          type: array
+                          description: Детали валидации метаданных по заказам
+                          items:
+                            $ref: '#/components/schemas/api.MetaValidationDetail'
+              example:
+                errors:
+                  - code: 409
+                    detail: MetaValidationFail
+                    metaDetails:
+                      - orderId: 4299281547
+                        status: invalid
+                        message: SGTIN код маркировки не прошёл проверку
+                      - orderId: 4279781545
+                        status: valid
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/dbw/orders/meta/details:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания DBW
+      summary: Предварительная проверка метаданных маркировки DBW-заказов
+      description: |
+        Метод выполняет предварительную (pre-flight) проверку метаданных маркировки для DBW-заказов. Возвращает тот же массив `metaDetails[]`, что содержится в теле ошибки 409 MetaValidationFail метода `/api/marketplace/v3/dbw/orders/status/deliver`. Используйте этот метод перед вызовом `deliverBulk` для выявления заказов с некорректными метаданными без риска блокировки.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 минута | 300 запросов | 200 мс | 20 запросов |
+
+        Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
+
+        **Примечание:** Лимиты в этой таблице являются оценочными — WB не публиковал явные значения для DBW-эндпоинтов на момент написания SDK (2026-05-06). Числа унаследованы от существующего эндпоинта `getClientInfo`. Уточнятся при следующем апдейте Swagger от WB.
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2DBW'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWCheckMetaValidationResponse'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.DBWBatchError'
+              example:
+                detail: {}
+                origin: dbw-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: IncorrectRequest
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
         '429':
           $ref: '#/components/responses/429'
 components:
@@ -1102,6 +1410,277 @@ components:
         requestId:
           type: string
           description: ID запроса при наличии ошибок
+    api.OrdersRequestV2DBW:
+      type: object
+      required:
+        - orders
+      description: Тело запроса для методов DBW, принимающих список ID заказов
+      properties:
+        orders:
+          type: array
+          description: Список ID DBW-заказов
+          maxItems: 1000
+          example:
+            - 4299281547
+            - 4279781545
+          items:
+            type: integer
+            format: int64
+    api.GetDBWClientInfoResponse:
+      type: object
+      description: Ответ метода получения информации о покупателях DBW-заказов
+      properties:
+        orders:
+          type: array
+          nullable: true
+          description: Список данных покупателей по заказам. Null если заказы не найдены.
+          items:
+            $ref: '#/components/schemas/api.DBWClientInfo'
+    api.DBWClientInfo:
+      type: object
+      description: Информация о покупателе для DBW-заказа
+      properties:
+        # Note: WB convention split — `orderID` (uppercase ID) is used by getClientInfo legacy
+        # response shape; `orderId` (camelCase) is used by all newer DBS/DBW bulk endpoints.
+        # Mirrors src/types/orders-fbw.types.ts:DBWClientInfo (originator: pre-2026 WB API).
+        orderID:
+          type: integer
+          format: int64
+          description: ID DBW-заказа
+          example: 4299281547
+        firstName:
+          type: string
+          description: Имя покупателя
+          example: Иван
+        fullName:
+          type: string
+          description: Полное имя покупателя
+          example: 'Иванов Иван Иванович'
+        phone:
+          type: string
+          description: Номер телефона покупателя
+          example: '+7 900 *** 12 34'
+        phoneCode:
+          type: integer
+          format: int64
+          description: Добавочный код телефона
+          example: 1234567
+        additionalPhoneCodes:
+          type: array
+          description: Дополнительные коды телефона
+          items:
+            type: integer
+            format: int64
+    api.DBWDeleteMetaBulkRequest:
+      type: object
+      description: Тело запроса для массового удаления метаданных DBW-заказов
+      required:
+        - orders
+        - key
+      properties:
+        orders:
+          type: array
+          description: Список ID DBW-заказов, из которых нужно удалить метаданные
+          maxItems: 1000
+          example:
+            - 4299281547
+            - 4279781545
+          items:
+            type: integer
+            format: int64
+        key:
+          type: string
+          description: "Ключ метаданных для удаления: 'imei' | 'uin' | 'gtin' | 'sgtin' | 'customsDeclaration'"
+          example: sgtin
+    api.DBWDeleteMetaBulkResponse:
+      type: object
+      description: Ответ массового удаления метаданных DBW-заказов
+      properties:
+        orders:
+          type: array
+          description: Результаты удаления по каждому заказу
+          items:
+            type: object
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4299281547
+              success:
+                type: boolean
+                description: Успешно ли удалены метаданные
+                example: true
+              error:
+                type: string
+                description: Описание ошибки при неуспешном удалении
+                example: ''
+    api.DBWSetSgtinBulkRequest:
+      type: object
+      description: Тело запроса для массовой установки кодов маркировки SGTIN на DBW-заказы
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          description: Список заказов с кодами маркировки
+          maxItems: 1000
+          items:
+            type: object
+            required:
+              - orderId
+              - sgtins
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4299281547
+              sgtins:
+                type: array
+                description: Коды маркировки Честного знака (SGTIN)
+                items:
+                  type: string
+                  example: '010460406000244621nF9NRdghskdj'
+    api.DBWSetMetaBulkResponse:
+      type: object
+      description: Ответ массовой установки метаданных маркировки DBW-заказов
+      properties:
+        orders:
+          type: array
+          description: Результаты установки метаданных по каждому заказу
+          items:
+            type: object
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4299281547
+              success:
+                type: boolean
+                description: Успешно ли установлены метаданные
+                example: true
+              error:
+                type: string
+                description: Описание ошибки при неуспешной установке
+                example: ''
+        errors:
+          type: array
+          nullable: true
+          description: Массив ошибок по заказам (при наличии)
+          items:
+            type: object
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4279781545
+              message:
+                type: string
+                description: Описание ошибки
+                example: invalid sgtin format
+              code:
+                type: string
+                description: Код ошибки
+                example: SGTIN_FORMAT_ERROR
+    api.DBWCheckMetaValidationResponse:
+      type: object
+      description: Ответ предварительной проверки метаданных маркировки DBW-заказов. Возвращает тот же массив metaDetails, что содержится в теле ошибки 409 MetaValidationFail метода deliverBulk.
+      properties:
+        metaDetails:
+          type: array
+          description: Результаты проверки метаданных по каждому заказу
+          items:
+            $ref: '#/components/schemas/api.MetaValidationDetail'
+    api.MetaValidationDetail:
+      type: object
+      description: Результат проверки метаданных маркировки для одного заказа. Возвращается в теле ответа 409 MetaValidationFail (DBS deliverBulk / DBW deliverBulk) и в 200-ответе предварительной проверки (DBW checkMetaValidation). Канонический источник — 04-orders-dbs.yaml.
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID заказа, к которому относится результат проверки
+          example: 4299281547
+        status:
+          type: string
+          description: "Результат проверки: 'valid' | 'invalid' | описание ошибки"
+          example: invalid
+        message:
+          type: string
+          description: Опциональное человекочитаемое описание причины ошибки
+          example: SGTIN код маркировки не прошёл проверку
+    api.DBWStatusSetResponses:
+      type: object
+      description: Ответ массового изменения статусов DBW-заказов. Структурно идентична DBS api.StatusSetResponses, но prefixed DBW (items.$ref указывает на api.DBWBatchErrorResponse, а не api.BatchErrorResponse).
+      example:
+        requestId: 03615778-eb9e-4f55-b4Of-fd3ac0fad2сc
+        results:
+          - orderId: 4299281547
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 4279781545
+            isError: false
+      properties:
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.DBWStatusSetResponse'
+    api.DBWStatusSetResponse:
+      type: object
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/api.DBWBatchErrorResponse'
+          type: array
+          description: Детали ошибки
+        isError:
+          type: boolean
+          description: Есть ли ошибки
+          example: true
+        orderId:
+          type: integer
+          description: ID DBW-заказа
+          example: 4299281547
+    api.DBWBatchError:
+      type: object
+      description: Тело ответа при ошибке запроса к DBW API
+      properties:
+        detail:
+          type: object
+          description: Детали ошибки
+          example: {}
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+          example: dbw-public-api
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        title:
+          type: string
+          description: Заголовок ошибки
+          example: IncorrectRequest
+    api.DBWBatchErrorResponse:
+      type: object
+      description: Один элемент массива ошибок в ответе массовой операции DBW (см. api.DBWStatusSetResponse.errors)
+      properties:
+        code:
+          type: integer
+          description: Код ошибки
+          example: 404
+        detail:
+          type: string
+          description: Описание ошибки
+          example: not found
   examples:
     RequestOptions:
       value:

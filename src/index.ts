@@ -653,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.10.2';
+export const version = '3.11.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -722,6 +722,24 @@ export { UserManagementModule } from './modules/user-management';
 
 // Orders DBS types (no name conflicts with global types)
 export type { MetaValidationDetail } from './types/orders-dbs.types';
+
+// Orders FBW / DBW bulk types (v3.11.0)
+export type {
+  DBWDeleteMetaBulkRequest,
+  DBWDeleteMetaBulkResponse,
+  DBWSetSgtinBulkRequest,
+  DBWSetMetaBulkResponse,
+  DBWBulkStatusChangeResponse,
+  DBWStatusSetResponse,
+  DBWMetaValidationDetail,
+  DBWCheckMetaValidationRequest,
+  DBWCheckMetaValidationResponse,
+} from './types/orders-fbw.types';
+// BulkStatusChangeResponse and StatusSetResponse are re-exported from orders-dbs.types via orders-fbw.types
+// Export them here under the DBS canonical path to avoid duplicate export conflicts.
+// (They are already available via orders-dbs.types if consumers need them directly.)
+// DBW-prefixed aliases (DBWBulkStatusChangeResponse, DBWStatusSetResponse, DBWMetaValidationDetail)
+// are exported from orders-fbw.types above for API symmetry.
 
 // User Management types (no name conflicts with global types)
 export type {

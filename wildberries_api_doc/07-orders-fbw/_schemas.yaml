@@ -520,6 +520,277 @@ components:
         barcodes:
           - barcode: "1234567891234"
             quantity: 1
+    api.OrdersRequestV2DBW:
+      type: object
+      required:
+        - orders
+      description: Тело запроса для методов DBW, принимающих список ID заказов
+      properties:
+        orders:
+          type: array
+          description: Список ID DBW-заказов
+          maxItems: 1000
+          example:
+            - 4299281547
+            - 4279781545
+          items:
+            type: integer
+            format: int64
+    api.GetDBWClientInfoResponse:
+      type: object
+      description: Ответ метода получения информации о покупателях DBW-заказов
+      properties:
+        orders:
+          type: array
+          nullable: true
+          description: Список данных покупателей по заказам. Null если заказы не найдены.
+          items:
+            $ref: "#/components/schemas/api.DBWClientInfo"
+    api.DBWClientInfo:
+      type: object
+      description: Информация о покупателе для DBW-заказа
+      properties:
+        # Note: WB convention split — `orderID` (uppercase ID) is used by getClientInfo legacy
+        # response shape; `orderId` (camelCase) is used by all newer DBS/DBW bulk endpoints.
+        # Mirrors src/types/orders-fbw.types.ts:DBWClientInfo (originator: pre-2026 WB API).
+        orderID:
+          type: integer
+          format: int64
+          description: ID DBW-заказа
+          example: 4299281547
+        firstName:
+          type: string
+          description: Имя покупателя
+          example: Иван
+        fullName:
+          type: string
+          description: Полное имя покупателя
+          example: "Иванов Иван Иванович"
+        phone:
+          type: string
+          description: Номер телефона покупателя
+          example: "+7 900 *** 12 34"
+        phoneCode:
+          type: integer
+          format: int64
+          description: Добавочный код телефона
+          example: 1234567
+        additionalPhoneCodes:
+          type: array
+          description: Дополнительные коды телефона
+          items:
+            type: integer
+            format: int64
+    api.DBWDeleteMetaBulkRequest:
+      type: object
+      description: Тело запроса для массового удаления метаданных DBW-заказов
+      required:
+        - orders
+        - key
+      properties:
+        orders:
+          type: array
+          description: Список ID DBW-заказов, из которых нужно удалить метаданные
+          maxItems: 1000
+          example:
+            - 4299281547
+            - 4279781545
+          items:
+            type: integer
+            format: int64
+        key:
+          type: string
+          description: "Ключ метаданных для удаления: 'imei' | 'uin' | 'gtin' | 'sgtin' | 'customsDeclaration'"
+          example: sgtin
+    api.DBWDeleteMetaBulkResponse:
+      type: object
+      description: Ответ массового удаления метаданных DBW-заказов
+      properties:
+        orders:
+          type: array
+          description: Результаты удаления по каждому заказу
+          items:
+            type: object
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4299281547
+              success:
+                type: boolean
+                description: Успешно ли удалены метаданные
+                example: true
+              error:
+                type: string
+                description: Описание ошибки при неуспешном удалении
+                example: ""
+    api.DBWSetSgtinBulkRequest:
+      type: object
+      description: Тело запроса для массовой установки кодов маркировки SGTIN на DBW-заказы
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          description: Список заказов с кодами маркировки
+          maxItems: 1000
+          items:
+            type: object
+            required:
+              - orderId
+              - sgtins
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4299281547
+              sgtins:
+                type: array
+                description: Коды маркировки Честного знака (SGTIN)
+                items:
+                  type: string
+                  example: "010460406000244621nF9NRdghskdj"
+    api.DBWSetMetaBulkResponse:
+      type: object
+      description: Ответ массовой установки метаданных маркировки DBW-заказов
+      properties:
+        orders:
+          type: array
+          description: Результаты установки метаданных по каждому заказу
+          items:
+            type: object
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4299281547
+              success:
+                type: boolean
+                description: Успешно ли установлены метаданные
+                example: true
+              error:
+                type: string
+                description: Описание ошибки при неуспешной установке
+                example: ""
+        errors:
+          type: array
+          nullable: true
+          description: Массив ошибок по заказам (при наличии)
+          items:
+            type: object
+            properties:
+              orderId:
+                type: integer
+                format: int64
+                description: ID DBW-заказа
+                example: 4279781545
+              message:
+                type: string
+                description: Описание ошибки
+                example: invalid sgtin format
+              code:
+                type: string
+                description: Код ошибки
+                example: SGTIN_FORMAT_ERROR
+    api.DBWCheckMetaValidationResponse:
+      type: object
+      description: Ответ предварительной проверки метаданных маркировки DBW-заказов. Возвращает тот же массив metaDetails, что содержится в теле ошибки 409 MetaValidationFail метода deliverBulk.
+      properties:
+        metaDetails:
+          type: array
+          description: Результаты проверки метаданных по каждому заказу
+          items:
+            $ref: "#/components/schemas/api.MetaValidationDetail"
+    api.MetaValidationDetail:
+      type: object
+      description: Результат проверки метаданных маркировки для одного заказа. Возвращается в теле ответа 409 MetaValidationFail (DBS deliverBulk / DBW deliverBulk) и в 200-ответе предварительной проверки (DBW checkMetaValidation). Канонический источник — 04-orders-dbs.yaml.
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          description: ID заказа, к которому относится результат проверки
+          example: 4299281547
+        status:
+          type: string
+          description: "Результат проверки: 'valid' | 'invalid' | описание ошибки"
+          example: invalid
+        message:
+          type: string
+          description: Опциональное человекочитаемое описание причины ошибки
+          example: SGTIN код маркировки не прошёл проверку
+    api.DBWStatusSetResponses:
+      type: object
+      description: Ответ массового изменения статусов DBW-заказов. Структурно идентична DBS api.StatusSetResponses, но prefixed DBW (items.$ref указывает на api.DBWBatchErrorResponse, а не api.BatchErrorResponse).
+      example:
+        requestId: 03615778-eb9e-4f55-b4Of-fd3ac0fad2сc
+        results:
+          - orderId: 4299281547
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 4279781545
+            isError: false
+      properties:
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/api.DBWStatusSetResponse"
+    api.DBWStatusSetResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          description: Детали ошибки
+          items:
+            $ref: "#/components/schemas/api.DBWBatchErrorResponse"
+        isError:
+          type: boolean
+          description: Есть ли ошибки
+          example: true
+        orderId:
+          type: integer
+          description: ID DBW-заказа
+          example: 4299281547
+    api.DBWBatchError:
+      type: object
+      description: Тело ответа при ошибке запроса к DBW API
+      properties:
+        detail:
+          type: object
+          description: Детали ошибки
+          example: {}
+        origin:
+          type: string
+          description: ID внутреннего сервиса WB
+          example: dbw-public-api
+        requestId:
+          type: string
+          description: Уникальный ID запроса
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        title:
+          type: string
+          description: Заголовок ошибки
+          example: IncorrectRequest
+    api.DBWBatchErrorResponse:
+      type: object
+      description: Один элемент массива ошибок в ответе массовой операции DBW (см. api.DBWStatusSetResponse.errors)
+      properties:
+        code:
+          type: integer
+          description: Код ошибки
+          example: 404
+        detail:
+          type: string
+          description: Описание ошибки
+          example: not found
   examples:
     ResponseCoefficients:
       value:

@@ -2,7 +2,7 @@
 
 # Interface: FloatGraphByPeriodItem
 
-Defined in: [types/analytics.types.ts:1104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1104)
+Defined in: [types/analytics.types.ts:1104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L1104)
 
 Среднее количество заказов за месяц
 
@@ -10,6 +10,6 @@ Defined in: [types/analytics.types.ts:1104](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="start"></a> `start` | `string` | Начало месяца | [types/analytics.types.ts:1106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1106) |
-| <a id="end"></a> `end` | `string` | Конец месяца | [types/analytics.types.ts:1108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1108) |
-| <a id="value"></a> `value` | `number` | Среднее количество заказов | [types/analytics.types.ts:1110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1110) |
+| <a id="start"></a> `start` | `string` | Начало месяца | [types/analytics.types.ts:1106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L1106) |
+| <a id="end"></a> `end` | `string` | Конец месяца | [types/analytics.types.ts:1108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L1108) |
+| <a id="value"></a> `value` | `number` | Среднее количество заказов | [types/analytics.types.ts:1110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L1110) |

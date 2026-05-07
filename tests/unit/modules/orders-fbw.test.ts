@@ -19,6 +19,7 @@ import type { ModelsGood, ModelsSuppliesFiltersRequest } from '../../../src/type
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import { WBAPIError } from '../../../src/errors/base-error';
 
 describe('OrdersFbwModule', () => {
   let mockClient: { get: ReturnType<typeof vi.fn>; post: ReturnType<typeof vi.fn> };
@@ -427,6 +428,259 @@ describe('OrdersFbwModule', () => {
     it('should propagate RateLimitError', async () => {
       mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
       await expect(ordersFbw.getClientInfo([123])).rejects.toThrow(RateLimitError);
+    });
+  });
+
+  // ============================================================================
+  // deleteMetaBulk() — DBW bulk metadata deletion (v3.11.0)
+  // ============================================================================
+
+  describe('deleteMetaBulk', () => {
+    it('should post correct body to correct URL and return response', async () => {
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.deleteMetaBulk({ orders: [123456], key: 'imei' });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.stringContaining('/dbw/orders/meta/delete'),
+        { orders: [123456], key: 'imei' },
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.deleteMetaBulkDBW' })
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should honour rateLimitKey orders-fbw.deleteMetaBulkDBW', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+
+      await ordersFbw.deleteMetaBulk({ orders: [111], key: 'sgtin' });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.deleteMetaBulkDBW' })
+      );
+    });
+
+    it('should propagate ValidationError on 409/422', async () => {
+      mockClient.post.mockRejectedValue(new ValidationError('Invalid request'));
+
+      await expect(ordersFbw.deleteMetaBulk({ orders: [123], key: 'gtin' })).rejects.toThrow(
+        ValidationError
+      );
+    });
+
+    it('should throw ValidationError when orders is empty', async () => {
+      await expect(ordersFbw.deleteMetaBulk({ orders: [], key: 'imei' })).rejects.toThrow(
+        ValidationError
+      );
+      await expect(ordersFbw.deleteMetaBulk({ orders: [], key: 'imei' })).rejects.toThrow(/empty/);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+  });
+
+  // ============================================================================
+  // setSgtinBulk() — DBW bulk SGTIN assignment (v3.11.0)
+  // ============================================================================
+
+  describe('setSgtinBulk', () => {
+    it('should post correct body to correct URL and return response', async () => {
+      const request = { orders: [{ orderId: 123456, sgtins: ['1234567890123456'] }] };
+      const mockResponse = { orders: [{ orderId: 123456, success: true }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.setSgtinBulk(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.stringContaining('/dbw/orders/meta/sgtin'),
+        request,
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.setSgtinBulkDBW' })
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should honour rateLimitKey orders-fbw.setSgtinBulkDBW', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+
+      await ordersFbw.setSgtinBulk({ orders: [{ orderId: 1, sgtins: ['abc'] }] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.setSgtinBulkDBW' })
+      );
+    });
+
+    it('should return errors array when some orders fail', async () => {
+      const mockResponse = {
+        orders: [{ orderId: 123, success: false, error: 'invalid sgtin' }],
+        errors: [{ orderId: 123, message: 'SGTIN validation failed', code: 'INVALID_SGTIN' }],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.setSgtinBulk({
+        orders: [{ orderId: 123, sgtins: ['bad'] }],
+      });
+
+      expect(result.errors).toHaveLength(1);
+      expect(result.errors![0].code).toBe('INVALID_SGTIN');
+    });
+
+    it('should throw ValidationError when orders is empty', async () => {
+      await expect(ordersFbw.setSgtinBulk({ orders: [] })).rejects.toThrow(ValidationError);
+      await expect(ordersFbw.setSgtinBulk({ orders: [] })).rejects.toThrow(/empty/);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+  });
+
+  // ============================================================================
+  // deliverBulk() — DBW bulk status deliver (v3.11.0)
+  // ============================================================================
+
+  describe('deliverBulk', () => {
+    it('should succeed with single order', async () => {
+      const mockResponse = { requestId: 'req-1', results: [{ orderId: 111, isError: false }] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.deliverBulk([111]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.stringContaining('/dbw/orders/status/deliver'),
+        { orders: [111] },
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.deliverBulkDBW' })
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should succeed with 1000 orders (boundary)', async () => {
+      const orderIds = Array.from({ length: 1000 }, (_, i) => i + 1);
+      mockClient.post.mockResolvedValue({ requestId: 'req-2', results: [] });
+
+      await expect(ordersFbw.deliverBulk(orderIds)).resolves.toBeDefined();
+      expect(mockClient.post).toHaveBeenCalled();
+    });
+
+    it('should throw ValidationError on empty array', async () => {
+      await expect(ordersFbw.deliverBulk([])).rejects.toThrow(ValidationError);
+      await expect(ordersFbw.deliverBulk([])).rejects.toThrow(/empty/);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+
+    it('should throw ValidationError when orderIds exceeds 1000', async () => {
+      const tooMany = Array.from({ length: 1001 }, (_, i) => i + 1);
+      await expect(ordersFbw.deliverBulk(tooMany)).rejects.toThrow(ValidationError);
+      await expect(ordersFbw.deliverBulk(tooMany)).rejects.toThrow(/1000/);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+
+    it('should propagate 409 MetaValidationFail with metaDetails on rejection', async () => {
+      const metaDetails = [{ orderId: 123456, status: 'invalid', message: 'SGTIN format invalid' }];
+      const error = new WBAPIError('MetaValidationFail', 409, {
+        errors: [{ code: 409, detail: 'MetaValidationFail', metaDetails }],
+      });
+      mockClient.post.mockRejectedValue(error);
+
+      await expect(ordersFbw.deliverBulk([123456])).rejects.toMatchObject({
+        statusCode: 409,
+        response: {
+          errors: [
+            expect.objectContaining({
+              metaDetails: expect.arrayContaining([
+                expect.objectContaining({ orderId: 123456, status: 'invalid' }),
+              ]),
+            }),
+          ],
+        },
+      });
+    });
+
+    it('should honour rateLimitKey orders-fbw.deliverBulkDBW', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'req-4', results: [] });
+
+      await ordersFbw.deliverBulk([1, 2, 3]);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.deliverBulkDBW' })
+      );
+    });
+  });
+
+  // ============================================================================
+  // checkMetaValidation() — DBW pre-flight metadata validator (v3.11.0)
+  // ============================================================================
+
+  describe('checkMetaValidation', () => {
+    it('should post correct body to correct URL and return parsed metaDetails array', async () => {
+      const mockResponse = {
+        metaDetails: [
+          { orderId: 123456, status: 'valid', message: '' },
+          { orderId: 234567, status: 'invalid', message: 'SGTIN format invalid' },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.checkMetaValidation({ orders: [123456, 234567] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.stringContaining('/dbw/orders/meta/details'),
+        { orders: [123456, 234567] },
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.checkMetaValidationDBW' })
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.metaDetails).toHaveLength(2);
+    });
+
+    it('should honour rateLimitKey orders-fbw.checkMetaValidationDBW', async () => {
+      mockClient.post.mockResolvedValue({ metaDetails: [] });
+
+      await ordersFbw.checkMetaValidation({ orders: [111] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(Object),
+        expect.objectContaining({ rateLimitKey: 'orders-fbw.checkMetaValidationDBW' })
+      );
+    });
+
+    it('should throw ValidationError on empty orders array', async () => {
+      await expect(ordersFbw.checkMetaValidation({ orders: [] })).rejects.toThrow(ValidationError);
+      await expect(ordersFbw.checkMetaValidation({ orders: [] })).rejects.toThrow(/empty/);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+
+    it('should accept exactly 1000 orders (boundary)', async () => {
+      const exactly1000 = Array.from({ length: 1000 }, (_, i) => i + 1);
+      mockClient.post.mockResolvedValue({ metaDetails: [] });
+      await expect(ordersFbw.checkMetaValidation({ orders: exactly1000 })).resolves.toBeDefined();
+    });
+
+    it('should throw ValidationError when orders array exceeds 1000 items', async () => {
+      const tooMany = Array.from({ length: 1001 }, (_, i) => i + 1);
+      await expect(ordersFbw.checkMetaValidation({ orders: tooMany })).rejects.toThrow(
+        ValidationError
+      );
+      await expect(ordersFbw.checkMetaValidation({ orders: tooMany })).rejects.toThrow(/1000/);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+
+    it('should parse mixed valid/invalid response — metaDetails[].status and .message accessible', async () => {
+      const mockResponse = {
+        metaDetails: [
+          { orderId: 111, status: 'valid', message: '' },
+          { orderId: 222, status: 'invalid', message: 'IMEI checksum failed' },
+          { orderId: 333, status: 'invalid', message: 'UIN missing' },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.checkMetaValidation({ orders: [111, 222, 333] });
+
+      expect(result.metaDetails[0].status).toBe('valid');
+      expect(result.metaDetails[1].status).toBe('invalid');
+      expect(result.metaDetails[1].message).toBe('IMEI checksum failed');
+      expect(result.metaDetails[2].message).toBe('UIN missing');
     });
   });
 });

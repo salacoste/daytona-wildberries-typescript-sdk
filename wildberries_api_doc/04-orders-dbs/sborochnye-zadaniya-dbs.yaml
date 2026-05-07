@@ -615,6 +615,42 @@ paths:
                 origin: dbs-public-api
                 requestId: f1787bd2d1fdс35d6f537316514у4a05
                 title: AccessDenied
+        "409":
+          description: Метаданные маркировки (SGTIN/IMEI) не прошли проверку. Используйте /api/marketplace/v3/dbs/orders/meta/details для предварительной проверки или исправьте метаданные через /api/marketplace/v3/dbs/orders/meta/sgtin перед повторной попыткой.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    description: Список ошибок валидации метаданных по заказам
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 409
+                          description: Код ошибки
+                        detail:
+                          type: string
+                          example: MetaValidationFail
+                          description: Тип ошибки
+                        metaDetails:
+                          type: array
+                          description: Детали валидации метаданных по заказам
+                          items:
+                            $ref: "#/components/schemas/api.MetaValidationDetail"
+              example:
+                errors:
+                  - code: 409
+                    detail: MetaValidationFail
+                    metaDetails:
+                      - orderId: 4299281547
+                        status: invalid
+                        message: SGTIN код маркировки не прошёл проверку
+                      - orderId: 4279781545
+                        status: valid
         "429":
           $ref: "#/components/responses/429"
   /api/marketplace/v3/dbs/orders/status/receive:

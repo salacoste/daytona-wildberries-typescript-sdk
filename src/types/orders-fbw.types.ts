@@ -395,3 +395,113 @@ export interface GetDBWClientInfoResponse {
   /** List of buyer information by order (null when no matching orders) */
   orders?: DBWClientInfo[] | null;
 }
+
+// ============================================================================
+// DBW Bulk Meta / Status Types (added v3.11.0 — WB 2026-05-06 announcement)
+// ============================================================================
+
+/**
+ * Request body for bulk deletion of marking metadata from DBW orders.
+ * Mirrors DBS `DeleteMetaBulkRequest`.
+ *
+ * @since 3.11.0
+ */
+export interface DBWDeleteMetaBulkRequest {
+  /** Array of order IDs whose metadata should be deleted */
+  orders: number[];
+  /** Metadata key to delete — e.g. 'imei' | 'uin' | 'gtin' | 'sgtin' | 'customsDeclaration' */
+  key: string;
+}
+
+/**
+ * Response from bulk metadata deletion for DBW orders.
+ * Mirrors DBS `DeleteMetaBulkResponse`.
+ *
+ * @since 3.11.0
+ */
+export interface DBWDeleteMetaBulkResponse {
+  /** Per-order deletion results */
+  orders: { orderId: number; success: boolean; error?: string }[];
+}
+
+/**
+ * Request body for bulk SGTIN code assignment on DBW orders.
+ * Mirrors DBS `SetSgtinBulkRequest`.
+ *
+ * @since 3.11.0
+ */
+export interface DBWSetSgtinBulkRequest {
+  /** Array of per-order SGTIN assignments */
+  orders: { orderId: number; sgtins: string[] }[];
+}
+
+/**
+ * Response from bulk metadata set operations for DBW orders.
+ * Mirrors DBS `SetMetaBulkResponse`.
+ *
+ * @since 3.11.0
+ */
+export interface DBWSetMetaBulkResponse {
+  /** Per-order set results */
+  orders: { orderId: number; success: boolean; error?: string }[];
+  /** Array of per-order errors (present when some orders failed) */
+  errors?: { orderId: number; message: string; code: string }[];
+}
+
+// Re-export DBS types for deliverBulk return type — single source of truth.
+// The 409 MetaValidationFail response shape is server-side identical between DBS and DBW.
+// If WB diverges the shape in a future swagger update, switch to a local copy here.
+export type {
+  MetaValidationDetail,
+  StatusSetResponse,
+  BulkStatusChangeResponse,
+} from './orders-dbs.types';
+
+// DBW-prefixed aliases for the above re-exports.
+// Provided to satisfy AC-5 API symmetry: consumers can import either the bare DBS-canonical name
+// or the DBW-prefixed alias — they resolve to the same type.
+import type {
+  BulkStatusChangeResponse,
+  StatusSetResponse,
+  MetaValidationDetail,
+} from './orders-dbs.types';
+
+/**
+ * Response shape for DBW bulk status-change operations (alias for {@link BulkStatusChangeResponse}).
+ * Maintained as a DBW-prefixed alias to preserve API symmetry with DBW request types.
+ * @since 3.11.0
+ */
+export type DBWBulkStatusChangeResponse = BulkStatusChangeResponse;
+
+/**
+ * Per-order result item in a DBW bulk status-change response (alias for {@link StatusSetResponse}).
+ * @since 3.11.0
+ */
+export type DBWStatusSetResponse = StatusSetResponse;
+
+/**
+ * Per-order metadata validation detail (alias for {@link MetaValidationDetail}).
+ * @since 3.11.0
+ */
+export type DBWMetaValidationDetail = MetaValidationDetail;
+
+/**
+ * Request body for {@link OrdersFbwModule.checkMetaValidation}.
+ * @since 3.11.0
+ */
+export interface DBWCheckMetaValidationRequest {
+  /** Array of DBW order IDs to validate metadata for. Max 1000. */
+  orders: number[];
+}
+
+/**
+ * Response from {@link OrdersFbwModule.checkMetaValidation}.
+ * Each item in `metaDetails[]` reports the validation status of a single
+ * order's marking metadata. Use this *before* calling deliverBulk() to
+ * detect orders that would fail with 409 MetaValidationFail.
+ * @since 3.11.0
+ */
+export interface DBWCheckMetaValidationResponse {
+  /** Per-order validation status entries. */
+  metaDetails: MetaValidationDetail[];
+}

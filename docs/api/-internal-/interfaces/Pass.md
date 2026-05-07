@@ -2,7 +2,7 @@
 
 # Interface: Pass
 
-Defined in: [types/orders-fbs.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L762)
+Defined in: [types/orders-fbs.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L762)
 
 Seller pass for warehouse access
 
@@ -10,12 +10,12 @@ Seller pass for warehouse access
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="firstname"></a> `firstName?` | `string` | Driver first name | [types/orders-fbs.types.ts:764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L764) |
-| <a id="dateend"></a> `dateEnd?` | `string` | Pass expiration date | [types/orders-fbs.types.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L766) |
-| <a id="lastname"></a> `lastName?` | `string` | Driver last name | [types/orders-fbs.types.ts:768](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L768) |
-| <a id="carmodel"></a> `carModel?` | `string` | Car model | [types/orders-fbs.types.ts:770](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L770) |
-| <a id="carnumber"></a> `carNumber?` | `string` | Car number | [types/orders-fbs.types.ts:772](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L772) |
-| <a id="officename"></a> `officeName?` | `string` | Warehouse name | [types/orders-fbs.types.ts:774](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L774) |
-| <a id="officeaddress"></a> `officeAddress?` | `string` | Warehouse address | [types/orders-fbs.types.ts:776](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L776) |
-| <a id="officeid"></a> `officeId?` | `number` | Warehouse ID | [types/orders-fbs.types.ts:778](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L778) |
-| <a id="id"></a> `id?` | `number` | Pass ID | [types/orders-fbs.types.ts:780](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L780) |
+| <a id="firstname"></a> `firstName?` | `string` | Driver first name | [types/orders-fbs.types.ts:764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L764) |
+| <a id="dateend"></a> `dateEnd?` | `string` | Pass expiration date | [types/orders-fbs.types.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L766) |
+| <a id="lastname"></a> `lastName?` | `string` | Driver last name | [types/orders-fbs.types.ts:768](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L768) |
+| <a id="carmodel"></a> `carModel?` | `string` | Car model | [types/orders-fbs.types.ts:770](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L770) |
+| <a id="carnumber"></a> `carNumber?` | `string` | Car number | [types/orders-fbs.types.ts:772](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L772) |
+| <a id="officename"></a> `officeName?` | `string` | Warehouse name | [types/orders-fbs.types.ts:774](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L774) |
+| <a id="officeaddress"></a> `officeAddress?` | `string` | Warehouse address | [types/orders-fbs.types.ts:776](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L776) |
+| <a id="officeid"></a> `officeId?` | `number` | Warehouse ID | [types/orders-fbs.types.ts:778](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L778) |
+| <a id="id"></a> `id?` | `number` | Pass ID | [types/orders-fbs.types.ts:780](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L780) |

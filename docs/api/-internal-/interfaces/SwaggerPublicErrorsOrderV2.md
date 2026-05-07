@@ -2,7 +2,7 @@
 
 # Interface: SwaggerPublicErrorsOrderV2
 
-Defined in: [types/products.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L577)
+Defined in: [types/products.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/products.types.ts#L577)
 
 Порядок выдачи пакетов
 
@@ -10,4 +10,4 @@ Defined in: [types/products.types.ts:577](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="ascending"></a> `ascending?` | `boolean` | - `false` — сортировка по убыванию - `true` — сортировка по возрастанию | [types/products.types.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L579) |
+| <a id="ascending"></a> `ascending?` | `boolean` | - `false` — сортировка по убыванию - `true` — сортировка по возрастанию | [types/products.types.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/products.types.ts#L579) |

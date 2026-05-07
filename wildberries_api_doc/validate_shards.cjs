@@ -10,6 +10,8 @@ const yaml = require('js-yaml');
 const modules = [
     '02-products',
     '03-orders-fbs',
+    '04-orders-dbs',
+    '07-orders-fbw',
     '08-promotion',
     '09-communications',
     '11-analytics',

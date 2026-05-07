@@ -12,6 +12,13 @@
 import { BaseClient } from '../../client/base-client';
 import { ValidationError } from '../../errors/validation-error';
 import type {
+  BulkStatusChangeResponse,
+  DBWCheckMetaValidationRequest,
+  DBWCheckMetaValidationResponse,
+  DBWDeleteMetaBulkRequest,
+  DBWDeleteMetaBulkResponse,
+  DBWSetMetaBulkResponse,
+  DBWSetSgtinBulkRequest,
   GetDBWClientInfoResponse,
   ModelsBox,
   ModelsGood,
@@ -229,6 +236,206 @@ export class OrdersFbwModule {
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/client',
       { orders: orderIds },
       { rateLimitKey: 'orders-fbw.getClientInfo' }
+    );
+  }
+
+  /**
+   * Удалить маркировочные метаданные у нескольких заказов DBW (массовая операция).
+   *
+   * Bulk-delete marking metadata (IMEI/UIN/GTIN/SGTIN/customsDeclaration) from up to
+   * N DBW orders in a single request. Mirrors the DBS `deleteMetaBulk` method.
+   *
+   * Rate limit: 150 requests/min, 400ms interval, burst 20.
+   * (Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
+   * Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+   *
+   * @param request - Orders array and metadata key to delete
+   * @returns Per-order deletion results
+   * @throws {ValidationError} When orders array is empty
+   * @throws {ValidationError} When request body is malformed
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.11.0
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbw}
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBW.deleteMetaBulk({ orders: [123456], key: 'imei' });
+   * for (const order of result.orders) {
+   *   console.log(`Order ${order.orderId}: ${order.success ? 'deleted' : order.error}`);
+   * }
+   * ```
+   */
+  async deleteMetaBulk(request: DBWDeleteMetaBulkRequest): Promise<DBWDeleteMetaBulkResponse> {
+    if (request.orders.length === 0) {
+      throw new ValidationError('orders array cannot be empty');
+    }
+    // Alt path observed in announcement: /api/v3/public/dbw/orders/meta/delete — flip if WB swagger says so
+    return this.client.post<DBWDeleteMetaBulkResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/meta/delete',
+      request,
+      { rateLimitKey: 'orders-fbw.deleteMetaBulkDBW' }
+    );
+  }
+
+  /**
+   * Задать SGTIN-коды для нескольких заказов DBW (массовая операция).
+   *
+   * Bulk-assign SGTIN (Serial Global Trade Item Number) codes to up to N DBW orders
+   * in a single request. Mirrors the DBS `setSgtinBulk` method.
+   *
+   * Rate limit: 500 requests/min, 120ms interval, burst 20.
+   * (Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
+   * Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+   *
+   * @param request - Per-order SGTIN assignments
+   * @returns Per-order set results; `errors[]` present when some orders fail
+   * @throws {ValidationError} When orders array is empty
+   * @throws {ValidationError} When request body is malformed
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.11.0
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbw}
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBW.setSgtinBulk({
+   *   orders: [{ orderId: 123456, sgtins: ['1234567890123456'] }],
+   * });
+   * if (result.errors?.length) {
+   *   console.log('Some orders failed:', result.errors);
+   * }
+   * ```
+   */
+  async setSgtinBulk(request: DBWSetSgtinBulkRequest): Promise<DBWSetMetaBulkResponse> {
+    if (request.orders.length === 0) {
+      throw new ValidationError('orders array cannot be empty');
+    }
+    // Alt path observed in announcement: /api/v3/public/dbw/orders/meta/sgtin — flip if WB swagger says so
+    return this.client.post<DBWSetMetaBulkResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/meta/sgtin',
+      request,
+      { rateLimitKey: 'orders-fbw.setSgtinBulkDBW' }
+    );
+  }
+
+  /**
+   * Передать несколько заказов DBW в доставку (массовая операция).
+   *
+   * Mark up to 1000 DBW orders as "delivered" (handed to carrier) in a single request.
+   * Mirrors the DBS `deliverBulk` method. WB disables the legacy single-order DBW
+   * deliver endpoint on 2026-06-05 — use this method instead.
+   *
+   * **Important:** Orders requiring IMEI/SGTIN must have metadata attached before calling
+   * this method. If metadata is missing, WB returns 409 `MetaValidationFail`.
+   *
+   * Rate limit: 300 requests/min, 200ms interval, burst 20.
+   * (Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
+   * Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+   *
+   * @param orderIds - Array of order IDs to mark as delivered (1–1000 items)
+   * @returns Per-order delivery status results. When WB returns application-level 409
+   *   MetaValidationFail, it surfaces in `result.results[].errors[]` with `code === 409`
+   *   and `detail === 'MetaValidationFail'`; check `result.results[].errors[].metaDetails[]`
+   *   per-order before retrying. (since 3.11.0 — WB API 2026-05-06)
+   * @throws {ValidationError} When orderIds is empty or exceeds 1000 items
+   * @throws {WBAPIError} 409 — ImeiIsNotFilled: mandatory IMEI not attached to order
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.11.0
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbw}
+   * @example
+   * ```typescript
+   * // Mark multiple DBW orders as handed to carrier
+   * const result = await sdk.ordersFBW.deliverBulk([123456, 234567, 345678]);
+   *
+   * for (const order of result.results ?? []) {
+   *   if (order.isError) {
+   *     console.log(`Order ${order.orderId} failed:`, order.errors);
+   *   } else {
+   *     console.log(`Order ${order.orderId} marked as delivered`);
+   *   }
+   * }
+   * ```
+   */
+  async deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse> {
+    if (orderIds.length === 0) {
+      throw new ValidationError('orderIds array cannot be empty');
+    }
+    if (orderIds.length > 1000) {
+      throw new ValidationError('orderIds array cannot exceed 1000 items');
+    }
+    // Alt path observed in announcement: /api/v3/public/dbw/orders/status/deliver — flip if WB swagger says so
+    return this.client.post<BulkStatusChangeResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/status/deliver',
+      { orders: orderIds },
+      { rateLimitKey: 'orders-fbw.deliverBulkDBW' }
+    );
+  }
+
+  /**
+   * Проверить метаданные маркировки DBW-заказов перед передачей в доставку (предварительная валидация).
+   *
+   * Pre-flight metadata validator for DBW orders. Returns the same `metaDetails[]` shape
+   * that WB returns inside the 409 `MetaValidationFail` body of `deliverBulk()`, but as a
+   * 200 OK response — without consuming a deliver-bulk quota attempt.
+   *
+   * **This method does NOT change order state.** It is a read-only pre-flight check.
+   * Use it before `deliverBulk()` to identify orders with invalid marking metadata
+   * (SGTIN/IMEI/UIN/etc.) so they can be fixed in advance, avoiding the guess-and-retry
+   * loop of: call `deliverBulk()` → catch 409 → read `metaDetails[]` → fix → retry.
+   *
+   * Rate limit: 300 requests/min, 200ms interval, burst 20.
+   * (Default mirrors `deliverBulk` DBW — WB has not yet published explicit limits.
+   * Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+   *
+   * @param request - Request containing array of DBW order IDs to validate (1–1000 items)
+   * @returns Per-order metadata validation results in `metaDetails[]`
+   * @throws {ValidationError} When `orders` array is empty
+   * @throws {ValidationError} When `orders` array exceeds 1000 items
+   * @throws {ValidationError} When request body is malformed (4xx propagation)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.11.0
+   * @see {@link https://dev.wildberries.ru/openapi/orders-dbw}
+   * @example
+   * ```typescript
+   * // Pre-flight pattern: validate → fix → deliver
+   * const validation = await sdk.ordersFBW.checkMetaValidation({
+   *   orders: [123456, 234567, 345678],
+   * });
+   *
+   * const invalidOrders = validation.metaDetails.filter(d => d.status === 'invalid');
+   * if (invalidOrders.length > 0) {
+   *   console.log('Orders with invalid metadata:', invalidOrders);
+   *   // Fix metadata for invalid orders first (narrow orderId: number | undefined → number):
+   *   const fixable = invalidOrders.filter(
+   *     (o): o is typeof o & { orderId: number } => o.orderId !== undefined
+   *   );
+   *   await sdk.ordersFBW.setSgtinBulk({
+   *     orders: fixable.map(o => ({ orderId: o.orderId, sgtins: ['correct-sgtin'] })),
+   *   });
+   * }
+   *
+   * // Now safe to deliver — no 409 MetaValidationFail expected
+   * const result = await sdk.ordersFBW.deliverBulk([123456, 234567, 345678]);
+   * ```
+   */
+  async checkMetaValidation(
+    request: DBWCheckMetaValidationRequest
+  ): Promise<DBWCheckMetaValidationResponse> {
+    if (request.orders.length === 0) {
+      throw new ValidationError('orders array cannot be empty');
+    }
+    if (request.orders.length > 1000) {
+      throw new ValidationError('orders array cannot exceed 1000 items');
+    }
+    return this.client.post<DBWCheckMetaValidationResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/meta/details',
+      { orders: request.orders },
+      { rateLimitKey: 'orders-fbw.checkMetaValidationDBW' }
     );
   }
 }

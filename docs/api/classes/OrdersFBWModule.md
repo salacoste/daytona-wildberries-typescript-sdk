@@ -2,7 +2,7 @@
 
 # Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L27)
+Defined in: [modules/orders-fbw/index.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L34)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:27](https://github.com/salacoste/dayton
 new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L28)
+Defined in: [modules/orders-fbw/index.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L35)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ createAcceptanceOption(data: ModelsGood[], options?: {
 }): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L46)
+Defined in: [modules/orders-fbw/index.ts:53](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L53)
 
 Опции приёмки
 
@@ -85,7 +85,7 @@ console.log(result);
 warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:71](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L71)
+Defined in: [modules/orders-fbw/index.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L78)
 
 Список складов
 
@@ -128,7 +128,7 @@ console.log(result);
 transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L92)
+Defined in: [modules/orders-fbw/index.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L99)
 
 Транзитные направления
 
@@ -174,7 +174,7 @@ listSupplies(data: ModelsSuppliesFiltersRequest, options?: {
 }): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:115](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L115)
+Defined in: [modules/orders-fbw/index.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L122)
 
 Список поставок
 
@@ -228,7 +228,7 @@ getSupply(ID: number, options?: {
 }): Promise<ModelsSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L142)
+Defined in: [modules/orders-fbw/index.ts:149](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L149)
 
 Детали поставки
 
@@ -283,7 +283,7 @@ getSuppliesGood(ID: number, options?: {
 }): Promise<ModelsGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L165)
+Defined in: [modules/orders-fbw/index.ts:172](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L172)
 
 Товары поставки
 
@@ -336,7 +336,7 @@ console.log(result);
 getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:190](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L190)
+Defined in: [modules/orders-fbw/index.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L197)
 
 Упаковка поставки
 
@@ -385,7 +385,7 @@ console.log(result);
 getClientInfo(orderIds: number[]): Promise<GetDBWClientInfoResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/modules/orders-fbw/index.ts#L224)
+Defined in: [modules/orders-fbw/index.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L231)
 
 Получение информации о покупателе для заказов DBW
 
@@ -440,4 +440,316 @@ const result = await sdk.ordersFBW.getClientInfo([987654321, 123456789]);
 for (const order of result.orders ?? []) {
   console.log(`Order ${order.orderID}: ${order.firstName}, phone: +${order.phoneCode}${order.phone}`);
 }
+```
+
+***
+
+### deleteMetaBulk()
+
+```ts
+deleteMetaBulk(request: DBWDeleteMetaBulkRequest): Promise<DBWDeleteMetaBulkResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L269)
+
+Удалить маркировочные метаданные у нескольких заказов DBW (массовая операция).
+
+Bulk-delete marking metadata (IMEI/UIN/GTIN/SGTIN/customsDeclaration) from up to
+N DBW orders in a single request. Mirrors the DBS `deleteMetaBulk` method.
+
+Rate limit: 150 requests/min, 400ms interval, burst 20.
+(Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
+Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | [`DBWDeleteMetaBulkRequest`](../interfaces/DBWDeleteMetaBulkRequest.md) | Orders array and metadata key to delete |
+
+#### Returns
+
+`Promise`\<[`DBWDeleteMetaBulkResponse`](../interfaces/DBWDeleteMetaBulkResponse.md)\>
+
+Per-order deletion results
+
+#### Throws
+
+When orders array is empty
+
+#### Throws
+
+When request body is malformed
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.11.0
+
+#### See
+
+[https://dev.wildberries.ru/openapi/orders-dbw](https://dev.wildberries.ru/openapi/orders-dbw)
+
+#### Example
+
+```typescript
+const result = await sdk.ordersFBW.deleteMetaBulk({ orders: [123456], key: 'imei' });
+for (const order of result.orders) {
+  console.log(`Order ${order.orderId}: ${order.success ? 'deleted' : order.error}`);
+}
+```
+
+***
+
+### setSgtinBulk()
+
+```ts
+setSgtinBulk(request: DBWSetSgtinBulkRequest): Promise<DBWSetMetaBulkResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L310)
+
+Задать SGTIN-коды для нескольких заказов DBW (массовая операция).
+
+Bulk-assign SGTIN (Serial Global Trade Item Number) codes to up to N DBW orders
+in a single request. Mirrors the DBS `setSgtinBulk` method.
+
+Rate limit: 500 requests/min, 120ms interval, burst 20.
+(Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
+Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | [`DBWSetSgtinBulkRequest`](../interfaces/DBWSetSgtinBulkRequest.md) | Per-order SGTIN assignments |
+
+#### Returns
+
+`Promise`\<[`DBWSetMetaBulkResponse`](../interfaces/DBWSetMetaBulkResponse.md)\>
+
+Per-order set results; `errors[]` present when some orders fail
+
+#### Throws
+
+When orders array is empty
+
+#### Throws
+
+When request body is malformed
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.11.0
+
+#### See
+
+[https://dev.wildberries.ru/openapi/orders-dbw](https://dev.wildberries.ru/openapi/orders-dbw)
+
+#### Example
+
+```typescript
+const result = await sdk.ordersFBW.setSgtinBulk({
+  orders: [{ orderId: 123456, sgtins: ['1234567890123456'] }],
+});
+if (result.errors?.length) {
+  console.log('Some orders failed:', result.errors);
+}
+```
+
+***
+
+### deliverBulk()
+
+```ts
+deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L362)
+
+Передать несколько заказов DBW в доставку (массовая операция).
+
+Mark up to 1000 DBW orders as "delivered" (handed to carrier) in a single request.
+Mirrors the DBS `deliverBulk` method. WB disables the legacy single-order DBW
+deliver endpoint on 2026-06-05 — use this method instead.
+
+**Important:** Orders requiring IMEI/SGTIN must have metadata attached before calling
+this method. If metadata is missing, WB returns 409 `MetaValidationFail`.
+
+Rate limit: 300 requests/min, 200ms interval, burst 20.
+(Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
+Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `orderIds` | `number`[] | Array of order IDs to mark as delivered (1–1000 items) |
+
+#### Returns
+
+`Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
+
+Per-order delivery status results. When WB returns application-level 409
+  MetaValidationFail, it surfaces in `result.results[].errors[]` with `code === 409`
+  and `detail === 'MetaValidationFail'`; check `result.results[].errors[].metaDetails[]`
+  per-order before retrying. (since 3.11.0 — WB API 2026-05-06)
+
+#### Throws
+
+When orderIds is empty or exceeds 1000 items
+
+#### Throws
+
+409 — ImeiIsNotFilled: mandatory IMEI not attached to order
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.11.0
+
+#### See
+
+[https://dev.wildberries.ru/openapi/orders-dbw](https://dev.wildberries.ru/openapi/orders-dbw)
+
+#### Example
+
+```typescript
+// Mark multiple DBW orders as handed to carrier
+const result = await sdk.ordersFBW.deliverBulk([123456, 234567, 345678]);
+
+for (const order of result.results ?? []) {
+  if (order.isError) {
+    console.log(`Order ${order.orderId} failed:`, order.errors);
+  } else {
+    console.log(`Order ${order.orderId} marked as delivered`);
+  }
+}
+```
+
+***
+
+### checkMetaValidation()
+
+```ts
+checkMetaValidation(request: DBWCheckMetaValidationRequest): Promise<DBWCheckMetaValidationResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:426](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/modules/orders-fbw/index.ts#L426)
+
+Проверить метаданные маркировки DBW-заказов перед передачей в доставку (предварительная валидация).
+
+Pre-flight metadata validator for DBW orders. Returns the same `metaDetails[]` shape
+that WB returns inside the 409 `MetaValidationFail` body of `deliverBulk()`, but as a
+200 OK response — without consuming a deliver-bulk quota attempt.
+
+**This method does NOT change order state.** It is a read-only pre-flight check.
+Use it before `deliverBulk()` to identify orders with invalid marking metadata
+(SGTIN/IMEI/UIN/etc.) so they can be fixed in advance, avoiding the guess-and-retry
+loop of: call `deliverBulk()` → catch 409 → read `metaDetails[]` → fix → retry.
+
+Rate limit: 300 requests/min, 200ms interval, burst 20.
+(Default mirrors `deliverBulk` DBW — WB has not yet published explicit limits.
+Will be updated via task-15.5 once WB publishes 07-orders-fbw.yaml.)
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | [`DBWCheckMetaValidationRequest`](../interfaces/DBWCheckMetaValidationRequest.md) | Request containing array of DBW order IDs to validate (1–1000 items) |
+
+#### Returns
+
+`Promise`\<[`DBWCheckMetaValidationResponse`](../interfaces/DBWCheckMetaValidationResponse.md)\>
+
+Per-order metadata validation results in `metaDetails[]`
+
+#### Throws
+
+When `orders` array is empty
+
+#### Throws
+
+When `orders` array exceeds 1000 items
+
+#### Throws
+
+When request body is malformed (4xx propagation)
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.11.0
+
+#### See
+
+[https://dev.wildberries.ru/openapi/orders-dbw](https://dev.wildberries.ru/openapi/orders-dbw)
+
+#### Example
+
+```typescript
+// Pre-flight pattern: validate → fix → deliver
+const validation = await sdk.ordersFBW.checkMetaValidation({
+  orders: [123456, 234567, 345678],
+});
+
+const invalidOrders = validation.metaDetails.filter(d => d.status === 'invalid');
+if (invalidOrders.length > 0) {
+  console.log('Orders with invalid metadata:', invalidOrders);
+  // Fix metadata for invalid orders first (narrow orderId: number | undefined → number):
+  const fixable = invalidOrders.filter(
+    (o): o is typeof o & { orderId: number } => o.orderId !== undefined
+  );
+  await sdk.ordersFBW.setSgtinBulk({
+    orders: fixable.map(o => ({ orderId: o.orderId, sgtins: ['correct-sgtin'] })),
+  });
+}
+
+// Now safe to deliver — no 409 MetaValidationFail expected
+const result = await sdk.ordersFBW.deliverBulk([123456, 234567, 345678]);
 ```

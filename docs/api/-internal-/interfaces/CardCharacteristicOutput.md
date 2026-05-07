@@ -2,7 +2,7 @@
 
 # Interface: CardCharacteristicOutput
 
-Defined in: [types/products.types.ts:980](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L980)
+Defined in: [types/products.types.ts:980](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/products.types.ts#L980)
 
 Characteristic value returned in card listing responses.
 Includes the characteristic name in addition to id and value.
@@ -16,6 +16,6 @@ v3.9.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | Characteristic ID | [types/products.types.ts:982](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L982) |
-| <a id="name"></a> `name?` | `string` | Characteristic name | [types/products.types.ts:984](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L984) |
-| <a id="value"></a> `value?` | `unknown` | Characteristic value | [types/products.types.ts:986](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L986) |
+| <a id="id"></a> `id?` | `number` | Characteristic ID | [types/products.types.ts:982](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/products.types.ts#L982) |
+| <a id="name"></a> `name?` | `string` | Characteristic name | [types/products.types.ts:984](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/products.types.ts#L984) |
+| <a id="value"></a> `value?` | `unknown` | Characteristic value | [types/products.types.ts:986](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/products.types.ts#L986) |

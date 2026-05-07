@@ -2,7 +2,7 @@
 
 # Interface: StatusHistoryItem
 
-Defined in: [types/orders-fbs.types.ts:340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L340)
+Defined in: [types/orders-fbs.types.ts:340](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L340)
 
 Individual order status history item
 
@@ -10,6 +10,6 @@ Individual order status history item
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="deliverydate"></a> `deliveryDate?` | `string` | Delivery date | [types/orders-fbs.types.ts:342](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L342) |
-| <a id="statuses"></a> `statuses?` | [`StatusHistoryEntry`](StatusHistoryEntry.md)[] | List of status entries | [types/orders-fbs.types.ts:344](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L344) |
-| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbs.types.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L346) |
+| <a id="deliverydate"></a> `deliveryDate?` | `string` | Delivery date | [types/orders-fbs.types.ts:342](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L342) |
+| <a id="statuses"></a> `statuses?` | [`StatusHistoryEntry`](StatusHistoryEntry.md)[] | List of status entries | [types/orders-fbs.types.ts:344](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L344) |
+| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbs.types.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L346) |

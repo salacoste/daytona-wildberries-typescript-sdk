@@ -2,7 +2,7 @@
 
 # Interface: GetCampaignCountResponse
 
-Defined in: [types/promotion.types.ts:1497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1497)
+Defined in: [types/promotion.types.ts:1497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/promotion.types.ts#L1497)
 
 Response from campaign count endpoint
 
@@ -10,5 +10,5 @@ Response from campaign count endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="adverts"></a> `adverts` | [`CampaignGroup`](CampaignGroup.md)[] \| `null` | Campaign groups by type/status | [types/promotion.types.ts:1499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1499) |
-| <a id="all"></a> `all` | `number` | Total number of campaigns | [types/promotion.types.ts:1501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1501) |
+| <a id="adverts"></a> `adverts` | [`CampaignGroup`](CampaignGroup.md)[] \| `null` | Campaign groups by type/status | [types/promotion.types.ts:1499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/promotion.types.ts#L1499) |
+| <a id="all"></a> `all` | `number` | Total number of campaigns | [types/promotion.types.ts:1501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/promotion.types.ts#L1501) |

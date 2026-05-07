@@ -70,6 +70,9 @@
       "pattern": "^https://dev\\.wildberries\\.ru/openapi"
     },
     {
+      "pattern": "^https://dev\\.wildberries\\.ru"
+    },
+    {
       "pattern": "^[a-z].*/$"
     },
     {

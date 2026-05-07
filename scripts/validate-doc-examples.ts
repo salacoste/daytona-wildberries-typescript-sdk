@@ -166,6 +166,12 @@ const VALID_METHODS: Record<string, string[]> = {
     'getSupply',
     'getSuppliesGood',
     'getSuppliesPackage',
+    // DBW bulk methods added v3.11.0 (task-15.0, task-15.2, task-15.3)
+    'getClientInfo',
+    'deleteMetaBulk',
+    'setSgtinBulk',
+    'deliverBulk',
+    'checkMetaValidation',
   ],
 
   finances: [
@@ -719,6 +725,8 @@ function main() {
       'tracking-promotion-channels-with-substitute-articles.md'
     ),
     join(__dirname, '..', 'docs', 'guides', 'migration-finance-reports-v5-to-v1.md'),
+    join(__dirname, '..', 'docs', 'guides', 'mandatory-product-characteristics.md'),
+    join(__dirname, '..', 'docs', 'ru', 'guides', 'mandatory-product-characteristics.md'),
 
     // Getting Started
     join(__dirname, '..', 'docs', 'getting-started', 'quickstart.md'),

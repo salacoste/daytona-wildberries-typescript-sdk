@@ -2,7 +2,7 @@
 
 # Interface: ReturnStatsParams
 
-Defined in: [types/returns.types.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/returns.types.ts#L175)
+Defined in: [types/returns.types.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L175)
 
 Parameters for `sdk.returns.getReturnStats()`.
 
@@ -14,8 +14,8 @@ v3.10.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="datefrom"></a> `dateFrom` | `string` | - | [types/returns.types.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/returns.types.ts#L176) |
-| <a id="dateto"></a> `dateTo` | `string` | - | [types/returns.types.ts:177](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/returns.types.ts#L177) |
-| <a id="groupby"></a> `groupBy` | `"category"` \| `"nmId"` \| `"orderType"` | Field to group by | [types/returns.types.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/returns.types.ts#L179) |
-| <a id="nmids"></a> `nmIds?` | `number`[] | Optional pre-filter passed through to getReturns() | [types/returns.types.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/returns.types.ts#L181) |
-| <a id="ordertype"></a> `orderType?` | `"fbo"` \| `"fbs"` | Optional pre-filter passed through to getReturns() | [types/returns.types.ts:183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/returns.types.ts#L183) |
+| <a id="datefrom"></a> `dateFrom` | `string` | - | [types/returns.types.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L176) |
+| <a id="dateto"></a> `dateTo` | `string` | - | [types/returns.types.ts:177](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L177) |
+| <a id="groupby"></a> `groupBy` | `"category"` \| `"nmId"` \| `"orderType"` | Field to group by | [types/returns.types.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L179) |
+| <a id="nmids"></a> `nmIds?` | `number`[] | Optional pre-filter passed through to getReturns() | [types/returns.types.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L181) |
+| <a id="ordertype"></a> `orderType?` | `"fbo"` \| `"fbs"` | Optional pre-filter passed through to getReturns() | [types/returns.types.ts:183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L183) |

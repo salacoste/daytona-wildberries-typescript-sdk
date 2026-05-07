@@ -2,7 +2,7 @@
 
 # Interface: CrossborderTurkeyClientInfo
 
-Defined in: [types/orders-fbs.types.ts:786](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L786)
+Defined in: [types/orders-fbs.types.ts:786](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L786)
 
 Client information for cross-border orders from Turkey
 
@@ -10,10 +10,10 @@ Client information for cross-border orders from Turkey
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="firstname"></a> `firstName?` | `string` | Client first name | [types/orders-fbs.types.ts:788](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L788) |
-| <a id="fullname"></a> `fullName?` | `string` | Full name (last, first, middle) | [types/orders-fbs.types.ts:790](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L790) |
-| <a id="lastname"></a> `lastName?` | `string` | Client last name | [types/orders-fbs.types.ts:792](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L792) |
-| <a id="middlename"></a> `middleName?` | `string` | Client middle name | [types/orders-fbs.types.ts:794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L794) |
-| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbs.types.ts:796](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L796) |
-| <a id="phone"></a> `phone?` | `string` | Client phone number | [types/orders-fbs.types.ts:798](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L798) |
-| <a id="phonecode"></a> `phoneCode?` | `string` | Not used | [types/orders-fbs.types.ts:800](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L800) |
+| <a id="firstname"></a> `firstName?` | `string` | Client first name | [types/orders-fbs.types.ts:788](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L788) |
+| <a id="fullname"></a> `fullName?` | `string` | Full name (last, first, middle) | [types/orders-fbs.types.ts:790](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L790) |
+| <a id="lastname"></a> `lastName?` | `string` | Client last name | [types/orders-fbs.types.ts:792](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L792) |
+| <a id="middlename"></a> `middleName?` | `string` | Client middle name | [types/orders-fbs.types.ts:794](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L794) |
+| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbs.types.ts:796](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L796) |
+| <a id="phone"></a> `phone?` | `string` | Client phone number | [types/orders-fbs.types.ts:798](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L798) |
+| <a id="phonecode"></a> `phoneCode?` | `string` | Not used | [types/orders-fbs.types.ts:800](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/orders-fbs.types.ts#L800) |

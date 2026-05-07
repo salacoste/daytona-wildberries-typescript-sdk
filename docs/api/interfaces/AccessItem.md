@@ -2,7 +2,7 @@
 
 # Interface: AccessItem
 
-Defined in: [types/user-management.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/user-management.types.ts#L48)
+Defined in: [types/user-management.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/user-management.types.ts#L48)
 
 Элемент настройки доступа к разделу профиля продавца
 
@@ -10,5 +10,5 @@ Defined in: [types/user-management.types.ts:48](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="code"></a> `code` | [`AccessCode`](../type-aliases/AccessCode.md) | Код раздела профиля продавца | [types/user-management.types.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/user-management.types.ts#L50) |
-| <a id="disabled"></a> `disabled` | `boolean` | Статус доступа к разделу: - `true` — доступ к разделу запрещён - `false` — доступ к разделу разрешён | [types/user-management.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/user-management.types.ts#L56) |
+| <a id="code"></a> `code` | [`AccessCode`](../type-aliases/AccessCode.md) | Код раздела профиля продавца | [types/user-management.types.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/user-management.types.ts#L50) |
+| <a id="disabled"></a> `disabled` | `boolean` | Статус доступа к разделу: - `true` — доступ к разделу запрещён - `false` — доступ к разделу разрешён | [types/user-management.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/user-management.types.ts#L56) |

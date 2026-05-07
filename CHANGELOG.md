@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.11.0] - 2026-05-08
+
+### Added
+
+- **`sdk.ordersFBW.deleteMetaBulk(request)`** — POST `/api/marketplace/v3/dbw/orders/meta/delete`
+  Bulk-delete marking metadata (IMEI/UIN/GTIN/SGTIN/customsDeclaration) from DBW orders.
+- **`sdk.ordersFBW.setSgtinBulk(request)`** — POST `/api/marketplace/v3/dbw/orders/meta/sgtin`
+  Bulk-assign SGTIN codes to DBW orders.
+- **`sdk.ordersFBW.deliverBulk(orderIds)`** — POST `/api/marketplace/v3/dbw/orders/status/deliver`
+  Mark up to 1000 DBW orders as handed to carrier in a single request. Validates 1–1000 array length; throws `ValidationError` otherwise. Returns `BulkStatusChangeResponse` with optional `metaDetails[]` on 409 `MetaValidationFail`.
+- **`sdk.ordersFBW.checkMetaValidation(request)`** — POST `/api/marketplace/v3/dbw/orders/meta/details`
+  Pre-flight metadata validator: returns the same `metaDetails[]` shape as the `deliverBulk()` 409 `MetaValidationFail` body, but as a 200 OK read-only response. Use before `deliverBulk()` to identify and fix invalid SGTIN/IMEI/UIN metadata without consuming a deliver-bulk quota attempt.
+- New public types: `DBWDeleteMetaBulkRequest`, `DBWDeleteMetaBulkResponse`, `DBWSetSgtinBulkRequest`, `DBWSetMetaBulkResponse`, `DBWCheckMetaValidationRequest`, `DBWCheckMetaValidationResponse`, `DBWBulkStatusChangeResponse`, `DBWStatusSetResponse`, `DBWMetaValidationDetail`. Also re-exported: `MetaValidationDetail` (canonical DBS type, also accessible via `orders-dbs` exports).
+- `OrderStatusItem.isCancellable?: boolean` field on `sdk.ordersFBS.getOrderStatuses()` response — pre-flight check for whether `cancelOrder()` will succeed (since WB API 2026-05-06).
+- `sdk.ordersDBS.deliverBulk()` response now exposes `results[].errors[].metaDetails[]` for 409 MetaValidationFail responses (since WB API 2026-05-06). Use `MetaValidationDetail` type for per-order metadata validation status.
+- `existNamedField?: boolean` and `hasFilter?: boolean` optional fields on `SubjectCharacteristic` (mirrors WB API 2026-05-06 announcement). See `docs/guides/mandatory-product-characteristics.md` for the full obligation matrix and routing logic.
+
+### Documentation
+
+- Updated `mandatory-product-characteristics` guide (EN + RU) with `existNamedField` / `hasFilter` routing flags, obligation matrix (16-row, 8 SDK-enforced + 8 server-side), and decision-tree Mermaid flowchart. Existing "Checking Mandatory Characteristics" and "Creating Cards with Required Characteristics" sections updated for the v3.10.2 helper signatures (`namedFields` / `namedFieldsPerVariant`). Migration Checklist extended with three new audit bullets. See [docs/guides/mandatory-product-characteristics.md](./docs/guides/mandatory-product-characteristics.md).
+
+### Notes
+
+- **WB 2026-05-06 announcement**: The 2026-05-06 WB announcement introduced three bulk DBW endpoints replacing legacy single-order endpoints (`deleteMetaBulk`, `setSgtinBulk`, `deliverBulk`) plus one additive pre-flight validator (`checkMetaValidation`). The legacy single-order endpoints will be **disabled on 2026-06-05**. Consumers using raw HTTP who relied on the three legacy endpoints should migrate to the three replacement bulk SDK methods before that date; the pre-flight validator is optional but recommended.
+- Rate limits default to DBS sibling values (150/500/300 req/min) — WB has not yet published explicit DBW limits. Will be regenerated via task-15.5 once WB publishes `07-orders-fbw.yaml` swagger update.
+- URL path prefix used: `/api/marketplace/v3/dbw/orders/...` (parallels existing `getClientInfo`). Alternative `/api/v3/public/dbw/orders/...` path observed in the announcement is noted in code comments; flip is a one-line edit per method.
+- **Path-prefix flip risk:** if WB swagger publishes `/api/v3/public/dbw/...` as canonical, the SDK URLs will change in a patch release. Consumers writing custom HTTP mocks against these endpoints should match on the suffix (`/dbw/orders/...`), not the full path.
+
+---
+
 ## [3.10.2] - 2026-05-06 (Hotfix)
 
 ### Fixed
@@ -12,12 +42,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Bug fix** (production): `validateRequiredCharacteristics` and `validateMergedCardVariants` now correctly handle WB API characteristics with `existNamedField:true` (e.g., `brand`, `height`, `length`, `name`, `width`, `weight`). Previously these helpers reported false positives for any required characteristic that lives outside the `characteristics[]` array.
 - **Action needed**: pass the new optional `namedFields` (or `namedFieldsPerVariant`) parameter when calling these helpers in production code. Without the parameter, helpers fall back to legacy behaviour and emit a one-time `console.warn` advising migration.
 
-### Added (paired hotfix changes)
+### Added (paired hotfix change)
 
-- `existNamedField?: boolean` and `hasFilter?: boolean` optional fields on `SubjectCharacteristic` (mirrors WB API 2026-05-06 announcement). See `docs/guides/mandatory-product-characteristics.md` for routing logic.
-- `OrderStatusItem.isCancellable?: boolean` field on `sdk.ordersFBS.getOrderStatuses()` response — pre-flight check for whether `cancelOrder()` will succeed (since WB API 2026-05-06).
-- `sdk.ordersDBS.deliverBulk()` response now exposes `results[].errors[].metaDetails[]` for 409 MetaValidationFail responses (since WB API 2026-05-06). Use new `MetaValidationDetail` type for per-order metadata validation status.
-- New public type: `MetaValidationDetail` (DBS canonical type).
+- `existNamedField` and `hasFilter` optional fields on `SubjectCharacteristic` interface (mirrors WB API 2026-05-06 announcement).
 
 ---
 

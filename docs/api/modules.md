@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.10.2
+# Wildberries API TypeScript SDK v3.11.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -52,6 +52,12 @@ Main entry point
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
 | [MetaValidationDetail](interfaces/MetaValidationDetail.md) | Per-order metadata validation status returned in 409 MetaValidationFail responses. When `deliverBulk()` returns this for an order, the marking metadata (SGTIN/IMEI) failed WB's validation — fix the metadata before retrying. |
+| [DBWDeleteMetaBulkRequest](interfaces/DBWDeleteMetaBulkRequest.md) | Request body for bulk deletion of marking metadata from DBW orders. Mirrors DBS `DeleteMetaBulkRequest`. |
+| [DBWDeleteMetaBulkResponse](interfaces/DBWDeleteMetaBulkResponse.md) | Response from bulk metadata deletion for DBW orders. Mirrors DBS `DeleteMetaBulkResponse`. |
+| [DBWSetSgtinBulkRequest](interfaces/DBWSetSgtinBulkRequest.md) | Request body for bulk SGTIN code assignment on DBW orders. Mirrors DBS `SetSgtinBulkRequest`. |
+| [DBWSetMetaBulkResponse](interfaces/DBWSetMetaBulkResponse.md) | Response from bulk metadata set operations for DBW orders. Mirrors DBS `SetMetaBulkResponse`. |
+| [DBWCheckMetaValidationRequest](interfaces/DBWCheckMetaValidationRequest.md) | Request body for [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). |
+| [DBWCheckMetaValidationResponse](interfaces/DBWCheckMetaValidationResponse.md) | Response from [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). Each item in `metaDetails[]` reports the validation status of a single order's marking metadata. Use this *before* calling deliverBulk() to detect orders that would fail with 409 MetaValidationFail. |
 | [ReturnItem](interfaces/ReturnItem.md) | Unified return record across FBO and FBS sources. |
 | [ReturnsApiRequest](interfaces/ReturnsApiRequest.md) | Request parameters for `sdk.returns.getReturns()`. |
 | [PartialFailure](interfaces/PartialFailure.md) | Per-source failure record returned in ReturnsApiResponse. |
@@ -92,6 +98,9 @@ Main entry point
 | Type Alias | Description |
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
+| [DBWBulkStatusChangeResponse](type-aliases/DBWBulkStatusChangeResponse.md) | Response shape for DBW bulk status-change operations (alias for [BulkStatusChangeResponse](-internal-/interfaces/BulkStatusChangeResponse.md)). Maintained as a DBW-prefixed alias to preserve API symmetry with DBW request types. |
+| [DBWStatusSetResponse](type-aliases/DBWStatusSetResponse.md) | Per-order result item in a DBW bulk status-change response (alias for [StatusSetResponse](-internal-/interfaces/StatusSetResponse.md)). |
+| [DBWMetaValidationDetail](type-aliases/DBWMetaValidationDetail.md) | Per-order metadata validation detail (alias for [MetaValidationDetail](interfaces/MetaValidationDetail.md)). |
 | [ReturnStatus](type-aliases/ReturnStatus.md) | Current state of a return. |
 | [ReturnCategory](type-aliases/ReturnCategory.md) | Categorized return type, derived from order fulfillment path and status history. |
 | [AccessCode](type-aliases/AccessCode.md) | Код раздела профиля продавца, к которому пользователь получит доступ. |

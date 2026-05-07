@@ -2,7 +2,7 @@
 
 # Interface: MergedCardVariant
 
-Defined in: [utils/validateMergedCardVariants.ts:8](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/utils/validateMergedCardVariants.ts#L8)
+Defined in: [utils/validateMergedCardVariants.ts:8](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/utils/validateMergedCardVariants.ts#L8)
 
 A single product variant within a merged card.
 
@@ -14,4 +14,4 @@ v3.9.2
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="characteristics"></a> `characteristics` | [`CardCharacteristicInput`](../-internal-/interfaces/CardCharacteristicInput.md)[] | Characteristics for this variant | [utils/validateMergedCardVariants.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/utils/validateMergedCardVariants.ts#L10) |
+| <a id="characteristics"></a> `characteristics` | [`CardCharacteristicInput`](../-internal-/interfaces/CardCharacteristicInput.md)[] | Characteristics for this variant | [utils/validateMergedCardVariants.ts:10](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/utils/validateMergedCardVariants.ts#L10) |

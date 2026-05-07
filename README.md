@@ -41,6 +41,16 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
+## What's New (v3.11.0) — May 2026
+
+🆕 **4 new DBW methods on `sdk.ordersFBW`** — WB disables legacy single-order DBW endpoints on **2026-06-05**; migrate now:
+- `sdk.ordersFBW.deleteMetaBulk({ orders, key })` — bulk metadata deletion
+- `sdk.ordersFBW.setSgtinBulk({ orders })` — bulk SGTIN assignment
+- `sdk.ordersFBW.deliverBulk(orderIds)` — bulk status → delivered (1–1000 orders, with 409 MetaValidationFail support)
+- `sdk.ordersFBW.checkMetaValidation({ orders })` — pre-flight metadata validator: find invalid SGTIN/IMEI/UIN before calling `deliverBulk()`, avoiding the 409 guess-and-retry loop
+
+See [CHANGELOG v3.11.0](#3110---unreleased) for full details and migration notes.
+
 ## What's New (v3.10.2 hotfix)
 
 🔧 **Bug fix**: `validateRequiredCharacteristics` and `validateMergedCardVariants` now correctly handle `existNamedField:true` characteristics (brand, height, length, etc.). See CHANGELOG v3.10.2 for migration details.
@@ -282,6 +292,16 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v3.11.0) — Май 2026
+
+🆕 **4 новых DBW-метода в `sdk.ordersFBW`** — WB отключает legacy single-order DBW эндпоинты **2026-06-05**; мигрируйте заранее:
+- `sdk.ordersFBW.deleteMetaBulk({ orders, key })` — массовое удаление маркировочных метаданных
+- `sdk.ordersFBW.setSgtinBulk({ orders })` — массовая установка SGTIN-кодов
+- `sdk.ordersFBW.deliverBulk(orderIds)` — массовая передача в доставку (1–1000 заказов, поддержка 409 MetaValidationFail)
+- `sdk.ordersFBW.checkMetaValidation({ orders })` — проверка метаданных маркировки перед передачей в доставку (предварительная валидация): находит невалидные SGTIN/IMEI/UIN до вызова `deliverBulk()`, исключая петлю guess-and-retry при 409
+
+Подробности и инструкции по миграции — в [CHANGELOG v3.11.0](#3110---unreleased).
 
 ## Что нового (v3.10.2 hotfix)
 
