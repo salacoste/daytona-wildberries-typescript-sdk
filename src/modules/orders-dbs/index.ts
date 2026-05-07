@@ -594,7 +594,10 @@ export class OrdersDbsModule {
    * Rate limit: Standard DBS rate limits apply
    *
    * @param orderIds - Array of order IDs to mark as delivered (1-1000 items)
-   * @returns Promise resolving to delivery status results for each order
+   * @returns Promise resolving to delivery status results for each order. When WB returns
+   *   application-level 409 MetaValidationFail, it surfaces in `result.results[].errors[]`
+   *   with `code === 409` and `detail === 'MetaValidationFail'`; check
+   *   `result.results[].errors[].metaDetails[]` per-order before retrying. (since 3.11.0 — WB API 2026-05-06)
    * @throws {ValidationError} When orderIds array is empty or exceeds 1000 items
    * @throws {WBAPIError} 409 — ImeiIsNotFilled: mandatory IMEI not attached to order
    * @throws {AuthenticationError} When API key is invalid (401/403)

@@ -194,6 +194,22 @@ export interface DBSOrderStatusBulk {
 }
 
 /**
+ * Per-order metadata validation status returned in 409 MetaValidationFail responses.
+ * When `deliverBulk()` returns this for an order, the marking metadata (SGTIN/IMEI)
+ * failed WB's validation — fix the metadata before retrying.
+ *
+ * @since 3.11.0
+ */
+export interface MetaValidationDetail {
+  /** Order ID this validation status applies to */
+  orderId?: number;
+  /** Validation result. WB-known values: `'valid'` | `'invalid'`. May contain other server-side strings. */
+  status?: 'valid' | 'invalid' | (string & {});
+  /** Optional human-readable detail */
+  message?: string;
+}
+
+/**
  * Response item for bulk status change operations
  */
 export interface StatusSetResponse {
@@ -207,6 +223,12 @@ export interface StatusSetResponse {
     code?: number;
     /** Error description */
     detail?: string;
+    /**
+     * Per-order metadata validation details. Present when `code === 409`
+     * and the failure is `MetaValidationFail` (since v3.11.0 — WB API 2026-05-06).
+     * Use this to identify which orders need metadata fixes before retrying deliver.
+     */
+    metaDetails?: MetaValidationDetail[];
   }[];
 }
 

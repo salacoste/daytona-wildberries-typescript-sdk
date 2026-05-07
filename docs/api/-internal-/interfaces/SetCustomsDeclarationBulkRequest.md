@@ -2,7 +2,7 @@
 
 # Interface: SetCustomsDeclarationBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:508](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L508)
+Defined in: [types/orders-dbs.types.ts:530](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L530)
 
 Request body for setCustomsDeclarationBulk
 
@@ -10,4 +10,4 @@ Request body for setCustomsDeclarationBulk
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `customsDeclaration`: `string`; \}[] | Array of orders with customs declaration numbers to set | [types/orders-dbs.types.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L510) |
+| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `customsDeclaration`: `string`; \}[] | Array of orders with customs declaration numbers to set | [types/orders-dbs.types.ts:532](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L532) |

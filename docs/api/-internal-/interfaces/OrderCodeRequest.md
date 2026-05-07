@@ -2,7 +2,7 @@
 
 # Interface: OrderCodeRequest
 
-Defined in: [types/orders-dbs.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L216)
+Defined in: [types/orders-dbs.types.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L238)
 
 Request item for receive/reject operations requiring confirmation code
 
@@ -10,5 +10,5 @@ Request item for receive/reject operations requiring confirmation code
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L218) |
-| <a id="code"></a> `code` | `string` | Confirmation code (displayed to customer on WB site/app) | [types/orders-dbs.types.ts:220](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L220) |
+| <a id="orderid"></a> `orderId` | `number` | Order ID | [types/orders-dbs.types.ts:240](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L240) |
+| <a id="code"></a> `code` | `string` | Confirmation code (displayed to customer on WB site/app) | [types/orders-dbs.types.ts:242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L242) |

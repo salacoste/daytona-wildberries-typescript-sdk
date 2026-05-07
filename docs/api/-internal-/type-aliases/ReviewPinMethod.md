@@ -6,7 +6,7 @@
 type ReviewPinMethod = "subscription" | "tariff";
 ```
 
-Defined in: [types/communications.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/communications.types.ts#L20)
+Defined in: [types/communications.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/communications.types.ts#L20)
 
 Method for pinning reviews
 - `subscription` - Jam subscription (подписка Джем)

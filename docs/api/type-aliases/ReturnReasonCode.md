@@ -14,7 +14,7 @@ type ReturnReasonCode =
   | "other";
 ```
 
-Defined in: [utils/classifyReturnReason.ts:6](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/utils/classifyReturnReason.ts#L6)
+Defined in: [utils/classifyReturnReason.ts:6](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/utils/classifyReturnReason.ts#L6)
 
 Standardized return reason codes derived from Wildberries free-text reason strings.
 

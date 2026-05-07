@@ -2,7 +2,7 @@
 
 # Interface: CommonResponseProperties
 
-Defined in: [types/analytics.types.ts:576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/analytics.types.ts#L576)
+Defined in: [types/analytics.types.ts:576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L576)
 
 Результат запроса
 
@@ -10,4 +10,4 @@ Defined in: [types/analytics.types.ts:576](https://github.com/salacoste/daytona-
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | `Record`\<`string`, `never`\> | [types/analytics.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/analytics.types.ts#L577) |
+| <a id="data"></a> `data?` | `Record`\<`string`, `never`\> | [types/analytics.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L577) |

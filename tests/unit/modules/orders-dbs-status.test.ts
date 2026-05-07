@@ -265,6 +265,30 @@ describe('OrdersDbsModule - Status Management', () => {
 
       await expect(ordersDbsModule.deliverBulk([123456])).rejects.toThrow(AuthenticationError);
     });
+
+    it('should parse 409 MetaValidationFail response with metaDetails (v3.11.0)', async () => {
+      const mockResponse = {
+        results: [
+          {
+            orderId: 12345,
+            errors: [
+              {
+                code: 409,
+                detail: 'MetaValidationFail',
+                metaDetails: [
+                  { orderId: 12345, status: 'invalid', message: 'SGTIN format invalid' },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+      const result = await ordersDbsModule.deliverBulk([12345]);
+      expect(result.results![0].errors![0].code).toBe(409);
+      expect(result.results![0].errors![0].metaDetails).toHaveLength(1);
+      expect(result.results![0].errors![0].metaDetails![0].status).toBe('invalid');
+    });
   });
 
   // ==========================================================================

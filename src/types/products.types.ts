@@ -907,6 +907,39 @@ export interface SubjectCharacteristic {
    * @since v3.9.2
    */
   isVariable?: boolean;
+  /**
+   * Routing flag — indicates how this characteristic should be passed in
+   * card create/update requests:
+   *
+   * - `false` → include in the `characteristics[]` array. Example: `color` for a coffee grinder.
+   * - `true` → pass as a separate top-level request parameter (NOT in `characteristics[]`).
+   *   Examples: `brand`, `height`, `length`, `name`, `width`, `weight`.
+   *
+   * **Important for validation helpers**: when this is `true`, the characteristic
+   * value is provided by the consumer outside `characteristics[]`. The
+   * `validateRequiredCharacteristics()` and `validateMergedCardVariants()`
+   * helpers, **starting in 3.10.2**, accept an optional `namedFields` parameter to
+   * correctly track these characteristics. (The helpers themselves were added in
+   * 3.9.0/3.9.2.)
+   *
+   * @since 3.10.2
+   * @see {@link https://dev.wildberries.ru/release-notes}
+   */
+  existNamedField?: boolean;
+  /**
+   * Read-only flag from `getObjectCharc()`. When `true`, this characteristic appears
+   * as a buyer-facing filter on the WB storefront category page.
+   *
+   * **Consumer impact:**
+   * - Combined with `required: true`, marks a key/filter mandatory characteristic
+   * - Filter characteristics typically have higher priority for buyer discovery —
+   *   surface them prominently in seller UIs
+   * - Read the obligation matrix in
+   *   `docs/guides/mandatory-product-characteristics.md` for full routing logic
+   *
+   * @since 3.10.2
+   */
+  hasFilter?: boolean;
   /** Unit name (e.g., "см", "г") */
   unitName?: string;
   /** Maximum number of values for this characteristic */

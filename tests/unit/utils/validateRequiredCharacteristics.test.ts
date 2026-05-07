@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { validateRequiredCharacteristics } from '../../../src/utils/validateRequiredCharacteristics';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 import type {
   SubjectCharacteristic,
   CardCharacteristicInput,
@@ -9,12 +10,16 @@ describe('validateRequiredCharacteristics', () => {
   const makeCharc = (
     charcID: number,
     name: string,
-    isRequiredForCreate?: boolean
+    isRequiredForCreate?: boolean,
+    extra?: Partial<SubjectCharacteristic>
   ): SubjectCharacteristic => ({
     charcID,
     name,
     isRequiredForCreate,
+    ...extra,
   });
+
+  // ── existing tests ────────────────────────────────────────────────────────
 
   it('should return empty array when all mandatory charcs are present', () => {
     const charcs: SubjectCharacteristic[] = [
@@ -107,5 +112,83 @@ describe('validateRequiredCharacteristics', () => {
     const missing = validateRequiredCharacteristics(charcs, input);
     expect(missing).toHaveLength(1);
     expect(missing[0].charcID).toBe(100);
+  });
+
+  // ── v3.10.2: existNamedField tests (TC-EN1 … TC-EN6) ─────────────────────
+
+  describe('existNamedField behaviour (v3.10.2)', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let warnSpy: any;
+
+    beforeEach(() => {
+      resetDeprecationWarnings();
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    it('TC-EN1: existNamedField:undefined char (legacy) → existing behaviour preserved', () => {
+      // A char without existNamedField set — should still check input[] by charcID
+      const charcs: SubjectCharacteristic[] = [makeCharc(10, 'Color', true, { required: true })];
+      const input: CardCharacteristicInput[] = [{ id: 10, value: 'Red' }];
+
+      const missing = validateRequiredCharacteristics(charcs, input);
+      expect(missing).toEqual([]);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('TC-EN2: existNamedField:false char → still checked in input[] (existing behaviour)', () => {
+      const charcs: SubjectCharacteristic[] = [
+        makeCharc(20, 'Size', true, { required: true, existNamedField: false }),
+      ];
+      // Not in input → should be flagged
+      const missing = validateRequiredCharacteristics(charcs, []);
+      expect(missing).toHaveLength(1);
+      expect(missing[0].charcID).toBe(20);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('TC-EN3: existNamedField:true + namedFields provided + value present → satisfied (not flagged)', () => {
+      const charcs: SubjectCharacteristic[] = [
+        makeCharc(30, 'brand', true, { required: true, existNamedField: true }),
+      ];
+      const missing = validateRequiredCharacteristics(charcs, [], { brand: 'Acme' });
+      expect(missing).toEqual([]);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('TC-EN4: existNamedField:true + namedFields provided + value missing → flagged as missing', () => {
+      const charcs: SubjectCharacteristic[] = [
+        makeCharc(31, 'height', true, { required: true, existNamedField: true }),
+      ];
+      // namedFields provided but 'height' key absent → should be flagged
+      const missing = validateRequiredCharacteristics(charcs, [], { brand: 'Acme' });
+      expect(missing).toHaveLength(1);
+      expect(missing[0].charcID).toBe(31);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('TC-EN5: existNamedField:true + namedFields NOT provided → fires warn-once', () => {
+      const charcs: SubjectCharacteristic[] = [
+        makeCharc(40, 'brand', true, { required: true, existNamedField: true }),
+      ];
+      validateRequiredCharacteristics(charcs, []);
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('existNamedField:true');
+      expect(warnSpy.mock.calls[0][0]).toContain('v3.10.2');
+    });
+
+    it('TC-EN6: 2 calls without namedFields → warn fires only once', () => {
+      const charcs: SubjectCharacteristic[] = [
+        makeCharc(50, 'brand', true, { required: true, existNamedField: true }),
+      ];
+      // First call — should warn
+      validateRequiredCharacteristics(charcs, []);
+      // Second call — warnOnce should suppress duplicate
+      validateRequiredCharacteristics(charcs, []);
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+    });
   });
 });

@@ -41,6 +41,10 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
+## What's New (v3.10.2 hotfix)
+
+🔧 **Bug fix**: `validateRequiredCharacteristics` and `validateMergedCardVariants` now correctly handle `existNamedField:true` characteristics (brand, height, length, etc.). See CHANGELOG v3.10.2 for migration details.
+
 ## What's New (v3.10.0) — May 2026
 
 🆕 **`sdk.returns` aggregator module** — single source of truth for return analytics. Combines FBO + FBS + Finance sources via `Promise.allSettled` with srid-based deduplication and per-source telemetry. Three methods:
@@ -278,6 +282,10 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v3.10.2 hotfix)
+
+🔧 **Исправление**: `validateRequiredCharacteristics` и `validateMergedCardVariants` теперь корректно обрабатывают характеристики с `existNamedField:true` (бренд, высота, длина и т.д.). Подробности миграции — в CHANGELOG v3.10.2.
 
 ## Что Нового (v3.10.0) — Май 2026
 

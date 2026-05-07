@@ -2,11 +2,11 @@
 
 # Interface: RequestPublicViewerPublicErrorsTableListV2
 
-Defined in: [types/products.types.ts:557](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/products.types.ts#L557)
+Defined in: [types/products.types.ts:557](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L557)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="cursor"></a> `cursor?` | [`SwaggerPublicErrorsCursorInput`](SwaggerPublicErrorsCursorInput.md) | [types/products.types.ts:558](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/products.types.ts#L558) |
-| <a id="order"></a> `order?` | [`SwaggerPublicErrorsOrderV2`](SwaggerPublicErrorsOrderV2.md) | [types/products.types.ts:559](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/products.types.ts#L559) |
+| <a id="cursor"></a> `cursor?` | [`SwaggerPublicErrorsCursorInput`](SwaggerPublicErrorsCursorInput.md) | [types/products.types.ts:558](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L558) |
+| <a id="order"></a> `order?` | [`SwaggerPublicErrorsOrderV2`](SwaggerPublicErrorsOrderV2.md) | [types/products.types.ts:559](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/products.types.ts#L559) |

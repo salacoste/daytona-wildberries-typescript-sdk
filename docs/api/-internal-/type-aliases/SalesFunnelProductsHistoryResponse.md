@@ -10,7 +10,7 @@ type SalesFunnelProductsHistoryResponse = {
 }[];
 ```
 
-Defined in: [types/analytics.types.ts:1655](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/analytics.types.ts#L1655)
+Defined in: [types/analytics.types.ts:1655](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1655)
 
 Ответ истории по товарам воронки продаж v3 (Swagger: ProductHistoryResponse)
 
@@ -18,6 +18,6 @@ Defined in: [types/analytics.types.ts:1655](https://github.com/salacoste/daytona
 
 | Name | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| `product` | [`SalesFunnelHistoryProduct`](../interfaces/SalesFunnelHistoryProduct.md) | Карточка товара | [types/analytics.types.ts:1657](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/analytics.types.ts#L1657) |
-| `history` | [`SalesFunnelHistory`](../interfaces/SalesFunnelHistory.md)[] | Статистика за период | [types/analytics.types.ts:1659](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/analytics.types.ts#L1659) |
-| `currency?` | `string` | Валюта (например, "RUB") | [types/analytics.types.ts:1661](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/analytics.types.ts#L1661) |
+| `product` | [`SalesFunnelHistoryProduct`](../interfaces/SalesFunnelHistoryProduct.md) | Карточка товара | [types/analytics.types.ts:1657](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1657) |
+| `history` | [`SalesFunnelHistory`](../interfaces/SalesFunnelHistory.md)[] | Статистика за период | [types/analytics.types.ts:1659](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1659) |
+| `currency?` | `string` | Валюта (например, "RUB") | [types/analytics.types.ts:1661](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/analytics.types.ts#L1661) |

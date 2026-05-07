@@ -6,7 +6,7 @@
 function resetDeprecationWarnings(): void;
 ```
 
-Defined in: [utils/deprecation.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/utils/deprecation.ts#L49)
+Defined in: [utils/deprecation.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/utils/deprecation.ts#L49)
 
 Reset all deprecation warning flags. **Test helper only.**
 

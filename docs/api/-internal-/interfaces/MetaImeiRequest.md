@@ -2,7 +2,7 @@
 
 # Interface: MetaImeiRequest
 
-Defined in: [types/orders-fbs.types.ts:110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-fbs.types.ts#L110)
+Defined in: [types/orders-fbs.types.ts:110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L110)
 
 Request body for attaching an IMEI to an order
 
@@ -10,4 +10,4 @@ Request body for attaching an IMEI to an order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="imei"></a> `imei` | `string` | IMEI number | [types/orders-fbs.types.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-fbs.types.ts#L112) |
+| <a id="imei"></a> `imei` | `string` | IMEI number | [types/orders-fbs.types.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-fbs.types.ts#L112) |

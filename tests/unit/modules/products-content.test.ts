@@ -214,6 +214,42 @@ describe('ProductsModule - Content, Directories & Tags', () => {
       expect(result.data![1].isVariable).toBe(false);
       expect(result.data![2].isVariable).toBeUndefined();
     });
+
+    it('should accept existNamedField and hasFilter fields in response (v3.10.2)', async () => {
+      const mockResponse = {
+        data: [
+          {
+            charcID: 90,
+            name: 'Бренд',
+            required: true,
+            existNamedField: true,
+            hasFilter: true,
+          },
+          {
+            charcID: 14177449,
+            name: 'Цвет',
+            required: false,
+            existNamedField: false,
+            hasFilter: true,
+            isVariable: true,
+          },
+          {
+            charcID: 100,
+            name: 'Material',
+            required: true,
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+      const result = await productsModule.getObjectCharc(1260);
+      expect(result.data).toHaveLength(3);
+      expect(result.data![0].existNamedField).toBe(true);
+      expect(result.data![0].hasFilter).toBe(true);
+      expect(result.data![1].existNamedField).toBe(false);
+      expect(result.data![1].isVariable).toBe(true);
+      expect(result.data![2].existNamedField).toBeUndefined();
+      expect(result.data![2].hasFilter).toBeUndefined();
+    });
   });
 
   // =========================================================================

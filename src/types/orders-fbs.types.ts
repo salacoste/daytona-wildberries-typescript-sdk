@@ -248,6 +248,26 @@ export interface OrderStatusItem {
   supplierStatus?: OrderSupplierStatus;
   /** Wildberries system status */
   wbStatus?: OrderWbStatus;
+  /**
+   * Whether this assembly task can still be cancelled by the seller before
+   * being transferred to Wildberries. When `true`, you can call
+   * `sdk.ordersFBS.cancelOrder(orderId)` and it will succeed.
+   *
+   * Use this field as a pre-check to avoid unnecessary API calls and 4xx errors
+   * when the task is already past the cancellation window.
+   *
+   * @since 3.11.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs/#tag/Sborochnye-zadaniya-FBS/paths/~1api~1v3~1orders~1status/post}
+   * @example
+   * ```typescript
+   * for (const status of statuses) {
+   *   if (status.isCancellable) {
+   *     await sdk.ordersFBS.cancelOrder(status.id!);
+   *   }
+   * }
+   * ```
+   */
+  isCancellable?: boolean;
 }
 
 /** Response containing order statuses */

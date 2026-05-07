@@ -230,6 +230,26 @@ describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
         expect.objectContaining({ rateLimitKey: 'orders-fbs.postOrdersStatus' })
       );
     });
+
+    it('should accept isCancellable field in OrderStatusItem (v3.11.0)', async () => {
+      const mockResponse = {
+        orders: [
+          { id: 100, supplierStatus: 'new', wbStatus: 'waiting', isCancellable: true },
+          { id: 101, supplierStatus: 'confirm', wbStatus: 'sorted', isCancellable: false },
+          {
+            id: 102,
+            supplierStatus: 'new',
+            wbStatus: 'waiting' /* isCancellable omitted — backwards compat */,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+      const result = await ordersFbs.getOrderStatuses({ orders: [100, 101, 102] });
+      expect(result.orders).toHaveLength(3);
+      expect(result.orders![0].isCancellable).toBe(true);
+      expect(result.orders![1].isCancellable).toBe(false);
+      expect(result.orders![2].isCancellable).toBeUndefined();
+    });
   });
 
   // ============================================================================

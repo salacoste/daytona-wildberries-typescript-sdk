@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.2] - 2026-05-06 (Hotfix)
+
+### Fixed
+
+- **Bug fix** (production): `validateRequiredCharacteristics` and `validateMergedCardVariants` now correctly handle WB API characteristics with `existNamedField:true` (e.g., `brand`, `height`, `length`, `name`, `width`, `weight`). Previously these helpers reported false positives for any required characteristic that lives outside the `characteristics[]` array.
+- **Action needed**: pass the new optional `namedFields` (or `namedFieldsPerVariant`) parameter when calling these helpers in production code. Without the parameter, helpers fall back to legacy behaviour and emit a one-time `console.warn` advising migration.
+
+### Added (paired hotfix changes)
+
+- `existNamedField?: boolean` and `hasFilter?: boolean` optional fields on `SubjectCharacteristic` (mirrors WB API 2026-05-06 announcement). See `docs/guides/mandatory-product-characteristics.md` for routing logic.
+- `OrderStatusItem.isCancellable?: boolean` field on `sdk.ordersFBS.getOrderStatuses()` response — pre-flight check for whether `cancelOrder()` will succeed (since WB API 2026-05-06).
+- `sdk.ordersDBS.deliverBulk()` response now exposes `results[].errors[].metaDetails[]` for 409 MetaValidationFail responses (since WB API 2026-05-06). Use new `MetaValidationDetail` type for per-order metadata validation status.
+- New public type: `MetaValidationDetail` (DBS canonical type).
+
+---
+
 ## [3.10.0] - 2026-05-04
 
 ### Added (Major Feature: WB Returns API Aggregator)

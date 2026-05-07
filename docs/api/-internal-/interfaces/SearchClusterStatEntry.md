@@ -2,7 +2,7 @@
 
 # Interface: SearchClusterStatEntry
 
-Defined in: [types/promotion.types.ts:1870](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1870)
+Defined in: [types/promotion.types.ts:1870](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1870)
 
 Statistics entry for a single search cluster
 
@@ -10,12 +10,12 @@ Statistics entry for a single search cluster
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="norm_query"></a> `norm_query` | `string` | Search cluster (normalized query) | [types/promotion.types.ts:1872](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1872) |
-| <a id="views"></a> `views` | `number` | Number of views | [types/promotion.types.ts:1874](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1874) |
-| <a id="clicks"></a> `clicks` | `number` | Number of clicks | [types/promotion.types.ts:1876](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1876) |
-| <a id="atbs"></a> `atbs` | `number` | Number of add-to-basket actions | [types/promotion.types.ts:1878](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1878) |
-| <a id="orders"></a> `orders` | `number` | Number of orders | [types/promotion.types.ts:1880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1880) |
-| <a id="ctr"></a> `ctr` | `number` | Click-through rate (%) | [types/promotion.types.ts:1882](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1882) |
-| <a id="cpc"></a> `cpc` | `number` | Cost per click (RUB) | [types/promotion.types.ts:1884](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1884) |
-| <a id="cpm"></a> `cpm` | `number` | Cost per mille - cost per 1000 impressions (RUB) | [types/promotion.types.ts:1886](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1886) |
-| <a id="avg_pos"></a> `avg_pos` | `number` | Average position on search results page | [types/promotion.types.ts:1888](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/promotion.types.ts#L1888) |
+| <a id="norm_query"></a> `norm_query` | `string` | Search cluster (normalized query) | [types/promotion.types.ts:1872](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1872) |
+| <a id="views"></a> `views` | `number` | Number of views | [types/promotion.types.ts:1874](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1874) |
+| <a id="clicks"></a> `clicks` | `number` | Number of clicks | [types/promotion.types.ts:1876](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1876) |
+| <a id="atbs"></a> `atbs` | `number` | Number of add-to-basket actions | [types/promotion.types.ts:1878](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1878) |
+| <a id="orders"></a> `orders` | `number` | Number of orders | [types/promotion.types.ts:1880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1880) |
+| <a id="ctr"></a> `ctr` | `number` | Click-through rate (%) | [types/promotion.types.ts:1882](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1882) |
+| <a id="cpc"></a> `cpc` | `number` | Cost per click (RUB) | [types/promotion.types.ts:1884](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1884) |
+| <a id="cpm"></a> `cpm` | `number` | Cost per mille - cost per 1000 impressions (RUB) | [types/promotion.types.ts:1886](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1886) |
+| <a id="avg_pos"></a> `avg_pos` | `number` | Average position on search results page | [types/promotion.types.ts:1888](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/promotion.types.ts#L1888) |

@@ -2,7 +2,7 @@
 
 # Interface: DeliveryDatesRequest
 
-Defined in: [types/orders-dbs.types.ts:392](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L392)
+Defined in: [types/orders-dbs.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L414)
 
 Request body for getDeliveryDates
 Used to query delivery date information for orders
@@ -11,4 +11,4 @@ Used to query delivery date information for orders
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to query delivery dates for | [types/orders-dbs.types.ts:394](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L394) |
+| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to query delivery dates for | [types/orders-dbs.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L416) |

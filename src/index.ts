@@ -653,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.10.0';
+export const version = '3.10.2';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -719,6 +719,9 @@ export { UserManagementModule } from './modules/user-management';
 // Modules without subpath exports (products, orders-fbs, orders-fbw, orders-dbs,
 // promotion, tariffs, in-store-pickup, general, user-management) currently have no public
 // type access path — track via WL-4.
+
+// Orders DBS types (no name conflicts with global types)
+export type { MetaValidationDetail } from './types/orders-dbs.types';
 
 // User Management types (no name conflicts with global types)
 export type {

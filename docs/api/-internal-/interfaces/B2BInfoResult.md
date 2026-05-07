@@ -2,7 +2,7 @@
 
 # Interface: B2BInfoResult
 
-Defined in: [types/orders-dbs.types.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L226)
+Defined in: [types/orders-dbs.types.ts:248](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L248)
 
 B2B buyer information result
 
@@ -10,10 +10,10 @@ B2B buyer information result
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId?` | `number` | Order ID | [types/orders-dbs.types.ts:228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L228) |
-| <a id="iserror"></a> `isError?` | `boolean` | Whether an error occurred | [types/orders-dbs.types.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L230) |
-| <a id="data"></a> `data?` | \{ `orgName?`: `string`; `inn?`: `string`; `kpp?`: `string`; \} | B2B buyer data (present if isError is false) | [types/orders-dbs.types.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L232) |
-| `data.orgName?` | `string` | Organization name | [types/orders-dbs.types.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L234) |
-| `data.inn?` | `string` | INN (Tax ID) | [types/orders-dbs.types.ts:236](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L236) |
-| `data.kpp?` | `string` | KPP (may be empty for individual entrepreneurs) | [types/orders-dbs.types.ts:238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L238) |
-| <a id="errors"></a> `errors?` | \{ `code?`: `number`; `detail?`: `string`; \}[] | Array of errors (present if isError is true) | [types/orders-dbs.types.ts:241](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/664412b904e291120a47b29888e3912d3cf7a872/src/types/orders-dbs.types.ts#L241) |
+| <a id="orderid"></a> `orderId?` | `number` | Order ID | [types/orders-dbs.types.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L250) |
+| <a id="iserror"></a> `isError?` | `boolean` | Whether an error occurred | [types/orders-dbs.types.ts:252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L252) |
+| <a id="data"></a> `data?` | \{ `orgName?`: `string`; `inn?`: `string`; `kpp?`: `string`; \} | B2B buyer data (present if isError is false) | [types/orders-dbs.types.ts:254](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L254) |
+| `data.orgName?` | `string` | Organization name | [types/orders-dbs.types.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L256) |
+| `data.inn?` | `string` | INN (Tax ID) | [types/orders-dbs.types.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L258) |
+| `data.kpp?` | `string` | KPP (may be empty for individual entrepreneurs) | [types/orders-dbs.types.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L260) |
+| <a id="errors"></a> `errors?` | \{ `code?`: `number`; `detail?`: `string`; \}[] | Array of errors (present if isError is true) | [types/orders-dbs.types.ts:263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6bf4b3c8ac3fd14863dea2ce111bf009b640b23d/src/types/orders-dbs.types.ts#L263) |
