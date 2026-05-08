@@ -63,6 +63,8 @@
   "homepage": "https://github.com/salacoste/daytona-wildberries-typescript-sdk#readme",
   "scripts": {
     "build": "vite build",
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

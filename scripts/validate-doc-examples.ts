@@ -14,8 +14,8 @@
  *   1 - Validation errors found
  */
 
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -761,6 +761,50 @@ function main() {
     join(__dirname, '..', 'examples', 'promotion-campaign-automation.ts'),
     join(__dirname, '..', 'examples', 'integration-product-order-finance.ts'),
   ];
+
+  // Coverage-gap check: warn if any guide .md file under docs/guides/ or docs/ru/guides/
+  // is missing from docsToValidate. Prevents the class of bug surfaced in Sprint 15
+  // (15.3 M2 + 15.8 M7) where new guides shipped without their snippets being validated.
+  const guideRoots = [
+    join(__dirname, '..', 'docs', 'guides'),
+    join(__dirname, '..', 'docs', 'ru', 'guides'),
+  ];
+  const docsToValidateSet = new Set(docsToValidate);
+  const repoRoot = join(__dirname, '..');
+  const uncoveredGuides: string[] = [];
+  for (const guideRoot of guideRoots) {
+    try {
+      const entries = readdirSync(guideRoot);
+      for (const entry of entries) {
+        const fullPath = join(guideRoot, entry);
+        try {
+          if (statSync(fullPath).isFile() && entry.endsWith('.md')) {
+            if (!docsToValidateSet.has(fullPath)) {
+              uncoveredGuides.push(relative(repoRoot, fullPath));
+            }
+          }
+        } catch {
+          // ignore stat errors on individual entries
+        }
+      }
+    } catch {
+      // ignore missing guide roots
+    }
+  }
+  if (uncoveredGuides.length > 0) {
+    console.log(
+      `\n${colors.yellow}⚠ Coverage gap: ${String(uncoveredGuides.length)} guide file(s) under docs/guides/ are NOT in docsToValidate:${colors.reset}`
+    );
+    for (const path of uncoveredGuides) {
+      console.log(`  - ${path}`);
+    }
+    console.log(
+      `${colors.yellow}  → Add to docsToValidate in scripts/validate-doc-examples.ts${colors.reset}`
+    );
+    console.log(
+      `${colors.yellow}  (Sprint 15 lesson: shipping a guide without snippet validation hides bugs)${colors.reset}\n`
+    );
+  }
 
   const results: ValidationResult[] = [];
   let totalErrors = 0;

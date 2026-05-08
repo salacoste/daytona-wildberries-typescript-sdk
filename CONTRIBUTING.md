@@ -416,6 +416,57 @@ npm run test:coverage
 
 ---
 
+## Common Pitfalls (Error Handling Patterns)
+
+### Application-level error codes inside HTTP 200 responses
+
+Several WB endpoints return **HTTP 200** with an application-level error code embedded
+in the response body. The most prominent example: `code: 409` with `detail: 'MetaValidationFail'`
+from `ordersDBS.deliverBulk()` and `ordersFBW.deliverBulk()`.
+
+Because these arrive as HTTP 200, `BaseClient.transformError()` does NOT throw — the body
+is returned to the caller intact.
+
+**Right way to handle this in module JSDoc:**
+
+```ts
+/**
+ * @returns Promise resolving to BulkStatusChangeResponse. When WB returns a 409
+ *   MetaValidationFail at the application level, inspect:
+ *   - `result.results[].errors[].code === 409`
+ *   - `result.results[].errors[].detail === 'MetaValidationFail'`
+ *   - `result.results[].errors[].metaDetails[]` (per-order SGTIN/IMEI/UIN status)
+ *
+ *   Use `checkMetaValidation()` as a pre-flight to detect bad metadata before retry.
+ */
+```
+
+**Wrong patterns to avoid:**
+
+- ❌ Adding `@throws {ValidationError} (409)` — the method does NOT throw on 409.
+- ❌ Referencing `error.response.errors[]` in JSDoc — there is no thrown error to access.
+- ❌ Writing tests with `mockClient.post.mockRejectedValue(...)` for the 409 path —
+  the 409 arrives as resolved value, not rejection. Use `mockResolvedValue()` and assert
+  on `result.results[]` shape.
+
+If you ever change `BaseClient.transformError()` to throw on HTTP 409, update every
+`deliverBulk()` JSDoc and the corresponding error-path tests across `orders-dbs` and
+`orders-fbw` in lockstep. See `src/client/base-client.ts:transformError()` for the
+canonical mapping table.
+
+### Sharded vs unsharded swagger sync
+
+Swagger source files in `wildberries_api_doc/` exist in two forms:
+- Single-file: `<NN>-<module>.yaml`
+- Sharded: `<NN>-<module>/<tag>.yaml` + `_index.yaml` + `_schemas.yaml`
+
+Both must stay in sync. Use `node wildberries_api_doc/validate_shards.cjs` to verify;
+this script enforces parity for modules listed in its `modules` array. When adding
+endpoints to a yaml that the script does not currently cover, add the module name
+to the script's `modules` array in the same PR.
+
+---
+
 ## Pull Request Process
 
 ### Before Submitting

@@ -445,6 +445,26 @@ export class BaseClient {
    * - 400/422 → ValidationError
    * - 5xx → NetworkError
    * - Network failures → NetworkError
+   * - All other 4xx (including **409**) → generic `WBAPIError` fallback
+   *
+   * **IMPORTANT — application-level error codes inside 200 OK bodies (since v3.10.2):**
+   *
+   * Several WB endpoints return HTTP 200 with an **application-level** error code
+   * embedded in the response body (most notably `code: 409` with `detail: 'MetaValidationFail'`
+   * for `ordersDBS.deliverBulk()` and `ordersFBW.deliverBulk()`). Because these arrive
+   * as HTTP 200 the BaseClient does NOT throw — the body is returned to the caller intact.
+   *
+   * Consumers must inspect the per-order shape, not catch a thrown error. Canonical paths:
+   * - `result.results[].errors[].code === 409`
+   * - `result.results[].errors[].detail === 'MetaValidationFail'`
+   * - `result.results[].errors[].metaDetails[]` (per-order SGTIN/IMEI/UIN validation status)
+   *
+   * Endpoint-level JSDoc on `deliverBulk()` and `checkMetaValidation()` documents this
+   * pattern explicitly. Do NOT add `@throws` annotations referencing this 409 pattern
+   * (it does not throw); use prose instead.
+   *
+   * If you change BaseClient to throw on HTTP 409, update every `deliverBulk()` JSDoc and
+   * the corresponding error-path tests across `orders-dbs` and `orders-fbw` modules in lockstep.
    *
    * @param error - Error from Axios request
    * @throws Typed SDK error
