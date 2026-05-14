@@ -2,12 +2,12 @@
 
 # Interface: ProductOrdersTextItem
 
-Defined in: [types/analytics.types.ts:439](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L439)
+Defined in: [types/analytics.types.ts:439](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/analytics.types.ts#L439)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="text"></a> `text` | `string` | Текст поискового запроса | [types/analytics.types.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L441) |
-| <a id="frequency"></a> `frequency` | `number` | Количество обращений с поисковым запросом | [types/analytics.types.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L443) |
-| <a id="dateitems"></a> `dateItems` | [`ProductOrdersMetrics`](ProductOrdersMetrics.md)[] | Статистика по датам | [types/analytics.types.ts:445](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L445) |
+| <a id="text"></a> `text` | `string` | Текст поискового запроса | [types/analytics.types.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/analytics.types.ts#L441) |
+| <a id="frequency"></a> `frequency` | `number` | Количество обращений с поисковым запросом | [types/analytics.types.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/analytics.types.ts#L443) |
+| <a id="dateitems"></a> `dateItems` | [`ProductOrdersMetrics`](ProductOrdersMetrics.md)[] | Статистика по датам | [types/analytics.types.ts:445](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/analytics.types.ts#L445) |

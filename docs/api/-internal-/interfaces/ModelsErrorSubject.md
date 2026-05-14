@@ -2,11 +2,11 @@
 
 # Interface: ModelsErrorSubject
 
-Defined in: [types/products.types.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/products.types.ts#L543)
+Defined in: [types/products.types.ts:543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L543)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID предмета | [types/products.types.ts:545](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/products.types.ts#L545) |
-| <a id="name"></a> `name` | `string` | Название предмета | [types/products.types.ts:547](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/products.types.ts#L547) |
+| <a id="id"></a> `id` | `number` | ID предмета | [types/products.types.ts:545](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L545) |
+| <a id="name"></a> `name` | `string` | Название предмета | [types/products.types.ts:547](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L547) |

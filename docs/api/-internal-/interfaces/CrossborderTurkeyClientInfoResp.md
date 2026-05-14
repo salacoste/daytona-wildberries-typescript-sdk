@@ -2,7 +2,7 @@
 
 # Interface: CrossborderTurkeyClientInfoResp
 
-Defined in: [types/orders-fbs.types.ts:806](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/orders-fbs.types.ts#L806)
+Defined in: [types/orders-fbs.types.ts:806](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/orders-fbs.types.ts#L806)
 
 Response wrapper for cross-border Turkey client information
 
@@ -10,4 +10,4 @@ Response wrapper for cross-border Turkey client information
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`CrossborderTurkeyClientInfo`](CrossborderTurkeyClientInfo.md)[] | Client info entries for cross-border orders from Turkey | [types/orders-fbs.types.ts:808](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/orders-fbs.types.ts#L808) |
+| <a id="orders"></a> `orders?` | [`CrossborderTurkeyClientInfo`](CrossborderTurkeyClientInfo.md)[] | Client info entries for cross-border orders from Turkey | [types/orders-fbs.types.ts:808](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/orders-fbs.types.ts#L808) |

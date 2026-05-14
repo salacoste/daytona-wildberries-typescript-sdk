@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryStatsResponse
 
-Defined in: [types/promotion.types.ts:916](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L916)
+Defined in: [types/promotion.types.ts:916](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L916)
 
 Статистика по поисковым кластерам
 
@@ -10,4 +10,4 @@ Defined in: [types/promotion.types.ts:916](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stats"></a> `stats` | [`V0GetNormQueryStatsItem`](V0GetNormQueryStatsItem.md)[] | Статистика | [types/promotion.types.ts:918](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L918) |
+| <a id="stats"></a> `stats` | [`V0GetNormQueryStatsItem`](V0GetNormQueryStatsItem.md)[] | Статистика | [types/promotion.types.ts:918](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L918) |

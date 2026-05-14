@@ -2,7 +2,7 @@
 
 # Interface: PinnedReviewsDeleteResponse
 
-Defined in: [types/communications.types.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/communications.types.ts#L176)
+Defined in: [types/communications.types.ts:176](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/communications.types.ts#L176)
 
 Response from unpin reviews operation
 
@@ -10,4 +10,4 @@ Response from unpin reviews operation
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | `number`[] | Array of successfully unpinned pin IDs | [types/communications.types.ts:178](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/communications.types.ts#L178) |
+| <a id="data"></a> `data` | `number`[] | Array of successfully unpinned pin IDs | [types/communications.types.ts:178](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/communications.types.ts#L178) |

@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryMinusRequest
 
-Defined in: [types/promotion.types.ts:1034](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1034)
+Defined in: [types/promotion.types.ts:1034](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1034)
 
 Запрос на получение минус-фраз
 
@@ -10,4 +10,4 @@ Defined in: [types/promotion.types.ts:1034](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`V0GetNormQueryMinusRequestItem`](V0GetNormQueryMinusRequestItem.md)[] | Массив элементов запроса (макс. 100) | [types/promotion.types.ts:1036](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1036) |
+| <a id="items"></a> `items` | [`V0GetNormQueryMinusRequestItem`](V0GetNormQueryMinusRequestItem.md)[] | Массив элементов запроса (макс. 100) | [types/promotion.types.ts:1036](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1036) |

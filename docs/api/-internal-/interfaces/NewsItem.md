@@ -2,7 +2,7 @@
 
 # Interface: NewsItem
 
-Defined in: [types/general.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L20)
+Defined in: [types/general.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/general.types.ts#L20)
 
 News item structure from news endpoint
 
@@ -10,8 +10,8 @@ News item structure from news endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID новости | [types/general.types.ts:22](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L22) |
-| <a id="header"></a> `header` | `string` | Заголовок новости | [types/general.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L24) |
-| <a id="date"></a> `date` | `string` | Дата и время публикации новости | [types/general.types.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L26) |
-| <a id="content"></a> `content` | `string` | Текст новости | [types/general.types.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L28) |
-| <a id="types"></a> `types` | [`NewsTag`](NewsTag.md)[] | Теги новости | [types/general.types.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L30) |
+| <a id="id"></a> `id` | `number` | ID новости | [types/general.types.ts:22](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/general.types.ts#L22) |
+| <a id="header"></a> `header` | `string` | Заголовок новости | [types/general.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/general.types.ts#L24) |
+| <a id="date"></a> `date` | `string` | Дата и время публикации новости | [types/general.types.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/general.types.ts#L26) |
+| <a id="content"></a> `content` | `string` | Текст новости | [types/general.types.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/general.types.ts#L28) |
+| <a id="types"></a> `types` | [`NewsTag`](NewsTag.md)[] | Теги новости | [types/general.types.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/general.types.ts#L30) |

@@ -2,7 +2,7 @@
 
 # Interface: ApiGTINRequest
 
-Defined in: [types/in-store-pickup.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/in-store-pickup.types.ts#L56)
+Defined in: [types/in-store-pickup.types.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/in-store-pickup.types.ts#L56)
 
 ## Example
 
@@ -18,4 +18,4 @@ Defined in: [types/in-store-pickup.types.ts:56](https://github.com/salacoste/day
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="gtin"></a> `gtin?` | `string` | GTIN | [types/in-store-pickup.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/in-store-pickup.types.ts#L58) |
+| <a id="gtin"></a> `gtin?` | `string` | GTIN | [types/in-store-pickup.types.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/in-store-pickup.types.ts#L58) |

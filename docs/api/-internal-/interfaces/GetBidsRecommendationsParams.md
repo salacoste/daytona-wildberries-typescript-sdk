@@ -2,7 +2,7 @@
 
 # Interface: GetBidsRecommendationsParams
 
-Defined in: [types/promotion.types.ts:1897](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1897)
+Defined in: [types/promotion.types.ts:1897](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1897)
 
 Parameters for the bid recommendations endpoint
 
@@ -14,5 +14,5 @@ Parameters for the bid recommendations endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advertid"></a> `advertId` | `number` | Campaign ID | [types/promotion.types.ts:1899](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1899) |
-| <a id="nmid"></a> `nmId` | `number` | WB article ID | [types/promotion.types.ts:1901](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1901) |
+| <a id="advertid"></a> `advertId` | `number` | Campaign ID | [types/promotion.types.ts:1899](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1899) |
+| <a id="nmid"></a> `nmId` | `number` | WB article ID | [types/promotion.types.ts:1901](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1901) |

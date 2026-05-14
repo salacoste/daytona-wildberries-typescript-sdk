@@ -56,27 +56,40 @@ function sanitizeStocksRequest(
   data: StocksRequest,
   methodName: 'getStocks' | 'deleteStock'
 ): StocksRequest {
+  // N2: no null-guard here — parameter type is StocksRequest (non-nullable); the
+  // Array.isArray checks below already handle absent/undefined fields safely.
   const hasLegacy = Array.isArray(data.skus) && data.skus.length > 0;
   const hasNew = Array.isArray(data.chrtIds) && data.chrtIds.length > 0;
+  // N1: detect "key present but empty" — chrtIds: [] is a migration-in-progress signal,
+  // not a "legacy-only" call. Strip empty chrtIds before legacy-only branch to avoid
+  // confusing the consumer (and avoid sending a malformed payload to WB).
+  const hasEmptyChrtIds = Array.isArray(data.chrtIds) && data.chrtIds.length === 0;
 
   if (hasLegacy && !hasNew) {
-    // task-16.2: WB API rejects `skus` after 2026-05-20 13:00 MSK
+    // task-16.2: WB API will reject `skus` after 2026-05-20 13:00 MSK
     warnOnce(
       `products.${methodName}:legacy-skus-call`,
       `products.${methodName}: the \`skus\` parameter is deprecated. WB API will reject ` +
-        `\`skus\` after 2026-05-20 13:00 MSK with HTTP 400. Migrate to \`chrtIds\` ` +
+        `requests with \`skus\` after 2026-05-20 13:00 MSK with HTTP 400. Migrate to \`chrtIds\` ` +
         `(size IDs from POST /content/v2/get/cards/list). ` +
         `See docs/guides/stocks-sku-to-chrtid-migration.md.`
     );
+    // N1: if empty chrtIds was declared (migration in-progress), strip it so WB doesn't
+    // see a malformed payload. The legacy-skus warning already fired, which is correct.
+    if (hasEmptyChrtIds) {
+      const { chrtIds, ...rest } = data;
+      void chrtIds;
+      return rest;
+    }
     return data;
   }
 
   if (hasLegacy && hasNew) {
-    // task-16.2: prefer chrtIds, strip skus; WB API rejects `skus` after 2026-05-20 13:00 MSK
+    // task-16.2: prefer chrtIds, strip skus; WB API will reject `skus` after 2026-05-20 13:00 MSK
     warnOnce(
       `products.${methodName}:mixed-skus-and-chrtIds`,
       `products.${methodName}: both \`skus\` and \`chrtIds\` provided. The SDK is sending ` +
-        `ONLY \`chrtIds\` to WB (\`skus\` will be stripped); WB API rejects \`skus\` after ` +
+        `ONLY \`chrtIds\` to WB (\`skus\` will be stripped); WB API will reject \`skus\` after ` +
         `2026-05-20 13:00 MSK with HTTP 400. Remove \`skus\` from your request to avoid this ` +
         `warning. See docs/guides/stocks-sku-to-chrtid-migration.md.`
     );
@@ -98,13 +111,26 @@ function sanitizeStocksRequest(
 function sanitizeUpdateStockPayload(
   data: UpdateStockRequest | undefined
 ): UpdateStockRequest | undefined {
+  // N2: Array.isArray guard is defensive against JS consumers (TS contract says
+  // stocks: StockItem[] always). May trigger no-unnecessary-condition in future
+  // refactors — keep the composite condition together.
   if (!data || !Array.isArray(data.stocks) || data.stocks.length === 0) return data;
 
-  const hasLegacyOnly = data.stocks.some((s) => s.sku !== undefined && s.chrtId === undefined);
-  const hasMixed = data.stocks.some((s) => s.sku !== undefined && s.chrtId !== undefined);
+  // N3: single-pass loop with early-exit when both flags set (avoids double .some() walk
+  // on large batches — up to 10k items). N4: use != null (nullish check catches both
+  // null + undefined, unlike !== undefined which lets null through as "set").
+  let hasLegacyOnly = false;
+  let hasMixed = false;
+  for (const s of data.stocks) {
+    const skuSet = s.sku != null; // N4: nullish — catches null + undefined
+    const chrtIdSet = s.chrtId != null; // N4: nullish — catches null + undefined
+    if (skuSet && !chrtIdSet) hasLegacyOnly = true;
+    else if (skuSet && chrtIdSet) hasMixed = true;
+    if (hasLegacyOnly && hasMixed) break; // N3: early-exit when both flags set
+  }
 
   if (hasLegacyOnly) {
-    // task-16.2: WB API rejects items with `sku` after 2026-05-20 13:00 MSK
+    // task-16.2: WB API will reject items with `sku` after 2026-05-20 13:00 MSK
     warnOnce(
       'products.updateStock:legacy-sku-call',
       `products.updateStock: stock items with \`sku\` (no \`chrtId\`) are deprecated. ` +
@@ -115,18 +141,18 @@ function sanitizeUpdateStockPayload(
   }
 
   if (hasMixed) {
-    // task-16.2: prefer chrtId per item, strip sku from mixed items; WB API rejects `sku` after 2026-05-20 13:00 MSK
+    // task-16.2: prefer chrtId per item, strip sku from mixed items; WB API will reject `sku` after 2026-05-20 13:00 MSK
     warnOnce(
       'products.updateStock:mixed-sku-and-chrtId',
       `products.updateStock: some items have BOTH \`sku\` and \`chrtId\`. The SDK is sending ` +
         `ONLY \`chrtId\` per item to WB (\`sku\` will be stripped from those items); WB API ` +
-        `rejects \`sku\` after 2026-05-20 13:00 MSK with HTTP 400. Remove \`sku\` from items ` +
+        `will reject \`sku\` after 2026-05-20 13:00 MSK with HTTP 400. Remove \`sku\` from items ` +
         `that already have \`chrtId\` to avoid this warning. ` +
         `See docs/guides/stocks-sku-to-chrtid-migration.md.`
     );
     return {
       stocks: data.stocks.map((s) => {
-        if (s.chrtId !== undefined && s.sku !== undefined) {
+        if (s.chrtId != null && s.sku != null) {
           const { sku, ...rest } = s;
           void sku;
           return rest;

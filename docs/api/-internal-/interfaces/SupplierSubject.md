@@ -2,7 +2,7 @@
 
 # Interface: SupplierSubject
 
-Defined in: [types/promotion.types.ts:1543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1543)
+Defined in: [types/promotion.types.ts:1543](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1543)
 
 Subject item for campaigns
 
@@ -10,6 +10,6 @@ Subject item for campaigns
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | Subject ID | [types/promotion.types.ts:1545](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1545) |
-| <a id="name"></a> `name` | `string` | Subject name | [types/promotion.types.ts:1547](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1547) |
-| <a id="count"></a> `count` | `number` | Number of WB articles (nmId) with this subject | [types/promotion.types.ts:1549](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L1549) |
+| <a id="id"></a> `id` | `number` | Subject ID | [types/promotion.types.ts:1545](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1545) |
+| <a id="name"></a> `name` | `string` | Subject name | [types/promotion.types.ts:1547](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1547) |
+| <a id="count"></a> `count` | `number` | Number of WB articles (nmId) with this subject | [types/promotion.types.ts:1549](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1549) |
