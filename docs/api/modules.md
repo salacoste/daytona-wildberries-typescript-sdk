@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.12.0
+# Wildberries API TypeScript SDK v3.13.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -51,6 +51,7 @@ Main entry point
 | [OperationMetadata](interfaces/OperationMetadata.md) | Metadata for a single SDK operation |
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
+| [SellerMessageRequest](interfaces/SellerMessageRequest.md) | Request body for [CommunicationsModule.createSellerMessage](classes/CommunicationsModule.md#createsellermessage). |
 | [MetaValidationDetail](interfaces/MetaValidationDetail.md) | Per-order metadata validation status returned in 409 MetaValidationFail responses. When `deliverBulk()` returns this for an order, the marking metadata (SGTIN/IMEI) failed WB's validation — fix the metadata before retrying. |
 | [DBWDeleteMetaBulkRequest](interfaces/DBWDeleteMetaBulkRequest.md) | Request body for bulk deletion of marking metadata from DBW orders. Mirrors DBS `DeleteMetaBulkRequest`. |
 | [DBWDeleteMetaBulkResponse](interfaces/DBWDeleteMetaBulkResponse.md) | Response from bulk metadata deletion for DBW orders. Mirrors DBS `DeleteMetaBulkResponse`. |
@@ -131,6 +132,7 @@ Main entry point
 | [tariffsRateLimits](variables/tariffsRateLimits.md) | - |
 | [userManagementRateLimits](variables/userManagementRateLimits.md) | - |
 | [version](variables/version.md) | SDK version |
+| [COMMUNICATIONS\_LIMITS](variables/COMMUNICATIONS_LIMITS.md) | Exported limits for external testability and documentation. |
 
 ## Functions
 

@@ -729,6 +729,8 @@ function main() {
     join(__dirname, '..', 'docs', 'ru', 'guides', 'mandatory-product-characteristics.md'),
     join(__dirname, '..', 'docs', 'guides', 'stocks-sku-to-chrtid-migration.md'),
     join(__dirname, '..', 'docs', 'ru', 'guides', 'stocks-sku-to-chrtid-migration.md'),
+    join(__dirname, '..', 'docs', 'guides', 'chat-replysign-format-migration.md'),
+    join(__dirname, '..', 'docs', 'ru', 'guides', 'chat-replysign-format-migration.md'),
 
     // Getting Started
     join(__dirname, '..', 'docs', 'getting-started', 'quickstart.md'),

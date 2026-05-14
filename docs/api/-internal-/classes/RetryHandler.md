@@ -2,7 +2,7 @@
 
 # Class: RetryHandler
 
-Defined in: [client/retry-handler.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/client/retry-handler.ts#L200)
+Defined in: [client/retry-handler.ts:200](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/client/retry-handler.ts#L200)
 
 RetryHandler - Automatic retry with exponential backoff
 
@@ -41,7 +41,7 @@ const result = await handler.executeWithRetry(
 new RetryHandler(config?: RetryConfig, logLevel?: "debug" | "info" | "warn" | "error"): RetryHandler;
 ```
 
-Defined in: [client/retry-handler.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/client/retry-handler.ts#L223)
+Defined in: [client/retry-handler.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/client/retry-handler.ts#L223)
 
 Creates a new RetryHandler instance
 
@@ -81,7 +81,7 @@ executeWithRetry<T>(
 options?: RetryOptions): Promise<T>;
 ```
 
-Defined in: [client/retry-handler.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/client/retry-handler.ts#L279)
+Defined in: [client/retry-handler.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/client/retry-handler.ts#L279)
 
 Executes an async operation with automatic retry on transient failures
 

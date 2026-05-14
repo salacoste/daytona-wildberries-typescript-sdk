@@ -6,7 +6,7 @@
 function parseMoneyAmount(value?: string | null): number;
 ```
 
-Defined in: [utils/parseMoneyAmount.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/parseMoneyAmount.ts#L31)
+Defined in: [utils/parseMoneyAmount.ts:31](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/parseMoneyAmount.ts#L31)
 
 Parse a money amount string from v1 finance reports to a JavaScript number.
 

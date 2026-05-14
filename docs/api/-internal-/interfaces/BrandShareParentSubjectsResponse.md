@@ -2,7 +2,7 @@
 
 # Interface: BrandShareParentSubjectsResponse
 
-Defined in: [types/reports.types.ts:605](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/reports.types.ts#L605)
+Defined in: [types/reports.types.ts:605](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/reports.types.ts#L605)
 
 Response for getBrandShareParentSubjects
 
@@ -14,4 +14,4 @@ EPIC 43 - Response type for getBrandShareParentSubjects
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`BrandShareParentSubjectsItem`](BrandShareParentSubjectsItem.md)[] | [types/reports.types.ts:606](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/reports.types.ts#L606) |
+| <a id="data"></a> `data?` | [`BrandShareParentSubjectsItem`](BrandShareParentSubjectsItem.md)[] | [types/reports.types.ts:606](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/reports.types.ts#L606) |

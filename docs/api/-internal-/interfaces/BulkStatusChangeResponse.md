@@ -2,7 +2,7 @@
 
 # Interface: BulkStatusChangeResponse
 
-Defined in: [types/orders-dbs.types.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-dbs.types.ts#L351)
+Defined in: [types/orders-dbs.types.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-dbs.types.ts#L351)
 
 Response from bulk status change operations
 
@@ -10,5 +10,5 @@ Response from bulk status change operations
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="requestid"></a> `requestId?` | `string` | Unique request ID | [types/orders-dbs.types.ts:353](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-dbs.types.ts#L353) |
-| <a id="results"></a> `results?` | [`StatusSetResponse`](StatusSetResponse.md)[] | Results for each order | [types/orders-dbs.types.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-dbs.types.ts#L355) |
+| <a id="requestid"></a> `requestId?` | `string` | Unique request ID | [types/orders-dbs.types.ts:353](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-dbs.types.ts#L353) |
+| <a id="results"></a> `results?` | [`StatusSetResponse`](StatusSetResponse.md)[] | Results for each order | [types/orders-dbs.types.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-dbs.types.ts#L355) |

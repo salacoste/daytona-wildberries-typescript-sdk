@@ -19,10 +19,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { CommunicationsModule } from '../../../src/modules/communications';
 import type { BaseClient } from '../../../src/client/base-client';
+import type { SellerMessageRequest } from '../../../src/types/communications.types';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 
 describe('CommunicationsModule', () => {
   let mockClient: {
@@ -437,17 +439,173 @@ describe('CommunicationsModule', () => {
       });
     });
 
-    describe('createSellerMessage() - Send message', () => {
-      it('should call correct URL with rateLimitKey', async () => {
-        mockClient.post.mockResolvedValue({ messageId: 'msg1' });
+    describe('createSellerMessage() - Send message (v3.13.0)', () => {
+      const NEW_FORMAT_REPLYSIGN =
+        '1:1e265a58-a120-b178-008c-60af2460207c:66f136e919a8207e136757754f253189bfb9ae1ad9da9170c9d5c478626663908888c370216525bef51c0ca8d77952e05c9c17f9b63ab00374c5555b42efc07d';
+      const OLD_FORMAT_REPLYSIGN = 'old-short-replysign-no-prefix';
 
-        await communicationsModule.createSellerMessage();
+      beforeEach(() => {
+        resetDeprecationWarnings();
+      });
 
-        expect(mockClient.post).toHaveBeenCalledWith(
-          'https://buyer-chat-api.wildberries.ru/api/v1/seller/message',
-          undefined,
-          { rateLimitKey: 'communications.postSellerMessage' }
+      it('AC-11: happy path — new-format replySign + message, POST URL, multipart body, no warning', async () => {
+        const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        mockClient.post.mockResolvedValue({ result: { chatID: 'chat1' } });
+
+        await communicationsModule.createSellerMessage({
+          replySign: NEW_FORMAT_REPLYSIGN,
+          message: 'Hello buyer!',
+        });
+
+        const [url, body, options] = mockClient.post.mock.calls[0] as [
+          string,
+          FormData,
+          { rateLimitKey: string; headers: Record<string, unknown> },
+        ];
+        expect(url).toBe('https://buyer-chat-api.wildberries.ru/api/v1/seller/message');
+        expect(body).toBeInstanceOf(FormData);
+        expect(body.get('replySign')).toBe(NEW_FORMAT_REPLYSIGN);
+        expect(body.get('message')).toBe('Hello buyer!');
+        expect(options.rateLimitKey).toBe('communications.postSellerMessage');
+        expect(options.headers['Content-Type']).toBeUndefined();
+        expect(spy).not.toHaveBeenCalled();
+        spy.mockRestore();
+      });
+
+      it('AC-12: throws ValidationError when replySign is empty string', async () => {
+        await expect(communicationsModule.createSellerMessage({ replySign: '' })).rejects.toThrow(
+          ValidationError
         );
+        await expect(communicationsModule.createSellerMessage({ replySign: '' })).rejects.toThrow(
+          'replySign is required'
+        );
+      });
+
+      it('AC-13: throws ValidationError when replySign is missing (JS caller)', async () => {
+        await expect(
+          communicationsModule.createSellerMessage(
+            {} as Partial<SellerMessageRequest> as SellerMessageRequest
+          )
+        ).rejects.toThrow(ValidationError);
+      });
+
+      it('should throw ValidationError when data is null/undefined (H1)', async () => {
+        await expect(
+          communicationsModule.createSellerMessage(null as unknown as SellerMessageRequest)
+        ).rejects.toThrow(ValidationError);
+        await expect(
+          communicationsModule.createSellerMessage(undefined as unknown as SellerMessageRequest)
+        ).rejects.toThrow(/data is required/);
+      });
+
+      it('should throw ValidationError when replySign is whitespace-only (M4)', async () => {
+        await expect(
+          communicationsModule.createSellerMessage({ replySign: '   ' })
+        ).rejects.toThrow(/non-empty/);
+      });
+
+      it('AC-14: throws ValidationError when replySign exceeds 255 chars', async () => {
+        const longSign = 'a'.repeat(256);
+        await expect(
+          communicationsModule.createSellerMessage({ replySign: longSign })
+        ).rejects.toThrow(ValidationError);
+        await expect(
+          communicationsModule.createSellerMessage({ replySign: longSign })
+        ).rejects.toThrow('maxLength 255');
+      });
+
+      it('AC-14b: throws ValidationError when message exceeds 1000 chars', async () => {
+        await expect(
+          communicationsModule.createSellerMessage({
+            replySign: NEW_FORMAT_REPLYSIGN,
+            message: 'x'.repeat(1001),
+          })
+        ).rejects.toThrow(ValidationError);
+        await expect(
+          communicationsModule.createSellerMessage({
+            replySign: NEW_FORMAT_REPLYSIGN,
+            message: 'x'.repeat(1001),
+          })
+        ).rejects.toThrow('maxLength 1000');
+      });
+
+      it('AC-15: old-format replySign fires warnOnce (and second call is muted)', async () => {
+        const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        mockClient.post.mockResolvedValue({});
+
+        await communicationsModule.createSellerMessage({ replySign: OLD_FORMAT_REPLYSIGN });
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        // warnOnce(key, message) calls console.warn(message) — verify message content
+        expect(spy.mock.calls[0][0]).toContain('communications.createSellerMessage');
+        expect(spy.mock.calls[0][0]).toContain('2026-06-04');
+
+        // Second call with same legacy format — warn-once must NOT re-fire (M7)
+        await communicationsModule.createSellerMessage({
+          replySign: 'another-old-format-no-version',
+        });
+        expect(spy).toHaveBeenCalledTimes(1); // STILL 1, muted by warnOnce
+
+        spy.mockRestore();
+      });
+
+      it('AC-16: new-format replySign does NOT fire any warning', async () => {
+        const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        mockClient.post.mockResolvedValue({});
+
+        await communicationsModule.createSellerMessage({ replySign: NEW_FORMAT_REPLYSIGN });
+
+        expect(spy).not.toHaveBeenCalled();
+        spy.mockRestore();
+      });
+
+      it('AC-17: file attachment via tuple shape — FormData has correct entries and inferred MIME (H3)', async () => {
+        mockClient.post.mockResolvedValue({});
+        const fileContent = Buffer.from('fake-jpeg-content');
+
+        await communicationsModule.createSellerMessage({
+          replySign: NEW_FORMAT_REPLYSIGN,
+          file: [{ filename: 'photo.jpg', content: fileContent }],
+        });
+
+        const body = mockClient.post.mock.calls[0][1] as FormData;
+        expect(body).toBeInstanceOf(FormData);
+        expect(body.get('replySign')).toBe(NEW_FORMAT_REPLYSIGN);
+        const files = body.getAll('file');
+        expect(files).toHaveLength(1);
+        expect(files[0]).toBeInstanceOf(Blob);
+        expect((files[0] as Blob).type).toBe('image/jpeg');
+      });
+
+      it('should throw ValidationError when single file exceeds 5 MB (H2)', async () => {
+        const bigFile = Buffer.alloc(6 * 1024 * 1024);
+        await expect(
+          communicationsModule.createSellerMessage({
+            replySign: NEW_FORMAT_REPLYSIGN,
+            file: [{ filename: 'big.pdf', content: bigFile }],
+          })
+        ).rejects.toThrow(/5 MB/);
+      });
+
+      it('AC-18: throws ValidationError when total file size exceeds 30 MB', async () => {
+        // 7 files × 5 MB each = 35 MB total — each file passes per-file check, total exceeds 30 MB
+        const fiveMbBuffer = Buffer.alloc(5 * 1024 * 1024);
+        const files = Array.from({ length: 7 }, (_, i) => ({
+          filename: `file${String(i)}.pdf`,
+          content: fiveMbBuffer,
+        }));
+        await expect(
+          communicationsModule.createSellerMessage({
+            replySign: NEW_FORMAT_REPLYSIGN,
+            file: files,
+          })
+        ).rejects.toThrow(ValidationError);
+        await expect(
+          communicationsModule.createSellerMessage({
+            replySign: NEW_FORMAT_REPLYSIGN,
+            file: files,
+          })
+        ).rejects.toThrow('30 MB');
       });
     });
   });

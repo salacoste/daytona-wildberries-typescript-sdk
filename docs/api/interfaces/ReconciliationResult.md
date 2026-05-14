@@ -2,7 +2,7 @@
 
 # Interface: ReconciliationResult
 
-Defined in: [utils/reconcileBuyoutsAndReturns.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L36)
+Defined in: [utils/reconcileBuyoutsAndReturns.ts:36](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L36)
 
 Per-nmId reconciliation summary.
 
@@ -14,10 +14,10 @@ v3.9.3
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L37) |
-| <a id="buyoutcount"></a> `buyoutCount` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L38) |
-| <a id="returncount"></a> `returnCount` | `number` | Total returns across both FBO and FBS | [utils/reconcileBuyoutsAndReturns.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L40) |
-| <a id="fboreturncount"></a> `fboReturnCount` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L41) |
-| <a id="fbsreturncount"></a> `fbsReturnCount` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L42) |
-| <a id="netrevenue"></a> `netRevenue?` | `number` | Net revenue = buyoutRevenue - return penalties (negative if returns dominate) | [utils/reconcileBuyoutsAndReturns.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L44) |
-| <a id="anomalies"></a> `anomalies` | [`ReconciliationAnomaly`](ReconciliationAnomaly.md)[] | Anomalies for this nmId | [utils/reconcileBuyoutsAndReturns.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/reconcileBuyoutsAndReturns.ts#L46) |
+| <a id="nmid"></a> `nmId` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L37) |
+| <a id="buyoutcount"></a> `buyoutCount` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L38) |
+| <a id="returncount"></a> `returnCount` | `number` | Total returns across both FBO and FBS | [utils/reconcileBuyoutsAndReturns.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L40) |
+| <a id="fboreturncount"></a> `fboReturnCount` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L41) |
+| <a id="fbsreturncount"></a> `fbsReturnCount` | `number` | - | [utils/reconcileBuyoutsAndReturns.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L42) |
+| <a id="netrevenue"></a> `netRevenue?` | `number` | Net revenue = buyoutRevenue - return penalties (negative if returns dominate) | [utils/reconcileBuyoutsAndReturns.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L44) |
+| <a id="anomalies"></a> `anomalies` | [`ReconciliationAnomaly`](ReconciliationAnomaly.md)[] | Anomalies for this nmId | [utils/reconcileBuyoutsAndReturns.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/utils/reconcileBuyoutsAndReturns.ts#L46) |

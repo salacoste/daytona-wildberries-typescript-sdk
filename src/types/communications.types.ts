@@ -412,7 +412,13 @@ export interface LastMessage {
 export interface Chat {
   /** ID чата */
   chatID?: string;
-  /** Подпись чата. Требуется при [отправке сообщения](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
+  /**
+   * Подпись чата. Требуется при [отправке сообщения](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post).
+   *
+   * **Deadline 2026-06-04**: WB updated `replySign` format on this date. Values cached before then
+   * must be refreshed via `getSellerChats()` to remain valid for send-message after the cutoff.
+   * New-format pattern: `<version>:<UUID>:<crypto-signature>` (e.g. `1:1e265a58-...:66f136e9...`).
+   */
   replySign?: string;
   /**
    * ID покупателя
@@ -451,7 +457,14 @@ export interface Event {
   addTimestamp?: number;
   /** Время появления события на сервере в UTC */
   addTime?: string;
-  /** Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post) */
+  /**
+   * Подпись чата. Доступна только при `"isNewChat": true`. Требуется при [отправке сообщения](https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post).
+   *
+   * **Deadline 2026-06-04**: WB updated `replySign` format on this date. Values cached before then
+   * must be refreshed via `getSellerChats()` to remain valid for send-message after the cutoff.
+   * This field is only present when `isNewChat: true`. New-format pattern:
+   * `<version>:<UUID>:<crypto-signature>` (e.g. `1:1e265a58-...:66f136e9...`).
+   */
   replySign?: string;
   sender?: Sender;
   /**
@@ -545,6 +558,39 @@ export interface MessageResponse {
     /** ID чата */
     chatID?: string;
   };
+}
+
+/**
+ * Request body for {@link CommunicationsModule.createSellerMessage}.
+ *
+ * Multipart/form-data — the SDK builds the FormData internally from these fields.
+ *
+ * **Deadline 2026-06-04**: WB API now requires the NEW format of `replySign`
+ * (pattern `<version>:<UUID>:<signature>`). Old-format values are rejected with HTTP 400.
+ * Refresh `replySign` via {@link CommunicationsModule.getSellerChats} before each send.
+ *
+ * @since 3.13.0
+ */
+export interface SellerMessageRequest {
+  /**
+   * Chat signature from `getSellerChats()` (preferred) or from `getSellerEvents()` when
+   * `isNewChat: true`. Format `<version>:<UUID>:<crypto-signature>` (~135 chars).
+   *
+   * **Hard deadline 2026-06-04**: old-format values rejected by WB API.
+   */
+  replySign: string;
+  /**
+   * Message text. Max 1000 UTF-16 code units (BMP characters count as 1; surrogate-pair
+   * emoji count as 2). For most plain text and Cyrillic content this matches char count.
+   */
+  message?: string;
+  /**
+   * Attachment files. Each ≤ 5MB; total ≤ 30MB. Formats: JPEG, PDF, PNG.
+   *
+   * Accept either `Blob` (browser/Node 18+ global) or `Buffer` (Node-only legacy) with
+   * a filename hint via tuple shape. The SDK normalizes both to FormData.
+   */
+  file?: (Blob | { filename: string; content: Buffer })[];
 }
 
 /**

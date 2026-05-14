@@ -2,7 +2,7 @@
 
 # Interface: StickerResponse
 
-Defined in: [types/orders-fbs.types.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L308)
+Defined in: [types/orders-fbs.types.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L308)
 
 Response containing order stickers
 
@@ -10,4 +10,4 @@ Response containing order stickers
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stickers"></a> `stickers?` | [`StickerItem`](StickerItem.md)[] | List of sticker data | [types/orders-fbs.types.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L310) |
+| <a id="stickers"></a> `stickers?` | [`StickerItem`](StickerItem.md)[] | List of sticker data | [types/orders-fbs.types.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L310) |

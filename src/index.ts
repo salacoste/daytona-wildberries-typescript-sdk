@@ -653,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.12.0';
+export const version = '3.13.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -698,7 +698,7 @@ export { OrdersFbsModule } from './modules/orders-fbs';
 export { OrdersFbwModule } from './modules/orders-fbw';
 export { FinancesModule } from './modules/finances';
 export { AnalyticsModule } from './modules/analytics';
-export { CommunicationsModule } from './modules/communications';
+export { CommunicationsModule, COMMUNICATIONS_LIMITS } from './modules/communications';
 export { ReportsModule } from './modules/reports';
 export { PromotionModule } from './modules/promotion';
 export { TariffsModule } from './modules/tariffs';
@@ -740,6 +740,9 @@ export type {
 // (They are already available via orders-dbs.types if consumers need them directly.)
 // DBW-prefixed aliases (DBWBulkStatusChangeResponse, DBWStatusSetResponse, DBWMetaValidationDetail)
 // are exported from orders-fbw.types above for API symmetry.
+
+// Communications types (v3.13.0 — createSellerMessage multipart body)
+export type { SellerMessageRequest } from './types/communications.types';
 
 // Products stock management types (v3.12.0 — sku → chrtId migration)
 export type {

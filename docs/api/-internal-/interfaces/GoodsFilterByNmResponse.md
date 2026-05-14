@@ -2,7 +2,7 @@
 
 # Interface: GoodsFilterByNmResponse
 
-Defined in: [types/products.types.ts:718](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L718)
+Defined in: [types/products.types.ts:718](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/products.types.ts#L718)
 
 Response for goods list by article numbers (POST /api/v2/list/goods/filter)
 
@@ -10,7 +10,7 @@ Response for goods list by article numbers (POST /api/v2/list/goods/filter)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `listGoods?`: [`GoodsList`](GoodsList.md)[]; \} | Goods list with pricing | [types/products.types.ts:720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L720) |
-| `data.listGoods?` | [`GoodsList`](GoodsList.md)[] | - | [types/products.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L721) |
-| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:724](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L724) |
-| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:726](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L726) |
+| <a id="data"></a> `data?` | \{ `listGoods?`: [`GoodsList`](GoodsList.md)[]; \} | Goods list with pricing | [types/products.types.ts:720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/products.types.ts#L720) |
+| `data.listGoods?` | [`GoodsList`](GoodsList.md)[] | - | [types/products.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/products.types.ts#L721) |
+| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:724](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/products.types.ts#L724) |
+| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:726](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/products.types.ts#L726) |

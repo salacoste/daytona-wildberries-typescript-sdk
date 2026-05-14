@@ -2,7 +2,7 @@
 
 # Interface: GetOrdersParams
 
-Defined in: [types/orders-fbs.types.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L42)
+Defined in: [types/orders-fbs.types.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L42)
 
 Parameters for paginated order listing
 
@@ -18,7 +18,7 @@ Index signature for compatibility with Record<string, unknown>
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="limit"></a> `limit` | `number` | Maximum number of items to return (1-1000) | [types/orders-fbs.types.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L44) |
-| <a id="next"></a> `next` | `number` | Pagination cursor; set to 0 for the first request | [types/orders-fbs.types.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L46) |
-| <a id="datefrom"></a> `dateFrom?` | `number` | Start of date range (Unix timestamp) | [types/orders-fbs.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L48) |
-| <a id="dateto"></a> `dateTo?` | `number` | End of date range (Unix timestamp) | [types/orders-fbs.types.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L50) |
+| <a id="limit"></a> `limit` | `number` | Maximum number of items to return (1-1000) | [types/orders-fbs.types.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L44) |
+| <a id="next"></a> `next` | `number` | Pagination cursor; set to 0 for the first request | [types/orders-fbs.types.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L46) |
+| <a id="datefrom"></a> `dateFrom?` | `number` | Start of date range (Unix timestamp) | [types/orders-fbs.types.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L48) |
+| <a id="dateto"></a> `dateTo?` | `number` | End of date range (Unix timestamp) | [types/orders-fbs.types.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L50) |

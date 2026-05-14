@@ -5,6 +5,8 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { warnOnce } from '../../utils/deprecation';
+import { ValidationError } from '../../errors/validation-error';
 import type {
   ChatsResponse,
   EventsResponse,
@@ -19,7 +21,39 @@ import type {
   PinnedReviewsListParams,
   PinnedReviewsListResponse,
   ResponseFeedback,
+  SellerMessageRequest,
 } from '../../types/communications.types';
+
+/** Matches the new WB `replySign` format: `<version>:<UUID>:<hex-signature>` */
+const NEW_FORMAT_REPLYSIGN_REGEX = /^\d+:[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}:[0-9a-f]+$/i;
+
+/** Exported limits for external testability and documentation. @since 3.13.0 */
+export const COMMUNICATIONS_LIMITS = {
+  MAX_MESSAGE_LENGTH: 1000,
+  MAX_TOTAL_FILE_SIZE: 30 * 1024 * 1024,
+  MAX_PER_FILE_SIZE: 5 * 1024 * 1024,
+  MAX_REPLYSIGN_LENGTH: 255,
+} as const;
+
+const { MAX_MESSAGE_LENGTH, MAX_TOTAL_FILE_SIZE, MAX_PER_FILE_SIZE, MAX_REPLYSIGN_LENGTH } =
+  COMMUNICATIONS_LIMITS;
+
+// MIME type inference for tuple-shape file attachments (H3 fix).
+const MIME_BY_EXTENSION: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.pdf': 'application/pdf',
+};
+
+function inferMimeFromFilename(filename: string): string {
+  const lower = filename.toLowerCase();
+  for (const [ext, mime] of Object.entries(MIME_BY_EXTENSION)) {
+    if (lower.endsWith(ext)) return mime;
+  }
+  // Fall back: let WB reject server-side if extension is unrecognised.
+  return 'application/octet-stream';
+}
 
 export class CommunicationsModule {
   constructor(private client: BaseClient) {}
@@ -618,14 +652,20 @@ export class CommunicationsModule {
    *
    * Метод возвращает список всех чатов продавца. По этим данным можно получить [события чатов](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1events/get) или [отправить сообщение покупателю](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1message/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 10 запросов | 1 секунда | 10 запросов | </div>
    *
+   * **v3.13.0 — replySign format change (deadline 2026-06-04)**: WB updated the `replySign` field
+   * returned by this endpoint. If you cache `replySign` values, you must refresh them via this
+   * method before calling `createSellerMessage()` after 2026-06-04 — old-format values will be
+   * rejected by WB with HTTP 400. New format: `<version>:<UUID>:<crypto-signature>` (~135 chars).
+   * See docs/guides/chat-replysign-format-migration.md.
+   *
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.communications.getSellerChats();
-  console.log(result);
+  const chats = await sdk.communications.getSellerChats();
+  console.log(chats.result);
    */
   async getSellerChats(): Promise<ChatsResponse> {
     return this.client.get<ChatsResponse>(
@@ -638,6 +678,12 @@ export class CommunicationsModule {
    * События чатов
    *
    * Метод возвращает список событий всех [чатов с покупателями](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1chats/get). Чтобы получить все события: 1. Сделайте первый запрос без параметра `next`. 2. Повторяйте запрос со значением параметра `next` из ответа на предыдущий запрос, пока `totalEvents` не станет равным `0`. Это будет означать, что вы получили все события. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 10 запросов | 1 секунда | 10 запросов | </div>
+   *
+   * **v3.13.0 — replySign format change (deadline 2026-06-04)**: when `Event.isNewChat` is `true`,
+   * the event includes a `replySign` field in the new format (`<version>:<UUID>:<crypto-signature>`).
+   * Old-format `replySign` values (e.g. cached from before 2026-06-04) will be rejected by WB after
+   * the deadline. Prefer refreshing via `getSellerChats()` which always returns the latest values.
+   * See docs/guides/chat-replysign-format-migration.md.
    *
    * @param [options] - Query parameters
    * @returns Успешно
@@ -660,24 +706,115 @@ export class CommunicationsModule {
   }
 
   /**
-   * Отправить сообщение
+   * Отправить сообщение покупателю (multipart/form-data)
    *
-   * Метод отправляет сообщения в [чат с покупателем](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1chats/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 10 запросов | 1 секунда | 10 запросов | </div>
+   * Метод отправляет сообщение в [чат с покупателем](/openapi/user-communication#tag/Chat-s-pokupatelyami/paths/~1api~1v1~1seller~1chats/get). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 10 запросов | 1 секунда | 10 запросов | </div>
    *
+   * **v3.13.0 fix**: this method previously took zero parameters and always sent an empty body
+   * (broken since introduction). It now requires a `data` parameter with `replySign`.
+   *
+   * **replySign deadline 2026-06-04**: WB rejects old-format `replySign` values with HTTP 400.
+   * Always fetch a fresh `replySign` from `getSellerChats()` before sending. New-format pattern:
+   * `<version>:<UUID>:<crypto-signature>` (~135 chars, e.g. `1:1e265a58-a120-b178-008c-60af2460207c:66f136...`).
+   * If you pass a value that does not match this pattern the SDK emits a one-time `console.warn`
+   * (see `warnOnce` — key `communications.createSellerMessage:legacy-replysign-format`).
+   * See docs/guides/chat-replysign-format-migration.md.
+   *
+   * @param data - Request body: `replySign` (required), optional `message` and `file` attachments
    * @returns Успешно
+   * @throws {ValidationError} When `replySign` is missing/empty/exceeds 255 chars, `message` > 1000 chars, or total file size > 30 MB
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.communications.createSellerMessage();
+  // 1. Fetch chats to get a fresh replySign
+  const chats = await sdk.communications.getSellerChats();
+  const chat = chats.result?.[0];
+  if (!chat?.replySign) throw new Error('No chat found');
+
+  // 2. Send message (optionally with attachments)
+  const result = await sdk.communications.createSellerMessage({
+    replySign: chat.replySign,
+    message: 'Thank you for your order!',
+  });
   console.log(result);
    */
-  async createSellerMessage(): Promise<MessageResponse> {
+  async createSellerMessage(data: SellerMessageRequest): Promise<MessageResponse> {
+    // H1: null-guard — JS callers may pass null/undefined; throw documented ValidationError.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- JS-caller guard
+    if (data == null) {
+      throw new ValidationError('data is required: pass { replySign, message?, file? }');
+    }
+    // M4: trim() so whitespace-only strings are rejected.
+    /* eslint-disable @typescript-eslint/no-unnecessary-condition -- JS-caller guard */
+    if (
+      data.replySign == null ||
+      typeof data.replySign !== 'string' ||
+      data.replySign.trim().length === 0
+    ) {
+      /* eslint-enable @typescript-eslint/no-unnecessary-condition */
+      throw new ValidationError('replySign is required (string, non-empty after trim)');
+    }
+    if (data.replySign.length > MAX_REPLYSIGN_LENGTH) {
+      throw new ValidationError(`replySign exceeds maxLength ${String(MAX_REPLYSIGN_LENGTH)}`);
+    }
+    if (data.message && data.message.length > MAX_MESSAGE_LENGTH) {
+      throw new ValidationError(`message exceeds maxLength ${String(MAX_MESSAGE_LENGTH)}`);
+    }
+    // H2: per-file 5 MB check before total; total check preserved.
+    if (data.file) {
+      let totalSize = 0;
+      for (const f of data.file) {
+        const sz = f instanceof Blob ? f.size : f.content.length;
+        if (sz > MAX_PER_FILE_SIZE) {
+          throw new ValidationError(
+            `file size exceeds 5 MB (got ${String(sz)} bytes). WB limit: 5 MB per file.`
+          );
+        }
+        totalSize += sz;
+      }
+      if (totalSize > MAX_TOTAL_FILE_SIZE) {
+        throw new ValidationError(`total file size exceeds 30 MB (got ${String(totalSize)} bytes)`);
+      }
+    }
+
+    // Heuristic: warn once when replySign looks like the old format (missing version:UUID: prefix).
+    // Best-effort — does not block the request; WB API enforces hard rejection after 2026-06-04.
+    if (!NEW_FORMAT_REPLYSIGN_REGEX.test(data.replySign)) {
+      warnOnce(
+        'communications.createSellerMessage:legacy-replysign-format',
+        'communications.createSellerMessage: `replySign` does not match the expected ' +
+          'new-format pattern (version:UUID:signature). WB API rejects old-format `replySign` ' +
+          'after 2026-06-04. Refresh via `getSellerChats()` to get current-format values. ' +
+          'See docs/guides/chat-replysign-format-migration.md.'
+      );
+    }
+
+    // Build multipart body; SDK hands raw FormData to axios.
+    const formData = new FormData();
+    formData.append('replySign', data.replySign);
+    if (data.message) formData.append('message', data.message);
+    if (data.file) {
+      // H3: infer MIME from filename extension so multipart part has correct Content-Type.
+      for (const f of data.file) {
+        if (f instanceof Blob) {
+          formData.append('file', f);
+        } else {
+          const mime = inferMimeFromFilename(f.filename);
+          formData.append('file', new Blob([f.content], { type: mime }), f.filename);
+        }
+      }
+    }
+
     return this.client.post<MessageResponse>(
       'https://buyer-chat-api.wildberries.ru/api/v1/seller/message',
-      undefined,
-      { rateLimitKey: 'communications.postSellerMessage' }
+      formData,
+      {
+        rateLimitKey: 'communications.postSellerMessage',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- axios + FormData auto-sets
+        // multipart/form-data boundary; overriding to undefined removes the default application/json
+        headers: { 'Content-Type': undefined as unknown as string },
+      }
     );
   }
 

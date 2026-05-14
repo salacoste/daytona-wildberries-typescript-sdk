@@ -41,6 +41,18 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
+## What's New (v3.13.0) — May 2026
+
+🔧 **Critical fix: `sdk.communications.createSellerMessage()` now works** — the method previously sent an empty body on every call (broken since introduction). v3.13.0 requires a `data: SellerMessageRequest` parameter. Existing TypeScript call sites `createSellerMessage()` will fail to compile — this is intentional; the old signature never worked.
+
+⚠️ **replySign format deadline: 2026-06-04** — WB updated the `replySign` field format. Old-format values cached before this date will be rejected with HTTP 400 after the cutoff. Always refresh via `getSellerChats()` before calling `createSellerMessage()`.
+
+🆕 **New type exported**: `SellerMessageRequest` — `import type { SellerMessageRequest } from 'daytona-wildberries-typescript-sdk'`.
+
+🔔 **Heuristic warn-once**: SDK emits a one-time `console.warn` when a probable old-format `replySign` is detected at runtime. Use `resetDeprecationWarnings()` in tests.
+
+See [CHANGELOG v3.13.0](#3130---2026-05-14) and the [migration guide](./docs/guides/chat-replysign-format-migration.md) for full details.
+
 ## What's New (v3.12.0) — May 2026
 
 ⚠️ **Critical migration deadline: 2026-05-20 13:00 MSK** — Wildberries begins disabling the legacy `sku` parameter on seller-warehouse stock endpoints. Migrate now.
@@ -307,6 +319,18 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v3.13.0) — Май 2026
+
+🔧 **Критическое исправление: `sdk.communications.createSellerMessage()` теперь работает** — метод ранее отправлял пустое тело при каждом вызове (сломан с момента появления). v3.13.0 требует параметр `data: SellerMessageRequest`. Существующие вызовы `createSellerMessage()` без аргументов перестанут компилироваться — это намеренно; старая сигнатура никогда не работала.
+
+⚠️ **Дедлайн формата replySign: 2026-06-04** — WB обновил формат поля `replySign`. Старые значения, кэшированные до этой даты, будут отклоняться с HTTP 400 после дедлайна. Всегда обновляйте через `getSellerChats()` перед вызовом `createSellerMessage()`.
+
+🆕 **Новый экспортируемый тип**: `SellerMessageRequest` — `import type { SellerMessageRequest } from 'daytona-wildberries-typescript-sdk'`.
+
+🔔 **Эвристика warn-once**: SDK выводит одноразовое `console.warn`, если обнаруживает вероятный `replySign` старого формата. В тестах используйте `resetDeprecationWarnings()`.
+
+Подробности — в [CHANGELOG v3.13.0](#3130---2026-05-14) и [руководстве по миграции](./docs/ru/guides/chat-replysign-format-migration.md).
 
 ## Что нового (v3.12.0) — Май 2026
 

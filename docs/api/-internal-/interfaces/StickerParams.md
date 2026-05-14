@@ -2,7 +2,7 @@
 
 # Interface: StickerParams
 
-Defined in: [types/orders-fbs.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L68)
+Defined in: [types/orders-fbs.types.ts:68](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L68)
 
 Query parameters for sticker format and dimensions
 
@@ -18,6 +18,6 @@ Index signature for compatibility with Record<string, unknown>
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="type"></a> `type` | [`StickerType`](../type-aliases/StickerType.md) | Output format | [types/orders-fbs.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L70) |
-| <a id="width"></a> `width` | `number` | Sticker width in mm (58 or 40) | [types/orders-fbs.types.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L72) |
-| <a id="height"></a> `height` | `number` | Sticker height in mm (40 or 30) | [types/orders-fbs.types.ts:74](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L74) |
+| <a id="type"></a> `type` | [`StickerType`](../type-aliases/StickerType.md) | Output format | [types/orders-fbs.types.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L70) |
+| <a id="width"></a> `width` | `number` | Sticker width in mm (58 or 40) | [types/orders-fbs.types.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L72) |
+| <a id="height"></a> `height` | `number` | Sticker height in mm (40 or 30) | [types/orders-fbs.types.ts:74](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L74) |

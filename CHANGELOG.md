@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- Note: same date as v3.12.0 (2026-05-14). GitHub slug differentiation: #3130---2026-05-14 vs #3120---2026-05-14. -->
+
+## [3.13.0] - 2026-05-14
+
+### Added
+
+- **`SellerMessageRequest` type** — new public interface for `createSellerMessage()` request body. Fields: `replySign` (required, string), `message` (optional, string ≤ 1000 chars), `file` (optional array of `Blob | { filename: string; content: Buffer }`, total ≤ 30 MB). Exported from the main barrel: `import type { SellerMessageRequest } from 'daytona-wildberries-typescript-sdk'`.
+- **`createSellerMessage(data: SellerMessageRequest)`** — the method now accepts a required `data` parameter and correctly sends multipart/form-data to `POST /api/v1/seller/message` with `replySign`, optional `message`, and optional file attachments. Uses Node 18+ global `FormData`; no new dependencies.
+
+### Fixed
+
+- **`createSellerMessage()` was 100% broken** — the method previously took zero parameters and always sent `undefined` as the request body, causing WB to reject every call (broken since module introduction in v3.6.0; the broken state went unnoticed until Sprint 17 research surfaced it). There is no working consumer code that relied on the old zero-parameter signature. Existing TypeScript code calling `sdk.communications.createSellerMessage()` without arguments **will fail to compile** after upgrading (intentional — forces migration to the corrected signature). JavaScript code calling without `data` will receive a `ValidationError` at runtime.
+
+### Notes
+
+- **Hard deadline 2026-06-04**: WB stops accepting old-format `replySign` values on `POST /api/v1/seller/message`. The new format is `<version>:<UUID>:<crypto-signature>` (~135 chars, e.g. `1:1e265a58-a120-b178-008c-60af2460207c:66f136e9...`). Consumers who cache `replySign` from `getSellerChats()` or `getSellerEvents()` must refresh those values via `getSellerChats()` before the deadline — old-format cached values will be rejected with HTTP 400.
+- **Heuristic warn-once**: SDK v3.13.0 emits a one-time `console.warn` per process when a `replySign` that does not match the new-format regex is passed to `createSellerMessage()`. Best-effort heuristic — false positives are accepted (warning is informational); WB enforces the hard rejection post-deadline. Warning key: `communications.createSellerMessage:legacy-replysign-format`. Suppress in tests with `resetDeprecationWarnings()`.
+- **SDK major-version note**: changing `createSellerMessage()` from `()` to `(data: required)` is technically a breaking change. However, the previous signature was 100% broken (always failed at runtime). There is no working consumer code to break, so this ships in v3.13.0 (minor) rather than v4.0.0, consistent with the `chrtId` migration in Sprint 16.
+- **Migration guide**: [docs/guides/chat-replysign-format-migration.md](./docs/guides/chat-replysign-format-migration.md) (EN) and [docs/ru/guides/chat-replysign-format-migration.md](./docs/ru/guides/chat-replysign-format-migration.md) (RU).
+
+### Related
+
+- WB API announcement: https://dev.wildberries.ru/release-notes (2026-05-14)
+- WB API reference: https://dev.wildberries.ru/openapi/user-communication#tag/Chat-s-pokupatelyami
+
+---
+
 ## [3.12.0] - 2026-05-14
 
 ### Added
