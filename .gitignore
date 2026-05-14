@@ -12,6 +12,12 @@ yarn.lock
 backlog/
 comparison_docs/
 
+# OMC orchestration state (local-only, never committed)
+.omc/
+
+# Scratch workspace
+temp/
+
 # Build outputs
 dist/
 build/
