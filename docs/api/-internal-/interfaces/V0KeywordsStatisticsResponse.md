@@ -2,10 +2,10 @@
 
 # Interface: V0KeywordsStatisticsResponse
 
-Defined in: [types/promotion.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L721)
+Defined in: [types/promotion.types.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L721)
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="keywords"></a> `keywords` | [`V0KeywordsStatistics`](V0KeywordsStatistics.md)[] | [types/promotion.types.ts:722](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L722) |
+| <a id="keywords"></a> `keywords` | [`V0KeywordsStatistics`](V0KeywordsStatistics.md)[] | [types/promotion.types.ts:722](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L722) |

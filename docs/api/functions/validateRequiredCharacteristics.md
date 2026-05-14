@@ -9,7 +9,7 @@ function validateRequiredCharacteristics(
    namedFields?: Record<string, unknown>): SubjectCharacteristic[];
 ```
 
-Defined in: [utils/validateRequiredCharacteristics.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/utils/validateRequiredCharacteristics.ts#L46)
+Defined in: [utils/validateRequiredCharacteristics.ts:46](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/utils/validateRequiredCharacteristics.ts#L46)
 
 Validates that all mandatory characteristics are present in a card creation request.
 Returns the list of missing mandatory characteristics.

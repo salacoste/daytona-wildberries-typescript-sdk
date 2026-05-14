@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryStatsItem
 
-Defined in: [types/promotion.types.ts:924](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L924)
+Defined in: [types/promotion.types.ts:924](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L924)
 
 Элемент статистики по поисковым кластерам
 
@@ -10,6 +10,6 @@ Defined in: [types/promotion.types.ts:924](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:926](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L926) |
-| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:928](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L928) |
-| <a id="stats"></a> `stats?` | [`V0GetNormQueryStatsItemStat`](V0GetNormQueryStatsItemStat.md)[] | Статистика по поисковым кластерам | [types/promotion.types.ts:930](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L930) |
+| <a id="advert_id"></a> `advert_id` | `number` | ID кампании | [types/promotion.types.ts:926](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L926) |
+| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:928](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L928) |
+| <a id="stats"></a> `stats?` | [`V0GetNormQueryStatsItemStat`](V0GetNormQueryStatsItemStat.md)[] | Статистика по поисковым кластерам | [types/promotion.types.ts:930](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L930) |

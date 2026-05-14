@@ -11,6 +11,7 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 
 describe('ProductsModule - Prices, Stocks & Warehouses', () => {
   let mockClient: {
@@ -343,8 +344,8 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
 
   describe('getStocks()', () => {
     const warehouseId = 12345;
-    const mockData = { skus: ['sku-001', 'sku-002'] };
-    const mockResponse = { stocks: [{ sku: 'sku-001', amount: 50 }] };
+    const mockData = { chrtIds: [12345678, 12345679] };
+    const mockResponse = { stocks: [{ chrtId: 12345678, amount: 50 }] };
 
     it('should POST to URL with warehouseId interpolated and rateLimitKey', async () => {
       mockClient.post.mockResolvedValue(mockResponse);
@@ -370,7 +371,7 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
 
   describe('updateStock()', () => {
     const warehouseId = 67890;
-    const mockData = { stocks: [{ sku: 'sku-003', amount: 100 }] };
+    const mockData = { stocks: [{ chrtId: 12345678, amount: 100 }] };
 
     it('should PUT to URL with warehouseId interpolated and rateLimitKey', async () => {
       mockClient.put.mockResolvedValue(undefined);
@@ -399,7 +400,7 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
 
   describe('deleteStock()', () => {
     const warehouseId = 11111;
-    const mockData = { skus: ['sku-del-1'] };
+    const mockData = { chrtIds: [12345678] };
 
     it('should DELETE to URL with warehouseId interpolated and rateLimitKey', async () => {
       mockClient.delete.mockResolvedValue(undefined);
@@ -424,6 +425,240 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
       await expect(productsModule.deleteStock(warehouseId, mockData)).rejects.toThrow(
         RateLimitError
       );
+    });
+  });
+
+  // ── Stocks: chrtId paths + warn-once deprecation tests (task-16.4) ──
+
+  describe('getStocks() — chrtId paths', () => {
+    const warehouseId = 12345;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let warnSpy: any;
+
+    beforeEach(() => {
+      resetDeprecationWarnings();
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      mockClient.post.mockResolvedValue({ stocks: [] });
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    // AC-3: happy path — chrtIds only, no warning
+    it('happy path: chrtIds only — no warning emitted', async () => {
+      const result = await productsModule.getStocks(warehouseId, { chrtIds: [12345678] });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        expect.stringContaining(`/api/v3/stocks/${warehouseId}`),
+        expect.objectContaining({ chrtIds: [12345678] }),
+        expect.objectContaining({ rateLimitKey: 'products.postStocks' })
+      );
+      const calledWith = mockClient.post.mock.calls[0][1] as Record<string, unknown>;
+      expect(calledWith).not.toHaveProperty('skus');
+      expect(result).toEqual({ stocks: [] });
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    // AC-4: mixed-mode — skus stripped, chrtIds forwarded, one warning
+    it('mixed-mode: skus stripped, chrtIds forwarded, mixed warning emitted', async () => {
+      await productsModule.getStocks(warehouseId, { skus: ['sku-abc'], chrtIds: [12345678] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.getStocks:');
+      expect(warnSpy.mock.calls[0][0]).toContain('both `skus` and `chrtIds` provided');
+      const calledWith = mockClient.post.mock.calls[0][1] as Record<string, unknown>;
+      expect(calledWith).not.toHaveProperty('skus');
+      expect(calledWith).toHaveProperty('chrtIds', [12345678]);
+    });
+
+    // AC-5: legacy-only — skus forwarded unchanged, legacy warning
+    it('legacy-only: skus forwarded unchanged, legacy-skus-call warning emitted', async () => {
+      await productsModule.getStocks(warehouseId, { skus: ['sku-001'] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.getStocks:');
+      expect(warnSpy.mock.calls[0][0]).toContain('`skus` parameter is deprecated');
+      const calledWith = mockClient.post.mock.calls[0][1] as Record<string, unknown>;
+      expect(calledWith).toHaveProperty('skus', ['sku-001']);
+    });
+
+    // AC-6: N1 edge case — empty chrtIds stripped, legacy warning fires
+    it('N1 edge case: empty chrtIds stripped, legacy-skus-call warning emitted', async () => {
+      await productsModule.getStocks(warehouseId, { skus: ['sku-xyz'], chrtIds: [] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.getStocks:');
+      expect(warnSpy.mock.calls[0][0]).toContain('`skus` parameter is deprecated');
+      const calledWith = mockClient.post.mock.calls[0][1] as Record<string, unknown>;
+      expect(calledWith).toHaveProperty('skus', ['sku-xyz']);
+      expect(calledWith).not.toHaveProperty('chrtIds');
+    });
+
+    // AC-7: warn-once idempotency — 3× pure chrtIds calls, never a warning
+    it('warn-once idempotency: 3× chrtIds-only calls never emit a warning', async () => {
+      await productsModule.getStocks(warehouseId, { chrtIds: [12345678] });
+      await productsModule.getStocks(warehouseId, { chrtIds: [12345679] });
+      await productsModule.getStocks(warehouseId, { chrtIds: [12345680] });
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    // warn-once idempotency for legacy path — 2× same legacy key warns only once
+    it('warn-once idempotency: 2× legacy-skus calls emit warning only once', async () => {
+      await productsModule.getStocks(warehouseId, { skus: ['sku-001'] });
+      await productsModule.getStocks(warehouseId, { skus: ['sku-002'] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('updateStock() — chrtId paths', () => {
+    const warehouseId = 67890;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let warnSpy: any;
+
+    beforeEach(() => {
+      resetDeprecationWarnings();
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      mockClient.put.mockResolvedValue(undefined);
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    // AC-8: happy path — chrtId only, no warning
+    it('happy path: chrtId only per item — no warning emitted', async () => {
+      await productsModule.updateStock(warehouseId, {
+        stocks: [{ chrtId: 12345678, amount: 100 }],
+      });
+      expect(mockClient.put).toHaveBeenCalledWith(
+        expect.stringContaining(`/api/v3/stocks/${warehouseId}`),
+        expect.objectContaining({ stocks: [{ chrtId: 12345678, amount: 100 }] }),
+        expect.objectContaining({ rateLimitKey: 'products.putStocks' })
+      );
+      const calledWith = mockClient.put.mock.calls[0][1] as { stocks: Record<string, unknown>[] };
+      expect(calledWith.stocks[0]).not.toHaveProperty('sku');
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    // AC-9: per-item mixed-mode — sku stripped from mixed item, warning emitted
+    it('per-item mixed-mode: sku stripped from mixed item, mixed-sku-and-chrtId warning', async () => {
+      await productsModule.updateStock(warehouseId, {
+        stocks: [
+          { sku: 'A', chrtId: 10, amount: 5 },
+          { chrtId: 20, amount: 3 },
+        ],
+      });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.updateStock:');
+      expect(warnSpy.mock.calls[0][0]).toContain('BOTH `sku` and `chrtId`');
+      const calledWith = mockClient.put.mock.calls[0][1] as { stocks: Record<string, unknown>[] };
+      expect(calledWith.stocks[0]).not.toHaveProperty('sku');
+      expect(calledWith.stocks[0]).toHaveProperty('chrtId', 10);
+      expect(calledWith.stocks[1]).toHaveProperty('chrtId', 20);
+    });
+
+    // AC-10: per-item legacy-only — warning emitted
+    it('per-item legacy-only: legacy-sku-call warning emitted', async () => {
+      await productsModule.updateStock(warehouseId, {
+        stocks: [{ sku: 'B', amount: 10 }],
+      });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.updateStock:');
+      expect(warnSpy.mock.calls[0][0]).toContain('stock items with `sku`');
+    });
+
+    // AC-11: heterogeneous batch (H1+H2 regression) — both warnings fire independently
+    it('H1+H2 regression: heterogeneous batch emits both legacy-sku-call and mixed-sku-and-chrtId', async () => {
+      await productsModule.updateStock(warehouseId, {
+        stocks: [
+          { sku: 'C', amount: 1 },
+          { sku: 'D', chrtId: 99, amount: 2 },
+        ],
+      });
+      const warnMessages = warnSpy.mock.calls.map((c: unknown[]) => c[0] as string);
+      expect(warnMessages.some((msg: string) => msg.includes('stock items with `sku`'))).toBe(true);
+      expect(warnMessages.some((msg: string) => msg.includes('BOTH `sku` and `chrtId`'))).toBe(
+        true
+      );
+    });
+
+    // AC-12: empty batch — no warning, no throw
+    it('empty batch: no warning emitted and call completes without throwing', async () => {
+      await expect(productsModule.updateStock(warehouseId, { stocks: [] })).resolves.not.toThrow();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    // AC-13: undefined data — no warning, no throw
+    it('undefined data: no warning emitted and call completes without throwing', async () => {
+      await expect(productsModule.updateStock(warehouseId, undefined)).resolves.not.toThrow();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    // warn-once idempotency for legacy-sku-call — 2× same key warns only once
+    it('warn-once idempotency: 2× legacy-sku calls emit warning only once', async () => {
+      await productsModule.updateStock(warehouseId, { stocks: [{ sku: 'X', amount: 1 }] });
+      await productsModule.updateStock(warehouseId, { stocks: [{ sku: 'Y', amount: 2 }] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+    });
+
+    // warn-once idempotency for happy path — 3× chrtId-only calls never warn
+    it('warn-once idempotency: 3× chrtId-only calls never emit a warning', async () => {
+      await productsModule.updateStock(warehouseId, { stocks: [{ chrtId: 1, amount: 10 }] });
+      await productsModule.updateStock(warehouseId, { stocks: [{ chrtId: 2, amount: 20 }] });
+      await productsModule.updateStock(warehouseId, { stocks: [{ chrtId: 3, amount: 30 }] });
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteStock() — chrtId paths', () => {
+    const warehouseId = 11111;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let warnSpy: any;
+
+    beforeEach(() => {
+      resetDeprecationWarnings();
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      mockClient.delete.mockResolvedValue(undefined);
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    // AC-14: happy path — chrtIds only, no warning
+    it('happy path: chrtIds only — no warning emitted', async () => {
+      await productsModule.deleteStock(warehouseId, { chrtIds: [12345678] });
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        expect.stringContaining(`/api/v3/stocks/${warehouseId}`),
+        expect.objectContaining({ chrtIds: [12345678] }),
+        expect.objectContaining({ rateLimitKey: 'products.deleteStocks' })
+      );
+      const calledWith = mockClient.delete.mock.calls[0][1] as Record<string, unknown>;
+      expect(calledWith).not.toHaveProperty('skus');
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    // AC-15: mixed-mode — skus stripped, chrtIds forwarded, warning emitted
+    it('mixed-mode: skus stripped, chrtIds forwarded, mixed warning emitted', async () => {
+      await productsModule.deleteStock(warehouseId, { skus: ['sku-del'], chrtIds: [77] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.deleteStock:');
+      expect(warnSpy.mock.calls[0][0]).toContain('both `skus` and `chrtIds` provided');
+      const calledWith = mockClient.delete.mock.calls[0][1] as Record<string, unknown>;
+      expect(calledWith).not.toHaveProperty('skus');
+      expect(calledWith).toHaveProperty('chrtIds', [77]);
+    });
+
+    // AC-16: legacy-only — warning emitted
+    it('legacy-only: legacy-skus-call warning emitted', async () => {
+      await productsModule.deleteStock(warehouseId, { skus: ['sku-del-2'] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('products.deleteStock:');
+      expect(warnSpy.mock.calls[0][0]).toContain('`skus` parameter is deprecated');
+    });
+
+    // warn-once idempotency for legacy-skus-call — 2× legacy calls warn only once
+    it('warn-once idempotency: 2× legacy-skus calls emit warning only once', async () => {
+      await productsModule.deleteStock(warehouseId, { skus: ['sku-a'] });
+      await productsModule.deleteStock(warehouseId, { skus: ['sku-b'] });
+      expect(warnSpy).toHaveBeenCalledTimes(1);
     });
   });
 

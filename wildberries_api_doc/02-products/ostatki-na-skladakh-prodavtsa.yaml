@@ -36,38 +36,15 @@ paths:
 
         Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
+
+        **Важно:** С 2026-05-20 13:00 МСК параметр `sku` постепенно отключается (release-notes id=522). Используйте `chrtId` вместо `sku`. Переходный период: оба поля принимаются до полного отключения.
       parameters:
         - $ref: "#/components/parameters/Warehouse"
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - stocks
-              properties:
-                stocks:
-                  type: array
-                  minItems: 1
-                  maxItems: 1000
-                  description: Массив баркодов товаров и их остатков
-                  items:
-                    type: object
-                    properties:
-                      chrtId:
-                        type: integer
-                        description: ID размера товара
-                        example: 12345678
-                      sku:
-                        type: string
-                        description: Баркод. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
-                        deprecated: true
-                        example: SKUTest123
-                      amount:
-                        type: integer
-                        maximum: 100000
-                        description: Остаток
-                        example: 10
+              $ref: "#/components/schemas/api.UpdateStockRequest"
       responses:
         "204":
           description: Обновлено
@@ -143,6 +120,8 @@ paths:
 
         Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
+
+        **Важно:** С 2026-05-20 13:00 МСК параметр `skus` постепенно отключается (release-notes id=522). Используйте `chrtIds` вместо `skus`. Переходный период: оба поля принимаются до полного отключения.
       parameters:
         - $ref: "#/components/parameters/Warehouse"
       requestBody:
@@ -150,31 +129,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                chrtIds:
-                  type: array
-                  nullable: false
-                  minItems: 1
-                  maxItems: 1000
-                  description: Массив ID размеров товаров
-                  items:
-                    type: integer
-                    nullable: false
-                    example: 123456789
-                skus:
-                  type: array
-                  nullable: false
-                  minItems: 1
-                  maxItems: 1000
-                  description: Массив баркодов. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
-                  deprecated: true
-                  items:
-                    type: string
-                    nullable: false
-                    example: SKUTest123
-              required:
-                - chrtIds
+              $ref: "#/components/schemas/api.StocksRequest"
       responses:
         "204":
           description: Удалено
@@ -238,6 +193,8 @@ paths:
 
         Один запрос с кодом ответа <code>409</code> учитывается как 10 запросов
         </div>
+
+        **Важно:** С 2026-05-20 13:00 МСК параметр `skus` постепенно отключается (release-notes id=522). Используйте `chrtIds` вместо `skus`. Переходный период: оба поля принимаются до полного отключения.
       parameters:
         - $ref: "#/components/parameters/Warehouse"
       requestBody:
@@ -245,55 +202,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              nullable: false
-              properties:
-                chrtIds:
-                  type: array
-                  description: Массив ID размеров товаров
-                  items:
-                    type: integer
-                    example: 12345678
-                skus:
-                  type: array
-                  description: Массив баркодов. Параметр будет отключен [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
-                  deprecated: true
-                  minItems: 1
-                  maxItems: 1000
-                  items:
-                    type: string
-                    example: SKUTest123
-              required:
-                - chrtIds
+              $ref: "#/components/schemas/api.StocksRequest"
       responses:
         "200":
           description: Успешно
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  stocks:
-                    type: array
-                    nullable: false
-                    items:
-                      type: object
-                      properties:
-                        chrtId:
-                          type: integer
-                          description: ID размера товара
-                          example: 12345678
-                        sku:
-                          type: string
-                          nullable: false
-                          description: Баркод. Поле будет отключено [9 февраля](https://dev.wildberries.ru/release-notes?id=386)
-                          deprecated: true
-                          example: SKUTest123
-                        amount:
-                          type: integer
-                          nullable: false
-                          description: Остаток
-                          example: 10
+                $ref: "#/components/schemas/api.GetStocksResponse"
         "400":
           description: Неправильный запрос
           content:

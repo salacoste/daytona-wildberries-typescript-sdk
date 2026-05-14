@@ -1028,6 +1028,72 @@ components:
             - `false` — сортировка по убыванию
             - `true` — сортировка по возрастанию
           default: true
+    api.StockItem:
+      type: object
+      description: Запись об остатке товара на складе продавца
+      properties:
+        sku:
+          type: string
+          deprecated: true
+          description: Баркод товара (deprecated с 2026-05-20 13:00 МСК, используйте chrtId)
+          example: SKUTest123
+        chrtId:
+          type: integer
+          format: int64
+          description: ID размера товара (chrt_id). Основной идентификатор с 2026-05-20 13:00 МСК
+          example: 12345678
+        amount:
+          type: integer
+          description: Количество товара на складе
+          example: 50
+    api.StocksRequest:
+      type: object
+      description: Тело запроса для получения или удаления остатков товаров на складе
+      properties:
+        skus:
+          type: array
+          deprecated: true
+          description: Список баркодов (deprecated с 2026-05-20 13:00 МСК, используйте chrtIds)
+          minItems: 1
+          maxItems: 1000
+          items:
+            type: string
+          example:
+            - SKUTest123
+            - SKUTest124
+        chrtIds:
+          type: array
+          description: Список ID размеров товаров (chrt_id)
+          minItems: 1
+          maxItems: 1000
+          items:
+            type: integer
+            format: int64
+          example:
+            - 12345678
+            - 12345679
+    api.UpdateStockRequest:
+      type: object
+      required:
+        - stocks
+      description: Тело запроса для обновления остатков товаров на складе
+      properties:
+        stocks:
+          type: array
+          description: Список остатков для обновления
+          minItems: 1
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/api.StockItem'
+    api.GetStocksResponse:
+      type: object
+      description: Ответ метода получения остатков товаров на складе
+      properties:
+        stocks:
+          type: array
+          description: Список остатков товаров
+          items:
+            $ref: '#/components/schemas/api.StockItem'
   parameters:
     Warehouse:
       name: warehouseId

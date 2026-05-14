@@ -41,6 +41,21 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
+## What's New (v3.12.0) — May 2026
+
+⚠️ **Critical migration deadline: 2026-05-20 13:00 MSK** — Wildberries begins disabling the legacy `sku` parameter on seller-warehouse stock endpoints. Migrate now.
+
+🆕 **3 stock methods on `sdk.products`** now accept `chrtId` / `chrtIds` (size IDs from `POST /content/v2/get/cards/list`):
+- `sdk.products.getStocks(warehouseId, { chrtIds })` — preferred path
+- `sdk.products.updateStock(warehouseId, { stocks: [{ chrtId, amount }] })` — per-item migration
+- `sdk.products.deleteStock(warehouseId, { chrtIds })` — preferred path
+
+🔧 **Deprecation handling**: legacy `sku`/`skus` parameters work until 2026-05-20 but emit a one-time `console.warn`. After the deadline: WB returns HTTP 400.
+
+🆕 **4 new types exported**: `StockItem`, `StocksRequest`, `UpdateStockRequest`, `GetStocksResponse`.
+
+See [CHANGELOG v3.12.0](#3120---2026-05-14) and the [migration guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/stocks-sku-to-chrtid-migration) for full details.
+
 ## What's New (v3.11.0) — May 2026
 
 🆕 **4 new DBW methods on `sdk.ordersFBW`** — WB disables legacy single-order DBW endpoints on **2026-06-05**; migrate now:
@@ -292,6 +307,21 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v3.12.0) — Май 2026
+
+⚠️ **Критический дедлайн миграции: 2026-05-20 13:00 MSK** — Wildberries начинает отключение legacy-параметра `sku` на эндпоинтах остатков склада продавца. Мигрируйте сейчас.
+
+🆕 **3 метода остатков в `sdk.products`** теперь принимают `chrtId` / `chrtIds` (ID размеров из `POST /content/v2/get/cards/list`):
+- `sdk.products.getStocks(warehouseId, { chrtIds })` — рекомендуемый путь
+- `sdk.products.updateStock(warehouseId, { stocks: [{ chrtId, amount }] })` — миграция per-item
+- `sdk.products.deleteStock(warehouseId, { chrtIds })` — рекомендуемый путь
+
+🔧 **Обработка устаревания**: legacy `sku`/`skus` работают до 2026-05-20, но эмитят одноразовый `console.warn`. После дедлайна: WB возвращает HTTP 400.
+
+🆕 **4 новых экспортируемых типа**: `StockItem`, `StocksRequest`, `UpdateStockRequest`, `GetStocksResponse`.
+
+Подробности — в [CHANGELOG v3.12.0](#3120---2026-05-14) и в [руководстве по миграции](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/stocks-sku-to-chrtid-migration).
 
 ## Что нового (v3.11.0) — Май 2026
 

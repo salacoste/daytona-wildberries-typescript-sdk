@@ -2,7 +2,7 @@
 
 # Interface: CampaignProductsResult
 
-Defined in: [types/promotion.types.ts:1739](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1739)
+Defined in: [types/promotion.types.ts:1739](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L1739)
 
 Result for a single campaign update
 
@@ -10,7 +10,7 @@ Result for a single campaign update
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1741](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1741) |
-| <a id="nms"></a> `nms` | \{ `added`: `number`[]; `deleted`: `number`[]; \} | Product cards result | [types/promotion.types.ts:1743](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1743) |
-| `nms.added` | `number`[] | Successfully added product cards | [types/promotion.types.ts:1745](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1745) |
-| `nms.deleted` | `number`[] | Successfully deleted product cards | [types/promotion.types.ts:1747](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L1747) |
+| <a id="advert_id"></a> `advert_id` | `number` | Campaign ID | [types/promotion.types.ts:1741](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L1741) |
+| <a id="nms"></a> `nms` | \{ `added`: `number`[]; `deleted`: `number`[]; \} | Product cards result | [types/promotion.types.ts:1743](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L1743) |
+| `nms.added` | `number`[] | Successfully added product cards | [types/promotion.types.ts:1745](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L1745) |
+| `nms.deleted` | `number`[] | Successfully deleted product cards | [types/promotion.types.ts:1747](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L1747) |

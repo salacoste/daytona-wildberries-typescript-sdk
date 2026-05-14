@@ -2,7 +2,7 @@
 
 # Interface: StockItem
 
-Defined in: [types/products.types.ts:1005](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L1005)
+Defined in: [types/products.types.ts:1005](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L1005)
 
 A single stock record on a seller warehouse.
 
@@ -21,6 +21,6 @@ at the SDK level (the request will be sent with `chrtId` only).
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="sku"></a> ~~`sku?`~~ | `string` | **Deprecated** since 3.12.0 — use `chrtId` instead. WB API will reject `sku` after 2026-05-20 13:00 MSK. See `docs/guides/stocks-sku-to-chrtid-migration.md`. | [types/products.types.ts:1010](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L1010) |
-| <a id="chrtid"></a> `chrtId?` | `number` | Size ID returned by `POST /content/v2/get/cards/list`. **Casing note**: WB API uses `chrtID` (uppercase D) in Content endpoints (`/content/v2/get/cards/list`) but `chrtId` (lowercase d) in this Marketplace stocks endpoint. Pass the same numeric value, but the SDK property is `chrtId` (lowercase d) for stocks methods. The SDK type keeps this optional for backwards compatibility, but the WB API will REQUIRE `chrtId` (and reject `sku`) after 2026-05-20 13:00 MSK. **Since** 3.12.0 | [types/products.types.ts:1023](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L1023) |
-| <a id="amount"></a> `amount?` | `number` | Stock amount. | [types/products.types.ts:1025](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/products.types.ts#L1025) |
+| <a id="sku"></a> ~~`sku?`~~ | `string` | **Deprecated** since 3.12.0 — use `chrtId` instead. WB API will reject `sku` after 2026-05-20 13:00 MSK. See `docs/guides/stocks-sku-to-chrtid-migration.md`. | [types/products.types.ts:1010](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L1010) |
+| <a id="chrtid"></a> `chrtId?` | `number` | Size ID returned by `POST /content/v2/get/cards/list`. **Casing note**: WB API uses `chrtID` (uppercase D) in Content endpoints (`/content/v2/get/cards/list`) but `chrtId` (lowercase d) in this Marketplace stocks endpoint. Pass the same numeric value, but the SDK property is `chrtId` (lowercase d) for stocks methods. The SDK type keeps this optional for backwards compatibility, but the WB API will REQUIRE `chrtId` (and reject `sku`) after 2026-05-20 13:00 MSK. **Since** 3.12.0 | [types/products.types.ts:1023](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L1023) |
+| <a id="amount"></a> `amount?` | `number` | Stock amount. | [types/products.types.ts:1025](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/products.types.ts#L1025) |

@@ -6,7 +6,7 @@
 function getOperationRateLimitKey(operationKey: string): string | undefined;
 ```
 
-Defined in: [config/operation-metadata.ts:3239](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/config/operation-metadata.ts#L3239)
+Defined in: [config/operation-metadata.ts:3239](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/config/operation-metadata.ts#L3239)
 
 Get the rate limit key for an operation
 

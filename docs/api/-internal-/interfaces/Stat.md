@@ -2,10 +2,10 @@
 
 # Interface: Stat
 
-Defined in: [types/promotion.types.ts:376](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L376)
+Defined in: [types/promotion.types.ts:376](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L376)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stats"></a> `stats?` | [`StatsBlok1`](StatsBlok1.md)[] | Блок статистики | [types/promotion.types.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/promotion.types.ts#L378) |
+| <a id="stats"></a> `stats?` | [`StatsBlok1`](StatsBlok1.md)[] | Блок статистики | [types/promotion.types.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/promotion.types.ts#L378) |

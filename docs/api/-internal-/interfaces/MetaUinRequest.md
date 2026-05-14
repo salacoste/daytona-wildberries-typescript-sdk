@@ -2,7 +2,7 @@
 
 # Interface: MetaUinRequest
 
-Defined in: [types/orders-fbs.types.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/orders-fbs.types.ts#L104)
+Defined in: [types/orders-fbs.types.ts:104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L104)
 
 Request body for attaching a UIN to an order
 
@@ -10,4 +10,4 @@ Request body for attaching a UIN to an order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="uin"></a> `uin` | `string` | Unique identification number | [types/orders-fbs.types.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/efd935090e1f32ad750e7d59c98524fc03dc71bf/src/types/orders-fbs.types.ts#L106) |
+| <a id="uin"></a> `uin` | `string` | Unique identification number | [types/orders-fbs.types.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/41c8c8d606c0e53924cd1cbbea0b9d4165c56f88/src/types/orders-fbs.types.ts#L106) |

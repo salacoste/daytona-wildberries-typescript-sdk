@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.12.0] - 2026-05-14
+
+### Added
+
+- 4 new public types for stock management: `StockItem`, `StocksRequest`, `UpdateStockRequest`, `GetStocksResponse` (mirrors WB API 2026-05-08 announcement).
+- `sdk.products.getStocks(warehouseId, { chrtIds })` — preferred path using size IDs (from `POST /content/v2/get/cards/list`).
+- `sdk.products.updateStock(warehouseId, { stocks: [{ chrtId, amount }] })` — per-item `chrtId` support.
+- `sdk.products.deleteStock(warehouseId, { chrtIds })` — preferred path.
+
+### Deprecated
+
+- **`sku` / `skus` parameters on `sdk.products.getStocks() / updateStock() / deleteStock()`** — Wildberries API begins gradually disabling `sku` on **2026-05-20 13:00 MSK**; after the deadline, requests with `sku` return HTTP 400. Migrate to `chrtId` / `chrtIds`. The SDK emits a one-time `console.warn` per process when legacy fields are detected (paired with `@deprecated` JSDoc tags). See migration guide at [docs/guides/stocks-sku-to-chrtid-migration.md](./docs/guides/stocks-sku-to-chrtid-migration.md).
+
+### Notes
+
+- **Hard deadline**: 2026-05-20 13:00 MSK — Wildberries begins gradually disabling the `sku` parameter on POST/PUT/DELETE `/api/v3/stocks/{warehouseId}` (initial outage 10 min/hour, expanding daily; after full rollout: HTTP 400).
+- **Two-tier deprecation**: IDE strikethrough via `@deprecated` JSDoc tags (compile-time, TypeScript users) + runtime `console.warn` via `warnOnce()` (catches JavaScript users + copy-paste patterns).
+- **Mixed-mode behavior**: when BOTH legacy and new fields are provided, the SDK strips the legacy field before forwarding to WB and emits a separate `mixed-*` warning. Original request data is never mutated (shallow clone via destructuring rest).
+- **Empty-array case**: `chrtIds: []` on an otherwise legacy-only call is stripped before forwarding, preventing a malformed payload to WB.
+- **Casing note**: WB Content API (`POST /content/v2/get/cards/list`) uses `chrtID` (uppercase D) in card responses; the Marketplace stocks API uses `chrtId` (lowercase d). Same numeric value — pass it through unchanged.
+- **Backwards compatibility**: existing consumer code using `sku`/`skus` continues to work until 2026-05-20. The deprecation is paired-optional (both `sku?` and `chrtId?` accepted); v4.0.0 will remove the legacy fields.
+
+### Tech Debt
+
+- `examples/products-warehouse-stock.ts` references non-existent methods `updateStockLevels()` and `deleteStockRecords()` (real methods are `updateStock()` / `deleteStock()`). Pre-existing bug, predates Sprint 16. Deferred to next sprint — example files are not part of the published npm artifact and are not validated by `validate:examples`. Track as follow-up.
+
+### Related
+
+- WB release-notes: https://dev.wildberries.ru/release-notes?id=522
+- Migration guide: [docs/guides/stocks-sku-to-chrtid-migration.md](./docs/guides/stocks-sku-to-chrtid-migration.md)
+
+---
+
 ## [3.11.0] - 2026-05-08
 
 ### Added
