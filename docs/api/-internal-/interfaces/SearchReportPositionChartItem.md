@@ -2,12 +2,12 @@
 
 # Interface: SearchReportPositionChartItem
 
-Defined in: [types/analytics.types.ts:88](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L88)
+Defined in: [types/analytics.types.ts:88](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L88)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="dt"></a> `dt` | `string` | Дата | [types/analytics.types.ts:90](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L90) |
-| <a id="average"></a> `average` | `number` | Средняя позиция товара в результатах поиска | [types/analytics.types.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L92) |
-| <a id="median"></a> `median` | `number` | Медианная позиция товара в результатах поиска | [types/analytics.types.ts:94](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/analytics.types.ts#L94) |
+| <a id="dt"></a> `dt` | `string` | Дата | [types/analytics.types.ts:90](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L90) |
+| <a id="average"></a> `average` | `number` | Средняя позиция товара в результатах поиска | [types/analytics.types.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L92) |
+| <a id="median"></a> `median` | `number` | Медианная позиция товара в результатах поиска | [types/analytics.types.ts:94](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/analytics.types.ts#L94) |

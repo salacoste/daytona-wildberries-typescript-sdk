@@ -58,6 +58,10 @@ Main entry point
 | [DBWSetMetaBulkResponse](interfaces/DBWSetMetaBulkResponse.md) | Response from bulk metadata set operations for DBW orders. Mirrors DBS `SetMetaBulkResponse`. |
 | [DBWCheckMetaValidationRequest](interfaces/DBWCheckMetaValidationRequest.md) | Request body for [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). |
 | [DBWCheckMetaValidationResponse](interfaces/DBWCheckMetaValidationResponse.md) | Response from [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). Each item in `metaDetails[]` reports the validation status of a single order's marking metadata. Use this *before* calling deliverBulk() to detect orders that would fail with 409 MetaValidationFail. |
+| [StockItem](interfaces/StockItem.md) | A single stock record on a seller warehouse. |
+| [StocksRequest](interfaces/StocksRequest.md) | Request body for [ProductsModule.getStocks](classes/ProductsModule.md#getstocks) and [ProductsModule.deleteStock](classes/ProductsModule.md#deletestock). |
+| [UpdateStockRequest](interfaces/UpdateStockRequest.md) | Request body for [ProductsModule.updateStock](classes/ProductsModule.md#updatestock). |
+| [GetStocksResponse](interfaces/GetStocksResponse.md) | Response from [ProductsModule.getStocks](classes/ProductsModule.md#getstocks). |
 | [ReturnItem](interfaces/ReturnItem.md) | Unified return record across FBO and FBS sources. |
 | [ReturnsApiRequest](interfaces/ReturnsApiRequest.md) | Request parameters for `sdk.returns.getReturns()`. |
 | [PartialFailure](interfaces/PartialFailure.md) | Per-source failure record returned in ReturnsApiResponse. |

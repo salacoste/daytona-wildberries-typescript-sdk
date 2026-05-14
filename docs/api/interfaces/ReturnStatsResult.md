@@ -2,7 +2,7 @@
 
 # Interface: ReturnStatsResult
 
-Defined in: [types/returns.types.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L208)
+Defined in: [types/returns.types.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L208)
 
 Aggregated return statistics returned by `sdk.returns.getReturnStats()`.
 Surfaces underlying getReturns() telemetry transparently.
@@ -15,9 +15,9 @@ v3.10.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="buckets"></a> `buckets` | [`ReturnStatsBucket`](ReturnStatsBucket.md)[] | Aggregated buckets sorted by count descending, key ascending as tiebreaker. | [types/returns.types.ts:210](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L210) |
-| <a id="totalreturns"></a> `totalReturns` | `number` | Total return count across all buckets. | [types/returns.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L212) |
-| <a id="totalamount"></a> `totalAmount` | `number` | Total amount across all buckets. | [types/returns.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L214) |
-| <a id="warnings"></a> `warnings` | `string`[] | Surfaces underlying getReturns() telemetry | [types/returns.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L216) |
-| <a id="partialfailures"></a> `partialFailures` | [`PartialFailure`](PartialFailure.md)[] | - | [types/returns.types.ts:217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L217) |
-| <a id="_meta"></a> `_meta` | [`ReturnsMeta`](ReturnsMeta.md) | - | [types/returns.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/returns.types.ts#L218) |
+| <a id="buckets"></a> `buckets` | [`ReturnStatsBucket`](ReturnStatsBucket.md)[] | Aggregated buckets sorted by count descending, key ascending as tiebreaker. | [types/returns.types.ts:210](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L210) |
+| <a id="totalreturns"></a> `totalReturns` | `number` | Total return count across all buckets. | [types/returns.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L212) |
+| <a id="totalamount"></a> `totalAmount` | `number` | Total amount across all buckets. | [types/returns.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L214) |
+| <a id="warnings"></a> `warnings` | `string`[] | Surfaces underlying getReturns() telemetry | [types/returns.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L216) |
+| <a id="partialfailures"></a> `partialFailures` | [`PartialFailure`](PartialFailure.md)[] | - | [types/returns.types.ts:217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L217) |
+| <a id="_meta"></a> `_meta` | [`ReturnsMeta`](ReturnsMeta.md) | - | [types/returns.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/returns.types.ts#L218) |

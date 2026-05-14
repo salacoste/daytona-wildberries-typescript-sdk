@@ -6,7 +6,7 @@
 function classifyFbsReturnCategory(statuses: FbsStatusEvent[]): ReturnCategory;
 ```
 
-Defined in: [utils/classifyFbsReturnCategory.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/utils/classifyFbsReturnCategory.ts#L49)
+Defined in: [utils/classifyFbsReturnCategory.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/utils/classifyFbsReturnCategory.ts#L49)
 
 Classifies an FBS order's return category by analyzing its status history.
 

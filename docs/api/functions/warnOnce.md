@@ -6,7 +6,7 @@
 function warnOnce(methodKey: string, message: string): void;
 ```
 
-Defined in: [utils/deprecation.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/utils/deprecation.ts#L28)
+Defined in: [utils/deprecation.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/utils/deprecation.ts#L28)
 
 Emit a deprecation warning for a method, at most once per process.
 

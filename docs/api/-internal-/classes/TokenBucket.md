@@ -2,7 +2,7 @@
 
 # Class: \_TokenBucket
 
-Defined in: [client/rate-limiter.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/client/rate-limiter.ts#L130)
+Defined in: [client/rate-limiter.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/client/rate-limiter.ts#L130)
 
 **`Internal`**
 
@@ -29,7 +29,7 @@ This class is used internally by RateLimiter and not exported.
 new _TokenBucket(config: RateLimitConfig): _TokenBucket;
 ```
 
-Defined in: [client/rate-limiter.ts:174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/client/rate-limiter.ts#L174)
+Defined in: [client/rate-limiter.ts:174](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/client/rate-limiter.ts#L174)
 
 Creates a new token bucket with the specified rate limit configuration.
 
@@ -51,7 +51,7 @@ Creates a new token bucket with the specified rate limit configuration.
 consume(): Promise<void>;
 ```
 
-Defined in: [client/rate-limiter.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/client/rate-limiter.ts#L224)
+Defined in: [client/rate-limiter.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/client/rate-limiter.ts#L224)
 
 Attempts to consume a token for a request.
 
@@ -87,7 +87,7 @@ await bucket.consume(); // Waits ~10 seconds for token refill
 getAvailableTokens(): number;
 ```
 
-Defined in: [client/rate-limiter.ts:282](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/client/rate-limiter.ts#L282)
+Defined in: [client/rate-limiter.ts:282](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/client/rate-limiter.ts#L282)
 
 **`Internal`**
 

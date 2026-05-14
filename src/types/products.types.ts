@@ -872,7 +872,7 @@ export interface GetContentTagsResponse {
  * Characteristic metadata for a product category (subject).
  * Returned by `getObjectCharc()`.
  *
- * @since v3.9.0
+ * @since 3.9.0
  * @see {@link https://dev.wildberries.ru/docs/openapi/work-with-products#tag/Kategorii-predmety-i-harakteristiki}
  */
 export interface SubjectCharacteristic {
@@ -895,7 +895,7 @@ export interface SubjectCharacteristic {
    * photo frames (28), calculators (977), lids (819), pillowcases (605),
    * cleaning wipes (1202).
    *
-   * @since v3.9.0
+   * @since 3.9.0
    */
   isRequiredForCreate?: boolean;
   /**
@@ -904,7 +904,7 @@ export interface SubjectCharacteristic {
    * merged cards (`createUploadAdd()`) — characteristics with `isVariable: true`
    * can have different values across variants of the same merged card.
    *
-   * @since v3.9.2
+   * @since 3.9.2
    */
   isVariable?: boolean;
   /**
@@ -954,7 +954,7 @@ export interface SubjectCharacteristic {
  * Characteristic value for card create/update requests.
  * Used in `createCardsUpload()`, `createUploadAdd()`, `createCardsUpdate()`.
  *
- * @since v3.9.0
+ * @since 3.9.0
  */
 export interface CardCharacteristicInput {
   /** Characteristic ID (from {@link SubjectCharacteristic.charcID}) */
@@ -975,7 +975,7 @@ export interface CardCharacteristicInput {
  * Includes the characteristic name in addition to id and value.
  * Returned by `getCardsList()`, `getCardsCursorList()`.
  *
- * @since v3.9.0
+ * @since 3.9.0
  */
 export interface CardCharacteristicOutput {
   /** Characteristic ID */
@@ -984,4 +984,107 @@ export interface CardCharacteristicOutput {
   name?: string;
   /** Characteristic value */
   value?: unknown;
+}
+
+// ============================================================================
+// Stock Management Types (v3.12.0 — sku → chrtId migration)
+// ============================================================================
+
+/**
+ * A single stock record on a seller warehouse.
+ *
+ * **Migration deadline 2026-05-20 13:00 MSK:** Wildberries is phasing out the `sku`
+ * field in favor of `chrtId` (size ID). Pass `chrtId` for all new code. The `sku` field
+ * will return HTTP 400 from the WB API after the deadline.
+ *
+ * Exactly one of `sku` or `chrtId` should be set per item. If both are set, `chrtId` wins
+ * at the SDK level (the request will be sent with `chrtId` only).
+ *
+ * @since 3.12.0
+ */
+export interface StockItem {
+  /**
+   * @deprecated since 3.12.0 — use `chrtId` instead. WB API will reject `sku` after
+   * 2026-05-20 13:00 MSK. See `docs/guides/stocks-sku-to-chrtid-migration.md`.
+   */
+  sku?: string;
+  /**
+   * Size ID returned by `POST /content/v2/get/cards/list`.
+   *
+   * **Casing note**: WB API uses `chrtID` (uppercase D) in Content endpoints
+   * (`/content/v2/get/cards/list`) but `chrtId` (lowercase d) in this Marketplace stocks
+   * endpoint. Pass the same numeric value, but the SDK property is `chrtId` (lowercase d)
+   * for stocks methods.
+   *
+   * The SDK type keeps this optional for backwards compatibility, but the WB API will
+   * REQUIRE `chrtId` (and reject `sku`) after 2026-05-20 13:00 MSK.
+   * @since 3.12.0
+   */
+  chrtId?: number;
+  /** Stock amount. */
+  amount?: number;
+}
+
+/**
+ * Request body for {@link ProductsModule.getStocks} and {@link ProductsModule.deleteStock}.
+ *
+ * Provide EITHER `skus` (deprecated) OR `chrtIds` (preferred). If both are provided,
+ * `chrtIds` wins. Pass `chrtIds` for all new code before 2026-05-20 13:00 MSK.
+ * @since 3.12.0
+ * @example
+ * ```typescript
+ * // New v3.12.0+ pattern (preferred)
+ * const request: StocksRequest = { chrtIds: [12345678] };
+ *
+ * // Legacy pattern (deprecated)
+ * const legacyRequest: StocksRequest = { skus: ['1234567890123'] };
+ * ```
+ */
+export interface StocksRequest {
+  /**
+   * @deprecated since 3.12.0 — use `chrtIds` instead. WB API will reject `skus` after
+   * 2026-05-20 13:00 MSK.
+   */
+  skus?: string[];
+  /**
+   * Array of size IDs (from `POST /content/v2/get/cards/list`).
+   *
+   * **Casing note**: WB API uses `chrtID` (uppercase D) in Content endpoints
+   * (`/content/v2/get/cards/list`) but `chrtId` (lowercase d) in this Marketplace stocks
+   * endpoint. Pass the same numeric values; the SDK property is `chrtIds` (lowercase d)
+   * for stocks methods.
+   *
+   * The SDK type keeps this optional for backwards compatibility, but the WB API will
+   * REQUIRE `chrtIds` (and reject `skus`) after 2026-05-20 13:00 MSK.
+   * @since 3.12.0
+   */
+  chrtIds?: number[];
+}
+
+/**
+ * Request body for {@link ProductsModule.updateStock}.
+ * @since 3.12.0
+ * @example
+ * ```typescript
+ * // New v3.12.0+ pattern (preferred)
+ * const request: UpdateStockRequest = { stocks: [{ chrtId: 12345678, amount: 100 }] };
+ *
+ * // Legacy pattern (deprecated)
+ * const legacyRequest: UpdateStockRequest = { stocks: [{ sku: '1234567890123', amount: 100 }] };
+ * ```
+ */
+export interface UpdateStockRequest {
+  /** Array of stock items. Use `chrtId` per item (not `sku`) after 2026-05-20. */
+  stocks: StockItem[];
+}
+
+/**
+ * Response from {@link ProductsModule.getStocks}.
+ *
+ * WB returns one of `sku` or `chrtId` per item, matching whichever identifier the
+ * request used. After 2026-05-20 13:00 MSK, only `chrtId` will be populated.
+ * @since 3.12.0
+ */
+export interface GetStocksResponse {
+  stocks?: StockItem[];
 }

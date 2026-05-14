@@ -2,11 +2,11 @@
 
 # Interface: RequestWithDate
 
-Defined in: [types/promotion.types.ts:517](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/promotion.types.ts#L517)
+Defined in: [types/promotion.types.ts:517](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L517)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID кампании | [types/promotion.types.ts:519](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/promotion.types.ts#L519) |
-| <a id="dates"></a> `dates` | `string`[] | Даты, за которые нужно получить информацию | [types/promotion.types.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/promotion.types.ts#L521) |
+| <a id="id"></a> `id` | `number` | ID кампании | [types/promotion.types.ts:519](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L519) |
+| <a id="dates"></a> `dates` | `string`[] | Даты, за которые нужно получить информацию | [types/promotion.types.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/promotion.types.ts#L521) |

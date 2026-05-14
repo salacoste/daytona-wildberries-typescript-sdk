@@ -741,6 +741,14 @@ export type {
 // DBW-prefixed aliases (DBWBulkStatusChangeResponse, DBWStatusSetResponse, DBWMetaValidationDetail)
 // are exported from orders-fbw.types above for API symmetry.
 
+// Products stock management types (v3.12.0 — sku → chrtId migration)
+export type {
+  StockItem,
+  StocksRequest,
+  UpdateStockRequest,
+  GetStocksResponse,
+} from './types/products.types';
+
 // User Management types (no name conflicts with global types)
 export type {
   AccessCode,

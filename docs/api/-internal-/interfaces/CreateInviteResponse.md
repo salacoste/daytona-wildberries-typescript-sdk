@@ -2,7 +2,7 @@
 
 # Interface: CreateInviteResponse
 
-Defined in: [types/general.types.ts:132](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/general.types.ts#L132)
+Defined in: [types/general.types.ts:132](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L132)
 
 Response from create invitation endpoint
 
@@ -10,7 +10,7 @@ Response from create invitation endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="inviteid"></a> `inviteID` | `string` | Invitation ID (UUID) | [types/general.types.ts:134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/general.types.ts#L134) |
-| <a id="expiredat"></a> `expiredAt` | `string` | Invitation expiration date/time | [types/general.types.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/general.types.ts#L136) |
-| <a id="issuccess"></a> `isSuccess` | `boolean` | Whether invitation was created successfully | [types/general.types.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/general.types.ts#L138) |
-| <a id="inviteurl"></a> `inviteUrl` | `string` | URL for the user to accept the invitation | [types/general.types.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/general.types.ts#L140) |
+| <a id="inviteid"></a> `inviteID` | `string` | Invitation ID (UUID) | [types/general.types.ts:134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L134) |
+| <a id="expiredat"></a> `expiredAt` | `string` | Invitation expiration date/time | [types/general.types.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L136) |
+| <a id="issuccess"></a> `isSuccess` | `boolean` | Whether invitation was created successfully | [types/general.types.ts:138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L138) |
+| <a id="inviteurl"></a> `inviteUrl` | `string` | URL for the user to accept the invitation | [types/general.types.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/general.types.ts#L140) |

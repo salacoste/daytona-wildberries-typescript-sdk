@@ -6,6 +6,6 @@
 type DocumentsLocale = "ru" | "en" | "zh";
 ```
 
-Defined in: [types/finances.types.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/0640fa555895ac0f50754d1f4eba4ba5e96a062e/src/types/finances.types.ts#L21)
+Defined in: [types/finances.types.ts:21](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/fe890adc67993deec87493683f2dd2b3be8b0abb/src/types/finances.types.ts#L21)
 
 Supported locale values for document endpoints
