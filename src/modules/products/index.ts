@@ -170,6 +170,27 @@ function sanitizeUpdateStockPayload(
 
 /* eslint-enable @typescript-eslint/no-deprecated */
 
+/**
+ * Filter values for {@link ProductsModule.getCardsList} `data.settings.filter.withPhoto`.
+ *
+ * **Deadline 2026-06-16**: WB changes the semantic of value `0`. After the deadline, `0`
+ * (or missing parameter) means "ALL cards" (not "no photo only"). The NEW value `2`
+ * replaces the old `0` semantic for "no photo only" cards.
+ *
+ * Using this const instead of magic numbers makes consumer code survive the schema change
+ * automatically — `WITH_PHOTO_FILTER.NO_PHOTO` resolves to `2` (the new value) in v3.14.0+.
+ *
+ * @since 3.14.0
+ */
+export const WITH_PHOTO_FILTER = {
+  /** All cards regardless of photo state. Same semantic before and after 2026-06-16. */
+  ALL: -1,
+  /** Only cards WITH photo. Same semantic before and after 2026-06-16. */
+  WITH_PHOTO: 1,
+  /** Only cards WITHOUT photo. NEW value `2` in v3.14.0+ — replaces legacy `0` semantic post-2026-06-16. */
+  NO_PHOTO: 2,
+} as const;
+
 export class ProductsModule {
   constructor(private client: BaseClient) {}
 
@@ -712,6 +733,14 @@ export class ProductsModule {
    *
    * Rate limit: 100 req/min, 600ms interval, burst 5
    *
+   * ⚠️ **Deadline 2026-06-16**: WB changes the `withPhoto` filter schema.
+   * `withPhoto: 0` (or missing) currently means "only no-photo cards" but will mean
+   * "ALL cards" after the deadline. A new value `withPhoto: 2` will mean "only no-photo
+   * cards" (replacing the old `0` semantic). If your code passes `withPhoto: 0` to
+   * filter for no-photo cards, you MUST migrate to `withPhoto: 2` (or
+   * `WITH_PHOTO_FILTER.NO_PHOTO`) before 2026-06-16. See
+   * `docs/guides/withphoto-semantic-migration.md` for the full migration matrix.
+   *
    * @param data - Request body with settings, filters, and cursor
    * @param [options] - Query parameters
    * @param [options.locale] - Language locale (e.g., 'ru', 'en')
@@ -726,7 +755,7 @@ export class ProductsModule {
    * const result = await sdk.products.getCardsList({
    *   settings: {
    *     cursor: { limit: 100 },
-   *     filter: { withPhoto: -1 },
+   *     filter: { withPhoto: WITH_PHOTO_FILTER.ALL },
    *   },
    * }, { locale: 'ru' });
    * console.log(result.cards); // Product cards array
@@ -738,6 +767,15 @@ export class ProductsModule {
       settings?: {
         sort?: { ascending?: boolean };
         filter?: {
+          /**
+           * Photo filter. Schema changes 2026-06-16:
+           * - `-1` — all cards (unchanged)
+           * - `0` or missing — all cards (was "no photo only" until 2026-06-16)
+           * - `1` — only with photo (unchanged)
+           * - `2` — only without photo (NEW; replaces legacy `0` semantic)
+           *
+           * Use {@link WITH_PHOTO_FILTER} for self-documenting code that survives the schema change.
+           */
           withPhoto?: number;
           textSearch?: string;
           tagIDs?: number[];
@@ -788,6 +826,23 @@ export class ProductsModule {
     }[];
     cursor?: { updatedAt?: string; nmID?: number; total?: number };
   }> {
+    // Sprint 19: detect legacy withPhoto:0 usage (semantic shift 2026-06-16)
+    // NOTE: If editing this message, also update:
+    //   - docs/guides/withphoto-semantic-migration.md (FAQ Q2)
+    //   - docs/ru/guides/withphoto-semantic-migration.md (FAQ Q2)
+    // to keep the doc-quoted message in sync.
+    if (data.settings?.filter?.withPhoto === 0) {
+      warnOnce(
+        'products.getCardsList:legacy-withphoto-zero',
+        `products.getCardsList: \`withPhoto: 0\` will change semantics on 2026-06-16. ` +
+          `Today it means "only cards without photo"; after the deadline it will mean ` +
+          `"ALL cards" (any photo state). If you want "no photo only", migrate to ` +
+          `\`WITH_PHOTO_FILTER.NO_PHOTO\` (= 2). If you want "all cards", use ` +
+          `\`WITH_PHOTO_FILTER.ALL\` (= -1) for clarity. ` +
+          `See docs/guides/withphoto-semantic-migration.md.`
+      );
+    }
+
     // Validate cursor limit (maximum enforced by Wildberries API)
     const MAXIMUM_CARDS_LIMIT = 100;
 

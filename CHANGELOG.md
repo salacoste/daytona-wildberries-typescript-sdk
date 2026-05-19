@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v3.14.0 — minor: new public WITH_PHOTO_FILTER const + runtime warn-once + migration guides (no breaking changes) -->
+
+## [3.14.0] - 2026-05-15
+
+### Added
+
+- **`WITH_PHOTO_FILTER` const** — new public helper constant for the `getCardsList()` `withPhoto` filter. Values: `{ ALL: -1, WITH_PHOTO: 1, NO_PHOTO: 2 }`. Exported from the main barrel: `import { WITH_PHOTO_FILTER } from 'daytona-wildberries-typescript-sdk'`. Uses post-migration semantics — `NO_PHOTO: 2` is the new WB value for "cards without photo" after 2026-06-16.
+- **Runtime warn-once for `withPhoto: 0`** — `sdk.products.getCardsList()` now emits a one-time `console.warn` (per process) when called with an explicit `withPhoto: 0`. The warning message includes the 2026-06-16 deadline, the migration target (`WITH_PHOTO_FILTER.NO_PHOTO` = 2), and a link to the migration guide. Value is passed through unchanged (SDK is informational, not mutating). Suppress in tests with `resetDeprecationWarnings()`.
+- **EN migration guide**: [docs/guides/withphoto-semantic-migration.md](./docs/guides/withphoto-semantic-migration.md) — 7 sections covering the silent break risk, full schema table, 5-scenario migration matrix, code BEFORE/AFTER examples, `WITH_PHOTO_FILTER` introduction, FAQ, and related resources.
+- **RU migration guide**: [docs/ru/guides/withphoto-semantic-migration.md](./docs/ru/guides/withphoto-semantic-migration.md) — identical structure in natural Russian.
+
+### Changed (WB-side, no SDK breaking change)
+
+- **WB API `withPhoto` schema on 2026-06-16**: `POST /content/v2/get/cards/list` filter field `withPhoto` changes semantics. Value `0` (or missing) changes from "only cards without photo" to "all cards". New value `2` means "only cards without photo" (replacing the old `0` semantic). Values `-1` and `1` are unchanged. SDK `src` types and Swagger source (`wildberries_api_doc/02-products.yaml`) updated to reflect new schema.
+- Removed `default: 0` annotation from `withPhoto` Swagger schema — the value is no longer semantically meaningful since `0` and missing converge to "all cards" post-2026-06-16.
+
+### Notes
+
+- **Migrate by 2026-06-16.** If your code passes `withPhoto: 0` to filter for no-photo cards, you MUST change it to `withPhoto: 2` (or `WITH_PHOTO_FILTER.NO_PHOTO`) before the deadline. After 2026-06-16, WB returns all cards for `withPhoto: 0` — no error, no signal, wrong data.
+- **Silent break risk**: This is the most dangerous type of WB API change — same HTTP 200, valid-looking response, wrong result set. SDK runtime warning (`console.warn` on `withPhoto: 0`) is the only programmatic signal; IDE JSDoc deadline callout is the design-time signal.
+- **Full migration matrix**: see [docs/guides/withphoto-semantic-migration.md](./docs/guides/withphoto-semantic-migration.md).
+- **Pre-deadline `withPhoto: 2` usage**: WB may not have deployed the new value `2` to production yet (sandbox-first). If WB returns HTTP 400 or unexpected results for `withPhoto: 2` before 2026-06-16, verify in sandbox before using `WITH_PHOTO_FILTER.NO_PHOTO` in production code. Hold deployment until WB confirms the new value is live.
+- **Why minor (not patch)**: v3.14.0 adds a new public exported API (`WITH_PHOTO_FILTER` const). Per SemVer, new public additions warrant a minor bump. The runtime warning is consumer-observable behavior (stderr write), which also justifies minor visibility.
+
+---
+
 <!-- v3.13.1 — patch: Sandbox-first feature addition (no breaking changes) -->
 
 ## [3.13.1] - 2026-05-15

@@ -2,7 +2,7 @@
 
 # Interface: BaseBidRecommendation
 
-Defined in: [types/promotion.types.ts:1923](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1923)
+Defined in: [types/promotion.types.ts:1923](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1923)
 
 Recommended base bids for the product card
 
@@ -10,6 +10,6 @@ Recommended base bids for the product card
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="competitivebid"></a> `competitiveBid?` | [`ReachBid`](ReachBid.md) | Competitive bid level | [types/promotion.types.ts:1925](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1925) |
-| <a id="leadersbid"></a> `leadersBid?` | [`ReachBid`](ReachBid.md) | Leaders bid level | [types/promotion.types.ts:1927](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1927) |
-| <a id="top2"></a> `top2?` | [`ReachBid`](ReachBid.md) | Top-2 position bid level | [types/promotion.types.ts:1929](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1929) |
+| <a id="competitivebid"></a> `competitiveBid?` | [`ReachBid`](ReachBid.md) | Competitive bid level | [types/promotion.types.ts:1925](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1925) |
+| <a id="leadersbid"></a> `leadersBid?` | [`ReachBid`](ReachBid.md) | Leaders bid level | [types/promotion.types.ts:1927](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1927) |
+| <a id="top2"></a> `top2?` | [`ReachBid`](ReachBid.md) | Top-2 position bid level | [types/promotion.types.ts:1929](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1929) |

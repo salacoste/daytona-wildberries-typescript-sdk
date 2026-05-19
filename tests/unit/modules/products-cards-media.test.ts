@@ -6,7 +6,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { ProductsModule } from '../../../src/modules/products';
+import { ProductsModule, WITH_PHOTO_FILTER } from '../../../src/modules/products';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
@@ -124,6 +125,86 @@ describe('ProductsModule - Cards & Media', () => {
       mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 429));
 
       await expect(productsModule.getCardsList({})).rejects.toThrow(RateLimitError);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 1b. getCardsList() — withPhoto migration (Sprint 19 / AC-12)
+  // ---------------------------------------------------------------------------
+  describe('getCardsList() — withPhoto migration', () => {
+    beforeEach(() => {
+      // Sprint 15.7 pattern: reset warn-once state so each test starts clean
+      resetDeprecationWarnings();
+      mockClient.post.mockResolvedValue({ cards: [], cursor: {} });
+    });
+
+    it('withPhoto: 2 (NEW value) — no warning emitted', async () => {
+      const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      await productsModule.getCardsList({ settings: { filter: { withPhoto: 2 } } });
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
+    it('withPhoto: 1 — no warning emitted', async () => {
+      const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      await productsModule.getCardsList({ settings: { filter: { withPhoto: 1 } } });
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
+    it('withPhoto: -1 — no warning emitted', async () => {
+      const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      await productsModule.getCardsList({ settings: { filter: { withPhoto: -1 } } });
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
+    it('no filter — no warning emitted', async () => {
+      const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      await productsModule.getCardsList({});
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
+    it('does not emit warning when withPhoto is absent (any intermediate path)', async () => {
+      const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      try {
+        mockClient.post.mockResolvedValue({ cards: [], cursor: { total: 0 } });
+
+        // Path 1: empty data
+        await productsModule.getCardsList({});
+        // Path 2: settings present, filter absent
+        await productsModule.getCardsList({ settings: {} });
+        // Path 3: filter present, withPhoto absent
+        await productsModule.getCardsList({ settings: { filter: {} } });
+
+        expect(spy).not.toHaveBeenCalled();
+      } finally {
+        spy.mockRestore();
+      }
+    });
+
+    it('withPhoto: 0 — warn-once fires once, second call muted', async () => {
+      const spy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      // First call: warning fires
+      await productsModule.getCardsList({ settings: { filter: { withPhoto: 0 } } });
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0]).toMatch(/withPhoto: 0.*2026-06-16/);
+      expect(spy.mock.calls[0][0]).toMatch(/WITH_PHOTO_FILTER\.NO_PHOTO/);
+      expect(spy.mock.calls[0][0]).toMatch(/withphoto-semantic-migration\.md/);
+
+      // Second call: muted by warnOnce
+      await productsModule.getCardsList({ settings: { filter: { withPhoto: 0 } } });
+      expect(spy).toHaveBeenCalledTimes(1); // still 1
+
+      spy.mockRestore();
+    });
+
+    it('WITH_PHOTO_FILTER.NO_PHOTO === 2 (regression guard)', () => {
+      expect(WITH_PHOTO_FILTER.NO_PHOTO).toBe(2);
+      expect(WITH_PHOTO_FILTER.ALL).toBe(-1);
+      expect(WITH_PHOTO_FILTER.WITH_PHOTO).toBe(1);
     });
   });
 

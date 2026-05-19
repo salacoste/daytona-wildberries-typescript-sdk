@@ -2,7 +2,7 @@
 
 # Interface: SellerLimit
 
-Defined in: [types/communications.types.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L250)
+Defined in: [types/communications.types.ts:250](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L250)
 
 Seller limit details for pinned reviews
 
@@ -10,8 +10,8 @@ Seller limit details for pinned reviews
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="perunitlimit"></a> `perUnitLimit` | `number` | Max pinned reviews per product card or merged group | [types/communications.types.ts:252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L252) |
-| <a id="remaining"></a> `remaining` | `number` | Remaining pinnable reviews | [types/communications.types.ts:254](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L254) |
-| <a id="totallimit"></a> `totalLimit` | `number` | Total pin limit | [types/communications.types.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L256) |
-| <a id="unlimited"></a> `unlimited` | `boolean` | Whether pinning is unlimited | [types/communications.types.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L258) |
-| <a id="used"></a> `used` | `number` | Current number of pinned reviews | [types/communications.types.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L260) |
+| <a id="perunitlimit"></a> `perUnitLimit` | `number` | Max pinned reviews per product card or merged group | [types/communications.types.ts:252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L252) |
+| <a id="remaining"></a> `remaining` | `number` | Remaining pinnable reviews | [types/communications.types.ts:254](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L254) |
+| <a id="totallimit"></a> `totalLimit` | `number` | Total pin limit | [types/communications.types.ts:256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L256) |
+| <a id="unlimited"></a> `unlimited` | `boolean` | Whether pinning is unlimited | [types/communications.types.ts:258](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L258) |
+| <a id="used"></a> `used` | `number` | Current number of pinned reviews | [types/communications.types.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L260) |

@@ -2,7 +2,7 @@
 
 # Interface: AdvertNMsSettings
 
-Defined in: [types/promotion.types.ts:1102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1102)
+Defined in: [types/promotion.types.ts:1102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1102)
 
 Настройки товаров кампании (с ставками в копейках)
 
@@ -10,6 +10,6 @@ Defined in: [types/promotion.types.ts:1102](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="bids_kopecks"></a> `bids_kopecks` | [`AdvertBidsKopecks`](AdvertBidsKopecks.md) | Ставки в копейках | [types/promotion.types.ts:1104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1104) |
-| <a id="subject"></a> `subject` | [`AdvertSubject`](AdvertSubject.md) | Предмет | [types/promotion.types.ts:1106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1106) |
-| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:1108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1108) |
+| <a id="bids_kopecks"></a> `bids_kopecks` | [`AdvertBidsKopecks`](AdvertBidsKopecks.md) | Ставки в копейках | [types/promotion.types.ts:1104](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1104) |
+| <a id="subject"></a> `subject` | [`AdvertSubject`](AdvertSubject.md) | Предмет | [types/promotion.types.ts:1106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1106) |
+| <a id="nm_id"></a> `nm_id` | `number` | Артикул WB | [types/promotion.types.ts:1108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1108) |

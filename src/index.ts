@@ -653,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.13.1';
+export const version = '3.14.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -693,7 +693,7 @@ export { BaseClient } from './client/base-client';
 
 // API Modules
 export { GeneralModule } from './modules/general';
-export { ProductsModule } from './modules/products';
+export { ProductsModule, WITH_PHOTO_FILTER } from './modules/products';
 export { OrdersFbsModule } from './modules/orders-fbs';
 export { OrdersFbwModule } from './modules/orders-fbw';
 export { FinancesModule } from './modules/finances';

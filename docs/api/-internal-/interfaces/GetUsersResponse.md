@@ -2,7 +2,7 @@
 
 # Interface: GetUsersResponse
 
-Defined in: [types/general.types.ts:206](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L206)
+Defined in: [types/general.types.ts:206](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L206)
 
 Response from get users endpoint
 
@@ -10,6 +10,6 @@ Response from get users endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="total"></a> `total` | `number` | Total number of users | [types/general.types.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L208) |
-| <a id="countinresponse"></a> `countInResponse` | `number` | Number of users in current response | [types/general.types.ts:210](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L210) |
-| <a id="users"></a> `users` | [`UserInfo`](UserInfo.md)[] | Users list | [types/general.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L212) |
+| <a id="total"></a> `total` | `number` | Total number of users | [types/general.types.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L208) |
+| <a id="countinresponse"></a> `countInResponse` | `number` | Number of users in current response | [types/general.types.ts:210](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L210) |
+| <a id="users"></a> `users` | [`UserInfo`](UserInfo.md)[] | Users list | [types/general.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L212) |

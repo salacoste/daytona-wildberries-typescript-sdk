@@ -2,7 +2,7 @@
 
 # Interface: GetAdvertsV2Response
 
-Defined in: [types/promotion.types.ts:1249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1249)
+Defined in: [types/promotion.types.ts:1249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1249)
 
 Ответ метода getAdvertsV2 (GET /adv/v2/adverts).
 Содержит список кампаний с типизированным bid_type и ставками в копейках.
@@ -11,4 +11,4 @@ Defined in: [types/promotion.types.ts:1249](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="adverts"></a> `adverts` | [`AdvertV2`](AdvertV2.md)[] | Список кампаний | [types/promotion.types.ts:1251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1251) |
+| <a id="adverts"></a> `adverts` | [`AdvertV2`](AdvertV2.md)[] | Список кампаний | [types/promotion.types.ts:1251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1251) |

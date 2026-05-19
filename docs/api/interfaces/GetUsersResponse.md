@@ -2,7 +2,7 @@
 
 # Interface: GetUsersResponse
 
-Defined in: [types/user-management.types.ts:121](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/user-management.types.ts#L121)
+Defined in: [types/user-management.types.ts:121](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/user-management.types.ts#L121)
 
 Ответ на запрос списка пользователей
 
@@ -10,6 +10,6 @@ Defined in: [types/user-management.types.ts:121](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="total"></a> `total` | `number` | Общее количество активных или приглашённых пользователей | [types/user-management.types.ts:123](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/user-management.types.ts#L123) |
-| <a id="countinresponse"></a> `countInResponse` | `number` | Количество активных или приглашённых пользователей на текущей странице | [types/user-management.types.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/user-management.types.ts#L125) |
-| <a id="users"></a> `users` | [`UserInfo`](UserInfo.md)[] | Информация о пользователях | [types/user-management.types.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/user-management.types.ts#L127) |
+| <a id="total"></a> `total` | `number` | Общее количество активных или приглашённых пользователей | [types/user-management.types.ts:123](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/user-management.types.ts#L123) |
+| <a id="countinresponse"></a> `countInResponse` | `number` | Количество активных или приглашённых пользователей на текущей странице | [types/user-management.types.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/user-management.types.ts#L125) |
+| <a id="users"></a> `users` | [`UserInfo`](UserInfo.md)[] | Информация о пользователях | [types/user-management.types.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/user-management.types.ts#L127) |

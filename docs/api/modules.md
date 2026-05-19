@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.13.1
+# Wildberries API TypeScript SDK v3.14.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -135,6 +135,7 @@ Main entry point
 | [userManagementRateLimits](variables/userManagementRateLimits.md) | - |
 | [version](variables/version.md) | SDK version |
 | [COMMUNICATIONS\_LIMITS](variables/COMMUNICATIONS_LIMITS.md) | Exported limits for external testability and documentation. |
+| [WITH\_PHOTO\_FILTER](variables/WITH_PHOTO_FILTER.md) | Filter values for [ProductsModule.getCardsList](classes/ProductsModule.md#getcardslist) `data.settings.filter.withPhoto`. |
 
 ## Functions
 

@@ -2,7 +2,7 @@
 
 # Interface: GetContentTagsResponse
 
-Defined in: [types/products.types.ts:856](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/products.types.ts#L856)
+Defined in: [types/products.types.ts:856](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L856)
 
 Response for content tags (GET /content/v2/tags)
 
@@ -10,7 +10,7 @@ Response for content tags (GET /content/v2/tags)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`ContentTag`](ContentTag.md)[] | Массив ярлыков | [types/products.types.ts:858](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/products.types.ts#L858) |
-| <a id="error"></a> `error?` | `boolean` | Флаг ошибки | [types/products.types.ts:860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/products.types.ts#L860) |
-| <a id="errortext"></a> `errorText?` | `string` | Описание ошибки | [types/products.types.ts:862](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/products.types.ts#L862) |
-| <a id="additionalerrors"></a> `additionalErrors?` | `string` | Дополнительные ошибки | [types/products.types.ts:864](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/products.types.ts#L864) |
+| <a id="data"></a> `data?` | [`ContentTag`](ContentTag.md)[] | Массив ярлыков | [types/products.types.ts:858](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L858) |
+| <a id="error"></a> `error?` | `boolean` | Флаг ошибки | [types/products.types.ts:860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L860) |
+| <a id="errortext"></a> `errorText?` | `string` | Описание ошибки | [types/products.types.ts:862](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L862) |
+| <a id="additionalerrors"></a> `additionalErrors?` | `string` | Дополнительные ошибки | [types/products.types.ts:864](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L864) |

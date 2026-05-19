@@ -2,7 +2,7 @@
 
 # Interface: SellerLimitsData
 
-Defined in: [types/communications.types.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L266)
+Defined in: [types/communications.types.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L266)
 
 Seller limits data for subscription and tariff
 
@@ -10,5 +10,5 @@ Seller limits data for subscription and tariff
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="subscription"></a> `subscription` | [`SellerLimit`](SellerLimit.md) \| `null` | Subscription limits (null if no active subscription) | [types/communications.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L268) |
-| <a id="tariff"></a> `tariff` | [`SellerLimit`](SellerLimit.md) \| `null` | Tariff limits (null if no active tariff option) | [types/communications.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/communications.types.ts#L270) |
+| <a id="subscription"></a> `subscription` | [`SellerLimit`](SellerLimit.md) \| `null` | Subscription limits (null if no active subscription) | [types/communications.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L268) |
+| <a id="tariff"></a> `tariff` | [`SellerLimit`](SellerLimit.md) \| `null` | Tariff limits (null if no active tariff option) | [types/communications.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/communications.types.ts#L270) |

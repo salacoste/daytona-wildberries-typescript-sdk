@@ -41,6 +41,16 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
+## What's New (v3.14.0) — May 2026
+
+🚨 **Silent semantic break deadline: 2026-06-16** — WB changes the `withPhoto` filter: `withPhoto: 0` (or missing) will mean "ALL cards" instead of "no-photo only". The new value `withPhoto: 2` replaces the old `0` semantic. **No HTTP error, no signal — wrong data.** Migrate before the deadline.
+
+🆕 **New `WITH_PHOTO_FILTER` const** — `import { WITH_PHOTO_FILTER } from 'daytona-wildberries-typescript-sdk'`. Use `WITH_PHOTO_FILTER.NO_PHOTO` (= 2), `WITH_PHOTO_FILTER.WITH_PHOTO` (= 1), or `WITH_PHOTO_FILTER.ALL` (= -1) instead of magic numbers.
+
+🔔 **Runtime warn-once**: first call with `withPhoto: 0` emits a `console.warn` pointing to the migration guide and deadline. Use `resetDeprecationWarnings()` in tests.
+
+See [CHANGELOG v3.14.0](#3140---2026-05-15) and the [migration guide](./docs/guides/withphoto-semantic-migration.md) for the full migration matrix and code examples.
+
 ## What's New (v3.13.0) — May 2026
 
 🔧 **Critical fix: `sdk.communications.createSellerMessage()` now works** — the method previously sent an empty body on every call (broken since introduction). v3.13.0 requires a `data: SellerMessageRequest` parameter. Existing TypeScript call sites `createSellerMessage()` will fail to compile — this is intentional; the old signature never worked.
@@ -319,6 +329,16 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v3.14.0) — Май 2026
+
+🚨 **Скрытое изменение семантики, дедлайн 2026-06-16** — WB меняет фильтр `withPhoto`: значение `0` (или отсутствие параметра) будет означать «ВСЕ карточки» вместо «только без фото». Новое значение `withPhoto: 2` заменяет прежнюю семантику `0`. **HTTP 200, нет ошибки, нет сигнала — неправильные данные.** Мигрируйте до дедлайна.
+
+🆕 **Новая константа `WITH_PHOTO_FILTER`** — `import { WITH_PHOTO_FILTER } from 'daytona-wildberries-typescript-sdk'`. Используйте `WITH_PHOTO_FILTER.NO_PHOTO` (= 2), `WITH_PHOTO_FILTER.WITH_PHOTO` (= 1) или `WITH_PHOTO_FILTER.ALL` (= -1) вместо магических чисел.
+
+🔔 **Предупреждение при первом вызове**: первый вызов с `withPhoto: 0` выводит `console.warn` со ссылкой на руководство по миграции и дедлайном. Используйте `resetDeprecationWarnings()` в тестах.
+
+Подробности — в [CHANGELOG v3.14.0](#3140---2026-05-15) и [руководстве по миграции](./docs/ru/guides/withphoto-semantic-migration.md) с полной матрицей миграции и примерами кода.
 
 ## Что нового (v3.13.0) — Май 2026
 

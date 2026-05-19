@@ -2,7 +2,7 @@
 
 # Interface: AdvertPlacements
 
-Defined in: [types/promotion.types.ts:1146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1146)
+Defined in: [types/promotion.types.ts:1146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1146)
 
 Места размещения кампании
 
@@ -10,5 +10,5 @@ Defined in: [types/promotion.types.ts:1146](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="search"></a> `search` | `boolean` | Размещение в поиске | [types/promotion.types.ts:1148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1148) |
-| <a id="recommendations"></a> `recommendations` | `boolean` | Размещение в рекомендациях | [types/promotion.types.ts:1150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1150) |
+| <a id="search"></a> `search` | `boolean` | Размещение в поиске | [types/promotion.types.ts:1148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1148) |
+| <a id="recommendations"></a> `recommendations` | `boolean` | Размещение в рекомендациях | [types/promotion.types.ts:1150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/promotion.types.ts#L1150) |

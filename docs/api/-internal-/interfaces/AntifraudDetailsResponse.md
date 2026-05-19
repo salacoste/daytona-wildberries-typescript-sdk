@@ -2,7 +2,7 @@
 
 # Interface: AntifraudDetailsResponse
 
-Defined in: [types/reports.types.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/reports.types.ts#L510)
+Defined in: [types/reports.types.ts:510](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/reports.types.ts#L510)
 
 Response for getAnalyticsAntifraudDetails
 
@@ -14,4 +14,4 @@ EPIC 43 - Response type for getAnalyticsAntifraudDetails
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`AntifraudDetailsItem`](AntifraudDetailsItem.md)[] | [types/reports.types.ts:511](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/reports.types.ts#L511) |
+| <a id="data"></a> `data?` | [`AntifraudDetailsItem`](AntifraudDetailsItem.md)[] | [types/reports.types.ts:511](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/reports.types.ts#L511) |
