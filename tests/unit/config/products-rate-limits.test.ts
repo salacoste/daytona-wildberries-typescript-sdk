@@ -198,6 +198,7 @@ describe('productsRateLimits', () => {
         'products.postContentCardsMoveNm',
         'products.postContentCardsDeleteTrash',
         'products.postContentCardsRecover',
+        'products.postContentCardsDelete',
         'products.postContentGetCardsTrash',
         'products.contentCardsLimits',
         'products.postContentBarcodes',
@@ -240,7 +241,7 @@ describe('productsRateLimits', () => {
 
     it('should not have any unexpected keys', () => {
       const actualKeys = Object.keys(productsRateLimits);
-      expect(actualKeys).toHaveLength(49);
+      expect(actualKeys).toHaveLength(50);
     });
   });
 });

@@ -6,7 +6,7 @@
 type Goods = Good[];
 ```
 
-Defined in: [types/products.types.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/products.types.ts#L179)
+Defined in: [types/products.types.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/products.types.ts#L179)
 
 Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно.
 

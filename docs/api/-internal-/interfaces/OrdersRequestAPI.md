@@ -2,7 +2,7 @@
 
 # Interface: OrdersRequestAPI
 
-Defined in: [types/orders-fbs.types.ts:220](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L220)
+Defined in: [types/orders-fbs.types.ts:220](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/orders-fbs.types.ts#L220)
 
 Generic order IDs request body used across multiple endpoints
 
@@ -21,4 +21,4 @@ Generic order IDs request body used across multiple endpoints
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | `number`[] | List of order IDs | [types/orders-fbs.types.ts:222](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbs.types.ts#L222) |
+| <a id="orders"></a> `orders?` | `number`[] | List of order IDs | [types/orders-fbs.types.ts:222](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/orders-fbs.types.ts#L222) |

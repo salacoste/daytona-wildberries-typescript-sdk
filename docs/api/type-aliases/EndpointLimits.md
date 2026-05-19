@@ -6,7 +6,7 @@
 type EndpointLimits = Record<string, RateLimitConfig>;
 ```
 
-Defined in: [client/rate-limiter.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/client/rate-limiter.ts#L113)
+Defined in: [client/rate-limiter.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/client/rate-limiter.ts#L113)
 
 Mapping of endpoint keys to their rate limit configurations.
 

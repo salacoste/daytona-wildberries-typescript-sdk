@@ -2,7 +2,7 @@
 
 # Interface: DBWSetSgtinBulkRequest
 
-Defined in: [types/orders-fbw.types.ts:433](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbw.types.ts#L433)
+Defined in: [types/orders-fbw.types.ts:433](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/orders-fbw.types.ts#L433)
 
 Request body for bulk SGTIN code assignment on DBW orders.
 Mirrors DBS `SetSgtinBulkRequest`.
@@ -15,4 +15,4 @@ Mirrors DBS `SetSgtinBulkRequest`.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `sgtins`: `string`[]; \}[] | Array of per-order SGTIN assignments | [types/orders-fbw.types.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/orders-fbw.types.ts#L435) |
+| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `sgtins`: `string`[]; \}[] | Array of per-order SGTIN assignments | [types/orders-fbw.types.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/orders-fbw.types.ts#L435) |

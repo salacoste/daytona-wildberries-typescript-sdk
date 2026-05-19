@@ -122,6 +122,14 @@ export const productsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.6,
     burstLimit: 5,
   },
+  'products.postContentCardsDelete': {
+    // Sandbox-only at v3.13.1 release; rate limits assumed parity with
+    // products.postContentCardsRecover (sibling operation). Re-check after WB
+    // production release per WL-5 in `backlog/watch-list.md`.
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 5,
+  },
   'products.postContentGetCardsTrash': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,

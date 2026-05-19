@@ -1088,3 +1088,49 @@ export interface UpdateStockRequest {
 export interface GetStocksResponse {
   stocks?: StockItem[];
 }
+
+// ============================================================================
+// Card Trash Management Types (v3.13.1 — sandbox-first permanent delete)
+// ============================================================================
+
+/**
+ * Request body for {@link ProductsModule.deleteCardsFromTrash}.
+ *
+ * **Sandbox-only at v3.13.1 release (2026-05-15)**: WB announced this endpoint in the
+ * Sandbox environment. Production availability is tracked via WL-5 in
+ * `backlog/watch-list.md`. SDK consumers running production traffic should test with
+ * sandbox credentials first to confirm the endpoint is responsive in their target
+ * environment.
+ *
+ * @since 3.13.1
+ */
+export interface DeleteCardsFromTrashRequest {
+  /** Array of product card IDs (nmID) currently in trash to delete permanently. */
+  nmIDs?: number[];
+}
+
+/**
+ * Response from {@link ProductsModule.deleteCardsFromTrash}.
+ *
+ * Standard WB content-api envelope: `error` flag + `errorText` for failure modes,
+ * `additionalErrors` for per-card errors when partial failure, empty `data` object
+ * on success (WB does not return the deleted nmIDs back).
+ *
+ * @since 3.13.1
+ */
+export interface DeleteCardsFromTrashResponse {
+  data?: Record<string, never>;
+  error?: boolean;
+  errorText?: string;
+  /**
+   * Per-card error details (when partial failure). Keys are card identifiers (e.g., nmID
+   * as string), values are error messages. WB sandbox returns `{}` on full-success; this
+   * shape accommodates the per-card-error case documented in the JSDoc above.
+   *
+   * NOTE: Intentional divergence from `createCardsRecover`'s `Record<string, never>` —
+   * this field's JSDoc semantics ("per-card errors") require a value type of `string`,
+   * not `never`. `Record<string, never>` can only represent `{}` and cannot hold any
+   * per-card error map. See story-task-139 Implementation Notes for rationale.
+   */
+  additionalErrors?: Record<string, string>;
+}

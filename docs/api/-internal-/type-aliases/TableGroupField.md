@@ -25,7 +25,7 @@ type TableGroupField =
   | "lostBuyoutsSum";
 ```
 
-Defined in: [types/analytics.types.ts:982](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/analytics.types.ts#L982)
+Defined in: [types/analytics.types.ts:982](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/analytics.types.ts#L982)
 
 Cортировка по полю:
  - `ordersCount` — Заказы, шт.

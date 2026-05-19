@@ -39,6 +39,8 @@ import type {
   StocksRequest,
   UpdateStockRequest,
   GetStocksResponse,
+  DeleteCardsFromTrashRequest,
+  DeleteCardsFromTrashResponse,
 } from '../../types/products.types';
 
 // task-16.2: module-private sanitization helpers for sku → chrtId migration
@@ -1046,6 +1048,74 @@ export class ProductsModule {
     }>('https://content-api.wildberries.ru/content/v2/cards/recover', data, {
       rateLimitKey: 'products.postContentCardsRecover',
     });
+  }
+
+  /**
+   * Окончательно удалить карточки товаров из корзины
+   *
+   * Permanently delete product cards from trash (irreversible). Frees up limit slots
+   * immediately, bypassing the 30-day auto-cleanup. Complement to `createDeleteTrash()`
+   * (soft, move to trash) — call this when you want to recover limit slots NOW.
+   *
+   * **Sandbox-only at v3.13.1 release (2026-05-15)**: WB announced this endpoint in the
+   * Sandbox environment. Production availability is tracked via WL-5 in
+   * `backlog/watch-list.md`. When WB confirms production release, this JSDoc marker
+   * will drop in a patch release.
+   *
+   * Workflow:
+   * ```
+   * createDeleteTrash → cards → trash (soft, 30d auto-cleanup)
+   *        │
+   *        ├── createCardsRecover → restore
+   *        ├── wait 30d            → auto-cleanup
+   *        └── deleteCardsFromTrash → hard delete NOW (this method)
+   * ```
+   *
+   * Rate limit: matches `createCardsRecover` sibling (server-side enforced)
+   *
+   * @param data - Request body with nmIDs to permanently delete from trash
+   * @param [data.nmIDs] - Array of product card IDs currently in trash
+   * @returns Standard content-api envelope (error flag, errorText, additionalErrors)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi-other/sandbox-environment} (search for `cards/delete` under Работа с товарами section)
+   * @see {@link ProductsModule.createDeleteTrash} — move TO trash (soft)
+   * @see {@link ProductsModule.createCardsRecover} — restore from trash
+   * @see {@link ProductsModule.getCardsLimits} — pre-flight limit check
+   * @since 3.13.1
+   * @example
+   * ```typescript
+   * // Free up limit slots immediately by permanently deleting trashed cards
+   * const limits = await sdk.products.getCardsLimits();
+   * // Treat undefined freeLimits as "no slots free" (WB may omit when zero)
+   * if (limits.data && !limits.data.freeLimits) {
+   *   // No free slots — clear old trash to make room
+   *   const trashed = await sdk.products.getTrashedCards({
+   *     settings: { cursor: { limit: 100 } },
+   *   });
+   *   const oldIds = trashed.cards
+   *     ?.filter((c) => c.nmID !== undefined)
+   *     .map((c) => c.nmID as number) ?? [];
+   *
+   *   if (oldIds.length > 0) {
+   *     const result = await sdk.products.deleteCardsFromTrash({ nmIDs: oldIds });
+   *     if (result.error) {
+   *       console.error('Delete failed:', result.errorText);
+   *     }
+   *   }
+   * }
+   * ```
+   */
+  async deleteCardsFromTrash(
+    data: DeleteCardsFromTrashRequest
+  ): Promise<DeleteCardsFromTrashResponse> {
+    return this.client.post<DeleteCardsFromTrashResponse>(
+      'https://content-api.wildberries.ru/content/v1/cards/delete',
+      data,
+      { rateLimitKey: 'products.postContentCardsDelete' }
+    );
   }
 
   /**

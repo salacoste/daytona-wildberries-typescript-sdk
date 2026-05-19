@@ -1303,4 +1303,89 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       expect(result.cards?.[0].kizMarked).toBe(true);
     });
   });
+
+  // ============================================================================
+  // Hard Delete from Trash (deleteCardsFromTrash) — v3.13.1 sandbox-first
+  // ============================================================================
+
+  describe('deleteCardsFromTrash() - Permanently Delete Cards from Trash (sandbox-first)', () => {
+    const mockDeleteResponse = {
+      data: {},
+      error: false,
+      errorText: '',
+      additionalErrors: {},
+    };
+
+    it('should permanently delete card from trash with correct URL, body and rateLimitKey', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockDeleteResponse);
+      const nmIDs = [12345678];
+
+      // Act
+      const result = await productsModule.deleteCardsFromTrash({ nmIDs });
+
+      // Assert — URL, body, rateLimitKey
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v1/cards/delete',
+        { nmIDs: [12345678] },
+        { rateLimitKey: 'products.postContentCardsDelete' }
+      );
+      expect(result.error).toBe(false);
+      // Regression guard: locks body shape to nmIDs only. If extending the request
+      // interface (e.g., adding `dryRun?: boolean`), intentionally update this assertion
+      // to include the new key — do NOT just delete it.
+      const callBody = mockClient.post.mock.calls[0][1] as object;
+      expect(Object.keys(callBody).sort()).toEqual(['nmIDs']);
+    });
+
+    it('should use v1 path (regression guard — WB uses v1 here, not v2 like sibling methods)', async () => {
+      // Arrange
+      mockClient.post.mockResolvedValue(mockDeleteResponse);
+
+      // Act
+      await productsModule.deleteCardsFromTrash({ nmIDs: [12345678] });
+
+      // Assert — v1 present, v2 absent
+      const calledUrl = mockClient.post.mock.calls[0][0] as string;
+      expect(calledUrl).toContain('/content/v1/cards/delete');
+      expect(calledUrl).not.toContain('/content/v2/cards/delete');
+    });
+
+    it('should pass empty nmIDs array through to WB without SDK-level error', async () => {
+      // Arrange — validation deferred to WB (same behaviour as createCardsRecover)
+      mockClient.post.mockResolvedValue(mockDeleteResponse);
+
+      // Act & Assert — should not throw at SDK level
+      await expect(productsModule.deleteCardsFromTrash({ nmIDs: [] })).resolves.not.toThrow();
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v1/cards/delete',
+        { nmIDs: [] },
+        { rateLimitKey: 'products.postContentCardsDelete' }
+      );
+    });
+
+    it('should surface WB error envelope with per-card additionalErrors map', async () => {
+      // Arrange — exercises the per-card error map shape (Record<string, string>) per
+      // the M2 type divergence from createCardsRecover sibling (which uses empty-object only).
+      const errorResponse = {
+        data: undefined,
+        error: true,
+        errorText: 'Some cards could not be deleted',
+        additionalErrors: { '123': 'not in trash', '456': 'card already deleted' },
+      };
+      mockClient.post.mockResolvedValue(errorResponse);
+
+      // Act
+      const result = await productsModule.deleteCardsFromTrash({ nmIDs: [123, 456] });
+
+      // Assert
+      expect(result.error).toBe(true);
+      expect(result.errorText).toBe('Some cards could not be deleted');
+      expect(result.additionalErrors).toEqual({
+        '123': 'not in trash',
+        '456': 'card already deleted',
+      });
+    });
+  });
 });

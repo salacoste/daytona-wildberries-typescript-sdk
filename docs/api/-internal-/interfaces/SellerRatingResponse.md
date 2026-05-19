@@ -2,7 +2,7 @@
 
 # Interface: SellerRatingResponse
 
-Defined in: [types/general.types.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/general.types.ts#L312)
+Defined in: [types/general.types.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L312)
 
 Seller rating and review count from GET /api/common/v1/rating
 
@@ -14,5 +14,5 @@ Seller rating and review count from GET /api/common/v1/rating
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="feedbackcount"></a> `feedbackCount?` | `number` | Total number of customer reviews | [types/general.types.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/general.types.ts#L314) |
-| <a id="valuation"></a> `valuation?` | `number` | Seller rating (e.g., 4.55) | [types/general.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/general.types.ts#L316) |
+| <a id="feedbackcount"></a> `feedbackCount?` | `number` | Total number of customer reviews | [types/general.types.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L314) |
+| <a id="valuation"></a> `valuation?` | `number` | Seller rating (e.g., 4.55) | [types/general.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/general.types.ts#L316) |

@@ -653,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.13.0';
+export const version = '3.13.1';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -750,6 +750,12 @@ export type {
   StocksRequest,
   UpdateStockRequest,
   GetStocksResponse,
+} from './types/products.types';
+
+// Products card trash management types (v3.13.1 — sandbox-first permanent delete)
+export type {
+  DeleteCardsFromTrashRequest,
+  DeleteCardsFromTrashResponse,
 } from './types/products.types';
 
 // User Management types (no name conflicts with global types)

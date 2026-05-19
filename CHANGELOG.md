@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v3.13.1 — patch: Sandbox-first feature addition (no breaking changes) -->
+
+## [3.13.1] - 2026-05-15
+
+### Added
+
+- `sdk.products.deleteCardsFromTrash(data)` — permanently delete product cards from trash, bypassing the 30-day auto-cleanup to free up limit slots immediately. Complement to existing `createDeleteTrash()` (soft, move to trash). POST `/content/v1/cards/delete` (note: `v1` path).
+- New public types: `DeleteCardsFromTrashRequest`, `DeleteCardsFromTrashResponse`.
+
+### Notes
+
+- **Sandbox-only at release time**: WB announced this endpoint in the Sandbox environment on 2026-05-15. Production availability is **NOT yet confirmed**. Test with sandbox credentials before relying on it in production. The SDK's WL-5 in `backlog/watch-list.md` monitors WB for production release confirmation; when prod is confirmed, a patch release drops the sandbox-only marker.
+- **No breaking changes**. Pure additive feature.
+- **Endpoint version path**: WB uses `/content/v1/cards/delete` (not `v2`). Other trash-related endpoints use `v2`. SDK matches WB exactly — do not normalize.
+- **Workflow context**: complete trash lifecycle is now `createDeleteTrash` → either `createCardsRecover` (restore), wait 30d (auto-cleanup), OR `deleteCardsFromTrash` (hard delete, frees slot NOW).
+
 <!-- Note: same date as v3.12.0 (2026-05-14). GitHub slug differentiation: #3130---2026-05-14 vs #3120---2026-05-14. -->
 
 ## [3.13.0] - 2026-05-14

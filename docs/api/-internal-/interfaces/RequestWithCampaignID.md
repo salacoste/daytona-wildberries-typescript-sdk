@@ -2,10 +2,10 @@
 
 # Interface: RequestWithCampaignID
 
-Defined in: [types/promotion.types.ts:524](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/promotion.types.ts#L524)
+Defined in: [types/promotion.types.ts:524](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L524)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id` | `number` | ID кампании | [types/promotion.types.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/promotion.types.ts#L526) |
+| <a id="id"></a> `id` | `number` | ID кампании | [types/promotion.types.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L526) |

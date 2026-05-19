@@ -2,7 +2,7 @@
 
 # Interface: AdvertSettings
 
-Defined in: [types/promotion.types.ts:1134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/promotion.types.ts#L1134)
+Defined in: [types/promotion.types.ts:1134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1134)
 
 Настройки кампании
 
@@ -10,6 +10,6 @@ Defined in: [types/promotion.types.ts:1134](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="payment_type"></a> `payment_type` | `"cpm"` \| `"cpc"` | Тип оплаты: cpm — за показы, cpc — за клик | [types/promotion.types.ts:1136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/promotion.types.ts#L1136) |
-| <a id="name"></a> `name` | `string` | Название кампании | [types/promotion.types.ts:1138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/promotion.types.ts#L1138) |
-| <a id="placements"></a> `placements` | [`AdvertPlacements`](AdvertPlacements.md) | Места размещения | [types/promotion.types.ts:1140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/ac6494889ad5a08c78d41bb42ba7661d7da6abe1/src/types/promotion.types.ts#L1140) |
+| <a id="payment_type"></a> `payment_type` | `"cpm"` \| `"cpc"` | Тип оплаты: cpm — за показы, cpc — за клик | [types/promotion.types.ts:1136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1136) |
+| <a id="name"></a> `name` | `string` | Название кампании | [types/promotion.types.ts:1138](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1138) |
+| <a id="placements"></a> `placements` | [`AdvertPlacements`](AdvertPlacements.md) | Места размещения | [types/promotion.types.ts:1140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/e4126f6f987b2bce23ba67f86a0aa29a93d9e571/src/types/promotion.types.ts#L1140) |

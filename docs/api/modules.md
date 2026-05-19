@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.13.0
+# Wildberries API TypeScript SDK v3.13.1
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -63,6 +63,8 @@ Main entry point
 | [StocksRequest](interfaces/StocksRequest.md) | Request body for [ProductsModule.getStocks](classes/ProductsModule.md#getstocks) and [ProductsModule.deleteStock](classes/ProductsModule.md#deletestock). |
 | [UpdateStockRequest](interfaces/UpdateStockRequest.md) | Request body for [ProductsModule.updateStock](classes/ProductsModule.md#updatestock). |
 | [GetStocksResponse](interfaces/GetStocksResponse.md) | Response from [ProductsModule.getStocks](classes/ProductsModule.md#getstocks). |
+| [DeleteCardsFromTrashRequest](interfaces/DeleteCardsFromTrashRequest.md) | Request body for [ProductsModule.deleteCardsFromTrash](classes/ProductsModule.md#deletecardsfromtrash). |
+| [DeleteCardsFromTrashResponse](interfaces/DeleteCardsFromTrashResponse.md) | Response from [ProductsModule.deleteCardsFromTrash](classes/ProductsModule.md#deletecardsfromtrash). |
 | [ReturnItem](interfaces/ReturnItem.md) | Unified return record across FBO and FBS sources. |
 | [ReturnsApiRequest](interfaces/ReturnsApiRequest.md) | Request parameters for `sdk.returns.getReturns()`. |
 | [PartialFailure](interfaces/PartialFailure.md) | Per-source failure record returned in ReturnsApiResponse. |
