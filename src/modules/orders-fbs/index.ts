@@ -725,32 +725,61 @@ export class OrdersFbsModule {
    * Closes a supply and sets all assembly tasks in it to `complete` status.
    * After closing, no new tasks can be added. The supply must have at least one task.
    *
+   * **⚠️ Deadline 2026-06-03 — B2C marking codes (Честный Знак).** WB will validate B2C
+   * marking codes server-side from this date. Codes must be passed in full with GS
+   * separators (ASCII 0x1D) and crypto-tail (код проверки подлинности). Invalid codes
+   * → HTTP 409 with diagnostic `metaDetails[]` (typed as `MetaValidationFailError`).
+   *
    * **Important: Metadata validation.** Returns 409 if order metadata is invalid:
    * - IMEI validation (enforced since March 31, 2026)
    * - UIN validation (enforced since April 7, 2026)
    * - Marking code for B2B orders (enforced since April 9, 2026)
+   * - Marking code for B2C orders via Честный Знак (enforced from June 3, 2026)
    *
    * Check `metaDetails` via `getOrdersMetaBulk()` before calling deliver.
    * Each metaDetail has `key`, `value`, and `decision` (filled/optional/required/invalid).
    *
+   * **Rate limit penalty**: each 409 response counts as 10 requests against the
+   * FBS supply/order rate-limit budget. Use pre-flight validation to avoid burning budget.
+   *
    * @param supplyId - ID of the supply to deliver
    * @returns Promise resolving to void on success
-   * @throws {WBAPIError} 409 — Metadata validation failed. Response contains details of invalid metadata.
+   * @throws {MetaValidationFailError} 409 — Metadata validation failed (thrown as MetaValidationFailError exposes
+   *   `metaDetails[]` with per-code diagnostics). Falls back to {@link WBAPIError} for 409s
+   *   without `metaDetails` (e.g. supply has zero orders).
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/Postavki-FBS}
+   * @see [Migration guide](../../../docs/guides/fbs-marking-code-validation.md)
    *
    * @example
    * ```typescript
-   * // Check metadata before deliver
-   * const meta = await sdk.ordersFBS.getOrdersMetaBulk({ orders: [orderId] });
-   * const invalid = meta.orders?.[0]?.metaDetails?.filter(d => d.decision === 'required' && !d.value);
+   * import { WildberriesSDK, MetaValidationFailError } from 'daytona-wildberries-typescript-sdk';
+   *
+   * // Pattern A: pre-flight via getOrdersMetaBulk (cheap, no 10x penalty)
+   * const meta = await sdk.ordersFBS.getOrdersMetaBulk({ orders: [12345] }); // example order ID
+   * const invalid = meta.orders?.[0]?.metaDetails?.filter(d => d.decision === 'required' || d.decision === 'invalid');
    * if (invalid?.length) {
    *   console.log('Fix metadata first:', invalid.map(d => d.key));
    * } else {
    *   await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-1234');
+   * }
+   * ```
+   *
+   * @example
+   * ```typescript
+   * import { WildberriesSDK, MetaValidationFailError } from 'daytona-wildberries-typescript-sdk';
+   *
+   * // Pattern B: typed catch
+   * try {
+   *   await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-1234');
+   * } catch (err) {
+   *   if (err instanceof MetaValidationFailError) {
+   *     err.metaDetails.forEach(d => console.log(d.key, d.value, d.decision));
+   *   }
+   *   throw err;
    * }
    * ```
    */

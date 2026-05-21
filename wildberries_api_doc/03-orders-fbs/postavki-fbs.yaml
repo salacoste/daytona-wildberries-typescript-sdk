@@ -431,12 +431,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/MetaValidationFailResponse"
               examples:
                 SupplyHasZeroOrders:
                   $ref: "#/components/examples/SupplyHasZeroOrders"
                 UinIsNotFilled:
                   $ref: "#/components/examples/UinIsNotFilled"
+                MetaValidationFailed:
+                  $ref: "#/components/examples/MetaValidationFailed"
         "429":
           $ref: "#/components/responses/429"
   /api/v3/supplies/{supplyId}/barcode:

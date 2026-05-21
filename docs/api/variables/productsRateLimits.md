@@ -6,4 +6,4 @@
 const productsRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/products-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/config/products-rate-limits.ts#L16)
+Defined in: [config/products-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/config/products-rate-limits.ts#L16)

@@ -733,6 +733,8 @@ function main() {
     join(__dirname, '..', 'docs', 'ru', 'guides', 'chat-replysign-format-migration.md'),
     join(__dirname, '..', 'docs', 'guides', 'withphoto-semantic-migration.md'),
     join(__dirname, '..', 'docs', 'ru', 'guides', 'withphoto-semantic-migration.md'),
+    join(__dirname, '..', 'docs', 'guides', 'fbs-marking-code-validation.md'),
+    join(__dirname, '..', 'docs', 'ru', 'guides', 'fbs-marking-code-validation.md'),
 
     // Getting Started
     join(__dirname, '..', 'docs', 'getting-started', 'quickstart.md'),

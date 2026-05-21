@@ -16,7 +16,12 @@
  *         ├── NetworkError (timeouts, 5xx)
  *         ├── CampaignNotFoundError (404)
  *         ├── BudgetExceededError (400)
- *         └── InvalidCampaignStateError (400)
+ *         ├── InvalidCampaignStateError (400)
+ *         ├── PickupOrderNotFoundError (404)
+ *         ├── InvalidOrderStateError (400)
+ *         ├── CustomerVerificationError (400)
+ *         ├── MetadataValidationError (422)
+ *         └── MetaValidationFailError (409 — FBS marking-code validation)
  * ```
  *
  * ## Usage Patterns
@@ -125,3 +130,6 @@ export {
   CustomerVerificationError,
   MetadataValidationError,
 } from './in-store-pickup-errors';
+
+// FBS marking-code validation error (since 3.15.0)
+export { MetaValidationFailError } from './meta-validation-fail-error';

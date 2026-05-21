@@ -2,7 +2,7 @@
 
 # Interface: OrdersNewResponse
 
-Defined in: [types/orders-fbs.types.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/orders-fbs.types.ts#L230)
+Defined in: [types/orders-fbs.types.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L230)
 
 Response containing a list of new (unprocessed) orders
 
@@ -10,4 +10,4 @@ Response containing a list of new (unprocessed) orders
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`OrderNew`](OrderNew.md)[] | List of new orders | [types/orders-fbs.types.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/orders-fbs.types.ts#L232) |
+| <a id="orders"></a> `orders?` | [`OrderNew`](OrderNew.md)[] | List of new orders | [types/orders-fbs.types.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L232) |

@@ -2,7 +2,7 @@
 
 # Interface: InviteeInfo
 
-Defined in: [types/general.types.ts:146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L146)
+Defined in: [types/general.types.ts:146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L146)
 
 Invitee information (for invited users)
 
@@ -10,8 +10,8 @@ Invitee information (for invited users)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="phonenumber"></a> `phoneNumber` | `string` | Phone number of invited user | [types/general.types.ts:148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L148) |
-| <a id="position"></a> `position` | `string` | User position | [types/general.types.ts:150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L150) |
-| <a id="inviteuuid"></a> `inviteUuid` | `string` | Invitation UUID | [types/general.types.ts:152](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L152) |
-| <a id="expiredat"></a> `expiredAt` | `string` | Invitation expiration date/time | [types/general.types.ts:154](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L154) |
-| <a id="isactive"></a> `isActive` | `boolean` | Whether invitation is active | [types/general.types.ts:156](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/general.types.ts#L156) |
+| <a id="phonenumber"></a> `phoneNumber` | `string` | Phone number of invited user | [types/general.types.ts:148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L148) |
+| <a id="position"></a> `position` | `string` | User position | [types/general.types.ts:150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L150) |
+| <a id="inviteuuid"></a> `inviteUuid` | `string` | Invitation UUID | [types/general.types.ts:152](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L152) |
+| <a id="expiredat"></a> `expiredAt` | `string` | Invitation expiration date/time | [types/general.types.ts:154](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L154) |
+| <a id="isactive"></a> `isActive` | `boolean` | Whether invitation is active | [types/general.types.ts:156](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L156) |

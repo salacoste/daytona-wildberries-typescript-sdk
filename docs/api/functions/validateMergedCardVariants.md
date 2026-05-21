@@ -9,7 +9,7 @@ function validateMergedCardVariants(
    namedFieldsPerVariant?: Record<string, unknown>[]): MergedCardValidationResult;
 ```
 
-Defined in: [utils/validateMergedCardVariants.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/utils/validateMergedCardVariants.ts#L79)
+Defined in: [utils/validateMergedCardVariants.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/utils/validateMergedCardVariants.ts#L79)
 
 Client-side validator for merged product card variants.
 

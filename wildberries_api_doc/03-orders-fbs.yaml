@@ -2148,12 +2148,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/MetaValidationFailResponse'
               examples:
                 SupplyHasZeroOrders:
                   $ref: '#/components/examples/SupplyHasZeroOrders'
                 UinIsNotFilled:
                   $ref: '#/components/examples/UinIsNotFilled'
+                MetaValidationFailed:
+                  $ref: '#/components/examples/MetaValidationFailed'
         '429':
           $ref: '#/components/responses/429'
   /api/v3/supplies/{supplyId}/barcode:
@@ -2606,6 +2608,17 @@ components:
       value:
         code: UinIsNotFilled
         message: Перевод в статус "в доставке" невозможен. Введите УИНы для всех сборочных заданий, где это необходимо.
+    MetaValidationFailed:
+      value:
+        code: MetaValidationFail
+        message: Marking codes are invalid for some assembly tasks
+        metaDetails:
+          - key: sgtin
+            value: ''
+            decision: invalid
+          - key: sgtin
+            value: '0104607085078824215KlYF93VKHf'
+            decision: invalid
     SupplyNotClosed:
       value:
         code: SupplyNotClosed
@@ -2773,6 +2786,36 @@ components:
           type: object
           description: Дополнительные данные, обогащающие ошибку
           nullable: true
+    MetaValidationFailResponse:
+      description: |
+        Extended 409 error body returned when marking-code validation fails.
+        Extends the base Error shape with an optional `metaDetails` array
+        describing each failed assembly task's metadata decision.
+        Available from 2026-06-03 for B2C FBS orders validated via Чесный Знак.
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            metaDetails:
+              type: array
+              description: |
+                Per-item metadata validation results. Present when at least one
+                assembly task failed marking-code validation.
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: 'Metadata type: imei, uin, sgtin, gtin, expiration, customsDeclaration'
+                    example: sgtin
+                  value:
+                    type: string
+                    description: Metadata value (empty string if not filled)
+                    example: ''
+                  decision:
+                    type: string
+                    description: 'Validation decision: filled, optional, required, invalid'
+                    example: invalid
     Next:
       type: integer
       format: int64

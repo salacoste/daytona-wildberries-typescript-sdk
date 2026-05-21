@@ -16,6 +16,7 @@ import {
   ValidationError,
   NetworkError,
 } from '../errors';
+import { MetaValidationFailError } from '../errors/meta-validation-fail-error';
 import { RateLimiter } from './rate-limiter';
 import { RetryHandler } from './retry-handler';
 import { ALL_RATE_LIMITS, applyBasicTokenMultipliers } from '../config/rate-limits';
@@ -550,6 +551,36 @@ export class BaseClient {
         pf.origin,
         pf.timestamp
       );
+    }
+
+    if (status === 409) {
+      // Check for marking-code validation failure: body must have a metaDetails array
+      if (
+        responseData != null &&
+        typeof responseData === 'object' &&
+        Array.isArray((responseData as Record<string, unknown>).metaDetails)
+      ) {
+        const body = responseData as Record<string, unknown>;
+        const msg =
+          typeof body.message === 'string'
+            ? body.message
+            : pf.detail ?? pf.title ?? 'Meta validation failed';
+        const code = typeof body.code === 'string' ? body.code : 'Unknown';
+        // metaDetails is confirmed as an array above; cast to the constructor parameter
+        // type. MetaDetail shape is validated server-side by the WB API.
+        type MetaDetailsParam = ConstructorParameters<typeof MetaValidationFailError>[2];
+        const metaDetails = body.metaDetails as MetaDetailsParam;
+        throw new MetaValidationFailError(
+          msg,
+          code,
+          metaDetails,
+          responseData,
+          pf.requestId,
+          pf.origin,
+          pf.timestamp
+        );
+      }
+      // Fall through to WBAPIError for 409s without metaDetails (e.g. SupplyHasZeroOrders)
     }
 
     if (status === 400 || status === 422) {

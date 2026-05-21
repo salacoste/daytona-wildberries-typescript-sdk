@@ -49,6 +49,36 @@ components:
           type: object
           description: Дополнительные данные, обогащающие ошибку
           nullable: true
+    MetaValidationFailResponse:
+      description: |
+        Extended 409 error body returned when marking-code validation fails.
+        Extends the base Error shape with an optional `metaDetails` array
+        describing each failed assembly task's metadata decision.
+        Available from 2026-06-03 for B2C FBS orders validated via Чесный Знак.
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            metaDetails:
+              type: array
+              description: |
+                Per-item metadata validation results. Present when at least one
+                assembly task failed marking-code validation.
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: 'Metadata type: imei, uin, sgtin, gtin, expiration, customsDeclaration'
+                    example: sgtin
+                  value:
+                    type: string
+                    description: Metadata value (empty string if not filled)
+                    example: ''
+                  decision:
+                    type: string
+                    description: 'Validation decision: filled, optional, required, invalid'
+                    example: invalid
     Next:
       type: integer
       format: int64

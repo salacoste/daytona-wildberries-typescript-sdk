@@ -370,7 +370,7 @@ export interface ExternalStickerResponse {
 
 /** Response containing metadata for a single order */
 export interface OrderMetaResponse {
-  /** @deprecated Will be removed April 30, 2026. Use metaDetails instead. */
+  /** @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use metaDetails instead. */
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   meta?: Meta;
   /** Metadata details with validation status */
@@ -387,7 +387,7 @@ export interface OrdersMetaResponse {
 export interface OrderMetaItem {
   /** Order ID */
   id?: number;
-  /** @deprecated Will be removed April 30, 2026. Use metaDetails instead. */
+  /** @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use metaDetails instead. */
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   meta?: Meta;
   /** Metadata details with validation status */
@@ -715,7 +715,7 @@ export interface MetaDetail {
 }
 
 /**
- * @deprecated Will be removed April 30, 2026. Use `metaDetails` (MetaDetail[]) instead.
+ * @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use `metaDetails` (MetaDetail[]) instead.
  */
 export interface Meta {
   /** IMEI */
@@ -837,7 +837,7 @@ export interface OrdersMetaAPI {
 export interface OrderMetaAPI {
   /** Assembly order ID */
   id?: number;
-  /** @deprecated Will be removed April 30, 2026. Use metaDetails instead. */
+  /** @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use metaDetails instead. */
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   meta?: Meta;
   /** Metadata details with validation status */

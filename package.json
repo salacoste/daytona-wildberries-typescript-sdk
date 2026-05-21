@@ -1,6 +1,6 @@
 {
   "name": "daytona-wildberries-typescript-sdk",
-  "version": "3.14.0",
+  "version": "3.15.0",
   "description": "Full-featured TypeScript SDK providing type-safe access to all Wildberries marketplace API methods",
   "keywords": [
     "wildberries",
@@ -86,6 +86,7 @@
     "docs:preview": "vitepress preview docs",
     "validate:links": "node scripts/validate-links.js",
     "validate:examples": "tsx scripts/validate-doc-examples.ts",
+    "validate:shards": "node scripts/validate_shards.cjs",
     "validate:all": "npm run validate:links && npm run validate:examples",
     "generate": "tsx tools/generate-sdk.ts",
     "generate:types": "tsx tools/generate-sdk.ts --types-only",

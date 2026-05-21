@@ -7,7 +7,13 @@
  * @module client/retry-handler
  */
 
-import { AuthenticationError, ValidationError, RateLimitError, NetworkError } from '../errors';
+import {
+  AuthenticationError,
+  ValidationError,
+  RateLimitError,
+  NetworkError,
+  MetaValidationFailError,
+} from '../errors';
 import { isOperationReadonly } from '../config/operation-metadata';
 
 /**
@@ -392,6 +398,13 @@ export class RetryHandler {
     // Type-safe error checking using instanceof
     if (error instanceof AuthenticationError) {
       return false; // Permanent failure - invalid credentials
+    }
+
+    // MetaValidationFailError is never retried — 409 responses on FBS deliver-supply
+    // count as 10 requests against the rate-limit budget; retry storms would exhaust
+    // quota 10× faster than for any other error class.
+    if (error instanceof MetaValidationFailError) {
+      return false;
     }
 
     if (error instanceof ValidationError) {

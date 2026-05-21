@@ -47,3 +47,6 @@ export {
   type ReconciliationResult,
   type ReconcileOptions,
 } from './reconcileBuyoutsAndReturns';
+
+// FBS marking-code validation helper (since 3.15.0)
+export { parseMetaValidationFail, type MetaValidationFailPayload } from './parseMetaValidationFail';

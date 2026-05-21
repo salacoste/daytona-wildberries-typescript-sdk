@@ -11,6 +11,7 @@ import {
   ValidationError,
   RateLimitError,
   NetworkError,
+  MetaValidationFailError,
 } from '../../../src/errors';
 
 describe('RetryHandler', () => {
@@ -116,6 +117,20 @@ describe('RetryHandler', () => {
 
       await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(ValidationError);
       expect(operation).toHaveBeenCalledTimes(1); // No retry
+    });
+
+    it('should NOT retry on MetaValidationFailError (409 with metaDetails)', async () => {
+      const handler = new RetryHandler({ maxRetries: 3 });
+      const error = new MetaValidationFailError('Marking codes are invalid', 'MetaValidationFail', [
+        { key: 'sgtin', value: '', decision: 'invalid' },
+      ]);
+      const operation = vi.fn().mockImplementation(() => Promise.reject(error));
+
+      await expect(handler.executeWithRetry(operation, 'testOp')).rejects.toThrow(
+        MetaValidationFailError
+      );
+      // Must NOT retry — each 409 counts as 10 requests against the rate-limit budget
+      expect(operation).toHaveBeenCalledTimes(1);
     });
 
     it('should retry on RateLimitError (429)', async () => {

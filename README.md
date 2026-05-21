@@ -41,6 +41,18 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
 
+## What's New (v3.15.0) — May 2026
+
+⚠️ **FBS marking-code deadline: 2026-06-03** — WB starts validating Честный Знак marking codes server-side for B2C FBS orders. Invalid codes → HTTP 409 with new `metaDetails[]` diagnostic field on `PATCH /api/v3/supplies/{supplyId}/deliver` (method `sdk.ordersFBS.updateSuppliesDeliver()`). Codes must be passed in full with GS separators + crypto-tail.
+
+🆕 **New `MetaValidationFailError` class** — `import { MetaValidationFailError } from 'daytona-wildberries-typescript-sdk'`. Extends `WBAPIError`; exposes typed `metaDetails: MetaDetail[]` and `code: string`. Backward-compatible — existing `instanceof WBAPIError` catches still work.
+
+🛠 **New `parseMetaValidationFail()` helper** — narrows any caught error to `{ code, message, metaDetails } | null` without importing the class. Convenient for shared error boundaries.
+
+⚡ **10× rate-limit penalty warning**: every 409 response on `updateSuppliesDeliver` counts as 10 requests. The migration guide recommends pre-flight validation via `sdk.ordersFBS.getOrdersMetaBulk()` to avoid burning quota.
+
+See [CHANGELOG v3.15.0](#3150---2026-05-21) and the [migration guide](./docs/guides/fbs-marking-code-validation.md) for the full pattern catalog, decision matrix, and FAQ.
+
 ## What's New (v3.14.0) — May 2026
 
 🚨 **Silent semantic break deadline: 2026-06-16** — WB changes the `withPhoto` filter: `withPhoto: 0` (or missing) will mean "ALL cards" instead of "no-photo only". The new value `withPhoto: 2` replaces the old `0` semantic. **No HTTP error, no signal — wrong data.** Migrate before the deadline.
@@ -329,6 +341,18 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v3.15.0) — Май 2026
+
+⚠️ **Дедлайн проверки маркировки FBS: 2026-06-03** — WB начинает серверную проверку кодов Честного знака для B2C-заказов FBS. Некорректные коды → HTTP 409 с новым диагностическим полем `metaDetails[]` на `PATCH /api/v3/supplies/{supplyId}/deliver` (метод `sdk.ordersFBS.updateSuppliesDeliver()`). Коды передаются полностью — с GS-разделителями и криптохвостом.
+
+🆕 **Новый класс `MetaValidationFailError`** — `import { MetaValidationFailError } from 'daytona-wildberries-typescript-sdk'`. Наследуется от `WBAPIError`; типизированно открывает `metaDetails: MetaDetail[]` и `code: string`. Обратносовместимо — существующие `instanceof WBAPIError` продолжают работать.
+
+🛠 **Новый хелпер `parseMetaValidationFail()`** — приводит любую пойманную ошибку к `{ code, message, metaDetails } | null` без импорта класса. Удобно для общих error boundary.
+
+⚡ **Штраф rate-limit ×10**: каждый ответ 409 на `updateSuppliesDeliver` учитывается как 10 запросов. Гайд миграции рекомендует предварительную проверку через `sdk.ordersFBS.getOrdersMetaBulk()`, чтобы не выжигать квоту.
+
+Подробности — в [CHANGELOG v3.15.0](#3150---2026-05-21) и [руководстве по миграции](./docs/ru/guides/fbs-marking-code-validation.md) с полным каталогом паттернов, матрицей решений и FAQ.
 
 ## Что нового (v3.14.0) — Май 2026
 

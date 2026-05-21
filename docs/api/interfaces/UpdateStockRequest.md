@@ -2,7 +2,7 @@
 
 # Interface: UpdateStockRequest
 
-Defined in: [types/products.types.ts:1076](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L1076)
+Defined in: [types/products.types.ts:1076](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L1076)
 
 Request body for [ProductsModule.updateStock](../classes/ProductsModule.md#updatestock).
 
@@ -24,4 +24,4 @@ const legacyRequest: UpdateStockRequest = { stocks: [{ sku: '1234567890123', amo
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stocks"></a> `stocks` | [`StockItem`](StockItem.md)[] | Array of stock items. Use `chrtId` per item (not `sku`) after 2026-05-20. | [types/products.types.ts:1078](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3351fd2a96c72b65744d4612c5d69e8a31b58e74/src/types/products.types.ts#L1078) |
+| <a id="stocks"></a> `stocks` | [`StockItem`](StockItem.md)[] | Array of stock items. Use `chrtId` per item (not `sku`) after 2026-05-20. | [types/products.types.ts:1078](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L1078) |

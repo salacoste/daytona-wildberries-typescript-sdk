@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.14.0
+# Wildberries API TypeScript SDK v3.15.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -20,6 +20,7 @@ Main entry point
 | [InvalidOrderStateError](classes/InvalidOrderStateError.md) | Error thrown when an order state transition is invalid |
 | [CustomerVerificationError](classes/CustomerVerificationError.md) | Error thrown when customer identity verification fails |
 | [MetadataValidationError](classes/MetadataValidationError.md) | Error thrown when product metadata validation fails |
+| [MetaValidationFailError](classes/MetaValidationFailError.md) | Error thrown when `PATCH /api/v3/supplies/{supplyId}/deliver` returns HTTP 409 with marking-code validation failures in the `metaDetails` response array. |
 | [NetworkError](classes/NetworkError.md) | Network error thrown for connection failures, timeouts, and server errors. |
 | [CampaignNotFoundError](classes/CampaignNotFoundError.md) | Error thrown when a campaign is not found by its ID. |
 | [InvalidBidError](classes/InvalidBidError.md) | Error thrown when bid amount is invalid or below minimum. |
@@ -53,6 +54,10 @@ Main entry point
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
 | [SellerMessageRequest](interfaces/SellerMessageRequest.md) | Request body for [CommunicationsModule.createSellerMessage](classes/CommunicationsModule.md#createsellermessage). |
 | [MetaValidationDetail](interfaces/MetaValidationDetail.md) | Per-order metadata validation status returned in 409 MetaValidationFail responses. When `deliverBulk()` returns this for an order, the marking metadata (SGTIN/IMEI) failed WB's validation — fix the metadata before retrying. |
+| [OrderMetaResponse](interfaces/OrderMetaResponse.md) | Response containing metadata for a single order |
+| [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
+| [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
+| [MetaDetail](interfaces/MetaDetail.md) | Metadata detail item with validation status Replaces the deprecated `meta` object. Use with `/api/marketplace/v3/orders/meta` endpoint. |
 | [DBWDeleteMetaBulkRequest](interfaces/DBWDeleteMetaBulkRequest.md) | Request body for bulk deletion of marking metadata from DBW orders. Mirrors DBS `DeleteMetaBulkRequest`. |
 | [DBWDeleteMetaBulkResponse](interfaces/DBWDeleteMetaBulkResponse.md) | Response from bulk metadata deletion for DBW orders. Mirrors DBS `DeleteMetaBulkResponse`. |
 | [DBWSetSgtinBulkRequest](interfaces/DBWSetSgtinBulkRequest.md) | Request body for bulk SGTIN code assignment on DBW orders. Mirrors DBS `SetSgtinBulkRequest`. |
@@ -93,6 +98,7 @@ Main entry point
 | [TariffComparison](interfaces/TariffComparison.md) | Complete tariff comparison result |
 | [WbReturn](interfaces/WbReturn.md) | Unified return record across FBO and FBS sources. |
 | [FbsReturnInput](interfaces/FbsReturnInput.md) | Minimal FBS return shape — what consumers should pass for FBS returns. The actual FBS return data comes from order status history; consumers shape it into this minimal record before calling enrichReturnsWithType(). |
+| [MetaValidationFailPayload](interfaces/MetaValidationFailPayload.md) | Parsed payload extracted from a MetaValidationFailError or a compatible plain object. |
 | [BuyoutInput](interfaces/BuyoutInput.md) | Buyout record input — minimal shape derived from sdk.analytics getStocksReportProducts() output. Consumers shape their data into this before calling reconcileBuyoutsAndReturns(). |
 | [ReconciliationAnomaly](interfaces/ReconciliationAnomaly.md) | Anomaly detected during reconciliation. |
 | [ReconciliationResult](interfaces/ReconciliationResult.md) | Per-nmId reconciliation summary. |
@@ -155,6 +161,7 @@ Main entry point
 | [warnOnce](functions/warnOnce.md) | Emit a deprecation warning for a method, at most once per process. |
 | [resetDeprecationWarnings](functions/resetDeprecationWarnings.md) | Reset all deprecation warning flags. **Test helper only.** |
 | [enrichReturnsWithType](functions/enrichReturnsWithType.md) | Builds a unified WbReturn[] from FBO returns (sdk.reports.getAnalyticsGoodsReturn) and optional FBS returns (derived from sdk.ordersFBS status history). |
+| [parseMetaValidationFail](functions/parseMetaValidationFail.md) | Extracts marking-code validation failure details from an unknown caught value. |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
 | [reconcileBuyoutsAndReturns](functions/reconcileBuyoutsAndReturns.md) | Reconciles buyouts and returns per nmId for unified analytics. |
 | [validateMergedCardVariants](functions/validateMergedCardVariants.md) | Client-side validator for merged product card variants. |

@@ -653,7 +653,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.14.0';
+export const version = '3.15.0';
 
 // Main SDK class
 export { WildberriesSDK as default };
@@ -722,6 +722,14 @@ export { UserManagementModule } from './modules/user-management';
 
 // Orders DBS types (no name conflicts with global types)
 export type { MetaValidationDetail } from './types/orders-dbs.types';
+
+// Orders FBS public types (since v3.15.0 — MetaDetail referenced in migration guide Pattern A)
+export type {
+  MetaDetail,
+  OrderMetaResponse,
+  OrderMetaItem,
+  OrdersMetaResponse,
+} from './types/orders-fbs.types';
 
 // Orders FBW / DBW bulk types (v3.11.0)
 export type {
@@ -792,6 +800,9 @@ export {
   MetadataValidationError,
 } from './errors/in-store-pickup-errors';
 
+// FBS marking-code validation error (since 3.15.0)
+export { MetaValidationFailError } from './errors/meta-validation-fail-error';
+
 // Utility functions
 export {
   calculateSupplyCost,
@@ -805,6 +816,8 @@ export {
   classifyFbsReturnCategory,
   warnOnce,
   resetDeprecationWarnings,
+  parseMetaValidationFail,
+  type MetaValidationFailPayload,
   type SupplyCostInput,
   type SupplyCostResult,
   type CompareTariffsInput,

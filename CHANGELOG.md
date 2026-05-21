@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v3.15.0 — minor: new MetaValidationFailError subclass + parseMetaValidationFail helper for FBS 409 marking-code diagnostics (no breaking changes) -->
+
+## [3.15.0] - 2026-05-21
+
+### Added
+
+- **`MetaValidationFailError` class** — new typed error subclass extending `WBAPIError`, thrown by `BaseClient` whenever a 409 response body contains a `metaDetails` array. Exposes typed `code: string` and `metaDetails: MetaDetail[]` instance fields. Backward-compatible with existing `instanceof WBAPIError` catches. Exported from the main barrel: `import { MetaValidationFailError } from 'daytona-wildberries-typescript-sdk'`.
+- **`parseMetaValidationFail(err)` helper** — narrows any caught error to `{ code, message, metaDetails } | null` for codebases that catch in a generic boundary and can't import the class. Returns `null` for non-matching errors. Exported from the main barrel.
+- **Swagger 409 schema** — `/api/v3/supplies/{supplyId}/deliver` 409 response extended with `MetaValidationFailResponse` schema (Error + optional `metaDetails: MetaDetail[]`) in both `wildberries_api_doc/03-orders-fbs.yaml` and the sharded copy. New example `MetaValidationFailed` showing populated `metaDetails`.
+- **Tooling**: `scripts/validate_shards.cjs` — new utility validating that all shard YAML files declared in `_index.yaml` manifests exist and parse cleanly. Reports `N/N clean` on success. Currently 57/57.
+- **EN migration guide**: [docs/guides/fbs-marking-code-validation.md](./docs/guides/fbs-marking-code-validation.md) — covers marking code format (GS separators + crypto-tail), three usage patterns (pre-flight via `getOrdersMetaBulk`, typed catch, generic error-boundary helper), `MetaDetail.decision` matrix, 10× rate-limit penalty warning, migration checklist, and FAQ.
+- **RU migration guide**: [docs/ru/guides/fbs-marking-code-validation.md](./docs/ru/guides/fbs-marking-code-validation.md) — identical structure in natural Russian.
+
+### Changed (WB-side, no SDK breaking change)
+
+- **WB API marking-code validation on 2026-06-03**: `PATCH /api/v3/supplies/{supplyId}/deliver` now validates Честный Знак marking codes server-side for B2C FBS orders. Invalid codes → HTTP 409 with new `metaDetails[]` diagnostic field in response body. Codes must be passed in full with GS separators + crypto-tail (код проверки подлинности). Optional-marking products unaffected.
+- **JSDoc on `sdk.ordersFBS.updateSuppliesDeliver()`** updated with: ⚠️ 2026-06-03 deadline callout, 10× rate-limit penalty warning on 409 responses, dual-pattern `@example` (pre-flight + typed catch), `@throws {MetaValidationFailError}` replacing generic `@throws {WBAPIError}` for 409s with `metaDetails`.
+
+### Notes
+
+- **Backward compatible**. `MetaValidationFailError extends WBAPIError` — existing `catch (err) { if (err instanceof WBAPIError) }` patterns continue to work unchanged. Plain 409s without `metaDetails` (e.g., `SupplyHasZeroOrders`, `UinIsNotFilled`) still throw the base `WBAPIError`, not the subclass.
+- **Pre-flight is the recommended pattern** for high-volume sellers. `sdk.ordersFBS.getOrdersMetaBulk({ orders: [...] })` returns the same `MetaDetail[]` diagnostic without burning the 10× rate-limit penalty that 409 responses incur.
+- **Schema inferred from WB's 2026-05-21 announcement and the existing MetaDetail shape used by `/api/marketplace/v3/orders/meta`. Validate against the published spec when WB publishes the OpenAPI update.**
+- **Why minor (not patch)**: v3.15.0 adds two new public exports (`MetaValidationFailError` class + `parseMetaValidationFail` helper) and changes the thrown error class for one error path. Per SemVer, new public additions and observable throw-shape changes warrant a minor bump.
+
+---
+
 <!-- v3.14.0 — minor: new public WITH_PHOTO_FILTER const + runtime warn-once + migration guides (no breaking changes) -->
 
 ## [3.14.0] - 2026-05-15

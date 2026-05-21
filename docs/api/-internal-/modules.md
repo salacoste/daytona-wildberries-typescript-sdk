@@ -238,8 +238,6 @@
 | [StatusHistoryEntry](interfaces/StatusHistoryEntry.md) | Individual status entry in status history |
 | [StatusHistoryItem](interfaces/StatusHistoryItem.md) | Individual order status history item |
 | [StatusHistoryResponse](interfaces/StatusHistoryResponse.md) | Response containing cross-border status history |
-| [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
-| [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
 | [SupplyCreateResponse](interfaces/SupplyCreateResponse.md) | Response after creating a new supply |
 | [SuppliesResponse](interfaces/SuppliesResponse.md) | Paginated response containing supplies |
 | [SupplyOrderIdsResponse](interfaces/SupplyOrderIdsResponse.md) | Response containing order IDs within a supply |
@@ -251,7 +249,6 @@
 | [OrderNew](interfaces/OrderNew.md) | New (unprocessed) assembly order with additional pricing and metadata fields |
 | [SupplyTrbx](interfaces/SupplyTrbx.md) | Supply box (transport box) entity |
 | [TrbxStickers](interfaces/TrbxStickers.md) | Box sticker data with encoded barcode and file content |
-| [MetaDetail](interfaces/MetaDetail.md) | Metadata detail item with validation status Replaces the deprecated `meta` object. Use with `/api/marketplace/v3/orders/meta` endpoint. |
 | [~~Meta~~](interfaces/Meta.md) | - |
 | [PassOffice](interfaces/PassOffice.md) | Warehouse office data for seller pass registration |
 | [Pass](interfaces/Pass.md) | Seller pass for warehouse access |
