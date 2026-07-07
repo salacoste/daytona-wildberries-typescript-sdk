@@ -1507,8 +1507,13 @@ export interface GetCampaignCountResponse {
 
 /**
  * Bid type for campaign
- * - `auto` — автоматическая ставка (Type 8)
- * - `manual` — ручная ставка (Type 9)
+ * - `auto` — автоматическая ставка (Type 8; ставкой управляет WB). Ранее
+ *   называлось `unified` (единая ставка) — это значение устарело и больше не
+ *   принимается; используйте `auto`.
+ * - `manual` — ручная ставка (Type 9; ставку задаёт продавец).
+ *
+ * {@link PromotionModule.updateBids} применяется к кампаниям `auto` (единая) и
+ * `manual` (ручная).
  */
 export type BidType = 'auto' | 'manual';
 
