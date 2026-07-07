@@ -141,7 +141,7 @@ export class PromotionModule {
    *
    * Метод меняет ставки карточек товаров по артикулам WB в кампаниях типа `9` с единой или ручной ставкой. <br><br> Для кампаний в статусах `4`, `9` и `11`. <br><br> В запросе укажите место размещения в параметре `placement`: - `combined` — в поиске и рекомендациях для кампаний с единой ставкой - `search `или `recommendations` — в поиске или рекомендациях для кампаний с ручной ставкой <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
    *
-   * @deprecated Use updateBidsV2() instead for kopeck-based bidding.
+   * @deprecated Use {@link PromotionModule.updateBids} instead for kopeck-based bidding.
    * @param data - Request body data
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -1216,6 +1216,13 @@ export class PromotionModule {
    *
    * Метод меняет ставки карточек товаров по артикулам WB в кампаниях с единой или ручной ставкой.
    * Для кампаний в статусах 4, 9 и 11. Replaces deprecated v0 endpoint.
+   *
+   * @deprecated Use {@link PromotionModule.updateBids} instead. Both methods
+   *   PATCH the same endpoint (`/api/advert/v1/bids`); `updateBids` is the
+   *   canonical entry point with named `UpdateBidsRequest` / `UpdateBidsResponse`
+   *   types and the `promotion.updateBids` rate-limit key. This duplicate wrapper
+   *   (rate-limit key `promotion.bidsV1`) is retained for backward compatibility
+   *   and will be removed in a future major release.
    *
    * Rate limit: 5 requests per second, 200ms interval, burst 5
    *

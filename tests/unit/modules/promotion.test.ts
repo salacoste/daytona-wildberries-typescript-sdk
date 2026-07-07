@@ -558,6 +558,9 @@ describe('PromotionModule', () => {
 
     it('updateBidsV2 - should update bids with V1 API', async () => {
       mockClient.patch.mockResolvedValue({ bids: [] });
+      // updateBidsV2 is intentionally tested to confirm deprecation is non-breaking (task-131).
+      // updateBids is the canonical entry for PATCH /api/advert/v1/bids.
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       await module.updateBidsV2({
         bids: [
           {

@@ -278,8 +278,8 @@ export interface GetAuctionAdverts {
     /** Статус кампании: - `-1` — удалена, процесс удаления будет завершён в течение 10 минут - `4` — готова к запуску - `7` — завершена - `8` — отменена - `9` — активна - `11` — на паузе */
     status: -1 | 4 | 7 | 8 | 9 | 11;
     timestamps: Timestamps;
-    /** Тип ставки: - `unified` — единая ставка - `manual` — ручная ставка */
-    bid_type: string;
+    /** Тип ставки: `auto` — автоматическая ставка (Type 8), `manual` — ручная ставка (Type 9) */
+    bid_type: BidType;
   };
 }
 
@@ -1685,7 +1685,7 @@ export interface UpdateBidsResultArticle {
   /** Updated bid in kopecks */
   bid_kopecks: number;
   /** Placement where bid was applied */
-  placement: string;
+  placement: 'search' | 'recommendations' | 'combined';
 }
 
 // ============================================================================
