@@ -50,3 +50,6 @@ export {
 
 // FBS marking-code validation helper (since 3.15.0)
 export { parseMetaValidationFail, type MetaValidationFailPayload } from './parseMetaValidationFail';
+
+// Pre-network bid validation/clamp against getBidsRecommendations (since 3.16.0)
+export { validateBid, clampBid, extractBidRange, type BidRange } from './bid-validation';
