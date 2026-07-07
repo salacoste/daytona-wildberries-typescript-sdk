@@ -15,6 +15,8 @@ import {
   RateLimitError,
   ValidationError,
   NetworkError,
+  BidOutOfRangeError,
+  parseBidOutOfRangeDetail,
 } from '../errors';
 import { MetaValidationFailError } from '../errors/meta-validation-fail-error';
 import { RateLimiter } from './rate-limiter';
@@ -584,6 +586,20 @@ export class BaseClient {
     }
 
     if (status === 400 || status === 422) {
+      // Detect WB advert bid-out-of-range 400: RFC 7807 body whose detail matches
+      // 'wrong bid value: <X>; min: <Y>[; max: <Z>]'. The detail pattern is
+      // bid-specific, so non-bid 400s fall through to the generic ValidationError.
+      const detail = pf.detail;
+      const bidRange = parseBidOutOfRangeDetail(detail);
+      if (detail !== undefined && bidRange) {
+        throw new BidOutOfRangeError(
+          detail,
+          { received: bidRange.received, min: bidRange.min, max: bidRange.max, field: 'bid' },
+          responseData,
+          pf.requestId
+        );
+      }
+
       const fieldErrors = this.extractFieldErrors(responseData);
       const message = pf.detail ?? pf.title ?? 'Validation failed';
       throw new ValidationError(message, fieldErrors, status, responseData, pf.requestId);

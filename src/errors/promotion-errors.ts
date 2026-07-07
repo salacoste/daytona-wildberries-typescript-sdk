@@ -88,6 +88,12 @@ export class CampaignNotFoundError extends WBAPIError {
  * - Bid format is incorrect
  * - Bid exceeds maximum allowed amount
  *
+ * Note: this is the broader bid-validation sibling. BaseClient does NOT throw it;
+ * callers may use it for their own pre-flight validation. For WB's structured
+ * out-of-range 400 responses (`wrong bid value: X; min: Y`), BaseClient throws
+ * the more specific {@link BidOutOfRangeError} (which exposes parsed `received`/`min`).
+ *
+ * @see {@link BidOutOfRangeError}
  * @example
  * ```typescript
  * import { InvalidBidError } from 'daytona-wildberries-typescript-sdk';

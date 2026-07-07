@@ -13,6 +13,8 @@ import MockAdapter from 'axios-mock-adapter';
 import { BaseClient } from '../../../src/client/base-client';
 import { MetaValidationFailError } from '../../../src/errors/meta-validation-fail-error';
 import { WBAPIError } from '../../../src/errors/base-error';
+import { BidOutOfRangeError } from '../../../src/errors/bid-out-of-range-error';
+import { ValidationError } from '../../../src/errors/validation-error';
 import type { SDKConfig } from '../../../src/config';
 
 describe('BaseClient — 409 error mapping', () => {
@@ -302,6 +304,80 @@ describe('BaseClient — 409 error mapping', () => {
     it('should still throw WBAPIError for 418 (unchanged behavior)', async () => {
       mockAxios.onGet(testUrl).reply(418, { error: "I'm a teapot" });
       await expect(client.get(testUrl)).rejects.toThrow(WBAPIError);
+    });
+  });
+
+  describe('400 bid-out-of-range → BidOutOfRangeError', () => {
+    const bidsUrl = 'https://advert-api.wildberries.ru/api/advert/v1/bids';
+
+    it('should throw BidOutOfRangeError when body matches the WB bid-400 shape', async () => {
+      const body = {
+        detail: 'wrong bid value: 3; min: 150',
+        title: 'invalid payload',
+        status: 400,
+      };
+      mockAxios.onPatch(bidsUrl).reply(400, body);
+
+      try {
+        await client.patch(bidsUrl, { bids: [] });
+        expect.fail('Should have thrown BidOutOfRangeError');
+      } catch (error) {
+        expect(error).toBeInstanceOf(BidOutOfRangeError);
+        const boe = error as BidOutOfRangeError;
+        expect(boe.received).toBe(3);
+        expect(boe.min).toBe(150);
+        expect(boe.max).toBeUndefined();
+        expect(boe.message).toBe('wrong bid value: 3; min: 150');
+        expect(boe.statusCode).toBe(400);
+      }
+    });
+
+    it('should parse an optional max ceiling when WB reports one', async () => {
+      const body = { detail: 'wrong bid value: 3; min: 150; max: 5000', title: 'invalid payload' };
+      mockAxios.onPatch(bidsUrl).reply(400, body);
+
+      try {
+        await client.patch(bidsUrl, { bids: [] });
+        expect.fail('Should have thrown BidOutOfRangeError');
+      } catch (error) {
+        expect(error).toBeInstanceOf(BidOutOfRangeError);
+        const boe = error as BidOutOfRangeError;
+        expect(boe.received).toBe(3);
+        expect(boe.min).toBe(150);
+        expect(boe.max).toBe(5000);
+      }
+    });
+
+    it('BidOutOfRangeError satisfies instanceof ValidationError (backward-compat)', async () => {
+      const body = { detail: 'wrong bid value: 3; min: 150', title: 'invalid payload' };
+      mockAxios.onPatch(bidsUrl).reply(400, body);
+
+      // Existing `catch (e instanceof ValidationError)` must still catch it
+      await expect(client.patch(bidsUrl, { bids: [] })).rejects.toBeInstanceOf(ValidationError);
+      await expect(client.patch(bidsUrl, { bids: [] })).rejects.toBeInstanceOf(WBAPIError);
+    });
+
+    it('should fall back to generic ValidationError for non-bid 400s', async () => {
+      // Same advert category, but a non-bid validation error
+      const body = { detail: 'advert_id is required', title: 'invalid payload' };
+      mockAxios.onPatch(bidsUrl).reply(400, body);
+
+      await expect(client.patch(bidsUrl, { bids: [] })).rejects.not.toBeInstanceOf(
+        BidOutOfRangeError
+      );
+      await expect(client.patch(bidsUrl, { bids: [] })).rejects.toBeInstanceOf(ValidationError);
+    });
+
+    it('should fall back to generic ValidationError for non-bid-shaped 400s on other categories', async () => {
+      // Detection is body-pattern-based: a 400 whose detail is NOT a bid-range string stays a
+      // generic ValidationError, regardless of category. No non-advert endpoint ever emits a
+      // 'wrong bid value: X; min: Y' body in practice, so this is the realistic guarantee.
+      const productsUrl = 'https://content-api.wildberries.ru/content/v2/cards';
+      const body = { detail: 'field "title" is required', title: 'invalid payload' };
+      mockAxios.onPost(productsUrl).reply(400, body);
+
+      await expect(client.post(productsUrl, {})).rejects.not.toBeInstanceOf(BidOutOfRangeError);
+      await expect(client.post(productsUrl, {})).rejects.toBeInstanceOf(ValidationError);
     });
   });
 });

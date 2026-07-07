@@ -793,6 +793,7 @@ export {
   BudgetExceededError,
   InvalidCampaignStateError,
 } from './errors/promotion-errors';
+export { BidOutOfRangeError, parseBidOutOfRangeDetail } from './errors/bid-out-of-range-error';
 export {
   PickupOrderNotFoundError,
   InvalidOrderStateError,

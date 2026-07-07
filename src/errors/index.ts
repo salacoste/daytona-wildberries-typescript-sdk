@@ -12,7 +12,8 @@
  *         ├── AuthenticationError (401, 403)
  *         ├── RateLimitError (429)
  *         ├── ValidationError (400, 422)
- *         │     └── InvalidBidError (bid validation failures)
+ *         │     ├── InvalidBidError (bid validation failures — legacy, not thrown by BaseClient)
+ *         │     └── BidOutOfRangeError (parsed WB advert 400 "wrong bid value: X; min: Y")
  *         ├── NetworkError (timeouts, 5xx)
  *         ├── CampaignNotFoundError (404)
  *         ├── BudgetExceededError (400)
@@ -122,6 +123,9 @@ export {
   BudgetExceededError,
   InvalidCampaignStateError,
 } from './promotion-errors';
+
+// Parsed WB advert bid-out-of-range 400 (since 3.16.0)
+export { BidOutOfRangeError, parseBidOutOfRangeDetail } from './bid-out-of-range-error';
 
 // In-Store Pickup specific errors
 export {
