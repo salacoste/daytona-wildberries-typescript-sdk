@@ -473,106 +473,106 @@ export interface Response4xxResponse {
 // ============================================================================
 
 /**
- * Antifraud details report item
+ * Antifraud details report item (self-purchase deductions)
  * @see EPIC 43 - Response type for getAnalyticsAntifraudDetails
+ * @spec SuccessTaskResponse (12-reports.yaml)
  */
 export interface AntifraudDetailsItem {
-  /** Артикул WB */
-  nmId?: number;
-  /** Дата недели отчёта */
-  weekDate?: string;
-  /** Сумма удержания */
-  amount?: number;
-  /** ID ПВЗ */
-  officeId?: number;
-  /** Название ПВЗ */
-  officeName?: string;
-  /** Количество единиц товара */
-  quantity?: number;
+  /** Артикул Wildberries */
+  nmID?: number;
+  /** Сумма заказа */
+  sum?: number;
+  /** Валюта */
+  currency?: string;
+  /** Дата начала отчёта */
+  dateFrom?: string;
+  /** Дата окончания отчёта */
+  dateTo?: string;
 }
 
 /**
  * Response for getAnalyticsAntifraudDetails
  * @see EPIC 43 - Response type for getAnalyticsAntifraudDetails
+ * @spec SuccessTaskResponse (12-reports.yaml) — wrapper key: `details`
  */
 export interface AntifraudDetailsResponse {
-  data?: AntifraudDetailsItem[];
+  details?: AntifraudDetailsItem[];
 }
 
 /**
  * Goods labeling report item
  * @see EPIC 43 - Response type for getAnalyticsGoodsLabeling
+ * @spec SuccessGoodsLabelingResponse (12-reports.yaml)
  */
 export interface GoodsLabelingItem {
+  /** Сумма штрафа, руб. */
+  amount?: number;
+  /** Дата */
+  date?: string;
+  /** ID поставки */
+  incomeId?: number;
   /** Артикул WB */
-  nmId?: number;
-  /** Дата штрафа */
-  dtBonus?: string;
-  /** Сумма штрафа */
-  bonusSumm?: number;
-  /** Баркод */
-  barcode?: string;
-  /** Артикул продавца */
-  vendorCode?: string;
-  /** Фото товара без маркировки */
+  nmID?: number;
+  /** Фото товара */
   photoUrls?: string[];
+  /** SKU товара Wildberries */
+  shkID?: number;
+  /** SKU объявления */
+  sku?: string;
 }
 
 /**
  * Response for getAnalyticsGoodsLabeling
  * @see EPIC 43 - Response type for getAnalyticsGoodsLabeling
+ * @spec SuccessGoodsLabelingResponse (12-reports.yaml) — wrapper key: `report` (flat, no nesting)
  */
 export interface GoodsLabelingResponse {
-  data?: {
-    reports?: GoodsLabelingItem[];
-    total?: number;
-  };
+  report?: GoodsLabelingItem[];
 }
 
 /**
  * Region sale report item
  * @see EPIC 43 - Response type for getAnalyticsRegionSale
+ * @spec SuccessRegionSaleResponse (12-reports.yaml)
  */
 export interface RegionSaleItem {
-  /** Название региона */
+  /** Населённый пункт (location) */
+  cityName?: string;
+  /** Страна */
+  countryName?: string;
+  /** Федеральный округ */
+  foName?: string;
+  /** Артикул WB */
+  nmID?: number;
+  /** Регион */
   regionName?: string;
-  /** ID региона */
-  regionId?: number;
-  /** Количество продаж */
-  salesCount?: number;
-  /** Сумма продаж */
-  salesSum?: number;
-  /** Количество возвратов */
-  returnsCount?: number;
-  /** Сумма возвратов */
-  returnsSum?: number;
+  /** Артикул продавца */
+  sa?: string;
+  /** К оплате за единицу товара, руб. */
+  saleInvoiceCostPrice?: number;
+  /** Доля, % */
+  saleInvoiceCostPricePerc?: number;
+  /** Выкуплено, шт. */
+  saleItemInvoiceQty?: number;
 }
 
 /**
  * Response for getAnalyticsRegionSale
  * @see EPIC 43 - Response type for getAnalyticsRegionSale
+ * @spec SuccessRegionSaleResponse (12-reports.yaml) — wrapper key: `report`
  */
 export interface RegionSaleResponse {
-  data?: RegionSaleItem[];
-}
-
-/**
- * Brand share brands item
- * @see EPIC 43 - Response type for getBrandShareBrands
- */
-export interface BrandShareBrandsItem {
-  /** Название бренда */
-  brandName?: string;
-  /** ID бренда */
-  brandId?: number;
+  report?: RegionSaleItem[];
 }
 
 /**
  * Response for getBrandShareBrands
  * @see EPIC 43 - Response type for getBrandShareBrands
+ * @spec SuccessBrandsResponse (12-reports.yaml) — `data` is an array of bare
+ * brand-name strings (e.g. ["H&M", "WOW"]).
  */
 export interface BrandShareBrandsResponse {
-  data?: BrandShareBrandsItem[];
+  data?: string[];
 }
 
 /**
@@ -597,24 +597,26 @@ export interface BrandShareParentSubjectsResponse {
 /**
  * Brand share report item
  * @see EPIC 43 - Response type for getAnalyticsBrandShare
+ * @spec SuccessBrandShareResponse (12-reports.yaml)
  */
 export interface BrandShareItem {
-  /** Дата */
-  date?: string;
-  /** Доля бренда, % */
-  brandShare?: number;
-  /** Количество продаж бренда */
-  brandSalesCount?: number;
-  /** Количество продаж категории */
-  categorySalesCount?: number;
+  /** Дата (ГГГГ-ММ-ДД) */
+  applyDate?: string;
+  /** Рейтинг бренда в родительской категории */
+  brandRating?: number;
+  /** Доля продаж в родительской категории — цена, % */
+  pricePercent?: number;
+  /** Доля продаж в родительской категории — количество, % */
+  qtyPercent?: number;
 }
 
 /**
  * Response for getAnalyticsBrandShare
  * @see EPIC 43 - Response type for getAnalyticsBrandShare
+ * @spec SuccessBrandShareResponse (12-reports.yaml) — wrapper key: `report`
  */
 export interface BrandShareResponse {
-  data?: BrandShareItem[];
+  report?: BrandShareItem[];
 }
 
 // ============================================================================

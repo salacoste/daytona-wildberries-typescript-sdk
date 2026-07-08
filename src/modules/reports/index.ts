@@ -693,7 +693,6 @@ export type {
   GoodsLabelingResponse,
   RegionSaleItem,
   RegionSaleResponse,
-  BrandShareBrandsItem,
   BrandShareBrandsResponse,
   BrandShareParentSubjectsItem,
   BrandShareParentSubjectsResponse,
