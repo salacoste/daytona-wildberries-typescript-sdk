@@ -12,12 +12,16 @@ export interface Response400 {
 }
 
 /**
- * Места размещения:
+ * Места размещения (перечисление WB `PlacementType`):
  *  - `search` — поиск
- *  - `recommendations` — рекомендации
+ *  - `recommendation` — рекомендации
  *  - `combined` — поиск и рекомендации
+ *
+ * Примечание: единственное число `recommendation` соответствует компоненту `PlacementType`
+ * в WB OpenAPI etalon (08-promotion.yaml:4536-4541). Не путать с полем `placement` ответа
+ * `updateBids`, которое использует множественное число `recommendations`.
  */
-export type PlacementType = 'combined' | 'search' | 'recommendations';
+export type PlacementType = 'combined' | 'search' | 'recommendation';
 
 export interface StandardizedBatchError {
   /** Детали ошибки */
@@ -68,6 +72,10 @@ export interface V0AdvertMultibid {
 export interface ResponseWithReturn {
   /** Размер обновлённого бюджета */
   total?: number;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   */
+  currency?: string;
 }
 
 export interface ResponseInfoAdvert {
@@ -335,8 +343,8 @@ export interface Timestamps {
   created: string;
   /** Время последнего изменения кампании */
   updated: string;
-  /** Время последнего запуска кампании */
-  started: string;
+  /** Время последнего запуска кампании (`null`, если кампания ещё не запускалась) */
+  started: string | null;
   /** Время удаления кампании. Если кампания не удалена, время указывается в будущем */
   deleted: string;
 }
@@ -2056,6 +2064,14 @@ export interface SearchClusterStatEntry {
   cpm: number;
   /** Average position on search results page */
   avg_pos: number;
+  /** Количество заказанных товаров, шт. */
+  shks?: number;
+  /** Затраты на продвижение товара в поисковом кластере, ₽ */
+  spend?: number;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   */
+  currency?: string;
 }
 
 // ============================================================================
@@ -2075,6 +2091,8 @@ export interface GetBidsRecommendationsParams {
 export interface ReachBid {
   /** Bid amount in kopecks */
   bidKopecks: number;
+  /** Minimum allowed bid in kopecks — the floor. Bidding below this triggers WB 400 "wrong bid value". */
+  bidKopecksMin?: number;
 }
 
 /** Recommended bids for a search cluster (norm query) */
