@@ -234,8 +234,8 @@ export interface DetailReportItem {
   kiz?: string;
   /** Уникальный ID заказа. Примечание для использующих API Marketplace: `srid` равен `rid` в ответах методов сборочных заданий. */
   srid?: string;
-  /** Тип отчёта: - `1` — стандартный - `2` — для уведомления о выкупе - `3` — уведомление о выкупе для Грузии - `4` — уведомление о выкупе для Грузии */
-  report_type?: 1 | 2 | 3 | 4;
+  /** Тип отчёта: - `1` — стандартный - `2` — для уведомления о выкупе - `3` — уведомление о выкупе для Грузии */
+  report_type?: 1 | 2 | 3;
   /** Признак B2B-продажи */
   is_legal_entity?: boolean;
   /** Номер короба для обработки товара */
@@ -324,6 +324,8 @@ export interface DetailReportItem {
    * @since v3.6.0
    */
   sale_price_wholesale_discount_prc?: number;
+  /** ИНН покупателя B2B (B2B buyer TIN) */
+  b2b_customer_tin?: string;
 }
 
 // ============================================================================
@@ -398,8 +400,8 @@ export interface SalesReportListItem {
   createDate?: string;
   /** Валюта (e.g., "RUB") */
   currency?: string;
-  /** Тип отчёта: 1 — стандартный, 2/3/4 — уведомления о выкупе */
-  reportType?: number;
+  /** Тип отчёта: 1 — стандартный, 2 — уведомление о выкупе, 3 — уведомление о выкупе для Грузии */
+  reportType?: 1 | 2 | 3;
   /** Сумма розничных цен (string — use parseMoneyAmount) */
   retailAmountSum?: string;
   /** К перечислению продавцу (string — use parseMoneyAmount) */
@@ -451,8 +453,8 @@ export interface SalesReportDetailedItem {
   createDate?: string;
   /** Валюта (was `currency_name`) */
   currency?: string;
-  /** Тип отчёта (was `report_type`): 1 — стандартный, 2/3/4 — уведомления о выкупе */
-  reportType?: number;
+  /** Тип отчёта (was `report_type`): 1 — стандартный, 2 — уведомление о выкупе, 3 — уведомление о выкупе для Грузии */
+  reportType?: 1 | 2 | 3;
   /** ID строки отчёта (was `rrd_id`) */
   rrdId?: number;
   /** Номер поставки (was `gi_id`) */
@@ -617,6 +619,8 @@ export interface SalesReportDetailedItem {
   agencyVat?: number;
   /** Оптовая скидка для бизнеса, % (was `sale_price_wholesale_discount_prc`) */
   salePriceWholesaleDiscountPrc?: number;
+  /** ИНН покупателя B2B (B2B buyer TIN) */
+  b2bCustomerTin?: string;
   /** ID транзакции (was `order_uid`) */
   orderUid?: string;
   /** Уникальный ID заказа (was `srid`) */

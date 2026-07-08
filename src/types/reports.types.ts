@@ -251,87 +251,75 @@ export type ModelsExciseReportResponseData = {
 }[];
 
 /**
- * MeasurementPenalties response type for penalty reports
- * @see EPIC 43 - Updated to match swagger MeasurementPenalties schema
+ * Measurement-penalty report item (one element of `data.reports[]` in the
+ * `MeasurementPenalties` response schema).
+ * @see EPIC 43 - Flattened to match swagger MeasurementPenalties `data.reports[]` item shape.
+ * Response is single-wrapped by {@link MeasurementPenaltiesResponse} (`{ data: { reports: Penalty[], total } }`).
  */
 export interface Penalty {
-  /** Данные ответа */
-  data: {
-    /** Удержания */
-    reports: {
-      /** Артикул WB */
-      nmId?: number;
-      /** ID замера */
-      dimId?: number;
-      /** Предмет */
-      subjectName?: string;
-      /** Разница в габаритах, % */
-      prcOver?: number;
-      /** Объём, л (фактические габариты) */
-      volume?: number;
-      /** Ширина, см (фактические габариты) */
-      width?: number;
-      /** Длина, см (фактические габариты) */
-      length?: number;
-      /** Высота, см (фактические габариты) */
-      height?: number;
-      /** Объём, л (габариты карточки товара) */
-      volumeSup?: number;
-      /** Ширина, см (габариты карточки товара) */
-      widthSup?: number;
-      /** Длина, см (габариты карточки товара) */
-      lengthSup?: number;
-      /** Высота, см (габариты карточки товара) */
-      heightSup?: number;
-      /** Фото замеров */
-      photoUrls?: string[];
-      /** Дата штрафа */
-      dtBonus?: string;
-      /** Статус обмера: - `false` — отменён - `true` — подтверждён */
-      isValid?: boolean;
-      /** Дата и время подтверждения или отмены обмера */
-      isValidDt?: string;
-      /** Сумма сторно */
-      reversalAmount?: number;
-      /** Сумма штрафа */
-      penaltyAmount?: number;
-    }[];
-    /** Количество удержаний в отчёте (без учёта limit/offset) */
-    total: number;
-  };
+  /** Артикул WB */
+  nmId?: number;
+  /** ID замера */
+  dimId?: number;
+  /** Предмет */
+  subjectName?: string;
+  /** Разница в габаритах, % */
+  prcOver?: number;
+  /** Объём, л (фактические габариты) */
+  volume?: number;
+  /** Ширина, см (фактические габариты) */
+  width?: number;
+  /** Длина, см (фактические габариты) */
+  length?: number;
+  /** Высота, см (фактические габариты) */
+  height?: number;
+  /** Объём, л (габариты карточки товара) */
+  volumeSup?: number;
+  /** Ширина, см (габариты карточки товара) */
+  widthSup?: number;
+  /** Длина, см (габариты карточки товара) */
+  lengthSup?: number;
+  /** Высота, см (габариты карточки товара) */
+  heightSup?: number;
+  /** Фото замеров */
+  photoUrls?: string[];
+  /** Дата штрафа */
+  dtBonus?: string;
+  /** Статус обмера: - `false` — отменён - `true` — подтверждён */
+  isValid?: boolean;
+  /** Дата и время подтверждения или отмены обмера */
+  isValidDt?: string;
+  /** Сумма сторно */
+  reversalAmount?: number;
+  /** Сумма штрафа */
+  penaltyAmount?: number;
 }
 
 /**
- * WHM (Warehouse Measurements) response type for warehouse measurement reports
- * @see EPIC 43 - Updated to match swagger WHM schema (removed stale fields)
+ * Warehouse-measurement report item (one element of `data.reports[]` in the
+ * `WHM` response schema).
+ * @see EPIC 43 - Flattened to match swagger WHM `data.reports[]` item shape.
+ * Response is single-wrapped by {@link WarehouseMeasurementsV2Response} (`{ data: { reports: Measurement[], total } }`).
  */
 export interface Measurement {
-  /** Данные ответа */
-  data: {
-    /** Замеры */
-    reports: {
-      /** Артикул WB */
-      nmId?: number;
-      /** Предмет */
-      subjectName?: string;
-      /** ID замера */
-      dimId?: number;
-      /** Объём, л (фактические габариты) */
-      volume?: number;
-      /** Ширина, см (фактические габариты) */
-      width?: number;
-      /** Длина, см (фактические габариты) */
-      length?: number;
-      /** Высота, см (фактические габариты) */
-      height?: number;
-      /** Фото замеров */
-      photoUrls?: string[];
-      /** Дата и время замера */
-      dt?: string;
-    }[];
-    /** Количество замеров в отчёте (без учёта limit/offset) */
-    total: number;
-  };
+  /** Артикул WB */
+  nmId?: number;
+  /** Предмет */
+  subjectName?: string;
+  /** ID замера */
+  dimId?: number;
+  /** Объём, л (фактические габариты) */
+  volume?: number;
+  /** Ширина, см (фактические габариты) */
+  width?: number;
+  /** Длина, см (фактические габариты) */
+  length?: number;
+  /** Высота, см (фактические габариты) */
+  height?: number;
+  /** Фото замеров */
+  photoUrls?: string[];
+  /** Дата и время замера */
+  dt?: string;
 }
 
 /**

@@ -341,6 +341,28 @@ describe('GeneralModule', () => {
       });
     });
 
+    it('should accept the new WB access codes (brandsFlow, copyrightComplaints, pretrialClaims, sellersChat)', async () => {
+      // Arrange — the 4 access sections WB added (task-145)
+      mockClient.post.mockResolvedValue(mockResponse);
+      const request = {
+        invite: { phoneNumber: '79999999999' },
+        access: [
+          { code: 'brandsFlow' as const, disabled: false },
+          { code: 'copyrightComplaints' as const, disabled: true },
+          { code: 'pretrialClaims' as const, disabled: true },
+          { code: 'sellersChat' as const, disabled: false },
+        ],
+      };
+
+      // Act
+      await generalModule.createInvite(request);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(`${USER_MGMT_BASE_URL}/api/v1/invite`, request, {
+        rateLimitKey: 'general.createInvite',
+      });
+    });
+
     it('should return invite response with all fields', async () => {
       // Arrange
       mockClient.post.mockResolvedValue(mockResponse);

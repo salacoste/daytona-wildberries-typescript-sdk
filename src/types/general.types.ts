@@ -89,12 +89,18 @@ export type AccessCode =
   | 'showcase' // Store showcase management
   | 'suppliersDocuments' // Documents viewing and downloading
   | 'supply' // FBW supply creation and management
-  | 'feedbacksQuestions' // View and respond to questions and reviews
   | 'questions' // View and respond to questions
   | 'pinFeedbacks' // Pin/unpin reviews
   | 'pointsForReviews' // Points for reviews
   | 'feedbacks' // View and respond to reviews
-  | 'wbPoint'; // WB Point
+  | 'oldAnalyticsReports' // Reports
+  | 'marketplace' // Seller Warehouse
+  | 'brandsFlow' // My brands
+  | 'copyrightComplaints' // Copyright owner claims
+  | 'pretrialClaims' // Pre-trial claims
+  | 'sellersChat' // Chat with Users
+  | 'brandzone' // Edit Brand Zone
+  | 'brandzoneSubscribe'; // Manage Brand Zone Subscription
 
 /**
  * Access permission item
@@ -293,12 +299,12 @@ export interface GetJamSubscriptionStatusParams {
  * @since 3.5.0
  */
 export interface JamSubscriptionDetails {
-  /** Subscription state: 'active' or other values when inactive */
-  state?: string;
-  /** How the subscription was activated (e.g., 'jam') */
-  activationSource?: string;
-  /** Subscription level (e.g., 'premium', 'standard') */
-  level?: string;
+  /** Subscription state: 'active' when active, 'inactive' when expired or cancelled */
+  state?: 'active' | 'inactive';
+  /** How the subscription was activated: 'constructor' (Plan Builder) or 'jam' (Jam Subscription) */
+  activationSource?: 'constructor' | 'jam';
+  /** Subscription level */
+  level?: 'standard' | 'advanced' | 'premium';
   /** Date of first subscription activation (ISO 8601) */
   since?: string;
   /** End date of current/last paid period (ISO 8601) */

@@ -43,8 +43,8 @@ export interface DBSOrderNew {
   dTimeTo?: string;
   /** Required metadata types (sgtin, imei, uin, gtin, customsDeclaration) */
   requiredMeta?: string[];
-  /** Delivery type - always 'dbs' for DBS orders */
-  deliveryType?: 'dbs';
+  /** Delivery type: 'dbs' (seller delivery) | 'edbs' (express seller delivery) */
+  deliveryType?: 'dbs' | 'edbs';
   /** Customer comment */
   comment?: string;
   /** Transaction ID for grouping orders in same cart */
@@ -158,14 +158,13 @@ export type DBSSupplierStatus =
   | 'receive'
   | 'reject'
   | 'cancel'
-  | 'canceled_by_missed_call';
+  | 'cancel_missed_call';
 
 /**
  * DBS WB system status
  */
 export type DBSWbStatus =
   | 'waiting'
-  | 'sorted'
   | 'sold'
   | 'canceled'
   | 'canceled_by_client'

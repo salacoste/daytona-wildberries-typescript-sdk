@@ -90,8 +90,8 @@ export interface StatusHistoryRequest {
 
 /** Query parameters for deleting order metadata by key */
 export interface DeleteMetaParams {
-  /** Metadata key to delete (e.g. "imei", "uin", "gtin", "sgtin") */
-  key?: string;
+  /** Metadata key to delete: imei, uin, gtin, sgtin, or customsDeclaration */
+  key?: 'imei' | 'uin' | 'gtin' | 'sgtin' | 'customsDeclaration';
 }
 
 /** Request body for attaching SGTIN marking codes to an order */
@@ -560,6 +560,10 @@ export interface Supply {
   destinationOfficeId?: number;
   /** Whether this supply contains B2B orders. Once the first order is added, the supply inherits its B2B flag. Since March 19, 2026 mixing B2B and non-B2B orders in one supply is rejected. */
   isB2b?: boolean;
+  /** Whether you can dispatch the order to a pickup point */
+  isPickupPointShipmentAllowed?: boolean;
+  /** ID of the recommended warehouse for acceptance of the supply for Moscow and Moscow region; 0 if not determined */
+  recommendedWhId?: number;
 }
 
 /**
@@ -633,6 +637,8 @@ export interface OrderNew {
   crossBorderType?: 0 | 1;
   /** Whether this is a zero-stock order (can be cancelled without penalty) */
   isZeroOrder?: boolean;
+  /** Whether you can dispatch the order to a pickup point */
+  isPickupPointShipmentAllowed?: boolean;
   /** Order options */
   options?: {
     /** Whether this is a B2B sale */

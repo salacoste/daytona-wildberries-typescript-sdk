@@ -681,7 +681,7 @@ export interface SalesFunnelGroupReq {
     /** Временная зона, по умолчанию Europe/Moscow */
     timezone?: string;
     /** Как сгруппировать данные (по умолчанию по дням): * `day` — по дням * `week` — по неделям * `month` — по месяцам */
-    aggregationLevel?: string;
+    aggregationLevel?: 'day' | 'week' | 'month';
     /** Скрыть удалённые `nmID` */
     skipDeletedNm?: boolean;
   };
