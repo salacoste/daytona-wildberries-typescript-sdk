@@ -17,6 +17,8 @@ comparison_docs/
 
 # Scratch workspace
 temp/
+.playwright-cli/
+.playwright-mcp/
 
 # Build outputs
 dist/

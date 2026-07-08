@@ -1,0 +1,1317 @@
+openapi: 3.0.1
+info:
+  title: FBW Supplies
+  version: ordersfbw
+  description: |
+    <div class="api-block">
+
+    This section describes the methods for getting:
+      - [information for forming supplies](/openapi/orders-fbw#tag/Information-for-Forming-Supplies)
+      - [supplies information](/openapi/orders-fbw#tag/Supplies-Information)
+
+    You can create listings in the [Content](/openapi/api-information#tag/Authorization/Token-categories) sandbox and then use the item SKUs in the Supplies <a href='/en/sandbox'>sandbox</a>
+
+    </div>
+  x-file-name: orders-fbw
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Information for Forming Supplies
+    description: ''
+  - name: Supplies Information
+    description: ''
+paths:
+  /api/v1/acceptance/options:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://supplies-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: true
+      x-category: supplies
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Information for Forming Supplies
+      summary: Acceptance Options
+      description: |
+        The method returns information about warehouses and package types available for supply. The warehouses list is determined by item's SKU and quantity
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 6 requests | 10 s | 6 requests |
+        | Service | 1 min | 6 requests | 10 s | 6 requests |
+        | Base with secret | 1 min | 6 requests | 10 s | 6 requests |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: warehouseID
+          in: query
+          description: Warehouse ID. <br> If the parameter is not specified, data for all warehouses is returned. <br> **Maximum is one value**
+          schema:
+            type: integer
+          example: 507
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              maxItems: 5000
+              items:
+                $ref: '#/components/schemas/models.Good'
+            examples:
+              RequestOptions:
+                $ref: '#/components/examples/RequestOptions'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.OptionsResultModel'
+              examples:
+                Response:
+                  $ref: '#/components/examples/OptionsResponse'
+        '400':
+          description: Incorrect request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ErrorModel'
+              examples:
+                BadWarehouseIDsParam:
+                  $ref: '#/components/examples/Response400Options'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+        '404':
+          description: Not found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/warehouses:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://supplies-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Information for Forming Supplies
+      summary: Warehouses List
+      description: |
+        The method returns Wildberries warehouses list.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 6 requests | 10 s | 6 requests |
+        | Service | 1 min | 6 requests | 10 s | 6 requests |
+        | Base with secret | 1 min | 6 requests | 10 s | 6 requests |
+        | Base | 12 h | 1 request | 12 h | 1 request |
+        </div>
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/models.WarehousesResultItems'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Access denied
+        '404':
+          description: Not found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/transit-tariffs:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Information for Forming Supplies
+      summary: Transit Directions
+      description: |
+        The method returns information about available transit directions.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 6 requests | 10 s | 10 requests |
+        | Service | 1 min | 6 requests | 10 s | 10 requests |
+        | Base with secret | 1 min | 6 requests | 10 s | 10 requests |
+        | Base | 12 h | 1 request | 12 h | 1 request |
+        </div>
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/models.TransitTariff'
+              examples:
+                ResponseTariffs:
+                  $ref: '#/components/examples/ResponseTariffs'
+        '401':
+          $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/supplies:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Supplies Information
+      summary: Supplies List
+      description: |
+        The method returns a list of supplies, the last 1000 supplies by default.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 30 requests | 2 s | 10 requests |
+        | Service | 1 min | 30 requests | 2 s | 10 requests |
+        | Base with secret | 1 min | 30 requests | 2 s | 10 requests |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          description: Number of objects in the response
+          schema:
+            type: integer
+            default: 1000
+            maximum: 1000
+            minimum: 1
+        - name: offset
+          in: query
+          description: From which element to start outputting data
+          schema:
+            type: integer
+            default: 0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.SuppliesFiltersRequest'
+            example:
+              dates:
+                - from: '2024-03-04'
+                  till: '2025-03-24'
+                  type: factDate
+              statusIDs:
+                - 5
+                - 6
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/models.Supply'
+              example:
+                - phone: +7 916 *** 44 44
+                  supplyID: null
+                  preorderID: 34597755
+                  createDate: '2024-12-29T16:58:26+03:00'
+                  supplyDate: null
+                  factDate: null
+                  updatedDate: null
+                  statusID: 1
+                  boxTypeID: 1
+                - phone: +7 916 *** 33 33
+                  supplyID: 26596368
+                  preorderID: 34601223
+                  createDate: '2024-12-29T16:57:59+03:00'
+                  supplyDate: '2024-12-29T00:00:00+03:00'
+                  factDate: null
+                  updatedDate: null
+                  statusID: 2
+                  boxTypeID: 5
+                - phone: +7 000 *** 36 76
+                  supplyID: 22677736
+                  preorderID: 27363170
+                  createDate: '2024-08-22T18:10:59+03:00'
+                  supplyDate: '2024-08-22T00:00:00+03:00'
+                  factDate: '2024-08-22T12:24:14+03:00'
+                  updatedDate: '2024-08-22T18:33:45+03:00'
+                  statusID: 6
+                  boxTypeID: 2
+                  isBoxOnPallet: false
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ErrorModel'
+              examples:
+                BadTypeFormat:
+                  $ref: '#/components/examples/BadTypeFormat'
+                BadLimitFormat:
+                  $ref: '#/components/examples/BadLimitFormat'
+                BadOffsetFormat:
+                  $ref: '#/components/examples/BadOffsetFormat'
+                BadFromOrTill:
+                  $ref: '#/components/examples/BadFromOrTill'
+                BadStatusIDs:
+                  $ref: '#/components/examples/BadStatusIDs'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/supplies/{ID}:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Supplies Information
+      summary: Supply Details
+      description: |
+        The method returns supply details by ID.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 30 requests | 2 s | 10 requests |
+        | Service | 1 min | 30 requests | 2 s | 10 requests |
+        | Base with secret | 1 min | 30 requests | 2 s | 10 requests |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: ID
+          in: path
+          description: ID of the supply or the order
+          required: true
+          schema:
+            type: integer
+        - name: isPreorderID
+          in: query
+          description: |
+            Search by:
+              - `true` — order ID, if you pass the order ID in `ID`
+              - `false` — supply ID, if you pass the supply ID in `ID`
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.SupplyDetails'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ErrorModel'
+              examples:
+                BadPathParamFormat:
+                  $ref: '#/components/examples/BadPathParamFormat'
+                BadisPreorderIDFormat:
+                  $ref: '#/components/examples/BadisPreorderIDFormat'
+                PreorderIdSearchError:
+                  $ref: '#/components/examples/PreorderIdSearchError'
+                BadID:
+                  $ref: '#/components/examples/BadID'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ErrorModel'
+              examples:
+                SupplyNotFound:
+                  $ref: '#/components/examples/SupplyNotFound'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/supplies/{ID}/goods:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Supplies Information
+      summary: Supply Items
+      description: |
+        The method returns information about the items in the supply.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 30 requests | 2 s | 10 requests |
+        | Service | 1 min | 30 requests | 2 s | 10 requests |
+        | Base with secret | 1 min | 30 requests | 2 s | 10 requests |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          description: Number of objects in the response
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: offset
+          in: query
+          description: From which element to start outputting data
+          schema:
+            type: integer
+            default: 0
+        - name: isPreorderID
+          in: query
+          description: |
+            Search by:
+              - `true` — order ID, if you pass the order ID in `ID`
+              - `false` — supply ID, if you pass the supply ID in `ID`
+          schema:
+            type: boolean
+            default: false
+        - name: ID
+          in: path
+          description: ID of the supply or the order
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/models.GoodInSupply'
+        '400':
+          description: Bad request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/models.ErrorModel'
+              examples:
+                BadOffsetFormat:
+                  $ref: '#/components/examples/BadOffsetFormat'
+                BadisPreorderIDFormat:
+                  $ref: '#/components/examples/BadisPreorderIDFormat'
+                BadPathParamFormat:
+                  $ref: '#/components/examples/BadPathParamFormat'
+                BadLimitFormat:
+                  $ref: '#/components/examples/BadLimitFormat'
+                BadSupplyIDItems:
+                  $ref: '#/components/examples/BadSupplyIDItems'
+                BadID:
+                  $ref: '#/components/examples/BadID'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/supplies/{ID}/package:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      tags:
+        - Supplies Information
+      summary: Supply Package
+      description: |
+        The method returns information about the package of the supply.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 30 requests | 2 s | 10 requests |
+        | Service | 1 min | 30 requests | 2 s | 10 requests |
+        | Base with secret | 1 min | 30 requests | 2 s | 10 requests |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: ID
+          in: path
+          description: Supply ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/models.Box'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ErrorModel'
+              examples:
+                BadPathParamFormat:
+                  $ref: '#/components/examples/BadPathParamFormat'
+                BadSupplyIDPackage:
+                  $ref: '#/components/examples/BadSupplyIDPackage'
+                BadID:
+                  $ref: '#/components/examples/BadID'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    models.TransitTariff:
+      type: object
+      properties:
+        transitWarehouseName:
+          type: string
+          description: Transit warehouse
+        destinationWarehouseName:
+          type: string
+          description: Destination warehouse
+        activeFrom:
+          type: string
+          description: From what date the transit direction is available
+          format: date-time
+        boxTariff:
+          nullable: true
+          type: array
+          description: Tariff for box transit. If `null`, transit for boxes is not available
+          items:
+            $ref: '#/components/schemas/models.VolumeTariff'
+        palletTariff:
+          type: integer
+          description: Tariff per pallet, ₽
+    models.VolumeTariff:
+      type: object
+      properties:
+        from:
+          type: integer
+          description: Supply volume from, liters
+        to:
+          type: integer
+          description: Supply volume up to, liters
+        value:
+          type: number
+          description: Rate, ₽ per liter
+    models.Box:
+      type: object
+      properties:
+        packageCode:
+          type: string
+          description: Package SKU
+        quantity:
+          type: integer
+          description: Total quantity of items in the package, pieces
+        barcodes:
+          type: array
+          description: List of packed items
+          items:
+            $ref: '#/components/schemas/models.GoodInBox'
+      example:
+        packageCode: WB_689
+        quantity: 1
+        barcodes:
+          - barcode: '1234567891234'
+            quantity: 1
+    models.GoodInBox:
+      type: object
+      properties:
+        barcode:
+          type: string
+          description: Barcode
+        quantity:
+          type: integer
+          description: Quantity, pieces
+    models.SuppliesFiltersRequest:
+      properties:
+        dates:
+          description: Filter by dates
+          items:
+            $ref: '#/components/schemas/models.DateFilterRequest'
+          type: array
+        statusIDs:
+          description: |
+            Filter the supply by statuses. Possible values:
+              - `1` — Not planned
+              - `2` — Planned
+              - `3` — Dispatch allowed
+              - `4` — Accepting
+              - `5` — Accepted
+              - `6` — Unloaded at the gate
+          items:
+            $ref: '#/components/schemas/models.HandySupplyStatus'
+          type: array
+      type: object
+    models.GoodInSupply:
+      type: object
+      properties:
+        barcode:
+          description: Item barcode
+          type: string
+        vendorCode:
+          type: string
+          description: Seller item number
+        nmID:
+          type: integer
+          description: WB item number
+        needKiz:
+          description: |
+            Is a labeling code [Chestny ZNAK](https://chestnyznak.ru/en) required for this item:
+              - `false` — not required
+              - `true` — required
+          type: boolean
+        tnved:
+          type: string
+          description: |
+            HS-code.
+            <br>
+            If `"needKiz":true` and `"tnved":null`, it is required to specify the **HS-codes** in the [personal account](https://seller.wildberries.ru/new-goods) or through [API](./work-with-products#tag/listings/paths/~1content~1v2~1cards~1update/post)
+          nullable: true
+        techSize:
+          type: string
+          description: Item size specified by the seller
+        color:
+          description: Item color
+          type: string
+          nullable: true
+        supplierBoxAmount:
+          type: integer
+          nullable: true
+          description: Specified in the package, pieces
+        quantity:
+          type: integer
+          description: Specified in the supply/order, pieces
+        readyForSaleQuantity:
+          type: integer
+          nullable: true
+          description: Ready for sale, pieces
+        acceptedQuantity:
+          type: integer
+          nullable: true
+          description: Accepted, pieces
+        unloadingQuantity:
+          type: integer
+          nullable: true
+          description: Total items at putaway, pieces
+      example:
+        barcode: '1234567891234'
+        vendorCode: wb4sewt0vg
+        nmID: 987456654
+        needKiz: true
+        tnved: '6204430000'
+        techSize: C
+        color: красный
+        supplierBoxAmount: 10
+        quantity: 10
+        readyForSaleQuantity: 0
+        unloadingQuantity: 0
+        acceptedQuantity: 0
+    models.DateFilterRequest:
+      properties:
+        from:
+          type: string
+          description: Period start date
+          format: ISO 8601
+        till:
+          type: string
+          description: Period end date
+          format: ISO 8601
+        type:
+          type: string
+          enum:
+            - factDate
+            - createDate
+            - supplyDate
+            - updatedDate
+          description: |
+            Dates type:
+              - `factDate` — actual dispatch date
+              - `createDate` — supply creation date
+              - `supplyDate` — planned dispatch date
+              - `updatedDate` — supply update date
+      required:
+        - type
+      type: object
+    models.SupplyDetails:
+      type: object
+      properties:
+        phone:
+          description: Phone number of the user that created the supply
+          type: string
+        statusID:
+          description: |
+            Supply status ID:
+            - `1` — Not planned
+            - `2` — Planned
+            - `3` — Dispatch allowed
+            - `4` — Accepting
+            - `5` — Accepted
+            - `6` — Unloaded at the gate
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+          type: integer
+        virtualTypeID:
+          description: |
+            ID of virtual supply type. Displayed only for supplies with `"boxTypeID":0`.
+              - `0` — Carryover of stock
+              - `1` — Depersonalization
+              - `4` — QR supply
+              - `5` — Additional acceptance
+              - `6` — Scan acceptance
+          type: integer
+        boxTypeID:
+          description: |
+            Supply type ID:
+              - `0` — Without boxes (virtual supply)
+              - `1` and `2` — Boxes
+              - `5` — Monopallets
+              - `6` — Supersafe
+          type: integer
+        createDate:
+          description: Date and time the supply was created
+          type: string
+        supplyDate:
+          description: Planned dispatch date
+          type: string
+          nullable: true
+        factDate:
+          description: Actual dispatch date
+          type: string
+          nullable: true
+        updatedDate:
+          description: Date of the supply update
+          type: string
+          nullable: true
+        warehouseID:
+          description: Warehouse ID for planned supply
+          type: integer
+        warehouseName:
+          description: Warehouse name for planned supply
+          type: string
+        actualWarehouseID:
+          description: Warehouse ID where the supply was delivered
+          type: integer
+          nullable: true
+        actualWarehouseName:
+          description: Warehouse name where the supply was delivered
+          type: string
+        transitWarehouseID:
+          description: Transit warehouse ID
+          type: integer
+          nullable: true
+        transitWarehouseName:
+          description: Transit warehouse name
+          type: string
+        acceptanceCost:
+          description: Preliminary acceptance cost, ₽
+          type: number
+          nullable: true
+        paidAcceptanceCoefficient:
+          description: Acceptance coefficient
+          type: number
+          nullable: true
+        rejectReason:
+          description: Reason why the supply cannot be accepted
+          type: string
+          nullable: true
+        supplierAssignName:
+          nullable: true
+          description: Short seller's name
+          type: string
+        storageCoef:
+          description: Storage coefficient
+          type: string
+          nullable: true
+        deliveryCoef:
+          description: Logistics coefficient
+          type: string
+          nullable: true
+        quantity:
+          type: integer
+          description: Added to the supply/order, pieces
+        readyForSaleQuantity:
+          type: integer
+          nullable: false
+          description: Ready for sale, pieces
+        acceptedQuantity:
+          type: integer
+          nullable: false
+          description: Accepted, pieces
+        unloadingQuantity:
+          type: integer
+          nullable: false
+          description: Total items at putaway, pieces
+        depersonalizedQuantity:
+          type: integer
+          nullable: true
+          description: Quantity of depersonalized items, pieces
+        isBoxOnPallet:
+          type: boolean
+          description: |
+            **Pallet with Single Items** — supply type:
+              - `true` — yes
+              - `false` — no
+
+              The field is returned only when `"boxTypeID": 2`
+      example:
+        phone: +7 903 *** 98 62
+        statusID: 5
+        boxTypeID: 2
+        createDate: '2025-07-15T17:17:45+03:00'
+        supplyDate: '2025-07-15T00:00:00+03:00'
+        factDate: '2025-07-18T11:37:32+03:00'
+        updatedDate: '2025-07-18T12:59:53+03:00'
+        warehouseID: 507
+        warehouseName: Коледино
+        actualWarehouseID: 507
+        actualWarehouseName: Коледино
+        transitWarehouseID: null
+        transitWarehouseName: ''
+        acceptanceCost: 5000
+        paidAcceptanceCoefficient: 10
+        rejectReason: null
+        supplierAssignName: Магазин
+        storageCoef: '215'
+        deliveryCoef: '200'
+        quantity: 10
+        readyForSaleQuantity: 0
+        acceptedQuantity: 10
+        unloadingQuantity: 10
+        depersonalizedQuantity: 0
+        isBoxOnPallet: true
+    models.HandySupplyStatus:
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      type: integer
+      x-enum-varnames:
+        - NotPlanned
+        - Planned
+        - AllowUnload
+        - Accepting
+        - Accepted
+        - Virtual
+        - UnloadedOnGate
+    models.Supply:
+      properties:
+        phone:
+          description: Phone number of the user that created the supply
+          type: string
+        supplyID:
+          description: Supply ID. If `null`, it's an order, so use the value of the `preorderID` field
+          type: integer
+          nullable: true
+        preorderID:
+          description: Order ID (unplanned supply). Will be `0` for all virtual supplies
+          type: integer
+        createDate:
+          description: Date and time the supply was created
+          type: string
+        supplyDate:
+          description: Planned dispatch date
+          type: string
+          nullable: true
+        factDate:
+          description: Actual dispatch date
+          type: string
+          nullable: true
+        updatedDate:
+          description: Date of the supply update
+          type: string
+          nullable: true
+        statusID:
+          description: |
+            Supply status ID:
+            - `1` — Not planned
+            - `2` — Planned
+            - `3` — Dispatch allowed
+            - `4` — Accepting
+            - `5` — Accepted
+            - `6` — Unloaded at the gate
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+          type: integer
+        boxTypeID:
+          description: |
+            Supply type ID:
+              - `0` — Without boxes (virtual supply)
+              - `1` and `2` — Boxes
+              - `5` — Monopallets
+              - `6` — Supersafe
+        isBoxOnPallet:
+          type: boolean
+          description: |
+            **Pallet with Single Items** — supply type:
+              - `true` — yes
+              - `false` — no
+
+              The field is returned only when `"boxTypeID": 2`
+      type: object
+    models.WarehousesResultItems:
+      type: object
+      properties:
+        ID:
+          type: integer
+          description: Warehouse ID
+        name:
+          type: string
+          description: Warehouse name
+        address:
+          type: string
+          description: Warehouse address
+        workTime:
+          type: string
+          description: Warehouse operating hours
+        isActive:
+          type: boolean
+          description: |
+            Is it available as a destination warehouse:
+            - `true` — yes
+            - `false` — no
+        isTransitActive:
+          type: boolean
+          description: |
+            Is it available as a transit warehouse:
+            - `true` — yes
+            - `false` — no
+      example:
+        ID: 300461
+        name: Гомель 2
+        address: Гомель, Могилёвская улица 1/А
+        workTime: 24/7
+        isActive: false
+        isTransitActive: true
+    models.Good:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          description: |
+            Total quantity of items planned for supply. <br> **Maximum 999999**
+          minimum: 1
+          maximum: 999999
+        barcode:
+          type: string
+          description: Barcode from the listing
+    models.ErrorModel:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        title:
+          type: string
+          description: Error ID
+        detail:
+          type: string
+          description: Error description
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: Service that returned the error
+    models.OptionsResultModel:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              barcode:
+                type: string
+                description: Listing barcode
+              error:
+                type: object
+                description: Error data. If an error is present
+                properties:
+                  title:
+                    type: string
+                    description: Error ID
+                  detail:
+                    type: string
+                    description: Error description
+              isError:
+                type: boolean
+                description: |
+                  Presence of an error:
+                    - `true` — there is an error
+                    - Field is absent — there is no error
+              warehouses:
+                type: array
+                nullable: true
+                description: Warehouses list. Will be `null` if an error is present
+                items:
+                  type: object
+                  properties:
+                    warehouseID:
+                      type: integer
+                      description: Warehouse ID. With it, you can get [information about the warehouse](./orders-fbw#tag/Information-for-Forming-Supplies/paths/~1api~1v1~1warehouses/get)
+                    canBox:
+                      type: boolean
+                      description: |
+                        **Box** package type:
+                          - `true` — available
+                          - `false` — not available
+                    canMonopallet:
+                      type: boolean
+                      description: |
+                        **Monopallet** package type:
+                          - `true` — available
+                          - `false` — not available
+                    canSupersafe:
+                      type: boolean
+                      description: |
+                        **Super safe** package type:
+                          - `true` — available
+                          - `false` — not available
+                    isBoxOnPallet:
+                      type: boolean
+                      description: |
+                        **Pallet with Single Items** supply type:
+                          - `true` — available
+                          - `false` — not available
+        requestId:
+          type: string
+          description: Request ID if an error is present
+  examples:
+    RequestOptions:
+      value:
+        - quantity: 1
+          barcode: k
+        - quantity: 7
+          barcode: '1111111111'
+    OptionsResponse:
+      value:
+        result:
+          - barcode: Seller
+            warehouses: null
+            error:
+              title: barcode validation error
+              detail: barcode Seller is not found
+            isError: true
+          - barcode: '123456789'
+            warehouses:
+              - warehouseID: 205349
+                canBox: true
+                canMonopallet: false
+                canSupersafe: false
+                isBoxOnPallet: false
+              - warehouseID: 211622
+                canBox: false
+                canMonopallet: true
+                canSupersafe: false
+                isBoxOnPallet: true
+              - warehouseID: 214951
+                canBox: true
+                canMonopallet: false
+                canSupersafe: false
+                isBoxOnPallet: true
+              - warehouseID: 206319
+                canBox: true
+                canMonopallet: false
+                canSupersafe: false
+                isBoxOnPallet: true
+        requestId: kr53d2bRKYmkK2N6zaNKHs
+    Response400Options:
+      value:
+        status: 400
+        title: bad request
+        detail: Неверный формат warehouseID
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+      description: The value of the parameter `warehouseID` is either not specified or specified incorrectly
+    BadTypeFormat:
+      value:
+        status: 400
+        title: bad request
+        detail: 'Выберите значение параметра ''Type'' из списка: ''factDate createDate supplyDate updatedDate'''
+        requestId: 31aba083c7144409c3cbbb968e693f16
+        origin: supply-api
+      description: The value of the parameter `type` is either not specified or specified incorrectly
+    BadStatusIDs:
+      value:
+        status: 400
+        title: bad request
+        detail: 'Выберите значение параметра ''StatusIDs[0]'' из списка: ''1 2 3 4 5 6'''
+        requestId: 52d7410a596b40cecfeb70c41ae5ac99
+        origin: supply-api
+      description: The value of the `statusIDs` parameter is incorrect
+    BadFromOrTill:
+      value:
+        status: 400
+        title: bad request
+        detail: 'ошибка при считывании даты "11-03-2019". Дата должна быть в формате ISO Date: 2006-01-02'
+        requestId: 7916f0258e363ad2b6663e980903818d
+        origin: supply-api
+      description: Specified date is incorrect
+    BadOffsetFormat:
+      value:
+        status: 400
+        title: bad request
+        detail: Неверный формат offset
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+      description: The value of the `offset` parameter is incorrect
+    BadLimitFormat:
+      value:
+        status: 400
+        title: bad request
+        detail: Неверный формат limit
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+      description: The value of the `limit` parameter is incorrect
+    BadisPreorderIDFormat:
+      value:
+        status: 400
+        title: bad request
+        detail: Неверный формат isPreorderID
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+      description: The value of the parameter `isPreorderID` is either not specified or specified incorrectly
+    BadPathParamFormat:
+      value:
+        status: 400
+        title: bad request
+        detail: неверный формат id (должен быть int64)
+        requestId: aee7d3a5378ef3c7ec0e7a5bc94abfcf
+        origin: supply-api
+      description: The value of the parameter `ID` is either not specified or specified incorrectly
+    PreorderIdSearchError:
+      value:
+        status: 400
+        title: bad request
+        detail: 'fail to get supply details: по заказу 123456789 найдена поставка 987654321. Используйте поиск по ID поставки'
+        requestId: bc28456e85d5590c74decbcd9f63cd91
+        origin: supply-api
+      description: The supply has been found for the order. Use the supply ID for search.
+    BadID:
+      value:
+        status: 400
+        title: bad request
+        detail: id выходит за рамки int64
+        requestId: 0e35ac7fdbb94695db4004cb4c4ca12b
+        origin: supply-api
+      description: The length of the ID parameter is exceeded
+    SupplyNotFound:
+      value:
+        status: 404
+        title: not found
+        detail: поставка 1234 не найдена
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+    BadSupplyIDItems:
+      value:
+        status: 400
+        title: bad request
+        detail: 'fail to get box barcodes info: fail to get barcodes info: internal error: get supply by id: Поставка не найдена'
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+      description: The specified supply is not found
+    BadSupplyIDPackage:
+      value:
+        status: 400
+        title: bad request
+        detail: 'fail to get barcodes info: internal error: get supply by id: Поставка не найдена'
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+      description: The specified supply is not found
+    ResponseTariffs:
+      value:
+        - transitWarehouseName: Обухово
+          destinationWarehouseName: Краснодар
+          activeFrom: '2024-11-03T21:01:00Z'
+          boxTariff: null
+          palletTariff: 7500
+        - transitWarehouseName: СЦ Гомель 2
+          destinationWarehouseName: Краснодар (Тихорецкая)
+          activeFrom: '2025-04-08T21:00:48.019Z'
+          boxTariff:
+            - from: 0
+              to: 1500
+              value: 5.3
+            - from: 1500
+              to: 0
+              value: 3.9
+          palletTariff: 6500
+  responses:
+    '401':
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '402':
+      description: Payment required
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details. The error is only returned to services from the [Solutions for business Catalog](https://dev.wildberries.ru/business-solutions)
+          example:
+            title: payment required
+            detail: wb solution for business has insufficient funds on its balance. please top up the balance in the company's personal account https://dev.wildberries.ru/company
+    '429':
+      description: Too many requests
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'

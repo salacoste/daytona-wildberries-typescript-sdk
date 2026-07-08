@@ -1,0 +1,4231 @@
+openapi: 3.0.1
+info:
+  title: Customer Communication
+  version: communication
+  description: |
+    <div class="api-block">
+
+    Management of customer inquiries and feedback, chats, and returns processing<br><br>
+
+    You can test the customer communication methods in the [sandbox](/en/sandbox). Also you can use [special methods](/en/docs/openapi-other/sandbox-environment#tag/Questions-and-Feedbacks) in the sandbox for managing test feedbacks and questions
+
+    </div>
+  x-file-name: communications
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Questions
+    description: ''
+  - name: Feedbacks
+    description: ''
+  - name: Pinned Feedback
+    description: ''
+  - name: Buyers Chat
+    description: ''
+  - name: Buyers Returns
+    description: ''
+paths:
+  /api/v1/new-feedbacks-questions:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Unseen Feedbacks and Questions
+      description: |
+        The method displays information about the seller unseen feedbacks and questions
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Questions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      hasNewQuestions:
+                        type: boolean
+                        description: |
+                          Is there any unviewed questions:
+                            - `true` — yes
+                            - `false` — no
+                        example: true
+                      hasNewFeedbacks:
+                        type: boolean
+                        description: |
+                          Is there any unviewed feedbacks:
+                            - `true` — yes
+                            - `false` — no
+                        example: false
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/questions/count-unanswered:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Unanswered Questions
+      description: |
+        The method allows you to get the number of unanswered questions for today and for all time
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Questions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      countUnanswered:
+                        type: integer
+                        description: Number of unanswered questions
+                        example: 24
+                      countUnansweredToday:
+                        type: integer
+                        description: Number of unanswered questions for today
+                        example: 0
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/questions/count:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Number of Questions
+      description: |
+        The method allows to get the number of questions for requested period
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Questions
+      parameters:
+        - name: dateFrom
+          in: query
+          description: The start date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+        - name: dateTo
+          in: query
+          description: The end date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+        - name: isAnswered
+          in: query
+          description: |
+            If the question was answered:
+              - `true` — yes
+              - `false` — no
+          schema:
+            type: boolean
+            default: true
+            example: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: integer
+                    description: Number of questions
+                    example: 77
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                IsAnsweredErr400:
+                  $ref: '#/components/examples/IsAnsweredErr400'
+                DateFromErr400:
+                  $ref: '#/components/examples/DateFromErr400'
+                DateToErr400:
+                  $ref: '#/components/examples/DateToErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/questions:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Questions List
+      description: |
+        The method allows you to get a list of questions by the specified parameters with pagination and sorting.<br> It is possible to get a maximum of 10,000 questions per query
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Questions
+      parameters:
+        - name: isAnswered
+          in: query
+          description: |
+            The question is answered:
+              - `true` — yes
+              - `false` — no
+          schema:
+            type: boolean
+          required: true
+        - name: nmId
+          in: query
+          description: WB item number
+          schema:
+            type: integer
+        - name: take
+          in: query
+          description: |
+            Number of requested questions (the maximum possible value for the parameter is 10,000, and the total amount of `take` and `skip` parameters must not exceed 10,000)
+          schema:
+            type: integer
+          required: true
+        - name: skip
+          in: query
+          description: |
+            Number of questions to skip (maximum possible value for the parameter is 10,000, and the total amount of `take` and `skip` parameters must not exceed 10,000)
+          schema:
+            type: integer
+          required: true
+        - name: order
+          in: query
+          description: Sorting questions by date (`dateAsc`/`dateDesc`)
+          schema:
+            type: string
+        - name: dateFrom
+          allowEmptyValue: true
+          in: query
+          description: The start date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+        - name: dateTo
+          in: query
+          description: The end date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      countUnanswered:
+                        type: integer
+                        description: Number of unanswered questions
+                      countArchive:
+                        type: integer
+                        description: Number of questions answered
+                      questions:
+                        description: Questions
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              description: question id
+                            text:
+                              type: string
+                              description: question text
+                            createdDate:
+                              type: string
+                              format: date-time
+                              description: Date and time the question was created
+                            state:
+                              type: string
+                              description: |
+                                Question status:
+                                  - `none` — question rejected by seller (this question doesn't appear on the buyer portal)
+                                  - `wbRu` — answer provided, the question is displayed on the buyers site
+                                  - `suppliersPortalSynch` - new question
+                            answer:
+                              description: Answer structure
+                              nullable: true
+                              type: object
+                              properties:
+                                text:
+                                  type: string
+                                  description: Answer text
+                                editable:
+                                  type: boolean
+                                  description: Ability to edit answer (`false` - unable, `true` - able to)
+                                createDate:
+                                  type: string
+                                  format: date-time
+                                  description: Date and time the answer was created
+                            productDetails:
+                              type: object
+                              description: Item information
+                              properties:
+                                nmId:
+                                  type: integer
+                                  description: WB item number
+                                imtId:
+                                  type: integer
+                                  description: Merged listing ID
+                                productName:
+                                  type: string
+                                  description: Item name
+                                supplierArticle:
+                                  type: string
+                                  description: Seller item number
+                                supplierName:
+                                  type: string
+                                  description: Seller's name
+                                brandName:
+                                  type: string
+                                  description: Brand name
+                            wasViewed:
+                              type: boolean
+                              description: If the question was viewed
+                            isWarned:
+                              type: boolean
+                              description: |
+                                Suspicious question indicator.<br>
+                                If `true`, the question is published, but on the seller portal, you will see a banner saying **Suspicious message**
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  countUnanswered: 24
+                  countArchive: 508
+                  questions:
+                    - id: 2ncBtX4B9I0UHoornoqG
+                      text: Question text
+                      createdDate: '2022-02-01T11:18:08.769513469Z'
+                      state: suppliersPortalSynch
+                      answer: null
+                      productDetails:
+                        imtId: 11157265
+                        nmId: 14917842
+                        productName: Coffee
+                        supplierArticle: '123401'
+                        supplierName: ' ГП Реклама и услуги'
+                        brandName: Nescafe
+                      wasViewed: false
+                      isWarned: false
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/FeedbackErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+    patch:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Working with Questions
+      description: |
+        Depending on the request body, you can:
+        - View question.
+        - Reject question.
+        - Answer question or edit the answer.
+
+        It is possible to edit a response to a question within 2 months (60 days), after the response has been submitted and only once.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required:
+                    - id
+                    - wasViewed
+                  properties:
+                    id:
+                      description: Question ID
+                      type: string
+                      example: n5um6IUBQOOSTxXoo0gV
+                    wasViewed:
+                      description: If the question was viewed
+                      type: boolean
+                      example: true
+                - type: object
+                  required:
+                    - id
+                    - answer
+                    - state
+                  properties:
+                    id:
+                      type: string
+                      description: Question ID
+                      example: n5um6IUBQOOSTxXoo0gV
+                    answer:
+                      type: object
+                      required:
+                        - text
+                      properties:
+                        text:
+                          type: string
+                          description: Answer text
+                          example: answer text
+                    state:
+                      type: string
+                      description: |
+                        - `none` - question rejected by seller (this question doesn't appear on the buyer portal).
+                        - `wbRu` - answer provided, the question is displayed on the buyers site.
+            examples:
+              ViewQuestion:
+                description: View question
+                value:
+                  id: n5um6IUBQOOSTxXoo0gV
+                  wasViewed: true
+              RejectQuestion:
+                description: Reject question
+                value:
+                  id: n5um6IUBQOOSTxXoo0gV
+                  answer:
+                    text: текст ответа
+                  state: none
+              AnswerQuestionOrEditAnswer:
+                description: Answer question or edit the answer
+                value:
+                  id: n5um6IUBQOOSTxXoo0gV
+                  answer:
+                    text: текст ответа
+                  state: wbRu
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  error:
+                    type: boolean
+                    description: Error flag
+                  errorText:
+                    type: string
+                    description: Error description
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data: null
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/FeedbackErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr404:
+                  $ref: '#/components/examples/FeedbackErr404'
+        '422':
+          description: Error processing request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                ResponsePatchQuestion:
+                  $ref: '#/components/examples/ResponsePatchQuestion'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/question:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Get the Question by ID
+      description: |
+        The method allows you to get a question by its ID
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Questions
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Question ID
+          schema:
+            type: string
+            example: ljAVapEBL38RyMdRln61
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Question ID
+                      text:
+                        type: string
+                        description: Question text
+                      createdDate:
+                        type: string
+                        format: date-time
+                        description: Date and time the question was created
+                      state:
+                        type: string
+                        description: |
+                          Question status:
+                            - `none` - on the buyer portal
+                            - `wbRu` - answer provided, the question is displayed on the buyers site
+                            - `suppliersPortalSynch`- new question
+                      answer:
+                        description: Answer
+                        type: object
+                        nullable: true
+                        properties:
+                          text:
+                            type: string
+                            description: Answer text
+                          editable:
+                            type: boolean
+                            description: Ability to edit answer (`false` - unable, `true` - able to)
+                          createDate:
+                            type: string
+                            format: date-time
+                            description: Date and time the answer was created
+                      productDetails:
+                        type: object
+                        description: Item information
+                        properties:
+                          nmId:
+                            type: integer
+                            description: WB item number
+                          imtId:
+                            type: integer
+                            description: Merged listing ID
+                          productName:
+                            type: string
+                            description: Item name
+                          supplierArticle:
+                            type: string
+                            description: Seller item number
+                          supplierName:
+                            type: string
+                            description: Seller's name
+                          brandName:
+                            type: string
+                            description: Brand name
+                      wasViewed:
+                        type: boolean
+                        description: If the question was viewed
+                      isWarned:
+                        type: boolean
+                        description: |
+                          Suspicious question indicator.<br>
+                          If `true`, the question is published, but on the seller portal, you will see a banner saying **Suspicious message**
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+              example:
+                data:
+                  id: TfWOp5QBfEYrrd0AMJau
+                  text: Хороший карандаш? Когда еще поставите?
+                  createdDate: '2025-01-27T11:38:21.202143857Z'
+                  state: wbRu
+                  answer:
+                    text: На следующей неделе
+                    editable: true
+                    createDate: '2025-07-28T08:24:37.187113704Z'
+                  productDetails:
+                    imtId: 202306781
+                    nmId: 224747484
+                    productName: Карандаш с ластиком
+                    supplierArticle: 12113156uw
+                    supplierName: ''
+                    brandName: Brand
+                  wasViewed: true
+                  isWarned: false
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '422':
+          description: Error processing request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                responseGetQuestionByIdErrEx:
+                  $ref: '#/components/examples/ResponseGetQuestionByIdErrEx'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/count-unanswered:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Unanswered Feedbacks
+      description: |
+        The method allows you to get the number of unanswered feedbacks for today, for all time.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Feedbacks
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      countUnanswered:
+                        type: integer
+                        description: Number of unanswered feedbacks
+                        example: 1
+                      countUnansweredToday:
+                        type: integer
+                        description: Number of unanswered feedbacks for today
+                        example: 0
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/count:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Number of Feedbacks
+      description: |
+        The method allows to get the number of feedbacks
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Feedbacks
+      parameters:
+        - name: dateFrom
+          in: query
+          description: The start date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+        - name: dateTo
+          in: query
+          description: The end date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+        - name: isAnswered
+          in: query
+          description: |
+            If the feedback was answered:
+              - `true` — yes
+              - `false` — no
+          schema:
+            type: boolean
+            default: true
+            example: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: integer
+                    description: Number of feedbacks
+                    example: 724583
+                  error:
+                    type: boolean
+                    description: Error presence
+                    example: false
+                  errorText:
+                    type: string
+                    description: Error description
+                    example: ''
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                    example: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                IsAnsweredErr400:
+                  $ref: '#/components/examples/IsAnsweredErr400'
+                DateFromErr400:
+                  $ref: '#/components/examples/DateFromErr400'
+                DateToErr400:
+                  $ref: '#/components/examples/DateToErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Feedbacks List
+      description: |
+        The method allows you to get a list of feedbacks by the specified parameters with pagination and sorting
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Feedbacks
+      parameters:
+        - name: isAnswered
+          in: query
+          required: true
+          description: |
+            If the feedback was answered:
+              - `true` — yes
+              - `false` — no
+          schema:
+            type: boolean
+            example: false
+        - name: nmId
+          in: query
+          description: WB item number
+          schema:
+            type: integer
+            example: 5870243
+        - name: take
+          in: query
+          required: true
+          description: Number of feedbacks (max. 5 000)
+          schema:
+            type: integer
+            example: 1
+        - name: skip
+          in: query
+          required: true
+          description: Number of feedbacks for skip (max. 199990)
+          schema:
+            type: integer
+            example: 0
+        - name: order
+          in: query
+          description: Sorting of feedbacks by date (dateAsc/dateDesc)
+          schema:
+            type: string
+            enum:
+              - dateAsc
+              - dateDesc
+        - name: dateFrom
+          in: query
+          description: The start date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+        - name: dateTo
+          in: query
+          description: The end date of the period in Unix timestamp format
+          schema:
+            type: integer
+            example: 1688465092
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      countUnanswered:
+                        type: integer
+                        description: Number of unanswered feedbacks
+                      countArchive:
+                        type: integer
+                        description: Number of archived feedbacks
+                      feedbacks:
+                        $ref: '#/components/schemas/responseFeedback'
+                  error:
+                    type: boolean
+                    description: Error presence
+                  errorText:
+                    type: string
+                    description: Error description
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  countUnanswered: 52
+                  countArchive: 1000
+                  feedbacks:
+                    - id: YX52RZEBhH9mrcYdEJuD
+                      text: Спасибо, всё подошло
+                      pros: Удобный
+                      cons: Нет
+                      productValuation: 5
+                      createdDate: '2024-09-26T10:20:48+03:00'
+                      answer:
+                        text: Пожалуйста. Ждём вас снова!
+                        state: wbRu
+                        editable: false
+                      state: wbRu
+                      productDetails:
+                        imtId: 123456789
+                        nmId: 987654321
+                        productName: ВАЗ
+                        supplierArticle: DP02/черный
+                        supplierName: ГП Реклама и услуги
+                        brandName: Бест Трикотаж
+                        size: '0'
+                      video:
+                        previewImage: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/preview.webp
+                        link: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/index.m3u8
+                        durationSec: 10
+                      wasViewed: true
+                      photoLinks:
+                        - fullSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/fs.webp
+                          miniSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/ms.webp
+                        - fullSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/fs.webp
+                          miniSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/ms.webp
+                        - fullSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/fs.webp
+                          miniSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/ms.webp
+                      userName: Николай
+                      orderStatus: buyout
+                      matchingSize: ok
+                      isAbleSupplierFeedbackValuation: false
+                      supplierFeedbackValuation: 1
+                      isAbleSupplierProductValuation: false
+                      supplierProductValuation: 2
+                      isAbleReturnProductOrders: false
+                      returnProductOrdersDate: '2024-08-20T16:39:49Z'
+                      bables:
+                        - цена
+                      lastOrderShkId: 123456789
+                      lastOrderCreatedAt: '2024-08-12T10:20:48+03:00'
+                      color: colorless
+                      subjectId: 219
+                      subjectName: Футболки-поло
+                      parentFeedbackId: null
+                      childFeedbackId: bIjTCZDvJni7NGnLbUlf
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/FeedbackErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/answer:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      tags:
+        - Feedbacks
+      security:
+        - HeaderApiKey: []
+      summary: Reply to Feedback
+      description: |
+        Allows you to respond to the feedback.
+         <br>
+         There is no validation by `feedback ID`: if an incorrect value is provided in the request, you will not receive an error.
+
+         <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - text
+              properties:
+                id:
+                  type: string
+                  description: Feedback ID
+                  example: J2FMRjUj6hwvwCElqssz
+                text:
+                  type: string
+                  description: Reply text
+                  example: Спасибо за Ваш отзыв!
+                  minimum: 2
+                  maximum: 5000
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/standardizedFQError'
+              examples:
+                contentTypeHeaderNotSpecified:
+                  $ref: '#/components/examples/contentTypeHeaderNotSpecified'
+                incorrectContentTypeHeader:
+                  $ref: '#/components/examples/incorrectContentTypeHeader'
+                incorrectContentType:
+                  $ref: '#/components/examples/incorrectContentType'
+                invalidJsonSyntax:
+                  $ref: '#/components/examples/invalidJsonSyntax'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+    patch:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      tags:
+        - Feedbacks
+      security:
+        - HeaderApiKey: []
+      summary: Edit Response to Feedback
+      description: |
+        Allows you to edit an already sent response to the feedback.
+        <br>
+        You can edit the response only once within 60 days.
+        <br>
+        There is no validation by `feedback ID`: if an incorrect value is provided in the request, you will not receive an error.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - text
+              properties:
+                id:
+                  type: string
+                  description: Feedback ID
+                  example: J2FMRjUj6hwvwCElqssz
+                text:
+                  type: string
+                  description: Reply text
+                  example: Спасибо за Ваш отзыв, он очень важен для нас!
+                  minimum: 2
+                  maximum: 5000
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/order/return:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Return Item by Feedback ID
+      description: |
+        The method allows requesting a return for a item for which a feedback has been left.
+        <br>Return is available for feedbacks with `"isAbleReturnProductOrders": true`
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Feedbacks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedbackId:
+                  type: string
+                  description: Feedback ID
+            example:
+              feedbackId: absdfgerrrfff1234
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+                  error:
+                    type: boolean
+                    description: Error presence
+                  errorText:
+                    type: string
+                    description: Error description
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/ResponseDoNotGetFeedback400'
+                RequestBodyErr400:
+                  $ref: '#/components/examples/RequestBodyErr400'
+                RequestIDErr400:
+                  $ref: '#/components/examples/RequestIDErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '422':
+          description: Error processing request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                responseInaccessibleBackGoodError422:
+                  $ref: '#/components/examples/responseInaccessibleBackGoodError422'
+                responseUnsuccessfullyBackGoodError422:
+                  $ref: '#/components/examples/responseUnsuccessfullyBackGoodError422'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedback:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Get the Feedback by ID
+      description: |
+        The method allows you to get a feedback by its ID
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Feedbacks
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Feedback ID
+          schema:
+            type: string
+            example: G7Y9Y1kBAtKOitoBT_lV
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Feedback ID
+                      text:
+                        type: string
+                        description: Feedback text
+                      pros:
+                        type: string
+                        description: Item pros
+                        nullable: false
+                      cons:
+                        type: string
+                        description: Item cons
+                        nullable: false
+                      matchingSize:
+                        type: string
+                        description: |
+                          Compliance of the declared size with the real one.
+                          <br>Possible values:
+                          - ` ` - for dimensionless items
+                          - `ок` - matches to the size
+                          - `smaller` - runs small
+                          - `bigger` - runs large
+                      productValuation:
+                        type: integer
+                        description: Item rate
+                      createdDate:
+                        type: string
+                        format: date-time
+                        description: Date and time the feedback was created
+                      answer:
+                        nullable: true
+                        type: object
+                        description: Reply structure
+                        properties:
+                          text:
+                            type: string
+                            description: Reply text
+                          state:
+                            type: string
+                            description: |
+                              Status:
+                                - `none` — new
+                                - `wbRu` — displayed on the site
+                                - `reviewRequired` — response being reviewed
+                                - `rejected` — response rejected
+                          editable:
+                            type: boolean
+                            description: |
+                              Whether the answer can be edited:
+                                - `false` — no
+                                - `true` - yes
+                      state:
+                        type: string
+                        description: |
+                          Feedback state:
+                            - `none` - not processed (new)
+                            - `wbRu` - processed
+                      productDetails:
+                        description: Item information
+                        type: object
+                        properties:
+                          nmId:
+                            type: integer
+                            description: WB item number
+                          imtId:
+                            type: integer
+                            description: Merged listing ID
+                          productName:
+                            type: string
+                            description: Item name
+                          supplierArticle:
+                            type: string
+                            nullable: true
+                            description: Seller item number
+                          supplierName:
+                            type: string
+                            nullable: true
+                            description: Seller's name
+                          brandName:
+                            type: string
+                            nullable: true
+                            description: Brand name
+                          size:
+                            type: string
+                            description: Item size (`techSize' in the listing)
+                      photoLinks:
+                        nullable: true
+                        description: Array of structure of images
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            fullSize:
+                              type: string
+                              description: Link of full-size images
+                            miniSize:
+                              type: string
+                              description: Link of small-size images
+                      userName:
+                        type: string
+                        description: Name of the feedback author
+                        nullable: false
+                      orderStatus:
+                        type: string
+                        description: |
+                          Order status.
+                          <br>Possible values:
+                          - `buyout` — bought out
+                          - `rejected` — rejected
+                          - `returned` — returned
+                          - `notSpecified` — status not assigned
+                      video:
+                        nullable: true
+                        description: Video structure
+                        type: object
+                        properties:
+                          previewImage:
+                            type: string
+                            description: Video preview image link
+                          link:
+                            type: string
+                            description: Link to the playlist video file (available through hls protocol)
+                          durationSec:
+                            type: integer
+                            description: Video duration
+                      wasViewed:
+                        type: boolean
+                        description: If the feedback was viewed
+                      isAbleSupplierFeedbackValuation:
+                        description: |
+                          Is the feedback rating available to the seller
+                            - `true`— yes
+                            - `false` — no
+                        type: boolean
+                      supplierFeedbackValuation:
+                        description: Feedback rating left by the seller
+                        type: integer
+                      isAbleSupplierProductValuation:
+                        description: Is the item rating available to the seller (`true` - available, `false` - not available)
+                        type: boolean
+                      supplierProductValuation:
+                        description: Item rating left by the seller
+                        type: integer
+                      isAbleReturnProductOrders:
+                        description: |
+                          Item return option:
+                            - `true` — available
+                            - `false` — unavailable
+                        type: boolean
+                      returnProductOrdersDate:
+                        nullable: true
+                        description: Date and time when a response with status code 200 was received for the return request.
+                        type: string
+                      bables:
+                        nullable: true
+                        description: List of customer tags
+                        type: array
+                        items:
+                          type: string
+                      lastOrderShkId:
+                        type: integer
+                        description: SKU of the item
+                      lastOrderCreatedAt:
+                        type: string
+                        description: Date of purchase
+                      color:
+                        type: string
+                        description: Item color
+                      subjectId:
+                        type: integer
+                        description: Subcategory ID
+                      subjectName:
+                        type: string
+                        description: Subcategory name
+                      parentFeedbackId:
+                        type: string
+                        description: ID of the original feedback (`null` if this feedback is original)
+                        nullable: true
+                      childFeedbackId:
+                        type: string
+                        nullable: true
+                        description: ID of the updated feedback (`null` if this feedback is updated)
+                  error:
+                    type: boolean
+                    description: Error presence
+                  errorText:
+                    type: string
+                    description: Error description
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  id: YX52RZEBhH9mrcYdEJuD
+                  text: Спасибо, всё подошло
+                  pros: Удобный
+                  cons: Нет
+                  productValuation: 5
+                  createdDate: '2024-09-26T10:20:48+03:00'
+                  answer:
+                    text: Пожалуйста. Ждём вас снова!
+                    state: wbRu
+                    editable: false
+                  state: wbRu
+                  productDetails:
+                    imtId: 123456789
+                    nmId: 987654321
+                    productName: ВАЗ
+                    supplierArticle: DP02/черный
+                    supplierName: ГП Реклама и услуги
+                    brandName: Бест Трикотаж
+                    size: '0'
+                  video:
+                    previewImage: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/preview.webp
+                    link: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/index.m3u8
+                    durationSec: 10
+                  wasViewed: true
+                  photoLinks:
+                    - fullSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/fs.webp
+                      miniSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/ms.webp
+                    - fullSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/fs.webp
+                      miniSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/ms.webp
+                    - fullSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/fs.webp
+                      miniSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/ms.webp
+                  userName: Николай
+                  orderStatus: returned
+                  matchingSize: ok
+                  isAbleSupplierFeedbackValuation: false
+                  supplierFeedbackValuation: 1
+                  isAbleSupplierProductValuation: false
+                  supplierProductValuation: 2
+                  isAbleReturnProductOrders: false
+                  returnProductOrdersDate: '2024-08-20T16:39:49Z'
+                  bables:
+                    - цена
+                  lastOrderShkId: 123456789
+                  lastOrderCreatedAt: '2024-08-12T10:20:48+03:00'
+                  color: colorless
+                  subjectId: 219
+                  subjectName: Футболки-поло
+                  parentFeedbackId: null
+                  childFeedbackId: bIjTCZDvJni7NGnLbUlf
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '422':
+          description: Error processing request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                ResponseGetFeedbackByIdErrEx:
+                  $ref: '#/components/examples/ResponseGetFeedbackByIdErrEx'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/feedbacks/archive:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://feedbacks-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: List of Archived Feedbacks
+      description: |
+        The method allows you to get a list of archived feedbacks. <br>
+        The feedback becomes archived if:
+          - A response to the feedback is received.
+          - No response to the feedback is received within 30 days.
+          - The feedback contains no text or photos.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Feedbacks
+      parameters:
+        - name: nmId
+          in: query
+          description: WB item number
+          schema:
+            type: integer
+            example: 14917842
+        - name: take
+          in: query
+          required: true
+          description: Number of feedbacks (max. 5 000)
+          schema:
+            type: integer
+            example: 1
+        - name: skip
+          in: query
+          required: true
+          description: Number of feedbacks for skip
+          schema:
+            type: integer
+            example: 0
+        - name: order
+          in: query
+          description: Sorting of feedbacks by date (dateAsc/dateDesc)
+          schema:
+            type: string
+            enum:
+              - dateAsc
+              - dateDesc
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feedbacks:
+                        $ref: '#/components/schemas/responseFeedback'
+                  error:
+                    type: boolean
+                    description: Error presence
+                  errorText:
+                    type: string
+                    description: Error description
+                  additionalErrors:
+                    description: Additional errors
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  feedbacks:
+                    - id: YX52RZEBhH9mrcYdEJuD
+                      text: Спасибо, всё подошло
+                      pros: Удобный
+                      cons: Нет
+                      productValuation: 5
+                      createdDate: '2024-09-26T10:20:48+03:00'
+                      answer:
+                        text: Пожалуйста. Ждём вас снова!
+                        state: wbRu
+                        editable: false
+                      state: wbRu
+                      productDetails:
+                        imtId: 123456789
+                        nmId: 987654321
+                        productName: ВАЗ
+                        supplierArticle: DP02/черный
+                        supplierName: ГП Реклама и услуги
+                        brandName: Бест Трикотаж
+                        size: '0'
+                      video:
+                        previewImage: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/preview.webp
+                        link: https://videofeedback01.wbbasket.ru/8defc853-7f62-4d6d-b236-8a16cfb63128/index.m3u8
+                        durationSec: 10
+                      wasViewed: true
+                      photoLinks:
+                        - fullSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/fs.webp
+                          miniSize: https://feedback04.wbbasket.ru/vol1333/part133337/123456789/photos/ms.webp
+                        - fullSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/fs.webp
+                          miniSize: https://feedback04.wbbasket.ru/vol1508/part150887/123456789/photos/ms.webp
+                        - fullSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/fs.webp
+                          miniSize: https://feedback04.wbbasket.ru/vol1486/part148682/123456789/photos/ms.webp
+                      userName: Николай
+                      orderStatus: returned
+                      matchingSize: ok
+                      isAbleSupplierFeedbackValuation: false
+                      supplierFeedbackValuation: 1
+                      isAbleSupplierProductValuation: false
+                      supplierProductValuation: 2
+                      isAbleReturnProductOrders: false
+                      returnProductOrdersDate: '2024-08-20T16:39:49Z'
+                      bables:
+                        - цена
+                      lastOrderShkId: 123456789
+                      lastOrderCreatedAt: '2024-08-12T10:20:48+03:00'
+                      color: colorless
+                      subjectId: 219
+                      subjectName: Футболки-поло
+                      parentFeedbackId: null
+                      childFeedbackId: bIjTCZDvJni7NGnLbUlf
+                error: false
+                errorText: ''
+                additionalErrors: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr400:
+                  $ref: '#/components/examples/FeedbackErr400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                FeedbackErr403:
+                  $ref: '#/components/examples/FeedbackErr403'
+        '422':
+          description: Error processing request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseFeedbackQuestionErr'
+              examples:
+                ResponseGetFeedbackArchive:
+                  $ref: '#/components/examples/ResponseGetFeedbackArchive'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/feedbacks/v1/pins:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: List of Pinned and Unpinned Feedback
+      description: |
+        The method allows to get the list of pinned and unpinned feedback.<br>
+        Only automatically unpinned feedback cause of the reasons specified in the response in the `unpinnedCause` field are considered unpinned.<br>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Pinned Feedback
+      parameters:
+        - name: state
+          in: query
+          description: |
+            If the feedback is pinned:
+              - `pinned` — yes
+              - `unpinned` — no
+          schema:
+            type: string
+            enum:
+              - pinned
+              - unpinned
+            example: pinned
+        - name: pinOn
+          in: query
+          description: |
+            Feedback pinning placement:
+              - `nm` — listing
+              - `imt` — group of merged listings
+          schema:
+            type: string
+            enum:
+              - nm
+              - imt
+            example: nm
+        - name: imtId
+          in: query
+          description: |
+            Merged listing ID.<br>
+            The same for all WB item number of group of merged listings.<br>
+            Every listing has `imtId`, even if is not merged with any other listing
+          schema:
+            type: integer
+            example: 256972151
+        - name: nmId
+          in: query
+          description: WB item number
+          schema:
+            type: integer
+            example: 177974151
+        - name: feedbackId
+          in: query
+          description: |
+            Feedback ID
+          schema:
+            type: integer
+            example: 789
+        - name: dateFrom
+          in: query
+          description: |
+            The date the first feedback in the list was pinned
+          schema:
+            type: string
+            format: date-time
+            example: '2020-01-01T15:04:05Z'
+        - name: dateTo
+          in: query
+          description: |
+            The date the last feedback in the list was pinned
+          schema:
+            type: string
+            format: date-time
+            example: '2020-02-01T15:04:05Z'
+        - name: next
+          in: query
+          description: |
+            The last pinning operation ID (paginator)
+          schema:
+            type: integer
+            example: 741
+        - name: limit
+          in: query
+          description: |
+            Feedback number per page (pagination)
+          schema:
+            type: integer
+            default: 500
+            example: 100
+            maximum: 500
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/respond.SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/openapi.PinnedReviewItemResult'
+                      next:
+                        type: integer
+                        description: Pagination parameter. Specify this value in the request to get the next batch. If the field is missing, you received all the data
+                        example: 200
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/respond.ResultErr'
+              example:
+                status: 400
+                title: Bad Request
+                detail: state must be one of the values 'pinned', 'unpinned'
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                origin: pin-open-api
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Pin Feedback
+      description: |
+        The method allows to pin the feedback to a group of merged listings or to a listing.<br>
+        To get feedback ID, use the [List of pinned and unpinned feedback](/openapi/user-communication#tag/Pinned-Feedback/paths/~1api~1feedbacks~1v1~1pins/get) method.<br>
+        <br>
+        The method is available for [Jam subscription](https://seller.wildberries.ru/monetization/jam) or **Pin a feedback** option in the [Plan Builder](https://seller.wildberries.ru/tariff-constructor).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Pinned Feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              example:
+                - pinMethod: subscription
+                  pinOn: imt
+                  feedbackId: VlbkVVl7mtw37wуWkJZz
+                - pinMethod: tariff
+                  pinOn: imt
+                  feedbackId: DibuRAImknLyiqgzvGcU
+              maxItems: 500
+              items:
+                $ref: '#/components/schemas/openapi.PinReviewItem'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/respond.SuccessResponse'
+                  - $ref: '#/components/schemas/openapi.PinReviewItemResult'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/respond.ResultErr'
+              example:
+                detail: invalid request body
+                origin: pin-open-api
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                status: 400
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/respond.ResultErr'
+              example:
+                origin: pin-open-api
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                status: 403
+                title: no active subscription or tariff
+                detail: this feature requires active subscription or active tariff
+        '429':
+          $ref: '#/components/responses/429'
+    delete:
+      x-readonly-method: false
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Unpin Feedback
+      description: |
+        The method allows to unpin the feedback in a group of merged listings or a listing.<br>
+        To get `pinId` — feedback pinning operation ID, use the [List of pinned and unpinned feedback](/openapi/user-communication#tag/Pinned-Feedback/paths/~1api~1feedbacks~1v1~1pins/get) method.<br>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Pinned Feedback
+      requestBody:
+        description: List of `pinId` — IDs of feedback pinning operations
+        content:
+          application/json:
+            schema:
+              type: array
+              maxItems: 500
+              items:
+                type: integer
+              example:
+                - 123456
+                - 234567
+                - 345678
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/respond.SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        description: List of `pinId` — pinning operations IDs of unpinned feedback
+                        example:
+                          - 123456
+                          - 234567
+                          - 345678
+                        items:
+                          type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/respond.ResultErr'
+              example:
+                detail: invalid request body
+                origin: pin-open-api
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                status: 400
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/feedbacks/v1/pins/count:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Pinned and Unpinned Feedback Number
+      description: |
+        The method returns the number of pinned and unpinned feedback for the period.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Pinned Feedback
+      parameters:
+        - name: state
+          in: query
+          description: |
+            If the feedback is pinned:
+              - `pinned` — yes
+              - `unpinned` — no
+          schema:
+            type: string
+            enum:
+              - pinned
+              - unpinned
+            example: pinned
+        - name: pinOn
+          in: query
+          description: |
+            Feedback pinning placement:
+              - `nm` — listing
+              - `imt` — group of merged listings
+          schema:
+            type: string
+            enum:
+              - nm
+              - imt
+            example: nm
+        - name: imtId
+          in: query
+          description: |
+            Merged listing ID.<br>
+            The same for all WB item number of group of merged listings.<br>
+            Every listing has `imtId`, even if is not merged with any other listing
+          schema:
+            type: integer
+            example: 256971531
+        - name: nmId
+          in: query
+          description: WB item number
+          schema:
+            type: integer
+            example: 177974151
+        - name: feedbackId
+          in: query
+          description: Feedback ID
+          schema:
+            type: integer
+            example: 789
+        - name: dateFrom
+          in: query
+          description: |
+            The date the first feedback in the list was pinned
+          schema:
+            type: string
+            format: date-time
+            example: '2020-01-01T15:04:05Z'
+        - name: dateTo
+          in: query
+          description: |
+            The date the last feedback in the list was pinned
+          schema:
+            type: string
+            format: date-time
+            example: '2020-02-01T15:04:05Z'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/respond.SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        description: Feedback number
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/respond.ResultErr'
+              example:
+                status: 400
+                title: Bad Request
+                detail: state must be one of the values 'pinned', 'unpinned'
+                requestId: 7b64у8ffc3523450d613723fwу61873e
+                origin: pin-open-api
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/feedbacks/v1/pins/limits:
+    servers:
+      - url: https://feedbacks-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: questionsandfeedback
+      security:
+        - HeaderApiKey: []
+      summary: Pinned Feedback Limits
+      description: |
+        The method returns the pinned feedback limits for a rate and subscription.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods in the <strong>Feedbacks and Questions</strong> category:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 s | 3 requests | 333 ms | 6 requests |
+        | Service | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base with secret | 1 s | 3 requests | 333 ms | 6 requests |
+        | Base | 1 h | 5 requests | 12 min | 1 request |
+        </div>
+      tags:
+        - Pinned Feedback
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/respond.SuccessResponse'
+                  - $ref: '#/components/schemas/openapi.SellerLimitsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/chats:
+    get:
+      x-readonly-method: true
+      x-category: buyerchat
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      summary: Chats List
+      description: |
+        Returns a list of all seller chats.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 10 requests | 1 s | 10 requests |
+        | Service | 10 s | 10 requests | 1 s | 10 requests |
+        | Base with secret | 10 s | 10 requests | 1 s | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      tags:
+        - Buyers Chat
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/events:
+    get:
+      x-readonly-method: true
+      x-category: buyerchat
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      summary: Chat Events
+      description: |
+        Returns an event list for all chats.
+
+        To retrieve all events:
+          1. Make the first request without a `next` parameter.
+          2. Repeat the request with the `next` parameter value from the previous response until `totalEvents` becomes `0`. This will indicate that you have received all events.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 10 requests | 1 s | 10 requests |
+        | Service | 10 s | 10 requests | 1 s | 10 requests |
+        | Base with secret | 10 s | 10 requests | 1 s | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      tags:
+        - Buyers Chat
+      parameters:
+        - name: next
+          in: query
+          description: |
+            Paginator. Retrieve the next data packet starting from this moment. <br>Format: Unix timestamp **with milliseconds**
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResponse'
+              example:
+                result:
+                  next: 1698045576000
+                  newestEventTime: '2023-10-23T07:19:36Z'
+                  oldestEventTime: '2023-10-23T05:02:20Z'
+                  totalEvents: 4
+                  events:
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: 55adee45-11f0-33b6-a847-6ccc7c78b2ec
+                      eventType: message
+                      isNewChat: true
+                      message:
+                        attachments:
+                          goodCard:
+                            nmID: 12345678
+                            price: 500
+                            priceCurrency: RUB
+                            rid: 2fb52cd9e25e52538a5f05994e688ae5
+                            size: '0'
+                          files:
+                            - contentType: application/pdf
+                              date: '2023-10-23T08:02:19.594Z'
+                              downloadID: ecaeb056-a4ee-45b4-ae45-666811755d38
+                              name: Чек.pdf
+                              url: https://chat-basket-01.wbbasket.ru/vol0/part3265/fb25c9e9-cae8-52db-b68e-736c1896a3f5/pdf/0380e781-281e-41b5-8ae1-ce281f15a4a7.pdf
+                              size: 1046143
+                          images:
+                            - date: '2023-10-23T08:02:20.717Z'
+                              downloadID: fd6be4e3-5447-41d7-a1e6-b2d3e06c3b05
+                              url: https://chat-basket-01.wbbasket.ru/vol0/part2345/fb89c9e9-cae8-52db-b68e-736c1466a3f5/jpg/0823ff24-821e-40e9-8cdf-0a2b5fd86a32.jpg
+                        text: Здравствуйте! У меня вопрос по товару "Альбом, бренд Эконом, артикул 13480414, товар получен 18.10.2023"
+                      source: rusite
+                      addTimestamp: 1698037340000
+                      addTime: '2023-10-23T05:02:20Z'
+                      replySign: 1:1e265a58-a120-b178-008c-60af2460207c:66f136e919a8207e136757754f253189bfb9ae1ad9da9170c9d5c478626663908888c370216525bef51c0ca8d77952e05c9c17f9b63ab00374c5555b42efc07d
+                      sender: client
+                      clientName: Алёна
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: cef95d3c-0345-4dc9-b6df-4c8c57a176a9
+                      eventType: message
+                      message:
+                        text: Здравствуйте! Пришёл не тот цвет. Можно вернуть и заказать другой товар?
+                      source: rusite
+                      addTimestamp: 1698037387000
+                      addTime: '2023-10-23T05:03:07Z'
+                      sender: client
+                      clientName: Алёна
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: fd22e5bf-64fd-43f7-b3a0-ad29uu027f97
+                      eventType: message
+                      message:
+                        text: Здравствуйте. Да, сейчас оформим возврат.
+                      source: seller-public-api
+                      addTimestamp: 1698038124000
+                      addTime: '2023-10-23T05:15:24Z'
+                      sender: seller
+                    - chatID: 1:1e265a58-a120-b178-008c-60af2460207c
+                      eventID: cef95d3c-0345-4dc9-b6df-4c8c75a176a7
+                      eventType: message
+                      addTimestamp: 1698045576000
+                      addTime: '2023-10-23T07:19:36Z'
+                      sender: seller
+                errors: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: HTTP status code
+                  title:
+                    type: string
+                    description: Error title
+                  origin:
+                    type: string
+                    description: WB internal service ID
+                  detail:
+                    type: string
+                    description: Error details
+                  requestId:
+                    type: string
+                    description: Unique request ID
+                  error:
+                    type: string
+                    description: Error text
+              examples:
+                IncorrectNextParameter:
+                  description: The data type or value is incorrect
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid number
+                    requestId: 62f59a4ce21064f20b1bbc28c85f38d8
+                    error: Invalid number
+                IncorrectNextParameter1:
+                  description: Invalid value 0
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid value for "next"
+                    requestId: 62f59a4ce21064f20b1bbc28c85f38d8
+                    error: Invalid value for "next"
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/message:
+    post:
+      x-readonly-method: false
+      x-category: buyerchat
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      summary: Send Message
+      description: |
+        Sends message to the buyer.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 10 requests | 1 s | 10 requests |
+        | Service | 10 s | 10 requests | 1 s | 10 requests |
+        | Base with secret | 10 s | 10 requests | 1 s | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      tags:
+        - Buyers Chat
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - replySign
+              type: object
+              properties:
+                replySign:
+                  maxLength: 255
+                  type: string
+                  description: |
+                    Chat signature. Can be obtained from [chat information](./user-communication#tag/Buyers-Chat/paths/~1api~1v1~1seller~1chats/get) or [event data](./user-communication#tag/Buyers-Chat/paths/~1api~1v1~1seller~1events/get) if the event contains the `"isNewChat": true` field.
+                message:
+                  maxLength: 1000
+                  type: string
+                  description: Message text. Maximum of 1000 symbols.
+                file:
+                  type: array
+                  description: |
+                    Files, in JPEG, PDF, or PNG format, maximum size — 5 MB each. Maximum of total file size — 30 MB.
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                result:
+                  addTime: 1712848270018
+                  chatID: 1:641b623c-5c0e-295b-db03-3d5b4d484c32
+                errors: []
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: HTTP status code
+                  title:
+                    type: string
+                    description: Error title
+                  origin:
+                    type: string
+                    description: WB internal service ID
+                  detail:
+                    type: string
+                    description: Error details
+                  requestId:
+                    type: string
+                    description: Unique request ID
+                  error:
+                    type: string
+                    description: Error text
+              examples:
+                InvalidSignature:
+                  description: Invalid signature
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid signature
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: Invalid signature
+                InvalidFileSize:
+                  description: File attachment size is too big
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: 'A24FA09844E: attachment too big. Max size: 5MiB'
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: 'A24FA09844E: attachment too big. Max size: 5MiB'
+                UnsupportedFilesType:
+                  description: Unsupported file type
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: '4A9F2544E29: "video_2023-07-25_10-54-09.mp4" has unsupported mime type'
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: '4A9F2544E29: "video_2023-07-25_10-54-09.mp4" has unsupported mime type'
+                InvalidMessage:
+                  description: Invalid value for the message parameter
+                  value:
+                    status: 400
+                    title: Bad Request
+                    origin: proxy-chats
+                    detail: Invalid value for "message"
+                    requestId: 1b21cad4833a0c9244dc294a000f6149
+                    error: Invalid value for "message"
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/seller/download/{id}:
+    get:
+      x-readonly-method: true
+      x-category: buyerchat
+      servers:
+        - url: https://buyer-chat-api.wildberries.ru
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Buyers Chat
+      summary: Get File from the Message
+      description: |
+        The method provides a file or image from the message by its ID.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 10 requests | 1 s | 10 requests |
+        | Service | 10 s | 10 requests | 1 s | 10 requests |
+        | Base with secret | 10 s | 10 requests | 1 s | 10 requests |
+        | Base | 1 h | 10 requests | 6 min | 1 request |
+        </div>
+      parameters:
+        - name: id
+          in: path
+          description: File ID from the `downloadID` field in the [chat events](./user-communication#tag/Buyers-Chat/paths/~1api~1v1~1seller~1events/get) method
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '202':
+          description: The file is under moderation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  moderationState:
+                    type: string
+                    description: Moderation status
+                    example: pending
+                  retrySeconds:
+                    type: integer
+                    description: Seconds until retry to request a file
+                    example: 30
+                required:
+                  - moderationState
+                  - retrySeconds
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: HTTP status code
+                  title:
+                    type: string
+                    description: Error title
+                  origin:
+                    type: string
+                    description: WB internal service ID
+                  detail:
+                    type: string
+                    description: Error details
+                  requestId:
+                    type: string
+                    description: Unique request ID
+                  error:
+                    type: string
+                    description: Error text
+              examples:
+                IncorrectNextParameter:
+                  description: Invalid file ID
+                  value:
+                    status: 400
+                    title: invalid fileID
+                    origin: proxy-chats
+                    detail: invalid fileID
+                    requestId: 62f59a4ce21064f20b1bbc28c85f38d8
+                    error: invalid fileID
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+        '451':
+          description: Moderation failed
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: HTTP status code
+                    example: 451
+                  title:
+                    type: string
+                    description: Error title
+                    example: Unavailable for Legal Reasons
+                  origin:
+                    type: string
+                    description: WB internal service ID
+                    example: proxy-chats
+                  detail:
+                    type: string
+                    description: Error detail
+                    example: moderation error
+                  requestId:
+                    type: string
+                    description: Request ID
+                    example: 62f59a4ce21064f20b1bbc28c85f38d8
+  /api/v1/claims:
+    servers:
+      - url: https://returns-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: returns
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Buyers Returns
+      summary: Buyers Return Applications
+      description: |
+        Returns buyers applications for item returns for the current 14 days.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 20 requests | 3 s | 10 requests |
+        | Service | 1 min | 20 requests | 3 s | 10 requests |
+        | Base with secret | 1 min | 20 requests | 3 s | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/is_archive'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/nm_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetClaimsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/Error400GetClaims'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/claim:
+    servers:
+      - url: https://returns-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: returns
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Buyers Returns
+      summary: Answer Buyers Application
+      description: |
+        Sends an answer to the buyers application for item return.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 20 requests | 3 s | 10 requests |
+        | Service | 1 min | 20 requests | 3 s | 10 requests |
+        | Base with secret | 1 min | 20 requests | 3 s | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      requestBody:
+        $ref: '#/components/requestBodies/PatchClaimReq'
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/responses/Error400PatchClaim'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  examples:
+    contentTypeHeaderNotSpecified:
+      description: Content-Type header not specified
+      value:
+        title: bad request
+        requestId: e6c4100223db8bf5818b2e5f12705891
+        origin: fbapi
+        detail: content-type header not specified
+    incorrectContentTypeHeader:
+      description: Incorrect Content-Type header
+      value:
+        title: bad request
+        requestId: e3676d061de748d9beaaa752d53e1670
+        origin: fbapi
+        detail: 'content-type is not a valid mime-type: u'
+    incorrectContentType:
+      description: Invalid data type specified in the Content-Type header
+      value:
+        title: bad request
+        requestId: cb4e8b210b4841ce9a3424946b497cb3
+        origin: fbapi
+        detail: 'not a json content-type: application/javascript'
+    invalidJsonSyntax:
+      description: Invalid JSON syntax
+      value:
+        title: bad request
+        requestId: 7f5a4faf91634812de5e143955ca0371
+        origin: fbapi
+        detail: Неверный синтаксис JSON
+    FeedbackErr400:
+      description: Bad request
+      value:
+        data: null
+        error: true
+        errorText: Something went wrong
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    IsAnsweredErr400:
+      description: Bad request
+      value:
+        data: null
+        error: true
+        errorText: Плохой формат isAnswered
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    DateFromErr400:
+      description: Bad request
+      value:
+        data: null
+        error: true
+        errorText: Плохой формат dateFrom
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    DateToErr400:
+      description: Bad request
+      value:
+        data: null
+        error: true
+        errorText: Плохой формат dateTo
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    FeedbackErr403:
+      description: Access denied
+      value:
+        data: null
+        error: true
+        errorText: Ошибка авторизации
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    FeedbackErr404:
+      description: Not found
+      value:
+        data: null
+        error: true
+        errorText: Не найден отзыв
+        additionalErrors: null
+        requestId: 734c9ea8-39e5-45c9-8cad-f03c13f733e9
+    responseInaccessibleBackGoodError422:
+      description: Request for item return is unavailable
+      value:
+        errorText: Request for item return is unavailable
+    responseUnsuccessfullyBackGoodError422:
+      description: Failed to process the return request for purchases
+      value:
+        data: null
+        error: true
+        errorText: Не удалось выполнить запрос на возврат покупок
+        additionalErrors: null
+        requestId: 93ea349d-d0ec-41b0-aaac-a8f5f137a109
+    ResponseGetQuestionByIdErrEx:
+      description: Failed to get a question by ID
+      value:
+        data: null
+        error: true
+        errorText: Невозможно получить вопрос по id
+        additionalErrors: null
+        requestId: 87a2fe4d-d28b-4bae-b824-c0f498c72702
+    ResponseGetFeedbackByIdErrEx:
+      description: Failed to get a review by ID
+      value:
+        data: null
+        error: true
+        errorText: Невозможно получить отзыв по id
+        additionalErrors: null
+        requestId: 87a2fe4d-d28b-4bae-b824-c0f498c72702
+    ResponseGetFeedbackArchive:
+      description: Failed to get archived reviews by filter
+      value:
+        data: null
+        error: true
+        errorText: Не удалось получить архивные отзывы по фильтру
+        additionalErrors: null
+        requestId: 87a2fe4d-d28b-4bae-b824-c0f498c72702
+    ResponsePatchQuestion:
+      description: Failed to edit question
+      value:
+        data: null
+        error: true
+        errorText: Не удалось отредактировать вопрос
+        additionalErrors: null
+        requestId: 87a2fe4d-d28b-4bae-b824-c0f498c72702
+    ResponseDoNotGetFeedback400:
+      description: Bad request
+      value:
+        errorText: Failed to receive the feedback
+    RequestBodyErr400:
+      description: Bad request
+      value:
+        data: null
+        error: true
+        errorText: failed to decode JSON request.
+        additionalErrors: null
+        requestId: 958d9676-b50c-41d6-b7ce-3c9f0bc3b822
+    RequestIDErr400:
+      description: Bad request
+      value:
+        data: null
+        error: true
+        errorText: Неправильный id в запросе
+        additionalErrors: null
+        requestId: 958d9676-b50c-41d6-b7ce-3c9f0bc3b822
+  schemas:
+    standardizedFQError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+        requestId:
+          type: string
+          description: Unique request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        detail:
+          type: string
+          description: Error details
+    responseFeedbackQuestionErr:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+        error:
+          description: Error flag
+          type: boolean
+        errorText:
+          description: Error description
+          type: string
+        additionalErrors:
+          description: Additional errors
+          nullable: true
+          type: array
+          items:
+            type: string
+        requestId:
+          description: ''
+          type: string
+    responseFeedback:
+      description: Array of structure of feedbacks
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Feedback ID
+          text:
+            type: string
+            description: Feedback text
+            nullable: false
+          pros:
+            type: string
+            description: Item pros
+            nullable: false
+          cons:
+            type: string
+            description: Item cons
+            nullable: false
+          productValuation:
+            type: integer
+            description: Item rate
+          createdDate:
+            type: string
+            format: date-time
+            description: Date and time the feedback was created
+          answer:
+            nullable: true
+            type: object
+            description: Reply structure
+            properties:
+              text:
+                type: string
+                description: Reply text
+              state:
+                type: string
+                description: |
+                  Status:
+                    - `none` — new
+                    - `wbRu` — displayed on the site
+                    - `reviewRequired` — response being reviewed
+                    - `rejected` — response rejected
+              editable:
+                type: boolean
+                description: |
+                  Whether the response can be edited:
+                    - `false` — no
+                    - `true` — yes
+          state:
+            type: string
+            description: |
+              Feedback status:
+                - `none` - unanswered (new)
+                - `wbRu` - answered
+          productDetails:
+            description: Item information
+            type: object
+            properties:
+              nmId:
+                type: integer
+                description: WB item number
+              imtId:
+                type: integer
+                description: Merged listing ID
+              productName:
+                type: string
+                description: Item name
+              supplierArticle:
+                type: string
+                nullable: true
+                description: Seller item number
+              supplierName:
+                type: string
+                nullable: true
+                description: Seller's name
+              brandName:
+                type: string
+                nullable: true
+                description: Item brand
+              size:
+                type: string
+                description: Item size (`techSize' in the listing)
+          photoLinks:
+            nullable: true
+            description: Array of structure of images
+            type: array
+            items:
+              type: object
+              properties:
+                fullSize:
+                  type: string
+                  description: Link of full-size images
+                miniSize:
+                  type: string
+                  description: Link of small-size images
+          video:
+            nullable: true
+            description: Video structure
+            type: object
+            properties:
+              previewImage:
+                type: string
+                description: URL to the video cover image
+              link:
+                type: string
+                description: URL to the video playlist file (available via HLS protocol)
+              durationSec:
+                type: integer
+                description: Total duration of the video
+          wasViewed:
+            type: boolean
+            description: If the feedback was viewed
+          userName:
+            type: string
+            description: Name of the feedback author
+          orderStatus:
+            type: string
+            description: |
+              Order status.
+              <br>Possible values:
+              - `buyout` — bought out
+              - `rejected` — rejected
+              - `returned` — returned
+              - `notSpecified` — status not assigned
+          matchingSize:
+            type: string
+            description: |
+              Compliance of the declared size with the real one.
+              <br>Possible values:
+              - ` ` — for dimensionless items
+              - `ок` — matches to the size
+              - `smaller` — runs small
+              - `bigger` — runs large
+          isAbleSupplierFeedbackValuation:
+            description: Is the seller able to file a report about the feedback (`true` — available, `false` — not available)
+            type: boolean
+          supplierFeedbackValuation:
+            description: |
+              Reason for report about the feedback
+            type: integer
+          isAbleSupplierProductValuation:
+            description: |
+              Item issue
+            type: boolean
+          supplierProductValuation:
+            description: Item rating left by the seller
+            type: integer
+          isAbleReturnProductOrders:
+            description: |
+              Item return option:
+                - `true` — available
+                - `false` — unavailable
+            type: boolean
+          returnProductOrdersDate:
+            nullable: true
+            description: Date and time when a response with status code 200 was received for the return request.
+            type: string
+          bables:
+            nullable: true
+            description: List of customer tags
+            type: array
+            items:
+              type: string
+          lastOrderShkId:
+            type: integer
+            description: SKU of the item
+          lastOrderCreatedAt:
+            type: string
+            description: Date of purchase
+          color:
+            type: string
+            description: Item color
+          subjectId:
+            type: integer
+            description: Subcategory ID
+          subjectName:
+            type: string
+            description: Subcategory name
+          parentFeedbackId:
+            type: string
+            description: ID of the original feedback (`null` if this feedback is original)
+            nullable: true
+          childFeedbackId:
+            type: string
+            nullable: true
+            description: ID of the updated feedback (`null` if this feedback is updated)
+    Chat:
+      type: object
+      properties:
+        chatID:
+          type: string
+          description: Chat ID
+          example: 1:4019cd7d-cca8-4e90-8b11-f78afbea42e3
+        replySign:
+          type: string
+          description: |
+            Chat signature. Required when [sending a message](./#/paths/~1api~1v1~1seller~1message/post)
+          example: 1:4019cd7d-cca8-4e90-8b11-f78afbea42e3:54828159:bc3a4c04079f5956cff170b25e73523aa1208b5c0bd7aea1e520a64ae3e212b1ebae6712661f3afd27520fa785fa3042254e8a3100ce00644322054ae7cfcd0e
+        clientName:
+          type: string
+          description: Buyer's name
+          example: Иван
+        goodCard:
+          $ref: '#/components/schemas/Listing'
+        lastMessage:
+          description: The last message in the chat
+          allOf:
+            - $ref: '#/components/schemas/LastMessage'
+    ChatsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chat'
+        errors:
+          description: Errors, if any
+          nullable: true
+          type: array
+          example: null
+          items:
+            type: string
+    Event:
+      type: object
+      properties:
+        chatID:
+          type: string
+          description: Chat ID
+        eventID:
+          type: string
+          description: Event ID
+        eventType:
+          $ref: '#/components/schemas/EventType'
+        isNewChat:
+          type: boolean
+          description: |
+            New chat indicator:
+            - `false` — chat is not new
+            - `true` — chat is new
+        message:
+          type: object
+          description: Message data
+          properties:
+            attachments:
+              $ref: '#/components/schemas/EventAttachments'
+            text:
+              type: string
+              description: Message text
+        source:
+          type: string
+          description: |
+            Message sending source:
+            - `seller-portal` — sellers portal
+            - `seller-public-api` — Buyers chat API
+            - `rusite` — buyers portal
+            - `global` — `global.wildberries.ru` portal
+            - `ios` —  mobile operating system by **Apple**
+            - `android` — **Android** mobile operating system by **Google**
+        addTimestamp:
+          type: integer
+          description: Time of event occurrence on the server. Unix timestamp format
+        addTime:
+          type: string
+          description: Time of event occurrence on the server in UTC
+        replySign:
+          type: string
+          description: |
+            Chat signature. Available only if `"isNewChat": true`. Required when [sending a message](./user-communication#tag/Buyers-Chat/paths/~1api~1v1~1seller~1message/post)
+        sender:
+          $ref: '#/components/schemas/Sender'
+        clientName:
+          type: string
+          description: Buyer's name
+    EventAttachments:
+      type: object
+      description: Attachments
+      properties:
+        goodCard:
+          $ref: '#/components/schemas/Listing'
+        files:
+          type: array
+          description: Files
+          items:
+            $ref: '#/components/schemas/File'
+        images:
+          type: array
+          description: Images
+          items:
+            $ref: '#/components/schemas/Image'
+    EventType:
+      type: string
+      description: |
+        Event type:
+        - `message` — message
+      enum:
+        - message
+    File:
+      type: object
+      properties:
+        contentType:
+          type: string
+          description: File type
+        date:
+          type: string
+          description: Date of the file upload
+        downloadID:
+          description: File ID. [Download the file](./user-communication#tag/Buyers-Chat/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
+          type: string
+        name:
+          type: string
+          description: File name
+        url:
+          type: string
+          description: URL for accessing the file
+          nullable: false
+        size:
+          type: integer
+          description: File size in bytes
+    Listing:
+      type: object
+      description: Order information
+      properties:
+        nmID:
+          type: integer
+          description: WB item number
+        price:
+          type: integer
+          description: Actual price with all discounts applied. Charged to the buyer
+        priceCurrency:
+          type: string
+          description: Currency
+        rid:
+          type: string
+          description: |
+            Unique order ID. <br>
+            Note: `rid` corresponds to `srid` in the responses of the methods:
+              - [Buyers Return Applications](./user-communication#tag/Buyers-Returns/paths/~1api~1v1~1claims/get)
+              - [Orders](./reports#tag/Main-Reports/paths/~1api~1v1~1supplier~1orders/get)
+              - [Sales](./reports#tag/Main-Reports/paths/~1api~1v1~1supplier~1sales/get)
+              - [Returns and Item Movement Report](./reports#tag/Returns-and-Product-Movement-Report)
+              - [Details for the Sales Reports by Report ID](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1SalesReportsDetailedReportId)
+              - [Details for the Sales Reports by Period](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1SalesReportsDetailed)
+              - [Details for the Acquiring Expenses Reports by Report ID](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1AcquiringDetailedReportId)
+              - [Details for the Acquiring Expenses Reports by Period](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1AcquiringDetailed)
+        size:
+          type: string
+          description: The item size, corresponds to `wbSize` in the [listing](./work-with-products#tag/listings/paths/~1content~1v2~1get~1cards~1list/post)
+    LastMessage:
+      type: object
+      example:
+        text: Можно заказать 100 штук?
+        addTimestamp: 1766138234889
+      properties:
+        text:
+          type: string
+          description: Message text
+        addTimestamp:
+          type: integer
+          description: Message time
+    Image:
+      type: object
+      description: Image
+      properties:
+        date:
+          type: string
+          description: Date of the image upload
+        downloadID:
+          description: File ID. [Download the file](./user-communication#tag/Buyers-Chat/paths/~1api~1v1~1seller~1download~1%7Bid%7D/get)
+          type: string
+        url:
+          type: string
+          description: URL for accessing the image
+    MessageResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          description: File upload errors, if any
+          items:
+            type: string
+        result:
+          type: object
+          properties:
+            addTime:
+              type: integer
+              description: Date and time the chat was created
+              format: Unix timestamp in milliseconds
+            chatID:
+              type: string
+              description: Chat ID
+            sign:
+              type: string
+              description: Chat signature
+    Sender:
+      type: string
+      description: |
+        Sender:
+        - `client` — buyer
+        - `seller` — seller
+        - `wb` — Wildberries
+      enum:
+        - client
+        - seller
+        - wb
+    EventsResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/EventsResult'
+        errors:
+          description: Errors, if any
+          nullable: true
+          type: array
+          items:
+            type: string
+    EventsResult:
+      type: object
+      properties:
+        next:
+          type: integer
+          description: Paginator. Retrieve the next data set starting from this moment
+          format: Unix timestamp
+        newestEventTime:
+          description: Newest response event time
+          type: string
+          format: date-time
+        oldestEventTime:
+          description: Oldest response event time
+          type: string
+          format: date-time
+        totalEvents:
+          type: integer
+          description: Number of events
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    domain.ReviewPinMethod:
+      type: string
+      enum:
+        - subscription
+        - tariff
+      x-enum-varnames:
+        - PinMethodSubscription
+        - PinMethodTariff
+    domain.ReviewPinOn:
+      type: string
+      enum:
+        - imt
+        - nm
+      x-enum-varnames:
+        - PinOnIMT
+        - PinOnNM
+    domain.ReviewState:
+      type: string
+      enum:
+        - pinned
+        - unpinned
+      x-enum-varnames:
+        - StatePinned
+        - StateUnpinned
+    openapi.PinReviewItem:
+      type: object
+      required:
+        - pinMethod
+        - pinOn
+        - feedbackId
+      properties:
+        pinMethod:
+          type: string
+          description: |
+            Pinning methods:
+              - `subscription` — Jam subscription
+              - `tariff` — rate option
+          example: subscription
+          enum:
+            - tariff
+            - subscription
+        pinOn:
+          type: string
+          description: |
+            Feedback pinning placement:
+              - `nm` — listing
+              - `imt` — group of merged listings
+          example: imt
+          enum:
+            - nm
+            - imt
+        feedbackId:
+          type: string
+          description: Feedback ID
+          example: DibuRAImknLyiqgzvGcU
+    openapi.PinReviewItemResult:
+      type: object
+      example:
+        data:
+          - feedbackId: VlbkVVl7mtw37wуWkJZz
+            pinId: 18577062
+            pinMethod: subscription
+            pinOn: imt
+            isErrors: false
+          - feedbackId: DibuRAImknLyiqgzvGcU
+            pinMethod: tariff
+            pinOn: imt
+            isErrors: true
+            errors:
+              - status: itemNotFound
+                title: item not found
+                detail: item not found or does not belong to seller
+                requestId: 0414dc48df701618e0a3bfc414fe3136
+                origin: pin-open-api
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              feedbackId:
+                type: string
+                description: Feedback ID
+              pinId:
+                type: integer
+                description: Pinning operation ID. If the field is missing, the feedback is not pinned
+              pinMethod:
+                type: string
+                description: |
+                  Pinning methods:
+                    - `subscription` — Jam subscription
+                    - `tariff` — rate option
+                enum:
+                  - tariff
+                  - subscription
+              pinOn:
+                type: string
+                description: |
+                  Feedback pinning placement:
+                    - `nm` — listing
+                    - `imt` — group of merged listings
+                enum:
+                  - nm
+                  - imt
+              isErrors:
+                type: boolean
+                description: Are there any errors
+              errors:
+                type: array
+                description: Error detail
+                items:
+                  $ref: '#/components/schemas/openapi.ResultErr'
+                example:
+                  - status: itemNotFound
+                    title: item not found
+                    detail: item not found or does not belong to seller
+                    requestId: 0414dс48df701618e0а3bfc414fe3136
+                    origin: pin-open-api
+            required:
+              - feedbackId
+              - isErrors
+              - pinMethod
+              - pinOn
+    openapi.PinnedReviewItemResult:
+      type: object
+      properties:
+        changeStateAt:
+          type: string
+          description: Date and time of pinning or unpinning
+          format: date-time
+          example: '2020-01-01T15:04:05Z'
+        imtId:
+          type: integer
+          description: Merged listing ID
+          example: 256971531
+        nmId:
+          type: integer
+          description: WB item number
+          example: 177974151
+        pinId:
+          type: integer
+          description: Pinning feedback operation ID
+          example: 1857762
+        pinMethod:
+          type: string
+          description: |
+            Pinning methods:
+              - `subscription` — Jam subscription
+              - `tariff` — rate option
+          example: subscription
+          allOf:
+            - $ref: '#/components/schemas/domain.ReviewPinMethod'
+        pinOn:
+          type: string
+          description: |
+            Feedback pinning placement:
+              - `nm` — listing
+              - `imt` — group of merged listings
+          example: imt
+          allOf:
+            - $ref: '#/components/schemas/domain.ReviewPinOn'
+        feedbackId:
+          type: string
+          description: Feedback ID
+          example: DibuRAImknLyiqgzvGcU
+        state:
+          type: string
+          description: |
+            If the feedback is pinned:
+              - `pinned` — yes
+              - `unpinned` — no
+          example: unpinned
+          allOf:
+            - $ref: '#/components/schemas/domain.ReviewState'
+        unpinnedCause:
+          type: string
+          description: |
+            Reason for unpinning the feedback:
+              - `sysTariffUnpinned` — subscription or rate option is expired
+              - `sysLimitReached` — total subscription limit is reached
+              - `sysNoratingUnpinned` — feedback is excluded from the rating. For example, it was deleted or banned
+              - `sysAdditionalSlot` — the maximum number of feedback is attached to group of merged listings or to the listing
+          example: sysTariffUnpinned
+          enum:
+            - sysTariffUnpinned
+            - sysLimitReached
+            - sysNoratingUnpinned
+            - sysAdditionalSlot
+      required:
+        - changeStateAt
+        - feedbackId
+        - imtId
+        - nmId
+        - pinId
+        - pinMethod
+        - pinOn
+        - state
+    openapi.ResultErr:
+      type: object
+      properties:
+        origin:
+          type: string
+          description: WB internal service ID
+        detail:
+          type: string
+          description: Error detail
+        requestId:
+          type: string
+          example: req-12345
+          description: Request ID
+        status:
+          type: string
+          example: feedbackNotFound
+          enum:
+            - feedbackNotFound
+            - itemNotFound
+            - feedbackMismatch
+            - itemNoImages
+            - feedbackExcluded
+            - imtNotDisplayed
+            - globalLimitReached
+            - unitLimitReached
+            - tariffRestriction
+            - subscriptionRestriction
+            - alreadyPinned
+            - bodyNotValid
+          description: Status
+        title:
+          type: string
+          example: feedbackNotFound
+          description: Error title
+      required:
+        - origin
+        - requestId
+        - status
+        - title
+    openapi.SellerLimit:
+      properties:
+        perUnitLimit:
+          type: integer
+          description: Maximum number of pinned feedback per listing or group of merged listings
+          example: 2
+        remaining:
+          type: integer
+          description: How many more feedback can be pinned
+          example: 5
+        totalLimit:
+          type: integer
+          description: Total pinning limit
+          example: 15
+        unlimited:
+          type: boolean
+          description: |
+            The number of pinned feedback is unlimited:
+              - `true` — yes
+              - `false` — no
+          example: false
+        used:
+          type: integer
+          description: Current number of pinned feedback
+          example: 10
+      required:
+        - perUnitLimit
+        - remaining
+        - totalLimit
+        - unlimited
+        - used
+    openapi.SellerLimitsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            subscription:
+              type: object
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/openapi.SellerLimit'
+                - description: Subscription limits
+            tariff:
+              type: object
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/openapi.SellerLimit'
+                - description: Tariff limits
+    respond.ResultErr:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error detail
+        origin:
+          type: string
+          description: WB internal service ID
+        requestId:
+          type: string
+          description: Request ID
+        status:
+          type: integer
+          description: HTTP status code
+        title:
+          type: string
+          description: Error title
+      required:
+        - origin
+        - requestId
+        - status
+        - title
+    respond.SuccessResponse:
+      type: object
+      properties:
+        data:
+          type: object
+      required:
+        - data
+  responses:
+    '401':
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '402':
+      description: Payment required
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details. The error is only returned to services from the [Solutions for business Catalog](https://dev.wildberries.ru/business-solutions)
+          example:
+            title: payment required
+            detail: wb solution for business has insufficient funds on its balance. please top up the balance in the company's personal account https://dev.wildberries.ru/company
+    '429':
+      description: Too many requests
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+    GetClaimsSuccessResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              claims:
+                - id: fe3e9337-e9f9-423c-8930-946a8ebef80
+                  claim_type: 1
+                  status: 2
+                  status_ex: 8
+                  nm_id: 196320101
+                  user_comment: Длина провода не соответствует описанию
+                  wb_comment: Продавец одобрил вашу заявку. Для возврата средств необходимо вернуть товар продавцу. Укажите дату, когда вам удобно принять курьера.
+                  dt: '2025-03-26T17:06:12.245611'
+                  imt_name: Кабель 0.5 м, 3797
+                  order_dt: '2024-10-27T05:18:56'
+                  dt_update: '2025-05-10T18:01:06.999613'
+                  photos:
+                    - //photos.wbstatic.net/claim/fe3e9337-e9f9-423c-8930-946a8ebef80/1.webp
+                    - //photos.wbstatic.net/claim/fe3e9337-e9f9-423c-8930-946a8ebef80/2.webp
+                  video_paths:
+                    - //video.wbstatic.net/claim/fe3e9337-e9f9-423c-8930-946a8ebef80/1.mp4
+                  actions:
+                    - autorefund1
+                    - approve1
+                  price: 157
+                  currency_code: '643'
+                  srid: v5o_7143225816503318733.0.0
+                  origin_id_info: IMEI 359889346153011, указанный покупателем в  заявке на возврат, не совпадает с IMEI 359889346238986, указанным продавцом или отсканированным на складе Wildberries
+                  delivery_dt: '2025-04-09T14:36:07'
+              total: 31
+            properties:
+              claims:
+                type: array
+                description: Applications
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Application ID
+                      format: UUID
+                    claim_type:
+                      type: integer
+                      description: |
+                        Application source:
+                          * `1` — buyers portal
+                          * `3` — chat
+                    status:
+                      type: integer
+                      description: |
+                        Buyer return decision:
+                          * `0` — under review
+                          * `1` — refusal
+                          * `2` — approved
+                    status_ex:
+                      type: integer
+                      description: |
+                        Item status:
+                          * `0` — application under review
+                          * `1` — item stays with buyer (Application rejected)
+                          * `2` — buyer returns item to WB, item sent for disposal
+                          * `5` — item stays with buyer (Application approved)
+                          * `8` — item will be returned to sale after WB inspection
+                          * `10` — item returned to seller
+                    nm_id:
+                      type: integer
+                      description: WB item number
+                    user_comment:
+                      type: string
+                      maxLength: 1000
+                      description: Buyer comment
+                    wb_comment:
+                      nullable: true
+                      type: string
+                      maxLength: 10000
+                      description: Answer to the buyer in Russian
+                    dt:
+                      type: string
+                      description: Date and time the application was submitted by the buyer. UTC+3
+                    imt_name:
+                      nullable: true
+                      type: string
+                      description: Item name
+                    order_dt:
+                      type: string
+                      description: Order date and time
+                    dt_update:
+                      type: string
+                      description: Date and time the application was reviewed. For the application that has not been reviewed — date and time the application was submitted. UTC+3
+                    photos:
+                      type: array
+                      description: Photos from buyer application
+                      minItems: 0
+                      maxItems: 10
+                      items:
+                        type: string
+                        format: WEBP
+                    video_paths:
+                      type: array
+                      description: Videos from buyer application
+                      minItems: 0
+                      maxItems: 1
+                      items:
+                        type: string
+                        format: MP4
+                    actions:
+                      type: array
+                      description: |
+                        [Seller answer](./user-communication#tag/Buyers-Returns/paths/~1api~1v1~1claim/patch) options.<br> Rejected applications can be reconsidered. If the array is empty, the application cannot be processed.<br>
+                          * `approve1` — approve with defect check.<br>Money will be refunded to the buyer after the item is returned. The item will be checked at the warehouse. If a defect/packing error is confirmed, the item will be sent to the seller. If the defect/packing error is not confirmed, the item will be returned to sale.
+                          <br>Not applicable for the <strong>[In-Store Pickup](./in-store-pickup)</strong> model.
+                          * `approve2` — approve and return the item.<br> Money will be refunded to the customer after the item is returned. The item will be sent to the seller.
+                          <br>Not applicable for the <strong>[In-Store Pickup](./in-store-pickup)</strong> model.
+                          * `autorefund1` — approve without item return.<br>The item will remain with the customer. The money for the item will be refunded to the customer without returning the item.
+                          * `reject1` — reject with response template: <details><summary><strong>Брак не обнаружен</strong></summary>Пришлось отклонить заявку — подтвердить производственный брак не получилось. Можете отнести товар на независимую экспертизу или в сервисный центр. Если брак подтвердится, создайте новую заявку с такой же причиной, ещё раз опишите проблему и добавьте фото заключения. А если остались вопросы, задайте их в чате: нажмите кнопку «Написать продавцу».</details>
+                          * `reject2` — reject with response template: <details><summary><strong>Добавить фото/видео</strong></summary>Пришлось отклонить заявку — нужно чуть больше информации. Создайте новую заявку с такой же причиной возврата, подробно опишите проблему и добавьте фото, на которых хорошо видно: сам товар целиком, брак, бирку или этикетку, упаковку со штрихкодом Wildberries, если она осталась. Желательно добавить видео — это поможет разобраться.</details>
+                          * `reject3` — reject with response template: <details><summary><strong>Направить в сервисный центр</strong></summary>Пришлось отклонить заявку — подтвердить производственный брак не получилось. Вы можете отнести товар в сервисный центр: адрес есть на сайте производителя или в гарантийном талоне. Там всё проверят и выдадут заключение. Если производственный брак подтвердится, создайте новую заявку с такой же причиной, ещё раз опишите проблему и добавьте фото заключения.</details>
+                          * `rejectcustom` — reject with a comment.<br> The comment is passed in the `comment` parameter.
+                          * `approvecc1` — approve the request for returning the item to the seller store.<br>You can provide a comment (e.g., contact phone number or operating hours of your returns department) in the `comment` parameter. Upon completion of the return, you need to respond to the request with `"action":"confirmreturngoodcc1"` or `"action":"rejectcustom"`.<br>Applicable only for the <strong>[In-Store Pickup](./in-store-pickup)</strong> model.
+                          * `confirmreturngoodcc1` — confirm receipt of the item from the buyer.<br>Applicable only for the <strong>[In-Store Pickup](./in-store-pickup)</strong> model.
+                      items:
+                        type: string
+                    price:
+                      type: number
+                      description: Actual price with all discounts applied. Charged to the buyer
+                    currency_code:
+                      type: string
+                      description: Price currency code
+                    srid:
+                      type: string
+                      description: Unique order ID for which a item claim was created
+                    origin_id_info:
+                      type: string
+                      description: Result of [IMEI](https://seller.wildberries.ru/instructions/ru/ru/material/items-labeling-in-fbs#imei) verification for a return via a Wildberries pickup point.<br>The value indicates whether the IMEI specified by the seller or scanned during acceptance at a Wildberries warehouse matches the IMEI from the buyer's application, which allows for more efficient [return application processing](./user-communication#tag/Buyers-Returns/paths/~1api~1v1~1claim/patch).<br>Applicable only to **Apple** items of the `Smartphones` subject (`"subjectId":515`) with a price of 40,000 rubles and above, taking into account the seller discount ([only](./work-with-products#tag/Prices-and-Discounts/paths/~1api~1v2~1upload~1task/post) `price` and `discount` parameters and fields)
+                      nullable: true
+                    delivery_dt:
+                      type: string
+                      description: Date and time the buyer received the order
+              total:
+                type: integer
+                description: Number of applications matching the query parameters. Except `limit` and `offset`
+    Error400GetClaims:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error ID
+                example: Invalid query params
+              detail:
+                description: Error description
+                type: string
+                example: 'Failed to deserialize query string: missing field `is_archive`'
+              requestId:
+                description: Request ID
+                type: string
+                example: e0aedc10-9789-49c1-9a83-d8422b4703dc
+    Error400PatchClaim:
+      description: Bad request
+      content:
+        application/json; charset=utf-8:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error ID
+                example: Validation error
+              detail:
+                description: Error description
+                type: string
+                example: 'Input model is not valid; Details: The Action field is required.'
+              requestId:
+                description: Request ID
+                type: string
+                example: 0HN3PI6JUGFSL:00000004
+  requestBodies:
+    PatchClaimReq:
+      required: true
+      description: Application answer
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: Application ID
+                type: string
+                format: UUID
+                example: fe3e9337-e9f9-423c-8930-946a8ebef80
+              action:
+                description: Application action.<br>Use one of the `actions` array values from the response of the getting [buyers applications](./user-communication#tag/Buyers-Returns/paths/~1api~1v1~1claims/get) method
+                type: string
+                example: rejectcustom
+              comment:
+                description: Comment.<br>Only when `"action":"rejectcustom"` or `"action":"approvecc1"`. When `"action":"rejectcustom"` this parameter is required
+                type: string
+                minLength: 10
+                maxLength: 1000
+                example: The photo is not related to the item in the application
+            required:
+              - id
+              - action
+  parameters:
+    limit:
+      in: query
+      name: limit
+      description: Number of applications in the response
+      schema:
+        type: integer
+        format: uint
+        default: 50
+        minimum: 1
+        maximum: 200
+        example: 50
+    offset:
+      in: query
+      name: offset
+      description: From which element to start outputting data. `0` by default
+      schema:
+        type: integer
+        format: uint
+        default: 0
+        minimum: 0
+        example: 0
+    is_archive:
+      in: query
+      name: is_archive
+      description: |
+        Application status:
+          * `false` — under review
+          * `true` — in archive
+      required: true
+      schema:
+        type: boolean
+        example: true
+    id:
+      in: query
+      name: id
+      description: Application ID
+      schema:
+        type: string
+        format: UUID
+        example: fe3e9337-e9f9-423c-8930-946a8ebef80
+    nm_id:
+      in: query
+      name: nm_id
+      description: WB item number
+      schema:
+        type: integer
+        example: 196320101
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header

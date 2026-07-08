@@ -1,0 +1,2318 @@
+openapi: 3.0.1
+info:
+  title: In-Store Pickup Orders
+  x-file-name: in-store-pickup
+  description: |
+    <div class="api-block">
+
+    Management of [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) and [order label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers) for the In-Store Pickup scheme.<br><br>
+
+    You can test the In-Store Pickup order methods in the [sandbox](/en/sandbox). Also you can use [special methods](/en/docs/openapi-other/sandbox-environment#tag/Marketplace-In-Store-Pickup) in the sandbox for emulating user actions
+
+    </div>
+  version: instorepickup
+servers:
+  - url: https://marketplace-api.wildberries.ru
+security:
+  - HeaderApiKey: []
+tags:
+  - name: In-Store Pickup Assembly Orders
+    description: ''
+  - name: In-Store Pickup Label Identifiers
+    x-displayName: In-Store Pickup Label Identifiers
+    description: ''
+paths:
+  /api/v3/click-collect/orders/new:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Get New Assembly Orders List
+      description: |
+        The method provides a list of all new [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) that the seller has at the time of the request.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for <strong>In-Store Pickup assembly orders</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.NewOrders'
+              examples:
+                NewOrderClick:
+                  $ref: '#/components/examples/NewOrderClick'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/status/confirm:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Transfer to Assembly
+      description: |
+        The method transfers [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) from the `new` [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) to the `confirm` — on  assembly — status.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | <no value> | <no value> | <no value> | <no value> |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.StatusSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/status/prepare:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Notify That the Assembly Orders Are Ready for Pickup
+      description: |
+        The method transfers [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) from the `confirm` — on assembly — [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) to the `prepare` — ready for pickup — status.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | <no value> | <no value> | <no value> | <no value> |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.MetaDetailsResponse'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/client:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Buyer Information
+      description: |
+        The method provides information about the buyer based on the assembly order ID.
+        <br><br>
+        Available only for assembly orders with the following statuses:
+          - `confirm` — in assembly
+          - `prepare` — ready for pickup
+
+        Restrictions:
+        - Information can only be obtained for assembly orders that are in the assembly process — status `confirm` and ready for pickup — status `prepare`.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for <strong>In-Store Pickup assembly orders</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrderClientInfoResp'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders/client/identity:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Check If the Order Belongs to the Buyer
+      description: |
+        The method indicates whether the checked order belongs to the buyer based on the provided code.
+        <br><br>
+        Available if at least one assembly order from the order is in `prepare` status — ready for pickup.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.CheckIdentityRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.CheckedIdentity'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Error'
+              examples:
+                OrderNotFound:
+                  $ref: '#/components/examples/OrderNotFound'
+        '409':
+          description: Incorrect verification code entered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Error'
+              examples:
+                InvalidPasscode:
+                  $ref: '#/components/examples/InvalidPasscode'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/status/receive:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Notify That the Orders Were Received by the Buyers
+      description: |
+        The method transfers [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) from the `prepare` — ready for pickup — [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) to the `receive` — received by the buyer — status.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | <no value> | <no value> | <no value> | <no value> |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.StatusSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/status/reject:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Notify that the Orders Are Declined
+      description: |
+        The method transfers [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) from the `prepare` — ready for pickup — [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) to the `reject` — refusal upon receipt — status.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | <no value> | <no value> | <no value> | <no value> |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.StatusSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/status/info:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Get Assembly Order Statuses
+      description: |
+        The method provides the statuses of [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) by their ID.
+        <br><br>
+        `supplierStatus` — the status of the assembly order. The trigger for its change is the action of the seller himself.
+
+        Possible values for `supplierStatus`:
+        | Status              | Description                | How to set the assembly order to this status                    |
+        |---------------------|----------------------------|-----------------------------------------------------------------|
+        | `new`                 | **New assembly order**         ||
+        | `confirm`             | **In assembly**                | [Transfer to assembly](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1confirm/post)          |
+        | `prepare`             | **Ready for pickup**           | [Notify that the assembly order is ready for delivery](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1prepare/post)           |
+        | `receive`             | **Received by buyer**       | [Notify that the order has been received by the buyer](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1receive/post)           |
+        | `reject`              | **Buyer refusal**           | [Notify that the buyer has declined the order](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1reject/post)            |
+        | `cancel`              | **Canceled by seller**         | [Cancel the order](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1cancel/post)            |
+        | `cancel_shelf_life`   | **Canceled due to shelf life expiration** | Automatically transitions upon event occurrence |
+
+        `wbStatus` — the status of the assembly order in the WB system.
+
+        Possible values for wbStatus:
+        - `waiting` - assembly order is in progress
+        - `sorted` - assembly order is sorted
+        - `sold` - the buyer got the order
+        - `canceled` - assembly order canceled
+        - `canceled_by_client` - buyer canceled the order upon receipt
+        - `declined_by_client` - buyer canceled the order within the first hour
+        <br>Cancellation is available to the buyer within the first hour from the time of order, if the order has not been transitioned to assembly
+        - `defect` - order canceled due to defect
+        - `ready_for_pickup` - order is ready for pickup
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | <no value> | <no value> | <no value> | <no value> |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrderStatusesV2'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v3/click-collect/orders:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Retrieve Information on Completed Assembly Orders
+      description: |
+        The method provides information on completed assembly orders after the sale or cancellation of an order.
+
+        You can get data for a specified period, maximum of 30 calendar days per request.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for <strong>In-Store Pickup assembly orders</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      parameters:
+        - name: limit
+          in: query
+          description: |
+            Pagination parameter. Sets the maximum number of returned data.
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: next
+          in: query
+          description: |
+            Pagination parameter. Sets the value from which the next batch of data should be retrieved. To obtain the complete list of data, it should be set to 0 in the first request. For subsequent requests, the values should be taken from the field with the same name in the response.
+          required: true
+          schema:
+            type: integer
+        - name: dateFrom
+          in: query
+          description: Period start date in the Unix timestamp format
+          required: true
+          schema:
+            type: integer
+        - name: dateTo
+          in: query
+          description: Period end date in the Unix timestamp format
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Orders'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectParameter:
+                  $ref: '#/components/examples/IncorrectParameter'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/status/cancel:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Assembly Orders
+      summary: Cancel the Assembly Orders
+      description: |
+        The method transfers [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) from the `new`, `confirm`, `prepare` [statuses](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) to the `cancel` — canceled by the seller — status.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | <no value> | <no value> | <no value> | <no value> |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.StatusSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/details:
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Get Assembly Orders Label Identifiers
+      description: |
+        Returns [assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders) label identifiers and their validation statuses.
+
+        You can get the list of label identifiers available for the assembly order with the [list of new assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1v3~1click-collect~1orders~1new/get), field `requiredMeta`.br>
+        Possible label identifiers:
+        - `imei` — [IMEI](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1imei/post)
+        - `uin` — [UIN](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1uin/post)
+        - `gtin` — [GTIN](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1gtin/post)
+        - `sgtin` — [Data Matrix code](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1sgtin/post)
+        - `customsDeclaration` — [customs declaration number](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/operation/postV3ClickCollectOrdersMetaCustomsDeclaration)
+        - `originCountryCode` — [numeric code of the country of origin](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/operation/postV3ClickCollectOrdersMetaCustomsDeclaration) according to [Russian classification of countries of the world](https://esnsi.gosuslugi.ru/classifiers/16269)
+
+        If the response has an empty `meta` structure, the assembly order has no label identifiers and you can't add it.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>getting and deleting In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 150 requests | 400 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrdersMetaDetailsResponse'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/info:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Get Assembly Orders Label Identifiers
+      deprecated: true
+      description: "This method is deprecated. It will be removed on\_[July 15](https://dev.wildberries.ru/en/release-notes?id=536)\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Introduction/Rate-Limits\">Request limit</a> per one seller account for all methods for <strong>getting and deleting In-Store Pickup label identifiers</strong>:\n\n| Period | Limit | Interval | Burst |\n| --- | --- | --- | --- |\n| 1 min | 150 requests | 400 ms | 20 requests |\n\nOne request with <code>4XX</code> response codes is counted as 10 requests\n</div>\n"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequestV2'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrdersMetaResponse'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDeniedBatch'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/delete:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Delete Assembly Order Label Identifiers
+      description: |
+        The method removes [assembly orders label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post) values. <br><br>
+        You can only delete one type of label identifiers in one request.
+        Specify the label identifiers type in the request:
+          - `imei` — [IMEI](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1imei/post)
+          - `uin` — [UIN](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1uin/post)
+          - `gtin` — [GTIN](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1gtin/post)
+          - `sgtin` — [Data Matrix code](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1sgtin/post)
+          - `customsDeclaration` — [customs declaration number](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/operation/postV3ClickCollectOrdersMetaCustomsDeclaration). Deleting the customs declaration number also deletes the associated country of origin code — `originCountryCode`
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>getting and deleting In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 150 requests | 400 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersMetaDeleteRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrdersResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/sgtin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Add Labeling codes Chestny ZNAK to the Assembly Orders (Chestny ZNAK)
+      description: |
+        The method sets labeling code [Chestny ZNAK](https://chestnyznak.ru/en) to the [assembly orders label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post).<br><br>
+        You can set the labeling codes Chestny ZNAK only for orders in the `confirm` status and if the field `sgtin` is returned in the response of the [Get order label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post) method.<br>
+        You can get the uploaded labeling codes in the [assembly orders label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post).
+
+        For more information about labeling codes Chestny ZNAK please check: https://chestnyznak.ru/en/.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>adding In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 20 requests | 3 s | 500 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersSGTINsSetRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.MetaSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/uin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Add UIN (Unique Identification Numbers) to the Assembly Orders
+      description: |
+        The method sets the UIN (Unique Identification Numbers) for the [assembly orders label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post).
+        The order can only have one UIN.
+        You can add the UIN only for assembly orders in the `confirm` [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) and that are delivered by WB.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>adding In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 20 requests | 3 s | 500 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersUINSetRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.MetaSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/imei:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Add IMEI to the Assembly Orders
+      description: |
+        Sets the IMEI for the [assembly orders label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post). <br>
+        The assembly order can have only one IMEI.
+        You can add the IMEI only for assembly orders in the `confirm` [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) that are delivered by Wildberries.<br>
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>adding In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 20 requests | 3 s | 500 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersIMEISetRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.MetaSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/gtin:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://marketplace-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Add GTIN to the Assembly Orders
+      description: |
+        The method sets the GTIN, Belarus item unique identifier, for the assembly orders [label identifiers](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1details/post).
+        The assembly order can only have one GTIN.
+        You can add the GTIN only for assembly orders in the `confirm` [status](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1marketplace~1v3~1click-collect~1orders~1status~1info/post) and that are delivered by WB.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>adding In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 20 requests | 3 s | 500 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersGTINSetRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.MetaSetResponses'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/meta/customs-declaration:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - In-Store Pickup Label Identifiers
+      summary: Add Customs Declaration Numbers to the Orders
+      operationId: postV3ClickCollectOrdersMetaCustomsDeclaration
+      description: |
+        Sets the customs declaration numbers and numeric codes of the countries of origin of the assembly orders.
+
+        Customs declaration numbers can only be added to assembly orders that:
+          - have the B2B sale attribute — `"isB2b": true` in the response of the method [getting new assembly orders](/openapi/in-store-pickup#tag/In-Store-Pickup-Assembly-Orders/paths/~1api~1v3~1click-collect~1orders~1new/get)
+          - are in `confirm` or `prepare`statuses
+
+        One assembly order can have only one customs declaration number.
+
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account for all methods for <strong>adding In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 20 requests | 3 s | 500 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  type: array
+                  maxItems: 1000
+                  items:
+                    type: object
+                    properties:
+                      customsDeclaration:
+                        type: string
+                        minLength: 17
+                        maxLength: 29
+                        description: Customs declaration number
+                        example: 10704010/010624/0000302
+                      orderId:
+                        type: integer
+                        description: Assembly order ID
+                      originCountryCode:
+                        type: string
+                        description: Numeric code of the country of origin according to [Russian classification of countries of the world](https://esnsi.gosuslugi.ru/classifiers/16269)
+                        example: '643'
+                        maxLength: 3
+                    required:
+                      - customsDeclaration
+                      - orderId
+                      - originCountryCode
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.CustomsDeclarationSetResponse'
+              examples:
+                CustomsDeclarationResponse:
+                  $ref: '#/components/examples/CustomsDeclarationResponse'
+        '400':
+          $ref: '#/components/responses/IncorrectRequest'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+  examples:
+    NewOrderClick:
+      value:
+        orders:
+          - ddate: 29.10.2024
+            salePrice: 14000
+            requiredMeta:
+              - sgtin
+            article: wb1702fyjh
+            rid: 1234567673554519872.0.0
+            createdAt: '2024-10-29T10:19:30Z'
+            warehouseAddress: Москва, район Якиманка, Софийская набережная, 4 с1
+            orderCode: 23457822-6667
+            payMode: prepaid
+            skus:
+              - '2041546265353'
+            id: 1234567890
+            warehouseId: 1234567
+            nmId: 123456789
+            chrtId: 987654321
+            price: 14000
+            finalPrice: 14000
+            convertedPrice: 14000
+            convertedFinalPrice: 14000
+            currencyCode: 643
+            convertedCurrencyCode: 643
+            cargoType: 1
+            isZeroOrder: false
+            options:
+              isB2b: true
+    CustomsDeclarationResponse:
+      value:
+        requestId: 7849e1c4-d30e-4937-abe3-0e54e85874bd
+        results:
+          - orderId: 567891234
+            isError: false
+          - errors:
+              - detail: InvalidOriginCountryCode
+                code: 400
+            orderId: 987654321
+            isError: true
+          - errors:
+              - detail: OrderNotB2B
+                code: 422
+            orderId: 123456789
+            isError: true
+          - errors:
+              - detail: StatusMismatch
+                code: 409
+            orderId: 543216789
+            isError: true
+    IncorrectRequestBody:
+      value:
+        message: Incorrect request body
+    InvalidPasscode:
+      description: The verification code you entered is incorrect
+      value:
+        code: InvalidPasscode
+    OrderNotFound:
+      description: Order not found
+      value:
+        code: NotFound
+    IncorrectParameter:
+      value:
+        message: Incorrect parameter is passed
+  schemas:
+    api.CheckedIdentity:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: |
+            Indicates whether the order belongs to the buyer:
+             - `true` — belongs
+             - `false` — the value is not applied. If the order does not belong to the buyer, you will receive a response with `409` status code
+    Error:
+      type: object
+      nullable: false
+      properties:
+        code:
+          type: string
+          description: Error code
+          nullable: false
+        message:
+          type: string
+          description: Error description
+          nullable: false
+        data:
+          type: object
+          description: Additional data enriching the error
+          nullable: true
+    api.CheckIdentityRequest:
+      type: object
+      properties:
+        orderCode:
+          type: string
+          description: Unique buyer order ID
+        passcode:
+          type: string
+          description: Confirmation code
+      example:
+        orderCode: 170046918-0011
+        passcode: '4567'
+    api.Error:
+      type: object
+      properties:
+        code:
+          type: string
+        data:
+          type: object
+        message:
+          type: string
+    api.NewOrder:
+      type: object
+      properties:
+        ddate:
+          type: string
+          description: Planned delivery date
+        salePrice:
+          description: |
+            Seller price in the currency of sale, including seller discount, except the WB Club discount, multiplied by 100
+          type: integer
+          nullable: true
+          example: 504600
+        requiredMeta:
+          type: array
+          nullable: true
+          description: |
+            List of label identifiers available for the assembly orders
+          items:
+            type: string
+        article:
+          type: string
+          description: Seller item number
+        rid:
+          type: string
+          description: |
+            Unique order ID. <br>
+            Note: `rid` corresponds to `srid` in the responses of the methods:
+              - [Buyers Return Applications](./user-communication#tag/Buyers-Returns/paths/~1api~1v1~1claims/get)
+              - [Orders](./reports#tag/Main-Reports/paths/~1api~1v1~1supplier~1orders/get)
+              - [Sales](./reports#tag/Main-Reports/paths/~1api~1v1~1supplier~1sales/get)
+              - [Returns and Item Movement Report](./reports#tag/Returns-and-Product-Movement-Report)
+              - [Details for the Sales Reports by Report ID](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1SalesReportsDetailedReportId)
+              - [Details for the Sales Reports by Period](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1SalesReportsDetailed)
+              - [Details for the Acquiring Expenses Reports by Report ID](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1AcquiringDetailedReportId)
+              - [Details for the Acquiring Expenses Reports by Period](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1AcquiringDetailed)
+        createdAt:
+          type: string
+          description: Date and time the assembly order was created
+          format: date-time
+        warehouseAddress:
+          type: string
+          description: |
+            Store address (seller warehouse) where the assembly order was received
+        orderCode:
+          type: string
+          description: |
+            Unique buyer order ID
+        payMode:
+          description: |
+            Pay mode:
+              - `prepaid` — prepaid
+              - `postpaid` — postpaid
+              - `unknown` — unknown
+          type: string
+          example: prepaid
+        skus:
+          type: array
+          description: Items SKU array
+          items:
+            type: string
+        id:
+          type: integer
+          description: Assembly order ID
+        warehouseId:
+          type: integer
+          description: |
+            Seller warehouse ID where the assembly order was received
+        nmId:
+          type: integer
+          description: WB item number
+        chrtId:
+          type: integer
+          description: Item size ID in WB system
+        price:
+          type: integer
+          description: |
+            The price in the currency of sale including all discounts, except WB Wallet discount, multiplied by 100. You can find a currency code in the `currencyCode`. Provided for informational purposes only
+        finalPrice:
+          description: The sum charged to the buyer in the currency of sale including all discounts, multiplied by 100. You can find a currency code in the `currencyCode` field. Provided for informational purposes only.
+          type: integer
+          example: 1014
+        convertedPrice:
+          description: The price in the currency of the seller country including all discounts, except WB Wallet discount, multiplied by 100. You can find a currency code in the `currencyCode` field. Provided for informational purposes only
+          type: integer
+          example: 5000
+        convertedFinalPrice:
+          description: The sum charged to the buyer in the currency of the seller country including all discounts, multiplied by 100. Provided for informational purposes only
+          type: integer
+          example: 1014
+        currencyCode:
+          type: integer
+          description: Sale currency code
+          example: 643
+          format: ISO 4217
+        convertedCurrencyCode:
+          description: Seller country currency code
+          format: ISO 4217
+          type: integer
+          example: 643
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Type of cargo:
+              - `1` — small-sized items
+              - `2` — over dimensional cargo (ODC)
+              - `3` — dimensional cargo+ (CD+)
+          enum:
+            - 1
+            - 2
+            - 3
+        isZeroOrder:
+          type: boolean
+          description: |
+            Indicator of an order for a item with zero inventory:
+              - `false` — the order is made for a item with a non-zero inventory
+              - `true` — the order is made for a item with zero inventory. Such an order can be canceled without a cancellation fee
+        options:
+          type: object
+          description: Order options
+          properties:
+            isB2b:
+              type: boolean
+              description: |
+                Indicator of a B2B sale:
+                  - `false` — not B2B sale
+                  - `true` — B2B sale
+    api.NewOrders:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Assembly orders list
+          items:
+            $ref: '#/components/schemas/api.NewOrder'
+    api.Order:
+      type: object
+      properties:
+        article:
+          type: string
+          description: Seller item number
+          example: wb6scpbwvp
+        cargoType:
+          type: integer
+          nullable: false
+          description: |
+            Type of cargo:
+              - `1` — small-sized items
+              - `2` — over dimensional cargo (ODC)
+              - `3` — dimensional cargo+ (CD+)
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+        chrtId:
+          type: integer
+          description: Item size ID in WB systems
+          example: 12345676
+        createdAt:
+          type: string
+          description: Date and time the assembly order was created
+          format: date-time
+          example: '2025-03-21T09:53:31Z'
+        price:
+          type: integer
+          description: |
+            The price in the currency of sale including all discounts, except WB Wallet discount, multiplied by 100. You can find a currency code in the `currencyCode`. Provided for informational purposes only
+          example: 5000
+        finalPrice:
+          description: The sum charged to the buyer in the currency of sale including all discounts, multiplied by 100. You can find a currency code in the `currencyCode` field. Provided for informational purposes only.
+          type: integer
+          example: 5000
+        convertedPrice:
+          description: The price in the currency of the seller country including all discounts, except WB Wallet discount, multiplied by 100. You can find a currency code in the `currencyCode` field. Provided for informational purposes only
+          type: integer
+          example: 5000
+        convertedFinalPrice:
+          description: The sum charged to the buyer in the currency of the seller country including all discounts, multiplied by 100. Provided for informational purposes only
+          type: integer
+          example: 5000
+        currencyCode:
+          type: integer
+          description: Sale currency code
+          format: ISO 4217
+          example: 643
+        convertedCurrencyCode:
+          description: Seller country currency code
+          format: ISO 4217
+          type: integer
+          example: 643
+        id:
+          type: integer
+          description: Assembly order ID
+          example: 123456789
+        isZeroOrder:
+          type: boolean
+          description: |
+            Indicator of an order for a item with zero inventory:
+              - `false` — the order is made for a item with a non-zero inventory
+              - `true` — the order is made for a item with zero inventory. Such an order can be canceled without a cancellation fee
+          example: false
+        nmId:
+          type: integer
+          description: WB item number
+          example: 1234567898765
+        orderCode:
+          type: string
+          description: |
+            Unique buyer order ID
+          example: 21117866-0006
+        payMode:
+          description: |
+            Pay mode:
+              - `prepaid` — prepaid
+              - `postpaid` — postpaid
+              - `unknown` — unknown
+          type: string
+          example: prepaid
+        rid:
+          type: string
+          description: |
+            Unique order ID. <br>
+            Note: `rid` corresponds to `srid` in the responses of the methods:
+              - [Buyers Return Applications](./user-communication#tag/Buyers-Returns/paths/~1api~1v1~1claims/get)
+              - [Orders](./reports#tag/Main-Reports/paths/~1api~1v1~1supplier~1orders/get)
+              - [Sales](./reports#tag/Main-Reports/paths/~1api~1v1~1supplier~1sales/get)
+              - [Returns and Item Movement Report](./reports#tag/Returns-and-Product-Movement-Report)
+              - [Details for the Sales Reports by Report ID](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1SalesReportsDetailedReportId)
+              - [Details for the Sales Reports by Period](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1SalesReportsDetailed)
+              - [Details for the Acquiring Expenses Reports by Report ID](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1AcquiringDetailedReportId)
+              - [Details for the Acquiring Expenses Reports by Period](./financial-reports-and-accounting#tag/Financial-Reports/operation/postV1AcquiringDetailed)
+          example: 5044304527347733263.0.0
+        skus:
+          type: array
+          description: Item SKU array
+          items:
+            type: string
+          example:
+            - '2043227963145'
+        warehouseAddress:
+          type: string
+          description: Store address (seller warehouse) where the assembly order was received
+          example: Москва, район Якиманка, Софийская набережная, 4 с1
+        warehouseId:
+          type: integer
+          description: Seller warehouse ID where the assembly order was received
+          example: 1162157
+        options:
+          type: object
+          description: Order options
+          properties:
+            isB2b:
+              example: false
+              type: boolean
+              description: |
+                Indicator of a B2B sale:
+                  - `false` — not B2B sale
+                  - `true` — B2B sale
+    api.OrderClientInfo:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '+7111111111'
+          description: |
+            Contact phone number for the buyer. To reach the buyer, dial this number and enter the extension code. This number is not the buyer's direct phone number
+        firstName:
+          type: string
+          description: Buyer's name
+          example: Ольга
+        orderID:
+          type: integer
+          example: 4564152
+          description: Assembly order ID
+        phoneCode:
+          type: integer
+          example: 3535
+          description: Phone extension code
+    api.OrderClientInfoResp:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.OrderClientInfo'
+    api.Orders:
+      type: object
+      properties:
+        next:
+          type: integer
+          description: |
+            Pagination parameter. Contains the value which should be specified in the request to retrieve the next batch of data
+          example: 12345566
+        orders:
+          type: array
+          description: Assembly orders list
+          items:
+            $ref: '#/components/schemas/api.Order'
+    api.OrdersRequest:
+      type: object
+      properties:
+        orders:
+          type: array
+          description: Assembly orders IDs list
+          items:
+            type: integer
+      example:
+        orders:
+          - 1234567
+    api.OrdersSGTINsSetRequest:
+      type: object
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/api.SGTINs'
+    api.SGTINs:
+      type: object
+      required:
+        - orderId
+        - sgtins
+      properties:
+        orderId:
+          description: Assembly order ID
+          type: integer
+          example: 123456
+        sgtins:
+          type: array
+          minItems: 1
+          maxItems: 24
+          description: List of Data Matrix codes. From 16 to 135 characters for one label
+          example:
+            - '123456789012345678'
+            - '1234567890123456'
+          items:
+            type: string
+    api.OrdersUINSetRequest:
+      type: object
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/api.UIN'
+    api.UIN:
+      type: object
+      required:
+        - orderId
+        - uin
+      properties:
+        orderId:
+          description: Assembly order ID
+          type: integer
+          example: 123456
+        uin:
+          type: string
+          minLength: 16
+          maxLength: 16
+          description: UIN
+          example: '1234568909091232'
+    api.OrdersIMEISetRequest:
+      type: object
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/api.IMEI'
+    api.IMEI:
+      type: object
+      required:
+        - orderId
+        - imei
+      properties:
+        orderId:
+          description: Assembly order ID
+          type: integer
+          example: 123456
+        imei:
+          type: string
+          minLength: 15
+          maxLength: 15
+          description: IMEI
+          example: '654321741987258'
+    api.OrdersGTINSetRequest:
+      type: object
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/api.GTIN'
+    api.GTIN:
+      type: object
+      required:
+        - gtin
+        - orderId
+      properties:
+        gtin:
+          description: GTIN
+          minLength: 13
+          maxLength: 13
+          type: string
+          example: '1234567890123'
+        orderId:
+          description: Assembly order ID
+          type: integer
+          example: 123456
+    api.BatchError:
+      type: object
+      required:
+        - origin
+        - requestId
+        - title
+      properties:
+        detail:
+          type: object
+          nullable: true
+          description: Error details
+          example: {}
+        origin:
+          type: string
+          description: WB internal service ID
+          example: market-public-api
+        requestId:
+          type: string
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        title:
+          type: string
+          description: Error title
+          example: IncorrectRequest
+    api.BatchErrorResponse:
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          type: integer
+          description: |
+            Error code:
+              - `404`
+              - `409`
+              - `400`
+          example: 404
+        detail:
+          type: string
+          description: |
+            - `NotFound` — the assembly order is not found
+            - `StatusMismatch` — operation is not possible for this assembly order status
+          example: NotFound
+      type: object
+    api.BatchCustomsDeclarationErrorResponse:
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          type: integer
+          description: |
+            Error code:
+              - `404`
+              - `409`
+              - `400`
+          example: 404
+        detail:
+          type: string
+          description: |
+            - `NotFound` — the assembly order is not found
+            - `StatusMismatch` — operation is not possible for this assembly order status
+            - `OrderNotB2B` — operation is available only for assembly orders with the B2B sale indicator `"isB2b": true`
+            - `InvalidOriginCountryCode` — invalid country of origin code
+          example: NotFound
+      type: object
+    api.MetaErrorResponse:
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          type: integer
+          description: Error code
+          example: 404
+        detail:
+          type: string
+          description: |
+            - `NotFound` — the assembly order is not found
+            - `IncorrectRequestBody` — incorrect request
+            - `IncorrectRequest` — incorrect parameter
+          example: NotFound
+      type: object
+    api.OrdersErrorResponse:
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          type: integer
+          description: Error code
+          example: 404
+        detail:
+          type: string
+          description: |
+            - `NotFound` — the assembly order is not found
+          example: NotFound
+      type: object
+    api.OrdersRequestV2:
+      properties:
+        ordersIds:
+          description: List of assembly order IDs
+          example:
+            - 123456
+            - 234567
+            - 345678
+          maxItems: 1000
+          type: array
+          items:
+            type: integer
+      type: object
+    api.StatusSetResponses:
+      example:
+        requestId: 03615778-eb9e-4f55-b4O4-fd3ac0fad2сc
+        results:
+          - orderId: 123456
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 234567
+            isError: false
+      properties:
+        requestId:
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          items:
+            $ref: '#/components/schemas/api.StatusSetResponse'
+          type: array
+      type: object
+      required:
+        - requestId
+        - results
+    api.CustomsDeclarationSetResponse:
+      example:
+        requestId: 03615778-eb9e-4f55-b4O4-fd3ac0fad2сc
+        results:
+          - orderId: 123456
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 234567
+            isError: false
+      properties:
+        requestId:
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          items:
+            $ref: '#/components/schemas/api.StatusSetCustomsDeclarationResponse'
+          type: array
+      type: object
+      required:
+        - requestId
+        - results
+    api.StatusSetResponse:
+      type: object
+      required:
+        - orderId
+        - isError
+      properties:
+        orderId:
+          type: integer
+          description: Assembly order ID
+          example: 123456
+        isError:
+          type: boolean
+          description: Are there any errors
+          example: true
+        errors:
+          items:
+            $ref: '#/components/schemas/api.BatchErrorResponse'
+          type: array
+          description: Error details
+    api.StatusSetCustomsDeclarationResponse:
+      type: object
+      required:
+        - orderId
+        - isError
+      properties:
+        orderId:
+          type: integer
+          description: Assembly order ID
+          example: 123456
+        isError:
+          type: boolean
+          description: Are there any errors
+          example: true
+        errors:
+          items:
+            $ref: '#/components/schemas/api.BatchCustomsDeclarationErrorResponse'
+          type: array
+          description: Error details
+    api.MetaDetailsResponse:
+      example:
+        requestId: 03615778-eb9e-4f55-b4O4-fd3ac0fad2сc
+        results:
+          - orderId: 234567
+            isError: false
+          - orderId: 123456
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 345678
+            isError: true
+            errors:
+              - code: 409
+                detail: MetaValidationFail
+                metaDetails:
+                  - key: imei
+                    value: '359876543210925'
+                    decision: imeiAlreadySold
+      properties:
+        requestId:
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          items:
+            type: object
+            required:
+              - orderId
+              - isError
+            properties:
+              orderId:
+                type: integer
+                description: Assembly order ID
+              isError:
+                type: boolean
+                description: Are there any errors
+              errors:
+                items:
+                  required:
+                    - code
+                    - detail
+                  properties:
+                    code:
+                      type: integer
+                      description: Error code
+                    detail:
+                      type: string
+                      description: |
+                        - `NotFound` — the assembly order is not found
+                        - `StatusMismatch` — operation is not possible for this assembly order status
+                        - `MetaValidationFail` — label identifiers validation failed
+                    metaDetails:
+                      description: Assembly order label identifiers validation errors
+                      $ref: '#/components/schemas/MetaDetailsErrors'
+                      type: array
+                  type: object
+                type: array
+                description: Error details
+      type: object
+      required:
+        - requestId
+        - results
+    MetaDetailsErrors:
+      type: array
+      description: Assembly order label identifiers validation errors
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+            example: uin
+            description: Label identifier
+          value:
+            nullable: true
+            type: string
+            example: null
+            description: Label identifier value
+          decision:
+            type: string
+            example: uinMaySell
+            description: |
+              Label identifiers validation errors. <br>
+              - `imei`
+                - `pending` — Label identifier validation continues. Wait for the validation status to change
+                - `required` — Required label identifier is not added to the assembly order
+                - `imeiInvalidFormat` — Invalid format
+                - `imeiAlreadySold` — The item with this IMEI has already been sold
+              - `uin`
+                - `required` — Маркировка обязательна и не закреплена за сборочным заданием
+              - `sgtin`
+                - `pending` — Label identifier validation continues. Wait for the validation status to change
+                - `required` — Required label identifier is not added to the assembly order
+                - `sgtinInvalidFormat` — Invalid format
+                - `sgtinNotFound` — Label identifier not found in [Chestny ZNAK](https://chestnyznak.ru/en/)
+                - `sgtinEmitted` —  Label identifier has been issued
+                - `sgtinApplied` — Putting into circulation not completed
+                - `sgtinWrittenOff` — Written off
+                - `sgtinRetired` — Retired
+                - `sgtinWithdrawn` — Withdrawn
+                - `sgtinDisaggregated` — Disaggregated
+                - `sgtinDisaggregation` — Disaggregation
+                - `sgtinAppliedNotPaid` — Not paid
+              - `gtin`
+                - `required` — Required label identifier is not added to the assembly order
+              - `expiration`
+                - `required` — Required label identifier is not added to the assembly order
+              - `customsDeclaration`
+                - `required` — Required label identifier is not added to the assembly order
+    api.OrdersResponses:
+      example:
+        requestId: 03615778-eb9e-4f55-b4O4-fd3ac0fad2сc
+        results:
+          - orderId: 123456
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 234567
+            isError: false
+      properties:
+        requestId:
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          items:
+            $ref: '#/components/schemas/api.OrdersResponse'
+          type: array
+      type: object
+      required:
+        - requestId
+        - results
+    api.OrdersResponse:
+      type: object
+      required:
+        - orderId
+        - isError
+      properties:
+        orderId:
+          type: integer
+          description: Assembly order ID
+          example: 123456
+        isError:
+          type: boolean
+          description: Are there any errors
+          example: true
+        errors:
+          items:
+            $ref: '#/components/schemas/api.OrdersErrorResponse'
+          type: array
+          description: Error details
+    api.MetaSetResponses:
+      example:
+        requestId: 03615778-eb9e-4f55-b4O4-fd3ac0fad2сc
+        results:
+          - orderId: 123456
+            isError: true
+            errors:
+              - code: 404
+                detail: NotFound
+          - orderId: 234567
+            isError: false
+      properties:
+        requestId:
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        results:
+          items:
+            $ref: '#/components/schemas/api.MetaSetResponse'
+          type: array
+      type: object
+      required:
+        - requestId
+        - results
+    api.MetaSetResponse:
+      type: object
+      required:
+        - orderId
+        - isError
+      properties:
+        orderId:
+          type: integer
+          description: Assembly order ID
+          example: 123456
+        isError:
+          type: boolean
+          description: Are there any errors
+          example: true
+        errors:
+          items:
+            $ref: '#/components/schemas/api.MetaErrorResponse'
+          type: array
+          description: Error details
+    api.OrderStatusesV2:
+      type: object
+      example:
+        orders:
+          - supplierStatus: confirm
+            wbStatus: waiting
+            errors: []
+            orderId: 123456
+          - supplierStatus: ''
+            wbStatus: ''
+            errors:
+              - code: 404
+                detail: NotFound
+            orderId: 789012
+      properties:
+        orders:
+          type: array
+          description: Status data
+          items:
+            $ref: '#/components/schemas/api.OrderStatusV2'
+    api.OrderStatusV2:
+      type: object
+      required:
+        - orderId
+      properties:
+        errors:
+          description: Error detail
+          items:
+            $ref: '#/components/schemas/api.OrdersErrorResponse'
+          type: array
+        orderId:
+          type: integer
+          description: Assembly order ID
+        supplierStatus:
+          type: string
+          description: Assembly order status set by the seller
+        wbStatus:
+          type: string
+          description: Assembly order status set by WB system
+    api.OrdersMetaDetailsResponse:
+      type: object
+      required:
+        - requestId
+        - orders
+      properties:
+        requestId:
+          type: string
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        orders:
+          type: array
+          description: Assembly orders label identifiers and validation statuses
+          items:
+            type: object
+            required:
+              - isError
+              - metaDetails
+              - orderId
+            properties:
+              orderId:
+                type: integer
+                example: 123456
+                description: Assembly order ID
+              isError:
+                type: boolean
+                description: Are there any errors
+                example: false
+              errors:
+                type: array
+                example: []
+                description: Error data
+                items:
+                  type: object
+                  required:
+                    - code
+                    - detail
+                  properties:
+                    code:
+                      type: integer
+                      description: Error code
+                      example: 404
+                    detail:
+                      type: string
+                      example: NotFound
+                      description: Additional error data
+              metaDetails:
+                type: array
+                description: Label identifiers and their validation statuses
+                items:
+                  type: object
+                  required:
+                    - decision
+                    - key
+                  properties:
+                    key:
+                      type: string
+                      example: imei
+                      description: |
+                        Label identifier:
+                        - `imei` — [IMEI](./in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1imei/post)
+                        - `uin` — [UIN](./in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1uin/post)
+                        - `gtin` — [GTIN](./in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1gtin/post)
+                        - `sgtin` — [Data Matrix code](./in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1marketplace~1v3~1click-collect~1orders~1meta~1sgtin/post)
+                        - `customsDeclaration` — [customs declaration number](./in-store-pickup#tag/inStorePickupLabelIdentifiers/operation/postV3ClickCollectOrdersMetaCustomsDeclaration)
+                        - `originCountryCode` — [numeric code of the country of origin](./in-store-pickup#tag/inStorePickupLabelIdentifiers/operation/postV3ClickCollectOrdersMetaCustomsDeclaration) according to [Russian classification of countries of the world](https://esnsi.gosuslugi.ru/classifiers/16269)
+                    value:
+                      type: string
+                      nullable: true
+                      description: Label identifier value
+                      example: '359876543210025'
+                    decision:
+                      type: string
+                      example: imeiInvalidFormat
+                      description: |
+                        Label identifiers validation statuses. <br>
+                        - `imei`
+                          - `filled` — Label identifier is added to the assembly order, validation is not required
+                          - `deadlineExceeded` — Label identifier validation is not completed and will continue. The validation can pass or fail
+                          - `optional` — Label identifier is not required. Validation passed
+                          - `imeiMaySell` — The item is approved for sale. Validation passed
+                          - `imeiSoldB2B` — The item was sold to a B2B buyer and approved for sale again. Validation passed
+                          - `pending` — Label identifier validation continues. Wait for the validation status to change
+                          - `required` — Required label identifier is not added to the assembly order. Validation failed
+                          - `imeiInvalidFormat` — Invalid format. Validation failed
+                          - `imeiAlreadySold` — The item with this IMEI has already been sold. Validation failed
+                        - `uin`
+                          - `filled` — Label identifier is added to the assembly order, validation is not required
+                          - `optional` — Label identifier is not required. Validation passed
+                          - `required` — Required label identifier is not added to the assembly order. Validation failed
+                        - `sgtin`
+                          - `filled` — Label identifier is added to the assembly order, validation is not required
+                          - `deadlineExceeded` —  Label identifier validation is not completed and will continue. The validation can pass or fail
+                          - `optional` — Label identifier is not required. Validation passed
+                          - `sgtinIntroduced` — The item is approved for sale. Validation passed
+                          - `sgtinSoldB2B` — The item was sold to a B2B buyer and approved for sale again. Validation passed
+                          - `pending` — Label identifier validation continues. Wait for the validation status to change
+                          - `required` — Required label identifier is not added to the assembly order. Validation failed
+                          - `sgtinInvalidFormat` — Invalid format. Validation failed
+                          - `sgtinNotFound` — Label identifier not found in [Chestny ZNAK](https://chestnyznak.ru/en/). Validation failed
+                          - `sgtinEmitted` —  Label identifier has been issued. Validation failed
+                          - `sgtinApplied` — Putting into circulation not completed. Validation failed
+                          - `sgtinWrittenOff` — Written off. Validation failed
+                          - `sgtinRetired` — Retired. Validation failed
+                          - `sgtinWithdrawn` — Withdrawn. Validation failed
+                          - `sgtinDisaggregated` — Disaggregated. Validation failed
+                          - `sgtinDisaggregation` — Disaggregation. Validation failed
+                          - `sgtinAppliedNotPaid` — Not paid. Validation failed
+                        - `gtin`
+                          - `filled` — Label identifier is added to the assembly order, validation is not required
+                          - `optional` — Label identifier is not required. Validation passed
+                          - `required` — Required label identifier is not added to the assembly order. Validation failed
+                        - `customsDeclaration`
+                          - `filled` — Label identifier is added to the assembly order, validation is not required
+                          - `optional` — Label identifier is not required. Validation passed
+                          - `required` — Required label identifier is not added to the assembly order. Validation failed
+    api.OrdersMetaResponse:
+      type: object
+      required:
+        - meta
+      properties:
+        meta:
+          type: array
+          description: Assembly orders label identifiers
+          items:
+            $ref: '#/components/schemas/api.OrderMetaV2'
+    api.OrderMetaV2:
+      type: object
+      required:
+        - error
+        - orderId
+      properties:
+        error:
+          type: string
+          description: |
+            Error message. <br>
+            - `""` — no errors
+            - `NotFound` — the assembly order is not found
+          example: ''
+        gtin:
+          type: string
+          nullable: true
+          description: GTIN
+          example: '123456789012345'
+        imei:
+          type: string
+          nullable: true
+          description: IMEI
+          example: '123456789012345'
+        orderId:
+          type: integer
+          description: Assembly order ID
+          example: 654321
+        sgtin:
+          type: array
+          nullable: true
+          description: Labeling code [Chestny ZNAK](https://chestnyznak.ru/en)
+          items:
+            type: string
+            example: '123456789012345'
+        uin:
+          type: string
+          nullable: true
+          description: UIN
+          example: '123456789012345'
+        customsDeclaration:
+          type: string
+          nullable: true
+          description: Customs declaration number
+          example: 10502030/050626/0001234
+    api.OrdersMetaDeleteRequest:
+      type: object
+      required:
+        - key
+        - ordersIds
+      properties:
+        key:
+          type: string
+          enum:
+            - imei
+            - uin
+            - gtin
+            - sgtin
+            - customsDeclaration
+          example: imei
+          description: Label identifiers type to delete. Only one value is passed
+        ordersIds:
+          type: array
+          description: Assembly order IDs list
+          maxItems: 1000
+          example:
+            - 123456
+            - 234567
+          items:
+            type: integer
+  responses:
+    '401':
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '402':
+      description: Payment required
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details. The error is only returned to services from the [Solutions for business Catalog](https://dev.wildberries.ru/business-solutions)
+          example:
+            title: payment required
+            detail: wb solution for business has insufficient funds on its balance. please top up the balance in the company's personal account https://dev.wildberries.ru/company
+    '429':
+      description: Too many requests
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+    AccessDenied:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Access denied
+    IncorrectRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/api.BatchError'
+          example:
+            detail: {}
+            origin: market-public-api
+            requestId: f1787bd2d1fdс35d6f537316514у4a05
+            title: IncorrectRequest
+    AccessDeniedBatch:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/api.BatchError'
+          example:
+            detail: {}
+            origin: market-public-api
+            requestId: f1787bd2d1fdс35d6f537316514у4a05
+            title: AccessDenied

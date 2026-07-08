@@ -1,0 +1,3534 @@
+openapi: 3.0.1
+info:
+  title: Reports
+  version: reports
+  description: |
+    <div class="api-block">
+
+    Reports on items, retentions, acceptance expenses, and paid storage
+
+    </div>
+  x-file-name: reports
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Main Reports
+    description: ''
+  - name: Warehouses Inventory Report
+    description: ''
+  - name: Report on Items with Mandatory Labeling
+    description: ''
+  - name: Retention Reports
+    description: ''
+  - name: Acceptance Expenses
+    description: ''
+  - name: Paid Storage
+    description: ''
+  - name: Sales by Regions
+    description: ''
+  - name: Share of Brand in Sales
+    description: ''
+  - name: Hidden Items
+    description: ''
+  - name: Returns and Item Movement Report
+    description: ''
+paths:
+  /api/v1/supplier/orders:
+    servers:
+      - url: https://statistics-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://statistics-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: statistics
+      security:
+        - HeaderApiKey: []
+      summary: Orders
+      description: |
+        The method returns order information.<br>The data updated every 30 minutes.<br><br>
+
+        1 line means 1 order and means 1 item.<br>The `srid` field should be used to identify the order.<br><br>
+
+        Data storage is guaranteed for no more than 90 days from the date of sale.<br><br>
+
+        The responses do not include orders for which payment was not confirmed. For example, it could be orders with delayed payments or installment payments. However, if there are sales for such orders, you can get it using [details for the realization reports](/openapi/financial-reports-and-accounting#tag/Financial-Reports).<br>
+        To receive all completed orders, use [Order Feed](https://seller.wildberries.ru/content-analytics/order-feed) in your personal account.
+
+        <div class="description_important">
+          The data in this report is preliminary and is used for operational monitoring
+        </div>
+
+        For a single response to a request with `flag=0` or without `flag`, a conditional limit of 80,000 rows is set. Therefore, more than one request may be necessary to retrieve all orders. In the second and subsequent requests, use the full value of the `lastChangeDate` field of the last row from the response of the previous request in the `dateFrom` parameter.<br> If the response returns an empty array `[]`, all orders have already been retrieved.<br><br>
+
+        In the sandbox, the `dateFrom` and `dateTo` parameters can only be set to a range within the last 4 months from the current date.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 10 requests |
+        | Service | 1 min | 1 request | 1 min | 10 requests |
+        | Base with secret | 1 min | 1 request | 1 min | 10 requests |
+        | Base | 3 h | 1 request | 3 h | 1 request |
+        </div>
+      tags:
+        - Main Reports
+      parameters:
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date-time
+          required: true
+          description: |
+            Date and time of last change on the order.<br>
+            Date format: RFC3339. You may send date or date with time.
+            Time could be specified in seconds or milliseconds.<br>
+            The time stands in Moscow time zone (UTC+3).
+            <br>Examples:
+              - `2019-06-20`
+              - `2019-06-20T23:59:59`
+              - `2019-06-20T00:00:00.12345`
+              - `2017-03-25T00:00:00`
+        - $ref: '#/components/parameters/flag'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrdersItem'
+              example:
+                - date: '2022-03-04T18:08:31'
+                  lastChangeDate: '2022-03-06T10:11:07'
+                  warehouseName: Подольск
+                  warehouseType: Склад продавца
+                  countryName: Россия
+                  oblastOkrugName: Центральный федеральный округ
+                  regionName: Московская
+                  supplierArticle: '12345'
+                  nmId: 1234567
+                  barcode: '123453559000'
+                  category: Бытовая техника
+                  subject: Мультистайлеры
+                  brand: Тест
+                  techSize: '0'
+                  incomeID: 56735459
+                  isSupply: false
+                  isRealization: true
+                  totalPrice: 1887
+                  discountPercent: 18
+                  spp: 26
+                  finishedPrice: 1145
+                  priceWithDisc: 1547
+                  isCancel: true
+                  cancelDate: '2022-03-09T00:00:00'
+                  sticker: '926912515'
+                  gNumber: '34343462218572569531'
+                  srid: 11.rf9ef11fce1684117b0nhj96222982382.3.0
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/responseErrorStatistics'
+                  - $ref: '#/components/schemas/responseErrorStatistics2'
+              examples:
+                DateFromFieldRequired:
+                  $ref: '#/components/examples/DateFromFieldRequired'
+                DateFromValueNotValidated:
+                  $ref: '#/components/examples/DateFromValueNotValidated'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/supplier/sales:
+    servers:
+      - url: https://statistics-api.wildberries.ru
+        description: |
+          **Prod**
+      - url: https://statistics-api-sandbox.wildberries.ru
+        description: |
+          **Sandbox**
+    get:
+      x-readonly-method: true
+      x-category: statistics
+      security:
+        - HeaderApiKey: []
+      summary: Sales
+      description: |
+        The method returns sale and return information.<br>The data updated every 30 minutes.<br><br>
+
+        1 line means 1 sale/return and means 1 item.<br>The `srid` field should be used to identify the order.<br><br>
+
+        Data storage is guaranteed for no more than 90 days from the date of sale.<br><br>
+
+        <div class="description_important">
+          The data in this report is preliminary and is used for operational monitoring
+        </div>
+
+          - The responses do not include orders for which payment was not confirmed, even if these orders are in details for the realization reports. For example, it could be orders with delayed payments or installment payments
+          - The values of the `priceWithDisc` and `forPay` fields are calculated using a simplified logic and may differ from `retail_price_withdisc_rub` and `ppvz_for_pay`, respectively, in details for the realization reports
+          - The fields `finishedPrice`, `priceWithDisc`, and `forPay` may temporarily have the value `0`: data is filled in asynchronously and updated within 24 hours
+          - For orders that are paid in a currency other than the seller currency, prices may be rounded due to currency conversion
+
+        Use [details for the realization reports](/openapi/financial-reports-and-accounting#tag/Financial-Reports) for accurate financial calculations, reconciliation, and reporting.<br><br>
+
+        For a single response to a request with `flag=0` or without `flag`, a conditional limit of 80,000 rows is set. Therefore, more than one request may be necessary to retrieve all sales and returns. In the second and subsequent requests, use the full value of the `lastChangeDate` field of the last row from the response of the previous request in the `dateFrom` parameter.<br> If the response returns an empty array `[]`, all sales and returns have already been retrieved.<br><br>
+
+        In the sandbox, the `dateFrom` and `dateTo` parameters can only be set to a range within the last 4 months from the current date.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 2 h | 1 request | 2 h | 1 request |
+        </div>
+      tags:
+        - Main Reports
+      parameters:
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date-time
+          required: true
+          description: |
+            Date and time of last change on the sale/return.<br>
+            Date format: RFC3339. You may send date or date with time.
+            Time could be specified in seconds or milliseconds.<br>
+            The time stands in Moscow time zone (UTC+3).
+            <br>Examples:
+              - `2019-06-20`
+              - `2019-06-20T23:59:59`
+              - `2019-06-20T00:00:00.12345`
+              - `2017-03-25T00:00:00`
+        - $ref: '#/components/parameters/flag'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SalesItem'
+              example:
+                - date: '2022-03-04T18:08:31'
+                  lastChangeDate: '2022-03-06T10:11:07'
+                  warehouseName: Подольск
+                  warehouseType: Склад продавца
+                  countryName: Россия
+                  oblastOkrugName: Центральный федеральный округ
+                  regionName: Московская
+                  supplierArticle: '12345'
+                  nmId: 1234567
+                  barcode: '123453559000'
+                  category: Бытовая техника
+                  subject: Мультистайлеры
+                  brand: Тест
+                  techSize: '0'
+                  incomeID: 56735459
+                  isSupply: false
+                  isRealization: true
+                  totalPrice: 1887
+                  discountPercent: 18
+                  spp: 20
+                  paymentSaleAmount: 93
+                  forPay: 1284.01
+                  finishedPrice: 1145
+                  priceWithDisc: 1547
+                  saleID: S9993700024
+                  sticker: '926912515'
+                  gNumber: '34343462218572569531'
+                  srid: 11.rf9ef11fce1684117b0nhj96222982382.3.0
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/responseErrorStatistics'
+                  - $ref: '#/components/schemas/responseErrorStatistics2'
+              examples:
+                DateFromFieldRequired:
+                  $ref: '#/components/examples/DateFromFieldRequired'
+                DateFromValueNotValidated:
+                  $ref: '#/components/examples/DateFromValueNotValidated'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/excise-report:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      tags:
+        - Report on Items with Mandatory Labeling
+      summary: Report on Items with Mandatory Labeling
+      description: |
+        Returns operations with labeled items
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 5 h | 10 requests | 30 min | 10 requests |
+        | Service | 5 h | 10 requests | 30 min | 10 requests |
+        | Base with secret | 5 h | 10 requests | 30 min | 10 requests |
+        | Base | 24 h | 2 requests | 12 h | 1 request |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExciseReportRequest'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExciseReportResponse'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'request body has an error: doesn''t match schema #/components/schemas/ExciseReportRequest: Error at "/countries/0": value is not one of the allowed values ["AM","BY","KG","KZ","RU","UZ"]'
+                origin: tariffs
+                requestId: 8bbd7db59522d09926dd059892dbeff0
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/warehouse_remains:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Warehouses Inventory Report
+      summary: Create the Report
+      description: |
+        Creates a task for report generation. The parameters `groupBy` and `filter` can be set in any combination — similar to the [version](https://seller.wildberries.ru/analytics-reports/warehouse-remains) in the personal account.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 5 requests |
+        | Service | 1 min | 1 request | 1 min | 5 requests |
+        | Base with secret | 1 min | 1 request | 1 min | 5 requests |
+        | Base | 1 h | 4 requests | 15 min | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: locale
+          schema:
+            type: string
+            example: ru
+            default: ru
+          description: |
+            Language of the `subjectName` and `warehouseName` response fields:
+              - `ru` — Russian
+              - `en` — English
+              - `zh` — Chinese. Values of the `warehouseName` are in English
+        - name: groupByBrand
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Group by brand
+        - name: groupBySubject
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Group by subcategory
+        - name: groupBySa
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Group by seller item number
+        - name: groupByNm
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Group by WB item number. If `groupByNm=true`, there will be `volume` field in the response
+        - name: groupByBarcode
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Group by barcode
+        - name: groupBySize
+          in: query
+          schema:
+            type: boolean
+            example: true
+            default: false
+          description: Group by size
+        - name: filterPics
+          in: query
+          schema:
+            type: integer
+            example: 1
+            default: 0
+          description: |
+            Photo filter:
+              - `-1` — without photo
+              - `0` — do not apply filter
+              - `1` — with photo
+        - name: filterVolume
+          in: query
+          schema:
+            type: integer
+            example: 3
+            default: 0
+          description: |
+            Volume filter:
+              - `-1` — without dimensions
+              - `0` — do not apply filter
+              - `3` — over three liters
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTaskResponse'
+              examples:
+                CreateResponseData:
+                  $ref: '#/components/examples/CreateResponseData'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'parameter "groupByNm" in query has an error: empty value is not allowed'
+                origin: api-statistics
+                requestId: 6a6c2fba81f08e58670a7dab835ff0d7
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/warehouse_remains/tasks/{task_id}/status:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Warehouses Inventory Report
+      summary: Check the Status
+      description: |
+        Returns the status of the generation task
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 5 s | 1 request | 5 s | 5 requests |
+        | Service | 5 s | 1 request | 5 s | 5 requests |
+        | Base with secret | 5 s | 1 request | 5 s | 5 requests |
+        | Base | 1 h | 4 requests | 15 min | 1 request |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            Generation task ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTasksResponse'
+              examples:
+                GetTasksResponseData:
+                  $ref: '#/components/examples/GetTasksResponseData'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''2f071556-ae39-492f-fd8cf1eb0d25'' text as *uuid.UUID: invalid UUID length: 31'
+                origin: api-statistics
+                requestId: 52dd27a91a1a643feae7201b206462df
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/warehouse_remains/tasks/{task_id}/download:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Warehouses Inventory Report
+      summary: Get the Report
+      description: |
+        Returns the report by task ID
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 1 h | 4 requests | 15 min | 1 request |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            Generation task ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    brand:
+                      type: string
+                      example: Wonderful
+                      description: Brand
+                    subjectName:
+                      type: string
+                      example: Фотоальбомы
+                      description: Subcategory name
+                    vendorCode:
+                      type: string
+                      example: 41058/прозрачный
+                      description: Seller item number
+                    nmId:
+                      type: integer
+                      example: 183804172
+                      description: WB item number
+                    barcode:
+                      type: string
+                      example: '2037031652319'
+                      description: Barcode
+                    techSize:
+                      type: string
+                      example: '0'
+                      description: Size
+                    volume:
+                      type: number
+                      example: 1.33
+                      description: Volume, L
+                    warehouses:
+                      type: array
+                      description: Inventory and to and from the client. It will be included in the response only if `quantity` is non-zero
+                      items:
+                        type: object
+                        properties:
+                          warehouseName:
+                            type: string
+                            example: Невинномысск
+                            description: Warehouse name
+                          quantity:
+                            type: integer
+                            example: 134
+                            description: |
+                              Quantity
+              example:
+                - brand: Wonderful
+                  subjectName: Фотоальбомы
+                  vendorCode: 41058/прозрачный
+                  nmId: 183804172
+                  barcode: '2037031652319'
+                  techSize: '0'
+                  volume: 1.33
+                  warehouses:
+                    - warehouseName: В пути до получателей
+                      quantity: 14
+                    - warehouseName: В пути возвраты на склад WB
+                      quantity: 4
+                    - warehouseName: Всего находится на складах
+                      quantity: 267
+                    - warehouseName: Невинномысск
+                      quantity: 134
+                    - warehouseName: Коледино
+                      quantity: 133
+        '204':
+          description: No data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''7b8875---9f03-46f1-af21-b9b4b22fe821'' text as *uuid.UUID: invalid UUID format'
+                origin: api-statistics
+                requestId: 44bac63ab29c46cb2d49392e6604c1a0
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/analytics/v1/measurement-penalties:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Retention Reports
+      summary: Logistics and Storage Costs Multiplier
+      operationId: getMeasurementPenalties
+      description: |
+        The method returns a report with [logistics and storage costs multiplier](https://seller.wildberries.ru/analytics-reports/dimensions-penalties)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 6 h | 1 request | 6 h | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: dateFrom
+          description: Report period start. By default the date when data for the report was first received is used
+          schema:
+            type: string
+            format: date-time
+          example: '2025-02-01T15:00:00Z'
+        - in: query
+          name: dateTo
+          required: true
+          description: Report period end
+          schema:
+            type: string
+            format: date-time
+          example: '2025-10-11T18:00:00Z'
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 330
+            maximum: 1000
+          description: Number of retentions in the response
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            example: 220
+            default: 0
+          description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeasurementPenalties'
+              examples:
+                MeasurementPenalties:
+                  $ref: '#/components/examples/MeasurementPenalties'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response400Retentions'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response403Retentions'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/analytics/v1/warehouse-measurements:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Retention Reports
+      summary: Warehouse Measurements
+      operationId: getWarehouseMeasurements
+      description: |
+        The method returns a report with [warehouse measurements](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/warehouse-measurements)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 6 h | 1 request | 6 h | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: dateFrom
+          description: Report period start. By default the date when data for the report was first received is used
+          schema:
+            type: string
+            format: date-time
+          example: '2025-02-01T15:00:00Z'
+        - in: query
+          name: dateTo
+          required: true
+          description: Report period end
+          schema:
+            type: string
+            format: date-time
+          example: '2025-10-11T18:00:00Z'
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 330
+            maximum: 1000
+          description: Number of measurements in the response
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            example: 220
+            default: 0
+          description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WHM'
+              examples:
+                Measurements:
+                  $ref: '#/components/examples/WHM'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response400Retentions'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response403Retentions'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/analytics/v1/deductions:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Retention Reports
+      summary: Substitutions and Incorrect Attachments
+      operationId: getDeductions
+      description: |
+        The method returns a report with [substitutions and incorrect attachments](https://seller.wildberries.ru/analytics-reports/dimensions-penalties/retentions) retentions
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 1 h | 4 requests | 15 min | 1 request |
+        </div>
+      parameters:
+        - name: dateFrom
+          in: query
+          description: Report period start. By default the date and time when data for the report was first received is used
+          schema:
+            type: string
+            format: date-time
+          example: '2025-02-01T15:00:00Z'
+        - name: dateTo
+          in: query
+          required: true
+          description: Report period end
+          schema:
+            type: string
+            format: date-time
+          example: '2025-10-11T18:00:00Z'
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum:
+              - nmId
+              - dtBonus
+              - bonusSumm
+            default: dtBonus
+            example: nmId
+          description: |
+            Sorting:
+            - `nmId` — by Wildberries item number
+            - `dtBonus` — by fine date and time
+            - `bonusSumm` — by fine amount
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum:
+              - desc
+              - asc
+            default: desc
+            example: asc
+          description: |
+            Data order:
+            - `desc` — descending
+            - `asc` — ascending
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 330
+            maximum: 1000
+          description: Number of retentions in the response
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            example: 220
+            default: 0
+          description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessSubstIncorAttachResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response400Retentions'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response403Retentions'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/antifraud-details:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Retention Reports
+      summary: Self-purchases
+      description: "Returns report with self-purchase deductions. The report is generated on Wednesdays at 7:00 UTC+4 and contains weekly data. Also you can get all data starting from August\_2023.\n<br><br>\nSelf-purchase deduction is\_30% of item price. Minimum deduction is\_100,000\_₽, if the total item cost delivered to the pick-up point is more than 100,000\_₽ per one week.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Introduction/Rate-Limits\">Request limit</a> per one seller account:\n\n\n| Type | Period | Limit | Interval | Burst |\n| --- | --- | --- | --- | --- |\n| Personal | 10 min | 1 request | 10 min | 10 requests |\n| Service | 10 min | 1 request | 10 min | 10 requests |\n| Base with secret | 10 min | 1 request | 10 min | 10 requests |\n| Base | 1 h | 1 request | 1 h | 1 request |\n</div>\n"
+      parameters:
+        - $ref: '#/components/parameters/Date'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessTaskResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                IncorrectDate:
+                  $ref: '#/components/examples/IncorrectDate'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/goods-labeling:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Retention Reports
+      summary: Item Labeling
+      description: |
+        Returns a report on deductions for the absence of mandatory item labeling.
+        <br>The report contains photos of items where the labeling is absent or cannot be read.
+        <br>Data can be obtained for up to 31 days, starting from March 2024
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 10 requests |
+        | Service | 1 min | 1 request | 1 min | 10 requests |
+        | Base with secret | 1 min | 1 request | 1 min | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/DateFromGoodsLabeling'
+        - $ref: '#/components/parameters/DateToGoodsLabeling'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessGoodsLabelingResponse'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/acceptance_report:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Acceptance Expenses
+      summary: Create the Report
+      description: "Creates a task for report generation.<br></br>\nMaximum of report period is\_31\_days.\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Introduction/Rate-Limits\">Request limit</a> per one seller account:\n\n\n| Type | Period | Limit | Interval | Burst |\n| --- | --- | --- | --- | --- |\n| Personal | 1 min | 1 request | 1 min | 1 request |\n| Service | 1 min | 1 request | 1 min | 1 request |\n| Base with secret | 1 min | 1 request | 1 min | 1 request |\n| Base | 3 h | 1 request | 3 h | 1 request |\n</div>\n"
+      parameters:
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTaskResponse'
+              examples:
+                CreateResponseData:
+                  $ref: '#/components/examples/CreateResponseData'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/acceptance_report/tasks/{task_id}/status:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Acceptance Expenses
+      summary: Check the Status
+      description: |
+        Returns the status of the generation task
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 5 s | 1 request | 5 s | 1 request |
+        | Service | 5 s | 1 request | 5 s | 1 request |
+        | Base with secret | 5 s | 1 request | 5 s | 1 request |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            Generation task ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTasksResponse'
+              examples:
+                GetTasksResponseData:
+                  $ref: '#/components/examples/GetTasksResponseData'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''7b8875---9f03-46f1-af21-b9b4b22fe821'' text as *uuid.UUID: invalid UUID format'
+                origin: api-statistics
+                requestId: 44bac63ab29c46cb2d49392e6604c1a0
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/acceptance_report/tasks/{task_id}/download:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Acceptance Expenses
+      summary: Get the Report
+      description: |
+        Returns the report by task ID
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            Generation task ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                      description: "Number of\_items"
+                      example: 40
+                    giCreateDate:
+                      type: string
+                      format: date
+                      description: Shipment creation date
+                      example: '2025-03-04'
+                    incomeId:
+                      type: integer
+                      description: Shipment number
+                      example: 11834106
+                    nmID:
+                      type: integer
+                      description: Wildberries item number
+                      example: 123456789
+                    shkCreateDate:
+                      type: string
+                      format: date
+                      description: Receiving date
+                      example: '2025-03-14'
+                    subjectName:
+                      type: string
+                      description: Subcategory
+                      example: Добавки пищевые
+                    total:
+                      type: number
+                      description: "Receiving cost,\_₽ with kopecks"
+                      example: 873.04
+        '204':
+          description: No data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''2f071556-ae39-492f-fd8cf1eb0d25'' text as *uuid.UUID: invalid UUID length: 31'
+                origin: api-statistics
+                requestId: 52dd27a91a1a643feae7201b206462df
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/paid_storage:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Paid Storage
+      summary: Generate the Report
+      description: "Create a task to generate a report. Maximum of report period\_— 8\_days\n\n<div class=\"description_limit\">\n<a href=\"/openapi/api-information#tag/Introduction/Rate-Limits\">Request limit</a> per one seller account:\n\n\n| Type | Period | Limit | Interval | Burst |\n| --- | --- | --- | --- | --- |\n| Personal | 1 min | 1 request | 1 min | 5 requests |\n| Service | 1 min | 1 request | 1 min | 5 requests |\n| Base with secret | 1 min | 1 request | 1 min | 5 requests |\n| Base | 1 h | 1 request | 1 h | 1 request |\n</div>\n"
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '2022-01-01'
+          description: |
+            Start of the report period, RFC3339 format. Date or date and time, for example:
+
+              * `2019-06-20`
+              * `2019-06-20T23:59:59`
+              * `2019-06-20T00:00:00.12345`
+              * `2017-03-25T00:00:00`
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '2022-01-09'
+          description: |
+            End of the report period, RFC3339 format. Date or date and time, for example:
+
+              * `2019-06-20`
+              * `2019-06-20T23:59:59`
+              * `2019-06-20T00:00:00.12345`
+              * `2017-03-25T00:00:00`
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTaskResponse'
+              examples:
+                CreateResponseData:
+                  $ref: '#/components/examples/CreateResponseData'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded8'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/paid_storage/tasks/{task_id}/status:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Paid Storage
+      summary: Check the Status
+      description: |
+        Returns the status of task
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 5 s | 1 request | 5 s | 5 requests |
+        | Service | 5 s | 1 request | 5 s | 5 requests |
+        | Base with secret | 5 s | 1 request | 5 s | 5 requests |
+        | Base | 1 h | 2 requests | 30 min | 2 requests |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            Task ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTasksResponse'
+              examples:
+                GetTasksResponseData:
+                  $ref: '#/components/examples/GetTasksResponseData'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''2f071556-ae39-492f-fd8cf1eb0d25'' text as *uuid.UUID: invalid UUID length: 31'
+                origin: api-statistics
+                requestId: 52dd27a91a1a643feae7201b206462df
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/paid_storage/tasks/{task_id}/download:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Paid Storage
+      summary: Get the Report
+      description: |
+        Returns the report by task ID
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 06e06887-9d9f-491f-b16a-bb1766fcb8d2
+          description: |
+            Task ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePaidStorage'
+              example:
+                - date: '2023-10-01'
+                  logWarehouseCoef: 1
+                  officeId: 507
+                  warehouse: Коледино
+                  warehouseCoef: 1.7
+                  giId: 123456
+                  chrtId: 1234567
+                  size: '0'
+                  barcode: ''
+                  subject: Маски одноразовые
+                  brand: 1000 Каталог
+                  vendorCode: '567383'
+                  nmId: 1234567
+                  volume: 12
+                  calcType: 'короба: без габаритов'
+                  warehousePrice: 7.65
+                  barcodesCount: 1
+                  palletPlaceCode: 0
+                  palletCount: 0
+                  originalDate: '2023-03-01'
+                  loyaltyDiscount: 10
+                  tariffFixDate: '2023-10-01'
+                  tariffLowerDate: '2023-11-01'
+        '204':
+          description: No data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: 'Invalid format for parameter task_id: error unmarshaling ''7b8875---9f03-46f1-af21-b9b4b22fe821'' text as *uuid.UUID: invalid UUID format'
+                origin: api-statistics
+                requestId: 44bac63ab29c46cb2d49392e6604c1a0
+                title: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              example:
+                detail: not found
+                origin: api-statistics
+                requestId: c777731fc180f215a49c9896c2f1200d
+                title: Not Found
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/region-sale:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Sales by Regions
+      summary: Get Report
+      description: |
+        Returns sales data grouped by regions of the countries. You can obtain a report for a maximum of 31 days.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 1 request | 10 s | 5 requests |
+        | Service | 10 s | 1 request | 10 s | 5 requests |
+        | Base with secret | 10 s | 1 request | 10 s | 5 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessRegionSaleResponse'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/brand-share/brands:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Share of Brand in Sales
+      summary: Seller Brands
+      description: |
+        Returns the list of the seller brands.
+
+        You can only get brands that:
+        - were sold in the last 90 days
+        - are in WB
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 10 requests |
+        | Service | 1 min | 1 request | 1 min | 10 requests |
+        | Base with secret | 1 min | 1 request | 1 min | 10 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBrandsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/brand-share/parent-subjects:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Share of Brand in Sales
+      summary: Parent Categories of the Brand
+      description: |
+        Returns parent categories of the brand.
+
+        Data can be obtained starting from 1 November 2022, for up to 365 days.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 5 s | 1 request | 5 s | 20 requests |
+        | Service | 5 s | 1 request | 5 s | 20 requests |
+        | Base with secret | 5 s | 1 request | 5 s | 20 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: locale
+          schema:
+            type: string
+            example: ru
+            default: ru
+          description: |
+            Language of the response field `parentName`:
+              - `ru` — Russian
+              - `en` — English
+              - `zh` — Chinese
+        - in: query
+          name: brand
+          schema:
+            type: string
+            example: H%26M
+          required: true
+          description: Brand
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessParentsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                IncorrectDateFrom:
+                  $ref: '#/components/examples/IncorrectDateFromBS'
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded365'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+                LocaleError:
+                  $ref: '#/components/examples/LocaleError'
+                MissingBrand:
+                  $ref: '#/components/examples/MissingBrand'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/brand-share:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Share of Brand in Sales
+      summary: Get Report
+      description: |
+        Returns a report on the brand's share in sales.
+
+        Data can be obtained starting from 1 November 2022, for up to 365 days.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 5 s | 1 request | 5 s | 20 requests |
+        | Service | 5 s | 1 request | 5 s | 20 requests |
+        | Base with secret | 5 s | 1 request | 5 s | 20 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: parentId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: Parent category ID
+        - in: query
+          name: brand
+          schema:
+            type: string
+            example: H%26M
+          required: true
+          description: Brand
+        - $ref: '#/components/parameters/DateFrom'
+        - $ref: '#/components/parameters/DateTo'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessBrandShareResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                IncorrectDateFrom:
+                  $ref: '#/components/examples/IncorrectDateFromBS'
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded365'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+                MissingParentId:
+                  $ref: '#/components/examples/MissingParentId'
+                MissingBrand:
+                  $ref: '#/components/examples/MissingBrand'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/banned-products/blocked:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Hidden Items
+      summary: Blocked Listings
+      description: |
+        Returns the list of [blocked listings](https://seller.wildberries.ru/analytics-reports/banned-products)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 1 request | 10 s | 6 requests |
+        | Service | 10 s | 1 request | 10 s | 6 requests |
+        | Base with secret | 10 s | 1 request | 10 s | 6 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - brand
+              - nmId
+              - title
+              - vendorCode
+              - reason
+            example: nmId
+          description: |
+            Sorting
+            - `brand` — by brand
+            - `nmId` — by WB item number
+            - `title` — by item title
+            - `vendorCode` — by seller item number
+            - `reason` — by reason for blocking
+          required: true
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum:
+              - desc
+              - asc
+            example: asc
+          description: |
+            Data order
+            - `desc` — from the largest numeric value to the smallest, from the last alphabetical value to the first
+            - `asc` — from the smallest numeric value to the largest, from the first alphabetical value to the last
+          required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    description: Report
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        brand:
+                          type: string
+                          example: Тест22
+                          description: Brand
+                        nmId:
+                          type: integer
+                          example: 82722944
+                          description: WB item number
+                        title:
+                          type: string
+                          example: Гуминовые кислоты - биоактивный противовирусный комплекс на
+                          description: Item title
+                        vendorCode:
+                          type: string
+                          example: пкdeир76
+                          description: Seller item number
+                        reason:
+                          type: string
+                          example: Контактные данные Продавца и ссылки на иные сайты/группы/сообщества на фотографиях Товара
+                          description: Reason for blocking
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Error title
+                  status:
+                    type: number
+                    description: HTTP status code
+                  detail:
+                    type: string
+                    description: Error details
+                  requestId:
+                    type: string
+                    description: Unique request ID
+                  origin:
+                    type: string
+                    description: WB internal service ID
+              example:
+                title: bad request
+                status: 400
+                detail: missing sort
+                requestId: 94b52fca-8403-49fb-85dd-95dfb73160ad
+                origin: banreportsvc-api
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/banned-products/shadowed:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Hidden Items
+      summary: Hidden from the Catalog
+      description: |
+        Returns the list of items [hidden from the catalog](https://seller.wildberries.ru/analytics-reports/banned-products/shadowed)
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 10 s | 1 request | 10 s | 6 requests |
+        | Service | 10 s | 1 request | 10 s | 6 requests |
+        | Base with secret | 10 s | 1 request | 10 s | 6 requests |
+        | Base | 1 h | 1 request | 1 h | 1 request |
+        </div>
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - brand
+              - nmId
+              - title
+              - vendorCode
+              - nmRating
+            example: title
+          description: |
+            Sorting
+            - `brand` — by brand
+            - `nmId` — by WB item number
+            - `title` — by item title
+            - `vendorCode` — by seller item number
+            - `nmRating` — by listing rating
+          required: true
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum:
+              - desc
+              - asc
+            example: desc
+          description: |
+            Data order
+            - `desc` — from the largest numeric value to the smallest, from the last alphabetical value to the first
+            - `asc` — from the smallest numeric value to the largest, from the first alphabetical value to the last
+          required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    description: Report
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        brand:
+                          type: string
+                          example: Трикотаж
+                          description: Brand
+                        nmId:
+                          type: integer
+                          example: 166658151
+                          description: WB item number
+                        title:
+                          type: string
+                          example: ВАЗ
+                          description: Item title
+                        vendorCode:
+                          type: string
+                          example: DP02/черный
+                          description: Seller item number
+                        nmRating:
+                          type: number
+                          example: 3.1
+                          description: Listing rating
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Error title
+                  status:
+                    type: number
+                    description: HTTP status code
+                  detail:
+                    type: string
+                    description: Error details
+                  requestId:
+                    type: string
+                    description: Unique request ID
+                  origin:
+                    type: string
+                    description: WB internal service ID
+              example:
+                title: bad request
+                status: 400
+                detail: missing order
+                requestId: 064f6c9e-924e-4e13-b551-0b89e3077938
+                origin: banreportsvc-api
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/v1/analytics/goods-return:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: contentanalytics
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Returns and Item Movement Report
+      summary: Get Report
+      description: |
+        Returns a list of [item returns to the seller](https://seller.wildberries.ru/analytics-reports/goods-return). With one request, you can obtain a report for a maximum of 31 days.
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 10 requests |
+        | Service | 1 min | 1 request | 1 min | 10 requests |
+        | Base with secret | 1 min | 1 request | 1 min | 10 requests |
+        | Base | 1 h | 2 requests | 30 min | 1 request |
+        </div>
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2024-08-13'
+          description: Beginning date of the reporting period
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2024-08-27'
+          description: End date of the reporting period
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    description: Report
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        barcode:
+                          type: string
+                          example: '1680063403480'
+                          description: Barcode
+                        brand:
+                          type: string
+                          example: dub
+                          description: Brand
+                        completedDt:
+                          type: string
+                          nullable: true
+                          example: '2025-03-31T11:33:53'
+                          description: Date and time the seller received return
+                        dstOfficeAddress:
+                          type: string
+                          example: Жуковский Улица Маяковского 19
+                          description: Address of POP where the seller receives returns
+                        dstOfficeId:
+                          type: integer
+                          example: 310105
+                          description: ID of POP where the seller receives returns
+                        expiredDt:
+                          type: string
+                          nullable: true
+                          example: '2025-03-31T11:33:53'
+                          description: Expiration date and time of the storage period
+                        isStatusActive:
+                          type: integer
+                          example: 0
+                          description: |
+                            Type of return status:
+
+                              * `0` — archive
+                              * `1` — active
+                          enum:
+                            - 0
+                            - 1
+                        nmId:
+                          type: integer
+                          example: 12862181
+                          description: WB item number
+                        orderDt:
+                          type: string
+                          format: date
+                          example: '2024-08-26'
+                          description: Date of the return order
+                        orderId:
+                          type: integer
+                          example: 2034240826
+                          description: Assembly order number
+                        readyToReturnDt:
+                          type: string
+                          nullable: true
+                          example: '2025-01-31T08:33:50'
+                          description: Date and time when the return is ready for delivery
+                        reason:
+                          type: string
+                          example: Цвет
+                          description: The reason for the return
+                        returnType:
+                          type: string
+                          example: Возврат заблокированного товара
+                          description: Return type
+                        shkId:
+                          type: integer
+                          example: 23411783472
+                          description: SKU of the item unit
+                        srid:
+                          type: string
+                          example: ad3817664d3046c5a8d55054d8be96d6
+                          description: The unique ID of the return order
+                        status:
+                          type: string
+                          example: В пути в пвз
+                          description: Return status
+                        stickerId:
+                          type: string
+                          example: '33811984302'
+                          description: Sticker of the return order
+                        subjectName:
+                          type: string
+                          example: Багажные бирки
+                          description: Subcategory name
+                        techSize:
+                          type: string
+                          example: '0'
+                          description: Size
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/4xxResponse'
+              examples:
+                MissingDateTimeFrom:
+                  $ref: '#/components/examples/MissingDateTimeFrom'
+                MissingDateTimeTo:
+                  $ref: '#/components/examples/MissingDateTimeTo'
+                IncorrectDateTimeFrom:
+                  $ref: '#/components/examples/IncorrectDateTimeFrom'
+                IncorrectDateTimeTo:
+                  $ref: '#/components/examples/IncorrectDateTimeTo'
+                DateRangeExceeded:
+                  $ref: '#/components/examples/DateRangeExceeded'
+                DateRanges:
+                  $ref: '#/components/examples/DateRanges'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '429':
+          $ref: '#/components/responses/429'
+components:
+  schemas:
+    OrdersItem:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date and time of order. This field equals to `dateFrom` in request if `flag=1`. If the time zone is not specified, then Moscow time UTC+3 is taken.
+        lastChangeDate:
+          type: string
+          description: Date and time of refreshing info of service. This field corresponds to the `dateFrom` parameter in the request if the `flag=0` parameter exist or not specified. If the time zone is not specified, then Moscow time UTC+3 is taken.
+        warehouseName:
+          type: string
+          maxLength: 50
+          description: Shipping warehouse name
+        warehouseType:
+          type: string
+          description: |
+            Type of items storage warehouse:
+              - `Склад WB` —  WB warehouse
+              - `Склад продавца` — seller warehouse
+          enum:
+            - Склад WB
+            - Склад продавца
+        countryName:
+          type: string
+          maxLength: 200
+          description: Country
+        oblastOkrugName:
+          type: string
+          maxLength: 200
+          description: Area
+        regionName:
+          type: string
+          maxLength: 200
+          description: Region
+        supplierArticle:
+          type: string
+          maxLength: 75
+          description: Seller article number
+        nmId:
+          type: integer
+          description: WB article number
+        barcode:
+          type: string
+          maxLength: 30
+          description: Barcode
+        category:
+          type: string
+          maxLength: 50
+          description: Category
+        subject:
+          type: string
+          maxLength: 50
+          description: Subcategory
+        brand:
+          type: string
+          maxLength: 50
+          description: Brand
+        techSize:
+          type: string
+          maxLength: 30
+          description: Item size
+        incomeID:
+          type: integer
+          description: Supply number
+        isSupply:
+          type: boolean
+          description: Supply contract
+        isRealization:
+          type: boolean
+          description: Implementation contract
+        totalPrice:
+          type: number
+          description: Price without discounts
+        discountPercent:
+          type: integer
+          description: "Seller discount,\_%"
+        spp:
+          type: number
+          description: "WB discount,\_%"
+        finishedPrice:
+          type: number
+          description: Price with all discounts, except WB Wallet sum
+        priceWithDisc:
+          type: number
+          description: Price with seller discount, including WB Club discount
+        isCancel:
+          type: boolean
+          description: |
+            Order cancel:
+             - `true` — the order is cancelled
+        cancelDate:
+          type: string
+          description: Date and time for order canceling. If order wasn't canceled, then `"0001-01-01T00:00:00"`. If the time zone is not specified, then Moscow time UTC+3 is taken.
+        sticker:
+          type: string
+          description: sticker ID
+        gNumber:
+          type: string
+          maxLength: 50
+          description: Buyer's cart ID. Orders within a single transaction will have the same `gNumber`
+        srid:
+          type: string
+          description: |
+            Unique order ID. <br> Note for those working with Marketplace API: `srid` equals `rid` in response of orders methods
+    SalesItem:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date and time of sale. This field equals to `dateFrom` in request if `flag`=1. If the time zone is not specified, then Moscow time (UTC+3) is taken
+        lastChangeDate:
+          type: string
+          description: Date and time of refreshing info of service. This field corresponds to the `dateFrom` parameter in the request if the `flag`=0 parameter exist or not specified. If the time zone is not specified, then Moscow time (UTC+3) is taken
+        warehouseName:
+          type: string
+          maxLength: 50
+          description: Shipping warehouse
+        warehouseType:
+          type: string
+          description: |
+            Type of items storage warehouse:
+              - `Склад WB` —  WB warehouse
+              - `Склад продавца` — seller warehouse
+          enum:
+            - Склад WB
+            - Склад продавца
+        countryName:
+          type: string
+          maxLength: 200
+          description: Country
+        oblastOkrugName:
+          type: string
+          maxLength: 200
+          description: Area
+        regionName:
+          type: string
+          maxLength: 200
+          description: Region
+        supplierArticle:
+          type: string
+          maxLength: 75
+          description: Seller article number
+        nmId:
+          type: integer
+          description: WB article number
+        barcode:
+          type: string
+          maxLength: 30
+          description: Barcode
+        category:
+          type: string
+          maxLength: 50
+          description: Category
+        subject:
+          type: string
+          maxLength: 50
+          description: Subcategory
+        brand:
+          type: string
+          maxLength: 50
+          description: Brand
+        techSize:
+          type: string
+          maxLength: 30
+          description: Item size
+        incomeID:
+          type: integer
+          description: Supply number
+        isSupply:
+          type: boolean
+          description: Supply contract
+        isRealization:
+          type: boolean
+          description: Implementation contract
+        totalPrice:
+          type: number
+          description: Price without discounts
+        discountPercent:
+          type: integer
+          description: "Seller discount,\_%"
+        spp:
+          type: number
+          description: "WB discount,\_%"
+        paymentSaleAmount:
+          type: integer
+          description: Discount for payment with WB Wallet, ₽
+        forPay:
+          type: number
+          description: To transfer to the seller.<br>Data synchronization takes up to 24 hours, during which time the value `0` can be displayed in the field
+        finishedPrice:
+          type: number
+          description: Price with all discounts.<br>Data synchronization takes up to 24 hours, during which time the value `0` can be displayed in the field
+        priceWithDisc:
+          type: number
+          description: Price with seller discount, including WB Club discount, from which the amount to be transferred to the seller `forPay` is calculated.<br>Data synchronization takes up to 24 hours, during which time the value `0` can be displayed in the field
+        saleID:
+          type: string
+          maxLength: 15
+          description: |
+            The unique ID of the sale/return.
+
+            - `S**********` — sale
+            - `R**********` — return (to WB warehouse)
+        sticker:
+          type: string
+          description: sticker ID
+        gNumber:
+          type: string
+          maxLength: 50
+          description: Buyer's cart ID. Orders within a single transaction will have the same `gNumber`
+        srid:
+          type: string
+          description: |
+            Unique order ID. <br> Note for those working with Marketplace API: `srid` equals `rid` in response of orders methods
+    responseErrorStatistics:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    responseErrorStatistics2:
+      type: object
+      properties:
+        errors:
+          type: string
+    ExciseReportRequest:
+      type: object
+      properties:
+        countries:
+          type: array
+          description: Country code in according with ISO 3166-2. Set the empty parameter to get data without filters by country
+          items:
+            type: string
+            enum:
+              - AM
+              - BY
+              - KG
+              - KZ
+              - RU
+              - UZ
+      example:
+        countries:
+          - AM
+          - RU
+    ExciseReportResponse:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/models.ExciseReportResponse'
+    models.ExciseReportResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/models.ExciseReportResponseData'
+    models.ExciseReportResponseData:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Buyer's country
+            example: Россия
+          price:
+            type: number
+            description: Price including VAT
+            example: 100
+          currency_name_short:
+            type: string
+            description: Currency
+            example: AMD
+          excise_short:
+            type: string
+            description: Labeling code
+            example: 0102900254680370215_Re/=lSbNiGD
+          barcode:
+            type: string
+            description: Barcode
+            example: '2038893425820'
+          nm_id:
+            type: integer
+            description: Wildberries article number
+            example: 169085355
+          operation_type_id:
+            type: integer
+            description: "Operation type, if exists:\n\n  * `1`\_— withdraw from circulation\n  * `2`\_— return to sale\n"
+            example: 1
+          fiscal_doc_number:
+            type: integer
+            description: Receipt number, if exists
+            example: 12345678
+          fiscal_dt:
+            type: string
+            description: Date in the receipt, if exists, YYYY-MM-DD
+            example: '2024-01-01'
+          fiscal_drive_number:
+            type: string
+            description: Fiscal storage number, if exists
+          rid:
+            type: integer
+            description: |
+              `Rid`
+            example: 606217433440
+          srid:
+            type: string
+            description: |
+              `Srid`
+            example: 7513432034713632943.1.0
+    MeasurementPenalties:
+      required:
+        - data
+      type: object
+      properties:
+        data:
+          required:
+            - reports
+            - total
+          type: object
+          description: Response data
+          properties:
+            reports:
+              type: array
+              description: Retentions
+              items:
+                type: object
+                properties:
+                  nmId:
+                    type: integer
+                    description: Wildberries article number
+                    example: 123456789
+                  subjectName:
+                    type: string
+                    description: Subcategory
+                    example: Костюмы спортивные
+                  dimId:
+                    type: integer
+                    description: Measurement ID
+                    example: 123456789
+                  prcOver:
+                    type: number
+                    description: Difference in dimensions, %
+                    example: 130.71
+                  volume:
+                    type: number
+                    description: Volume, l (as measured at warehouse)
+                    example: 6.47
+                  width:
+                    type: integer
+                    description: Width, cm (as measured at warehouse)
+                    example: 7
+                  length:
+                    type: integer
+                    description: Length, cm (as measured at warehouse)
+                    example: 28
+                  height:
+                    type: integer
+                    description: Height, cm (as measured at warehouse)
+                    example: 33
+                  volumeSup:
+                    type: number
+                    description: Volume, L (as specified in listing)
+                    example: 4.95
+                  widthSup:
+                    type: integer
+                    description: Width, cm (as specified in listing)
+                    example: 8
+                  lengthSup:
+                    type: integer
+                    description: Length, cm (as specified in listing)
+                    example: 33
+                  heightSup:
+                    type: integer
+                    description: Height, cm (as specified in listing)
+                    example: 33
+                  photoUrls:
+                    type: array
+                    items:
+                      type: string
+                    description: Photos of the measurements
+                    example:
+                      - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35154094220_em907759_n1_b2eaa5ed-bf21-4c58-b419-b5b5ec6f29ee.webp
+                      - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35159094420_em907759_n2_040407b0-7752-4ae7-a4a4-7ec016e86511.webp
+                      - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35189094220_em904757_n3_9f502e24-3b3e-4efd-9hac-802813046ac3.webp
+                  dtBonus:
+                    type: string
+                    format: date-time
+                    description: Fine date
+                    example: '2025-06-02T00:00:00Z'
+                  isValid:
+                    type: boolean
+                    description: |
+                      Status of measurement
+                        - `false` — canceled
+                        - `true` — valid
+                    example: true
+                  isValidDt:
+                    type: string
+                    format: date-time
+                    description: Date and time of validation or cancellation of the measurement
+                    example: '2025-05-29T13:35:57Z'
+                  reversalAmount:
+                    type: number
+                    description: Reversal amount
+                    example: 0
+                  penaltyAmount:
+                    type: number
+                    description: Fine amount
+                    example: 449.83
+            total:
+              type: integer
+              description: Number of retentions in the report. Except `limit` and `offset`
+              example: 11
+    WHM:
+      required:
+        - data
+      type: object
+      properties:
+        data:
+          required:
+            - reports
+            - total
+          type: object
+          description: Response data
+          properties:
+            reports:
+              type: array
+              description: Measurements
+              items:
+                type: object
+                properties:
+                  nmId:
+                    type: integer
+                    description: Wildberries article number
+                    example: 123456789
+                  subjectName:
+                    type: string
+                    description: Subcategory
+                    example: ''
+                  dimId:
+                    type: integer
+                    description: Measurement ID
+                    example: 123456789
+                  volume:
+                    type: number
+                    description: Volume, l
+                  width:
+                    type: integer
+                    description: Width, cm
+                    example: 66
+                  length:
+                    type: integer
+                    description: Length, cm
+                    example: 54
+                  height:
+                    type: integer
+                    description: Height, cm
+                    example: 11
+                  photoUrls:
+                    type: array
+                    items:
+                      type: string
+                    description: Photos of measurements
+                    example:
+                      - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_a9f839da-c3b7-4ed6-737c-a9e731250fb0.jpg
+                      - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_2aac23b7-c8f9-42db-74e9-b4a9c916017c.jpg
+                      - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_ff93b7c4-19d6-e0a2-4dba-7c2f09f06b3.jpg
+                  dt:
+                    type: string
+                    format: date-time
+                    description: Date and time
+                    example: '2025-04-01T00:06:00Z'
+            total:
+              type: integer
+              description: Number of measurements in the report. Except `limit` and `offset`
+              example: 11
+    Response400Retentions:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+          example: bad request
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: Error details
+          example: 'invalid parameter: dateTo'
+        requestId:
+          type: string
+          description: Unique request ID
+          example: 31db50b5-14c0-4f4e-965e-6e1f9607ee78
+        origin:
+          type: string
+          description: WB internal service ID
+          example: dimension-penalty
+    Response403Retentions:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+          example: access denied
+        status:
+          type: integer
+          description: HTTP status code
+          example: 403
+        detail:
+          type: string
+          description: Error details
+          example: 'abac: access denied'
+        requestId:
+          type: string
+          description: Unique request ID
+          example: 31db50b5-14c0-4f4e-965e-6e1f9607ee78
+        origin:
+          type: string
+          description: WB internal service ID
+          example: dimension-penalty
+    ResponsePaidStorage:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+            description: Calculation or recalculation date
+          logWarehouseCoef:
+            type: number
+            description: Logistics and storage coefficient
+          officeId:
+            type: integer
+            description: Warehouse ID
+          warehouse:
+            type: string
+            description: Warehouse name
+          warehouseCoef:
+            type: number
+            description: Warehouse coefficient
+          giId:
+            type: integer
+            description: Shipment ID
+          chrtId:
+            type: integer
+            description: Size ID
+          size:
+            type: string
+            description: Size (`techSize` in listing)
+          barcode:
+            type: string
+            description: Barcode
+          subject:
+            type: string
+            description: Subcategory
+          brand:
+            type: string
+            description: Brand
+          vendorCode:
+            type: string
+            description: Seller article number
+          nmId:
+            type: integer
+            description: Wildberries article number
+          volume:
+            type: number
+            description: Item volume
+          calcType:
+            type: string
+            description: Calculation type
+          warehousePrice:
+            type: number
+            description: Storage price
+          barcodesCount:
+            type: integer
+            description: Chargeable item units in the warehouse, in the last 24 hours
+          palletPlaceCode:
+            type: integer
+            description: Pallet place code
+          palletCount:
+            type: number
+            description: Number of pallets
+          originalDate:
+            type: string
+            description: "Calculation date, in case of\_recalculation. If there was not a recalculation, the same as `date`"
+          loyaltyDiscount:
+            type: number
+            description: "Loyalty program discount,\_₽"
+          tariffFixDate:
+            type: string
+            description: Tariff fixing date
+          tariffLowerDate:
+            type: string
+            description: Tariff reduction date
+      example:
+        - date: '2023-10-01'
+          logWarehouseCoef: 0
+          officeId: 507
+          warehouse: Коледино
+          warehouseCoef: 1.7
+          giId: 123456
+          chrtId: 1234567
+          size: '0'
+          barcode: ''
+          subject: Маски одноразовые
+          brand: 1000 Каталог
+          vendorCode: Артикул_продавца
+          nmId: 1234567
+          volume: 12
+          calcType: 'короба: без габаритов'
+          warehousePrice: 7.65
+          barcodesCount: 1
+          palletPlaceCode: 0
+          palletCount: 0
+          originalDate: '2023-10-01'
+          loyaltyDiscount: 10
+          tariffFixDate: '2023-10-01'
+          tariffLowerDate: '2023-11-01'
+    GetTasksResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GetTasksResponseData'
+    GetTasksResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Task ID
+        status:
+          type: string
+          description: |
+            Task status:
+              * `new`
+              * `processing`
+              * `done` — report is generated
+              * `purged` — report is deleted
+              * `canceled` — declined
+    CreateTaskResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateTaskResponseData'
+    CreateTaskResponseData:
+      type: object
+      properties:
+        taskId:
+          type: string
+          description: Task ID
+    4xxResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error details
+        origin:
+          type: string
+          description: WB internal service ID
+        requestId:
+          type: string
+          description: Unique request ID
+        title:
+          type: string
+          description: Error title
+  parameters:
+    flag:
+      in: query
+      name: flag
+      schema:
+        type: integer
+        default: 0
+      required: false
+      description: |
+        If parameter `flag=0` (or it doesn't exist in requests string), then call of API methods returns data,
+        which value of field `lastChangeDate` (date and time of refreshing info of service) is greater or equal to the given
+        parameter value  `dateFrom`.
+        In this case the number of returned rows of data varies from 0 to approximately 80,000.
+        <br>
+        If parameter `flag=1`, then information about all orders or sales with the date will be uploaded,
+        that equals to the passed parameter `dateFrom` (in this case the time in the date doesn't matter).
+        Also the number of returned rows of data will be equal to the number of all orders or sales
+        that were made on the specified date, passed in the `dateFrom` parameter.
+    Date:
+      in: query
+      name: date
+      description: |
+        Date from report period, `YYYY-MM-DD`, for example `2023-12-01`. To get all data from August 2023 do not use this parameter
+      schema:
+        type: string
+      example: '2023-12-01'
+    DateFrom:
+      in: query
+      name: dateFrom
+      description: Report period start, `YYYY-MM-DD`
+      schema:
+        type: string
+      example: '2025-02-28'
+      required: true
+    DateTo:
+      in: query
+      name: dateTo
+      description: Report period end, `YYYY-MM-DD`
+      schema:
+        type: string
+      example: '2025-03-21'
+      required: true
+    DateFromGoodsLabeling:
+      in: query
+      name: dateFrom
+      description: |
+        Report period start, `YYYY-MM-DD`
+      schema:
+        type: string
+        format: date
+        example: '2024-04-01'
+      required: true
+    DateToGoodsLabeling:
+      in: query
+      name: dateTo
+      description: |
+        Report period end, `YYYY-MM-DD`
+      schema:
+        type: string
+        format: date
+        example: '2024-04-30'
+      required: true
+  examples:
+    DateFromFieldRequired:
+      description: Request error
+      value:
+        errors:
+          - 'dateFrom: field required'
+    DateFromValueNotValidated:
+      description: Request error
+      value:
+        errors: 'dateFrom: Value not validated'
+    CreateResponseData:
+      value:
+        data:
+          taskId: 219eaecf-e532-4bd8-9f15-8036ec1b042d
+    GetTasksResponseData:
+      value:
+        data:
+          id: cad56ec5-91ec-43a2-b5e8-efcf244cf309
+          status: done
+    MissingDateTimeFrom:
+      description: Set the start of report period
+      value:
+        detail: 'parameter "dateFrom" in query has an error: value is required but missing'
+        origin: api-statistics
+        requestId: 320ce05be8ed69060fe4c359a8e77ed6
+        title: Bad Request
+    MissingDateTimeTo:
+      description: Set the end of report period
+      value:
+        detail: 'parameter "dateTo" in query has an error: value is required but missing'
+        origin: api-statistics
+        requestId: 0e3c2f6760c8d1971760b93ed4213cc4
+        title: Bad Request
+    IncorrectDateTimeFrom:
+      description: Incorrect format of the start date
+      value:
+        detail: can't parse dateFrom
+        origin: api-statistics
+        requestId: 31a5d21782082b9f161c4f77fcf9ba33
+        title: Bad Request
+    IncorrectDateTimeTo:
+      description: Incorrect format of the end date
+      value:
+        detail: can't parse dateTo
+        origin: api-statistics
+        requestId: 7361df9e49f9821e3de911b5931a136c
+        title: Bad Request
+    DateRangeExceeded:
+      description: "Maximum of report period is 31\_days"
+      value:
+        detail: difference between dateFrom and dateTo should be less or equal 31 days
+        origin: api-statistics
+        requestId: d5a7c02990f5e611728c29293fb6c366
+        title: Bad Request
+    DateRangeExceeded8:
+      description: "Maximum of report period is 8\_days"
+      value:
+        detail: Difference between dateFrom and dateTo should be less or equal 8 days
+        origin: api-statistics
+        requestId: f9274b5d8d0a9d50ed9990d73d29f5d2
+        title: Bad Request
+    DateRangeExceeded365:
+      description: "Maximum of report period is 365\_days"
+      value:
+        detail: difference between dateFrom and dateTo should be less or equal 365 days
+        origin: api-statistics
+        requestId: cfd15c87683c88203e79a47f6774ff08
+        title: Bad Request
+    DateRanges:
+      description: Start date should be earlier than end date
+      value:
+        detail: dateTo should be greater dateFrom
+        origin: api-statistics
+        requestId: 00725309a5e7566730fd13f756d20d20
+        title: Bad Request
+    IncorrectDate:
+      description: Incorrect format of the date
+      value:
+        detail: can't parse date
+        origin: api-statistics
+        requestId: 83c6b8ad24ac27a03f9166e57de31668
+        title: Bad Request
+    IncorrectDateFromBS:
+      description: The date should be 01.11.2022 or later
+      value:
+        detail: date cannot be earlier than 2022-11-01
+        origin: api-statistics
+        requestId: 68472ed47542fb51572de64273075bc0
+        title: Bad Request
+    LocaleError:
+      description: Error when specifying the language of the `parentName` field value
+      value:
+        detail: 'parameter "locale" in query has an error: value is not one of the allowed values ["ru","en","zh"]'
+        origin: api-statistics
+        requestId: af5b14cceb985597464ce500137bc1af
+        title: Bad Request
+    MissingBrand:
+      description: Set the brand
+      value:
+        detail: 'parameter "brand" in query has an error: value is required but missing'
+        origin: api-statistics
+        requestId: e358b83254107a12f4bd39361379b9a0
+        title: Bad Request
+    MissingParentId:
+      description: Set the parent category ID
+      value:
+        detail: 'parameter "parentId" in query has an error: value is required but missing'
+        origin: api-statistics
+        requestId: 51f24452bb940a004b5d40a076d5696d
+        title: Bad Request
+    MeasurementPenalties:
+      value:
+        data:
+          reports:
+            - nmId: 9234567890
+              subjectName: Костюмы спортивные
+              dimId: 98151405
+              prcOver: 130.71
+              volume: 6.47
+              width: 7
+              length: 28
+              height: 33
+              volumeSup: 4.95
+              widthSup: 30
+              lengthSup: 33
+              heightSup: 5
+              photoUrls:
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35154094220_em907759_n1_b2eaa5ed-bf21-4c58-b419-b5b5ec6f29ee.webp
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35159094420_em907759_n2_040407b0-7752-4ae7-a4a4-7ec016e86511.webp
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/measurement_on_table/wbs35189094220_em904757_n3_9f502e24-3b3e-4efd-9hac-802813046ac3.webp
+              dtBonus: '2025-06-02T00:00:00Z'
+              isValid: true
+              isValidDt: '2025-05-29T13:35:57Z'
+              reversalAmount: 0
+              penaltyAmount: 449.83
+            - nmId: 9123456789
+              subjectName: Масло топленое
+              dimId: 97079587
+              prcOver: 136.09
+              volume: 4.37
+              width: 14
+              length: 24
+              height: 13
+              volumeSup: 3.21
+              widthSup: 13
+              lengthSup: 13
+              heightSup: 19
+              photoUrls:
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/handheld-goods-measurements-photo/gId35619967012_em1178949_nphotoA_d037721f-62c2-4bdd-a5a8-4ad0905e3f8e.webp
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/handheld-goods-measurements-photo/gId35619967012_em1178949_nphotoB_fb161a65-e4b0-08d7-bb01-1bdba1b4d741.webp
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/handheld-goods-measurements-photo/gId35619967012_em1178949_nphotoC_9a8b10f7-26c4-4fc0-b2c5-a7e29a545aa4.webp
+              dtBonus: '2025-06-02T00:00:00Z'
+              isValid: true
+              isValidDt: '2025-05-23T01:24:19Z'
+              reversalAmount: 0
+              penaltyAmount: 350.08
+            - nmId: 9234567809
+              subjectName: Фонарики бытовые
+              dimId: 96989876
+              prcOver: 246.75
+              volume: 2.28
+              width: 12
+              length: 19
+              height: 10
+              volumeSup: 0.92
+              widthSup: 11
+              lengthSup: 14
+              heightSup: 6
+              photoUrls:
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/handheld-goods-measurements-photo/gId35776508795_em644504_nphotoA_1bdac868-a6c0-435a-950f-489f74acdb2e.webp
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/handheld-goods-measurements-photo/gId35776508795_em644504_nphotoB_8f1802b8-5552-4aae-b930-19e8efbee597.webp
+                - https://static-basket-09.wbbasket.ru/vol184/obmer-tovarov/handheld-goods-measurements-photo/gId35776508795_em644504_nphotoC_5d8f1832-e219-46cd-931b-d6d238d6784b.webp
+              dtBonus: '2025-06-02T00:00:00Z'
+              isValid: true
+              isValidDt: '2025-05-23T01:24:19Z'
+              reversalAmount: 0
+              penaltyAmount: 501.6
+          total: 3
+    WHM:
+      value:
+        data:
+          reports:
+            - nmId: 9234567089
+              subjectName: Чемоданы
+              dimId: 4983331
+              volume: 16.25
+              width: 26
+              length: 25
+              height: 25
+              photoUrls:
+                - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/282504229_98bd4653-cc2e-496c-7aee-e035c2329ac0.jpg
+                - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/282504229_55f71345-58d9-48ef-6ae8-548e34abefc9.jpg
+                - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/282504229_576b1f5b-5245-4e55-4ff4-351fc7a77f72.jpg
+              dt: '2025-06-05T00:00:00Z'
+            - nmId: 9234560789
+              subjectName: Платья
+              dimId: 86840305
+              volume: 39.2
+              width: 66
+              length: 54
+              height: 11
+              photoUrls:
+                - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_a9f839da-c3b7-4ea6-737c-a9e731250fb0.jpg
+                - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_2aac23b7-c8f9-42db-74e9-b4a9c916017c.jpg
+                - https://static-basket-03.wb.ru/vol54/handheld-goods-measurements-photo/8906416_ff93b7c4-19d6-e0a2-4dba-7c2f09f06b3.jpg
+              dt: '2025-04-01T00:06:00Z'
+          total: 2
+  responses:
+    '401':
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: unauthorized
+            detail: 'token problem; token is malformed: could not base64 decode signature: illegal base64 data at input byte 84'
+            code: 07e4668e--a53a3d31f8b0-[UK-oWaVDUqNrKG]; 03bce=277; 84bd353bf-75
+            requestId: 7b80742415072fe8b6b7f7761f1d1211
+            origin: s2s-api-auth-catalog
+            status: 401
+            statusText: Unauthorized
+            timestamp: '2024-09-30T06:52:38Z'
+    '402':
+      description: Payment required
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details. The error is only returned to services from the [Solutions for business Catalog](https://dev.wildberries.ru/business-solutions)
+          example:
+            title: payment required
+            detail: wb solution for business has insufficient funds on its balance. please top up the balance in the company's personal account https://dev.wildberries.ru/company
+    '429':
+      description: Too many requests
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Unique request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          example:
+            title: too many requests
+            detail: limited by c122a060-a7fb-4bb4-abb0-32fd4e18d489
+            code: 07e4668e-ac2242c5c8c5-[UK-4dx7JUdskGZ]
+            requestId: 9d3c02cc698f8b041c661a7c28bed293
+            origin: s2s-api-auth-catalog
+            status: 429
+            statusText: Too Many Requests
+            timestamp: '2024-09-30T06:52:38Z'
+    SuccessRegionSaleResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              report:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    cityName:
+                      type: string
+                      description: Location
+                      example: деревня Суханово
+                    countryName:
+                      type: string
+                      description: Country
+                      example: Россия
+                    foName:
+                      type: string
+                      description: Federal district
+                      example: Центральный федеральный округ
+                    nmID:
+                      type: integer
+                      description: WB article number
+                      example: 177974431
+                    regionName:
+                      type: string
+                      description: Region
+                      example: Московская область
+                    sa:
+                      type: string
+                      description: Seller article number
+                      example: '112233445566778899'
+                    saleInvoiceCostPrice:
+                      type: number
+                      format: float
+                      description: To payment for the item, rub.
+                      example: 592.11
+                    saleInvoiceCostPricePerc:
+                      type: number
+                      format: float
+                      description: Fraction, %
+                      example: 43.0547333297454
+                    saleItemInvoiceQty:
+                      type: integer
+                      description: Redeemed, pcs.
+                      example: 4
+    SuccessTaskResponse:
+      description: Self-purchase deductions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nmID:
+                      type: integer
+                      description: Wildberries article number
+                      example: 123456789
+                    sum:
+                      type: integer
+                      description: Order sum
+                      example: 3540
+                    currency:
+                      type: string
+                      description: Currency
+                      example: RUB
+                    dateFrom:
+                      type: string
+                      description: Report start date
+                      example: '2023-08-23'
+                    dateTo:
+                      type: string
+                      description: Report end date
+                      example: '2023-08-29'
+    SuccessSubstIncorAttachResponse:
+      description: Успешно
+      content:
+        application/json:
+          schema:
+            required:
+              - data
+            type: object
+            properties:
+              data:
+                required:
+                  - reports
+                  - total
+                type: object
+                description: Response data
+                properties:
+                  reports:
+                    type: array
+                    description: Retentions
+                    items:
+                      type: object
+                      properties:
+                        dtBonus:
+                          type: string
+                          format: date-time
+                          description: Fine date and time
+                          example: '2025-06-02T00:00:00Z'
+                        nmId:
+                          type: integer
+                          description: Wildberries article number
+                          example: 544454
+                        oldShkId:
+                          type: integer
+                          description: Old SKU
+                          example: 26624352356
+                        oldColor:
+                          type: string
+                          description: Old color
+                          example: темно-синий,голубой
+                        oldSize:
+                          type: string
+                          description: Old Size
+                          example: A
+                        oldSku:
+                          type: string
+                          description: Old SKU
+                          example: '54532562'
+                        oldVendorCode:
+                          type: string
+                          description: Old seller `supplierArticle`
+                          example: 23535 Стемпинг 500
+                        newShkId:
+                          type: integer
+                          description: New SKU
+                          example: 123333223
+                        newColor:
+                          type: string
+                          description: New color
+                          example: темно-синий,голубой
+                        newSize:
+                          type: string
+                          description: New size
+                          example: A
+                        newSku:
+                          type: string
+                          description: New SKU
+                          example: '12323332223'
+                        newVendorCode:
+                          type: string
+                          description: New seller article number
+                          example: wh-service-podmena
+                        bonusSumm:
+                          type: number
+                          description: Fine amount
+                          example: 247.5
+                        bonusType:
+                          type: string
+                          description: Fine reason
+                          example: Подмена FBW
+                        photoUrls:
+                          type: array
+                          items:
+                            type: string
+                          description: Photos of the measurements
+                          example:
+                            - https://static-basket-03.wb.ru/vol49/change_characteristics/19189882946-2023-12-15T10:18:21.125Z-1.webp
+                            - https://static-basket-03.wb.ru/vol49/change_characteristics/19189052946-2023-12-15T10:18:35.249Z-2.webp
+                  total:
+                    type: integer
+                    description: Number of retentions in the report. Except `limit` and `offset`
+                    example: 11
+    SuccessGoodsLabelingResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              report:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    amount:
+                      description: Fine amount, rubles
+                      type: number
+                    date:
+                      description: Date
+                      type: string
+                      format: date-time
+                    incomeId:
+                      description: Income ID
+                      type: integer
+                    nmID:
+                      description: WB article number
+                      type: integer
+                    photoUrls:
+                      description: Item photo URL
+                      type: array
+                      items:
+                        type: string
+                    shkID:
+                      description: Wildberries item SKU
+                      type: integer
+                    sku:
+                      description: Listing SKU
+                      type: string
+          example:
+            report:
+              - amount: 1500
+                date: '2024-03-26T01:00:00Z'
+                incomeId: 18484008
+                nmID: 49434732
+                photoUrls:
+                  - https://static-basket-03.{{ .baseDomain }}/vol54/photo-fixation-violation-shk-excise/12345678900-1811460999-1.jpg
+                  - https://static-basket-03.{{ .baseDomain }}/vol54/photo-fixation-violation-shk-excise/12345678900-1811461000-2.jpg
+                  - https://static-basket-03.{{ .baseDomain }}/vol54/photo-fixation-violation-shk-excise/12345678900-1811461001-3.jpg
+                shkID: 17346434621
+                sku: '4630153500834'
+    SuccessBrandsResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                description: Brands list
+                type: array
+                items:
+                  type: string
+                example:
+                  - 1000 | Каталог
+                  - 1000 Каталог
+                  - AndBerries
+                  - H&M
+                  - Mirtex
+                  - PlayToday
+                  - Test1
+                  - WOW
+                  - '["Colambetta"]'
+                  - dubs
+                  - test
+                  - Бест Трикотаж
+                  - Тест
+    SuccessParentsResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                description: Brand categories
+                type: array
+                items:
+                  type: object
+                  properties:
+                    parentId:
+                      type: integer
+                      description: Parent category ID
+                    parentName:
+                      type: string
+                      description: Parent category name
+          example:
+            data:
+              - parentId: 3
+                parentName: Аксессуары
+              - parentId: 7
+                parentName: Игрушки
+              - parentId: 1
+                parentName: Одежда
+              - parentId: 239
+                parentName: Спортивный товар
+    SuccessBrandShareResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              report:
+                description: Report
+                type: array
+                items:
+                  type: object
+                  properties:
+                    applyDate:
+                      type: string
+                      format: ГГГГ-ММ-ДД
+                      description: Date
+                    brandRating:
+                      type: integer
+                      description: Brand rating in parent category
+                    pricePercent:
+                      type: number
+                      format: float
+                      description: Share of sales in the parent category — price, %
+                    qtyPercent:
+                      type: number
+                      format: float
+                      description: Share of sales in the parent category — quantity, %
+          example:
+            report:
+              - applyDate: '2023-10-31'
+                brandRating: 5
+                pricePercent: 0.68
+                qtyPercent: 1
+              - applyDate: '2023-11-01'
+                brandRating: 5
+                pricePercent: 0.65
+                qtyPercent: 0.99
+              - applyDate: '2023-11-02'
+                brandRating: 4
+                pricePercent: 0.74
+                qtyPercent: 1.23
+              - applyDate: '2023-11-03'
+                brandRating: 2
+                pricePercent: 0.76
+                qtyPercent: 1.39
+  securitySchemes:
+    HeaderApiKey:
+      type: apiKey
+      name: Authorization
+      in: header
