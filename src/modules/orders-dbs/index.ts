@@ -39,6 +39,7 @@ import type {
   SetGtinBulkRequest,
   SetCustomsDeclarationBulkRequest,
   SetMetaBulkResponse,
+  DBSCheckMetaValidationResponse,
 } from '../../types/orders-dbs.types';
 
 /** Base URL for DBS API endpoints */
@@ -323,7 +324,10 @@ export class OrdersDbsModule {
   /**
    * Get metadata for multiple orders (bulk)
    *
-   * Replaces the deprecated single-order getMeta() method.
+   * @deprecated WB shuts down POST .../meta/info on **July 27, 2026**. Migrate to
+   *   {@link OrdersDbsModule.checkMetaValidation} (POST .../meta/details), which also
+   *   returns marking-metadata validation status.
+   *
    * Rate limit: 150 requests/min, 400ms interval, 20 burst
    *
    * @param request - Request with order IDs
@@ -799,6 +803,43 @@ export class OrdersDbsModule {
       `${BASE_URL}/api/marketplace/v3/dbs/orders/status/cancel`,
       { orders: orderIds },
       { rateLimitKey: 'orders-dbs.cancelBulk' }
+    );
+  }
+
+  /**
+   * Check marking-metadata validation (B2B Chestny ZNAK pre-flight)
+   *
+   * Returns per-order marking-metadata validation status. Call BEFORE
+   * status/deliver to identify orders that would get 409 MetaValidationFail.
+   * Replaces the deprecated getMetaBulk() (meta/info, shutdown July 27).
+   *
+   * Rate limit: 300 req/min, 200ms interval, burst 20 (4XX×10 penalty)
+   *
+   * @param request - Request with DBS order IDs (max 1000)
+   * @returns Per-order validation details
+   * @throws {ValidationError} When orders array is empty or exceeds 1000
+   * @since 3.16.0
+   * @example
+   * ```typescript
+   * const validation = await sdk.ordersDBS.checkMetaValidation({ orders: [123456, 234567] });
+   * const invalid = validation.metaDetails.filter(d => d.status === 'invalid');
+   * if (invalid.length > 0) {
+   *   // fix marking metadata (sgtin/imei/uin/gtin), then deliver
+   * }
+   * await sdk.ordersDBS.deliverStatus({ orders: [123456, 234567] });
+   * ```
+   */
+  async checkMetaValidation(request: GetMetaBulkRequest): Promise<DBSCheckMetaValidationResponse> {
+    if (request.orders.length === 0) {
+      throw new ValidationError('orders array cannot be empty');
+    }
+    if (request.orders.length > 1000) {
+      throw new ValidationError('orders array cannot exceed 1000 items');
+    }
+    return this.client.post<DBSCheckMetaValidationResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/details`,
+      request,
+      { rateLimitKey: 'orders-dbs.checkMetaValidation' }
     );
   }
 }

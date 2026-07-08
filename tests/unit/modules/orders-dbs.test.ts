@@ -641,6 +641,7 @@ describe('OrdersDbsModule', () => {
       mockClient.post.mockResolvedValue({ orders: [] });
       const request = { orders: [123456] };
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
       await ordersDbsModule.getMetaBulk(request);
 
       expect(mockClient.post).toHaveBeenCalledWith(
@@ -654,6 +655,7 @@ describe('OrdersDbsModule', () => {
       const mockResponse = { orders: [{ orderId: 123456, imei: '123' }] };
       mockClient.post.mockResolvedValue(mockResponse);
 
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
       const result = await ordersDbsModule.getMetaBulk({ orders: [123456] });
 
       expect(result).toEqual(mockResponse);
@@ -887,6 +889,31 @@ describe('OrdersDbsModule', () => {
       expect(typeof ordersDbsModule.getNewOrders).toBe('function');
       expect(typeof ordersDbsModule.getOrders).toBe('function');
       expect(typeof ordersDbsModule.getClientInfo).toBe('function');
+    });
+  });
+
+  describe('checkMetaValidation() (task-142)', () => {
+    it('should call POST meta/details with orders + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ metaDetails: [] });
+      await ordersDbsModule.checkMetaValidation({ orders: [123456, 234567] });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/details`,
+        { orders: [123456, 234567] },
+        expect.objectContaining({ rateLimitKey: 'orders-dbs.checkMetaValidation' })
+      );
+    });
+
+    it('should throw ValidationError on empty orders', async () => {
+      await expect(ordersDbsModule.checkMetaValidation({ orders: [] })).rejects.toThrow(
+        ValidationError
+      );
+    });
+
+    it('should throw ValidationError on >1000 orders', async () => {
+      const big = Array.from({ length: 1001 }, (_, i) => i);
+      await expect(ordersDbsModule.checkMetaValidation({ orders: big })).rejects.toThrow(
+        ValidationError
+      );
     });
   });
 });

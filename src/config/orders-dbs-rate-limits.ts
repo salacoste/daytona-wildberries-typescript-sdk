@@ -280,4 +280,11 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+  /** Check marking-metadata validation (meta/details) — mirrors deliver/status bucket */
+  'orders-dbs.checkMetaValidation': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

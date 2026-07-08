@@ -209,6 +209,16 @@ export interface MetaValidationDetail {
 }
 
 /**
+ * Response from {@link OrdersDbsModule.checkMetaValidation} (POST .../meta/details).
+ * Per-order marking-metadata validation results. Use before status/deliver to
+ * avoid the 409 MetaValidationFail guess-and-retry loop.
+ * @since 3.16.0
+ */
+export interface DBSCheckMetaValidationResponse {
+  metaDetails: MetaValidationDetail[];
+}
+
+/**
  * Response item for bulk status change operations
  */
 export interface StatusSetResponse {
