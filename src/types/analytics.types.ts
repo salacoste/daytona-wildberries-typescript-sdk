@@ -39,6 +39,12 @@ export interface MainResponse {
   commonInfo: CommonInfo;
   positionInfo: PositionInfo;
   visibilityInfo: VisibilityInfo;
+  /**
+   * Валюта отчёта (ISO 4217, например "RUB").
+   * Spec marks `currency` as required; kept optional `?` per codebase convention
+   * (WB omits empty fields).
+   */
+  currency?: string;
   /** Список элементов таблицы */
   groups?: TableGroupItem[];
 }
@@ -356,6 +362,12 @@ export interface TableGroupRequest {
 export interface TableGroupResponse {
   /** Список групп товаров для таблицы */
   groups: TableGroupItem[];
+  /**
+   * Валюта отчёта (ISO 4217, например "RUB").
+   * Spec marks `currency` as required; kept optional `?` per codebase convention
+   * (WB omits empty fields).
+   */
+  currency?: string;
 }
 
 /**
@@ -390,6 +402,12 @@ export interface TableDetailsRequest {
 export interface TableDetailsResponse {
   /** Список товаров в группе по фильтру */
   products: TableProductItem[];
+  /**
+   * Валюта отчёта (ISO 4217, например "RUB").
+   * Spec marks `currency` as required; kept optional `?` per codebase convention
+   * (WB omits empty fields).
+   */
+  currency?: string;
 }
 
 /**
@@ -414,6 +432,12 @@ export interface ProductSearchTextsRequest {
 
 export interface ProductSearchTextsResponse {
   items: TableSearchTextItem[];
+  /**
+   * Валюта отчёта (ISO 4217, например "RUB").
+   * Spec marks `currency` as required; kept optional `?` per codebase convention
+   * (WB omits empty fields).
+   */
+  currency?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -782,6 +806,41 @@ export interface StocksReportReq {
   userReportName?: string;
   /** Параметры отчёта */
   params: CommonReportFilters;
+}
+
+/**
+ * Параметры запроса для отчёта по истории запасов (reportType `STOCK_HISTORY_DAILY_CSV`).
+ *
+ * В отличие от {@link StocksReportReq}, этот вариант использует инлайн-параметры
+ * (без `availabilityFilters`/`orderBy`) и период `PeriodInv` (структурно совпадает с PeriodSt,
+ * окно до 3 месяцев).
+ *
+ * Спецсхема: `InventoryHistoryReportReq`.
+ */
+export interface InventoryHistoryReportReq {
+  /** ID отчёта в UUID-формате. Генерируется продавцом самостоятельно */
+  id: string;
+  /** Тип отчёта — `STOCK_HISTORY_DAILY_CSV` (история запасов по дням) */
+  reportType: string;
+  /** Название отчёта. Если не указано, сформируется автоматически */
+  userReportName?: string;
+  /** Параметры отчёта (инлайн-форма ежедневной истории запасов) */
+  params: {
+    /** Список артикулов WB для фильтрации */
+    nmIds?: number[];
+    /** Список ID предметов для фильтрации */
+    subjectIds?: number[];
+    /** Список брендов для фильтрации */
+    brandNames?: string[];
+    /** Список ID ярлыков для фильтрации */
+    tagIds?: number[];
+    /** Текущий период (окно до 3 месяцев). Спецсхема: `PeriodInv` */
+    currentPeriod: PeriodSt;
+    /** Тип складов хранения товаров */
+    stockType: StockType;
+    /** Пропустить удалённые товары */
+    skipDeletedNm: boolean;
+  };
 }
 
 export interface NmReportRetryReportRequest {

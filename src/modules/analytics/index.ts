@@ -29,6 +29,7 @@ import type {
   SearchReportProductReq,
   SearchReportTextReq,
   StocksReportReq,
+  InventoryHistoryReportReq,
   TableDetailsRequest,
   TableDetailsResponse,
   TableGroupRequest,
@@ -107,6 +108,7 @@ export class AnalyticsModule {
       | SearchReportProductReq
       | SearchReportTextReq
       | StocksReportReq
+      | InventoryHistoryReportReq
   ): Promise<NmReportCreateReportResponse> {
     return this.client.post<NmReportCreateReportResponse>(
       'https://seller-analytics-api.wildberries.ru/api/v2/nm-report/downloads',
@@ -687,6 +689,7 @@ export type {
   SearchReportProductReq,
   SearchReportTextReq,
   StocksReportReq,
+  InventoryHistoryReportReq,
   NmReportRetryReportRequest,
   NmReportCreateReportResponse,
   NmReportGetReportsResponse,

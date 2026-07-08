@@ -175,6 +175,26 @@ describe('AnalyticsModule', () => {
         );
       });
 
+      it('createNmReportDownload accepts InventoryHistoryReportReq (STOCK_HISTORY_DAILY_CSV)', async () => {
+        mockClient.post.mockResolvedValue({ data: {} });
+        await module.createNmReportDownload({
+          id: '11111111-2222-3333-4444-555555555555',
+          reportType: 'STOCK_HISTORY_DAILY_CSV',
+          params: {
+            currentPeriod: { start: '2024-02-10', end: '2024-02-10' },
+            stockType: 'wb',
+            skipDeletedNm: true,
+            nmIds: [111222333],
+          },
+        });
+
+        expect(mockClient.post).toHaveBeenCalledWith(
+          `${BASE_URL}/api/v2/nm-report/downloads`,
+          expect.objectContaining({ reportType: 'STOCK_HISTORY_DAILY_CSV' }),
+          expect.objectContaining({ rateLimitKey: 'analytics.postNmReportDownloads' })
+        );
+      });
+
       it('createDownloadsRetry passes rateLimitKey', async () => {
         mockClient.post.mockResolvedValue({ data: {} });
         await module.createDownloadsRetry({ downloadId: 'test-uuid' });
