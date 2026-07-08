@@ -487,7 +487,7 @@ export class GeneralModule {
    */
   async getSellerRating(): Promise<SellerRatingResponse> {
     return this.client.get<SellerRatingResponse>(
-      'https://common-api.wildberries.ru/api/common/v1/rating',
+      'https://feedbacks-api.wildberries.ru/api/common/v1/rating',
       { rateLimitKey: 'general.getSellerRating' }
     );
   }

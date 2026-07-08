@@ -888,7 +888,7 @@ describe('GeneralModule', () => {
       await generalModule.getSellerRating();
 
       expect(mockClient.get).toHaveBeenCalledWith(
-        'https://common-api.wildberries.ru/api/common/v1/rating',
+        'https://feedbacks-api.wildberries.ru/api/common/v1/rating',
         { rateLimitKey: 'general.getSellerRating' }
       );
     });
