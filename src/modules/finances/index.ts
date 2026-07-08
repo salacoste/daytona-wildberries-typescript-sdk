@@ -10,7 +10,20 @@
    warnings when THEY import or call these. The method remains functional until 2026-07-15. */
 
 import { BaseClient } from '../../client/base-client';
+import { WBAPIError } from '../../errors/base-error';
 import { warnOnce } from '../../utils/deprecation';
+
+/**
+ * Wildberries disables the v5 `getSupplierReportDetailByPeriod()` endpoint on this date.
+ * After it passes, the method throws a migration error instead of hitting the network.
+ */
+const SUPPLIER_REPORT_DETAIL_V5_DEADLINE = new Date('2026-07-15T00:00:00Z').getTime();
+
+/**
+ * Migration guide URL for the v5 → v1 finance reports transition.
+ */
+const SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL =
+  'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1';
 import type {
   AccountBalanceResponse,
   DetailReportItem,
@@ -102,16 +115,52 @@ export class FinancesModule {
     rrdid?: number;
     period?: 'weekly' | 'daily';
   }): Promise<DetailReportItem[]> {
+    const pastDeadline = Date.now() >= SUPPLIER_REPORT_DETAIL_V5_DEADLINE;
     warnOnce(
       'FinancesModule.getSupplierReportDetailByPeriod',
-      '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated and will be removed after 2026-07-15. ' +
-        'Migrate to getSalesReportsDetailed(). See migration guide: ' +
-        'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1'
+      pastDeadline
+        ? '[DISABLED] getSupplierReportDetailByPeriod() was disabled by Wildberries on 2026-07-15. ' +
+            'Migrate to getSalesReportsDetailed(). See migration guide: ' +
+            SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL
+        : '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated and will be removed after 2026-07-15. ' +
+            'Migrate to getSalesReportsDetailed(). See migration guide: ' +
+            SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL
     );
-    return this.client.get<DetailReportItem[]>(
-      'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
-      { params: options, rateLimitKey: 'finances.supplierReportDetailByPeriod' }
-    );
+
+    // After WB disables the endpoint (2026-07-15), avoid a confusing opaque API
+    // failure and throw a clear migration error before touching the network.
+    if (pastDeadline) {
+      throw new WBAPIError(
+        'getSupplierReportDetailByPeriod() was disabled by Wildberries on 2026-07-15. ' +
+          'Migrate to getSalesReportsDetailed(). See migration guide: ' +
+          SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL
+      );
+    }
+
+    try {
+      return await this.client.get<DetailReportItem[]>(
+        'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
+        { params: options, rateLimitKey: 'finances.supplierReportDetailByPeriod' }
+      );
+    } catch (error) {
+      // If the endpoint fails after the deadline (e.g. consumer pinned the
+      // clock or hit a transitional window), wrap the opaque API error with a
+      // clear migration message pointing at the v1 replacement.
+      const now = Date.now();
+      if (now >= SUPPLIER_REPORT_DETAIL_V5_DEADLINE && error instanceof WBAPIError) {
+        throw new WBAPIError(
+          `getSupplierReportDetailByPeriod() failed — this endpoint was disabled by Wildberries on 2026-07-15. ` +
+            `Original error: ${error.message} ` +
+            `Migrate to getSalesReportsDetailed(). See migration guide: ${SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL}`,
+          error.statusCode,
+          error.response,
+          error.requestId,
+          error.origin,
+          error.timestamp
+        );
+      }
+      throw error;
+    }
   }
 
   /**

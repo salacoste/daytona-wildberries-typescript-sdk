@@ -21,6 +21,7 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import { WBAPIError } from '../../../src/errors/base-error';
 import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 
 describe('FinancesModule', () => {
@@ -365,6 +366,104 @@ describe('FinancesModule', () => {
 
       await expect(module.getSupplierReportDetailByPeriod(requiredParams)).rejects.toThrow(
         RateLimitError
+      );
+    });
+  });
+
+  // ──────────────────────────────────────────────────
+  // getSupplierReportDetailByPeriod() — post-deadline (after 2026-07-15)
+  // task-113 (WL-4): WB disables the v5 endpoint on 2026-07-15. After that the
+  // SDK must throw a clear migration error instead of an opaque API failure.
+  // ──────────────────────────────────────────────────
+
+  describe('getSupplierReportDetailByPeriod() — post-deadline error handling (task-113)', () => {
+    beforeEach(() => {
+      resetDeprecationWarnings();
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2026-08-01T00:00:00Z')); // past 2026-07-15
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should throw a clear migration error after the deadline without calling the network', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      await expect(
+        module.getSupplierReportDetailByPeriod({
+          dateFrom: '2024-01-01',
+          dateTo: '2024-01-31',
+        })
+      ).rejects.toThrow(WBAPIError);
+
+      // Network must NOT be hit — error is thrown pre-flight.
+      expect(mockClient.get).not.toHaveBeenCalled();
+      warnSpy.mockRestore();
+    });
+
+    it('should reference getSalesReportsDetailed() and the migration guide URL in the error', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      await expect(
+        module.getSupplierReportDetailByPeriod({
+          dateFrom: '2024-01-01',
+          dateTo: '2024-01-31',
+        })
+      ).rejects.toThrow(/getSalesReportsDetailed/);
+    });
+
+    it('should reference the migration guide URL in the error message', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      await expect(
+        module.getSupplierReportDetailByPeriod({
+          dateFrom: '2024-01-01',
+          dateTo: '2024-01-31',
+        })
+      ).rejects.toThrow(
+        'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1'
+      );
+    });
+
+    it('should use the [DISABLED] warnOnce message after the deadline passes', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      await expect(
+        module.getSupplierReportDetailByPeriod({
+          dateFrom: '2024-01-01',
+          dateTo: '2024-01-31',
+        })
+      ).rejects.toThrow();
+
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0][0]).toContain('[DISABLED]');
+      expect(warnSpy.mock.calls[0][0]).not.toContain('[DEPRECATED]');
+      warnSpy.mockRestore();
+    });
+
+    it('should wrap an opaque API error with a migration message if it slips past the pre-flight check', async () => {
+      // Simulate the clock being just before the deadline at pre-flight time...
+      vi.setSystemTime(new Date('2026-07-14T23:59:59Z'));
+      // ...but a stale/NetworkError propagating after the deadline. The BaseClient
+      // error carries no useful hint about the disabled endpoint on its own.
+      const originalError = new WBAPIError('Request failed with status code 404', 404, {
+        message: 'Not Found',
+      });
+      mockClient.get.mockRejectedValue(originalError);
+
+      // Advance real time isn't possible under fake timers, so simulate the
+      // post-deadline wrap by jumping the clock forward before the await settles.
+      const promise = module.getSupplierReportDetailByPeriod({
+        dateFrom: '2024-01-01',
+        dateTo: '2024-01-31',
+      });
+      vi.setSystemTime(new Date('2026-08-01T00:00:00Z'));
+
+      await expect(promise).rejects.toThrow(WBAPIError);
+      await expect(promise).rejects.toThrow(/getSalesReportsDetailed/);
+      await expect(promise).rejects.toThrow(
+        /https:\/\/salacoste\.github\.io\/daytona-wildberries-typescript-sdk\/guides\/migration-finance-reports-v5-to-v1/
       );
     });
   });
