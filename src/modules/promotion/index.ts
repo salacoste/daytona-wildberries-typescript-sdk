@@ -664,7 +664,15 @@ export class PromotionModule {
    *
    * Метод формирует статистику по ключевым фразам из поисковой строки: количество просмотров товара и затраты по одной ключевой фразе. Подходит для кампаний c единой и ручной ставкой. <br><br> Статистика формируется за каждый день, когда кампания была активна. В одном запросе можно получить данные максимум за 7 дней. <br> Данные обновляются каждый час. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
    *
-   * @deprecated This endpoint is deprecated. Use alternative methods for keyword statistics.
+   * @deprecated WB removed the v0 advert statistics API; the
+   *   `/adv/v0/stats/keywords` endpoint is no longer present in the WB OpenAPI
+   *   spec. Use {@link PromotionModule.getSearchClusterStats} (normquery-based
+   *   search cluster statistics on `/adv/v0/normquery/stats`) instead — it
+   *   returns per-cluster views/spend for the same cpm campaigns and supports
+   *   both cpm and cpc payment types. This method is retained only for backward
+   *   compatibility and will return errors once WB fully shuts down the v0
+   *   advert surface.
+   * @see {@link PromotionModule.getSearchClusterStats} Replacement method
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
