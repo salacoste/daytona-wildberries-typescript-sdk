@@ -125,4 +125,10 @@ export const analyticsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 20,
     burstLimit: 3,
   },
+  // v1 Item Rating
+  'analytics.itemRating': {
+    requestsPerMinute: 3,
+    intervalSeconds: 20,
+    burstLimit: 3,
+  },
 };

@@ -43,6 +43,8 @@ import type {
   TableSizeResponse,
   WbWarehousesStockRequest,
   WbWarehousesStockResponse,
+  ItemRatingRequest,
+  ItemRatingResponseWrapper,
 } from '../../types/analytics.types';
 
 export class AnalyticsModule {
@@ -578,6 +580,64 @@ export class AnalyticsModule {
       { rateLimitKey: 'analytics.postStocksReportWbWarehouses' }
     );
   }
+
+  /**
+   * Get item rating with feedback distribution.
+   *
+   * Returns the seller rating, a feedback-increase summary (total + per-star 1-5
+   * with optional dynamics vs. the previous period), and a per-item breakdown
+   * of feedback counts and star distribution.
+   *
+   * Rate limit: 3 requests per minute, 20s interval, burst 3.
+   *
+   * @param data - Request parameters. `currentPeriod`, `orderBy`, and `offset` are required.
+   * Pass `pastPeriod` to enable compare mode (yields `dynamics` fields in the response).
+   * @param data.currentPeriod - Current period (`start`/`end` as `YYYY-MM-DD`).
+   * @param data.pastPeriod - Previous period for comparison (optional — compare mode).
+   * @param data.nmIds - WB item numbers filter (max 50).
+   * @param data.subjectIds - Subcategory IDs filter (max 50).
+   * @param data.brandNames - Brand names filter (max 50).
+   * @param data.tagIds - Label IDs filter (max 50).
+   * @param data.isNotIncludeNMsWithoutSales - Exclude items without sales (default `false`).
+   * @param data.orderBy - Sorting parameters (`field` + `mode`).
+   * @param data.limit - Items per response (default 100, max 1000).
+   * @param data.offset - Skip N results for pagination (required).
+   * @returns Seller rating, feedback-increase summary, and per-item array.
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.16.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/Rating/operation/postV1ItemRating}
+   * @example
+   * ```typescript
+   * // Period mode (single period, no dynamics)
+   * const rating = await sdk.analytics.getItemRating({
+   *   currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+   *   orderBy: { field: 'feedbackCount', mode: 'desc' },
+   *   offset: 0,
+   *   limit: 100,
+   * });
+   * console.log(rating.data.sellerRating.current); // e.g. 3.56
+   *
+   * // Compare mode (current + past period — yields `dynamics` fields)
+   * const compared = await sdk.analytics.getItemRating({
+   *   currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+   *   pastPeriod: { start: '2026-02-08', end: '2026-02-08' },
+   *   nmIds: [162579635, 166699779],
+   *   orderBy: { field: 'fiveStar', mode: 'desc' },
+   *   offset: 0,
+   * });
+   * console.log(compared.data.feedbackIncrease.fiveStar.dynamics); // % change vs past period
+   * ```
+   */
+  async getItemRating(data: ItemRatingRequest): Promise<ItemRatingResponseWrapper> {
+    return this.client.post<ItemRatingResponseWrapper>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/item-rating',
+      data,
+      { rateLimitKey: 'analytics.itemRating' }
+    );
+  }
 }
 // Re-export all analytics types from the subpath import 'daytona-wildberries-typescript-sdk/analytics'.
 // Without these, consumers can import the module class but cannot access type definitions.
@@ -682,4 +742,20 @@ export type {
   WbWarehousesStockRequest,
   WbWarehouseStockItem,
   WbWarehousesStockResponse,
+  ItemRatingRequest,
+  ItemRatingResponse,
+  ItemRatingResponseWrapper,
+  PeriodItemRating,
+  PastPeriodItemRating,
+  OrderByItemRating,
+  ItemRatingOrderByField,
+  ItemRatingOrderByMode,
+  TableItemFloat,
+  FeedbacksIncreaseItem,
+  ItemRatingStarMetric,
+  DistributionTableItem,
+  TableItemBaseCommon,
+  DistributionTableIndicators,
+  DistributionTableIndicator,
+  DistributionFeedbackRating,
 } from '../../types/analytics.types';

@@ -1716,3 +1716,201 @@ export interface WbWarehousesStockResponse {
     items: WbWarehouseStockItem[];
   };
 }
+
+// ============================================================================
+// Item Rating (POST /api/analytics/v1/item-rating) — task-151
+// @since 3.16.0
+// ============================================================================
+
+/** Current period for item rating.
+ * Dates use `YYYY-MM-DD` format. `start` must not be later than `end`,
+ * and neither may be earlier than 364 days before yesterday. */
+export interface PeriodItemRating {
+  /** Start date of the period (`YYYY-MM-DD`). No later than `end`. */
+  start: string;
+  /** End date of the period (`YYYY-MM-DD`). */
+  end: string;
+}
+
+/** Previous period for comparison. Day count must be less than or equal to `currentPeriod`. */
+export interface PastPeriodItemRating {
+  /** Start date of the period (`YYYY-MM-DD`). No later than `end`. */
+  start: string;
+  /** End date of the period (`YYYY-MM-DD`). No later than the day before `currentPeriod.start`. */
+  end: string;
+}
+
+/** Sorting field for item rating. */
+export type ItemRatingOrderByField =
+  | 'feedbackRating'
+  | 'feedbackCount'
+  | 'fiveStar'
+  | 'fourStar'
+  | 'threeStar'
+  | 'twoStar'
+  | 'oneStar'
+  | 'disqualified';
+
+/** Sorting mode for item rating. */
+export type ItemRatingOrderByMode = 'asc' | 'desc';
+
+/** Sorting parameters for item rating. */
+export interface OrderByItemRating {
+  /** Sorting field. */
+  field: ItemRatingOrderByField;
+  /** Sorting order: `asc` (ascending) or `desc` (descending). */
+  mode: ItemRatingOrderByMode;
+}
+
+/** Request parameters for POST /api/analytics/v1/item-rating.
+ * Supports a single-period mode (`currentPeriod` only) and a compare mode
+ * (`currentPeriod` + `pastPeriod`). */
+export interface ItemRatingRequest {
+  /** Current period. */
+  currentPeriod: PeriodItemRating;
+  /** Previous period for comparison (optional — enables compare mode). */
+  pastPeriod?: PastPeriodItemRating;
+  /** List of WB item numbers for filtering (max 50). */
+  nmIds?: number[];
+  /** List of subcategory IDs for filtering (max 50). */
+  subjectIds?: number[];
+  /** List of brands for filtering (max 50). */
+  brandNames?: string[];
+  /** List of label IDs for filtering (max 50). */
+  tagIds?: number[];
+  /** Do not count items without sales. Default `false`. */
+  isNotIncludeNMsWithoutSales?: boolean;
+  /** Sorting parameters. */
+  orderBy: OrderByItemRating;
+  /** Number of items in the response (default 100, max 1000). */
+  limit?: number;
+  /** How many results to skip (pagination). */
+  offset: number;
+}
+
+/** A rating/metric value with optional dynamics vs. previous period. */
+export interface ItemRatingFloatMetric {
+  /** Current value. */
+  current: number;
+  /** Dynamics compared to the previous period (%). Optional. */
+  dynamics?: number;
+}
+
+/** Per-star feedback counts with current period, total, and optional dynamics. */
+export interface ItemRatingStarMetric {
+  /** Feedback increase for the period. */
+  current: number;
+  /** Dynamics compared to the previous period (%). Optional. */
+  dynamics?: number;
+  /** Total ratings. */
+  total: number;
+}
+
+/** Seller rating summary (current + optional dynamics). */
+export interface TableItemFloat {
+  /** Current rating. */
+  current: number;
+  /** Dynamics compared to the previous period (%). Optional. */
+  dynamics?: number;
+}
+
+/** Feedback increase summary: total plus per-star breakdown (1-5). */
+export interface FeedbacksIncreaseItem {
+  /** Feedback increase for the period. */
+  current: number;
+  /** Total ratings. */
+  total: number;
+  /** Dynamics compared to the previous period (%). */
+  dynamics: number;
+  /** 5 star reviews. */
+  fiveStar: ItemRatingStarMetric;
+  /** 4 star reviews. */
+  fourStar: ItemRatingStarMetric;
+  /** 3 star reviews. */
+  threeStar: ItemRatingStarMetric;
+  /** 2 star reviews. */
+  twoStar: ItemRatingStarMetric;
+  /** 1 star reviews. */
+  oneStar: ItemRatingStarMetric;
+}
+
+/** Feedback rating value: current rating, optional dynamics, optional percentile. */
+export interface DistributionFeedbackRating {
+  /** Current rating. */
+  current: number;
+  /** Dynamics compared to the previous period (%). Optional. */
+  dynamics?: number;
+  /** How many percent of other sellers' items of this subcategory have a lower feedback rating. Nullable. */
+  percentile?: number | null;
+}
+
+/** Base item fields shared by per-item rows. */
+export interface TableItemBaseCommon {
+  /** WB item number. */
+  nmId?: number;
+  /** Item name. */
+  title?: string;
+  /** Seller item number (vendor code). */
+  vendorCode?: string;
+  /** Subcategory ID. */
+  subjectId?: number;
+  /** Subcategory name. */
+  subjectName?: string;
+  /** Brand. */
+  brandName?: string;
+  /** Label name. */
+  tagName?: string;
+  /** Label ID. */
+  tagId?: number;
+  /** Whether the review is pinned. */
+  pinnedFeedback?: boolean;
+  /** Listing rating. */
+  rating?: number;
+  /** Feedback rating (current + optional dynamics + optional percentile). */
+  feedbackRating?: DistributionFeedbackRating;
+}
+
+/** Per-star/feedback indicator with current value and optional dynamics. */
+export interface DistributionTableIndicator {
+  /** Feedback increase for the period. */
+  current: number;
+  /** Dynamics compared to the previous period (%). Optional. */
+  dynamics?: number;
+}
+
+/** Per-item indicator breakdown (feedback count + per-star counts + disqualified). */
+export interface DistributionTableIndicators {
+  /** Feedback count. */
+  feedbackCount?: DistributionTableIndicator;
+  /** 5 star reviews. */
+  fiveStar?: DistributionTableIndicator;
+  /** 4 star reviews. */
+  fourStar?: DistributionTableIndicator;
+  /** 3 star reviews. */
+  threeStar?: DistributionTableIndicator;
+  /** 2 star reviews. */
+  twoStar?: DistributionTableIndicator;
+  /** 1 star reviews. */
+  oneStar?: DistributionTableIndicator;
+  /** Excluded reviews. */
+  disqualified?: number;
+}
+
+/** Single item row in the item-rating response: base fields merged with indicator breakdown. */
+export interface DistributionTableItem extends TableItemBaseCommon, DistributionTableIndicators {}
+
+/** Response body for POST /api/analytics/v1/item-rating (the `data` payload). */
+export interface ItemRatingResponse {
+  /** Seller rating. */
+  sellerRating: TableItemFloat;
+  /** Feedback increase summary. */
+  feedbackIncrease: FeedbacksIncreaseItem;
+  /** Per-item data. */
+  cards: DistributionTableItem[];
+}
+
+/** Top-level response wrapper for POST /api/analytics/v1/item-rating. */
+export interface ItemRatingResponseWrapper {
+  /** Response data. */
+  data: ItemRatingResponse;
+}

@@ -514,4 +514,119 @@ describe('AnalyticsModule', () => {
       expect(result.data.items).toEqual([]);
     });
   });
+
+  // ============================================================================
+  // getItemRating (v1 Item Rating) — task-151
+  // ============================================================================
+
+  describe('getItemRating()', () => {
+    const ITEM_RATING_URL = `${BASE_URL}/api/analytics/v1/item-rating`;
+
+    it('should call correct URL with request body and rateLimitKey (period mode)', async () => {
+      mockClient.post.mockResolvedValue({
+        data: { sellerRating: { current: 3.56 }, feedbackIncrease: {} as any, cards: [] },
+      });
+
+      const request = {
+        currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+        orderBy: { field: 'feedbackCount' as const, mode: 'desc' as const },
+        offset: 0,
+        limit: 100,
+      };
+
+      await module.getItemRating(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(ITEM_RATING_URL, request, {
+        rateLimitKey: 'analytics.itemRating',
+      });
+    });
+
+    it('should pass through compare mode (pastPeriod) request body and rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({
+        data: { sellerRating: { current: 3.56 }, feedbackIncrease: {} as any, cards: [] },
+      });
+
+      const request = {
+        currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+        pastPeriod: { start: '2026-02-08', end: '2026-02-08' },
+        nmIds: [162579635, 166699779],
+        subjectIds: [232, 1364],
+        brandNames: ['Abikas', 'Tike'],
+        tagIds: [3, 5, 6],
+        isNotIncludeNMsWithoutSales: true,
+        orderBy: { field: 'fiveStar' as const, mode: 'desc' as const },
+        limit: 130,
+        offset: 50,
+      };
+
+      await module.getItemRating(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(ITEM_RATING_URL, request, {
+        rateLimitKey: 'analytics.itemRating',
+      });
+    });
+
+    it('should return the response payload unchanged (passthrough)', async () => {
+      const mockResponse = {
+        data: {
+          sellerRating: { current: 3.56, dynamics: 0.03 },
+          feedbackIncrease: {
+            current: 26,
+            total: 116,
+            dynamics: 23,
+            fiveStar: { current: 19, dynamics: 17, total: 51 },
+            fourStar: { current: 2, dynamics: 1, total: 13 },
+            threeStar: { current: 1, dynamics: 1, total: 11 },
+            twoStar: { current: 5, dynamics: 5, total: 34 },
+            oneStar: { current: -1, dynamics: -1, total: 7 },
+          },
+          cards: [
+            {
+              nmId: 123456789,
+              title: 'iPh 17 512 ГБ Серебристый',
+              vendorCode: 'wb3ha2668w',
+              feedbackRating: { current: 3.87, dynamics: 0.31, percentile: 1.7 },
+              feedbackCount: { current: 12, dynamics: 9 },
+              disqualified: 7,
+            },
+          ],
+        },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getItemRating({
+        currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+        orderBy: { field: 'feedbackCount', mode: 'desc' },
+        offset: 0,
+      });
+
+      expect(result).toEqual(mockResponse);
+      expect(result.data.sellerRating.current).toBe(3.56);
+      expect(result.data.feedbackIncrease.fiveStar.total).toBe(51);
+      expect(result.data.cards[0].nmId).toBe(123456789);
+      expect(result.data.cards[0].feedbackRating?.percentile).toBe(1.7);
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+      await expect(
+        module.getItemRating({
+          currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+          orderBy: { field: 'feedbackCount', mode: 'desc' },
+          offset: 0,
+        })
+      ).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(
+        module.getItemRating({
+          currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+          orderBy: { field: 'feedbackCount', mode: 'desc' },
+          offset: 0,
+        })
+      ).rejects.toThrow(RateLimitError);
+    });
+  });
 });
