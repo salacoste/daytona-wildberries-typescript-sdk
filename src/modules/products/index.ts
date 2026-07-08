@@ -8,6 +8,8 @@ import { BaseClient } from '../../client/base-client';
 import { warnOnce } from '../../utils/deprecation';
 import type {
   BrandsResponse,
+  B2bWholesaleGoods,
+  B2bWholesaleUploadTaskResponse,
   ClubDisc,
   GetContentTagsResponse,
   GetDirectoryColorsResponse,
@@ -1622,6 +1624,52 @@ export class ProductsModule {
       'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount',
       data,
       { rateLimitKey: 'products.postUploadTaskClubDiscount' }
+    );
+  }
+
+  /**
+   * Установить оптовые скидки для B2B-продаж
+   *
+   * Sets wholesale discount thresholds for B2B sales. Each item carries per-item
+   * wholesale discount thresholds (price breakpoint + discount %).
+   *
+   * Reads back via getGoodsFilter() / createGoodsFilter() — responses include a
+   * `wholesaleDiscountThreshold` array per item when such discounts exist.
+   *
+   * Note: this endpoint lives on the `/api/discounts-prices/v1/` path (v1) — a
+   * different prefix from the existing `/api/v2/upload/task*` methods. Auth accepts
+   * a Personal OR Service token for the Prices & Discounts category.
+   *
+   * Rate limit: 10 req/6s, 600ms interval, burst 5 (same Prices & Discounts tier)
+   *
+   * @param data - B2B wholesale discount thresholds (max 1000 items)
+   * @returns Per-item processing results (`success` + `error` when failed)
+   * @throws {AuthenticationError} When API key/token is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki} - Prices and Discounts
+   * @example
+   * ```typescript
+   * const result = await sdk.products.createUploadTaskB2bWholesale([
+   *   {
+   *     nmID: 12345678,
+   *     wholesaleDiscountThreshold: [
+   *       { minPrice: 1000, discount: 5 },
+   *       { minPrice: 5000, discount: 10 },
+   *     ],
+   *   },
+   * ]);
+   * console.log(result.data?.[0].success);
+   * ```
+   */
+  async createUploadTaskB2bWholesale(
+    data: B2bWholesaleGoods
+  ): Promise<B2bWholesaleUploadTaskResponse> {
+    return this.client.post<B2bWholesaleUploadTaskResponse>(
+      'https://discounts-prices-api.wildberries.ru/api/discounts-prices/v1/upload/task/b2b/wholesale',
+      data,
+      { rateLimitKey: 'products.postUploadTaskB2bWholesale' }
     );
   }
 

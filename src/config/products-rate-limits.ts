@@ -184,6 +184,13 @@ export const productsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.6,
     burstLimit: 5,
   },
+  // B2B wholesale discounts (POST /api/discounts-prices/v1/upload/task/b2b/wholesale)
+  // Same Prices & Discounts tier as the other upload/task methods.
+  'products.postUploadTaskB2bWholesale': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 5,
+  },
   'products.historyTasks': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,

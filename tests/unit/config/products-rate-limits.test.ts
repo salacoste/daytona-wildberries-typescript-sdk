@@ -212,6 +212,7 @@ describe('productsRateLimits', () => {
         'products.postUploadTask',
         'products.postUploadTaskSize',
         'products.postUploadTaskClubDiscount',
+        'products.postUploadTaskB2bWholesale',
         'products.historyTasks',
         'products.historyGoodsTask',
         'products.bufferTasks',
@@ -241,7 +242,7 @@ describe('productsRateLimits', () => {
 
     it('should not have any unexpected keys', () => {
       const actualKeys = Object.keys(productsRateLimits);
-      expect(actualKeys).toHaveLength(50);
+      expect(actualKeys).toHaveLength(51);
     });
   });
 });

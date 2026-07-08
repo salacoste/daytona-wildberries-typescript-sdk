@@ -118,6 +118,58 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
     });
   });
 
+  describe('createUploadTaskB2bWholesale()', () => {
+    const mockData = [
+      {
+        nmID: 123,
+        wholesaleDiscountThreshold: [
+          { minPrice: 1000, discount: 5 },
+          { minPrice: 5000, discount: 10 },
+        ],
+      },
+    ];
+    const mockResponse = {
+      data: [{ nmID: 123, success: true }],
+    };
+
+    it('should POST to correct v1 URL with data and rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue(mockResponse);
+      await productsModule.createUploadTaskB2bWholesale(mockData);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://discounts-prices-api.wildberries.ru/api/discounts-prices/v1/upload/task/b2b/wholesale',
+        mockData,
+        { rateLimitKey: 'products.postUploadTaskB2bWholesale' }
+      );
+    });
+
+    it('should return the response from client (passthrough)', async () => {
+      mockClient.post.mockResolvedValue(mockResponse);
+      const result = await productsModule.createUploadTaskB2bWholesale(mockData);
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should pass through per-item success/error results', async () => {
+      const mixed = {
+        data: [
+          { nmID: 123, success: true },
+          { nmID: 456, success: false, error: { code: 'INVALID', message: 'bad threshold' } },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mixed);
+      const result = await productsModule.createUploadTaskB2bWholesale(mockData);
+      expect(result).toEqual(mixed);
+      expect(result.data?.[1].success).toBe(false);
+      expect(result.data?.[1].error?.message).toBe('bad threshold');
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(productsModule.createUploadTaskB2bWholesale(mockData)).rejects.toThrow(
+        RateLimitError
+      );
+    });
+  });
+
   // ── Prices & Discounts: History/Buffer ──
 
   describe('getHistoryTasks()', () => {
@@ -258,6 +310,28 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
     it('should propagate RateLimitError', async () => {
       mockClient.get.mockRejectedValue(new RateLimitError('Limited', 2000));
       await expect(productsModule.getGoodsFilter()).rejects.toThrow(RateLimitError);
+    });
+
+    it('should pass through wholesaleDiscountThreshold per item (B2B wholesale discounts)', async () => {
+      const thresholdResponse = {
+        data: {
+          listGoods: [
+            {
+              nmID: 100,
+              wholesaleDiscountThreshold: [
+                { minPrice: 1000, discount: 5 },
+                { minPrice: 5000, discount: 10 },
+              ],
+            },
+          ],
+        },
+      };
+      mockClient.get.mockResolvedValue(thresholdResponse);
+      const result = await productsModule.getGoodsFilter({ limit: 1000 });
+      expect(result.data?.listGoods?.[0].wholesaleDiscountThreshold).toEqual([
+        { minPrice: 1000, discount: 5 },
+        { minPrice: 5000, discount: 10 },
+      ]);
     });
   });
 

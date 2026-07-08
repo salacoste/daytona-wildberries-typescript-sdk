@@ -216,6 +216,44 @@ export interface ClubDiscReq {
 }
 
 /**
+ * Товары и пороги оптовых скидок для B2B-продаж. Максимум 1 000 товаров.
+ *
+ * Body for POST /api/discounts-prices/v1/upload/task/b2b/wholesale.
+ *
+ * Note: This endpoint lives on the `/api/discounts-prices/v1/` path (v1) — a
+ * different prefix from the existing `/api/v2/upload/task*` methods. Auth accepts
+ * a Personal OR Service token for the Prices & Discounts category.
+ */
+export type B2bWholesaleGoods = B2bWholesaleGood[];
+
+export interface B2bWholesaleGood {
+  /** Артикул WB */
+  nmID: number;
+  /** Пороги оптовой скидки для B2B-продаж (per-item wholesale discount thresholds) */
+  wholesaleDiscountThreshold: WholesaleDiscountThreshold[];
+}
+
+/**
+ * Результат обработки одной позиции загрузки оптовых скидок B2B.
+ *
+ * 200 response item for POST /api/discounts-prices/v1/upload/task/b2b/wholesale.
+ * `success` is `true` on successful processing; on `false`, error details are in `error`.
+ */
+export interface B2bWholesaleTaskResult {
+  /** Артикул WB */
+  nmID?: number;
+  /** Успешность обработки: `true` — успешно, `false` — неуспешно (детали в `error`) */
+  success: boolean;
+  /** Детали ошибки. Присутствует только когда `success` = `false` */
+  error?: {
+    /** Код/причина ошибки */
+    code?: string;
+    /** Текст ошибки */
+    message?: string;
+  };
+}
+
+/**
  * Размеры товара
  */
 export interface GoodsList {
@@ -248,6 +286,28 @@ export interface GoodsList {
   editableSizePrice?: boolean;
   /** Признак неликвидного товара: - `true` — неликвидный товар с [низким индексом остатка](https://seller.wildberries.ru/instructions/ru/ru/material/stocks-index?categoryId=e324ce0f-9a2a-4b8d-8fd1-72f751b09b3b&goBackOption=prevRoute#%D1%83%D1%80%D0%BE%D0%B2%D0%BD%D0%B8-%D0%B8%D0%BD%D0%B4%D0%B5%D0%BA%D1%81%D0%B0-%D0%BE%D1%81%D1%82%D0%B0%D1%82%D0%BA%D0%B0) - Поле отсутствует — ликвидный товар */
   isBadTurnover?: boolean;
+  /**
+   * Пороги оптовых скидок для B2B-продаж.
+   *
+   * Returned by GET/POST /api/v2/list/goods/filter when B2B wholesale discounts
+   * have been set via POST /api/discounts-prices/v1/upload/task/b2b/wholesale.
+   * Each entry describes one wholesale discount tier (price breakpoint + discount %).
+   * Absent when no B2B wholesale discounts are configured for the item.
+   */
+  wholesaleDiscountThreshold?: WholesaleDiscountThreshold[];
+}
+
+/**
+ * Порог оптовой скидки для B2B-продаж.
+ *
+ * One tier of a per-item wholesale discount: the discount percentage applied once
+ * the order qualifies for this wholesale price breakpoint.
+ */
+export interface WholesaleDiscountThreshold {
+  /** Порог цены, от которого начинает действовать оптовая скидка */
+  minPrice?: number;
+  /** Оптовая скидка, % */
+  discount?: number;
 }
 
 /**
@@ -647,6 +707,23 @@ export interface UploadTaskResponse {
     /** Whether this upload already exists */
     alreadyExists?: boolean;
   };
+  /** Error flag */
+  error?: boolean;
+  /** Error description */
+  errorText?: string;
+}
+
+/**
+ * Response for B2B wholesale discount upload
+ * (POST /api/discounts-prices/v1/upload/task/b2b/wholesale).
+ *
+ * Per the WB announcement: the response carries a per-item result in a `success`
+ * field — `true` on successful processing, `false` on failure with error details
+ * in an `error` object. See {@link B2bWholesaleTaskResult} for the item shape.
+ */
+export interface B2bWholesaleUploadTaskResponse {
+  /** Per-item processing results */
+  data?: B2bWholesaleTaskResult[];
   /** Error flag */
   error?: boolean;
   /** Error description */
