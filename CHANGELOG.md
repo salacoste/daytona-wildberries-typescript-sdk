@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v3.16.0 — minor: conformance audit + 8 new endpoints + ~18 type-defect fixes + 3 runtime-breaking bug fixes -->
+
+## [3.16.0] - 2026-07-08
+
+### Added
+
+- **8 new WB API endpoints**: Pickup `checkMetaValidation` + `setCustomsDeclarationBulk`; DBS `checkMetaValidation`; FBS `getOrdersArchive`; analytics `getItemRating`; products `createUploadTaskB2bWholesale`; promotion `getV1Config` + `postV1NormqueryBids`; general `getTariffConstructorOptions`.
+- **`BidOutOfRangeError`** + `validateBid()` / `clampBid()` / `extractBidRange()` — opt-in pre-network bid validation helpers.
+- **`currency` field** on 10+ promotion response types; `id_kopecks` on normquery/get-bids.
+- **WB OpenAPI etalon** (`docs/api-reference/`) — 12 specs + structured parsed reference (273 endpoints, 437 schemas, 107 enums) + 12-module conformance audit reports.
+
+### Fixed
+
+- **products writes broken**: `createUploadTask`/`createTaskSize`/`createTaskClubDiscount` sent bare array (now `{data:[...]}`); `createGoodsFilter` wrong field (`nmIDs`→`nmList`); `createMediaFile` unusable (now takes `nmId`/`photoNumber`/`formData` + headers).
+- **reports**: 5 fabricated response types corrected (wrong wrapper keys + invented fields — `getAnalyticsRegionSale`/`AntifraudDetails`/`GoodsLabeling`/`BrandShareBrands`/`BrandShare`).
+- **general**: `getSellerRating` wrong domain (`common-api`→`feedbacks-api`).
+- **communications**: `updateClaim` sent `undefined` body (now sends required `{id, action, comment?}`).
+- **~15 type-defect fixes**: `BidType` (auto→unified), `CampaignPlacementType` (missing combined + singular/plural), `AccessCode` (20 spec values), `DeleteMetaParams.key` (enum), `DBSOrderMeta` (number→string marking codes), ordersDBS enums (deliveryType/supplierStatus/wbStatus), reports double-wrap, finances report_type/reportType, analytics aggregationLevel, JamSubscription unions.
+
+### Changed
+
+- `getMetaBulk()` `@deprecated` (WB shutdown Jul 27 → `checkMetaValidation`).
+- `GoodCard.date` `@deprecated` (WB removed Jun 16).
+- `updateBidsV2` `@deprecated` (→ canonical `updateBids`).
+- v0 promotion methods `@deprecated` with migration pointers.
+- `updateBids` canonicalized (named types, `promotion.updateBids` rate-limit key).
+
+### Notes
+
+- Type narrowings are corrections (old types were wrong). Products write-body + reports type fixes are **BREAKING** for consumers using the incorrect shapes — but those were bugs.
+- Conformance audit: 12-module field-by-field validation against WB OpenAPI etalon. 3 CLEAN (tariffs, ordersFBW, finances); findings in per-module backlog tasks.
+- Full test suite: **2176+ passed, 0 failed**.
+
 <!-- v3.15.0 — minor: new MetaValidationFailError subclass + parseMetaValidationFail helper for FBS 409 marking-code diagnostics (no breaking changes) -->
 
 ## [3.15.0] - 2026-05-21
