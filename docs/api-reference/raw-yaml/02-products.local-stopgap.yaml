@@ -343,6 +343,9 @@ paths:
                               -  `1` — массив строк
                               -  `4` — число (целое либо с десятичной дробью)
                               -  `0` — характеристика не используется
+                        isVariable:
+                          type: boolean
+                          description: Whether product variants within a merged card can differ by this characteristic.
                   error:
                     type: boolean
                     description: Флаг наличия ошибки

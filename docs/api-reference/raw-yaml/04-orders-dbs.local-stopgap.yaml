@@ -1579,6 +1579,10 @@ paths:
                       orderId:
                         type: integer
                         description: ID сборочного задания
+                      originCountryCode:
+                        type: integer
+                        description: Код страны происхождения товара (числовой, ОКСМ https://esnsi.gosuslugi.ru/classifiers/16269). Обязателен для B2B-заказов с 2026-07-08.
+                        example: 643
                     required:
                       - customsDeclaration
                       - orderId
