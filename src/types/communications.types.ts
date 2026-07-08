@@ -513,7 +513,16 @@ export interface File {
  * Информация о заказе
  */
 export interface GoodCard {
-  /** Дата заказа */
+  /**
+   * Дата заказа
+   * @deprecated WB removed this field from the `goodCard` of the Chat List
+   * (`GET /api/v1/seller/chats`) and Chat Events (`GET /api/v1/seller/events`)
+   * responses on June 16, 2026 — it is no longer present in live responses and
+   * reading it now returns `undefined`. There is no replacement order-date field;
+   * use `addTime`/`addTimestamp` on the enclosing message/event for timing. Planned
+   * for hard-removal in a future major version. See
+   * https://dev.wildberries.ru/release-notes
+   */
   date?: string;
   /**
    * Запрошен ли возврат товара
