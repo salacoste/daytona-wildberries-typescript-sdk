@@ -61,4 +61,10 @@ export const generalRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 1,
   },
+  // GET /api/common/v1/tariff-constructor/options — Plan Builder (Tariff Constructor) options
+  'general.tariffConstructorOptions': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
+  },
 };

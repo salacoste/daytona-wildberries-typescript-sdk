@@ -321,3 +321,124 @@ export interface SellerRatingResponse {
   /** Seller rating (e.g., 4.55) */
   valuation?: number;
 }
+
+/**
+ * Activation status of a Plan Builder (Tariff Constructor) option or package.
+ *
+ * - `'active'` — active
+ * - `'pendingActivation'` — activated, will start working at 00:00 the next day
+ * - `'pendingDeactivation'` — deactivated, will stop working at 00:00 the next day
+ * @since 3.16.0
+ */
+export type PlanBuilderActivationStatus = 'active' | 'pendingActivation' | 'pendingDeactivation';
+
+/**
+ * Response language for Plan Builder option/package names.
+ * @since 3.16.0
+ */
+export type PlanBuilderLocale = 'ru' | 'en';
+
+/**
+ * Parameters for GET /api/common/v1/tariff-constructor/options
+ * @since 3.16.0
+ */
+export interface GetTariffConstructorOptionsParams {
+  /** Response field language: `ru` (Russian, default) or `en` (English) */
+  locale?: PlanBuilderLocale;
+}
+
+/**
+ * Promo applied to a Plan Builder option.
+ * Returned when the option is activated via a promo and the promo period has not expired.
+ * @since 3.16.0
+ */
+export interface PlanBuilderPromotion {
+  /** Cost of activating the option through a promo, % of turnover */
+  commissionRate: number;
+  /** End date of the promo price (ISO 8601) */
+  expiresAt: string;
+}
+
+/**
+ * Short option reference embedded inside an option package.
+ * @since 3.16.0
+ */
+export interface PlanBuilderOptionShort {
+  /** Option ID */
+  id: string;
+  /** Option code (slug) */
+  slug: string;
+  /** Option name in the language specified in the `locale` parameter */
+  name: string;
+}
+
+/**
+ * An option activated in the Plan Builder outside of any package.
+ * @since 3.16.0
+ */
+export interface PlanBuilderOption {
+  /** Option ID */
+  id: string;
+  /** Option code (slug) */
+  slug: string;
+  /** Option name in the language specified in the `locale` parameter */
+  name: string;
+  /** Option activation status */
+  status: PlanBuilderActivationStatus;
+  /** Option activation date (ISO 8601) */
+  activatedAt?: string;
+  /** End date of the minimum duration period; the option cannot be deactivated before this date (ISO 8601) */
+  expiresAt?: string;
+  /** Cost of activating the option, % of turnover. Returned if the response does not contain the `promotion` object */
+  commissionRate?: number;
+  /** Minimum duration of the option */
+  periodDuration?: number;
+  /** Promo details. Present only if the option is activated via a promo whose period has not expired */
+  promotion?: PlanBuilderPromotion;
+}
+
+/**
+ * An option package activated in the Plan Builder.
+ * @since 3.16.0
+ */
+export interface PlanBuilderPackage {
+  /** Package ID (UUID) */
+  id?: string;
+  /** Package code (slug) */
+  slug: string;
+  /** Package name in the language specified in the `locale` parameter */
+  name: string;
+  /** Package activation status */
+  status: PlanBuilderActivationStatus;
+  /** Package activation date (ISO 8601) */
+  activatedAt?: string;
+  /** End date of the minimum duration period; the package cannot be deactivated before this date (ISO 8601) */
+  expiresAt?: string;
+  /** Fee for the package, % of turnover */
+  commissionRate?: number;
+  /** Minimum duration of the package */
+  periodDuration?: number;
+  /** Options included in the package */
+  options?: PlanBuilderOptionShort[];
+}
+
+/**
+ * Information about all options and option packages the seller activated in the
+ * Plan Builder (Tariff Constructor). Returned by GET /api/common/v1/tariff-constructor/options.
+ *
+ * Options included in activated packages are in `packages`; options activated
+ * outside of packages are in `options`.
+ * @since 3.16.0
+ */
+export interface PlanBuilderOptionsInfo {
+  /** Number of active options not included in packages */
+  activeOptionCount: number;
+  /** Number of active option packages */
+  activePackageCount: number;
+  /** Final fee for activated options and packages, % of turnover */
+  totalCommissionRate: number;
+  /** Activated option packages */
+  packages: PlanBuilderPackage[];
+  /** Activated options */
+  options: PlanBuilderOption[];
+}

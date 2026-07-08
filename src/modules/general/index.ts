@@ -21,6 +21,8 @@ import type {
   JamSubscriptionTier,
   JamSubscriptionDetails,
   SellerRatingResponse,
+  GetTariffConstructorOptionsParams,
+  PlanBuilderOptionsInfo,
 } from '../../types/general.types';
 
 export class GeneralModule {
@@ -487,6 +489,54 @@ export class GeneralModule {
     return this.client.get<SellerRatingResponse>(
       'https://common-api.wildberries.ru/api/common/v1/rating',
       { rateLimitKey: 'general.getSellerRating' }
+    );
+  }
+
+  /**
+   * Получение информации об опциях и пакетах опций Конструктора тарифов (Plan Builder)
+   *
+   * Возвращает информацию обо всех опциях и пакетах опций, которые продавец активировал
+   * в [Конструкторе тарифов](https://seller.wildberries.ru/tariff-constructor).
+   *
+   * Опции, включённые в активированные пакеты, возвращаются в массиве `packages`.
+   * Опции, активированные вне пакетов, возвращаются в массиве `options`.
+   *
+   * **Авторизация:** Сервисный токен любой категории.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 мин | 1 запрос | 1 мин | 10 запросов |
+   *
+   * @readonly
+   * @param [params] - Параметры запроса
+   * @param [params.locale] - Язык полей ответа: `ru` (по умолчанию) или `en`
+   * @returns Активированные опции и пакеты опций Конструктора тарифов
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (e.g., wrong locale value) (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 3.16.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/api-information#tag/Informaciya-o-prodavce/operation/getCommonV1TariffConstructorOptions}
+   * @example
+   * ```typescript
+   * const info = await sdk.general.getTariffConstructorOptions({ locale: 'ru' });
+   * console.log(`Total fee: ${info.totalCommissionRate}%`);
+   * console.log(`Packages: ${info.activePackageCount}, standalone options: ${info.activeOptionCount}`);
+   * for (const pkg of info.packages) {
+   *   console.log(`Package ${pkg.name} (${pkg.commissionRate}%) — ${pkg.options?.length ?? 0} options`);
+   * }
+   * ```
+   */
+  async getTariffConstructorOptions(
+    params?: GetTariffConstructorOptionsParams
+  ): Promise<PlanBuilderOptionsInfo> {
+    return this.client.get<PlanBuilderOptionsInfo>(
+      'https://common-api.wildberries.ru/api/common/v1/tariff-constructor/options',
+      {
+        params: params ? { ...params } : undefined,
+        rateLimitKey: 'general.tariffConstructorOptions',
+      }
     );
   }
 }

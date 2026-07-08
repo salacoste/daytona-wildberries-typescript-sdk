@@ -903,4 +903,104 @@ describe('GeneralModule', () => {
       await expect(generalModule.getSellerRating()).rejects.toThrow(RateLimitError);
     });
   });
+
+  // ============================================================================
+  // Tariff Constructor (Plan Builder) Options
+  // ============================================================================
+
+  describe('getTariffConstructorOptions()', () => {
+    it('should return Plan Builder options and packages', async () => {
+      const mockResponse = {
+        activeOptionCount: 2,
+        activePackageCount: 1,
+        totalCommissionRate: 2.3,
+        packages: [
+          {
+            slug: 'super-seller',
+            name: 'Суперпродавец',
+            status: 'active',
+            periodDuration: 90,
+            commissionRate: 0.8,
+            activatedAt: '2026-03-15T00:00:00+03:00',
+            expiresAt: '2026-06-15T00:00:00+03:00',
+            options: [
+              {
+                id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+                slug: 'review-pin',
+                name: 'Закрепление отзыва',
+              },
+            ],
+          },
+        ],
+        options: [
+          {
+            id: 'd4e5f6a7-b8c9-0123-defa-234567890123',
+            slug: 'priority-support',
+            name: 'Приоритетная поддержка',
+            status: 'pendingDeactivation',
+            periodDuration: 30,
+            activatedAt: '2026-03-15T00:00:00+03:00',
+            expiresAt: '2026-04-10T00:00:00+03:00',
+            promotion: { commissionRate: 0.3, expiresAt: '2026-04-30T00:00:00+03:00' },
+          },
+        ],
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await generalModule.getTariffConstructorOptions();
+
+      expect(result.totalCommissionRate).toBe(2.3);
+      expect(result.activePackageCount).toBe(1);
+      expect(result.activeOptionCount).toBe(2);
+      expect(result.packages).toHaveLength(1);
+      expect(result.packages[0].options).toHaveLength(1);
+      expect(result.options[0].promotion?.commissionRate).toBe(0.3);
+    });
+
+    it('should call correct URL and rateLimitKey without params', async () => {
+      mockClient.get.mockResolvedValue({
+        activeOptionCount: 0,
+        activePackageCount: 0,
+        totalCommissionRate: 0,
+        packages: [],
+        options: [],
+      });
+
+      await generalModule.getTariffConstructorOptions();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/common/v1/tariff-constructor/options',
+        { params: undefined, rateLimitKey: 'general.tariffConstructorOptions' }
+      );
+    });
+
+    it('should forward locale param when provided', async () => {
+      mockClient.get.mockResolvedValue({
+        activeOptionCount: 0,
+        activePackageCount: 0,
+        totalCommissionRate: 0,
+        packages: [],
+        options: [],
+      });
+
+      await generalModule.getTariffConstructorOptions({ locale: 'en' });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/common/v1/tariff-constructor/options',
+        { params: { locale: 'en' }, rateLimitKey: 'general.tariffConstructorOptions' }
+      );
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.get.mockRejectedValue(new AuthenticationError('Invalid token'));
+      await expect(generalModule.getTariffConstructorOptions()).rejects.toThrow(
+        AuthenticationError
+      );
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.get.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(generalModule.getTariffConstructorOptions()).rejects.toThrow(RateLimitError);
+    });
+  });
 });
