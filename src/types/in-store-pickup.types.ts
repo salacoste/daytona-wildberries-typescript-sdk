@@ -305,3 +305,60 @@ export interface ApiBaseMeta {
     value?: string | null;
   };
 }
+
+// ============================================================================
+// Bulk B2B marking validation + customs-declaration (task-158, since 3.16.0)
+// ============================================================================
+
+/** Per-order label-identifier validation detail (meta/details response). */
+export interface PickupMetaDetail {
+  /** Identifier name: imei | uin | gtin | sgtin | customsDeclaration | originCountryCode. */
+  key: string;
+  /** Identifier value (null when not set). */
+  value?: string | null;
+  /** Validation status (filled, optional, pending, required, imeiInvalidFormat, sgtinNotFound, …). */
+  decision: string;
+}
+
+/** Per-order result in the meta/details response. */
+export interface PickupMetaDetailsOrder {
+  orderId: number;
+  isError: boolean;
+  errors?: { code: number; detail: string }[];
+  metaDetails: PickupMetaDetail[];
+}
+
+/** Response from {@link InStorePickupModule.checkMetaValidation}. */
+export interface CheckMetaValidationResponse {
+  requestId: string;
+  orders: PickupMetaDetailsOrder[];
+}
+
+/** Per-order item in a setCustomsDeclarationBulk request. */
+export interface PickupCustomsDeclarationItem {
+  orderId: number;
+  /** Customs declaration number (17–29 chars). */
+  customsDeclaration: string;
+  /** Numeric country-of-origin code (ОКСМ, https://esnsi.gosuslugi.ru/classifiers/16269). REQUIRED for B2B since 2026-07-08. */
+  originCountryCode: string;
+}
+
+/** Request body for {@link InStorePickupModule.setCustomsDeclarationBulk}. */
+export interface SetCustomsDeclarationBulkRequest {
+  /** Orders with customs declarations + origin country codes (max 1000). */
+  orders: PickupCustomsDeclarationItem[];
+}
+
+/** Per-order result in the setCustomsDeclarationBulk response. */
+export interface PickupCustomsDeclarationResult {
+  orderId: number;
+  isError: boolean;
+  /** Error entries (includes `InvalidOriginCountryCode` for B2B orders missing/invalid originCountryCode). */
+  errors?: { code: number; detail: string }[];
+}
+
+/** Response from {@link InStorePickupModule.setCustomsDeclarationBulk}. */
+export interface CustomsDeclarationSetResponse {
+  requestId: string;
+  results: PickupCustomsDeclarationResult[];
+}

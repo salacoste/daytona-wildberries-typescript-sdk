@@ -9,6 +9,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { ValidationError } from '../../errors';
 import type {
   ApiCheckIdentityRequest,
   ApiCheckedIdentity,
@@ -22,6 +23,9 @@ import type {
   ApiOrdersRequest,
   ApiSGTINsRequest,
   ApiUINRequest,
+  CheckMetaValidationResponse,
+  CustomsDeclarationSetResponse,
+  SetCustomsDeclarationBulkRequest,
 } from '../../types/in-store-pickup.types';
 
 export class InStorePickupModule {
@@ -80,6 +84,7 @@ export class InStorePickupModule {
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {MetaValidationFailError} When B2B marking validation fails (409 — Chestny ZNAK; use checkMetaValidation for pre-flight)
    * @throws {NetworkError} When network request fails or times out
    * @example
    * await sdk.inStorePickup.updateOrdersPrepare(12345);
@@ -400,6 +405,82 @@ export class InStorePickupModule {
       `https://marketplace-api.wildberries.ru/api/v3/click-collect/orders/${orderId}/meta/gtin`,
       data,
       { rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaGtin' }
+    );
+  }
+
+  // ============================================================================
+  // Bulk B2B marking validation + customs-declaration (task-158)
+  // ============================================================================
+
+  /**
+   * Check marking-metadata validation (B2B Chestny ZNAK pre-flight)
+   *
+   * Returns label-identifier validation statuses for assembly orders. Call BEFORE
+   * transferring an order to `prepare` to identify orders that would get 409
+   * MetaValidationFail. WB deprecated bulk `POST .../meta/info` on July 15 —
+   * use this `meta/details` method instead.
+   *
+   * Rate limit: 150 req/min, 400ms interval, burst 20 (4XX×10 penalty)
+   *
+   * @param orders - Array of assembly order IDs (max 1000)
+   * @returns Per-order label identifiers + validation statuses
+   * @throws {ValidationError} When orders array is empty or exceeds 1000
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @since 3.16.0
+   * @example
+   * ```typescript
+   * const result = await sdk.inStorePickup.checkMetaValidation([123456, 234567]);
+   * const invalid = result.orders.filter(o => o.isError);
+   * ```
+   */
+  async checkMetaValidation(orders: number[]): Promise<CheckMetaValidationResponse> {
+    if (orders.length === 0) {
+      throw new ValidationError('orders array cannot be empty');
+    }
+    if (orders.length > 1000) {
+      throw new ValidationError('orders array cannot exceed 1000 items');
+    }
+    return this.client.post<CheckMetaValidationResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/click-collect/orders/meta/details',
+      { ordersIds: orders },
+      { rateLimitKey: 'in-store-pickup.checkMetaValidation' }
+    );
+  }
+
+  /**
+   * Bulk add customs declaration numbers + country-of-origin codes (B2B)
+   *
+   * Sets customs declaration (ДТ) numbers + origin country codes for assembly
+   * orders (statuses `confirm` or `prepare` only). **B2B requirement (since
+   * 2026-07-08):** B2B orders MUST include `originCountryCode` (numeric ОКСМ
+   * code, https://esnsi.gosuslugi.ru/classifiers/16269). Invalid/missing code
+   * for a B2B order → HTTP 200 with `InvalidOriginCountryCode` in that order's
+   * `errors[]` (partial success — check `results[].isError`).
+   *
+   * Rate limit: 20 req/min, 3s interval, burst 500 (4XX×10 penalty)
+   *
+   * @param request - Orders with customs declarations + origin country codes
+   * @returns Per-order results
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @since 3.16.0
+   * @example
+   * ```typescript
+   * const result = await sdk.inStorePickup.setCustomsDeclarationBulk({
+   *   orders: [{ orderId: 123456, customsDeclaration: '10704010/010624/0000302', originCountryCode: '643' }]
+   * });
+   * const failed = result.results.filter(r => r.isError);
+   * ```
+   */
+  async setCustomsDeclarationBulk(
+    request: SetCustomsDeclarationBulkRequest
+  ): Promise<CustomsDeclarationSetResponse> {
+    return this.client.post<CustomsDeclarationSetResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/click-collect/orders/meta/customs-declaration',
+      request,
+      { rateLimitKey: 'in-store-pickup.setCustomsDeclarationBulk' }
     );
   }
 }

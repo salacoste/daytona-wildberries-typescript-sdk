@@ -110,4 +110,16 @@ export const inStorePickupRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+  'in-store-pickup.checkMetaValidation': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
+  'in-store-pickup.setCustomsDeclarationBulk': {
+    requestsPerMinute: 20,
+    intervalSeconds: 3,
+    burstLimit: 500,
+    penaltyMultiplier: 10,
+  },
 };

@@ -744,4 +744,51 @@ describe('InStorePickupModule', () => {
       await expect(module.updateMetaImei(1, { imei: 'x' })).rejects.toThrow(RateLimitError);
     });
   });
+
+  describe('Bulk B2B marking validation + customs-declaration (task-158)', () => {
+    it('checkMetaValidation - POST meta/details with ordersIds + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'req-1', orders: [] });
+      await module.checkMetaValidation([123456, 234567]);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/click-collect/orders/meta/details`,
+        { ordersIds: [123456, 234567] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.checkMetaValidation' })
+      );
+    });
+
+    it('checkMetaValidation - throws ValidationError on empty array', async () => {
+      await expect(module.checkMetaValidation([])).rejects.toThrow(ValidationError);
+    });
+
+    it('checkMetaValidation - throws ValidationError on >1000 items', async () => {
+      const big = Array.from({ length: 1001 }, (_, i) => i);
+      await expect(module.checkMetaValidation(big)).rejects.toThrow(ValidationError);
+    });
+
+    it('setCustomsDeclarationBulk - POST with originCountryCode (string)', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'req-2', results: [] });
+      await module.setCustomsDeclarationBulk({
+        orders: [
+          {
+            orderId: 123456,
+            customsDeclaration: '10704010/010624/0000302',
+            originCountryCode: '643',
+          },
+        ],
+      });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/click-collect/orders/meta/customs-declaration`,
+        {
+          orders: [
+            {
+              orderId: 123456,
+              customsDeclaration: '10704010/010624/0000302',
+              originCountryCode: '643',
+            },
+          ],
+        },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.setCustomsDeclarationBulk' })
+      );
+    });
+  });
 });
