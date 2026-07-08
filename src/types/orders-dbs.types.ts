@@ -280,14 +280,14 @@ export type DBSMetadataKey = 'imei' | 'uin' | 'gtin' | 'sgtin' | 'customsDeclara
  * Order metadata structure
  */
 export interface DBSOrderMeta {
-  /** IMEI metadata */
-  imei?: { value?: number };
+  /** IMEI metadata (15-digit string) */
+  imei?: { value?: string };
   /** UIN metadata */
-  uin?: { value?: number };
+  uin?: { value?: string };
   /** GTIN metadata */
-  gtin?: { value?: number };
+  gtin?: { value?: string };
   /** SGTIN (marking codes) metadata */
-  sgtin?: { value?: number[] };
+  sgtin?: { value?: string[] };
   /** Customs declaration metadata */
   customsDeclaration?: { value?: string };
 }
@@ -528,7 +528,12 @@ export interface SetGtinBulkRequest {
  */
 export interface SetCustomsDeclarationBulkRequest {
   /** Array of orders with customs declaration numbers to set */
-  orders: { orderId: number; customsDeclaration: string }[];
+  orders: {
+    orderId: number;
+    customsDeclaration: string;
+    /** Country of origin code (numeric, Russian classifier of countries https://esnsi.gosuslugi.ru/classifiers/16269). REQUIRED for B2B orders since 2026-07-08. */
+    originCountryCode?: number;
+  }[];
 }
 
 /**
