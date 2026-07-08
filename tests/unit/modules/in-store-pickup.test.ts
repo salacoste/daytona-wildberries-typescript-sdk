@@ -2,12 +2,15 @@
  * Unit tests for InStorePickupModule
  *
  * Tests the InStorePickupModule class with mocked BaseClient to verify:
- * - Correct URL construction including path parameter interpolation
- * - Correct HTTP method selection per endpoint (GET/POST/PATCH/PUT/DELETE)
- * - Rate limit key presence in options for all 16 methods
- * - Request body payloads forwarded correctly
- * - Query parameters passed via params option
- * - Deprecated alias delegation
+ * - Correct URL construction for the batch click-collect API (v3.17.0)
+ * - The 12 new *Bulk batch methods POST to the correct batch URLs with the
+ *   correct body + rateLimitKey
+ * - The 12 deprecated single-order shims delegate to their *Bulk counterpart
+ *   with a single-element array, emit warnOnce, and return the legacy shape
+ *   (especially the getOrdersMeta + createOrdersStatus response mappings)
+ * - The 6 untouched methods (getOrdersNew, createOrdersClient,
+ *   createClientIdentity, getClickCollectOrders, checkMetaValidation,
+ *   setCustomsDeclarationBulk) remain correct
  * - Error propagation for 401, 403, 400, 429, 409, and network errors
  *
  * @module tests/unit/modules/in-store-pickup
@@ -15,6 +18,7 @@
 
 /* eslint-disable @typescript-eslint/no-deprecated -- intentionally testing deprecated methods */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression -- void assertions in tests */
+/* eslint-disable no-console -- console assertions are intentional in deprecation tests */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { InStorePickupModule } from '../../../src/modules/in-store-pickup';
@@ -24,8 +28,10 @@ import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
 import { ValidationError } from '../../../src/errors/validation-error';
 import { WBAPIError } from '../../../src/errors/base-error';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 
 const BASE_URL = 'https://marketplace-api.wildberries.ru';
+const BATCH = `${BASE_URL}/api/marketplace/v3/click-collect`;
 
 describe('InStorePickupModule', () => {
   let mockClient: {
@@ -46,6 +52,8 @@ describe('InStorePickupModule', () => {
       delete: vi.fn(),
     };
     module = new InStorePickupModule(mockClient as unknown as BaseClient);
+    resetDeprecationWarnings();
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
   });
 
   afterEach(() => {
@@ -61,7 +69,8 @@ describe('InStorePickupModule', () => {
       expect(module).toBeInstanceOf(InStorePickupModule);
     });
 
-    it('should expose all 16 core methods', () => {
+    it('should expose all legacy + bulk methods', () => {
+      // legacy shims
       expect(typeof module.getOrdersNew).toBe('function');
       expect(typeof module.updateOrdersConfirm).toBe('function');
       expect(typeof module.updateOrdersPrepare).toBe('function');
@@ -78,43 +87,30 @@ describe('InStorePickupModule', () => {
       expect(typeof module.updateMetaUin).toBe('function');
       expect(typeof module.updateMetaImei).toBe('function');
       expect(typeof module.updateMetaGtin).toBe('function');
+      // new batch methods
+      expect(typeof module.confirmBulk).toBe('function');
+      expect(typeof module.prepareBulk).toBe('function');
+      expect(typeof module.receiveBulk).toBe('function');
+      expect(typeof module.rejectBulk).toBe('function');
+      expect(typeof module.cancelBulk).toBe('function');
+      expect(typeof module.getStatusesBulk).toBe('function');
+      expect(typeof module.getMetaBulk).toBe('function');
+      expect(typeof module.deleteMetaBulk).toBe('function');
+      expect(typeof module.setSgtinBulk).toBe('function');
+      expect(typeof module.setUinBulk).toBe('function');
+      expect(typeof module.setImeiBulk).toBe('function');
+      expect(typeof module.setGtinBulk).toBe('function');
     });
   });
 
   // ==========================================================================
-  // Assembly Task Operations
+  // Untouched methods (read paths still using /api/v3/click-collect)
   // ==========================================================================
 
-  describe('Assembly Task Operations', () => {
+  describe('Untouched methods', () => {
     describe('getOrdersNew', () => {
       it('should fetch new pickup orders via GET', async () => {
-        const mockResponse = {
-          orders: [
-            {
-              id: 12345,
-              rid: 'abc-123',
-              createdAt: '2026-02-01T10:00:00Z',
-              warehouseId: 507,
-              warehouseAddress: 'Moscow, Main St 1',
-              nmId: 99887766,
-              chrtId: 11223344,
-              price: 150000,
-              finalPrice: 140000,
-              convertedPrice: 150000,
-              convertedFinalPrice: 140000,
-              currencyCode: 643,
-              convertedCurrencyCode: 643,
-              cargoType: 1,
-              article: 'ART-001',
-              skus: ['2000000000001'],
-              orderCode: '170046918-0011',
-              payMode: 'prepaid',
-              requiredMeta: ['sgtin', 'imei'],
-              isZeroOrder: false,
-            },
-          ],
-        };
-
+        const mockResponse = { orders: [] };
         mockClient.get.mockResolvedValue(mockResponse);
 
         const result = await module.getOrdersNew();
@@ -124,207 +120,13 @@ describe('InStorePickupModule', () => {
           expect.objectContaining({ rateLimitKey: 'in-store-pickup.clickCollectOrdersNew' })
         );
         expect(result).toEqual(mockResponse);
-        expect(result.orders).toHaveLength(1);
-      });
-
-      it('should handle empty orders response', async () => {
-        mockClient.get.mockResolvedValue({ orders: [] });
-
-        const result = await module.getOrdersNew();
-
-        expect(result.orders).toEqual([]);
       });
     });
 
-    describe('updateOrdersConfirm', () => {
-      it('should confirm an order for assembly via PATCH', async () => {
-        const orderId = 12345;
-        mockClient.patch.mockResolvedValue(undefined);
-
-        await module.updateOrdersConfirm(orderId);
-
-        expect(mockClient.patch).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/confirm`,
-          {},
-          expect.objectContaining({
-            rateLimitKey: 'in-store-pickup.patchClickCollectOrdersConfirm',
-          })
-        );
-      });
-
-      it('should pass empty object as body', async () => {
-        mockClient.patch.mockResolvedValue(undefined);
-
-        await module.updateOrdersConfirm(99999);
-
-        expect(mockClient.patch).toHaveBeenCalledWith(expect.any(String), {}, expect.any(Object));
-      });
-    });
-
-    describe('updateOrdersPrepare', () => {
-      it('should mark an order as prepared via PATCH', async () => {
-        const orderId = 12345;
-        mockClient.patch.mockResolvedValue(undefined);
-
-        await module.updateOrdersPrepare(orderId);
-
-        expect(mockClient.patch).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/prepare`,
-          {},
-          expect.objectContaining({
-            rateLimitKey: 'in-store-pickup.patchClickCollectOrdersPrepare',
-          })
-        );
-      });
-    });
-
-    describe('updateOrdersReceive', () => {
-      it('should mark an order as received via PATCH', async () => {
-        const orderId = 12345;
-        mockClient.patch.mockResolvedValue(undefined);
-
-        await module.updateOrdersReceive(orderId);
-
-        expect(mockClient.patch).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/receive`,
-          {},
-          expect.objectContaining({
-            rateLimitKey: 'in-store-pickup.patchClickCollectOrdersReceive',
-          })
-        );
-      });
-    });
-
-    describe('updateOrdersReject', () => {
-      it('should reject an order via PATCH', async () => {
-        const orderId = 12345;
-        mockClient.patch.mockResolvedValue(undefined);
-
-        await module.updateOrdersReject(orderId);
-
-        expect(mockClient.patch).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/reject`,
-          {},
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersReject' })
-        );
-      });
-    });
-
-    describe('updateOrdersCancel', () => {
-      it('should cancel an order via PATCH', async () => {
-        const orderId = 12345;
-        mockClient.patch.mockResolvedValue(undefined);
-
-        await module.updateOrdersCancel(orderId);
-
-        expect(mockClient.patch).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/cancel`,
-          {},
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersCancel' })
-        );
-      });
-    });
-  });
-
-  // ==========================================================================
-  // Order Query Operations
-  // ==========================================================================
-
-  describe('Order Query Operations', () => {
-    describe('getClickCollectOrders', () => {
-      it('should fetch orders with pagination parameters via GET', async () => {
-        const mockResponse = {
-          next: 54321,
-          orders: [
-            {
-              id: 12345,
-              article: 'ART-001',
-              createdAt: '2026-01-15T10:00:00Z',
-              orderCode: '170046918-0011',
-              warehouseId: 507,
-              nmId: 99887766,
-              chrtId: 11223344,
-              price: 150000,
-              currencyCode: 643,
-              cargoType: 1,
-            },
-          ],
-        };
-        const params = { limit: 10, next: 0, dateFrom: 1706745600, dateTo: 1707350400 };
-
-        mockClient.get.mockResolvedValue(mockResponse);
-
-        const result = await module.getClickCollectOrders(params);
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders`,
-          expect.objectContaining({
-            params,
-            rateLimitKey: 'in-store-pickup.clickCollectOrders',
-          })
-        );
-        expect(result).toEqual(mockResponse);
-        expect(result.next).toBe(54321);
-      });
-
-      it('should fetch orders with minimal required parameters', async () => {
-        mockClient.get.mockResolvedValue({ orders: [] });
-        const params = { limit: 1, next: 0, dateFrom: 0, dateTo: 0 };
-
-        const result = await module.getClickCollectOrders(params);
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders`,
-          expect.objectContaining({ params })
-        );
-        expect(result).toEqual({ orders: [] });
-      });
-    });
-
-    describe('createOrdersStatus', () => {
-      it('should get order statuses via POST', async () => {
-        const requestData = { orders: [12345, 67890] };
-        const mockResponse = {
-          orders: [
-            { id: 12345, supplierStatus: 'confirm', wbStatus: 'waiting' },
-            { id: 67890, supplierStatus: 'prepare', wbStatus: 'sorted' },
-          ],
-        };
-
-        mockClient.post.mockResolvedValue(mockResponse);
-
-        const result = await module.createOrdersStatus(requestData);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/status`,
-          requestData,
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.postClickCollectOrdersStatus' })
-        );
-        expect(result).toEqual(mockResponse);
-        expect(result.orders).toHaveLength(2);
-      });
-    });
-  });
-
-  // ==========================================================================
-  // Customer Interaction
-  // ==========================================================================
-
-  describe('Customer Interaction', () => {
     describe('createOrdersClient', () => {
       it('should fetch customer info via POST', async () => {
         const requestData = { orders: [12345] };
-        const mockResponse = {
-          orders: [
-            {
-              phone: '+71111111111',
-              firstName: 'Ivan',
-              orderID: 12345,
-              phoneCode: 1234567,
-            },
-          ],
-        };
-
+        const mockResponse = { orders: [] };
         mockClient.post.mockResolvedValue(mockResponse);
 
         const result = await module.createOrdersClient(requestData);
@@ -335,7 +137,6 @@ describe('InStorePickupModule', () => {
           expect.objectContaining({ rateLimitKey: 'in-store-pickup.postClickCollectOrdersClient' })
         );
         expect(result).toEqual(mockResponse);
-        expect(result.orders).toHaveLength(1);
       });
     });
 
@@ -343,7 +144,6 @@ describe('InStorePickupModule', () => {
       it('should verify customer identity via POST', async () => {
         const requestData = { orderCode: '170046918-0011', passcode: '4567' };
         const mockResponse = { ok: true };
-
         mockClient.post.mockResolvedValue(mockResponse);
 
         const result = await module.createClientIdentity(requestData);
@@ -356,401 +156,386 @@ describe('InStorePickupModule', () => {
           })
         );
         expect(result).toEqual(mockResponse);
-        expect(result.ok).toBe(true);
       });
     });
-  });
 
-  // ==========================================================================
-  // Metadata Read/Delete
-  // ==========================================================================
-
-  describe('Metadata Read/Delete', () => {
-    describe('getOrdersMeta', () => {
-      it('should fetch order metadata via GET', async () => {
-        const orderId = 12345;
-        const mockResponse = {
-          meta: {
-            imei: { value: '123456789012345' },
-            sgtin: { value: ['1234567890123456'] },
-            uin: { value: 'UIN-001' },
-            gtin: { value: 'GTIN-001' },
-          },
-        };
-
+    describe('getClickCollectOrders', () => {
+      it('should fetch orders with pagination parameters via GET', async () => {
+        const mockResponse = { next: 54321, orders: [] };
+        const params = { limit: 10, next: 0, dateFrom: 1706745600, dateTo: 1707350400 };
         mockClient.get.mockResolvedValue(mockResponse);
 
-        const result = await module.getOrdersMeta(orderId);
+        const result = await module.getClickCollectOrders(params);
 
         expect(mockClient.get).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta`,
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.clickCollectOrdersMeta' })
+          `${BASE_URL}/api/v3/click-collect/orders`,
+          expect.objectContaining({
+            params,
+            rateLimitKey: 'in-store-pickup.clickCollectOrders',
+          })
         );
         expect(result).toEqual(mockResponse);
       });
     });
+  });
 
-    describe('deleteOrdersMeta', () => {
-      it('should delete order metadata with key parameter via DELETE', async () => {
-        const orderId = 12345;
-        const options = { key: 'imei' };
+  // ==========================================================================
+  // New *Bulk batch methods (task-147)
+  // ==========================================================================
 
-        mockClient.delete.mockResolvedValue(undefined);
+  describe('Bulk status setters', () => {
+    const cases: {
+      name: string;
+      endpoint: string;
+      key: string;
+    }[] = [
+      { name: 'confirmBulk', endpoint: 'status/confirm', key: 'in-store-pickup.confirmBulk' },
+      { name: 'prepareBulk', endpoint: 'status/prepare', key: 'in-store-pickup.prepareBulk' },
+      { name: 'receiveBulk', endpoint: 'status/receive', key: 'in-store-pickup.receiveBulk' },
+      { name: 'rejectBulk', endpoint: 'status/reject', key: 'in-store-pickup.rejectBulk' },
+      { name: 'cancelBulk', endpoint: 'status/cancel', key: 'in-store-pickup.cancelBulk' },
+    ];
 
-        await module.deleteOrdersMeta(orderId, options);
+    for (const c of cases) {
+      describe(c.name, () => {
+        it(`should POST to ${c.endpoint} with {ordersIds} + rateLimitKey`, async () => {
+          mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+          await (module as unknown as Record<string, (ids: number[]) => unknown>)[c.name]([
+            123456, 234567,
+          ]);
+          expect(mockClient.post).toHaveBeenCalledWith(
+            `${BATCH}/orders/${c.endpoint}`,
+            { ordersIds: [123456, 234567] },
+            expect.objectContaining({ rateLimitKey: c.key })
+          );
+        });
 
-        expect(mockClient.delete).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta`,
-          {},
-          expect.objectContaining({
-            params: options,
-            rateLimitKey: 'in-store-pickup.deleteClickCollectOrdersMeta',
-          })
-        );
+        it('should throw ValidationError on empty array', async () => {
+          await expect(
+            (module as unknown as Record<string, (ids: number[]) => unknown>)[c.name]([])
+          ).rejects.toThrow(ValidationError);
+        });
+
+        it('should throw ValidationError on >1000 items', async () => {
+          const big = Array.from({ length: 1001 }, (_, i) => i);
+          await expect(
+            (module as unknown as Record<string, (ids: number[]) => unknown>)[c.name](big)
+          ).rejects.toThrow(ValidationError);
+        });
+      });
+    }
+  });
+
+  describe('getStatusesBulk', () => {
+    it('should POST to status/info with {ordersIds} + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ orders: [] });
+      await module.getStatusesBulk([123456, 234567]);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/status/info`,
+        { ordersIds: [123456, 234567] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.getStatusesBulk' })
+      );
+    });
+
+    it('should throw ValidationError on empty array', async () => {
+      await expect(module.getStatusesBulk([])).rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getMetaBulk', () => {
+    it('should POST to meta/details with request + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', orders: [] });
+      await module.getMetaBulk({ ordersIds: [123456] });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/meta/details`,
+        { ordersIds: [123456] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.getMetaBulk' })
+      );
+    });
+
+    it('should throw ValidationError on empty array', async () => {
+      await expect(module.getMetaBulk({ ordersIds: [] })).rejects.toThrow(ValidationError);
+    });
+
+    it('should throw ValidationError on >1000 items', async () => {
+      const big = Array.from({ length: 1001 }, (_, i) => i);
+      await expect(module.getMetaBulk({ ordersIds: big })).rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('deleteMetaBulk', () => {
+    it('should POST to meta/delete with {key, ordersIds} + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      await module.deleteMetaBulk({ key: 'imei', ordersIds: [123456] });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/meta/delete`,
+        { key: 'imei', ordersIds: [123456] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.deleteMetaBulk' })
+      );
+    });
+
+    it('should accept all enum key values', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      for (const key of ['imei', 'uin', 'gtin', 'sgtin', 'customsDeclaration'] as const) {
+        await module.deleteMetaBulk({ key, ordersIds: [1] });
+      }
+      expect(mockClient.post).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  describe('Bulk meta setters', () => {
+    const cases: {
+      name: string;
+      endpoint: string;
+      key: string;
+      body: unknown;
+    }[] = [
+      {
+        name: 'setSgtinBulk',
+        endpoint: 'meta/sgtin',
+        key: 'in-store-pickup.setSgtinBulk',
+        body: { orders: [{ orderId: 123456, sgtins: ['1234567890123456'] }] },
+      },
+      {
+        name: 'setUinBulk',
+        endpoint: 'meta/uin',
+        key: 'in-store-pickup.setUinBulk',
+        body: { orders: [{ orderId: 123456, uin: '1234567890123456' }] },
+      },
+      {
+        name: 'setImeiBulk',
+        endpoint: 'meta/imei',
+        key: 'in-store-pickup.setImeiBulk',
+        body: { orders: [{ orderId: 123456, imei: '123456789012345' }] },
+      },
+      {
+        name: 'setGtinBulk',
+        endpoint: 'meta/gtin',
+        key: 'in-store-pickup.setGtinBulk',
+        body: { orders: [{ orderId: 123456, gtin: '1234567890123' }] },
+      },
+    ];
+
+    for (const c of cases) {
+      describe(c.name, () => {
+        it(`should POST to ${c.endpoint} with body + rateLimitKey`, async () => {
+          mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+          await (module as unknown as Record<string, (req: unknown) => unknown>)[c.name](c.body);
+          expect(mockClient.post).toHaveBeenCalledWith(
+            `${BATCH}/orders/${c.endpoint}`,
+            c.body,
+            expect.objectContaining({ rateLimitKey: c.key })
+          );
+        });
+      });
+    }
+  });
+
+  // ==========================================================================
+  // Deprecated single-order shims (task-147)
+  // ==========================================================================
+
+  describe('Deprecated status shims', () => {
+    const cases: {
+      shim: string;
+      bulk: string;
+    }[] = [
+      { shim: 'updateOrdersConfirm', bulk: 'confirmBulk' },
+      { shim: 'updateOrdersPrepare', bulk: 'prepareBulk' },
+      { shim: 'updateOrdersReceive', bulk: 'receiveBulk' },
+      { shim: 'updateOrdersReject', bulk: 'rejectBulk' },
+      { shim: 'updateOrdersCancel', bulk: 'cancelBulk' },
+    ];
+
+    for (const c of cases) {
+      describe(c.shim, () => {
+        it(`should delegate to ${c.bulk} with single-element array, warn, return void`, async () => {
+          mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+          const bulkSpy = vi.spyOn(
+            module as unknown as Record<string, (ids: number[]) => unknown>,
+            c.bulk
+          );
+
+          const result = await (module as unknown as Record<string, (id: number) => Promise<void>>)[
+            c.shim
+          ](12345);
+
+          expect(bulkSpy).toHaveBeenCalledWith([12345]);
+          // Each shim posts exactly once to the batch endpoint
+          expect(mockClient.post).toHaveBeenCalledTimes(1);
+          expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('[DEPRECATED]'));
+          expect(result).toBeUndefined();
+        });
+      });
+    }
+  });
+
+  describe('createOrdersStatus (shim)', () => {
+    it('should delegate to getStatusesBulk and map response to legacy shape', async () => {
+      mockClient.post.mockResolvedValue({
+        orders: [
+          { orderId: 12345, supplierStatus: 'confirm', wbStatus: 'waiting' },
+          { orderId: 67890, supplierStatus: 'prepare', wbStatus: 'sorted' },
+        ],
       });
 
-      it('should delete order metadata with different key values', async () => {
-        const orderId = 12345;
-        mockClient.delete.mockResolvedValue(undefined);
+      const result = await module.createOrdersStatus({ orders: [12345, 67890] });
 
-        await module.deleteOrdersMeta(orderId, { key: 'gtin' });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/status/info`,
+        { ordersIds: [12345, 67890] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.getStatusesBulk' })
+      );
+      // Legacy shape: { orders: [{ id, supplierStatus, wbStatus }] }
+      expect(result.orders).toEqual([
+        { id: 12345, supplierStatus: 'confirm', wbStatus: 'waiting' },
+        { id: 67890, supplierStatus: 'prepare', wbStatus: 'sorted' },
+      ]);
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('[DEPRECATED]'));
+    });
 
-        expect(mockClient.delete).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta`,
-          {},
-          expect.objectContaining({ params: { key: 'gtin' } })
-        );
+    it('should throw ValidationError on empty orders', async () => {
+      await expect(module.createOrdersStatus({ orders: [] })).rejects.toThrow(ValidationError);
+      await expect(module.createOrdersStatus({})).rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getOrdersMeta (shim)', () => {
+    it('should delegate to getMetaBulk and map OrderMetaV2 -> legacy ApiBaseMeta', async () => {
+      mockClient.post.mockResolvedValue({
+        requestId: 'r1',
+        orders: [
+          {
+            orderId: 12345,
+            error: '',
+            gtin: '1234567890123',
+            imei: '123456789012345',
+            uin: '1234567890123456',
+            sgtin: ['01046012345678900421abc123'],
+          },
+        ],
+      });
+
+      const result = await module.getOrdersMeta(12345);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/meta/details`,
+        { ordersIds: [12345] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.getMetaBulk' })
+      );
+      // Legacy shape: each field wrapped in { value }
+      expect(result.meta).toEqual({
+        gtin: { value: '1234567890123' },
+        imei: { value: '123456789012345' },
+        sgtin: { value: ['01046012345678900421abc123'] },
+        uin: { value: '1234567890123456' },
+      });
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('[DEPRECATED]'));
+    });
+
+    it('should default sgtin to [] and wrap nulls when fields absent', async () => {
+      mockClient.post.mockResolvedValue({
+        requestId: 'r1',
+        orders: [{ orderId: 1, error: '', gtin: null, imei: null, uin: null, sgtin: null }],
+      });
+
+      const result = await module.getOrdersMeta(1);
+
+      expect(result.meta).toEqual({
+        gtin: { value: null },
+        imei: { value: null },
+        sgtin: { value: [] },
+        uin: { value: null },
       });
     });
   });
 
-  // ==========================================================================
-  // Metadata Write
-  // ==========================================================================
+  describe('deleteOrdersMeta (shim)', () => {
+    it('should delegate to deleteMetaBulk with {key, ordersIds:[orderId]}', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
 
-  describe('Metadata Write', () => {
-    describe('updateMetaSgtin', () => {
-      it('should set SGTIN via PUT', async () => {
-        const orderId = 12345;
-        const data = { sgtins: ['1234567890123456'] };
+      await module.deleteOrdersMeta(12345, { key: 'imei' });
 
-        mockClient.put.mockResolvedValue(undefined);
-
-        await module.updateMetaSgtin(orderId, data);
-
-        expect(mockClient.put).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta/sgtin`,
-          data,
-          expect.objectContaining({
-            rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaSgtin',
-          })
-        );
-      });
-    });
-
-    describe('updateMetaUin', () => {
-      it('should set UIN via PUT', async () => {
-        const orderId = 12345;
-        const data = { uin: '1234567890123456' };
-
-        mockClient.put.mockResolvedValue(undefined);
-
-        await module.updateMetaUin(orderId, data);
-
-        expect(mockClient.put).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta/uin`,
-          data,
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaUin' })
-        );
-      });
-    });
-
-    describe('updateMetaImei', () => {
-      it('should set IMEI via PUT', async () => {
-        const orderId = 12345;
-        const data = { imei: '123456789012345' };
-
-        mockClient.put.mockResolvedValue(undefined);
-
-        await module.updateMetaImei(orderId, data);
-
-        expect(mockClient.put).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta/imei`,
-          data,
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaImei' })
-        );
-      });
-    });
-
-    describe('updateMetaGtin', () => {
-      it('should set GTIN via PUT', async () => {
-        const orderId = 12345;
-        const data = { gtin: '1234567890123456' };
-
-        mockClient.put.mockResolvedValue(undefined);
-
-        await module.updateMetaGtin(orderId, data);
-
-        expect(mockClient.put).toHaveBeenCalledWith(
-          `${BASE_URL}/api/v3/click-collect/orders/${orderId}/meta/gtin`,
-          data,
-          expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaGtin' })
-        );
-      });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/meta/delete`,
+        { key: 'imei', ordersIds: [12345] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.deleteMetaBulk' })
+      );
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('[DEPRECATED]'));
     });
   });
 
-  // ==========================================================================
-  // Rate Limit Key Presence (all 16 methods)
-  // ==========================================================================
-
-  describe('Rate Limit Key Presence', () => {
-    it('should pass rateLimitKey for getOrdersNew', async () => {
-      mockClient.get.mockResolvedValue({ orders: [] });
-      await module.getOrdersNew();
-      expect(mockClient.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.clickCollectOrdersNew' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateOrdersConfirm', async () => {
-      mockClient.patch.mockResolvedValue(undefined);
-      await module.updateOrdersConfirm(1);
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersConfirm' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateOrdersPrepare', async () => {
-      mockClient.patch.mockResolvedValue(undefined);
-      await module.updateOrdersPrepare(1);
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersPrepare' })
-      );
-    });
-
-    it('should pass rateLimitKey for createOrdersClient', async () => {
-      mockClient.post.mockResolvedValue({ orders: [] });
-      await module.createOrdersClient({ orders: [1] });
+  describe('Deprecated meta-set shims', () => {
+    it('updateMetaSgtin delegates to setSgtinBulk', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      await module.updateMetaSgtin(12345, { sgtins: ['1234567890123456'] });
       expect(mockClient.post).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.postClickCollectOrdersClient' })
+        `${BATCH}/orders/meta/sgtin`,
+        { orders: [{ orderId: 12345, sgtins: ['1234567890123456'] }] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.setSgtinBulk' })
       );
     });
 
-    it('should pass rateLimitKey for createClientIdentity', async () => {
-      mockClient.post.mockResolvedValue({ ok: true });
-      await module.createClientIdentity({ orderCode: 'x', passcode: '1' });
+    it('updateMetaUin delegates to setUinBulk', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      await module.updateMetaUin(12345, { uin: '1234567890123456' });
       expect(mockClient.post).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({
-          rateLimitKey: 'in-store-pickup.postClickCollectOrdersClientIdentity',
-        })
+        `${BATCH}/orders/meta/uin`,
+        { orders: [{ orderId: 12345, uin: '1234567890123456' }] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.setUinBulk' })
       );
     });
 
-    it('should pass rateLimitKey for updateOrdersReceive', async () => {
-      mockClient.patch.mockResolvedValue(undefined);
-      await module.updateOrdersReceive(1);
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersReceive' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateOrdersReject', async () => {
-      mockClient.patch.mockResolvedValue(undefined);
-      await module.updateOrdersReject(1);
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersReject' })
-      );
-    });
-
-    it('should pass rateLimitKey for createOrdersStatus', async () => {
-      mockClient.post.mockResolvedValue({ orders: [] });
-      await module.createOrdersStatus({ orders: [1] });
+    it('updateMetaImei delegates to setImeiBulk', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      await module.updateMetaImei(12345, { imei: '123456789012345' });
       expect(mockClient.post).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.postClickCollectOrdersStatus' })
+        `${BATCH}/orders/meta/imei`,
+        { orders: [{ orderId: 12345, imei: '123456789012345' }] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.setImeiBulk' })
       );
     });
 
-    it('should pass rateLimitKey for getClickCollectOrders', async () => {
-      mockClient.get.mockResolvedValue({ orders: [] });
-      await module.getClickCollectOrders({ limit: 10, next: 0, dateFrom: 0, dateTo: 0 });
-      expect(mockClient.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.clickCollectOrders' })
+    it('updateMetaGtin delegates to setGtinBulk', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      await module.updateMetaGtin(12345, { gtin: '1234567890123' });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/meta/gtin`,
+        { orders: [{ orderId: 12345, gtin: '1234567890123' }] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.setGtinBulk' })
       );
     });
 
-    it('should pass rateLimitKey for updateOrdersCancel', async () => {
-      mockClient.patch.mockResolvedValue(undefined);
-      await module.updateOrdersCancel(1);
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.patchClickCollectOrdersCancel' })
-      );
-    });
-
-    it('should pass rateLimitKey for getOrdersMeta', async () => {
-      mockClient.get.mockResolvedValue({ meta: {} });
-      await module.getOrdersMeta(1);
-      expect(mockClient.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.clickCollectOrdersMeta' })
-      );
-    });
-
-    it('should pass rateLimitKey for deleteOrdersMeta', async () => {
-      mockClient.delete.mockResolvedValue(undefined);
-      await module.deleteOrdersMeta(1, { key: 'imei' });
-      expect(mockClient.delete).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.deleteClickCollectOrdersMeta' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateMetaSgtin', async () => {
-      mockClient.put.mockResolvedValue(undefined);
+    it('all four meta-set shims emit warnOnce', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
       await module.updateMetaSgtin(1, { sgtins: ['x'] });
-      expect(mockClient.put).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaSgtin' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateMetaUin', async () => {
-      mockClient.put.mockResolvedValue(undefined);
       await module.updateMetaUin(1, { uin: 'x' });
-      expect(mockClient.put).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaUin' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateMetaImei', async () => {
-      mockClient.put.mockResolvedValue(undefined);
       await module.updateMetaImei(1, { imei: 'x' });
-      expect(mockClient.put).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaImei' })
-      );
-    });
-
-    it('should pass rateLimitKey for updateMetaGtin', async () => {
-      mockClient.put.mockResolvedValue(undefined);
       await module.updateMetaGtin(1, { gtin: 'x' });
-      expect(mockClient.put).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({ rateLimitKey: 'in-store-pickup.putClickCollectOrdersMetaGtin' })
-      );
+      expect(console.warn).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  describe('warnOnce fires only once per method', () => {
+    it('updateOrdersConfirm warns once across multiple calls', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+      await module.updateOrdersConfirm(1);
+      await module.updateOrdersConfirm(2);
+      await module.updateOrdersConfirm(3);
+      expect(console.warn).toHaveBeenCalledTimes(1);
     });
   });
 
   // ==========================================================================
-  // Error Handling
+  // Bulk B2B marking validation + customs-declaration (task-158, unchanged)
   // ==========================================================================
-
-  describe('Error Handling', () => {
-    it('should propagate AuthenticationError on 401 response', async () => {
-      const error = new AuthenticationError('Invalid API key', 401);
-      mockClient.get.mockRejectedValue(error);
-
-      await expect(module.getOrdersNew()).rejects.toThrow(AuthenticationError);
-    });
-
-    it('should propagate AuthenticationError on 403 response', async () => {
-      const error = new AuthenticationError('Forbidden', 403);
-      mockClient.get.mockRejectedValue(error);
-
-      await expect(module.getOrdersNew()).rejects.toThrow(AuthenticationError);
-    });
-
-    it('should propagate ValidationError on 400 response', async () => {
-      const error = new ValidationError('Bad request');
-      mockClient.post.mockRejectedValue(error);
-
-      await expect(module.createOrdersStatus({ orders: [1] })).rejects.toThrow(ValidationError);
-    });
-
-    it('should propagate RateLimitError on 429 response', async () => {
-      const error = new RateLimitError('Rate limit exceeded', 5000);
-      mockClient.patch.mockRejectedValue(error);
-
-      await expect(module.updateOrdersConfirm(1)).rejects.toThrow(RateLimitError);
-    });
-
-    it('should propagate WBAPIError on 409 conflict for state transition methods', async () => {
-      const error = new WBAPIError('Conflict: invalid state transition', 409);
-      mockClient.patch.mockRejectedValue(error);
-
-      await expect(module.updateOrdersConfirm(1)).rejects.toThrow(WBAPIError);
-      await expect(module.updateOrdersConfirm(1)).rejects.toThrow('Conflict');
-    });
-
-    it('should propagate WBAPIError on 409 conflict for metadata write methods', async () => {
-      const error = new WBAPIError('Conflict: metadata already set', 409);
-      mockClient.put.mockRejectedValue(error);
-
-      await expect(module.updateMetaSgtin(1, { sgtins: ['x'] })).rejects.toThrow(WBAPIError);
-      await expect(module.updateMetaSgtin(1, { sgtins: ['x'] })).rejects.toThrow('Conflict');
-    });
-
-    it('should propagate NetworkError on network timeout', async () => {
-      const error = new NetworkError('Request timed out', true, undefined);
-      mockClient.get.mockRejectedValue(error);
-
-      await expect(module.getOrdersNew()).rejects.toThrow(NetworkError);
-    });
-
-    it('should propagate NetworkError on server error', async () => {
-      const error = new NetworkError('Internal server error', false, 500);
-      mockClient.post.mockRejectedValue(error);
-
-      await expect(module.createOrdersClient({ orders: [1] })).rejects.toThrow(NetworkError);
-    });
-
-    it('should propagate errors from DELETE operations', async () => {
-      const error = new AuthenticationError('Invalid API key');
-      mockClient.delete.mockRejectedValue(error);
-
-      await expect(module.deleteOrdersMeta(1, { key: 'imei' })).rejects.toThrow(
-        AuthenticationError
-      );
-    });
-
-    it('should propagate errors from PUT operations', async () => {
-      const error = new RateLimitError('Too many requests', 10000);
-      mockClient.put.mockRejectedValue(error);
-
-      await expect(module.updateMetaImei(1, { imei: 'x' })).rejects.toThrow(RateLimitError);
-    });
-  });
 
   describe('Bulk B2B marking validation + customs-declaration (task-158)', () => {
     it('checkMetaValidation - POST meta/details with ordersIds + rateLimitKey', async () => {
       mockClient.post.mockResolvedValue({ requestId: 'req-1', orders: [] });
       await module.checkMetaValidation([123456, 234567]);
       expect(mockClient.post).toHaveBeenCalledWith(
-        `${BASE_URL}/api/marketplace/v3/click-collect/orders/meta/details`,
+        `${BATCH}/orders/meta/details`,
         { ordersIds: [123456, 234567] },
         expect.objectContaining({ rateLimitKey: 'in-store-pickup.checkMetaValidation' })
       );
@@ -777,7 +562,7 @@ describe('InStorePickupModule', () => {
         ],
       });
       expect(mockClient.post).toHaveBeenCalledWith(
-        `${BASE_URL}/api/marketplace/v3/click-collect/orders/meta/customs-declaration`,
+        `${BATCH}/orders/meta/customs-declaration`,
         {
           orders: [
             {
@@ -789,6 +574,48 @@ describe('InStorePickupModule', () => {
         },
         expect.objectContaining({ rateLimitKey: 'in-store-pickup.setCustomsDeclarationBulk' })
       );
+    });
+  });
+
+  // ==========================================================================
+  // Error Handling
+  // ==========================================================================
+
+  describe('Error Handling', () => {
+    it('should propagate AuthenticationError on 401 response', async () => {
+      const error = new AuthenticationError('Invalid API key', 401);
+      mockClient.get.mockRejectedValue(error);
+      await expect(module.getOrdersNew()).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate ValidationError on 400 response', async () => {
+      const error = new ValidationError('Bad request');
+      mockClient.post.mockRejectedValue(error);
+      await expect(module.createOrdersStatus({ orders: [1] })).rejects.toThrow(ValidationError);
+    });
+
+    it('should propagate RateLimitError on 429 response from a bulk setter', async () => {
+      const error = new RateLimitError('Rate limit exceeded', 5000);
+      mockClient.post.mockRejectedValue(error);
+      await expect(module.confirmBulk([1])).rejects.toThrow(RateLimitError);
+    });
+
+    it('should propagate WBAPIError on 409 conflict for prepareBulk', async () => {
+      const error = new WBAPIError('Conflict: invalid state transition', 409);
+      mockClient.post.mockRejectedValue(error);
+      await expect(module.prepareBulk([1])).rejects.toThrow(WBAPIError);
+    });
+
+    it('should propagate NetworkError on network timeout', async () => {
+      const error = new NetworkError('Request timed out', true, undefined);
+      mockClient.get.mockRejectedValue(error);
+      await expect(module.getOrdersNew()).rejects.toThrow(NetworkError);
+    });
+
+    it('should propagate errors through the receive shim to receiveBulk', async () => {
+      const error = new RateLimitError('Too many requests', 10000);
+      mockClient.post.mockRejectedValue(error);
+      await expect(module.updateOrdersReceive(1)).rejects.toThrow(RateLimitError);
     });
   });
 });

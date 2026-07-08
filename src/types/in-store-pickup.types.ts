@@ -118,6 +118,11 @@ export interface ApiNewOrder {
   cargoType?: 1 | 2 | 3;
   /** Признак заказа товара с нулевым остатком: - `false` — заказ сделан на товар с ненулевым остатком - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену */
   isZeroOrder?: boolean;
+  /** Опции заказа */
+  options?: {
+    /** Признак B2B-продажи: - `false` — не B2B - `true` — B2B-продажа */
+    isB2b?: boolean;
+  };
 }
 
 export interface ApiNewOrders {
@@ -164,6 +169,11 @@ export interface ApiOrder {
   warehouseAddress?: string;
   /** ID склада продавца, на который поступило сборочное задание */
   warehouseId?: number;
+  /** Опции заказа */
+  options?: {
+    /** Признак B2B-продажи: - `false` — не B2B - `true` — B2B-продажа */
+    isB2b?: boolean;
+  };
 }
 
 /**
@@ -217,6 +227,7 @@ export interface ApiOrderStatus {
   /** Статус сборочного задания в системе WB */
   wbStatus?:
     | 'waiting'
+    | 'sorted'
     | 'sold'
     | 'canceled'
     | 'canceled_by_client'
@@ -361,4 +372,148 @@ export interface PickupCustomsDeclarationResult {
 export interface CustomsDeclarationSetResponse {
   requestId: string;
   results: PickupCustomsDeclarationResult[];
+}
+
+// ============================================================================
+// Batch click-collect API (task-147, since 3.17.0)
+// WB shut down single-order /api/v3/click-collect/orders/{orderId}/* paths and
+// migrated to batch POST /api/marketplace/v3/click-collect/*. The 12 legacy
+// single-order methods below are preserved as @deprecated shims that delegate
+// to these batch types. Shapes mirror the DBS module (server-identical).
+// ============================================================================
+
+/** Metadata key type for label identifiers (delete + validation). */
+export type PickupMetadataKey = 'imei' | 'uin' | 'gtin' | 'sgtin' | 'customsDeclaration';
+
+/**
+ * Request body for batch status setters + status info + meta read.
+ * `{ ordersIds }` — pickup receive/reject take NO passcodes (unlike DBS).
+ */
+export interface OrdersRequestV2 {
+  /** List of assembly order IDs (max 1000). */
+  ordersIds: number[];
+}
+
+/** Per-order error in a batch response. */
+export interface BatchError {
+  /** Error code (e.g. 404). */
+  code: number;
+  /** Error description (e.g. `NotFound`). */
+  detail: string;
+}
+
+/** Per-order result in a batch status-change response. */
+export interface StatusSetResponse {
+  /** Assembly order ID. */
+  orderId: number;
+  /** Whether an error occurred for this order. */
+  isError: boolean;
+  /** Error details (present when `isError` is true). */
+  errors?: BatchError[];
+}
+
+/** Response from batch status setters (confirm/prepare/receive/reject/cancel). */
+export interface BulkStatusChangeResponse {
+  /** Unique request ID. */
+  requestId: string;
+  /** Per-order results. */
+  results: StatusSetResponse[];
+}
+
+/** Per-order status in the batch status-info response. */
+export interface PickupOrderStatusBulk {
+  /** Assembly order ID. */
+  orderId: number;
+  /** Status set by the seller. */
+  supplierStatus?: string;
+  /** Status set by the WB system. */
+  wbStatus?: string;
+  /** Error details (present when the order was not found). */
+  errors?: BatchError[];
+}
+
+/** Response from {@link InStorePickupModule.getStatusesBulk}. */
+export interface GetStatusInfoResponse {
+  /** Status data for each requested order. */
+  orders: PickupOrderStatusBulk[];
+}
+
+/** Request body for {@link InStorePickupModule.getMetaBulk}. */
+export interface GetMetaBulkRequest {
+  /** Order IDs to get metadata for (max 1000). */
+  ordersIds: number[];
+}
+
+/** Single order's label identifiers (meta/details response item). */
+export interface OrderMetaV2 {
+  /** Error message (`""` = no errors, `NotFound` = order not found). */
+  error: string;
+  /** GTIN. */
+  gtin?: string | null;
+  /** IMEI. */
+  imei?: string | null;
+  /** Assembly order ID. */
+  orderId: number;
+  /** Chestny ZNAK labeling codes. */
+  sgtin?: string[] | null;
+  /** UIN. */
+  uin?: string | null;
+  /** Customs declaration number. */
+  customsDeclaration?: string | null;
+}
+
+/** Response from {@link InStorePickupModule.getMetaBulk}. */
+export interface GetOrderMetaBulkResponse {
+  /** Unique request ID. */
+  requestId: string;
+  /** Label identifiers for each requested order. */
+  orders: OrderMetaV2[];
+}
+
+/** Request body for {@link InStorePickupModule.deleteMetaBulk}. */
+export interface DeleteMetaBulkRequest {
+  /** Label identifier type to delete (only one per request). */
+  key: PickupMetadataKey;
+  /** Assembly order IDs (max 1000). */
+  ordersIds: number[];
+}
+
+/** Response from {@link InStorePickupModule.deleteMetaBulk}. */
+export interface DeleteMetaBulkResponse {
+  /** Unique request ID. */
+  requestId: string;
+  /** Per-order results. */
+  results: StatusSetResponse[];
+}
+
+/** Request body for {@link InStorePickupModule.setSgtinBulk}. */
+export interface SetSgtinBulkRequest {
+  /** Orders with SGTIN (Data Matrix) codes (max 1000). */
+  orders: { orderId: number; sgtins: string[] }[];
+}
+
+/** Request body for {@link InStorePickupModule.setUinBulk}. */
+export interface SetUinBulkRequest {
+  /** Orders with UIN values (max 1000). */
+  orders: { orderId: number; uin: string }[];
+}
+
+/** Request body for {@link InStorePickupModule.setImeiBulk}. */
+export interface SetImeiBulkRequest {
+  /** Orders with IMEI values (max 1000). */
+  orders: { orderId: number; imei: string }[];
+}
+
+/** Request body for {@link InStorePickupModule.setGtinBulk}. */
+export interface SetGtinBulkRequest {
+  /** Orders with GTIN values (max 1000). */
+  orders: { orderId: number; gtin: string }[];
+}
+
+/** Response from batch meta-set operations (sgtin/uin/imei/gtin). */
+export interface SetMetaBulkResponse {
+  /** Unique request ID. */
+  requestId: string;
+  /** Per-order results. */
+  results: StatusSetResponse[];
 }

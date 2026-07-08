@@ -37,6 +37,7 @@ In-depth guides for production deployment and advanced SDK usage.
 - **[Type 8 → Type 9 (alternate)](/guides/migration-v2.4-promotion-deprecation)** - Original deprecation notice for Type 8 campaign removal
 - **[Migration v2.3 - Promotion Required Parameters](/guides/migration-v2.3)** - Breaking changes in Promotion module method signatures
 - **[Migration DBS Legacy to Bulk](/guides/migration-dbs-legacy-to-bulk)** - Migrate from deprecated single-order DBS methods to bulk APIs
+- **[In-Store Pickup Batch Migration](/guides/in-store-pickup-batch-migration)** - Migrate from dead single-order pickup paths to the batch click-collect API (v3.17.0)
 
 ---
 
