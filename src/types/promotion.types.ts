@@ -764,6 +764,11 @@ export interface FullStatsItem {
   sum_price: number;
   /** Количество просмотров */
   views: number;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   * @since task-170
+   */
+  currency?: string;
 }
 
 /**
@@ -952,6 +957,15 @@ export interface V0GetNormQueryStatsItemStat {
   cpm?: number;
   /** Средняя позиция товара на страницах поисковой выдачи */
   avg_pos?: number;
+  /** Количество заказанных товаров, шт. */
+  shks?: number;
+  /** Затраты на продвижение товара в конкретном поисковом кластере кампании */
+  spend?: number;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   * @since task-170
+   */
+  currency?: string;
 }
 
 /**
@@ -1014,6 +1028,23 @@ export interface V0GetNormQueryBidsItem {
   norm_query: string;
   /** Текущая ставка за тысячу показов, ₽ */
   bid: number;
+  /**
+   * Текущая ставка в минорных единцах валюты — 0.01 базовой единицы
+   * [валюты кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) за тысячу показов.
+   * @since task-170
+   */
+  bid_kopecks?: number;
+  /**
+   * Идентификатор ставки в минорных единицах валюты (0.01 базовой единицы за тысячу показов).
+   * Отличается от `bid_kopecks` — это отдельное поле идентификатора ставки.
+   * @since task-170
+   */
+  id_kopecks?: number;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   * @since task-170
+   */
+  currency?: string;
 }
 
 /**
@@ -1094,6 +1125,11 @@ export interface GetAdvertsItem {
   timestamps: Timestamps;
   /** Тип ставки: auto — автоматическая ставка, manual — ручная ставка */
   bid_type: BidType;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   * @since task-170
+   */
+  currency?: string;
 }
 
 /**
@@ -1240,6 +1276,11 @@ export interface AdvertV2 {
   status: -1 | 4 | 7 | 8 | 9 | 11;
   /** Временные метки */
   timestamps: AdvertTimestamps;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   * @since task-170
+   */
+  currency?: string;
 }
 
 /**
@@ -1678,6 +1719,11 @@ export interface UpdateBidsArticle {
 export interface UpdateBidsResponse {
   /** Results of bid updates */
   bids: UpdateBidsResultCampaign[];
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   * @since task-170
+   */
+  currency?: string;
 }
 
 /**
@@ -1700,6 +1746,116 @@ export interface UpdateBidsResultArticle {
   bid_kopecks: number;
   /** Placement where bid was applied */
   placement: 'search' | 'recommendations' | 'combined';
+}
+
+// ============================================================================
+// V1 Config + V1 NormQuery Bids Types (task-170)
+// ============================================================================
+
+/**
+ * Ответ метода GET /api/advert/v1/config — конфигурация кабинета продвижения.
+ *
+ * Возвращает валюту, код валюты [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances)
+ * и допустимые шаги ставок для метода POST /api/advert/v1/normquery/bids.
+ *
+ * @since task-170
+ */
+export interface V2GetConfigResponse {
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   */
+  currency: string;
+  /**
+   * Код валюты [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances)
+   * (напр. 860 для UZS).
+   */
+  currencyCode: number;
+  /**
+   * Шаг ставки в минорных единицах валюты — 0.01 базовой единицы валюты кабинета
+   * — для CPM-кампаний (за показы).
+   */
+  cpmStep: number;
+  /**
+   * Шаг ставки в минорных единицах валюты — 0.01 базовой единицы валюты кабинета
+   * — для CPC-кампаний (за клики).
+   */
+  cpcStep: number;
+}
+
+/**
+ * Элемент запроса на установку ставки для поискового кластера (V1, валюта кабинета).
+ *
+ * @since task-170
+ */
+export interface V1SetNormQueryBidsRequestItem {
+  /** ID кампании */
+  advertId: number;
+  /** Артикул WB */
+  nmId: number;
+  /** Поисковый кластер — группа похожих поисковых запросов */
+  normQuery: string;
+  /**
+   * Ставка в минорных единицах валюты — 0.01 базовой единицы
+   * [валюты кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * Допустимый шаг ставки возвращается методом GET /api/advert/v1/config.
+   */
+  bidMinorUnits: number;
+}
+
+/**
+ * Запрос на установку ставок для поисковых кластеров (V1, валюта кабинета).
+ *
+ * @since task-170
+ */
+export interface V1SetNormQueryBidsRequest {
+  /** Массив ставок (макс. 100) */
+  bids: V1SetNormQueryBidsRequestItem[];
+}
+
+/**
+ * Успешно обработанный элемент ставки (V1).
+ *
+ * @since task-170
+ */
+export interface V1SetNormQueryBidsSuccessItem {
+  /** ID кампании */
+  advertId: number;
+  /** Артикул WB */
+  nmId: number;
+  /** Поисковый кластер — группа похожих поисковых запросов */
+  normQuery: string;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   */
+  currency: string;
+}
+
+/**
+ * Элемент с причиной отклонения ставки (V1).
+ *
+ * @since task-170
+ */
+export interface V1SetNormQueryBidsFailItem {
+  /** ID кампании */
+  advertId: number;
+  /** Артикул WB */
+  nmId: number;
+  /** Поисковый кластер — группа похожих поисковых запросов */
+  normQuery: string;
+  /** Описание причины ошибки */
+  reason: string;
+}
+
+/**
+ * Ответ метода POST /api/advert/v1/normquery/bids (V1, валюта кабинета).
+ *
+ * @since task-170
+ */
+export interface V1SetNormQueryBidsResponse {
+  /** Успешно обработанные ставки */
+  success: V1SetNormQueryBidsSuccessItem[];
+  /** Отклонённые ставки с указанием причины */
+  failed: V1SetNormQueryBidsFailItem[];
 }
 
 // ============================================================================

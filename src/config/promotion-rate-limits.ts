@@ -278,6 +278,24 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
   },
 
   // ============================================================================
+  // V1 Config + V1 NormQuery Bids Rate Limits - NEW in task-170
+  // ============================================================================
+
+  /** GET /api/advert/v1/config - Account currency + allowed bid steps */
+  'promotion.v1Config': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
+  },
+
+  /** POST /api/advert/v1/normquery/bids - Set search-cluster bids in account currency (v1) */
+  'promotion.v1NormqueryBids': {
+    requestsPerMinute: 120,
+    intervalSeconds: 0.5,
+    burstLimit: 4,
+  },
+
+  // ============================================================================
   // V2 Replacement Endpoints Rate Limits - NEW in Feb 2026
   // ============================================================================
 

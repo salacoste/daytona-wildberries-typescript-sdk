@@ -44,6 +44,9 @@ import type {
   V0KeywordsStatisticsResponse,
   V0SetMinusNormQueryRequest,
   V0SetNormQueryBidsRequest,
+  V1SetNormQueryBidsRequest,
+  V1SetNormQueryBidsResponse,
+  V2GetConfigResponse,
 } from '../../types/promotion.types';
 
 export class PromotionModule {
@@ -189,12 +192,14 @@ export class PromotionModule {
     balance?: number;
     net?: number;
     bonus?: number;
+    currency?: string;
     cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[];
   }> {
     return this.client.get<{
       balance?: number;
       net?: number;
       bonus?: number;
+      currency?: string;
       cashbacks?: { sum?: number; percent?: number; expiration_date?: string }[];
     }>('https://advert-api.wildberries.ru/adv/v1/balance', {
       rateLimitKey: 'promotion.advBalance',
@@ -218,8 +223,8 @@ export class PromotionModule {
    */
   async getAdvBudget(options?: {
     id: number;
-  }): Promise<{ cash?: number; netting?: number; total?: number }> {
-    return this.client.get<{ cash?: number; netting?: number; total?: number }>(
+  }): Promise<{ cash?: number; netting?: number; total?: number; currency?: string }> {
+    return this.client.get<{ cash?: number; netting?: number; total?: number; currency?: string }>(
       'https://advert-api.wildberries.ru/adv/v1/budget',
       { params: options, rateLimitKey: 'promotion.advBudget' }
     );
@@ -325,6 +330,7 @@ export class PromotionModule {
       type?: number;
       statusId?: number;
       cardStatus?: string;
+      currency?: string;
     }[]
   > {
     return this.client.get<
@@ -335,6 +341,7 @@ export class PromotionModule {
         type?: number;
         statusId?: number;
         cardStatus?: string;
+        currency?: string;
       }[]
     >('https://advert-api.wildberries.ru/adv/v1/payments', {
       params: options,
@@ -1017,6 +1024,78 @@ export class PromotionModule {
   }
 
   /**
+   * Конфигурация кабинета продвижения (V1)
+   *
+   * Возвращает валюту, код валюты [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances)
+   * и допустимые шаги ставок (`cpmStep`, `cpcStep`) для метода
+   * {@link PromotionModule.postV1NormqueryBids}.
+   *
+   * Rate limit: 1 request per minute, 1 min interval, burst 10
+   *
+   * @returns Account currency, currency code and allowed bid steps (CPM and CPC)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-170
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Kampanii/operation/getV1Config}
+   * @example
+   * ```typescript
+   * const config = await sdk.promotion.getV1Config();
+   * console.log(config.currency, config.currencyCode, config.cpmStep, config.cpcStep);
+   * ```
+   */
+  async getV1Config(): Promise<V2GetConfigResponse> {
+    return this.client.get<V2GetConfigResponse>(
+      'https://advert-api.wildberries.ru/api/advert/v1/config',
+      {
+        rateLimitKey: 'promotion.v1Config',
+      }
+    );
+  }
+
+  /**
+   * Установить ставки для поисковых кластеров в валюте кабинета (V1)
+   *
+   * Устанавливает ставки для поисковых кластеров в валюте [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * Доступно только для кампаний с ручной ставкой и моделью оплаты `cpm` — за показы.
+   * Допустимый шаг ставки возвращается методом {@link PromotionModule.getV1Config}.
+   *
+   * Отличается от {@link PromotionModule.setNormqueryBids} (v0, `/adv/v0/normquery/bids`):
+   * v1 принимает ставку в `bidMinorUnits` и работает в валюте кабинета продавца.
+   *
+   * Rate limit: 2 requests per second, 500ms interval, burst 4
+   *
+   * @param data - Request body with bids in minor currency units (max 100 items)
+   * @returns Result with successfully applied bids and failed bids (with reasons)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-170
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery/operation/postV1NormqueryBids}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.postV1NormqueryBids({
+   *   bids: [{
+   *     advertId: 1825035,
+   *     nmId: 983512347,
+   *     normQuery: 'Фраза 1',
+   *     bidMinorUnits: 1000
+   *   }]
+   * });
+   * console.log(result.success, result.failed);
+   * ```
+   */
+  async postV1NormqueryBids(data: V1SetNormQueryBidsRequest): Promise<V1SetNormQueryBidsResponse> {
+    return this.client.post<V1SetNormQueryBidsResponse>(
+      'https://advert-api.wildberries.ru/api/advert/v1/normquery/bids',
+      data,
+      { rateLimitKey: 'promotion.v1NormqueryBids' }
+    );
+  }
+
+  /**
    * Список минус-фраз кампаний
    *
    * Метод возвращает список минус-фраз по ID кампаний и артикулам WB.
@@ -1165,13 +1244,13 @@ export class PromotionModule {
   }): Promise<{
     bids: {
       nm_id: number;
-      bids: { type: PlacementType; value: number }[];
+      bids: { type: PlacementType; value: number; currency?: string }[];
     }[];
   }> {
     return this.client.post<{
       bids: {
         nm_id: number;
-        bids: { type: PlacementType; value: number }[];
+        bids: { type: PlacementType; value: number; currency?: string }[];
       }[];
     }>('https://advert-api.wildberries.ru/api/advert/v1/bids/min', data, {
       rateLimitKey: 'promotion.bidsMinV1',

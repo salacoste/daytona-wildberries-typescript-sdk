@@ -392,6 +392,64 @@ describe('PromotionModule', () => {
         expect.objectContaining({ rateLimitKey: 'promotion.normquerySetMinus' })
       );
     });
+
+    it('getV1Config - should get account currency and allowed bid steps', async () => {
+      const mockResponse = {
+        cpcStep: 500,
+        cpmStep: 100000,
+        currency: 'UZS',
+        currencyCode: 860,
+      };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getV1Config();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v1/config',
+        expect.objectContaining({ rateLimitKey: 'promotion.v1Config' })
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.currency).toBe('UZS');
+      expect(result.currencyCode).toBe(860);
+      expect(result.cpmStep).toBe(100000);
+      expect(result.cpcStep).toBe(500);
+    });
+
+    it('postV1NormqueryBids - should set search-cluster bids in account currency', async () => {
+      const mockResponse = {
+        success: [
+          {
+            advertId: 1825035,
+            nmId: 983512347,
+            normQuery: 'Фраза 1',
+            currency: 'RUB',
+          },
+        ],
+        failed: [],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const requestBody = {
+        bids: [
+          {
+            advertId: 1825035,
+            nmId: 983512347,
+            normQuery: 'Фраза 1',
+            bidMinorUnits: 1000,
+          },
+        ],
+      };
+      const result = await module.postV1NormqueryBids(requestBody);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v1/normquery/bids',
+        requestBody,
+        expect.objectContaining({ rateLimitKey: 'promotion.v1NormqueryBids' })
+      );
+      expect(result.success).toHaveLength(1);
+      expect(result.success[0].currency).toBe('RUB');
+      expect(result.failed).toEqual([]);
+    });
   });
 
   describe('V2 API Methods', () => {
