@@ -702,14 +702,20 @@ describe('CommunicationsModule', () => {
     });
 
     describe('updateClaim() - Response to return claim', () => {
-      it('should call correct URL with rateLimitKey', async () => {
+      it('should call correct URL with rateLimitKey and pass the request body', async () => {
         mockClient.patch.mockResolvedValue({});
 
-        await communicationsModule.updateClaim();
+        const body = {
+          id: 'fe3e9337-e9f9-423c-8930-946a8ebef80',
+          action: 'rejectcustom',
+          comment: 'The photo is not related to the item in the application',
+        };
+
+        await communicationsModule.updateClaim(body);
 
         expect(mockClient.patch).toHaveBeenCalledWith(
           'https://returns-api.wildberries.ru/api/v1/claim',
-          undefined,
+          body,
           { rateLimitKey: 'communications.patchClaim' }
         );
       });

@@ -875,23 +875,31 @@ export class CommunicationsModule {
    *
    * Метод отправляет ответ на [заявку](/openapi/user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) покупателя на возврат товаров. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 20 запросов | 3 секунды | 10 запросов | </div>
    *
+   * @param data - Request body. `action` must be one of the values from the `actions` array returned by `claims()`. When `action` is `"rejectcustom"` the `comment` is required (10–1000 chars); it is optional for `"approvecc1"`.
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @example
-  const result = await sdk.communications.updateClaim();
+  const result = await sdk.communications.updateClaim({
+    id: 'fe3e9337-e9f9-423c-8930-946a8ebef80',
+    action: 'rejectcustom',
+    comment: 'The photo is not related to the item in the application',
+  });
   console.log(result);
    */
-  async updateClaim(): Promise<unknown> {
-    return this.client.patch<unknown>(
-      'https://returns-api.wildberries.ru/api/v1/claim',
-      undefined,
-      {
-        rateLimitKey: 'communications.patchClaim',
-      }
-    );
+  async updateClaim(data: {
+    /** Application ID (UUID). */
+    id: string;
+    /** Application action. Use one of the `actions` array values from `claims()`. */
+    action: string;
+    /** Comment (10–1000 chars). Required when `action` is `"rejectcustom"`, optional for `"approvecc1"`. */
+    comment?: string;
+  }): Promise<unknown> {
+    return this.client.patch<unknown>('https://returns-api.wildberries.ru/api/v1/claim', data, {
+      rateLimitKey: 'communications.patchClaim',
+    });
   }
 
   // ============================================================================
