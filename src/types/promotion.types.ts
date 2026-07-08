@@ -1506,21 +1506,30 @@ export interface GetCampaignCountResponse {
 // ============================================================================
 
 /**
- * Bid type for campaign
- * - `auto` — автоматическая ставка (Type 8; ставкой управляет WB). Ранее
- *   называлось `unified` (единая ставка) — это значение устарело и больше не
- *   принимается; используйте `auto`.
+ * Bid type for campaign (per WB OpenAPI etalon `08-promotion.yaml` enum).
+ * - `unified` — единая ставка (Type 8; ставкой управляет WB).
  * - `manual` — ручная ставка (Type 9; ставку задаёт продавец).
  *
- * {@link PromotionModule.updateBids} применяется к кампаниям `auto` (единая) и
+ * NOTE: an earlier SDK version used `'auto'` for the unified/Type-8 value — that
+ * was incorrect. WB's spec and the live API use `'unified'` (and never `'auto'`):
+ * a prod probe returned 118 `unified` + 154 `manual` campaigns, 0 `auto`.
+ *
+ * {@link PromotionModule.updateBids} применяется к кампаниям `unified` (единая) и
  * `manual` (ручная).
  */
-export type BidType = 'auto' | 'manual';
+export type BidType = 'manual' | 'unified';
 
 /**
- * Campaign placement types
+ * Campaign placement types (per WB OpenAPI etalon `PlacementType` enum).
+ * - `combined` — search and recommendation
+ * - `search` — search only
+ * - `recommendation` — recommendation only (singular)
+ *
+ * Note: this is distinct from the bid `placement` field
+ * (`UpdateBidsArticle.placement` = `'search' | 'recommendations' | 'combined'`,
+ * plural `'recommendations'`), which is used by `updateBids`.
  */
-export type CampaignPlacementType = 'search' | 'recommendations';
+export type CampaignPlacementType = 'combined' | 'search' | 'recommendation';
 
 /**
  * Request to create a campaign

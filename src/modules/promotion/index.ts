@@ -1357,7 +1357,7 @@ export class PromotionModule {
    *   nms: [12345678, 87654321],
    *   bid_type: 'manual',
    *   payment_type: 'cpm',
-   *   placement_types: ['search', 'recommendations']
+   *   placement_types: ['search', 'recommendation']
    * });
    * console.log(`Created campaign with ID: ${campaignId}`);
    * ```

@@ -345,7 +345,7 @@ export class WildberriesSDK {
    *   name: 'Winter Sale Campaign',
    *   nms: [12345, 67890],
    *   bid_type: 'manual',
-   *   placement_types: ['search', 'recommendations']
+   *   placement_types: ['search', 'recommendation']
    * });
    *
    * // Get minimum bids for products

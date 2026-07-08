@@ -634,7 +634,7 @@ describe('PromotionModule', () => {
         name: 'Test Campaign',
         nms: [146168367, 200425104],
         bid_type: 'manual' as const,
-        placement_types: ['search' as const, 'recommendations' as const],
+        placement_types: ['search' as const, 'recommendation' as const],
       };
 
       await module.createCampaign(request);
