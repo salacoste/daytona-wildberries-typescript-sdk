@@ -222,6 +222,9 @@ export class OrdersFbsModule {
    * Returns assembly task information without their current status.
    * Data can be retrieved for a given period, up to 30 calendar days per request.
    *
+   * **3-month window:** From 2026-07-21, returns only assembly orders created LESS than
+   * 3 months ago. For older orders, use `getOrdersArchive()` (`GET /api/marketplace/v3/fbs/orders/archive`).
+   *
    * @param options - Query parameters for pagination and date filtering
    * @returns Promise resolving to orders with pagination cursor
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -752,6 +755,7 @@ export class OrdersFbsModule {
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/Postavki-FBS}
+   * @see [FBS marking guide](https://dev.wildberries.ru/knowledge-base/articles/019e9273-118b-7b69-a25a-ea1d756f05d9/rabota-s-markirovkoi-po-modeli-fbs)
    * @see [Migration guide](../../../docs/guides/fbs-marking-code-validation.md)
    *
    * @example

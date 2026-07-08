@@ -570,6 +570,9 @@ paths:
                             - postponed_delivery
                             - accepted_by_carrier
                             - sent_to_carrier
+                        isCancellable:
+                          type: boolean
+                          description: Whether this assembly task can still be cancelled by the seller before being transferred to Wildberries.
         '400':
           description: Неправильный запрос
           content:
@@ -2617,7 +2620,7 @@ components:
             value: ''
             decision: invalid
           - key: sgtin
-            value: '0104607085078824215KlYF93VKHf'
+            value: '0104607085078824215KlYFAbCdEf'
             decision: invalid
     SupplyNotClosed:
       value:

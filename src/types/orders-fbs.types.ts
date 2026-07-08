@@ -716,7 +716,9 @@ export interface MetaDetail {
   key: string;
   /** Metadata value (empty string if not filled) */
   value: string;
-  /** Validation decision. Known values: 'filled' (value set), 'optional' (not required), 'required' (must fill before deliver), 'invalid' (value failed validation) */
+  /** Validation decision. Known values: 'filled' (value set), 'optional' (not required), 'required' (must fill before deliver), 'invalid' (value failed validation).
+   *
+   * When WB's B2C marking validation is not yet available for a seller, only 'filled'/'optional'/'required' are returned for sgtin; when available, the full status set is returned (non-exhaustive). See WB release-notes?id=513. */
   decision: string;
 }
 

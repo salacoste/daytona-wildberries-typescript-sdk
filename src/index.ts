@@ -804,6 +804,9 @@ export {
 // FBS marking-code validation error (since 3.15.0)
 export { MetaValidationFailError } from './errors/meta-validation-fail-error';
 
+// WB warehouse maintenance error (406 WarehouseStocksUpdateBlock — stocks PUT retryable)
+export { WarehouseStocksUpdateBlockError } from './errors/warehouse-stocks-update-block-error';
+
 // Utility functions
 export {
   calculateSupplyCost,

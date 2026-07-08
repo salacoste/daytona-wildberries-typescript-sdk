@@ -831,7 +831,9 @@ describe('OrdersDbsModule', () => {
     it('should call correct endpoint with rateLimitKey', async () => {
       // Arrange
       mockClient.post.mockResolvedValue({ orders: [] });
-      const request = { orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789' }] };
+      const request = {
+        orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789', originCountryCode: 643 }],
+      };
 
       // Act
       await ordersDbsModule.setCustomsDeclarationBulk(request);

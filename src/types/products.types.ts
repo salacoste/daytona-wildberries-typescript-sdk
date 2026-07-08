@@ -242,7 +242,9 @@ export interface GoodsList {
   discount?: number;
   /** Скидка WB Клуба, % */
   clubDiscount?: number;
-  /** Можно ли устанавливать цены отдельно для разных размеров (зависит от категории товара): - `true` — можно - `false` — нельзя */
+  /** Можно ли устанавливать цены отдельно для разных размеров (зависит от категории товара): - `true` — можно - `false` — нельзя
+   *
+   * Also true when the 'Size-Based Prices' Tariff-Builder option is enabled (RU only) and the item has >1 size. If not enabled, size-priced cards fall into drafts (`/content/v2/cards/error/list`); size-priced items cannot be added to promos (`POST /api/v1/calendar/promotions/upload` → 400). */
   editableSizePrice?: boolean;
   /** Признак неликвидного товара: - `true` — неликвидный товар с [низким индексом остатка](https://seller.wildberries.ru/instructions/ru/ru/material/stocks-index?categoryId=e324ce0f-9a2a-4b8d-8fd1-72f751b09b3b&goBackOption=prevRoute#%D1%83%D1%80%D0%BE%D0%B2%D0%BD%D0%B8-%D0%B8%D0%BD%D0%B4%D0%B5%D0%BA%D1%81%D0%B0-%D0%BE%D1%81%D1%82%D0%B0%D1%82%D0%BA%D0%B0) - Поле отсутствует — ликвидный товар */
   isBadTurnover?: boolean;
@@ -272,7 +274,9 @@ export interface SizeGood {
   clubDiscount?: number;
   /** Размер товара */
   techSizeName?: string;
-  /** Можно ли устанавливать цены отдельно для разных размеров (зависит от категории товара): - `true` — можно - `false` — нельзя */
+  /** Можно ли устанавливать цены отдельно для разных размеров (зависит от категории товара): - `true` — можно - `false` — нельзя
+   *
+   * Also true when the 'Size-Based Prices' Tariff-Builder option is enabled (RU only) and the item has >1 size. If not enabled, size-priced cards fall into drafts (`/content/v2/cards/error/list`); size-priced items cannot be added to promos (`POST /api/v1/calendar/promotions/upload` → 400). */
   editableSizePrice?: boolean;
   /** Признак неликвидного товара: - `true` — неликвидный товар с [низким индексом остатка](https://seller.wildberries.ru/instructions/ru/ru/material/stocks-index?categoryId=e324ce0f-9a2a-4b8d-8fd1-72f751b09b3b&goBackOption=prevRoute#%D1%83%D1%80%D0%BE%D0%B2%D0%BD%D0%B8-%D0%B8%D0%BD%D0%B4%D0%B5%D0%BA%D1%81%D0%B0-%D0%BE%D1%81%D1%82%D0%B0%D1%82%D0%BA%D0%B0) - Поле отсутствует — ликвидный товар */
   isBadTurnover?: boolean;

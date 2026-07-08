@@ -14,6 +14,7 @@ import {
   ValidationError,
   NetworkError,
   WBAPIError,
+  WarehouseStocksUpdateBlockError,
 } from '../../../src/errors';
 import type { SDKConfig } from '../../../src/config';
 
@@ -242,6 +243,26 @@ describe('BaseClient', () => {
         } catch (error) {
           expect(error).toBeInstanceOf(AuthenticationError);
           expect((error as AuthenticationError).statusCode).toBe(401);
+        }
+      });
+    });
+
+    describe('WarehouseStocksUpdateBlockError (406)', () => {
+      it('should transform 406 to WarehouseStocksUpdateBlockError', async () => {
+        mockAxios.onGet(testUrl).reply(406, { detail: 'The warehouse is processing' });
+
+        await expect(client.get(testUrl)).rejects.toThrow(WarehouseStocksUpdateBlockError);
+      });
+
+      it('should set statusCode 406 on the error', async () => {
+        mockAxios.onGet(testUrl).reply(406, { detail: 'WarehouseStocksUpdateBlock' });
+
+        try {
+          await client.get(testUrl);
+          expect.fail('Should have thrown WarehouseStocksUpdateBlockError');
+        } catch (error) {
+          expect(error).toBeInstanceOf(WarehouseStocksUpdateBlockError);
+          expect((error as WarehouseStocksUpdateBlockError).statusCode).toBe(406);
         }
       });
     });

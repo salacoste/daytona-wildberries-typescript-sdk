@@ -19,12 +19,18 @@
  * - `showcase` — Управление витриной магазина
  * - `suppliersDocuments` — Просмотр и скачивание документов
  * - `supply` — Создание и управление поставками FBW
- * - `feedbacksQuestions` — Просмотр и ответы на вопросы и отзывы покупателей
  * - `questions` — Просмотр и ответы на вопросы покупателей
  * - `pinFeedbacks` — Возможность закреплять и откреплять отзывы
  * - `pointsForReviews` — Баллы за отзывы
  * - `feedbacks` — Просмотр и ответы на отзывы покупателей
- * - `wbPoint` — WB Point
+ * - `oldAnalyticsReports` — Отчёты
+ * - `marketplace` — Склад продавца
+ * - `brandsFlow` — Мои бренды
+ * - `copyrightComplaints` — Обращения правообладателей
+ * - `pretrialClaims` — Досудебные претензии
+ * - `sellersChat` — Чат с покупателями
+ * - `brandzone` — Бренд-зона
+ * - `brandzoneSubscribe` — Управление подпиской бренд-зоны
  */
 export type AccessCode =
   | 'balance'
@@ -35,12 +41,18 @@ export type AccessCode =
   | 'showcase'
   | 'suppliersDocuments'
   | 'supply'
-  | 'feedbacksQuestions'
   | 'questions'
   | 'pinFeedbacks'
   | 'pointsForReviews'
   | 'feedbacks'
-  | 'wbPoint';
+  | 'oldAnalyticsReports'
+  | 'marketplace'
+  | 'brandsFlow'
+  | 'copyrightComplaints'
+  | 'pretrialClaims'
+  | 'sellersChat'
+  | 'brandzone'
+  | 'brandzoneSubscribe';
 
 /**
  * Элемент настройки доступа к разделу профиля продавца

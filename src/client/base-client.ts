@@ -16,6 +16,7 @@ import {
   ValidationError,
   NetworkError,
   BidOutOfRangeError,
+  WarehouseStocksUpdateBlockError,
   parseBidOutOfRangeDetail,
 } from '../errors';
 import { MetaValidationFailError } from '../errors/meta-validation-fail-error';
@@ -603,6 +604,18 @@ export class BaseClient {
       const fieldErrors = this.extractFieldErrors(responseData);
       const message = pf.detail ?? pf.title ?? 'Validation failed';
       throw new ValidationError(message, fieldErrors, status, responseData, pf.requestId);
+    }
+
+    if (status === 406) {
+      // WB WarehouseStocksUpdateBlock — warehouse is processing (maintenance); inventory cannot
+      // be updated until the work completes. Transient — consumer should retry later.
+      throw new WarehouseStocksUpdateBlockError(
+        pf.detail ?? 'Warehouse is processing — inventory update temporarily unavailable',
+        responseData,
+        pf.requestId,
+        pf.origin,
+        pf.timestamp
+      );
     }
 
     if (status >= 500) {

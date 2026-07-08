@@ -270,7 +270,7 @@ export class OrdersFbwModule {
     if (request.orders.length === 0) {
       throw new ValidationError('orders array cannot be empty');
     }
-    // Alt path observed in announcement: /api/v3/public/dbw/orders/meta/delete — flip if WB swagger says so
+    // Path confirmed: /api/marketplace/v3/dbw/orders/meta/delete (WB openapi fragment authoritative)
     return this.client.post<DBWDeleteMetaBulkResponse>(
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/meta/delete',
       request,
@@ -311,7 +311,7 @@ export class OrdersFbwModule {
     if (request.orders.length === 0) {
       throw new ValidationError('orders array cannot be empty');
     }
-    // Alt path observed in announcement: /api/v3/public/dbw/orders/meta/sgtin — flip if WB swagger says so
+    // Path confirmed: /api/marketplace/v3/dbw/orders/meta/sgtin (WB openapi fragment authoritative)
     return this.client.post<DBWSetMetaBulkResponse>(
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/meta/sgtin',
       request,
@@ -328,6 +328,10 @@ export class OrdersFbwModule {
    *
    * **Important:** Orders requiring IMEI/SGTIN must have metadata attached before calling
    * this method. If metadata is missing, WB returns 409 `MetaValidationFail`.
+   *
+   * **B2C marking (Честный Знак):** WB validates B2C marking for DBW from 2026-06-15.
+   * Invalid marking → HTTP 409 `MetaValidationFail` with diagnostic `metaDetails[]`.
+   * Pre-flight via `checkMetaValidation()` to avoid the guess-and-retry loop.
    *
    * Rate limit: 300 requests/min, 200ms interval, burst 20.
    * (Default mirrors DBS sibling — WB has not yet published explicit DBW limits.
@@ -366,7 +370,7 @@ export class OrdersFbwModule {
     if (orderIds.length > 1000) {
       throw new ValidationError('orderIds array cannot exceed 1000 items');
     }
-    // Alt path observed in announcement: /api/v3/public/dbw/orders/status/deliver — flip if WB swagger says so
+    // Path confirmed: /api/marketplace/v3/dbw/orders/status/deliver (WB openapi fragment authoritative)
     return this.client.post<BulkStatusChangeResponse>(
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/dbw/orders/status/deliver',
       { orders: orderIds },

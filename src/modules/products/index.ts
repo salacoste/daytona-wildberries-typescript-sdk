@@ -761,6 +761,9 @@ export class ProductsModule {
    * console.log(result.cards); // Product cards array
    * console.log(result.cursor?.total); // Total count
    * ```
+   *
+   * ⚠️ **Token requirement (from 2026-08-03):** WB rejects Promotion-category tokens for this
+   * method — use a Content-category API token.
    */
   async getCardsList(
     data: {
@@ -1196,6 +1199,9 @@ export class ProductsModule {
    * }, { locale: 'ru' });
    * console.log(result.cards); // Trashed cards array
    * ```
+   *
+   * ⚠️ **Token requirement (from 2026-08-03):** WB rejects Promotion-category tokens for this
+   * method — use a Content-category API token.
    */
   async getTrashedCards(
     data: {
@@ -1935,6 +1941,7 @@ export class ProductsModule {
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {WarehouseStocksUpdateBlockError} 406 — Warehouse is processing (maintenance); retry later
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
    * @example New v3.12.0+ pattern (preferred — required after 2026-05-20):

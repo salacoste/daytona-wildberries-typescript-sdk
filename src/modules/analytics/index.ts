@@ -534,6 +534,9 @@ export class AnalyticsModule {
    *
    * Доступен только для токенов типа Personal и Service.
    *
+   * **WB expanded access:** now also available to registered/authorized services
+   * via a basic token + secret (not just personal/service tokens).
+   *
    * **Заменяет устаревший метод** `GET /api/v1/supplier/stocks`,
    * который будет отключён 23 июня 2026.
    *
@@ -551,6 +554,7 @@ export class AnalyticsModule {
    * @throws {NetworkError} When network request fails or times out
    * @since 3.4.0
    * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/Istoriya-ostatkov/operation/postV1StocksReportWbWarehouses}
+   * @see [Stocks History guide](https://dev.wildberries.ru/knowledge-base/articles/019ef14c-c72d-717a-9fc2-b0b2f361dc80)
    * @example
    * ```typescript
    * // Get all inventory

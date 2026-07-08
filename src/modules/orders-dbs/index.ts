@@ -467,12 +467,17 @@ export class OrdersDbsModule {
    * Rate limit: 500 requests/min, 120ms interval, 20 burst
    *
    * @param request - Request with order customs declaration data
-   * @returns Promise resolving to bulk set response
+   * @returns Promise resolving to bulk set response. Orders that fail validation return in the
+   *   response with error `InvalidOriginCountryCode` in the errors array (HTTP 200, partial
+   *   success — not thrown).
+   *
+   * **B2B requirement (since 2026-07-08):** B2B orders MUST include `originCountryCode` (numeric
+   * country code, Russian classifier of countries). Without it the declaration cannot be linked.
    *
    * @example
    * ```typescript
    * const result = await sdk.ordersDBS.setCustomsDeclarationBulk({
-   *   orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789' }]
+   *   orders: [{ orderId: 123456, customsDeclaration: 'CD-123456789', originCountryCode: 643 }]
    * });
    * ```
    */
