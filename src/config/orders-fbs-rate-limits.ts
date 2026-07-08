@@ -254,4 +254,11 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 1,
     penaltyMultiplier: 10,
   },
+  /** GET /api/marketplace/v3/fbs/orders/archive — Archived FBS assembly orders (paginated) */
+  'orders-fbs.ordersArchive': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

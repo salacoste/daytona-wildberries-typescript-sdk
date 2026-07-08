@@ -864,3 +864,115 @@ export interface APIError {
   /** Additional error data */
   data?: Record<string, unknown>;
 }
+
+/**
+ * Price information for an archived FBS order
+ * Maps to swagger schema: v3.ArchiveOrderPriceInfo
+ */
+export interface ArchiveOrderPriceInfo {
+  /** Currency code of the converted price */
+  convertedCurrencyCode: number;
+  /** Price converted into the reporting currency */
+  convertedPrice: number;
+  /** Currency code of the original price */
+  currencyCode: number;
+  /** Original product price */
+  price: number;
+}
+
+/**
+ * Product details for an archived FBS order
+ * Maps to swagger schema: v3.ArchiveOrderProduct
+ */
+export interface ArchiveOrderProduct {
+  /** Seller's article (vendor code) */
+  article: string;
+  /** Charter ID (size identifier) */
+  chrtId: number;
+  /** Wildberries nomenclature ID (nmId) */
+  nmId: number;
+  /** Barcodes (SKUs) of the size */
+  skus: string[];
+}
+
+/**
+ * Status information for an archived FBS order
+ * Maps to swagger schema: v3.ArchiveOrderStatus
+ */
+export interface ArchiveOrderStatus {
+  /** Supplier-side order status */
+  supplierStatus: string;
+  /** Wildberries-side order status */
+  wbStatus: string;
+}
+
+/**
+ * A single archived FBS assembly order
+ * Maps to swagger schema: v3.ArchiveOrder
+ */
+export interface ArchiveOrder {
+  /** Cargo type: 'mgt' (small), 'sgt' (medium), 'kgtPlus' (large+) */
+  cargoType: 'mgt' | 'sgt' | 'kgtPlus';
+  /** Color code, or null when not applicable */
+  colorCode: string | null;
+  /** Order creation timestamp (ISO 8601) */
+  createdAt: string;
+  /** Cross-border delivery details, or null for non-cross-border orders */
+  crossBorder: { parcel?: string } | null;
+  /** Cross-border type: 'local' (domestic) or 'crossBorder' */
+  crossBorderType: 'local' | 'crossBorder';
+  /** Numeric order identifier */
+  id: number;
+  /** Whether this is a zero-price (free) order */
+  isZeroOrder: boolean;
+  /** Additional metadata details */
+  metaDetails: unknown[];
+  /** Order-level options */
+  options: { isB2B?: boolean };
+  /** Unique order UID */
+  orderUid: string;
+  /** Price information for the order */
+  priceInfo: ArchiveOrderPriceInfo;
+  /** Product details for the order */
+  product: ArchiveOrderProduct;
+  /** Request ID (rid) for tracing */
+  rid: string;
+  /** Scan price, or null when not applicable */
+  scanPrice: number | null;
+  /** Supplier and WB statuses */
+  status: ArchiveOrderStatus;
+  /** Sticker (label) ID assigned to the order */
+  stickerId: number;
+  /** Supply ID the order is bound to, or null when not bound */
+  supplyId: string | null;
+  /** Warehouse ID the order is fulfilled from */
+  warehouseId: number;
+}
+
+/**
+ * Response for GET /api/marketplace/v3/fbs/orders/archive
+ * Maps to swagger schema: v3.ArchiveOrdersResponse
+ */
+export interface ArchiveOrdersResponse {
+  /** Pagination cursor for the next page, or null when the archive is exhausted */
+  next: number | null;
+  /** List of archived FBS orders for the current page */
+  orders: ArchiveOrder[];
+}
+
+/**
+ * Query parameters for GET /api/marketplace/v3/fbs/orders/archive
+ * Maps to swagger schema: v3.ArchiveOrdersParams
+ */
+export interface ArchiveOrdersParams {
+  /** Year of the archive period */
+  year: number;
+  /** Month of the archive period (1-12) */
+  month: number;
+  /** Pagination cursor (0 for the first page) */
+  next: number;
+  /** Maximum number of orders to return per page */
+  limit: number;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}

@@ -48,6 +48,8 @@ import type {
   ReshipmentResponse,
   BarcodeParams,
   BarcodeResponse,
+  ArchiveOrdersParams,
+  ArchiveOrdersResponse,
 } from '../../types/orders-fbs.types';
 
 export class OrdersFbsModule {
@@ -1054,6 +1056,45 @@ export class OrdersFbsModule {
     return this.client.get<SupplyOrderIdsResponse>(
       `https://marketplace-api.wildberries.ru/api/marketplace/v3/supplies/${supplyId}/order-ids`,
       { rateLimitKey: 'orders-fbs.getMarketplaceSuppliesOrderIds' }
+    );
+  }
+
+  /**
+   * Get archived FBS assembly orders
+   *
+   * Returns a paginated list of archived FBS assembly orders for a given year/month period.
+   * Use the `next` cursor from the response to fetch subsequent pages; pagination is exhausted
+   * when `next` is `null`.
+   *
+   * @param params - Query parameters (year, month, next cursor, limit)
+   * @returns Promise resolving to archived orders with the next pagination cursor
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Zakazy-FBS/paths/~1api~1marketplace~1v3~1fbs~1orders~1archive/get}
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.getOrdersArchive({
+   *   year: 2025,
+   *   month: 6,
+   *   next: 0,
+   *   limit: 100,
+   * });
+   * console.log(result.orders);
+   * // Fetch the next page using the returned cursor:
+   * if (result.next !== null) {
+   *   const next = await sdk.ordersFBS.getOrdersArchive({
+   *     year: 2025, month: 6, next: result.next, limit: 100,
+   *   });
+   * }
+   * ```
+   */
+  async getOrdersArchive(params: ArchiveOrdersParams): Promise<ArchiveOrdersResponse> {
+    return this.client.get<ArchiveOrdersResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/orders/archive',
+      { params, rateLimitKey: 'orders-fbs.ordersArchive' }
     );
   }
 }

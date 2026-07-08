@@ -595,4 +595,100 @@ describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
       );
     });
   });
+
+  // ============================================================================
+  // getOrdersArchive()
+  // ============================================================================
+
+  describe('getOrdersArchive', () => {
+    it('should call GET on the correct URL with query params and return archived orders with pagination', async () => {
+      const mockResponse = {
+        next: 500,
+        orders: [
+          {
+            cargoType: 'mgt',
+            colorCode: null,
+            createdAt: '2025-06-01T08:00:00Z',
+            crossBorder: null,
+            crossBorderType: 'local',
+            id: 1234567890,
+            isZeroOrder: false,
+            metaDetails: [],
+            options: {},
+            orderUid: 'a1b2c3d4-uuid',
+            priceInfo: {
+              convertedCurrencyCode: 0,
+              convertedPrice: 1000,
+              currencyCode: 0,
+              price: 1000,
+            },
+            product: {
+              article: 'Article-1',
+              chrtId: 111,
+              nmId: 222,
+              skus: ['sku-1'],
+            },
+            rid: 'rid-1',
+            scanPrice: null,
+            status: { supplierStatus: 'active', wbStatus: 'waiting' },
+            stickerId: 0,
+            supplyId: null,
+            warehouseId: 1,
+          },
+        ],
+      };
+
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbs.getOrdersArchive({
+        year: 2025,
+        month: 6,
+        next: 0,
+        limit: 100,
+      });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/orders/archive',
+        expect.objectContaining({
+          params: { year: 2025, month: 6, next: 0, limit: 100 },
+          rateLimitKey: expect.any(String),
+        })
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.orders).toHaveLength(1);
+      expect(result.next).toBe(500);
+    });
+
+    it('should pass the correct rateLimitKey in options', async () => {
+      mockClient.get.mockResolvedValue({ next: null, orders: [] });
+
+      await ordersFbs.getOrdersArchive({ year: 2025, month: 1, next: 0, limit: 50 });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.ordersArchive' })
+      );
+    });
+
+    it('should passthrough response when pagination is exhausted (next === null)', async () => {
+      const mockResponse = { next: null, orders: [] };
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbs.getOrdersArchive({
+        year: 2024,
+        month: 12,
+        next: 999,
+        limit: 200,
+      });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/orders/archive',
+        expect.objectContaining({
+          params: { year: 2024, month: 12, next: 999, limit: 200 },
+        })
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.next).toBeNull();
+    });
+  });
 });
