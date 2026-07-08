@@ -1460,11 +1460,27 @@ export class ProductsModule {
   /**
    * Загрузить медиафайл
    *
-   * Uploads a single media file to a product card. Images: max 30 per card, min 700x900px, max 32MB,
-   * formats JPG/PNG/BMP/GIF/WebP. Video: max 1 per card, max 50MB, formats MOV/MP4.
+   * Uploads a single media file to a product card via `multipart/form-data`.
+   * Images: max 30 per card, min 700x900px, max 32MB, formats JPG/PNG/BMP/GIF/WebP.
+   * Video: max 1 per card, max 50MB, formats MOV/MP4.
+   *
+   * The WB spec (POST /content/v3/media/file) requires three inputs:
+   *  - `X-Nm-Id` header (string): the WB article ID to attach the file to.
+   *  - `X-Photo-Number` header (integer): the 1-based media slot. For video,
+   *    always `1`. To append an image, the number must exceed the count of
+   *    already-uploaded media files.
+   *  - `multipart/form-data` body with an `uploadfile` field carrying the
+   *    binary content.
    *
    * Rate limit: 100 req/min, 600ms interval, burst 5
    *
+   * @param nmId - WB article ID (sent as the `X-Nm-Id` header)
+   * @param photoNumber - 1-based media slot number (sent as the
+   * `X-Photo-Number` header)
+   * @param formData - `multipart/form-data` payload. Must contain an
+   * `uploadfile` field with the file content. Build with the global
+   * `FormData` (Node 18+/browsers) and append a `Blob`, `File`, `Buffer`,
+   * or `ReadableStream` as the value.
    * @returns Upload result
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -1473,11 +1489,17 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products}
    * @example
    * ```typescript
-   * const result = await sdk.products.createMediaFile();
+   * const formData = new FormData();
+   * formData.append('uploadfile', fileBlob, 'photo.jpg');
+   * const result = await sdk.products.createMediaFile(12345678, 2, formData);
    * console.log(result);
    * ```
    */
-  async createMediaFile(): Promise<{
+  async createMediaFile(
+    nmId: number | string,
+    photoNumber: number,
+    formData: FormData
+  ): Promise<{
     data?: Record<string, never>;
     error?: boolean;
     errorText?: string;
@@ -1488,8 +1510,12 @@ export class ProductsModule {
       error?: boolean;
       errorText?: string;
       additionalErrors?: Record<string, never>;
-    }>('https://content-api.wildberries.ru/content/v3/media/file', undefined, {
+    }>('https://content-api.wildberries.ru/content/v3/media/file', formData, {
       rateLimitKey: 'products.postContentMediaFile',
+      headers: {
+        'X-Nm-Id': String(nmId),
+        'X-Photo-Number': String(photoNumber),
+      },
     });
   }
 
@@ -1543,7 +1569,9 @@ export class ProductsModule {
    *
    * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
-   * @param data - Goods pricing data
+   * @param data - Goods pricing data (array of pricing entries). Wrapped in a
+   * `{ data: [...] }` envelope before sending, per the WB spec
+   * (`SupplierTaskRequest`).
    * @returns Upload task response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -1552,16 +1580,16 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
    * ```typescript
-   * const result = await sdk.products.createUploadTask({
-   *   data: [{ nmID: 12345678, price: 1500, discount: 10 }],
-   * });
+   * const result = await sdk.products.createUploadTask([
+   *   { nmID: 12345678, price: 1500, discount: 10 },
+   * ]);
    * console.log(result);
    * ```
    */
   async createUploadTask(data: Goods): Promise<UploadTaskResponse> {
     return this.client.post<UploadTaskResponse>(
       'https://discounts-prices-api.wildberries.ru/api/v2/upload/task',
-      data,
+      { data },
       { rateLimitKey: 'products.postUploadTask' }
     );
   }
@@ -1574,7 +1602,9 @@ export class ProductsModule {
    *
    * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
-   * @param data - Size pricing data
+   * @param data - Size pricing data (array of per-size entries). Wrapped in a
+   * `{ data: [...] }` envelope before sending, per the WB spec
+   * (`SupplierTaskRequestSize`).
    * @returns Upload task response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -1583,16 +1613,16 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
    * ```typescript
-   * const result = await sdk.products.createTaskSize({
-   *   data: [{ nmID: 12345678, sizeID: 100, price: 2000 }],
-   * });
+   * const result = await sdk.products.createTaskSize([
+   *   { nmID: 12345678, sizeID: 100, price: 2000 },
+   * ]);
    * console.log(result);
    * ```
    */
   async createTaskSize(data: SizeGoodsBody): Promise<UploadTaskResponse> {
     return this.client.post<UploadTaskResponse>(
       'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/size',
-      data,
+      { data },
       { rateLimitKey: 'products.postUploadTaskSize' }
     );
   }
@@ -1604,7 +1634,9 @@ export class ProductsModule {
    *
    * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
-   * @param data - Club discount data
+   * @param data - Club discount data (array of club-discount entries). Wrapped
+   * in a `{ data: [...] }` envelope before sending, per the WB spec
+   * (`SupplierTaskRequestClubDisc`).
    * @returns Upload task response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -1613,16 +1645,16 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
    * ```typescript
-   * const result = await sdk.products.createTaskClubDiscount({
-   *   data: [{ nmID: 12345678, clubDiscount: 15 }],
-   * });
+   * const result = await sdk.products.createTaskClubDiscount([
+   *   { nmID: 12345678, clubDiscount: 15 },
+   * ]);
    * console.log(result);
    * ```
    */
   async createTaskClubDiscount(data: ClubDisc): Promise<UploadTaskResponse> {
     return this.client.post<UploadTaskResponse>(
       'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount',
-      data,
+      { data },
       { rateLimitKey: 'products.postUploadTaskClubDiscount' }
     );
   }
@@ -1840,8 +1872,9 @@ export class ProductsModule {
    * Rate limit: 10 req/6s, 600ms interval, burst 5
    *
    * @param data - Request body with article IDs
-   * @param data.nmIDs - Array of article IDs to fetch pricing for
-   * @returns Goods with pricing information filtered by nmIDs
+   * @param data.nmList - Array of article IDs to fetch pricing for (WB spec
+   * field name; min 1, max 1000)
+   * @returns Goods with pricing information filtered by nmList
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
@@ -1849,11 +1882,11 @@ export class ProductsModule {
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ceny-i-skidki}
    * @example
    * ```typescript
-   * const result = await sdk.products.createGoodsFilter({ nmIDs: [12345678, 87654321] });
+   * const result = await sdk.products.createGoodsFilter({ nmList: [12345678, 87654321] });
    * console.log(result);
    * ```
    */
-  async createGoodsFilter(data: { nmIDs: number[] }): Promise<GoodsFilterByNmResponse> {
+  async createGoodsFilter(data: { nmList: number[] }): Promise<GoodsFilterByNmResponse> {
     return this.client.post<GoodsFilterByNmResponse>(
       'https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter',
       data,

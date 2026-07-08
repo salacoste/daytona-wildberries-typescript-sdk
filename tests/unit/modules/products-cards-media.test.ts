@@ -756,42 +756,57 @@ describe('ProductsModule - Cards & Media', () => {
   // ---------------------------------------------------------------------------
   describe('createMediaFile()', () => {
     const mockMediaFileResponse = { data: {}, error: false, errorText: '', additionalErrors: {} };
+    const mockFormData = new FormData();
+    mockFormData.append('uploadfile', new Blob(['fake-image-bytes']), 'photo.jpg');
 
-    it('should POST to correct URL with undefined body', async () => {
+    it('should POST to correct URL with FormData body, X-Nm-Id and X-Photo-Number headers, and rateLimitKey', async () => {
       mockClient.post.mockResolvedValue(mockMediaFileResponse);
 
-      await productsModule.createMediaFile();
+      await productsModule.createMediaFile(213864079, 2, mockFormData);
 
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://content-api.wildberries.ru/content/v3/media/file',
-        undefined,
-        expect.objectContaining({ rateLimitKey: 'products.postContentMediaFile' })
+        mockFormData,
+        {
+          rateLimitKey: 'products.postContentMediaFile',
+          headers: { 'X-Nm-Id': '213864079', 'X-Photo-Number': '2' },
+        }
       );
     });
 
     it('should include rateLimitKey products.postContentMediaFile', async () => {
       mockClient.post.mockResolvedValue(mockMediaFileResponse);
 
-      await productsModule.createMediaFile();
+      await productsModule.createMediaFile(213864079, 1, mockFormData);
 
       const callArgs = mockClient.post.mock.calls[0][2];
       expect(callArgs.rateLimitKey).toBe('products.postContentMediaFile');
     });
 
-    it('should take no arguments', async () => {
+    it('should stringify nmId and photoNumber into headers', async () => {
       mockClient.post.mockResolvedValue(mockMediaFileResponse);
 
-      await productsModule.createMediaFile();
+      await productsModule.createMediaFile(213864079, 3, mockFormData);
+
+      const callArgs = mockClient.post.mock.calls[0][2];
+      expect(callArgs.headers).toEqual({ 'X-Nm-Id': '213864079', 'X-Photo-Number': '3' });
+    });
+
+    it('should forward the FormData payload as the request body', async () => {
+      mockClient.post.mockResolvedValue(mockMediaFileResponse);
+
+      await productsModule.createMediaFile(213864079, 1, mockFormData);
 
       expect(mockClient.post).toHaveBeenCalledTimes(1);
-      // Second arg should be undefined (no body)
-      expect(mockClient.post.mock.calls[0][1]).toBeUndefined();
+      expect(mockClient.post.mock.calls[0][1]).toBe(mockFormData);
     });
 
     it('should propagate NetworkError', async () => {
       mockClient.post.mockRejectedValue(new NetworkError('Connection refused'));
 
-      await expect(productsModule.createMediaFile()).rejects.toThrow(NetworkError);
+      await expect(productsModule.createMediaFile(213864079, 1, mockFormData)).rejects.toThrow(
+        NetworkError
+      );
     });
   });
 

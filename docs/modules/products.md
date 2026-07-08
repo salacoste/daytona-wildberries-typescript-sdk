@@ -351,12 +351,10 @@ await sdk.products.createMediaSave({
 
 ```typescript
 // Set prices and discounts (async operation)
-const task = await sdk.products.createUploadTask({
-  data: [
-    { nmID: 12345678, price: 2999, discount: 15 },
-    { nmID: 87654321, price: 1999, discount: 10 },
-  ],
-});
+const task = await sdk.products.createUploadTask([
+  { nmID: 12345678, price: 2999, discount: 15 },
+  { nmID: 87654321, price: 1999, discount: 10 },
+]);
 console.log('Task ID:', task.data?.id);
 
 // Check task status
@@ -374,7 +372,7 @@ console.log('Products with prices:', pricing.data?.listGoods);
 
 // Get pricing for specific products
 const specificPricing = await sdk.products.createGoodsFilter({
-  nmIDs: [12345678, 87654321],
+  nmList: [12345678, 87654321],
 });
 ```
 

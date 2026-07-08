@@ -44,12 +44,12 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
     const mockData = [{ nmID: 123, price: 1000, discount: 10 }];
     const mockResponse = { uploadID: 1, alreadyExists: false };
 
-    it('should POST to correct URL with data and rateLimitKey', async () => {
+    it('should POST to correct URL with { data } envelope and rateLimitKey', async () => {
       mockClient.post.mockResolvedValue(mockResponse);
       await productsModule.createUploadTask(mockData);
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://discounts-prices-api.wildberries.ru/api/v2/upload/task',
-        mockData,
+        { data: mockData },
         { rateLimitKey: 'products.postUploadTask' }
       );
     });
@@ -70,12 +70,12 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
     const mockData = [{ nmID: 456, sizeID: 789, price: 500 }];
     const mockResponse = { uploadID: 2, alreadyExists: false };
 
-    it('should POST to correct URL with rateLimitKey', async () => {
+    it('should POST to correct URL with { data } envelope and rateLimitKey', async () => {
       mockClient.post.mockResolvedValue(mockResponse);
       await productsModule.createTaskSize(mockData);
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/size',
-        mockData,
+        { data: mockData },
         { rateLimitKey: 'products.postUploadTaskSize' }
       );
     });
@@ -96,12 +96,12 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
     const mockData = [{ nmID: 111, clubDiscount: 15 }];
     const mockResponse = { uploadID: 3, alreadyExists: false };
 
-    it('should POST to correct URL with rateLimitKey', async () => {
+    it('should POST to correct URL with { data } envelope and rateLimitKey', async () => {
       mockClient.post.mockResolvedValue(mockResponse);
       await productsModule.createTaskClubDiscount(mockData);
       expect(mockClient.post).toHaveBeenCalledWith(
         'https://discounts-prices-api.wildberries.ru/api/v2/upload/task/club-discount',
-        mockData,
+        { data: mockData },
         { rateLimitKey: 'products.postUploadTaskClubDiscount' }
       );
     });
@@ -336,10 +336,10 @@ describe('ProductsModule - Prices, Stocks & Warehouses', () => {
   });
 
   describe('createGoodsFilter()', () => {
-    const mockData = { nmIDs: [100, 200, 300] };
+    const mockData = { nmList: [100, 200, 300] };
     const mockResponse = { data: { listGoods: [{ nmID: 100 }] } };
 
-    it('should POST to correct URL with data and rateLimitKey', async () => {
+    it('should POST to correct URL with nmList body and rateLimitKey', async () => {
       mockClient.post.mockResolvedValue(mockResponse);
       await productsModule.createGoodsFilter(mockData);
       expect(mockClient.post).toHaveBeenCalledWith(
