@@ -1,0 +1,821 @@
+{
+  "module": "07-orders-fbw",
+  "sourceFile": "07-orders-fbw.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "FBW Supplies",
+  "counts": {
+    "endpoints": 7,
+    "schemas": 14,
+    "enums": 4
+  },
+  "endpoints": [
+    {
+      "method": "post",
+      "path": "/api/v1/acceptance/options",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Acceptance Options",
+      "deprecated": false,
+      "tags": [
+        "Information for Forming Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/warehouses",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Warehouses List",
+      "deprecated": false,
+      "tags": [
+        "Information for Forming Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/transit-tariffs",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Transit Directions",
+      "deprecated": false,
+      "tags": [
+        "Information for Forming Supplies"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/supplies",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Supplies List",
+      "deprecated": false,
+      "tags": [
+        "Supplies Information"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/supplies/{ID}",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Supply Details",
+      "deprecated": false,
+      "tags": [
+        "Supplies Information"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/supplies/{ID}/goods",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Supply Items",
+      "deprecated": false,
+      "tags": [
+        "Supplies Information"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/supplies/{ID}/package",
+      "baseUrl": "https://supplies-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Supply Package",
+      "deprecated": false,
+      "tags": [
+        "Supplies Information"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "models.TransitTariff",
+      "type": "object",
+      "properties": [
+        {
+          "name": "transitWarehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "destinationWarehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "activeFrom",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxTariff",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "palletTariff",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.VolumeTariff",
+      "type": "object",
+      "properties": [
+        {
+          "name": "from",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "to",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.Box",
+      "type": "object",
+      "properties": [
+        {
+          "name": "packageCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "barcodes",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.GoodInBox",
+      "type": "object",
+      "properties": [
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.SuppliesFiltersRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dates",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "statusIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.GoodInSupply",
+      "type": "object",
+      "properties": [
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "needKiz",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tnved",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSize",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplierBoxAmount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "readyForSaleQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acceptedQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "unloadingQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.DateFilterRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "from",
+          "type": "string",
+          "format": "ISO 8601",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "till",
+          "type": "string",
+          "format": "ISO 8601",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "factDate",
+            "createDate",
+            "supplyDate",
+            "updatedDate"
+          ]
+        }
+      ],
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "name": "models.SupplyDetails",
+      "type": "object",
+      "properties": [
+        {
+          "name": "phone",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "statusID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "name": "virtualTypeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxTypeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplyDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "factDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "updatedDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "actualWarehouseID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "actualWarehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "transitWarehouseID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "transitWarehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acceptanceCost",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "paidAcceptanceCoefficient",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rejectReason",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplierAssignName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "storageCoef",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryCoef",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "readyForSaleQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acceptedQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "unloadingQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "depersonalizedQuantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isBoxOnPallet",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.HandySupplyStatus",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "models.Supply",
+      "type": "object",
+      "properties": [
+        {
+          "name": "phone",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplyID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "preorderID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplyDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "factDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "updatedDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "statusID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "name": "boxTypeID",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isBoxOnPallet",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehousesResultItems",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "workTime",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isActive",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isTransitActive",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.Good",
+      "type": "object",
+      "properties": [
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.ErrorModel",
+      "type": "object",
+      "properties": [
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.OptionsResultModel",
+      "type": "object",
+      "properties": [
+        {
+          "name": "result",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "components.schemas.models.DateFilterRequest.properties.type",
+      "values": [
+        "factDate",
+        "createDate",
+        "supplyDate",
+        "updatedDate"
+      ]
+    },
+    {
+      "location": "components.schemas.models.SupplyDetails.properties.statusID",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "location": "components.schemas.models.HandySupplyStatus",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "location": "components.schemas.models.Supply.properties.statusID",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2139 @@
+{
+  "module": "02-products.local-stopgap",
+  "sourceFile": "02-products.local-stopgap.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Работа с товарами",
+  "counts": {
+    "endpoints": 49,
+    "schemas": 50,
+    "enums": 5
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/content/v2/object/parent/all",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Родительские категории товаров",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/object/all",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Список предметов",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/object/charcs/{subjectId}",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Характеристики предмета",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/directory/colors",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Цвет",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/directory/kinds",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Пол",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/directory/countries",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Страна производства",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/directory/seasons",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Сезон",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/directory/vat",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Ставка НДС",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/directory/tnved",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "ТНВЭД-код",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/content/v1/brands",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Бренды",
+      "deprecated": false,
+      "tags": [
+        "Категории, предметы и характеристики"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/tags",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Список ярлыков",
+      "deprecated": false,
+      "tags": [
+        "Ярлыки"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/tag",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Создание ярлыка",
+      "deprecated": false,
+      "tags": [
+        "Ярлыки"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/content/v2/tag/{id}",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Изменение ярлыка",
+      "deprecated": false,
+      "tags": [
+        "Ярлыки"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/content/v2/tag/{id}",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Удаление ярлыка",
+      "deprecated": false,
+      "tags": [
+        "Ярлыки"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/tag/nomenclature/link",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Управление ярлыками в карточке товара",
+      "deprecated": false,
+      "tags": [
+        "Ярлыки"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/get/cards/list",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Список карточек товаров",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/error/list",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Список несозданных карточек товаров с ошибками",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/update",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Редактирование карточек товаров",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/moveNm",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Объединение и разъединение карточек товаров",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/delete/trash",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Перенос карточек товаров в корзину",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/recover",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Восстановление карточек товаров из корзины",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/get/cards/trash",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Список карточек товаров в корзине",
+      "deprecated": false,
+      "tags": [
+        "Карточки товаров"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/content/v2/cards/limits",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Лимиты карточек товаров",
+      "deprecated": false,
+      "tags": [
+        "Создание карточек товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/barcodes",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Генерация баркодов",
+      "deprecated": false,
+      "tags": [
+        "Создание карточек товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/upload",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Создание карточек товаров",
+      "deprecated": false,
+      "tags": [
+        "Создание карточек товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v2/cards/upload/add",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Создание карточек товаров с присоединением",
+      "deprecated": false,
+      "tags": [
+        "Создание карточек товаров"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v3/media/file",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Загрузить медиафайл",
+      "deprecated": false,
+      "tags": [
+        "Медиафайлы"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/content/v3/media/save",
+      "baseUrl": "https://content-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Загрузить медиафайлы по ссылкам",
+      "deprecated": false,
+      "tags": [
+        "Медиафайлы"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/upload/task",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Установить цены и скидки",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/upload/task/size",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Установить цены для размеров",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/upload/task/club-discount",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Установить скидки WB Клуба",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/history/tasks",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Состояние обработанной загрузки",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/history/goods/task",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Детализация обработанной загрузки",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/buffer/tasks",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Состояние необработанной загрузки",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/buffer/goods/task",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Детализация необработанной загрузки",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/list/goods/filter",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить товары с ценами",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/list/goods/filter",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить товары с ценами по артикулам",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/list/goods/size/nm",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить размеры товара с ценами",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/quarantine/goods",
+      "baseUrl": "https://discounts-prices-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить товары в карантине",
+      "deprecated": false,
+      "tags": [
+        "Цены и скидки"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Обновить остатки товаров",
+      "deprecated": false,
+      "tags": [
+        "Остатки на складах продавца"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Удалить остатки товаров",
+      "deprecated": false,
+      "tags": [
+        "Остатки на складах продавца"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/stocks/{warehouseId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить остатки товаров",
+      "deprecated": false,
+      "tags": [
+        "Остатки на складах продавца"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/offices",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить список складов WB",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/warehouses",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить список складов продавца",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/warehouses",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Создать склад продавца",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/warehouses/{warehouseId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Обновить склад продавца",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/warehouses/{warehouseId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Удалить склад продавца",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/dbw/warehouses/{warehouseId}/contacts",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Список контактов",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/dbw/warehouses/{warehouseId}/contacts",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Обновить список контактов",
+      "deprecated": false,
+      "tags": [
+        "Склады продавца"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "BrandsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "brands",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "next",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "total",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "brands",
+        "total"
+      ]
+    },
+    {
+      "name": "BrandsResponseError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "origin",
+        "requestId"
+      ]
+    },
+    {
+      "name": "StoreContactRequestBody",
+      "type": "object",
+      "properties": [
+        {
+          "name": "contacts",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseCardCreate",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additionalErrors",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "requestMoveNmsImtConn",
+      "type": "object",
+      "properties": [
+        {
+          "name": "targetIMT",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmIDs",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "targetIMT",
+        "nmIDs"
+      ]
+    },
+    {
+      "name": "requestMoveNmsImtDisconn",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmIDs",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmIDs"
+      ]
+    },
+    {
+      "name": "responseIncorrectDate",
+      "type": "object",
+      "properties": [
+        {
+          "name": "error",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseBodyContentError400",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additionalErrors",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseBodyContentError403",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additionalErrors",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseContentError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additionalErrors",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "mediaErrors",
+      "type": "object",
+      "properties": [
+        {
+          "name": "additionalErrors",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ResponseError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "RequestAlreadyExistsError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "StocksWarehouseError",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TaskCreated",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Goods",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Good",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmID"
+      ]
+    },
+    {
+      "name": "SizeGoodsBody",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "SizeGoodReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sizeID",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmID",
+        "sizeID",
+        "price"
+      ]
+    },
+    {
+      "name": "ClubDisc",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "ClubDiscReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "clubDiscount",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmID",
+        "clubDiscount"
+      ]
+    },
+    {
+      "name": "GoodsList",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sizes",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyIsoCode4217",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clubDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "editableSizePrice",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isBadTurnover",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SizeGood",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sizeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyIsoCode4217",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discountedPrice",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clubDiscountedPrice",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clubDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSizeName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "editableSizePrice",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isBadTurnover",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GoodBufferHistory",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sizeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSizeName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyIsoCode4217",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clubDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GoodHistory",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sizeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSizeName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyIsoCode4217",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clubDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SupplierTaskMetadata",
+      "type": "object",
+      "properties": [
+        {
+          "name": "uploadID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uploadDate",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "activationDate",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "overAllGoodsNumber",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "successGoodsNumber",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SupplierTaskMetadataBuffer",
+      "type": "object",
+      "properties": [
+        {
+          "name": "uploadID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uploadDate",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "activationDate",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "overAllGoodsNumber",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "successGoodsNumber",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Date",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Date1",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TaskStatus",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TaskStatusBuffer",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "GoodStatus",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "GoodStatusBuffer",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "QuarantineGoods",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sizeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSizeName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyIsoCode4217",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "newPrice",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "oldPrice",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "newDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "oldDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "priceDiff",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Office",
+      "type": "object",
+      "properties": [
+        {
+          "name": "address",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "longitude",
+          "type": "number",
+          "format": "float64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "latitude",
+          "type": "number",
+          "format": "float64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "deliveryType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ]
+        },
+        {
+          "name": "federalDistrict",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Warehouse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "officeId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "deliveryType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ]
+        },
+        {
+          "name": "isDeleting",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isProcessing",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responsePublicViewerPublicErrorsTableListV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "additionalErrors",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data",
+        "error",
+        "errorText",
+        "additionalErrors"
+      ]
+    },
+    {
+      "name": "models.ErrorTableListPublicRespV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cursor",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items",
+        "cursor"
+      ]
+    },
+    {
+      "name": "models.ErrorTableListPublicRespV2Item",
+      "type": "object",
+      "properties": [
+        {
+          "name": "batchUUID",
+          "type": "string",
+          "format": "UUID",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjects",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brands",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vendorCodes",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "batchUUID",
+        "subjects",
+        "brands",
+        "vendorCodes",
+        "errors"
+      ]
+    },
+    {
+      "name": "viewer_contract.PublicErrorsCursorOutput",
+      "type": "object",
+      "properties": [
+        {
+          "name": "next",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "batchUUID",
+          "type": "string",
+          "format": "UUID",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "next",
+        "updatedAt",
+        "batchUUID"
+      ]
+    },
+    {
+      "name": "models.ErrorSubject",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "name": "models.ErrorBrand",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "format": "uint64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "requestPublicViewerPublicErrorsTableListV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "cursor",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "order",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "swagger.PublicErrorsCursorInput",
+      "type": "object",
+      "properties": [
+        {
+          "name": "limit",
+          "type": "number",
+          "format": "int",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "batchUUID",
+          "type": "string",
+          "format": "UUID",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "swagger.PublicErrorsOrderV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ascending",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.StockItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "sku",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "amount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.StocksRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.UpdateStockRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "stocks",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "stocks"
+      ]
+    },
+    {
+      "name": "api.GetStocksResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "stocks",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./content/v2/get/cards/trash.post.parameters.0.schema",
+      "values": [
+        "ru",
+        "en",
+        "zh"
+      ]
+    },
+    {
+      "location": "components.schemas.Office.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.Office.properties.deliveryType",
+      "values": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ]
+    },
+    {
+      "location": "components.schemas.Warehouse.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.Warehouse.properties.deliveryType",
+      "values": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ]
+    }
+  ]
+}

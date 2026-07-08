@@ -1,0 +1,2735 @@
+{
+  "module": "08-promotion",
+  "sourceFile": "08-promotion.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Marketing and Promotion",
+  "counts": {
+    "endpoints": 39,
+    "schemas": 71,
+    "enums": 12
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/adv/v1/promotion/count",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Campaigns Lists",
+      "deprecated": false,
+      "tags": [
+        "Campaigns"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/advert/v2/adverts",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Campaigns Information",
+      "deprecated": false,
+      "tags": [
+        "Campaigns"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/advert/v1/bids/min",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Minimum Bids for Listings",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Creation"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v2/seacat/save-ad",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create Campaign",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Creation"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/supplier/subjects",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Subcategories for Campaigns",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Creation"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v2/supplier/nms",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Listings for Campaigns",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Creation"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v0/delete",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete Campaign",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/rename",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Rename Campaign",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v0/start",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Launch Campaign",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v0/pause",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Pause Campaign",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v0/stop",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Stop Campaign",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/adv/v0/auction/placements",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Changing Placements in Campaigns with Custom Bid",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/advert/v1/bids",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Changing Campaigns Bids",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/balance",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Balance",
+      "deprecated": false,
+      "tags": [
+        "Finances"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/budget",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Campaign Budget",
+      "deprecated": false,
+      "tags": [
+        "Finances"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v1/budget/deposit",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Top-up of the Campaign Budget",
+      "deprecated": false,
+      "tags": [
+        "Finances"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/upd",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Receiving Costs History",
+      "deprecated": false,
+      "tags": [
+        "Finances"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/payments",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Receiving the History of Account Top-ups",
+      "deprecated": false,
+      "tags": [
+        "Finances"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/adv/v0/auction/nms",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Changing the Listings in Campaigns",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/advert/v0/bids/recommendations",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Recommended bids for items and search clusters",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/normquery/stats",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Search Clusters Statistics",
+      "deprecated": false,
+      "tags": [
+        "Statistics"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/normquery/get-bids",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "List of Search Clusters Bids",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/advert/v1/config",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": "getV1Config",
+      "summary": "Promotion Configuration Values",
+      "deprecated": false,
+      "tags": [
+        "Campaigns Management"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/advert/v1/normquery/bids",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": "postV1NormqueryBids",
+      "summary": "Set Bids for Search Clusters in the Currency of the Seller Account",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/normquery/bids",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Set Bids for Search Clusters",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/adv/v0/normquery/bids",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete Bids from Search Clusters",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/normquery/get-minus",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "List of Campaign Minus Phrases",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/normquery/set-minus",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Setting and Deleting Minus Phrases",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/count",
+      "baseUrl": "https://advert-media-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Media Campaigns Number",
+      "deprecated": false,
+      "tags": [
+        "Media"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/adverts",
+      "baseUrl": "https://advert-media-api.wildberries.ru",
+      "operationId": null,
+      "summary": "List of Media Campaigns",
+      "deprecated": false,
+      "tags": [
+        "Media"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v1/advert",
+      "baseUrl": "https://advert-media-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Information About Media Campaign",
+      "deprecated": false,
+      "tags": [
+        "Media"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/adv/v3/fullstats",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Campaigns Statistics",
+      "deprecated": false,
+      "tags": [
+        "Statistics"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v1/stats",
+      "baseUrl": "https://advert-media-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Media Campaign Statistics",
+      "deprecated": false,
+      "tags": [
+        "Statistics"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/calendar/promotions",
+      "baseUrl": "https://dp-calendar-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Promos List",
+      "deprecated": false,
+      "tags": [
+        "Promo Calendar"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/calendar/promotions/details",
+      "baseUrl": "https://dp-calendar-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Promos Details",
+      "deprecated": false,
+      "tags": [
+        "Promo Calendar"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/calendar/promotions/nomenclatures",
+      "baseUrl": "https://dp-calendar-api.wildberries.ru",
+      "operationId": null,
+      "summary": "List of Items for Participating in the Promo",
+      "deprecated": false,
+      "tags": [
+        "Promo Calendar"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/calendar/promotions/upload",
+      "baseUrl": "https://dp-calendar-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Item to the Promo",
+      "deprecated": false,
+      "tags": [
+        "Promo Calendar"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v0/normquery/list",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Active and Inactive Search Cluster Lists",
+      "deprecated": false,
+      "tags": [
+        "Search Clusters"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/adv/v1/normquery/stats",
+      "baseUrl": "https://advert-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Daily Search Clusters Statistics",
+      "deprecated": false,
+      "tags": [
+        "Statistics"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "V1SetNormQueryBidsRequestItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "normQuery",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "bidMinorUnits",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advertId",
+        "nmId",
+        "normQuery",
+        "bidMinorUnits"
+      ]
+    },
+    {
+      "name": "V1SetNormQueryBidsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bids",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "bids"
+      ]
+    },
+    {
+      "name": "V1SetNormQueryBidsSuccessResponseItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "normQuery",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": "ISO 4217",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advertId",
+        "nmId",
+        "normQuery",
+        "currency"
+      ]
+    },
+    {
+      "name": "NormQueryBidFailResponseItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "normQuery",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advertId",
+        "nmId",
+        "normQuery",
+        "reason"
+      ]
+    },
+    {
+      "name": "V1SetNormQueryBidsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "success",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "failed",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "success",
+        "failed"
+      ]
+    },
+    {
+      "name": "V2GetConfigResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currency",
+          "type": "string",
+          "format": "ISO 4217",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cpmStep",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cpcStep",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currency",
+        "currencyCode",
+        "cpmStep",
+        "cpcStep"
+      ]
+    },
+    {
+      "name": "V0BidsRecommendationsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "base",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "normQueries",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationBase",
+      "type": "object",
+      "properties": [
+        {
+          "name": "competitiveBid",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "leadersBid",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "top2",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationBaseBidTop2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bidKopecks",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationBaseBidCompetitiveBid",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bidKopecks",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationBaseBidLeadersBid",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bidKopecks",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationNormQuery",
+      "type": "object",
+      "properties": [
+        {
+          "name": "normQuery",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "reachMax",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "reachMedium",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "reachMin",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationReachMax",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bidKopecks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "bidKopecksMin",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationReachMedium",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bidKopecks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "bidKopecksMin",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0BidRecommendationReachMin",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bidKopecks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "bidKopecksMin",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0GetNormQueryListRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryListRequestItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advertId",
+        "nmId"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryListResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryListResponseItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "normQueries",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0GetNormQueryListResponseItemNormQueries",
+      "type": "object",
+      "properties": [
+        {
+          "name": "active",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "excluded",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V1GetNormQueryStatsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "from",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "to",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "from",
+        "to",
+        "items"
+      ]
+    },
+    {
+      "name": "V1GetNormQueryStatsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items"
+      ]
+    },
+    {
+      "name": "V1GetNormQueryStatsResponseItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dailyStats",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advertId",
+        "nmId"
+      ]
+    },
+    {
+      "name": "V1GetNormQueryStatsResponseItemDailyStat",
+      "type": "object",
+      "properties": [
+        {
+          "name": "date",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stat",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "date"
+      ]
+    },
+    {
+      "name": "V1GetNormQueryStatsResponseItemStat",
+      "type": "object",
+      "properties": [
+        {
+          "name": "normQuery",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "views",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clicks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "atbs",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ctr",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cpc",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cpm",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "avgPos",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "shks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "spend",
+          "type": "number",
+          "format": "double",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "400Response",
+      "type": "object",
+      "properties": [
+        {
+          "name": "error",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PlacementType",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "V0GetNormQueryStatsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "from",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "to",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "from",
+        "to",
+        "items"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryStatsItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stats",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advert_id",
+        "nm_id"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryStatsItemStat",
+      "type": "object",
+      "properties": [
+        {
+          "name": "norm_query",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "views",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clicks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "atbs",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ctr",
+          "type": "number",
+          "format": "double",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cpc",
+          "type": "number",
+          "format": "double",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cpm",
+          "type": "number",
+          "format": "double",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "avg_pos",
+          "type": "number",
+          "format": "double",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "shks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "spend",
+          "type": "number",
+          "format": "double",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0GetNormQueryStatsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "stats",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "stats"
+      ]
+    },
+    {
+      "name": "V0SetNormQueryBidsRequestItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "norm_query",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "bid",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advert_id",
+        "nm_id",
+        "norm_query",
+        "bid"
+      ]
+    },
+    {
+      "name": "V0SetNormQueryBidsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bids",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "bids"
+      ]
+    },
+    {
+      "name": "V0SetMinusNormQueryRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "norm_queries",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advert_id",
+        "nm_id",
+        "norm_queries"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryBidsRequestItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advert_id",
+        "nm_id"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryBidsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryBidsItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "norm_query",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "bid",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "bid_kopecks",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": "ISO 4217",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advert_id",
+        "nm_id",
+        "bid",
+        "norm_query",
+        "bid_kopecks",
+        "currency"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryBidsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bids",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "bids"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryMinusRequestItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advert_id",
+        "nm_id"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryMinusRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items"
+      ]
+    },
+    {
+      "name": "V0GetNormQueryMinusResponseItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "norm_queries",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "V0GetNormQueryMinusResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "StandardizedBatchError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "request_id",
+        "origin",
+        "status"
+      ]
+    },
+    {
+      "name": "ResponseWithReturn",
+      "type": "object",
+      "properties": [
+        {
+          "name": "total",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseAdvError1",
+      "type": "object",
+      "properties": [
+        {
+          "name": "error",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PromoItemsList",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "inAction",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "planPrice",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "planDiscount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GetAdverts",
+      "type": "object",
+      "properties": [
+        {
+          "name": "adverts",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "adverts"
+      ]
+    },
+    {
+      "name": "AdvertNMsSettings",
+      "type": "object",
+      "properties": [
+        {
+          "name": "bids_kopecks",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subject",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "subject",
+        "bids_kopecks",
+        "nm_id"
+      ]
+    },
+    {
+      "name": "AdvertSubcategory",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "name": "AdvertBidsKopecks",
+      "type": null,
+      "properties": [
+        {
+          "name": "search",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "recommendations",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "recommendations",
+        "search"
+      ]
+    },
+    {
+      "name": "AdvertSettings",
+      "type": "object",
+      "properties": [
+        {
+          "name": "payment_type",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "placements",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "payment_type",
+        "name",
+        "placements"
+      ]
+    },
+    {
+      "name": "Timestamps",
+      "type": "object",
+      "properties": [
+        {
+          "name": "created",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "updated",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "started",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deleted",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "created",
+        "updated",
+        "started",
+        "deleted"
+      ]
+    },
+    {
+      "name": "response400",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "detail",
+        "title",
+        "request_id",
+        "origin",
+        "status"
+      ]
+    },
+    {
+      "name": "StatInterval",
+      "type": "object",
+      "properties": [
+        {
+          "name": "interval",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stats",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "interval"
+      ]
+    },
+    {
+      "name": "StatDate",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dates",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stats",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "dates"
+      ]
+    },
+    {
+      "name": "StatCampaignNotFound",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advert_id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Stat",
+      "type": "object",
+      "properties": [
+        {
+          "name": "stats",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "StatsBlok1",
+      "type": "object",
+      "properties": [
+        {
+          "name": "item_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "item_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "category_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "advert_type",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "place",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "views",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clicks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cr",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ctr",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date_from",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date_to",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subject_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "atbs",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cpc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "daily_stats",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "expenses",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cr1",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cr2",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "DailyStats1",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Stats1",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "StatsBlok2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "item_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "item_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "category_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "advert_type",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "place",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "views",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clicks",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cr",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ctr",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date_from",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date_to",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subject_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "atbs",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cpc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "daily_stats",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "expenses",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cr1",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cr2",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "DailyStats2",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Stats2",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "RequestWithDate",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dates",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "dates"
+      ]
+    },
+    {
+      "name": "RequestWithCampaignID",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id"
+      ]
+    },
+    {
+      "name": "RequestWithInterval",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "interval",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "interval"
+      ]
+    },
+    {
+      "name": "ResponseFullStats",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "FullStatsItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "advertId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "atbs",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "boosterStats",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "canceled",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "clicks",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cpc",
+          "type": "number",
+          "format": "double",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cr",
+          "type": "number",
+          "format": "double",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ctr",
+          "type": "number",
+          "format": "double",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "days",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "shks",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sum",
+          "type": "number",
+          "format": "double",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sum_price",
+          "type": "number",
+          "format": "double",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "views",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": "ISO 4217",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "advertId",
+        "atbs",
+        "canceled",
+        "clicks",
+        "cpc",
+        "cr",
+        "ctr",
+        "days",
+        "orders",
+        "shks",
+        "sum",
+        "sum_price",
+        "views",
+        "currency"
+      ]
+    },
+    {
+      "name": "DaysV3",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "BoosterStatsV3",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "FullStatsError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "request_id",
+        "status",
+        "origin"
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./api/advert/v2/adverts.get.parameters.2.schema",
+      "values": [
+        "cpm",
+        "cpc"
+      ]
+    },
+    {
+      "location": "paths./api/advert/v1/bids/min.post.requestBody.content.application/json.schema.properties.payment_type",
+      "values": [
+        "cpm",
+        "cpc"
+      ]
+    },
+    {
+      "location": "paths./api/advert/v1/bids/min.post.requestBody.content.application/json.schema.properties.placement_types.items",
+      "values": [
+        "combined",
+        "search",
+        "recommendation"
+      ]
+    },
+    {
+      "location": "paths./adv/v2/seacat/save-ad.post.requestBody.content.application/json.schema.properties.bid_type",
+      "values": [
+        "manual",
+        "unified"
+      ]
+    },
+    {
+      "location": "paths./adv/v2/seacat/save-ad.post.requestBody.content.application/json.schema.properties.payment_type",
+      "values": [
+        "cpm",
+        "cpc"
+      ]
+    },
+    {
+      "location": "paths./adv/v2/seacat/save-ad.post.requestBody.content.application/json.schema.properties.placement_types.items",
+      "values": [
+        "search",
+        "recommendations"
+      ]
+    },
+    {
+      "location": "paths./api/advert/v1/bids.patch.requestBody.content.application/json.schema.properties.bids.items.properties.nm_bids.items.properties.placement",
+      "values": [
+        "search",
+        "recommendations",
+        "combined"
+      ]
+    },
+    {
+      "location": "components.schemas.PlacementType",
+      "values": [
+        "combined",
+        "search",
+        "recommendation"
+      ]
+    },
+    {
+      "location": "components.schemas.GetAdverts.properties.adverts.items.properties.status",
+      "values": [
+        -1,
+        4,
+        7,
+        8,
+        9,
+        11
+      ]
+    },
+    {
+      "location": "components.schemas.DaysV3.items.properties.apps.items.properties.appType",
+      "values": [
+        1,
+        32,
+        64
+      ]
+    },
+    {
+      "location": "components.responses.PromosGetByIDSuccessResponse.content.application/json.schema.properties.data.properties.promotions.items.properties.type",
+      "values": [
+        "regular",
+        "auto"
+      ]
+    },
+    {
+      "location": "components.responses.PromoSuccessResponse.content.application/json.schema.properties.data.properties.promotions.items.properties.type",
+      "values": [
+        "regular",
+        "auto"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1063 @@
+{
+  "module": "12-reports",
+  "sourceFile": "12-reports.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Reports",
+  "counts": {
+    "endpoints": 24,
+    "schemas": 18,
+    "enums": 10
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v1/supplier/orders",
+      "baseUrl": "https://statistics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Orders",
+      "deprecated": false,
+      "tags": [
+        "Main Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/supplier/sales",
+      "baseUrl": "https://statistics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Sales",
+      "deprecated": false,
+      "tags": [
+        "Main Reports"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/analytics/excise-report",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Report on Items with Mandatory Labeling",
+      "deprecated": false,
+      "tags": [
+        "Report on Items with Mandatory Labeling"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/warehouse_remains",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create the Report",
+      "deprecated": false,
+      "tags": [
+        "Warehouses Inventory Report"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/warehouse_remains/tasks/{task_id}/status",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Check the Status",
+      "deprecated": false,
+      "tags": [
+        "Warehouses Inventory Report"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/warehouse_remains/tasks/{task_id}/download",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Report",
+      "deprecated": false,
+      "tags": [
+        "Warehouses Inventory Report"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/analytics/v1/measurement-penalties",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "getMeasurementPenalties",
+      "summary": "Logistics and Storage Costs Multiplier",
+      "deprecated": false,
+      "tags": [
+        "Retention Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/analytics/v1/warehouse-measurements",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "getWarehouseMeasurements",
+      "summary": "Warehouse Measurements",
+      "deprecated": false,
+      "tags": [
+        "Retention Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/analytics/v1/deductions",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "getDeductions",
+      "summary": "Substitutions and Incorrect Attachments",
+      "deprecated": false,
+      "tags": [
+        "Retention Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/antifraud-details",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Self-purchases",
+      "deprecated": false,
+      "tags": [
+        "Retention Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/goods-labeling",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Item Labeling",
+      "deprecated": false,
+      "tags": [
+        "Retention Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/acceptance_report",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create the Report",
+      "deprecated": false,
+      "tags": [
+        "Acceptance Expenses"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/acceptance_report/tasks/{task_id}/status",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Check the Status",
+      "deprecated": false,
+      "tags": [
+        "Acceptance Expenses"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/acceptance_report/tasks/{task_id}/download",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Report",
+      "deprecated": false,
+      "tags": [
+        "Acceptance Expenses"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/paid_storage",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Generate the Report",
+      "deprecated": false,
+      "tags": [
+        "Paid Storage"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/paid_storage/tasks/{task_id}/status",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Check the Status",
+      "deprecated": false,
+      "tags": [
+        "Paid Storage"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/paid_storage/tasks/{task_id}/download",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Report",
+      "deprecated": false,
+      "tags": [
+        "Paid Storage"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/region-sale",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Report",
+      "deprecated": false,
+      "tags": [
+        "Sales by Regions"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/brand-share/brands",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Seller Brands",
+      "deprecated": false,
+      "tags": [
+        "Share of Brand in Sales"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/brand-share/parent-subjects",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Parent Categories of the Brand",
+      "deprecated": false,
+      "tags": [
+        "Share of Brand in Sales"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/brand-share",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Report",
+      "deprecated": false,
+      "tags": [
+        "Share of Brand in Sales"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/banned-products/blocked",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Blocked Listings",
+      "deprecated": false,
+      "tags": [
+        "Hidden Items"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/banned-products/shadowed",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Hidden from the Catalog",
+      "deprecated": false,
+      "tags": [
+        "Hidden Items"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/analytics/goods-return",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Report",
+      "deprecated": false,
+      "tags": [
+        "Returns and Item Movement Report"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "OrdersItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "date",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "lastChangeDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "Склад WB",
+            "Склад продавца"
+          ]
+        },
+        {
+          "name": "countryName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "oblastOkrugName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "regionName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplierArticle",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brand",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSize",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "incomeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isSupply",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isRealization",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "totalPrice",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discountPercent",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "spp",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finishedPrice",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "priceWithDisc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isCancel",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cancelDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sticker",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "gNumber",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "srid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SalesItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "date",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "lastChangeDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "Склад WB",
+            "Склад продавца"
+          ]
+        },
+        {
+          "name": "countryName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "oblastOkrugName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "regionName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplierArticle",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brand",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "techSize",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "incomeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isSupply",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isRealization",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "totalPrice",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "discountPercent",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "spp",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "paymentSaleAmount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "forPay",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finishedPrice",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "priceWithDisc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "saleID",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sticker",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "gNumber",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "srid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseErrorStatistics",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseErrorStatistics2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ExciseReportRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "countries",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ExciseReportResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "response",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.ExciseReportResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.ExciseReportResponseData",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "MeasurementPenalties",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data"
+      ]
+    },
+    {
+      "name": "WHM",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data"
+      ]
+    },
+    {
+      "name": "Response400Retentions",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Response403Retentions",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ResponsePaidStorage",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "GetTasksResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GetTasksResponseData",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CreateTaskResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CreateTaskResponseData",
+      "type": "object",
+      "properties": [
+        {
+          "name": "taskId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "4xxResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./api/analytics/v1/deductions.get.parameters.2.schema",
+      "values": [
+        "nmId",
+        "dtBonus",
+        "bonusSumm"
+      ]
+    },
+    {
+      "location": "paths./api/analytics/v1/deductions.get.parameters.3.schema",
+      "values": [
+        "desc",
+        "asc"
+      ]
+    },
+    {
+      "location": "paths./api/v1/analytics/banned-products/blocked.get.parameters.0.schema",
+      "values": [
+        "brand",
+        "nmId",
+        "title",
+        "vendorCode",
+        "reason"
+      ]
+    },
+    {
+      "location": "paths./api/v1/analytics/banned-products/blocked.get.parameters.1.schema",
+      "values": [
+        "desc",
+        "asc"
+      ]
+    },
+    {
+      "location": "paths./api/v1/analytics/banned-products/shadowed.get.parameters.0.schema",
+      "values": [
+        "brand",
+        "nmId",
+        "title",
+        "vendorCode",
+        "nmRating"
+      ]
+    },
+    {
+      "location": "paths./api/v1/analytics/banned-products/shadowed.get.parameters.1.schema",
+      "values": [
+        "desc",
+        "asc"
+      ]
+    },
+    {
+      "location": "paths./api/v1/analytics/goods-return.get.responses.200.content.application/json.schema.properties.report.items.properties.isStatusActive",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "location": "components.schemas.OrdersItem.properties.warehouseType",
+      "values": [
+        "Склад WB",
+        "Склад продавца"
+      ]
+    },
+    {
+      "location": "components.schemas.SalesItem.properties.warehouseType",
+      "values": [
+        "Склад WB",
+        "Склад продавца"
+      ]
+    },
+    {
+      "location": "components.schemas.ExciseReportRequest.properties.countries.items",
+      "values": [
+        "AM",
+        "BY",
+        "KG",
+        "KZ",
+        "RU",
+        "UZ"
+      ]
+    }
+  ]
+}

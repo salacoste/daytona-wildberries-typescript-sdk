@@ -1,0 +1,2279 @@
+{
+  "module": "13-finances",
+  "sourceFile": "13-finances.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Documents and Accounting",
+  "counts": {
+    "endpoints": 12,
+    "schemas": 15,
+    "enums": 8
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v1/account/balance",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Seller Balance",
+      "deprecated": false,
+      "tags": [
+        "Balance"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/finance/v1/sales-reports/list",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": "postV1SalesReportsList",
+      "summary": "Sales Reports List",
+      "deprecated": false,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/finance/v1/sales-reports/detailed/{reportId}",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": "postV1SalesReportsDetailedReportId",
+      "summary": "Details for the Sales Reports by Report ID",
+      "deprecated": false,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/finance/v1/sales-reports/detailed",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": "postV1SalesReportsDetailed",
+      "summary": "Details for the Sales Reports by Period",
+      "deprecated": false,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v5/supplier/reportDetailByPeriod",
+      "baseUrl": "https://statistics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Realization Sales Report",
+      "deprecated": true,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/finance/v1/acquiring/list",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": "postV1AcquiringList",
+      "summary": "Acquiring Expenses Reports List",
+      "deprecated": false,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/finance/v1/acquiring/detailed/{reportId}",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": "postV1AcquiringDetailedReportId",
+      "summary": "Details for the Acquiring Expenses Reports by Report ID",
+      "deprecated": false,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/finance/v1/acquiring/detailed",
+      "baseUrl": "https://finance-api.wildberries.ru",
+      "operationId": "postV1AcquiringDetailed",
+      "summary": "Details for the Acquiring Expenses Reports by Period",
+      "deprecated": false,
+      "tags": [
+        "Financial Reports"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/documents/categories",
+      "baseUrl": "https://documents-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Documents Categories",
+      "deprecated": false,
+      "tags": [
+        "Documents"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/documents/list",
+      "baseUrl": "https://documents-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Documents List",
+      "deprecated": false,
+      "tags": [
+        "Documents"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/documents/download",
+      "baseUrl": "https://documents-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Document",
+      "deprecated": false,
+      "tags": [
+        "Documents"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/documents/download/all",
+      "baseUrl": "https://documents-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Documents",
+      "deprecated": false,
+      "tags": [
+        "Documents"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "requestDownload",
+      "type": "object",
+      "properties": [
+        {
+          "name": "params",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GetCategories",
+      "type": null,
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GetList",
+      "type": null,
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GetDoc",
+      "type": null,
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "GetDocs",
+      "type": null,
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SalesReportListReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "period",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "daily",
+            "weekly"
+          ]
+        }
+      ],
+      "required": [
+        "dateFrom",
+        "dateTo"
+      ]
+    },
+    {
+      "name": "SalesReportListRes",
+      "type": "object",
+      "properties": [
+        {
+          "name": "reportId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sellerFinanceName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "createDate",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "retailAmountSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "forPaySum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgSalePercent",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deliveryServiceSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "paidStorageSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "paidAcceptanceSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deductionSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "penaltySum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "additionalPaymentSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cashbackAmountSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cashbackDiscountSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cashbackCommissionChangeSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "paymentSchedule",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "bankPaymentSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "reportId",
+        "sellerFinanceName",
+        "dateFrom",
+        "dateTo",
+        "createDate",
+        "currency",
+        "reportType",
+        "retailAmountSum",
+        "forPaySum",
+        "avgSalePercent",
+        "deliveryServiceSum",
+        "paidStorageSum",
+        "paidAcceptanceSum",
+        "deductionSum",
+        "penaltySum",
+        "additionalPaymentSum",
+        "cashbackAmountSum",
+        "cashbackDiscountSum",
+        "cashbackCommissionChangeSum",
+        "paymentSchedule",
+        "bankPaymentSum"
+      ]
+    },
+    {
+      "name": "FinancialReportsDetailedReportIdReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rrdId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fields",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SalesReportsDetailedReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rrdId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "period",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "daily",
+            "weekly"
+          ]
+        },
+        {
+          "name": "fields",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "dateFrom",
+        "dateTo"
+      ]
+    },
+    {
+      "name": "SalesReportsDetailedRes",
+      "type": "object",
+      "properties": [
+        {
+          "name": "reportId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "createDate",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "rrdId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "giId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dlvPrc",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fixTariffDateFrom",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fixTariffDateTo",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "techSize",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sku",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "docTypeName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "retailPrice",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "retailAmount",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "salePercent",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "commissionPercent",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "officeName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sellerOperName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderDt",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "saleDt",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "rrDate",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "shkId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "retailPriceWithDisc",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deliveryAmount",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "returnAmount",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deliveryService",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "giBoxTypeName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "productDiscountForReport",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sellerPromo",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "spp",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "kvwBase",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "kvw",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "supRatingUp",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isKgvpV2",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ppvzSalesCommission",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "forPay",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ppvzReward",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringFee",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringPercent",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "paymentProcessing",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringBank",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vw",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vwNds",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ppvzOfficeName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ppvzOfficeId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ppvzSupplierName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ppvzSupplierInn",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "declarationNumber",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "bonusTypeName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "stickerId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "srvDbs",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "penalty",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "additionalPayment",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "rebillLogisticCost",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "rebillLogisticOrg",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "paidStorage",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deduction",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "paidAcceptance",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "kiz",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isB2b",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "trbxId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "installmentCofinancingAmount",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "wibesDiscountPercent",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cashbackAmount",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cashbackDiscount",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cashbackCommissionChange",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "paymentSchedule",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "deliveryMethod",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sellerPromoId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sellerPromoDiscount",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "loyaltyId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "loyaltyDiscount",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "uuidPromocode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "salePricePromocodeDiscountPrc",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "articleSubstitution",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "salePriceAffiliatedDiscountPrc",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "agencyVat",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "salePriceWholesaleDiscountPrc",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "b2bCustomerTin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderUid",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "srid",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "reportId",
+        "dateFrom",
+        "dateTo",
+        "createDate",
+        "currency",
+        "reportType",
+        "rrdId",
+        "giId",
+        "dlvPrc",
+        "fixTariffDateFrom",
+        "fixTariffDateTo",
+        "subjectName",
+        "nmId",
+        "brandName",
+        "vendorCode",
+        "title",
+        "techSize",
+        "sku",
+        "docTypeName",
+        "quantity",
+        "retailPrice",
+        "retailAmount",
+        "salePercent",
+        "commissionPercent",
+        "officeName",
+        "sellerOperName",
+        "orderDt",
+        "saleDt",
+        "rrDate",
+        "shkId",
+        "retailPriceWithDisc",
+        "deliveryAmount",
+        "returnAmount",
+        "deliveryService",
+        "giBoxTypeName",
+        "productDiscountForReport",
+        "sellerPromo",
+        "spp",
+        "kvwBase",
+        "kvw",
+        "supRatingUp",
+        "isKgvpV2",
+        "ppvzSalesCommission",
+        "forPay",
+        "ppvzReward",
+        "acquiringFee",
+        "acquiringPercent",
+        "paymentProcessing",
+        "acquiringBank",
+        "vw",
+        "vwNds",
+        "ppvzOfficeName",
+        "ppvzOfficeId",
+        "ppvzSupplierName",
+        "ppvzSupplierInn",
+        "declarationNumber",
+        "stickerId",
+        "country",
+        "srvDbs",
+        "penalty",
+        "additionalPayment",
+        "rebillLogisticCost",
+        "paidStorage",
+        "deduction",
+        "paidAcceptance",
+        "orderId",
+        "isB2b",
+        "trbxId",
+        "installmentCofinancingAmount",
+        "wibesDiscountPercent",
+        "cashbackAmount",
+        "cashbackDiscount",
+        "cashbackCommissionChange",
+        "paymentSchedule",
+        "deliveryMethod",
+        "sellerPromoId",
+        "sellerPromoDiscount",
+        "loyaltyId",
+        "loyaltyDiscount",
+        "uuidPromocode",
+        "salePricePromocodeDiscountPrc",
+        "articleSubstitution",
+        "salePriceAffiliatedDiscountPrc",
+        "salePriceWholesaleDiscountPrc",
+        "b2bCustomerTin",
+        "orderUid",
+        "srid"
+      ]
+    },
+    {
+      "name": "AcquiringReportListReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "dateFrom",
+        "dateTo"
+      ]
+    },
+    {
+      "name": "AcquiringReportListRes",
+      "type": "object",
+      "properties": [
+        {
+          "name": "reportId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sellerFinanceName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "createDate",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringFeeSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringFeeVatSum",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "reportId",
+        "sellerFinanceName",
+        "dateFrom",
+        "dateTo",
+        "createDate",
+        "currency",
+        "acquiringFeeSum",
+        "acquiringFeeVatSum"
+      ]
+    },
+    {
+      "name": "AcquiringReportsDetailedReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dateFrom",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateTo",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rrdId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fields",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "dateFrom",
+        "dateTo"
+      ]
+    },
+    {
+      "name": "AcquiringReportsDetailedRes",
+      "type": "object",
+      "properties": [
+        {
+          "name": "rrdId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acqDate",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringBank",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "tin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "taxRegistrationReasonCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "saleDate",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "srid",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "docTypeName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "retailAmount",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringFee",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "acquiringFeeVat",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "invoiceNumber",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "invoiceDate",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "shkId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "reportId",
+        "currency",
+        "rrdId",
+        "nmId",
+        "docTypeName",
+        "retailAmount",
+        "saleDate",
+        "acqDate",
+        "shkId",
+        "acquiringFee",
+        "acquiringFeeVat",
+        "acquiringBank",
+        "tin",
+        "taxRegistrationReasonCode",
+        "invoiceNumber",
+        "invoiceDate",
+        "srid"
+      ]
+    },
+    {
+      "name": "DetailReportItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "realizationreport_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date_from",
+          "type": "string",
+          "format": "date",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date_to",
+          "type": "string",
+          "format": "date",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "create_dt",
+          "type": "string",
+          "format": "date",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currency_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "suppliercontract_code",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rrd_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "gi_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "dlv_prc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fix_tariff_date_from",
+          "type": "string",
+          "format": "date",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fix_tariff_date_to",
+          "type": "string",
+          "format": "date",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subject_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nm_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brand_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sa_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ts_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "doc_type_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "retail_price",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "retail_amount",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sale_percent",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "commission_percent",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "office_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplier_oper_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "order_dt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sale_dt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rr_dt",
+          "type": "string",
+          "format": "date",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "shk_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "retail_price_withdisc_rub",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "delivery_amount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "return_amount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "delivery_rub",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "gi_box_type_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "product_discount_for_report",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplier_promo",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_spp_prc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_kvw_prc_base",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_kvw_prc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sup_rating_prc_up",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "is_kgvp_v2",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_sales_commission",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_for_pay",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_reward",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acquiring_fee",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acquiring_percent",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "payment_processing",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acquiring_bank",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_vw",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_vw_nds",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_office_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_office_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_supplier_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_supplier_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ppvz_inn",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "declaration_number",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "bonus_type_name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sticker_id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "site_country",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "srv_dbs",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "penalty",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additional_payment",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rebill_logistic_cost",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rebill_logistic_org",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "storage_fee",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deduction",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "acceptance",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "assembly_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "kiz",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "srid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "report_type",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "is_legal_entity",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "trbx_id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "installment_cofinancing_amount",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "wibes_wb_discount_percent",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cashback_amount",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cashback_discount",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cashback_commission_change",
+          "type": "number",
+          "format": "decimal",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "order_uid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "payment_schedule",
+          "type": "number",
+          "format": "decimal",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "delivery_method",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "seller_promo_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "seller_promo_discount",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "loyalty_id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "loyalty_discount",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uuid_promocode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sale_price_promocode_discount_prc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "article_substitution",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sale_price_affiliated_discount_prc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "agency_vat",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sale_price_wholesale_discount_prc",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "b2b_customer_tin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./api/v5/supplier/reportDetailByPeriod.get.parameters.4.schema",
+      "values": [
+        "weekly",
+        "daily"
+      ]
+    },
+    {
+      "location": "paths./api/v1/documents/list.get.parameters.3.schema",
+      "values": [
+        "date",
+        "category"
+      ]
+    },
+    {
+      "location": "paths./api/v1/documents/list.get.parameters.4.schema",
+      "values": [
+        "desc",
+        "asc"
+      ]
+    },
+    {
+      "location": "components.schemas.SalesReportListReq.properties.period",
+      "values": [
+        "daily",
+        "weekly"
+      ]
+    },
+    {
+      "location": "components.schemas.SalesReportListRes.properties.reportType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.SalesReportsDetailedReq.properties.period",
+      "values": [
+        "daily",
+        "weekly"
+      ]
+    },
+    {
+      "location": "components.schemas.SalesReportsDetailedRes.properties.reportType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.DetailReportItem.properties.report_type",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

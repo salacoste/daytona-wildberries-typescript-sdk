@@ -1,0 +1,1492 @@
+{
+  "module": "06-in-store-pickup",
+  "sourceFile": "06-in-store-pickup.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "In-Store Pickup Orders",
+  "counts": {
+    "endpoints": 18,
+    "schemas": 41,
+    "enums": 3
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v3/click-collect/orders/new",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get New Assembly Orders List",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/status/confirm",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Transfer to Assembly",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/status/prepare",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Notify That the Assembly Orders Are Ready for Pickup",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/click-collect/orders/client",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Buyer Information",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/click-collect/orders/client/identity",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Check If the Order Belongs to the Buyer",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/status/receive",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Notify That the Orders Were Received by the Buyers",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/status/reject",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Notify that the Orders Are Declined",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/status/info",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Order Statuses",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/click-collect/orders",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Retrieve Information on Completed Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/status/cancel",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Cancel the Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/details",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Orders Label Identifiers",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/info",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Orders Label Identifiers",
+      "deprecated": true,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/delete",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete Assembly Order Label Identifiers",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/sgtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Labeling codes Chestny ZNAK to the Assembly Orders (Chestny ZNAK)",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/uin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add UIN (Unique Identification Numbers) to the Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/imei",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add IMEI to the Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/gtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add GTIN to the Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/click-collect/orders/meta/customs-declaration",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": "postV3ClickCollectOrdersMetaCustomsDeclaration",
+      "summary": "Add Customs Declaration Numbers to the Orders",
+      "deprecated": false,
+      "tags": [
+        "In-Store Pickup Label Identifiers"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "api.CheckedIdentity",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ok",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.CheckIdentityRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "passcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.Error",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.NewOrder",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ddate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "salePrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requiredMeta",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "article",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseAddress",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "payMode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedFinalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedCurrencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.NewOrders",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.Order",
+      "type": "object",
+      "properties": [
+        {
+          "name": "article",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedFinalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedCurrencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "payMode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseAddress",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderClientInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "phone",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "phoneCode",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderClientInfoResp",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.Orders",
+      "type": "object",
+      "properties": [
+        {
+          "name": "next",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersSGTINsSetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.SGTINs",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sgtins",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "sgtins"
+      ]
+    },
+    {
+      "name": "api.OrdersUINSetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.UIN",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "uin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "uin"
+      ]
+    },
+    {
+      "name": "api.OrdersIMEISetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.IMEI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "imei",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "imei"
+      ]
+    },
+    {
+      "name": "api.OrdersGTINSetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.GTIN",
+      "type": "object",
+      "properties": [
+        {
+          "name": "gtin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "gtin",
+        "orderId"
+      ]
+    },
+    {
+      "name": "api.BatchError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "origin",
+        "requestId",
+        "title"
+      ]
+    },
+    {
+      "name": "api.BatchErrorResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "code",
+        "detail"
+      ]
+    },
+    {
+      "name": "api.BatchCustomsDeclarationErrorResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "code",
+        "detail"
+      ]
+    },
+    {
+      "name": "api.MetaErrorResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "code",
+        "detail"
+      ]
+    },
+    {
+      "name": "api.OrdersErrorResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "code",
+        "detail"
+      ]
+    },
+    {
+      "name": "api.OrdersRequestV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ordersIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.StatusSetResponses",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId",
+        "results"
+      ]
+    },
+    {
+      "name": "api.CustomsDeclarationSetResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId",
+        "results"
+      ]
+    },
+    {
+      "name": "api.StatusSetResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isError",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "isError"
+      ]
+    },
+    {
+      "name": "api.StatusSetCustomsDeclarationResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isError",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "isError"
+      ]
+    },
+    {
+      "name": "api.MetaDetailsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId",
+        "results"
+      ]
+    },
+    {
+      "name": "MetaDetailsErrors",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "api.OrdersResponses",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId",
+        "results"
+      ]
+    },
+    {
+      "name": "api.OrdersResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isError",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "isError"
+      ]
+    },
+    {
+      "name": "api.MetaSetResponses",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId",
+        "results"
+      ]
+    },
+    {
+      "name": "api.MetaSetResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isError",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId",
+        "isError"
+      ]
+    },
+    {
+      "name": "api.OrderStatusesV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderStatusV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "supplierStatus",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "wbStatus",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderId"
+      ]
+    },
+    {
+      "name": "api.OrdersMetaDetailsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId",
+        "orders"
+      ]
+    },
+    {
+      "name": "api.OrdersMetaResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "meta",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "meta"
+      ]
+    },
+    {
+      "name": "api.OrderMetaV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "error",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "gtin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "imei",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "sgtin",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "customsDeclaration",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "error",
+        "orderId"
+      ]
+    },
+    {
+      "name": "api.OrdersMetaDeleteRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "key",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "imei",
+            "uin",
+            "gtin",
+            "sgtin",
+            "customsDeclaration"
+          ]
+        },
+        {
+          "name": "ordersIds",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "key",
+        "ordersIds"
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "location": "components.schemas.api.NewOrder.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.api.Order.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.api.OrdersMetaDeleteRequest.properties.key",
+      "values": [
+        "imei",
+        "uin",
+        "gtin",
+        "sgtin",
+        "customsDeclaration"
+      ]
+    }
+  ]
+}

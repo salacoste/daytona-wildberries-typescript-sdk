@@ -1,0 +1,1686 @@
+{
+  "module": "03-orders-fbs",
+  "sourceFile": "03-orders-fbs.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "FBS Orders",
+  "counts": {
+    "endpoints": 35,
+    "schemas": 22,
+    "enums": 17
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v3/passes/offices",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Offices for Pass",
+      "deprecated": false,
+      "tags": [
+        "FBS Passes"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/passes",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Passes",
+      "deprecated": false,
+      "tags": [
+        "FBS Passes"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/passes",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create Pass",
+      "deprecated": false,
+      "tags": [
+        "FBS Passes"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/passes/{passId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Update Pass",
+      "deprecated": false,
+      "tags": [
+        "FBS Passes"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/passes/{passId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete the Pass",
+      "deprecated": false,
+      "tags": [
+        "FBS Passes"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/orders/new",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get New Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/orders",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/orders/status",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Orders Statuses",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/supplies/orders/reshipment",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get All Assembly Orders for Re-shipment",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/orders/{orderId}/cancel",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Cancel the Assembly Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/orders/stickers",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Orders Stickers",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/orders/meta",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Assembly Orders Label Identifiers",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/orders/{orderId}/meta",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete Assembly Order Label Identifiers",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/orders/{orderId}/meta/sgtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Labeling Code Chestny ZNAK to the Assembly Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/orders/{orderId}/meta/uin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add UIN (Unique Identification Number) to the Assembly Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/orders/{orderId}/meta/imei",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add IMEI to the Assembly Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/orders/{orderId}/meta/gtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add GTIN to the Assembly Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/orders/{orderId}/meta/expiration",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Expiration Date to the Assembly Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/marketplace/v3/orders/{orderId}/meta/customs-declaration",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Custom Declaration number to the Order",
+      "deprecated": false,
+      "tags": [
+        "FBS Label Identifiers"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/orders/stickers/cross-border",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Stickers for Cross-Border Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/orders/status/history",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Status History for Cross-Border Orders",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/orders/client",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Orders with Client Information",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/supplies",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create a New Supply",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/supplies",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get a Supplies List",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/marketplace/v3/supplies/{supplyId}/orders",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Assembly Orders to the Supply",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/supplies/{supplyId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Supply Details",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/supplies/{supplyId}",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete the Supply",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/marketplace/v3/supplies/{supplyId}/order-ids",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Supply Assembly Order IDs",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/supplies/{supplyId}/deliver",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Move the Supply to the Delivery",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/supplies/{supplyId}/barcode",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Supply QR Code",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Supply Shipping Units List",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Add Shipping Units to the Supply",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/supplies/{supplyId}/trbx",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete Shipping Units from the Supply",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/supplies/{supplyId}/trbx/stickers",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Supply Shipping Unit QR Code Stickers",
+      "deprecated": false,
+      "tags": [
+        "FBS Supplies"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/marketplace/v3/fbs/orders/archive",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the List of Archived Assembly Orders",
+      "deprecated": false,
+      "tags": [
+        "FBS Assembly Orders"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "v3.ArchiveOrders",
+      "type": "object",
+      "properties": [
+        {
+          "name": "next",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders",
+        "next"
+      ]
+    },
+    {
+      "name": "v3.ArchiveOrder",
+      "type": "object",
+      "properties": [
+        {
+          "name": "cargoType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "colorCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "crossBorder",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "crossBorderType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "metaDetails",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderUid",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "priceInfo",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "product",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "scanPrice",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stickerId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "supplyId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "cargoType",
+        "colorCode",
+        "createdAt",
+        "crossBorder",
+        "crossBorderType",
+        "id",
+        "isZeroOrder",
+        "metaDetails",
+        "options",
+        "orderUid",
+        "priceInfo",
+        "product",
+        "rid",
+        "scanPrice",
+        "status",
+        "stickerId",
+        "supplyId",
+        "warehouseId"
+      ]
+    },
+    {
+      "name": "v3.SupplyOrderIDsAPI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PassOffice",
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "v3.APIErrorV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail"
+      ]
+    },
+    {
+      "name": "409SupplyDeliverError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Next",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Order",
+      "type": "object",
+      "properties": [
+        {
+          "name": "address",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "scanPrice",
+          "type": "number",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "fbs"
+          ]
+        },
+        {
+          "name": "supplyId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderUid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "article",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "colorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offices",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "officeId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedCurrencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "crossBorderType",
+          "type": "integer",
+          "format": "int32",
+          "required": false,
+          "enum": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Supply",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isB2b",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isPickupPointShipmentAllowed",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "done",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "closedAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "scanDt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "crossBorderType",
+          "type": "integer",
+          "format": "int32",
+          "required": false,
+          "enum": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "destinationOfficeId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "recommendedWhId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "OrderNew",
+      "type": "object",
+      "properties": [
+        {
+          "name": "address",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "ddate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sellerDate",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "salePrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requiredMeta",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "optionalMeta",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "fbs"
+          ]
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "scanPrice",
+          "type": "number",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderUid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "article",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "colorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offices",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "officeId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedFinalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedCurrencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "crossBorderType",
+          "type": "integer",
+          "format": "int32",
+          "required": false,
+          "enum": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isPickupPointShipmentAllowed",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SupplyTrbx",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "TrbxStickers",
+      "type": "object",
+      "properties": [
+        {
+          "name": "barcode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "format": "byte",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "MetaDetails",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "v3.GetMetaMultiRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "v3.OrdersMetaAPI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "v3.OrderMetaAPI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "metaDetails",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Pass",
+      "type": "object",
+      "properties": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "dateEnd",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "carModel",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "carNumber",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "officeName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "officeAddress",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "officeId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CrossborderTurkeyClientInfo",
+      "type": null,
+      "properties": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fullName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "phoneCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CrossborderTurkeyClientInfoResp",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "OrdersRequestAPI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "v3.APIError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./api/v3/orders/status.post.responses.200.content.application/json.schema.properties.orders.items.properties.supplierStatus",
+      "values": [
+        "new",
+        "confirm",
+        "complete",
+        "cancel"
+      ]
+    },
+    {
+      "location": "paths./api/v3/orders/status.post.responses.200.content.application/json.schema.properties.orders.items.properties.wbStatus",
+      "values": [
+        "waiting",
+        "sorted",
+        "sold",
+        "canceled",
+        "canceled_by_client",
+        "declined_by_client",
+        "defect",
+        "ready_for_pickup",
+        "postponed_delivery",
+        "accepted_by_carrier",
+        "sent_to_carrier"
+      ]
+    },
+    {
+      "location": "paths./api/v3/orders/stickers.post.parameters.0.schema",
+      "values": [
+        "svg",
+        "zplv",
+        "zplh",
+        "png"
+      ]
+    },
+    {
+      "location": "paths./api/v3/orders/stickers.post.parameters.1.schema",
+      "values": [
+        58,
+        40
+      ]
+    },
+    {
+      "location": "paths./api/v3/orders/stickers.post.parameters.2.schema",
+      "values": [
+        40,
+        30
+      ]
+    },
+    {
+      "location": "paths./api/v3/orders/{orderId}/meta.delete.parameters.1.schema",
+      "values": [
+        "imei",
+        "uin",
+        "gtin",
+        "sgtin",
+        "customsDeclaration"
+      ]
+    },
+    {
+      "location": "paths./api/v3/orders/stickers/cross-border.post.responses.200.content.application/json.schema.properties.stickers.items.properties.status",
+      "values": [
+        "awaitingTrackNumber",
+        "ready"
+      ]
+    },
+    {
+      "location": "paths./api/v3/supplies/{supplyId}/barcode.get.parameters.1.schema",
+      "values": [
+        "svg",
+        "zplv",
+        "zplh",
+        "png"
+      ]
+    },
+    {
+      "location": "paths./api/v3/supplies/{supplyId}/trbx/stickers.post.parameters.1.schema",
+      "values": [
+        "svg",
+        "zplv",
+        "zplh",
+        "png"
+      ]
+    },
+    {
+      "location": "components.schemas.Order.properties.deliveryType",
+      "values": [
+        "fbs"
+      ]
+    },
+    {
+      "location": "components.schemas.Order.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.Order.properties.crossBorderType",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "location": "components.schemas.Supply.properties.cargoType",
+      "values": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.Supply.properties.crossBorderType",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "location": "components.schemas.OrderNew.properties.deliveryType",
+      "values": [
+        "fbs"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderNew.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.OrderNew.properties.crossBorderType",
+      "values": [
+        0,
+        1
+      ]
+    }
+  ]
+}

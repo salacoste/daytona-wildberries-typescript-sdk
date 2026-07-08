@@ -1,0 +1,4538 @@
+{
+  "module": "11-analytics",
+  "sourceFile": "11-analytics.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Analytics and Data",
+  "counts": {
+    "endpoints": 18,
+    "schemas": 106,
+    "enums": 19
+  },
+  "endpoints": [
+    {
+      "method": "post",
+      "path": "/api/analytics/v3/sales-funnel/products",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "postSalesFunnelProducts",
+      "summary": "Listings Statistics per Period",
+      "deprecated": false,
+      "tags": [
+        "Sales Funnel"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/analytics/v3/sales-funnel/products/history",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "postSalesFunnelProductsHistory",
+      "summary": "Listings Statistics per Days",
+      "deprecated": false,
+      "tags": [
+        "Sales Funnel"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/analytics/v3/sales-funnel/grouped/history",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "postSalesFunnelGroupedHistory",
+      "summary": "Grouped Listings Statistics per Days",
+      "deprecated": false,
+      "tags": [
+        "Sales Funnel"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/nm-report/downloads",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create the Report",
+      "deprecated": false,
+      "tags": [
+        "Seller Analytics CSV"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/nm-report/downloads",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Reports List",
+      "deprecated": false,
+      "tags": [
+        "Seller Analytics CSV"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/nm-report/downloads/retry",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Regenerate the Report",
+      "deprecated": false,
+      "tags": [
+        "Seller Analytics CSV"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v2/nm-report/downloads/file/{downloadId}",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Report",
+      "deprecated": false,
+      "tags": [
+        "Seller Analytics CSV"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/search-report/report",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Main Page",
+      "deprecated": false,
+      "tags": [
+        "Search Queries for Your Items"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/search-report/table/groups",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Pagination by Groups",
+      "deprecated": false,
+      "tags": [
+        "Search Queries for Your Items"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/search-report/table/details",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Pagination by Items Within a Group",
+      "deprecated": false,
+      "tags": [
+        "Search Queries for Your Items"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/search-report/product/search-texts",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Search Texts by Item",
+      "deprecated": false,
+      "tags": [
+        "Search Queries for Your Items"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/search-report/product/orders",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Orders and Positions by Item Search Texts",
+      "deprecated": false,
+      "tags": [
+        "Search Queries for Your Items"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/analytics/v1/stocks-report/wb-warehouses",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "postV1StocksReportWbWarehouses",
+      "summary": "WB Warehouses Inventory",
+      "deprecated": false,
+      "tags": [
+        "Stocks Report"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/stocks-report/products/groups",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Group Data",
+      "deprecated": false,
+      "tags": [
+        "Stocks Report"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/stocks-report/products/products",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Item Data",
+      "deprecated": false,
+      "tags": [
+        "Stocks Report"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/stocks-report/products/sizes",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Size Data",
+      "deprecated": false,
+      "tags": [
+        "Stocks Report"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v2/stocks-report/offices",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Warehouse Data",
+      "deprecated": false,
+      "tags": [
+        "Stocks Report"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/analytics/v1/item-rating",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "postV1ItemRating",
+      "summary": "Get Report",
+      "deprecated": false,
+      "tags": [
+        "Item Rating"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "MainRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "positionCluster",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "includeSubstitutedSKUs",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "includeSearchTexts",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "orderBy",
+        "positionCluster",
+        "limit",
+        "offset"
+      ]
+    },
+    {
+      "name": "MainResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "commonInfo",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "positionInfo",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "visibilityInfo",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "groups",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "commonInfo",
+        "positionInfo",
+        "visibilityInfo",
+        "currency"
+      ]
+    },
+    {
+      "name": "CommonInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "supplierRating",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "advertisedProducts",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "totalProducts",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "supplierRating",
+        "advertisedProducts",
+        "totalProducts"
+      ]
+    },
+    {
+      "name": "PositionInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "average",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "median",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "chartItems",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "clusters",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "average",
+        "median",
+        "chartItems",
+        "clusters"
+      ]
+    },
+    {
+      "name": "SearchReportPositionChartItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dt",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "average",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "median",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "dt",
+        "average",
+        "median"
+      ]
+    },
+    {
+      "name": "SearchReportPositionClusters",
+      "type": "object",
+      "properties": [
+        {
+          "name": "firstHundred",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "secondHundred",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "below",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "firstHundred",
+        "secondHundred",
+        "below"
+      ]
+    },
+    {
+      "name": "VisibilityInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "visibility",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "openCard",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "byDay",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "byWeek",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "byMonth",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "visibility",
+        "openCard"
+      ]
+    },
+    {
+      "name": "TableGroupItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectId",
+          "type": "integer",
+          "format": "uint64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "metrics",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "metrics",
+        "items"
+      ]
+    },
+    {
+      "name": "TableItemItem",
+      "type": "object",
+      "properties": [],
+      "required": [
+        "nmId",
+        "vendorCode",
+        "isAdvertised",
+        "isCardRated",
+        "rating",
+        "feedbackRating",
+        "price",
+        "avgPosition",
+        "openCard",
+        "addToCart",
+        "openToCart",
+        "orders",
+        "cartToOrder",
+        "visibility"
+      ]
+    },
+    {
+      "name": "TableGroupRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "positionCluster",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "includeSubstitutedSKUs",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "includeSearchTexts",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "orderBy",
+        "positionCluster",
+        "limit",
+        "offset"
+      ]
+    },
+    {
+      "name": "TableGroupResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "groups",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "groups",
+        "currency"
+      ]
+    },
+    {
+      "name": "TableDetailsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectId",
+          "type": "integer",
+          "format": "int32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "positionCluster",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "all",
+            "firstHundred",
+            "secondHundred",
+            "below"
+          ]
+        },
+        {
+          "name": "includeSubstitutedSKUs",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "includeSearchTexts",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "orderBy",
+        "positionCluster",
+        "limit",
+        "offset"
+      ]
+    },
+    {
+      "name": "TableDetailsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "products",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "products",
+        "currency"
+      ]
+    },
+    {
+      "name": "ItemSearchTextsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "topOrderBy",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "openCard",
+            "addToCart",
+            "openToCart",
+            "orders",
+            "cartToOrder"
+          ]
+        },
+        {
+          "name": "includeSubstitutedSKUs",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "includeSearchTexts",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "nmIds",
+        "limit",
+        "topOrderBy",
+        "orderBy"
+      ]
+    },
+    {
+      "name": "ItemSearchTextsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items",
+        "currency"
+      ]
+    },
+    {
+      "name": "TableSearchTextItem",
+      "type": "object",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "ItemOrdersRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "period",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "searchTexts",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "period",
+        "nmId",
+        "searchTexts"
+      ]
+    },
+    {
+      "name": "ItemOrdersResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "total",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "total",
+        "items"
+      ]
+    },
+    {
+      "name": "ItemOrdersTextItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "text",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "frequency",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dateItems",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "text",
+        "frequency",
+        "dateItems"
+      ]
+    },
+    {
+      "name": "ItemOrdersMetrics",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dt",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgPosition",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orders",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "dt",
+        "avgPosition",
+        "orders"
+      ]
+    },
+    {
+      "name": "PositionCluster",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "OrderByGrTe",
+      "type": "object",
+      "properties": [
+        {
+          "name": "field",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "avgPosition",
+            "openCard",
+            "addToCart",
+            "openToCart",
+            "orders",
+            "cartToOrder",
+            "visibility"
+          ]
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }
+      ],
+      "required": [
+        "field",
+        "mode"
+      ]
+    },
+    {
+      "name": "OrderByMainAndDetails",
+      "type": "object",
+      "properties": [
+        {
+          "name": "field",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "avgPosition",
+            "openCard",
+            "addToCart",
+            "openToCart",
+            "orders",
+            "cartToOrder",
+            "visibility",
+            "minPrice",
+            "maxPrice"
+          ]
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }
+      ],
+      "required": [
+        "field",
+        "mode"
+      ]
+    },
+    {
+      "name": "TextLimit",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "StandardTariff",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "AdvancedTariff",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Date",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "PeriodOrdersRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "Period",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "pastPeriod",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "CommonResponseProperties",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ErrorObject400",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "requestId",
+        "origin"
+      ]
+    },
+    {
+      "name": "ErrorObject403",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "requestId",
+        "origin"
+      ]
+    },
+    {
+      "name": "SalesFunnelItemReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "SalesFunnelGroupReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "SearchReportGroupReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "SearchReportItemReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "SearchReportTextReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "InventoryMetricsReportReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "InventoryHistoryReportReq",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "reportType",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "userReportName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "reportType",
+        "params"
+      ]
+    },
+    {
+      "name": "NmReportRetryReportRequest",
+      "type": null,
+      "properties": [
+        {
+          "name": "downloadId",
+          "type": "string",
+          "format": "uuid",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "NmReportCreateReportResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data"
+      ]
+    },
+    {
+      "name": "NmReportGetReportsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data"
+      ]
+    },
+    {
+      "name": "NmReportRetryReportResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data"
+      ]
+    },
+    {
+      "name": "response429Download",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "statusText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "response429DownloadDaily",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "requestId",
+        "origin"
+      ]
+    },
+    {
+      "name": "TableGroupRequestSt",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "CommonReportFilters",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockType",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "skipDeletedNm",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "availabilityFilters",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "availabilityFilters",
+        "currentPeriod",
+        "stockType",
+        "skipDeletedNm",
+        "orderBy"
+      ]
+    },
+    {
+      "name": "PeriodInv",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "StockType",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "availabilityFilters",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TableOrderBy",
+      "type": "object",
+      "properties": [
+        {
+          "name": "field",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "mode",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "field",
+        "mode"
+      ]
+    },
+    {
+      "name": "TableGroupField",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "OrderByMode",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TableGroupResponseSt",
+      "type": "object",
+      "properties": [
+        {
+          "name": "groups",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "groups",
+        "currency"
+      ]
+    },
+    {
+      "name": "TableGroups",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TableGroupItemSt",
+      "type": "object",
+      "properties": [
+        {
+          "name": "subjectID",
+          "type": "integer",
+          "format": "int32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "tagID",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "tagName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "metrics",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "subjectID",
+        "subjectName",
+        "brandName",
+        "tagID",
+        "tagName",
+        "metrics",
+        "items"
+      ]
+    },
+    {
+      "name": "TableCommonMetrics",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ordersCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "ordersSum",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgOrders",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgOrdersByMonth",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutSum",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutPercent",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockSum",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "saleRate",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgStockTurnover",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "toClientCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fromClientCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "officeMissingTime",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "lostOrdersCount",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "lostOrdersSum",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "lostBuyoutsCount",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "lostBuyoutsSum",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "ordersCount",
+        "ordersSum",
+        "buyoutCount",
+        "buyoutSum",
+        "buyoutPercent",
+        "avgOrders",
+        "avgOrdersByMonth",
+        "stockCount",
+        "stockSum",
+        "saleRate",
+        "avgStockTurnover",
+        "toClientCount",
+        "fromClientCount",
+        "officeMissingTime",
+        "lostOrdersCount",
+        "lostOrdersSum",
+        "lostBuyoutsCount",
+        "lostBuyoutsSum"
+      ]
+    },
+    {
+      "name": "FloatGraphByPeriodItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end",
+        "value"
+      ]
+    },
+    {
+      "name": "TableItemItemSt",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isDeleted",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "mainPhoto",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "hasSizes",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "metrics",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmID",
+        "isDeleted",
+        "subjectName",
+        "name",
+        "vendorCode",
+        "brandName",
+        "mainPhoto",
+        "hasSizes",
+        "metrics"
+      ]
+    },
+    {
+      "name": "TableItemRequest",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "CommonItemFilters",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectID",
+          "type": "integer",
+          "format": "int32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagID",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockType",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "skipDeletedNm",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "availabilityFilters",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "stockType",
+        "skipDeletedNm",
+        "orderBy",
+        "availabilityFilters"
+      ]
+    },
+    {
+      "name": "TableItemResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items",
+        "currency"
+      ]
+    },
+    {
+      "name": "TableSizeRequest",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "CommonSizeFilters",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockType",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "includeOffice",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmID",
+        "currentPeriod",
+        "stockType",
+        "orderBy",
+        "includeOffice"
+      ]
+    },
+    {
+      "name": "TableSizeResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "offices",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sizes",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currency"
+      ]
+    },
+    {
+      "name": "TableOfficeItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "regionName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "officeID",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "officeName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "metrics",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "regionName",
+        "officeID",
+        "officeName",
+        "metrics"
+      ]
+    },
+    {
+      "name": "TableShippingOfficeRequest",
+      "type": null,
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "CommonShippingOfficeFilters",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIDs",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockType",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "skipDeletedNm",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "stockType",
+        "skipDeletedNm"
+      ]
+    },
+    {
+      "name": "TableShippingOfficeResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "regions",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currency"
+      ]
+    },
+    {
+      "name": "TableShippingOfficeItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "regionName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "metrics",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "offices",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "regionName",
+        "metrics",
+        "offices"
+      ]
+    },
+    {
+      "name": "TableShippingOfficeMetrics",
+      "type": "object",
+      "properties": [
+        {
+          "name": "stockCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stockSum",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "saleRate",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "toClientCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fromClientCount",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "stockCount",
+        "stockSum",
+        "saleRate",
+        "toClientCount",
+        "fromClientCount"
+      ]
+    },
+    {
+      "name": "ItemsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "selectedPeriod",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skipDeletedNm",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "selectedPeriod"
+      ]
+    },
+    {
+      "name": "ItemHistoryRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "selectedPeriod",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "skipDeletedNm",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "aggregationLevel",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "selectedPeriod",
+        "nmIds"
+      ]
+    },
+    {
+      "name": "GroupedHistoryRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "selectedPeriod",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skipDeletedNm",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "aggregationLevel",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "selectedPeriod"
+      ]
+    },
+    {
+      "name": "ItemsResponse",
+      "type": null,
+      "properties": [
+        {
+          "name": "products",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "currency",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "products",
+        "currency"
+      ]
+    },
+    {
+      "name": "ItemHistoryResponse",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "GroupedHistoryResponse",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Item",
+      "type": null,
+      "properties": [
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectId",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "tags",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "productRating",
+          "type": "number",
+          "format": "float32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "feedbackRating",
+          "type": "number",
+          "format": "float32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "stocks",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmId",
+        "title",
+        "vendorCode",
+        "brandName",
+        "subjectId",
+        "subjectName",
+        "tags",
+        "productRating",
+        "feedbackRating",
+        "stocks"
+      ]
+    },
+    {
+      "name": "HistoryItem",
+      "type": null,
+      "properties": [
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectId",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmId",
+        "title",
+        "vendorCode",
+        "brandName",
+        "subjectId",
+        "subjectName"
+      ]
+    },
+    {
+      "name": "Tag",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "name": "Statistics",
+      "type": null,
+      "properties": [
+        {
+          "name": "selected",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "past",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "comparison",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "selected"
+      ]
+    },
+    {
+      "name": "Conversions",
+      "type": null,
+      "properties": [
+        {
+          "name": "addToCartPercent",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cartToOrderPercent",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutPercent",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "addToCartPercent",
+        "cartToOrderPercent",
+        "buyoutPercent"
+      ]
+    },
+    {
+      "name": "Statistic",
+      "type": null,
+      "properties": [
+        {
+          "name": "period",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "openCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cartCount",
+          "type": "integer",
+          "format": "int32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgPrice",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgOrdersCountPerDay",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "shareOrderPercent",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "addToWishlist",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "timeToReady",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "localizationPercent",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "wbClub",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "conversions",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "period",
+        "openCount",
+        "cartCount",
+        "orderCount",
+        "orderSum",
+        "buyoutCount",
+        "buyoutSum",
+        "cancelCount",
+        "cancelSum",
+        "avgPrice",
+        "avgOrdersCountPerDay",
+        "shareOrderPercent",
+        "addToWishlist",
+        "timeToReady",
+        "localizationPercent",
+        "wbClub",
+        "conversions"
+      ]
+    },
+    {
+      "name": "Comparison",
+      "type": null,
+      "properties": [
+        {
+          "name": "openCountDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cartCountDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderCountDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderSumDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutCountDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutSumDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelCountDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelSumDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgOrdersCountPerDayDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgPriceDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "shareOrderPercentDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "addToWishlistDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "timeToReadyDynamic",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "localizationPercentDynamic",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "wbClubDynamic",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "conversions",
+          "type": null,
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "openCountDynamic",
+        "cartCountDynamic",
+        "orderCountDynamic",
+        "orderSumDynamic",
+        "buyoutCountDynamic",
+        "buyoutSumDynamic",
+        "cancelCountDynamic",
+        "cancelSumDynamic",
+        "avgOrdersCountPerDayDynamic",
+        "avgPriceDynamic",
+        "shareOrderPercentDynamic",
+        "addToWishlistDynamic",
+        "timeToReadyDynamic",
+        "localizationPercentDynamic",
+        "wbClubDynamic",
+        "conversions"
+      ]
+    },
+    {
+      "name": "WbClubMetrics",
+      "type": null,
+      "properties": [
+        {
+          "name": "orderCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgPrice",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutPercent",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgOrderCountPerDay",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderCount",
+        "orderSum",
+        "buyoutSum",
+        "buyoutCount",
+        "cancelSum",
+        "cancelCount",
+        "avgPrice",
+        "buyoutPercent",
+        "avgOrderCountPerDay"
+      ]
+    },
+    {
+      "name": "WbClubMetricsDynamic",
+      "type": null,
+      "properties": [
+        {
+          "name": "orderCount",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderSum",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutSum",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutCount",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelSum",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cancelCount",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgPrice",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutPercent",
+          "type": "integer",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "avgOrderCountPerDay",
+          "type": "number",
+          "format": "int",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orderCount",
+        "orderSum",
+        "buyoutSum",
+        "buyoutCount",
+        "cancelSum",
+        "cancelCount",
+        "avgPrice",
+        "buyoutPercent",
+        "avgOrderCountPerDay"
+      ]
+    },
+    {
+      "name": "TimeToReady",
+      "type": null,
+      "properties": [
+        {
+          "name": "days",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "hours",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "mins",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "days",
+        "hours",
+        "mins"
+      ]
+    },
+    {
+      "name": "History",
+      "type": "object",
+      "properties": [
+        {
+          "name": "date",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "openCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cartCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutSum",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "buyoutPercent",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "addToCartConversion",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cartToOrderConversion",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "addToWishlistCount",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "date",
+        "openCount",
+        "cartCount",
+        "orderCount",
+        "orderSum",
+        "buyoutCount",
+        "buyoutSum",
+        "buyoutPercent",
+        "addToCartConversion",
+        "cartToOrderConversion",
+        "addToWishlistCount"
+      ]
+    },
+    {
+      "name": "DatePeriod",
+      "type": null,
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "Level",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "OrderBy",
+      "type": "object",
+      "properties": [
+        {
+          "name": "field",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "openCard",
+            "addToCart",
+            "orderCount",
+            "orderSum",
+            "buyoutCount",
+            "buyoutSum",
+            "cancelCount",
+            "cancelSum",
+            "avgPrice",
+            "stockMpQty",
+            "stockWbQty",
+            "shareOrderPercent",
+            "addToWishlist",
+            "timeToReady",
+            "localizationPercent",
+            "wbClub.orderCount",
+            "wbClub.orderSum",
+            "wbClub.buyoutSum",
+            "wbClub.cancelSum",
+            "wbClub.buyoutCount",
+            "wbClub.avgPrice",
+            "wbClub.buyoutPercent",
+            "wbClub.avgOrderCountPerDay",
+            "wbClub.cancelCount"
+          ]
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }
+      ],
+      "required": [
+        "field",
+        "mode"
+      ]
+    },
+    {
+      "name": "InventoryRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "InventoryWbResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "items"
+      ]
+    },
+    {
+      "name": "ItemRatingRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isNotIncludeNMsWithoutSales",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "orderBy",
+        "offset"
+      ]
+    },
+    {
+      "name": "PeriodItemRating",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "pastPeriodItemRating",
+      "type": "object",
+      "properties": [
+        {
+          "name": "start",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "format": "date",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "OrderByItemRating",
+      "type": "object",
+      "properties": [
+        {
+          "name": "field",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "feedbackRating",
+            "feedbackCount",
+            "fiveStar",
+            "fourStar",
+            "threeStar",
+            "twoStar",
+            "oneStar",
+            "disqualified"
+          ]
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }
+      ],
+      "required": [
+        "field",
+        "mode"
+      ]
+    },
+    {
+      "name": "ItemRatingResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "sellerRating",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "feedbackIncrease",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "cards",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "sellerRating",
+        "feedbackIncrease",
+        "cards"
+      ]
+    },
+    {
+      "name": "TableItemFloat",
+      "type": "object",
+      "properties": [
+        {
+          "name": "current",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dynamics",
+          "type": "number",
+          "format": "float64",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "current"
+      ]
+    },
+    {
+      "name": "FeedbacksIncreaseItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "current",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "total",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "dynamics",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fiveStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fourStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "threeStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "twoStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "oneStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "current",
+        "total",
+        "dynamics",
+        "fiveStar",
+        "fourStar",
+        "threeStar",
+        "twoStar",
+        "oneStar"
+      ]
+    },
+    {
+      "name": "DistributionTableItem",
+      "type": "object",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "TableItemBaseCommon",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectId",
+          "type": "integer",
+          "format": "uint64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "pinnedFeedback",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rating",
+          "type": "number",
+          "format": "float64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "feedbackRating",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "DistributionTableIndicators",
+      "type": "object",
+      "properties": [
+        {
+          "name": "feedbackCount",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fiveStar",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fourStar",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "threeStar",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "twoStar",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "oneStar",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "disqualified",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ErrorObject",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "requestId",
+        "origin"
+      ]
+    },
+    {
+      "name": "Currency",
+      "type": "string",
+      "properties": [],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "components.schemas.TableDetailsRequest.properties.positionCluster",
+      "values": [
+        "all",
+        "firstHundred",
+        "secondHundred",
+        "below"
+      ]
+    },
+    {
+      "location": "components.schemas.ItemSearchTextsRequest.properties.topOrderBy",
+      "values": [
+        "openCard",
+        "addToCart",
+        "openToCart",
+        "orders",
+        "cartToOrder"
+      ]
+    },
+    {
+      "location": "components.schemas.PositionCluster",
+      "values": [
+        "all",
+        "firstHundred",
+        "secondHundred",
+        "below"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByGrTe.properties.field",
+      "values": [
+        "avgPosition",
+        "openCard",
+        "addToCart",
+        "openToCart",
+        "orders",
+        "cartToOrder",
+        "visibility"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByGrTe.properties.mode",
+      "values": [
+        "asc",
+        "desc"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByMainAndDetails.properties.field",
+      "values": [
+        "avgPosition",
+        "openCard",
+        "addToCart",
+        "openToCart",
+        "orders",
+        "cartToOrder",
+        "visibility",
+        "minPrice",
+        "maxPrice"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByMainAndDetails.properties.mode",
+      "values": [
+        "asc",
+        "desc"
+      ]
+    },
+    {
+      "location": "components.schemas.SalesFunnelItemReq.properties.params.properties.aggregationLevel",
+      "values": [
+        "day",
+        "week",
+        "month"
+      ]
+    },
+    {
+      "location": "components.schemas.SearchReportTextReq.properties.params.properties.topOrderBy",
+      "values": [
+        "openCard",
+        "addToCart",
+        "openToCart",
+        "orders",
+        "cartToOrder"
+      ]
+    },
+    {
+      "location": "components.schemas.StockType",
+      "values": [
+        "",
+        "wb",
+        "mp"
+      ]
+    },
+    {
+      "location": "components.schemas.availabilityFilters.items",
+      "values": [
+        "deficient",
+        "actual",
+        "balanced",
+        "nonActual",
+        "nonLiquid",
+        "invalidData"
+      ]
+    },
+    {
+      "location": "components.schemas.TableGroupField",
+      "values": [
+        "ordersCount",
+        "ordersSum",
+        "avgOrders",
+        "buyoutCount",
+        "buyoutSum",
+        "buyoutPercent",
+        "stockCount",
+        "stockSum",
+        "saleRate",
+        "avgStockTurnover",
+        "toClientCount",
+        "fromClientCount",
+        "minPrice",
+        "maxPrice",
+        "officeMissingTime",
+        "lostOrdersCount",
+        "lostOrdersSum",
+        "lostBuyoutsCount",
+        "lostBuyoutsSum"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByMode",
+      "values": [
+        "asc",
+        "desc"
+      ]
+    },
+    {
+      "location": "components.schemas.TableItemItemSt.properties.metrics.allOf.1.properties.availability",
+      "values": [
+        "deficient",
+        "actual",
+        "balanced",
+        "nonActual",
+        "nonLiquid",
+        "invalidData"
+      ]
+    },
+    {
+      "location": "components.schemas.Level",
+      "values": [
+        "day",
+        "week"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderBy.properties.field",
+      "values": [
+        "openCard",
+        "addToCart",
+        "orderCount",
+        "orderSum",
+        "buyoutCount",
+        "buyoutSum",
+        "cancelCount",
+        "cancelSum",
+        "avgPrice",
+        "stockMpQty",
+        "stockWbQty",
+        "shareOrderPercent",
+        "addToWishlist",
+        "timeToReady",
+        "localizationPercent",
+        "wbClub.orderCount",
+        "wbClub.orderSum",
+        "wbClub.buyoutSum",
+        "wbClub.cancelSum",
+        "wbClub.buyoutCount",
+        "wbClub.avgPrice",
+        "wbClub.buyoutPercent",
+        "wbClub.avgOrderCountPerDay",
+        "wbClub.cancelCount"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderBy.properties.mode",
+      "values": [
+        "asc",
+        "desc"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByItemRating.properties.field",
+      "values": [
+        "feedbackRating",
+        "feedbackCount",
+        "fiveStar",
+        "fourStar",
+        "threeStar",
+        "twoStar",
+        "oneStar",
+        "disqualified"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderByItemRating.properties.mode",
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  ]
+}

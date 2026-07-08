@@ -1,0 +1,776 @@
+{
+  "module": "01-general",
+  "sourceFile": "01-general.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "General",
+  "counts": {
+    "endpoints": 10,
+    "schemas": 15,
+    "enums": 9
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/ping",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Connection Check",
+      "deprecated": false,
+      "tags": [
+        "WB API Connection Check"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/communications/v2/news",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Getting Seller Portal News",
+      "deprecated": false,
+      "tags": [
+        "News API"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/seller-info",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get Seller Information",
+      "deprecated": false,
+      "tags": [
+        "Seller Information"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/common/v1/rating",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": "getCommonV1Rating",
+      "summary": "Get Seller Rating",
+      "deprecated": false,
+      "tags": [
+        "Seller Information"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/common/v1/subscriptions",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": "getCommonV1Subscriptions",
+      "summary": "Get Jam Subscription Information",
+      "deprecated": false,
+      "tags": [
+        "Seller Information"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/common/v1/tariff-constructor/options",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": "getCommonV1TariffConstructorOptions",
+      "summary": "Get Information about Plan Builder Options",
+      "deprecated": false,
+      "tags": [
+        "Seller Information"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/invite",
+      "baseUrl": "https://user-management-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Create an Invitation for a New User",
+      "deprecated": false,
+      "tags": [
+        "Seller User Management"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/users",
+      "baseUrl": "https://user-management-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get a List of Seller Active or Invited Users",
+      "deprecated": false,
+      "tags": [
+        "Seller User Management"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v1/users/access",
+      "baseUrl": "https://user-management-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Update User's Access Permissions",
+      "deprecated": false,
+      "tags": [
+        "Seller User Management"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v1/user",
+      "baseUrl": "https://user-management-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Delete User",
+      "deprecated": false,
+      "tags": [
+        "Seller User Management"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "Access",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "getUsersResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "total",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "countInResponse",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "users",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "users",
+        "total",
+        "countInResponse"
+      ]
+    },
+    {
+      "name": "createInviteRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "access",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "invite",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "invite"
+      ]
+    },
+    {
+      "name": "createInviteResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "inviteID",
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "expiredAt",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isSuccess",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "inviteUrl",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "inviteID",
+        "expiredAt",
+        "isSuccess",
+        "inviteUrl"
+      ]
+    },
+    {
+      "name": "updateUserAccessRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "usersAccesses",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "usersAccesses"
+      ]
+    },
+    {
+      "name": "UserAccess",
+      "type": "object",
+      "properties": [
+        {
+          "name": "userId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "access",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "errorResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "number",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "title",
+        "detail",
+        "requestId",
+        "origin",
+        "status"
+      ]
+    },
+    {
+      "name": "SupplierRatingModel",
+      "type": "object",
+      "properties": [
+        {
+          "name": "feedbackCount",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "valuation",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "SubscriptionsJamInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "state",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        },
+        {
+          "name": "activationSource",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "constructor",
+            "jam"
+          ]
+        },
+        {
+          "name": "level",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "standard",
+            "advanced",
+            "premium"
+          ]
+        },
+        {
+          "name": "since",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "till",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "state",
+        "activationSource",
+        "level",
+        "since",
+        "till"
+      ]
+    },
+    {
+      "name": "PlanBuilderOptionsInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "activeOptionCount",
+          "type": "number",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "activePackageCount",
+          "type": "number",
+          "format": "int",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "totalCommissionRate",
+          "type": "number",
+          "format": "float",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "packages",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "activeOptionCount",
+        "activePackageCount",
+        "totalCommissionRate",
+        "packages",
+        "options"
+      ]
+    },
+    {
+      "name": "PlanBuilderPackage",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "active",
+            "pendingActivation",
+            "pendingDeactivation"
+          ]
+        },
+        {
+          "name": "activatedAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "expiresAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "commissionRate",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "periodDuration",
+          "type": "number",
+          "format": "int",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PlanBuilderOption",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "active",
+            "pendingActivation",
+            "pendingDeactivation"
+          ]
+        },
+        {
+          "name": "activatedAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "expiresAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "commissionRate",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "periodDuration",
+          "type": "number",
+          "format": "int",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "promotion",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PlanBuilderOptionShort",
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PlanBuilderPromotion",
+      "type": "object",
+      "properties": [
+        {
+          "name": "commissionRate",
+          "type": "number",
+          "format": "float",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "expiresAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "PlanBuilderErrors",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./ping.get.responses.200.content.application/json.schema.properties.Status",
+      "values": [
+        "OK"
+      ]
+    },
+    {
+      "location": "paths./api/common/v1/tariff-constructor/options.get.parameters.0.schema",
+      "values": [
+        "ru",
+        "en"
+      ]
+    },
+    {
+      "location": "components.schemas.Access.items.properties.code",
+      "values": [
+        "balance",
+        "brands",
+        "changeJam",
+        "discountPrice",
+        "finance",
+        "showcase",
+        "suppliersDocuments",
+        "supply",
+        "questions",
+        "pinFeedbacks",
+        "pointsForReviews",
+        "feedbacks",
+        "oldAnalyticsReports",
+        "marketplace",
+        "brandsFlow",
+        "copyrightComplaints",
+        "pretrialClaims",
+        "sellersChat",
+        "brandzone",
+        "brandzoneSubscribe"
+      ]
+    },
+    {
+      "location": "components.schemas.getUsersResponse.properties.users.items.properties.role",
+      "values": [
+        "user",
+        ""
+      ]
+    },
+    {
+      "location": "components.schemas.SubscriptionsJamInfo.properties.state",
+      "values": [
+        "active",
+        "inactive"
+      ]
+    },
+    {
+      "location": "components.schemas.SubscriptionsJamInfo.properties.activationSource",
+      "values": [
+        "constructor",
+        "jam"
+      ]
+    },
+    {
+      "location": "components.schemas.SubscriptionsJamInfo.properties.level",
+      "values": [
+        "standard",
+        "advanced",
+        "premium"
+      ]
+    },
+    {
+      "location": "components.schemas.PlanBuilderPackage.properties.status",
+      "values": [
+        "active",
+        "pendingActivation",
+        "pendingDeactivation"
+      ]
+    },
+    {
+      "location": "components.schemas.PlanBuilderOption.properties.status",
+      "values": [
+        "active",
+        "pendingActivation",
+        "pendingDeactivation"
+      ]
+    }
+  ]
+}

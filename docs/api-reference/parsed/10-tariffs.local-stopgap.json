@@ -1,0 +1,708 @@
+{
+  "module": "10-tariffs.local-stopgap",
+  "sourceFile": "10-tariffs.local-stopgap.yaml",
+  "openapiVersion": "3.0.0",
+  "title": "Тарифы",
+  "counts": {
+    "endpoints": 5,
+    "schemas": 20,
+    "enums": 0
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v1/tariffs/commission",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Комиссия по категориям товаров",
+      "deprecated": false,
+      "tags": [
+        "Комиссии"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/tariffs/box",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Тарифы для коробов",
+      "deprecated": false,
+      "tags": [
+        "Тарифы на остаток"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/tariffs/pallet",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Тарифы для монопаллет",
+      "deprecated": false,
+      "tags": [
+        "Тарифы на остаток"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/tariffs/v1/acceptance/coefficients",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Тарифы на поставку",
+      "deprecated": false,
+      "tags": [
+        "Тарифы на поставку"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/tariffs/return",
+      "baseUrl": "https://common-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Тарифы на возврат",
+      "deprecated": false,
+      "tags": [
+        "Стоимость возврата продавцу"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "models.TariffsBoxResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehousesBoxRates",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dtNextBox",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "dtTillMax",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseList",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehouseBoxRates",
+      "type": "object",
+      "properties": [
+        {
+          "name": "boxDeliveryBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxDeliveryCoefExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxDeliveryLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxDeliveryMarketplaceBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxDeliveryMarketplaceCoefExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxDeliveryMarketplaceLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxStorageBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxStorageCoefExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxStorageLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "geoName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.TariffsPalletResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehousesPalletRates",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dtNextPallet",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "dtTillMax",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseList",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehousePalletRates",
+      "type": "object",
+      "properties": [
+        {
+          "name": "palletDeliveryExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "palletDeliveryValueBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "palletDeliveryValueLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "palletStorageExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "palletStorageValueExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.ReturnTariffsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehousesReturnRates",
+      "type": "object",
+      "properties": [
+        {
+          "name": "dtNextDeliveryDumpKgt",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "dtNextDeliveryDumpSrg",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "dtNextDeliveryDumpSup",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseList",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.WarehouseReturnRates",
+      "type": "object",
+      "properties": [
+        {
+          "name": "deliveryDumpKgtOfficeBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpKgtOfficeLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpKgtReturnExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSrgOfficeExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSrgReturnExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSupCourierBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSupCourierLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSupOfficeBase",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSupOfficeLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryDumpSupReturnExpr",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.ErrorModel",
+      "type": "object",
+      "properties": [
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "models.AcceptanceCoefficient",
+      "type": "object",
+      "properties": [
+        {
+          "name": "date",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "coefficient",
+          "type": "number",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "allowUnload",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "boxTypeID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "storageCoef",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryCoef",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryBaseLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryAdditionalLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "storageBaseLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "storageAdditionalLiter",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isSortingCenter",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "TariffsBoxResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "response",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "TariffsPalletResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "response",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ReturnTariffsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "response",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Commission",
+      "type": "object",
+      "properties": [
+        {
+          "name": "report",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CommissionChina",
+      "type": "object",
+      "properties": [
+        {
+          "name": "report",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CommissionTurkey",
+      "type": "object",
+      "properties": [
+        {
+          "name": "report",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CommissionUzbekistan",
+      "type": "object",
+      "properties": [
+        {
+          "name": "report",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "CommissionUAE",
+      "type": "object",
+      "properties": [
+        {
+          "name": "report",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "BadRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": []
+}

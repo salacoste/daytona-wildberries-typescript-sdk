@@ -1,0 +1,1563 @@
+{
+  "module": "04-orders-dbs.local-stopgap",
+  "sourceFile": "04-orders-dbs.local-stopgap.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Заказы DBS",
+  "counts": {
+    "endpoints": 31,
+    "schemas": 38,
+    "enums": 3
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v3/dbs/orders/new",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить список новых сборочных заданий",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/dbs/orders",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить информацию о завершенных сборочных заданиях",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/dbs/groups/info",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить информацию о платной доставке",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/dbs/orders/client",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Информация о покупателе",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/b2b/info",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Информация о покупателе B2B",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/dbs/orders/delivery-date",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Дата и время доставки",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/status/info",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить статусы сборочных заданий",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/status/cancel",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Отменить сборочные задания",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/status/confirm",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Перевести сборочные задания на сборку",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/status/deliver",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Перевести сборочные задания в доставку",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/status/receive",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Сообщить о получении заказов",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/status/reject",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Сообщить об отказе от заказов",
+      "deprecated": false,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v3/dbs/orders/status",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить статусы сборочных заданий",
+      "deprecated": true,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/dbs/orders/{orderId}/cancel",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Отменить сборочное задание",
+      "deprecated": true,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/dbs/orders/{orderId}/confirm",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Перевести на сборку",
+      "deprecated": true,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/dbs/orders/{orderId}/deliver",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Перевести в доставку",
+      "deprecated": true,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/dbs/orders/{orderId}/receive",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Сообщить, что заказ принят покупателем",
+      "deprecated": true,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v3/dbs/orders/{orderId}/reject",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Сообщить, что покупатель отказался от заказа",
+      "deprecated": true,
+      "tags": [
+        "Сборочные задания DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/info",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить метаданные сборочных заданий",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/delete",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Удалить метаданные сборочных заданий",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/sgtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить коды маркировки за сборочными заданиями",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/uin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить УИН за сборочными заданиями",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/imei",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить IMEI за сборочными заданиями",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/gtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить GTIN за сборочными заданиями",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/marketplace/v3/dbs/orders/meta/customs-declaration",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить за сборочными заданиями номер ГТД",
+      "deprecated": false,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v3/dbs/orders/{orderId}/meta",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Получить метаданные сборочного задания",
+      "deprecated": true,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/v3/dbs/orders/{orderId}/meta",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Удалить метаданные сборочного задания",
+      "deprecated": true,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/dbs/orders/{orderId}/meta/sgtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить за сборочным заданием код маркировки товара",
+      "deprecated": true,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/dbs/orders/{orderId}/meta/uin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить за сборочным заданием УИН (уникальный идентификационный номер)",
+      "deprecated": true,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/dbs/orders/{orderId}/meta/imei",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить за сборочным заданием IMEI",
+      "deprecated": true,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    },
+    {
+      "method": "put",
+      "path": "/api/v3/dbs/orders/{orderId}/meta/gtin",
+      "baseUrl": "https://marketplace-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Закрепить за сборочным заданием GTIN",
+      "deprecated": true,
+      "tags": [
+        "Метаданные DBS"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "api.OrderGroupsRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "groups",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "OrdersRequestAPI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderGroup",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "DeliveryDatesRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Code",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Next",
+      "type": "integer",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "OrderNewDBS",
+      "type": "object",
+      "properties": [
+        {
+          "name": "salePrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requiredMeta",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "address",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderUid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "groupId",
+          "type": "string",
+          "format": "UUID",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "article",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "colorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "dbs",
+            "edbs"
+          ]
+        },
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedFinalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedCurrencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "OrderDBS",
+      "type": "object",
+      "properties": [
+        {
+          "name": "address",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "deliveryType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderUid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "groupId",
+          "type": "string",
+          "format": "UUID",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "article",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "colorCode",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "createdAt",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "skus",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "id",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "warehouseId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "chrtId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "currencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedCurrencyCode",
+          "type": "integer",
+          "format": "ISO 4217",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "convertedFinalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "finalPrice",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "cargoType",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isZeroOrder",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "DbsOnlyClientInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "replacementPhone",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "fullName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "phoneCode",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additionalPhoneCodes",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "DbsOnlyClientInfoResp",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "DeliveryDatesInfoResp",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Meta",
+      "type": "object",
+      "properties": [
+        {
+          "name": "imei",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uin",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "gtin",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sgtin",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "customsDeclaration",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersMetaDeleteRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "key",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderIds",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "key",
+        "orderIds"
+      ]
+    },
+    {
+      "name": "api.OrdersGTINSetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.GTIN",
+      "type": "object",
+      "properties": [
+        {
+          "name": "gtin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersIMEISetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.IMEI",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "imei",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersSGTINsSetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.SGTINs",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sgtins",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersUINSetRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.UIN",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersRequestV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "ordersIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.StatusSetResponses",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.StatusSetResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isError",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersMetaResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "meta",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderMetaV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "error",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "gtin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "imei",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sgtin",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "uin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "customsDeclaration",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderStatusesV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrderStatusV2",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "supplierStatus",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "wbStatus",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.OrdersCodeRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orders",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "orders"
+      ]
+    },
+    {
+      "name": "api.OrderCodeRequest",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.BatchError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.BatchErrorResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "code",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.Error",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.B2bClientInfoResponses",
+      "type": "object",
+      "properties": [
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "results",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": [
+        "requestId"
+      ]
+    },
+    {
+      "name": "api.B2bClientInfoResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isError",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "isError",
+        "orderId"
+      ]
+    },
+    {
+      "name": "api.B2bClientInfo",
+      "type": "object",
+      "properties": [
+        {
+          "name": "inn",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "kpp",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orgName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "api.MetaValidationDetail",
+      "type": "object",
+      "properties": [
+        {
+          "name": "orderId",
+          "type": "integer",
+          "format": "int64",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    }
+  ],
+  "enums": [
+    {
+      "location": "components.schemas.OrderNewDBS.properties.deliveryType",
+      "values": [
+        "dbs",
+        "edbs"
+      ]
+    },
+    {
+      "location": "components.schemas.OrderNewDBS.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "location": "components.schemas.OrderDBS.properties.cargoType",
+      "values": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

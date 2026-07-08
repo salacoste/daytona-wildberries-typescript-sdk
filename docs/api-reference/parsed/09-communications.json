@@ -1,0 +1,1256 @@
+{
+  "module": "09-communications",
+  "sourceFile": "09-communications.yaml",
+  "openapiVersion": "3.0.1",
+  "title": "Customer Communication",
+  "counts": {
+    "endpoints": 25,
+    "schemas": 27,
+    "enums": 17
+  },
+  "endpoints": [
+    {
+      "method": "get",
+      "path": "/api/v1/new-feedbacks-questions",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Unseen Feedbacks and Questions",
+      "deprecated": false,
+      "tags": [
+        "Questions"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/questions/count-unanswered",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Unanswered Questions",
+      "deprecated": false,
+      "tags": [
+        "Questions"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/questions/count",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Number of Questions",
+      "deprecated": false,
+      "tags": [
+        "Questions"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/questions",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Questions List",
+      "deprecated": false,
+      "tags": [
+        "Questions"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v1/questions",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Working with Questions",
+      "deprecated": false,
+      "tags": [
+        "Questions"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/question",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Question by ID",
+      "deprecated": false,
+      "tags": [
+        "Questions"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/feedbacks/count-unanswered",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Unanswered Feedbacks",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/feedbacks/count",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Number of Feedbacks",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/feedbacks",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Feedbacks List",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/feedbacks/answer",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Reply to Feedback",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v1/feedbacks/answer",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Edit Response to Feedback",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/feedbacks/order/return",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Return Item by Feedback ID",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/feedback",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get the Feedback by ID",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/feedbacks/archive",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "List of Archived Feedbacks",
+      "deprecated": false,
+      "tags": [
+        "Feedbacks"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/feedbacks/v1/pins",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "List of Pinned and Unpinned Feedback",
+      "deprecated": false,
+      "tags": [
+        "Pinned Feedback"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/feedbacks/v1/pins",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Pin Feedback",
+      "deprecated": false,
+      "tags": [
+        "Pinned Feedback"
+      ]
+    },
+    {
+      "method": "delete",
+      "path": "/api/feedbacks/v1/pins",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Unpin Feedback",
+      "deprecated": false,
+      "tags": [
+        "Pinned Feedback"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/feedbacks/v1/pins/count",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Pinned and Unpinned Feedback Number",
+      "deprecated": false,
+      "tags": [
+        "Pinned Feedback"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/feedbacks/v1/pins/limits",
+      "baseUrl": "https://feedbacks-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Pinned Feedback Limits",
+      "deprecated": false,
+      "tags": [
+        "Pinned Feedback"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/seller/chats",
+      "baseUrl": "https://buyer-chat-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Chats List",
+      "deprecated": false,
+      "tags": [
+        "Buyers Chat"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/seller/events",
+      "baseUrl": "https://buyer-chat-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Chat Events",
+      "deprecated": false,
+      "tags": [
+        "Buyers Chat"
+      ]
+    },
+    {
+      "method": "post",
+      "path": "/api/v1/seller/message",
+      "baseUrl": "https://buyer-chat-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Send Message",
+      "deprecated": false,
+      "tags": [
+        "Buyers Chat"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/seller/download/{id}",
+      "baseUrl": "https://buyer-chat-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Get File from the Message",
+      "deprecated": false,
+      "tags": [
+        "Buyers Chat"
+      ]
+    },
+    {
+      "method": "get",
+      "path": "/api/v1/claims",
+      "baseUrl": "https://returns-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Buyers Return Applications",
+      "deprecated": false,
+      "tags": [
+        "Buyers Returns"
+      ]
+    },
+    {
+      "method": "patch",
+      "path": "/api/v1/claim",
+      "baseUrl": "https://returns-api.wildberries.ru",
+      "operationId": null,
+      "summary": "Answer Buyers Application",
+      "deprecated": false,
+      "tags": [
+        "Buyers Returns"
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "name": "standardizedFQError",
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseFeedbackQuestionErr",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errorText",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "additionalErrors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "responseFeedback",
+      "type": "array",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "Chat",
+      "type": "object",
+      "properties": [
+        {
+          "name": "chatID",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "replySign",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clientName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "goodCard",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "lastMessage",
+          "type": null,
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "ChatsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "result",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Event",
+      "type": "object",
+      "properties": [
+        {
+          "name": "chatID",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "eventID",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "eventType",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "isNewChat",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "message",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "addTimestamp",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "addTime",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "replySign",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "sender",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "clientName",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "EventAttachments",
+      "type": "object",
+      "properties": [
+        {
+          "name": "goodCard",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "files",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "images",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "EventType",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "File",
+      "type": "object",
+      "properties": [
+        {
+          "name": "contentType",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "date",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "downloadID",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "size",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Listing",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmID",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "price",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "priceCurrency",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "rid",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "size",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "LastMessage",
+      "type": "object",
+      "properties": [
+        {
+          "name": "text",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "addTimestamp",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Image",
+      "type": "object",
+      "properties": [
+        {
+          "name": "date",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "downloadID",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "MessageResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "result",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "Sender",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "EventsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "result",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "errors",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "EventsResult",
+      "type": "object",
+      "properties": [
+        {
+          "name": "next",
+          "type": "integer",
+          "format": "Unix timestamp",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "newestEventTime",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "oldestEventTime",
+          "type": "string",
+          "format": "date-time",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "totalEvents",
+          "type": "integer",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "events",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "domain.ReviewPinMethod",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "domain.ReviewPinOn",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "domain.ReviewState",
+      "type": "string",
+      "properties": [],
+      "required": []
+    },
+    {
+      "name": "openapi.PinReviewItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "pinMethod",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "tariff",
+            "subscription"
+          ]
+        },
+        {
+          "name": "pinOn",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "nm",
+            "imt"
+          ]
+        },
+        {
+          "name": "feedbackId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "pinMethod",
+        "pinOn",
+        "feedbackId"
+      ]
+    },
+    {
+      "name": "openapi.PinReviewItemResult",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "openapi.PinnedReviewItemResult",
+      "type": "object",
+      "properties": [
+        {
+          "name": "changeStateAt",
+          "type": "string",
+          "format": "date-time",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "imtId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pinId",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pinMethod",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pinOn",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "feedbackId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "unpinnedCause",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": [
+            "sysTariffUnpinned",
+            "sysLimitReached",
+            "sysNoratingUnpinned",
+            "sysAdditionalSlot"
+          ]
+        }
+      ],
+      "required": [
+        "changeStateAt",
+        "feedbackId",
+        "imtId",
+        "nmId",
+        "pinId",
+        "pinMethod",
+        "pinOn",
+        "state"
+      ]
+    },
+    {
+      "name": "openapi.ResultErr",
+      "type": "object",
+      "properties": [
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": [
+            "feedbackNotFound",
+            "itemNotFound",
+            "feedbackMismatch",
+            "itemNoImages",
+            "feedbackExcluded",
+            "imtNotDisplayed",
+            "globalLimitReached",
+            "unitLimitReached",
+            "tariffRestriction",
+            "subscriptionRestriction",
+            "alreadyPinned",
+            "bodyNotValid"
+          ]
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "origin",
+        "requestId",
+        "status",
+        "title"
+      ]
+    },
+    {
+      "name": "openapi.SellerLimit",
+      "type": null,
+      "properties": [
+        {
+          "name": "perUnitLimit",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "remaining",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "totalLimit",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "unlimited",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "used",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "perUnitLimit",
+        "remaining",
+        "totalLimit",
+        "unlimited",
+        "used"
+      ]
+    },
+    {
+      "name": "openapi.SellerLimitsResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": false,
+          "enum": null
+        }
+      ],
+      "required": []
+    },
+    {
+      "name": "respond.ResultErr",
+      "type": "object",
+      "properties": [
+        {
+          "name": "detail",
+          "type": "string",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "origin",
+        "requestId",
+        "status",
+        "title"
+      ]
+    },
+    {
+      "name": "respond.SuccessResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "data",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "data"
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "location": "paths./api/v1/feedbacks.get.parameters.4.schema",
+      "values": [
+        "dateAsc",
+        "dateDesc"
+      ]
+    },
+    {
+      "location": "paths./api/v1/feedbacks/archive.get.parameters.3.schema",
+      "values": [
+        "dateAsc",
+        "dateDesc"
+      ]
+    },
+    {
+      "location": "paths./api/feedbacks/v1/pins.get.parameters.0.schema",
+      "values": [
+        "pinned",
+        "unpinned"
+      ]
+    },
+    {
+      "location": "paths./api/feedbacks/v1/pins.get.parameters.1.schema",
+      "values": [
+        "nm",
+        "imt"
+      ]
+    },
+    {
+      "location": "paths./api/feedbacks/v1/pins/count.get.parameters.0.schema",
+      "values": [
+        "pinned",
+        "unpinned"
+      ]
+    },
+    {
+      "location": "paths./api/feedbacks/v1/pins/count.get.parameters.1.schema",
+      "values": [
+        "nm",
+        "imt"
+      ]
+    },
+    {
+      "location": "components.schemas.EventType",
+      "values": [
+        "message"
+      ]
+    },
+    {
+      "location": "components.schemas.Sender",
+      "values": [
+        "client",
+        "seller",
+        "wb"
+      ]
+    },
+    {
+      "location": "components.schemas.domain.ReviewPinMethod",
+      "values": [
+        "subscription",
+        "tariff"
+      ]
+    },
+    {
+      "location": "components.schemas.domain.ReviewPinOn",
+      "values": [
+        "imt",
+        "nm"
+      ]
+    },
+    {
+      "location": "components.schemas.domain.ReviewState",
+      "values": [
+        "pinned",
+        "unpinned"
+      ]
+    },
+    {
+      "location": "components.schemas.openapi.PinReviewItem.properties.pinMethod",
+      "values": [
+        "tariff",
+        "subscription"
+      ]
+    },
+    {
+      "location": "components.schemas.openapi.PinReviewItem.properties.pinOn",
+      "values": [
+        "nm",
+        "imt"
+      ]
+    },
+    {
+      "location": "components.schemas.openapi.PinReviewItemResult.properties.data.items.properties.pinMethod",
+      "values": [
+        "tariff",
+        "subscription"
+      ]
+    },
+    {
+      "location": "components.schemas.openapi.PinReviewItemResult.properties.data.items.properties.pinOn",
+      "values": [
+        "nm",
+        "imt"
+      ]
+    },
+    {
+      "location": "components.schemas.openapi.PinnedReviewItemResult.properties.unpinnedCause",
+      "values": [
+        "sysTariffUnpinned",
+        "sysLimitReached",
+        "sysNoratingUnpinned",
+        "sysAdditionalSlot"
+      ]
+    },
+    {
+      "location": "components.schemas.openapi.ResultErr.properties.status",
+      "values": [
+        "feedbackNotFound",
+        "itemNotFound",
+        "feedbackMismatch",
+        "itemNoImages",
+        "feedbackExcluded",
+        "imtNotDisplayed",
+        "globalLimitReached",
+        "unitLimitReached",
+        "tariffRestriction",
+        "subscriptionRestriction",
+        "alreadyPinned",
+        "bodyNotValid"
+      ]
+    }
+  ]
+}
