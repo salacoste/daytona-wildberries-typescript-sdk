@@ -63,6 +63,25 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
       );
       expect(result).toEqual(mockSupply);
     });
+
+    it('should pass through recommendedWhId + isPickupPointShipmentAllowed fields', async () => {
+      const mockSupply = {
+        id: 'WB-GI-99999',
+        done: false,
+        name: 'Supply with new fields',
+        cargoType: 1,
+        destinationOfficeId: 507,
+        recommendedWhId: 123569,
+        isPickupPointShipmentAllowed: true,
+      };
+
+      mockClient.get.mockResolvedValue(mockSupply);
+
+      const result = await ordersFbs.getSupply('WB-GI-99999');
+
+      expect(result.recommendedWhId).toBe(123569);
+      expect(result.isPickupPointShipmentAllowed).toBe(true);
+    });
   });
 
   // ============================================================================

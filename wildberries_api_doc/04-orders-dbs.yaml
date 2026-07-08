@@ -2666,6 +2666,16 @@ components:
                 type: integer
                 description: ID сборочного задания
                 example: 1234567890
+              dDateFrom:
+                type: string
+                nullable: true
+                description: Дата начала интервала для доставки. Заполняется, если покупатель указал интервал.
+                example: '2025-02-20'
+              dDateTo:
+                type: string
+                nullable: true
+                description: Дата окончания интервала для доставки. Заполняется, если покупатель указал интервал.
+                example: '2025-02-22'
     Meta:
       type: object
       description: Метаданные сборочного задания
