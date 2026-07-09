@@ -286,7 +286,7 @@ export interface GetAuctionAdverts {
     /** Статус кампании: - `-1` — удалена, процесс удаления будет завершён в течение 10 минут - `4` — готова к запуску - `7` — завершена - `8` — отменена - `9` — активна - `11` — на паузе */
     status: -1 | 4 | 7 | 8 | 9 | 11;
     timestamps: Timestamps;
-    /** Тип ставки: `auto` — автоматическая ставка (Type 8), `manual` — ручная ставка (Type 9) */
+    /** Тип ставки: `unified` — единая ставка (Type 8, управляет WB), `manual` — ручная ставка (Type 9) */
     bid_type: BidType;
   };
 }
@@ -1131,7 +1131,7 @@ export interface GetAdvertsItem {
   status: -1 | 4 | 7 | 8 | 9 | 11;
   /** Временные отметки */
   timestamps: Timestamps;
-  /** Тип ставки: auto — автоматическая ставка, manual — ручная ставка */
+  /** Тип ставки: unified — единая ставка (Type 8, управляет WB), manual — ручная ставка (Type 9) */
   bid_type: BidType;
   /**
    * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
@@ -1257,12 +1257,12 @@ export interface AdvertTimestamps {
 
 /**
  * Информация о кампании из V2 API.
- * Использует bid_type: 'auto' | 'manual' и ставки в копейках.
+ * Использует bid_type: 'unified' | 'manual' и ставки в копейках.
  */
 export interface AdvertV2 {
   /**
    * Тип ставки:
-   * - `auto` — автоматическая ставка (Type 8)
+   * - `unified` — единая ставка (Type 8; ставкой управляет WB)
    * - `manual` — ручная ставка (Type 9)
    */
   bid_type: BidType;

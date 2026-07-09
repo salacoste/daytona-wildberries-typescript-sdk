@@ -1182,7 +1182,7 @@ export class PromotionModule {
    * @param options.ids - Campaign IDs, comma-separated (max 50)
    * @param options.statuses - Campaign statuses: -1 (deleted), 4 (ready), 7 (finished), 8 (cancelled), 9 (active), 11 (paused)
    * @param options.payment_type - Payment type: cpm (per impressions) or cpc (per click)
-   * @returns List of campaigns with bid_type (auto/manual) and bids in kopecks
+   * @returns List of campaigns with bid_type (unified/manual) and bids in kopecks
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
@@ -1726,7 +1726,7 @@ export class PromotionModule {
    *
    * **Семантика placement** (поле `placement` каждой ставки):
    * - `combined` — поиск и рекомендации вместе (кампании с **единой** ставкой,
-   *   `bid_type: auto` / Type 8)
+   *   `bid_type: unified` / Type 8)
    * - `search` / `recommendations` — одно место размещения (кампании с **ручной**
    *   ставкой, `bid_type: manual` / Type 9)
    *
