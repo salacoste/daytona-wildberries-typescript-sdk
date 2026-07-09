@@ -3,7 +3,7 @@ info:
   title: Заказы Самовывоз
   x-file-name: in-store-pickup
   description: |
-    Управление [сборочными заданиями](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz) и [метаданными](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz) заказов модели Самовывоз.
+    Управление [сборочными заданиями](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz) и [идентификаторами маркировки](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers) заказов модели Самовывоз.
   version: instorepickup
 servers:
   - url: https://marketplace-api.wildberries.ru
@@ -561,15 +561,15 @@ paths:
       x-category: marketplace
       tags:
         - Метаданные Самовывоз
-      summary: Получить метаданные сборочного задания
+      summary: Получить идентификаторы маркировки сборочного задания
       description: |
-        Метод возвращает метаданные [сборочного задания](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get).
+        Метод возвращает идентификаторы маркировки [сборочного задания](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get).
         <br><br>
-        Перечень метаданных, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get), поле `requiredMeta`.
+        Перечень идентификаторов маркировки, доступных для сборочного задания, можно получить в [списке новых сборочных заданий](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1new/get), поле `requiredMeta`.
         <br><br>
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных Самовывоз</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления идентификаторов маркировки Самовывоз</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
@@ -604,14 +604,14 @@ paths:
       x-category: marketplace
       tags:
         - Метаданные Самовывоз
-      summary: Удалить метаданные сборочного задания
+      summary: Удалить идентификаторы маркировки сборочного задания
       description: |
-        Метод удаляет значение метаданных сборочного задания для переданного ключа.
-        Возможные метаданные: `imei`, `uin`, `gtin`, `sgtin`
+        Метод удаляет значение идентификаторов маркировки сборочного задания для переданного ключа.
+        Возможные идентификаторы маркировки: `imei`, `uin`, `gtin`, `sgtin`
         Передается только одно значение.
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления метаданных Самовывоз</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>получения и удаления идентификаторов маркировки Самовывоз</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
@@ -629,7 +629,7 @@ paths:
         - name: key
           in: query
           description: |
-            Название метаданных для удаления (`imei`, `uin`, `gtin`, `sgtin`).
+            Название идентификаторов маркировки для удаления (`imei`, `uin`, `gtin`, `sgtin`).
             Передается только одно значение.
           required: true
           schema:
@@ -655,12 +655,12 @@ paths:
       description: |
         Метод закрепляет за сборочным заданием код маркировки [Честный знак](https://честныйзнак.рф).
         <br><br>
-        Закрепить код маркировки можно только, если в [метаданных сборочного задания](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get) есть поле `sgtins`, а сборочное задание находится в [статусе](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1status/post) `confirm`.
+        Закрепить код маркировки можно только, если в [идентификаторов маркировки сборочного задания](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get) есть поле `sgtins`, а сборочное задание находится в [статусе](/openapi/in-store-pickup#tag/Sborochnye-zadaniya-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1status/post) `confirm`.
         <br><br>
-        Получить загруженные маркировки можно в [метаданных сборочного задания](/openapi/in-store-pickup#tag/Metadannye-Samovyvoz/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get).
+        Получить загруженные маркировки можно в [идентификаторов маркировки сборочного задания](/openapi/in-store-pickup#tag/inStorePickupLabelIdentifiers/paths/~1api~1v3~1click-collect~1orders~1{orderId}~1meta/get).
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления идентификаторов маркировки Самовывоз</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
@@ -727,7 +727,7 @@ paths:
         `confirm` и доставка которых осуществляется силами WB.
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления идентификаторов маркировки Самовывоз</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
@@ -794,7 +794,7 @@ paths:
         статусе `confirm` и доставка которых осуществляется силами WB.
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления идентификаторов маркировки Самовывоз</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
@@ -862,7 +862,7 @@ paths:
         доставка которых осуществляется силами WB.
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления метаданных Самовывоз</strong>:
+        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца для всех методов <strong>закрепления идентификаторов маркировки Самовывоз</strong>:
 
         | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
@@ -969,7 +969,7 @@ components:
     FailedToUpdateMeta:
       value:
         code: FailedToUpdateMeta
-        message: Не удалось обновить метаданные сборочного задания. Убедитесь, что сборочное задание удовлетворяет всем необходимым требованиям (сборочное задание существует, находится в статусе "На сборке", сборочному заданию доступны метаданные см. описание метода **Получить метаданные сборочного задания**)
+        message: Не удалось обновить идентификаторы маркировки сборочного задания. Убедитесь, что сборочное задание удовлетворяет всем необходимым требованиям (сборочное задание существует, находится в статусе "На сборке", сборочному заданию доступны идентификаторы маркировки см. описание метода **Получить идентификаторы маркировки сборочного задания**)
     IncorrectParameter:
       value:
         code: IncorrectParameter
@@ -1059,7 +1059,7 @@ components:
           type: array
           nullable: true
           description: |
-            Список метаданных, доступных для сборочного задания
+            Список идентификаторов маркировки, доступных для сборочного задания
           items:
             type: string
         article:

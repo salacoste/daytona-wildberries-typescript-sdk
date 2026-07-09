@@ -240,7 +240,7 @@ export class OrdersFbwModule {
   }
 
   /**
-   * Удалить маркировочные метаданные у нескольких заказов DBW (массовая операция).
+   * Удалить идентификаторы маркировки у нескольких заказов DBW (массовая операция).
    *
    * Bulk-delete marking metadata (IMEI/UIN/GTIN/SGTIN/customsDeclaration) from up to
    * N DBW orders in a single request. Mirrors the DBS `deleteMetaBulk` method.
@@ -379,7 +379,7 @@ export class OrdersFbwModule {
   }
 
   /**
-   * Проверить метаданные маркировки DBW-заказов перед передачей в доставку (предварительная валидация).
+   * Проверить идентификаторы маркировки DBW-заказов перед передачей в доставку (предварительная валидация).
    *
    * Pre-flight metadata validator for DBW orders. Returns the same `metaDetails[]` shape
    * that WB returns inside the 409 `MetaValidationFail` body of `deliverBulk()`, but as a

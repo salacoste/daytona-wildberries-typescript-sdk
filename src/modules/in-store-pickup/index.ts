@@ -467,7 +467,7 @@ export class InStorePickupModule {
   }
 
   /**
-   * Получить метаданные сборочных заданий (batch)
+   * Получить идентификаторы маркировки сборочных заданий (batch)
    *
    * Returns label identifiers for up to 1000 assembly orders in a single request.
    * Replaces the dead single-order GET `.../orders/{id}/meta` path.
@@ -499,14 +499,14 @@ export class InStorePickupModule {
   }
 
   /**
-   * Получить метаданные сборочного задания (single order)
+   * Получить идентификаторы маркировки сборочного задания (single order)
    *
    * @deprecated WB shut down `GET /api/v3/click-collect/orders/{orderId}/meta`.
    *   This shim delegates to {@link InStorePickupModule.getMetaBulk} with a
    *   single-element array and maps the batch `OrderMetaV2` back to the legacy
    *   `{meta:{gtin:{value}, imei:{value}, sgtin:{value:[]}, uin:{value}}}` shape.
    * @param orderId - ID сборочного задания
-   * @returns Метаданные сборочного задания (legacy shape)
+   * @returns Идентификаторы маркировки сборочного задания (legacy shape)
    * @example
    * const result = await sdk.inStorePickup.getOrdersMeta(12345);
    */
@@ -529,7 +529,7 @@ export class InStorePickupModule {
   }
 
   /**
-   * Удалить метаданные сборочных заданий (batch)
+   * Удалить идентификаторы маркировки сборочных заданий (batch)
    *
    * Deletes one label-identifier type (imei/uin/gtin/sgtin/customsDeclaration)
    * for up to 1000 assembly orders. Replaces the dead single-order DELETE
@@ -562,7 +562,7 @@ export class InStorePickupModule {
   }
 
   /**
-   * Удалить метаданные сборочного задания (single order)
+   * Удалить идентификаторы маркировки сборочного задания (single order)
    *
    * @deprecated WB shut down `DELETE /api/v3/click-collect/orders/{orderId}/meta`.
    *   This shim delegates to {@link InStorePickupModule.deleteMetaBulk} with a
