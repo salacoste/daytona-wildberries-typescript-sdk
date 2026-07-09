@@ -729,6 +729,7 @@ export type {
   OrderMetaResponse,
   OrderMetaItem,
   OrdersMetaResponse,
+  APIErrorV2,
 } from './types/orders-fbs.types';
 
 // Orders FBW / DBW bulk types (v3.11.0)

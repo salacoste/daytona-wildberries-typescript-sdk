@@ -19,6 +19,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbsModule } from '../../../src/modules/orders-fbs';
 import type { BaseClient } from '../../../src/client/base-client';
+import type { APIErrorV2 } from '../../../src/types/orders-fbs.types';
 import { WBAPIError } from '../../../src/errors/base-error';
 
 describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
@@ -690,5 +691,27 @@ describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
       expect(result).toEqual(mockResponse);
       expect(result.next).toBeNull();
     });
+  });
+});
+
+describe('APIErrorV2 type (v3.APIErrorV2 envelope)', () => {
+  it('accepts the full required+optional shape', () => {
+    const err: APIErrorV2 = {
+      title: 'Bad Request',
+      detail: 'orderId is required',
+      errors: [{ location: 'path', message: 'missing', value: null }],
+      origin: 'orders-fbs',
+      requestId: 'req-123',
+      status: 400,
+      code: 'invalid_request',
+    };
+    expect(err.title).toBe('Bad Request');
+    expect(err.status).toBe(400);
+  });
+
+  it('accepts the minimal required-only shape (title + detail)', () => {
+    const err: APIErrorV2 = { title: 'Forbidden', detail: 'access denied' };
+    expect(err.title).toBe('Forbidden');
+    expect(err.errors).toBeUndefined();
   });
 });

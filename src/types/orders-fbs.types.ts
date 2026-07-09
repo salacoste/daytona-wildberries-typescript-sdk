@@ -866,6 +866,30 @@ export interface APIError {
 }
 
 /**
+ * WB v3 APIErrorV2 envelope -- the newer V2 error shape returned by some v3 endpoints
+ * (e.g. 400/403 responses). Maps to swagger schema: v3.APIErrorV2.
+ *
+ * Unlike the legacy {@link APIError} ({code,message,data}), this envelope surfaces
+ * structured per-field errors via `errors[]` and a human-readable `title`/`detail`.
+ */
+export interface APIErrorV2 {
+  /** Error title (required) */
+  title: string;
+  /** Error details (required) */
+  detail: string;
+  /** Structured per-field errors (location/message/value) */
+  errors?: unknown[];
+  /** WB internal service ID */
+  origin?: string;
+  /** Unique request ID */
+  requestId?: string;
+  /** HTTP status code */
+  status?: number;
+  /** Error code */
+  code?: string;
+}
+
+/**
  * Price information for an archived FBS order
  * Maps to swagger schema: v3.ArchiveOrderPriceInfo
  */
