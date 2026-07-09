@@ -242,6 +242,20 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
   },
 
+  /** POST /adv/v0/normquery/list - Active and inactive search cluster lists */
+  'promotion.getNormqueryList': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 10,
+  },
+
+  /** POST /adv/v1/normquery/stats - Daily search clusters statistics (v1) */
+  'promotion.getNormqueryStatsV1': {
+    requestsPerMinute: 10,
+    intervalSeconds: 6,
+    burstLimit: 20,
+  },
+
   /** POST /adv/v0/normquery/get-bids - Get current bids for clusters */
   'promotion.normqueryGetBids': {
     requestsPerMinute: 300,

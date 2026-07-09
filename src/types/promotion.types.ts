@@ -977,6 +977,144 @@ export interface V0GetNormQueryStatsItemStat {
 }
 
 /**
+ * Запрос списка активных и неактивных поисковых кластеров (v0)
+ *
+ * POST /adv/v0/normquery/list — возвращает списки активных и неактивных
+ * поисковых кластеров с количеством просмотров от 100.
+ */
+export interface V0GetNormQueryListRequest {
+  /** Массив элементов запроса (макс. 100) */
+  items: V0GetNormQueryListRequestItem[];
+}
+
+/**
+ * Элемент запроса списка поисковых кластеров
+ */
+export interface V0GetNormQueryListRequestItem {
+  /** ID кампании */
+  advertId: number;
+  /** Артикул WB */
+  nmId: number;
+}
+
+/**
+ * Ответ со списком активных и неактивных поисковых кластеров (v0)
+ */
+export interface V0GetNormQueryListResponse {
+  /** Список поисковых кластеров по кампаниям и артикулам (может быть null) */
+  items?: (V0GetNormQueryListResponseItem | null)[] | null;
+}
+
+/**
+ * Элемент ответа со списком поисковых кластеров
+ */
+export interface V0GetNormQueryListResponseItem {
+  /** ID кампании */
+  advertId?: number;
+  /** Артикул WB */
+  nmId?: number;
+  /** Поисковые кластеры (активные и исключённые) */
+  normQueries?: V0GetNormQueryListResponseItemNormQueries;
+}
+
+/**
+ * Активные и исключённые поисковые кластеры
+ */
+export interface V0GetNormQueryListResponseItemNormQueries {
+  /** Активные поисковые кластеры (может быть null) */
+  active?: string[] | null;
+  /** Неактивные поисковые кластеры (может быть null) */
+  excluded?: string[] | null;
+}
+
+/**
+ * Запрос ежедневной статистики по поисковым кластерам (v1)
+ *
+ * POST /adv/v1/normquery/stats — возвращает статистику (просмотры, клики,
+ * добавления в корзину, заказы, CTR, CPC, CPM и т.д.) по поисковым кластерам
+ * за указанный период с детализацией по дням. Применимо для кампаний с моделью
+ * оплаты `cpm` (за показы) и `cpc` (за клики).
+ *
+ * V1-преемник метода {@link V0GetNormQueryStatsRequest} (`/adv/v0/normquery/stats`).
+ */
+export interface V1GetNormQueryStatsRequest {
+  /** Дата начала периода (YYYY-MM-DD) */
+  from: string;
+  /** Дата окончания периода (YYYY-MM-DD) */
+  to: string;
+  /** Массив элементов запроса (макс. 100) */
+  items: V1GetNormQueryStatsRequestItem[];
+}
+
+/**
+ * Элемент запроса ежедневной статистики по поисковым кластерам
+ */
+export interface V1GetNormQueryStatsRequestItem {
+  /** ID кампании */
+  advertId: number;
+  /** Артикул WB */
+  nmId: number;
+}
+
+/**
+ * Ответ с ежедневной статистикой по поисковым кластерам (v1)
+ */
+export interface V1GetNormQueryStatsResponse {
+  /** Статистика по кампаниям и артикулам */
+  items: V1GetNormQueryStatsResponseItem[];
+}
+
+/**
+ * Элемент ответа с ежедневной статистикой
+ */
+export interface V1GetNormQueryStatsResponseItem {
+  /** ID кампании */
+  advertId: number;
+  /** Артикул WB */
+  nmId: number;
+  /** Детализация статистики по дням */
+  dailyStats: V1GetNormQueryStatsResponseItemDailyStat[];
+}
+
+/**
+ * Статистика за конкретный день
+ */
+export interface V1GetNormQueryStatsResponseItemDailyStat {
+  /** Дата */
+  date: string;
+  /** Статистика по поисковому кластеру */
+  stat: V1GetNormQueryStatsResponseItemStat;
+}
+
+/**
+ * Статистика по конкретному поисковому кластеру (v1)
+ */
+export interface V1GetNormQueryStatsResponseItemStat {
+  /** Поисковый кластер */
+  normQuery?: string;
+  /** Количество добавлений товаров в корзину */
+  atbs?: number;
+  /** Средняя позиция товара на страницах поисковой выдачи */
+  avgPos?: number;
+  /** Количество кликов */
+  clicks?: number;
+  /** Стоимость одного клика, в базовых единицах валюты кабинета продавца */
+  cpc?: number;
+  /** Средняя стоимость за тысячу показов, в базовых единицах валюты кабинета продавца (null для cpc-кампаний) */
+  cpm?: number;
+  /** Кликабельность — отношение числа кликов к количеству показов, % (null для cpc-кампаний) */
+  ctr?: number;
+  /** Количество заказов */
+  orders?: number;
+  /** Количество заказанных товаров, шт. */
+  shks?: number;
+  /** Затраты на продвижение товара в конкретном поисковом кластере кампании */
+  spend?: number;
+  /** Количество просмотров (null для cpc-кампаний) */
+  views?: number;
+}
+
+/**
  * Запрос на установку ставок для поисковых кластеров
  */
 export interface V0SetNormQueryBidsRequest {

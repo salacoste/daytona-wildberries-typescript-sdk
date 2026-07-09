@@ -37,6 +37,8 @@ import type {
   UpdateCampaignProductsResponse,
   V0GetNormQueryBidsRequest,
   V0GetNormQueryBidsResponse,
+  V0GetNormQueryListRequest,
+  V0GetNormQueryListResponse,
   V0GetNormQueryMinusRequest,
   V0GetNormQueryMinusResponse,
   V0GetNormQueryStatsRequest,
@@ -44,6 +46,8 @@ import type {
   V0KeywordsStatisticsResponse,
   V0SetMinusNormQueryRequest,
   V0SetNormQueryBidsRequest,
+  V1GetNormQueryStatsRequest,
+  V1GetNormQueryStatsResponse,
   V1SetNormQueryBidsRequest,
   V1SetNormQueryBidsResponse,
   V2GetConfigResponse,
@@ -915,12 +919,86 @@ export class PromotionModule {
    * });
    * console.log(stats.stats);
    * ```
+   *
+   * @remarks Prefer the V1 successor {@link PromotionModule.getNormqueryStatsV1}
+   * (`/adv/v1/normquery/stats`), which returns daily-detailed statistics and supports
+   * both `cpm` and `cpc` campaigns.
    */
   async getNormqueryStats(data: V0GetNormQueryStatsRequest): Promise<V0GetNormQueryStatsResponse> {
     return this.client.post<V0GetNormQueryStatsResponse>(
       'https://advert-api.wildberries.ru/adv/v0/normquery/stats',
       data,
       { rateLimitKey: 'promotion.normqueryStats' }
+    );
+  }
+
+  /**
+   * Active and Inactive Search Cluster Lists
+   *
+   * Метод возвращает списки активных и неактивных поисковых кластеров
+   * с количеством просмотров от 100 по ID кампаний и артикулам WB.
+   *
+   * Rate limit: 5 requests per second, 200ms interval, burst 10
+   *
+   * @param data - Request body with campaign/product items (max 100)
+   * @returns Lists of active and inactive search clusters per campaign/product
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Search-Clusters/paths/~1adv~1v0~1normquery~1list/post}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.getNormqueryList({
+   *   items: [{ advertId: 123456789, nmId: 987654321 }]
+   * });
+   * console.log(result.items?.[0]?.normQueries?.active);
+   * ```
+   */
+  async getNormqueryList(data: V0GetNormQueryListRequest): Promise<V0GetNormQueryListResponse> {
+    return this.client.post<V0GetNormQueryListResponse>(
+      'https://advert-api.wildberries.ru/adv/v0/normquery/list',
+      data,
+      { rateLimitKey: 'promotion.getNormqueryList' }
+    );
+  }
+
+  /**
+   * Daily Search Clusters Statistics (v1)
+   *
+   * Метод возвращает статистику (просмотры, клики, добавления в корзину, заказы,
+   * CTR, CPC, CPM и т.д.) по поисковым кластерам за указанный период с детализацией
+   * по дням. Применимо для кампаний с моделью оплаты `cpm` — за показы, и `cpc` —
+   * за клики.
+   *
+   * V1-преемник метода {@link PromotionModule.getNormqueryStats} (`/adv/v0/normquery/stats`).
+   *
+   * Rate limit: 10 requests per minute, 6 second interval, burst 20
+   *
+   * @param data - Request body with date range and campaign/product items (max 100)
+   * @returns Daily-detailed statistics for search clusters
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Statistics/paths/~1adv~1v1~1normquery~1stats/post}
+   * @example
+   * ```typescript
+   * const stats = await sdk.promotion.getNormqueryStatsV1({
+   *   from: '2026-01-01',
+   *   to: '2026-01-30',
+   *   items: [{ advertId: 123456789, nmId: 987654321 }]
+   * });
+   * console.log(stats.items[0]?.dailyStats);
+   * ```
+   */
+  async getNormqueryStatsV1(
+    data: V1GetNormQueryStatsRequest
+  ): Promise<V1GetNormQueryStatsResponse> {
+    return this.client.post<V1GetNormQueryStatsResponse>(
+      'https://advert-api.wildberries.ru/adv/v1/normquery/stats',
+      data,
+      { rateLimitKey: 'promotion.getNormqueryStatsV1' }
     );
   }
 

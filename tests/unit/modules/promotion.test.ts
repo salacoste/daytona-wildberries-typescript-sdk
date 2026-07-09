@@ -338,6 +338,32 @@ describe('PromotionModule', () => {
       );
     });
 
+    it('getNormqueryList - should get active and inactive search cluster lists', async () => {
+      mockClient.post.mockResolvedValue({ items: [] });
+      await module.getNormqueryList({
+        items: [{ advertId: 123, nmId: 456 }],
+      });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v0/normquery/list',
+        { items: [{ advertId: 123, nmId: 456 }] },
+        expect.objectContaining({ rateLimitKey: 'promotion.getNormqueryList' })
+      );
+    });
+
+    it('getNormqueryStatsV1 - should get daily search cluster statistics (v1)', async () => {
+      mockClient.post.mockResolvedValue({ items: [] });
+      await module.getNormqueryStatsV1({
+        from: '2026-01-01',
+        to: '2026-01-30',
+        items: [{ advertId: 123, nmId: 456 }],
+      });
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/adv/v1/normquery/stats',
+        { from: '2026-01-01', to: '2026-01-30', items: [{ advertId: 123, nmId: 456 }] },
+        expect.objectContaining({ rateLimitKey: 'promotion.getNormqueryStatsV1' })
+      );
+    });
+
     it('getNormqueryBids - should get search cluster bids', async () => {
       mockClient.post.mockResolvedValue({ bids: [] });
       await module.getNormqueryBids({ items: [{ advert_id: 123, nm_id: 456 }] });
