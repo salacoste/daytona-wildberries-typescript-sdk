@@ -420,11 +420,6 @@ export interface Chat {
    * New-format pattern: `<version>:<UUID>:<crypto-signature>` (e.g. `1:1e265a58-...:66f136e9...`).
    */
   replySign?: string;
-  /**
-   * ID покупателя
-   * @deprecated This field will be removed on February 2. See https://dev.wildberries.ru/release-notes?id=466
-   */
-  clientID?: string;
   /** Имя покупателя */
   clientName?: string;
   goodCard?: GoodCard;
@@ -467,11 +462,6 @@ export interface Event {
    */
   replySign?: string;
   sender?: Sender;
-  /**
-   * ID покупателя
-   * @deprecated This field will be removed on February 2. See https://dev.wildberries.ru/release-notes?id=466
-   */
-  clientID?: string;
   /** Имя покупателя */
   clientName?: string;
 }
@@ -513,22 +503,6 @@ export interface File {
  * Информация о заказе
  */
 export interface GoodCard {
-  /**
-   * Дата заказа
-   * @deprecated WB removed this field from the `goodCard` of the Chat List
-   * (`GET /api/v1/seller/chats`) and Chat Events (`GET /api/v1/seller/events`)
-   * responses on June 16, 2026 — it is no longer present in live responses and
-   * reading it now returns `undefined`. There is no replacement order-date field;
-   * use `addTime`/`addTimestamp` on the enclosing message/event for timing. Planned
-   * for hard-removal in a future major version. See
-   * https://dev.wildberries.ru/release-notes
-   */
-  date?: string;
-  /**
-   * Запрошен ли возврат товара
-   * @deprecated This field has been removed. Use the claims endpoint instead: /api/v1/claims
-   */
-  needRefund?: boolean;
   /** Артикул WB */
   nmID?: number;
   /** Фактическая цена с учетом всех скидок. Взимается с покупателя */
@@ -539,11 +513,6 @@ export interface GoodCard {
   rid?: string;
   /** Размер товара, соответствует `wbSize` в [карточке товара](https://dev.wildberries.ru/openapi/work-with-products#tag/Kartochki-tovarov/paths/~1content~1v2~1get~1cards~1list/post) */
   size?: string;
-  /**
-   * Статус товара
-   * @deprecated This field will be removed on February 10. See https://dev.wildberries.ru/release-notes?id=469
-   */
-  statusID?: number;
 }
 
 /**
