@@ -36,6 +36,7 @@ pointing at the replacement. Fix each call site (usually a one-line rename or fi
 | general | `JamSubscriptionStatus`, `JamSubscriptionTier`, `GetJamSubscriptionStatusParams` | `JamSubscriptionDetails` (from `getJamSubscription`) |
 | promotion | `GetAdverts` family, `V0KeywordsStatistics*` | v2 types (`AdvertV2` / `GetAdvertsV2Response`, etc.) |
 | in-store-pickup | `ApiGTINRequest`, `ApiIMEIRequest`, `ApiOrderStatus(es)`, `ApiOrdersMeta`, `ApiBaseMeta`, `ApiSGTINsRequest`, `ApiUINRequest` | the `…Bulk` request types |
+| orders-fbs `OrderMetaResponse` / `OrderMetaItem` / `OrderMetaAPI` | `.meta` (`Meta` interface) | `.metaDetails` (`MetaDetail[]` — `{key, value, decision}`) |
 
 ## Removed config (internal)
 
@@ -51,12 +52,6 @@ pointing at the replacement. Fix each call site (usually a one-line rename or fi
   stocks are gone (nothing left to detect/strip — `sku`/`skus` no longer exist).
 - Card-size barcodes (`sizes[].skus` on `createCard`/media methods) are **unrelated** and
   still supported — only the *stocks* `sku`/`skus` identifiers were removed.
-
-## Deferred (NOT removed in v4.0.0)
-
-- The 4 `orders-fbs` `meta` response fields (`@deprecated` *"retained pending WB
-  confirmation of removal status"*). Their WB removal is unverified, and dropping a field
-  WB still returns would lose live data. Slated for v4.1 once a live GET confirms WB dropped them.
 
 ---
 

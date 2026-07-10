@@ -22,15 +22,12 @@ dropped. Each removed symbol is now a compile error pointing at its replacement 
 - **in-store-pickup** (12): the single-order click-collect v3 shims (`updateOrdersConfirm/Prepare/Receive/Reject/Cancel`, `createOrdersStatus`, `getOrdersMeta`, `deleteOrdersMeta`, `updateMetaSgtin/Uin/Imei/Gtin`) + 8 `Api*` types → the `…Bulk` batch methods.
 - **products**: stocks `StockItem.sku`, `StocksRequest.skus`, `UpdateStockRequest.stocks[].sku` (WB rejects since 2026-05-20) → `chrtId`/`chrtIds`. Sanitizers + `warnOnce` paths removed.
 - **communications** (5 fields): `clientID` (Chat/Event), `GoodCard.date`, `GoodCard.needRefund`, `GoodCard.statusID` (all WB-removed).
+- **orders-fbs**: the 4 deprecated `meta` response fields (`OrderMetaResponse`/`OrderMetaItem`/`OrderMetaAPI` `.meta`) + the `Meta` interface (WB-side removal scheduled 2026-04-30) → use `metaDetails` (`MetaDetail[]`).
 - **config**: `DEFAULT_RATE_LIMITS` alias; 3 dead analytics v2 keys; `reports.analyticsCharacteristicsChange`.
 
 ### Changed
 
 - `products.updateStock(warehouseId, data)` — `data` is now **required** (was optional).
-
-### Deferred (not in v4.0.0)
-
-- The 4 `orders-fbs` `meta` fields (`@deprecated` "retained pending WB confirmation") — kept; their WB removal is unverified. Slated for v4.1.
 
 ### Notes
 

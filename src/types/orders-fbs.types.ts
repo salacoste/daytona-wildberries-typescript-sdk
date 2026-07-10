@@ -370,9 +370,6 @@ export interface ExternalStickerResponse {
 
 /** Response containing metadata for a single order */
 export interface OrderMetaResponse {
-  /** @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use metaDetails instead. */
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  meta?: Meta;
   /** Metadata details with validation status */
   metaDetails?: MetaDetail[];
 }
@@ -387,9 +384,6 @@ export interface OrdersMetaResponse {
 export interface OrderMetaItem {
   /** Order ID */
   id?: number;
-  /** @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use metaDetails instead. */
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  meta?: Meta;
   /** Metadata details with validation status */
   metaDetails?: MetaDetail[];
 }
@@ -723,36 +717,6 @@ export interface MetaDetail {
 }
 
 /**
- * @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use `metaDetails` (MetaDetail[]) instead.
- */
-export interface Meta {
-  /** IMEI */
-  imei?: {
-    value?: string;
-  };
-  /** UIN (unique identification number) */
-  uin?: {
-    value?: string;
-  };
-  /** GTIN (Global Trade Item Number) */
-  gtin?: {
-    value?: string;
-  };
-  /** Honest Sign marking code (SGTIN) */
-  sgtin?: {
-    value?: string[];
-  };
-  /** Product expiration date */
-  expiration?: {
-    value?: string;
-  };
-  /** Customs declaration number */
-  customsDeclaration?: {
-    value?: string;
-  };
-}
-
-/**
  * Warehouse office data for seller pass registration
  */
 export interface PassOffice {
@@ -845,9 +809,6 @@ export interface OrdersMetaAPI {
 export interface OrderMetaAPI {
   /** Assembly order ID */
   id?: number;
-  /** @deprecated Was scheduled for WB-side removal on 2026-04-30; field retained pending WB confirmation of removal status. Use metaDetails instead. */
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
-  meta?: Meta;
   /** Metadata details with validation status */
   metaDetails?: MetaDetail[];
 }

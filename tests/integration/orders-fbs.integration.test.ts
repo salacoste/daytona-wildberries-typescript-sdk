@@ -228,7 +228,10 @@ const handlers = [
     return HttpResponse.json({
       orders: body.orders.map((id) => ({
         id,
-        meta: { imei: '123456789012345', sgtin: ['01234567890123456789012'] },
+        metaDetails: [
+          { key: 'imei', value: '123456789012345', decision: 'filled' },
+          { key: 'sgtin', value: '01234567890123456789012', decision: 'filled' },
+        ],
       })),
     });
   }),
@@ -458,8 +461,9 @@ describe('OrdersFbsModule Integration Tests', () => {
 
       expect(result.orders).toBeDefined();
       expect(result.orders).toHaveLength(2);
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- testing legacy meta field
-      expect(result.orders![0].meta?.imei).toBe('123456789012345');
+      expect(result.orders![0].metaDetails?.find((d) => d.key === 'imei')?.value).toBe(
+        '123456789012345'
+      );
     });
 
     it('should delete metadata', async () => {
