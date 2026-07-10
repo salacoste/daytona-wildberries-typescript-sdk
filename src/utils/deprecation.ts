@@ -14,14 +14,14 @@ const _warned = new Set<string>();
 /**
  * Emit a deprecation warning for a method, at most once per process.
  *
- * @param methodKey - Unique identifier for the deprecated method (e.g. 'FinancesModule.getSupplierReportDetailByPeriod')
+ * @param methodKey - Unique identifier for the deprecated method (e.g. 'products.getCardsList:legacy-withphoto-zero')
  * @param message - The warning message to display
  *
  * @example
  * ```typescript
  * warnOnce(
- *   'FinancesModule.getSupplierReportDetailByPeriod',
- *   '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated. Migrate to getSalesReportsDetailed().'
+ *   'products.getCardsList:legacy-withphoto-zero',
+ *   '[DEPRECATED] withPhoto: 0 semantics changed. Use WITH_PHOTO_FILTER.NO_PHOTO for "no photo only".'
  * );
  * ```
  */

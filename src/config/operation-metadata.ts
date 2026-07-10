@@ -1166,16 +1166,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Get metadata for multiple orders (bulk)
-   * x-readonly-method: true, x-category: marketplace
-   */
-  'ordersDBS.getMetaBulk': {
-    readonly: true,
-    category: 'marketplace',
-    rateLimitKey: 'orders-dbs.getMetaBulk',
-  },
-
-  /**
    * Delete specific metadata from an order (deprecated)
    * x-readonly-method: false, x-category: marketplace
    */
@@ -1538,16 +1528,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Get manual bid campaigns (V0)
-   * x-readonly-method: true, x-category: advert
-   */
-  'promotion.getAuctionAdverts': {
-    readonly: true,
-    category: 'advert',
-    rateLimitKey: 'promotion.advAuctionAdverts',
-  },
-
-  /**
    * Get campaigns V2 (replacement for deprecated endpoints)
    * x-readonly-method: true, x-category: advert
    */
@@ -1692,16 +1672,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Update bids (V1)
-   * x-readonly-method: false, x-category: advert
-   */
-  'promotion.updateBidsV2': {
-    readonly: false,
-    category: 'advert',
-    rateLimitKey: 'promotion.bidsV1',
-  },
-
-  /**
    * Update placement for manual bid campaigns
    * x-readonly-method: false, x-category: advert
    */
@@ -1709,16 +1679,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
     readonly: false,
     category: 'advert',
     rateLimitKey: 'promotion.putAdvAuctionPlacements',
-  },
-
-  /**
-   * Update auction bids
-   * x-readonly-method: false, x-category: advert
-   */
-  'promotion.updateAuctionBid': {
-    readonly: false,
-    category: 'advert',
-    rateLimitKey: 'promotion.patchAdvAuctionBids',
   },
 
   /**
@@ -1816,16 +1776,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Set/remove minus-phrases for auto campaigns
-   * x-readonly-method: false, x-category: advert
-   */
-  'promotion.createAutoSetExcluded': {
-    readonly: false,
-    category: 'advert',
-    rateLimitKey: 'promotion.postAdvAutoSetExcluded',
-  },
-
-  /**
    * Get product list for auto campaign
    * x-readonly-method: true, x-category: advert
    */
@@ -1833,16 +1783,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
     readonly: true,
     category: 'advert',
     rateLimitKey: 'promotion.advAutoGetnmtoadd',
-  },
-
-  /**
-   * Update product list in auto campaign
-   * x-readonly-method: false, x-category: advert
-   */
-  'promotion.createAutoUpdatenm': {
-    readonly: false,
-    category: 'advert',
-    rateLimitKey: 'promotion.postAdvAutoUpdatenm',
   },
 
   // --- Media Campaigns (media.yaml) ---
@@ -1917,16 +1857,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
     readonly: true,
     category: 'advert',
     rateLimitKey: 'promotion.advStatWords',
-  },
-
-  /**
-   * Get keyword statistics
-   * x-readonly-method: true, x-category: advert
-   */
-  'promotion.getStatsKeywords': {
-    readonly: true,
-    category: 'advert',
-    rateLimitKey: 'promotion.advStatsKeywords',
   },
 
   /**
@@ -2949,16 +2879,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Get supplier report detail by period
-   * x-readonly-method: true, x-category: statistics
-   */
-  'finances.getSupplierReportDetailByPeriod': {
-    readonly: true,
-    category: 'statistics',
-    rateLimitKey: 'finances.supplierReportDetailByPeriod',
-  },
-
-  /**
    * Get documents categories
    * x-readonly-method: true, x-category: documents
    */
@@ -3014,26 +2934,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Confirm orders
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateOrdersConfirm': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersConfirm',
-  },
-
-  /**
-   * Prepare orders
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateOrdersPrepare': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersPrepare',
-  },
-
-  /**
    * Create order client notification
    * x-readonly-method: false, x-category: marketplace
    */
@@ -3054,36 +2954,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
-   * Receive orders
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateOrdersReceive': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersReceive',
-  },
-
-  /**
-   * Reject orders
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateOrdersReject': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersReject',
-  },
-
-  /**
-   * Get order status
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.createOrdersStatus': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersStatus',
-  },
-
-  /**
    * Get click & collect orders
    * x-readonly-method: true, x-category: marketplace
    */
@@ -3093,75 +2963,9 @@ export const operationMetadata: Record<string, OperationMetadata> = {
     rateLimitKey: 'in-store-pickup.clickCollectOrders',
   },
 
-  /**
-   * Cancel orders
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateOrdersCancel': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersCancel',
-  },
-
-  /**
-   * Get orders meta
-   * x-readonly-method: true, x-category: marketplace
-   */
-  'inStorePickup.getOrdersMeta': {
-    readonly: true,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.ordersMeta',
-  },
-
-  /**
-   * Delete orders meta
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.deleteOrdersMeta': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.deleteOrdersMeta',
-  },
-
-  /**
-   * Update meta SGTIN
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateMetaSgtin': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.metaSgtin',
-  },
-
-  /**
-   * Update meta UIN
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateMetaUin': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.metaUin',
-  },
-
-  /**
-   * Update meta IMEI
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateMetaImei': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.metaImei',
-  },
-
-  /**
-   * Update meta GTIN
-   * x-readonly-method: false, x-category: marketplace
-   */
-  'inStorePickup.updateMetaGtin': {
-    readonly: false,
-    category: 'marketplace',
-    rateLimitKey: 'in-store-pickup.metaGtin',
-  },
+  // In-store-pickup shim methods removed in v4.0.0 — their metadata entries
+  // (updateOrdersConfirm/Prepare/Receive/Reject/Cancel, createOrdersStatus,
+  // getOrdersMeta, deleteOrdersMeta, updateMetaSgtin/Uin/Imei/Gtin) were deleted.
 };
 
 // ============================================================================

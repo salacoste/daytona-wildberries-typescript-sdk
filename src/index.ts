@@ -190,13 +190,6 @@ export class WildberriesSDK {
    * const balance = await sdk.finances.getAccountBalance();
    * console.log(`Available: ${balance.for_withdraw} ${balance.currency}`);
    *
-   * // Get sales report by period
-   * const report = await sdk.finances.getSupplierReportDetailByPeriod({
-   *   dateFrom: '2024-01-01',
-   *   dateTo: '2024-01-31',
-   *   period: 'weekly'
-   * });
-   *
    * // List seller documents
    * const docs = await sdk.finances.getDocumentsList();
    * ```
@@ -711,7 +704,7 @@ export { UserManagementModule } from './modules/user-management';
 //
 // To import types, use the module subpath import for any module that has one
 // (since v3.6.1 — finances, analytics, communications, reports re-export their types):
-//   import type { DetailReportItem } from 'daytona-wildberries-typescript-sdk/finances';
+//   import type { SalesReportDetailedItem } from 'daytona-wildberries-typescript-sdk/finances';
 //   import type { MainResponse } from 'daytona-wildberries-typescript-sdk/analytics';
 //   import type { PinReviewItem } from 'daytona-wildberries-typescript-sdk/communications';
 //   import type { IncomesItem } from 'daytona-wildberries-typescript-sdk/reports';
