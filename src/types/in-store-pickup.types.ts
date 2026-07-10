@@ -43,36 +43,6 @@ export interface ApiError {
   message?: string;
 }
 
-/**
- * @example
-```json
-{
-  "gtin": [
-    "1234567890123456"
-  ]
-}
-```
- */
-export interface ApiGTINRequest {
-  /** GTIN */
-  gtin?: string;
-}
-
-/**
- * @example
-```json
-{
-  "imei": [
-    "123456789012345"
-  ]
-}
-```
- */
-export interface ApiIMEIRequest {
-  /** IMEI */
-  imei?: string;
-}
-
 export interface ApiNewOrder {
   /** Планируемая дата доставки */
   ddate?: string;
@@ -202,55 +172,11 @@ export interface ApiOrderClientInfoResp {
   orders?: ApiOrderClientInfo[];
 }
 
-/**
- * @example
-```json
-{
-  "supplierStatus": "confirm",
-  "wbStatus": "waiting",
-  "id": 1234567
-}
-```
- */
-export interface ApiOrderStatus {
-  /** ID сборочного задания */
-  id?: number;
-  /** Статус сборочного задания, установленный продавцом */
-  supplierStatus?:
-    | 'new'
-    | 'confirm'
-    | 'prepare'
-    | 'receive'
-    | 'reject'
-    | 'cancel'
-    | 'cancel_shelf_life';
-  /** Статус сборочного задания в системе WB */
-  wbStatus?:
-    | 'waiting'
-    | 'sorted'
-    | 'sold'
-    | 'canceled'
-    | 'canceled_by_client'
-    | 'declined_by_client'
-    | 'defect'
-    | 'ready_for_pickup';
-}
-
-export interface ApiOrderStatuses {
-  /** Список статусов сборочных заданий */
-  orders?: ApiOrderStatus[];
-}
-
 export interface ApiOrders {
   /** Параметр пагинации. Содержит значение, которое необходимо указать в запросе для получения следующего пакета данных */
   next?: number;
   /** Список сборочных заданий */
   orders?: ApiOrder[];
-}
-
-export interface ApiOrdersMeta {
-  /** Метаданные сборочного задания */
-  meta?: ApiBaseMeta;
 }
 
 /**
@@ -266,55 +192,6 @@ export interface ApiOrdersMeta {
 export interface ApiOrdersRequest {
   /** Список ID сборочных заданий */
   orders?: number[];
-}
-
-/**
- * @example
-```json
-{
-  "sgtins": [
-    "1234567890123456"
-  ]
-}
-```
- */
-export interface ApiSGTINsRequest {
-  /** Массив кодов маркировки. Допускается от 16 до 135 символов для кода одной маркировки */
-  sgtins?: string[];
-}
-
-/**
- * @example
-```json
-{
-  "uin": [
-    "1234567890123456"
-  ]
-}
-```
- */
-export interface ApiUINRequest {
-  /** УИН */
-  uin?: string;
-}
-
-export interface ApiBaseMeta {
-  /** GTIN */
-  gtin?: {
-    value?: string | null;
-  };
-  /** IMEI */
-  imei?: {
-    value?: string | null;
-  };
-  /** Код маркировки Честного знака */
-  sgtin?: {
-    value?: string[] | null;
-  };
-  /** УИН */
-  uin?: {
-    value?: string | null;
-  };
 }
 
 // ============================================================================
@@ -377,9 +254,9 @@ export interface CustomsDeclarationSetResponse {
 // ============================================================================
 // Batch click-collect API (task-147, since 3.17.0)
 // WB shut down single-order /api/v3/click-collect/orders/{orderId}/* paths and
-// migrated to batch POST /api/marketplace/v3/click-collect/*. The 12 legacy
-// single-order methods below are preserved as @deprecated shims that delegate
-// to these batch types. Shapes mirror the DBS module (server-identical).
+// migrated to batch POST /api/marketplace/v3/click-collect/*. The legacy
+// single-order @deprecated shims were removed in v4.0.0; only these live batch
+// types remain. Shapes mirror the DBS module (server-identical).
 // ============================================================================
 
 /** Metadata key type for label identifiers (delete + validation). */

@@ -10,21 +10,13 @@
 
 import { BaseClient } from '../../client/base-client';
 import { ValidationError } from '../../errors';
-import { warnOnce } from '../../utils/deprecation';
 import type {
   ApiCheckIdentityRequest,
   ApiCheckedIdentity,
-  ApiGTINRequest,
-  ApiIMEIRequest,
   ApiNewOrders,
   ApiOrderClientInfoResp,
-  ApiOrderStatus,
-  ApiOrderStatuses,
   ApiOrders,
-  ApiOrdersMeta,
   ApiOrdersRequest,
-  ApiSGTINsRequest,
-  ApiUINRequest,
   BulkStatusChangeResponse,
   CheckMetaValidationResponse,
   CustomsDeclarationSetResponse,
@@ -33,7 +25,6 @@ import type {
   GetMetaBulkRequest,
   GetOrderMetaBulkResponse,
   GetStatusInfoResponse,
-  PickupMetadataKey,
   SetCustomsDeclarationBulkRequest,
   SetGtinBulkRequest,
   SetImeiBulkRequest,
@@ -102,25 +93,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Перевести на сборку (single order)
-   *
-   * @deprecated WB shut down `PATCH /api/v3/click-collect/orders/{orderId}/confirm`.
-   *   This shim delegates to {@link InStorePickupModule.confirmBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @example
-   * await sdk.inStorePickup.updateOrdersConfirm(12345); // -> confirmBulk([12345])
-   */
-  async updateOrdersConfirm(orderId: number): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateOrdersConfirm',
-      '[DEPRECATED] updateOrdersConfirm() targets a removed single-order endpoint. ' +
-        'Use confirmBulk() for one or more orders instead.'
-    );
-    await this.confirmBulk([orderId]);
-  }
-
-  /**
    * Сообщить, что сборочное задание готово к выдаче (batch)
    *
    * Moves up to 1000 assembly orders to `prepare` status (ready for pickup).
@@ -151,25 +123,6 @@ export class InStorePickupModule {
       { ordersIds: orderIds },
       { rateLimitKey: 'in-store-pickup.prepareBulk' }
     );
-  }
-
-  /**
-   * Сообщить, что сборочное задание готово к выдаче (single order)
-   *
-   * @deprecated WB shut down `PATCH /api/v3/click-collect/orders/{orderId}/prepare`.
-   *   This shim delegates to {@link InStorePickupModule.prepareBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @example
-   * await sdk.inStorePickup.updateOrdersPrepare(12345); // -> prepareBulk([12345])
-   */
-  async updateOrdersPrepare(orderId: number): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateOrdersPrepare',
-      '[DEPRECATED] updateOrdersPrepare() targets a removed single-order endpoint. ' +
-        'Use prepareBulk() for one or more orders instead.'
-    );
-    await this.prepareBulk([orderId]);
   }
 
   /**
@@ -255,25 +208,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Сообщить, что заказ принят покупателем (single order)
-   *
-   * @deprecated WB shut down `PATCH /api/v3/click-collect/orders/{orderId}/receive`.
-   *   This shim delegates to {@link InStorePickupModule.receiveBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @example
-   * await sdk.inStorePickup.updateOrdersReceive(12345); // -> receiveBulk([12345])
-   */
-  async updateOrdersReceive(orderId: number): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateOrdersReceive',
-      '[DEPRECATED] updateOrdersReceive() targets a removed single-order endpoint. ' +
-        'Use receiveBulk() for one or more orders instead.'
-    );
-    await this.receiveBulk([orderId]);
-  }
-
-  /**
    * Сообщить, что покупатель отказался от заказа (batch)
    *
    * Moves up to 1000 assembly orders to `reject` status (buyer refused).
@@ -308,25 +242,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Сообщить, что покупатель отказался от заказа (single order)
-   *
-   * @deprecated WB shut down `PATCH /api/v3/click-collect/orders/{orderId}/reject`.
-   *   This shim delegates to {@link InStorePickupModule.rejectBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @example
-   * await sdk.inStorePickup.updateOrdersReject(12345); // -> rejectBulk([12345])
-   */
-  async updateOrdersReject(orderId: number): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateOrdersReject',
-      '[DEPRECATED] updateOrdersReject() targets a removed single-order endpoint. ' +
-        'Use rejectBulk() for one or more orders instead.'
-    );
-    await this.rejectBulk([orderId]);
-  }
-
-  /**
    * Получить статусы сборочных заданий (batch)
    *
    * Returns statuses for up to 1000 assembly orders in a single request.
@@ -356,35 +271,6 @@ export class InStorePickupModule {
       { ordersIds: orderIds },
       { rateLimitKey: 'in-store-pickup.getStatusesBulk' }
     );
-  }
-
-  /**
-   * Получить статусы сборочных заданий (legacy)
-   *
-   * @deprecated WB shut down `POST /api/v3/click-collect/orders/status`. This
-   *   shim delegates to {@link InStorePickupModule.getStatusesBulk} and maps the
-   *   batch response back to the legacy `{orders:[{id,supplierStatus,wbStatus}]}` shape.
-   * @param data - Request body data (`{ orders: number[] }`)
-   * @returns Статусы сборочных заданий (legacy shape)
-   * @example
-   * const result = await sdk.inStorePickup.createOrdersStatus({ orders: [12345] });
-   */
-  async createOrdersStatus(data: ApiOrdersRequest): Promise<ApiOrderStatuses> {
-    warnOnce(
-      'InStorePickupModule.createOrdersStatus',
-      '[DEPRECATED] createOrdersStatus() targets a removed endpoint. ' +
-        'Use getStatusesBulk() instead; this shim maps the batch response to the legacy shape.'
-    );
-    if (!data.orders || data.orders.length === 0) {
-      throw new ValidationError('data.orders cannot be empty');
-    }
-    const bulk = await this.getStatusesBulk(data.orders);
-    const orders: ApiOrderStatus[] = bulk.orders.map((o) => ({
-      id: o.orderId,
-      supplierStatus: o.supplierStatus as ApiOrderStatus['supplierStatus'],
-      wbStatus: o.wbStatus as ApiOrderStatus['wbStatus'],
-    }));
-    return { orders };
   }
 
   /**
@@ -448,25 +334,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Отменить сборочное задание (single order)
-   *
-   * @deprecated WB shut down `PATCH /api/v3/click-collect/orders/{orderId}/cancel`.
-   *   This shim delegates to {@link InStorePickupModule.cancelBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @example
-   * await sdk.inStorePickup.updateOrdersCancel(12345); // -> cancelBulk([12345])
-   */
-  async updateOrdersCancel(orderId: number): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateOrdersCancel',
-      '[DEPRECATED] updateOrdersCancel() targets a removed single-order endpoint. ' +
-        'Use cancelBulk() for one or more orders instead.'
-    );
-    await this.cancelBulk([orderId]);
-  }
-
-  /**
    * Получить идентификаторы маркировки сборочных заданий (batch)
    *
    * Returns label identifiers for up to 1000 assembly orders in a single request.
@@ -496,36 +363,6 @@ export class InStorePickupModule {
       request,
       { rateLimitKey: 'in-store-pickup.getMetaBulk' }
     );
-  }
-
-  /**
-   * Получить идентификаторы маркировки сборочного задания (single order)
-   *
-   * @deprecated WB shut down `GET /api/v3/click-collect/orders/{orderId}/meta`.
-   *   This shim delegates to {@link InStorePickupModule.getMetaBulk} with a
-   *   single-element array and maps the batch `OrderMetaV2` back to the legacy
-   *   `{meta:{gtin:{value}, imei:{value}, sgtin:{value:[]}, uin:{value}}}` shape.
-   * @param orderId - ID сборочного задания
-   * @returns Идентификаторы маркировки сборочного задания (legacy shape)
-   * @example
-   * const result = await sdk.inStorePickup.getOrdersMeta(12345);
-   */
-  async getOrdersMeta(orderId: number): Promise<ApiOrdersMeta> {
-    warnOnce(
-      'InStorePickupModule.getOrdersMeta',
-      '[DEPRECATED] getOrdersMeta() targets a removed single-order endpoint. ' +
-        'Use getMetaBulk() instead; this shim maps the batch response to the legacy shape.'
-    );
-    const bulk = await this.getMetaBulk({ ordersIds: [orderId] });
-    const o = bulk.orders[0];
-    return {
-      meta: {
-        gtin: { value: o.gtin ?? null },
-        imei: { value: o.imei ?? null },
-        sgtin: { value: o.sgtin ?? [] },
-        uin: { value: o.uin ?? null },
-      },
-    };
   }
 
   /**
@@ -562,30 +399,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Удалить идентификаторы маркировки сборочного задания (single order)
-   *
-   * @deprecated WB shut down `DELETE /api/v3/click-collect/orders/{orderId}/meta`.
-   *   This shim delegates to {@link InStorePickupModule.deleteMetaBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @param options - Query parameters
-   * @param options.key - Metadata key to delete (imei, uin, gtin, sgtin, customsDeclaration)
-   * @example
-   * await sdk.inStorePickup.deleteOrdersMeta(12345, { key: 'imei' });
-   */
-  async deleteOrdersMeta(orderId: number, options: { key: string }): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.deleteOrdersMeta',
-      '[DEPRECATED] deleteOrdersMeta() targets a removed single-order endpoint. ' +
-        'Use deleteMetaBulk() instead.'
-    );
-    await this.deleteMetaBulk({
-      key: options.key as PickupMetadataKey,
-      ordersIds: [orderId],
-    });
-  }
-
-  /**
    * Закрепить за сборочными заданиями коды маркировки SGTIN (batch)
    *
    * Sets Chestny ZNAK labeling codes for up to 1000 assembly orders.
@@ -611,26 +424,6 @@ export class InStorePickupModule {
       request,
       { rateLimitKey: 'in-store-pickup.setSgtinBulk' }
     );
-  }
-
-  /**
-   * Закрепить за сборочным заданием код маркировки товара SGTIN (single order)
-   *
-   * @deprecated WB shut down `PUT /api/v3/click-collect/orders/{orderId}/meta/sgtin`.
-   *   This shim delegates to {@link InStorePickupModule.setSgtinBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @param data - Request body data
-   * @example
-   * await sdk.inStorePickup.updateMetaSgtin(12345, { sgtins: ['1234567890123456'] });
-   */
-  async updateMetaSgtin(orderId: number, data: ApiSGTINsRequest): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateMetaSgtin',
-      '[DEPRECATED] updateMetaSgtin() targets a removed single-order endpoint. ' +
-        'Use setSgtinBulk() instead.'
-    );
-    await this.setSgtinBulk({ orders: [{ orderId, sgtins: data.sgtins ?? [] }] });
   }
 
   /**
@@ -662,26 +455,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Закрепить за сборочным заданием УИН (single order)
-   *
-   * @deprecated WB shut down `PUT /api/v3/click-collect/orders/{orderId}/meta/uin`.
-   *   This shim delegates to {@link InStorePickupModule.setUinBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @param data - Request body data
-   * @example
-   * await sdk.inStorePickup.updateMetaUin(12345, { uin: '1234567890123456' });
-   */
-  async updateMetaUin(orderId: number, data: ApiUINRequest): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateMetaUin',
-      '[DEPRECATED] updateMetaUin() targets a removed single-order endpoint. ' +
-        'Use setUinBulk() instead.'
-    );
-    await this.setUinBulk({ orders: [{ orderId, uin: data.uin ?? '' }] });
-  }
-
-  /**
    * Закрепить за сборочными заданиями IMEI (batch)
    *
    * Sets IMEI values for up to 1000 assembly orders. Replaces the dead
@@ -710,26 +483,6 @@ export class InStorePickupModule {
   }
 
   /**
-   * Закрепить за сборочным заданием IMEI (single order)
-   *
-   * @deprecated WB shut down `PUT /api/v3/click-collect/orders/{orderId}/meta/imei`.
-   *   This shim delegates to {@link InStorePickupModule.setImeiBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @param data - Request body data
-   * @example
-   * await sdk.inStorePickup.updateMetaImei(12345, { imei: '123456789012345' });
-   */
-  async updateMetaImei(orderId: number, data: ApiIMEIRequest): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateMetaImei',
-      '[DEPRECATED] updateMetaImei() targets a removed single-order endpoint. ' +
-        'Use setImeiBulk() instead.'
-    );
-    await this.setImeiBulk({ orders: [{ orderId, imei: data.imei ?? '' }] });
-  }
-
-  /**
    * Закрепить за сборочными заданиями GTIN (batch)
    *
    * Sets GTIN values for up to 1000 assembly orders. Replaces the dead
@@ -755,26 +508,6 @@ export class InStorePickupModule {
       request,
       { rateLimitKey: 'in-store-pickup.setGtinBulk' }
     );
-  }
-
-  /**
-   * Закрепить за сборочным заданием GTIN (single order)
-   *
-   * @deprecated WB shut down `PUT /api/v3/click-collect/orders/{orderId}/meta/gtin`.
-   *   This shim delegates to {@link InStorePickupModule.setGtinBulk} with a
-   *   single-element array and will be removed in a future major release.
-   * @param orderId - ID сборочного задания
-   * @param data - Request body data
-   * @example
-   * await sdk.inStorePickup.updateMetaGtin(12345, { gtin: '1234567890123456' });
-   */
-  async updateMetaGtin(orderId: number, data: ApiGTINRequest): Promise<void> {
-    warnOnce(
-      'InStorePickupModule.updateMetaGtin',
-      '[DEPRECATED] updateMetaGtin() targets a removed single-order endpoint. ' +
-        'Use setGtinBulk() instead.'
-    );
-    await this.setGtinBulk({ orders: [{ orderId, gtin: data.gtin ?? '' }] });
   }
 
   // ============================================================================
