@@ -257,38 +257,6 @@ export interface UserManagementErrorResponse {
 // ============================================================================
 
 /**
- * Jam (Джем) subscription tier
- *
- * Wildberries offers tiered "Jam" subscriptions that unlock higher limits
- * on analytics endpoints (e.g., search-texts limit field).
- *
- * - `'none'` — No Jam subscription (analytics search-texts unavailable)
- * - `'standard'` — Standard tier (limit ≤ 30)
- * - `'advanced'` — Advanced tier (limit ≤ 50)
- */
-export type JamSubscriptionTier = 'none' | 'standard' | 'advanced';
-
-/**
- * Result of a Jam subscription status probe
- */
-export interface JamSubscriptionStatus {
-  /** Detected subscription tier */
-  tier: JamSubscriptionTier;
-  /** ISO 8601 timestamp when the check was performed */
-  checkedAt: string;
-  /** Number of probe API calls made (1 for advanced, 2 for standard/none) */
-  probeCallsMade: number;
-}
-
-/**
- * Parameters for the Jam subscription status check
- */
-export interface GetJamSubscriptionStatusParams {
-  /** One or more WB article IDs (nmIds) to use in the probe request */
-  nmIds: number[];
-}
-
-/**
  * Detailed Jam subscription information from GET /api/common/v1/subscriptions
  *
  * - If seller never subscribed: empty 200 response (all fields undefined)
