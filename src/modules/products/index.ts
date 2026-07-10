@@ -839,11 +839,10 @@ export class ProductsModule {
     if (data.settings?.filter?.withPhoto === 0) {
       warnOnce(
         'products.getCardsList:legacy-withphoto-zero',
-        `products.getCardsList: \`withPhoto: 0\` will change semantics on 2026-06-16. ` +
-          `Today it means "only cards without photo"; after the deadline it will mean ` +
-          `"ALL cards" (any photo state). If you want "no photo only", migrate to ` +
-          `\`WITH_PHOTO_FILTER.NO_PHOTO\` (= 2). If you want "all cards", use ` +
-          `\`WITH_PHOTO_FILTER.ALL\` (= -1) for clarity. ` +
+        `products.getCardsList: \`withPhoto: 0\` now returns ALL cards — the 2026-06-16 ` +
+          `WB semantic change is live (0 previously meant "only cards without photo"). ` +
+          `If you wanted "no photo only", use \`WITH_PHOTO_FILTER.NO_PHOTO\` (= 2). ` +
+          `For explicit "all cards", \`WITH_PHOTO_FILTER.ALL\` (= -1) is clearer. ` +
           `See docs/guides/withphoto-semantic-migration.md.`
       );
     }
