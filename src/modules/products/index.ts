@@ -45,132 +45,9 @@ import type {
   DeleteCardsFromTrashResponse,
 } from '../../types/products.types';
 
-// task-16.2: module-private sanitization helpers for sku → chrtId migration
-// deadline: WB API rejects `skus`/`sku` after 2026-05-20 13:00 MSK with HTTP 400
-
-/* eslint-disable @typescript-eslint/no-deprecated -- helpers intentionally read deprecated fields to detect and warn about them */
-
-/**
- * task-16.2: detect legacy `sku`/`skus` usage on stocks payloads (getStocks / deleteStock).
- * Emits one-time `warnOnce` for legacy-only or mixed-mode requests. Returns a shallow
- * clone with `skus` stripped if mixed-mode; otherwise returns input unchanged.
- * Never mutates input. Module-private — not exported.
- */
-function sanitizeStocksRequest(
-  data: StocksRequest,
-  methodName: 'getStocks' | 'deleteStock'
-): StocksRequest {
-  // N2: no null-guard here — parameter type is StocksRequest (non-nullable); the
-  // Array.isArray checks below already handle absent/undefined fields safely.
-  const hasLegacy = Array.isArray(data.skus) && data.skus.length > 0;
-  const hasNew = Array.isArray(data.chrtIds) && data.chrtIds.length > 0;
-  // N1: detect "key present but empty" — chrtIds: [] is a migration-in-progress signal,
-  // not a "legacy-only" call. Strip empty chrtIds before legacy-only branch to avoid
-  // confusing the consumer (and avoid sending a malformed payload to WB).
-  const hasEmptyChrtIds = Array.isArray(data.chrtIds) && data.chrtIds.length === 0;
-
-  if (hasLegacy && !hasNew) {
-    // task-16.2: WB API will reject `skus` after 2026-05-20 13:00 MSK
-    warnOnce(
-      `products.${methodName}:legacy-skus-call`,
-      `products.${methodName}: the \`skus\` parameter is deprecated. WB API will reject ` +
-        `requests with \`skus\` after 2026-05-20 13:00 MSK with HTTP 400. Migrate to \`chrtIds\` ` +
-        `(size IDs from POST /content/v2/get/cards/list). ` +
-        `See docs/guides/stocks-sku-to-chrtid-migration.md.`
-    );
-    // N1: if empty chrtIds was declared (migration in-progress), strip it so WB doesn't
-    // see a malformed payload. The legacy-skus warning already fired, which is correct.
-    if (hasEmptyChrtIds) {
-      const { chrtIds, ...rest } = data;
-      void chrtIds;
-      return rest;
-    }
-    return data;
-  }
-
-  if (hasLegacy && hasNew) {
-    // task-16.2: prefer chrtIds, strip skus; WB API will reject `skus` after 2026-05-20 13:00 MSK
-    warnOnce(
-      `products.${methodName}:mixed-skus-and-chrtIds`,
-      `products.${methodName}: both \`skus\` and \`chrtIds\` provided. The SDK is sending ` +
-        `ONLY \`chrtIds\` to WB (\`skus\` will be stripped); WB API will reject \`skus\` after ` +
-        `2026-05-20 13:00 MSK with HTTP 400. Remove \`skus\` from your request to avoid this ` +
-        `warning. See docs/guides/stocks-sku-to-chrtid-migration.md.`
-    );
-    const { skus, ...rest } = data;
-    void skus;
-    return rest;
-  }
-
-  // new-only or empty: pass through unchanged (no deprecated fields present)
-  return data;
-}
-
-/**
- * task-16.2: detect legacy `sku` on per-item basis in updateStock payloads.
- * Emits one-time `warnOnce` for legacy-only items, mixed items, or both simultaneously.
- * Returns a shallow clone with `sku` stripped from mixed items; otherwise returns input
- * unchanged. Never mutates input. Module-private — not exported.
- */
-function sanitizeUpdateStockPayload(
-  data: UpdateStockRequest | undefined
-): UpdateStockRequest | undefined {
-  // N2: Array.isArray guard is defensive against JS consumers (TS contract says
-  // stocks: StockItem[] always). May trigger no-unnecessary-condition in future
-  // refactors — keep the composite condition together.
-  if (!data || !Array.isArray(data.stocks) || data.stocks.length === 0) return data;
-
-  // N3: single-pass loop with early-exit when both flags set (avoids double .some() walk
-  // on large batches — up to 10k items). N4: use != null (nullish check catches both
-  // null + undefined, unlike !== undefined which lets null through as "set").
-  let hasLegacyOnly = false;
-  let hasMixed = false;
-  for (const s of data.stocks) {
-    const skuSet = s.sku != null; // N4: nullish — catches null + undefined
-    const chrtIdSet = s.chrtId != null; // N4: nullish — catches null + undefined
-    if (skuSet && !chrtIdSet) hasLegacyOnly = true;
-    else if (skuSet && chrtIdSet) hasMixed = true;
-    if (hasLegacyOnly && hasMixed) break; // N3: early-exit when both flags set
-  }
-
-  if (hasLegacyOnly) {
-    // task-16.2: WB API will reject items with `sku` after 2026-05-20 13:00 MSK
-    warnOnce(
-      'products.updateStock:legacy-sku-call',
-      `products.updateStock: stock items with \`sku\` (no \`chrtId\`) are deprecated. ` +
-        `WB API will reject items with \`sku\` after 2026-05-20 13:00 MSK with HTTP 400. ` +
-        `Migrate each item to \`chrtId\` (size ID from POST /content/v2/get/cards/list). ` +
-        `See docs/guides/stocks-sku-to-chrtid-migration.md.`
-    );
-  }
-
-  if (hasMixed) {
-    // task-16.2: prefer chrtId per item, strip sku from mixed items; WB API will reject `sku` after 2026-05-20 13:00 MSK
-    warnOnce(
-      'products.updateStock:mixed-sku-and-chrtId',
-      `products.updateStock: some items have BOTH \`sku\` and \`chrtId\`. The SDK is sending ` +
-        `ONLY \`chrtId\` per item to WB (\`sku\` will be stripped from those items); WB API ` +
-        `will reject \`sku\` after 2026-05-20 13:00 MSK with HTTP 400. Remove \`sku\` from items ` +
-        `that already have \`chrtId\` to avoid this warning. ` +
-        `See docs/guides/stocks-sku-to-chrtid-migration.md.`
-    );
-    return {
-      stocks: data.stocks.map((s) => {
-        if (s.chrtId != null && s.sku != null) {
-          const { sku, ...rest } = s;
-          void sku;
-          return rest;
-        }
-        return s;
-      }),
-    };
-  }
-
-  // new-only or amount-only-batch: pass through unchanged (no deprecated fields present)
-  return data;
-}
-
-/* eslint-enable @typescript-eslint/no-deprecated */
+// v4.0.0: the sku/skus stocks sanitization helpers (task-16.2) were removed — the legacy
+// `sku`/`skus` fields are gone from StockItem/StocksRequest, so there is nothing to detect
+// or strip. Callers now pass `chrtId`/`chrtIds` directly. See docs/guides/migration-v4.md.
 
 /**
  * Filter values for {@link ProductsModule.getCardsList} `data.settings.filter.withPhoto`.
@@ -1965,39 +1842,26 @@ export class ProductsModule {
    *
    * Returns stock amounts for products at a seller's warehouse. A 409 response counts as 10 requests.
    *
-   * **Migration deadline 2026-05-20 13:00 MSK**: Wildberries is phasing out the `skus`
-   * parameter on this endpoint in favor of `chrtIds`. Pass `chrtIds` for all new code.
-   * After the deadline, WB returns HTTP 400 if `skus` is sent.
-   *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body — see {@link StocksRequest}. Pass `chrtIds` (preferred since
-   *   v3.12.0) or `skus` (deprecated; rejected by WB API after 2026-05-20).
+   * @param data - Request body — see {@link StocksRequest}. Pass `chrtIds` (size IDs).
    * @returns Stock amounts. See {@link GetStocksResponse}.
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
-   * @example New v3.12.0+ pattern (preferred — required after 2026-05-20):
+   * @example
    * ```typescript
    * const result = await sdk.products.getStocks(12345, { chrtIds: [12345678, 12345679] });
    * console.log(result.stocks); // [{ chrtId: 12345678, amount: 50 }, ...]
    * ```
-   *
-   * @example Legacy pattern (deprecated since v3.12.0, breaks after 2026-05-20):
-   * ```typescript
-   * // Will emit a console.warn (since v3.12.0) and return HTTP 400 from WB after 2026-05-20
-   * const result = await sdk.products.getStocks(12345, { skus: ['1234567890123'] });
-   * ```
    */
   async getStocks(warehouseId: number, data: StocksRequest): Promise<GetStocksResponse> {
-    // task-16.2: detect legacy sku usage, emit warn-once (deadline 2026-05-20 13:00 MSK)
-    const sanitized = sanitizeStocksRequest(data, 'getStocks');
     return this.client.post<GetStocksResponse>(
       `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
-      sanitized,
+      data,
       { rateLimitKey: 'products.postStocks' }
     );
   }
@@ -2008,15 +1872,10 @@ export class ProductsModule {
    * Updates stock amounts for products at a seller's warehouse. Parameter names are not validated;
    * incorrect names return 204 but do not update stocks. A 409 response counts as 10 requests.
    *
-   * **Migration deadline 2026-05-20 13:00 MSK**: Wildberries is phasing out the `sku` field
-   * in stock items in favor of `chrtId`. Use `chrtId` per item for all new code.
-   * After the deadline, WB returns HTTP 400 if `sku` is sent.
-   *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body — see {@link UpdateStockRequest}. Use `chrtId` per stock item
-   *   (preferred since v3.12.0) or `sku` (deprecated; rejected by WB API after 2026-05-20).
+   * @param data - Request body — see {@link UpdateStockRequest}. Set `chrtId` per stock item.
    * @returns void on success (204)
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -2024,30 +1883,17 @@ export class ProductsModule {
    * @throws {WarehouseStocksUpdateBlockError} 406 — Warehouse is processing (maintenance); retry later
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
-   * @example New v3.12.0+ pattern (preferred — required after 2026-05-20):
+   * @example
    * ```typescript
    * await sdk.products.updateStock(12345, {
    *   stocks: [{ chrtId: 12345678, amount: 100 }],
    * });
    * ```
-   *
-   * @example Legacy pattern (deprecated since v3.12.0, breaks after 2026-05-20):
-   * ```typescript
-   * // Will emit a console.warn (since v3.12.0) and return HTTP 400 from WB after 2026-05-20
-   * await sdk.products.updateStock(12345, {
-   *   stocks: [{ sku: '1234567890123', amount: 100 }],
-   * });
-   * ```
    */
-  // TODO(v4.0.0): tighten to `data: UpdateStockRequest` (required). Current optional
-  // signature preserves pre-v3.12.0 public API. task-16.2 explicitly chose warn-only
-  // semantics (AC-5 "no throw") instead of fail-fast empty-body validation.
-  async updateStock(warehouseId: number, data?: UpdateStockRequest): Promise<void> {
-    // task-16.2: detect legacy sku usage, emit warn-once (deadline 2026-05-20 13:00 MSK)
-    const sanitized = sanitizeUpdateStockPayload(data);
+  async updateStock(warehouseId: number, data: UpdateStockRequest): Promise<void> {
     return this.client.put(
       `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
-      sanitized,
+      data,
       { rateLimitKey: 'products.putStocks' }
     );
   }
@@ -2058,38 +1904,25 @@ export class ProductsModule {
    * Irreversibly deletes stock records. Must re-upload stocks to resume sales.
    * A 409 response counts as 10 requests.
    *
-   * **Migration deadline 2026-05-20 13:00 MSK**: Wildberries is phasing out the `skus`
-   * parameter on this endpoint in favor of `chrtIds`. Pass `chrtIds` for all new code.
-   * After the deadline, WB returns HTTP 400 if `skus` is sent.
-   *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
    * @param warehouseId - ID склада продавца
-   * @param data - Request body — see {@link StocksRequest}. Pass `chrtIds` (preferred since
-   *   v3.12.0) or `skus` (deprecated; rejected by WB API after 2026-05-20).
+   * @param data - Request body — see {@link StocksRequest}. Pass `chrtIds` (size IDs).
    * @returns void on success
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
    * @see {@link https://dev.wildberries.ru/openapi/work-with-products#tag/Ostatki-na-skladah-prodavca}
-   * @example New v3.12.0+ pattern (preferred — required after 2026-05-20):
+   * @example
    * ```typescript
    * await sdk.products.deleteStock(12345, { chrtIds: [12345678, 12345679] });
    * ```
-   *
-   * @example Legacy pattern (deprecated since v3.12.0, breaks after 2026-05-20):
-   * ```typescript
-   * // Will emit a console.warn (since v3.12.0) and return HTTP 400 from WB after 2026-05-20
-   * await sdk.products.deleteStock(12345, { skus: ['1234567890123'] });
-   * ```
    */
   async deleteStock(warehouseId: number, data: StocksRequest): Promise<void> {
-    // task-16.2: detect legacy sku usage, emit warn-once (deadline 2026-05-20 13:00 MSK)
-    const sanitized = sanitizeStocksRequest(data, 'deleteStock');
     return this.client.delete(
       `https://marketplace-api.wildberries.ru/api/v3/stocks/${warehouseId}`,
-      sanitized,
+      data,
       { rateLimitKey: 'products.deleteStocks' }
     );
   }

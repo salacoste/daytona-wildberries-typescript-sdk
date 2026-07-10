@@ -1074,21 +1074,12 @@ export interface CardCharacteristicOutput {
 /**
  * A single stock record on a seller warehouse.
  *
- * **Migration deadline 2026-05-20 13:00 MSK:** Wildberries is phasing out the `sku`
- * field in favor of `chrtId` (size ID). Pass `chrtId` for all new code. The `sku` field
- * will return HTTP 400 from the WB API after the deadline.
+ * Set `chrtId` (size ID) per item. The legacy `sku` field was removed in v4.0.0 —
+ * WB rejects `sku` since 2026-05-20. See `docs/guides/migration-v4.md`.
  *
- * Exactly one of `sku` or `chrtId` should be set per item. If both are set, `chrtId` wins
- * at the SDK level (the request will be sent with `chrtId` only).
- *
- * @since 3.12.0
+ * @since 3.12.0 (sku field removed in 4.0.0)
  */
 export interface StockItem {
-  /**
-   * @deprecated since 3.12.0 — use `chrtId` instead. WB API will reject `sku` after
-   * 2026-05-20 13:00 MSK. See `docs/guides/stocks-sku-to-chrtid-migration.md`.
-   */
-  sku?: string;
   /**
    * Size ID returned by `POST /content/v2/get/cards/list`.
    *
@@ -1097,8 +1088,6 @@ export interface StockItem {
    * endpoint. Pass the same numeric value, but the SDK property is `chrtId` (lowercase d)
    * for stocks methods.
    *
-   * The SDK type keeps this optional for backwards compatibility, but the WB API will
-   * REQUIRE `chrtId` (and reject `sku`) after 2026-05-20 13:00 MSK.
    * @since 3.12.0
    */
   chrtId?: number;
@@ -1109,24 +1098,16 @@ export interface StockItem {
 /**
  * Request body for {@link ProductsModule.getStocks} and {@link ProductsModule.deleteStock}.
  *
- * Provide EITHER `skus` (deprecated) OR `chrtIds` (preferred). If both are provided,
- * `chrtIds` wins. Pass `chrtIds` for all new code before 2026-05-20 13:00 MSK.
- * @since 3.12.0
+ * Pass `chrtIds` (size IDs from `POST /content/v2/get/cards/list`). The legacy `skus`
+ * field was removed in v4.0.0 — WB rejects `skus` since 2026-05-20.
+ * See `docs/guides/migration-v4.md`.
+ * @since 3.12.0 (skus field removed in 4.0.0)
  * @example
  * ```typescript
- * // New v3.12.0+ pattern (preferred)
  * const request: StocksRequest = { chrtIds: [12345678] };
- *
- * // Legacy pattern (deprecated)
- * const legacyRequest: StocksRequest = { skus: ['1234567890123'] };
  * ```
  */
 export interface StocksRequest {
-  /**
-   * @deprecated since 3.12.0 — use `chrtIds` instead. WB API will reject `skus` after
-   * 2026-05-20 13:00 MSK.
-   */
-  skus?: string[];
   /**
    * Array of size IDs (from `POST /content/v2/get/cards/list`).
    *
@@ -1135,8 +1116,6 @@ export interface StocksRequest {
    * endpoint. Pass the same numeric values; the SDK property is `chrtIds` (lowercase d)
    * for stocks methods.
    *
-   * The SDK type keeps this optional for backwards compatibility, but the WB API will
-   * REQUIRE `chrtIds` (and reject `skus`) after 2026-05-20 13:00 MSK.
    * @since 3.12.0
    */
   chrtIds?: number[];
@@ -1147,23 +1126,18 @@ export interface StocksRequest {
  * @since 3.12.0
  * @example
  * ```typescript
- * // New v3.12.0+ pattern (preferred)
  * const request: UpdateStockRequest = { stocks: [{ chrtId: 12345678, amount: 100 }] };
- *
- * // Legacy pattern (deprecated)
- * const legacyRequest: UpdateStockRequest = { stocks: [{ sku: '1234567890123', amount: 100 }] };
  * ```
  */
 export interface UpdateStockRequest {
-  /** Array of stock items. Use `chrtId` per item (not `sku`) after 2026-05-20. */
+  /** Array of stock items (set `chrtId` per item). */
   stocks: StockItem[];
 }
 
 /**
  * Response from {@link ProductsModule.getStocks}.
  *
- * WB returns one of `sku` or `chrtId` per item, matching whichever identifier the
- * request used. After 2026-05-20 13:00 MSK, only `chrtId` will be populated.
+ * WB returns `chrtId` per item (the legacy `sku` identifier was removed in v4.0.0).
  * @since 3.12.0
  */
 export interface GetStocksResponse {
