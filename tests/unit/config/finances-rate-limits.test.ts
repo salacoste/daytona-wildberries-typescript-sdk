@@ -26,20 +26,6 @@ describe('financesRateLimits', () => {
   });
 
   // ──────────────────────────────────────────────────
-  // Supplier Report Tier (1 req/min, 60s interval, burst 1)
-  // ──────────────────────────────────────────────────
-
-  describe('Supplier Report Tier (1 req/min, 60s interval, burst 1)', () => {
-    it('should have correct values for finances.supplierReportDetailByPeriod', () => {
-      expect(financesRateLimits['finances.supplierReportDetailByPeriod']).toEqual({
-        requestsPerMinute: 1,
-        intervalSeconds: 60,
-        burstLimit: 1,
-      });
-    });
-  });
-
-  // ──────────────────────────────────────────────────
   // Documents Standard Tier (6 req/min, 10s interval, burst 5)
   // ──────────────────────────────────────────────────
 
@@ -126,10 +112,9 @@ describe('financesRateLimits', () => {
   });
 
   describe('Completeness', () => {
-    it('should have entries for all 12 expected keys', () => {
+    it('should have entries for all 11 expected keys', () => {
       const expectedKeys = [
         'finances.accountBalance',
-        'finances.supplierReportDetailByPeriod',
         'finances.documentsCategories',
         'finances.documentsList',
         'finances.documentsDownload',
@@ -149,9 +134,9 @@ describe('financesRateLimits', () => {
       }
     });
 
-    it('should have exactly 12 entries (no unexpected keys)', () => {
+    it('should have exactly 11 entries (no unexpected keys)', () => {
       const actualKeys = Object.keys(financesRateLimits);
-      expect(actualKeys).toHaveLength(12);
+      expect(actualKeys).toHaveLength(11);
     });
   });
 });

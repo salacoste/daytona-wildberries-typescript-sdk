@@ -171,13 +171,6 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
-  /** @deprecated Endpoint removed from API */
-  'orders-fbs.postFilesOrdersExternalStickers': {
-    requestsPerMinute: 10,
-    intervalSeconds: 6,
-    burstLimit: 5,
-    penaltyMultiplier: 10,
-  },
   /** PATCH /api/marketplace/v3/supplies/{supplyId}/orders — Add assembly tasks to supply (bulk) */
   'orders-fbs.patchMarketplaceSuppliesOrders': {
     requestsPerMinute: 300,
