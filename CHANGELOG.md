@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v3.18.0 — minor: item recommendations management + DBS order stickers -->
+
+## [3.18.0] - 2026-07-10
+
+### Added
+
+- **promotion**: item recommendations management — `getRecommendationsList` (POST /api/content/v1/recommendations/list) + `setRecommendations` (POST /api/content/v1/recommendations/set; 200 + `errors[]` on partial failure, not a 4xx). Content-category token + Jam Advanced/Premium (or Tariff-Builder 'Seller Recommendations') gating. (task-156)
+- **orders-dbs**: `createOrdersStickers` — POST /api/marketplace/v3/dbs/orders/stickers, stickers for DBS assembly orders with pickup-point delivery (mirrors FBS sticker shape; DBS-local types). (task-166)
+
+<!-- v3.17.0 — minor: normquery/v1-stats endpoints, batch click-collect migration, APIErrorV2, conformance + currency fixes -->
+
+## [3.17.0] - 2026-07-10
+
+### Added
+
+- **promotion**: normquery list + v1 stats endpoints (task-148).
+- **orders-fbs**: `v3.APIErrorV2` error-envelope type (task-175).
+- **in-store-pickup**: migrated to batch click-collect API + backward-compat shims (task-147).
+- **finances**: v5 `getSupplierReportDetailByPeriod` post-deadline error handling (task-113).
+
+### Fixed
+
+- **promotion**: conformance defects M4/D8/D6/D5/D4b — `PlacementType` enum, currency/nullable/kopecks fields (task-164).
+- **analytics**: `currency` added to 4 search-report wrappers + `InventoryHistoryReportReq` (task-169).
+
+### Changed
+
+- Docs: terminology sync (Метаданные→Label Identifiers, ГТД→ДТ), deep-conformance tracker 12/12 complete, JSDoc refreshes (tasks 150, 153, 164, 166 follow-ups).
+
 <!-- v3.16.0 — minor: conformance audit + 8 new endpoints + ~18 type-defect fixes + 3 runtime-breaking bug fixes -->
 
 ## [3.16.0] - 2026-07-08
