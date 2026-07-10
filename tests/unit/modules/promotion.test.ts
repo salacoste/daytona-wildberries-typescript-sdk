@@ -81,22 +81,6 @@ describe('PromotionModule', () => {
       );
     });
 
-    it('updateAuctionBid - should update bids (deprecated)', async () => {
-      mockClient.patch.mockResolvedValue({ bids: [] });
-      const data = {
-        bids: [
-          { advert_id: 123, nm_bids: [{ nm_id: 456, bid: 100, placement: 'search' as const }] },
-        ],
-      };
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await module.updateAuctionBid(data);
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        'https://advert-api.wildberries.ru/adv/v0/auction/bids',
-        data,
-        expect.objectContaining({ rateLimitKey: 'promotion.patchAdvAuctionBids' })
-      );
-    });
-
     it('updateAuctionNm - should update product list', async () => {
       mockClient.patch.mockResolvedValue({ nms: [] });
       const data = { nms: [{ advert_id: 123, nms: { add: [456], delete: [789] } }] };
@@ -166,42 +150,6 @@ describe('PromotionModule', () => {
     });
   });
 
-  describe('Deprecated Methods', () => {
-    it('createAutoSetExcluded - should call with deprecation warning', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await module.createAutoSetExcluded({ excluded: ['phrase1'] }, { id: 123 });
-      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('DEPRECATED'));
-      expect(mockClient.post).toHaveBeenCalledWith(
-        'https://advert-api.wildberries.ru/adv/v1/auto/set-excluded',
-        { excluded: ['phrase1'] },
-        expect.objectContaining({
-          params: { id: 123 },
-          rateLimitKey: 'promotion.postAdvAutoSetExcluded',
-        })
-      );
-      warnSpy.mockRestore();
-    });
-
-    it('createAutoUpdatenm - should call with deprecation warning', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await module.createAutoUpdatenm({ add: [123], delete: [456] }, { id: 789 });
-      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('DEPRECATED'));
-      expect(mockClient.post).toHaveBeenCalledWith(
-        'https://advert-api.wildberries.ru/adv/v1/auto/updatenm',
-        { add: [123], delete: [456] },
-        expect.objectContaining({
-          params: { id: 789 },
-          rateLimitKey: 'promotion.postAdvAutoUpdatenm',
-        })
-      );
-      warnSpy.mockRestore();
-    });
-  });
-
   describe('Media Campaign Methods', () => {
     it('getAdvCount - should get media campaign count', async () => {
       mockClient.get.mockResolvedValue({ all: 10, adverts: { type: 1, status: 9, count: 5 } });
@@ -247,19 +195,6 @@ describe('PromotionModule', () => {
         expect.objectContaining({
           params: { ids: '123,456', beginDate: '2025-01-01', endDate: '2025-01-31' },
           rateLimitKey: 'promotion.advFullstats',
-        })
-      );
-    });
-
-    it('getStatsKeywords - should get keyword statistics (deprecated)', async () => {
-      mockClient.get.mockResolvedValue({});
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await module.getStatsKeywords({ advert_id: 123, from: '2025-01-01', to: '2025-01-07' });
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://advert-api.wildberries.ru/adv/v0/stats/keywords',
-        expect.objectContaining({
-          params: { advert_id: 123, from: '2025-01-01', to: '2025-01-07' },
-          rateLimitKey: 'promotion.advStatsKeywords',
         })
       );
     });
@@ -637,33 +572,6 @@ describe('PromotionModule', () => {
       );
       await expect(module.getBidsRecommendations({ advertId: 123, nmId: 999 })).rejects.toThrow(
         'nm does not belong to advert'
-      );
-    });
-
-    it('updateBidsV2 - should update bids with V1 API', async () => {
-      mockClient.patch.mockResolvedValue({ bids: [] });
-      // updateBidsV2 is intentionally tested to confirm deprecation is non-breaking (task-131).
-      // updateBids is the canonical entry for PATCH /api/advert/v1/bids.
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
-      await module.updateBidsV2({
-        bids: [
-          {
-            advert_id: 123,
-            nm_bids: [{ nm_id: 456, bid_kopecks: 250, placement: 'recommendations' }],
-          },
-        ],
-      });
-      expect(mockClient.patch).toHaveBeenCalledWith(
-        'https://advert-api.wildberries.ru/api/advert/v1/bids',
-        {
-          bids: [
-            {
-              advert_id: 123,
-              nm_bids: [{ nm_id: 456, bid_kopecks: 250, placement: 'recommendations' }],
-            },
-          ],
-        },
-        expect.objectContaining({ rateLimitKey: 'promotion.bidsV1' })
       );
     });
   });

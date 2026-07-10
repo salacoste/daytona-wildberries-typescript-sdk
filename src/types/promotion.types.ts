@@ -707,29 +707,6 @@ export type ResponseWithDate = {
   advertId?: number;
 }[];
 
-export interface V0KeywordsStatistic {
-  /** Количество кликов */
-  clicks: number;
-  /** CTR (Click-Through Rate) — показатель кликабельности */
-  ctr: number;
-  /** Ключевая фраза */
-  keyword: string;
-  /** Сумма затрат по ключевой фразе */
-  sum: number;
-  /** Количество показов */
-  views: number;
-}
-
-export interface V0KeywordsStatistics {
-  /** Дата */
-  date: string;
-  stats: V0KeywordsStatistic[];
-}
-
-export interface V0KeywordsStatisticsResponse {
-  keywords: V0KeywordsStatistics[];
-}
-
 export interface ErrorResponse {
   type: string;
   message: string;
@@ -1244,95 +1221,6 @@ export interface V0GetNormQueryMinusResponseItem {
 }
 
 // ============================================================================
-// GetAdverts Types (Non-Auction with Kopecks)
-// ============================================================================
-
-/**
- * Ответ со списком кампаний (с ставками в копейках)
- */
-export interface GetAdverts {
-  /** Кампании */
-  adverts: GetAdvertsItem[];
-}
-
-/**
- * Элемент списка кампаний
- */
-export interface GetAdvertsItem {
-  /** ID кампании */
-  id: number;
-  /** Настройки товаров */
-  nm_settings: AdvertNMsSettings[];
-  /** Настройки кампании */
-  settings: AdvertSettings;
-  /** Статус кампании */
-  status: -1 | 4 | 7 | 8 | 9 | 11;
-  /** Временные отметки */
-  timestamps: Timestamps;
-  /** Тип ставки: unified — единая ставка (Type 8, управляет WB), manual — ручная ставка (Type 9) */
-  bid_type: BidType;
-  /**
-   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
-   * @since task-170
-   */
-  currency?: string;
-}
-
-/**
- * Настройки товаров кампании (с ставками в копейках)
- */
-export interface AdvertNMsSettings {
-  /** Ставки в копейках */
-  bids_kopecks: AdvertBidsKopecks;
-  /** Предмет */
-  subject: AdvertSubject;
-  /** Артикул WB */
-  nm_id: number;
-}
-
-/**
- * Ставки в копейках
- */
-export interface AdvertBidsKopecks {
-  /** Ставка в поиске */
-  search: number;
-  /** Ставка в рекомендациях */
-  recommendations: number;
-}
-
-/**
- * Предмет (для кампаний с копейками)
- */
-export interface AdvertSubject {
-  /** ID предмета */
-  id: number;
-  /** Название предмета */
-  name: string;
-}
-
-/**
- * Настройки кампании
- */
-export interface AdvertSettings {
-  /** Тип оплаты: cpm — за показы, cpc — за клик */
-  payment_type: 'cpm' | 'cpc';
-  /** Название кампании */
-  name: string;
-  /** Места размещения */
-  placements: AdvertPlacements;
-}
-
-/**
- * Места размещения кампании
- */
-export interface AdvertPlacements {
-  /** Размещение в поиске */
-  search: boolean;
-  /** Размещение в рекомендациях */
-  recommendations: boolean;
-}
-
-// ============================================================================
 // V2 API Types (with bid_kopecks)
 // ============================================================================
 
@@ -1391,6 +1279,28 @@ export interface AdvertTimestamps {
   started: string | null;
   /** Время удаления кампании. Если кампания не удалена, время указывается в будущем */
   deleted: string;
+}
+
+/**
+ * Настройки кампании
+ */
+export interface AdvertSettings {
+  /** Тип оплаты: cpm — за показы, cpc — за клик */
+  payment_type: 'cpm' | 'cpc';
+  /** Название кампании */
+  name: string;
+  /** Места размещения */
+  placements: AdvertPlacements;
+}
+
+/**
+ * Места размещения кампании
+ */
+export interface AdvertPlacements {
+  /** Размещение в поиске */
+  search: boolean;
+  /** Размещение в рекомендациях */
+  recommendations: boolean;
 }
 
 /**

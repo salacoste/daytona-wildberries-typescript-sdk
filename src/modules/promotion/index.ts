@@ -5,12 +5,10 @@
  */
 
 import { BaseClient } from '../../client/base-client';
-import { warnOnce } from '../../utils/deprecation';
 import type {
   BidsRecommendationsResponse,
   CampaignProductsUpdate,
   CreateCampaignRequest,
-  GetAdverts,
   GetAdvertsV2Response,
   GetBidsRecommendationsParams,
   GetCampaignCountResponse,
@@ -47,7 +45,6 @@ import type {
   V0GetNormQueryMinusResponse,
   V0GetNormQueryStatsRequest,
   V0GetNormQueryStatsResponse,
-  V0KeywordsStatisticsResponse,
   V0SetMinusNormQueryRequest,
   V0SetNormQueryBidsRequest,
   V1GetNormQueryStatsRequest,
@@ -144,41 +141,6 @@ export class PromotionModule {
   }): Promise<void> {
     return this.client.put('https://advert-api.wildberries.ru/adv/v0/auction/placements', data, {
       rateLimitKey: 'promotion.putAdvAuctionPlacements',
-    });
-  }
-
-  /**
-   * Изменение ставок в кампаниях
-   *
-   * Метод меняет ставки карточек товаров по артикулам WB в кампаниях типа `9` с единой или ручной ставкой. <br><br> Для кампаний в статусах `4`, `9` и `11`. <br><br> В запросе укажите место размещения в параметре `placement`: - `combined` — в поиске и рекомендациях для кампаний с единой ставкой - `search `или `recommendations` — в поиске или рекомендациях для кампаний с ручной ставкой <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 5 запросов | 200 миллисекунд | 5 запросов | </div>
-   *
-   * @deprecated Use {@link PromotionModule.updateBids} instead for kopeck-based bidding.
-   * @param data - Request body data
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.promotion.updateAuctionBid({});
-  console.log(result);
-   */
-  async updateAuctionBid(data: {
-    bids: {
-      advert_id: number;
-      nm_bids: {
-        nm_id: number;
-        bid: number;
-        placement: 'search' | 'recommendations' | 'combined';
-      }[];
-    }[];
-  }): Promise<{
-    bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[];
-  }> {
-    return this.client.patch<{
-      bids: { advert_id: number; nm_bids: { nm_id: number; bid: number; placement: string }[] }[];
-    }>('https://advert-api.wildberries.ru/adv/v0/auction/bids', data, {
-      rateLimitKey: 'promotion.patchAdvAuctionBids',
     });
   }
 
@@ -354,78 +316,6 @@ export class PromotionModule {
     >('https://advert-api.wildberries.ru/adv/v1/payments', {
       params: options,
       rateLimitKey: 'promotion.advPayments',
-    });
-  }
-
-  /**
-   * Установка/удаление минус-фраз для кампании с единой ставкой
-   *
-   * <div class="description_important"> ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br> **Обновление**: Дата отключения перенесена с 15 января на 2 февраля 2026.<br><br> **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br> **Альтернатива**: Для работы с минус-фразами в кампаниях type 9 используйте соответствующие методы управления кампаниями с ручной ставкой. </div> Метод устанавливает и удаляет минус-фразы для кампании [с единой ставкой](/openapi/promotion#tag/Sozdanie-kampanij/paths/~1adv~1v1~1save-ad/post).<br><br> Данные фразы можно выбрать из списка запросов, по которым покупатели находили ваш товар. Список запросов можно получить в [статистике ключевых фраз](/openapi/analytics#tag/Statistika-po-prodvizheniyu/paths/~1adv~1v0~1stats~1keywords/get).<br> Отправка пустого массива удаляет все минус-фразы из кампании. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 6 секунд | 1 запрос | 6 секунд | 5 запросов | </div>
-   *
-   * @deprecated This method will be disabled by Wildberries API on February 2, 2026.
-   * Use setNormqueryMinus() for type 9 campaigns with manual bidding instead.
-   * @see {@link https://dev.wildberries.ru/release-notes?id=388} Release notes
-   * @see {@link PromotionModule.setNormqueryMinus} New method
-   *
-   * @param data - Request body data
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * const result = await sdk.promotion.createAutoSetExcluded({}, {}); // February 2, 2026
-   * console.log(result);
-   */
-  async createAutoSetExcluded(
-    data: { excluded?: string[] },
-    options?: { id: number }
-  ): Promise<void> {
-    warnOnce(
-      'PromotionModule.createAutoSetExcluded',
-      '[DEPRECATED] createAutoSetExcluded() will be disabled by Wildberries API on February 2, 2026. ' +
-        'Use setNormqueryMinus() for type 9 campaigns with manual bidding instead.'
-    );
-    return this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/set-excluded', data, {
-      params: options,
-      rateLimitKey: 'promotion.postAdvAutoSetExcluded',
-    });
-  }
-
-  /**
-   * Изменение списка карточек товаров в кампании с единой ставкой
-   *
-   * <div class="description_important"> ⚠️ **DEPRECATED**: Этот метод устарел и будет отключён **2 февраля 2026**.<br><br> **Причина**: Переход от кампаний с единой ставкой (type 8) к кампаниям с ручной и единой ставкой (type 9).<br><br> **Альтернатива**: Для работы с товарами в кампаниях type 9 используйте метод [Управление товарами в кампаниях](/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1adv~1v0~1auction~1nms/patch). </div> Метод добавляет и удаляет карточки товаров в кампании с единой ставкой.<br><br> <div class="description_important"> Добавить можно только те карточки товаров, которые вернутся в <a href="/openapi/promotion#tag/Parametry-avtomaticheskih-kampanij/paths/~1adv~1v1~1auto~1getnmtoadd/get">списке карточек товаров для кампании с единой ставкой</a>.<br>Удалить единственную карточку товара из кампании нельзя. </div> Проверки по параметру `delete` не предусмотрено. Если пришел ответ со статус-кодом `200`, а изменений не произошло, проверьте, чтобы запрос соответствовал документации. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 60 запросов | 1 секунда | 5 запросов | </div>
-   *
-   * @deprecated This method will be disabled by Wildberries API on February 2, 2026.
-   * Use updateAuctionNm() for type 9 campaigns instead.
-   * @see {@link https://dev.wildberries.ru/release-notes?id=388} Release notes
-   * @see {@link PromotionModule.updateAuctionNm} New method
-   *
-   * @param data - Request body data
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * const result = await sdk.promotion.createAutoUpdatenm({}, {}); // February 2, 2026
-   * console.log(result);
-   */
-  async createAutoUpdatenm(
-    data: { add?: number[]; delete?: number[] },
-    options?: { id: number }
-  ): Promise<void> {
-    warnOnce(
-      'PromotionModule.createAutoUpdatenm',
-      '[DEPRECATED] createAutoUpdatenm() will be disabled by Wildberries API on February 2, 2026. ' +
-        'Use updateAuctionNm() for type 9 campaigns instead.'
-    );
-    return this.client.post('https://advert-api.wildberries.ru/adv/v1/auto/updatenm', data, {
-      params: options,
-      rateLimitKey: 'promotion.postAdvAutoUpdatenm',
     });
   }
 
@@ -668,41 +558,6 @@ export class PromotionModule {
   }
 
   /**
-   * Статистика по ключевым фразам
-   *
-   * Метод формирует статистику по ключевым фразам из поисковой строки: количество просмотров товара и затраты по одной ключевой фразе. Подходит для кампаний c единой и ручной ставкой. <br><br> Статистика формируется за каждый день, когда кампания была активна. В одном запросе можно получить данные максимум за 7 дней. <br> Данные обновляются каждый час. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
-   *
-   * @deprecated WB removed the v0 advert statistics API; the
-   *   `/adv/v0/stats/keywords` endpoint is no longer present in the WB OpenAPI
-   *   spec. Use {@link PromotionModule.getSearchClusterStats} (normquery-based
-   *   search cluster statistics on `/adv/v0/normquery/stats`) instead — it
-   *   returns per-cluster views/spend for the same cpm campaigns and supports
-   *   both cpm and cpc payment types. This method is retained only for backward
-   *   compatibility and will return errors once WB fully shuts down the v0
-   *   advert surface.
-   * @see {@link PromotionModule.getSearchClusterStats} Replacement method
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-  const result = await sdk.promotion.getStatsKeywords({});
-  console.log(result);
-   */
-  async getStatsKeywords(options?: {
-    advert_id: number;
-    from: string;
-    to: string;
-  }): Promise<V0KeywordsStatisticsResponse> {
-    return this.client.get<V0KeywordsStatisticsResponse>(
-      'https://advert-api.wildberries.ru/adv/v0/stats/keywords',
-      { params: options, rateLimitKey: 'promotion.advStatsKeywords' }
-    );
-  }
-
-  /**
    * Статистика медиакампаний
    *
    * Метод формирует статистику кампаний сервиса [WB Медиа](https://cmp.wildberries.ru/cmpf/statistics). Статистику можно группировать по датам и/или интервалам. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 10 запросов | 100 миллисекунд | 10 запросов | </div>
@@ -824,75 +679,6 @@ export class PromotionModule {
       undefined,
       { rateLimitKey: 'promotion.postCalendarPromotionsUpload' }
     );
-  }
-
-  // ============================================================================
-  // Deprecated V0/V1 Methods - Will be removed February 2, 2026
-  // ============================================================================
-
-  /**
-   * Получить информацию о кампаниях (устаревший метод)
-   *
-   * Метод возвращает информацию о рекламных кампаниях по их идентификаторам.
-   *
-   * @deprecated Будет удалён 2 февраля 2026. Используйте getAdvertsV2() вместо этого.
-   * @see {@link https://dev.wildberries.ru/release-notes?id=388} Release notes
-   * @see {@link PromotionModule.getAdvertsV2} Новый метод
-   *
-   * @param ids - Массив идентификаторов кампаний
-   * @returns Информация о кампаниях
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * ```typescript
-   * const adverts = await sdk.promotion.getPromotionAdverts([12345, 67890]);
-   * console.log(adverts);
-   * ```
-   */
-  async getPromotionAdverts(ids: number[]): Promise<GetAdverts> {
-    warnOnce(
-      'PromotionModule.getPromotionAdverts',
-      '[DEPRECATED] getPromotionAdverts() будет удалён 2 февраля 2026. Используйте getAdvertsV2().'
-    );
-    return this.client.post<GetAdverts>(
-      'https://advert-api.wildberries.ru/adv/v1/promotion/adverts',
-      ids,
-      { rateLimitKey: 'promotion.postAdvPromotionAdverts' }
-    );
-  }
-
-  /**
-   * Получить список аукционных кампаний (устаревший метод)
-   *
-   * Метод возвращает список рекламных кампаний типа "аукцион".
-   *
-   * @deprecated Будет удалён 2 февраля 2026. Используйте getAdvertsV2() вместо этого.
-   * @see {@link https://dev.wildberries.ru/release-notes?id=388} Release notes
-   * @see {@link PromotionModule.getAdvertsV2} Новый метод
-   *
-   * @param params - Параметры фильтрации
-   * @returns Список аукционных кампаний
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @example
-   * ```typescript
-   * const adverts = await sdk.promotion.getAuctionAdverts({ status: 9 });
-   * console.log(adverts);
-   * ```
-   */
-  async getAuctionAdverts(params?: { status?: number; type?: number }): Promise<GetAdverts> {
-    warnOnce(
-      'PromotionModule.getAuctionAdverts',
-      '[DEPRECATED] getAuctionAdverts() будет удалён 2 февраля 2026. Используйте getAdvertsV2().'
-    );
-    return this.client.get<GetAdverts>('https://advert-api.wildberries.ru/adv/v0/auction/adverts', {
-      params,
-      rateLimitKey: 'promotion.advAuctionAdverts',
-    });
   }
 
   // ============================================================================
@@ -1394,76 +1180,6 @@ export class PromotionModule {
         rateLimitKey: 'promotion.getBidsRecommendations',
       }
     );
-  }
-
-  /**
-   * Изменение ставок в кампаниях (V1 API)
-   *
-   * Метод меняет ставки карточек товаров по артикулам WB в кампаниях с единой или ручной ставкой.
-   * Для кампаний в статусах 4, 9 и 11. Replaces deprecated v0 endpoint.
-   *
-   * @deprecated Use {@link PromotionModule.updateBids} instead. Both methods
-   *   PATCH the same endpoint (`/api/advert/v1/bids`); `updateBids` is the
-   *   canonical entry point with named `UpdateBidsRequest` / `UpdateBidsResponse`
-   *   types and the `promotion.updateBids` rate-limit key. This duplicate wrapper
-   *   (rate-limit key `promotion.bidsV1`) is retained for backward compatibility
-   *   and will be removed in a future major release.
-   *
-   * Rate limit: 5 requests per second, 200ms interval, burst 5
-   *
-   * @param data - Request body with bids in kopecks
-   * @returns Updated bids
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Upravlenie-kampaniyami/paths/~1api~1advert~1v1~1bids/patch}
-   * @example
-   * ```typescript
-   * const result = await sdk.promotion.updateBidsV2({
-   *   bids: [{
-   *     advert_id: 12345,
-   *     nm_bids: [{
-   *       nm_id: 13335157,
-   *       bid_kopecks: 250,
-   *       placement: 'recommendations'
-   *     }]
-   *   }]
-   * });
-   * console.log(result.bids);
-   * ```
-   */
-  async updateBidsV2(data: {
-    bids: {
-      advert_id: number;
-      nm_bids: {
-        nm_id: number;
-        bid_kopecks: number;
-        placement: 'search' | 'recommendations' | 'combined';
-      }[];
-    }[];
-  }): Promise<{
-    bids: {
-      advert_id: number;
-      nm_bids: {
-        nm_id: number;
-        bid_kopecks: number;
-        placement: string;
-      }[];
-    }[];
-  }> {
-    return this.client.patch<{
-      bids: {
-        advert_id: number;
-        nm_bids: {
-          nm_id: number;
-          bid_kopecks: number;
-          placement: string;
-        }[];
-      }[];
-    }>('https://advert-api.wildberries.ru/api/advert/v1/bids', data, {
-      rateLimitKey: 'promotion.bidsV1',
-    });
   }
 
   // ============================================================================

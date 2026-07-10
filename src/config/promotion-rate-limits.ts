@@ -19,16 +19,6 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.2,
     burstLimit: 5,
   },
-  'promotion.postAdvPromotionAdverts': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 5,
-  },
-  'promotion.advAuctionAdverts': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 5,
-  },
   'promotion.advConfig': {
     requestsPerMinute: 1,
     intervalSeconds: 60,
@@ -94,11 +84,6 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 1,
     burstLimit: 1,
   },
-  'promotion.patchAdvAuctionBids': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 5,
-  },
   // GET /api/advert/v0/bids/recommendations — recommended bids for product cards and search clusters (cpm only)
   'promotion.getBidsRecommendations': {
     requestsPerMinute: 5,
@@ -145,17 +130,7 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.5,
     burstLimit: 2,
   },
-  'promotion.postAdvAutoSetExcluded': {
-    requestsPerMinute: 10,
-    intervalSeconds: 6,
-    burstLimit: 5,
-  },
   'promotion.advAutoGetnmtoadd': {
-    requestsPerMinute: 60,
-    intervalSeconds: 1,
-    burstLimit: 5,
-  },
-  'promotion.postAdvAutoUpdatenm': {
     requestsPerMinute: 60,
     intervalSeconds: 1,
     burstLimit: 5,
@@ -196,11 +171,6 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 4,
   },
   'promotion.advStatWords': {
-    requestsPerMinute: 240,
-    intervalSeconds: 0.25,
-    burstLimit: 4,
-  },
-  'promotion.advStatsKeywords': {
     requestsPerMinute: 240,
     intervalSeconds: 0.25,
     burstLimit: 4,
@@ -325,13 +295,6 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     requestsPerMinute: 20,
     intervalSeconds: 3,
     burstLimit: 5,
-  },
-
-  /** PATCH /api/advert/v1/bids - Update bids (new API path) */
-  'promotion.bidsV1': {
-    requestsPerMinute: 300,
-    intervalSeconds: 0.2,
-    burstLimit: 10,
   },
 
   // ============================================================================
