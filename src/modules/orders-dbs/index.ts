@@ -30,7 +30,6 @@ import type {
   DeliveryDatesRequest,
   DeliveryDatesInfoResponse,
   GetMetaBulkRequest,
-  GetOrderMetaBulkResponse,
   DeleteMetaBulkRequest,
   DeleteMetaBulkResponse,
   SetSgtinBulkRequest,
@@ -323,31 +322,6 @@ export class OrdersDbsModule {
   // ==========================================================================
   // Bulk Metadata Endpoints (Story 26.2) - Replace deprecated single-order methods
   // ==========================================================================
-
-  /**
-   * Get metadata for multiple orders (bulk)
-   *
-   * @deprecated WB shuts down POST .../meta/info on **July 27, 2026**. Migrate to
-   *   {@link OrdersDbsModule.checkMetaValidation} (POST .../meta/details), which also
-   *   returns marking-metadata validation status.
-   *
-   * Rate limit: 150 requests/min, 400ms interval, 20 burst
-   *
-   * @param request - Request with order IDs
-   * @returns Promise resolving to bulk metadata response
-   *
-   * @example
-   * ```typescript
-   * const meta = await sdk.ordersDBS.getMetaBulk({ orders: [123456, 234567] });
-   * ```
-   */
-  async getMetaBulk(request: GetMetaBulkRequest): Promise<GetOrderMetaBulkResponse> {
-    return this.client.post<GetOrderMetaBulkResponse>(
-      `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/info`,
-      request,
-      { rateLimitKey: 'orders-dbs.getMetaBulk' }
-    );
-  }
 
   /**
    * Delete metadata for multiple orders (bulk)

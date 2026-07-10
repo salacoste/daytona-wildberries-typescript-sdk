@@ -458,32 +458,6 @@ export interface GetMetaBulkRequest {
 }
 
 /**
- * Metadata for a single order in bulk response
- */
-export interface BulkOrderMeta {
-  /** Order ID */
-  orderId: number;
-  /** IMEI code */
-  imei?: string;
-  /** UIN code */
-  uin?: string;
-  /** GTIN code */
-  gtin?: string;
-  /** SGTIN marking codes */
-  sgtins?: string[];
-  /** Customs declaration number */
-  customsDeclaration?: string;
-}
-
-/**
- * Response from getMetaBulk
- */
-export interface GetOrderMetaBulkResponse {
-  /** Metadata for each requested order */
-  orders: BulkOrderMeta[];
-}
-
-/**
  * Request body for deleteMetaBulk
  */
 export interface DeleteMetaBulkRequest {

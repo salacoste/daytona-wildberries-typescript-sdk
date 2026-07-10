@@ -633,36 +633,6 @@ describe('OrdersDbsModule', () => {
   });
 
   // ==========================================================================
-  // getMetaBulk() Tests
-  // ==========================================================================
-
-  describe('getMetaBulk()', () => {
-    it('should call correct endpoint with rateLimitKey', async () => {
-      mockClient.post.mockResolvedValue({ orders: [] });
-      const request = { orders: [123456] };
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-      await ordersDbsModule.getMetaBulk(request);
-
-      expect(mockClient.post).toHaveBeenCalledWith(
-        `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/info`,
-        request,
-        { rateLimitKey: 'orders-dbs.getMetaBulk' }
-      );
-    });
-
-    it('should return metadata response', async () => {
-      const mockResponse = { orders: [{ orderId: 123456, imei: '123' }] };
-      mockClient.post.mockResolvedValue(mockResponse);
-
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing deprecated method
-      const result = await ordersDbsModule.getMetaBulk({ orders: [123456] });
-
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  // ==========================================================================
   // deleteMetaBulk() Tests
   // ==========================================================================
 

@@ -221,14 +221,6 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
   // T6: Bulk Metadata Read/Delete (150 req/min, 400ms interval, burst 20) - Story 26.2
   // ============================================================================
 
-  /** Get metadata bulk */
-  'orders-dbs.getMetaBulk': {
-    requestsPerMinute: 150,
-    intervalSeconds: 0.4,
-    burstLimit: 20,
-    penaltyMultiplier: 10,
-  },
-
   /** Delete metadata bulk */
   'orders-dbs.deleteMetaBulk': {
     requestsPerMinute: 150,
