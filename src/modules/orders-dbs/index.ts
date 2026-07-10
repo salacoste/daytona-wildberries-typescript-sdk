@@ -40,6 +40,9 @@ import type {
   SetCustomsDeclarationBulkRequest,
   SetMetaBulkResponse,
   DBSCheckMetaValidationResponse,
+  StickerParams,
+  StickerRequest,
+  StickerResponse,
 } from '../../types/orders-dbs.types';
 
 /** Base URL for DBS API endpoints */
@@ -840,6 +843,54 @@ export class OrdersDbsModule {
       `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/details`,
       request,
       { rateLimitKey: 'orders-dbs.checkMetaValidation' }
+    );
+  }
+
+  /**
+   * Get DBS assembly-order stickers
+   *
+   * Returns stickers for DBS (Delivery by Seller) assembly orders with delivery
+   * to a pickup point, in SVG, ZPLV, ZPLH, or PNG format. Maximum 100 stickers
+   * per request.
+   *
+   * Mirrors the FBS `createOrdersSticker` method at the DBS endpoint path.
+   * Request/response shape mirrors FBS stickers — verify field-level details
+   * against the live orders-dbs spec.
+   *
+   * Access (expanded): available to registered/authorized services via a basic
+   * token + secret, as well as personal/service tokens.
+   *
+   * Rate limit: 300 requests per minute, 200ms interval, burst 20 (mirrors FBS
+   * stickers; confirm against the live spec).
+   *
+   * @param options - Sticker format and dimensions (`type`, `width`, `height`)
+   * @param data - Request body containing order IDs (max 100)
+   * @returns Promise resolving to the stickers response
+   * @throws {ValidationError} When the orders array exceeds 100 items
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-DBS/paths/~1api~1marketplace~1v3~1dbs~1orders~1stickers/post}
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.createOrdersStickers(
+   *   { type: 'png', width: 58, height: 40 },
+   *   { orders: [123, 456] },
+   * );
+   * console.log(result.stickers);
+   * ```
+   */
+  async createOrdersStickers(
+    options?: StickerParams,
+    data?: StickerRequest
+  ): Promise<StickerResponse> {
+    if (data?.orders && data.orders.length > 100) {
+      throw new ValidationError('orders array cannot exceed 100 items');
+    }
+    return this.client.post<StickerResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/stickers`,
+      data,
+      { params: options, rateLimitKey: 'orders-dbs.createOrdersStickers' }
     );
   }
 }

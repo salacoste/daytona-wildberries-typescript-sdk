@@ -287,4 +287,12 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+
+  /** POST /api/marketplace/v3/dbs/orders/stickers - DBS assembly-order stickers (mirrors FBS stickers) */
+  'orders-dbs.createOrdersStickers': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

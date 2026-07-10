@@ -607,3 +607,54 @@ export interface DBSBulkErrorResponse {
   /** Error title */
   title?: string;
 }
+
+/**
+ * Sticker types for DBS assembly orders.
+ *
+ * These mirror the orders-fbs `Sticker*` types (StickerType, StickerParams,
+ * StickerRequest, StickerItem, StickerResponse). They are duplicated here to
+ * keep the DBS module self-contained — no cross-module type imports is the
+ * established convention in this codebase. Verify field-level details against
+ * the live orders-dbs spec (task-166).
+ */
+
+/** Output format for an assembly-order sticker. */
+export type StickerType = 'svg' | 'zplv' | 'zplh' | 'png';
+
+/** Query parameters for sticker format and dimensions. */
+export interface StickerParams {
+  /** Output format */
+  type: StickerType;
+  /** Sticker width in mm (58 or 40) */
+  width: number;
+  /** Sticker height in mm (40 or 30) */
+  height: number;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}
+
+/** Request body for retrieving DBS order stickers (max 100 order IDs). */
+export interface StickerRequest {
+  /** List of order IDs (max 100) */
+  orders?: number[];
+}
+
+/** Individual DBS sticker data item. */
+export interface StickerItem {
+  /** Order ID */
+  orderId?: number;
+  /** Sticker part A value */
+  partA?: string;
+  /** Sticker part B value */
+  partB?: string;
+  /** Encoded barcode value */
+  barcode?: string;
+  /** Base64-encoded sticker file */
+  file?: string;
+}
+
+/** Response containing DBS order stickers. */
+export interface StickerResponse {
+  /** List of sticker data */
+  stickers?: StickerItem[];
+}

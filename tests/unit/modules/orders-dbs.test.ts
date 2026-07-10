@@ -916,4 +916,47 @@ describe('OrdersDbsModule', () => {
       );
     });
   });
+
+  describe('createOrdersStickers() (task-166)', () => {
+    it('should call POST dbs/orders/stickers with params + body + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ stickers: [] });
+
+      await ordersDbsModule.createOrdersStickers(
+        { type: 'png', width: 58, height: 40 },
+        { orders: [123, 456] }
+      );
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/stickers`,
+        { orders: [123, 456] },
+        expect.objectContaining({
+          params: { type: 'png', width: 58, height: 40 },
+          rateLimitKey: 'orders-dbs.createOrdersStickers',
+        })
+      );
+    });
+
+    it('should pass through the stickers response', async () => {
+      const resp = { stickers: [{ orderId: 123, file: 'aGVsbG8=' }] };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await ordersDbsModule.createOrdersStickers(
+        { type: 'png', width: 58, height: 40 },
+        { orders: [123] }
+      );
+
+      expect(result).toEqual(resp);
+    });
+
+    it('should throw ValidationError when orders exceed 100', async () => {
+      const big = Array.from({ length: 101 }, (_, i) => i + 1);
+
+      await expect(
+        ordersDbsModule.createOrdersStickers(
+          { type: 'png', width: 58, height: 40 },
+          { orders: big }
+        )
+      ).rejects.toThrow(ValidationError);
+    });
+  });
 });
