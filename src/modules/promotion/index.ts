@@ -19,6 +19,8 @@ import type {
   GetSearchClusterStatsRequest,
   GetSearchClusterStatsResponse,
   GetSupplierSubjectsParams,
+  ListRecommendationsRequest,
+  ListRecommendationsResponse,
   PlacementType,
   RequestWithCampaignID,
   RequestWithDate,
@@ -26,6 +28,8 @@ import type {
   ResponseFullStats,
   ResponseWithReturn,
   SetMinusPhrasesRequest,
+  SetRecommendationsRequest,
+  SetRecommendationsResponse,
   Stat,
   StatDate,
   StatInterval,
@@ -1888,6 +1892,87 @@ export class PromotionModule {
         })),
       },
       { rateLimitKey: 'promotion.updateCampaignProducts' }
+    );
+  }
+
+  /**
+   * Get Seller Recommendations list (item recommendations in product cards)
+   *
+   * Returns the current seller-recommendation assignments for product cards
+   * (the "Seller Recommendations" block shown in product listings).
+   *
+   * Lives on the **content-api** domain (Content-category methods), although
+   * documented under the promotion tag. Auth: Personal or Service token
+   * (Content category). Gating: Jam subscription (Advanced/Premium) OR the
+   * "Seller Recommendations in listings" Tariff-Builder option.
+   *
+   * Rate limit: 100 requests per minute
+   *
+   * @param data - Optional filter (WB item numbers). The exact filter shape is
+   *   INFERRED — verify against the live spec (task-156 AC#9).
+   * @returns Recommendation entries per item in `data`; per-item `errors` on partial success (HTTP 200)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/work-with-products}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.getRecommendationsList({ nmIDs: [12345678] });
+   * for (const entry of result.data ?? []) {
+   *   console.log(`${entry.nmID}: ${entry.tagsIDs.join(', ')}`);
+   * }
+   * ```
+   */
+  async getRecommendationsList(
+    data: ListRecommendationsRequest
+  ): Promise<ListRecommendationsResponse> {
+    return this.client.post<ListRecommendationsResponse>(
+      'https://content-api.wildberries.ru/api/content/v1/recommendations/list',
+      data,
+      { rateLimitKey: 'promotion.getRecommendationsList' }
+    );
+  }
+
+  /**
+   * Set Seller Recommendations (item recommendations in product cards)
+   *
+   * Sets, updates, or removes seller recommendations for product cards.
+   * Send an empty `tagsIDs` array to clear a product's recommendations.
+   *
+   * PARTIAL SUCCESS: WB returns HTTP **200** even when some items fail — the
+   * per-item failures are listed in the `errors` array of the response body
+   * (each `{ nmID, error }`). Always inspect `result.errors` instead of relying
+   * on the status code.
+   *
+   * Lives on the **content-api** domain. Auth: Personal or Service token
+   * (Content category). Gating: Jam subscription (Advanced/Premium) OR the
+   * "Seller Recommendations in listings" Tariff-Builder option.
+   *
+   * Rate limit: 100 requests per minute
+   *
+   * @param data - Per-product recommendation assignments
+   * @returns Response envelope; `data` is `null`. Check `errors` for partial failures.
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/work-with-products}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.setRecommendations([
+   *   { nmID: 12345678, tagsIDs: [11111111, 22222222] },
+   * ]);
+   * if (result.errors.length) {
+   *   console.warn('Partial failure:', result.errors);
+   * }
+   * ```
+   */
+  async setRecommendations(data: SetRecommendationsRequest): Promise<SetRecommendationsResponse> {
+    return this.client.post<SetRecommendationsResponse>(
+      'https://content-api.wildberries.ru/api/content/v1/recommendations/set',
+      data,
+      { rateLimitKey: 'promotion.setRecommendations' }
     );
   }
 }

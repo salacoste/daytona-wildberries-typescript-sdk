@@ -2267,3 +2267,70 @@ export interface BidsRecommendationsResponse {
   /** Recommended bids per search cluster */
   normQueries: NormQueryBidRecommendation[];
 }
+
+// ============================================================================
+// Seller Recommendations (Item Recommendations) Types
+// ============================================================================
+// Source: WB Content API — POST /api/content/v1/recommendations/{list,set}
+// (content-api domain; documented under the promotion tag).
+// Schema captured 2026-07-10 from official WB docs snippets + release-notes
+// id=190/196/471 + community SDKs. The live promotion spec (295K) exceeded the
+// in-session fetch threshold (dev.wildberries.ru antibot-protected), so the
+// `list` request filter + entry shape are INFERRED from the confirmed `set`
+// shape — verify field-level precision against the live OpenAPI (task-156 AC#9).
+
+/** Per-item error returned in the `errors` array on partial success (HTTP 200). */
+export interface RecommendationError {
+  /** WB item number that failed. */
+  nmID: number;
+  /** Human-readable error reason (e.g. "Товар не найден"). */
+  error: string;
+}
+
+/** A recommended-items assignment for one product card (`/set` request item). */
+export interface RecommendationsSetItem {
+  /** WB item number of the product whose recommendations are being set. */
+  nmID: number;
+  /** WB item numbers to display as recommendations for this product.
+   *  Send an empty array to clear the product's recommendations. */
+  tagsIDs: number[];
+}
+
+/** One product's current recommendation assignments (`/list` response entry). */
+export interface RecommendationEntry {
+  /** WB item number (product). */
+  nmID: number;
+  /** WB item numbers currently set as recommendations for this product. */
+  tagsIDs: number[];
+}
+
+/** Request body for POST /api/content/v1/recommendations/set — array of per-product assignments. */
+export type SetRecommendationsRequest = RecommendationsSetItem[];
+
+/** Response for POST /api/content/v1/recommendations/set.
+ *  `data` is `null`. On PARTIAL success WB still returns HTTP 200 — inspect `errors`. */
+export interface SetRecommendationsResponse {
+  /** Always `null` for the set method. */
+  data: null;
+  /** Per-item errors. Populated on partial success (HTTP 200); empty on full success. */
+  errors: RecommendationError[];
+  /** Additional error details (structure not documented in samples; `null` when absent). */
+  additionalErrors: unknown;
+}
+
+/** Request filter for POST /api/content/v1/recommendations/list.
+ *  INFERRED shape — verify the exact filter fields against the live spec (AC#9). */
+export interface ListRecommendationsRequest {
+  /** Optional WB item numbers to fetch recommendations for. Omit to list all. */
+  nmIDs?: number[];
+}
+
+/** Response for POST /api/content/v1/recommendations/list — entries in `data`. */
+export interface ListRecommendationsResponse {
+  /** Recommendation entries per product; `null` if empty/unavailable. */
+  data: RecommendationEntry[] | null;
+  /** Per-item errors. Populated on partial success (HTTP 200); empty on full success. */
+  errors: RecommendationError[];
+  /** Additional error details (structure not documented in samples; `null` when absent). */
+  additionalErrors: unknown;
+}

@@ -422,4 +422,18 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 6,
     burstLimit: 20,
   },
+
+  /** POST /api/content/v1/recommendations/list - Get seller recommendations (Content-category) */
+  'promotion.getRecommendationsList': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 10,
+  },
+
+  /** POST /api/content/v1/recommendations/set - Set seller recommendations (Content-category) */
+  'promotion.setRecommendations': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 10,
+  },
 };

@@ -870,4 +870,60 @@ describe('PromotionModule', () => {
       await expect(module.pauseCampaign(1234)).rejects.toThrow(AuthenticationError);
     });
   });
+
+  describe('Seller Recommendations Methods', () => {
+    it('getRecommendationsList - should call content-api endpoint with filter body', async () => {
+      mockClient.post.mockResolvedValue({ data: [], errors: [], additionalErrors: null });
+
+      await module.getRecommendationsList({ nmIDs: [12345678] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/api/content/v1/recommendations/list',
+        { nmIDs: [12345678] },
+        expect.objectContaining({ rateLimitKey: 'promotion.getRecommendationsList' })
+      );
+    });
+
+    it('getRecommendationsList - should pass through response entries', async () => {
+      const resp = {
+        data: [{ nmID: 12345678, tagsIDs: [111, 222] }],
+        errors: [],
+        additionalErrors: null,
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await module.getRecommendationsList({ nmIDs: [12345678] });
+
+      expect(result).toEqual(resp);
+      expect(result.data?.[0].tagsIDs).toEqual([111, 222]);
+    });
+
+    it('setRecommendations - should call content-api endpoint with assignments array', async () => {
+      mockClient.post.mockResolvedValue({ data: null, errors: [], additionalErrors: null });
+
+      const body = [{ nmID: 12345678, tagsIDs: [11111111, 22222222] }];
+      await module.setRecommendations(body);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/api/content/v1/recommendations/set',
+        body,
+        expect.objectContaining({ rateLimitKey: 'promotion.setRecommendations' })
+      );
+    });
+
+    it('setRecommendations - should surface partial-success errors array on HTTP 200', async () => {
+      const resp = {
+        data: null,
+        errors: [{ nmID: 12345678, error: 'Товар не найден' }],
+        additionalErrors: null,
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await module.setRecommendations([{ nmID: 12345678, tagsIDs: [11111111] }]);
+
+      expect(result.data).toBeNull();
+      expect(result.errors).toHaveLength(1);
+      expect(result.errors[0]).toEqual({ nmID: 12345678, error: 'Товар не найден' });
+    });
+  });
 });
