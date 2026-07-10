@@ -4,29 +4,9 @@
  * DO NOT EDIT MANUALLY - Changes will be overwritten on next generation
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated -- This module imports, defines, and re-exports
-   DetailReportItem and getSupplierReportDetailByPeriod(), which are deprecated per Sprint 10 task-103.
-   Self-references to deprecated symbols are unavoidable here — consumers will see the deprecation
-   warnings when THEY import or call these. The method remains functional until 2026-07-15. */
-
 import { BaseClient } from '../../client/base-client';
-import { WBAPIError } from '../../errors/base-error';
-import { warnOnce } from '../../utils/deprecation';
-
-/**
- * Wildberries disables the v5 `getSupplierReportDetailByPeriod()` endpoint on this date.
- * After it passes, the method throws a migration error instead of hitting the network.
- */
-const SUPPLIER_REPORT_DETAIL_V5_DEADLINE = new Date('2026-07-15T00:00:00Z').getTime();
-
-/**
- * Migration guide URL for the v5 → v1 finance reports transition.
- */
-const SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL =
-  'https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1';
 import type {
   AccountBalanceResponse,
-  DetailReportItem,
   DocumentsLocale,
   GetCategories,
   GetDoc,
@@ -70,97 +50,6 @@ export class FinancesModule {
       'https://finance-api.wildberries.ru/api/v1/account/balance',
       { rateLimitKey: 'finances.accountBalance' }
     );
-  }
-
-  /**
-   * Отчёт о продажах по реализации (v5, **deprecated**)
-   *
-   * @deprecated **This method will be disabled by Wildberries on 2026-07-15.**
-   * Migrate to {@link getSalesReportsDetailed} (v1) before that date.
-   *
-   * **Key migration differences (v5 → v1)**:
-   * - HTTP method: GET → POST
-   * - Field names: `snake_case` → `camelCase` (e.g., `ppvz_for_pay` → `forPay`)
-   * - Money amounts: `number` → `string` (use `parseMoneyAmount()` helper)
-   * - Domain: `statistics-api.wildberries.ru` → `finance-api.wildberries.ru`
-   * - New `fields[]` parameter for selective field loading
-   *
-   * See the [migration guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-finance-reports-v5-to-v1)
-   * for complete field mapping and code examples.
-   *
-   * Метод возвращает детализации к [отчётам реализации](https://seller.wildberries.ru/suppliers-mutual-settlements). <br><br> Данные доступны с 29 января 2024 года. <div class="description_important"> Вы можете выгрузить данные в <a href="https://dev.wildberries.ru/ru/cases/1">Google Таблицы</a> </div> <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
-   *
-   * @param options - Query parameters including required dateFrom and dateTo
-   * @returns Array of detailed report items for the specified period
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @see {@link https://dev.wildberries.ru/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty}
-   * @example
-   * ```typescript
-   * // DEPRECATED — migrate to getSalesReportsDetailed() before 2026-07-15
-   * const result = await sdk.finances.getSupplierReportDetailByPeriod({
-   *   dateFrom: '2024-01-01',
-   *   dateTo: '2024-01-31',
-   *   period: 'weekly',
-   * });
-   * console.log(result);
-   * ```
-   */
-  async getSupplierReportDetailByPeriod(options: {
-    dateFrom: string;
-    dateTo: string;
-    limit?: number;
-    rrdid?: number;
-    period?: 'weekly' | 'daily';
-  }): Promise<DetailReportItem[]> {
-    const pastDeadline = Date.now() >= SUPPLIER_REPORT_DETAIL_V5_DEADLINE;
-    warnOnce(
-      'FinancesModule.getSupplierReportDetailByPeriod',
-      pastDeadline
-        ? '[DISABLED] getSupplierReportDetailByPeriod() was disabled by Wildberries on 2026-07-15. ' +
-            'Migrate to getSalesReportsDetailed(). See migration guide: ' +
-            SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL
-        : '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated and will be removed after 2026-07-15. ' +
-            'Migrate to getSalesReportsDetailed(). See migration guide: ' +
-            SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL
-    );
-
-    // After WB disables the endpoint (2026-07-15), avoid a confusing opaque API
-    // failure and throw a clear migration error before touching the network.
-    if (pastDeadline) {
-      throw new WBAPIError(
-        'getSupplierReportDetailByPeriod() was disabled by Wildberries on 2026-07-15. ' +
-          'Migrate to getSalesReportsDetailed(). See migration guide: ' +
-          SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL
-      );
-    }
-
-    try {
-      return await this.client.get<DetailReportItem[]>(
-        'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
-        { params: options, rateLimitKey: 'finances.supplierReportDetailByPeriod' }
-      );
-    } catch (error) {
-      // If the endpoint fails after the deadline (e.g. consumer pinned the
-      // clock or hit a transitional window), wrap the opaque API error with a
-      // clear migration message pointing at the v1 replacement.
-      const now = Date.now();
-      if (now >= SUPPLIER_REPORT_DETAIL_V5_DEADLINE && error instanceof WBAPIError) {
-        throw new WBAPIError(
-          `getSupplierReportDetailByPeriod() failed — this endpoint was disabled by Wildberries on 2026-07-15. ` +
-            `Original error: ${error.message} ` +
-            `Migrate to getSalesReportsDetailed(). See migration guide: ${SUPPLIER_REPORT_DETAIL_V5_MIGRATION_URL}`,
-          error.statusCode,
-          error.response,
-          error.requestId,
-          error.origin,
-          error.timestamp
-        );
-      }
-      throw error;
-    }
   }
 
   /**
@@ -553,11 +442,10 @@ export class FinancesModule {
 
 // Re-export all finances types from the subpath import 'daytona-wildberries-typescript-sdk/finances'.
 // Without these, consumers can import the FinancesModule class but cannot access type definitions
-// like DetailReportItem, AccountBalanceResponse, etc. — caught by DX integration test for v3.6.0.
+// like AccountBalanceResponse, etc. — caught by DX integration test for v3.6.0.
 // @since v3.6.1
 export type {
   AccountBalanceResponse,
-  DetailReportItem,
   DocumentsLocale,
   RequestDownload,
   GetCategories,

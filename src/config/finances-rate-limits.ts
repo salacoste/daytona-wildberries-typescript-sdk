@@ -19,11 +19,6 @@ export const financesRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 1,
   },
-  'finances.supplierReportDetailByPeriod': {
-    requestsPerMinute: 1,
-    intervalSeconds: 60,
-    burstLimit: 1,
-  },
   'finances.documentsCategories': {
     requestsPerMinute: 6,
     intervalSeconds: 10,

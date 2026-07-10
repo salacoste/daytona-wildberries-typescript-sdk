@@ -37,7 +37,6 @@ import { FinancesModule } from '../../src/modules/finances';
 import { BaseClient } from '../../src/client/base-client';
 import type {
   AccountBalanceResponse,
-  DetailReportItem,
   GetCategories,
   GetList,
   GetDoc,
@@ -56,50 +55,6 @@ const handlers = [
       for_withdraw: 75000.25,
     } satisfies AccountBalanceResponse);
   }),
-
-  // GET /api/v5/supplier/reportDetailByPeriod (statistics-api)
-  http.get(
-    'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const dateFrom = url.searchParams.get('dateFrom');
-      const dateTo = url.searchParams.get('dateTo');
-
-      if (!dateFrom || !dateTo) {
-        return new HttpResponse(
-          JSON.stringify({ title: 'Bad Request', detail: 'missing dateTo params' }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-
-      const items: DetailReportItem[] = [
-        {
-          realizationreport_id: 100001,
-          date_from: dateFrom,
-          date_to: dateTo,
-          create_dt: '2026-01-20T12:00:00Z',
-          currency_name: 'руб',
-          suppliercontract_code: null,
-          rrd_id: 1,
-          nm_id: 12345678,
-          brand_name: 'TestBrand',
-          sa_name: 'ART-001',
-          barcode: '1234567890123',
-          doc_type_name: 'Продажа',
-          quantity: 1,
-          retail_price: 2500,
-          retail_amount: 2500,
-          sale_percent: 15,
-          commission_percent: 10,
-          ppvz_for_pay: 1912.5,
-          delivery_method: 'FBS',
-          report_type: 1,
-        },
-      ];
-
-      return HttpResponse.json(items);
-    }
-  ),
 
   // GET /api/v1/documents/categories (documents-api)
   http.get('https://documents-api.wildberries.ru/api/v1/documents/categories', () => {
@@ -202,30 +157,6 @@ describe('Finances Integration Tests', () => {
       expect(result).toHaveProperty('for_withdraw');
       expect(typeof result.currency).toBe('string');
       expect(typeof result.current).toBe('number');
-    });
-  });
-
-  describe('Financial Reports (statistics-api domain)', () => {
-    it('should return report items with valid date range', async () => {
-      const result = await finances.getSupplierReportDetailByPeriod({
-        dateFrom: '2026-01-01',
-        dateTo: '2026-01-31',
-      });
-      expect(Array.isArray(result)).toBe(true);
-      expect(result).toHaveLength(1);
-      expect(result[0].realizationreport_id).toBe(100001);
-      expect(result[0].brand_name).toBe('TestBrand');
-      expect(result[0].report_type).toBe(1);
-      expect(result[0].delivery_method).toBe('FBS');
-    });
-
-    it('should forward date parameters', async () => {
-      const result = await finances.getSupplierReportDetailByPeriod({
-        dateFrom: '2026-01-01',
-        dateTo: '2026-01-31',
-      });
-      expect(result[0].date_from).toBe('2026-01-01');
-      expect(result[0].date_to).toBe('2026-01-31');
     });
   });
 
