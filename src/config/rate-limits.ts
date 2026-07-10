@@ -101,12 +101,6 @@ export const ALL_RATE_LIMITS = {
 export type EndpointKey = keyof typeof ALL_RATE_LIMITS;
 
 /**
- * Legacy export for backwards compatibility.
- * @deprecated Use ALL_RATE_LIMITS instead
- */
-export const DEFAULT_RATE_LIMITS = ALL_RATE_LIMITS;
-
-/**
  * Category-level rate limit multipliers for Basic/Test tokens.
  *
  * WB enforces significantly reduced limits for Basic and Test tokens since March 30, 2026.

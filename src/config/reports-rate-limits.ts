@@ -74,12 +74,6 @@ export const reportsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 10,
   },
-  // @deprecated - endpoint removed from swagger, kept for backward compatibility
-  'reports.analyticsCharacteristicsChange': {
-    requestsPerMinute: 1,
-    intervalSeconds: 60,
-    burstLimit: 10,
-  },
   'reports.acceptance_report': {
     requestsPerMinute: 1,
     intervalSeconds: 60,

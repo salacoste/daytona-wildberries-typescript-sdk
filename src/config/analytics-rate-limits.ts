@@ -14,30 +14,6 @@
 import type { RateLimitConfig } from '../client/rate-limiter';
 
 export const analyticsRateLimits: Record<string, RateLimitConfig> = {
-  /**
-   * @deprecated v2 endpoint is dead (404). Wrapper delegates to postSalesFunnelProducts.
-   */
-  'analytics.postNmReportDetail': {
-    requestsPerMinute: 3,
-    intervalSeconds: 20,
-    burstLimit: 3,
-  },
-  /**
-   * @deprecated v2 endpoint is dead (404). Wrapper delegates to postSalesFunnelProductsHistory.
-   */
-  'analytics.postNmReportDetailHistory': {
-    requestsPerMinute: 3,
-    intervalSeconds: 20,
-    burstLimit: 3,
-  },
-  /**
-   * @deprecated v2 endpoint is dead (404). Wrapper delegates to postSalesFunnelGroupedHistory.
-   */
-  'analytics.postNmReportGroupedHistory': {
-    requestsPerMinute: 3,
-    intervalSeconds: 20,
-    burstLimit: 3,
-  },
   'analytics.nmReportDownloads': {
     requestsPerMinute: 3,
     intervalSeconds: 20,
