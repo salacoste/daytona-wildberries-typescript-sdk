@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v4.0.0 — major: removes all WB-dead/sunset deprecated surface (methods, types, fields, config) -->
+
+## [4.0.0] - 2026-07-11
+
+**BREAKING major.** Removes deprecated API surface that Wildberries had already disabled or
+dropped. Each removed symbol is now a compile error pointing at its replacement — see
+`docs/guides/migration-v4.md`. Bundled into one major bump rather than several.
+
+### Removed (breaking)
+
+- **finances**: `getSupplierReportDetailByPeriod` (v5; WB disables 2026-07-15) + `DetailReportItem` → v1 sales-reports methods.
+- **orders-dbs**: `getMetaBulk` (WB shuts down `…/meta/info` 2026-07-27) + `GetOrderMetaBulkResponse`/`BulkOrderMeta` → `checkMetaValidation`.
+- **general**: `getJamSubscriptionStatus` probe + `buildResult` + `JamSubscriptionStatus`/`JamSubscriptionTier`/`GetJamSubscriptionStatusParams` → `getJamSubscription`.
+- **promotion** (7): `updateBidsV2`, `createAutoSetExcluded`, `createAutoUpdatenm`, `getAuctionAdverts`, `getPromotionAdverts`, `getStatsKeywords`, `updateAuctionBid` (v0/v1 advert API, WB-disabled 2026-02-02) + orphan types → v2 methods (`updateBids`, `getAdvertsV2`, …).
+- **in-store-pickup** (12): the single-order click-collect v3 shims (`updateOrdersConfirm/Prepare/Receive/Reject/Cancel`, `createOrdersStatus`, `getOrdersMeta`, `deleteOrdersMeta`, `updateMetaSgtin/Uin/Imei/Gtin`) + 8 `Api*` types → the `…Bulk` batch methods.
+- **products**: stocks `StockItem.sku`, `StocksRequest.skus`, `UpdateStockRequest.stocks[].sku` (WB rejects since 2026-05-20) → `chrtId`/`chrtIds`. Sanitizers + `warnOnce` paths removed.
+- **communications** (5 fields): `clientID` (Chat/Event), `GoodCard.date`, `GoodCard.needRefund`, `GoodCard.statusID` (all WB-removed).
+- **config**: `DEFAULT_RATE_LIMITS` alias; 3 dead analytics v2 keys; `reports.analyticsCharacteristicsChange`.
+
+### Changed
+
+- `products.updateStock(warehouseId, data)` — `data` is now **required** (was optional).
+
+### Deferred (not in v4.0.0)
+
+- The 4 `orders-fbs` `meta` fields (`@deprecated` "retained pending WB confirmation") — kept; their WB removal is unverified. Slated for v4.1.
+
+### Notes
+
+- Symbols shared with surviving methods were kept (e.g. `GetMetaBulkRequest`, `AdvertSettings`/`AdvertPlacements`, `BidType`, `ApiOrdersRequest`, `PickupMetadataKey`).
+- Full suite green; tsc + eslint clean.
+
 <!-- v3.18.0 — minor: item recommendations management + DBS order stickers -->
 
 ## [3.18.0] - 2026-07-10
