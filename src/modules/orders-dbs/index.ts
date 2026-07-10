@@ -118,8 +118,8 @@ export class OrdersDbsModule {
    * @param params - Query parameters for filtering and pagination
    * @param params.limit - Number of orders to return (1-1000)
    * @param params.next - Pagination cursor (0 for first request)
-   * @param params.dateFrom - Start date as Unix timestamp
-   * @param params.dateTo - End date as Unix timestamp
+   * @param params.dateFrom - Start date as Unix timestamp in SECONDS (not JS ms — use `Math.floor(Date.now()/1000)`)
+   * @param params.dateTo - End date as Unix timestamp in SECONDS (not JS ms — use `Math.floor(Date.now()/1000)`)
    * @returns Promise resolving to orders and next pagination cursor
    * @throws {ValidationError} When parameters are invalid (limit out of range, date range > 30 days)
    * @throws {AuthenticationError} When API key is invalid (401/403)

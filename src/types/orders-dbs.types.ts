@@ -322,9 +322,9 @@ export interface GetOrdersParams {
   limit: number;
   /** Pagination cursor (0 for first request) */
   next: number;
-  /** Start date as Unix timestamp */
+  /** Start date as Unix timestamp in SECONDS (WB rejects JS milliseconds) */
   dateFrom: number;
-  /** End date as Unix timestamp */
+  /** End date as Unix timestamp in SECONDS (WB rejects JS milliseconds) */
   dateTo: number;
 }
 
