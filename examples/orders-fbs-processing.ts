@@ -73,7 +73,7 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
@@ -130,7 +130,7 @@ async function processFBSOrders() {
 
       // Get statuses for first 5 orders
       const orderIds = allOrders.slice(0, Math.min(5, allOrders.length)).map((o) => o.id);
-      const statusResponse = await sdk.ordersFBS.createOrdersStatu({ orders: orderIds });
+      const statusResponse = await sdk.ordersFBS.getOrderStatuses({ orders: orderIds });
       const statuses = statusResponse.orders ?? [];
 
       console.log(`Checked ${statuses.length} order statuses:\n`);
@@ -146,7 +146,7 @@ async function processFBSOrders() {
     console.log('\nStep 4: Order status breakdown...');
     if (allOrders.length > 0) {
       const orderIds = allOrders.map((o) => o.id);
-      const statusResponse2 = await sdk.ordersFBS.createOrdersStatu({ orders: orderIds });
+      const statusResponse2 = await sdk.ordersFBS.getOrderStatuses({ orders: orderIds });
       const statuses = statusResponse2.orders ?? [];
 
       const statusBreakdown = statuses.reduce(

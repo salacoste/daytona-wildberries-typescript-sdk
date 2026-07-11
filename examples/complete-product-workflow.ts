@@ -265,7 +265,7 @@ async function completeProductWorkflow() {
       const chrtID = sizes[0]?.chrtID;
 
       if (chrtID !== undefined) {
-        const warehouses = await sdk.products.getWarehouses();
+        const warehouses = await sdk.products.warehouses();
         if (warehouses.length > 0) {
           const warehouseId = warehouses[0].id;
 

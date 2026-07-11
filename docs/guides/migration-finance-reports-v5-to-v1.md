@@ -25,7 +25,7 @@ keywords:
 
 ```typescript
 // ❌ OLD (v5, deprecated, disabled 2026-07-15)
-const rows = await sdk.finances.getSupplierReportDetailByPeriod({
+const rows = await sdk.finances['getSupplierReportDetailByPeriod']({
   dateFrom: '2026-03-17',
   dateTo: '2026-03-20',
 });
@@ -269,7 +269,7 @@ function logReport(row: AnyDetailReport): void {
 
 **Before (v5):**
 ```typescript
-const rows = await sdk.finances.getSupplierReportDetailByPeriod({
+const rows = await sdk.finances['getSupplierReportDetailByPeriod']({
   dateFrom: '2026-03-01',
   dateTo: '2026-03-31',
 });
@@ -318,7 +318,7 @@ const campaignRevenue = campaignRows.reduce(
 let allRows: DetailReportItem[] = [];
 let rrdid = 0;
 while (true) {
-  const page = await sdk.finances.getSupplierReportDetailByPeriod({
+  const page = await sdk.finances['getSupplierReportDetailByPeriod']({
     dateFrom, dateTo, rrdid, limit: 100000,
   });
   if (page.length === 0) break;

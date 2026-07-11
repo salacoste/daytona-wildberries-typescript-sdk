@@ -91,7 +91,7 @@ async function setupInventoryManagement() {
     // 1. GET AVAILABLE WB WAREHOUSES FOR FBS
     // ========================================
     console.log('Step 1: Fetching WB warehouses for FBS binding...');
-    const wbOffices = await sdk.products.getWBOffices();
+    const wbOffices = await sdk.products.offices();
     console.log(`✓ Found ${wbOffices.length} WB warehouses`);
     console.log(`  Selected: ${wbOffices[0].name} (ID: ${wbOffices[0].id})`);
 
@@ -106,7 +106,7 @@ async function setupInventoryManagement() {
     // 3. LIST ALL WAREHOUSES
     // ========================================
     console.log('\nStep 3: Listing all warehouses...');
-    const warehouses = await sdk.products.getWarehouses();
+    const warehouses = await sdk.products.warehouses();
     console.log(`✓ Total warehouses: ${warehouses.length}`);
     warehouses.forEach((wh) => {
       console.log(`  - ${wh.name} (ID: ${wh.id}, Office: ${wh.officeId})`);

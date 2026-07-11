@@ -334,7 +334,7 @@ async function main() {
     try {
       // Get available document categories
       console.log('   Fetching document categories...');
-      const categories = await sdk.finances.getDocumentCategories('en');
+      const categories = await sdk.finances.getDocumentsCategories({ locale: 'en' });
 
       console.log(`✅ ${categories.data.categories.length} categories available:`);
       categories.data.categories.forEach((cat) => {
@@ -344,7 +344,7 @@ async function main() {
 
       // Get list of documents
       console.log('   Fetching recent documents...');
-      const documents = await sdk.finances.getDocuments({
+      const documents = await sdk.finances.getDocumentsList({
         sort: 'date',
         order: 'desc',
       });
@@ -365,10 +365,10 @@ async function main() {
         // Example: Download first document (commented out to avoid actual download)
         // const firstDoc = documents.data.documents[0];
         // console.log(`   Downloading ${firstDoc.serviceName}...`);
-        // const download = await sdk.finances.downloadDocument(
-        //   firstDoc.serviceName,
-        //   firstDoc.extensions[0]
-        // );
+        // const download = await sdk.finances.getDocumentsDownload({
+        //   serviceName: firstDoc.serviceName,
+        //   extension: firstDoc.extensions[0],
+        // });
         // console.log(`   ✅ Downloaded: ${download.data.fileName}`);
         // // To save: Buffer.from(download.data.document, 'base64')
       }

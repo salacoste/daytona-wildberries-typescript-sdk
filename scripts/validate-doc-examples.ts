@@ -17,6 +17,7 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
+import { WildberriesSDK } from '../src';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -65,244 +66,40 @@ const VALID_MODULES = [
 ];
 
 /**
- * Known SDK methods per module (extracted from actual implementation)
- * This is the source of truth for validation
+ * Known SDK methods per module.
+ *
+ * Populated dynamically by introspecting a live `WildberriesSDK` instance, so this
+ * list can never go stale — every public method added to a module is automatically
+ * recognized as valid. Construction is synchronous and performs no network I/O, so
+ * it is safe to run at validator load time.
+ *
+ * This is the source of truth for method-name validation.
  */
-const VALID_METHODS: Record<string, string[]> = {
-  general: ['ping', 'news', 'sellerInfo'],
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- introspection of SDK internals requires any
+const _dummySdk: any = new WildberriesSDK({ apiKey: '__validate_dummy__' });
 
-  products: [
-    // Categories and directories
-    'getParentAll',
-    'getObjectAll',
-    'getObjectCharc',
-    'getDirectoryColors',
-    'getDirectoryKinds',
-    'getDirectoryCountries',
-    'getDirectorySeasons',
-    'getDirectoryVat',
-    'getDirectoryTnved',
-    'getBrands',
-    // Content tags
-    'getContentTags',
-    'createContentTag',
-    'updateContentTag',
-    'deleteContentTag',
-    // Cards management
-    'getCardsList',
-    'createCardsUpload',
-    'createCardsUpdate',
-    'createCardsMovenm',
-    'createCardsRecover',
-    'createDeleteTrash',
-    'getTrashedCards',
-    'getCardsLimits',
-    'createErrorList',
-    'createNomenclatureLink',
-    // Media
-    'createMediaFile',
-    'createMediaSave',
-    // Content operations
-    'createContentBarcode',
-    // Upload tasks
-    'createUploadTask',
-    'createUploadAdd',
-    'createTaskSize',
-    'createTaskClubDiscount',
-    'getHistoryTasks',
-    'getGoodsTask',
-    'getBufferTasks',
-    'getBufferGoodsTask',
-    // Goods filter
-    'getGoodsFilter',
-    'createGoodsFilter',
-    // Quarantine
-    'getQuarantineGoods',
-    // Sizes
-    'getSizeNm',
-    // Warehouses
-    'offices',
-    'warehouses',
-    'createWarehouse',
-    'updateWarehouse',
-    'deleteWarehouse',
-    'getWarehousesContact',
-    'updateWarehousesContact',
-    // Stock
-    'getStocks',
-    'updateStock',
-    'deleteStock',
-  ],
-
-  ordersFBS: [
-    'getPassesOffices',
-    'passes',
-    'createPass',
-    'updatePass',
-    'deletePass',
-    'getOrdersNew',
-    'orders',
-    'createOrdersStatu',
-    'getOrders',
-    'getOrderStatuses',
-    'getAssemblyTasks',
-    'getAssemblyTask',
-    'createSupply',
-    'getSupplies',
-    'getSupply',
-    'addOrderToSupply',
-    'deliverSupply',
-    'deleteSupply',
-    'getOrderStickers',
-    'getSupplyBarcode',
-    'cancelOrder',
-  ],
-
-  ordersFBW: [
-    'warehouses',
-    'createAcceptanceOption',
-    'transitTariffs',
-    'listSupplies',
-    'getSupply',
-    'getSuppliesGood',
-    'getSuppliesPackage',
-    // DBW bulk methods added v3.11.0 (task-15.0, task-15.2, task-15.3)
-    'getClientInfo',
-    'deleteMetaBulk',
-    'setSgtinBulk',
-    'deliverBulk',
-    'checkMetaValidation',
-  ],
-
-  finances: [
-    'getAccountBalance',
-    'getBalance',
-    'getTransactions',
-    'getTransactionDetail',
-    'getSupplierReportDetailByPeriod',
-    'getSupplierReportdetailbyperiod',
-    // v1 Sales Reports (since v3.7.0)
-    'getSalesReportsList',
-    'getSalesReportsDetailed',
-    'getSalesReportsDetailedByReportId',
-    // v1 Acquiring Reports (since v3.7.0)
-    'getAcquiringReportsList',
-    'getAcquiringReportsDetailed',
-    'getAcquiringReportsDetailedByReportId',
-    'getDocumentCategories',
-    'getDocumentsCategories',
-    'getDocumentsList',
-    'getDocuments',
-    'getDocumentsDownload',
-    'downloadDocument',
-    'downloadDocuments',
-    'getPayouts',
-    'getPayoutDetail',
-  ],
-
-  analytics: [
-    // Downloads
-    'getNmReportDownloads',
-    'createNmReportDownload',
-    'createDownloadsRetry',
-    'getDownloadsFile',
-    // Search reports
-    'createSearchReportReport',
-    // Table reports
-    'createTableGroup',
-    'createTableDetail',
-    // Product search and orders
-    'createProductSearchText',
-    'createProductOrder',
-    // Products reports
-    'createProductsGroup',
-    'createProductsProduct',
-    'createProductsSize',
-    // Stocks
-    'createStocksReportOffice',
-    // Sales funnel
-    'getSalesFunnelProducts',
-    'getSalesFunnelProductsHistory',
-    'getSalesFunnelGroupedHistory',
-  ],
-
-  communications: [
-    // Chats
-    'getSellerChats',
-    'getSellerEvents',
-    'createSellerMessage',
-    'getSellerDownload',
-    // Questions
-    'questions',
-    'question',
-    'updateQuestion',
-    'getQuestionsCount',
-    'getQuestionsCountUnanswered',
-    'newFeedbacksQuestions',
-    // Feedbacks/Reviews
-    'feedbacks',
-    'feedback',
-    'createFeedbacksAnswer',
-    'updateFeedbacksAnswer',
-    'getFeedbacksCount',
-    'getFeedbacksCountUnanswered',
-    'getFeedbacksArchive',
-    // Pinned reviews
-    'getPinnedFeedbacks',
-    'getPinnedFeedbacksCount',
-    'getPinnedFeedbacksLimits',
-    'pinFeedback',
-    'unpinFeedback',
-    // Returns and claims
-    'createOrderReturn',
-    'claims',
-    'updateClaim',
-  ],
-
-  reports: [
-    'getIncomes',
-    'getStocks',
-    'getOrders',
-    'getSales',
-    'createWarehouseRemainsReport',
-    'checkReportStatus',
-    'downloadReport',
-  ],
-
-  promotion: [
-    'getPromotionCount',
-    'createSeacatSaveAd',
-    'getPromotionInfo',
-    'pauseCampaign',
-    'resumeCampaign',
-    'updateBids',
-  ],
-
-  tariffs: ['getTariffsCommission', 'getTariffsBox', 'getTariffsPallet', 'getTariffsReturn'],
-
-  inStorePickup: [
-    // Order retrieval
-    'getOrdersNew',
-    'getClickCollectOrders',
-    'createOrdersStatus',
-    // Order lifecycle
-    'updateOrdersConfirm',
-    'updateOrdersPrepare',
-    'updateOrdersReceive',
-    'updateOrdersReject',
-    'updateOrdersCancel',
-    // Customer operations
-    'createOrdersClient',
-    'createClientIdentity',
-    // Metadata operations
-    'getOrdersMeta',
-    'deleteOrdersMeta',
-    'updateMetaSgtin',
-    'updateMetaUin',
-    'updateMetaImei',
-    'updateMetaGtin',
-  ],
-};
+const VALID_METHODS: Record<string, string[]> = Object.fromEntries(
+  // For each own module property on the SDK instance, collect public method names
+  // from its prototype (i.e. the module class's instance methods).
+  Object.getOwnPropertyNames(_dummySdk)
+    .filter((prop) => {
+      // Only module instances (objects with a prototype beyond Object.prototype).
+      const value = _dummySdk[prop];
+      const proto = Object.getPrototypeOf(value);
+      return value && typeof value === 'object' && proto && proto !== Object.prototype;
+    })
+    .map((prop) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- per-module prototype walk
+      const mod: any = _dummySdk[prop];
+      const proto = Object.getPrototypeOf(mod);
+      const methods = Object.getOwnPropertyNames(proto).filter((m) => {
+        // Skip constructor, private members (underscore-prefixed), and non-function properties.
+        if (m === 'constructor' || m.startsWith('_')) return false;
+        return typeof mod[m] === 'function';
+      });
+      return [prop, methods];
+    })
+);
 
 /**
  * Methods that are intentionally shown as wrong examples or are placeholder methods not yet implemented

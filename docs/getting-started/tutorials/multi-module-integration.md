@@ -301,7 +301,7 @@ async function processOrderForProduct(productId: string) {
     }
 
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel({
       orderId: targetOrder.orderId,
       status: 'confirmed'
     });
@@ -336,7 +336,7 @@ async function processOrderForProduct(productId: string) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate packing
 
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel({
       orderId: targetOrder.orderId,
       status: 'assembled'
     });
@@ -357,7 +357,7 @@ async function processOrderForProduct(productId: string) {
 
     // 2.6: Mark as shipped
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel({
       orderId: targetOrder.orderId,
       status: 'shipped',
       trackingNumber: label.data.trackingNumber
@@ -436,11 +436,10 @@ async function verifyFinancialTransactions(orderId: string) {
     // 3.1: Check account balance
     console.log('Checking account balance...');
 
-    const balance = await sdk.finances.getBalance();
+    const balance = await sdk.finances.getAccountBalance();
 
-    console.log(`Current Balance: ${balance.data.amount.toLocaleString()} RUB`);
-    console.log(`Available for Withdrawal: ${balance.data.availableForWithdrawal.toLocaleString()} RUB`);
-    console.log(`Pending: ${balance.data.pending.toLocaleString()} RUB`);
+    console.log(`Current Balance: ${(balance.current ?? 0).toLocaleString()} RUB`);
+    console.log(`Available for Withdrawal: ${(balance.for_withdraw ?? 0).toLocaleString()} RUB`);
 
     // 3.2: Get recent transactions
     console.log('\nFetching recent transactions...');
@@ -448,7 +447,7 @@ async function verifyFinancialTransactions(orderId: string) {
     const dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 7); // Last 7 days
 
-    const transactions = await sdk.finances.getTransactions({
+    const transactions = await sdk.finances.getSalesReportsDetailed({
       dateFrom: dateFrom.toISOString(),
       dateTo: new Date().toISOString(),
       limit: 10
@@ -479,10 +478,8 @@ async function verifyFinancialTransactions(orderId: string) {
     console.log('\nGenerating financial report...');
 
     const report = await // NOTE: getFinancialReport doesn't exist - use:
-    // sdk.finances.getDocuments( or sdk.reports.createWarehouseRemainsReport({
-      dateFrom: dateFrom.toISOString(),
-      dateTo: new Date().toISOString(),
-      reportType: 'detailed'
+    // sdk.finances.getDocumentsList() or sdk.reports.warehouseRemains({
+      groupByBrand: true
     });
 
     console.log('✓ Financial report generated');
@@ -620,7 +617,7 @@ async function runCompleteIntegration() {
 
     // Confirm
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel({
       orderId: order.orderId,
       status: 'confirmed'
     });
@@ -643,7 +640,7 @@ async function runCompleteIntegration() {
 
     // Assemble
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel({
       orderId: order.orderId,
       status: 'assembled'
     });
@@ -660,13 +657,13 @@ async function runCompleteIntegration() {
     // === PHASE 3: FINANCIAL RECONCILIATION ===
     console.log('💰 PHASE 3: Financial Reconciliation\n');
 
-    const balance = await sdk.finances.getBalance();
-    console.log(`✓ Current balance: ${balance.data.amount.toLocaleString()} RUB`);
+    const balance = await sdk.finances.getAccountBalance();
+    console.log(`✓ Current balance: ${(balance.current ?? 0).toLocaleString()} RUB`);
 
     const dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 7);
 
-    const transactions = await sdk.finances.getTransactions({
+    const transactions = await sdk.finances.getSalesReportsDetailed({
       dateFrom: dateFrom.toISOString(),
       dateTo: new Date().toISOString()
     });
@@ -771,9 +768,9 @@ async function handleCrossModuleTransaction() {
 
     // Step 3: Process order
     const order = await // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder(orderData);
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel(orderId);
     rollbackActions.push(() => // NOTE: updateOrderStatus doesn't exist - use supply workflow
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({ orderId: order.data.id, status: 'cancelled' }));
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel({ orderId: order.data.id, status: 'cancelled' }));
 
     // All succeeded
     return { success: true, product, order };

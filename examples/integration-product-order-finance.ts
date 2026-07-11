@@ -393,7 +393,7 @@ async function main() {
 
     console.log('📍 Step 3.2: Fetching recent transactions...\n');
 
-    const transactions = await sdk.finances.getTransactions({
+    const transactions = await sdk.finances.getSalesReportsDetailed({
       dateFrom: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       dateTo: new Date().toISOString().split('T')[0],
       limit: 10,
@@ -415,24 +415,13 @@ async function main() {
     // Step 3.3: Get payout information
     // ────────────────────────────────────────────────────────────────────────
 
-    console.log('📍 Step 3.3: Checking payout schedule...\n');
+    console.log('📍 Step 3.3: Checking account balance...\n');
 
-    const payouts = await sdk.finances.getPayouts({
-      dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      dateTo: new Date().toISOString().split('T')[0],
-      limit: 5,
-    });
+    const balance = await sdk.finances.getAccountBalance();
 
-    if (Array.isArray(payouts) && payouts.length > 0) {
-      console.log(`✅ Found ${payouts.length} recent payouts:\n`);
-      payouts.slice(0, 2).forEach((payout: any) => {
-        console.log(`   Payout Date: ${payout.date || 'N/A'}`);
-        console.log(`   Amount: ${payout.amount || 0}₽`);
-        console.log(`   Status: ${payout.status || 'Unknown'}\n`);
-      });
-    } else {
-      console.log('   No recent payouts found\n');
-    }
+    console.log(`✅ Current account balance:\n`);
+    console.log(`   Balance: ${balance.current ?? 0}₽`);
+    console.log(`   Available for withdrawal: ${balance.for_withdraw ?? 0}₽\n`);
 
     // ============================================================================
     // INTEGRATION SUMMARY

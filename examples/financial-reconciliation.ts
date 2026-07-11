@@ -98,7 +98,7 @@ import {
   AuthenticationError,
   ValidationError,
   NetworkError,
-  WBAPIError
+  WBAPIError,
 } from '../src';
 import type { Transaction, TransactionFilters } from '../src/types/finances.types';
 import type { SalesItem } from '../src/types/reports.types';
@@ -171,9 +171,8 @@ function matchTransactionToSale(
     const amountMatchClose = saleAmount > 0 && amountDiff / saleAmount < 0.01;
 
     // Check timing proximity (if transaction has sale_dt)
-    const timeDiffHours = transactionTime > 0
-      ? Math.abs(transactionTime - saleTime) / (1000 * 60 * 60)
-      : 999;
+    const timeDiffHours =
+      transactionTime > 0 ? Math.abs(transactionTime - saleTime) / (1000 * 60 * 60) : 999;
     const withinTimeWindow = timeDiffHours <= maxTimingDifferenceHours;
 
     // Exact match: Product + Amount + Timing all match
@@ -232,7 +231,9 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
         dateTo: endDate.toISOString().split('T')[0],
       };
 
-      allTransactions = await sdk.finances.getTransactions(filters);
+      allTransactions = (await sdk.finances.getSalesReportsDetailed(
+        filters as Parameters<typeof sdk.finances.getSalesReportsDetailed>[0]
+      )) as unknown as Transaction[];
       console.log(`  ✓ Fetched ${allTransactions.length} transaction records`);
     } catch (error) {
       console.error('  ✗ Failed to fetch transactions:', error);
@@ -252,7 +253,10 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
     let allSales: SalesItem[] = [];
     try {
       // Fetch sales (dateFrom parameter, flag=1 for all sales)
-      allSales = await sdk.reports.getSales(startDate.toISOString().split('T')[0], 1);
+      allSales = await sdk.reports.getSupplierSales({
+        dateFrom: startDate.toISOString().split('T')[0],
+        flag: 1,
+      });
       console.log(`  ✓ Fetched ${allSales.length} sales records`);
     } catch (error) {
       console.error('  ✗ Failed to fetch sales:', error);
@@ -340,10 +344,7 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
     console.log();
 
     // Step 4: Calculate metrics
-    const totalTransactionValue = allTransactions.reduce(
-      (sum, tx) => sum + tx.ppvz_for_pay,
-      0
-    );
+    const totalTransactionValue = allTransactions.reduce((sum, tx) => sum + tx.ppvz_for_pay, 0);
     const totalSalesRevenue = allSales.reduce((sum, sale) => sum + sale.forPay, 0);
 
     const matchRate = allSales.length > 0 ? (matched.length / allSales.length) * 100 : 0;
@@ -366,8 +367,7 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
         }
         return 0;
       });
-      averageTimingLag =
-        timingLags.reduce((sum, lag) => sum + lag, 0) / timingLags.length;
+      averageTimingLag = timingLags.reduce((sum, lag) => sum + lag, 0) / timingLags.length;
     }
 
     const report: ReconciliationReport = {
@@ -434,9 +434,7 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
       console.log(
         `Missing Transactions (sales without transactions): ${discrepanciesByType.missing_transaction.length}`
       );
-      console.log(
-        `Product Mismatches: ${discrepanciesByType.product_mismatch.length}`
-      );
+      console.log(`Product Mismatches: ${discrepanciesByType.product_mismatch.length}`);
       console.log();
 
       console.log('=== Top Discrepancies (First 5) ===');
@@ -454,7 +452,9 @@ async function performReconciliation(apiKey: string): Promise<ReconciliationRepo
     const totalTime = (Date.now() - perfStart) / 1000;
     console.log('=== Performance Summary ===');
     console.log(`Total reconciliation time: ${totalTime.toFixed(1)}s`);
-    console.log(`  Data fetching: ${((modulePerf.transactions + modulePerf.sales) / 1000).toFixed(1)}s`);
+    console.log(
+      `  Data fetching: ${((modulePerf.transactions + modulePerf.sales) / 1000).toFixed(1)}s`
+    );
     console.log(`  Matching logic: ${(matchingTime / 1000).toFixed(1)}s`);
     console.log();
 

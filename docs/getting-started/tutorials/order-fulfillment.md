@@ -333,9 +333,9 @@ async function processOrder(orderId: string) {
     // Note: Wildberries FBS API doesn't have updateOrderStatus()
     // Status updates happen through specific actions:
     // - Create supply: sdk.ordersFBS.createSupply()
-    // - Add order to supply: sdk.ordersFBS.addOrderToSupply()
-    // - Deliver supply: sdk.ordersFBS.deliverSupply()
-    // - Cancel order: sdk.ordersFBS.cancelOrder()
+    // - Add order to supply: sdk.ordersFBS.addOrdersToSupply()
+    // - Deliver supply: sdk.ordersFBS.updateSuppliesDeliver()
+    // - Cancel order: sdk.ordersFBS.updateOrdersCancel()
 
     console.log('✓ Order confirmed');
 
@@ -346,7 +346,7 @@ async function processOrder(orderId: string) {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Status update handled by supply management workflow
-    // See: sdk.ordersFBS.createSupply() and addOrderToSupply()
+    // See: sdk.ordersFBS.createSupply() and addOrdersToSupply()
 
     console.log('✓ Order assembled and ready for shipping');
 
@@ -378,11 +378,9 @@ Assembling order...
 async function cancelOrder(orderId: string, reason: string) {
   try {
     await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-      orderId: orderId,
-      status: 'cancelled',
-      cancellationReason: reason
-    });
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel(
+      Number(orderId)
+    );
 
     console.log(`✓ Order ${orderId} cancelled`);
     console.log(`  Reason: ${reason}`);
@@ -630,10 +628,9 @@ Processed 2 orders successfully
 ```typescript
 try {
   await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-    orderId: orderId,
-    status: 'shipped'
-  });
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel(
+    Number(orderId)
+  );
 } catch (error) {
   if (error.name === 'ValidationError') {
     console.error('Invalid state transition');
@@ -660,11 +657,9 @@ async function checkInventoryBeforeConfirm(order: Order) {
 
         // Cancel order if insufficient stock
         await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-          orderId: order.orderId,
-          status: 'cancelled',
-          cancellationReason: `Insufficient stock for ${item.sku}`
-        });
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel(
+          Number(order.orderId)
+        );
 
         return false;
       }
@@ -747,10 +742,9 @@ async function updateOrderWithLogging(orderId: string, newStatus: string) {
 
   try {
     const result = await // NOTE: updateOrderStatus doesn't exist - use supply workflow instead
-    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.cancelOrder({
-      orderId,
-      status: newStatus
-    });
+    // sdk.ordersFBS.createSupply() or sdk.ordersFBS.updateOrdersCancel(
+      Number(orderId)
+    );
 
     // Log successful transition
     console.log(`[${timestamp}] Order ${orderId}: ${result.data.previousStatus} → ${newStatus}`);
