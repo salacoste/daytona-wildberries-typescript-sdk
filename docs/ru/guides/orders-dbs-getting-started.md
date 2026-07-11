@@ -751,5 +751,4 @@ await sdk.ordersDBS.setImeiBulk({
 - [Руководство по миграции: с устаревших на массовые методы](/guides/migration-dbs-legacy-to-bulk)
 - [Пример: Базовый процесс DBS](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/orders-dbs-core-workflow.ts)
 - [Пример: Заказы B2B](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/orders-dbs-b2b.ts)
-- [Пример: Метаданные](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/orders-dbs-metadata.ts)
 - [Официальная документация WB DBS API](https://dev.wildberries.ru/openapi/orders-dbs)

@@ -388,7 +388,6 @@ If you encounter issues during migration:
 
 - [DBS Core Workflow Example](../../examples/orders-dbs-core-workflow.ts)
 - [DBS B2B Example](../../examples/orders-dbs-b2b.ts)
-- [DBS Metadata Example](../../examples/orders-dbs-metadata.ts)
 - [Official WB DBS API Docs](https://dev.wildberries.ru/openapi/orders-dbs)
 
 ## Related Migration Guides

@@ -388,5 +388,4 @@ interface GetStatusInfoResponse {
 
 - [Пример базового процесса DBS](../../examples/orders-dbs-core-workflow.ts)
 - [Пример B2B заказов DBS](../../examples/orders-dbs-b2b.ts)
-- [Пример метаданных DBS](../../examples/orders-dbs-metadata.ts)
 - [Официальная документация WB DBS API](https://dev.wildberries.ru/openapi/orders-dbs)
