@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 dropped. Each removed symbol is now a compile error pointing at its replacement — see
 `docs/guides/migration-v4.md`. Bundled into one major bump rather than several.
 
+### Added
+
+- **`computeROAS()`** — typed ROAS helper over `getAdvFullstats` results. `ROAS = Σ(sum_price) / Σ(sum)` over a rolling window that excludes the freshest day(s) where `sum_price` finalization lags (~1-2 day light undercount; the Q6 same-day-ROAS footgun). Accepts a `FullStatsItem` or `DaysV3Item[]`; returns `{ roas: number|null, revenue, spend, daysUsed, excludedDays }` (`roas` null when `spend === 0`). Exported from the main SDK index. (task-136.1)
+
 ### Removed (breaking)
 
 - **finances**: `getSupplierReportDetailByPeriod` (v5; WB disables 2026-07-15) + `DetailReportItem` → v1 sales-reports methods.
