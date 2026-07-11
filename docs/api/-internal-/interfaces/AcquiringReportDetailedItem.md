@@ -2,7 +2,7 @@
 
 # Interface: AcquiringReportDetailedItem
 
-Defined in: [types/finances.types.ts:728](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L728)
+Defined in: [types/finances.types.ts:487](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L487)
 
 Item returned by `getAcquiringReportsDetailed()` and `getAcquiringReportsDetailedByReportId()`.
 Detailed row for acquiring (payment acquisition) fees.
@@ -23,20 +23,20 @@ v3.7.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="rrdid"></a> `rrdId?` | `number` | ID строки отчёта | [types/finances.types.ts:730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L730) |
-| <a id="reportid"></a> `reportId?` | `number` | Номер отчёта | [types/finances.types.ts:732](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L732) |
-| <a id="acqdate"></a> `acqDate?` | `string` | Дата эквайринга | [types/finances.types.ts:734](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L734) |
-| <a id="acquiringbank"></a> `acquiringBank?` | `string` | Банк-эквайер (e.g., "Тинькофф") | [types/finances.types.ts:736](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L736) |
-| <a id="tin"></a> `tin?` | `string` | ИНН | [types/finances.types.ts:738](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L738) |
-| <a id="taxregistrationreasoncode"></a> `taxRegistrationReasonCode?` | `string` | КПП (код причины постановки на учёт) | [types/finances.types.ts:740](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L740) |
-| <a id="saledate"></a> `saleDate?` | `string` | Дата продажи | [types/finances.types.ts:742](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L742) |
-| <a id="srid"></a> `srid?` | `string` | Уникальный ID заказа | [types/finances.types.ts:744](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L744) |
-| <a id="doctypename"></a> `docTypeName?` | `string` | Тип документа | [types/finances.types.ts:746](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L746) |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/finances.types.ts:748](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L748) |
-| <a id="retailamount"></a> `retailAmount?` | `string` | Вайлдберриз реализовал (string — use parseMoneyAmount) | [types/finances.types.ts:750](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L750) |
-| <a id="acquiringfee"></a> `acquiringFee?` | `string` | Комиссия за эквайринг (string — use parseMoneyAmount) | [types/finances.types.ts:752](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L752) |
-| <a id="acquiringfeevat"></a> `acquiringFeeVat?` | `string` | НДС с комиссии за эквайринг (string — use parseMoneyAmount) | [types/finances.types.ts:754](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L754) |
-| <a id="invoicenumber"></a> `invoiceNumber?` | `string` | Номер счёта-фактуры | [types/finances.types.ts:756](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L756) |
-| <a id="invoicedate"></a> `invoiceDate?` | `string` | Дата счёта-фактуры | [types/finances.types.ts:758](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L758) |
-| <a id="shkid"></a> `shkId?` | `number` | Штрихкод | [types/finances.types.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L760) |
-| <a id="currency"></a> `currency?` | `string` | Валюта | [types/finances.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/finances.types.ts#L762) |
+| <a id="rrdid"></a> `rrdId?` | `number` | ID строки отчёта | [types/finances.types.ts:489](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L489) |
+| <a id="reportid"></a> `reportId?` | `number` | Номер отчёта | [types/finances.types.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L491) |
+| <a id="acqdate"></a> `acqDate?` | `string` | Дата эквайринга | [types/finances.types.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L493) |
+| <a id="acquiringbank"></a> `acquiringBank?` | `string` | Банк-эквайер (e.g., "Тинькофф") | [types/finances.types.ts:495](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L495) |
+| <a id="tin"></a> `tin?` | `string` | ИНН | [types/finances.types.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L497) |
+| <a id="taxregistrationreasoncode"></a> `taxRegistrationReasonCode?` | `string` | КПП (код причины постановки на учёт) | [types/finances.types.ts:499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L499) |
+| <a id="saledate"></a> `saleDate?` | `string` | Дата продажи | [types/finances.types.ts:501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L501) |
+| <a id="srid"></a> `srid?` | `string` | Уникальный ID заказа | [types/finances.types.ts:503](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L503) |
+| <a id="doctypename"></a> `docTypeName?` | `string` | Тип документа | [types/finances.types.ts:505](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L505) |
+| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/finances.types.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L507) |
+| <a id="retailamount"></a> `retailAmount?` | `string` | Вайлдберриз реализовал (string — use parseMoneyAmount) | [types/finances.types.ts:509](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L509) |
+| <a id="acquiringfee"></a> `acquiringFee?` | `string` | Комиссия за эквайринг (string — use parseMoneyAmount) | [types/finances.types.ts:511](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L511) |
+| <a id="acquiringfeevat"></a> `acquiringFeeVat?` | `string` | НДС с комиссии за эквайринг (string — use parseMoneyAmount) | [types/finances.types.ts:513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L513) |
+| <a id="invoicenumber"></a> `invoiceNumber?` | `string` | Номер счёта-фактуры | [types/finances.types.ts:515](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L515) |
+| <a id="invoicedate"></a> `invoiceDate?` | `string` | Дата счёта-фактуры | [types/finances.types.ts:517](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L517) |
+| <a id="shkid"></a> `shkId?` | `number` | Штрихкод | [types/finances.types.ts:519](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L519) |
+| <a id="currency"></a> `currency?` | `string` | Валюта | [types/finances.types.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/finances.types.ts#L521) |

@@ -2,12 +2,12 @@
 
 # Interface: GetMetaBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:446](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L446)
+Defined in: [types/in-store-pickup.types.ts:319](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L319)
 
-Request body for getMetaBulk
+Request body for [InStorePickupModule.getMetaBulk](../../classes/InStorePickupModule.md#getmetabulk).
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to get metadata for | [types/orders-dbs.types.ts:448](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L448) |
+| <a id="ordersids"></a> `ordersIds` | `number`[] | Order IDs to get metadata for (max 1000). | [types/in-store-pickup.types.ts:321](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L321) |

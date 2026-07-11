@@ -2,7 +2,7 @@
 
 # Interface: CreateInviteRequest
 
-Defined in: [types/general.types.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L122)
+Defined in: [types/general.types.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/general.types.ts#L128)
 
 Request to create user invitation
 
@@ -10,5 +10,5 @@ Request to create user invitation
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="access"></a> `access?` | [`AccessItem`](AccessItem.md)[] | Access permissions for the user | [types/general.types.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L124) |
-| <a id="invite"></a> `invite` | [`InviteInfo`](InviteInfo.md) | Invitation details | [types/general.types.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/general.types.ts#L126) |
+| <a id="access"></a> `access?` | [`AccessItem`](AccessItem.md)[] | Access permissions for the user | [types/general.types.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/general.types.ts#L130) |
+| <a id="invite"></a> `invite` | [`InviteInfo`](InviteInfo.md) | Invitation details | [types/general.types.ts:132](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/general.types.ts#L132) |

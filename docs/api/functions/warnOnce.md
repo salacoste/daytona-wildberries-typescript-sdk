@@ -6,7 +6,7 @@
 function warnOnce(methodKey: string, message: string): void;
 ```
 
-Defined in: [utils/deprecation.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/utils/deprecation.ts#L28)
+Defined in: [utils/deprecation.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/utils/deprecation.ts#L28)
 
 Emit a deprecation warning for a method, at most once per process.
 
@@ -14,7 +14,7 @@ Emit a deprecation warning for a method, at most once per process.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `methodKey` | `string` | Unique identifier for the deprecated method (e.g. 'FinancesModule.getSupplierReportDetailByPeriod') |
+| `methodKey` | `string` | Unique identifier for the deprecated method (e.g. 'products.getCardsList:legacy-withphoto-zero') |
 | `message` | `string` | The warning message to display |
 
 ## Returns
@@ -25,7 +25,7 @@ Emit a deprecation warning for a method, at most once per process.
 
 ```typescript
 warnOnce(
-  'FinancesModule.getSupplierReportDetailByPeriod',
-  '[DEPRECATED] getSupplierReportDetailByPeriod() is deprecated. Migrate to getSalesReportsDetailed().'
+  'products.getCardsList:legacy-withphoto-zero',
+  '[DEPRECATED] withPhoto: 0 semantics changed. Use WITH_PHOTO_FILTER.NO_PHOTO for "no photo only".'
 );
 ```

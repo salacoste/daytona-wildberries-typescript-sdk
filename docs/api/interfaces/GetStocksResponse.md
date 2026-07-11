@@ -2,12 +2,11 @@
 
 # Interface: GetStocksResponse
 
-Defined in: [types/products.types.ts:1088](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L1088)
+Defined in: [types/products.types.ts:1143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L1143)
 
 Response from [ProductsModule.getStocks](../classes/ProductsModule.md#getstocks).
 
-WB returns one of `sku` or `chrtId` per item, matching whichever identifier the
-request used. After 2026-05-20 13:00 MSK, only `chrtId` will be populated.
+WB returns `chrtId` per item (the legacy `sku` identifier was removed in v4.0.0).
 
 ## Since
 
@@ -17,4 +16,4 @@ request used. After 2026-05-20 13:00 MSK, only `chrtId` will be populated.
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="stocks"></a> `stocks?` | [`StockItem`](StockItem.md)[] | [types/products.types.ts:1089](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L1089) |
+| <a id="stocks"></a> `stocks?` | [`StockItem`](StockItem.md)[] | [types/products.types.ts:1144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L1144) |

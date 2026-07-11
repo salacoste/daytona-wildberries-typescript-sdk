@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v3.15.0
+# Wildberries API TypeScript SDK v4.0.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -16,6 +16,7 @@ Main entry point
 | [BaseClient](classes/BaseClient.md) | Base HTTP client for all Wildberries API modules |
 | [AuthenticationError](classes/AuthenticationError.md) | Authentication error thrown when API key is invalid or lacks permissions. |
 | [WBAPIError](classes/WBAPIError.md) | Base error class for all Wildberries SDK errors. |
+| [BidOutOfRangeError](classes/BidOutOfRangeError.md) | Error thrown when WB rejects a bid for being out of the accepted range. |
 | [PickupOrderNotFoundError](classes/PickupOrderNotFoundError.md) | Error thrown when a pickup order is not found |
 | [InvalidOrderStateError](classes/InvalidOrderStateError.md) | Error thrown when an order state transition is invalid |
 | [CustomerVerificationError](classes/CustomerVerificationError.md) | Error thrown when customer identity verification fails |
@@ -28,6 +29,7 @@ Main entry point
 | [InvalidCampaignStateError](classes/InvalidCampaignStateError.md) | Error thrown when attempting invalid campaign state transitions. |
 | [RateLimitError](classes/RateLimitError.md) | Rate limit error thrown when API rate limits are exceeded. |
 | [ValidationError](classes/ValidationError.md) | Validation error thrown when request data fails validation. |
+| [WarehouseStocksUpdateBlockError](classes/WarehouseStocksUpdateBlockError.md) | Error thrown when WB returns HTTP 406 `WarehouseStocksUpdateBlock` on inventory updates. |
 | [WildberriesSDK](classes/WildberriesSDK.md) | Main SDK class providing access to all Wildberries API modules. |
 | [AnalyticsModule](classes/AnalyticsModule.md) | - |
 | [CommunicationsModule](classes/CommunicationsModule.md) | - |
@@ -58,6 +60,7 @@ Main entry point
 | [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
 | [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
 | [MetaDetail](interfaces/MetaDetail.md) | Metadata detail item with validation status Replaces the deprecated `meta` object. Use with `/api/marketplace/v3/orders/meta` endpoint. |
+| [APIErrorV2](interfaces/APIErrorV2.md) | WB v3 APIErrorV2 envelope -- the newer V2 error shape returned by some v3 endpoints (e.g. 400/403 responses). Maps to swagger schema: v3.APIErrorV2. |
 | [DBWDeleteMetaBulkRequest](interfaces/DBWDeleteMetaBulkRequest.md) | Request body for bulk deletion of marking metadata from DBW orders. Mirrors DBS `DeleteMetaBulkRequest`. |
 | [DBWDeleteMetaBulkResponse](interfaces/DBWDeleteMetaBulkResponse.md) | Response from bulk metadata deletion for DBW orders. Mirrors DBS `DeleteMetaBulkResponse`. |
 | [DBWSetSgtinBulkRequest](interfaces/DBWSetSgtinBulkRequest.md) | Request body for bulk SGTIN code assignment on DBW orders. Mirrors DBS `SetSgtinBulkRequest`. |
@@ -89,6 +92,7 @@ Main entry point
 | [UserAccess](interfaces/UserAccess.md) | Настройки доступа для конкретного пользователя |
 | [UpdateUserAccessRequest](interfaces/UpdateUserAccessRequest.md) | Запрос на обновление настроек доступа пользователей |
 | [UserManagementErrorResponse](interfaces/UserManagementErrorResponse.md) | Ответ с информацией об ошибке от User Management API |
+| [BidRange](interfaces/BidRange.md) | Effective accepted bid range for an article, in kopecks. |
 | [SupplyCostInput](interfaces/SupplyCostInput.md) | Input parameters for supply cost calculation |
 | [SupplyCostResult](interfaces/SupplyCostResult.md) | Result of supply cost calculation |
 | [FbsStatusEvent](interfaces/FbsStatusEvent.md) | Single FBS status event from order status history. Consumer shapes this from their `order_wb_status_history` table or SDK call. |
@@ -103,6 +107,8 @@ Main entry point
 | [ReconciliationAnomaly](interfaces/ReconciliationAnomaly.md) | Anomaly detected during reconciliation. |
 | [ReconciliationResult](interfaces/ReconciliationResult.md) | Per-nmId reconciliation summary. |
 | [ReconcileOptions](interfaces/ReconcileOptions.md) | Optional configuration for reconciliation. |
+| [ROASResult](interfaces/ROASResult.md) | Result of [computeROAS](functions/computeROAS.md). |
+| [ComputeROASOptions](interfaces/ComputeROASOptions.md) | Options for [computeROAS](functions/computeROAS.md). |
 | [MergedCardVariant](interfaces/MergedCardVariant.md) | A single product variant within a merged card. |
 | [MergedCardValidationResult](interfaces/MergedCardValidationResult.md) | Result of merged card variant validation. |
 
@@ -111,8 +117,8 @@ Main entry point
 | Type Alias | Description |
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
-| [DBWBulkStatusChangeResponse](type-aliases/DBWBulkStatusChangeResponse.md) | Response shape for DBW bulk status-change operations (alias for [BulkStatusChangeResponse](-internal-/interfaces/BulkStatusChangeResponse.md)). Maintained as a DBW-prefixed alias to preserve API symmetry with DBW request types. |
-| [DBWStatusSetResponse](type-aliases/DBWStatusSetResponse.md) | Per-order result item in a DBW bulk status-change response (alias for [StatusSetResponse](-internal-/interfaces/StatusSetResponse.md)). |
+| [DBWBulkStatusChangeResponse](type-aliases/DBWBulkStatusChangeResponse.md) | Response shape for DBW bulk status-change operations (alias for [BulkStatusChangeResponse](-internal-/interfaces/BulkStatusChangeResponse-1.md)). Maintained as a DBW-prefixed alias to preserve API symmetry with DBW request types. |
+| [DBWStatusSetResponse](type-aliases/DBWStatusSetResponse.md) | Per-order result item in a DBW bulk status-change response (alias for [StatusSetResponse](-internal-/interfaces/StatusSetResponse-1.md)). |
 | [DBWMetaValidationDetail](type-aliases/DBWMetaValidationDetail.md) | Per-order metadata validation detail (alias for [MetaValidationDetail](interfaces/MetaValidationDetail.md)). |
 | [ReturnStatus](type-aliases/ReturnStatus.md) | Current state of a return. |
 | [ReturnCategory](type-aliases/ReturnCategory.md) | Categorized return type, derived from order fulfillment path and status history. |
@@ -154,6 +160,10 @@ Main entry point
 | [getOperationsByCategory](functions/getOperationsByCategory.md) | Get all operations for a specific category |
 | [getReadonlyOperations](functions/getReadonlyOperations.md) | Get all readonly operations |
 | [getWriteOperations](functions/getWriteOperations.md) | Get all write operations (not readonly) |
+| [parseBidOutOfRangeDetail](functions/parseBidOutOfRangeDetail.md) | Parse a WB advert `detail` string for the bid-out-of-range format. |
+| [extractBidRange](functions/extractBidRange.md) | Compute the effective bid range for an article from a recommendations response. |
+| [validateBid](functions/validateBid.md) | Validate a desired bid against an article's recommendation range. |
+| [clampBid](functions/clampBid.md) | Clamp a desired bid into an article's recommendation range. |
 | [calculateSupplyCost](functions/calculateSupplyCost.md) | Calculates the total supply cost including acceptance, storage, and logistics |
 | [classifyFbsReturnCategory](functions/classifyFbsReturnCategory.md) | Classifies an FBS order's return category by analyzing its status history. |
 | [classifyReturnReason](functions/classifyReturnReason.md) | Classifies a Wildberries return reason string into a standardized enum code. |
@@ -164,6 +174,7 @@ Main entry point
 | [parseMetaValidationFail](functions/parseMetaValidationFail.md) | Extracts marking-code validation failure details from an unknown caught value. |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
 | [reconcileBuyoutsAndReturns](functions/reconcileBuyoutsAndReturns.md) | Reconciles buyouts and returns per nmId for unified analytics. |
+| [computeROAS](functions/computeROAS.md) | Compute ROAS (Return on Ad Spend) from WB fullstats per-day data. |
 | [validateMergedCardVariants](functions/validateMergedCardVariants.md) | Client-side validator for merged product card variants. |
 | [validateRequiredCharacteristics](functions/validateRequiredCharacteristics.md) | Validates that all mandatory characteristics are present in a card creation request. Returns the list of missing mandatory characteristics. |
 

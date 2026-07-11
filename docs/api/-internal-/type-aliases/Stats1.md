@@ -11,13 +11,13 @@ type Stats1 = {
 }[];
 ```
 
-Defined in: [types/promotion.types.ts:436](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L436)
+Defined in: [types/promotion.types.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L444)
 
 ## Type Declaration
 
 | Name | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| `views?` | `number` | Количество просмотров | [types/promotion.types.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L438) |
-| `clicks?` | `number` | Количество кликов | [types/promotion.types.ts:440](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L440) |
-| `atbs?` | `number` | Количество добавлений товаров в корзину | [types/promotion.types.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L442) |
-| `ctr?` | `number` | CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках медиакампании | [types/promotion.types.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L444) |
+| `views?` | `number` | Количество просмотров | [types/promotion.types.ts:446](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L446) |
+| `clicks?` | `number` | Количество кликов | [types/promotion.types.ts:448](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L448) |
+| `atbs?` | `number` | Количество добавлений товаров в корзину | [types/promotion.types.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L450) |
+| `ctr?` | `number` | CTR (click-through rate) — показатель кликабельности, отношение числа кликов к количеству показов в рамках медиакампании | [types/promotion.types.ts:452](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L452) |

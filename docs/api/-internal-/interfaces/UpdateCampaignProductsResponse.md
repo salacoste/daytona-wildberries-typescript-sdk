@@ -2,7 +2,7 @@
 
 # Interface: UpdateCampaignProductsResponse
 
-Defined in: [types/promotion.types.ts:1731](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L1731)
+Defined in: [types/promotion.types.ts:1957](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1957)
 
 Response from updateCampaignProducts
 
@@ -10,4 +10,4 @@ Response from updateCampaignProducts
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nms"></a> `nms` | [`CampaignProductsResult`](CampaignProductsResult.md)[] | Results of product updates | [types/promotion.types.ts:1733](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L1733) |
+| <a id="nms"></a> `nms` | [`CampaignProductsResult`](CampaignProductsResult.md)[] | Results of product updates | [types/promotion.types.ts:1959](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1959) |

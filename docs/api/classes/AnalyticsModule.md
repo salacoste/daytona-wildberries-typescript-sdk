@@ -2,7 +2,7 @@
 
 # Class: AnalyticsModule
 
-Defined in: [modules/analytics/index.ts:48](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L48)
+Defined in: [modules/analytics/index.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L51)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/analytics/index.ts:48](https://github.com/salacoste/daytona
 new AnalyticsModule(client: BaseClient): AnalyticsModule;
 ```
 
-Defined in: [modules/analytics/index.ts:49](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L49)
+Defined in: [modules/analytics/index.ts:52](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L52)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ getNmReportDownloads(options?: {
 }): Promise<NmReportGetReportsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:69](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L69)
+Defined in: [modules/analytics/index.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L72)
 
 Получить список отчётов
 
@@ -93,10 +93,11 @@ createNmReportDownload(data?:
   | SearchReportGroupReq
   | SearchReportProductReq
   | SearchReportTextReq
-| StocksReportReq): Promise<NmReportCreateReportResponse>;
+  | StocksReportReq
+| InventoryHistoryReportReq): Promise<NmReportCreateReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:100](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L100)
+Defined in: [modules/analytics/index.ts:103](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L103)
 
 Создать отчёт
 
@@ -111,7 +112,7 @@ Rate limit: 3 requests/minute, 20-second interval, burst 3
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data?` | \| [`SalesFunnelProductReq`](../-internal-/interfaces/SalesFunnelProductReq.md) \| [`SalesFunnelGroupReq`](../-internal-/interfaces/SalesFunnelGroupReq.md) \| [`SearchReportGroupReq`](../-internal-/interfaces/SearchReportGroupReq.md) \| [`SearchReportProductReq`](../-internal-/interfaces/SearchReportProductReq.md) \| [`SearchReportTextReq`](../-internal-/interfaces/SearchReportTextReq.md) \| [`StocksReportReq`](../-internal-/interfaces/StocksReportReq.md) | Request body data |
+| `data?` | \| [`SalesFunnelProductReq`](../-internal-/interfaces/SalesFunnelProductReq.md) \| [`SalesFunnelGroupReq`](../-internal-/interfaces/SalesFunnelGroupReq.md) \| [`SearchReportGroupReq`](../-internal-/interfaces/SearchReportGroupReq.md) \| [`SearchReportProductReq`](../-internal-/interfaces/SearchReportProductReq.md) \| [`SearchReportTextReq`](../-internal-/interfaces/SearchReportTextReq.md) \| [`StocksReportReq`](../-internal-/interfaces/StocksReportReq.md) \| [`InventoryHistoryReportReq`](../-internal-/interfaces/InventoryHistoryReportReq.md) | Request body data |
 
 #### Returns
 
@@ -158,7 +159,7 @@ console.log(result);
 createDownloadsRetry(data: NmReportRetryReportRequest): Promise<NmReportRetryReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:135](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L135)
+Defined in: [modules/analytics/index.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L139)
 
 Сгенерировать отчёт повторно
 
@@ -214,7 +215,7 @@ console.log(result);
 getDownloadsFile(downloadId: string): Promise<ArrayBuffer>;
 ```
 
-Defined in: [modules/analytics/index.ts:165](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L165)
+Defined in: [modules/analytics/index.ts:169](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L169)
 
 Получить отчёт
 
@@ -273,7 +274,7 @@ createSearchReportReport(data: MainRequest): Promise<CommonResponseProperties & 
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:191](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L191)
+Defined in: [modules/analytics/index.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L195)
 
 Основная страница
 
@@ -333,7 +334,7 @@ createTableGroup(data: TableGroupRequest): Promise<CommonResponseProperties & {
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L221)
+Defined in: [modules/analytics/index.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L225)
 
 Пагинация по группам
 
@@ -394,7 +395,7 @@ createTableDetail(data: TableDetailsRequest): Promise<CommonResponseProperties &
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L251)
+Defined in: [modules/analytics/index.ts:255](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L255)
 
 Пагинация по товарам в группе
 
@@ -455,7 +456,7 @@ createProductSearchText(data: ProductSearchTextsRequest): Promise<CommonResponse
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:280](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L280)
+Defined in: [modules/analytics/index.ts:284](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L284)
 
 Поисковые запросы по товару
 
@@ -515,7 +516,7 @@ createProductOrder(data: ProductOrdersRequest): Promise<CommonResponseProperties
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L308)
+Defined in: [modules/analytics/index.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L312)
 
 Заказы и позиции по поисковым запросам товара
 
@@ -574,7 +575,7 @@ createProductsGroup(data: TableGroupRequestSt): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:337](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L337)
+Defined in: [modules/analytics/index.ts:341](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L341)
 
 Данные по группам
 
@@ -634,7 +635,7 @@ createProductsProduct(data: TableProductRequest): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:364](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L364)
+Defined in: [modules/analytics/index.ts:368](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L368)
 
 Данные по товарам
 
@@ -694,7 +695,7 @@ createProductsSize(data: CommonSizeFilters): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:392](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L392)
+Defined in: [modules/analytics/index.ts:396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L396)
 
 Данные по размерам
 
@@ -755,7 +756,7 @@ createStocksReportOffice(data: CommonShippingOfficeFilters): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:419](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L419)
+Defined in: [modules/analytics/index.ts:423](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L423)
 
 Данные по складам
 
@@ -813,7 +814,7 @@ console.log(result);
 getSalesFunnelProducts(data: SalesFunnelProductsRequest): Promise<SalesFunnelProductsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:455](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L455)
+Defined in: [modules/analytics/index.ts:459](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L459)
 
 Статистика карточек товаров за период (v3)
 
@@ -874,7 +875,7 @@ console.log(result.products);
 getSalesFunnelProductsHistory(data: SalesFunnelProductsHistoryRequest): Promise<SalesFunnelProductsHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:487](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L487)
+Defined in: [modules/analytics/index.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L491)
 
 Статистика карточек товаров по дням (v3)
 
@@ -933,7 +934,7 @@ console.log(result);
 getSalesFunnelGroupedHistory(data: SalesFunnelGroupedHistoryRequest): Promise<SalesFunnelGroupedHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L518)
+Defined in: [modules/analytics/index.ts:522](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L522)
 
 Статистика групп карточек товаров по дням (v3)
 
@@ -991,7 +992,7 @@ console.log(result);
 getWbWarehousesStock(data?: WbWarehousesStockRequest): Promise<WbWarehousesStockResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:570](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/analytics/index.ts#L570)
+Defined in: [modules/analytics/index.ts:578](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L578)
 
 Текущие остатки на складах WB
 
@@ -1000,6 +1001,9 @@ Defined in: [modules/analytics/index.ts:570](https://github.com/salacoste/dayton
 Результаты отсортированы по возрастанию nmId.
 
 Доступен только для токенов типа Personal и Service.
+
+**WB expanded access:** now also available to registered/authorized services
+via a basic token + secret (not just personal/service tokens).
 
 **Заменяет устаревший метод** `GET /api/v1/supplier/stocks`,
 который будет отключён 23 июня 2026.
@@ -1040,7 +1044,8 @@ When network request fails or times out
 
 #### See
 
-[https://dev.wildberries.ru/docs/openapi/analytics#tag/Istoriya-ostatkov/operation/postV1StocksReportWbWarehouses](https://dev.wildberries.ru/docs/openapi/analytics#tag/Istoriya-ostatkov/operation/postV1StocksReportWbWarehouses)
+ - [https://dev.wildberries.ru/docs/openapi/analytics#tag/Istoriya-ostatkov/operation/postV1StocksReportWbWarehouses](https://dev.wildberries.ru/docs/openapi/analytics#tag/Istoriya-ostatkov/operation/postV1StocksReportWbWarehouses)
+ - [Stocks History guide](https://dev.wildberries.ru/knowledge-base/articles/019ef14c-c72d-717a-9fc2-b0b2f361dc80)
 
 #### Example
 
@@ -1057,4 +1062,81 @@ const page = await sdk.analytics.getWbWarehousesStock({
   limit: 100,
   offset: 0,
 });
+```
+
+***
+
+### getItemRating()
+
+```ts
+getItemRating(data: ItemRatingRequest): Promise<ItemRatingResponseWrapper>;
+```
+
+Defined in: [modules/analytics/index.ts:636](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/analytics/index.ts#L636)
+
+Get item rating with feedback distribution.
+
+Returns the seller rating, a feedback-increase summary (total + per-star 1-5
+with optional dynamics vs. the previous period), and a per-item breakdown
+of feedback counts and star distribution.
+
+Rate limit: 3 requests per minute, 20s interval, burst 3.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`ItemRatingRequest`](../-internal-/interfaces/ItemRatingRequest.md) | Request parameters. `currentPeriod`, `orderBy`, and `offset` are required. Pass `pastPeriod` to enable compare mode (yields `dynamics` fields in the response). |
+
+#### Returns
+
+`Promise`\<[`ItemRatingResponseWrapper`](../-internal-/interfaces/ItemRatingResponseWrapper.md)\>
+
+Seller rating, feedback-increase summary, and per-item array.
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+3.16.0
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/analytics#tag/Rating/operation/postV1ItemRating](https://dev.wildberries.ru/docs/openapi/analytics#tag/Rating/operation/postV1ItemRating)
+
+#### Example
+
+```typescript
+// Period mode (single period, no dynamics)
+const rating = await sdk.analytics.getItemRating({
+  currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+  orderBy: { field: 'feedbackCount', mode: 'desc' },
+  offset: 0,
+  limit: 100,
+});
+console.log(rating.data.sellerRating.current); // e.g. 3.56
+
+// Compare mode (current + past period — yields `dynamics` fields)
+const compared = await sdk.analytics.getItemRating({
+  currentPeriod: { start: '2026-02-10', end: '2026-02-10' },
+  pastPeriod: { start: '2026-02-08', end: '2026-02-08' },
+  nmIds: [162579635, 166699779],
+  orderBy: { field: 'fiveStar', mode: 'desc' },
+  offset: 0,
+});
+console.log(compared.data.feedbackIncrease.fiveStar.dynamics); // % change vs past period
 ```

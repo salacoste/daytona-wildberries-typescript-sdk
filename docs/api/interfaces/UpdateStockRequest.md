@@ -2,7 +2,7 @@
 
 # Interface: UpdateStockRequest
 
-Defined in: [types/products.types.ts:1076](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L1076)
+Defined in: [types/products.types.ts:1132](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L1132)
 
 Request body for [ProductsModule.updateStock](../classes/ProductsModule.md#updatestock).
 
@@ -13,15 +13,11 @@ Request body for [ProductsModule.updateStock](../classes/ProductsModule.md#updat
 ## Example
 
 ```typescript
-// New v3.12.0+ pattern (preferred)
 const request: UpdateStockRequest = { stocks: [{ chrtId: 12345678, amount: 100 }] };
-
-// Legacy pattern (deprecated)
-const legacyRequest: UpdateStockRequest = { stocks: [{ sku: '1234567890123', amount: 100 }] };
 ```
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stocks"></a> `stocks` | [`StockItem`](StockItem.md)[] | Array of stock items. Use `chrtId` per item (not `sku`) after 2026-05-20. | [types/products.types.ts:1078](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L1078) |
+| <a id="stocks"></a> `stocks` | [`StockItem`](StockItem.md)[] | Array of stock items (set `chrtId` per item). | [types/products.types.ts:1134](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L1134) |

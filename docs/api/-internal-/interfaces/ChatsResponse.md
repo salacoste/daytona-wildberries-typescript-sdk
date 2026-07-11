@@ -2,11 +2,11 @@
 
 # Interface: ChatsResponse
 
-Defined in: [types/communications.types.ts:434](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/communications.types.ts#L434)
+Defined in: [types/communications.types.ts:429](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/communications.types.ts#L429)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="result"></a> `result?` | [`Chat`](Chat.md)[] | - | [types/communications.types.ts:435](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/communications.types.ts#L435) |
-| <a id="errors"></a> `errors?` | `string`[] | Ошибки, если есть | [types/communications.types.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/communications.types.ts#L437) |
+| <a id="result"></a> `result?` | [`Chat`](Chat.md)[] | - | [types/communications.types.ts:430](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/communications.types.ts#L430) |
+| <a id="errors"></a> `errors?` | `string`[] | Ошибки, если есть | [types/communications.types.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/communications.types.ts#L432) |

@@ -2,21 +2,24 @@
 
 # Interface: AntifraudDetailsItem
 
-Defined in: [types/reports.types.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L491)
+Defined in: [types/reports.types.ts:480](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L480)
 
-Antifraud details report item
+Antifraud details report item (self-purchase deductions)
 
 ## See
 
 EPIC 43 - Response type for getAnalyticsAntifraudDetails
 
+## Spec
+
+SuccessTaskResponse (12-reports.yaml)
+
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L493) |
-| <a id="weekdate"></a> `weekDate?` | `string` | Дата недели отчёта | [types/reports.types.ts:495](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L495) |
-| <a id="amount"></a> `amount?` | `number` | Сумма удержания | [types/reports.types.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L497) |
-| <a id="officeid"></a> `officeId?` | `number` | ID ПВЗ | [types/reports.types.ts:499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L499) |
-| <a id="officename"></a> `officeName?` | `string` | Название ПВЗ | [types/reports.types.ts:501](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L501) |
-| <a id="quantity"></a> `quantity?` | `number` | Количество единиц товара | [types/reports.types.ts:503](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L503) |
+| <a id="nmid"></a> `nmID?` | `number` | Артикул Wildberries | [types/reports.types.ts:482](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L482) |
+| <a id="sum"></a> `sum?` | `number` | Сумма заказа | [types/reports.types.ts:484](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L484) |
+| <a id="currency"></a> `currency?` | `string` | Валюта | [types/reports.types.ts:486](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L486) |
+| <a id="datefrom"></a> `dateFrom?` | `string` | Дата начала отчёта | [types/reports.types.ts:488](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L488) |
+| <a id="dateto"></a> `dateTo?` | `string` | Дата окончания отчёта | [types/reports.types.ts:490](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L490) |

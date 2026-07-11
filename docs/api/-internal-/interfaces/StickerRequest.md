@@ -2,12 +2,12 @@
 
 # Interface: StickerRequest
 
-Defined in: [types/orders-fbs.types.ts:62](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L62)
+Defined in: [types/orders-dbs.types.ts:611](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-dbs.types.ts#L611)
 
-Request body for retrieving order stickers
+Request body for retrieving DBS order stickers (max 100 order IDs).
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | `number`[] | List of order IDs (max 100) | [types/orders-fbs.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L64) |
+| <a id="orders"></a> `orders?` | `number`[] | List of order IDs (max 100) | [types/orders-dbs.types.ts:613](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-dbs.types.ts#L613) |

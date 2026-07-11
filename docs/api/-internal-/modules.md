@@ -17,6 +17,7 @@
 | [ProblemJsonFields](interfaces/ProblemJsonFields.md) | Parsed fields from an RFC 7807 problem+json error response. |
 | [RetryConfig](interfaces/RetryConfig.md) | Configuration options for retry behavior |
 | [RetryOptions](interfaces/RetryOptions.md) | Options for controlling retry behavior per-operation |
+| [ParsedBidRange](interfaces/ParsedBidRange.md) | Parsed components of a WB advert "wrong bid value" 400 detail string. |
 | [MainRequest](interfaces/MainRequest.md) | Параметры запроса для формирования главной страницы: - `currentPeriod` — текущий период - `pastPeriod` — предыдущий период для сравнения |
 | [MainResponse](interfaces/MainResponse.md) | - |
 | [CommonInfo](interfaces/CommonInfo.md) | - |
@@ -49,6 +50,7 @@
 | [SearchReportProductReq](interfaces/SearchReportProductReq.md) | - |
 | [SearchReportTextReq](interfaces/SearchReportTextReq.md) | - |
 | [StocksReportReq](interfaces/StocksReportReq.md) | - |
+| [InventoryHistoryReportReq](interfaces/InventoryHistoryReportReq.md) | Параметры запроса для отчёта по истории запасов (reportType `STOCK_HISTORY_DAILY_CSV`). |
 | [NmReportRetryReportRequest](interfaces/NmReportRetryReportRequest.md) | - |
 | [NmReportCreateReportResponse](interfaces/NmReportCreateReportResponse.md) | - |
 | [NmReportGetReportsResponse](interfaces/NmReportGetReportsResponse.md) | - |
@@ -90,6 +92,20 @@
 | [WbWarehousesStockRequest](interfaces/WbWarehousesStockRequest.md) | Request for WB warehouses current inventory |
 | [WbWarehouseStockItem](interfaces/WbWarehouseStockItem.md) | Single inventory item — 1 size in 1 WB warehouse |
 | [WbWarehousesStockResponse](interfaces/WbWarehousesStockResponse.md) | Response from POST /api/analytics/v1/stocks-report/wb-warehouses |
+| [PeriodItemRating](interfaces/PeriodItemRating.md) | Current period for item rating. Dates use `YYYY-MM-DD` format. `start` must not be later than `end`, and neither may be earlier than 364 days before yesterday. |
+| [PastPeriodItemRating](interfaces/PastPeriodItemRating.md) | Previous period for comparison. Day count must be less than or equal to `currentPeriod`. |
+| [OrderByItemRating](interfaces/OrderByItemRating.md) | Sorting parameters for item rating. |
+| [ItemRatingRequest](interfaces/ItemRatingRequest.md) | Request parameters for POST /api/analytics/v1/item-rating. Supports a single-period mode (`currentPeriod` only) and a compare mode (`currentPeriod` + `pastPeriod`). |
+| [ItemRatingStarMetric](interfaces/ItemRatingStarMetric.md) | Per-star feedback counts with current period, total, and optional dynamics. |
+| [TableItemFloat](interfaces/TableItemFloat.md) | Seller rating summary (current + optional dynamics). |
+| [FeedbacksIncreaseItem](interfaces/FeedbacksIncreaseItem.md) | Feedback increase summary: total plus per-star breakdown (1-5). |
+| [DistributionFeedbackRating](interfaces/DistributionFeedbackRating.md) | Feedback rating value: current rating, optional dynamics, optional percentile. |
+| [TableItemBaseCommon](interfaces/TableItemBaseCommon.md) | Base item fields shared by per-item rows. |
+| [DistributionTableIndicator](interfaces/DistributionTableIndicator.md) | Per-star/feedback indicator with current value and optional dynamics. |
+| [DistributionTableIndicators](interfaces/DistributionTableIndicators.md) | Per-item indicator breakdown (feedback count + per-star counts + disqualified). |
+| [DistributionTableItem](interfaces/DistributionTableItem.md) | Single item row in the item-rating response: base fields merged with indicator breakdown. |
+| [ItemRatingResponse](interfaces/ItemRatingResponse.md) | Response body for POST /api/analytics/v1/item-rating (the `data` payload). |
+| [ItemRatingResponseWrapper](interfaces/ItemRatingResponseWrapper.md) | Top-level response wrapper for POST /api/analytics/v1/item-rating. |
 | [PinnedReviewError](interfaces/PinnedReviewError.md) | Error details for pinned reviews operations |
 | [PinReviewItem](interfaces/PinReviewItem.md) | Request item for pinning a review |
 | [PinReviewItemResultData](interfaces/PinReviewItemResultData.md) | Result item from pin operation |
@@ -120,7 +136,6 @@
 | [GetList](interfaces/GetList.md) | - |
 | [GetDoc](interfaces/GetDoc.md) | - |
 | [GetDocs](interfaces/GetDocs.md) | - |
-| [~~DetailReportItem~~](interfaces/DetailReportItem.md) | Response item from `getSupplierReportDetailByPeriod()` (v5, **deprecated**). |
 | [SalesReportListRequest](interfaces/SalesReportListRequest.md) | Request body for `getSalesReportsList()` (v1). |
 | [SalesReportDetailedRequest](interfaces/SalesReportDetailedRequest.md) | Request body for `getSalesReportsDetailed()` (v1). |
 | [SalesReportDetailedByIdRequest](interfaces/SalesReportDetailedByIdRequest.md) | Request body for `getSalesReportsDetailedByReportId()` (v1). |
@@ -147,41 +162,60 @@
 | [GetUsersResponse](interfaces/GetUsersResponse.md) | Response from get users endpoint |
 | [UserAccessUpdate](interfaces/UserAccessUpdate.md) | User access update item |
 | [UpdateUserAccessRequest](interfaces/UpdateUserAccessRequest.md) | Request to update user access |
-| [JamSubscriptionStatus](interfaces/JamSubscriptionStatus.md) | Result of a Jam subscription status probe |
-| [GetJamSubscriptionStatusParams](interfaces/GetJamSubscriptionStatusParams.md) | Parameters for the Jam subscription status check |
 | [JamSubscriptionDetails](interfaces/JamSubscriptionDetails.md) | Detailed Jam subscription information from GET /api/common/v1/subscriptions |
 | [SellerRatingResponse](interfaces/SellerRatingResponse.md) | Seller rating and review count from GET /api/common/v1/rating |
+| [GetTariffConstructorOptionsParams](interfaces/GetTariffConstructorOptionsParams.md) | Parameters for GET /api/common/v1/tariff-constructor/options |
+| [PlanBuilderPromotion](interfaces/PlanBuilderPromotion.md) | Promo applied to a Plan Builder option. Returned when the option is activated via a promo and the promo period has not expired. |
+| [PlanBuilderOptionShort](interfaces/PlanBuilderOptionShort.md) | Short option reference embedded inside an option package. |
+| [PlanBuilderOption](interfaces/PlanBuilderOption.md) | An option activated in the Plan Builder outside of any package. |
+| [PlanBuilderPackage](interfaces/PlanBuilderPackage.md) | An option package activated in the Plan Builder. |
+| [PlanBuilderOptionsInfo](interfaces/PlanBuilderOptionsInfo.md) | Information about all options and option packages the seller activated in the Plan Builder (Tariff Constructor). Returned by GET /api/common/v1/tariff-constructor/options. |
 | [ApiCheckedIdentity](interfaces/ApiCheckedIdentity.md) | Auto-generated TypeScript types for in-store-pickup module Generated from: wildberries_api_doc/06-in-store-pickup.yaml |
 | [ApiCheckIdentityRequest](interfaces/ApiCheckIdentityRequest.md) | - |
-| [ApiGTINRequest](interfaces/ApiGTINRequest.md) | - |
-| [ApiIMEIRequest](interfaces/ApiIMEIRequest.md) | - |
 | [ApiNewOrder](interfaces/ApiNewOrder.md) | - |
 | [ApiNewOrders](interfaces/ApiNewOrders.md) | - |
 | [ApiOrder](interfaces/ApiOrder.md) | - |
 | [ApiOrderClientInfo](interfaces/ApiOrderClientInfo.md) | - |
 | [ApiOrderClientInfoResp](interfaces/ApiOrderClientInfoResp.md) | - |
-| [ApiOrderStatus](interfaces/ApiOrderStatus.md) | - |
-| [ApiOrderStatuses](interfaces/ApiOrderStatuses.md) | - |
 | [ApiOrders](interfaces/ApiOrders.md) | - |
-| [ApiOrdersMeta](interfaces/ApiOrdersMeta.md) | - |
 | [ApiOrdersRequest](interfaces/ApiOrdersRequest.md) | - |
-| [ApiSGTINsRequest](interfaces/ApiSGTINsRequest.md) | - |
-| [ApiUINRequest](interfaces/ApiUINRequest.md) | - |
-| [ApiBaseMeta](interfaces/ApiBaseMeta.md) | - |
+| [PickupMetaDetail](interfaces/PickupMetaDetail.md) | Per-order label-identifier validation detail (meta/details response). |
+| [PickupMetaDetailsOrder](interfaces/PickupMetaDetailsOrder.md) | Per-order result in the meta/details response. |
+| [CheckMetaValidationResponse](interfaces/CheckMetaValidationResponse.md) | Response from [InStorePickupModule.checkMetaValidation](../classes/InStorePickupModule.md#checkmetavalidation). |
+| [PickupCustomsDeclarationItem](interfaces/PickupCustomsDeclarationItem.md) | Per-order item in a setCustomsDeclarationBulk request. |
+| [SetCustomsDeclarationBulkRequest](interfaces/SetCustomsDeclarationBulkRequest.md) | Request body for [InStorePickupModule.setCustomsDeclarationBulk](../classes/InStorePickupModule.md#setcustomsdeclarationbulk). |
+| [PickupCustomsDeclarationResult](interfaces/PickupCustomsDeclarationResult.md) | Per-order result in the setCustomsDeclarationBulk response. |
+| [CustomsDeclarationSetResponse](interfaces/CustomsDeclarationSetResponse.md) | Response from [InStorePickupModule.setCustomsDeclarationBulk](../classes/InStorePickupModule.md#setcustomsdeclarationbulk). |
+| [BatchError](interfaces/BatchError.md) | Per-order error in a batch response. |
+| [StatusSetResponse](interfaces/StatusSetResponse.md) | Per-order result in a batch status-change response. |
+| [BulkStatusChangeResponse](interfaces/BulkStatusChangeResponse.md) | Response from batch status setters (confirm/prepare/receive/reject/cancel). |
+| [PickupOrderStatusBulk](interfaces/PickupOrderStatusBulk.md) | Per-order status in the batch status-info response. |
+| [GetStatusInfoResponse](interfaces/GetStatusInfoResponse.md) | Response from [InStorePickupModule.getStatusesBulk](../classes/InStorePickupModule.md#getstatusesbulk). |
+| [GetMetaBulkRequest](interfaces/GetMetaBulkRequest.md) | Request body for [InStorePickupModule.getMetaBulk](../classes/InStorePickupModule.md#getmetabulk). |
+| [OrderMetaV2](interfaces/OrderMetaV2.md) | Single order's label identifiers (meta/details response item). |
+| [GetOrderMetaBulkResponse](interfaces/GetOrderMetaBulkResponse.md) | Response from [InStorePickupModule.getMetaBulk](../classes/InStorePickupModule.md#getmetabulk). |
+| [DeleteMetaBulkRequest](interfaces/DeleteMetaBulkRequest.md) | Request body for [InStorePickupModule.deleteMetaBulk](../classes/InStorePickupModule.md#deletemetabulk). |
+| [DeleteMetaBulkResponse](interfaces/DeleteMetaBulkResponse.md) | Response from [InStorePickupModule.deleteMetaBulk](../classes/InStorePickupModule.md#deletemetabulk). |
+| [SetSgtinBulkRequest](interfaces/SetSgtinBulkRequest.md) | Request body for [InStorePickupModule.setSgtinBulk](../classes/InStorePickupModule.md#setsgtinbulk). |
+| [SetUinBulkRequest](interfaces/SetUinBulkRequest.md) | Request body for [InStorePickupModule.setUinBulk](../classes/InStorePickupModule.md#setuinbulk). |
+| [SetImeiBulkRequest](interfaces/SetImeiBulkRequest.md) | Request body for [InStorePickupModule.setImeiBulk](../classes/InStorePickupModule.md#setimeibulk). |
+| [SetGtinBulkRequest](interfaces/SetGtinBulkRequest.md) | Request body for [InStorePickupModule.setGtinBulk](../classes/InStorePickupModule.md#setgtinbulk). |
+| [SetMetaBulkResponse](interfaces/SetMetaBulkResponse.md) | Response from batch meta-set operations (sgtin/uin/imei/gtin). |
 | [DBSAddress](interfaces/DBSAddress.md) | Address information for DBS delivery Contains full address and GPS coordinates for delivery routing |
 | [DBSOrderNew](interfaces/DBSOrderNew.md) | New DBS order (assembly task) awaiting processing Contains delivery window, customer address, and required metadata |
 | [DBSOrder](interfaces/DBSOrder.md) | Completed DBS order information Returned by getOrders for completed/cancelled orders |
 | [DBSClientInfo](interfaces/DBSClientInfo.md) | Customer contact information for DBS orders Returned by getClientInfo |
 | [DBSOrderStatusBulk](interfaces/DBSOrderStatusBulk.md) | Order status from bulk status info endpoint |
-| [StatusSetResponse](interfaces/StatusSetResponse.md) | Response item for bulk status change operations |
+| [DBSCheckMetaValidationResponse](interfaces/DBSCheckMetaValidationResponse.md) | Response from [OrdersDbsModule.checkMetaValidation](../classes/OrdersDbsModule.md#checkmetavalidation) (POST .../meta/details). Per-order marking-metadata validation results. Use before status/deliver to avoid the 409 MetaValidationFail guess-and-retry loop. |
+| [StatusSetResponse](interfaces/StatusSetResponse-1.md) | Response item for bulk status change operations |
 | [OrderCodeRequest](interfaces/OrderCodeRequest.md) | Request item for receive/reject operations requiring confirmation code |
 | [B2BInfoResult](interfaces/B2BInfoResult.md) | B2B buyer information result |
 | [GetNewOrdersResponse](interfaces/GetNewOrdersResponse.md) | Response from getNewOrders |
 | [GetOrdersParams](interfaces/GetOrdersParams.md) | Parameters for getOrders |
 | [GetOrdersResponse](interfaces/GetOrdersResponse.md) | Response from getOrders |
 | [GetClientInfoResponse](interfaces/GetClientInfoResponse.md) | Response from getClientInfo |
-| [GetStatusInfoResponse](interfaces/GetStatusInfoResponse.md) | Response from bulk status info endpoint |
-| [BulkStatusChangeResponse](interfaces/BulkStatusChangeResponse.md) | Response from bulk status change operations |
+| [GetStatusInfoResponse](interfaces/GetStatusInfoResponse-1.md) | Response from bulk status info endpoint |
+| [BulkStatusChangeResponse](interfaces/BulkStatusChangeResponse-1.md) | Response from bulk status change operations |
 | [GetB2BInfoResponse](interfaces/GetB2BInfoResponse.md) | Response from B2B info endpoint |
 | [OrderGroupsRequest](interfaces/OrderGroupsRequest.md) | Request body for getGroupsInfo Used to query order group information |
 | [OrderGroup](interfaces/OrderGroup.md) | A single order group containing related orders |
@@ -189,22 +223,24 @@
 | [DeliveryDatesRequest](interfaces/DeliveryDatesRequest.md) | Request body for getDeliveryDates Used to query delivery date information for orders |
 | [DeliveryDateInfo](interfaces/DeliveryDateInfo.md) | Delivery date information for a single order |
 | [DeliveryDatesInfoResponse](interfaces/DeliveryDatesInfoResponse.md) | Response from getDeliveryDates |
-| [GetMetaBulkRequest](interfaces/GetMetaBulkRequest.md) | Request body for getMetaBulk |
-| [BulkOrderMeta](interfaces/BulkOrderMeta.md) | Metadata for a single order in bulk response |
-| [GetOrderMetaBulkResponse](interfaces/GetOrderMetaBulkResponse.md) | Response from getMetaBulk |
-| [DeleteMetaBulkRequest](interfaces/DeleteMetaBulkRequest.md) | Request body for deleteMetaBulk |
-| [DeleteMetaBulkResponse](interfaces/DeleteMetaBulkResponse.md) | Response from deleteMetaBulk |
-| [SetSgtinBulkRequest](interfaces/SetSgtinBulkRequest.md) | Request body for setSgtinBulk |
-| [SetUinBulkRequest](interfaces/SetUinBulkRequest.md) | Request body for setUinBulk |
-| [SetImeiBulkRequest](interfaces/SetImeiBulkRequest.md) | Request body for setImeiBulk |
-| [SetGtinBulkRequest](interfaces/SetGtinBulkRequest.md) | Request body for setGtinBulk |
-| [SetCustomsDeclarationBulkRequest](interfaces/SetCustomsDeclarationBulkRequest.md) | Request body for setCustomsDeclarationBulk |
+| [GetMetaBulkRequest](interfaces/GetMetaBulkRequest-1.md) | Request body for getMetaBulk |
+| [DeleteMetaBulkRequest](interfaces/DeleteMetaBulkRequest-1.md) | Request body for deleteMetaBulk |
+| [DeleteMetaBulkResponse](interfaces/DeleteMetaBulkResponse-1.md) | Response from deleteMetaBulk |
+| [SetSgtinBulkRequest](interfaces/SetSgtinBulkRequest-1.md) | Request body for setSgtinBulk |
+| [SetUinBulkRequest](interfaces/SetUinBulkRequest-1.md) | Request body for setUinBulk |
+| [SetImeiBulkRequest](interfaces/SetImeiBulkRequest-1.md) | Request body for setImeiBulk |
+| [SetGtinBulkRequest](interfaces/SetGtinBulkRequest-1.md) | Request body for setGtinBulk |
+| [SetCustomsDeclarationBulkRequest](interfaces/SetCustomsDeclarationBulkRequest-1.md) | Request body for setCustomsDeclarationBulk |
 | [BulkMetaResultItem](interfaces/BulkMetaResultItem.md) | Result item for a single order in bulk metadata set response |
 | [BulkMetaError](interfaces/BulkMetaError.md) | Error detail for a single order in bulk metadata operations |
-| [SetMetaBulkResponse](interfaces/SetMetaBulkResponse.md) | Response from bulk metadata set operations (setSgtinBulk, setUinBulk, etc.) |
+| [SetMetaBulkResponse](interfaces/SetMetaBulkResponse-1.md) | Response from bulk metadata set operations (setSgtinBulk, setUinBulk, etc.) |
+| [StickerParams](interfaces/StickerParams.md) | Query parameters for sticker format and dimensions. |
+| [StickerRequest](interfaces/StickerRequest.md) | Request body for retrieving DBS order stickers (max 100 order IDs). |
+| [StickerItem](interfaces/StickerItem.md) | Individual DBS sticker data item. |
+| [StickerResponse](interfaces/StickerResponse.md) | Response containing DBS order stickers. |
 | [GetOrdersParams](interfaces/GetOrdersParams-1.md) | Parameters for paginated order listing |
-| [StickerRequest](interfaces/StickerRequest.md) | Request body for retrieving order stickers |
-| [StickerParams](interfaces/StickerParams.md) | Query parameters for sticker format and dimensions |
+| [StickerRequest](interfaces/StickerRequest-1.md) | Request body for retrieving order stickers |
+| [StickerParams](interfaces/StickerParams-1.md) | Query parameters for sticker format and dimensions |
 | [CrossBorderStickerRequest](interfaces/CrossBorderStickerRequest.md) | Request body for cross-border order stickers |
 | [StatusHistoryRequest](interfaces/StatusHistoryRequest.md) | Request body for cross-border status history lookup |
 | [DeleteMetaParams](interfaces/DeleteMetaParams.md) | Query parameters for deleting order metadata by key |
@@ -231,8 +267,8 @@
 | [OrderStatusResponse](interfaces/OrderStatusResponse.md) | Response containing order statuses |
 | [ReshipmentResponse](interfaces/ReshipmentResponse.md) | Response containing orders that require reshipment |
 | [ReshipmentOrder](interfaces/ReshipmentOrder.md) | An order that requires reshipment |
-| [StickerItem](interfaces/StickerItem.md) | Individual sticker data item |
-| [StickerResponse](interfaces/StickerResponse.md) | Response containing order stickers |
+| [StickerItem](interfaces/StickerItem-1.md) | Individual sticker data item |
+| [StickerResponse](interfaces/StickerResponse-1.md) | Response containing order stickers |
 | [CrossBorderStickerItem](interfaces/CrossBorderStickerItem.md) | Individual cross-border sticker data item |
 | [CrossBorderStickerResponse](interfaces/CrossBorderStickerResponse.md) | Response containing cross-border order stickers |
 | [StatusHistoryEntry](interfaces/StatusHistoryEntry.md) | Individual status entry in status history |
@@ -249,11 +285,16 @@
 | [OrderNew](interfaces/OrderNew.md) | New (unprocessed) assembly order with additional pricing and metadata fields |
 | [SupplyTrbx](interfaces/SupplyTrbx.md) | Supply box (transport box) entity |
 | [TrbxStickers](interfaces/TrbxStickers.md) | Box sticker data with encoded barcode and file content |
-| [~~Meta~~](interfaces/Meta.md) | - |
 | [PassOffice](interfaces/PassOffice.md) | Warehouse office data for seller pass registration |
 | [Pass](interfaces/Pass.md) | Seller pass for warehouse access |
 | [CrossborderTurkeyClientInfo](interfaces/CrossborderTurkeyClientInfo.md) | Client information for cross-border orders from Turkey |
 | [CrossborderTurkeyClientInfoResp](interfaces/CrossborderTurkeyClientInfoResp.md) | Response wrapper for cross-border Turkey client information |
+| [ArchiveOrderPriceInfo](interfaces/ArchiveOrderPriceInfo.md) | Price information for an archived FBS order Maps to swagger schema: v3.ArchiveOrderPriceInfo |
+| [ArchiveOrderProduct](interfaces/ArchiveOrderProduct.md) | Product details for an archived FBS order Maps to swagger schema: v3.ArchiveOrderProduct |
+| [ArchiveOrderStatus](interfaces/ArchiveOrderStatus.md) | Status information for an archived FBS order Maps to swagger schema: v3.ArchiveOrderStatus |
+| [ArchiveOrder](interfaces/ArchiveOrder.md) | A single archived FBS assembly order Maps to swagger schema: v3.ArchiveOrder |
+| [ArchiveOrdersResponse](interfaces/ArchiveOrdersResponse.md) | Response for GET /api/marketplace/v3/fbs/orders/archive Maps to swagger schema: v3.ArchiveOrdersResponse |
+| [ArchiveOrdersParams](interfaces/ArchiveOrdersParams.md) | Query parameters for GET /api/marketplace/v3/fbs/orders/archive Maps to swagger schema: v3.ArchiveOrdersParams |
 | [ModelsTransitTariff](interfaces/ModelsTransitTariff.md) | Auto-generated TypeScript types for orders-fbw module Generated from: wildberries_api_doc/07-orders-fbw.yaml |
 | [ModelsVolumeTariff](interfaces/ModelsVolumeTariff.md) | - |
 | [ModelsBox](interfaces/ModelsBox.md) | - |
@@ -277,7 +318,10 @@
 | [Good](interfaces/Good.md) | - |
 | [SizeGoodReq](interfaces/SizeGoodReq.md) | - |
 | [ClubDiscReq](interfaces/ClubDiscReq.md) | - |
+| [B2bWholesaleGood](interfaces/B2bWholesaleGood.md) | - |
+| [B2bWholesaleTaskResult](interfaces/B2bWholesaleTaskResult.md) | Результат обработки одной позиции загрузки оптовых скидок B2B. |
 | [GoodsList](interfaces/GoodsList.md) | Размеры товара |
+| [WholesaleDiscountThreshold](interfaces/WholesaleDiscountThreshold.md) | Порог оптовой скидки для B2B-продаж. |
 | [SizeGood](interfaces/SizeGood.md) | Информация о размере |
 | [GoodBufferHistory](interfaces/GoodBufferHistory.md) | - |
 | [GoodHistory](interfaces/GoodHistory.md) | - |
@@ -298,6 +342,7 @@
 | [Brand](interfaces/Brand.md) | Бренд |
 | [BrandsResponse](interfaces/BrandsResponse.md) | Ответ со списком брендов |
 | [UploadTaskResponse](interfaces/UploadTaskResponse.md) | Response for upload task creation (POST /api/v2/upload/task, /task/size, /task/club-discount) |
+| [B2bWholesaleUploadTaskResponse](interfaces/B2bWholesaleUploadTaskResponse.md) | Response for B2B wholesale discount upload (POST /api/discounts-prices/v1/upload/task/b2b/wholesale). |
 | [TaskHistoryResponse](interfaces/TaskHistoryResponse.md) | Response for processed upload tasks history (GET /api/v2/history/tasks) |
 | [GoodsHistoryResponse](interfaces/GoodsHistoryResponse.md) | Response for goods in processed upload (GET /api/v2/history/goods/task) |
 | [TaskBufferResponse](interfaces/TaskBufferResponse.md) | Response for buffer upload tasks (GET /api/v2/buffer/tasks) |
@@ -318,7 +363,6 @@
 | [CardCharacteristicInput](interfaces/CardCharacteristicInput.md) | Characteristic value for card create/update requests. Used in `createCardsUpload()`, `createUploadAdd()`, `createCardsUpdate()`. |
 | [CardCharacteristicOutput](interfaces/CardCharacteristicOutput.md) | Characteristic value returned in card listing responses. Includes the characteristic name in addition to id and value. Returned by `getCardsList()`, `getCardsCursorList()`. |
 | [ResponseWithReturn](interfaces/ResponseWithReturn.md) | - |
-| [Timestamps](interfaces/Timestamps.md) | Временные отметки |
 | [StatInterval](interfaces/StatInterval.md) | - |
 | [StatDate](interfaces/StatDate.md) | - |
 | [Stat](interfaces/Stat.md) | - |
@@ -327,9 +371,6 @@
 | [RequestWithDate](interfaces/RequestWithDate.md) | - |
 | [RequestWithCampaignID](interfaces/RequestWithCampaignID.md) | - |
 | [RequestWithInterval](interfaces/RequestWithInterval.md) | - |
-| [V0KeywordsStatistic](interfaces/V0KeywordsStatistic.md) | - |
-| [V0KeywordsStatistics](interfaces/V0KeywordsStatistics.md) | - |
-| [V0KeywordsStatisticsResponse](interfaces/V0KeywordsStatisticsResponse.md) | - |
 | [FullStatsItem](interfaces/FullStatsItem.md) | Статистика по одной кампании за период, указанный в запросе. По всем артикулам WB и платформам |
 | [DaysV3Item](interfaces/DaysV3Item.md) | Элемент статистики по дням (V3) |
 | [DaysV3AppItem](interfaces/DaysV3AppItem.md) | Элемент статистики по платформе (V3) |
@@ -340,6 +381,17 @@
 | [V0GetNormQueryStatsResponse](interfaces/V0GetNormQueryStatsResponse.md) | Статистика по поисковым кластерам |
 | [V0GetNormQueryStatsItem](interfaces/V0GetNormQueryStatsItem.md) | Элемент статистики по поисковым кластерам |
 | [V0GetNormQueryStatsItemStat](interfaces/V0GetNormQueryStatsItemStat.md) | Статистика по конкретному поисковому кластеру |
+| [V0GetNormQueryListRequest](interfaces/V0GetNormQueryListRequest.md) | Запрос списка активных и неактивных поисковых кластеров (v0) |
+| [V0GetNormQueryListRequestItem](interfaces/V0GetNormQueryListRequestItem.md) | Элемент запроса списка поисковых кластеров |
+| [V0GetNormQueryListResponse](interfaces/V0GetNormQueryListResponse.md) | Ответ со списком активных и неактивных поисковых кластеров (v0) |
+| [V0GetNormQueryListResponseItem](interfaces/V0GetNormQueryListResponseItem.md) | Элемент ответа со списком поисковых кластеров |
+| [V0GetNormQueryListResponseItemNormQueries](interfaces/V0GetNormQueryListResponseItemNormQueries.md) | Активные и исключённые поисковые кластеры |
+| [V1GetNormQueryStatsRequest](interfaces/V1GetNormQueryStatsRequest.md) | Запрос ежедневной статистики по поисковым кластерам (v1) |
+| [V1GetNormQueryStatsRequestItem](interfaces/V1GetNormQueryStatsRequestItem.md) | Элемент запроса ежедневной статистики по поисковым кластерам |
+| [V1GetNormQueryStatsResponse](interfaces/V1GetNormQueryStatsResponse.md) | Ответ с ежедневной статистикой по поисковым кластерам (v1) |
+| [V1GetNormQueryStatsResponseItem](interfaces/V1GetNormQueryStatsResponseItem.md) | Элемент ответа с ежедневной статистикой |
+| [V1GetNormQueryStatsResponseItemDailyStat](interfaces/V1GetNormQueryStatsResponseItemDailyStat.md) | Статистика за конкретный день |
+| [V1GetNormQueryStatsResponseItemStat](interfaces/V1GetNormQueryStatsResponseItemStat.md) | Статистика по конкретному поисковому кластеру (v1) |
 | [V0SetNormQueryBidsRequest](interfaces/V0SetNormQueryBidsRequest.md) | Запрос на установку ставок для поисковых кластеров |
 | [V0SetNormQueryBidsRequestItem](interfaces/V0SetNormQueryBidsRequestItem.md) | Элемент запроса на установку ставки |
 | [V0GetNormQueryBidsRequest](interfaces/V0GetNormQueryBidsRequest.md) | Запрос на получение ставок поисковых кластеров |
@@ -351,18 +403,13 @@
 | [V0GetNormQueryMinusRequestItem](interfaces/V0GetNormQueryMinusRequestItem.md) | Элемент запроса на получение минус-фраз |
 | [V0GetNormQueryMinusResponse](interfaces/V0GetNormQueryMinusResponse.md) | Ответ со списком минус-фраз |
 | [V0GetNormQueryMinusResponseItem](interfaces/V0GetNormQueryMinusResponseItem.md) | Элемент ответа со списком минус-фраз |
-| [GetAdverts](interfaces/GetAdverts.md) | Ответ со списком кампаний (с ставками в копейках) |
-| [GetAdvertsItem](interfaces/GetAdvertsItem.md) | Элемент списка кампаний |
-| [AdvertNMsSettings](interfaces/AdvertNMsSettings.md) | Настройки товаров кампании (с ставками в копейках) |
-| [AdvertBidsKopecks](interfaces/AdvertBidsKopecks.md) | Ставки в копейках |
-| [AdvertSubject](interfaces/AdvertSubject.md) | Предмет (для кампаний с копейками) |
-| [AdvertSettings](interfaces/AdvertSettings.md) | Настройки кампании |
-| [AdvertPlacements](interfaces/AdvertPlacements.md) | Места размещения кампании |
 | [BidsKopecks](interfaces/BidsKopecks.md) | Ставки в копейках для поиска и рекомендаций. Ставка в копейках (например, 250 = 2.50 RUB) |
 | [Subject](interfaces/Subject.md) | Предмет/категория товара |
 | [NmSettingV2](interfaces/NmSettingV2.md) | Настройки артикула для V2 API. Использует ставки в копейках (bids_kopecks) вместо устаревшего bid. |
 | [AdvertTimestamps](interfaces/AdvertTimestamps.md) | Временные метки кампании |
-| [AdvertV2](interfaces/AdvertV2.md) | Информация о кампании из V2 API. Использует bid_type: 'auto' | 'manual' и ставки в копейках. |
+| [AdvertSettings](interfaces/AdvertSettings.md) | Настройки кампании |
+| [AdvertPlacements](interfaces/AdvertPlacements.md) | Места размещения кампании |
+| [AdvertV2](interfaces/AdvertV2.md) | Информация о кампании из V2 API. Использует bid_type: 'unified' | 'manual' и ставки в копейках. |
 | [GetAdvertsV2Response](interfaces/GetAdvertsV2Response.md) | Ответ метода getAdvertsV2 (GET /adv/v2/adverts). Содержит список кампаний с типизированным bid_type и ставками в копейках. |
 | [CampaignListItem](interfaces/CampaignListItem.md) | Campaign list item in count response |
 | [CampaignGroup](interfaces/CampaignGroup.md) | Campaign group by type/status in count response |
@@ -377,6 +424,12 @@
 | [UpdateBidsResponse](interfaces/UpdateBidsResponse.md) | Response from updateBids (V1 API) |
 | [UpdateBidsResultCampaign](interfaces/UpdateBidsResultCampaign.md) | Result of bid update for a campaign |
 | [UpdateBidsResultArticle](interfaces/UpdateBidsResultArticle.md) | Result of bid update for an article |
+| [V2GetConfigResponse](interfaces/V2GetConfigResponse.md) | Ответ метода GET /api/advert/v1/config — конфигурация кабинета продвижения. |
+| [V1SetNormQueryBidsRequestItem](interfaces/V1SetNormQueryBidsRequestItem.md) | Элемент запроса на установку ставки для поискового кластера (V1, валюта кабинета). |
+| [V1SetNormQueryBidsRequest](interfaces/V1SetNormQueryBidsRequest.md) | Запрос на установку ставок для поисковых кластеров (V1, валюта кабинета). |
+| [V1SetNormQueryBidsSuccessItem](interfaces/V1SetNormQueryBidsSuccessItem.md) | Успешно обработанный элемент ставки (V1). |
+| [V1SetNormQueryBidsFailItem](interfaces/V1SetNormQueryBidsFailItem.md) | Элемент с причиной отклонения ставки (V1). |
+| [V1SetNormQueryBidsResponse](interfaces/V1SetNormQueryBidsResponse.md) | Ответ метода POST /api/advert/v1/normquery/bids (V1, валюта кабинета). |
 | [UpdateCampaignProductsRequest](interfaces/UpdateCampaignProductsRequest.md) | Request for adding/removing products from campaigns |
 | [CampaignProductsUpdate](interfaces/CampaignProductsUpdate.md) | Single campaign update item |
 | [UpdateCampaignProductsResponse](interfaces/UpdateCampaignProductsResponse.md) | Response from updateCampaignProducts |
@@ -396,25 +449,30 @@
 | [NormQueryBidRecommendation](interfaces/NormQueryBidRecommendation.md) | Recommended bids for a search cluster (norm query) |
 | [BaseBidRecommendation](interfaces/BaseBidRecommendation.md) | Recommended base bids for the product card |
 | [BidsRecommendationsResponse](interfaces/BidsRecommendationsResponse.md) | Response from GET /api/advert/v0/bids/recommendations |
+| [RecommendationError](interfaces/RecommendationError.md) | Per-item error returned in the `errors` array on partial success (HTTP 200). |
+| [RecommendationsSetItem](interfaces/RecommendationsSetItem.md) | A recommended-items assignment for one product card (`/set` request item). |
+| [RecommendationEntry](interfaces/RecommendationEntry.md) | One product's current recommendation assignments (`/list` response entry). |
+| [SetRecommendationsResponse](interfaces/SetRecommendationsResponse.md) | Response for POST /api/content/v1/recommendations/set. `data` is `null`. On PARTIAL success WB still returns HTTP 200 — inspect `errors`. |
+| [ListRecommendationsRequest](interfaces/ListRecommendationsRequest.md) | Request filter for POST /api/content/v1/recommendations/list. INFERRED shape — verify the exact filter fields against the live spec (AC#9). |
+| [ListRecommendationsResponse](interfaces/ListRecommendationsResponse.md) | Response for POST /api/content/v1/recommendations/list — entries in `data`. |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
 | [SalesItem](interfaces/SalesItem.md) | - |
 | [ExciseReportRequest](interfaces/ExciseReportRequest.md) | - |
 | [ExciseReportResponse](interfaces/ExciseReportResponse.md) | - |
 | [ModelsExciseReportResponse](interfaces/ModelsExciseReportResponse.md) | - |
-| [Penalty](interfaces/Penalty.md) | MeasurementPenalties response type for penalty reports |
-| [Measurement](interfaces/Measurement.md) | WHM (Warehouse Measurements) response type for warehouse measurement reports |
+| [Penalty](interfaces/Penalty.md) | Measurement-penalty report item (one element of `data.reports[]` in the `MeasurementPenalties` response schema). |
+| [Measurement](interfaces/Measurement.md) | Warehouse-measurement report item (one element of `data.reports[]` in the `WHM` response schema). |
 | [GetTasksResponse](interfaces/GetTasksResponse.md) | - |
 | [GetTasksResponseData](interfaces/GetTasksResponseData.md) | - |
 | [CreateTaskResponse](interfaces/CreateTaskResponse.md) | - |
 | [CreateTaskResponseData](interfaces/CreateTaskResponseData.md) | - |
-| [AntifraudDetailsItem](interfaces/AntifraudDetailsItem.md) | Antifraud details report item |
+| [AntifraudDetailsItem](interfaces/AntifraudDetailsItem.md) | Antifraud details report item (self-purchase deductions) |
 | [AntifraudDetailsResponse](interfaces/AntifraudDetailsResponse.md) | Response for getAnalyticsAntifraudDetails |
 | [GoodsLabelingItem](interfaces/GoodsLabelingItem.md) | Goods labeling report item |
 | [GoodsLabelingResponse](interfaces/GoodsLabelingResponse.md) | Response for getAnalyticsGoodsLabeling |
 | [RegionSaleItem](interfaces/RegionSaleItem.md) | Region sale report item |
 | [RegionSaleResponse](interfaces/RegionSaleResponse.md) | Response for getAnalyticsRegionSale |
-| [BrandShareBrandsItem](interfaces/BrandShareBrandsItem.md) | Brand share brands item |
 | [BrandShareBrandsResponse](interfaces/BrandShareBrandsResponse.md) | Response for getBrandShareBrands |
 | [BrandShareParentSubjectsItem](interfaces/BrandShareParentSubjectsItem.md) | Brand share parent subjects item |
 | [BrandShareParentSubjectsResponse](interfaces/BrandShareParentSubjectsResponse.md) | Response for getBrandShareParentSubjects |
@@ -470,6 +528,8 @@
 | [AggregationLevel](type-aliases/AggregationLevel.md) | Тип агрегации: по дням или по неделям |
 | [SalesFunnelProductsHistoryResponse](type-aliases/SalesFunnelProductsHistoryResponse.md) | Ответ истории по товарам воронки продаж v3 (Swagger: ProductHistoryResponse) |
 | [SalesFunnelGroupedHistoryResponse](type-aliases/SalesFunnelGroupedHistoryResponse.md) | Ответ сгруппированной истории воронки продаж v3 (Swagger: GroupedHistoryResponse) |
+| [ItemRatingOrderByField](type-aliases/ItemRatingOrderByField.md) | Sorting field for item rating. |
+| [ItemRatingOrderByMode](type-aliases/ItemRatingOrderByMode.md) | Sorting mode for item rating. |
 | [ReviewPinMethod](type-aliases/ReviewPinMethod.md) | Method for pinning reviews - `subscription` - Jam subscription (подписка Джем) - `tariff` - Tariff option (тарифная опция) |
 | [ReviewPinOn](type-aliases/ReviewPinOn.md) | Location where review is pinned - `nm` - Product card (карточка товара) - `imt` - Group of merged product cards (группа объединённых карточек товаров) |
 | [ReviewState](type-aliases/ReviewState.md) | State of pinned review - `pinned` - Review is pinned - `unpinned` - Review is unpinned |
@@ -481,17 +541,21 @@
 | [Sender](type-aliases/Sender.md) | Отправитель: - `client` — покупатель - `seller` — продавец - `wb` — Wildberries |
 | [DocumentsLocale](type-aliases/DocumentsLocale.md) | Supported locale values for document endpoints |
 | [AccessCode](type-aliases/AccessCode.md) | Access code for user permissions Determines which sections of the seller profile the user can access |
-| [JamSubscriptionTier](type-aliases/JamSubscriptionTier.md) | Jam (Джем) subscription tier |
+| [PlanBuilderActivationStatus](type-aliases/PlanBuilderActivationStatus.md) | Activation status of a Plan Builder (Tariff Constructor) option or package. |
+| [PlanBuilderLocale](type-aliases/PlanBuilderLocale.md) | Response language for Plan Builder option/package names. |
+| [PickupMetadataKey](type-aliases/PickupMetadataKey.md) | Metadata key type for label identifiers (delete + validation). |
 | [DBSSupplierStatus](type-aliases/DBSSupplierStatus.md) | DBS supplier status Triggered by seller actions |
+| [StickerType](type-aliases/StickerType.md) | Output format for an assembly-order sticker. |
 | [OrderSupplierStatus](type-aliases/OrderSupplierStatus.md) | Supplier-side order status |
 | [OrderWbStatus](type-aliases/OrderWbStatus.md) | Wildberries system order status |
 | [CargoType](type-aliases/CargoType.md) | Cargo type: 1 = small, 2 = oversized, 3 = large |
-| [StickerType](type-aliases/StickerType.md) | Sticker output format |
+| [StickerType](type-aliases/StickerType-1.md) | Sticker output format |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |
 | [SizeGoodsBody](type-aliases/SizeGoodsBody.md) | Размеры и цены для них. Максимум 1 000 размеров. |
 | [ClubDisc](type-aliases/ClubDisc.md) | Товары и скидки WB Клуба для них. Максимум 1 000 товаров. |
-| [PlacementType](type-aliases/PlacementType.md) | Места размещения: - `search` — поиск - `recommendations` — рекомендации - `combined` — поиск и рекомендации |
+| [B2bWholesaleGoods](type-aliases/B2bWholesaleGoods.md) | Товары и пороги оптовых скидок для B2B-продаж. Максимум 1 000 товаров. |
+| [PlacementType](type-aliases/PlacementType.md) | Места размещения (перечисление WB `PlacementType`): - `search` — поиск - `recommendation` — рекомендации - `combined` — поиск и рекомендации |
 | [DailyStats1](type-aliases/DailyStats1.md) | - |
 | [Stats1](type-aliases/Stats1.md) | - |
 | [DailyStats2](type-aliases/DailyStats2.md) | - |
@@ -499,7 +563,8 @@
 | [ResponseFullStats](type-aliases/ResponseFullStats.md) | Статистика по кампаниям за период, указанный в запросе. По всем артикулам WB и платформам |
 | [DaysV3](type-aliases/DaysV3.md) | Статистка по дням (V3) |
 | [BoosterStatsV3](type-aliases/BoosterStatsV3.md) | Статистика по средней позиции товара (для кампаний с единой ставкой) (V3) |
-| [BidType](type-aliases/BidType.md) | Bid type for campaign - `auto` — автоматическая ставка (Type 8) - `manual` — ручная ставка (Type 9) |
-| [CampaignPlacementType](type-aliases/CampaignPlacementType.md) | Campaign placement types |
+| [BidType](type-aliases/BidType.md) | Bid type for campaign (per WB OpenAPI etalon `08-promotion.yaml` enum). - `unified` — единая ставка (Type 8; ставкой управляет WB). - `manual` — ручная ставка (Type 9; ставку задаёт продавец). |
+| [CampaignPlacementType](type-aliases/CampaignPlacementType.md) | Campaign placement types (per WB OpenAPI etalon `PlacementType` enum). - `combined` — search and recommendation - `search` — search only - `recommendation` — recommendation only (singular) |
+| [SetRecommendationsRequest](type-aliases/SetRecommendationsRequest.md) | Request body for POST /api/content/v1/recommendations/set — array of per-product assignments. |
 | [ModelsExciseReportResponseData](type-aliases/ModelsExciseReportResponseData.md) | - |
 | [ResponsePaidStorage](type-aliases/ResponsePaidStorage.md) | - |

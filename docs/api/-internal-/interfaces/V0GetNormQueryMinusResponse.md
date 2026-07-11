@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryMinusResponse
 
-Defined in: [types/promotion.types.ts:1052](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L1052)
+Defined in: [types/promotion.types.ts:1206](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1206)
 
 Ответ со списком минус-фраз
 
@@ -10,4 +10,4 @@ Defined in: [types/promotion.types.ts:1052](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`V0GetNormQueryMinusResponseItem`](V0GetNormQueryMinusResponseItem.md)[] | Массив элементов | [types/promotion.types.ts:1054](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L1054) |
+| <a id="items"></a> `items` | [`V0GetNormQueryMinusResponseItem`](V0GetNormQueryMinusResponseItem.md)[] | Массив элементов | [types/promotion.types.ts:1208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1208) |

@@ -2,7 +2,7 @@
 
 # Class: InStorePickupModule
 
-Defined in: [modules/in-store-pickup/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L27)
+Defined in: [modules/in-store-pickup/index.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L39)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/in-store-pickup/index.ts:27](https://github.com/salacoste/d
 new InStorePickupModule(client: BaseClient): InStorePickupModule;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:28](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L28)
+Defined in: [modules/in-store-pickup/index.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L40)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/in-store-pickup/index.ts:28](https://github.com/salacoste/d
 getOrdersNew(): Promise<ApiNewOrders>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:44](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L44)
+Defined in: [modules/in-store-pickup/index.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L56)
 
 Получить список новых сборочных заданий
 
@@ -69,29 +69,34 @@ console.log(result);
 
 ***
 
-### updateOrdersConfirm()
+### confirmBulk()
 
 ```ts
-updateOrdersConfirm(orderId: number): Promise<void>;
+confirmBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:65](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L65)
+Defined in: [modules/in-store-pickup/index.ts:81](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L81)
 
-Перевести на сборку
+Перевести на сборку (batch)
 
-Метод переводит сборочное задание в статус confirm — на сборке.
+Moves up to 1000 assembly orders to `confirm` status in a single request.
+Replaces the dead single-order PATCH `.../orders/{id}/confirm` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
+| `orderIds` | `number`[] | Array of assembly order IDs (1-1000 items) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
 
-Response data
+Per-order confirmation results
+
+#### Throws
+
+When orderIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -103,43 +108,52 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-await sdk.inStorePickup.updateOrdersConfirm(12345);
+```typescript
+const result = await sdk.inStorePickup.confirmBulk([123456, 234567]);
 ```
 
 ***
 
-### updateOrdersPrepare()
+### prepareBulk()
 
 ```ts
-updateOrdersPrepare(orderId: number): Promise<void>;
+prepareBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:87](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L87)
+Defined in: [modules/in-store-pickup/index.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L114)
 
-Сообщить, что сборочное задание готово к выдаче
+Сообщить, что сборочное задание готово к выдаче (batch)
 
-Метод переводит сборочное задание в статус prepare — готово к выдаче.
+Moves up to 1000 assembly orders to `prepare` status (ready for pickup).
+Replaces the dead single-order PATCH `.../orders/{id}/prepare` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
+| `orderIds` | `number`[] | Array of assembly order IDs (1-1000 items) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
 
-Response data
+Per-order results
+
+#### Throws
+
+When orderIds array is empty or exceeds 1000
+
+#### Throws
+
+When B2B marking validation fails (409 — Chestny ZNAK; use checkMetaValidation for pre-flight)
 
 #### Throws
 
@@ -151,16 +165,16 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-await sdk.inStorePickup.updateOrdersPrepare(12345);
+```typescript
+const result = await sdk.inStorePickup.prepareBulk([123456, 234567]);
 ```
 
 ***
@@ -171,7 +185,7 @@ await sdk.inStorePickup.updateOrdersPrepare(12345);
 createOrdersClient(data: ApiOrdersRequest): Promise<ApiOrderClientInfoResp>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:111](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L111)
+Defined in: [modules/in-store-pickup/index.ts:144](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L144)
 
 Информация о покупателе
 
@@ -221,7 +235,7 @@ console.log(result);
 createClientIdentity(data: ApiCheckIdentityRequest): Promise<ApiCheckedIdentity>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:135](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L135)
+Defined in: [modules/in-store-pickup/index.ts:168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L168)
 
 Проверить, что заказ принадлежит покупателю
 
@@ -265,29 +279,36 @@ console.log(result);
 
 ***
 
-### updateOrdersReceive()
+### receiveBulk()
 
 ```ts
-updateOrdersReceive(orderId: number): Promise<void>;
+receiveBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L157)
+Defined in: [modules/in-store-pickup/index.ts:196](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L196)
 
-Сообщить, что заказ принят покупателем
+Сообщить, что заказ принят покупателем (batch)
 
-Метод переводит сборочное задание в статус receive — получено покупателем.
+Moves up to 1000 assembly orders to `receive` status (received by buyer).
+Replaces the dead single-order PATCH `.../orders/{id}/receive` path.
+
+NOTE: pickup `receive` takes NO passcodes (unlike DBS) — just order IDs.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
+| `orderIds` | `number`[] | Array of assembly order IDs (1-1000 items) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
 
-Response data
+Per-order results
+
+#### Throws
+
+When orderIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -299,43 +320,50 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-await sdk.inStorePickup.updateOrdersReceive(12345);
+```typescript
+const result = await sdk.inStorePickup.receiveBulk([123456, 234567]);
 ```
 
 ***
 
-### updateOrdersReject()
+### rejectBulk()
 
 ```ts
-updateOrdersReject(orderId: number): Promise<void>;
+rejectBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L179)
+Defined in: [modules/in-store-pickup/index.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L230)
 
-Сообщить, что покупатель отказался от заказа
+Сообщить, что покупатель отказался от заказа (batch)
 
-Метод переводит сборочное задание в статус reject — отказ при получении.
+Moves up to 1000 assembly orders to `reject` status (buyer refused).
+Replaces the dead single-order PATCH `.../orders/{id}/reject` path.
+
+NOTE: pickup `reject` takes NO passcodes (unlike DBS) — just order IDs.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
+| `orderIds` | `number`[] | Array of assembly order IDs (1-1000 items) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
 
-Response data
+Per-order results
+
+#### Throws
+
+When orderIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -347,43 +375,48 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-await sdk.inStorePickup.updateOrdersReject(12345);
+```typescript
+const result = await sdk.inStorePickup.rejectBulk([123456, 234567]);
 ```
 
 ***
 
-### createOrdersStatus()
+### getStatusesBulk()
 
 ```ts
-createOrdersStatus(data: ApiOrdersRequest): Promise<ApiOrderStatuses>;
+getStatusesBulk(orderIds: number[]): Promise<GetStatusInfoResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L202)
+Defined in: [modules/in-store-pickup/index.ts:262](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L262)
 
-Получить статусы сборочных заданий
+Получить статусы сборочных заданий (batch)
 
-Метод возвращает статусы сборочных заданий по их ID.
+Returns statuses for up to 1000 assembly orders in a single request.
+Replaces the dead single-batch POST `.../orders/status` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `data` | [`ApiOrdersRequest`](../-internal-/interfaces/ApiOrdersRequest.md) | Request body data |
+| `orderIds` | `number`[] | Array of assembly order IDs (1-1000 items) |
 
 #### Returns
 
-`Promise`\<[`ApiOrderStatuses`](../-internal-/interfaces/ApiOrderStatuses.md)\>
+`Promise`\<[`GetStatusInfoResponse`](../-internal-/interfaces/GetStatusInfoResponse.md)\>
 
-Статусы сборочных заданий
+Status information for each order
+
+#### Throws
+
+When orderIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -395,17 +428,16 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-const result = await sdk.inStorePickup.createOrdersStatus({ orders: [12345] });
-console.log(result);
+```typescript
+const result = await sdk.inStorePickup.getStatusesBulk([123456, 234567]);
 ```
 
 ***
@@ -421,7 +453,7 @@ getClickCollectOrders(options?: {
 }): Promise<ApiOrders>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:226](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L226)
+Defined in: [modules/in-store-pickup/index.ts:292](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L292)
 
 Получить информацию о завершённых сборочных заданиях
 
@@ -469,29 +501,34 @@ console.log(result);
 
 ***
 
-### updateOrdersCancel()
+### cancelBulk()
 
 ```ts
-updateOrdersCancel(orderId: number): Promise<void>;
+cancelBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L252)
+Defined in: [modules/in-store-pickup/index.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L322)
 
-Отменить сборочное задание
+Отменить сборочное задание (batch)
 
-Метод отменяет сборочное задание и переводит в статус cancel — отменено продавцом.
+Moves up to 1000 assembly orders to `cancel` status (canceled by seller).
+Replaces the dead single-order PATCH `.../orders/{id}/cancel` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
+| `orderIds` | `number`[] | Array of assembly order IDs (1-1000 items) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`BulkStatusChangeResponse`](../-internal-/interfaces/BulkStatusChangeResponse.md)\>
 
-Response data
+Per-order results
+
+#### Throws
+
+When orderIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -503,44 +540,48 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-await sdk.inStorePickup.updateOrdersCancel(12345);
+```typescript
+const result = await sdk.inStorePickup.cancelBulk([123456, 234567]);
 ```
 
 ***
 
-### getOrdersMeta()
+### getMetaBulk()
 
 ```ts
-getOrdersMeta(orderId: number): Promise<ApiOrdersMeta>;
+getMetaBulk(request: GetMetaBulkRequest): Promise<GetOrderMetaBulkResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L276)
+Defined in: [modules/in-store-pickup/index.ts:354](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L354)
 
-Получить метаданные сборочного задания
+Получить идентификаторы маркировки сборочных заданий (batch)
 
-Метод возвращает метаданные сборочного задания.
-Перечень метаданных, доступных для сборочного задания, можно получить в списке новых сборочных заданий, поле requiredMeta.
+Returns label identifiers for up to 1000 assembly orders in a single request.
+Replaces the dead single-order GET `.../orders/{id}/meta` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
+| `request` | [`GetMetaBulkRequest`](../-internal-/interfaces/GetMetaBulkRequest.md) | Request with order IDs (max 1000) |
 
 #### Returns
 
-`Promise`\<[`ApiOrdersMeta`](../-internal-/interfaces/ApiOrdersMeta.md)\>
+`Promise`\<[`GetOrderMetaBulkResponse`](../-internal-/interfaces/GetOrderMetaBulkResponse.md)\>
 
-Метаданные сборочного задания
+Label identifiers for each order
+
+#### Throws
+
+When ordersIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -552,49 +593,49 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-const result = await sdk.inStorePickup.getOrdersMeta(12345);
-console.log(result);
+```typescript
+const result = await sdk.inStorePickup.getMetaBulk({ ordersIds: [123456] });
 ```
 
 ***
 
-### deleteOrdersMeta()
+### deleteMetaBulk()
 
 ```ts
-deleteOrdersMeta(orderId: number, options: {
-  key: string;
-}): Promise<void>;
+deleteMetaBulk(request: DeleteMetaBulkRequest): Promise<DeleteMetaBulkResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:300](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L300)
+Defined in: [modules/in-store-pickup/index.ts:387](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L387)
 
-Удалить метаданные сборочного задания
+Удалить идентификаторы маркировки сборочных заданий (batch)
 
-Метод удаляет значение метаданных сборочного задания для переданного ключа.
-Возможные метаданные: imei, uin, gtin, sgtin. Передается только одно значение.
+Deletes one label-identifier type (imei/uin/gtin/sgtin/customsDeclaration)
+for up to 1000 assembly orders. Replaces the dead single-order DELETE
+`.../orders/{id}/meta` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
-| `options` | \{ `key`: `string`; \} | Query parameters |
-| `options.key` | `string` | Metadata key to delete (imei, uin, gtin, sgtin) |
+| `request` | [`DeleteMetaBulkRequest`](../-internal-/interfaces/DeleteMetaBulkRequest.md) | Request with key + order IDs (max 1000) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`DeleteMetaBulkResponse`](../-internal-/interfaces/DeleteMetaBulkResponse.md)\>
 
-Response data
+Per-order results
+
+#### Throws
+
+When ordersIds array is empty or exceeds 1000
 
 #### Throws
 
@@ -606,46 +647,44 @@ When rate limit exceeded (429)
 
 #### Throws
 
-When request data is invalid (400/422)
-
-#### Throws
-
 When network request fails or times out
+
+#### Since
+
+3.17.0
 
 #### Example
 
-```ts
-await sdk.inStorePickup.deleteOrdersMeta(12345, { key: 'imei' });
+```typescript
+const result = await sdk.inStorePickup.deleteMetaBulk({ key: 'imei', ordersIds: [123456] });
 ```
 
 ***
 
-### updateMetaSgtin()
+### setSgtinBulk()
 
 ```ts
-updateMetaSgtin(orderId: number, data: ApiSGTINsRequest): Promise<void>;
+setSgtinBulk(request: SetSgtinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L325)
+Defined in: [modules/in-store-pickup/index.ts:421](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L421)
 
-Закрепить за сборочным заданием код маркировки товара (SGTIN)
+Закрепить за сборочными заданиями коды маркировки SGTIN (batch)
 
-Метод закрепляет за сборочным заданием код маркировки Честный знак.
-Закрепить код маркировки можно только, если в метаданных есть поле sgtins,
-а сборочное задание находится в статусе confirm.
+Sets Chestny ZNAK labeling codes for up to 1000 assembly orders.
+Replaces the dead single-order PUT `.../orders/{id}/meta/sgtin` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
-| `data` | [`ApiSGTINsRequest`](../-internal-/interfaces/ApiSGTINsRequest.md) | Request body data |
+| `request` | [`SetSgtinBulkRequest`](../-internal-/interfaces/SetSgtinBulkRequest.md) | Orders with SGTIN codes (max 1000) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`SetMetaBulkResponse`](../-internal-/interfaces/SetMetaBulkResponse.md)\>
 
-Response data
+Per-order results
 
 #### Throws
 
@@ -663,39 +702,44 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### Since
+
+3.17.0
+
 #### Example
 
-```ts
-await sdk.inStorePickup.updateMetaSgtin(12345, { sgtins: ['1234567890123456'] });
+```typescript
+const result = await sdk.inStorePickup.setSgtinBulk({
+  orders: [{ orderId: 123456, sgtins: ['1234567890123456'] }]
+});
 ```
 
 ***
 
-### updateMetaUin()
+### setUinBulk()
 
 ```ts
-updateMetaUin(orderId: number, data: ApiUINRequest): Promise<void>;
+setUinBulk(request: SetUinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:349](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L349)
+Defined in: [modules/in-store-pickup/index.ts:449](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L449)
 
-Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
+Закрепить за сборочными заданиями УИН (batch)
 
-Метод обновляет УИН сборочного задания. У одного сборочного задания может быть только один УИН.
-Добавлять маркировку можно только для сборочных заданий в статусе confirm.
+Sets UIN values for up to 1000 assembly orders. Replaces the dead
+single-order PUT `.../orders/{id}/meta/uin` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
-| `data` | [`ApiUINRequest`](../-internal-/interfaces/ApiUINRequest.md) | Request body data |
+| `request` | [`SetUinBulkRequest`](../-internal-/interfaces/SetUinBulkRequest.md) | Orders with UIN values (max 1000) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`SetMetaBulkResponse`](../-internal-/interfaces/SetMetaBulkResponse.md)\>
 
-Response data
+Per-order results
 
 #### Throws
 
@@ -713,39 +757,44 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### Since
+
+3.17.0
+
 #### Example
 
-```ts
-await sdk.inStorePickup.updateMetaUin(12345, { uin: '1234567890123456' });
+```typescript
+const result = await sdk.inStorePickup.setUinBulk({
+  orders: [{ orderId: 123456, uin: '1234567890123456' }]
+});
 ```
 
 ***
 
-### updateMetaImei()
+### setImeiBulk()
 
 ```ts
-updateMetaImei(orderId: number, data: ApiIMEIRequest): Promise<void>;
+setImeiBulk(request: SetImeiBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L373)
+Defined in: [modules/in-store-pickup/index.ts:477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L477)
 
-Закрепить за сборочным заданием IMEI
+Закрепить за сборочными заданиями IMEI (batch)
 
-Метод обновляет IMEI сборочного задания. У одного сборочного задания может быть только один IMEI.
-Добавлять маркировку можно только для сборочных заданий в статусе confirm.
+Sets IMEI values for up to 1000 assembly orders. Replaces the dead
+single-order PUT `.../orders/{id}/meta/imei` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
-| `data` | [`ApiIMEIRequest`](../-internal-/interfaces/ApiIMEIRequest.md) | Request body data |
+| `request` | [`SetImeiBulkRequest`](../-internal-/interfaces/SetImeiBulkRequest.md) | Orders with IMEI values (max 1000) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`SetMetaBulkResponse`](../-internal-/interfaces/SetMetaBulkResponse.md)\>
 
-Response data
+Per-order results
 
 #### Throws
 
@@ -763,40 +812,44 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### Since
+
+3.17.0
+
 #### Example
 
-```ts
-await sdk.inStorePickup.updateMetaImei(12345, { imei: '123456789012345' });
+```typescript
+const result = await sdk.inStorePickup.setImeiBulk({
+  orders: [{ orderId: 123456, imei: '123456789012345' }]
+});
 ```
 
 ***
 
-### updateMetaGtin()
+### setGtinBulk()
 
 ```ts
-updateMetaGtin(orderId: number, data: ApiGTINRequest): Promise<void>;
+setGtinBulk(request: SetGtinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/in-store-pickup/index.ts:398](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/in-store-pickup/index.ts#L398)
+Defined in: [modules/in-store-pickup/index.ts:505](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L505)
 
-Закрепить за сборочным заданием GTIN
+Закрепить за сборочными заданиями GTIN (batch)
 
-Метод обновляет GTIN (уникальный ID товара в Беларуси) сборочного задания.
-У одного сборочного задания может быть только один GTIN.
-Добавлять маркировку можно только для сборочных заданий в статусе confirm.
+Sets GTIN values for up to 1000 assembly orders. Replaces the dead
+single-order PUT `.../orders/{id}/meta/gtin` path.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `orderId` | `number` | ID сборочного задания |
-| `data` | [`ApiGTINRequest`](../-internal-/interfaces/ApiGTINRequest.md) | Request body data |
+| `request` | [`SetGtinBulkRequest`](../-internal-/interfaces/SetGtinBulkRequest.md) | Orders with GTIN values (max 1000) |
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<[`SetMetaBulkResponse`](../-internal-/interfaces/SetMetaBulkResponse.md)\>
 
-Response data
+Per-order results
 
 #### Throws
 
@@ -814,8 +867,126 @@ When request data is invalid (400/422)
 
 When network request fails or times out
 
+#### Since
+
+3.17.0
+
 #### Example
 
+```typescript
+const result = await sdk.inStorePickup.setGtinBulk({
+  orders: [{ orderId: 123456, gtin: '1234567890123' }]
+});
+```
+
+***
+
+### checkMetaValidation()
+
 ```ts
-await sdk.inStorePickup.updateMetaGtin(12345, { gtin: '1234567890123456' });
+checkMetaValidation(orders: number[]): Promise<CheckMetaValidationResponse>;
+```
+
+Defined in: [modules/in-store-pickup/index.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L539)
+
+Check marking-metadata validation (B2B Chestny ZNAK pre-flight)
+
+Returns label-identifier validation statuses for assembly orders. Call BEFORE
+transferring an order to `prepare` to identify orders that would get 409
+MetaValidationFail. WB deprecated bulk `POST .../meta/info` on July 15 —
+use this `meta/details` method instead.
+
+Rate limit: 150 req/min, 400ms interval, burst 20 (4XX×10 penalty)
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `orders` | `number`[] | Array of assembly order IDs (max 1000) |
+
+#### Returns
+
+`Promise`\<[`CheckMetaValidationResponse`](../-internal-/interfaces/CheckMetaValidationResponse.md)\>
+
+Per-order label identifiers + validation statuses
+
+#### Throws
+
+When orders array is empty or exceeds 1000
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Since
+
+3.16.0
+
+#### Example
+
+```typescript
+const result = await sdk.inStorePickup.checkMetaValidation([123456, 234567]);
+const invalid = result.orders.filter(o => o.isError);
+```
+
+***
+
+### setCustomsDeclarationBulk()
+
+```ts
+setCustomsDeclarationBulk(request: SetCustomsDeclarationBulkRequest): Promise<CustomsDeclarationSetResponse>;
+```
+
+Defined in: [modules/in-store-pickup/index.ts:579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/in-store-pickup/index.ts#L579)
+
+Bulk add customs declaration numbers + country-of-origin codes (B2B)
+
+Sets customs declaration (ДТ) numbers + origin country codes for assembly
+orders (statuses `confirm` or `prepare` only). **B2B requirement (since
+2026-07-08):** B2B orders MUST include `originCountryCode` (numeric ОКСМ
+code, https://esnsi.gosuslugi.ru/classifiers/16269). Invalid/missing code
+for a B2B order → HTTP 200 with `InvalidOriginCountryCode` in that order's
+`errors[]` (partial success — check `results[].isError`).
+
+Rate limit: 20 req/min, 3s interval, burst 500 (4XX×10 penalty)
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | [`SetCustomsDeclarationBulkRequest`](../-internal-/interfaces/SetCustomsDeclarationBulkRequest.md) | Orders with customs declarations + origin country codes |
+
+#### Returns
+
+`Promise`\<[`CustomsDeclarationSetResponse`](../-internal-/interfaces/CustomsDeclarationSetResponse.md)\>
+
+Per-order results
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Since
+
+3.16.0
+
+#### Example
+
+```typescript
+const result = await sdk.inStorePickup.setCustomsDeclarationBulk({
+  orders: [{ orderId: 123456, customsDeclaration: '10704010/010624/0000302', originCountryCode: '643' }]
+});
+const failed = result.results.filter(r => r.isError);
 ```

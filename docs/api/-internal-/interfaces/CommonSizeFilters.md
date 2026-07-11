@@ -2,7 +2,7 @@
 
 # Interface: CommonSizeFilters
 
-Defined in: [types/analytics.types.ts:1190](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1190)
+Defined in: [types/analytics.types.ts:1249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1249)
 
 Общие фильтры по размеру
 
@@ -10,8 +10,8 @@ Defined in: [types/analytics.types.ts:1190](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmID` | `number` | Артикул WB | [types/analytics.types.ts:1192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1192) |
-| <a id="currentperiod"></a> `currentPeriod` | [`PeriodSt`](PeriodSt.md) | - | [types/analytics.types.ts:1193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1193) |
-| <a id="stocktype"></a> `stockType` | [`StockType`](../type-aliases/StockType.md) | - | [types/analytics.types.ts:1194](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1194) |
-| <a id="orderby"></a> `orderBy` | [`TableOrderBy`](TableOrderBy.md) | - | [types/analytics.types.ts:1195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1195) |
-| <a id="includeoffice"></a> `includeOffice` | `boolean` | Включить детализацию по складам | [types/analytics.types.ts:1197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1197) |
+| <a id="nmid"></a> `nmID` | `number` | Артикул WB | [types/analytics.types.ts:1251](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1251) |
+| <a id="currentperiod"></a> `currentPeriod` | [`PeriodSt`](PeriodSt.md) | - | [types/analytics.types.ts:1252](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1252) |
+| <a id="stocktype"></a> `stockType` | [`StockType`](../type-aliases/StockType.md) | - | [types/analytics.types.ts:1253](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1253) |
+| <a id="orderby"></a> `orderBy` | [`TableOrderBy`](TableOrderBy.md) | - | [types/analytics.types.ts:1254](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1254) |
+| <a id="includeoffice"></a> `includeOffice` | `boolean` | Включить детализацию по складам | [types/analytics.types.ts:1256](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1256) |

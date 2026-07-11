@@ -2,13 +2,13 @@
 
 # Interface: DeleteMetaBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:480](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L480)
+Defined in: [types/in-store-pickup.types.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L351)
 
-Request body for deleteMetaBulk
+Request body for [InStorePickupModule.deleteMetaBulk](../../classes/InStorePickupModule.md#deletemetabulk).
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to delete metadata from | [types/orders-dbs.types.ts:482](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L482) |
-| <a id="key"></a> `key` | `string` | Metadata key to delete | [types/orders-dbs.types.ts:484](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L484) |
+| <a id="key"></a> `key` | [`PickupMetadataKey`](../type-aliases/PickupMetadataKey.md) | Label identifier type to delete (only one per request). | [types/in-store-pickup.types.ts:353](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L353) |
+| <a id="ordersids"></a> `ordersIds` | `number`[] | Assembly order IDs (max 1000). | [types/in-store-pickup.types.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L355) |

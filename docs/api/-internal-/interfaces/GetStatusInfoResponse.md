@@ -2,12 +2,12 @@
 
 # Interface: GetStatusInfoResponse
 
-Defined in: [types/orders-dbs.types.ts:343](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L343)
+Defined in: [types/in-store-pickup.types.ts:313](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L313)
 
-Response from bulk status info endpoint
+Response from [InStorePickupModule.getStatusesBulk](../../classes/InStorePickupModule.md#getstatusesbulk).
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`DBSOrderStatusBulk`](DBSOrderStatusBulk.md)[] | List of order statuses | [types/orders-dbs.types.ts:345](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L345) |
+| <a id="orders"></a> `orders` | [`PickupOrderStatusBulk`](PickupOrderStatusBulk.md)[] | Status data for each requested order. | [types/in-store-pickup.types.ts:315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L315) |

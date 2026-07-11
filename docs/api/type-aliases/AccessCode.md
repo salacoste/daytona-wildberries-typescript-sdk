@@ -12,15 +12,21 @@ type AccessCode =
   | "showcase"
   | "suppliersDocuments"
   | "supply"
-  | "feedbacksQuestions"
   | "questions"
   | "pinFeedbacks"
   | "pointsForReviews"
   | "feedbacks"
-  | "wbPoint";
+  | "oldAnalyticsReports"
+  | "marketplace"
+  | "brandsFlow"
+  | "copyrightComplaints"
+  | "pretrialClaims"
+  | "sellersChat"
+  | "brandzone"
+  | "brandzoneSubscribe";
 ```
 
-Defined in: [types/user-management.types.ts:29](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/user-management.types.ts#L29)
+Defined in: [types/user-management.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/user-management.types.ts#L35)
 
 Код раздела профиля продавца, к которому пользователь получит доступ.
 
@@ -32,9 +38,15 @@ Defined in: [types/user-management.types.ts:29](https://github.com/salacoste/day
 - `showcase` — Управление витриной магазина
 - `suppliersDocuments` — Просмотр и скачивание документов
 - `supply` — Создание и управление поставками FBW
-- `feedbacksQuestions` — Просмотр и ответы на вопросы и отзывы покупателей
 - `questions` — Просмотр и ответы на вопросы покупателей
 - `pinFeedbacks` — Возможность закреплять и откреплять отзывы
 - `pointsForReviews` — Баллы за отзывы
 - `feedbacks` — Просмотр и ответы на отзывы покупателей
-- `wbPoint` — WB Point
+- `oldAnalyticsReports` — Отчёты
+- `marketplace` — Склад продавца
+- `brandsFlow` — Мои бренды
+- `copyrightComplaints` — Обращения правообладателей
+- `pretrialClaims` — Досудебные претензии
+- `sellersChat` — Чат с покупателями
+- `brandzone` — Бренд-зона
+- `brandzoneSubscribe` — Управление подпиской бренд-зоны

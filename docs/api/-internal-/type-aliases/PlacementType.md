@@ -3,12 +3,16 @@
 # Type Alias: PlacementType
 
 ```ts
-type PlacementType = "combined" | "search" | "recommendations";
+type PlacementType = "combined" | "search" | "recommendation";
 ```
 
-Defined in: [types/promotion.types.ts:20](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L20)
+Defined in: [types/promotion.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L24)
 
-Места размещения:
+Места размещения (перечисление WB `PlacementType`):
  - `search` — поиск
- - `recommendations` — рекомендации
+ - `recommendation` — рекомендации
  - `combined` — поиск и рекомендации
+
+Примечание: единственное число `recommendation` соответствует компоненту `PlacementType`
+в WB OpenAPI etalon (08-promotion.yaml:4536-4541). Не путать с полем `placement` ответа
+`updateBids`, которое использует множественное число `recommendations`.

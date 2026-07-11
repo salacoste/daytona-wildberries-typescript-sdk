@@ -2,7 +2,7 @@
 
 # Class: CommunicationsModule
 
-Defined in: [modules/communications/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L58)
+Defined in: [modules/communications/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L58)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/communications/index.ts:58](https://github.com/salacoste/da
 new CommunicationsModule(client: BaseClient): CommunicationsModule;
 ```
 
-Defined in: [modules/communications/index.ts:59](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L59)
+Defined in: [modules/communications/index.ts:59](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L59)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ newFeedbacksQuestions(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L75)
+Defined in: [modules/communications/index.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L75)
 
 Непросмотренные отзывы и вопросы
 
@@ -99,7 +99,7 @@ getQuestionsCountUnanswered(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L105)
+Defined in: [modules/communications/index.ts:105](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L105)
 
 Неотвеченные вопросы
 
@@ -159,7 +159,7 @@ getQuestionsCount(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L136)
+Defined in: [modules/communications/index.ts:136](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L136)
 
 Количество вопросов
 
@@ -254,7 +254,7 @@ questions(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L167)
+Defined in: [modules/communications/index.ts:167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L167)
 
 Список вопросов
 
@@ -356,7 +356,7 @@ updateQuestion(data?:
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L249)
+Defined in: [modules/communications/index.ts:249](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L249)
 
 Работа с вопросами
 
@@ -438,7 +438,7 @@ question(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:284](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L284)
+Defined in: [modules/communications/index.ts:284](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L284)
 
 Получить вопрос по ID
 
@@ -523,7 +523,7 @@ getFeedbacksCountUnanswered(): Promise<{
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:349](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L349)
+Defined in: [modules/communications/index.ts:349](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L349)
 
 Необработанные отзывы
 
@@ -584,7 +584,7 @@ getFeedbacksCount(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L380)
+Defined in: [modules/communications/index.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L380)
 
 Количество отзывов
 
@@ -658,7 +658,7 @@ feedbacks(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L411)
+Defined in: [modules/communications/index.ts:411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L411)
 
 Список отзывов
 
@@ -726,7 +726,7 @@ createFeedbacksAnswer(data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L450)
+Defined in: [modules/communications/index.ts:450](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L450)
 
 Ответить на отзыв
 
@@ -779,7 +779,7 @@ updateFeedbacksAnswer(data?: {
 }): Promise<void>;
 ```
 
-Defined in: [modules/communications/index.ts:470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L470)
+Defined in: [modules/communications/index.ts:470](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L470)
 
 Отредактировать ответ на отзыв
 
@@ -836,7 +836,7 @@ createOrderReturn(data: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L491)
+Defined in: [modules/communications/index.ts:491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L491)
 
 Возврат товара по ID отзыва
 
@@ -946,7 +946,7 @@ feedback(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:522](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L522)
+Defined in: [modules/communications/index.ts:522](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L522)
 
 Получить отзыв по ID
 
@@ -1061,7 +1061,7 @@ getFeedbacksArchive(options?: {
 }>;
 ```
 
-Defined in: [modules/communications/index.ts:628](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L628)
+Defined in: [modules/communications/index.ts:628](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L628)
 
 Список архивных отзывов
 
@@ -1121,7 +1121,7 @@ console.log(result);
 getSellerChats(): Promise<ChatsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:670](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L670)
+Defined in: [modules/communications/index.ts:670](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L670)
 
 Список чатов
 
@@ -1172,7 +1172,7 @@ getSellerEvents(options?: {
 }): Promise<EventsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:698](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L698)
+Defined in: [modules/communications/index.ts:698](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L698)
 
 События чатов
 
@@ -1228,7 +1228,7 @@ console.log(result);
 createSellerMessage(data: SellerMessageRequest): Promise<MessageResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:742](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L742)
+Defined in: [modules/communications/index.ts:742](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L742)
 
 Отправить сообщение покупателю (multipart/form-data)
 
@@ -1296,7 +1296,7 @@ console.log(result);
 getSellerDownload(id: string): Promise<unknown>;
 ```
 
-Defined in: [modules/communications/index.ts:836](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L836)
+Defined in: [modules/communications/index.ts:836](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L836)
 
 Получить файл из сообщения
 
@@ -1351,7 +1351,7 @@ claims(options?: {
 }): Promise<unknown>;
 ```
 
-Defined in: [modules/communications/index.ts:860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L860)
+Defined in: [modules/communications/index.ts:860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L860)
 
 Заявки покупателей на возврат
 
@@ -1402,14 +1402,27 @@ console.log(result);
 ### updateClaim()
 
 ```ts
-updateClaim(): Promise<unknown>;
+updateClaim(data: {
+  id: string;
+  action: string;
+  comment?: string;
+}): Promise<unknown>;
 ```
 
-Defined in: [modules/communications/index.ts:887](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L887)
+Defined in: [modules/communications/index.ts:892](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L892)
 
 Ответ на заявку покупателя
 
 Метод отправляет ответ на [заявку](/openapi/user-communication#tag/Vozvraty-pokupatelyami/paths/~1api~1v1~1claims/get) покупателя на возврат товаров. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 20 запросов | 3 секунды | 10 запросов | </div>
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | \{ `id`: `string`; `action`: `string`; `comment?`: `string`; \} | Request body. `action` must be one of the values from the `actions` array returned by `claims()`. When `action` is `"rejectcustom"` the `comment` is required (10–1000 chars); it is optional for `"approvecc1"`. |
+| `data.id` | `string` | Application ID (UUID). |
+| `data.action` | `string` | Application action. Use one of the `actions` array values from `claims()`. |
+| `data.comment?` | `string` | Comment (10–1000 chars). Required when `action` is `"rejectcustom"`, optional for `"approvecc1"`. |
 
 #### Returns
 
@@ -1436,7 +1449,11 @@ When network request fails or times out
 #### Example
 
 ```ts
-const result = await sdk.communications.updateClaim();
+const result = await sdk.communications.updateClaim({
+ id: 'fe3e9337-e9f9-423c-8930-946a8ebef80',
+ action: 'rejectcustom',
+ comment: 'The photo is not related to the item in the application',
+});
 console.log(result);
 ```
 
@@ -1448,7 +1465,7 @@ console.log(result);
 getPinnedFeedbacksCount(params?: PinnedReviewsCountParams): Promise<PinnedReviewsCountResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:930](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L930)
+Defined in: [modules/communications/index.ts:938](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L938)
 
 Get count of pinned/unpinned reviews
 
@@ -1512,7 +1529,7 @@ const cardCount = await sdk.communications.getPinnedFeedbacksCount({
 getPinnedFeedbacksLimits(): Promise<PinnedReviewsLimitsResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:963](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L963)
+Defined in: [modules/communications/index.ts:971](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L971)
 
 Get limits for pinning reviews
 
@@ -1563,7 +1580,7 @@ if (limits.data.tariff) {
 getPinnedFeedbacks(params?: PinnedReviewsListParams): Promise<PinnedReviewsListResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:1004](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L1004)
+Defined in: [modules/communications/index.ts:1012](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L1012)
 
 Get list of pinned/unpinned reviews
 
@@ -1632,7 +1649,7 @@ if (response.next) {
 pinFeedback(data: PinnedReviewsCreateRequest): Promise<PinnedReviewsCreateResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:1052](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L1052)
+Defined in: [modules/communications/index.ts:1060](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L1060)
 
 Pin reviews to product cards or merged groups
 
@@ -1711,7 +1728,7 @@ result.data.forEach(item => {
 unpinFeedback(data: PinnedReviewsDeleteRequest): Promise<PinnedReviewsDeleteResponse>;
 ```
 
-Defined in: [modules/communications/index.ts:1087](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/modules/communications/index.ts#L1087)
+Defined in: [modules/communications/index.ts:1095](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/communications/index.ts#L1095)
 
 Unpin reviews from product cards or merged groups
 

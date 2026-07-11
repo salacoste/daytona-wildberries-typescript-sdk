@@ -2,7 +2,7 @@
 
 # Interface: UploadTaskResponse
 
-Defined in: [types/products.types.ts:638](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L638)
+Defined in: [types/products.types.ts:702](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L702)
 
 Response for upload task creation (POST /api/v2/upload/task, /task/size, /task/club-discount)
 
@@ -10,8 +10,8 @@ Response for upload task creation (POST /api/v2/upload/task, /task/size, /task/c
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `id?`: `number`; `alreadyExists?`: `boolean`; \} | Upload task data | [types/products.types.ts:640](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L640) |
-| `data.id?` | `number` | Upload task ID | [types/products.types.ts:642](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L642) |
-| `data.alreadyExists?` | `boolean` | Whether this upload already exists | [types/products.types.ts:644](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L644) |
-| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:647](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L647) |
-| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:649](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/products.types.ts#L649) |
+| <a id="data"></a> `data?` | \{ `id?`: `number`; `alreadyExists?`: `boolean`; \} | Upload task data | [types/products.types.ts:704](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L704) |
+| `data.id?` | `number` | Upload task ID | [types/products.types.ts:706](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L706) |
+| `data.alreadyExists?` | `boolean` | Whether this upload already exists | [types/products.types.ts:708](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L708) |
+| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:711](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L711) |
+| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:713](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/products.types.ts#L713) |

@@ -6,6 +6,6 @@
 type DaysV3 = DaysV3Item[];
 ```
 
-Defined in: [types/promotion.types.ts:772](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/promotion.types.ts#L772)
+Defined in: [types/promotion.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L762)
 
 Статистка по дням (V3)

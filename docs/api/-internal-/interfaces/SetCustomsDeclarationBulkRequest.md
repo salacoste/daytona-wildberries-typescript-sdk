@@ -2,12 +2,12 @@
 
 # Interface: SetCustomsDeclarationBulkRequest
 
-Defined in: [types/orders-dbs.types.ts:530](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L530)
+Defined in: [types/in-store-pickup.types.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L235)
 
-Request body for setCustomsDeclarationBulk
+Request body for [InStorePickupModule.setCustomsDeclarationBulk](../../classes/InStorePickupModule.md#setcustomsdeclarationbulk).
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | \{ `orderId`: `number`; `customsDeclaration`: `string`; \}[] | Array of orders with customs declaration numbers to set | [types/orders-dbs.types.ts:532](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L532) |
+| <a id="orders"></a> `orders` | [`PickupCustomsDeclarationItem`](PickupCustomsDeclarationItem.md)[] | Orders with customs declarations + origin country codes (max 1000). | [types/in-store-pickup.types.ts:237](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L237) |

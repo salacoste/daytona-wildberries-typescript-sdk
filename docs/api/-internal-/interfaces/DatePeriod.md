@@ -2,7 +2,7 @@
 
 # Interface: DatePeriod
 
-Defined in: [types/analytics.types.ts:1312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1312)
+Defined in: [types/analytics.types.ts:1371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1371)
 
 Период дат для v3 Sales Funnel запросов
 
@@ -10,5 +10,5 @@ Defined in: [types/analytics.types.ts:1312](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="start"></a> `start` | `string` | Начало периода | [types/analytics.types.ts:1314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1314) |
-| <a id="end"></a> `end` | `string` | Конец периода | [types/analytics.types.ts:1316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/analytics.types.ts#L1316) |
+| <a id="start"></a> `start` | `string` | Начало периода | [types/analytics.types.ts:1373](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1373) |
+| <a id="end"></a> `end` | `string` | Конец периода | [types/analytics.types.ts:1375](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1375) |

@@ -2,7 +2,7 @@
 
 # Interface: TrbxListResponse
 
-Defined in: [types/orders-fbs.types.ts:432](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L432)
+Defined in: [types/orders-fbs.types.ts:426](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-fbs.types.ts#L426)
 
 Response containing a list of supply boxes
 
@@ -10,4 +10,4 @@ Response containing a list of supply boxes
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="trbxes"></a> `trbxes?` | [`SupplyTrbx`](SupplyTrbx.md)[] | List of boxes | [types/orders-fbs.types.ts:434](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L434) |
+| <a id="trbxes"></a> `trbxes?` | [`SupplyTrbx`](SupplyTrbx.md)[] | List of boxes | [types/orders-fbs.types.ts:428](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-fbs.types.ts#L428) |

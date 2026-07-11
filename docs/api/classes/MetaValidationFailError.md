@@ -2,7 +2,7 @@
 
 # Class: MetaValidationFailError
 
-Defined in: errors/meta-validation-fail-error.ts:38
+Defined in: [errors/meta-validation-fail-error.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L38)
 
 Error thrown when `PATCH /api/v3/supplies/{supplyId}/deliver` returns HTTP 409
 with marking-code validation failures in the `metaDetails` response array.
@@ -62,7 +62,7 @@ new MetaValidationFailError(
    timestamp?: string): MetaValidationFailError;
 ```
 
-Defined in: errors/meta-validation-fail-error.ts:63
+Defined in: [errors/meta-validation-fail-error.ts:63](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L63)
 
 Creates a MetaValidationFailError
 
@@ -90,13 +90,13 @@ Creates a MetaValidationFailError
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/errors/base-error.ts#L35) |
-| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/errors/base-error.ts#L43) |
-| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/errors/base-error.ts#L51) |
-| <a id="code"></a> `code` | `readonly` | `string` | WB error code from the response body (e.g. `'MetaValidationFail'`). Defaults to `'Unknown'` when WB omits the code field. | - | errors/meta-validation-fail-error.ts:43 |
-| <a id="metadetails"></a> `metaDetails` | `readonly` | [`MetaDetail`](../interfaces/MetaDetail.md)[] | Array of individual marking-code validation failures. Each item exposes `key` (metadata type), `value` (the submitted code), and `decision` (`'invalid'` when the code failed validation). | - | errors/meta-validation-fail-error.ts:50 |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L35) |
+| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L43) |
+| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L51) |
+| <a id="code"></a> `code` | `readonly` | `string` | WB error code from the response body (e.g. `'MetaValidationFail'`). Defaults to `'Unknown'` when WB omits the code field. | - | [errors/meta-validation-fail-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L43) |
+| <a id="metadetails"></a> `metaDetails` | `readonly` | [`MetaDetail`](../interfaces/MetaDetail.md)[] | Array of individual marking-code validation failures. Each item exposes `key` (metadata type), `value` (the submitted code), and `decision` (`'invalid'` when the code failed validation). | - | [errors/meta-validation-fail-error.ts:50](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L50) |
 
 ## Methods
 
@@ -106,7 +106,7 @@ Creates a MetaValidationFailError
 getUserMessage(): string;
 ```
 
-Defined in: errors/meta-validation-fail-error.ts:84
+Defined in: [errors/meta-validation-fail-error.ts:84](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L84)
 
 Returns a user-friendly error message listing the failing marking codes.
 
@@ -136,7 +136,7 @@ toJSON(): {
 };
 ```
 
-Defined in: errors/meta-validation-fail-error.ts:122
+Defined in: [errors/meta-validation-fail-error.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L122)
 
 Custom JSON serialization to include metaDetails and code properties
 
@@ -158,13 +158,13 @@ Object representation including metaDetails and code
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | errors/meta-validation-fail-error.ts:123 |
-| `message` | `string` | errors/meta-validation-fail-error.ts:124 |
-| `statusCode?` | `number` | errors/meta-validation-fail-error.ts:125 |
-| `code` | `string` | errors/meta-validation-fail-error.ts:126 |
-| `metaDetails` | [`MetaDetail`](../interfaces/MetaDetail.md)[] | errors/meta-validation-fail-error.ts:127 |
-| `response?` | `unknown` | errors/meta-validation-fail-error.ts:128 |
-| `requestId?` | `string` | errors/meta-validation-fail-error.ts:129 |
+| `name` | `string` | [errors/meta-validation-fail-error.ts:123](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L123) |
+| `message` | `string` | [errors/meta-validation-fail-error.ts:124](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L124) |
+| `statusCode?` | `number` | [errors/meta-validation-fail-error.ts:125](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L125) |
+| `code` | `string` | [errors/meta-validation-fail-error.ts:126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L126) |
+| `metaDetails` | [`MetaDetail`](../interfaces/MetaDetail.md)[] | [errors/meta-validation-fail-error.ts:127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L127) |
+| `response?` | `unknown` | [errors/meta-validation-fail-error.ts:128](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L128) |
+| `requestId?` | `string` | [errors/meta-validation-fail-error.ts:129](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/meta-validation-fail-error.ts#L129) |
 
 #### Overrides
 

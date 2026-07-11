@@ -2,7 +2,7 @@
 
 # Interface: GoodsLabelingItem
 
-Defined in: [types/reports.types.ts:518](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L518)
+Defined in: [types/reports.types.ts:507](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L507)
 
 Goods labeling report item
 
@@ -10,13 +10,18 @@ Goods labeling report item
 
 EPIC 43 - Response type for getAnalyticsGoodsLabeling
 
+## Spec
+
+SuccessGoodsLabelingResponse (12-reports.yaml)
+
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:520](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L520) |
-| <a id="dtbonus"></a> `dtBonus?` | `string` | Дата штрафа | [types/reports.types.ts:522](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L522) |
-| <a id="bonussumm"></a> `bonusSumm?` | `number` | Сумма штрафа | [types/reports.types.ts:524](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L524) |
-| <a id="barcode"></a> `barcode?` | `string` | Баркод | [types/reports.types.ts:526](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L526) |
-| <a id="vendorcode"></a> `vendorCode?` | `string` | Артикул продавца | [types/reports.types.ts:528](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L528) |
-| <a id="photourls"></a> `photoUrls?` | `string`[] | Фото товара без маркировки | [types/reports.types.ts:530](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/reports.types.ts#L530) |
+| <a id="amount"></a> `amount?` | `number` | Сумма штрафа, руб. | [types/reports.types.ts:509](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L509) |
+| <a id="date"></a> `date?` | `string` | Дата | [types/reports.types.ts:511](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L511) |
+| <a id="incomeid"></a> `incomeId?` | `number` | ID поставки | [types/reports.types.ts:513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L513) |
+| <a id="nmid"></a> `nmID?` | `number` | Артикул WB | [types/reports.types.ts:515](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L515) |
+| <a id="photourls"></a> `photoUrls?` | `string`[] | Фото товара | [types/reports.types.ts:517](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L517) |
+| <a id="shkid"></a> `shkID?` | `number` | SKU товара Wildberries | [types/reports.types.ts:519](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L519) |
+| <a id="sku"></a> `sku?` | `string` | SKU объявления | [types/reports.types.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L521) |

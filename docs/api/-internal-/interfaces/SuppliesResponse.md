@@ -2,7 +2,7 @@
 
 # Interface: SuppliesResponse
 
-Defined in: [types/orders-fbs.types.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L404)
+Defined in: [types/orders-fbs.types.ts:398](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-fbs.types.ts#L398)
 
 Paginated response containing supplies
 
@@ -10,5 +10,5 @@ Paginated response containing supplies
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="next"></a> `next?` | `number` | Pagination cursor for the next page | [types/orders-fbs.types.ts:406](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L406) |
-| <a id="supplies"></a> `supplies?` | [`Supply`](Supply.md)[] | List of supplies | [types/orders-fbs.types.ts:408](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-fbs.types.ts#L408) |
+| <a id="next"></a> `next?` | `number` | Pagination cursor for the next page | [types/orders-fbs.types.ts:400](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-fbs.types.ts#L400) |
+| <a id="supplies"></a> `supplies?` | [`Supply`](Supply.md)[] | List of supplies | [types/orders-fbs.types.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-fbs.types.ts#L402) |

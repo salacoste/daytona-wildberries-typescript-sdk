@@ -2,12 +2,13 @@
 
 # Interface: GetOrderMetaBulkResponse
 
-Defined in: [types/orders-dbs.types.ts:472](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L472)
+Defined in: [types/in-store-pickup.types.ts:343](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L343)
 
-Response from getMetaBulk
+Response from [InStorePickupModule.getMetaBulk](../../classes/InStorePickupModule.md#getmetabulk).
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | [`BulkOrderMeta`](BulkOrderMeta.md)[] | Metadata for each requested order | [types/orders-dbs.types.ts:474](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/2f9d1c0411f3b2698257855578a5fa059d0e206a/src/types/orders-dbs.types.ts#L474) |
+| <a id="requestid"></a> `requestId` | `string` | Unique request ID. | [types/in-store-pickup.types.ts:345](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L345) |
+| <a id="orders"></a> `orders` | [`OrderMetaV2`](OrderMetaV2.md)[] | Label identifiers for each requested order. | [types/in-store-pickup.types.ts:347](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/in-store-pickup.types.ts#L347) |
