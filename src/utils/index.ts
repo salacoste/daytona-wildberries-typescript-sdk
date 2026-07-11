@@ -53,3 +53,6 @@ export { parseMetaValidationFail, type MetaValidationFailPayload } from './parse
 
 // Pre-network bid validation/clamp against getBidsRecommendations (since 3.16.0)
 export { validateBid, clampBid, extractBidRange, type BidRange } from './bid-validation';
+
+// ROAS computation over fullstats (rolling window, exclude freshest day) (since 4.1.0)
+export { computeROAS, type ROASResult, type ComputeROASOptions } from './roas';

@@ -837,6 +837,9 @@ export {
   clampBid,
   extractBidRange,
   type BidRange,
+  computeROAS,
+  type ROASResult,
+  type ComputeROASOptions,
 } from './utils';
 
 // Returns module types (since v3.10.0 — populated by sdk.returns module in story 13.2)
