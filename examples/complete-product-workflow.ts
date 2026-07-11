@@ -85,12 +85,7 @@
 
 import { WildberriesSDK } from '../src';
 import type { CreateProductRequest } from '../src/types/products.types';
-import {
-  RateLimitError,
-  ValidationError,
-  AuthenticationError,
-  NetworkError
-} from '../src/errors';
+import { RateLimitError, ValidationError, AuthenticationError, NetworkError } from '../src/errors';
 
 /**
  * Main workflow function demonstrating complete product lifecycle
@@ -98,7 +93,7 @@ import {
 async function completeProductWorkflow() {
   // Initialize SDK
   const sdk = new WildberriesSDK({
-    apiKey: process.env.WB_API_KEY || 'your-api-key-here'
+    apiKey: process.env.WB_API_KEY || 'your-api-key-here',
   });
 
   console.log('=== Complete Product Workflow ===\n');
@@ -120,7 +115,9 @@ async function completeProductWorkflow() {
 
     // Use first parent category
     const selectedParent = parentData[0];
-    console.log(`   Selected parent: ${selectedParent.name || 'Category'} (ID: ${selectedParent.id})\n`);
+    console.log(
+      `   Selected parent: ${selectedParent.name || 'Category'} (ID: ${selectedParent.id})\n`
+    );
 
     // Get child categories/subjects
     const subjects = await sdk.products.getObjectAll({ parentID: selectedParent.id });
@@ -128,13 +125,17 @@ async function completeProductWorkflow() {
     console.log(`✅ Retrieved ${subjectData.length} subjects/categories`);
 
     const selectedSubject = subjectData[0];
-    console.log(`   Selected subject: ${selectedSubject.subjectName} (ID: ${selectedSubject.subjectID})\n`);
+    console.log(
+      `   Selected subject: ${selectedSubject.subjectName} (ID: ${selectedSubject.subjectID})\n`
+    );
 
     // Get characteristics for the subject
     const chars = await sdk.products.getObjectCharc(selectedSubject.subjectID);
     const charData = chars.data as any[];
     const requiredChars = charData.filter((c: any) => c.required);
-    console.log(`✅ Retrieved ${charData.length} characteristics (${requiredChars.length} required)`);
+    console.log(
+      `✅ Retrieved ${charData.length} characteristics (${requiredChars.length} required)`
+    );
 
     // ========================================
     // Step 2: Create product card
@@ -144,31 +145,36 @@ async function completeProductWorkflow() {
 
     const productData: CreateProductRequest = {
       subjectID: selectedSubject.subjectID,
-      variants: [{
-        vendorCode: `EXAMPLE-${Date.now()}`,  // Unique vendor code
-        brand: 'Example Brand',
-        title: 'Example Product - Complete Workflow Demo',
-        description: 'This product was created using the complete workflow example. It demonstrates all product management capabilities.',
+      variants: [
+        {
+          vendorCode: `EXAMPLE-${Date.now()}`, // Unique vendor code
+          brand: 'Example Brand',
+          title: 'Example Product - Complete Workflow Demo',
+          description:
+            'This product was created using the complete workflow example. It demonstrates all product management capabilities.',
 
-        dimensions: {
-          length: 10,
-          width: 10,
-          height: 5,
-          weightBrutto: 0.5
+          dimensions: {
+            length: 10,
+            width: 10,
+            height: 5,
+            weightBrutto: 0.5,
+          },
+
+          sizes: [
+            {
+              techSize: 'ONE SIZE',
+              wbSize: 'ONE SIZE',
+              // skus will be auto-generated if omitted
+            },
+          ],
+
+          // Use first few characteristics as examples
+          characteristics: charData.slice(0, 3).map((char: any) => ({
+            id: char.charcID,
+            value: char.required ? ['Sample Value'] : ['Optional'],
+          })),
         },
-
-        sizes: [{
-          techSize: 'ONE SIZE',
-          wbSize: 'ONE SIZE',
-          // skus will be auto-generated if omitted
-        }],
-
-        // Use first few characteristics as examples
-        characteristics: charData.slice(0, 3).map((char: any) => ({
-          id: char.charcID,
-          value: char.required ? ['Sample Value'] : ['Optional']
-        }))
-      }]
+      ],
     };
 
     console.log('Creating product card...');
@@ -193,11 +199,11 @@ async function completeProductWorkflow() {
     console.log('Fetching product list to verify creation...');
     const productList = await sdk.products.listProducts({
       filter: {
-        textSearch: productData.variants[0].vendorCode
+        textSearch: productData.variants[0].vendorCode,
       },
       cursor: {
-        limit: 10
-      }
+        limit: 10,
+      },
     });
 
     const cards = productList.cards || [];
@@ -222,13 +228,17 @@ async function completeProductWorkflow() {
 
       if (sizes.length > 0 && sizes[0].chrtID) {
         console.log('Creating pricing task...');
-        const pricingData = [{
-          nmID: nmID,
-          price: 1999,  // 19.99 RUB
-          sizes: [{
-            chrtID: sizes[0].chrtID
-          }]
-        }];
+        const pricingData = [
+          {
+            nmID: nmID,
+            price: 1999, // 19.99 RUB
+            sizes: [
+              {
+                chrtID: sizes[0].chrtID,
+              },
+            ],
+          },
+        ];
 
         const pricingResult = await sdk.products.updatePricing(pricingData);
         console.log(`✅ Pricing task created`);
@@ -249,21 +259,28 @@ async function completeProductWorkflow() {
       const product = cards[0];
       const sizes = product.sizes || [];
 
-      if (sizes.length > 0 && sizes[0].skus && sizes[0].skus.length > 0) {
-        const sku = sizes[0].skus[0];
+      // chrtID is the numeric size ID (Content API). Stocks methods use the
+      // same value but lowercase: chrtId. Card-size barcodes (sizes[].skus)
+      // are unrelated and were NOT removed in v4.0.0.
+      const chrtID = sizes[0]?.chrtID;
 
-        console.log('Updating stock levels...');
-        await sdk.products.updateStockLevels({
-          stocks: [{
-            sku: sku,
-            amount: 100
-          }]
-        });
+      if (chrtID !== undefined) {
+        const warehouses = await sdk.products.getWarehouses();
+        if (warehouses.length > 0) {
+          const warehouseId = warehouses[0].id;
 
-        console.log(`✅ Stock updated for SKU: ${sku}`);
-        console.log(`   Quantity: 100 units`);
+          console.log('Updating stock levels...');
+          await sdk.products.updateStock(warehouseId, {
+            stocks: [{ chrtId: chrtID, amount: 100 }],
+          });
+
+          console.log(`✅ Stock updated for chrtId: ${chrtID}`);
+          console.log(`   Quantity: 100 units`);
+        } else {
+          console.log('⚠️  No seller warehouse available for stock management');
+        }
       } else {
-        console.log('⚠️  No SKUs available for stock management');
+        console.log('⚠️  No size ID (chrtID) available for stock management');
       }
     }
 
@@ -283,7 +300,6 @@ async function completeProductWorkflow() {
     console.log('  • Configure additional product variants');
     console.log('  • Set up promotional campaigns');
     console.log('  • Monitor order processing\n');
-
   } catch (error) {
     console.error('\n' + '='.repeat(50));
     console.error('❌ Error occurred during workflow:');

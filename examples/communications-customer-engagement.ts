@@ -163,7 +163,7 @@ async function manageChatConversations() {
     chats.forEach((chat, index) => {
       console.log(`Chat ${index + 1}:`);
       console.log(`  Chat ID: ${chat.chatID}`);
-      console.log(`  Customer: ${chat.clientName} (ID: ${chat.clientID})`);
+      console.log(`  Customer: ${chat.clientName}`);
       if (chat.goodCard) {
         console.log(`  Product: ${chat.goodCard.goodsName || chat.goodCard.productName}`);
       }

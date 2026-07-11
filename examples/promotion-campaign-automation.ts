@@ -146,28 +146,17 @@ async function main() {
 
   try {
     // ============================================================================
-    // Step 1: Get configuration parameters (min bids, available categories)
+    // Step 1: Account overview
     // ============================================================================
+    // NOTE: getAdvConfig() was removed in v4.0.0 (the WB v0 config endpoint was
+    // disabled). For per-product minimum bids use getBidsMinV2(); for the list
+    // of campaigns use getAdvertsV2() (Step 2).
 
-    console.log('📍 Step 1: Fetching campaign configuration...\n');
+    console.log('📍 Step 1: Account overview...\n');
 
-    const config = await sdk.promotion.getAdvConfig();
-
-    if (!config.config || config.config.length === 0) {
-      console.log('⚠️  No configuration data available');
-      return;
-    }
-
-    console.log('✅ Campaign Configuration:');
-    config.config.slice(0, 5).forEach((param) => {
-      console.log(`   ${param.name}: ${param.value} - ${param.description}`);
-    });
-    console.log('');
-
-    if (config.categories && config.categories.length > 0) {
-      console.log(`✅ Available Categories: ${config.categories.length}`);
-      console.log(`   Example: ${config.categories[0].name} (ID: ${config.categories[0].id})\n`);
-    }
+    const balance = await sdk.promotion.getAdvBalance();
+    console.log('✅ Account balance:');
+    console.log(`   Balance: ${balance.balance}, Net: ${balance.net}, Bonus: ${balance.bonus}\n`);
 
     // ============================================================================
     // Step 2: Check existing campaigns
@@ -175,12 +164,14 @@ async function main() {
 
     console.log('📍 Step 2: Checking existing campaigns...\n');
 
-    const campaignCount = await sdk.promotion.getPromotionCount();
+    const advertsList = await sdk.promotion.getAdvertsV2();
 
-    if (campaignCount.adverts && campaignCount.adverts.length > 0) {
-      console.log(`✅ Found ${campaignCount.all} total campaigns:`);
-      campaignCount.adverts.forEach((group) => {
-        console.log(`   Type ${group.type}, Status ${group.status}: ${group.count} campaigns`);
+    if (advertsList.adverts && advertsList.adverts.length > 0) {
+      console.log(`✅ Found ${advertsList.adverts.length} total campaigns:`);
+      advertsList.adverts.forEach((advert) => {
+        console.log(
+          `   ID ${advert.id}, bid_type ${advert.bid_type}, Status ${advert.status}: ${advert.settings?.name ?? '(no name)'}`
+        );
       });
       console.log('');
     } else {
@@ -197,21 +188,17 @@ async function main() {
     console.log('   This example demonstrates the workflow without creating a real campaign\n');
 
     // UNCOMMENT TO CREATE REAL CAMPAIGN:
+    // NOTE: createAdvSaveAd() was removed in v4.0.0 — use the v2 createCampaign().
     /*
-    campaignId = await sdk.promotion.createAdvSaveAd({
-      type: exampleCampaign.type,
+    campaignId = String(await sdk.promotion.createCampaign({
       name: exampleCampaign.name,
-      sum: exampleCampaign.initialBudget,
       nms: exampleCampaign.productIds,
-      cpm: exampleCampaign.bidAmount,
-      on_pause: false, // Start immediately
-    });
+      // ...v2 CreateCampaignRequest fields (payment type, bids, placements)
+    }));
 
     console.log(`✅ Campaign created successfully!`);
     console.log(`   Campaign ID: ${campaignId}`);
     console.log(`   Name: ${exampleCampaign.name}`);
-    console.log(`   Budget: ${exampleCampaign.initialBudget}₽`);
-    console.log(`   Bid: ${exampleCampaign.bidAmount}₽ CPM`);
     console.log(`   Products: ${exampleCampaign.productIds.length} items\n`);
     */
 
@@ -236,10 +223,13 @@ async function main() {
     console.log('     - Budget remaining\n');
 
     // UNCOMMENT TO GET REAL STATISTICS:
+    // NOTE: createAdvFullstats() was removed in v4.0.0 — use getAdvFullstats() (GET).
     /*
-    const stats = await sdk.promotion.createAdvFullstats([{
-      campaignId: parseInt(campaignId),
-    }]);
+    const stats = await sdk.promotion.getAdvFullstats({
+      ids: campaignId,
+      beginDate: '...',
+      endDate: '...',
+    });
 
     console.log('📊 Campaign Performance:');
     console.log(`   Impressions: ${stats.views}`);
@@ -296,27 +286,11 @@ async function main() {
     console.log('⚠️  Campaign control requires an active campaign');
     console.log('   Available operations:\n');
     console.log('   Control:');
-    console.log('     - Pause campaign (temporary stop)');
-    console.log('     - Resume campaign (from pause)');
-    console.log('     - Stop campaign (permanently end)');
-    console.log('     - Adjust bids and budget\n');
-
-    // UNCOMMENT TO CONTROL REAL CAMPAIGN:
-    /*
-    // Pause campaign for review
-    console.log('⏸️  Pausing campaign for review...');
-    await sdk.promotion.getAdvPause({ id: parseInt(campaignId) });
-    console.log('✅ Campaign paused\n');
-
-    // Wait for review (in real scenario)
-    console.log('📊 Reviewing performance metrics...');
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Resume campaign
-    console.log('▶️  Resuming campaign...');
-    await sdk.promotion.getAdvStart({ id: parseInt(campaignId) });
-    console.log('✅ Campaign resumed\n');
-    */
+    console.log('     - Adjust bids (sdk.promotion.updateBids) and budget\n');
+    console.log('   NOTE: the legacy pause/resume/stop lifecycle methods');
+    console.log('   (getAdvPause / getAdvStart / getAdvStop) were removed in v4.0.0');
+    console.log('   (the underlying WB v0/v1 advert endpoints were disabled).');
+    console.log('   See docs/guides/migration-v4.md for details.\n');
 
     // ============================================================================
     // Step 7: Optimization recommendations

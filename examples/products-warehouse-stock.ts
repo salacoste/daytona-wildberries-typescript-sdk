@@ -115,26 +115,28 @@ async function setupInventoryManagement() {
     // ========================================
     // 4. UPDATE STOCK FOR PRODUCTS
     // ========================================
+    // chrtId is the size ID returned by POST /content/v2/get/cards/list
+    // (sizes[].chrtID — same numeric value, lowercase d in the SDK stocks API).
     console.log('\nStep 4: Updating stock levels...');
-    await sdk.products.updateStockLevels(newWarehouse.id, [
-      { sku: 'BARCODE123', amount: 100 },
-      { sku: 'BARCODE456', amount: 50 },
-      { sku: 'BARCODE789', amount: 200 },
-    ]);
-    console.log('✓ Stock updated for 3 products');
+    await sdk.products.updateStock(newWarehouse.id, {
+      stocks: [
+        { chrtId: 12345678, amount: 100 },
+        { chrtId: 12345679, amount: 50 },
+        { chrtId: 12345680, amount: 200 },
+      ],
+    });
+    console.log('✓ Stock updated for 3 sizes');
 
     // ========================================
     // 5. GET CURRENT STOCK LEVELS
     // ========================================
     console.log('\nStep 5: Fetching current stock...');
-    const stocks = await sdk.products.getStock(newWarehouse.id, [
-      'BARCODE123',
-      'BARCODE456',
-      'BARCODE789',
-    ]);
+    const stocksResp = await sdk.products.getStocks(newWarehouse.id, {
+      chrtIds: [12345678, 12345679, 12345680],
+    });
     console.log('✓ Current stock levels:');
-    stocks.forEach((stock) => {
-      console.log(`  SKU: ${stock.sku}, Stock: ${stock.amount}`);
+    stocksResp.stocks?.forEach((stock) => {
+      console.log(`  chrtId: ${stock.chrtId}, Stock: ${stock.amount}`);
     });
 
     // ========================================
@@ -152,36 +154,39 @@ async function setupInventoryManagement() {
     // 7. ADJUST STOCK (RESTOCK)
     // ========================================
     console.log('\nStep 7: Adjusting stock quantities...');
-    await sdk.products.updateStockLevels(newWarehouse.id, [
-      { sku: 'BARCODE123', amount: 150 }, // Increased
-      { sku: 'BARCODE456', amount: 30 }, // Decreased
-    ]);
-    console.log('✓ Stock adjusted for 2 products');
+    await sdk.products.updateStock(newWarehouse.id, {
+      stocks: [
+        { chrtId: 12345678, amount: 150 }, // Increased
+        { chrtId: 12345679, amount: 30 }, // Decreased
+      ],
+    });
+    console.log('✓ Stock adjusted for 2 sizes');
 
     // Verify adjustments
-    const updatedStocks = await sdk.products.getStock(newWarehouse.id, [
-      'BARCODE123',
-      'BARCODE456',
-    ]);
+    const updatedResp = await sdk.products.getStocks(newWarehouse.id, {
+      chrtIds: [12345678, 12345679],
+    });
     console.log('  New stock levels:');
-    updatedStocks.forEach((stock) => {
-      console.log(`    ${stock.sku}: ${stock.amount}`);
+    updatedResp.stocks?.forEach((stock) => {
+      console.log(`    ${stock.chrtId}: ${stock.amount}`);
     });
 
     // ========================================
     // 8. REMOVE STOCK FOR SPECIFIC PRODUCT
     // ========================================
-    console.log('\nStep 8: Deleting stock for BARCODE789...');
+    console.log('\nStep 8: Deleting stock for chrtId 12345680...');
     console.log('  ⚠️  WARNING: This operation is IRREVERSIBLE!');
-    await sdk.products.deleteStockRecords(newWarehouse.id, ['BARCODE789']);
+    await sdk.products.deleteStock(newWarehouse.id, { chrtIds: [12345680] });
     console.log('✓ Stock deleted (must re-upload to resume sales)');
 
     // ========================================
     // 9. VERIFY REMAINING STOCK
     // ========================================
     console.log('\nStep 9: Verifying remaining stock...');
-    const finalStocks = await sdk.products.getStock(newWarehouse.id, ['BARCODE123', 'BARCODE456']);
-    console.log(`✓ Final stock count: ${finalStocks.length} products remaining`);
+    const finalResp = await sdk.products.getStocks(newWarehouse.id, {
+      chrtIds: [12345678, 12345679],
+    });
+    console.log(`✓ Final stock count: ${finalResp.stocks?.length ?? 0} sizes remaining`);
 
     console.log('\n✅ Inventory management workflow completed successfully!');
   } catch (error: unknown) {
@@ -238,21 +243,22 @@ async function bulkStockManagement() {
     }
 
     // Create 100 stock updates (testing batch capability)
-    console.log('Creating bulk stock update for 100 SKUs...');
+    // chrtId is the size ID from POST /content/v2/get/cards/list (sizes[].chrtID).
+    console.log('Creating bulk stock update for 100 sizes...');
     const bulkUpdates = Array.from({ length: 100 }, (_, i) => ({
-      sku: `BULK-SKU-${String(i + 1).padStart(3, '0')}`,
+      chrtId: 10000000 + i,
       amount: (i + 1) * 10,
     }));
 
-    await sdk.products.updateStockLevels(warehouseId, bulkUpdates);
-    console.log('✓ Bulk update completed for 100 SKUs');
+    await sdk.products.updateStock(warehouseId, { stocks: bulkUpdates });
+    console.log('✓ Bulk update completed for 100 sizes');
 
     // Verify sample of bulk stocks
-    const sampleSkus = ['BULK-SKU-001', 'BULK-SKU-050', 'BULK-SKU-100'];
-    const sampleStocks = await sdk.products.getStock(warehouseId, sampleSkus);
+    const sampleChrtIds = [10000000, 10000049, 10000099];
+    const sampleResp = await sdk.products.getStocks(warehouseId, { chrtIds: sampleChrtIds });
     console.log('\n✓ Sample stock verification:');
-    sampleStocks.forEach((stock) => {
-      console.log(`  ${stock.sku}: ${stock.amount}`);
+    sampleResp.stocks?.forEach((stock) => {
+      console.log(`  chrtId ${stock.chrtId}: ${stock.amount}`);
     });
 
     console.log('\n✅ Bulk stock management completed!');
@@ -286,11 +292,11 @@ async function demonstrateErrorHandling() {
       }
     }
 
-    // Example 2: Validation error (SKU array too large)
-    console.log('\nExample 2: Testing validation error (> 1000 SKUs)...');
+    // Example 2: Validation error (chrtIds array too large)
+    console.log('\nExample 2: Testing validation error (> 1000 chrtIds)...');
     try {
-      const tooManySkus = Array.from({ length: 1001 }, (_, i) => `SKU-${i}`);
-      await sdk.products.getStock(123, tooManySkus);
+      const tooManyChrtIds = Array.from({ length: 1001 }, (_, i) => i);
+      await sdk.products.getStocks(123, { chrtIds: tooManyChrtIds });
     } catch (error: unknown) {
       if (error instanceof Error && error.name === 'ValidationError') {
         console.log('✓ Validation error caught:', error.message);
@@ -300,7 +306,7 @@ async function demonstrateErrorHandling() {
     // Example 3: Validation error (amount > 100,000)
     console.log('\nExample 3: Testing validation error (amount > 100,000)...');
     try {
-      await sdk.products.updateStockLevels(123, [{ sku: 'TEST-SKU', amount: 150000 }]);
+      await sdk.products.updateStock(123, { stocks: [{ chrtId: 12345678, amount: 150000 }] });
     } catch (error: unknown) {
       if (error instanceof Error && error.name === 'ValidationError') {
         console.log('✓ Validation error caught:', error.message);

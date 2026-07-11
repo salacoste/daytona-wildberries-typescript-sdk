@@ -85,6 +85,7 @@ import {
   ValidationError,
   NetworkError,
   WBAPIError,
+  parseMoneyAmount,
 } from '../src';
 
 /**
@@ -169,7 +170,7 @@ async function main() {
 
       console.log(`   Date range: ${dateFrom} to ${dateTo}`);
 
-      const transactions = await sdk.finances.getSupplierReportDetailByPeriod({
+      const transactions = await sdk.finances.getSalesReportsDetailed({
         dateFrom,
         dateTo,
         limit: 10, // Get first 10 rows
@@ -181,11 +182,13 @@ async function main() {
       if (transactions.length > 0) {
         console.log('   Recent report rows:');
         transactions.slice(0, 5).forEach((txn, index) => {
-          console.log(`   ${index + 1}. ID: ${txn.rrd_id}`);
-          console.log(`      Brand: ${txn.brand_name} (${txn.sa_name})`);
-          console.log(`      Type: ${txn.doc_type_name}`);
-          console.log(`      Amount: ${txn.ppvz_for_pay ?? 0} ${txn.currency_name ?? 'руб'}`);
-          console.log(`      Sale Date: ${txn.sale_dt}`);
+          console.log(`   ${index + 1}. ID: ${txn.rrdId}`);
+          console.log(`      Brand: ${txn.brandName} (${txn.vendorCode})`);
+          console.log(`      Type: ${txn.docTypeName}`);
+          console.log(
+            `      Amount: ${parseMoneyAmount(txn.forPay).toFixed(2)} ${txn.currency ?? 'руб'}`
+          );
+          console.log(`      Sale Date: ${txn.saleDt}`);
           console.log('');
         });
       } else {
@@ -219,19 +222,17 @@ async function main() {
 
       console.log(`   Fetching all report rows from ${dateFrom} to ${dateTo}...`);
 
-      type DetailRow = Awaited<
-        ReturnType<typeof sdk.finances.getSupplierReportDetailByPeriod>
-      >[number];
+      type DetailRow = Awaited<ReturnType<typeof sdk.finances.getSalesReportsDetailed>>[number];
       let allRows: DetailRow[] = [];
-      let rrdid = 0;
+      let rrdId = 0;
       let pageNumber = 1;
       let hasMore = true;
 
       while (hasMore) {
-        const page = await sdk.finances.getSupplierReportDetailByPeriod({
+        const page = await sdk.finances.getSalesReportsDetailed({
           dateFrom,
           dateTo,
-          rrdid,
+          rrdId,
           limit: 100000, // Max limit per request
         });
 
@@ -241,8 +242,8 @@ async function main() {
           console.log(`   ✓ Page ${pageNumber}: ${page.length} rows`);
           allRows = allRows.concat(page);
 
-          // Use the last row's rrd_id for next page
-          rrdid = page[page.length - 1].rrd_id ?? 0;
+          // Use the last row's rrdId for next page
+          rrdId = page[page.length - 1].rrdId ?? 0;
           pageNumber++;
         }
 
@@ -257,13 +258,13 @@ async function main() {
 
       // Calculate summary statistics
       if (allRows.length > 0) {
-        const totalAmount = allRows.reduce((sum, row) => sum + (row.ppvz_for_pay ?? 0), 0);
+        const totalAmount = allRows.reduce((sum, row) => sum + parseMoneyAmount(row.forPay), 0);
         const avgAmount = totalAmount / allRows.length;
 
         console.log('   Transaction Summary:');
         console.log(`   Total Amount: ${totalAmount.toFixed(2)} руб`);
         console.log(`   Average Amount: ${avgAmount.toFixed(2)} руб`);
-        console.log(`   Transaction Count: ${allTransactions.length}\n`);
+        console.log(`   Transaction Count: ${allRows.length}\n`);
       }
     } catch (error) {
       if (error instanceof RateLimitError) {
@@ -281,37 +282,37 @@ async function main() {
     console.log('Step 5: Searching for specific row by rrd_id...');
 
     try {
-      // Use rrdid parameter to start fetching from a specific row.
-      // The API doesn't have a "get single row by ID" method — use rrdid-based pagination
-      // to start from the row AFTER a known rrd_id and fetch a small batch.
+      // Use rrdId parameter to start fetching from a specific row.
+      // The API doesn't have a "get single row by ID" method — use rrdId-based pagination
+      // to start from the row AFTER a known rrdId and fetch a small batch.
       const targetRrdId = 1232610467;
       const searchDateFrom = '2024-01-01';
       const searchDateTo = '2024-01-31';
 
-      console.log(`   Starting from rrd_id: ${targetRrdId}...`);
+      console.log(`   Starting from rrdId: ${targetRrdId}...`);
 
-      const rows = await sdk.finances.getSupplierReportDetailByPeriod({
+      const rows = await sdk.finances.getSalesReportsDetailed({
         dateFrom: searchDateFrom,
         dateTo: searchDateTo,
-        rrdid: targetRrdId,
+        rrdId: targetRrdId,
         limit: 1,
       });
 
       if (rows.length > 0) {
         const row = rows[0];
         console.log('✅ Row found:');
-        console.log(`   ID: ${row.rrd_id ?? 'N/A'}`);
-        console.log(`   Brand: ${row.brand_name ?? 'N/A'}`);
-        console.log(`   Article: ${row.sa_name ?? 'N/A'}`);
-        console.log(`   WB Article: ${row.nm_id ?? 'N/A'}`);
-        console.log(`   Type: ${row.doc_type_name ?? 'N/A'}`);
+        console.log(`   ID: ${row.rrdId ?? 'N/A'}`);
+        console.log(`   Brand: ${row.brandName ?? 'N/A'}`);
+        console.log(`   Article: ${row.vendorCode ?? 'N/A'}`);
+        console.log(`   WB Article: ${row.nmId ?? 'N/A'}`);
+        console.log(`   Type: ${row.docTypeName ?? 'N/A'}`);
         console.log(`   Quantity: ${row.quantity ?? 0}`);
         console.log(
-          `   Payment to Supplier: ${row.ppvz_for_pay ?? 0} ${row.currency_name ?? 'руб'}`
+          `   Payment to Supplier: ${parseMoneyAmount(row.forPay).toFixed(2)} ${row.currency ?? 'руб'}`
         );
-        console.log(`   Sale Date: ${row.sale_dt ?? 'N/A'}\n`);
+        console.log(`   Sale Date: ${row.saleDt ?? 'N/A'}\n`);
       } else {
-        console.log('   No rows found after the specified rrd_id\n');
+        console.log('   No rows found after the specified rrdId\n');
       }
     } catch (error) {
       if (error instanceof RateLimitError) {

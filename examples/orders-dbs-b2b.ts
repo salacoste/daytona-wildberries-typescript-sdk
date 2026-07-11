@@ -58,7 +58,6 @@
  *
  * **Related Examples:**
  * - orders-dbs-core-workflow.ts - Full DBS order processing workflow
- * - orders-dbs-metadata.ts - Product marking and metadata handling
  *
  * @see {@link https://dev.wildberries.ru/openapi/orders-dbs} - Official DBS API documentation
  */

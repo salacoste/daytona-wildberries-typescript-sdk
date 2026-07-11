@@ -128,16 +128,16 @@ See [CHANGELOG.md](CHANGELOG.md) for the complete release history.
 
 ## ⚠️ Critical API Update
 
-**Wildberries API Deprecation Notice** - Four Promotion API methods will be **disabled on February 2, 2026**:
+**Wildberries API Deprecation Notice** - The Promotion v0/v1 advert API was **disabled by Wildberries on February 2, 2026** and the corresponding SDK methods were **removed in v4.0.0**:
 
-- `getAutoGetnmtoadd()` - List of Product Cards (type 8 campaigns)
+- `getAuctionAdverts()` / `getPromotionAdverts()` - advert listing (v0/v1)
 - `createAutoUpdatenm()` - Update Product Cards (type 8 campaigns)
-- `getAutoStatWords()` - Statistics by Phrase Clusters (type 8 campaigns)
 - `createAutoSetExcluded()` - Set/Remove Minus-Phrases (type 8 campaigns)
+- `getStatsKeywords()` / `updateAuctionBid()` - keyword stats & manual bidding (v0/v1)
 
-**Action Required:** Migrate to type 9 campaign methods before February 2, 2026.
+**Action Required:** Migrate to the v2 advert methods (e.g. `getAdvertsV2()`, `updateBids()`).
 
-📖 **[Complete Migration Guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)**
+📖 **[v4.0.0 Migration Guide](./docs/guides/migration-v4.md)**
 
 ---
 
@@ -429,16 +429,16 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 
 ## ⚠️ Критическое Обновление API
 
-**Уведомление об устаревании API Wildberries** - Четыре метода Promotion API будут **отключены 2 февраля 2026**:
+**Уведомление об устаревании API Wildberries** - Рекламный API v0/v1 был **отключён Wildberries 2 февраля 2026**, а соответствующие методы SDK **удалены в v4.0.0**:
 
-- `getAutoGetnmtoadd()` - Список карточек товаров (кампании type 8)
+- `getAuctionAdverts()` / `getPromotionAdverts()` - списки рекламных кампаний (v0/v1)
 - `createAutoUpdatenm()` - Обновление карточек товаров (кампании type 8)
-- `getAutoStatWords()` - Статистика по кластерам фраз (кампании type 8)
 - `createAutoSetExcluded()` - Установка/удаление минус-фраз (кампании type 8)
+- `getStatsKeywords()` / `updateAuctionBid()` - статистика по ключевым словам и ручные ставки (v0/v1)
 
-**Требуется действие:** Перейдите на методы кампаний type 9 до 2 февраля 2026.
+**Требуется действие:** Перейдите на методы v2 (например, `getAdvertsV2()`, `updateBids()`).
 
-📖 **[Полное Руководство по Миграции](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-v2.4-promotion-deprecation)**
+📖 **[Руководство по миграции v4.0.0](./docs/guides/migration-v4.md)**
 
 ---
 

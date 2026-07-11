@@ -143,22 +143,25 @@ async function getAllChats() {
     chatsResponse.result.forEach((chat, index) => {
       console.log(`Chat ${index + 1}:`);
       console.log(`  Chat ID: ${chat.chatID}`);
-      console.log(`  Customer: ${chat.clientName} (ID: ${chat.clientID})`);
+      console.log(`  Customer: ${chat.clientName}`);
       console.log(`  Reply Sign: ${chat.replySign.slice(0, 30)}...`);
 
       if (chat.goodCard) {
         console.log(`  Product: nmID ${chat.goodCard.nmID}`);
         console.log(`  Order: ${chat.goodCard.rid}`);
         console.log(`  Price: ${chat.goodCard.price} ${chat.goodCard.priceCurrency}`);
-        console.log(`  Status: ${chat.goodCard.statusID}`);
       }
 
       // NEW: Display last message (added in v2.3.2)
       if (chat.lastMessage) {
         const date = new Date(chat.lastMessage.addTimestamp!);
         const timeAgo = getTimeAgo(date);
-        console.log(`  Last Message: "${chat.lastMessage.text?.substring(0, 50)}${(chat.lastMessage.text?.length ?? 0) > 50 ? '...' : ''}"`);
-        console.log(`  Sent: ${date.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })} (${timeAgo})`);
+        console.log(
+          `  Last Message: "${chat.lastMessage.text?.substring(0, 50)}${(chat.lastMessage.text?.length ?? 0) > 50 ? '...' : ''}"`
+        );
+        console.log(
+          `  Sent: ${date.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })} (${timeAgo})`
+        );
       }
 
       console.log('');
@@ -433,7 +436,7 @@ async function filterEventsByChat() {
 
     // Filter events for this specific chat
     const chatEvents = eventsResponse.result.events.filter(
-      event => event.chatID === targetChatID
+      (event) => event.chatID === targetChatID
     );
 
     console.log(`Chat ID: ${targetChatID}`);
@@ -473,7 +476,9 @@ async function getOnlyCustomerMessages() {
     const eventsResponse = await sdk.communications.getEvents();
 
     // Filter for client messages only
-    const customerMessages = eventsResponse.result.events.filter(event => event.sender === 'client');
+    const customerMessages = eventsResponse.result.events.filter(
+      (event) => event.sender === 'client'
+    );
 
     console.log(`Total events: ${eventsResponse.result.events.length}`);
     console.log(`Customer messages: ${customerMessages.length}\n`);
@@ -575,7 +580,9 @@ async function answerProductQuestions() {
     // Display and answer questions
     for (const question of questionsResponse.data.questions.slice(0, 3)) {
       console.log(`Question ID: ${question.id}`);
-      console.log(`Product: ${question.productDetails.productName} (nmId: ${question.productDetails.nmId})`);
+      console.log(
+        `Product: ${question.productDetails.productName} (nmId: ${question.productDetails.nmId})`
+      );
       console.log(`Question: "${question.text}"`);
       console.log(`Created: ${question.createdDate}`);
       console.log(`Status: ${question.state}`);
@@ -677,7 +684,9 @@ async function rejectInappropriateQuestions() {
 
       if (hasInappropriateContent || question.isWarned) {
         console.log(`Rejecting question: "${question.text}"`);
-        console.log(`Reason: ${question.isWarned ? 'Marked as suspicious' : 'Inappropriate content'}`);
+        console.log(
+          `Reason: ${question.isWarned ? 'Marked as suspicious' : 'Inappropriate content'}`
+        );
 
         // Reject question (state='none', not visible to customers)
         await sdk.communications.answerQuestion(
@@ -918,8 +927,12 @@ async function analyzeReviewsWithMedia() {
     const withTags = reviews.filter((r) => r.bables && r.bables.length > 0);
 
     console.log(`Total reviews: ${reviews.length}`);
-    console.log(`With photos: ${withPhotos.length} (${((withPhotos.length / reviews.length) * 100).toFixed(1)}%)`);
-    console.log(`With videos: ${withVideos.length} (${((withVideos.length / reviews.length) * 100).toFixed(1)}%)`);
+    console.log(
+      `With photos: ${withPhotos.length} (${((withPhotos.length / reviews.length) * 100).toFixed(1)}%)`
+    );
+    console.log(
+      `With videos: ${withVideos.length} (${((withVideos.length / reviews.length) * 100).toFixed(1)}%)`
+    );
     console.log(`With tags: ${withTags.length}\n`);
 
     // Show reviews with media

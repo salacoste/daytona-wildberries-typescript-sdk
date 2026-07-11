@@ -61,9 +61,7 @@
  * ```
  *
  * **Related Examples:**
- * - promotion-campaign-automation.ts - Full campaign lifecycle
- * - promotion/story-9.4-bidding.ts - Advanced bidding strategies
- * - promotion/story-9.5-keywords.ts - Keyword management
+ * - promotion-campaign-automation.ts - Campaign automation workflow
  *
  * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/Poiskovye-klastery} - Official API Documentation
  */

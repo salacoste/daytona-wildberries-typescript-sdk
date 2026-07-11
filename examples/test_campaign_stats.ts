@@ -51,39 +51,42 @@ async function main() {
       const fullStats = await sdk.promotion.getAdvFullstats({
         ids: String(CAMPAIGN_ID),
         beginDate: formatDate(lastWeek),
-        endDate: formatDate(today)
+        endDate: formatDate(today),
       });
       console.log('   Response:', JSON.stringify(fullStats, null, 2).substring(0, 1000));
     } catch (e: any) {
       console.log(`   ⚠️ Error: ${e.message}`);
     }
 
-    // 3. Get keyword stats (max 7 days)
-    console.log('\n🔑 3. Keyword Statistics (Last 7 days):');
+    // 3. Daily stats breakdown (last 7 days)
+    // NOTE: per-keyword stats (getStatsKeywords) were removed in v4.0.0 — the
+    // WB v0/v1 keyword-stats endpoint was disabled 2026-02-02. Use getAdvFullstats
+    // (kept) for the per-day campaign breakdown instead.
+    console.log('\n🔑 3. Daily Stats Breakdown (Last 7 days):');
     console.log('-'.repeat(40));
     try {
       // API limit: max 7 days range
       const sevenDaysAgo = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
-      const keywordStats = await sdk.promotion.getStatsKeywords({
-        advert_id: CAMPAIGN_ID,
-        from: formatDate(sevenDaysAgo),
-        to: formatDate(today)
+      const dailyStats = await sdk.promotion.getAdvFullstats({
+        ids: String(CAMPAIGN_ID),
+        beginDate: formatDate(sevenDaysAgo),
+        endDate: formatDate(today),
       });
 
-      if (keywordStats.keywords && keywordStats.keywords.length > 0) {
-        keywordStats.keywords.forEach((day: any) => {
-          console.log(`\n   📅 ${day.date}:`);
-          if (day.stats && day.stats.length > 0) {
-            day.stats.slice(0, 5).forEach((s: any) => {
-              console.log(`      ${s.keyword}: ${s.views} views, ${s.clicks} clicks, CTR ${s.ctr}%`);
+      const days = Array.isArray(dailyStats) ? dailyStats : [];
+      if (days.length > 0) {
+        days.forEach((day: any) => {
+          console.log(`\n   📅 ${day.begin ?? day.date ?? 'N/A'}:`);
+          if (Array.isArray(day.days) && day.days.length > 0) {
+            day.days.slice(0, 5).forEach((d: any) => {
+              console.log(
+                `      views=${d.views ?? 0}, clicks=${d.clicks ?? 0}, spend=${d.sum ?? 0}₽`
+              );
             });
-            if (day.stats.length > 5) {
-              console.log(`      ... and ${day.stats.length - 5} more keywords`);
-            }
           }
         });
       } else {
-        console.log('   No keyword stats available');
+        console.log('   No daily stats available');
       }
     } catch (e: any) {
       console.log(`   ⚠️ Error: ${e.message}`);
@@ -92,21 +95,14 @@ async function main() {
       }
     }
 
-    // 4. Get stat words
-    console.log('\n📝 4. Stat Words:');
+    // 4. Per-phrase stat words
+    // NOTE: getStatWords() was removed in v4.0.0 — the WB v0/v1 phrase-stats
+    // endpoint was disabled 2026-02-02 with no v2 replacement. For aggregate
+    // campaign stats, use getAdvFullstats() (covered in sections 2 and 3).
+    console.log('\n📝 4. Per-Phrase Stat Words:');
     console.log('-'.repeat(40));
-    try {
-      const statWords = await sdk.promotion.getStatWords({ id: CAMPAIGN_ID });
-      console.log('   Words:', JSON.stringify(statWords.words, null, 2).substring(0, 500));
-      if (statWords.stat && statWords.stat.length > 0) {
-        console.log('\n   Stats (first 5):');
-        statWords.stat.slice(0, 5).forEach((s, i) => {
-          console.log(`   ${i + 1}. ${s.keyword}: views=${s.views}, clicks=${s.clicks}, ctr=${s.ctr}%, cpc=${s.cpc}`);
-        });
-      }
-    } catch (e: any) {
-      console.log(`   ⚠️ Error: ${e.message}`);
-    }
+    console.log('   (getStatWords was removed in v4.0.0 — no v2 replacement.)');
+    console.log('   Use getAdvFullstats() for aggregate campaign statistics.');
 
     // 5. Get campaign budget
     console.log('\n💰 5. Campaign Budget:');
@@ -126,7 +122,7 @@ async function main() {
     try {
       const upd = await sdk.promotion.getAdvUpd({
         from: formatDate(lastMonth),
-        to: formatDate(today)
+        to: formatDate(today),
       });
 
       // Filter for this campaign
@@ -148,7 +144,6 @@ async function main() {
 
     console.log('\n' + '='.repeat(60));
     console.log('✅ Test completed!');
-
   } catch (error: any) {
     console.error('\n❌ Fatal error:', error.message);
     if (error.response) {

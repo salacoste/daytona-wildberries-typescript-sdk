@@ -118,7 +118,7 @@ async function completeOrderWorkflow() {
 
     // Step 2: Confirm order and start assembly
     console.log('\n→ Confirming order...');
-    await sdk.inStorePickup.updateOrdersConfirm(order.id);
+    await sdk.inStorePickup.confirmBulk([order.id]);
     console.log('✓ Order confirmed and moved to assembly');
 
     // Step 3: Check if metadata is required
@@ -128,21 +128,25 @@ async function completeOrderWorkflow() {
       // Set SGTIN codes if required (Честный знак marking)
       if (order.requiredMeta.includes('sgtin')) {
         const sgtinCodes = ['01234567890123456789012345678'];
-        await sdk.inStorePickup.updateMetaSgtin(order.id, { sgtins: sgtinCodes });
+        await sdk.inStorePickup.setSgtinBulk({
+          orders: [{ orderId: order.id, sgtins: sgtinCodes }],
+        });
         console.log('✓ SGTIN codes set');
       }
 
       // Set IMEI if required (for electronics)
       if (order.requiredMeta.includes('imei')) {
         const imei = '123456789012345';
-        await sdk.inStorePickup.updateMetaImei(order.id, { imei });
+        await sdk.inStorePickup.setImeiBulk({
+          orders: [{ orderId: order.id, imei }],
+        });
         console.log('✓ IMEI code set');
       }
     }
 
     // Step 4: Complete assembly
     console.log('\n→ Marking order as prepared...');
-    await sdk.inStorePickup.updateOrdersPrepare(order.id);
+    await sdk.inStorePickup.prepareBulk([order.id]);
     console.log('✓ Order ready for pickup');
 
     // Step 5: Wait for customer arrival (simulated)
@@ -161,7 +165,7 @@ async function completeOrderWorkflow() {
 
       // Step 7: Hand over order
       console.log('\n→ Handing over order...');
-      await sdk.inStorePickup.updateOrdersReceive(order.id);
+      await sdk.inStorePickup.receiveBulk([order.id]);
       console.log('✓ Order completed successfully!');
     } else {
       console.log('✗ Customer verification failed');
@@ -221,13 +225,14 @@ async function metadataManagementWorkflow() {
   try {
     // Step 1: Get current metadata
     console.log('→ Fetching order metadata...');
-    const metadata = await sdk.inStorePickup.getOrdersMeta(orderId);
+    const metadata = await sdk.inStorePickup.getMetaBulk({ ordersIds: [orderId] });
+    const meta = metadata.orders?.[0];
 
     console.log('\nCurrent metadata:');
-    console.log(`  SGTIN codes: ${metadata.meta?.sgtin?.value?.length ?? 0} items`);
-    console.log(`  UIN codes: ${metadata.meta?.uin?.value ? 1 : 0} items`);
-    console.log(`  IMEI codes: ${metadata.meta?.imei?.value ? 1 : 0} items`);
-    console.log(`  GTIN codes: ${metadata.meta?.gtin?.value ? 1 : 0} items`);
+    console.log(`  SGTIN codes: ${meta?.sgtin?.length ?? 0} items`);
+    console.log(`  UIN codes: ${meta?.uin ? 1 : 0} items`);
+    console.log(`  IMEI codes: ${meta?.imei ? 1 : 0} items`);
+    console.log(`  GTIN codes: ${meta?.gtin ? 1 : 0} items`);
 
     // Step 2: Set SGTIN codes (Честный знак) for regulated products
     console.log('\n→ Setting SGTIN codes...');
@@ -235,38 +240,41 @@ async function metadataManagementWorkflow() {
       '01234567890123456789012345678', // 29-digit SGTIN code
       '01234567890123456789012345679',
     ];
-    await sdk.inStorePickup.updateMetaSgtin(orderId, { sgtins: sgtinCodes });
+    await sdk.inStorePickup.setSgtinBulk({
+      orders: [{ orderId, sgtins: sgtinCodes }],
+    });
     console.log('✓ SGTIN codes updated');
 
     // Step 3: Set UIN code for pharmaceutical products
     console.log('\n→ Setting UIN code...');
     const uin = 'UIN123456789ABCD';
-    await sdk.inStorePickup.updateMetaUin(orderId, { uin });
+    await sdk.inStorePickup.setUinBulk({ orders: [{ orderId, uin }] });
     console.log('✓ UIN code set');
 
     // Step 4: Set IMEI for electronics
     console.log('\n→ Setting IMEI code...');
     const imei = '123456789012345'; // 15-digit IMEI
-    await sdk.inStorePickup.updateMetaImei(orderId, { imei });
+    await sdk.inStorePickup.setImeiBulk({ orders: [{ orderId, imei }] });
     console.log('✓ IMEI code set');
 
     // Step 5: Set GTIN code
     console.log('\n→ Setting GTIN code...');
     const gtin = '12345678901234'; // 14-digit GTIN
-    await sdk.inStorePickup.updateMetaGtin(orderId, { gtin });
+    await sdk.inStorePickup.setGtinBulk({ orders: [{ orderId, gtin }] });
     console.log('✓ GTIN code set');
 
     // Step 6: Verify updated metadata
-    const updatedMetadata = await sdk.inStorePickup.getOrdersMeta(orderId);
+    const updatedMetadata = await sdk.inStorePickup.getMetaBulk({ ordersIds: [orderId] });
+    const updatedMeta = updatedMetadata.orders?.[0];
     console.log('\n✓ All metadata updated successfully');
-    console.log(`  SGTIN: ${updatedMetadata.meta?.sgtin?.value?.length ?? 0} codes`);
-    console.log(`  UIN: ${updatedMetadata.meta?.uin?.value ? 1 : 0} codes`);
-    console.log(`  IMEI: ${updatedMetadata.meta?.imei?.value ? 1 : 0} codes`);
-    console.log(`  GTIN: ${updatedMetadata.meta?.gtin?.value ? 1 : 0} codes`);
+    console.log(`  SGTIN: ${updatedMeta?.sgtin?.length ?? 0} codes`);
+    console.log(`  UIN: ${updatedMeta?.uin ? 1 : 0} codes`);
+    console.log(`  IMEI: ${updatedMeta?.imei ? 1 : 0} codes`);
+    console.log(`  GTIN: ${updatedMeta?.gtin ? 1 : 0} codes`);
 
     // Step 7: Delete metadata if needed (before assembly completion)
     console.log('\n→ Deleting SGTIN codes...');
-    await sdk.inStorePickup.deleteOrdersMeta(orderId, { key: 'sgtin' });
+    await sdk.inStorePickup.deleteMetaBulk({ ordersIds: [orderId], key: 'sgtin' });
     console.log('✓ SGTIN codes deleted');
   } catch (error) {
     console.error('Error managing metadata:', error);
@@ -302,11 +310,11 @@ async function orderStatusTracking() {
       const orderIds = ordersResponse.orders.slice(0, 5).map((o) => o.id);
       console.log(`\n→ Getting status for ${orderIds.length} orders...`);
 
-      const statuses = await sdk.inStorePickup.createOrdersStatus({ orders: orderIds });
+      const statuses = await sdk.inStorePickup.getStatusesBulk(orderIds);
 
       console.log('\nOrder statuses:');
       statuses.orders?.forEach((status) => {
-        console.log(`\nOrder ${status.id}:`);
+        console.log(`\nOrder ${status.orderId}:`);
         console.log(`  Supplier Status: ${status.supplierStatus}`);
         console.log(`  WB Status: ${status.wbStatus}`);
       });
@@ -340,13 +348,13 @@ async function orderRejectionWorkflow() {
 
     // Scenario A: Reject order after assembly (customer didn't come)
     console.log('→ Rejecting order (customer no-show)...');
-    await sdk.inStorePickup.updateOrdersReject(orderId);
+    await sdk.inStorePickup.rejectBulk([orderId]);
     console.log('✓ Order rejected');
 
     // Scenario B: Cancel order before assembly
     const anotherOrderId = 67890;
     console.log('\n→ Cancelling order (supplier cannot fulfill)...');
-    await sdk.inStorePickup.updateOrdersCancel(anotherOrderId);
+    await sdk.inStorePickup.cancelBulk([anotherOrderId]);
     console.log('✓ Order cancelled');
   } catch (error) {
     console.error('Error in rejection workflow:', error);
@@ -374,7 +382,7 @@ async function errorHandlingExamples() {
     // Example 1: Handle invalid state transition
     try {
       // Trying to prepare order without confirming first
-      await sdk.inStorePickup.updateOrdersPrepare(orderId);
+      await sdk.inStorePickup.prepareBulk([orderId]);
     } catch (error) {
       if (error instanceof InvalidOrderStateError) {
         console.log('✗ Invalid state transition');
@@ -383,7 +391,7 @@ async function errorHandlingExamples() {
         console.log(`  Recovery: ${error.getUserMessage()}`);
 
         // Recovery: Get current status and follow correct flow
-        const statuses = await sdk.inStorePickup.createOrdersStatus({ orders: [orderId] });
+        const statuses = await sdk.inStorePickup.getStatusesBulk([orderId]);
         const currentState = statuses.orders[0]?.supplierStatus;
         console.log(`\n→ Current state is: ${currentState}`);
         console.log('→ Following correct flow: new → confirm → prepare → receive');
@@ -392,7 +400,7 @@ async function errorHandlingExamples() {
 
     // Example 2: Handle order not found
     try {
-      await sdk.inStorePickup.updateOrdersConfirm(99999);
+      await sdk.inStorePickup.confirmBulk([99999]);
     } catch (error) {
       if (error instanceof PickupOrderNotFoundError) {
         console.log('\n✗ Order not found');
@@ -418,7 +426,9 @@ async function errorHandlingExamples() {
 
     // Example 4: Handle metadata validation error
     try {
-      await sdk.inStorePickup.updateMetaSgtin(12345, { sgtins: ['invalid-code'] });
+      await sdk.inStorePickup.setSgtinBulk({
+        orders: [{ orderId: 12345, sgtins: ['invalid-code'] }],
+      });
     } catch (error) {
       if (error instanceof MetadataValidationError) {
         console.log('\n✗ Metadata validation failed');
