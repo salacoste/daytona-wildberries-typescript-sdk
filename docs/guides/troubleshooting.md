@@ -68,9 +68,9 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 | Get category attributes | `sdk.products.getObjectCharc(subjectId)` | Required/optional fields |
 | Upload media file | `sdk.products.createMediaFile()` | Initiate media upload |
 | Save media | `sdk.products.createMediaSave({ nmId, data })` | Save uploaded media |
-| Get stock | `sdk.products.getStocks(warehouseId, { skus })` | Get stock for SKUs |
-| Update stock | `sdk.products.updateStock(warehouseId, { stocks })` | Update stock levels |
-| Delete stock | `sdk.products.deleteStock(warehouseId, { skus })` | Remove stock entries |
+| Get stock | `sdk.products.getStocks(warehouseId, { chrtIds })` | Get stock by size IDs (`chrtId`) |
+| Update stock | `sdk.products.updateStock(warehouseId, { stocks })` | Update stock levels (set `chrtId` per item) |
+| Delete stock | `sdk.products.deleteStock(warehouseId, { chrtIds })` | Remove stock entries by size IDs |
 | Get warehouses | `sdk.products.warehouses()` | List seller warehouses |
 | Get offices | `sdk.products.offices()` | List available offices |
 | Get cards limits | `sdk.products.getCardsLimits()` | Check card creation limits |
@@ -105,7 +105,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
 | Get account balance | `sdk.finances.getAccountBalance()` | Current balance |
-| Get report by period | `sdk.finances.getSupplierReportdetailbyperiod({ dateFrom, dateTo, limit?, rrdid?, period? })` | Detailed report |
+| Get report by period | `sdk.finances.getSalesReportsDetailed({ dateFrom, dateTo, limit?, rrdId?, period? })` | Detailed sales report (v1; money fields are strings — use `parseMoneyAmount`) |
 | Get document categories | `sdk.finances.getDocumentsCategories({ locale? })` | List document categories |
 | List documents | `sdk.finances.getDocumentsList({ locale?, beginTime?, endTime?, ... })` | Invoices, reports |
 | Download document | `sdk.finances.getDocumentsDownload({ serviceName, extension })` | Get PDF/Excel |
@@ -113,7 +113,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 ### Analytics
 
-> **v2.7.0 Migration Note**: The Sales Funnel methods below use the v3 API. The old v2 methods (`createNmReportDetail`, `createDetailHistory`, `createGroupedHistory`) still work as deprecated wrappers but will be removed in a future version. See the [Analytics v3 Migration Guide](./migration-v2.7-analytics-v3.md) for details.
+> **v4.0.0 Migration Note**: The Sales Funnel methods below use the v3 API. The old v2 methods (`createNmReportDetail`, `createDetailHistory`, `createGroupedHistory`) were **removed in v4.0.0**. See the [Analytics v3 Migration Guide](./migration-v2.7-analytics-v3.md) for details.
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
@@ -171,18 +171,15 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 
 | Operation | Actual SDK Method | Notes |
 |-----------|-------------------|-------|
-| Get promotion count | `sdk.promotion.getPromotionCount()` | Active campaigns summary |
-| Create ad campaign | `sdk.promotion.createPromotionAdvert(data)` | New ad campaign |
-| Get auction adverts | `sdk.promotion.getAuctionAdverts({ type? })` | Auction campaigns |
+| Get promotion count | `sdk.promotion.getCampaignCount()` | Active campaigns summary |
+| List campaigns | `sdk.promotion.getAdvertsV2({ statuses?, payment_type? })` | V2 campaign list (replaces `getAuctionAdverts`) |
+| Create ad campaign | `sdk.promotion.createCampaign(data)` | New ad campaign (replaces `createPromotionAdvert`) |
 | Get adv balance | `sdk.promotion.getAdvBalance()` | Advertising balance |
 | Get adv budget | `sdk.promotion.getAdvBudget(advertId)` | Campaign budget |
-| Deposit budget | `sdk.promotion.createAdvBudgetDeposit(advertId, data)` | Add funds to campaign |
-| Pause advert | `sdk.promotion.getAdvAdvertStoppar(advertId)` | Pause campaign |
-| Start advert | `sdk.promotion.getAdvAdvertStart(advertId)` | Resume campaign |
-| Get full stats | `sdk.promotion.createFullstat(data)` | Full statistics |
-| Get full stats by subject | `sdk.promotion.createFullstatBySubjects(data)` | Stats by subject |
-| Get campaign words | `sdk.promotion.getAdvWords(advertId)` | Campaign keywords |
-| Update campaign words | `sdk.promotion.createAdvWords(advertId, data)` | Set keywords |
+| Deposit budget | `sdk.promotion.createBudgetDeposit(data, { id })` | Add funds to campaign |
+| Start campaign | `sdk.promotion.startCampaign(id)` | Start/resume campaign |
+| Pause campaign | `sdk.promotion.pauseCampaign(id)` | Pause campaign |
+| Get full stats | `sdk.promotion.getAdvFullstats({ ids, beginDate, endDate })` | Full statistics |
 
 ### Tariffs
 
@@ -208,8 +205,7 @@ Quick lookup table for common operations and their actual SDK methods. Copy thes
 const cards = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
 const orders = await sdk.ordersFBS.orders({ limit: 100, next: 0, dateFrom: timestamp });
 const balance = await sdk.finances.getAccountBalance();
-const report = await sdk.analytics.getSalesFunnelProducts({ ... }); // v3 (recommended)
-// or: sdk.analytics.createNmReportDetail({ ... }); // v2 deprecated wrapper (still works)
+const report = await sdk.analytics.getSalesFunnelProducts({ ... }); // v3 (the v2 createNmReportDetail wrapper was removed in v4.0.0)
 
 // ❌ WRONG - These methods DO NOT exist
 const products = await sdk.products.listProducts();     // TypeError: listProducts is not a function

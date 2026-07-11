@@ -87,13 +87,16 @@ console.log(`⚠️  Type 8 campaigns to migrate: ${type8.length}`);
 
 **2. Update Your Code** (10-30 min):
 ```typescript
-// ❌ OLD (Type 8)
+// ❌ OLD (Type 8) — removed in v4.0.0
 const products = await sdk.promotion.getAutoGetnmtoadd({ id: campaignId });
 
-// ✅ NEW (Type 9)
-const campaigns = await sdk.promotion.getAuctionAdverts({ id: [campaignId] });
-const products = campaigns.adverts?.[0]?.nms || [];
+// ✅ Type 9 campaigns — fetch via the v2 advert API (the v0/v1 methods
+//    shown in earlier migration guides were removed in v4.0.0)
+const campaigns = await sdk.promotion.getAdvertsV2({ ids: String(campaignId) });
+const products = campaigns.adverts?.[0]?.nm_settings || [];
 ```
+
+> **v4.0.0 note**: the v0/v1 advert methods (`getAuctionAdverts`, `getAutoGetnmtoadd`, etc.) have been removed. See [docs/guides/migration-v4.md](/guides/migration-v4) for the full replacement table.
 
 **3. Test & Deploy** (15 min)
 

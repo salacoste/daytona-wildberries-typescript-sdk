@@ -13,7 +13,7 @@ This guide explains how to detect your Wildberries Jam subscription tier using t
 - [What is Jam?](#what-is-jam)
 - [Why Detection Matters](#why-detection-matters)
 - [Direct API (Recommended)](#direct-api-recommended)
-- [Probe-Based Detection (Legacy)](#probe-based-detection-legacy)
+- [Probe-Based Detection (Removed in v4.0.0)](#probe-based-detection-removed-in-v4-0-0)
 - [Usage Examples](#usage-examples)
 - [Rate Limits](#rate-limits)
 - [Error Handling](#error-handling)
@@ -138,13 +138,13 @@ const report = await sdk.analytics.createProductSearchText({
 console.log(`Retrieved ${report.data?.length ?? 0} search texts`);
 ```
 
-## Probe-Based Detection (Legacy)
+## Probe-Based Detection (Removed in v4.0.0)
 
-::: warning Legacy Method
-`getJamSubscriptionStatus()` is deprecated in favor of `getJamSubscription()`. Use this method only as a fallback when you do not have a Service token (e.g., when using a Personal token that lacks access to the subscriptions endpoint).
+::: danger Removed in v4.0.0
+The probe-based `getJamSubscriptionStatus()` method and its types (`JamSubscriptionStatus`, `JamSubscriptionTier`, `GetJamSubscriptionStatusParams`) were **removed in v4.0.0**. Use the direct API `getJamSubscription()` exclusively — it does not consume analytics quota and does not require product IDs. The section below is retained for historical context only.
 :::
 
-The probe method determines the subscription tier by making up to two targeted requests to the analytics search-text endpoint. It does not require a Service token but consumes analytics rate limit quota.
+The probe method determined the subscription tier by making up to two targeted requests to the analytics search-text endpoint. It did not require a Service token but consumed analytics rate limit quota.
 
 ### How It Works
 
@@ -239,28 +239,18 @@ switch (status.tier) {
 
 ### Choosing Between Direct API and Probe
 
-```typescript
-import { WildberriesSDK, AuthenticationError } from 'daytona-wildberries-typescript-sdk';
+> The probe fallback was removed in v4.0.0. The direct API (`getJamSubscription()`) is now the only supported path and requires a Service token. If you only have a Personal token without access to the subscriptions endpoint, request a Service token from the WB seller portal.
 
-async function detectJamTier(sdk: WildberriesSDK, productIds: number[]) {
-  // Try direct API first (requires Service token)
-  try {
-    const jam = await sdk.general.getJamSubscription();
-    if (jam.state === 'active') {
-      return jam.level === 'premium' ? 'advanced' : 'standard';
-    }
-    return 'none';
-  } catch (error) {
-    if (error instanceof AuthenticationError) {
-      // Likely not a Service token -- fall back to probe
-      console.warn('Direct API requires Service token. Falling back to probe.');
-      const status = await sdk.general.getJamSubscriptionStatus({
-        nmIds: productIds,
-      });
-      return status.tier;
-    }
-    throw error;
+```typescript
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
+
+async function detectJamTier(sdk: WildberriesSDK) {
+  // Direct API only (requires Service token)
+  const jam = await sdk.general.getJamSubscription();
+  if (jam.state === 'active') {
+    return jam.level === 'premium' ? 'advanced' : 'standard';
   }
+  return 'none';
 }
 ```
 
@@ -320,20 +310,9 @@ class MyApp {
 | Burst limit | 10 |
 | Calls per detection | 1 |
 
-### Probe Method (getJamSubscriptionStatus)
+### Probe Method (removed in v4.0.0)
 
-The probe method calls `POST /api/v2/search-report/product/search-texts` under the hood. It shares the same rate limit quota as `sdk.analytics.createProductSearchText()`:
-
-| Parameter | Value |
-|-----------|-------|
-| Requests per minute | 3 |
-| Interval | 20 seconds |
-| Burst limit | 3 |
-| Probe calls per detection | 1-2 |
-
-::: warning Rate Limit Impact
-The probe method consumes 1-2 requests from the analytics search-text quota. The direct API has its own separate quota. Prefer the direct API when possible.
-:::
+The probe-based `getJamSubscriptionStatus()` was removed in v4.0.0. It previously called `POST /api/v2/search-report/product/search-texts` under the hood and shared the rate limit quota with `sdk.analytics.createProductSearchText()`. Use the direct API (`getJamSubscription()`) instead — it has its own separate quota and does not consume analytics budget.
 
 ## Error Handling
 
@@ -364,54 +343,28 @@ async function detectJamDirect(sdk: WildberriesSDK) {
   }
 }
 
-// Probe method
-async function detectJamProbe(sdk: WildberriesSDK, nmIds: number[]) {
-  try {
-    return await sdk.general.getJamSubscriptionStatus({ nmIds });
-  } catch (error) {
-    if (error instanceof ValidationError) {
-      // nmIds array is empty or invalid
-      console.error('Invalid parameters:', error.message);
-    } else if (error instanceof AuthenticationError) {
-      console.error('Authentication failed:', error.message);
-    } else if (error instanceof RateLimitError) {
-      console.error(`Rate limited. Retry after ${error.retryAfter}ms`);
-    } else if (error instanceof NetworkError) {
-      console.error('Network error:', error.message);
-    } else if (error instanceof WBAPIError) {
-      // 403: nmIds do not belong to your seller account
-      console.error(`API error ${error.statusCode}: ${error.message}`);
-    }
-    throw error;
-  }
-}
+// Probe method — REMOVED in v4.0.0
+// The probe-based getJamSubscriptionStatus() was removed. Use the direct API above.
 ```
+
+> The probe method (`getJamSubscriptionStatus()`) was removed in v4.0.0. There is no longer a probe fallback — use `getJamSubscription()` directly.
 
 ## Best Practices
 
-### 1. Prefer the Direct API
+### 1. Use the Direct API
 
-Use `getJamSubscription()` whenever you have a Service token. It returns richer data, does not consume analytics quota, and does not require product IDs:
+Use `getJamSubscription()` with a Service token. It returns richer data, does not consume analytics quota, and does not require product IDs:
 
 ```typescript
-// Preferred: direct API with Service token
+// Direct API with Service token (the only supported method since v4.0.0)
 const jam = await sdk.general.getJamSubscription();
-
-// Fallback: probe with any token (requires product IDs)
-const status = await sdk.general.getJamSubscriptionStatus({
-  nmIds: [yourProductId],
-});
 ```
 
 ### 2. Cache Detection Results
 
 Jam subscription tiers do not change frequently. Check once at application startup or once per hour, not on every analytics request.
 
-### 3. Use Valid Product IDs (Probe Only)
-
-When using the probe method, the `nmIds` parameter must contain product IDs that belong to your seller account. Using IDs from other sellers or non-existent IDs will result in a 403 Forbidden error.
-
-### 4. Handle the "None" / Inactive State Gracefully
+### 3. Handle the "None" / Inactive State Gracefully
 
 If the seller has no Jam subscription, search-text analytics endpoints are unavailable. Design your application to degrade gracefully:
 

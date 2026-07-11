@@ -368,7 +368,7 @@ The Wildberries Jam subscription directly affects the `createProductSearchText()
 
 ### Detecting Your Tier
 
-Use `sdk.general.getJamSubscriptionStatus()` to determine your tier programmatically:
+Use `sdk.general.getJamSubscription()` to determine your tier programmatically (the probe-based `getJamSubscriptionStatus()` was removed in v4.0.0 — see the [Jam subscription guide](/guides/jam-subscription)):
 
 ```typescript
 import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
@@ -376,15 +376,14 @@ import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 
 async function getSearchTextsWithCorrectLimit(nmIds: number[]) {
-  // Step 1: Detect Jam tier
-  const jamStatus = await sdk.general.getJamSubscriptionStatus({
-    nmIds,
-  });
+  // Step 1: Detect Jam tier via the direct subscription API
+  const jam = await sdk.general.getJamSubscription();
+  const isActive = jam.state === 'active';
 
-  console.log(`Jam tier: ${jamStatus.tier}`);
+  console.log(`Jam active: ${isActive}, level: ${jam.level ?? 'n/a'}`);
 
-  // Step 2: Handle "none" tier
-  if (jamStatus.tier === 'none') {
+  // Step 2: Handle inactive / no subscription
+  if (!isActive) {
     console.warn(
       'Jam subscription required for search-text analytics. ' +
       'Falling back to group-level report.'
@@ -393,8 +392,8 @@ async function getSearchTextsWithCorrectLimit(nmIds: number[]) {
     return null;
   }
 
-  // Step 3: Set limit based on tier
-  const limit = jamStatus.tier === 'advanced' ? 50 : 30;
+  // Step 3: Set limit based on level (premium → 50, otherwise → 30)
+  const limit = jam.level === 'premium' ? 50 : 30;
 
   // Step 4: Fetch search texts
   const searchTexts = await sdk.analytics.createProductSearchText({
@@ -503,16 +502,14 @@ const PRODUCT_ID = 123456789;
 
 async function analyzeProductSEO() {
   // 1. Detect Jam tier and set correct limit
-  const jamStatus = await sdk.general.getJamSubscriptionStatus({
-    nmIds: [PRODUCT_ID],
-  });
+  const jam = await sdk.general.getJamSubscription();
 
-  if (jamStatus.tier === 'none') {
+  if (jam.state !== 'active') {
     console.error('Jam subscription required for search text analysis');
     return;
   }
 
-  const limit = jamStatus.tier === 'advanced' ? 50 : 30;
+  const limit = jam.level === 'premium' ? 50 : 30;
 
   // 2. Get top search queries by card opens
   const byOpens = await sdk.analytics.createProductSearchText({
@@ -652,16 +649,14 @@ async function findLowConversionQueries() {
   const PRODUCT_ID = 123456789;
 
   // Check Jam tier
-  const jamStatus = await sdk.general.getJamSubscriptionStatus({
-    nmIds: [PRODUCT_ID],
-  });
+  const jam = await sdk.general.getJamSubscription();
 
-  if (jamStatus.tier === 'none') {
+  if (jam.state !== 'active') {
     console.error('Jam subscription required');
     return;
   }
 
-  const limit = jamStatus.tier === 'advanced' ? 50 : 30;
+  const limit = jam.level === 'premium' ? 50 : 30;
 
   // Get top queries by card opens (traffic)
   const trafficQueries = await sdk.analytics.createProductSearchText({

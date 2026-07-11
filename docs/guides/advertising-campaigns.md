@@ -26,12 +26,12 @@ SDK предоставляет полный доступ к рекламным �
 
 | Функция | Описание | Ключевые методы |
 |---------|----------|-----------------|
-| **Кампании** | Создание, запуск, пауза, остановка | `getAdvertsV2()`, `getAdvStart()`, `getAdvPause()` |
-| **Ставки** | Управление ставками по товарам | `updateBidsV2()`, `getBidsMinV2()` |
+| **Кампании** | Создание, запуск, пауза, остановка | `getAdvertsV2()`, `startCampaign()`, `pauseCampaign()` |
+| **Ставки** | Управление ставками по товарам | `updateBids()`, `getBidsMinV2()` |
 | **Поисковые кластеры** | Таргетинг по ключевым фразам | `getNormqueryStats()`, `setNormqueryBids()` |
 | **Минус-фразы** | Исключение нежелательных запросов | `getNormqueryMinus()`, `setNormqueryMinus()` |
 | **Финансы** | Баланс, бюджеты, пополнения | `getAdvBalance()`, `getAdvBudget()` |
-| **Статистика** | Аналитика эффективности | `getAdvFullstats()`, `getStatsKeywords()` |
+| **Статистика** | Аналитика эффективности | `getAdvFullstats()` |
 | **Акции** | Участие в акциях WB | `getCalendarPromotions()` |
 
 ### Типы кампаний
@@ -101,10 +101,11 @@ for (const campaign of campaigns.adverts ?? []) {
 
 ```typescript
 // Создать кампанию с ручной ставкой
-const campaignId = await sdk.promotion.createSeacatSaveAd({
+const campaignId = await sdk.promotion.createCampaign({
   name: 'Зимняя коллекция 2024',
   nms: [168120815, 173574852],      // Артикулы WB (до 50 шт)
   bid_type: 'manual',                // manual или unified
+  payment_type: 'cpm',
   placement_types: ['search', 'recommendations']
 });
 
@@ -117,10 +118,10 @@ console.log(`Создана кампания: ${campaignId}`);
 const campaignId = 12345;
 
 // Запустить кампанию (из статуса 4 или 11)
-await sdk.promotion.getAdvStart({ id: campaignId });
+await sdk.promotion.startCampaign(campaignId);
 
 // Поставить на паузу (из статуса 9)
-await sdk.promotion.getAdvPause({ id: campaignId });
+await sdk.promotion.pauseCampaign(campaignId);
 
 // Завершить кампанию
 await sdk.promotion.getAdvStop({ id: campaignId });
@@ -183,12 +184,12 @@ for (const item of minBids.bids) {
 
 ```typescript
 // Изменить ставки в кампаниях (в копейках)
-const result = await sdk.promotion.updateAuctionBid({
+const result = await sdk.promotion.updateBids({
   bids: [{
     advert_id: 12345,
     nm_bids: [
-      { nm_id: 168120815, bid: 15000, placement: 'search' },        // 150₽
-      { nm_id: 173574852, bid: 10000, placement: 'recommendations' } // 100₽
+      { nm_id: 168120815, bid_kopecks: 15000, placement: 'search' },        // 150₽
+      { nm_id: 173574852, bid_kopecks: 10000, placement: 'recommendations' } // 100₽
     ]
   }]
 });
@@ -427,17 +428,19 @@ for (const campaign of stats.adverts ?? []) {
 
 ### Статистика по ключевым фразам
 
+> Метод `getStatsKeywords()` **удалён в v4.0.0**. Используйте `getAdvFullstats()` — он возвращает данные по дням, платформам и SKU (включая показы, клики, CTR и расход).
+
 ```typescript
-const keywordStats = await sdk.promotion.getStatsKeywords({
-  advert_id: 12345,
-  from: '2025-01-01',
-  to: '2025-01-07'
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: '12345',
+  beginDate: '2025-01-01',
+  endDate: '2025-01-07'
 });
 
-for (const day of keywordStats.days ?? []) {
-  console.log(`\n${day.date}:`);
-  for (const kw of day.keywords ?? []) {
-    console.log(`  "${kw.keyword}": ${kw.views} показов, ${kw.clicks} кликов`);
+for (const campaign of stats) {
+  console.log(`Кампания ${campaign.advertId}: ${campaign.views} показов, ${campaign.clicks} кликов`);
+  for (const day of campaign.days ?? []) {
+    console.log(`  ${day.date}: показы=${day.views}, клики=${day.clicks}`);
   }
 }
 ```
@@ -556,12 +559,12 @@ const mediaStats = await sdk.promotion.createAdvStat([
 |-------|-------|----------|
 | **Кампании** | | |
 | `getAdvertsV2()` | 300 req/min | 200 мс |
-| `getAdvStart()`, `getAdvPause()`, `getAdvStop()` | 300 req/min | 200 мс |
-| `createSeacatSaveAd()` | 5 req/min | 12 сек |
+| `startCampaign()`, `pauseCampaign()`, `getAdvStop()` | 300 req/min | 200 мс |
+| `createCampaign()` | 5 req/min | 12 сек |
 | `getAdvDelete()` | 300 req/min | 200 мс |
 | **Ставки** | | |
 | `getBidsMinV2()` | 20 req/min | 3 сек |
-| `updateAuctionBid()` | 300 req/min | 200 мс |
+| `updateBids()` | 300 req/min | 200 мс |
 | `updateAuctionPlacement()` | 60 req/min | 1 сек |
 | **Поисковые кластеры** | | |
 | `getNormqueryStats()` | 10 req/min | 6 сек |
@@ -576,7 +579,6 @@ const mediaStats = await sdk.promotion.createAdvStat([
 | `getAdvUpd()`, `getAdvPayments()` | 60 req/min | 1 сек |
 | **Статистика** | | |
 | `getAdvFullstats()` | 3 req/min | 20 сек |
-| `getStatsKeywords()` | 240 req/min | 250 мс |
 | **Акции** | | |
 | `getCalendarPromotions()` | 100 req/min | 600 мс |
 | **Медиа** | | |
@@ -593,9 +595,11 @@ const mediaStats = await sdk.promotion.createAdvStat([
 // ✅ Правильно: V2 методы
 const campaigns = await sdk.promotion.getAdvertsV2({ statuses: '9' });
 const minBids = await sdk.promotion.getBidsMinV2({ ... });
+await sdk.promotion.updateBids({ ... });
 
-// ❌ Устарело: V0/V1 методы (отключение 02.02.2026)
-const old = await sdk.promotion.getAuctionAdverts({ ... }); // deprecated
+// ❌ Удалено в v4.0.0: V0/V1 методы
+// const old = await sdk.promotion.getAuctionAdverts({ ... });
+// await sdk.promotion.updateBidsV2({ ... });
 ```
 
 ### 2. Проверяйте баланс перед запуском
@@ -615,7 +619,7 @@ async function safeLaunchCampaign(campaignId: number) {
   }
 
   // Запустить
-  await sdk.promotion.getAdvStart({ id: campaignId });
+  await sdk.promotion.startCampaign(campaignId);
 }
 ```
 
@@ -627,7 +631,7 @@ import { RateLimitError } from 'daytona-wildberries-typescript-sdk';
 async function updateBidsWithRetry(data: any, maxRetries = 3) {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      return await sdk.promotion.updateAuctionBid(data);
+      return await sdk.promotion.updateBids(data);
     } catch (error) {
       if (error instanceof RateLimitError && attempt < maxRetries - 1) {
         const delay = error.retryAfter || 1000;

@@ -296,34 +296,29 @@ The response includes a nested breakdown: `days[] -> apps[] -> nms[]`
 
 This allows drill-down from campaign totals to individual product performance per platform per day.
 
-### Keyword Performance: getStatsKeywords()
+### Keyword & SKU Performance: getAdvFullstats()
 
-Returns keyword-level statistics for advertising campaigns.
+> The standalone `getStatsKeywords()`, `getStatWords()`, and `getAutoStatWords()` methods were **removed in v4.0.0**. Use `getAdvFullstats()` for all advertising performance data — it returns per-day, per-platform, and per-SKU breakdowns.
 
-**Rate limit**: 240 requests/minute
+**Rate limit**: 3 requests/minute, 20s interval
 
 ```typescript
-const kwStats = await sdk.promotion.getStatsKeywords({
-  advert_id: 24483511,
-  from: '2026-01-01',
-  to: '2026-01-07'
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: '24483511',
+  beginDate: '2026-01-01',
+  endDate: '2026-01-07'
 });
-```
 
-### Manual and Unified Bid Statistics
-
-- **`getStatWords()`** -- keyword phrase statistics for campaigns with manual bids (240 req/min)
-- **`getAutoStatWords()`** -- cluster phrase statistics for campaigns with unified bids (240 req/min)
-
-```typescript
-// Manual bid campaign keywords
-const manualStats = await sdk.promotion.getStatWords({ id: 24483511 });
-console.log('Keywords:', manualStats.words?.keywords);
-console.log('Stats:', manualStats.stat);
-
-// Unified bid campaign clusters
-const autoStats = await sdk.promotion.getAutoStatWords({ id: 24483511 });
-console.log('Clusters:', autoStats.clusters);
+// SKU-level aggregation across days and platforms
+for (const campaign of stats) {
+  for (const day of campaign.days ?? []) {
+    for (const app of day.apps ?? []) {
+      for (const nm of app.nms ?? []) {
+        console.log(`SKU ${nm.nmId}: ${nm.views} views, ${nm.clicks} clicks, ${nm.orders} orders`);
+      }
+    }
+  }
+}
 ```
 
 ---
@@ -340,9 +335,9 @@ This is the most valuable analytical pattern -- combining organic funnel data fr
 │   (Organic Funnel)   │     │   (Advertising)      │
 │                      │     │                      │
 │  getSalesFunnel      │     │  getAdvFullstats()   │
-│  Products()          │     │  getStatsKeywords()  │
-│  ProductsHistory()   │     │  getStatWords()      │
-│  GroupedHistory()    │     │  getAutoStatWords()  │
+│  Products()          │     │  (universal stats)   │
+│  ProductsHistory()   │     │                      │
+│  GroupedHistory()    │     │                      │
 └──────────┬───────────┘     └──────────┬───────────┘
            │                            │
            │      nmId (common key)     │
@@ -383,7 +378,7 @@ async function crossChannelAnalysis(
   });
 
   // Step 2: Get advertising campaign IDs
-  const campaigns = await sdk.promotion.getPromotionCount();
+  const campaigns = await sdk.promotion.getCampaignCount();
   const campaignIds = campaigns.adverts
     ?.flatMap(g => g.advert_list?.map(a => a.advertId) ?? [])
     .filter((id): id is number => id !== undefined);
@@ -833,9 +828,10 @@ function checkStockHealth(products: Array<{ product: any; statistic: any }>) {
 | `getSalesFunnelProductsHistory()` | Analytics | 3 req/min | 20s between requests |
 | `getSalesFunnelGroupedHistory()` | Analytics | 3 req/min | 20s between requests |
 | `getAdvFullstats()` | Promotion | 3 req/min | 20s between requests |
-| `getStatsKeywords()` | Promotion | 240 req/min | No mandatory interval |
-| `getStatWords()` | Promotion | 240 req/min | No mandatory interval |
-| `getAutoStatWords()` | Promotion | 240 req/min | No mandatory interval |
+
+::: warning Removed in v4.0.0
+The standalone `getStatsKeywords()`, `getStatWords()`, and `getAutoStatWords()` methods were **removed in v4.0.0** (WB disabled the underlying v0/v1 advert API). They are no longer available — use `getAdvFullstats()` for all advertising performance data. See `docs/guides/migration-v4.md` for the full replacement table.
+:::
 
 ### Sequential Polling with Rate Limit Safety
 
@@ -985,7 +981,7 @@ async function analyticsDashboard() {
 
     // 2. Fetch campaign list
     console.log('Fetching campaign list...');
-    const campaigns = await sdk.promotion.getPromotionCount();
+    const campaigns = await sdk.promotion.getCampaignCount();
     const activeIds = campaigns.adverts
       ?.filter(g => g.status === 9)
       .flatMap(g => g.advert_list?.map(a => a.advertId) ?? [])

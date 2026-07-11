@@ -26,7 +26,7 @@ const balance = await sdk.promotion.getAdvBalance();
 console.log(`Balance: ${balance.net}₽`);
 
 // Get all campaigns overview
-const campaigns = await sdk.promotion.getPromotionCount();
+const campaigns = await sdk.promotion.getCampaignCount();
 console.log(`Total campaigns: ${campaigns.all}`);
 ```
 
@@ -54,12 +54,8 @@ console.log(`Total campaigns: ${campaigns.all}`);
 | `8` | Unified bid | **Deprecated** |
 | `9` | Unified or manual bid | **Current** |
 
-::: warning Important: Different Methods for Different Types
-Wildberries API uses **different endpoints** for different campaign types:
-- **`getAuctionAdverts()`** - for type 9 campaigns ONLY
-- **`createPromotionAdvert()`** - for types 4-8 (legacy) campaigns ONLY
-
-There is NO universal method to get details for all campaign types in one call.
+::: warning Important: Campaign Listing
+Wildberries moved all campaign listing to the V2 endpoint. Use **`getAdvertsV2()`** to list campaigns of any type with filtering by `statuses`, `payment_type`, or `ids`. The legacy `getAuctionAdverts()` (type 9 only) and `createPromotionAdvert()` (types 4-8) methods were removed in v4.0.0.
 :::
 
 ### Bid Types
@@ -83,10 +79,11 @@ There is NO universal method to get details for all campaign types in one call.
 
 ```typescript
 // Create campaign with manual bid for search
-const campaign = await sdk.promotion.createSeacatSaveAd({
+const campaign = await sdk.promotion.createCampaign({
   name: 'Winter Collection 2024',
   nms: [168120815, 173574852], // Product NM IDs (max 50)
   bid_type: 'manual',
+  payment_type: 'cpm',
   placement_types: ['search']
 });
 
@@ -99,7 +96,7 @@ console.log(`Campaign created: ID ${campaign}`);
 
 ```typescript
 // Get all campaigns grouped by type and status
-const overview = await sdk.promotion.getPromotionCount();
+const overview = await sdk.promotion.getCampaignCount();
 
 overview.adverts?.forEach(group => {
   console.log(`Type ${group.type}, Status ${group.status}: ${group.count} campaigns`);
@@ -111,47 +108,27 @@ overview.adverts?.forEach(group => {
 });
 ```
 
-#### Get Details for Type 9 Campaigns (Modern)
+#### Get Campaign Details (V2)
+
+Use `getAdvertsV2()` to list campaigns with filtering by status, payment type, or IDs. This replaces the removed `getAuctionAdverts()` (type 9 only) and `createPromotionAdvert()` (types 4-8) methods.
 
 ```typescript
-// Get auction campaigns (type 9)
-const auctionCampaigns = await sdk.promotion.getAuctionAdverts({});
-auctionCampaigns.adverts?.forEach(campaign => {
+// List all campaigns
+const allCampaigns = await sdk.promotion.getAdvertsV2({});
+allCampaigns.adverts?.forEach(campaign => {
   console.log(`Campaign ${campaign.id}: status=${campaign.status}, bid_type=${campaign.bid_type}`);
 });
 
 // Filter by status or payment type
-const activeCampaigns = await sdk.promotion.getAuctionAdverts({
+const activeCampaigns = await sdk.promotion.getAdvertsV2({
   statuses: '9',        // Active only
   payment_type: 'cpm'   // CPM campaigns
 });
 
 // Get specific campaigns by IDs
-const specificCampaigns = await sdk.promotion.getAuctionAdverts({
+const specificCampaigns = await sdk.promotion.getAdvertsV2({
   ids: '12345,67890'    // Max 50 IDs
 });
-```
-
-#### Get Details for Legacy Campaigns (Types 4-8)
-
-::: warning Method Name Confusion
-`createPromotionAdvert()` does NOT create campaigns - it RETRIEVES information about legacy campaigns.
-This naming is generated from the Swagger spec and can be confusing.
-:::
-
-```typescript
-// Get details for legacy campaigns (types 4-8)
-const legacyDetails = await sdk.promotion.createPromotionAdvert(
-  [12345, 67890],     // Array of campaign IDs (max 50)
-  {
-    status: 9,        // Filter by status (optional)
-    type: 8,          // Filter by type (optional)
-    order: 'change',  // Sort by: 'create', 'change', 'id'
-    direction: 'desc' // Sort direction: 'asc' or 'desc'
-  }
-);
-
-console.log('Legacy campaign details:', legacyDetails);
 ```
 
 #### Complete Workflow: Get ALL Campaign Details
@@ -159,39 +136,24 @@ console.log('Legacy campaign details:', legacyDetails);
 ```typescript
 async function getAllCampaignDetails(sdk: WildberriesSDK) {
   // Step 1: Get list of ALL campaigns
-  const allCampaigns = await sdk.promotion.getPromotionCount();
+  const allCampaigns = await sdk.promotion.getCampaignCount();
 
-  // Step 2: Separate by type
-  const type9Ids: number[] = [];
-  const legacyIds: number[] = [];
-
+  // Step 2: Collect all campaign IDs
+  const allIds: number[] = [];
   allCampaigns.adverts?.forEach(group => {
     group.advert_list?.forEach(advert => {
-      if (group.type === 9) {
-        type9Ids.push(advert.advertId!);
-      } else if (group.type && group.type >= 4 && group.type <= 8) {
-        legacyIds.push(advert.advertId!);
-      }
+      allIds.push(advert.advertId!);
     });
   });
 
-  console.log(`Found ${type9Ids.length} type 9 campaigns (modern)`);
-  console.log(`Found ${legacyIds.length} legacy campaigns (types 4-8)`);
+  console.log(`Found ${allIds.length} campaigns`);
 
-  // Step 3: Get details for type 9 campaigns
-  if (type9Ids.length > 0) {
-    const type9Details = await sdk.promotion.getAuctionAdverts({
-      ids: type9Ids.slice(0, 50).join(',')  // Max 50 IDs per request
+  // Step 3: Get details in batches of 50 (V2 max IDs per request)
+  if (allIds.length > 0) {
+    const details = await sdk.promotion.getAdvertsV2({
+      ids: allIds.slice(0, 50).join(',')
     });
-    console.log('Type 9 campaign details:', type9Details);
-  }
-
-  // Step 4: Get details for legacy campaigns
-  if (legacyIds.length > 0) {
-    const legacyDetails = await sdk.promotion.createPromotionAdvert(
-      legacyIds.slice(0, 50)  // Max 50 IDs per request
-    );
-    console.log('Legacy campaign details:', legacyDetails);
+    console.log('Campaign details:', details);
   }
 }
 ```
@@ -200,10 +162,10 @@ async function getAllCampaignDetails(sdk: WildberriesSDK) {
 
 ```typescript
 // Start campaign (requires status 4 or 11 + budget)
-await sdk.promotion.getAdvStart({ id: campaignId });
+await sdk.promotion.startCampaign(campaignId);
 
 // Pause campaign (only for status 9 - active)
-await sdk.promotion.getAdvPause({ id: campaignId });
+await sdk.promotion.pauseCampaign(campaignId);
 
 // Stop/finish campaign (for statuses 4, 9, 11)
 await sdk.promotion.getAdvStop({ id: campaignId });
@@ -268,7 +230,7 @@ if (balance.cashbacks?.length) {
 
 ```typescript
 // First pause the campaign if active
-await sdk.promotion.getAdvPause({ id: campaignId });
+await sdk.promotion.pauseCampaign(campaignId);
 
 // Deposit 1000₽ from cabinet balance
 await sdk.promotion.createBudgetDeposit(
@@ -318,41 +280,31 @@ console.log(`Total spent in 30 days: ${totalSpent}₽`);
 ### Get Minimum Bids
 
 ```typescript
-// Get minimum bids for products in a campaign
-const minBids = await sdk.promotion.createBidsMin({
+// Get minimum bids for products in a campaign (V2 — kopecks)
+const minBids = await sdk.promotion.getBidsMinV2({
   advert_id: campaignId,
   nm_ids: [168120815, 173574852],
   payment_type: 'cpm',  // 'cpm' (per 1000 views) or 'cpc' (per click)
   placement_types: ['search']
 });
 
-minBids.forEach(bid => {
+minBids.bids.forEach(bid => {
   console.log(`NM ${bid.nm_id}: min bid = ${bid.bid}₽`);
 });
 ```
 
-### Update Bids for Unified Bid Campaigns
+### Update Bids (Kopecks)
+
+`updateBids()` is the single bid-update method (kopecks-based). It handles both unified and manual bid campaigns — the rubles-based `updateAdvBid()` and `updateAuctionBid()` were removed in v4.0.0.
 
 ```typescript
-// For campaigns with unified bid (bid_type: 'unified')
-await sdk.promotion.updateAdvBid({
-  bids: [{
-    advert_id: campaignId,
-    bid: 280  // CPM bid in rubles
-  }]
-});
-```
-
-### Update Bids for Manual Bid Campaigns
-
-```typescript
-// For campaigns with manual bid (bid_type: 'manual')
-await sdk.promotion.updateAuctionBid({
+// For campaigns with manual bid (bid_type: 'manual') — per-product, per-placement
+await sdk.promotion.updateBids({
   bids: [{
     advert_id: campaignId,
     nm_bids: [{
       nm_id: 168120815,
-      bid: 280,
+      bid_kopecks: 28000,  // 280₽ in kopecks
       placement: 'search'  // or 'recommendations', 'combined'
     }]
   }]
@@ -361,111 +313,66 @@ await sdk.promotion.updateAuctionBid({
 
 ## Keyword/Phrase Management
 
-### Excluded Phrases (Minus-words) for Manual Bid
+### Excluded Phrases (Minus-words)
 
-> **Important**: These methods require campaign to be active (status 9).
-
-```typescript
-// Set excluded phrases
-await sdk.promotion.createSearchSetExcluded(
-  { excluded: ['cheap', 'discount', 'used'] },
-  { id: campaignId }
-);
-
-// Clear all excluded phrases
-await sdk.promotion.createSearchSetExcluded(
-  { excluded: [] },
-  { id: campaignId }
-);
-```
-
-### Excluded Phrases for Unified Bid
+> **Important**: Minus-phrase management requires the campaign to be active (status 9). The removed `createSearchSetExcluded()` / `createAutoSetExcluded()` methods are replaced by the normquery-based `setMinusPhrases()` / `getMinusPhrases()`.
 
 ```typescript
-// Set excluded phrases for unified bid campaign
-await sdk.promotion.createAutoSetExcluded(
-  { excluded: ['cheap', 'discount'] },
-  { id: campaignId }
-);
-```
+// Set minus-phrases for a campaign+product (normquery-based)
+await sdk.promotion.setMinusPhrases({
+  advert_id: campaignId,
+  nm_id: 168120815,
+  norm_queries: ['cheap', 'discount', 'used']
+});
 
-### Fixed Phrases (for Manual Bid)
+// Clear all minus-phrases (pass an empty array)
+await sdk.promotion.setMinusPhrases({
+  advert_id: campaignId,
+  nm_id: 168120815,
+  norm_queries: []
+});
 
-Fixed phrases ensure your product appears only for specific search queries.
-
-```typescript
-// Get fixed phrases activity status
-const activity = await sdk.promotion.getSearchSetPlus({ id: campaignId });
-
-// Set fixed phrases (phrases must exist in campaign's keyword list)
-await sdk.promotion.createSearchSetPlu(
-  { pluse: ['winter jacket', 'warm coat'] },
-  { id: campaignId }
-);
-
-// Remove all fixed phrases
-await sdk.promotion.createSearchSetPlu(
-  { pluse: [] },
-  { id: campaignId }
-);
-
-// Toggle fixed phrases activity (true = active, false = inactive)
-await sdk.promotion.getSearchSetPlus({
-  id: campaignId,
-  fixed: true
+// Read current minus-phrases
+const mp = await sdk.promotion.getMinusPhrases({
+  items: [{ advert_id: campaignId, nm_id: 168120815 }]
 });
 ```
+
+### Fixed Phrases (Removed in v4.0.0)
+
+The fixed-phrase management methods (`createSearchSetPlu()`, `getSearchSetPlus()`) were **removed in v4.0.0** — WB dropped the underlying v1 search-phrase endpoints. There is no 1:1 replacement. For keyword-level performance, use `getAdvFullstats()` (see [Campaign Statistics](#campaign-statistics)).
 
 ## Campaign Statistics
 
 ### Keyword Statistics (Last 7 Days)
+
+> The standalone `getStatsKeywords()` method was **removed in v4.0.0**. Use `getAdvFullstats()` for keyword/SKU-level performance — it returns per-day, per-platform, and per-SKU breakdowns.
 
 ```typescript
 const to = new Date();
 const from = new Date();
 from.setDate(from.getDate() - 7);
 
-const stats = await sdk.promotion.getStatsKeywords({
-  advert_id: campaignId,
-  from: from.toISOString().split('T')[0],
-  to: to.toISOString().split('T')[0]
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: String(campaignId),
+  beginDate: from.toISOString().split('T')[0],
+  endDate: to.toISOString().split('T')[0]  // max 31 days
 });
 
-stats.keywords?.forEach(day => {
-  console.log(`\nDate: ${day.date}`);
-  day.stats?.forEach(kw => {
-    console.log(`  "${kw.keyword}": views=${kw.views}, clicks=${kw.clicks}, sum=${kw.sum}₽`);
+stats.forEach(campaign => {
+  console.log(`Campaign ${campaign.advertId}: ${campaign.views} views, ${campaign.clicks} clicks, CTR ${campaign.ctr}%`);
+  campaign.days.forEach(day => {
+    console.log(`  ${day.date}: views=${day.views}, clicks=${day.clicks}, sum=${day.sum}`);
+    day.apps?.forEach(app => {
+      app.nms?.forEach(nm => {
+        console.log(`    SKU ${nm.nmId}: ${nm.clicks} clicks, ${nm.orders} orders`);
+      });
+    });
   });
 });
 ```
 
-### Keyword Stats for Manual Bid Campaigns
-
-```typescript
-const manualStats = await sdk.promotion.getStatWords({ id: campaignId });
-
-if (manualStats.stat) {
-  manualStats.stat.forEach(s => {
-    console.log(`"${s.keyword}": views=${s.views}, clicks=${s.clicks}, ctr=${s.ctr}%`);
-  });
-}
-```
-
-### Cluster Stats for Unified Bid Campaigns
-
-```typescript
-const unifiedStats = await sdk.promotion.getAutoStatWords({ id: campaignId });
-
-if (unifiedStats.clusters) {
-  unifiedStats.clusters.forEach(c => {
-    console.log(`Cluster "${c.cluster}": ${c.count} keywords`);
-  });
-}
-
-if (unifiedStats.excluded) {
-  console.log(`Excluded phrases: ${unifiedStats.excluded.length}`);
-}
-```
+> The bid-type-specific stats methods `getStatWords()` (manual bid) and `getAutoStatWords()` (unified bid) were **removed in v4.0.0**. `getAdvFullstats()` is now the universal statistics method for all campaign types.
 
 ### Full Campaign Statistics (getAdvFullstats)
 
@@ -725,10 +632,11 @@ async function runAdvertisingCampaign() {
     }
 
     // 2. Create campaign
-    campaignId = await sdk.promotion.createSeacatSaveAd({
+    campaignId = await sdk.promotion.createCampaign({
       name: 'SDK Test Campaign',
       nms: [168120815],
       bid_type: 'manual',
+      payment_type: 'cpm',
       placement_types: ['search']
     }) as number;
     console.log(`Created campaign: ${campaignId}`);
@@ -743,17 +651,17 @@ async function runAdvertisingCampaign() {
     await delay(RATE_LIMIT_DELAY);
 
     // 4. Get minimum bids
-    const minBids = await sdk.promotion.createBidsMin({
+    const minBids = await sdk.promotion.getBidsMinV2({
       advert_id: campaignId,
       nm_ids: [168120815],
       payment_type: 'cpm',
       placement_types: ['search']
     });
-    console.log(`Minimum bid: ${minBids[0]?.bid || 'N/A'}₽`);
+    console.log(`Minimum bid: ${minBids.bids[0]?.bid || 'N/A'}₽`);
     await delay(RATE_LIMIT_DELAY);
 
     // 5. Start campaign
-    await sdk.promotion.getAdvStart({ id: campaignId });
+    await sdk.promotion.startCampaign(campaignId);
     console.log('Campaign started!');
 
     // 6. Monitor (in real scenario, poll periodically)
@@ -763,7 +671,7 @@ async function runAdvertisingCampaign() {
     // Cleanup: Delete test campaign
     if (campaignId) {
       try {
-        await sdk.promotion.getAdvPause({ id: campaignId });
+        await sdk.promotion.pauseCampaign(campaignId);
         await delay(2000);
         await sdk.promotion.getAdvDelete({ id: campaignId });
         console.log('Campaign deleted');
@@ -809,7 +717,7 @@ import {
 } from 'daytona-wildberries-typescript-sdk';
 
 try {
-  await sdk.promotion.getAdvStart({ id: campaignId });
+  await sdk.promotion.startCampaign(campaignId);
 } catch (error) {
   if (error instanceof ValidationError) {
     // Invalid campaign ID or wrong status
@@ -828,24 +736,22 @@ try {
 
 ### Campaign Listing & Details
 
-::: tip Campaign Types Quick Reference
-- **Type 9** (current): Use `getAuctionAdverts()`
-- **Types 4-8** (legacy): Use `createPromotionAdvert()`
+::: tip Campaign Listing
+Use `getAdvertsV2()` to list campaigns of any type. The legacy `getAuctionAdverts()` (type 9) and `createPromotionAdvert()` (types 4-8) were removed in v4.0.0.
 :::
 
 | Method | API Endpoint | Campaign Types | Description |
 |--------|--------------|----------------|-------------|
-| `getPromotionCount()` | `GET /adv/v1/promotion/count` | **ALL** | List all campaigns with IDs |
-| `getAuctionAdverts()` | `GET /adv/v0/auction/adverts` | **9 only** | Get details for modern campaigns |
-| `createPromotionAdvert()` | `POST /adv/v1/promotion/adverts` | **4-8 only** | Get details for legacy campaigns |
+| `getCampaignCount()` | `GET /adv/v1/promotion/count` | **ALL** | List all campaigns with IDs |
+| `getAdvertsV2()` | `GET /adv/v2/adverts` | **ALL** | Get filtered campaign details |
 
 ### Campaign Management
 
 | Method | Description | Required Status |
 |--------|-------------|-----------------|
-| `createSeacatSaveAd()` | Create campaign (type 9) | - |
-| `getAdvStart()` | Start campaign | 4 or 11 |
-| `getAdvPause()` | Pause campaign | 9 |
+| `createCampaign()` | Create campaign (type 9) | - |
+| `startCampaign()` | Start campaign | 4 or 11 |
+| `pauseCampaign()` | Pause campaign | 9 |
 | `getAdvStop()` | Stop/finish campaign | 4, 9, or 11 |
 | `getAdvDelete()` | Delete campaign | 4 only |
 | `createAdvRename()` | Rename campaign | any |
@@ -863,27 +769,23 @@ try {
 
 | Method | Description |
 |--------|-------------|
-| `createBidsMin()` | Get minimum bids |
-| `updateAdvBid()` | Update unified bid |
-| `updateAuctionBid()` | Update manual bids |
+| `getBidsMinV2()` | Get minimum bids (kopecks) |
+| `updateBids()` | Update bids (kopecks) |
 
 ### Keywords & Phrases
 
 | Method | Description | Bid Type |
 |--------|-------------|----------|
-| `createSearchSetExcluded()` | Set minus-words | manual |
-| `createAutoSetExcluded()` | Set minus-words | unified |
-| `getSearchSetPlus()` | Get/toggle fixed phrases | manual |
-| `createSearchSetPlu()` | Set fixed phrases | manual |
+| `setMinusPhrases()` | Set/get minus-words (normquery-based) | all |
+| `getMinusPhrases()` | Get minus-words | all |
+
+> The fixed-phrase methods (`getSearchSetPlus`, `createSearchSetPlu`) and `createSearchSetExcluded` / `createAutoSetExcluded` were removed in v4.0.0.
 
 ### Statistics
 
 | Method | Description |
 |--------|-------------|
-| `getStatsKeywords()` | Keyword stats (7 days) |
-| `getStatWords()` | Keyword stats (manual bid) |
-| `getAutoStatWords()` | Cluster stats (unified bid) |
-| `getAdvFullstats()` | Full campaign statistics |
+| `getAdvFullstats()` | Full campaign statistics (universal — replaces `getStatsKeywords`, `getStatWords`, `getAutoStatWords`) |
 
 ## Troubleshooting
 
@@ -891,7 +793,7 @@ try {
 
 1. **"Validation failed" on budget deposit**
    - Campaign must be in status 11 (paused)
-   - Pause the campaign first: `getAdvPause({ id })`
+   - Pause the campaign first: `pauseCampaign(id)`
 
 2. **"Validation failed" on excluded/fixed phrases**
    - Campaign must be active (status 9)
@@ -957,20 +859,20 @@ try {
 
 ## TypeScript Type Notes
 
-### Required Parameters in getStatsKeywords()
+### Required Parameters in getAdvFullstats()
 
-All parameters are **required** - this matches the WB API contract:
+`getStatsKeywords()` was removed in v4.0.0. Use `getAdvFullstats()` — all parameters are **required**:
 
 ```typescript
 // CORRECT: All parameters are required
-const stats = await sdk.promotion.getStatsKeywords({
-  advert_id: campaignId,  // Required - campaign ID
-  from: '2024-01-01',     // Required - start date
-  to: '2024-01-07'        // Required - end date (max 7 days from start)
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: String(campaignId),  // Required - campaign ID(s), comma-separated string
+  beginDate: '2024-01-01',  // Required - start date
+  endDate: '2024-01-07'     // Required - end date (max 31 days from start)
 });
 
 // WRONG: TypeScript will show error if parameters are missing
-// const stats = await sdk.promotion.getStatsKeywords({});  // Error!
+// const stats = await sdk.promotion.getAdvFullstats({});  // Error!
 ```
 
 ### Placement Types Array Syntax
@@ -995,19 +897,20 @@ const request2 = {
 ### Type Definition Reference
 
 ```typescript
-// createBidsMin parameter type
-interface BidsMinRequest {
+// getBidsMinV2 parameter type (V2 — kopecks)
+interface BidsMinV2Request {
   advert_id: number;
   nm_ids: number[];
   payment_type: 'cpm' | 'cpc';
   placement_types: ('combined' | 'search' | 'recommendation')[];  // Array!
 }
 
-// createSeacatSaveAd parameter type
-interface SeacatSaveAdRequest {
+// createCampaign parameter type
+interface CreateCampaignRequest {
   name: string;
   nms: number[];
   bid_type: 'manual' | 'unified';
+  payment_type: 'cpm' | 'cpc';
   placement_types?: ('search' | 'recommendations')[];  // Optional array
 }
 ```
@@ -1143,8 +1046,8 @@ interface PromotionsNomenclaturesResponse {
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `getAdvStart` | `(options: { id: number }) => Promise<unknown>` | Start campaign |
-| `getAdvPause` | `(options: { id: number }) => Promise<unknown>` | Pause campaign |
+| `startCampaign` | `(id: number) => Promise<void>` | Start campaign |
+| `pauseCampaign` | `(id: number) => Promise<void>` | Pause campaign |
 | `getAdvStop` | `(options: { id: number }) => Promise<unknown>` | Stop campaign |
 | `getAdvDelete` | `(options: { id: number }) => Promise<unknown>` | Delete campaign |
 | `createAdvRename` | `(data: { advertId: number; name: string }) => Promise<unknown>` | Rename campaign |
@@ -1162,12 +1065,12 @@ interface PromotionsNomenclaturesResponse {
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `getSearchSetPlus` | `(options: { id: number; fixed?: boolean }) => Promise<unknown>` | Get/toggle fixed phrases |
-| `createSearchSetPlu` | `(data: { pluse?: string[] }, options: { id: number }) => Promise<string[]>` | Set fixed phrases |
-| `createSearchSetExcluded` | `(data: { excluded?: string[] }, options: { id: number }) => Promise<unknown>` | Set minus-phrases (manual) |
-| `createAutoSetExcluded` | `(data: { excluded?: string[] }, options: { id: number }) => Promise<unknown>` | Set minus-phrases (unified) |
-| `getAutoGetnmtoadd` | `(options: { id: number }) => Promise<number[]>` | Get available products |
-| `createAutoUpdatenm` | `(data: { add?: number[]; delete?: number[] }, options: { id: number }) => Promise<unknown>` | Update campaign products |
+| `setMinusPhrases` | `(request: SetMinusPhrasesRequest) => Promise<void>` | Set minus-phrases (normquery-based) |
+| `getMinusPhrases` | `(request: GetMinusPhrasesRequest) => Promise<GetMinusPhrasesResponse>` | Get minus-phrases |
+| `getSupplierNms` | `(subjectIds: number[]) => Promise<SupplierNmItem[]>` | Get available products |
+| `updateCampaignProducts` | `(data: UpdateCampaignProductsRequest) => Promise<UpdateCampaignProductsResponse>` | Update campaign products |
+
+> The fixed-phrase methods (`getSearchSetPlus`, `createSearchSetPlu`) and the legacy `createSearchSetExcluded` / `createAutoSetExcluded` / `getAutoGetnmtoadd` / `createAutoUpdatenm` were removed in v4.0.0.
 
 ### Calendar API Methods
 
@@ -1186,20 +1089,24 @@ In v2.2.3, many methods changed from **optional** to **required** parameters to 
 
 ### Methods with Changed Signatures
 
+::: warning Several of these methods were later removed in v4.0.0
+This table records v2.2.3 signature changes only. The methods marked ⛔ below were **subsequently removed in v4.0.0** and no longer exist — see `docs/guides/migration-v4.md` for their replacements.
+:::
+
 | Method | Before (v2.2.2) | After (v2.2.3) |
 |--------|-----------------|----------------|
-| `getAdvStart` | `options?: { id }` | `options: { id }` |
-| `getAdvPause` | `options?: { id }` | `options: { id }` |
+| `getAdvStart` ⛔ | `options?: { id }` | `options: { id }` |
+| `getAdvPause` ⛔ | `options?: { id }` | `options: { id }` |
 | `getAdvStop` | `options?: { id }` | `options: { id }` |
 | `getAdvDelete` | `options?: { id }` | `options: { id }` |
 | `getAdvBudget` | `options?: { id }` | `options: { id }` |
-| `getSearchSetPlus` | `options?: { id; fixed? }` | `options: { id; fixed? }` |
-| `getAutoGetnmtoadd` | `options?: { id }` | `options: { id }` |
+| `getSearchSetPlus` ⛔ | `options?: { id; fixed? }` | `options: { id; fixed? }` |
+| `getAutoGetnmtoadd` ⛔ | `options?: { id }` | `options: { id }` |
 | `createBudgetDeposit` | `options?: { id }` | `options: { id }` |
-| `createSearchSetPlu` | `options?: { id }` | `options: { id }` |
-| `createSearchSetExcluded` | `options?: { id }` | `options: { id }` |
-| `createAutoSetExcluded` | `options?: { id }` | `options: { id }` |
-| `createAutoUpdatenm` | `options?: { id }` | `options: { id }` |
+| `createSearchSetPlu` ⛔ | `options?: { id }` | `options: { id }` |
+| `createSearchSetExcluded` ⛔ | `options?: { id }` | `options: { id }` |
+| `createAutoSetExcluded` ⛔ | `options?: { id }` | `options: { id }` |
+| `createAutoUpdatenm` ⛔ | `options?: { id }` | `options: { id }` |
 | `getAdvUpd` | `options?: { from; to }` | `options: { from; to }` |
 | `createAdvRename` | `data?: { advertId; name }` | `data: { advertId; name }` |
 | `getCalendarPromotions` | `options?: { ... }` | `options: { startDateTime; endDateTime; allPromo; limit?; offset? }` |

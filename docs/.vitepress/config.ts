@@ -128,6 +128,7 @@ export default defineConfig({
             text: 'Guides',
             items: [
               { text: 'Overview', link: '/guides/' },
+              { text: '🚨 Migration v4.0.0 — Breaking Removals', link: '/guides/migration-v4' },
               { text: '🔄 Migration v3.0 - Complete Guide', link: '/guides/migration-v3' },
               { text: '⚠️ Migration v2.7 - Analytics v3 Sales Funnel', link: '/guides/migration-v2.7-analytics-v3' },
               { text: '⚠️ Type 8 → Type 9 Campaign Migration', link: '/guides/migration-type8-to-type9' },
@@ -384,6 +385,7 @@ export default defineConfig({
             text: 'Руководства',
             items: [
               { text: 'Обзор', link: '/ru/guides/' },
+              { text: '🚨 Миграция v4.0.0 — Критические удаления', link: '/guides/migration-v4' },
               { text: '🔄 Миграция v3.0 - Полное руководство', link: '/ru/guides/migration-v3' },
               { text: '⚠️ Миграция v2.7 - Аналитика v3 (Воронка продаж)', link: '/ru/guides/migration-v2.7-analytics-v3' },
               { text: '⚠️ Миграция Type 8 → Type 9 кампаний', link: '/ru/guides/migration-type8-to-type9' },

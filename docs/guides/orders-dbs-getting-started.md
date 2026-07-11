@@ -8,7 +8,7 @@ layout: doc
 
 This guide covers everything you need to know to work with DBS (Delivery by Seller) orders in the Wildberries TypeScript SDK.
 
-> **Migration Notice**: Legacy single-order status and metadata methods are deprecated and will be **disabled on April 13, 2026**. Use the bulk methods described in this guide. See the [Migration Guide](/guides/migration-dbs-legacy-to-bulk) for details.
+> **v4.0.0**: Legacy single-order status and metadata methods were **removed**. All workflows below use the bulk methods. The metadata-read method `getMetaBulk()` was replaced by `checkMetaValidation()` (POST `…/meta/details`), which returns per-order marking-metadata validation status. See the [Migration Guide](/guides/migration-dbs-legacy-to-bulk) and [v4.0.0 migration guide](/guides/migration-v4) for details.
 
 ## Table of Contents
 
@@ -115,7 +115,7 @@ WB_API_KEY=your_api_key_here
 
 | Method | Description | Rate Tier |
 |--------|-------------|-----------|
-| `getMetaBulk(request)` | Get metadata for multiple orders | T3 (150 rpm) |
+| `checkMetaValidation(request)` | Check marking-metadata validation status for multiple orders | T1 (300 rpm) |
 | `deleteMetaBulk(request)` | Delete metadata for multiple orders | T3 (150 rpm) |
 | `setSgtinBulk(request)` | Set SGTIN codes for multiple orders | T4 (500 rpm) |
 | `setUinBulk(request)` | Set UIN codes for multiple orders | T4 (500 rpm) |
@@ -123,25 +123,25 @@ WB_API_KEY=your_api_key_here
 | `setGtinBulk(request)` | Set GTIN codes for multiple orders | T4 (500 rpm) |
 | `setCustomsDeclarationBulk(request)` | Set customs declarations for multiple orders | T4 (500 rpm) |
 
-### Deprecated Methods (Removed April 13, 2026)
+### Removed Methods (v4.0.0)
 
-The following legacy single-order methods are deprecated. Migrate to their bulk replacements before the deadline.
+The following legacy single-order methods were **removed in v4.0.0**. Use their bulk replacements instead.
 
-| Deprecated Method | Replacement | Deadline |
-|-------------------|-------------|----------|
-| `getMeta(orderId)` | `getMetaBulk(request)` | April 13, 2026 |
-| `deleteMeta(orderId, key)` | `deleteMetaBulk(request)` | April 13, 2026 |
-| `setSgtin(orderId, sgtins)` | `setSgtinBulk(request)` | April 13, 2026 |
-| `setUin(orderId, uin)` | `setUinBulk(request)` | April 13, 2026 |
-| `setImei(orderId, imei)` | `setImeiBulk(request)` | April 13, 2026 |
-| `setGtin(orderId, gtin)` | `setGtinBulk(request)` | April 13, 2026 |
-| `setCustomsDeclaration(orderId, cd)` | `setCustomsDeclarationBulk(request)` | April 13, 2026 |
-| `getStatuses(orderIds)` | `getStatusesBulk(orderIds)` | April 13, 2026 |
-| `confirm(orderId)` | `confirmBulk([orderId])` | April 13, 2026 |
-| `deliver(orderId)` | `deliverBulk([orderId])` | April 13, 2026 |
-| `receive(orderId, code)` | `receiveBulk([{orderId, code}])` | April 13, 2026 |
-| `reject(orderId, code)` | `rejectBulk([{orderId, code}])` | April 13, 2026 |
-| `cancel(orderId)` | `cancelBulk([orderId])` | April 13, 2026 |
+| Removed Method | Replacement |
+|-------------------|-------------|
+| `getMeta(orderId)` | `checkMetaValidation(request)` (validation status) |
+| `deleteMeta(orderId, key)` | `deleteMetaBulk(request)` |
+| `setSgtin(orderId, sgtins)` | `setSgtinBulk(request)` |
+| `setUin(orderId, uin)` | `setUinBulk(request)` |
+| `setImei(orderId, imei)` | `setImeiBulk(request)` |
+| `setGtin(orderId, gtin)` | `setGtinBulk(request)` |
+| `setCustomsDeclaration(orderId, cd)` | `setCustomsDeclarationBulk(request)` |
+| `getStatuses(orderIds)` | `getStatusesBulk(orderIds)` |
+| `confirm(orderId)` | `confirmBulk([orderId])` |
+| `deliver(orderId)` | `deliverBulk([orderId])` |
+| `receive(orderId, code)` | `receiveBulk([{orderId, code}])` |
+| `reject(orderId, code)` | `rejectBulk([{orderId, code}])` |
+| `cancel(orderId)` | `cancelBulk([orderId])` |
 
 ## Complete Order Workflow
 
@@ -233,19 +233,16 @@ if (sgtinOrders.length > 0) {
 }
 ```
 
-### Step 5: Verify Metadata (Bulk)
+### Step 5: Validate Metadata (Bulk)
 
 ```typescript
-// Verify metadata was set correctly for all orders
-const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+// Check marking-metadata validation status for all orders before confirming
+const validation = await sdk.ordersDBS.checkMetaValidation({ orders: orderIds });
 
-for (const orderMeta of meta.orders ?? []) {
-  console.log(`Order ${orderMeta.orderId}:`);
-  if (orderMeta.imei) {
-    console.log(`  IMEI: ${orderMeta.imei}`);
-  }
-  if (orderMeta.sgtins?.length) {
-    console.log(`  SGTINs: ${orderMeta.sgtins.length} codes`);
+for (const detail of validation.metaDetails ?? []) {
+  console.log(`Order ${detail.orderId}: ${detail.status}`);
+  if (detail.status === 'invalid') {
+    console.warn(`  Needs metadata fix: ${detail.message ?? 'marking metadata invalid'}`);
   }
 }
 ```
@@ -396,23 +393,19 @@ const cdResult = await sdk.ordersDBS.setCustomsDeclarationBulk({
 });
 ```
 
-### Verifying Metadata (Bulk)
+### Validating Metadata (Bulk)
+
+`checkMetaValidation()` returns per-order marking-metadata validation status. Call it after setting metadata and before confirming/delivering to surface orders that would 409:
 
 ```typescript
-const meta = await sdk.ordersDBS.getMetaBulk({
+const validation = await sdk.ordersDBS.checkMetaValidation({
   orders: [111, 222, 333, 444, 555]
 });
 
-for (const orderMeta of meta.orders ?? []) {
-  console.log(`Order ${orderMeta.orderId}:`);
-  if (orderMeta.imei) {
-    console.log(`  IMEI: ${orderMeta.imei}`);
-  }
-  if (orderMeta.sgtins?.length) {
-    console.log(`  SGTIN codes: ${orderMeta.sgtins.length}`);
-  }
-  if (orderMeta.customsDeclaration) {
-    console.log(`  Customs: ${orderMeta.customsDeclaration}`);
+for (const detail of validation.metaDetails ?? []) {
+  console.log(`Order ${detail.orderId}: ${detail.status}`);
+  if (detail.status === 'invalid') {
+    console.warn(`  Fix marking metadata before delivering: ${detail.message ?? ''}`);
   }
 }
 ```
@@ -488,9 +481,9 @@ The DBS API uses a **4-tier rate limit system**. The SDK enforces these limits a
 
 | Tier | Name | Requests/Min | Interval | Burst | Applies To |
 |------|------|-------------|----------|-------|------------|
-| **T1** | Assembly Read | 300 | 200ms | 20 | `getNewOrders`, `getOrders`, `getClientInfo`, `getStatusesBulk`, `getB2BInfo`, `getGroupsInfo`, `getDeliveryDates` |
+| **T1** | Assembly Read | 300 | 200ms | 20 | `getNewOrders`, `getOrders`, `getClientInfo`, `getStatusesBulk`, `getB2BInfo`, `getGroupsInfo`, `getDeliveryDates`, `checkMetaValidation` |
 | **T2** | Status Write | 60 | 1s | 10 | `confirmBulk`, `deliverBulk`, `receiveBulk`, `rejectBulk`, `cancelBulk` |
-| **T3** | Meta Read/Delete | 150 | 400ms | 20 | `getMetaBulk`, `deleteMetaBulk` (and deprecated `getMeta`, `deleteMeta`) |
+| **T3** | Meta Delete | 150 | 400ms | 20 | `deleteMetaBulk` |
 | **T4** | Meta Set | 500 | 120ms | 20 | `setSgtinBulk`, `setUinBulk`, `setImeiBulk`, `setGtinBulk`, `setCustomsDeclarationBulk` |
 
 ### Penalty Multiplier (409 Responses)

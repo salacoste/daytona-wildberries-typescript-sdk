@@ -8,7 +8,7 @@ layout: doc
 
 This guide covers common workflows for processing DBS (Delivery by Seller) orders with the Wildberries TypeScript SDK.
 
-> **Migration Notice**: Legacy single-order methods are deprecated and will be **disabled on April 13, 2026**. All workflows in this guide use the recommended bulk methods. See the [Migration Guide](/guides/migration-dbs-legacy-to-bulk) for details.
+> **v4.0.0**: Legacy single-order methods were **removed**. All workflows in this guide use the recommended bulk methods. The metadata-read method `getMetaBulk()` was replaced by `checkMetaValidation()` (POST `…/meta/details`), which returns per-order marking-metadata validation status. See the [Migration Guide](/guides/migration-dbs-legacy-to-bulk) and [v4.0.0 migration guide](/guides/migration-v4) for details.
 
 ## Table of Contents
 
@@ -293,24 +293,18 @@ async function setVerifyConfirm(orders: any[]) {
   // 1. Set metadata in bulk (grouped by type)
   await processMetadataBulk(orders);
 
-  // 2. Verify all metadata was set correctly
-  const metaResult = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+  // 2. Validate marking metadata (replaces the old getMetaBulk read-back)
+  const validation = await sdk.ordersDBS.checkMetaValidation({ orders: orderIds });
   const incomplete: number[] = [];
 
-  for (const orderMeta of metaResult.orders ?? []) {
-    const order = orders.find(o => o.id === orderMeta.orderId);
-    const required = order?.requiredMeta ?? [];
-
-    for (const metaType of required) {
-      if (!checkMetadataValue(orderMeta, metaType)) {
-        incomplete.push(orderMeta.orderId!);
-        console.warn(`Order ${orderMeta.orderId}: missing ${metaType}`);
-        break;
-      }
+  for (const detail of validation.metaDetails ?? []) {
+    if (detail.status === 'invalid') {
+      incomplete.push(detail.orderId!);
+      console.warn(`Order ${detail.orderId}: marking metadata invalid — ${detail.message ?? ''}`);
     }
   }
 
-  // 3. Confirm only orders with complete metadata
+  // 3. Confirm only orders with valid metadata
   const readyIds = orderIds.filter(id => !incomplete.includes(id));
   if (readyIds.length > 0) {
     const result = await sdk.ordersDBS.confirmBulk(readyIds);
@@ -318,7 +312,7 @@ async function setVerifyConfirm(orders: any[]) {
   }
 
   if (incomplete.length > 0) {
-    console.warn(`${incomplete.length} orders skipped (missing metadata)`);
+    console.warn(`${incomplete.length} orders skipped (invalid metadata)`);
   }
 }
 ```
@@ -359,10 +353,10 @@ async function correctMetadata(
     // ... handle other types similarly
   }
 
-  // 3. Verify corrections
-  const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
-  for (const m of meta.orders ?? []) {
-    console.log(`Order ${m.orderId}: ${metaType} updated`);
+  // 3. Validate corrections
+  const validation = await sdk.ordersDBS.checkMetaValidation({ orders: orderIds });
+  for (const d of validation.metaDetails ?? []) {
+    console.log(`Order ${d.orderId}: ${metaType} validation=${d.status}`);
   }
 }
 ```
@@ -386,10 +380,11 @@ async function ensureMetadataCompliance(
   // Get current orders to check required metadata
   const { orders } = await sdk.ordersDBS.getNewOrders();
 
-  // Get metadata for all orders in one bulk call
-  const metaBulk = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
-  const metaMap = new Map(
-    (metaBulk.orders ?? []).map(m => [m.orderId, m])
+  // Validate marking metadata for all orders in one bulk call
+  // (replaces the removed getMetaBulk value read-back)
+  const validation = await sdk.ordersDBS.checkMetaValidation({ orders: orderIds });
+  const statusByOrder = new Map(
+    (validation.metaDetails ?? []).map(d => [d.orderId, d.status])
   );
 
   for (const orderId of orderIds) {
@@ -412,13 +407,11 @@ async function ensureMetadataCompliance(
       continue;
     }
 
-    // Check each required type using bulk-fetched metadata
-    const meta = metaMap.get(orderId);
-    for (const metaType of required) {
-      const hasValue = checkMetadataValue(meta, metaType);
-
-      if (!hasValue) {
-        // Try to set from inventory
+    // If validation reports invalid (or the order has not yet been set),
+    // attempt to set the required marking metadata from inventory.
+    const status = statusByOrder.get(orderId);
+    if (status !== 'valid') {
+      for (const metaType of required) {
         try {
           await setMetadataFromInventory(orderId, metaType);
         } catch (err) {
@@ -435,23 +428,6 @@ async function ensureMetadataCompliance(
   }
 
   return results;
-}
-
-function checkMetadataValue(orderMeta: any, type: string): boolean {
-  switch (type) {
-    case 'imei':
-      return !!orderMeta?.imei;
-    case 'sgtin':
-      return (orderMeta?.sgtins?.length ?? 0) > 0;
-    case 'uin':
-      return !!orderMeta?.uin;
-    case 'gtin':
-      return !!orderMeta?.gtin;
-    case 'customsDeclaration':
-      return !!orderMeta?.customsDeclaration;
-    default:
-      return false;
-  }
 }
 ```
 
@@ -856,15 +832,15 @@ function isTransientError(code?: number): boolean {
 }
 ```
 
-## Migrating from Deprecated Methods
+## Migrating from Removed Methods
 
-If your workflows still use the deprecated single-order methods (`getMeta`, `deleteMeta`, `setSgtin`, `setImei`, `setUin`, `setGtin`, `setCustomsDeclaration`), you need to migrate to bulk methods before **April 13, 2026**.
+If your workflows still use the removed single-order methods (`getMeta`, `deleteMeta`, `setSgtin`, `setImei`, `setUin`, `setGtin`, `setCustomsDeclaration`), migrate to the bulk methods. These were **removed in v4.0.0**.
 
 ### Quick Migration Summary
 
 | Old Pattern | New Pattern |
 |-------------|-------------|
-| `getMeta(orderId)` one at a time | `getMetaBulk({ orders: [id1, id2, ...] })` |
+| `getMeta(orderId)` one at a time | `checkMetaValidation({ orders: [id1, id2, ...] })` (validation status) |
 | `deleteMeta(orderId, key)` one at a time | `deleteMetaBulk({ orders: [id1, id2], key })` |
 | `setImei(orderId, imei)` per order | `setImeiBulk({ orders: [{orderId, imei}, ...] })` |
 | `setSgtin(orderId, sgtins)` per order | `setSgtinBulk({ orders: [{orderId, sgtins}, ...] })` |
@@ -875,7 +851,7 @@ If your workflows still use the deprecated single-order methods (`getMeta`, `del
 ### Before and After Example
 
 ```typescript
-// BEFORE (deprecated -- will stop working April 13, 2026)
+// BEFORE (removed in v4.0.0 — no longer compiles)
 for (const orderId of orderIds) {
   const meta = await sdk.ordersDBS.getMeta(orderId);      // N API calls
   if (!meta.meta?.imei?.value) {
@@ -884,10 +860,10 @@ for (const orderId of orderIds) {
 }
 
 // AFTER (recommended -- fewer API calls, better performance)
-const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds }); // 1 call
-const needsImei = (meta.orders ?? [])
-  .filter(m => !m.imei)
-  .map(m => ({ orderId: m.orderId!, imei: getImei(m.orderId!) }));
+const validation = await sdk.ordersDBS.checkMetaValidation({ orders: orderIds }); // 1 call
+const needsImei = (validation.metaDetails ?? [])
+  .filter(d => d.status !== 'valid')
+  .map(d => ({ orderId: d.orderId!, imei: getImei(d.orderId!) }));
 
 if (needsImei.length > 0) {
   await sdk.ordersDBS.setImeiBulk({ orders: needsImei });           // 1 call

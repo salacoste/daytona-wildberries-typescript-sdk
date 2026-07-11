@@ -18,15 +18,15 @@ keywords:
 
 > **Use case**: Finance reconciliation. After-the-fact attribution of settled revenue to specific external marketing campaigns using substitute article IDs from the Wildberries financial report.
 
-::: warning v5 endpoint will be disabled 2026-07-15
-The examples below use `getSupplierReportDetailByPeriod()` (v5), which Wildberries will disable on **2026-07-15**. For new code, use the v1 replacement `getSalesReportsDetailed()` which returns the same substitute article data (`articleSubstitution`, `salePriceAffiliatedDiscountPrc`) in camelCase with string money amounts. See the [v5→v1 migration guide](/guides/migration-finance-reports-v5-to-v1) for the complete field mapping and code examples.
+::: warning v5 endpoint removed in v4.0.0
+The examples below use the v1 replacement `getSalesReportsDetailed()`, which returns the same substitute article data (`articleSubstitution`, `salePriceAffiliatedDiscountPrc`) in camelCase with string money amounts. The deprecated v5 `getSupplierReportDetailByPeriod()` endpoint was **removed in SDK v4.0.0** (WB disabled it 2026-07-15) — see the [v5→v1 migration guide](/guides/migration-finance-reports-v5-to-v1) for the complete field mapping.
 :::
 >
 > **Not for**: Real-time marketing analytics. If you need live campaign metrics during a campaign, use the analytics module's search query data (`includeSubstitutedSKUs` parameter on `getSearchQueriesV3`) — that's the marketing-team-facing tool. This guide is for finance teams matching marketing spend to actual paid revenue *after* the reporting period closes.
 
 **Target audience**: Finance engineers, BI tool builders, platform operators serving multiple Wildberries sellers.
 
-**Prerequisites**: SDK v3.6.0+, valid Wildberries API key with Statistics permissions, Node.js ≥20.
+**Prerequisites**: SDK v4.0.0+ (v1 finance reports), valid Wildberries API key with Statistics permissions, Node.js ≥20.
 
 **Estimated reading time**: 10 minutes.
 
@@ -48,33 +48,33 @@ This feature was added by Wildberries on **2026-04-06** ([news id=11270](https:/
 flowchart LR
     A[Marketing Channel<br/>e.g. Instagram campaign] -->|routes via| B[Substitute Article<br/>ID: SUB-IG-001]
     B -->|customer purchases| C[Wildberries order]
-    C -->|recorded in| D[Finance Report Row<br/>article_substitution: 'SUB-IG-001'<br/>sale_price_affiliated_discount_prc: 10]
-    D -->|fetched by SDK| E[sdk.finances.<br/>getSupplierReportDetailByPeriod]
+    C -->|recorded in| D[Finance Report Row<br/>articleSubstitution: 'SUB-IG-001'<br/>salePriceAffiliatedDiscountPrc: 10]
+    D -->|fetched by SDK| E[sdk.finances.<br/>getSalesReportsDetailed]
     E -->|aggregate by ID| F[Per-Channel ROI<br/>revenue, qty, discount, payout]
 ```
 
-The SDK exposes the `article_substitution` and `sale_price_affiliated_discount_prc` fields on `DetailReportItem` (added in v3.6.0). You fetch the report, filter to rows where a substitute article was used, group by ID, and aggregate.
+The SDK exposes the `articleSubstitution` and `salePriceAffiliatedDiscountPrc` fields on `SalesReportDetailedItem`. You fetch the report, filter to rows where a substitute article was used, group by ID, and aggregate.
 
 ---
 
 ## SDK fields
 
-After installing SDK v3.6.0+, the following optional fields are available on every `DetailReportItem` returned by `sdk.finances.getSupplierReportDetailByPeriod()`:
+After installing SDK v3.6.0+, the following optional fields are available on every `SalesReportDetailedItem` returned by `sdk.finances.getSalesReportsDetailed()`:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `article_substitution` | `string` | Substitute article ID. Empty string `""` means no substitute article was used for this transaction. |
-| `sale_price_affiliated_discount_prc` | `number` | Substitute article discount applied, as a percentage (e.g. `10` for 10%). |
-| `sale_price_wholesale_discount_prc` | `number` | Wholesale business discount, as a percentage. Currently always `0` until WB launches the progressive wholesale discount tool — see [news id=11226](https://seller.wildberries.ru/news-v2/news-details?id=11226). |
-| `agency_vat` | `number` | Agency VAT. Semantics undocumented by WB as of 2026-04-08; verify with WB before relying on values. |
+| `articleSubstitution` | `string` | Substitute article ID. Empty string `""` means no substitute article was used for this transaction. |
+| `salePriceAffiliatedDiscountPrc` | `number` | Substitute article discount applied, as a percentage (e.g. `10` for 10%). |
+| `salePriceWholesaleDiscountPrc` | `number` | Wholesale business discount, as a percentage. Currently always `0` until WB launches the progressive wholesale discount tool — see [news id=11226](https://seller.wildberries.ru/news-v2/news-details?id=11226). |
+| `agencyVat` | `number` | Agency VAT. Semantics undocumented by WB as of 2026-04-08; verify with WB before relying on values. |
 
 ## Production-grade aggregation pattern
 
 The example below is intentionally written to handle real-world scale — multiple substitute articles, thousands of report rows, and the empty state. It uses **inline `reduce`** for aggregation rather than `Object.groupBy()` because the SDK supports Node 20 (where `Object.groupBy()` is unavailable).
 
 ```typescript
-import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
-import type { DetailReportItem } from 'daytona-wildberries-typescript-sdk/finances';
+import { WildberriesSDK, parseMoneyAmount } from 'daytona-wildberries-typescript-sdk';
+import type { SalesReportDetailedItem } from 'daytona-wildberries-typescript-sdk/finances';
 
 interface ChannelAggregate {
   substituteArticleId: string;
@@ -90,16 +90,18 @@ async function reconcileSubstituteArticles(
   dateFrom: string,
   dateTo: string
 ): Promise<ChannelAggregate[]> {
-  // 1. Fetch all detail rows for the period
-  const rows: DetailReportItem[] = await sdk.finances.getSupplierReportDetailByPeriod({
+  // 1. Fetch all detail rows for the period (v1 endpoint — money fields are strings)
+  const rows: SalesReportDetailedItem[] = await sdk.finances.getSalesReportsDetailed({
     dateFrom,
     dateTo,
+    limit: 100000,
+    rrdId: 0,
     period: 'weekly',
   });
 
   // 2. Filter to rows that came through a substitute article
   const substituteRows = rows.filter(
-    (row) => row.article_substitution != null && row.article_substitution !== ''
+    (row) => row.articleSubstitution != null && row.articleSubstitution !== ''
   );
 
   // 3. Handle empty state explicitly so consumers don't think the SDK is broken
@@ -121,14 +123,14 @@ async function reconcileSubstituteArticles(
   };
 
   const buckets = substituteRows.reduce<Record<string, Bucket>>((acc, row) => {
-    const key = row.article_substitution!;
+    const key = row.articleSubstitution!;
     if (!acc[key]) {
       acc[key] = { revenueSum: 0, quantitySum: 0, payoutSum: 0, discountSum: 0, count: 0 };
     }
-    acc[key].revenueSum += row.retail_amount ?? 0;
+    acc[key].revenueSum += parseMoneyAmount(row.retailAmount);
     acc[key].quantitySum += row.quantity ?? 0;
-    acc[key].payoutSum += row.ppvz_for_pay ?? 0;
-    acc[key].discountSum += row.sale_price_affiliated_discount_prc ?? 0;
+    acc[key].payoutSum += parseMoneyAmount(row.forPay);
+    acc[key].discountSum += row.salePriceAffiliatedDiscountPrc ?? 0;
     acc[key].count += 1;
     return acc;
   }, {});
@@ -203,18 +205,19 @@ The two views serve different audiences:
 
 ## Caveats
 
-- **Substitute article disablement**: Wildberries allows sellers to disable substitute articles, and once disabled they cannot be re-enabled. Whether the `article_substitution` field remains populated in **historical** finance reports after disablement is not yet verified — assume it persists (typical Wildberries archival behavior) but verify before relying on it for long-term analysis.
+- **Substitute article disablement**: Wildberries allows sellers to disable substitute articles, and once disabled they cannot be re-enabled. Whether the `articleSubstitution` field remains populated in **historical** finance reports after disablement is not yet verified — assume it persists (typical Wildberries archival behavior) but verify before relying on it for long-term analysis.
 - **No management API**: As of 2026-04-08 there is no public Wildberries API for creating, listing, or disabling substitute articles. This must be done in the seller portal under *Рост продаж → Подменные артикулы*. The SDK exposes the data flowing into the finance report; it does not manage the substitute articles themselves.
-- **`agency_vat` semantics undocumented**: The `agency_vat` field appears in the API response but is not documented in any WB news article or local OpenAPI spec. Verify with WB before using.
-- **Wholesale discount field returns 0**: `sale_price_wholesale_discount_prc` is currently always `0`. It will populate once Wildberries launches the progressive wholesale discount tool — see [news id=11226](https://seller.wildberries.ru/news-v2/news-details?id=11226).
+- **`agencyVat` semantics undocumented**: The `agencyVat` field appears in the API response but is not documented in any WB news article or local OpenAPI spec. Verify with WB before using.
+- **Wholesale discount field returns 0**: `salePriceWholesaleDiscountPrc` is currently always `0`. It will populate once Wildberries launches the progressive wholesale discount tool — see [news id=11226](https://seller.wildberries.ru/news-v2/news-details?id=11226).
+- **String money amounts**: The v1 endpoint returns money fields (`retailAmount`, `forPay`, etc.) as `string` to preserve kopeck precision. Always coerce with `parseMoneyAmount()` before arithmetic — never `Number()` or `+` directly.
 
 ## Rate limits
 
-`getSupplierReportDetailByPeriod` is rate-limited to **1 request per minute per seller account**. For batch reconciliation jobs, add appropriate delays or rely on the SDK's built-in rate limiter (it will queue requests automatically).
+`getSalesReportsDetailed` is rate-limited to **1 request per minute per seller account**. For batch reconciliation jobs, add appropriate delays or rely on the SDK's built-in rate limiter (it will queue requests automatically).
 
 ## Related resources
 
-- [Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1) — full field mapping (snake_case v5 → camelCase v1), `parseMoneyAmount` usage, and drop-in replacement examples. The examples in this guide use the deprecated v5 endpoint; the migration guide shows the v1 equivalents.
+- [Finance Reports v5 → v1 Migration](/guides/migration-finance-reports-v5-to-v1) — full field mapping (snake_case v5 → camelCase v1), `parseMoneyAmount` usage, and drop-in replacement examples. The examples in this guide use the v1 endpoint; the migration guide shows the v5→v1 field mapping for migrating old code.
 - WB news (substitute articles, 2026-04-06): https://seller.wildberries.ru/news-v2/news-details?id=11270
 - WB news (wholesale discount, 2026-04-02): https://seller.wildberries.ru/news-v2/news-details?id=11226
 - WB API docs: https://dev.wildberries.ru/docs/openapi/financial-reports-and-accounting#tag/Finansovye-otchyoty/paths/~1api~1v5~1supplier~1reportDetailByPeriod/get

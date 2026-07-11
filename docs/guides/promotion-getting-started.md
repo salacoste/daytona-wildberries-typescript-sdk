@@ -8,7 +8,7 @@ layout: doc
 
 This guide covers everything you need to know to work with advertising campaigns and promotion features in the Wildberries TypeScript SDK.
 
-> **Migration Notice**: Several legacy methods (type 8 campaigns) are deprecated and will be **disabled on February 2, 2026**. Use the V2 methods and type 9 campaigns described in this guide. See the [Migration Guide](/guides/migration-v2.4-promotion-deprecation) for details.
+> **v4.0.0**: Several legacy promotion methods (type 8 campaigns and the v0/v1 advert API) were **removed**. Use the V2 methods and type 9 campaigns described in this guide. See the [v4.0.0 Migration Guide](/guides/migration-v4) and the [Type 8→9 Migration Guide](/guides/migration-v2.4-promotion-deprecation) for details.
 
 ## Table of Contents
 
@@ -41,9 +41,9 @@ The **Promotion module** provides complete control over Wildberries advertising 
 
 | Feature | Description | Key Methods |
 |---------|-------------|-------------|
-| **Campaign Listing** | Get all campaigns with filtering | `getAdvertsV2()`, `getPromotionCount()` |
-| **Campaign Control** | Start, pause, stop, delete | `getAdvStart()`, `getAdvPause()`, `getAdvStop()`, `getAdvDelete()` |
-| **Bidding (V2)** | Modern bid management in kopecks | `getBidsMinV2()`, `updateBidsV2()` |
+| **Campaign Listing** | Get all campaigns with filtering | `getAdvertsV2()`, `getCampaignCount()` |
+| **Campaign Control** | Start, pause, stop, delete | `startCampaign()`, `pauseCampaign()`, `getAdvStop()`, `getAdvDelete()` |
+| **Bidding** | Bid management in kopecks | `getBidsMinV2()`, `updateBids()` |
 | **Search Clusters** | Keyword cluster targeting | `getNormqueryStats()`, `setNormqueryBids()` |
 | **Minus-Phrases** | Negative keyword management | `getNormqueryMinus()`, `setNormqueryMinus()` |
 | **Finances** | Balance and budget management | `getAdvBalance()`, `getAdvBudget()`, `createBudgetDeposit()` |
@@ -129,13 +129,13 @@ const cpmCampaigns = await sdk.promotion.getAdvertsV2({
 });
 ```
 
-### Campaign Count (Legacy)
+### Campaign Count
 
-> **Note**: `getPromotionCount()` is deprecated. Use `getAdvertsV2()` instead.
+> **Note**: `getCampaignCount()` returns counts grouped by type and status. For filtered campaign details, use `getAdvertsV2()`.
 
 ```typescript
-// Get campaign counts grouped by type and status (deprecated)
-const counts = await sdk.promotion.getPromotionCount();
+// Get campaign counts grouped by type and status
+const counts = await sdk.promotion.getCampaignCount();
 console.log(`Total campaigns: ${counts.all}`);
 
 // Check for type 8 campaigns that need migration
@@ -151,11 +151,11 @@ if (type8?.length) {
 const campaignId = 12345;
 
 // Start a campaign (must be in status 4 or 11)
-await sdk.promotion.getAdvStart({ id: campaignId });
+await sdk.promotion.startCampaign(campaignId);
 console.log('Campaign started');
 
 // Pause an active campaign (status 9)
-await sdk.promotion.getAdvPause({ id: campaignId });
+await sdk.promotion.pauseCampaign(campaignId);
 console.log('Campaign paused');
 
 // Stop a campaign completely
@@ -330,12 +330,12 @@ for (const product of minBids.bids) {
 }
 ```
 
-### Update Bids (V2 - Kopecks)
+### Update Bids (Kopecks)
 
 ```typescript
 // Update bids for products in campaigns
 // Works for campaigns in statuses 4, 9, and 11
-const result = await sdk.promotion.updateBidsV2({
+const result = await sdk.promotion.updateBids({
   bids: [{
     advert_id: 12345,
     nm_bids: [
@@ -361,22 +361,7 @@ const result = await sdk.promotion.updateBidsV2({
 console.log('Bids updated:', result.bids);
 ```
 
-### Legacy Bid Update (V0)
-
-> **Note**: `updateAuctionBid()` uses rubles, not kopecks. Consider migrating to V2.
-
-```typescript
-// Update bids using legacy method (rubles)
-await sdk.promotion.updateAuctionBid({
-  bids: [{
-    advert_id: 12345,
-    nm_bids: [
-      { nm_id: 983512347, bid: 5, placement: 'search' },  // 5 rubles
-      { nm_id: 983512347, bid: 3, placement: 'recommendations' }
-    ]
-  }]
-});
-```
+> The rubles-based `updateAuctionBid()` was removed in v4.0.0. Use `updateBids()` (kopecks) for all bid updates.
 
 ## Campaign Finances
 
@@ -425,7 +410,7 @@ const deposit = await sdk.promotion.createBudgetDeposit(
 console.log('Deposit successful');
 
 // Start the campaign after depositing
-await sdk.promotion.getAdvStart({ id: 12345 });
+await sdk.promotion.startCampaign(12345);
 ```
 
 ### View Spending History
@@ -477,52 +462,58 @@ console.log('Campaign performance:', stats);
 
 ### Keyword Statistics
 
+> The standalone `getStatsKeywords()` method was **removed in v4.0.0** (WB disabled the underlying v0/v1 advert API). Use `getAdvFullstats()` for campaign performance — it returns per-day, per-platform, and per-SKU breakdowns including clicks, views, CTR, and spend.
+
 ```typescript
-// Get keyword performance statistics
-const keywordStats = await sdk.promotion.getStatsKeywords({
-  advert_id: 12345,
-  from: '2025-01-01',
-  to: '2025-01-07'
+// Get campaign statistics (use for keyword/SKU-level performance)
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: '12345',
+  beginDate: '2025-01-01',
+  endDate: '2025-01-07'  // max 7 days for keyword-level granularity
 });
 
-for (const kw of keywordStats ?? []) {
-  console.log(`Keyword: ${kw.keyword}`);
-  console.log(`  Views: ${kw.views}, Clicks: ${kw.clicks}`);
-  console.log(`  CTR: ${kw.ctr}%`);
+for (const campaign of stats) {
+  console.log(`Campaign ${campaign.advertId}: ${campaign.views} views, ${campaign.clicks} clicks, CTR ${campaign.ctr}%`);
 }
 ```
 
-## Deprecated Methods
+## Removed Methods (v4.0.0)
 
-The following methods are deprecated and will be disabled on **February 2, 2026**:
+The following methods were **removed in v4.0.0** (WB disabled the underlying v0/v1 advert API on 2026-02-02). Use the replacements listed.
 
-| Deprecated Method | Replacement | Notes |
+| Removed Method | Replacement | Notes |
 |-------------------|-------------|-------|
-| `getPromotionCount()` | `getAdvertsV2()` | V2 provides more filtering options |
+| `getPromotionCount()` | `getCampaignCount()` | Same endpoint, renamed |
 | `createPromotionAdvert()` | `getAdvertsV2()` | Use V2 for campaign info |
 | `getAuctionAdverts()` | `getAdvertsV2()` | V2 unified method |
 | `createBidsMin()` | `getBidsMinV2()` | V2 uses kopecks |
-| `updateAdvBid()` | `updateBidsV2()` | V2 uses kopecks |
-| `getAdvStart()` | Campaign management API | Use updated endpoints |
-| `getAdvPause()` | Campaign management API | Use updated endpoints |
-| `getAdvConfig()` | Configuration API | Use updated endpoints |
-| `getAutoGetnmtoadd()` | `getAuctionAdverts()` + `updateAuctionNm()` | Type 9 campaigns |
-| `createAutoUpdatenm()` | `updateAuctionNm()` | Type 9 campaigns |
+| `updateAdvBid()` | `updateBids()` | Uses kopecks |
+| `updateBidsV2()` | `updateBids()` | Renamed |
+| `updateAuctionBid()` | `updateBids()` | Rubles→kopecks |
+| `getAdvStart()` | `startCampaign(id)` | Renamed |
+| `getAdvPause()` | `pauseCampaign(id)` | Renamed |
+| `createSeacatSaveAd()` | `createCampaign(data)` | Renamed |
+| `getAutoGetnmtoadd()` | `getSupplierNms(subjectIds)` | Type 9 campaigns |
+| `createAutoUpdatenm()` | `updateCampaignProducts()` | Type 9 campaigns |
 | `getAutoStatWords()` | `getAdvFullstats()` | Universal statistics |
-| `createAutoSetExcluded()` | Type 9 campaign creation | New API |
+| `createAutoSetExcluded()` | `setMinusPhrases()` | Minus-phrase management |
+| `getStatsKeywords()` | `getAdvFullstats()` | Keyword stats via full stats |
+| `getStatWords()` | `getAdvFullstats()` | Keyword stats via full stats |
+| `createAdvFullstat()` | `getAdvFullstats()` | v2 POST → v3 GET |
 
 ### Migration Example
 
 ```typescript
-// ❌ OLD (deprecated)
+// ❌ OLD (removed in v4.0.0)
 const oldCampaigns = await sdk.promotion.getPromotionCount();
 
-// ✅ NEW (recommended)
-const newCampaigns = await sdk.promotion.getAdvertsV2();
+// ✅ NEW
+const counts = await sdk.promotion.getCampaignCount();
+const campaigns = await sdk.promotion.getAdvertsV2();
 ```
 
 ```typescript
-// ❌ OLD (deprecated, uses rubles)
+// ❌ OLD (removed, used rubles)
 const oldMinBids = await sdk.promotion.createBidsMin({
   advert_id: 12345,
   nm_ids: [983512347],
@@ -530,7 +521,7 @@ const oldMinBids = await sdk.promotion.createBidsMin({
   placement_types: ['search', 'recommendation']
 });
 
-// ✅ NEW (recommended, uses kopecks)
+// ✅ NEW (uses kopecks)
 const newMinBids = await sdk.promotion.getBidsMinV2({
   advert_id: 12345,
   nm_ids: [983512347],
@@ -539,7 +530,7 @@ const newMinBids = await sdk.promotion.getBidsMinV2({
 });
 ```
 
-See the [Migration Guide](/guides/migration-v2.4-promotion-deprecation) for complete migration instructions.
+See the [v4.0.0 Migration Guide](/guides/migration-v4) for the complete removal list and [Migration Guide: Type 8 to Type 9](/guides/migration-v2.4-promotion-deprecation) for campaign-type migration.
 
 ## Error Handling
 
@@ -584,7 +575,7 @@ async function manageCampaign(campaignId: number) {
 ```typescript
 // Campaign not found
 try {
-  await sdk.promotion.getAdvStart({ id: 999999999 });
+  await sdk.promotion.startCampaign(999999999);
 } catch (error) {
   if (error instanceof WBAPIError && error.statusCode === 404) {
     console.error('Campaign not found');
@@ -594,7 +585,7 @@ try {
 // Invalid campaign state
 try {
   // Trying to pause an already paused campaign
-  await sdk.promotion.getAdvPause({ id: pausedCampaignId });
+  await sdk.promotion.pauseCampaign(pausedCampaignId);
 } catch (error) {
   if (error instanceof WBAPIError && error.statusCode === 400) {
     console.error('Campaign is not in a valid state for this operation');
@@ -610,16 +601,15 @@ The Promotion API uses different rate limits for different endpoint categories:
 
 | Category | Requests/Min | Interval | Burst | Methods |
 |----------|-------------|----------|-------|---------|
-| **Campaign Control** | 300 | 200ms | 5 | `getAdvStart`, `getAdvPause`, `getAdvStop`, `getAdvDelete` |
-| **Campaign Info (V2)** | 300 | 200ms | 5 | `getAdvertsV2`, `getAuctionAdverts` |
-| **Bid Updates** | 300 | 200ms | 5 | `updateBidsV2`, `updateAuctionBid` |
-| **Min Bids** | 20 | 3s | 5 | `getBidsMinV2`, `createBidsMin` |
+| **Campaign Control** | 300 | 200ms | 5 | `startCampaign`, `pauseCampaign`, `getAdvStop`, `getAdvDelete` |
+| **Campaign Info (V2)** | 300 | 200ms | 5 | `getAdvertsV2`, `getCampaignCount` |
+| **Bid Updates** | 300 | 200ms | 5 | `updateBids` |
+| **Min Bids** | 20 | 3s | 5 | `getBidsMinV2` |
 | **Balance/Budget** | 60 | 1s | 5 | `getAdvBalance`, `getAdvBudget` |
 | **NormQuery Stats** | 10 | 6s | 20 | `getNormqueryStats` |
 | **NormQuery Bids** | 300 | 200ms | 10 | `getNormqueryBids`, `deleteNormqueryBids` |
 | **NormQuery Set Bids** | 120 | 500ms | 4 | `setNormqueryBids` |
 | **Full Statistics** | 3 | 20s | 1 | `getAdvFullstats` |
-| **Config** | 1 | 60s | 1 | `getAdvConfig` |
 
 ### Rate Limit Tips
 
@@ -651,11 +641,12 @@ Always prefer V2 methods over deprecated equivalents:
 // ✅ Recommended
 const campaigns = await sdk.promotion.getAdvertsV2();
 const minBids = await sdk.promotion.getBidsMinV2({ ... });
-await sdk.promotion.updateBidsV2({ ... });
+await sdk.promotion.updateBids({ ... });
 
-// ❌ Avoid (deprecated)
-const oldCampaigns = await sdk.promotion.getPromotionCount();
-const oldMinBids = await sdk.promotion.createBidsMin({ ... });
+// ❌ Removed in v4.0.0
+// const oldCampaigns = await sdk.promotion.getPromotionCount();
+// const oldMinBids = await sdk.promotion.createBidsMin({ ... });
+// await sdk.promotion.updateBidsV2({ ... });
 ```
 
 ### 2. Respect Rate Limits
@@ -676,10 +667,11 @@ All new campaigns should be type 9 (manual/unified bid):
 
 ```typescript
 // Create type 9 campaign with manual bids
-const campaignId = await sdk.promotion.createSeacatSaveAd({
+const campaignId = await sdk.promotion.createCampaign({
   name: 'My Campaign',
   nms: [983512347, 123456789],
   bid_type: 'manual',
+  payment_type: 'cpm',
   placement_types: ['search', 'recommendations']
 });
 ```

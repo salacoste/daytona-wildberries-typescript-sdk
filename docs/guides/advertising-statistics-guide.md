@@ -13,20 +13,15 @@
 | Метод | Что возвращает | Rate Limit | HTTP |
 |-------|---------------|------------|------|
 | [`getAdvFullstats()`](#getadvfullstats) | Полная статистика кампаний (клики, показы, заказы, по дням/платформам/SKU) | **3 req/min, интервал 20с** | GET |
-| [`getStatsKeywords()`](#getstatskeywords) | Статистика по ключевым словам (за 7 дней) | 240 req/min | GET |
-| [`getStatWords()`](#getstatwords) | Ключевые слова для кампаний с ручной ставкой | 240 req/min | GET |
-| [`getAutoStatWords()`](#getautostatwords) | Кластеры фраз для кампаний с единой ставкой | 240 req/min | GET |
 | [`createAdvStat()`](#createadvstat) | Статистика медиа-кампаний (баннеры) | 600 req/min | POST |
-| [`createAdvFullstat()`](#createadvfullstat) | Полная статистика v2 | 1 req/min | POST |
 | [`getAdvBalance()`](#getadvbalance) | Баланс рекламного кабинета | 60 req/min | GET |
 | [`getAdvBudget()`](#getadvbudget) | Бюджет кампании | 240 req/min | GET |
 | [`getAdvUpd()`](#getadvupd) | История расходов (УПД) | 60 req/min | GET |
 | [`getAdvPayments()`](#getadvpayments) | История пополнений | 60 req/min | GET |
-| [`getPromotionCount()`](#getpromotioncount) | Список всех кампаний с ID | 300 req/min | GET |
-| [`getAuctionAdverts()`](#getauctionadverts) | Детали кампаний типа 9 (текущие) | 300 req/min | GET |
+| [`getCampaignCount()`](#getcampaigncount) | Список всех кампаний с ID | 300 req/min | GET |
 
-::: danger Критически важно
-Метки ~~`createAdvFullstat()`~~ (v2, POST) и `getAutoStatWords()` — **DEPRECATED**. Используйте `getAdvFullstats()` (v3, GET).
+::: danger Методы удалены в v4.0.0
+Методы `createAdvFullstat()` (v2, POST), `getStatsKeywords()`, `getStatWords()`, `getAutoStatWords()`, `getPromotionCount()` и `getAuctionAdverts()` **удалены в v4.0.0**. Используйте `getAdvFullstats()` (v3, GET) для статистики и `getCampaignCount()` / `getAdvertsV2()` для списка кампаний.
 :::
 
 ---
@@ -299,169 +294,45 @@ async function getAllCampaignStats(
 
 ---
 
-## getStatsKeywords
+## getStatsKeywords (удалён в v4.0.0)
 
-Статистика по ключевым словам из поиска. Показывает, какие ключевые слова приводят показы и клики.
-
-### Параметры
-
-| Параметр | Тип | Обязательный | Описание |
-|----------|-----|:---:|-----------|
-| `advert_id` | `number` | Да | ID кампании |
-| `from` | `string` | Да | Начало периода, `YYYY-MM-DD` |
-| `to` | `string` | Да | Конец периода, `YYYY-MM-DD` |
-
-::: warning Ограничения
-- Максимальный период: **7 дней**
-- Обновляется **каждый час**
-- Домен API: `api.wildberries.ru` (НЕ `advert-api`)
+::: danger Удалено в v4.0.0
+Метод `getStatsKeywords()` **удалён в v4.0.0** (WB отключил v0/v1 advert API). Для статистики по ключевым словам и SKU используйте [`getAdvFullstats()`](#getadvfullstats) — он возвращает данные по дням, платформам и SKU, включая показы, клики, CTR и расход.
 :::
 
-### Пример
+Ранее метод возвращал статистику по ключевым словам из поиска (параметры `advert_id`, `from`, `to`, макс. 7 дней, домен `api.wildberries.ru`). Замена:
 
 ```typescript
-const today = new Date();
-const weekAgo = new Date();
-weekAgo.setDate(today.getDate() - 7);
-
-const format = (d: Date) => d.toISOString().split('T')[0];
-
-const keywordStats = await sdk.promotion.getStatsKeywords({
-  advert_id: 24483511,            // ⚠️ advert_id, НЕ id, НЕ campaignId
-  from: format(weekAgo),          // ⚠️ from, НЕ beginDate
-  to: format(today),              // ⚠️ to, НЕ endDate
+const stats = await sdk.promotion.getAdvFullstats({
+  ids: '24483511',
+  beginDate: format(weekAgo),
+  endDate: format(today),
 });
 
-for (const day of keywordStats.keywords) {
-  console.log(`\n--- ${day.date} ---`);
-
-  // Сортировка по расходу
-  const sorted = [...(day.stats ?? [])].sort((a, b) => (b.sum ?? 0) - (a.sum ?? 0));
-
-  for (const kw of sorted) {
-    console.log(`  "${kw.keyword}": показы=${kw.views}, клики=${kw.clicks}, ` +
-      `CTR=${kw.ctr}%, расход=${kw.sum}₽`);
-  }
-}
-```
-
-### Структура ответа
-
-```typescript
-{
-  keywords: Array<{
-    date: string;             // "2025-12-17"
-    stats: Array<{
-      keyword: string;        // Ключевое слово
-      views: number;          // Показы
-      clicks: number;         // Клики
-      ctr: number;            // CTR, %
-      sum: number;            // Расход, ₽
-    }>;
-  }>;
+for (const campaign of stats) {
+  console.log(`Кампания ${campaign.advertId}: показы=${campaign.views}, клики=${campaign.clicks}, CTR=${campaign.ctr}%`);
 }
 ```
 
 ---
 
-## getStatWords
+## getStatWords (удалён в v4.0.0)
 
-Статистика по ключевым словам для кампаний с **ручной ставкой** (type 9, bid_type manual). Показывает фразы, минус-слова и детальную статистику по каждому ключу.
-
-### Параметры
-
-| Параметр | Тип | Обязательный | Описание |
-|----------|-----|:---:|-----------|
-| `id` | `number` | Да | ID кампании |
-
-::: info
-Обновляется каждые **30 минут**. Работает только для кампаний с ручной ставкой.
+::: danger Удалено в v4.0.0
+Метод `getStatWords()` **удалён в v4.0.0**. Для статистики по ключевым словам/SKU используйте [`getAdvFullstats()`](#getadvfullstats).
 :::
 
-### Пример
-
-```typescript
-const wordStats = await sdk.promotion.getStatWords({ id: 24483511 });
-
-// Настроенные фразы кампании
-if (wordStats.words) {
-  console.log('Фразы:', wordStats.words.phrase?.join(', '));
-  console.log('Минус-слова:', wordStats.words.excluded?.join(', '));
-  console.log('Фиксированные:', wordStats.words.fixed ? 'Да' : 'Нет');
-
-  if (wordStats.words.keywords) {
-    console.log('\nТоп ключевых слов:');
-    for (const kw of wordStats.words.keywords.slice(0, 10)) {
-      console.log(`  "${kw.keyword}": ${kw.count} показов`);
-    }
-  }
-}
-
-// Статистика по ключевым словам
-if (wordStats.stat) {
-  console.log('\nСтатистика:');
-  for (const s of wordStats.stat) {
-    console.log(`  "${s.keyword}": views=${s.views}, clicks=${s.clicks}, ` +
-      `CTR=${s.ctr}%, CPC=${s.cpc}₽, расход=${s.sum}₽`);
-  }
-}
-```
-
-### Структура ответа
-
-```typescript
-{
-  words?: {
-    phrase?: string[];         // Активные поисковые фразы
-    strong?: string[];         // Усиленные фразы
-    excluded?: string[];       // Минус-слова
-    pluse?: string[];          // Доп. фразы
-    keywords?: Array<{
-      keyword?: string;
-      count?: number;          // Количество показов
-    }>;
-    fixed?: boolean;           // Фиксированные фразы
-  };
-  stat?: Array<{
-    advertId?: number;
-    keyword?: string;
-    views?: number;
-    clicks?: number;
-    ctr?: number;              // %
-    cpc?: number;              // ₽
-    sum?: number;              // Расход, ₽
-    frq?: number;              // Частотность
-    duration?: number;         // Длительность показов
-  }>;
-}
-```
+Ранее метод возвращал статистику по ключевым словам для кампаний с ручной ставкой (параметр `id`, обновление каждые 30 минут). Замена — `getAdvFullstats()`, который возвращает универсальную статистику по дням, платформам и SKU.
 
 ---
 
-## getAutoStatWords
+## getAutoStatWords (удалён в v4.0.0)
 
-::: danger DEPRECATED — будет отключен 02.02.2026
-Используйте [`getAdvFullstats()`](#getadvfullstats) вместо этого метода.
+::: danger Удалено в v4.0.0
+Метод `getAutoStatWords()` **удалён в v4.0.0**. Используйте [`getAdvFullstats()`](#getadvfullstats).
 :::
 
-Кластеры ключевых фраз для кампаний с **единой ставкой** (type 8). Группирует похожие поисковые фразы.
-
-### Пример
-
-```typescript
-const clusters = await sdk.promotion.getAutoStatWords({ id: 24483511 });
-
-if (clusters.clusters) {
-  for (const c of clusters.clusters) {
-    console.log(`Кластер "${c.cluster}": ${c.count} показов`);
-    console.log(`  Ключевые слова: ${c.keywords?.join(', ')}`);
-  }
-}
-
-if (clusters.excluded) {
-  console.log(`\nМинус-слова: ${clusters.excluded.join(', ')}`);
-}
-```
+Ранее метод возвращал кластеры ключевых фраз для кампаний с единой ставкой (type 8). Замена — `getAdvFullstats()`.
 
 ---
 
@@ -534,21 +405,14 @@ Array<{
 
 ---
 
-## createAdvFullstat
+## createAdvFullstat (удалён в v4.0.0)
 
-::: danger DEPRECATED — будет отключен 30 сентября
-Используйте [`getAdvFullstats()`](#getadvfullstats) вместо этого метода. Обратите внимание: v2 использует POST, v3 использует GET.
+::: danger Удалено в v4.0.0
+Метод `createAdvFullstat()` (v2, POST) **удалён в v4.0.0**. Используйте [`getAdvFullstats()`](#getadvfullstats) (v3, GET).
 :::
 
-Устаревший метод полной статистики (v2). Rate limit: 1 req/min.
-
 ```typescript
-// ❌ DEPRECATED — не используйте
-const stats = await sdk.promotion.createAdvFullstat([
-  { id: 24483511, interval: { begin: '2025-12-01', end: '2025-12-07' } }
-]);
-
-// ✅ ИСПОЛЬЗУЙТЕ ВМЕСТО ЭТОГО:
+// ✅ ИСПОЛЬЗУЙТЕ:
 const stats = await sdk.promotion.getAdvFullstats({
   ids: '24483511',
   beginDate: '2025-12-01',
@@ -645,12 +509,12 @@ for (const p of payments) {
 
 ---
 
-## getPromotionCount
+## getCampaignCount
 
-Список всех кампаний с ID, типами и статусами. Используйте для получения ID кампаний перед запросом статистики.
+Список всех кампаний с ID, типами и статусами. Используйте для получения ID кампаний перед запросом статистики. (Переименован из `getPromotionCount()` в v4.0.0 — тот же endpoint.)
 
 ```typescript
-const campaigns = await sdk.promotion.getPromotionCount();
+const campaigns = await sdk.promotion.getCampaignCount();
 
 console.log(`Всего кампаний: ${campaigns.all}`);
 
@@ -671,23 +535,17 @@ console.log(`ID кампаний: ${allIds.join(', ')}`);
 
 ---
 
-## getAuctionAdverts
+## getAuctionAdverts (удалён в v4.0.0)
 
-Детали кампаний типа 9 (текущий тип). Ставки, товары, плейсменты.
+::: danger Удалено в v4.0.0
+Метод `getAuctionAdverts()` **удалён в v4.0.0**. Используйте `getAdvertsV2()` для получения деталей кампаний любого типа.
+:::
 
 ```typescript
-// Все активные кампании
-const active = await sdk.promotion.getAuctionAdverts({ statuses: '9' });
-
-// Конкретные кампании
-const specific = await sdk.promotion.getAuctionAdverts({
-  ids: '24483511,23332267',
-});
-
-// Фильтр по типу оплаты
-const cpmCampaigns = await sdk.promotion.getAuctionAdverts({
-  payment_type: 'cpm',
-});
+// ✅ ИСПОЛЬЗУЙТЕ getAdvertsV2:
+const active = await sdk.promotion.getAdvertsV2({ statuses: '9' });
+const specific = await sdk.promotion.getAdvertsV2({ ids: '24483511,23332267' });
+const cpmCampaigns = await sdk.promotion.getAdvertsV2({ payment_type: 'cpm' });
 ```
 
 ---
@@ -705,7 +563,7 @@ async function generateDailyReport(date: string) {
   const report: Record<string, unknown>[] = [];
 
   // 1. Получаем список всех кампаний
-  const campaigns = await sdk.promotion.getPromotionCount();
+  const campaigns = await sdk.promotion.getCampaignCount();
   const activeIds = (campaigns.adverts ?? [])
     .filter(g => g.status === 9 || g.status === 11) // Активные и на паузе
     .flatMap(g => g.advert_list?.map(a => a.advertId!) ?? []);
@@ -801,71 +659,73 @@ import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({ apiKey: process.env.WB_API_KEY! });
 
-interface KeywordReport {
-  keyword: string;
+interface SkuReport {
+  nmId: number;
+  name: string;
   totalViews: number;
   totalClicks: number;
   totalSpent: number;
+  totalOrders: number;
   avgCtr: number;
-  days: Array<{ date: string; views: number; clicks: number; sum: number }>;
 }
 
-async function getKeywordAnalytics(campaignId: number, days: number = 7) {
+async function getSkuAnalytics(campaignId: number, days: number = 7) {
   const to = new Date();
   const from = new Date();
   from.setDate(to.getDate() - days);
 
   const format = (d: Date) => d.toISOString().split('T')[0];
 
-  const stats = await sdk.promotion.getStatsKeywords({
-    advert_id: campaignId,
-    from: format(from),
-    to: format(to),
+  // getAdvFullstats заменил getStatsKeywords (удалён в v4.0.0)
+  const stats = await sdk.promotion.getAdvFullstats({
+    ids: String(campaignId),
+    beginDate: format(from),
+    endDate: format(to),
   });
 
-  // Агрегация по ключевым словам
-  const kwMap = new Map<string, KeywordReport>();
+  // Агрегация по SKU (nmId) — days[] -> apps[] -> nms[]
+  const skuMap = new Map<number, SkuReport>();
 
-  for (const day of stats.keywords ?? []) {
-    for (const kw of day.stats ?? []) {
-      const existing = kwMap.get(kw.keyword!) ?? {
-        keyword: kw.keyword!,
-        totalViews: 0,
-        totalClicks: 0,
-        totalSpent: 0,
-        avgCtr: 0,
-        days: [],
-      };
+  for (const campaign of stats) {
+    for (const day of campaign.days ?? []) {
+      for (const app of day.apps ?? []) {
+        for (const nm of app.nms ?? []) {
+          const existing = skuMap.get(nm.nmId) ?? {
+            nmId: nm.nmId,
+            name: nm.name,
+            totalViews: 0,
+            totalClicks: 0,
+            totalSpent: 0,
+            totalOrders: 0,
+            avgCtr: 0,
+          };
 
-      existing.totalViews += kw.views ?? 0;
-      existing.totalClicks += kw.clicks ?? 0;
-      existing.totalSpent += kw.sum ?? 0;
-      existing.days.push({
-        date: day.date!,
-        views: kw.views ?? 0,
-        clicks: kw.clicks ?? 0,
-        sum: kw.sum ?? 0,
-      });
+          existing.totalViews += nm.views ?? 0;
+          existing.totalClicks += nm.clicks ?? 0;
+          existing.totalSpent += nm.sum ?? 0;
+          existing.totalOrders += nm.orders ?? 0;
 
-      kwMap.set(kw.keyword!, existing);
+          skuMap.set(nm.nmId, existing);
+        }
+      }
     }
   }
 
   // Расчет среднего CTR
-  for (const kw of kwMap.values()) {
-    kw.avgCtr = kw.totalViews > 0
-      ? (kw.totalClicks / kw.totalViews) * 100
+  for (const sku of skuMap.values()) {
+    sku.avgCtr = sku.totalViews > 0
+      ? (sku.totalClicks / sku.totalViews) * 100
       : 0;
   }
 
-  return [...kwMap.values()].sort((a, b) => b.totalSpent - a.totalSpent);
+  return [...skuMap.values()].sort((a, b) => b.totalSpent - a.totalSpent);
 }
 
 // Использование
-const keywords = await getKeywordAnalytics(24483511, 7);
-for (const kw of keywords.slice(0, 20)) {
-  console.log(`"${kw.keyword}": ${kw.totalViews} показов, ` +
-    `${kw.totalClicks} кликов, CTR=${kw.avgCtr.toFixed(2)}%, ${kw.totalSpent}₽`);
+const skus = await getSkuAnalytics(24483511, 7);
+for (const sku of skus.slice(0, 20)) {
+  console.log(`SKU ${sku.nmId} "${sku.name}": ${sku.totalViews} показов, ` +
+    `${sku.totalClicks} кликов, CTR=${sku.avgCtr.toFixed(2)}%, ${sku.totalSpent}₽`);
 }
 ```
 
@@ -1020,8 +880,6 @@ try {
 | Метод | Минимальный интервал |
 |-------|---------------------|
 | `getAdvFullstats()` | 21 секунда |
-| `getStatsKeywords()` | 250 мс |
-| `getStatWords()` | 250 мс |
 | `getAdvBalance()` | 1 секунда |
 | `getAdvUpd()` | 1 секунда |
 | `getAdvPayments()` | 1 секунда |
@@ -1043,7 +901,7 @@ const stats = await sdk.promotion.getAdvFullstats({
 
 if (stats.length === 0) {
   // Проверяем: существует ли кампания?
-  const campaigns = await sdk.promotion.getPromotionCount();
+  const campaigns = await sdk.promotion.getCampaignCount();
   const allIds = campaigns.adverts?.flatMap(g =>
     g.advert_list?.map(a => a.advertId) ?? []
   ) ?? [];
@@ -1056,21 +914,23 @@ if (stats.length === 0) {
 }
 ```
 
-### Ошибка: getStatsKeywords — неправильные параметры
+### Ошибка: getAdvFullstats — неправильные параметры
+
+> `getStatsKeywords()` удалён в v4.0.0. Ниже — типичные ошибки параметров `getAdvFullstats()`.
 
 ```typescript
-// ❌ НЕПРАВИЛЬНО — путаница с getAdvFullstats
-await sdk.promotion.getStatsKeywords({
-  id: 24483511,              // ❌ Параметр называется advert_id
-  beginDate: '2025-12-01',   // ❌ Параметр называется from
-  endDate: '2025-12-07',     // ❌ Параметр называется to
+// ❌ НЕПРАВИЛЬНО — путаница с типами параметров
+await sdk.promotion.getAdvFullstats({
+  ids: 24483511,            // ❌ ids — строка, не число
+  from: '2025-12-01',       // ❌ Параметр называется beginDate
+  to: '2025-12-07',         // ❌ Параметр называется endDate
 });
 
 // ✅ ПРАВИЛЬНО
-await sdk.promotion.getStatsKeywords({
-  advert_id: 24483511,       // ✅ advert_id
-  from: '2025-12-01',        // ✅ from
-  to: '2025-12-07',          // ✅ to (макс 7 дней)
+await sdk.promotion.getAdvFullstats({
+  ids: '24483511',          // ✅ строка
+  beginDate: '2025-12-01',  // ✅ beginDate
+  endDate: '2025-12-07',    // ✅ endDate (макс 31 день)
 });
 ```
 
@@ -1081,9 +941,6 @@ await sdk.promotion.getStatsKeywords({
 | Метод | Параметр даты начала | Параметр даты конца | Параметр ID | Макс. период |
 |-------|---------------------|--------------------|----|--------------|
 | `getAdvFullstats()` | `beginDate` | `endDate` | `ids` (строка) | 31 день |
-| `getStatsKeywords()` | `from` | `to` | `advert_id` (число) | 7 дней |
-| `getStatWords()` | — | — | `id` (число) | — |
-| `getAutoStatWords()` | — | — | `id` (число) | — |
 | `getAdvUpd()` | `from` | `to` | — | без лимита |
 | `getAdvPayments()` | `from` | `to` | — | без лимита |
 
@@ -1125,9 +982,8 @@ await sdk.promotion.getStatsKeywords({
 
 | Домен | Методы |
 |-------|--------|
-| `advert-api.wildberries.ru` | `getAdvFullstats`, `getStatWords`, `getAutoStatWords`, `getAdvBalance`, `getAdvBudget`, `getAdvUpd`, `getAdvPayments`, `getPromotionCount`, `getAuctionAdverts` |
+| `advert-api.wildberries.ru` | `getAdvFullstats`, `getAdvBalance`, `getAdvBudget`, `getAdvUpd`, `getAdvPayments`, `getCampaignCount`, `getAdvertsV2` |
 | `advert-media-api.wildberries.ru` | `createAdvStat`, `getAdvCount`, `getAdvAdverts`, `getAdvAdvert` |
-| `api.wildberries.ru` | `getStatsKeywords` |
 
 ::: info
 SDK автоматически направляет запросы на нужный домен. Знать домены нужно только для отладки сетевых проблем.
