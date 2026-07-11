@@ -99,7 +99,7 @@ export class CampaignNotFoundError extends WBAPIError {
  * import { InvalidBidError } from 'daytona-wildberries-typescript-sdk';
  *
  * try {
- *   await sdk.promotion.updateAuctionBids({
+ *   await sdk.promotion.updateBids({
  *     bids: [{ advert_id: 123, nm_bids: [{ nm_id: 456, bid: 50, placement: 'search' }] }]
  *   });
  * } catch (error) {
@@ -428,7 +428,7 @@ export class InvalidCampaignStateError extends WBAPIError {
       '  - Paused (11) → Active (9): Use startCampaign()',
       '  - Active/Paused → Completed (7): Use stopCampaign()',
       '\nTo resolve this issue:',
-      '1. Check current campaign state using getCampaigns() or getAuctionAdverts()',
+      '1. Check current campaign state using getAdvertsV2()',
       '2. Ensure campaign is in a valid state for this operation',
       '3. Review campaign lifecycle documentation',
     ].join('\n');

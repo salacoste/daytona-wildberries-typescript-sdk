@@ -8,10 +8,6 @@
  * @todo Re-enable when MSW v3 or Vitest provides a solution
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated -- This file tests the deprecated
-   getSupplierReportDetailByPeriod() method and DetailReportItem type (Sprint 10 task-103).
-   The method remains functional until WB disables it on 2026-07-15. */
-
 /**
  * Integration tests for FinancesModule
  *
