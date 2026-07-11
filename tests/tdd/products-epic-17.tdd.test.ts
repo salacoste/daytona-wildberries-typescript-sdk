@@ -141,7 +141,7 @@ describe('EPIC 17: Products Rate Limits', () => {
 
   describe('PUT methods pass rateLimitKey', () => {
     it('updateStock should pass rateLimitKey in options', async () => {
-      await module.updateStock(1, { stocks: [{ sku: 'ABC', amount: 10 }] });
+      await module.updateStock(1, { stocks: [{ chrtId: 123, amount: 10 }] });
 
       expect(mockClient.put).toHaveBeenCalledWith(
         expect.any(String),
@@ -167,7 +167,7 @@ describe('EPIC 17: Products Rate Limits', () => {
 
   describe('DELETE methods pass rateLimitKey', () => {
     it('deleteStock should pass rateLimitKey in options', async () => {
-      await module.deleteStock(1, { skus: ['ABC'] });
+      await module.deleteStock(1, { chrtIds: [123] });
 
       expect(mockClient.delete).toHaveBeenCalledWith(
         expect.any(String),

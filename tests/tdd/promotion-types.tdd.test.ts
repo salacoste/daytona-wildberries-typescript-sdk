@@ -13,7 +13,7 @@
  * Current Issues Found:
  * - BidType exports 'unified' | 'manual' but should be 'auto' | 'manual'
  * - PlacementType exports 'recommendation' (singular) but API uses 'recommendations' (plural)
- * - GetAdvertsItem.bid_type is typed as string, should use BidType
+ * - V2 response item bid_type is typed as string, should use BidType
  * - Missing AdvertV2, NmSettingV2, BidsKopecks, GetAdvertsV2Response named exports
  */
 
@@ -35,33 +35,6 @@ describe('Task-50: Promotion Types Update (bid_type enum & bid_kopecks)', () => 
 
       // Verify 'unified' is NOT in the valid values (this is the semantic check)
       expect(validBidTypes).not.toContain('unified');
-    });
-
-    it('GetAdvertsItem.bid_type should be typed as BidType, not string', () => {
-      // Current issue: GetAdvertsItem has bid_type: string
-      // Required: GetAdvertsItem should have bid_type: BidType (= 'auto' | 'manual')
-      // This is a compile-time check that cannot be verified at runtime
-      // The test creates conformant data to validate the structure
-      const advertItem: PromotionTypes.GetAdvertsItem = {
-        id: 123,
-        nm_settings: [],
-        settings: {
-          payment_type: 'cpm',
-          name: 'Test',
-          placements: { search: true, recommendations: false },
-        },
-        status: 9,
-        timestamps: {
-          created: '2024-01-01T00:00:00+03:00',
-          deleted: '2100-01-01T00:00:00+03:00',
-          started: '2024-01-01T00:00:00+03:00',
-          updated: '2024-01-01T00:00:00+03:00',
-        },
-        bid_type: 'auto', // This should be valid after type fix
-      };
-
-      // After fix, bid_type should only accept 'auto' | 'manual'
-      expect(['auto', 'manual']).toContain(advertItem.bid_type);
     });
 
     it('should export AdvertV2 interface for V2 API responses', () => {

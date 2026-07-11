@@ -15,7 +15,7 @@
  *   AC6: T4 entry added at 500 req/min with shared key
  *   AC9: Unit test verifies every rateLimitKey has a matching config entry
  *
- * 22 methods → 28 config entries (includes EPIC 26 bulk meta + group/delivery endpoints)
+ * 22 methods → 27 config entries (getMetaBulk removed in v4.0.0; checkMetaValidation is the live replacement)
  *
  * Tier definitions:
  *   T1 (300/min, 0.2s, burst 20): getNewOrders, getOrders, getClientInfo,
@@ -38,7 +38,7 @@ import type { BaseClient } from '../../src/client/base-client';
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** All 28 unique rateLimitKey values expected in the module */
+/** All 27 unique rateLimitKey values expected in the module */
 const EXPECTED_RATE_LIMIT_KEYS: string[] = [
   // T1 – 300 req/min
   'orders-dbs.getNewOrders',
@@ -62,7 +62,6 @@ const EXPECTED_RATE_LIMIT_KEYS: string[] = [
   'orders-dbs.cancel',
   // T3 – 150 req/min
   'orders-dbs.getMeta',
-  'orders-dbs.getMetaBulk',
   'orders-dbs.deleteMeta',
   'orders-dbs.deleteMetaBulk',
   // T4 – 500 req/min (shared)
@@ -472,9 +471,9 @@ describe('EPIC 27: DBS Rate Limits', () => {
   // ==========================================================================
 
   describe('AC #9: Every rateLimitKey has a matching config entry', () => {
-    it('config should contain exactly 28 entries', async () => {
+    it('config should contain exactly 27 entries', async () => {
       const { ordersDbsRateLimits } = await import('../../src/config/orders-dbs-rate-limits');
-      expect(Object.keys(ordersDbsRateLimits)).toHaveLength(28);
+      expect(Object.keys(ordersDbsRateLimits)).toHaveLength(27);
     });
 
     it('every expected key exists in config', async () => {
@@ -534,10 +533,9 @@ describe('EPIC 27: DBS Rate Limits', () => {
       await module.reject(1, 'ABC');
       await module.cancel(1);
 
-      // New EPIC 26 methods (9 bulk endpoints)
+      // New EPIC 26 methods (8 live bulk endpoints; getMetaBulk removed in v4.0.0)
       await module.getGroupsInfo({ orders: [1] });
       await module.getDeliveryDates({ orders: [1] });
-      await module.getMetaBulk({ orders: [1] });
       await module.deleteMetaBulk({ orders: [1], key: 'imei' });
       await module.setSgtinBulk({ orders: [{ orderId: 1, sgtins: ['123'] }] });
       await module.setUinBulk({ orders: [{ orderId: 1, uin: '123' }] });
@@ -566,8 +564,8 @@ describe('EPIC 27: DBS Rate Limits', () => {
         );
       }
 
-      // Should have collected exactly 28 unique keys
-      expect(collectedKeys.size).toBe(28);
+      // Should have collected exactly 27 unique keys
+      expect(collectedKeys.size).toBe(27);
     });
   });
 

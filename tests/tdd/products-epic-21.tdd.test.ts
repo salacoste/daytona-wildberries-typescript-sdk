@@ -202,12 +202,6 @@ describe('EPIC 21: Products Test Coverage - Critical CRUD Methods', () => {
       expect(mockClient.post).toHaveBeenCalledTimes(1);
     });
 
-    it('createStock is callable with warehouseId and data', async () => {
-      mockClient.post.mockResolvedValue({ stocks: [] });
-      await module.createStock(1, { skus: ['ABC123'] });
-      expect(mockClient.post).toHaveBeenCalledTimes(1);
-    });
-
     it('deleteContentTag is callable with tag ID', async () => {
       mockClient.delete.mockResolvedValue({});
       await module.deleteContentTag(42);

@@ -5,11 +5,11 @@
  * and parameter fixes. They are EXPECTED TO FAIL until the implementation is complete.
  *
  * Acceptance Criteria verified:
- *  1. report_type enum values 1, 2, 3, 4 accepted
- *  2. suppliercontract_code typed as object | null not Record<string, never>
- *  3. 5 missing DetailReportItem fields added
  *  4. Required params not wrapped in optional objects
  *  5. Balance response uses named interface
+ *
+ * Note: ACs #1-3 covered getSupplierReportDetailByPeriod / DetailReportItem,
+ * removed in v4.0.0 — see docs/guides/migration-v4.md.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -35,41 +35,6 @@ describe('EPIC 46: Finances Type & Parameter Fixes', () => {
       delete: vi.fn().mockResolvedValue({}),
     };
     module = new FinancesModule(mockClient as unknown as BaseClient);
-  });
-
-  describe('AC #1: report_type enum values 1,2,3,4', () => {
-    it('should accept report_type value 1 in getSupplierReportDetailByPeriod options', async () => {
-      // The period query param should support report_type with numeric enum values 1-4
-      // Currently: the method is named getSupplierReportdetailbyperiod (wrong casing)
-      // and period param accepts 'weekly' | 'daily' but should also support report_type
-      await module.getSupplierReportdetailbyperiod({
-        dateFrom: '2026-01-01',
-        dateTo: '2026-01-31',
-      });
-      expect(mockClient.get).toHaveBeenCalled();
-    });
-
-    it.todo('report_type=1 is accepted for standard report');
-    it.todo('report_type=2 is accepted for detailed report');
-    it.todo('report_type=3 is accepted for summary report');
-    it.todo('report_type=4 is accepted for extended report');
-    it.todo('report_type is available as a query parameter in getSupplierReportDetailByPeriod');
-  });
-
-  describe('AC #2: suppliercontract_code correct type', () => {
-    it.todo(
-      'DetailReportItem.suppliercontract_code typed as object | null not Record<string, never>'
-    );
-    it.todo('suppliercontract_code accepts null value');
-    it.todo('suppliercontract_code accepts non-empty object value');
-  });
-
-  describe('AC #3: 5 missing DetailReportItem fields added', () => {
-    it.todo('DetailReportItem has payment_schedule field');
-    it.todo('DetailReportItem has seller_promo_id field');
-    it.todo('DetailReportItem has seller_promo_discount field');
-    it.todo('DetailReportItem has uuid_promocode field');
-    it.todo('DetailReportItem has sale_price_promocode_discount_prc field');
   });
 
   describe('AC #4: Required params not wrapped in optional objects', () => {

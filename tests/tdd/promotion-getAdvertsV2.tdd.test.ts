@@ -11,7 +11,7 @@
  *
  * Current Implementation Status:
  * - The getAdvertsV2 method already exists with correct URL and rateLimitKey
- * - The GetAdverts type exists but uses bid_type: string instead of typed enum
+ * - The response type uses bid_type: string instead of typed enum
  * - Tests verify the expected behavior for when types are properly updated
  *
  * Expected: Most tests PASS (method exists), but type-specific tests may fail
@@ -387,16 +387,15 @@ describe('Task-51: Update getAdvertsV2 Method', () => {
   });
 
   describe('Type correctness (requires task-50 type updates)', () => {
-    it('response type should use GetAdvertsV2Response (not GetAdverts)', () => {
-      // The method currently returns Promise<GetAdverts>
-      // After task-50, it should return Promise<GetAdvertsV2Response> with proper types
+    it('response type should use GetAdvertsV2Response', () => {
+      // The method should return Promise<GetAdvertsV2Response> with proper types
       // This is a design decision to verify - GetAdvertsV2Response should be the canonical name
       expect(typeof module.getAdvertsV2).toBe('function');
     });
 
     it('advert bid_type should be typed as BidType enum, not string', () => {
-      // Current: GetAdvertsItem.bid_type: string
-      // Expected: GetAdvertsItem.bid_type: 'auto' | 'manual' (or BidType)
+      // Current: response item bid_type: string
+      // Expected: bid_type: 'auto' | 'manual' (or BidType)
       const mockAdvert = {
         bid_type: 'auto' as const, // This should be valid after task-50
         id: 12345,

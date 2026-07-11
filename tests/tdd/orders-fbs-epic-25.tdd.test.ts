@@ -50,10 +50,6 @@ describe('EPIC 25: Orders FBS Testing - Method Completeness', () => {
     });
 
     describe('Order metadata methods', () => {
-      it('should have getOrdersMeta method', () => {
-        expect(typeof module.getOrdersMeta).toBe('function');
-      });
-
       it('should have deleteOrdersMeta method', () => {
         expect(typeof module.deleteOrdersMeta).toBe('function');
       });
@@ -154,12 +150,6 @@ describe('EPIC 25: Orders FBS Testing - Method Completeness', () => {
 
     it('createOrdersStatu() should return a promise', async () => {
       const result = module.createOrdersStatu({ orders: [123] });
-      expect(result).toBeInstanceOf(Promise);
-      await result;
-    });
-
-    it('getOrdersMeta() should return a promise', async () => {
-      const result = module.getOrdersMeta(12345);
       expect(result).toBeInstanceOf(Promise);
       await result;
     });

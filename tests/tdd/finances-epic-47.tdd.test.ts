@@ -8,7 +8,10 @@
  * Acceptance Criteria verified:
  *  1. All 6 @example blocks reference sdk.finances.* not sdk.general.*
  *  2. Rate limit keys wired for all 6 methods
- *  3. Method naming casing fixed (getSupplierReportdetailbyperiod -> getSupplierReportDetailByPeriod)
+ *  3. Method naming casing fixed
+ *
+ * Note: getSupplierReportDetailByPeriod cases removed — method deleted in v4.0.0
+ * (see docs/guides/migration-v4.md).
  *  4. Unit tests exist for all 6 methods
  *  5. @see links to official documentation
  */
@@ -45,15 +48,6 @@ describe('EPIC 47: Finances Code Quality', () => {
       expect(mockClient.get).toHaveBeenCalled();
     });
 
-    it('getSupplierReportDetailByPeriod @example should reference sdk.finances not sdk.general', async () => {
-      // Currently: sdk.general.getSupplierReportdetailbyperiod -> should be: sdk.finances.getSupplierReportDetailByPeriod
-      await module.getSupplierReportdetailbyperiod({
-        dateFrom: '2026-01-01',
-        dateTo: '2026-01-31',
-      });
-      expect(mockClient.get).toHaveBeenCalled();
-    });
-
     it('getDocumentsCategories @example should reference sdk.finances not sdk.general', async () => {
       await module.getDocumentsCategories();
       expect(mockClient.get).toHaveBeenCalled();
@@ -80,17 +74,6 @@ describe('EPIC 47: Finances Code Quality', () => {
   describe('AC #2: Rate limit keys wired for all 6 methods', () => {
     it('should pass rateLimitKey for getAccountBalance', async () => {
       await module.getAccountBalance();
-      expect(mockClient.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ rateLimitKey: expect.any(String) })
-      );
-    });
-
-    it('should pass rateLimitKey for getSupplierReportDetailByPeriod', async () => {
-      await module.getSupplierReportdetailbyperiod({
-        dateFrom: '2026-01-01',
-        dateTo: '2026-01-31',
-      });
       expect(mockClient.get).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({ rateLimitKey: expect.any(String) })
@@ -132,12 +115,6 @@ describe('EPIC 47: Finances Code Quality', () => {
   });
 
   describe('AC #3: Method naming casing fixed', () => {
-    it('should have getSupplierReportDetailByPeriod (correct camelCase)', () => {
-      // Currently named: getSupplierReportdetailbyperiod (no camelCase)
-      // Should be: getSupplierReportDetailByPeriod
-      expect(module).toHaveProperty('getSupplierReportDetailByPeriod');
-    });
-
     it('should have correct camelCase for all method names', () => {
       // Verify all methods follow camelCase convention
       expect(module).toHaveProperty('getAccountBalance');
@@ -202,31 +179,10 @@ describe('EPIC 47: Finances Code Quality', () => {
         expect.objectContaining({ rateLimitKey: expect.any(String) })
       );
     });
-
-    it('getSupplierReportDetailByPeriod should call correct URL', async () => {
-      // This test will fail because the method is named getSupplierReportdetailbyperiod
-      if (typeof (module as any).getSupplierReportDetailByPeriod === 'function') {
-        await (module as any).getSupplierReportDetailByPeriod({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-      } else {
-        // Fallback to current name to test URL
-        await module.getSupplierReportdetailbyperiod({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-      }
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod',
-        expect.anything()
-      );
-    });
   });
 
   describe('AC #5: @see links to official documentation', () => {
     it.todo('getAccountBalance has @see link to dev.wildberries.ru finance docs');
-    it.todo('getSupplierReportDetailByPeriod has @see link to dev.wildberries.ru');
     it.todo('getDocumentsCategories has @see link to dev.wildberries.ru');
     it.todo('getDocumentsList has @see link to dev.wildberries.ru');
     it.todo('getDocumentsDownload has @see link to dev.wildberries.ru');

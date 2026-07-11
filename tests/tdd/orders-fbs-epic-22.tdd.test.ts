@@ -35,40 +35,6 @@ describe('EPIC 22: Orders FBS URL Fixes', () => {
     mod = new OrdersFbsModule(mockClient as unknown as BaseClient) as ModuleWithMethods;
   });
 
-  describe('AC1: getOrdersMeta uses POST /api/marketplace/v3/orders/meta', () => {
-    it('should have a getOrdersMeta method that accepts an array of order IDs (batch)', async () => {
-      // The updated API uses POST with a body containing order IDs (batch endpoint)
-      // instead of GET with a single orderId path parameter
-      const orderIds = [12345, 67890];
-      await mod.getOrdersMeta({ orders: orderIds });
-
-      // Should use POST (not GET)
-      expect(mockClient.post).toHaveBeenCalled();
-      expect(mockClient.get).not.toHaveBeenCalled();
-    });
-
-    it('should call the new URL /api/marketplace/v3/orders/meta', async () => {
-      const orderIds = [12345, 67890];
-      await mod.getOrdersMeta({ orders: orderIds });
-
-      const calledUrl = mockClient.post.mock.calls[0][0] as string;
-      expect(calledUrl).toContain('/api/marketplace/v3/orders/meta');
-      // Should NOT contain the old per-order path pattern
-      expect(calledUrl).not.toMatch(/\/orders\/\d+\/meta/);
-    });
-
-    it('should send order IDs in the request body', async () => {
-      const requestData = { orders: [12345, 67890] };
-      await mod.getOrdersMeta(requestData);
-
-      expect(mockClient.post).toHaveBeenCalledWith(
-        expect.any(String),
-        requestData,
-        expect.anything()
-      );
-    });
-  });
-
   describe('AC2: getOrdersStickers uses POST /api/marketplace/v3/orders/stickers', () => {
     it('should call the URL containing /api/marketplace/v3/orders/stickers', async () => {
       // The current method is createOrdersSticker; the fixed version should be getOrdersStickers
@@ -125,21 +91,11 @@ describe('EPIC 22: Orders FBS URL Fixes', () => {
   });
 
   describe('AC5: Deprecated getOrderMeta (singular per-order) removed or deprecated', () => {
-    it('should not have the old getOrdersMeta method that takes a single orderId path param', async () => {
-      // The old method signature: getOrdersMeta(orderId: number) -> GET /orders/{orderId}/meta
-      // The new method should accept an object (batch), not a single orderId
-      await mod.getOrdersMeta({ orders: [12345] });
-      // Verify it does NOT call GET (which is the old behavior)
-      expect(mockClient.get).not.toHaveBeenCalledWith(
-        expect.stringMatching(/\/orders\/\d+\/meta/),
-        expect.anything()
-      );
-    });
-
-    it('should provide batch meta retrieval via POST', async () => {
-      // getOrdersMeta should be updated to batch mode using POST
-      await mod.getOrdersMeta({ orders: [111, 222] });
-      expect(mockClient.post).toHaveBeenCalled();
+    it('should not expose a singular getOrdersMeta(orderId) path-param method', () => {
+      // The singular per-order getOrdersMeta(orderId) -> GET /orders/{orderId}/meta
+      // was removed in v4.0.0; only the batch getOrdersMetaBulk() remains
+      // (see docs/guides/migration-v4.md).
+      expect(typeof (mod as unknown as Record<string, unknown>).getOrdersMeta).not.toBe('function');
     });
   });
 });

@@ -137,23 +137,6 @@ describe('EPIC 26: DBS New Endpoints', () => {
   // ============================================================================
 
   describe('AC #2: Bulk metadata endpoints', () => {
-    describe('getMetaBulk()', () => {
-      it('should have getMetaBulk method', () => {
-        expect(module).toHaveProperty('getMetaBulk');
-        expect(typeof (module as any).getMetaBulk).toBe('function');
-      });
-
-      it('should accept an array of order IDs', async () => {
-        await (module as any).getMetaBulk([111, 222, 333]);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          expect.any(String),
-          expect.anything(),
-          expect.anything()
-        );
-      });
-    });
-
     describe('deleteMetaBulk()', () => {
       it('should have deleteMetaBulk method', () => {
         expect(module).toHaveProperty('deleteMetaBulk');
@@ -203,16 +186,6 @@ describe('EPIC 26: DBS New Endpoints', () => {
 
   describe('AC #3: Correct URLs for new endpoints', () => {
     describe('Bulk metadata URLs at /api/marketplace/v3/dbs/orders/meta/*', () => {
-      it('getMetaBulk should call POST /api/marketplace/v3/dbs/orders/meta/info', async () => {
-        await (module as any).getMetaBulk([111, 222]);
-
-        expect(mockClient.post).toHaveBeenCalledWith(
-          `${BASE_URL}/api/marketplace/v3/dbs/orders/meta/info`,
-          expect.anything(),
-          expect.anything()
-        );
-      });
-
       it('deleteMetaBulk should call POST /api/marketplace/v3/dbs/orders/meta/delete', async () => {
         await (module as any).deleteMetaBulk({ orders: [111], key: 'imei' });
 
@@ -279,12 +252,6 @@ describe('EPIC 26: DBS New Endpoints', () => {
     });
 
     describe('All bulk metadata endpoints use POST method', () => {
-      it('getMetaBulk should use POST (not GET)', async () => {
-        await (module as any).getMetaBulk([111]);
-        expect(mockClient.post).toHaveBeenCalled();
-        expect(mockClient.get).not.toHaveBeenCalled();
-      });
-
       it('deleteMetaBulk should use POST (not DELETE)', async () => {
         await (module as any).deleteMetaBulk({ orders: [111], key: 'imei' });
         expect(mockClient.post).toHaveBeenCalled();
@@ -415,11 +382,6 @@ describe('EPIC 26: DBS New Endpoints', () => {
     });
 
     describe('Bulk metadata schemas', () => {
-      it('should export GetOrderMetaBulkResponse type', async () => {
-        const types = await import('../../src/types/orders-dbs.types');
-        expect(types).toBeDefined();
-      });
-
       it('should export DeleteMetaBulkRequest type', async () => {
         const types = await import('../../src/types/orders-dbs.types');
         expect(types).toBeDefined();
@@ -477,18 +439,6 @@ describe('EPIC 26: DBS New Endpoints', () => {
   // ============================================================================
 
   describe('Bulk metadata endpoints pass rateLimitKey', () => {
-    it('getMetaBulk should pass rateLimitKey', async () => {
-      await (module as any).getMetaBulk([111]);
-
-      expect(mockClient.post).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.anything(),
-        expect.objectContaining({
-          rateLimitKey: expect.stringContaining('orders-dbs'),
-        })
-      );
-    });
-
     it('deleteMetaBulk should pass rateLimitKey', async () => {
       await (module as any).deleteMetaBulk({ orders: [111], key: 'imei' });
 

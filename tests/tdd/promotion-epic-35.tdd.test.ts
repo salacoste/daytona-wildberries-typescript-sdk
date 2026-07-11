@@ -38,7 +38,6 @@ describe('EPIC 35: Promotion Code Quality', () => {
       const expectedMethods = [
         'getPromotionCount',
         'createPromotionAdvert',
-        'getAuctionAdverts',
         'getAdvConfig',
         'createBidsMin',
         'createAdvSaveAd',
@@ -52,7 +51,6 @@ describe('EPIC 35: Promotion Code Quality', () => {
         'getAdvStop',
         'updateAdvBid',
         'updateAuctionPlacement',
-        'updateAuctionBid',
         'getAdvBalance',
         'getAdvBudget',
         'createBudgetDeposit',
@@ -61,9 +59,7 @@ describe('EPIC 35: Promotion Code Quality', () => {
         'getSearchSetPlus',
         'createSearchSetPlu',
         'createSearchSetExcluded',
-        'createAutoSetExcluded',
         'getAutoGetnmtoadd',
-        'createAutoUpdatenm',
         'updateAuctionNm',
         'getAdvCount',
         'getAdvAdverts',
@@ -72,7 +68,6 @@ describe('EPIC 35: Promotion Code Quality', () => {
         'getAdvFullstats',
         'getAutoStatWords',
         'getStatWords',
-        'getStatsKeywords',
         'createAdvStat',
         'getCalendarPromotions',
         'getPromotionsDetails',
@@ -92,15 +87,6 @@ describe('EPIC 35: Promotion Code Quality', () => {
     it('should pass rateLimitKey for getPromotionCount()', async () => {
       mockClient.get.mockResolvedValue({});
       await module.getPromotionCount();
-      expect(mockClient.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ rateLimitKey: expect.any(String) })
-      );
-    });
-
-    it('should pass rateLimitKey for getAuctionAdverts()', async () => {
-      mockClient.get.mockResolvedValue({});
-      await module.getAuctionAdverts();
       expect(mockClient.get).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({ rateLimitKey: expect.any(String) })

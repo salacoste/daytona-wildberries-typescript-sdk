@@ -79,21 +79,6 @@ describe('EPIC 24: Orders FBS Rate Limits', () => {
       );
     });
 
-    it('should pass rateLimitKey when calling getOrdersMeta()', async () => {
-      await module.getOrdersMeta(12345);
-
-      // Whether GET or POST, the options should include rateLimitKey
-      const getCalls = mockClient.get.mock.calls;
-      const postCalls = mockClient.post.mock.calls;
-      const allCalls = [...getCalls, ...postCalls];
-
-      expect(allCalls.length).toBeGreaterThan(0);
-
-      const lastCallOptions = allCalls[0][allCalls[0].length - 1] as Record<string, unknown>;
-      expect(lastCallOptions).toHaveProperty('rateLimitKey');
-      expect(lastCallOptions.rateLimitKey).toContain('orders-fbs');
-    });
-
     it('should pass rateLimitKey when calling updateOrdersCancel()', async () => {
       await module.updateOrdersCancel(12345);
 
