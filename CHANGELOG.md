@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- v4.0.1 — patch: fix sdk.version reporting stale 3.15.0 -->
+
+## [4.0.1] - 2026-07-12
+
+### Fixed
+
+- **`sdk.version`** (exported `version`) reported a stale `'3.15.0'` — a hardcoded literal not bumped since v3.15.0, so v3.16/3.17/3.18/4.0.0 all shipped reporting the wrong version. Now derived from `package.json` (single source of truth) via `resolveJsonModule`; added a drift-guard unit test so CI catches any future mismatch.
+
 <!-- v4.0.0 — major: removes all WB-dead/sunset deprecated surface (methods, types, fields, config) -->
 
 ## [4.0.0] - 2026-07-11

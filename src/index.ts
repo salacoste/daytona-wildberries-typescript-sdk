@@ -5,6 +5,7 @@
  * @packageDocumentation
  */
 
+import pkg from '../package.json';
 import { BaseClient } from './client/base-client';
 import { GeneralModule } from './modules/general';
 import { ProductsModule } from './modules/products';
@@ -646,7 +647,7 @@ export class WildberriesSDK {
 /**
  * SDK version
  */
-export const version = '3.15.0';
+export const version = pkg.version;
 
 // Main SDK class
 export { WildberriesSDK as default };
