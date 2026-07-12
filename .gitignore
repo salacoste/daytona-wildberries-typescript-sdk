@@ -65,3 +65,8 @@ logs/
 _bmad-output/
 # BMad v6 memory (session-specific)
 _bmad/_memory/
+
+# Local AI/agent tooling (BMAD skills, codex) — not part of the SDK
+.agents/
+.codex/
+AGENTS.md

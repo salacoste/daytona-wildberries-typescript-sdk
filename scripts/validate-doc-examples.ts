@@ -155,6 +155,9 @@ const KNOWN_WRONG_EXAMPLES = [
   'sdk.finances.getReport(',
   'sdk.finances.downloadReport(',
 
+  // Migration-guide 'before/❌ OLD' examples — method removed in v4.0.0, shown for migration context
+  'sdk.finances.getSupplierReportDetailByPeriod(',
+
   // Reports module placeholders
   'sdk.reports.getExciseReport(',
 
