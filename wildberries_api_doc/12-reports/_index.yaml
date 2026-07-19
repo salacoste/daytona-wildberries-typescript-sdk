@@ -42,9 +42,9 @@ _shards:
     endpoints: 3
     description: Brand Share in Sales
   - file: skrytye-tovary.yaml
-    domain: Скрытые товары
+    domain: Заблокированные карточки
     endpoints: 2
-    description: Hidden Products
+    description: Blocked Listings
   - file: otchet-o-tovarakh-c-obyazatelnoy-markirovkoy.yaml
     domain: Отчёт о товарах c обязательной маркировкой
     endpoints: 1

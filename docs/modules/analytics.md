@@ -12,7 +12,7 @@ The **Analytics** module provides access to sales funnel analytics, search query
 | **SDK Namespace** | `sdk.analytics.*` |
 | **Base URL** | `https://seller-analytics-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/11-analytics/` |
-| **Methods** | 17 |
+| **Methods** | 19 |
 | **Authentication** | API Key (Header) |
 
 ### What's New (v3.4.0 - March 2026)
@@ -113,6 +113,16 @@ All three Sales Funnel v3 responses now include an optional `currency` field (e.
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getWbWarehousesStock()` | POST | `/api/analytics/v1/stocks-report/wb-warehouses` | Get current inventory on WB warehouses |
+
+### Item Rating
+
+| Method | HTTP | Endpoint | Description |
+|--------|------|----------|-------------|
+| `getItemRatingV2()` | POST | `/api/analytics/v2/item-rating` | Current item-rating report; supports catalog-hidden filtering and returns `items[].isShadowed` |
+| `getItemRating()` | POST | `/api/analytics/v1/item-rating` | **Deprecated:** WB removal on 2026-07-30 |
+
+Use `onlyShadowedNms: true` with `getItemRatingV2()` to retrieve only products hidden
+from the catalog. See the [v2 migration guide](../guides/migration-item-rating-v2.md).
 
 ### Previously Deprecated v2 (removed from source)
 

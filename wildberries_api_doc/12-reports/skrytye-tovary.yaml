@@ -1,9 +1,9 @@
 openapi: "3.0.1"
 info:
-  title: Скрытые товары
+  title: Заблокированные карточки
   version: reports
 tags:
-  - name: Скрытые товары
+  - name: Заблокированные карточки
     description: ''
 servers:
   - url: https://seller-analytics-api.wildberries.ru
@@ -19,7 +19,7 @@ paths:
       security:
         - HeaderApiKey: []
       tags:
-        - Скрытые товары
+        - Заблокированные карточки
       summary: Заблокированные карточки
       description: |
         Метод возвращает список [заблокированных карточек товаров продавца](https://seller.wildberries.ru/analytics-reports/banned-products) с причинами блокировки.
@@ -134,35 +134,33 @@ paths:
     servers:
       - url: https://seller-analytics-api.wildberries.ru
     get:
+      deprecated: true
       x-readonly-method: true
       x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
-        - Скрытые товары
+        - Заблокированные карточки
       summary: Скрытые из каталога
       description: |
-        Метод возвращает список [товаров продавца, скрытых из каталога](https://seller.wildberries.ru/analytics-reports/banned-products/shadowed).
+        Данный метод устарел. Он будет удалён [30 июля](/release-notes?id=558).
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+        <a href="/openapi/api-information#tag/introduction/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
-        | Период | Лимит | Интервал | Всплеск |
-        | --- | --- | --- | --- |
-        | 10 сек | 1 запрос | 10 сек | 6 запросов |
+
+        | Тип | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- | --- |
+        | Персональный | 10 сек | 1 запрос | 10 сек | 6 запросов |
+        | Сервисный | 10 сек | 1 запрос | 10 сек | 6 запросов |
+        | Базовый с секретом | 10 сек | 1 запрос | 10 сек | 6 запросов |
+        | Базовый | 1 ч | 1 запрос | 1 ч | 1 запрос |
         </div>
       parameters:
         - in: query
           name: sort
           schema:
             type: string
-            description: |
-              Сортировка
-              - `brand` — по бренду
-              - `nmId` — по артикулу WB
-              - `title` — по наименованию товара
-              - `vendorCode` — по артикулу продавца
-              - `nmRating` — по рейтингу товара
             enum:
               - brand
               - nmId
@@ -170,19 +168,26 @@ paths:
               - vendorCode
               - nmRating
             example: title
+          description: |
+            Сортировка
+            - `brand` — по бренду
+            - `nmId` — по артикулу WB
+            - `title` — по наименованию товара
+            - `vendorCode` — по артикулу продавца
+            - `nmRating` — по рейтингу товара
           required: true
         - in: query
           name: order
           schema:
             type: string
-            description: |
-              Порядок выдачи
-              - `desc` — от наибольшего числового значения к наименьшему, от последнего по алфавиту значения к первому
-              - `asc` — от наименьшего числового значения к наибольшему, от первого по алфавиту значения к последнему
             enum:
               - desc
               - asc
             example: desc
+          description: |
+            Порядок выдачи
+            - `desc` — от наибольшего числового значения к наименьшему, от последнего по алфавиту значения к первому
+            - `asc` — от наименьшего числового значения к наибольшему, от первого по алфавиту значения к последнему
           required: true
       responses:
         '200':
@@ -248,6 +253,8 @@ paths:
                 origin: banreportsvc-api
         '401':
           $ref: '_schemas.yaml#/components/responses/401'
+        '402':
+          $ref: '_schemas.yaml#/components/responses/402'
         '429':
           $ref: '_schemas.yaml#/components/responses/429'
 components:

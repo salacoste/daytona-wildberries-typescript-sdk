@@ -23,7 +23,7 @@ function makeGoodsReturnResponse(items: Partial<GoodsReturnItem>[]): GoodsReturn
       orderId: 1,
       orderDt: '2026-04-15',
       reason: '',
-      isStatusActive: 0 as 0 | 1,
+      isStatusActive: 0,
       completedDt: '2026-04-20',
       ...item,
     })),

@@ -200,7 +200,7 @@ describe('TariffsModule Integration Tests', () => {
           subjectID: 101,
           subjectName: 'Smartphones',
           kgvpMarketplace: 15,
-        }),
+        })
       );
     });
 
@@ -223,7 +223,7 @@ describe('TariffsModule Integration Tests', () => {
         expect.objectContaining({
           warehouseName: 'Moscow',
           boxDeliveryBase: '50',
-        }),
+        })
       );
     });
   });
@@ -239,7 +239,7 @@ describe('TariffsModule Integration Tests', () => {
         expect.objectContaining({
           warehouseName: 'Moscow',
           palletDeliveryValueBase: '400',
-        }),
+        })
       );
     });
   });
@@ -255,7 +255,7 @@ describe('TariffsModule Integration Tests', () => {
         expect.objectContaining({
           warehouseName: 'Moscow',
           deliveryDumpSupOfficeBase: '30',
-        }),
+        })
       );
     });
   });
@@ -272,14 +272,14 @@ describe('TariffsModule Integration Tests', () => {
           warehouseName: 'Moscow',
           coefficient: 1,
           allowUnload: true,
-        }),
+        })
       );
       expect(result[1]).toEqual(
         expect.objectContaining({
           warehouseID: 508,
           warehouseName: 'Saint Petersburg',
           coefficient: 1.5,
-        }),
+        })
       );
     });
 

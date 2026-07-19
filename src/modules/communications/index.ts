@@ -801,7 +801,11 @@ export class CommunicationsModule {
           formData.append('file', f);
         } else {
           const mime = inferMimeFromFilename(f.filename);
-          formData.append('file', new Blob([f.content], { type: mime }), f.filename);
+          formData.append(
+            'file',
+            new Blob([Uint8Array.from(f.content)], { type: mime }),
+            f.filename
+          );
         }
       }
     }

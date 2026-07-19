@@ -105,7 +105,7 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getBannedProductsBlocked()` | GET | `/api/v1/analytics/banned-products/blocked` | Get blocked products list |
-| `getBannedProductsShadowed()` | GET | `/api/v1/analytics/banned-products/shadowed` | Get products hidden from catalog |
+| `getBannedProductsShadowed()` | GET | `/api/v1/analytics/banned-products/shadowed` | **Deprecated:** WB removal on 2026-07-30; use `analytics.getItemRatingV2({ onlyShadowedNms: true, ... })` |
 | `getAnalyticsGoodsReturn()` | GET | `/api/v1/analytics/goods-return` | Get goods returns report |
 
 ---

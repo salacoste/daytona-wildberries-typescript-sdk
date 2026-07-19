@@ -723,6 +723,7 @@ export type {
   OrderMetaResponse,
   OrderMetaItem,
   OrdersMetaResponse,
+  APIError,
   APIErrorV2,
 } from './types/orders-fbs.types';
 

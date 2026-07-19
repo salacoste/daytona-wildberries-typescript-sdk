@@ -61,6 +61,11 @@ describe('BaseClient', () => {
       const defaultClient = new BaseClient({ apiKey: 'test-key' });
       expect(defaultClient).toBeInstanceOf(BaseClient);
     });
+
+    it('should initialize reduced rate limits for a basic token', () => {
+      const basicClient = new BaseClient({ apiKey: 'test-key', tokenType: 'basic' });
+      expect(basicClient).toBeInstanceOf(BaseClient);
+    });
   });
 
   describe('Authentication', () => {
@@ -204,7 +209,7 @@ describe('BaseClient', () => {
         let capturedHeaders: Record<string, unknown> | undefined;
 
         mockAxios.onDelete(testUrl).reply((config) => {
-          capturedHeaders = config.headers as Record<string, unknown>;
+          capturedHeaders = config.headers;
           return [200, { deleted: true }];
         });
 

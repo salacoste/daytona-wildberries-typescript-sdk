@@ -101,8 +101,13 @@ export const analyticsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 20,
     burstLimit: 3,
   },
-  // v1 Item Rating
+  // Item Rating reports (v1 is scheduled for removal by WB on 2026-07-30)
   'analytics.itemRating': {
+    requestsPerMinute: 3,
+    intervalSeconds: 20,
+    burstLimit: 3,
+  },
+  'analytics.itemRatingV2': {
     requestsPerMinute: 3,
     intervalSeconds: 20,
     burstLimit: 3,

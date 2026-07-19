@@ -1973,3 +1973,102 @@ export interface ItemRatingResponseWrapper {
   /** Response data. */
   data: ItemRatingResponse;
 }
+
+// ============================================================================
+// Item Rating V2 (POST /api/analytics/v2/item-rating) — task-182
+// @since 4.1.0
+// ============================================================================
+
+/** Request parameters for the v2 item-rating report. */
+export interface ItemRatingV2Request {
+  /** Current period. */
+  currentPeriod: PeriodItemRating;
+  /** Previous period for comparison (optional — enables compare mode). */
+  pastPeriod?: PastPeriodItemRating;
+  /** List of WB item numbers for filtering (max 50). */
+  nmIds?: number[];
+  /** List of subcategory IDs for filtering (max 50). */
+  subjectIds?: number[];
+  /** List of brands for filtering (max 50). */
+  brandNames?: string[];
+  /** List of label IDs for filtering (max 50). */
+  tagIds?: number[];
+  /** Return only products with sales during `currentPeriod`. Default `false`. */
+  isNotIncludeNmsWithoutSales?: boolean;
+  /** Return only products hidden from the catalog. Default `false`. */
+  onlyShadowedNms?: boolean;
+  /** Sorting parameters. */
+  orderBy: OrderByItemRating;
+  /** Number of products in the response (default 100, max 1000). */
+  limit?: number;
+  /** How many results to skip (pagination). */
+  offset: number;
+}
+
+/** Feedback rating returned for a v2 item row. */
+export interface DistributionFeedbackRatingV2 {
+  /** Current feedback rating. */
+  current: number;
+  /** Dynamics compared to the previous period (%). */
+  dynamics?: number;
+  /** Percentage of competing products in the subject with a lower rating. */
+  percentile: number | null;
+}
+
+/** A product row returned by the v2 item-rating report. */
+export interface DistributionTableItemV2 {
+  /** WB item number. */
+  nmId: number;
+  /** Product name. */
+  title: string;
+  /** Seller vendor code. */
+  vendorCode: string;
+  /** Subject ID. */
+  subjectId: number;
+  /** Subject name. */
+  subjectName: string;
+  /** Brand name. */
+  brandName: string;
+  /** Label name. */
+  tagName: string;
+  /** Label ID. */
+  tagId: number;
+  /** Whether a feedback entry is pinned. */
+  pinnedFeedback: boolean;
+  /** Product-card rating. */
+  rating: number;
+  /** Feedback rating details. */
+  feedbackRating: DistributionFeedbackRatingV2;
+  /** All feedback received during the period. */
+  feedbackCount: DistributionTableIndicator;
+  /** Five-star feedback received during the period. */
+  fiveStar: DistributionTableIndicator;
+  /** Four-star feedback received during the period. */
+  fourStar: DistributionTableIndicator;
+  /** Three-star feedback received during the period. */
+  threeStar: DistributionTableIndicator;
+  /** Two-star feedback received during the period. */
+  twoStar: DistributionTableIndicator;
+  /** One-star feedback received during the period. */
+  oneStar: DistributionTableIndicator;
+  /** Feedback excluded from the rating. */
+  disqualified: number;
+  /** Whether the product is hidden from the catalog. */
+  isShadowed: boolean;
+}
+
+/** Response payload for POST /api/analytics/v2/item-rating. */
+export interface ItemRatingV2Response {
+  /** Seller rating. */
+  sellerRating: TableItemFloat;
+  /** Feedback increase summary. */
+  feedbackIncrease: FeedbacksIncreaseItem;
+  /** Per-product data. */
+  items: DistributionTableItemV2[];
+}
+
+/** Top-level response wrapper for POST /api/analytics/v2/item-rating. */
+export interface ItemRatingV2ResponseWrapper {
+  /** Response data. */
+  data: ItemRatingV2Response;
+}

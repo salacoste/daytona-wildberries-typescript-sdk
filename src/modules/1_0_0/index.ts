@@ -43,7 +43,9 @@ export class Type100Module {
   console.log(result);
    */
   async getAdvAdvert(options?: { id: number }): Promise<unknown> {
-    return this.client.get<unknown>('https://api.wildberries.ru/adv/v1/advert', { params: options });
+    return this.client.get<unknown>('https://api.wildberries.ru/adv/v1/advert', {
+      params: options,
+    });
   }
 
   /**
@@ -80,8 +82,14 @@ export class Type100Module {
   const result = await sdk.general.getAdvFullstats({});
   console.log(result);
    */
-  async getAdvFullstats(options?: { ids?: string; beginDate?: string; endDate?: string }): Promise<unknown> {
-    return this.client.get<unknown>('https://api.wildberries.ru/adv/v3/fullstats', { params: options });
+  async getAdvFullstats(options?: {
+    ids?: string;
+    beginDate?: string;
+    endDate?: string;
+  }): Promise<unknown> {
+    return this.client.get<unknown>('https://api.wildberries.ru/adv/v3/fullstats', {
+      params: options,
+    });
   }
 
   /**
@@ -101,5 +109,4 @@ export class Type100Module {
   async getCalendarPromotions(): Promise<unknown> {
     return this.client.get<unknown>('https://api.wildberries.ru/api/v1/calendar/promotions');
   }
-
 }

@@ -513,6 +513,9 @@ export class ReportsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @deprecated Scheduled for removal by Wildberries on 2026-07-30. Use
+   * `sdk.analytics.getItemRatingV2({ onlyShadowedNms: true, ... })` instead;
+   * v2 returns catalog visibility in `data.items[].isShadowed`.
    * @example
    * const result = await sdk.reports.getBannedProductsShadowed({});
    * console.log(result);

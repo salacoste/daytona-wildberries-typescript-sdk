@@ -384,6 +384,8 @@ describe('ReportsModule', () => {
 
       it('getBannedProductsShadowed passes rateLimitKey', async () => {
         mockClient.get.mockResolvedValue({});
+        // Legacy endpoint must remain an explicit call until it is removed by WB on 2026-07-30.
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         await module.getBannedProductsShadowed({ sort: 'nmId', order: 'desc' });
 
         expect(mockClient.get).toHaveBeenCalledWith(

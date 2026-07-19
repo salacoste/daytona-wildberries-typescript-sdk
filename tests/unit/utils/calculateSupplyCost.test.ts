@@ -17,6 +17,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import type { Mock } from 'vitest';
 import type { ModelsAcceptanceCoefficient } from '../../../src/types/orders-fbw.types';
 import { calculateSupplyCost } from '../../../src/utils/calculateSupplyCost';
 
@@ -60,10 +61,10 @@ describe('calculateSupplyCost', () => {
     isSortingCenter: false,
   };
 
-  let mockGetCoefficients: ReturnType<typeof vi.fn<[], Promise<ModelsAcceptanceCoefficient[]>>>;
+  let mockGetCoefficients: Mock<() => Promise<ModelsAcceptanceCoefficient[]>>;
 
   beforeEach(() => {
-    mockGetCoefficients = vi.fn<[], Promise<ModelsAcceptanceCoefficient[]>>();
+    mockGetCoefficients = vi.fn<() => Promise<ModelsAcceptanceCoefficient[]>>();
   });
 
   afterEach(() => {

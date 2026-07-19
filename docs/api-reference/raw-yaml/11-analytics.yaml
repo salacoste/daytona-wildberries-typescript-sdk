@@ -1264,8 +1264,8 @@ paths:
 
         <div class="description_token">
             Method is <a href="/openapi/api-information#tag/Authorization/Rules-for-using-API-access-tokens">available</a> by
-                <strong>Personal</strong> token, 
-                <strong>Service</strong> token, 
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token,
                 <strong>Base</strong> token <strong>with secret</strong>
         </div>
 
@@ -1578,7 +1578,7 @@ paths:
                 $ref: '#/components/schemas/ErrorObject403'
         '429':
           $ref: '#/components/responses/429'
-  /api/analytics/v1/item-rating:
+  /api/analytics/v2/item-rating:
     servers:
       - url: https://seller-analytics-api.wildberries.ru
     post:
@@ -1588,27 +1588,27 @@ paths:
         - personal
         - service
       tags:
-        - Item Rating
-      summary: Get Report
-      operationId: postV1ItemRating
+        - Оценка товара
+      summary: Получить отчёт
+      operationId: postV2ItemRating
       description: |
 
         <div class="description_token">
-            Method is <a href="/openapi/api-information#tag/Authorization/Rules-for-using-API-access-tokens">available</a> by
-                <strong>Personal</strong> token, 
-                <strong>Service</strong> token
+            Метод <a href="/openapi/api-information#tag/authorization/Pravila-ispolzovaniya-tokenov-dostupa-k-API">доступен</a> по
+                <strong>Персональному</strong> токену,
+                <strong>Сервисному</strong> токену
         </div>
 
-        The method forms a dataset for item rating.
+        Метод формирует набор данных об оценках товаров.
         <br><br>
-        The report data is updated once an hour.
+        Данные отчёта обновляются 1 раз в час.
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+        <a href="/openapi/api-information#tag/introduction/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
-        | Period | Limit | Interval | Burst |
+        | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- |
-        | 1 min | 3 requests | 20 s | 3 requests |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
         </div>
       requestBody:
         required: true
@@ -1618,7 +1618,7 @@ paths:
               $ref: '#/components/schemas/ItemRatingRequest'
       responses:
         '200':
-          description: Success
+          description: Успешно
           content:
             application/json:
               schema:
@@ -1629,7 +1629,75 @@ paths:
                 required:
                   - data
         '400':
-          description: Bad request
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject403'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Response403General'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/analytics/v1/item-rating:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    post:
+      deprecated: true
+      x-readonly-method: true
+      x-category: contentanalytics
+      x-token-types:
+        - personal
+        - service
+      tags:
+        - Оценка товара
+      summary: Получить отчёт
+      operationId: postV1ItemRating
+      description: |
+
+        <div class="description_token">
+            Метод <a href="/openapi/api-information#tag/authorization/Pravila-ispolzovaniya-tokenov-dostupa-k-API">доступен</a> по
+                <strong>Персональному</strong> токену,
+                <strong>Сервисному</strong> токену
+        </div>
+
+        Данный метод устарел. Он будет удалён [30 июля](/release-notes?id=558).
+
+        <div class="description_limit">
+        <a href="/openapi/api-information#tag/introduction/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
+
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 3 запроса | 20 сек | 3 запроса |
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemRatingRequestV1'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ItemRatingResponseV1'
+                required:
+                  - data
+        '400':
+          description: Неправильный запрос
           content:
             application/json:
               schema:
@@ -1639,11 +1707,14 @@ paths:
         '402':
           $ref: '#/components/responses/402'
         '403':
-          description: Access denied
+          description: Доступ запрещён
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorObject403'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Response403General'
         '429':
           $ref: '#/components/responses/429'
 components:
@@ -5630,18 +5701,18 @@ components:
               - quantity
               - inWayToClient
               - inWayFromClient
-    ItemRatingRequest:
+    ItemRatingRequestV1:
       type: object
       required:
         - currentPeriod
         - orderBy
         - offset
-      description: Request parameters
+      description: Параметры запроса
       properties:
         currentPeriod:
           $ref: '#/components/schemas/PeriodItemRating'
         pastPeriod:
-          $ref: '#/components/schemas/pastPeriodItemRating'
+          $ref: '#/components/schemas/PastPeriodItemRating'
         nmIds:
           example:
             - 162579635
@@ -5651,7 +5722,7 @@ components:
           items:
             type: integer
             format: int32
-          description: List of WB item numbers for filtering
+          description: Список артикулов WB для фильтрации
         subjectIds:
           example:
             - 232
@@ -5661,7 +5732,7 @@ components:
           items:
             type: integer
             format: int32
-          description: List of subcategory IDs for filtering
+          description: Список ID предметов для фильтрации
         brandNames:
           example:
             - Abikas
@@ -5670,7 +5741,7 @@ components:
           maxItems: 50
           items:
             type: string
-          description: List of brands for filtering
+          description: Список брендов для фильтрации
         tagIds:
           example:
             - 3
@@ -5681,12 +5752,12 @@ components:
           items:
             type: integer
             format: int64
-          description: List of label IDs for filtering
+          description: Список ID ярлыков для фильтрации
         isNotIncludeNMsWithoutSales:
           example: true
           type: boolean
           default: false
-          description: Do not count items without sales
+          description: Не учитывать товары без продаж
         orderBy:
           $ref: '#/components/schemas/OrderByItemRating'
         limit:
@@ -5695,52 +5766,134 @@ components:
           format: uint32
           default: 100
           maximum: 1000
-          description: Number of items in the response
+          description: Количество товаров в ответе
         offset:
           example: 50
           type: integer
           format: uint32
-          description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+          description: Сколько элементов пропустить. Например, для значения `10` ответ начнётся с 11 элемента
+    ItemRatingRequest:
+      type: object
+      required:
+        - currentPeriod
+        - orderBy
+        - offset
+      description: Параметры запроса
+      properties:
+        currentPeriod:
+          $ref: '#/components/schemas/PeriodItemRating'
+        pastPeriod:
+          $ref: '#/components/schemas/PastPeriodItemRating'
+        nmIds:
+          example:
+            - 162579635
+            - 166699779
+          type: array
+          maxItems: 50
+          items:
+            type: integer
+            format: int32
+          description: Список артикулов WB для фильтрации
+        subjectIds:
+          example:
+            - 232
+            - 1364
+          type: array
+          maxItems: 50
+          items:
+            type: integer
+            format: int32
+          description: Список ID предметов для фильтрации
+        brandNames:
+          example:
+            - Abikas
+            - Tike
+          type: array
+          maxItems: 50
+          items:
+            type: string
+          description: Список брендов для фильтрации
+        tagIds:
+          example:
+            - 3
+            - 5
+            - 6
+          maxItems: 50
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: Список ID ярлыков для фильтрации
+        isNotIncludeNmsWithoutSales:
+          example: true
+          type: boolean
+          default: false
+          description: |
+            Не возвращать товары без продаж:
+              - `true` — да, возвращаются только товары с продажами за период, указанный в объекте `currentPeriod`
+              - `false` — нет, возвращаются все товары, если не указаны другие параметры
+        onlyShadowedNms:
+          example: true
+          type: boolean
+          default: false
+          description: |
+            Возвращаются ли в ответе только скрытые товары:
+              - `true` — да, возвращаются только скрытые из каталога товары
+              - `false` — нет, возвращаются все товары, если не указаны другие параметры
+        orderBy:
+          $ref: '#/components/schemas/OrderByItemRating'
+        limit:
+          example: 130
+          type: integer
+          format: uint32
+          default: 100
+          maximum: 1000
+          description: Количество товаров в ответе
+        offset:
+          example: 50
+          type: integer
+          format: uint32
+          description: Сколько элементов пропустить. Например, для значения `10` ответ начнётся с 11 элемента
     PeriodItemRating:
       type: object
       required:
         - start
         - end
-      description: Current period
+      description: Текущий период
       properties:
         start:
           example: '2026-02-10'
           type: string
           format: date
-          description: Start date of the period. No later than `end`. No earlier than 364 days from yesterday
+          description: Дата начала периода. Не ранее 364 суток от вчерашнего дня и не позднее `end`
         end:
           example: '2026-02-10'
           type: string
           format: date
-          description: End date of the period. No earlier than 364 days from yesterday
-    pastPeriodItemRating:
+          description: Дата окончания периода. Не ранее 364 суток от вчерашнего дня
+    PastPeriodItemRating:
       type: object
       required:
         - start
         - end
-      description: Previous period for comparison. Number of days — less than or equal to `currentPeriod`
+      description: Прошлый период для сравнения. Количество дней — меньше или равно `currentPeriod`
       properties:
         start:
           example: '2026-02-08'
           type: string
           format: date
-          description: Start date of the period. No later than `end`. No earlier than 364 days from yesterday
+          description: Дата начала периода. Не ранее 364 суток от вчерашнего дня и не позднее `end`
         end:
           example: '2026-02-08'
           type: string
           format: date
-          description: End date of the period. No later than the day before the start date `currentPeriod`. No earlier than 364 days from yesterday
+          description: Дата окончания периода. Не ранее 364 суток от вчерашнего дня и не позднее даты перед началом `currentPeriod`.
     OrderByItemRating:
       type: object
       required:
         - field
         - mode
-      description: Sorting parameters
+      description: Параметры сортировки
       properties:
         field:
           example: feedbackCount
@@ -5755,15 +5908,15 @@ components:
             - oneStar
             - disqualified
           description: |
-            Sorting field:
-              - `feedbackRating` — Review-based rating
-              - `feedbackCount` — Total reviews
-              - `fiveStar` — 5 star reviews
-              - `fourStar` — 4 star reviews
-              - `threeStar` — 3 star reviews
-              - `twoStar` — 2 star reviews
-              - `oneStar` — 1 star reviews
-              - `disqualified` — Excluded reviews
+            Поле для сортировки:
+              - `feedbackRating` — Рейтинг товара по отзывам
+              - `feedbackCount` — Все отзывы за период
+              - `fiveStar` — Отзывы 5 звёзд
+              - `fourStar` — Отзывы 4 звезды
+              - `threeStar` — Отзывы 3 звезды
+              - `twoStar` — Отзывы 2 звезды
+              - `oneStar` — Отзывы 1 звезда
+              - `disqualified` — Отзывы, исключённые из рейтинга
         mode:
           example: desc
           type: string
@@ -5771,16 +5924,16 @@ components:
             - asc
             - desc
           description: |
-            Sorting order:
-              - `asc` — ascending
-              - `desc` — descending
-    ItemRatingResponse:
+            Порядок сортировки:
+              - `asc` — по возрастанию
+              - `desc` — по убыванию
+    ItemRatingResponseV1:
       type: object
       required:
         - sellerRating
         - feedbackIncrease
         - cards
-      description: Response data
+      description: Данные ответа
       properties:
         sellerRating:
           $ref: '#/components/schemas/TableItemFloat'
@@ -5788,25 +5941,42 @@ components:
           $ref: '#/components/schemas/FeedbacksIncreaseItem'
         cards:
           type: array
-          description: Item data
+          description: Данные по товарам
+          items:
+            $ref: '#/components/schemas/DistributionTableItemV1'
+    ItemRatingResponse:
+      type: object
+      required:
+        - sellerRating
+        - feedbackIncrease
+        - items
+      description: Данные ответа
+      properties:
+        sellerRating:
+          $ref: '#/components/schemas/TableItemFloat'
+        feedbackIncrease:
+          $ref: '#/components/schemas/FeedbacksIncreaseItem'
+        items:
+          type: array
+          description: Данные по товарам
           items:
             $ref: '#/components/schemas/DistributionTableItem'
     TableItemFloat:
       type: object
       required:
         - current
-      description: Seller rating
+      description: Рейтинг продавца
       properties:
         current:
           example: 3.56
           type: number
           format: float64
-          description: Current rating
+          description: Текущий рейтинг
         dynamics:
           example: 0.03
           type: number
           format: float64
-          description: Dynamics compared to the previous period (%)
+          description: Динамика по сравнению с предыдущим периодом, %
     FeedbacksIncreaseItem:
       type: object
       required:
@@ -5818,281 +5988,458 @@ components:
         - threeStar
         - twoStar
         - oneStar
-      description: Feedback increase
+      description: Прирост оценок
       properties:
         current:
           example: 26
           type: integer
-          description: Feedback increase for the period
+          description: Прирост оценок за период
         total:
           example: 116
           type: integer
-          description: Total ratings
+          description: Всего оценок
         dynamics:
           example: 23
           type: integer
-          description: Dynamics compared to the previous period (%)
+          description: Динамика по сравнению с предыдущим периодом, %
         fiveStar:
           type: object
           required:
             - current
             - total
-          description: 5 star reviews
+          description: Отзывы 5 звёзд
           properties:
             current:
               example: 19
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 17
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
             total:
               example: 51
               type: integer
-              description: Total ratings
+              description: Всего оценок
         fourStar:
           type: object
           required:
             - current
             - total
-          description: 4 star reviews
+          description: Отзывы 4 звезды
           properties:
             current:
               example: 2
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 1
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
             total:
               example: 13
               type: integer
-              description: Total ratings
+              description: Всего оценок
         threeStar:
           type: object
           required:
             - current
             - total
-          description: 3 star reviews
+          description: Отзывы 3 звезды
           properties:
             current:
               example: 1
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 1
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
             total:
               example: 11
               type: integer
-              description: Total ratings
+              description: Всего оценок
         twoStar:
           type: object
           required:
             - current
             - total
-          description: 1 star reviews
+          description: Отзывы 2 звезды
           properties:
             current:
               example: 5
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 5
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
             total:
               example: 34
               type: integer
-              description: Total ratings
+              description: Всего оценок
         oneStar:
           type: object
           required:
             - current
             - total
-          description: 1 star reviews
+          description: Отзывы 1 звезда
           properties:
             current:
               example: -1
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: -1
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
             total:
               example: 7
               type: integer
-              description: Total ratings
-    DistributionTableItem:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/TableItemBaseCommon'
-        - $ref: '#/components/schemas/DistributionTableIndicators'
-    TableItemBaseCommon:
+              description: Всего оценок
+    DistributionTableItemV1:
       type: object
       properties:
         nmId:
           example: 123456789
           type: integer
           format: int64
-          description: WB item number
+          description: Артикул WB
         title:
           example: iPh 17 512 ГБ Серебристый
           type: string
-          description: Item name
+          description: Название товара
         vendorCode:
           example: wb3ha2668w
           type: string
-          description: Seller item number
+          description: Артикул продавца
         subjectId:
           example: 50
-          description: Subcategory ID
+          description: ID предмета
           type: integer
           format: uint64
         subjectName:
           example: Phones
           type: string
-          description: Subcategory name
+          description: Название предмета
         brandName:
           example: Attlee
           type: string
-          description: Brand
+          description: Бренд
         tagName:
           example: Phones
           type: string
-          description: Label name
+          description: Название ярлыка
         tagId:
           example: 65
           type: integer
           format: int64
-          description: Label ID
+          description: ID ярлыка
         pinnedFeedback:
           example: true
           type: boolean
-          description: The review is pinned
+          description: Отзыв закреплён
         rating:
           example: 10
           type: number
           format: float64
-          description: Listing rating
+          description: Рейтинг карточки товара
         feedbackRating:
           type: object
           required:
             - current
             - percentile
-          description: Feedback rating
+          description: Рейтинг товара по отзывам
           properties:
             current:
               example: 3.87
               type: number
               format: float64
-              description: Current rating
+              description: Текущий рейтинг
             dynamics:
               example: 0.31
               type: number
               format: float64
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
             percentile:
               example: 1.7
               type: number
               format: float64
               nullable: true
-              description: How many percent of other sellers' items of this subcategory that have a lower feedback rating
-    DistributionTableIndicators:
-      type: object
-      properties:
+              description: Сколько процентов товаров этого предмета у других продавцов имеют рейтинг ниже, чем у этого товара
         feedbackCount:
           type: object
           required:
             - current
-          description: Feedback count
+          description: Все отзывы за период
           properties:
             current:
               example: 12
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 9
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
         fiveStar:
           type: object
           required:
             - current
-          description: 5 star reviews
+          description: Отзывы 5 звёзд
           properties:
             current:
               example: 9
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 7
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
         fourStar:
           type: object
           required:
             - current
-          description: 4 star reviews
+          description: Отзывы 4 звезды
           properties:
             current:
               example: 0
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: -1
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
         threeStar:
           type: object
           required:
             - current
-          description: 3 star reviews
+          description: Отзывы 3 звезды
           properties:
             current:
               example: 1
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 1
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
         twoStar:
           type: object
           required:
             - current
-          description: 2 star reviews
+          description: Отзывы 2 звезды
           properties:
             current:
               example: 2
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 2
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
         oneStar:
           type: object
           required:
             - current
-          description: 1 star reviews
+          description: Отзывы 1 звезда
           properties:
             current:
               example: 0
               type: integer
-              description: Feedback increase for the period
+              description: Прирост оценок за период
             dynamics:
               example: 0
               type: integer
-              description: Dynamics compared to the previous period (%)
+              description: Динамика по сравнению с предыдущим периодом, %
         disqualified:
           example: 7
           type: integer
-          description: Excluded reviews
+          description: Отзывы, исключённые из рейтинга
+    DistributionTableItem:
+      type: object
+      required:
+        - nmId
+        - title
+        - vendorCode
+        - subjectId
+        - subjectName
+        - brandName
+        - tagName
+        - tagId
+        - pinnedFeedback
+        - rating
+        - feedbackRating
+        - feedbackCount
+        - fiveStar
+        - fourStar
+        - threeStar
+        - twoStar
+        - oneStar
+        - disqualified
+        - isShadowed
+      properties:
+        nmId:
+          example: 123456789
+          type: integer
+          format: int64
+          description: Артикул WB
+        title:
+          example: iPh 17 512 ГБ Серебристый
+          type: string
+          description: Название товара
+        vendorCode:
+          example: wb3ha2668w
+          type: string
+          description: Артикул продавца
+        subjectId:
+          example: 50
+          description: ID предмета
+          type: integer
+          format: uint64
+        subjectName:
+          example: Phones
+          type: string
+          description: Название предмета
+        brandName:
+          example: Attlee
+          type: string
+          description: Бренд
+        tagName:
+          example: Phones
+          type: string
+          description: Название ярлыка
+        tagId:
+          example: 65
+          type: integer
+          format: int64
+          description: ID ярлыка
+        pinnedFeedback:
+          example: true
+          type: boolean
+          description: Отзыв закреплён
+        rating:
+          example: 10
+          type: number
+          format: float64
+          description: Рейтинг карточки товара
+        feedbackRating:
+          type: object
+          required:
+            - current
+            - percentile
+          description: Рейтинг товара по отзывам
+          properties:
+            current:
+              example: 3.87
+              type: number
+              format: float64
+              description: Текущий рейтинг
+            dynamics:
+              example: 0.31
+              type: number
+              format: float64
+              description: Динамика по сравнению с предыдущим периодом, %
+            percentile:
+              example: 1.7
+              type: number
+              format: float64
+              nullable: true
+              description: Сколько процентов товаров этого предмета у других продавцов имеют рейтинг ниже, чем у этого товара
+        feedbackCount:
+          type: object
+          required:
+            - current
+          description: Все отзывы за период
+          properties:
+            current:
+              example: 12
+              type: integer
+              description: Прирост оценок за период
+            dynamics:
+              example: 9
+              type: integer
+              description: Динамика по сравнению с предыдущим периодом, %
+        fiveStar:
+          type: object
+          required:
+            - current
+          description: Отзывы 5 звёзд
+          properties:
+            current:
+              example: 9
+              type: integer
+              description: Прирост оценок за период
+            dynamics:
+              example: 7
+              type: integer
+              description: Динамика по сравнению с предыдущим периодом, %
+        fourStar:
+          type: object
+          required:
+            - current
+          description: Отзывы 4 звезды
+          properties:
+            current:
+              example: 0
+              type: integer
+              description: Прирост оценок за период
+            dynamics:
+              example: -1
+              type: integer
+              description: Динамика по сравнению с предыдущим периодом, %
+        threeStar:
+          type: object
+          required:
+            - current
+          description: Отзывы 3 звезды
+          properties:
+            current:
+              example: 1
+              type: integer
+              description: Прирост оценок за период
+            dynamics:
+              example: 1
+              type: integer
+              description: Динамика по сравнению с предыдущим периодом, %
+        twoStar:
+          type: object
+          required:
+            - current
+          description: Отзывы 2 звезды
+          properties:
+            current:
+              example: 2
+              type: integer
+              description: Прирост оценок за период
+            dynamics:
+              example: 2
+              type: integer
+              description: Динамика по сравнению с предыдущим периодом, %
+        oneStar:
+          type: object
+          required:
+            - current
+          description: Отзывы 1 звезда
+          properties:
+            current:
+              example: 0
+              type: integer
+              description: Прирост оценок за период
+            dynamics:
+              example: 0
+              type: integer
+              description: Динамика по сравнению с предыдущим периодом, %
+        disqualified:
+          example: 7
+          type: integer
+          description: Отзывы, исключённые из рейтинга
+        isShadowed:
+          example: true
+          type: boolean
+          description: |
+            Является ли товар скрытым из каталога:
+              - `true` — товар скрыт из каталога
+              - `false` — товар не скрыт из каталога
     ErrorObject:
       type: object
       properties:

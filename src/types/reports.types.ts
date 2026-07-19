@@ -475,7 +475,7 @@ export interface Response4xxResponse {
 /**
  * Antifraud details report item (self-purchase deductions)
  * @see EPIC 43 - Response type for getAnalyticsAntifraudDetails
- * @spec SuccessTaskResponse (12-reports.yaml)
+ * OpenAPI schema: `SuccessTaskResponse` in `12-reports.yaml`.
  */
 export interface AntifraudDetailsItem {
   /** Артикул Wildberries */
@@ -493,7 +493,7 @@ export interface AntifraudDetailsItem {
 /**
  * Response for getAnalyticsAntifraudDetails
  * @see EPIC 43 - Response type for getAnalyticsAntifraudDetails
- * @spec SuccessTaskResponse (12-reports.yaml) — wrapper key: `details`
+ * OpenAPI schema: `SuccessTaskResponse` in `12-reports.yaml`; wrapper key: `details`.
  */
 export interface AntifraudDetailsResponse {
   details?: AntifraudDetailsItem[];
@@ -502,7 +502,7 @@ export interface AntifraudDetailsResponse {
 /**
  * Goods labeling report item
  * @see EPIC 43 - Response type for getAnalyticsGoodsLabeling
- * @spec SuccessGoodsLabelingResponse (12-reports.yaml)
+ * OpenAPI schema: `SuccessGoodsLabelingResponse` in `12-reports.yaml`.
  */
 export interface GoodsLabelingItem {
   /** Сумма штрафа, руб. */
@@ -524,7 +524,8 @@ export interface GoodsLabelingItem {
 /**
  * Response for getAnalyticsGoodsLabeling
  * @see EPIC 43 - Response type for getAnalyticsGoodsLabeling
- * @spec SuccessGoodsLabelingResponse (12-reports.yaml) — wrapper key: `report` (flat, no nesting)
+ * OpenAPI schema: `SuccessGoodsLabelingResponse` in `12-reports.yaml`; wrapper key:
+ * `report` (flat, no nesting).
  */
 export interface GoodsLabelingResponse {
   report?: GoodsLabelingItem[];
@@ -533,7 +534,7 @@ export interface GoodsLabelingResponse {
 /**
  * Region sale report item
  * @see EPIC 43 - Response type for getAnalyticsRegionSale
- * @spec SuccessRegionSaleResponse (12-reports.yaml)
+ * OpenAPI schema: `SuccessRegionSaleResponse` in `12-reports.yaml`.
  */
 export interface RegionSaleItem {
   /** Населённый пункт (location) */
@@ -559,7 +560,7 @@ export interface RegionSaleItem {
 /**
  * Response for getAnalyticsRegionSale
  * @see EPIC 43 - Response type for getAnalyticsRegionSale
- * @spec SuccessRegionSaleResponse (12-reports.yaml) — wrapper key: `report`
+ * OpenAPI schema: `SuccessRegionSaleResponse` in `12-reports.yaml`; wrapper key: `report`.
  */
 export interface RegionSaleResponse {
   report?: RegionSaleItem[];
@@ -568,7 +569,7 @@ export interface RegionSaleResponse {
 /**
  * Response for getBrandShareBrands
  * @see EPIC 43 - Response type for getBrandShareBrands
- * @spec SuccessBrandsResponse (12-reports.yaml) — `data` is an array of bare
+ * OpenAPI schema: `SuccessBrandsResponse` in `12-reports.yaml`; `data` is an array of bare
  * brand-name strings (e.g. ["H&M", "WOW"]).
  */
 export interface BrandShareBrandsResponse {
@@ -597,7 +598,7 @@ export interface BrandShareParentSubjectsResponse {
 /**
  * Brand share report item
  * @see EPIC 43 - Response type for getAnalyticsBrandShare
- * @spec SuccessBrandShareResponse (12-reports.yaml)
+ * OpenAPI schema: `SuccessBrandShareResponse` in `12-reports.yaml`.
  */
 export interface BrandShareItem {
   /** Дата (ГГГГ-ММ-ДД) */
@@ -613,7 +614,7 @@ export interface BrandShareItem {
 /**
  * Response for getAnalyticsBrandShare
  * @see EPIC 43 - Response type for getAnalyticsBrandShare
- * @spec SuccessBrandShareResponse (12-reports.yaml) — wrapper key: `report`
+ * OpenAPI schema: `SuccessBrandShareResponse` in `12-reports.yaml`; wrapper key: `report`.
  */
 export interface BrandShareResponse {
   report?: BrandShareItem[];

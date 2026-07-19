@@ -248,7 +248,7 @@
       "summary": "Blocked Listings",
       "deprecated": false,
       "tags": [
-        "Hidden Items"
+        "Blocked Listings"
       ]
     },
     {
@@ -256,10 +256,10 @@
       "path": "/api/v1/analytics/banned-products/shadowed",
       "baseUrl": "https://seller-analytics-api.wildberries.ru",
       "operationId": null,
-      "summary": "Hidden from the Catalog",
-      "deprecated": false,
+      "summary": "Скрытые из каталога",
+      "deprecated": true,
       "tags": [
-        "Hidden Items"
+        "Blocked Listings"
       ]
     },
     {

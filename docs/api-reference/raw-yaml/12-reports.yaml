@@ -28,7 +28,7 @@ tags:
     description: ''
   - name: Share of Brand in Sales
     description: ''
-  - name: Hidden Items
+  - name: Blocked Listings
     description: ''
   - name: Returns and Item Movement Report
     description: ''
@@ -1758,7 +1758,7 @@ paths:
       security:
         - HeaderApiKey: []
       tags:
-        - Hidden Items
+        - Blocked Listings
       summary: Blocked Listings
       description: |
         Returns the list of [blocked listings](https://seller.wildberries.ru/analytics-reports/banned-products)
@@ -1879,26 +1879,27 @@ paths:
     servers:
       - url: https://seller-analytics-api.wildberries.ru
     get:
+      deprecated: true
       x-readonly-method: true
       x-category: contentanalytics
       security:
         - HeaderApiKey: []
       tags:
-        - Hidden Items
-      summary: Hidden from the Catalog
+        - Blocked Listings
+      summary: Скрытые из каталога
       description: |
-        Returns the list of items [hidden from the catalog](https://seller.wildberries.ru/analytics-reports/banned-products/shadowed)
+        Данный метод устарел. Он будет удалён [30 июля](/release-notes?id=558).
 
         <div class="description_limit">
-        <a href="/openapi/api-information#tag/Introduction/Rate-Limits">Request limit</a> per one seller account:
+        <a href="/openapi/api-information#tag/introduction/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца:
 
 
-        | Type | Period | Limit | Interval | Burst |
+        | Тип | Период | Лимит | Интервал | Всплеск |
         | --- | --- | --- | --- | --- |
-        | Personal | 10 s | 1 request | 10 s | 6 requests |
-        | Service | 10 s | 1 request | 10 s | 6 requests |
-        | Base with secret | 10 s | 1 request | 10 s | 6 requests |
-        | Base | 1 h | 1 request | 1 h | 1 request |
+        | Персональный | 10 сек | 1 запрос | 10 сек | 6 запросов |
+        | Сервисный | 10 сек | 1 запрос | 10 сек | 6 запросов |
+        | Базовый с секретом | 10 сек | 1 запрос | 10 сек | 6 запросов |
+        | Базовый | 1 ч | 1 запрос | 1 ч | 1 запрос |
         </div>
       parameters:
         - in: query
@@ -1913,12 +1914,12 @@ paths:
               - nmRating
             example: title
           description: |
-            Sorting
-            - `brand` — by brand
-            - `nmId` — by WB item number
-            - `title` — by item title
-            - `vendorCode` — by seller item number
-            - `nmRating` — by listing rating
+            Сортировка
+            - `brand` — по бренду
+            - `nmId` — по артикулу WB
+            - `title` — по наименованию товара
+            - `vendorCode` — по артикулу продавца
+            - `nmRating` — по рейтингу товара
           required: true
         - in: query
           name: order
@@ -1929,20 +1930,20 @@ paths:
               - asc
             example: desc
           description: |
-            Data order
-            - `desc` — from the largest numeric value to the smallest, from the last alphabetical value to the first
-            - `asc` — from the smallest numeric value to the largest, from the first alphabetical value to the last
+            Порядок выдачи
+            - `desc` — от наибольшего числового значения к наименьшему, от последнего по алфавиту значения к первому
+            - `asc` — от наименьшего числового значения к наибольшему, от первого по алфавиту значения к последнему
           required: true
       responses:
         '200':
-          description: Success
+          description: Успешно
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   report:
-                    description: Report
+                    description: Отчёт
                     type: array
                     items:
                       type: object
@@ -1950,25 +1951,25 @@ paths:
                         brand:
                           type: string
                           example: Трикотаж
-                          description: Brand
+                          description: Бренд
                         nmId:
                           type: integer
                           example: 166658151
-                          description: WB item number
+                          description: Артикул WB
                         title:
                           type: string
                           example: ВАЗ
-                          description: Item title
+                          description: Наименование товара
                         vendorCode:
                           type: string
                           example: DP02/черный
-                          description: Seller item number
+                          description: Артикул продавца
                         nmRating:
                           type: number
                           example: 3.1
-                          description: Listing rating
+                          description: Рейтинг товара
         '400':
-          description: Bad request
+          description: Неправильный запрос
           content:
             application/json:
               schema:
@@ -1976,19 +1977,19 @@ paths:
                 properties:
                   title:
                     type: string
-                    description: Error title
+                    description: Заголовок ошибки
                   status:
                     type: number
-                    description: HTTP status code
+                    description: HTTP статус-код
                   detail:
                     type: string
-                    description: Error details
+                    description: Детали ошибки
                   requestId:
                     type: string
-                    description: Unique request ID
+                    description: Уникальный ID запроса
                   origin:
                     type: string
-                    description: WB internal service ID
+                    description: ID внутреннего сервиса WB
               example:
                 title: bad request
                 status: 400

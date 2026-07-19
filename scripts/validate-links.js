@@ -14,9 +14,9 @@
  *   1 - Broken links detected
  */
 
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { readdirSync, statSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 // Find all markdown files recursively
 function findMarkdownFiles(dir, fileList = []) {
@@ -44,17 +44,23 @@ function findMarkdownFiles(dir, fileList = []) {
 console.log('🔍 Finding markdown files...\n');
 const markdownFiles = findMarkdownFiles('.');
 console.log(`Found ${markdownFiles.length} markdown files\n`);
+const markdownLinkCheckCli = resolve('node_modules/markdown-link-check/markdown-link-check');
+const batchSize = 100;
 
 let hasErrors = false;
 let checkedFiles = 0;
 let totalLinks = 0;
 let brokenLinks = 0;
 
-markdownFiles.forEach((file) => {
-  console.log(`Checking links in ${file}...`);
+for (let index = 0; index < markdownFiles.length; index += batchSize) {
+  const batch = markdownFiles.slice(index, index + batchSize);
+  console.log(
+    `Checking files ${String(index + 1)}-${String(index + batch.length)} of ${String(markdownFiles.length)}...`
+  );
   try {
-    const output = execSync(
-      `npx markdown-link-check "${file}" --config .markdown-link-check.json`,
+    const output = execFileSync(
+      process.execPath,
+      [markdownLinkCheckCli, ...batch, '--config', '.markdown-link-check.json'],
       {
         stdio: 'pipe',
         encoding: 'utf8',
@@ -62,12 +68,12 @@ markdownFiles.forEach((file) => {
     );
 
     // Count links
-    const linkMatches = output.match(/\[✓\]/g) || [];
-    const brokenMatches = output.match(/\[✖\]/g) || [];
+    const linkMatches = output.match(/^\s*\[✓\]/gm) || [];
+    const brokenMatches = output.match(/^\s*\[✖\].+→ Status:/gm) || [];
 
     totalLinks += linkMatches.length + brokenMatches.length;
     brokenLinks += brokenMatches.length;
-    checkedFiles++;
+    checkedFiles += batch.length;
 
     if (brokenMatches.length > 0) {
       console.log(output);
@@ -78,8 +84,8 @@ markdownFiles.forEach((file) => {
     // The broken link output is in error.stdout, not the try block.
     // Bug fix (Sprint 9 task-100): count broken links from catch block too.
     if (error.stdout) {
-      const catchBrokenMatches = error.stdout.match(/\[✖\]/g) || [];
-      const catchLinkMatches = error.stdout.match(/\[✓\]/g) || [];
+      const catchBrokenMatches = error.stdout.match(/^\s*\[✖\].+→ Status:/gm) || [];
+      const catchLinkMatches = error.stdout.match(/^\s*\[✓\]/gm) || [];
       brokenLinks += catchBrokenMatches.length;
       totalLinks += catchBrokenMatches.length + catchLinkMatches.length;
       if (catchBrokenMatches.length > 0) {
@@ -87,11 +93,14 @@ markdownFiles.forEach((file) => {
         console.error(error.stdout);
       }
     } else {
-      console.warn(`⚠️  Warning: Could not check ${file}`);
+      hasErrors = true;
+      console.warn(
+        `⚠️  Warning: Could not check files ${String(index + 1)}-${String(index + batch.length)}`
+      );
     }
-    checkedFiles++;
+    checkedFiles += batch.length;
   }
-});
+}
 
 console.log('\n' + '='.repeat(60));
 console.log('Link Validation Summary');
@@ -108,9 +117,8 @@ if (hasErrors && brokenLinks > 0) {
   console.log('3. Run "npm run validate:links" again');
   process.exit(1);
 } else if (hasErrors) {
-  console.log('\n⚠️  Warning: Some files could not be checked, but no broken links found');
-  console.log('\n✅ Validation passed with warnings');
-  process.exit(0);
+  console.log('\n❌ Link validation failed - some files could not be checked');
+  process.exit(1);
 } else {
   console.log('\n✅ All links valid!');
   process.exit(0);

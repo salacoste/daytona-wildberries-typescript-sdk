@@ -565,10 +565,10 @@ export interface SellerMessageRequest {
   /**
    * Attachment files. Each ≤ 5MB; total ≤ 30MB. Formats: JPEG, PDF, PNG.
    *
-   * Accept either `Blob` (browser/Node 18+ global) or `Buffer` (Node-only legacy) with
-   * a filename hint via tuple shape. The SDK normalizes both to FormData.
+   * Accept either `Blob` or a `Uint8Array` with a filename hint via tuple shape.
+   * Node.js `Buffer` is supported because it extends `Uint8Array`.
    */
-  file?: (Blob | { filename: string; content: Buffer })[];
+  file?: (Blob | { filename: string; content: Uint8Array })[];
 }
 
 /**

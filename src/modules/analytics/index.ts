@@ -46,6 +46,8 @@ import type {
   WbWarehousesStockResponse,
   ItemRatingRequest,
   ItemRatingResponseWrapper,
+  ItemRatingV2Request,
+  ItemRatingV2ResponseWrapper,
 } from '../../types/analytics.types';
 
 export class AnalyticsModule {
@@ -584,6 +586,42 @@ export class AnalyticsModule {
   }
 
   /**
+   * Get the v2 item-rating report, including catalog visibility.
+   *
+   * Use `onlyShadowedNms: true` to replace the deprecated
+   * `reports.getBannedProductsShadowed()` report. Each returned item includes
+   * `isShadowed`, and the per-product array is named `items` (not the v1 `cards`).
+   *
+   * Rate limit: 3 requests per minute, 20s interval, burst 3.
+   *
+   * @param data - V2 report filters, sorting, and pagination.
+   * @returns Seller rating, feedback summary, and per-product rows with `isShadowed`.
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since 4.1.0
+   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/Ocenka-tovara/operation/postV2ItemRating}
+   * @example
+   * ```typescript
+   * const hiddenProducts = await sdk.analytics.getItemRatingV2({
+   *   currentPeriod: { start: '2026-07-01', end: '2026-07-18' },
+   *   onlyShadowedNms: true,
+   *   orderBy: { field: 'feedbackCount', mode: 'desc' },
+   *   offset: 0,
+   * });
+   * console.log(hiddenProducts.data.items[0]?.isShadowed);
+   * ```
+   */
+  async getItemRatingV2(data: ItemRatingV2Request): Promise<ItemRatingV2ResponseWrapper> {
+    return this.client.post<ItemRatingV2ResponseWrapper>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v2/item-rating',
+      data,
+      { rateLimitKey: 'analytics.itemRatingV2' }
+    );
+  }
+
+  /**
    * Get item rating with feedback distribution.
    *
    * Returns the seller rating, a feedback-increase summary (total + per-star 1-5
@@ -609,8 +647,11 @@ export class AnalyticsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @deprecated Scheduled for removal by Wildberries on 2026-07-30. Use
+   * {@link AnalyticsModule.getItemRatingV2}; note the v2 response uses `items`
+   * instead of `cards` and the no-sales filter is `isNotIncludeNmsWithoutSales`.
    * @since 3.16.0
-   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/Rating/operation/postV1ItemRating}
+   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/Ocenka-tovara/operation/postV1ItemRating}
    * @example
    * ```typescript
    * // Period mode (single period, no dynamics)
@@ -748,6 +789,11 @@ export type {
   ItemRatingRequest,
   ItemRatingResponse,
   ItemRatingResponseWrapper,
+  ItemRatingV2Request,
+  ItemRatingV2Response,
+  ItemRatingV2ResponseWrapper,
+  DistributionTableItemV2,
+  DistributionFeedbackRatingV2,
   PeriodItemRating,
   PastPeriodItemRating,
   OrderByItemRating,

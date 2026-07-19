@@ -17,26 +17,26 @@ export const var100RateLimits: Record<string, RateLimitConfig> = {
   '1_0_0.contentTags': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
+    burstLimit: 5,
   },
   '1_0_0.advAdvert': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
+    burstLimit: 5,
   },
   '1_0_0.postAdvFullstats': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
+    burstLimit: 5,
   },
   '1_0_0.advFullstats': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
+    burstLimit: 5,
   },
   '1_0_0.calendarPromotions': {
     requestsPerMinute: 10,
     intervalSeconds: 6,
-    burstLimit: 5
-  }
+    burstLimit: 5,
+  },
 };

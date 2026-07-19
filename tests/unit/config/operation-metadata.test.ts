@@ -552,19 +552,19 @@ describe('operationMetadata consistency', () => {
 describe('edge cases and error handling', () => {
   it('handles null-like inputs gracefully for isOperationReadonly', () => {
     // TypeScript would normally catch these, but testing runtime behavior
-    expect(isOperationReadonly('' as string)).toBe(false);
+    expect(isOperationReadonly('')).toBe(false);
   });
 
   it('handles null-like inputs gracefully for getOperationCategory', () => {
-    expect(getOperationCategory('' as string)).toBeUndefined();
+    expect(getOperationCategory('')).toBeUndefined();
   });
 
   it('handles null-like inputs gracefully for getOperationRateLimitKey', () => {
-    expect(getOperationRateLimitKey('' as string)).toBeUndefined();
+    expect(getOperationRateLimitKey('')).toBeUndefined();
   });
 
   it('handles null-like inputs gracefully for getOperationMetadata', () => {
-    expect(getOperationMetadata('' as string)).toBeUndefined();
+    expect(getOperationMetadata('')).toBeUndefined();
   });
 
   it('handles special characters in operation key lookup', () => {

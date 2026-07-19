@@ -12,6 +12,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import type { Mock } from 'vitest';
 import type { ModelsWarehouseBoxRates } from '../../../src/types/tariffs.types';
 import type { ModelsAcceptanceCoefficient } from '../../../src/types/orders-fbw.types';
 import { compareTariffs } from '../../../src/utils/compareTariffs';
@@ -76,14 +77,12 @@ describe('compareTariffs', () => {
     isSortingCenter: false,
   };
 
-  let mockGetBoxTariffs: ReturnType<typeof vi.fn<[], Promise<ModelsWarehouseBoxRates[]>>>;
-  let mockGetAcceptanceCoefficients: ReturnType<
-    typeof vi.fn<[], Promise<ModelsAcceptanceCoefficient[]>>
-  >;
+  let mockGetBoxTariffs: Mock<() => Promise<ModelsWarehouseBoxRates[]>>;
+  let mockGetAcceptanceCoefficients: Mock<() => Promise<ModelsAcceptanceCoefficient[]>>;
 
   beforeEach(() => {
-    mockGetBoxTariffs = vi.fn<[], Promise<ModelsWarehouseBoxRates[]>>();
-    mockGetAcceptanceCoefficients = vi.fn<[], Promise<ModelsAcceptanceCoefficient[]>>();
+    mockGetBoxTariffs = vi.fn<() => Promise<ModelsWarehouseBoxRates[]>>();
+    mockGetAcceptanceCoefficients = vi.fn<() => Promise<ModelsAcceptanceCoefficient[]>>();
   });
 
   afterEach(() => {

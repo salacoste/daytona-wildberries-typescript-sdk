@@ -73,6 +73,9 @@
       "pattern": "^https://dev\\.wildberries\\.ru"
     },
     {
+      "pattern": "^https://esnsi\\.gosuslugi\\.ru/"
+    },
+    {
       "pattern": "^[a-z].*/$"
     },
     {

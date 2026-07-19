@@ -2,6 +2,8 @@
 .mcp.json
 .claude/mcp.json
 .claude/settings.local.json
+.claude/scheduled_tasks.json
+.claude/scheduled_tasks.lock
 
 # Dependencies
 node_modules/

@@ -4,8 +4,8 @@
   "openapiVersion": "3.0.1",
   "title": "Analytics and Data",
   "counts": {
-    "endpoints": 18,
-    "schemas": 106,
+    "endpoints": 19,
+    "schemas": 109,
     "enums": 19
   },
   "endpoints": [
@@ -198,13 +198,24 @@
     },
     {
       "method": "post",
+      "path": "/api/analytics/v2/item-rating",
+      "baseUrl": "https://seller-analytics-api.wildberries.ru",
+      "operationId": "postV2ItemRating",
+      "summary": "Получить отчёт",
+      "deprecated": false,
+      "tags": [
+        "Оценка товара"
+      ]
+    },
+    {
+      "method": "post",
       "path": "/api/analytics/v1/item-rating",
       "baseUrl": "https://seller-analytics-api.wildberries.ru",
       "operationId": "postV1ItemRating",
-      "summary": "Get Report",
-      "deprecated": false,
+      "summary": "Получить отчёт",
+      "deprecated": true,
       "tags": [
-        "Item Rating"
+        "Оценка товара"
       ]
     }
   ],
@@ -3885,6 +3896,286 @@
           "enum": null
         },
         {
+          "name": "isNotIncludeNmsWithoutSales",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "onlyShadowedNms",
+          "type": "boolean",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "orderBy",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "format": "uint32",
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "format": "uint32",
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "currentPeriod",
+        "orderBy",
+        "offset"
+      ]
+    },
+    {
+      "name": "ItemRatingResponse",
+      "type": "object",
+      "properties": [
+        {
+          "name": "sellerRating",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "feedbackIncrease",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "sellerRating",
+        "feedbackIncrease",
+        "items"
+      ]
+    },
+    {
+      "name": "DistributionTableItem",
+      "type": "object",
+      "properties": [
+        {
+          "name": "nmId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "vendorCode",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectId",
+          "type": "integer",
+          "format": "uint64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "subjectName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "brandName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "tagName",
+          "type": "string",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "tagId",
+          "type": "integer",
+          "format": "int64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pinnedFeedback",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "rating",
+          "type": "number",
+          "format": "float64",
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "feedbackRating",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "feedbackCount",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fiveStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "fourStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "threeStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "twoStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "oneStar",
+          "type": "object",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "disqualified",
+          "type": "integer",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "isShadowed",
+          "type": "boolean",
+          "format": null,
+          "required": true,
+          "enum": null
+        }
+      ],
+      "required": [
+        "nmId",
+        "title",
+        "vendorCode",
+        "subjectId",
+        "subjectName",
+        "brandName",
+        "tagName",
+        "tagId",
+        "pinnedFeedback",
+        "rating",
+        "feedbackRating",
+        "feedbackCount",
+        "fiveStar",
+        "fourStar",
+        "threeStar",
+        "twoStar",
+        "oneStar",
+        "disqualified",
+        "isShadowed"
+      ]
+    },
+    {
+      "name": "ItemRatingRequestV1",
+      "type": "object",
+      "properties": [
+        {
+          "name": "currentPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": true,
+          "enum": null
+        },
+        {
+          "name": "pastPeriod",
+          "type": "$ref",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "nmIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "subjectIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "brandNames",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
+          "name": "tagIds",
+          "type": "array",
+          "format": null,
+          "required": false,
+          "enum": null
+        },
+        {
           "name": "isNotIncludeNMsWithoutSales",
           "type": "boolean",
           "format": null,
@@ -3944,7 +4235,7 @@
       ]
     },
     {
-      "name": "pastPeriodItemRating",
+      "name": "PastPeriodItemRating",
       "type": "object",
       "properties": [
         {
@@ -4004,7 +4295,7 @@
       ]
     },
     {
-      "name": "ItemRatingResponse",
+      "name": "ItemRatingResponseV1",
       "type": "object",
       "properties": [
         {
@@ -4131,7 +4422,7 @@
       ]
     },
     {
-      "name": "DistributionTableItem",
+      "name": "DistributionTableItemV1",
       "type": "object",
       "properties": [],
       "required": []

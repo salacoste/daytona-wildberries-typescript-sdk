@@ -9,6 +9,7 @@ _description: |
     2. [Поисковых запросов по вашим товарам](/openapi/analytics#tag/Poiskovye-zaprosy-po-vashim-tovaram)
     3. [Истории остатков](/openapi/analytics#tag/Istoriya-ostatkov)
     4. [Аналитики продавца в формате CSV](/openapi/analytics#tag/Analitika-prodavca-CSV)
+    5. [Оценки товара](/openapi/analytics#tag/Ocenka-tovara)
 _original_file: 11-analytics.yaml
 _base_url: https://seller-analytics-api.wildberries.ru
 _shards:
@@ -28,7 +29,11 @@ _shards:
     domain: Аналитика продавца CSV
     endpoints: 4
     description: Seller Analytics CSV
+  - file: otsenka-tovara.yaml
+    domain: Оценка товара
+    endpoints: 2
+    description: Item Rating v2 and deprecated v1
 _shared_schemas: _schemas.yaml
-_total_endpoints: 16
+_total_endpoints: 18
 _base_urls:
   - https://seller-analytics-api.wildberries.ru

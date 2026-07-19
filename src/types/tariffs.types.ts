@@ -309,9 +309,17 @@ export interface ModelsAcceptanceCoefficient {
 }
 
 // Type aliases for backward compatibility and convenience
-export type TariffItem = ModelsWarehouseBoxRates | ModelsWarehousePalletRates | ModelsWarehouseReturnRates;
+export type TariffItem =
+  | ModelsWarehouseBoxRates
+  | ModelsWarehousePalletRates
+  | ModelsWarehouseReturnRates;
 export type BoxTariffItem = ModelsWarehouseBoxRates;
 export type PalletTariffItem = ModelsWarehousePalletRates;
 
 /** Response type for getTariffsCommission method */
-export type TariffsCommissionResponse = Commission | CommissionChina | CommissionTurkey | CommissionUzbekistan | CommissionUAE;
+export type TariffsCommissionResponse =
+  | Commission
+  | CommissionChina
+  | CommissionTurkey
+  | CommissionUzbekistan
+  | CommissionUAE;

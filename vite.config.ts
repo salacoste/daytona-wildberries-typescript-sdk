@@ -15,26 +15,33 @@ export default defineConfig({
   plugins: [
     dts({
       outDir: 'dist/esm',
+      entryRoot: 'src',
       include: ['src/**/*.ts'],
       exclude: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
     }),
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        'modules/finances/index': resolve(__dirname, 'src/modules/finances/index.ts'),
+        'modules/analytics/index': resolve(__dirname, 'src/modules/analytics/index.ts'),
+        'modules/communications/index': resolve(__dirname, 'src/modules/communications/index.ts'),
+        'modules/reports/index': resolve(__dirname, 'src/modules/reports/index.ts'),
+      },
       name: 'WildberriesSDK',
       formats: ['es', 'cjs'],
-      fileName: (format) => {
+      fileName: (format, entryName) => {
         if (format === 'es') {
-          return 'esm/index.js';
+          return `esm/${entryName}.js`;
         }
         if (format === 'cjs') {
           // CRITICAL FIX: Use .cjs extension for CommonJS when package.json has "type": "module"
           // This prevents "ReferenceError: exports is not defined" errors
           // See: https://nodejs.org/api/packages.html#determining-module-system
-          return 'cjs/index.cjs';
+          return `cjs/${entryName}.cjs`;
         }
-        return `${format}/index.js`;
+        return `${format}/${entryName}.js`;
       },
     },
     rollupOptions: {
@@ -44,6 +51,7 @@ export default defineConfig({
       output: {
         // Preserve module structure for better tree-shaking
         preserveModules: false,
+        exports: 'named',
       },
     },
     // Generate sourcemaps for debugging

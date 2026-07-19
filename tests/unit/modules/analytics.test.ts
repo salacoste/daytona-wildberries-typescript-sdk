@@ -2,7 +2,7 @@
  * Unit Tests for Analytics Module (EPIC 41 & 42)
  *
  * Tests cover:
- * - rateLimitKey wiring for all 17 active methods
+ * - rateLimitKey wiring for all active methods
  * - Type fixes (AvailabilityFilters, TableProductItem)
  * - Return type fixes (getDownloadsFile → ArrayBuffer)
  *
@@ -14,10 +14,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AnalyticsModule } from '../../../src/modules/analytics';
+import { AnalyticsModule, type ItemRatingV2Request } from '../../../src/modules/analytics';
 import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
+import { analyticsRateLimits } from '../../../src/config/analytics-rate-limits';
 import type {
   AvailabilityFilters,
   TableProductItem,
@@ -424,7 +425,7 @@ describe('AnalyticsModule', () => {
   // ==========================================================================
 
   describe('All module methods exist', () => {
-    it('should have all 17 active methods', () => {
+    it('should expose all 19 current methods, including item-rating v1 and v2', () => {
       // CSV Export (4)
       expect(typeof module.getNmReportDownloads).toBe('function');
       expect(typeof module.createNmReportDownload).toBe('function');
@@ -451,6 +452,10 @@ describe('AnalyticsModule', () => {
 
       // v1 WB Warehouses Inventory (1)
       expect(typeof module.getWbWarehousesStock).toBe('function');
+
+      // Item Rating (v2 current + v1 deprecated)
+      expect(typeof module.getItemRatingV2).toBe('function');
+      expect(typeof module.getItemRating).toBe('function');
     });
 
     // Note: Deprecated v2 wrapper methods (createNmReportDetail, createDetailHistory,
@@ -532,6 +537,90 @@ describe('AnalyticsModule', () => {
       const result = await module.getWbWarehousesStock({ nmIds: [999999] });
 
       expect(result.data.items).toEqual([]);
+    });
+  });
+
+  // ============================================================================
+  // getItemRatingV2 (v2 Item Rating) — task-182
+  // ============================================================================
+
+  describe('getItemRatingV2()', () => {
+    const ITEM_RATING_V2_URL = `${BASE_URL}/api/analytics/v2/item-rating`;
+
+    it('should route hidden-product filters to the v2 endpoint', async () => {
+      mockClient.post.mockResolvedValue({
+        data: { sellerRating: { current: 3.56 }, feedbackIncrease: {} as any, items: [] },
+      });
+
+      const request: ItemRatingV2Request = {
+        currentPeriod: { start: '2026-07-01', end: '2026-07-18' },
+        isNotIncludeNmsWithoutSales: true,
+        onlyShadowedNms: true,
+        orderBy: { field: 'feedbackCount' as const, mode: 'desc' as const },
+        offset: 0,
+        limit: 100,
+      };
+
+      await module.getItemRatingV2(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(ITEM_RATING_V2_URL, request, {
+        rateLimitKey: 'analytics.itemRatingV2',
+      });
+      expect(analyticsRateLimits['analytics.itemRatingV2']).toEqual({
+        requestsPerMinute: 3,
+        intervalSeconds: 20,
+        burstLimit: 3,
+      });
+    });
+
+    it('should return v2 items with catalog visibility unchanged', async () => {
+      const item = {
+        nmId: 123456789,
+        title: 'Товар',
+        vendorCode: 'vendor-1',
+        subjectId: 50,
+        subjectName: 'Предмет',
+        brandName: 'Brand',
+        tagName: 'Tag',
+        tagId: 65,
+        pinnedFeedback: true,
+        rating: 10,
+        feedbackRating: { current: 3.87, dynamics: 0.31, percentile: 1.7 },
+        feedbackCount: { current: 12, dynamics: 9 },
+        fiveStar: { current: 9, dynamics: 7 },
+        fourStar: { current: 0, dynamics: -1 },
+        threeStar: { current: 1, dynamics: 1 },
+        twoStar: { current: 2, dynamics: 2 },
+        oneStar: { current: 0, dynamics: 0 },
+        disqualified: 7,
+        isShadowed: true,
+      };
+      const mockResponse = {
+        data: {
+          sellerRating: { current: 3.56 },
+          feedbackIncrease: {
+            current: 26,
+            total: 116,
+            dynamics: 23,
+            fiveStar: { current: 19, total: 51 },
+            fourStar: { current: 2, total: 13 },
+            threeStar: { current: 1, total: 11 },
+            twoStar: { current: 5, total: 34 },
+            oneStar: { current: -1, total: 7 },
+          },
+          items: [item],
+        },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getItemRatingV2({
+        currentPeriod: { start: '2026-07-01', end: '2026-07-18' },
+        orderBy: { field: 'feedbackCount', mode: 'desc' },
+        offset: 0,
+      });
+
+      expect(result).toEqual(mockResponse);
+      expect(result.data.items[0].isShadowed).toBe(true);
     });
   });
 
