@@ -202,6 +202,7 @@ export default defineConfig({
                 text: 'Analytics Guides',
                 collapsed: true,
                 items: [
+                  { text: '🆕 Item Rating v1 → v2 Migration', link: '/guides/migration-item-rating-v2' },
                   { text: 'Sales Funnel Analytics', link: '/guides/sales-funnel-analytics' },
                   { text: 'Search Queries Analytics', link: '/guides/search-queries-analytics' },
                   { text: 'Seller Analytics CSV', link: '/guides/seller-analytics-csv' }

@@ -34,12 +34,20 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - **🔄 Smart Retry Logic** - Exponential backoff retry mechanism for transient failures with per-request timeout support
 - **🛡️ Rich Error Handling** - Typed error hierarchy with detailed recovery guidance
 - **📦 Tree-Shakeable** - Dual ESM/CommonJS builds, import only what you need (<100KB gzipped)
-- **✅ Battle-Tested** - 2,207 tests passing across all modules
+- **✅ Battle-Tested** - 2,376 tests passing across all modules
 - **🎯 100% API Coverage** - All YAML endpoints implemented including v1 Finance Reports and Acquiring Reports
 - **📚 Comprehensive Documentation** - Complete API reference, 44 guides, tutorials, and working examples in English and Russian
 - **🔧 Zero Configuration** - Works out of the box with sensible defaults, configurable for advanced use
 - **💰 Finance v1 Reports** - Sales Reports and Acquiring Reports with `parseMoneyAmount()` helper and field union types for autocomplete
 - **🔔 Deprecation Utilities** - `warnOnce()` and `resetDeprecationWarnings()` for clean migration workflows
+
+## What's New (v4.1.0) — July 2026
+
+🆕 **Item Rating v2** — `sdk.analytics.getItemRatingV2()` implements `POST /api/analytics/v2/item-rating`, including `onlyShadowedNms` and `items[].isShadowed` for hidden-from-catalog reporting.
+
+⚠️ **Migration deadline: July 30, 2026** — Wildberries will disable Item Rating v1 and the dedicated hidden-products report. Replace `sdk.analytics.getItemRating()` and `sdk.reports.getBannedProductsShadowed()` with the v2 method.
+
+📖 **[Item Rating v1 → v2 migration guide](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-item-rating-v2)**
 
 ## What's New (v3.15.0) — May 2026
 
@@ -231,7 +239,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Project Status & Development
 
-**Current Status:** 🟢 Production Ready | **SDK Version:** 3.10.0
+**Current Status:** 🟢 Production Ready | **SDK Version:** 4.1.0
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Comprehensive overview of all epics, stories, and implementation status.
 
@@ -241,7 +249,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 |--------|-------|
 | **API Modules** | 14 (100%) |
 | **API Endpoints** | 240+ implemented |
-| **Test Suite** | 2,207 tests passing (100%) |
+| **Test Suite** | 2,376 tests passing |
 | **Documentation** | 44 guides, 22 examples |
 | **Bundle Size** | ~91KB gzipped (ESM) |
 
@@ -335,12 +343,20 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - **🔄 Умная Логика Повторов** - Экспоненциальная задержка для временных сбоев с поддержкой таймаута для каждого запроса
 - **🛡️ Богатая Обработка Ошибок** - Типизированная иерархия ошибок с подробными рекомендациями
 - **📦 Tree-Shakeable** - Двойная сборка ESM/CommonJS, импортируйте только то, что нужно (<100KB gzip)
-- **✅ Проверено в Бою** - 2,207 тестов для всех модулей
+- **✅ Проверено в Бою** - 2,376 тестов для всех модулей
 - **🎯 100% Покрытие API** - Все эндпоинты YAML реализованы, включая Финансовые Отчеты v1 и Эквайринг
 - **📚 Полная Документация** - Справочник API, 44 руководства, примеры на английском и русском
 - **🔧 Без Настройки** - Работает из коробки с разумными значениями по умолчанию
 - **💰 Финансовые Отчеты v1** - Отчеты о продажах и эквайринге с хелпером `parseMoneyAmount()` и union-типами полей для автодополнения
 - **🔔 Утилиты Для Устаревших Методов** - `warnOnce()` и `resetDeprecationWarnings()` для удобной миграции
+
+## Что нового (v4.1.0) — Июль 2026
+
+🆕 **Оценка товара v2** — `sdk.analytics.getItemRatingV2()` реализует `POST /api/analytics/v2/item-rating`, включая `onlyShadowedNms` и `items[].isShadowed` для отчёта по скрытым из каталога товарам.
+
+⚠️ **Дедлайн миграции: 30 июля 2026** — Wildberries отключит Оценку товара v1 и отдельный отчёт по скрытым товарам. Замените `sdk.analytics.getItemRating()` и `sdk.reports.getBannedProductsShadowed()` на метод v2.
+
+📖 **[Руководство по миграции Оценки товара v1 → v2](https://salacoste.github.io/daytona-wildberries-typescript-sdk/guides/migration-item-rating-v2)**
 
 ## Что нового (v3.15.0) — Май 2026
 
@@ -532,7 +548,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 
 ## 📊 Статус Проекта и Разработка
 
-**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 3.10.0
+**Текущий Статус:** 🟢 Production Ready | **Версия SDK:** 4.1.0
 
 **📖 [Project Status Summary](PROJECT_STATUS_SUMMARY.md)** — Комплексный обзор всех эпиков, историй и статуса реализации.
 
@@ -542,7 +558,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 |---------|----------|
 | **API модули** | 14 (100%) |
 | **API эндпоинты** | 240+ реализовано |
-| **Тесты** | 2,207 тестов проходят (100%) |
+| **Тесты** | 2,376 тестов проходят |
 | **Документация** | 44 руководства, 22 примера |
 | **Размер бандла** | ~91KB gzipped (ESM) |
 

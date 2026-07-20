@@ -13,13 +13,13 @@ hero:
       text: View API Reference
       link: /api/
     - theme: warning
-      text: ⚠️ API Deprecation Notice
-      link: /guides/migration-v2.4-promotion-deprecation
+      text: ⚠️ Item Rating v2 Migration
+      link: /guides/migration-item-rating-v2
 
 features:
   - icon: 🔒
     title: Type Safety First
-    details: Auto-generated TypeScript types from OpenAPI specifications with 100% strict mode enforcement, eliminating runtime errors and providing full IDE autocomplete support across all 11 API modules.
+    details: Auto-generated TypeScript types from OpenAPI specifications with 100% strict mode enforcement, eliminating runtime errors and providing full IDE autocomplete support across all 14 API modules.
 
   - icon: ⚡
     title: Intelligent Rate Limiting
@@ -31,7 +31,7 @@ features:
 
   - icon: 📦
     title: Complete API Coverage
-    details: 11 fully-typed modules covering 100% of Wildberries API endpoints - Products, Orders (FBS/FBW), Finances, Analytics, Reports, Communications, Promotion, Tariffs, and more.
+    details: 14 fully-typed modules covering the Wildberries API surface - Products, Orders (FBS/FBW/DBS), Finances, Analytics, Reports, Communications, Promotion, Tariffs, Returns, and more.
 
   - icon: 🔄
     title: Automatic Retry Logic
@@ -59,6 +59,16 @@ console.log(categories);
 ```
 
 **👉 [Complete 5-Minute Quickstart Guide](/getting-started/quickstart)**
+
+---
+
+## 🆕 v4.1.0 — Item Rating v2
+
+Wildberries will disable Item Rating v1 and the dedicated hidden-from-catalog report on
+**July 30, 2026**. SDK v4.1.0 adds `analytics.getItemRatingV2()` with
+`onlyShadowedNms` filtering and `items[].isShadowed` visibility.
+
+**👉 [Migrate Item Rating v1 and hidden-product reporting](/guides/migration-item-rating-v2)**
 
 ---
 
@@ -113,11 +123,11 @@ const products = campaigns.adverts?.[0]?.nm_settings || [];
     <div class="stat-label">API Coverage</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">98%</div>
+    <div class="stat-number">90%+</div>
     <div class="stat-label">Test Coverage</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">2080</div>
+    <div class="stat-number">2376</div>
     <div class="stat-label">Tests</div>
   </div>
   <div class="stat-card">
@@ -178,7 +188,7 @@ const products = campaigns.adverts?.[0]?.nm_settings || [];
 
 ### 🎯 Production Ready
 
-Battle-tested with 98% test coverage and 2080 tests. All 11 API modules fully implemented and validated against official Wildberries OpenAPI specifications.
+Battle-tested with 90%+ statement coverage and 2,376 tests. All 14 API modules are implemented and validated against the repository's Wildberries OpenAPI specifications.
 
 ### ⚡ Time Savings
 
@@ -199,7 +209,7 @@ Works out of the box with sensible defaults. Advanced configuration available fo
 
 ## Supported API Modules
 
-All 11 Wildberries API modules fully supported:
+All 14 Wildberries API modules are supported:
 
 | Module | Coverage | Key Features |
 |--------|----------|--------------|

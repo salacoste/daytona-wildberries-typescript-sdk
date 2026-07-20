@@ -535,6 +535,7 @@ function main() {
     join(__dirname, '..', 'docs', 'ru', 'guides', 'withphoto-semantic-migration.md'),
     join(__dirname, '..', 'docs', 'guides', 'fbs-marking-code-validation.md'),
     join(__dirname, '..', 'docs', 'ru', 'guides', 'fbs-marking-code-validation.md'),
+    join(__dirname, '..', 'docs', 'guides', 'migration-item-rating-v2.md'),
 
     // Getting Started
     join(__dirname, '..', 'docs', 'getting-started', 'quickstart.md'),
