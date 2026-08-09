@@ -242,7 +242,8 @@ export default defineConfig({
               { text: 'Analytics', link: '/modules/analytics' },
               { text: 'Reports', link: '/modules/reports' },
               { text: 'Finances', link: '/modules/finances' },
-              { text: '🆕 Returns (v3.10.0)', link: '/modules/returns' }
+              { text: '🆕 Returns (v3.10.0)', link: '/modules/returns' },
+              { text: 'User Management', link: '/modules/user-management' }
             ]
           },
           {
@@ -505,7 +506,8 @@ export default defineConfig({
               { text: 'Analytics', link: '/modules/analytics' },
               { text: 'Reports', link: '/modules/reports' },
               { text: 'Finances', link: '/modules/finances' },
-              { text: '🆕 Returns (v3.10.0)', link: '/modules/returns' }
+              { text: '🆕 Returns (v3.10.0)', link: '/modules/returns' },
+              { text: 'User Management', link: '/modules/user-management' }
             ]
           },
           {
