@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Pre-commit hook: TypeScript type-check + gitleaks secret scan.
+# Install with:  ./scripts/install-hooks.sh
+# (or copy this file to .git/hooks/pre-commit and chmod +x)
+set -u
+
+# Always run from the repo root so .gitleaks.toml / package.json resolve.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+# --- 1. TypeScript type check ------------------------------------------------
+echo "Running TypeScript type check..."
+if ! npm run --silent type-check; then
+  echo ""
+  echo "❌ TypeScript type check FAILED — fix type errors before committing."
+  echo "   Skip (NOT recommended): git commit --no-verify"
+  exit 1
+fi
+echo "✅ TypeScript type check passed."
+
+# --- 2. gitleaks secret scan (staged changes) --------------------------------
+if command -v gitleaks >/dev/null 2>&1; then
+  echo "Running gitleaks secret scan on staged changes..."
+  if ! gitleaks git --pre-commit --staged --redact --config .gitleaks.toml; then
+    echo ""
+    echo "❌ gitleaks found potential secrets in staged changes."
+    echo "   - Real secret? Remove it from the commit (and rotate it)."
+    echo "   - Known safe placeholder? Add it to [allowlist] in .gitleaks.toml."
+    echo "   Skip (NOT recommended): git commit --no-verify"
+    exit 1
+  fi
+  echo "✅ gitleaks secret scan passed."
+else
+  echo "⚠️  gitleaks not installed — secret scan skipped. Install: brew install gitleaks"
+fi
+
+exit 0

@@ -176,6 +176,10 @@ npm run type-check
 
 # 6. Lint
 npm run lint
+
+# 7. Install the pre-commit hook (TypeScript type-check + gitleaks secret scan)
+./scripts/install-hooks.sh
+#    Secret scanning requires gitleaks: brew install gitleaks
 ```
 
 ### Project Structure

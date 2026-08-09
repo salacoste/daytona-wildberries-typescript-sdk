@@ -1,0 +1,108 @@
+# gitleaks secret-scan configuration for daytona-wildberries-typescript-sdk
+#
+# Self-contained ruleset (high-signal secret types) + allowlist for known
+# documentation/example placeholders. We do NOT use `[extend] gitleaks:default`
+# because that registry reference is not resolved by some gitleaks builds,
+# silently yielding an empty ruleset.
+#
+# Used by:
+#   - local pre-commit hook (scripts/git-hooks/pre-commit): scans staged changes
+#   - CI: .github/workflows/gitleaks.yml (gitleaks-action): scans push/PR history
+#
+# Manual:  gitleaks git --pre-commit --staged --redact --config .gitleaks.toml
+
+title = "daytona-wildberries-typescript-sdk"
+
+# ---------------------------------------------------------------------------
+# Rules
+# ---------------------------------------------------------------------------
+
+[[rules]]
+id = "private-key"
+description = "Private key blocks"
+regex = '''-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----'''
+tags = ["key", "private"]
+
+[[rules]]
+id = "aws-access-token"
+description = "AWS access key id"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["aws"]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS secret access key assignment"
+regex = '''(?i)aws[_\-\.]?(?:secret|sk)[_\-]?access[_\-]?key["'\s:=]+[A-Za-z0-9/+=]{40}'''
+tags = ["aws"]
+
+[[rules]]
+id = "github-token"
+description = "GitHub personal access / OAuth / app token"
+regex = '''gh[pousr]_[0-9A-Za-z]{36,}'''
+tags = ["github"]
+
+[[rules]]
+id = "gitlab-token"
+description = "GitLab token"
+regex = '''glpat-[0-9a-zA-Z\-_]{20}'''
+tags = ["gitlab"]
+
+[[rules]]
+id = "google-api-key"
+description = "Google API key"
+regex = '''AIza[0-9A-Za-z\-_]{35}'''
+tags = ["google"]
+
+[[rules]]
+id = "slack-token"
+description = "Slack token"
+regex = '''xox[baprs]-[0-9A-Za-z\-]{10,}'''
+tags = ["slack"]
+
+[[rules]]
+id = "stripe-key"
+description = "Stripe secret/public/restricted key"
+regex = '''(?:sk|pk|rk)_(?:live|test)_[0-9a-zA-Z]{20,}'''
+tags = ["stripe"]
+
+[[rules]]
+id = "jwt-full"
+description = "Full JWT (header.payload.signature) — NOT the header-only doc placeholder"
+regex = '''eyJ[a-zA-Z0-9_\-]{8,}\.eyJ[a-zA-Z0-9_\-]{8,}\.[a-zA-Z0-9_\-]{8,}'''
+tags = ["jwt"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic api-key / token / secret assignment (32+ char literal value)"
+regex = '''(?i)(?:api[_\-]?key|apikey|secret[_\-]?key|access[_\-]?token|auth[_\-]?token|private[_\-]?token|client[_\-]?secret|bearer)["'\s:=]{1,4}[A-Za-z0-9/\+=_\-]{32,}'''
+tags = ["generic", "token"]
+
+# ---------------------------------------------------------------------------
+# Allowlist — generated/vendored dirs + known doc/example placeholders
+# ---------------------------------------------------------------------------
+
+[allowlist]
+description = "Ignore generated/vendored dirs and known documentation/example placeholders (NOT real secrets)."
+
+paths = [
+  '''node_modules/''',
+  '''dist/''',
+  '''coverage/''',
+  '''\.git/''',
+  '''package-lock\.json''',
+  '''docs/api/''',
+  '''docs/\.vitepress/(cache|dist)/''',
+  '''wildberries_api_doc/''',
+  '''\.gitleaks\.toml''',
+]
+
+regexes = [
+  # Canonical JWT *header-only* placeholders used in docs / anti-examples
+  # (header + literal "..." — never a full header.payload.signature token).
+  '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9''', # {"alg":"HS256","typ":"JWT"}
+  '''eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9''', # {"alg":"RS256","typ":"JWT"}
+  # Well-known fake/example values used in documentation
+  '''AKIAIOSFODNN7EXAMPLE''',
+  '''wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY''',
+  '''\+79991234567''',
+]

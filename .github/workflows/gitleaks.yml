@@ -1,0 +1,22 @@
+name: Secret Scan
+
+# Scans the full commit history for leaked secrets on push (main) and pull requests.
+# Mirrors the local pre-commit hook (scripts/git-hooks/pre-commit) using .gitleaks.toml.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for complete scanning
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
