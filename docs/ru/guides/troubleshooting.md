@@ -49,7 +49,7 @@ layout: doc
 
 Таблица быстрого поиска для распространенных операций и их фактических методов SDK. Копируйте эти точные имена методов, чтобы избежать ошибок `TypeError: method is not a function`.
 
-**✅ Проверено на**: SDK v2.7.0 | **Последнее обновление**: 2026-02-03 | **Валидация**: Все методы проверены на соответствие фактической реализации (применена миграция Analytics v3)
+**✅ Проверено на**: SDK v4.1.0 | **Последнее обновление**: 2026-02-03 | **Валидация**: Все методы проверены на соответствие фактической реализации (применена миграция Analytics v3)
 
 ### Товары и каталог
 
@@ -224,7 +224,7 @@ const created = await sdk.products.createProduct(data); // TypeError: createProd
 Чтобы видеть детальные операции SDK, включите режим отладки:
 
 ```typescript
-import { WildberriesSDK } from '@daytona/wildberries-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
@@ -248,7 +248,7 @@ const sdk = new WildberriesSDK({
 [2024-10-27T10:30:45.124Z] [DEBUG] Заголовки запроса: {
   "Authorization": "Bearer ey***",
   "Content-Type": "application/json",
-  "User-Agent": "wildberries-sdk/1.0.0"
+  "User-Agent": "wildberries-sdk/4.1.0"
 }
 [2024-10-27T10:30:45.368Z] [DEBUG] Статус ответа: 200
 [2024-10-27T10:30:45.368Z] [DEBUG] Время ответа: 245ms
@@ -328,7 +328,7 @@ AuthenticationError: Invalid API key
 
 4. **Протестировать валидность ключа:**
    ```typescript
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!,
@@ -419,7 +419,7 @@ Error: WB_API_KEY environment variable is not set
    import dotenv from 'dotenv';
    dotenv.config();
 
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!
@@ -528,7 +528,7 @@ AuthenticationError: 401 Unauthorized - Token has expired
 3. **Реализовать ротацию ключей:**
    ```typescript
    // Мониторинг истечения ключа
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!,
@@ -1084,7 +1084,7 @@ Field: categoryId - Must be a valid category ID
 
 1. **Проверить требования к полям:**
    ```typescript
-   import { CreateProductRequest } from '@daytona/wildberries-sdk';
+   import { CreateProductRequest } from 'daytona-wildberries-typescript-sdk';
 
    // ❌ НЕПРАВИЛЬНО - Отсутствуют обязательные поля
    const product: CreateProductRequest = {
@@ -1310,10 +1310,10 @@ Expected property 'items' to be array, got undefined
 1. **Проверить версию SDK:**
    ```bash
    # Проверить установленную версию
-   npm list @daytona/wildberries-sdk
+   npm list daytona-wildberries-typescript-sdk
 
    # Обновить до последней
-   npm update @daytona/wildberries-sdk
+   npm update daytona-wildberries-typescript-sdk
    ```
 
 2. **Проверить версию API:**
@@ -1363,7 +1363,7 @@ Expected property 'items' to be array, got undefined
 
 **Сообщение об ошибке:**
 ```
-Error: Cannot find module '@daytona/wildberries-sdk'
+Error: Cannot find module 'daytona-wildberries-typescript-sdk'
 ```
 
 **Причина:** SDK не установлен или неправильный путь импорта.
@@ -1378,12 +1378,12 @@ Error: Cannot find module '@daytona/wildberries-sdk'
 
 1. **Установить SDK:**
    ```bash
-   npm install @daytona/wildberries-sdk
+   npm install daytona-wildberries-typescript-sdk
    ```
 
 2. **Проверить установку:**
    ```bash
-   npm list @daytona/wildberries-sdk
+   npm list daytona-wildberries-typescript-sdk
    ```
 
 3. **Проверить путь импорта:**
@@ -1393,7 +1393,7 @@ Error: Cannot find module '@daytona/wildberries-sdk'
    import { WildberriesSDK } from '@daytona/wb-sdk';  // Неправильное имя
 
    // ✅ ПРАВИЛЬНО
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
    ```
 
 4. **Очистить кэш и переустановить:**
@@ -1458,7 +1458,7 @@ TypeError: sdk.products.createCardsUpload is not a function
 
 4. **Использовать TypeScript для автодополнения:**
    ```typescript
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!
@@ -1576,15 +1576,15 @@ TypeError: sdk.products.createCardsUpload is not a function
 
 3. **Проверить версию SDK:**
    ```bash
-   npm list @daytona/wildberries-sdk
+   npm list daytona-wildberries-typescript-sdk
    # Обновить, если устарела
-   npm update @daytona/wildberries-sdk
+   npm update daytona-wildberries-typescript-sdk
    ```
 
 4. **Создать минимальное воспроизведение:**
    ```typescript
    // Изолировать проблему
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!
@@ -1853,8 +1853,8 @@ try {
 
 ```typescript
 // 1. Версия SDK
-import { version } from '@daytona/wildberries-sdk';
-console.log('Версия SDK:', version);  // например, 1.0.0
+import { version } from 'daytona-wildberries-typescript-sdk';
+console.log('Версия SDK:', version);  // например, 4.1.0
 
 // 2. Версия Node.js
 console.log('Версия Node:', process.version);  // например, v20.11.1
@@ -1920,6 +1920,6 @@ try {
 
 **Последнее обновление**: 2024-10-27
 **Версия документа**: 1.0
-**Версия SDK**: 1.0.0
+**Версия SDK**: 4.1.0
 
 Для последней версии этого руководства посетите [GitHub репозиторий](https://github.com/salacoste/daytona-wildberries-typescript-sdk).

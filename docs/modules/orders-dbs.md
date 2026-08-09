@@ -12,7 +12,7 @@ The **Orders DBS (Delivery by Seller)** module manages orders where the seller h
 | **SDK Namespace** | `sdk.ordersDBS.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/04-orders-dbs/` |
-| **Methods** | 19 |
+| **Methods** | 20 |
 | **Authentication** | API Key (Header) |
 | **409 Penalty** | 10x rate limit multiplier |
 

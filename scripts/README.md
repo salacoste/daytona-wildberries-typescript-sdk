@@ -299,7 +299,7 @@ Current coverage:
   - All `.ts` files in `examples/` directory covering all SDK modules
 - **Total files validated**: 31 files
 - **Total code examples**: 139 validated
-- **SDK modules validated**: 11 modules, 76+ methods
+- **SDK modules validated**: 14 modules, 76+ methods
 - **Known wrong examples**: 30+ (educational anti-patterns + placeholder methods)
 - **Response type checks**: Property access validation, await validation, promise pattern detection
 - **Validation types**: Method name validation, response structure validation, async pattern validation

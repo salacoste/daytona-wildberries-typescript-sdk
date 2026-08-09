@@ -8,7 +8,7 @@ Common questions about the Wildberries API TypeScript SDK.
 
 ### What is this SDK?
 
-The Wildberries API TypeScript SDK is a production-ready TypeScript library that provides type-safe access to all Wildberries marketplace API methods. It covers all 11 API modules (Products, Orders, Finances, Analytics, Communications, Reports, Promotion, Tariffs, In-Store Pickup).
+The Wildberries API TypeScript SDK is a production-ready TypeScript library that provides type-safe access to all Wildberries marketplace API methods. It covers all 14 API modules (Products, Orders FBS/FBW/DBS, Finances, Analytics, Communications, Reports, Promotion, Tariffs, In-Store Pickup, User Management, Returns).
 
 ### Is this an official Wildberries SDK?
 
@@ -18,7 +18,7 @@ No, this is a community-developed SDK. It is built from official Wildberries Ope
 
 - ✅ Node.js 20.x (LTS)
 - ✅ Node.js 22.x (Current)
-- ❌ Node.js 18.x (no longer supported as of v1.0)
+- ❌ Node.js 18.x (no longer supported — `engines.node` requires ≥20.0.0)
 
 ### Is TypeScript required?
 

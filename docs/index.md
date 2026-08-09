@@ -131,7 +131,7 @@ const products = campaigns.adverts?.[0]?.nm_settings || [];
     <div class="stat-label">Tests</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">11</div>
+    <div class="stat-number">14</div>
     <div class="stat-label">API Modules</div>
   </div>
 </div>
@@ -224,6 +224,9 @@ All 14 Wildberries API modules are supported:
 | **Promotion** | 100% | Campaign lifecycle, bidding, statistics, search clusters, bid recommendations ⚠️ **[Migration Required](/guides/migration-v2.4-promotion-deprecation)** |
 | **Tariffs** | 100% | Commission rates, fee schedules |
 | **In-Store Pickup** | 100% | Pickup point orders and management |
+| **Orders DBS** | 100% | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata |
+| **User Management** | 100% | Seller-profile users: invitations, access rights |
+| **Returns** | 100% | Unified return analytics (FBO + FBS + Finance) |
 
 **[View Complete Module Documentation →](/api/)**
 

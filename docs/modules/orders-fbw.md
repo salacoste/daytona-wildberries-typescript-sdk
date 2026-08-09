@@ -13,7 +13,7 @@ The **Orders FBW (Fulfillment by Wildberries)** module manages supply creation a
 | **Base URL** | `https://supplies-api.wildberries.ru` (most methods) |
 | **Alt Base URL** | `https://marketplace-api.wildberries.ru` (`getClientInfo` only) |
 | **Source Swagger** | `wildberries_api_doc/07-orders-fbw.yaml` |
-| **Methods** | 8 |
+| **Methods** | 12 |
 | **Authentication** | API Key (Header) |
 
 ---

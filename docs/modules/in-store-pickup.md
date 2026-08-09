@@ -12,7 +12,7 @@ The **In-Store Pickup** module manages click-and-collect orders where customers 
 | **SDK Namespace** | `sdk.inStorePickup.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/06-in-store-pickup.yaml` |
-| **Methods** | 16 |
+| **Methods** | 18 |
 | **Authentication** | API Key (Header) |
 | **409 Penalty** | 10x rate limit multiplier |
 

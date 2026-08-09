@@ -9,7 +9,7 @@ The **Orders FBS (Fulfillment by Seller)** module provides comprehensive order m
 **Module Name**: `ordersFBS`
 **Source**: Generated from `wildberries_api_doc/03-orders-fbs.yaml`
 **Base URL**: `https://marketplace-api.wildberries.ru`
-**Total Methods**: 34 methods across 7 functional areas
+**Total Methods**: 36 methods across 7 functional areas
 
 ### FBS vs FBW
 

@@ -118,7 +118,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
     <div class="stat-label">Тестов</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">11</div>
+    <div class="stat-number">14</div>
     <div class="stat-label">API модулей</div>
   </div>
 </div>
@@ -196,7 +196,7 @@ const products = campaigns.adverts?.[0]?.nms || [];
 
 ## Поддерживаемые API модули
 
-Все 11 модулей Wildberries API полностью поддерживаются:
+Все 14 публичных модулей Wildberries API полностью поддерживаются:
 
 | Модуль | Покрытие | Ключевые возможности |
 |--------|----------|----------------------|
@@ -211,6 +211,9 @@ const products = campaigns.adverts?.[0]?.nms || [];
 | **Promotion** | 100% | Кампании, промо-коды, реклама ⚠️ **[Требуется Миграция](/guides/migration-v2.4-promotion-deprecation)** |
 | **Tariffs** | 100% | Комиссионные ставки, расписание сборов |
 | **In-Store Pickup** | 100% | Заказы и управление пунктами выдачи |
+| **Orders DBS** | 100% | Заказы с доставкой продавцом, массовые операции, B2B, маркировка |
+| **User Management** | 100% | Пользователи профиля продавца: приглашения, права доступа |
+| **Returns** | 100% | Унифицированная аналитика возвратов (FBO + FBS + Финансы) |
 
 **[Просмотреть полную документацию модулей →](/api/)**
 

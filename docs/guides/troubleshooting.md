@@ -50,7 +50,7 @@ Quick solutions for common Wildberries SDK issues. This guide helps you diagnose
 
 Quick lookup table for common operations and their actual SDK methods. Copy these exact method names to avoid `TypeError: method is not a function` errors.
 
-**✅ Verified Against**: SDK v2.7.0 | **Last Updated**: 2026-02-03 | **Validation**: All methods cross-checked against actual implementation (Analytics v3 migration applied)
+**✅ Verified Against**: SDK v4.1.0 | **Last Updated**: 2026-08-09 | **Validation**: All methods cross-checked against actual implementation (Analytics v3 migration applied)
 
 ### Products & Catalog
 
@@ -223,7 +223,7 @@ const created = await sdk.products.createProduct(data); // TypeError: createProd
 To see detailed SDK operations, enable debug mode:
 
 ```typescript
-import { WildberriesSDK } from '@daytona/wildberries-sdk';
+import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
 const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!,
@@ -327,7 +327,7 @@ AuthenticationError: Invalid API key
 
 4. **Test key validity:**
    ```typescript
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!,
@@ -418,7 +418,7 @@ Error: WB_API_KEY environment variable is not set
    import dotenv from 'dotenv';
    dotenv.config();
 
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!
@@ -527,7 +527,7 @@ AuthenticationError: 401 Unauthorized - Token has expired
 3. **Implement key rotation:**
    ```typescript
    // Monitor key expiration
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!,
@@ -1081,7 +1081,7 @@ Field: categoryId - Must be a valid category ID
 
 1. **Check field requirements:**
    ```typescript
-   import { CreateProductRequest } from '@daytona/wildberries-sdk';
+   import { CreateProductRequest } from 'daytona-wildberries-typescript-sdk';
 
    // ❌ WRONG - Missing required fields
    const product: CreateProductRequest = {
@@ -1435,10 +1435,10 @@ Expected property 'items' to be array, got undefined
 1. **Check SDK version:**
    ```bash
    # Check installed version
-   npm list @daytona/wildberries-sdk
+   npm list daytona-wildberries-typescript-sdk
 
    # Update to latest
-   npm update @daytona/wildberries-sdk
+   npm update daytona-wildberries-typescript-sdk
    ```
 
 2. **Verify API version:**
@@ -1488,7 +1488,7 @@ General issues that don't fit other categories but are still commonly encountere
 
 **Error Message:**
 ```
-Error: Cannot find module '@daytona/wildberries-sdk'
+Error: Cannot find module 'daytona-wildberries-typescript-sdk'
 ```
 
 **Cause:** SDK not installed or incorrect import path.
@@ -1503,12 +1503,12 @@ Error: Cannot find module '@daytona/wildberries-sdk'
 
 1. **Install SDK:**
    ```bash
-   npm install @daytona/wildberries-sdk
+   npm install daytona-wildberries-typescript-sdk
    ```
 
 2. **Verify installation:**
    ```bash
-   npm list @daytona/wildberries-sdk
+   npm list daytona-wildberries-typescript-sdk
    ```
 
 3. **Check import path:**
@@ -1518,7 +1518,7 @@ Error: Cannot find module '@daytona/wildberries-sdk'
    import { WildberriesSDK } from '@daytona/wb-sdk';  // Wrong name
 
    // ✅ CORRECT
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
    ```
 
 4. **Clear cache and reinstall:**
@@ -1583,7 +1583,7 @@ TypeError: sdk.products.createCardsUpload is not a function
 
 4. **Use TypeScript for autocomplete:**
    ```typescript
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!
@@ -1697,15 +1697,15 @@ TypeError: sdk.products.createCardsUpload is not a function
 
 3. **Check SDK version:**
    ```bash
-   npm list @daytona/wildberries-sdk
+   npm list daytona-wildberries-typescript-sdk
    # Update if outdated
-   npm update @daytona/wildberries-sdk
+   npm update daytona-wildberries-typescript-sdk
    ```
 
 4. **Create minimal reproduction:**
    ```typescript
    // Isolate the issue
-   import { WildberriesSDK } from '@daytona/wildberries-sdk';
+   import { WildberriesSDK } from 'daytona-wildberries-typescript-sdk';
 
    const sdk = new WildberriesSDK({
      apiKey: process.env.WB_API_KEY!
@@ -1971,8 +1971,8 @@ If you've found a bug, [open a GitHub issue](https://github.com/salacoste/dayton
 
 ```typescript
 // 1. SDK Version
-import { version } from '@daytona/wildberries-sdk';
-console.log('SDK version:', version);  // e.g., 1.0.0
+import { version } from 'daytona-wildberries-typescript-sdk';
+console.log('SDK version:', version);  // e.g., 4.1.0
 
 // 2. Node.js Version
 console.log('Node version:', process.version);  // e.g., v20.11.1
