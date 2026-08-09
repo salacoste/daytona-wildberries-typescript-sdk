@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Install git hooks into .git/hooks (pre-commit: TypeScript type-check + gitleaks secret scan).
+# Activate the checked-in git hooks via core.hooksPath.
+# The hook runs directly from scripts/git-hooks/ (no copy to .git/hooks),
+# so it is always in sync with the committed version.
 # Run once after cloning:  ./scripts/install-hooks.sh
 set -eu
 
 cd "$(git rev-parse --show-toplevel)"
 
-mkdir -p .git/hooks
-cp scripts/git-hooks/pre-commit .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+git config core.hooksPath scripts/git-hooks
 
-echo "✅ Installed .git/hooks/pre-commit"
-echo "   - TypeScript type-check: npm run type-check"
-echo "   - Secret scan:           gitleaks (brew install gitleaks)  config: .gitleaks.toml"
-echo "   Skip either (NOT recommended): git commit --no-verify"
+echo "✅ core.hooksPath = scripts/git-hooks"
+echo "   pre-commit: TypeScript type-check + gitleaks secret scan"
+echo "   Requires:   node/npm + gitleaks (brew install gitleaks)  |  config: .gitleaks.toml"
+echo "   Uninstall:  git config --unset core.hooksPath"
