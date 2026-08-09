@@ -85,6 +85,57 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
   });
 
   // ============================================================================
+  // getSupplies (alias for supplies)
+  // ============================================================================
+
+  describe('getSupplies', () => {
+    it('should fetch supplies list with same URL + rateLimitKey as supplies()', async () => {
+      const mockSupplies = {
+        supplies: [{ id: 'WB-GI-12345', name: 'Supply A' }],
+        next: 100,
+      };
+
+      mockClient.get.mockResolvedValue(mockSupplies);
+
+      const result = await ordersFbs.getSupplies({ limit: 1, next: 0 });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/v3/supplies',
+        expect.objectContaining({
+          params: { limit: 1, next: 0 },
+          rateLimitKey: 'orders-fbs.supplies',
+        })
+      );
+      expect(result).toEqual(mockSupplies);
+    });
+
+    it('should return identical results to supplies() for the same input (delegation)', async () => {
+      const mockSupplies = {
+        supplies: [{ id: 'WB-GI-67890', name: 'Supply B' }],
+        next: 50,
+      };
+
+      mockClient.get.mockResolvedValue(mockSupplies);
+
+      const params = { limit: 1, next: 0 };
+      const aliasResult = await ordersFbs.getSupplies(params);
+      const originalResult = await ordersFbs.supplies(params);
+
+      expect(aliasResult).toEqual(originalResult);
+      expect(mockClient.get).toHaveBeenNthCalledWith(
+        1,
+        'https://marketplace-api.wildberries.ru/api/v3/supplies',
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.supplies' })
+      );
+      expect(mockClient.get).toHaveBeenNthCalledWith(
+        2,
+        'https://marketplace-api.wildberries.ru/api/v3/supplies',
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.supplies' })
+      );
+    });
+  });
+
+  // ============================================================================
   // deleteSupply
   // ============================================================================
 

@@ -644,6 +644,30 @@ export class OrdersFbsModule {
   }
 
   /**
+   * List FBO supplies (alias for `supplies()`)
+   *
+   * Thin alias kept for naming consistency with `getSupply()`, so the
+   * `getSupply` / `getSupplies` pair reads naturally and is easier to discover.
+   *
+   * @param options - Query parameters for pagination
+   * @returns Promise resolving to supplies list with pagination cursor
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies/get}
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.getSupplies({ limit: 100, next: 0 });
+   * console.log(result.supplies);
+   * ```
+   */
+  async getSupplies(options?: GetSuppliesParams): Promise<SuppliesResponse> {
+    return this.supplies(options);
+  }
+
+  /**
    * Create a new supply
    *
    * Creates a new supply for FBS assembly tasks. A new supply acquires the cargo type
