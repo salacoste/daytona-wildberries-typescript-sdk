@@ -6,25 +6,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Wildberries API TypeScript SDK** - Full-featured SDK providing type-safe access to all Wildberries marketplace API methods.
+**Wildberries API TypeScript SDK** — Production-ready, full-featured SDK providing type-safe access to all Wildberries marketplace API methods.
 
-**Core Purpose**: Transform 11 OpenAPI/Swagger specifications into production-ready TypeScript SDK with modular architecture, complete type safety, automatic rate limiting, retry mechanisms, and comprehensive error handling.
+- **Package**: `daytona-wildberries-typescript-sdk`
+- **Version**: **4.1.0** (production-ready; 223 Backlog.md tasks completed, board cleared)
+- **Module**: ESM (`"type": "module"`), Node **≥20**, dual ESM/CJS build via Vite
+- **License**: Personal Use (`SEE LICENSE IN LICENSE`)
+- **Repo**: `github.com/salacoste/daytona-wildberries-typescript-sdk`
+- **Docs site**: `salacoste.github.io/daytona-wildberries-typescript-sdk` (VitePress + TypeDoc, bilingual EN/RU)
 
-**Target Users**: E-commerce developers, ERP/CRM integrators, analytics platform builders working with Wildberries marketplace (100,000+ active sellers).
+**Core Purpose**: Transform the Wildberries OpenAPI 3.0.1 specifications into a production-ready TypeScript SDK with modular architecture, complete type safety, automatic per-endpoint rate limiting, retry mechanisms, typed error hierarchy, and an aggregator module for unified return analytics.
+
+**Target Users**: E-commerce developers, ERP/CRM integrators, analytics platform builders working with the Wildberries marketplace (100,000+ active sellers).
 
 ### Critical Context
 
-- **Source Truth**: `wildberries_api_doc/*.yaml` - 11 OpenAPI 3.0.1 specifications
-- **Architecture Reference**: `pre_product.md` - Complete requirements and design decisions
-- **Authentication**: Header-based API Key (`HeaderApiKey` security scheme)
-- **Multi-Domain**: Different base URLs per API category (common-api, content-api, marketplace-api, seller-analytics-api, finance-api, statistics-api)
-- **Rate Limits**: Variable limits per API category, requiring intelligent rate limiting implementation
+- **Source Truth**: `wildberries_api_doc/*.yaml` — **14 OpenAPI 3.0.1 specification files** (DO NOT MODIFY). The SDK historically *leads* WB announcements rather than trailing them.
+- **Authentication**: Header-based API Key (`Authorization: Bearer <apiKey>`, `HeaderApiKey` security scheme), injected automatically by `BaseClient`.
+- **Multi-Domain**: Different base URLs per API category — `common-api`, `content-api`, `marketplace-api`, `finance-api`, `statistics-api`, `seller-analytics-api`, `advert-api`.
+- **Rate Limits**: Variable limits per API category AND per token type (`personal` / `service` / `basic` / `test`); enforced by a token-bucket `RateLimiter`.
 
 ---
 
 ## 🚨 MANDATORY: Context7 MCP Server Usage
 
-**CRITICAL REQUIREMENT**: Before planning or writing ANY code in this project, you MUST use Context7 MCP server to retrieve up-to-date documentation and best practices.
+> **This is an active project policy.** It is enforced regardless of SDK maturity. Do not gut this section.
+
+**CRITICAL REQUIREMENT**: Before planning or writing ANY code in this project, you MUST use the Context7 MCP server to retrieve up-to-date documentation and best practices.
 
 ### When to Use Context7 (ALWAYS)
 
@@ -52,17 +60,15 @@ resolve-library-id("openapi-typescript")
 
 **Step 2: Get Library Documentation**
 ```typescript
-// Use mcp__context7__get-library-docs with the resolved ID
-get-library-docs({
-  context7CompatibleLibraryID: "/microsoft/TypeScript",
-  topic: "utility types and generics",
-  tokens: 5000
+// Use mcp__context7__query-docs with the resolved ID
+query-docs({
+  libraryId: "/microsoft/TypeScript",
+  query: "utility types and generics",
 })
 
-get-library-docs({
-  context7CompatibleLibraryID: "/vitest-dev/vitest",
-  topic: "mocking and testing async code",
-  tokens: 5000
+query-docs({
+  libraryId: "/vitest-dev/vitest",
+  query: "mocking and testing async code",
 })
 ```
 
@@ -131,82 +137,117 @@ Context7 queries are fast (<2s) and prevent:
 
 ## API Modules Architecture
 
+The SDK exposes **14 public modules** on the `WildberriesSDK` instance (`sdk.*`), plus one supplemental internal module (`src/modules/1_0_0/`). Approximate public method counts are verified from `src/modules/*/index.ts`.
+
 ### Module Mapping (Swagger → SDK)
 
-| Priority | Swagger File | Module Name | Domain | Key Features |
-|----------|--------------|-------------|---------|--------------|
-| CRITICAL | `02-products.yaml` | `products` | content-api | Categories, product cards, media, pricing, warehouse, stock |
-| CRITICAL | `03-orders-fbs.yaml` | `ordersFBS` | marketplace-api | Seller warehouse fulfillment, order status, shipping |
-| CRITICAL | `13-finances.yaml` | `finances` | finance-api/statistics-api | Balance, financial reports, transactions, payouts |
-| HIGH | `01-general.yaml` | `general` | common-api | Ping, news, seller info, auth utilities |
-| HIGH | `07-orders-fbw.yaml` | `ordersFBW` | marketplace-api | WB warehouse fulfillment |
-| HIGH | `09-communications.yaml` | `communications` | - | Customer chat, Q&A, reviews |
-| HIGH | `11-analytics.yaml` | `analytics` | seller-analytics-api | Sales funnel, search queries, stock history, CSV reports |
-| HIGH | `12-reports.yaml` | `reports` | - | Report generation and retrieval |
-| MEDIUM | `08-promotion.yaml` | `promotion` | - | Campaigns, promo codes, advertising |
-| MEDIUM | `10-tariffs.yaml` | `tariffs` | - | Tariff info, commission rates |
-| MEDIUM | `06-in-store-pickup.yaml` | `inStorePickup` | - | Pickup point management |
+| # | `sdk.*` property | Module class | Domain | Methods (~) | Key Features |
+|---|---|---|---|---|---|
+| 1 | `sdk.general` | `GeneralModule` | common-api | 10 | Ping, server time, news, seller info, auth utilities |
+| 2 | `sdk.products` | `ProductsModule` | content-api | 51 | Categories, product cards, characteristics, media, pricing, warehouse, stock |
+| 3 | `sdk.ordersFBS` | `OrdersFbsModule` | marketplace-api | 35 | Seller-warehouse (FBS) fulfillment, order status, shipping, marking codes |
+| 4 | `sdk.ordersFBW` | `OrdersFbwModule` | marketplace-api | 12 | WB-warehouse (FBO/FBW) supply, acceptance coefficients, transit tariffs |
+| 5 | `sdk.ordersDBS` | `OrdersDbsModule` | marketplace-api | 20 | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata |
+| 6 | `sdk.finances` | `FinancesModule` | finance-api / statistics-api | 11 | Balance, realization reports, documents (list/download) |
+| 7 | `sdk.analytics` | `AnalyticsModule` | seller-analytics-api | 19 | Sales funnel v3, search queries, stock history, CSV reports, item rating v2 |
+| 8 | `sdk.communications` | `CommunicationsModule` | common-api | 25 | Customer chat, product Q&A, reviews, pinned reviews |
+| 9 | `sdk.reports` | `ReportsModule` | statistics-api | 25 | Incomes, stocks, sales/returns, excise, async warehouse-remains reports |
+| 10 | `sdk.promotion` | `PromotionModule` | advert-api | 45 | Campaigns, auction/manual bids, budgets, statistics |
+| 11 | `sdk.tariffs` | `TariffsModule` | — | 5 | Commission rates, box/pallet storage, return tariffs, acceptance coefficients |
+| 12 | `sdk.inStorePickup` | `InStorePickupModule` | — (click & collect) | 18 | Pickup order lifecycle, customer verification, SGTIN/UIN/IMEI/GTIN metadata |
+| 13 | `sdk.userManagement` | `UserManagementModule` | common-api | 4 | Invitations, user listing, access rights, deletion |
+| 14 | `sdk.returns` | `ReturnsModule` | aggregator (since v3.10.0) | 3 | Unified FBO+FBS+Finance return analytics, partial-failure tolerant |
 
-### Implementation Priority Order
+**Total: 283 public methods across the 14 modules.**
 
-1. **Foundation First**: `general` module (authentication, connectivity testing)
-2. **Core Business**: `products`, `ordersFBS`, `finances` (parallel development possible)
-3. **Extended Operations**: `ordersFBW`, `communications`, `analytics`, `reports`
-4. **Supporting Features**: `promotion`, `tariffs`, `inStorePickup`
+**Supplemental module (NOT a public `sdk.*` property):** `src/modules/1_0_0/` — 5 legacy methods (`getContentTags`, `getAdvAdvert`, `createAdvFullstat`, `getAdvFullstats`, `getCalendarPromotions`) retained for backward compatibility.
+
+**Domain base URLs in use:** `common-api`, `content-api`, `marketplace-api`, `finance-api`, `statistics-api`, `seller-analytics-api`, `advert-api`.
+
+> **Known doc gap:** `docs/modules/` has 13 pages — there is **no `user-management.md`** page (user-management was added later). Do not invent one unless explicitly tasked.
+
+### Implementation Notes
+
+- The SDK historically *leads* WB announcements: source-spec drift may exist where the SDK already reflects a WB news item not yet present in the local YAML.
+- v4.0.0 was a **BREAKING major** that removed all WB-dead/sunset deprecated surface (7 promotion methods, 12 in-store-pickup shims, v5 finance report, orders-dbs meta, etc.). Each removed symbol is a compile error pointing at its replacement → see `docs/guides/migration-v4.md`.
 
 ---
 
-## Project Structure (Target)
+## Project Structure (actual `src/`)
 
 ```
-wb-api-sdk/
+daytona-wildberries-typescript-sdk/
 ├── src/
-│   ├── client/                 # Core infrastructure
-│   │   ├── base-client.ts     # HTTP client with retry & timeout
-│   │   ├── rate-limiter.ts    # Per-endpoint rate limit enforcement
-│   │   ├── retry-handler.ts   # Exponential backoff retry logic
-│   │   └── auth-manager.ts    # API key management & validation
+│   ├── client/                       # Core infrastructure
+│   │   ├── base-client.ts            # Axios HTTP client: auth, timeout, typed error transformation, PII-sanitized logging
+│   │   ├── rate-limiter.ts           # Per-endpoint token-bucket rate limiter (basic/test multipliers)
+│   │   ├── retry-handler.ts          # Exponential backoff (retries net/5xx/429; NOT 401/403/422)
+│   │   └── index.ts
 │   │
-│   ├── modules/               # Generated from Swagger (11 modules)
-│   │   ├── general/
-│   │   ├── products/
-│   │   ├── orders-fbs/
-│   │   ├── orders-fbw/
-│   │   ├── promotion/
-│   │   ├── communications/
-│   │   ├── analytics/
-│   │   ├── reports/
-│   │   ├── finances/
-│   │   ├── tariffs/
-│   │   └── in-store-pickup/
+│   ├── modules/                      # 14 public modules + 1 supplemental
+│   │   ├── general/  products/  orders-fbs/  orders-fbw/  orders-dbs/
+│   │   ├── finances/  analytics/  communications/  reports/
+│   │   ├── promotion/  tariffs/  in-store-pickup/
+│   │   ├── user-management/          # Seller-profile user/access management
+│   │   ├── returns/                  # Aggregator (reports + ordersFBS + finances), since v3.10.0
+│   │   ├── 1_0_0/                    # Supplemental legacy methods (internal)
+│   │   └── index.ts
 │   │
-│   ├── types/                 # Generated TypeScript types
-│   │   ├── general.types.ts
-│   │   ├── products.types.ts
-│   │   └── [module].types.ts
+│   ├── types/                        # Generated TypeScript types (one file per module)
+│   │   ├── general.types.ts  products.types.ts  orders-fbs.types.ts
+│   │   ├── orders-fbw.types.ts  orders-dbs.types.ts  finances.types.ts
+│   │   ├── analytics.types.ts  communications.types.ts  reports.types.ts
+│   │   ├── promotion.types.ts  tariffs.types.ts  in-store-pickup.types.ts
+│   │   ├── user-management.types.ts  returns.types.ts
+│   │   └── (communications.types.ts.backup — local artifact, not shipped)
 │   │
-│   ├── errors/                # Custom error hierarchy
-│   │   ├── base-error.ts      # WBAPIError
-│   │   ├── auth-error.ts      # AuthenticationError
-│   │   ├── rate-limit-error.ts
-│   │   ├── validation-error.ts
-│   │   └── network-error.ts
+│   ├── errors/                       # Typed error hierarchy (~16 classes)
+│   │   ├── base-error.ts             # WBAPIError (base)
+│   │   ├── auth-error.ts             # AuthenticationError
+│   │   ├── rate-limit-error.ts       # RateLimitError
+│   │   ├── validation-error.ts       # ValidationError
+│   │   ├── network-error.ts          # NetworkError
+│   │   ├── promotion-errors.ts       # CampaignNotFound/InvalidBid/BudgetExceeded/InvalidCampaignState
+│   │   ├── bid-out-of-range-error.ts # BidOutOfRangeError + parseBidOutOfRangeDetail
+│   │   ├── in-store-pickup-errors.ts # PickupOrderNotFound/InvalidOrderState/CustomerVerification/MetadataValidation
+│   │   ├── meta-validation-fail-error.ts    # MetaValidationFailError + parseMetaValidationFail
+│   │   ├── warehouse-stocks-update-block-error.ts # 406 WarehouseStocksUpdateBlockError
+│   │   └── index.ts
 │   │
-│   ├── utils/                 # Shared utilities
-│   ├── config.ts              # SDKConfig interface
-│   └── index.ts               # Main SDK export
+│   ├── utils/                        # Exported utility helpers
+│   │   ├── calculateSupplyCost.ts  compareTariffs.ts  parseMoneyAmount.ts
+│   │   ├── validateRequiredCharacteristics.ts  validateMergedCardVariants.ts
+│   │   ├── classifyReturnReason.ts  enrichReturnsWithType.ts
+│   │   ├── reconcileBuyoutsAndReturns.ts  classifyFbsReturnCategory.ts
+│   │   ├── bid-validation.ts        # validateBid, clampBid, extractBidRange
+│   │   ├── roas.ts                  # computeROAS
+│   │   ├── deprecation.ts           # warnOnce, resetDeprecationWarnings
+│   │   ├── parseMetaValidationFail.ts
+│   │   └── index.ts
+│   │
+│   ├── config/                       # Configuration & rate-limit registry
+│   │   ├── sdk-config.ts             # SDKConfig + RequestOptions (authoritative shape)
+│   │   ├── rate-limits.ts            # ALL_RATE_LIMITS aggregate
+│   │   ├── operation-metadata.ts     # x-readonly-method / x-category from Swagger
+│   │   ├── index.ts
+│   │   └── *-rate-limits.ts          # One per module (general, products, orders-fbs/fbw/dbs,
+│   │                                 #   user-management, finances, promotion, tariffs,
+│   │                                 #   in-store-pickup, analytics, communications, reports, 1_0_0)
+│   │
+│   └── index.ts                      # Main SDK entry: WildberriesSDK + all exports
 │
-├── tools/                     # Build & code generation
-│   └── generate-sdk.ts        # Swagger → TypeScript generator
+├── tools/                            # Build & code generation
+│   └── generate-sdk.ts               # Swagger → TypeScript generator
 │
-├── tests/                     # Test suites
-│   ├── unit/                  # Unit tests per module
-│   ├── integration/           # Integration tests with MSW
-│   └── fixtures/              # Mock data from Swagger examples
+├── tests/                            # Vitest 4 + @vitest/coverage-v8 + MSW 2 (jsdom)
+│   ├── unit/                         # Unit tests per module (~2,376 tests / 80 files)
+│   ├── integration/                  # Integration tests with MSW
+│   ├── tdd/                          # TDD specs (run via npm run test:tdd)
+│   └── fixtures/                     # Mock data from Swagger examples
 │
-├── examples/                  # Usage examples per module
-├── docs/                      # Generated TypeDoc
-└── wildberries_api_doc/       # Source Swagger files (DO NOT MODIFY)
+├── examples/                         # Usage examples per module
+├── docs/                             # VitePress site + TypeDoc API reference
+└── wildberries_api_doc/              # 14 source Swagger files (DO NOT MODIFY)
 ```
 
 ---
@@ -231,7 +272,7 @@ interface ProductListResponse { ... }   // [Schema]Response
 
 // Module classes
 class ProductsModule { ... }            // [Module]Module
-class OrdersFBSModule { ... }           // Match camelCase in main SDK
+class OrdersFbsModule { ... }           // Match camelCase property on the SDK instance
 
 // Error classes
 class WBAPIError extends Error { ... }  // WB prefix for Wildberries
@@ -267,7 +308,8 @@ export class ProductsModule {
    */
   async getParentCategories(): Promise<GetCategoriesResponse> {
     return this.client.get<GetCategoriesResponse>(
-      'https://content-api.wildberries.ru/content/v2/object/parent/all'
+      'https://content-api.wildberries.ru/content/v2/object/parent/all',
+      { rateLimitKey: 'products.getParentAll' }
     );
   }
 
@@ -287,47 +329,136 @@ export class ProductsModule {
 
 ### Configuration & Initialization
 
+The authoritative config shape lives in `src/config/sdk-config.ts` (`SDKConfig` and `RequestOptions`).
+
 ```typescript
-// src/config.ts
+// src/config/sdk-config.ts
 export interface SDKConfig {
-  apiKey: string;                                    // Required
-  baseUrls?: Partial<Record<APIModule, string>>;   // Override per module
-  timeout?: number;                                 // Default: 30000ms
+  apiKey: string;                                       // Required — injected as `Authorization: Bearer <apiKey>`
+  baseUrls?: Partial<Record<string, string>>;           // Per-module base URL overrides (e.g. for testing)
+  timeout?: number;                                     // Default: 30000 (ms)
   retryConfig?: {
-    maxRetries?: number;                           // Default: 3
-    retryDelay?: number;                           // Default: 1000ms
-    exponentialBackoff?: boolean;                  // Default: true
+    maxRetries?: number;                               // Default: 3
+    retryDelay?: number;                               // Default: 1000 (ms)
+    exponentialBackoff?: boolean;                      // Default: true
   };
   rateLimitConfig?: {
-    requestsPerSecond?: number;                    // Global limit
-    requestsPerMinute?: number;                    // Global limit
+    requestsPerSecond?: number;                        // Global limit
+    requestsPerMinute?: number;                        // Global limit
   };
-  logLevel?: 'debug' | 'info' | 'warn' | 'error'; // Default: 'warn'
+  logLevel?: 'debug' | 'info' | 'warn' | 'error';      // Default: 'warn'
+  tokenType?: 'personal' | 'service' | 'basic' | 'test'; // Default: 'personal'
 }
 
-// src/index.ts - Main SDK class
+export interface RequestOptions {
+  headers?: Record<string, string>;
+  params?: Record<string, unknown>;
+  rateLimitKey?: string;        // Format: `module.method`
+  timeout?: number;             // Per-request timeout override
+  responseType?: 'json' | 'blob' | 'text' | 'arraybuffer' | 'document' | 'stream';
+}
+```
+
+> **`tokenType` (since 2026-03-30):** `basic` and `test` tokens get **reduced rate limits** (enforced via `applyBasicTokenMultipliers` in the `RateLimiter`). The SDK constructor emits a one-time `console.warn` for these token types. See [WB news/281](https://dev.wildberries.ru/news/281).
+
+```typescript
+// src/index.ts — main SDK class (14 public module properties)
 export class WildberriesSDK {
   public readonly general: GeneralModule;
   public readonly products: ProductsModule;
-  public readonly ordersFBS: OrdersFBSModule;
-  public readonly ordersFBW: OrdersFBWModule;
+  public readonly ordersFBS: OrdersFbsModule;
+  public readonly ordersFBW: OrdersFbwModule;
+  public readonly ordersDBS: OrdersDbsModule;
   public readonly finances: FinancesModule;
   public readonly analytics: AnalyticsModule;
-  public readonly reports: ReportsModule;
   public readonly communications: CommunicationsModule;
+  public readonly reports: ReportsModule;
   public readonly promotion: PromotionModule;
   public readonly tariffs: TariffsModule;
   public readonly inStorePickup: InStorePickupModule;
+  public readonly userManagement: UserManagementModule;
+  public readonly returns: ReturnsModule;           // initialized last — depends on reports/ordersFBS/finances
 
-  constructor(config: SDKConfig) {
-    const client = new BaseClient(config);
+  constructor(config: SDKConfig) { /* ... */ }
+}
+```
 
-    this.general = new GeneralModule(client);
-    this.products = new ProductsModule(client);
-    // ... initialize all modules
+### BaseClient Method Signatures
+
+```
+get<T>(url, options?: RequestOptions): Promise<T>
+post<T>(url, data?, options?: RequestOptions): Promise<T>
+put<T>(url, data?, options?: RequestOptions): Promise<T>
+patch<T>(url, data?, options?: RequestOptions): Promise<T>
+delete<T>(url, data?, options?: RequestOptions): Promise<T>
+```
+
+- GET: 2 args (url, options with `params` + `rateLimitKey`)
+- POST/PUT/PATCH/DELETE: 3 args (url, data, options with `rateLimitKey`)
+- `BaseClient` injects `Authorization`, applies per-request `timeout`/`responseType`, and transforms errors into the typed hierarchy (including RFC 7807 `problem+json`, `BidOutOfRange`, and 406 `WarehouseStocksUpdateBlock`).
+
+---
+
+## Core Infrastructure
+
+### BaseClient (`src/client/base-client.ts`)
+Axios-based. Injects `Authorization: Bearer <apiKey>`; configurable timeout; **typed error transformation** (RFC 7807 `problem+json`, `BidOutOfRange`, 406 `WarehouseStocksUpdateBlock`); PII-sanitized debug logging. All modules receive it via dependency injection.
+
+### RateLimiter (`src/client/rate-limiter.ts`)
+Per-endpoint **token-bucket**; limits extracted from Swagger `description` fields into per-module `src/config/*-rate-limits.ts` files (merged into `ALL_RATE_LIMITS`). `RateLimitConfig = { requestsPerMinute, intervalSeconds?, burstLimit?, penaltyMultiplier? }`. Keys MUST exactly match the `rateLimitKey` values used in module methods. Multipliers are applied for `basic`/`test` tokens via `applyBasicTokenMultipliers`.
+
+### RetryHandler (`src/client/retry-handler.ts`)
+Exponential backoff. **Retries**: network errors, 5xx, 429. **Does NOT retry**: 401, 403, 422.
+
+---
+
+## Errors (exported from `src/index.ts`)
+
+~16 classes plus parse helpers:
+
+- `WBAPIError` (base, `src/errors/base-error.ts`)
+- `AuthenticationError`, `RateLimitError`, `ValidationError`, `NetworkError`
+- `CampaignNotFoundError`, `InvalidBidError`, `BudgetExceededError`, `InvalidCampaignStateError` (promotion)
+- `BidOutOfRangeError` (+ `parseBidOutOfRangeDetail`)
+- `PickupOrderNotFoundError`, `InvalidOrderStateError`, `CustomerVerificationError`, `MetadataValidationError` (in-store-pickup)
+- `MetaValidationFailError` (+ `parseMetaValidationFail`) — FBS marking-code validation
+- `WarehouseStocksUpdateBlockError` — 406 WB warehouse maintenance (stocks PUT retryable)
+
+```typescript
+// Base error shape
+export class WBAPIError extends Error {
+  constructor(
+    message: string,
+    public readonly statusCode?: number,
+    public readonly response?: unknown
+  ) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+// Rate-limit error carries retry-after
+export class RateLimitError extends WBAPIError {
+  constructor(message: string, public readonly retryAfter: number) {
+    super(message, 429);
   }
 }
 ```
+
+---
+
+## Utility Helpers (exported from `src/index.ts`)
+
+All helpers are exported from the main entry (`./utils`):
+
+- **Supply/tariffs**: `calculateSupplyCost`, `compareTariffs`, `parseMoneyAmount`
+- **Product validation**: `validateRequiredCharacteristics`, `validateMergedCardVariants`
+- **Returns analytics**: `classifyReturnReason`, `enrichReturnsWithType`, `reconcileBuyoutsAndReturns`, `classifyFbsReturnCategory`
+- **Bidding/promotion**: `validateBid`, `clampBid`, `extractBidRange`, `computeROAS`
+- **Deprecation**: `warnOnce`, `resetDeprecationWarnings`
+- **FBS marking**: `parseMetaValidationFail`
+
+The **`returns` aggregator module** (`sdk.returns`) unifies FBO + FBS + Finance return data: it fetches FBO returns via `sdk.reports.getAnalyticsGoodsReturn()`, enriches them with financial amounts from `sdk.finances.getSalesReportsDetailed()`, and is **partial-failure tolerant** (one source failing does not abort the response — see `result.partialFailures` and `result._meta.sources`).
 
 ---
 
@@ -392,24 +523,20 @@ export class RetryHandler {
 
 **Challenge**: Each endpoint has unique rate limits (e.g., "3 requests per minute with 20s intervals").
 
-**Solution Pattern**:
+**Solution Pattern** (implemented in `src/client/rate-limiter.ts`):
 ```typescript
-// src/client/rate-limiter.ts
 class RateLimiter {
-  private limits = new Map<string, {
-    requestsPerMinute: number;
-    intervalSeconds: number;
-    burstLimit: number;
-  }>();
+  private limits = new Map<string, RateLimitConfig>();
+  // RateLimitConfig = { requestsPerMinute, intervalSeconds?, burstLimit?, penaltyMultiplier? }
 
   async waitForSlot(key: string): Promise<void> {
-    // Token bucket or sliding window algorithm
-    // Extract limits from Swagger 'description' fields
+    // Token-bucket algorithm; limits sourced from src/config/*-rate-limits.ts
+    // applyBasicTokenMultipliers() reduces capacity for basic/test tokens
   }
 }
 ```
 
-**Extract from Swagger**:
+**Extract from Swagger** (rate limits live in the `description` field):
 ```yaml
 description: |
   <div class="description_limit">
@@ -423,44 +550,24 @@ description: |
 
 **Challenge**: Different modules use different base URLs.
 
-**Solution**: Extract from Swagger `servers` field per path:
+**Solution**: Each method encodes its full URL (extracted from Swagger `servers`), with per-module overrides via `SDKConfig.baseUrls`:
 ```typescript
-// Auto-detect from: paths['/api/v1/balance'].servers[0].url
 const domainMap = {
   general: 'https://common-api.wildberries.ru',
   products: 'https://content-api.wildberries.ru',
   analytics: 'https://seller-analytics-api.wildberries.ru',
   finances: 'https://finance-api.wildberries.ru',
-  // Some modules have multiple domains per operation
+  statistics: 'https://statistics-api.wildberries.ru',
+  marketplace: 'https://marketplace-api.wildberries.ru',
+  advert: 'https://advert-api.wildberries.ru',
 };
 ```
 
 ### 3. Error Handling Hierarchy
 
+See the [Errors](#errors-exported-from-srcindexts) section above for the full exported list. In `BaseClient`:
+
 ```typescript
-// src/errors/base-error.ts
-export class WBAPIError extends Error {
-  constructor(
-    message: string,
-    public readonly statusCode?: number,
-    public readonly response?: unknown
-  ) {
-    super(message);
-    this.name = this.constructor.name;
-  }
-}
-
-// src/errors/rate-limit-error.ts
-export class RateLimitError extends WBAPIError {
-  constructor(
-    message: string,
-    public readonly retryAfter: number // milliseconds
-  ) {
-    super(message, 429);
-  }
-}
-
-// Usage in BaseClient
 catch (error) {
   if (error.response?.status === 429) {
     const retryAfter = parseRetryAfter(error.response.headers);
@@ -469,7 +576,7 @@ catch (error) {
   if (error.response?.status === 401) {
     throw new AuthenticationError('Invalid API key');
   }
-  // ... handle other status codes
+  // ... RFC 7807 problem+json, BidOutOfRange, 406 WarehouseStocksUpdateBlock, etc.
 }
 ```
 
@@ -490,7 +597,7 @@ export class RetryHandler {
       } catch (error) {
         lastError = error;
 
-        // Don't retry on auth errors or validation errors
+        // Don't retry on auth errors (401/403) or validation errors (422)
         if (error instanceof AuthenticationError ||
             error instanceof ValidationError) {
           throw error;
@@ -554,24 +661,8 @@ async function generateFromSwagger(swaggerPath: string) {
   appendToConfig(rateLimits, moduleName);
 }
 
-// Run for all 11 Swagger files
-const swaggerFiles = [
-  '01-general.yaml',
-  '02-products.yaml',
-  '03-orders-fbs.yaml',
-  '06-in-store-pickup.yaml',
-  '07-orders-fbw.yaml',
-  '08-promotion.yaml',
-  '09-communications.yaml',
-  '10-tariffs.yaml',
-  '11-analytics.yaml',
-  '12-reports.yaml',
-  '13-finances.yaml'
-];
-
-swaggerFiles.forEach(file =>
-  generateFromSwagger(`wildberries_api_doc/${file}`)
-);
+// The source spec directory contains 14 OpenAPI files under wildberries_api_doc/.
+// Run the generator per-file via: npm run generate[:types-only|:general]
 ```
 
 ### 2. Type Generation Details
@@ -620,92 +711,36 @@ function generateMethod(path: string, method: string, operation: any) {
 
 ---
 
-## Testing Strategy
+## Build, Exports & Tests
 
-**⚠️ BEFORE writing tests, query Context7 for:**
-- `/vitest-dev/vitest` - "mocking, async testing, describe/it patterns"
-- `/mswjs/msw` - "mock service worker setup, request handlers"
-- `/microsoft/TypeScript` - "type testing, generic constraints in tests"
+### Build & Exports
 
-### Unit Tests (Vitest)
+- **Build tooling:** Vite (dual **ESM/CJS**) + `vite-plugin-dts`; TypeDoc API reference + VitePress site.
+- **Main entry:** `./dist/cjs/index.cjs` (CJS) / `./dist/esm/index.js` (ESM); types from `./dist/esm/index.d.ts`.
+- **Subpath exports** (so module types import without clashing with global `Error`/`Date`):
+  - `.` (root)
+  - `./finances`, `./analytics`, `./communications`, `./reports`
+- Modules without subpath exports (`products`, `orders-fbs`, `orders-fbw`, `orders-dbs`, `promotion`, `tariffs`, `in-store-pickup`, `general`, `user-management`) currently have no public type-only import path — tracked as **WL-4**.
 
-**Context7 Reference**: Query `/vitest-dev/vitest` for mocking and testing patterns before implementation.
+### Tests
 
-**Per-module structure**:
-```typescript
-// tests/unit/modules/products.test.ts
-import { describe, it, expect, vi } from 'vitest';
-import { ProductsModule } from '../../../src/modules/products';
-import { BaseClient } from '../../../src/client/base-client';
+- **Framework:** Vitest 4 + `@vitest/coverage-v8`; **MSW 2** for integration (jsdom/happy-dom).
+- **Scale:** ~**2,376 tests across 80 test files** in the default config; TDD specs (~39 files) run separately via `npm run test:tdd`.
+- **Coverage thresholds:** ≥90% core infrastructure (`src/client/`); ≥80% modules.
 
-describe('ProductsModule', () => {
-  const mockClient = {
-    get: vi.fn(),
-    post: vi.fn(),
-  } as unknown as BaseClient;
+### npm scripts (highlights)
 
-  const products = new ProductsModule(mockClient);
-
-  it('should fetch parent categories', async () => {
-    const mockResponse = { data: [{ id: 1, name: 'Electronics' }] };
-    mockClient.get.mockResolvedValue(mockResponse);
-
-    const result = await products.getParentCategories();
-
-    expect(mockClient.get).toHaveBeenCalledWith(
-      'https://content-api.wildberries.ru/content/v2/object/parent/all'
-    );
-    expect(result).toEqual(mockResponse);
-  });
-
-  it('should handle rate limit errors', async () => {
-    mockClient.post.mockRejectedValue(new RateLimitError('Limited', 5000));
-
-    await expect(products.createProduct({ ... }))
-      .rejects
-      .toThrow(RateLimitError);
-  });
-});
-```
-
-### Integration Tests (MSW - Mock Service Worker)
-
-**Context7 Reference**: Query `/mswjs/msw` for "setupServer, http handlers, request mocking" patterns.
-
-```typescript
-// tests/integration/products.integration.test.ts
-import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
-import { WildberriesSDK } from '../../src';
-
-const server = setupServer(
-  http.get('https://content-api.wildberries.ru/content/v2/object/parent/all', () => {
-    return HttpResponse.json({
-      data: [{ id: 1, name: 'Electronics' }]
-    });
-  })
-);
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
-describe('Products Integration', () => {
-  it('should successfully fetch categories', async () => {
-    const sdk = new WildberriesSDK({ apiKey: 'test-key' });
-    const categories = await sdk.products.getParentCategories();
-
-    expect(categories.data).toHaveLength(1);
-    expect(categories.data[0].name).toBe('Electronics');
-  });
-});
-```
-
-### Coverage Requirements
-
-- **Critical Paths**: ≥80% coverage (products, orders, finances)
-- **Core Infrastructure**: ≥90% coverage (BaseClient, RateLimiter, RetryHandler)
-- **Generated Modules**: Focus on integration tests over line coverage
+| Purpose | Command |
+|---|---|
+| Build | `npm run build` (Vite) |
+| Type check | `npm run type-check` (`tsc --noEmit`) |
+| Tests | `npm test` (`vitest run`) |
+| Coverage | `npm run test:coverage` |
+| TDD specs | `npm run test:tdd` |
+| Integration | `npm run test:integration` |
+| Lint / format | `npm run lint` / `npm run format` |
+| Generate SDK | `npm run generate` (or `:types-only` / `:general`) |
+| Docs | `npm run docs` (TypeDoc) / `npm run docs:dev` (VitePress) |
 
 ---
 
@@ -739,19 +774,7 @@ describe('Products Integration', () => {
 
 ### TypeDoc Configuration
 
-```json
-// typedoc.json
-{
-  "entryPoints": ["src/index.ts"],
-  "out": "docs",
-  "plugin": ["typedoc-plugin-markdown"],
-  "excludePrivate": true,
-  "excludeProtected": true,
-  "readme": "README.md"
-}
-```
-
-Generate with: `npx typedoc`
+Generate with: `npm run docs` (TypeDoc) or `npm run docs:build` (TypeDoc + VitePress). Entry point is `src/index.ts`; output is the API reference under `docs/api/`.
 
 ---
 
@@ -760,114 +783,55 @@ Generate with: `npx typedoc`
 ### Initial Setup
 
 ```bash
-# Install dependencies (when package.json exists)
 npm install
-
-# Generate SDK from Swagger files
-npm run generate
-
-# Build TypeScript
-npm run build
-
-# Run tests
-npm test
-
-# Type check
-npm run type-check
-
-# Lint
+npm run generate      # (re)generate from Swagger if specs changed
+npm run build         # Vite build (ESM + CJS + dts)
+npm test              # vitest run
+npm run type-check    # tsc --noEmit
 npm run lint
 ```
 
 ### Code Generation Workflow
 
 ```bash
-# Generate all modules from Swagger
-npm run generate
-
-# Generate specific module
-npm run generate:products
-
-# Validate generated types
-npm run type-check
-
-# Update if Swagger files change
-npm run generate && npm run type-check && npm test
+npm run generate            # Generate all modules from Swagger
+npm run generate:types      # Types only
+npm run generate:general    # Single module
+npm run type-check          # Validate generated types
+npm run generate && npm run type-check && npm test   # Full loop after spec changes
 ```
 
 ### Testing Workflow
 
 ```bash
-# Run all tests
-npm test
-
-# Run specific module tests
-npm test products
-
-# Run with coverage
-npm run test:coverage
-
-# Run integration tests only
+npm test                # Default suite (~2,376 tests / 80 files)
+npm run test:coverage   # With coverage (≥90% client, ≥80% modules)
+npm run test:tdd        # TDD specs (separate config)
 npm run test:integration
-
-# Watch mode during development
 npm run test:watch
 ```
 
 ### Release Process
 
 ```bash
-# Version bump
-npm version patch|minor|major
-
-# Build production bundle
-npm run build
-
-# Publish to npm
-npm publish
-
-# Tag release in git
+npm version patch|minor|major   # Version bump
+npm run build                   # Production build
+npm publish                     # Publish (manual)
 git push --tags
 ```
+
+> See `RELEASE_NOTES_v1.0.md` and `CHANGELOG.md` (source of truth for version history) for release conventions.
 
 ---
 
 ## Quality Standards
-
-### TypeScript Configuration
-
-```json
-// tsconfig.json (strict mode required)
-{
-  "compilerOptions": {
-    "strict": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "outDir": "./dist"
-  }
-}
-```
 
 ### Performance Budgets
 
 - **SDK Overhead**: <200ms per operation
 - **Bundle Size**: <100KB gzipped (core SDK without modules)
 - **Memory**: Minimal footprint, no memory leaks
-- **Type Generation**: <30s for all 11 modules
+- **Type Generation**: <30s for all 14 modules
 
 ### Error Messages (User-Friendly)
 
@@ -888,14 +852,12 @@ throw new ValidationError(
 ## Key Design Principles
 
 ### 1. Type Safety First
-
 - Generate types directly from Swagger schemas
 - No `any` types except in controlled error handling
 - Strict TypeScript mode enforced
 - Runtime validation for critical inputs
 
 ### 2. Separation of Concerns
-
 - **BaseClient**: HTTP operations, auth, error handling
 - **RateLimiter**: Rate limit enforcement (isolated)
 - **RetryHandler**: Retry logic (isolated)
@@ -903,25 +865,21 @@ throw new ValidationError(
 - **Types**: Pure interfaces, no logic
 
 ### 3. Developer Experience
-
 - **Autocomplete**: Full IDE support via TypeScript
 - **Error Messages**: Clear, actionable, with context
 - **Examples**: Working code for every module
-- **Documentation**: Comprehensive JSDoc + TypeDoc
+- **Documentation**: Comprehensive JSDoc + TypeDoc + VitePress site
 
 ### 4. Reliability
-
-- **Retry on Transient Errors**: Network issues, 5xx errors
-- **No Retry on Permanent Errors**: 4xx errors except 429
-- **Rate Limit Compliance**: Automatic enforcement
-- **Graceful Degradation**: Meaningful errors when API unavailable
+- **Retry on Transient Errors**: Network issues, 5xx errors, 429
+- **No Retry on Permanent Errors**: 401/403/422
+- **Rate Limit Compliance**: Automatic per-endpoint enforcement (with token-type multipliers)
+- **Graceful Degradation**: Meaningful errors when API unavailable (e.g., `returns` aggregator partial-failure tolerance)
 
 ### 5. Extensibility
-
 - **Module Independence**: Each module can be used standalone
-- **Custom Configuration**: Override defaults per use case
-- **Interceptors**: Support for request/response middleware
-- **Event Hooks**: Allow logging, monitoring, debugging
+- **Custom Configuration**: Override base URLs / timeouts per use case
+- **Aggregation**: Cross-module helpers (`returns`, `reconcileBuyoutsAndReturns`, `computeROAS`) compose module outputs
 
 ---
 
@@ -935,7 +893,7 @@ security:
   - HeaderApiKey: []
 ```
 
-Implement as:
+Implemented in `BaseClient` as:
 ```typescript
 headers: {
   'Authorization': `Bearer ${this.config.apiKey}`
@@ -951,11 +909,11 @@ paths:
       - url: https://finance-api.wildberries.ru
 ```
 
-Parse `servers[0].url` per path, fall back to module default.
+`BaseClient` uses the full URL encoded per method; `SDKConfig.baseUrls` provides per-module overrides.
 
 ### Rate Limit Parsing
 
-Extract from `description` field:
+Extract from the `description` field into per-module `src/config/*-rate-limits.ts`:
 ```typescript
 const rateLimitRegex = /Период[\s|]*Лимит[\s|]*Интервал[\s|]*Всплеск[\s|]*\n[\s|]*---[\s|]*---[\s|]*---[\s|]*---[\s|]*\n[\s|]*(\d+)\s+(\w+)[\s|]*(\d+)\s+(\w+)/;
 
@@ -1001,7 +959,6 @@ Extract and use in integration test fixtures.
 ## Common Patterns & Anti-Patterns
 
 ### ✅ DO
-
 - Use generated types for all request/response data
 - Implement retry logic for network errors
 - Validate API key format before first request
@@ -1010,17 +967,28 @@ Extract and use in integration test fixtures.
 - Use async/await consistently
 - Export all error classes from main index
 - Document rate limits in method JSDoc
+- Add a `rateLimitKey` to every module method
+- Reset static deprecation-warning flags in tests (`beforeEach`)
 
 ### ❌ DON'T
-
 - Hardcode base URLs (extract from Swagger)
 - Ignore rate limits (causes API blocks)
 - Suppress errors silently
 - Use callbacks (async/await only)
 - Modify Swagger files in `wildberries_api_doc/`
-- Mix generated and manual code in same file
+- Mix generated and manual code in the same file
 - Skip type generation (manual types get outdated)
 - Commit API keys or tokens
+- Pass `undefined` as a body to PATCH/DELETE assertions expecting `expect.anything()` (use `{}` instead)
+
+---
+
+## Testing Notes & Gotchas
+
+- **Static deprecation flags in tests:** warn-once static fields (e.g. `_coefficientsDeprecationWarned`) must be reset in `beforeEach`. Add `eslint-disable @typescript-eslint/no-explicit-any` and set `(ModuleClass as any)._flag = false`.
+- **`expect.anything()` does NOT match `undefined`/`null`:** for PATCH/DELETE methods with an empty body, pass `{}` rather than `undefined`.
+- **TDD test execution:** `tests/tdd/**` is excluded from the default vitest config — run via `npm run test:tdd`.
+- **Interfaces are erased at runtime:** `Object.keys(types)` cannot see TypeScript interfaces; verify structurally with `import type` + mock objects instead.
 
 ---
 
@@ -1028,7 +996,7 @@ Extract and use in integration test fixtures.
 
 ### Model Context Protocol (MCP) Server
 
-Potential integration to expose SDK via MCP for AI agents:
+Potential integration to expose the SDK via MCP for AI agents (not yet shipped):
 
 ```typescript
 // Future: src/mcp/server.ts
@@ -1038,7 +1006,6 @@ export class WildberriesMCPServer {
   constructor(private sdk: WildberriesSDK) {}
 
   async handleToolCall(tool: string, args: any) {
-    // Map MCP tool calls to SDK methods
     switch(tool) {
       case 'get_products':
         return await this.sdk.products.getProductList(args);
@@ -1054,17 +1021,7 @@ export class WildberriesMCPServer {
 # Future: Command-line interface
 wb-cli products list --limit 10
 wb-cli orders status --id 123456
-wb-cli analytics sales --from 2024-01-01 --to 2024-12-31
-```
-
-### Webhook Support
-
-```typescript
-// Future: Event-driven architecture
-class WebhookHandler {
-  onOrderCreated(callback: (order: Order) => void);
-  onProductUpdated(callback: (product: Product) => void);
-}
+wb-cli analytics sales --from 2026-01-01 --to 2026-12-31
 ```
 
 ---
@@ -1084,8 +1041,8 @@ class WebhookHandler {
 Before marking any module complete:
 
 - [ ] Types generated from Swagger schemas
-- [ ] All endpoints implemented with correct HTTP method
-- [ ] Rate limits extracted and enforced
+- [ ] All endpoints implemented with the correct HTTP method
+- [ ] Rate limits extracted into `src/config/*-rate-limits.ts` and enforced (`rateLimitKey` on every method)
 - [ ] Retry logic implemented for transient errors
 - [ ] Error handling with typed error classes
 - [ ] JSDoc comments with examples
@@ -1098,6 +1055,7 @@ Before marking any module complete:
 
 ---
 
-**Last Updated**: 2024-10-19
-**SDK Version Target**: 1.0.0
+**Last Updated**: 2026-08-09
+**SDK Version**: 4.1.0
 **OpenAPI Version**: 3.0.1
+**Status**: Production-ready · 14 public modules · 223 Backlog.md tasks done

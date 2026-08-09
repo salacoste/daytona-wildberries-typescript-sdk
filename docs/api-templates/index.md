@@ -1,6 +1,6 @@
 ---
 title: API Reference
-description: Complete TypeScript API reference for Wildberries SDK with all 11 modules
+description: Complete TypeScript API reference for Wildberries SDK with all 14 modules
 layout: doc
 ---
 
@@ -10,14 +10,14 @@ Complete TypeScript API reference for the Wildberries SDK. Browse all modules, c
 
 ## SDK Core
 
-- **[WildberriesSDK](/api/classes/WildberriesSDK)** - Main SDK class aggregating all 11 modules
+- **[WildberriesSDK](/api/classes/WildberriesSDK)** - Main SDK class aggregating all 14 modules
 - **[BaseClient](/api/-internal-/classes/BaseClient)** - HTTP client with retry and timeout handling
 - **[RateLimiter](/api/-internal-/classes/RateLimiter)** - Per-endpoint rate limit enforcement
 - **[RetryHandler](/api/-internal-/classes/RetryHandler)** - Exponential backoff retry logic
 
 ## SDK Modules
 
-Complete reference for all 11 API modules covering product management, orders, finances, analytics, and more.
+Complete reference for all 14 API modules covering product management, orders, finances, analytics, and more.
 
 | Module | Description | API Domain |
 |--------|-------------|------------|
@@ -25,13 +25,16 @@ Complete reference for all 11 API modules covering product management, orders, f
 | **[ProductsModule](/api/classes/ProductsModule)** | Product catalog, categories, pricing, stock | content-api |
 | **[OrdersFbsModule](/api/classes/OrdersFbsModule)** | Seller warehouse fulfillment orders | marketplace-api |
 | **[OrdersFbwModule](/api/classes/OrdersFbwModule)** | Wildberries warehouse fulfillment | marketplace-api |
+| **[OrdersDbsModule](/api/classes/OrdersDbsModule)** | Delivery by Seller (DBS) orders | marketplace-api |
 | **[FinancesModule](/api/classes/FinancesModule)** | Balance, transactions, financial reports | finance-api, statistics-api |
 | **[AnalyticsModule](/api/classes/AnalyticsModule)** | Sales analytics, performance metrics, CSV reports | seller-analytics-api |
-| **[ReportsModule](/api/classes/ReportsModule)** | Async report generation and retrieval | - |
-| **[CommunicationsModule](/api/classes/CommunicationsModule)** | Customer chat, Q&A, reviews | - |
-| **[PromotionModule](/api/classes/PromotionModule)** | Campaigns, promo codes, advertising | - |
+| **[ReportsModule](/api/classes/ReportsModule)** | Async report generation and retrieval | statistics-api |
+| **[CommunicationsModule](/api/classes/CommunicationsModule)** | Customer chat, Q&A, reviews | common-api |
+| **[PromotionModule](/api/classes/PromotionModule)** | Campaigns, promo codes, advertising | advert-api |
 | **[TariffsModule](/api/classes/TariffsModule)** | Commission rates, tariff info, fees | - |
-| **[InStorePickupModule](/api/classes/InStorePickupModule)** | Pickup point management | - |
+| **[InStorePickupModule](/api/classes/InStorePickupModule)** | Click & collect pickup orders | - |
+| **[UserManagementModule](/api/classes/UserManagementModule)** | Seller profile user & access management | common-api |
+| **[ReturnsModule](/api/classes/ReturnsModule)** | Unified FBO + FBS + finance returns aggregator | aggregator |
 
 ## Configuration Interfaces
 
@@ -94,7 +97,7 @@ const sdk = new WildberriesSDK({
   apiKey: process.env.WB_API_KEY!
 });
 
-// Access any of the 11 modules
+// Access any of the 14 modules
 const categories = await sdk.products.getParentAll();
 const orders = await sdk.ordersFBS.getOrders({ limit: 10 });
 const balance = await sdk.finances.getBalance();

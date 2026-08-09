@@ -1,44 +1,31 @@
 # Wildberries API TypeScript SDK Architecture Document
 
-**Document Version**: 1.0 | **Date**: 2025-10-19 | **Status**: Final
+**Document Version**: 2.0 | **Date**: 2026-08-09 | **Status**: Maintained — reflects v4.1.0
 
 ---
 
 ## Introduction
 
-This document outlines the overall project architecture for **Wildberries API TypeScript SDK**, including backend systems, shared services, and non-UI specific concerns. Its primary goal is to serve as the guiding architectural blueprint for AI-driven development, ensuring consistency and adherence to chosen patterns and technologies.
+This document outlines the overall project architecture for **Wildberries API TypeScript SDK**, including backend systems, shared services, and non-UI specific concerns. It is a living internal architecture reference that reflects the **shipped v4.1.0** system, kept in sync with the code as the SDK evolves.
 
 **Relationship to Frontend Architecture:**
 This is a **TypeScript library/SDK project** with no UI components. This document serves as the complete architectural specification for the SDK's internal structure, code generation framework, HTTP client infrastructure, and developer experience design.
 
-### Starter Template or Existing Project
+### Project Foundation
 
-**Analysis:** This is a **greenfield TypeScript SDK project** with no starter template.
-
-**Project Foundation:**
 - **TypeScript 5.x** with strict mode
-- **Node.js LTS** (18.x, 20.x, 22.x)
-- **Vite** for build tooling (dual ESM/CommonJS output)
-- **Vitest** for testing
-- **Custom code generator** (`tools/generate-sdk.ts`) to transform 11 OpenAPI specifications
+- **Node.js ≥ 20** (engines: `>=20.0.0`)
+- **ESM package** (`"type": "module"`) with **Vite** dual ESM/CJS build (`vite-plugin-dts`)
+- **Vitest 4** + `@vitest/coverage-v8` for testing; **MSW 2** for integration (jsdom)
+- **Custom code generator** (`tools/generate-sdk.ts`) transforms the OpenAPI specifications in `wildberries_api_doc/` into TypeScript
 
-**Decision: No Starter Template**
-
-For TypeScript SDK/library projects, building from scratch provides:
-- **Unique Requirements:** Code generation from OpenAPI specs is highly specialized - no template covers this pattern
-- **Bundle Optimization:** Custom Vite configuration needed for tree-shakeable dual builds
-- **Type System Design:** Complex generic types and type generation require custom architecture
-- **Minimal Dependencies:** SDK projects need lean dependency trees - starters add bloat
-
-**Approach:**
-- Initialize with `npm init` and configure TypeScript/Vite manually
-- Build custom code generator tailored to Wildberries API structure
-- Maximum control over bundle size and type safety
+**Approach (no starter template):** The SDK was built from scratch with no starter template. Rationale: code generation from OpenAPI specs is highly specialized (no template covers it), a custom Vite configuration gives full control over tree-shakeable dual ESM/CJS builds, the type-generation pipeline required bespoke architecture, and an SDK benefits from a lean dependency tree. The result is a custom generator tailored to Wildberries API structure with maximum control over bundle size and type safety.
 
 ### Change Log
 
 | Date | Version | Description | Author |
 |------|---------|-------------|--------|
+| 2026-08-09 | 2.0 | Refreshed to shipped reality: 14 public modules, v4.1.0, real core infra/config/errors, removed non-existent SuppliesModule, updated test/build stack | System |
 | 2026-01-25 | 1.2 | Added SuppliesModule and extended Tariffs architecture documentation | System |
 | 2025-12-25 | 1.1 | Added Promotion API deprecation documentation | System |
 | 2025-10-19 | 1.0 | Initial architecture document from PRD | Winston (Architect Agent) |
@@ -49,7 +36,7 @@ For TypeScript SDK/library projects, building from scratch provides:
 
 ### Technical Summary
 
-The Wildberries API TypeScript SDK employs a **layered library architecture** with automated code generation at its core. The system transforms 11 OpenAPI 3.0.1 specifications into production-ready TypeScript modules using a custom generator, while providing centralized HTTP infrastructure through a shared BaseClient. The architecture prioritizes **type safety** (TypeScript strict mode), **developer experience** (full IDE autocomplete), **reliability** (automatic retry with exponential backoff), and **bundle efficiency** (tree-shakeable modules <100KB gzipped). Core architectural patterns include code generation, dependency injection, interceptor-based middleware, and token bucket rate limiting, all supporting the PRD goal of reducing integration time from weeks to hours while maintaining zero critical security vulnerabilities.
+The Wildberries API TypeScript SDK employs a **layered library architecture** with automated code generation at its core. The system transforms the OpenAPI 3.0.1 specifications in `wildberries_api_doc/` into production-ready TypeScript modules using a custom generator, while providing centralized HTTP infrastructure through a shared BaseClient. It ships **14 public SDK modules** (general, products, ordersFBS, ordersFBW, ordersDBS, finances, analytics, communications, reports, promotion, tariffs, inStorePickup, userManagement, returns) plus a supplemental `1_0_0` legacy module. The architecture prioritizes **type safety** (TypeScript strict mode), **developer experience** (full IDE autocomplete), **reliability** (automatic retry with exponential backoff), and **bundle efficiency** (tree-shakeable dual ESM/CJS build). Core architectural patterns include code generation, dependency injection, interceptor-based middleware, token bucket rate limiting, and a typed error hierarchy, all supporting the goal of reducing integration time from weeks to hours while maintaining zero critical security vulnerabilities.
 
 ### High Level Overview
 
@@ -60,19 +47,18 @@ The Wildberries API TypeScript SDK employs a **layered library architecture** wi
 
 **Service Architecture:** **TypeScript SDK Library** with 4-layer design:
 
-1. **Core Infrastructure Layer**
-   - `BaseClient`: Axios-based HTTP client with auth, timeout, error transformation
-   - `RateLimiter`: Token bucket algorithm enforcing per-endpoint rate limits
-   - `RetryHandler`: Exponential backoff retry logic for transient failures
-   - `AuthManager`: API key validation and header injection
+1. **Core Infrastructure Layer** (`src/client/`)
+   - `BaseClient`: Axios-based HTTP client; injects the `Authorization` header, applies configurable timeout, and transforms responses into typed errors (including RFC 7807 `problem+json`, `BidOutOfRange`, and `406 WarehouseStocksUpdateBlock`). Auth-key validation and header injection are handled here (no separate `AuthManager` class).
+   - `RateLimiter`: Per-endpoint token bucket enforcing per-endpoint rate limits; `basic`/`test` token multipliers applied via `applyBasicTokenMultipliers`.
+   - `RetryHandler`: Exponential backoff for transient failures (network errors, 5xx, 429); does **not** retry 401/403/422.
 
-2. **Generated Type Layer**
+2. **Generated Type Layer** (`src/types/`)
    - TypeScript interfaces auto-generated from OpenAPI `components.schemas`
    - Request/response type pairs per endpoint
    - Enum types for API values (OrderStatus, ReportType, etc.)
    - Generic utility types for pagination, filters, date ranges
 
-3. **API Module Layer** (12 modules)
+3. **API Module Layer** (14 public modules + supplemental `1_0_0`)
    - Each module delegates to BaseClient
    - Typed methods generated from OpenAPI `paths`
    - Module-specific rate limit configuration
@@ -101,19 +87,19 @@ Developer → WildberriesSDK({ apiKey })
 **Key Architectural Decisions:**
 
 1. **Code Generation over Manual Implementation**
-   - Rationale: 11 APIs with 100+ endpoints impossible to maintain manually; OpenAPI as single source of truth prevents drift
+   - Rationale: Dozens of APIs with hundreds of endpoints would be impossible to maintain manually; the OpenAPI specs in `wildberries_api_doc/` are the single source of truth, preventing drift
 
 2. **Shared BaseClient with Dependency Injection**
-   - Rationale: Consistent error handling, auth, and retry logic across all modules
+   - Rationale: Consistent auth, typed error transformation, retry, and rate-limiting logic across all modules
 
 3. **Token Bucket Rate Limiting**
-   - Rationale: Prevents API bans by enforcing limits extracted from Swagger descriptions
+   - Rationale: Prevents API bans by enforcing per-endpoint limits extracted from OpenAPI descriptions, with reduced multipliers for `basic`/`test` tokens
 
 4. **Dual Build (ESM + CommonJS)**
-   - Rationale: Maximum compatibility with Node.js projects
+   - Rationale: Maximum compatibility with both modern and legacy Node.js projects
 
-5. **Zero Runtime Dependencies (except Axios)**
-   - Rationale: Minimizes security surface area and bundle size
+5. **Minimal Runtime Dependencies**
+   - Rationale: Only `axios` and `dotenv` ship at runtime, minimizing the security surface area and bundle size
 
 ### High Level Project Diagram
 
@@ -129,26 +115,27 @@ graph TB
         SDK --> PROD[ProductsModule]
         SDK --> OFBS[OrdersFBSModule]
         SDK --> OFBW[OrdersFBWModule]
+        SDK --> ODBS[OrdersDbsModule]
         SDK --> FIN[FinancesModule]
         SDK --> ANAL[AnalyticsModule]
-        SDK --> REP[ReportsModule]
         SDK --> COMM[CommunicationsModule]
+        SDK --> REP[ReportsModule]
         SDK --> PROM[PromotionModule]
         SDK --> TAR[TariffsModule]
         SDK --> ISP[InStorePickupModule]
-        SDK --> SUP[SuppliesModule]
+        SDK --> UMGT[UserManagementModule]
+        SDK --> RET[ReturnsModule<br/>aggregator]
     end
 
     subgraph "Core Infrastructure Layer"
-        BC[BaseClient<br/>HTTP + Auth + Errors]
+        BC[BaseClient<br/>HTTP + Auth + Typed Errors]
         RL[RateLimiter<br/>Token Bucket]
         RH[RetryHandler<br/>Exponential Backoff]
-        AM[AuthManager<br/>API Key]
     end
 
     subgraph "Code Generation System"
         GEN_TOOL[tools/generate-sdk.ts]
-        SWAGGER[11 OpenAPI YAML Files]
+        SWAGGER[OpenAPI YAML Files]
         TYPE_GEN[Type Generator]
         MODULE_GEN[Module Generator]
         RATE_GEN[Rate Limit Parser]
@@ -161,7 +148,7 @@ graph TB
         API_ANALYTICS[seller-analytics-api.wildberries.ru]
         API_FINANCE[finance-api.wildberries.ru]
         API_STATS[statistics-api.wildberries.ru]
-        API_SUPPLIES[supplies-api.wildberries.ru]
+        API_ADVERT[advert-api.wildberries.ru]
     end
 
     DEV --> SDK
@@ -169,18 +156,19 @@ graph TB
     PROD --> BC
     OFBS --> BC
     OFBW --> BC
+    ODBS --> BC
     FIN --> BC
     ANAL --> BC
-    REP --> BC
     COMM --> BC
+    REP --> BC
     PROM --> BC
     TAR --> BC
     ISP --> BC
-    SUP --> BC
+    UMGT --> BC
+    RET --> BC
 
     BC --> RL
     BC --> RH
-    BC --> AM
     BC --> ERRORS[Error Classes]
 
     BC --> API_COMMON
@@ -189,7 +177,7 @@ graph TB
     BC --> API_ANALYTICS
     BC --> API_FINANCE
     BC --> API_STATS
-    BC --> API_SUPPLIES
+    BC --> API_ADVERT
 
     SWAGGER --> GEN_TOOL
     GEN_TOOL --> TYPE_GEN
@@ -223,8 +211,8 @@ graph TB
 
 #### Pattern 4: Error Handling Pattern
 - **Recommendation:** Typed Error Hierarchy
-- **Description:** Custom error classes extending Error (WBAPIError, AuthenticationError, RateLimitError, ValidationError, NetworkError)
-- **Rationale:** TypeScript-native with `instanceof` checks, rich context, preserves stack traces
+- **Description:** A base `WBAPIError` extended by ~16 specialized classes: `AuthenticationError`, `RateLimitError`, `ValidationError`, `NetworkError`, plus domain-specific errors (`CampaignNotFoundError`, `InvalidBidError`, `BudgetExceededError`, `InvalidCampaignStateError`, `BidOutOfRangeError`, `PickupOrderNotFoundError`, `InvalidOrderStateError`, `CustomerVerificationError`, `MetadataValidationError`, `MetaValidationFailError`, `WarehouseStocksUpdateBlockError`). Several ship with parse helpers (e.g. `parseBidOutOfRangeDetail`, `parseMetaValidationFail`).
+- **Rationale:** TypeScript-native with `instanceof` checks, rich context, preserves stack traces, and maps API-specific failure modes (RFC 7807 `problem+json`, `BidOutOfRange`, `406` warehouse blocks) to actionable types
 
 #### Pattern 5: HTTP Client Pattern
 - **Recommendation:** Interceptor Pattern with Axios
@@ -265,34 +253,34 @@ Supporting infrastructure:
 | **Category** | **Technology** | **Version** | **Purpose** | **Rationale** |
 |--------------|----------------|-------------|-------------|---------------|
 | **Language** | TypeScript | 5.3.3 | Primary development language | Strong typing eliminates runtime errors, excellent IDE support, strict mode enforces type safety |
-| **Runtime** | Node.js | 20.11.1 LTS | JavaScript runtime environment | LTS version ensures stability. Multi-version support (18, 20, 22) covers 95% of users |
+| **Runtime** | Node.js | ≥ 20 (`engines`) | JavaScript runtime environment | Pinned to ≥20 in `package.json`; the SDK is an ESM package (`"type": "module"`) |
 | **Module System** | ESM + CommonJS | Dual build | Module formats | ESM for modern projects (tree-shaking), CommonJS for legacy compatibility |
-| **Build Tool** | Vite | 5.0.12 | Fast builds & optimization | 10-100x faster than Webpack, native ESM, optimal code splitting, meets <30s build requirement |
-| **HTTP Client** | Axios | 1.6.7 | HTTP request library | Mature interceptor architecture, excellent TypeScript support, 100M+ weekly downloads |
-| **Code Generation** | Custom Generator | N/A | Transform OpenAPI → TypeScript | Bespoke tool for Wildberries-specific patterns (rate limits, multi-domain URLs) |
+| **Build Tool** | Vite | 6.x | Fast builds & optimization | Native ESM, optimal code splitting, `vite-plugin-dts` emits `.d.ts`; 10-100x faster than Webpack |
+| **HTTP Client** | Axios | 1.6.7 | HTTP request library | Mature ecosystem, excellent TypeScript support, foundation for BaseClient |
+| **Env Loading** | dotenv | 17.x | Load `.env` for examples/scripts | Runtime dependency used by example scripts |
+| **Code Generation** | Custom Generator | N/A | Transform OpenAPI → TypeScript | Bespoke tool (`tools/generate-sdk.ts`) for Wildberries-specific patterns (rate limits, multi-domain URLs) |
 | **YAML Parser** | js-yaml | 4.1.0 | Parse OpenAPI specs | Industry standard for YAML parsing, required for code generator |
-| **Test Framework** | Vitest | 1.2.2 | Unit & integration testing | TypeScript-native, Vite-compatible, 10x faster than Jest, built-in coverage |
-| **HTTP Mocking** | MSW | 2.1.2 | Integration test mocking | Intercepts network requests at fetch/Axios level, realistic HTTP testing |
+| **Test Framework** | Vitest | 4.x | Unit & integration testing | TypeScript-native, Vite-compatible, built-in coverage via `@vitest/coverage-v8` |
+| **HTTP Mocking** | MSW | 2.12.9 | Integration test mocking | Intercepts network requests at fetch/Axios level, realistic HTTP testing (jsdom env) |
 | **Linting** | ESLint | 8.56.0 | Code quality enforcement | TypeScript-specific rules, no-any enforcement, catches common mistakes |
 | **Formatting** | Prettier | 3.2.4 | Code style consistency | Zero-config, integrates with ESLint, ensures uniform code style |
-| **Documentation** | TypeDoc | 0.25.7 | API reference generation | TypeScript-native, converts JSDoc → static site, validates 100% coverage |
+| **Documentation** | TypeDoc | 0.28.x | API reference generation | TypeScript-native, converts JSDoc → static site; VitePress builds the docs site |
 | **CI/CD** | GitHub Actions | N/A | Automated testing & publishing | Free for public repos, matrix testing, automated npm publishing |
 | **Package Manager** | npm | 10.x | Dependency management | Default Node.js package manager, native to npm registry |
 | **Version Control** | Git + GitHub | N/A | Source control | Industry standard, GitHub integrations (Actions, Pages, Releases) |
-| **License** | MIT | N/A | Open source license | Permissive license encouraging adoption |
+| **License** | SEE LICENSE IN LICENSE | N/A | Personal Use license | See `LICENSE` in the repository for terms |
 
 ### Development-Time Tools
 
 | **Category** | **Technology** | **Version** | **Purpose** | **Rationale** |
 |--------------|----------------|-------------|-------------|---------------|
 | **MCP Integration** | Context7 MCP Server | N/A | Library documentation lookup | **MANDATORY** for retrieving up-to-date patterns. Development-time only, NOT runtime dependency |
-| **Code Coverage** | c8 (via Vitest) | Built-in | Test coverage reporting | Native Vitest integration, validates ≥90% core, ≥80% module coverage |
-| **Bundle Analyzer** | rollup-plugin-visualizer | 5.12.0 | Bundle size analysis | Validates <100KB gzipped, visualizes tree-shaking effectiveness |
+| **Code Coverage** | @vitest/coverage-v8 | 4.x | Test coverage reporting | Native Vitest integration, enforces ≥90% core, ≥80% module coverage thresholds |
 | **Type Checker** | tsc | 5.3.3 | Type validation | Standalone type checking, runs in CI, ensures strict mode compliance |
 
 ### Dependency Philosophy
 
-**Runtime Dependencies:** MINIMAL (Axios only)
+**Runtime Dependencies:** MINIMAL (Axios + dotenv only)
 - Every dependency increases security surface area and bundle size
 
 **Development Dependencies:** SELECTIVE (Build/test tools only)
@@ -430,7 +418,7 @@ Major logical components organized into 4 architectural layers.
 
 ### Component 1: WildberriesSDK (Main SDK Class)
 
-**Responsibility:** Primary entry point, aggregates all 11 API modules
+**Responsibility:** Primary entry point, aggregates all 14 public SDK modules
 
 **Key Interfaces:**
 ```typescript
@@ -438,20 +426,23 @@ class WildberriesSDK {
   constructor(config: SDKConfig)
   readonly general: GeneralModule
   readonly products: ProductsModule
-  readonly ordersFBS: OrdersFBSModule
-  readonly ordersFBW: OrdersFBWModule
+  readonly ordersFBS: OrdersFbsModule
+  readonly ordersFBW: OrdersFbwModule
+  readonly ordersDBS: OrdersDbsModule
   readonly finances: FinancesModule
   readonly analytics: AnalyticsModule
-  readonly reports: ReportsModule
   readonly communications: CommunicationsModule
+  readonly reports: ReportsModule
   readonly promotion: PromotionModule
   readonly tariffs: TariffsModule
   readonly inStorePickup: InStorePickupModule
-  readonly supplies: SuppliesModule
+  readonly userManagement: UserManagementModule
+  readonly returns: ReturnsModule
+  static readonly version: string
 }
 ```
 
-**Dependencies:** BaseClient, all 12 modules, AuthManager
+**Dependencies:** BaseClient, all 14 modules (the `returns` aggregator additionally depends on `reports`, `ordersFBS`, and `finances`)
 **Technology Stack:** TypeScript 5.3.3 class with dependency injection
 **Location:** `src/index.ts`
 
@@ -466,12 +457,12 @@ class BaseClient {
   post<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T>
   put<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T>
   patch<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T>
-  delete<T>(url: string, options?: RequestOptions): Promise<T>
+  delete<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T>
 }
 ```
 
-**Dependencies:** Axios, RateLimiter, RetryHandler, AuthManager, Error classes
-**Technology Stack:** Axios instance with interceptors, generic TypeScript methods
+**Dependencies:** Axios, RateLimiter, RetryHandler, `ALL_RATE_LIMITS` + `applyBasicTokenMultipliers`, the typed error classes (including `BidOutOfRangeError`, `WarehouseStocksUpdateBlockError`, `MetaValidationFailError`)
+**Technology Stack:** Axios instance with interceptors, generic TypeScript methods, PII-sanitized debug logging
 **Location:** `src/client/base-client.ts`
 
 ### Component 3: RateLimiter (Rate Limit Enforcement)
@@ -506,51 +497,69 @@ class RetryHandler {
 **Technology Stack:** Generic async wrapper, exponential backoff formula
 **Location:** `src/client/retry-handler.ts`
 
-### Component 5: AuthManager (Authentication)
+### Component 5: Authentication (handled by WildberriesSDK + BaseClient)
 
 **Responsibility:** API key validation and authentication header injection
 
-**Key Interfaces:**
-```typescript
-class AuthManager {
-  validate(): void
-  getAuthHeader(): { Authorization: string }
-}
-```
+**Note:** There is no standalone `AuthManager` class in the shipped code. API-key presence is validated up front in the `WildberriesSDK` constructor (throws `AuthenticationError` on a missing/blank key), and the `Authorization: Bearer <apiKey>` header is injected by `BaseClient` on every request. A `tokenType` on `SDKConfig` (`personal` | `service` | `basic` | `test`) selects rate-limit multipliers; `basic`/`test` tokens emit a one-time reduced-limits warning at construction.
 
-**Dependencies:** AuthenticationError
-**Technology Stack:** Simple validation, header format
-**Location:** `src/client/auth-manager.ts`
+**Dependencies:** AuthenticationError, BaseClient
+**Location:** `src/index.ts` (validation), `src/client/base-client.ts` (header injection)
 
-### Component 6-16: API Modules (11 Modules)
+### Components 6-19: API Modules (14 public modules + supplemental `1_0_0`)
 
-**Pattern:** Each module follows identical structure - delegate to BaseClient with typed request/response
+**Pattern:** Each module follows identical structure — delegate to BaseClient with typed request/response
 
-**Modules:**
-1. GeneralModule - Ping, news, seller info
-2. ProductsModule - Categories, products, media, pricing, stock
-3. OrdersFBSModule - Seller fulfillment orders, shipping labels
-4. OrdersFBWModule - WB fulfillment, supplies, returns
-5. FinancesModule - Balance, transactions, reports, payouts
-6. AnalyticsModule - Sales funnel, performance, CSV exports
-7. ReportsModule - Async report generation
-8. CommunicationsModule - Chat, Q&A, reviews
-9. PromotionModule - Campaigns, promo codes, advertising ⚠️ **DEPRECATION WARNING**: 4 type 8 campaign methods deprecated (Feb 2, 2026)
-10. TariffsModule - Commission rates, fees
-11. InStorePickupModule - Pickup points, orders
-12. SuppliesModule - Acceptance coefficients, transit tariffs, warehouses
+**Public modules** (`sdk.*` properties on `WildberriesSDK`, defined in `src/index.ts`):
 
-**Location:** `src/modules/[module]/`
+| # | Property | Class | Domain | Methods (~) |
+|---|----------|-------|--------|-------------|
+| 1 | `sdk.general` | GeneralModule | common-api | 10 |
+| 2 | `sdk.products` | ProductsModule | content-api | 51 |
+| 3 | `sdk.ordersFBS` | OrdersFbsModule | marketplace-api | 35 |
+| 4 | `sdk.ordersFBW` | OrdersFbwModule | marketplace-api | 12 |
+| 5 | `sdk.ordersDBS` | OrdersDbsModule | marketplace-api | 20 |
+| 6 | `sdk.finances` | FinancesModule | finance-api / statistics-api | 11 |
+| 7 | `sdk.analytics` | AnalyticsModule | seller-analytics-api | 19 |
+| 8 | `sdk.communications` | CommunicationsModule | common-api | 25 |
+| 9 | `sdk.reports` | ReportsModule | statistics-api | 25 |
+| 10 | `sdk.promotion` | PromotionModule | advert-api | 45 |
+| 11 | `sdk.tariffs` | TariffsModule | common-api | 5 |
+| 12 | `sdk.inStorePickup` | InStorePickupModule | common-api (click & collect) | 18 |
+| 13 | `sdk.userManagement` | UserManagementModule | common-api | 4 |
+| 14 | `sdk.returns` | ReturnsModule | aggregator (since v3.10.0) | 3 |
 
-### Tariffs Module - Extended Architecture
+**Total: 283 public methods across the 14 modules.**
 
-The SDK provides access to tariff data from **two distinct API domains**, each serving different business purposes:
+**Supplemental (not a public `sdk.*` property):** `src/modules/1_0_0/` holds 5 legacy methods (`getContentTags`, `getAdvAdvert`, `createAdvFullstat`, `getAdvFullstats`, `getCalendarPromotions`) retained for backward compatibility.
 
-#### Two Sources of Tariffs
+**Module responsibilities:**
+1. GeneralModule — Ping, server time, news, seller info
+2. ProductsModule — Categories, product cards, media, pricing, stock, trash
+3. OrdersFbsModule — Seller-fulfillment orders, status, shipping labels, metadata
+4. OrdersFbwModule — WB-fulfillment supplies, acceptance coefficients, transit tariffs, warehouses
+5. OrdersDbsModule — Delivery-by-Seller orders (bulk status ops, metadata, B2B buyer info)
+6. FinancesModule — Balance, realization reports, documents, payouts
+7. AnalyticsModule — Sales funnel v3, search-query analysis, stock history, CSV exports
+8. CommunicationsModule — Chat, product Q&A, reviews (incl. pinned reviews)
+9. ReportsModule — Async report generation, incomes/stocks/sales, warehouse-remains downloads
+10. PromotionModule — Campaigns, auction bids, budgets, statistics (type 8 deprecated in favor of type 9 — see `docs/guides/migration-v4.md`)
+11. TariffsModule — Commission rates, box/pallet storage, return tariffs
+12. InStorePickupModule — Click & collect order lifecycle, customer verification, regulated-goods metadata
+13. UserManagementModule — Invitations, user listing, access updates, deletion
+14. ReturnsModule — Aggregates FBO + FBS + finance returns with partial-failure tolerance
 
-##### 1. TariffsModule (Storage Tariffs)
+**Location:** `src/modules/[module]/index.ts`
+
+### Tariffs & Supply-Logistics — Extended Architecture
+
+The SDK exposes tariff and supply-logistics data from **two distinct surfaces**, each serving different business purposes. Storage/commission tariffs live in `TariffsModule`, while supply-side acceptance coefficients, transit tariffs, and warehouse listings live in `OrdersFBWModule` (WB-fulfillment logistics).
+
+#### Two Sources of Cost Data
+
+##### 1. TariffsModule (Storage & Commission Tariffs)
 **Domain:** `common-api.wildberries.ru`
-**Purpose:** Fees for product storage and return operations
+**Purpose:** Fees for product storage and return operations, plus sales commissions
 
 | Method | Description |
 |--------|-------------|
@@ -564,21 +573,23 @@ The SDK provides access to tariff data from **two distinct API domains**, each s
 - Compare commission rates across product categories
 - Budget for return processing fees
 
-##### 2. SuppliesModule (Supply Tariffs)
-**Domain:** `supplies-api.wildberries.ru`
-**Purpose:** Fees and coefficients for product delivery to WB warehouses
+##### 2. OrdersFBWModule (Supply-Side Logistics)
+**Domain:** `marketplace-api.wildberries.ru` (WB-fulfillment logistics)
+**Purpose:** Acceptance coefficients, supply options, transit (cross-dock) tariffs, and warehouse listings for delivering goods to WB warehouses
 
 | Method | Description |
 |--------|-------------|
-| `getAcceptanceCoefficients(warehouseIDs?)` | Acceptance coefficients forecast (14 days) |
-| `getAcceptanceOptions(goods, warehouseID?)` | Available acceptance options for goods |
-| `getTransitTariffs()` | Transit (cross-dock) delivery tariffs |
-| `getWarehouses()` | List of WB warehouses with acceptance info |
+| `getAcceptanceCoefficients(...)` | Acceptance coefficients forecast (14 days) |
+| `createAcceptanceOption(goods)` | Available acceptance options for goods |
+| `getTransitTariffs()` / transit endpoints | Transit (cross-dock) delivery tariffs |
+| `warehouses()` | List of WB warehouses with acceptance info |
 
 **Use Cases:**
 - Plan supply deliveries based on acceptance forecasts
 - Optimize delivery timing using coefficient predictions
 - Calculate cross-dock shipping costs
+
+> Note: Earlier drafts referenced a standalone `SuppliesModule` backed by a `supplies-api.wildberries.ru` domain. That module and domain do not exist in the shipped SDK — supply-logistics operations are part of `OrdersFBWModule`.
 
 #### Architecture Diagram
 
@@ -588,19 +599,19 @@ The SDK provides access to tariff data from **two distinct API domains**, each s
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌───────────────────────────┐   ┌───────────────────────────┐ │
-│  │      TariffsModule        │   │      SuppliesModule       │ │
-│  │   (Storage Tariffs)       │   │    (Supply Tariffs)       │ │
+│  │      TariffsModule        │   │     OrdersFBWModule       │ │
+│  │ (Storage & Commission)    │   │   (Supply-Side Logistics) │ │
 │  │                           │   │                           │ │
 │  │  • getTariffsBox()        │   │  • getAcceptanceCoeffs()  │ │
-│  │  • getTariffsPallet()     │   │  • getAcceptanceOptions() │ │
-│  │  • getTariffsReturn()     │   │  • getTransitTariffs()    │ │
-│  │  • getTariffsCommission() │   │  • getWarehouses()        │ │
+│  │  • getTariffsPallet()     │   │  • createAcceptanceOption │ │
+│  │  • getTariffsReturn()     │   │  • transit tariffs        │ │
+│  │  • getTariffsCommission() │   │  • warehouses()           │ │
 │  └─────────────┬─────────────┘   └─────────────┬─────────────┘ │
 │                │                               │               │
 │                ▼                               ▼               │
 │  ┌───────────────────────────┐   ┌───────────────────────────┐ │
-│  │  common-api.wildberries.ru│   │ supplies-api.wildberries.ru│ │
-│  │  (Tariffs & Settings)     │   │ (Supplies & Logistics)    │ │
+│  │  common-api.wildberries.ru│   │marketplace-api.wildberries│ │
+│  │  (Tariffs & Settings)     │   │   (WB Supply Logistics)   │ │
 │  └───────────────────────────┘   └───────────────────────────┘ │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -608,11 +619,11 @@ The SDK provides access to tariff data from **two distinct API domains**, each s
 
 #### Business Logic Separation
 
-The separation into two modules reflects the WB API design philosophy:
+The split across two modules reflects the WB API's own domain boundaries:
 
-| Aspect | TariffsModule | SuppliesModule |
-|--------|---------------|----------------|
-| **Focus** | Ongoing storage costs | One-time supply costs |
+| Aspect | TariffsModule | OrdersFBWModule |
+|--------|---------------|-----------------|
+| **Focus** | Ongoing storage costs & commissions | One-time supply logistics |
 | **Time Frame** | Point-in-time rates | 14-day forecasts |
 | **Granularity** | Category-level | Warehouse-level |
 | **Update Frequency** | Daily | Hourly |
@@ -629,20 +640,20 @@ const sdk = new WildberriesSDK({ apiKey: 'your-api-key' });
 const storageTariffs = await sdk.tariffs.getTariffsBox('2024-01-15');
 const commissions = await sdk.tariffs.getTariffsCommission();
 
-// Supply planning (SuppliesModule)
-const coefficients = await sdk.supplies.getAcceptanceCoefficients();
-const warehouses = await sdk.supplies.getWarehouses();
-const transitCosts = await sdk.supplies.getTransitTariffs();
+// Supply planning (OrdersFBWModule)
+const coefficients = await sdk.ordersFBW.getAcceptanceCoefficients();
+const warehouses = await sdk.ordersFBW.warehouses();
 ```
 
 ### Component 17: Error Classes
 
-**Hierarchy:**
-- WBAPIError (base)
-- AuthenticationError (401, 403)
-- RateLimitError (429)
-- ValidationError (400, 422)
-- NetworkError (timeouts, 5xx)
+**Hierarchy:** A base `WBAPIError` extended by ~16 specialized classes, organized by domain:
+- **Core:** `WBAPIError`, `AuthenticationError` (401/403), `RateLimitError` (429), `ValidationError` (400/422), `NetworkError` (timeouts, 5xx)
+- **Promotion:** `CampaignNotFoundError`, `InvalidBidError`, `BudgetExceededError`, `InvalidCampaignStateError`, `BidOutOfRangeError`
+- **In-store pickup / orders:** `PickupOrderNotFoundError`, `InvalidOrderStateError`, `CustomerVerificationError`, `MetadataValidationError`
+- **Marking codes / warehouse:** `MetaValidationFailError`, `WarehouseStocksUpdateBlockError`
+
+**Parse helpers (exported alongside their errors):** `parseBidOutOfRangeDetail`, `parseMetaValidationFail`.
 
 **Location:** `src/errors/`
 
@@ -660,7 +671,7 @@ const transitCosts = await sdk.supplies.getTransitTariffs();
 
 ## External APIs
 
-This SDK integrates with 12 Wildberries API domains.
+This SDK integrates with the Wildberries API across multiple domains (common-api, content-api, marketplace-api, finance-api, statistics-api, seller-analytics-api, advert-api).
 
 ### Common Integration Patterns
 
@@ -699,31 +710,27 @@ This SDK integrates with 12 Wildberries API domains.
 **Rate Limits:** 5 req/min for queries, 1 req/2min for CSV exports
 **Key Endpoints:** Sales funnel, product performance, search queries, CSV exports
 
-### Wildberries Supplies API
+### Wildberries Marketplace API — Supply Logistics (OrdersFBWModule)
 
-**Purpose:** Supply management, acceptance coefficients, transit tariffs, warehouse operations
-**Base URL:** `https://supplies-api.wildberries.ru`
-**Rate Limits:** 10 req/min for coefficient queries, 5 req/min for options
-**Key Endpoints:**
-- `GET /api/v1/acceptance/coefficients` - Acceptance coefficients (14-day forecast)
-- `POST /api/v1/acceptance/options` - Available acceptance options for goods
-- `GET /api/v1/tariffs/transit` - Transit (cross-dock) delivery tariffs
-- `GET /api/v1/warehouses` - List of WB warehouses with acceptance info
+**Purpose:** WB-fulfillment supply management: acceptance coefficients, transit tariffs, warehouse operations
+**Base URL:** `https://marketplace-api.wildberries.ru`
+**Key Surfaces (exposed via `sdk.ordersFBW`):**
+- Acceptance coefficients (14-day forecast)
+- Available acceptance options for goods
+- Transit (cross-dock) delivery tariffs
+- Warehouse listings with acceptance info
 
 **Relationship to Tariffs API:**
-The Supplies API complements the Common API tariffs endpoints by providing supply-side cost data:
-- Common API (`/api/v1/tariffs/*`) → Storage tariffs (boxes, pallets, returns)
-- Supplies API (`/api/v1/acceptance/*`, `/api/v1/tariffs/transit`) → Supply delivery tariffs
+Marketplace supply-logistics complements the Common API tariffs endpoints:
+- Common API (`/api/v1/tariffs/*`) → Storage tariffs (boxes, pallets, returns) and commissions
+- Marketplace API (acceptance/transit/warehouses) → Supply delivery logistics
 
 ### Additional APIs
 
-- **Common API:** General utilities (ping, news, seller info), storage tariffs
-- **Statistics API:** Extended financial/operational statistics
-- **Communications API:** Chat, Q&A, reviews
-- **Promotion API:** Marketing campaigns and advertising
-- **Tariffs API:** Commission rates and fees
-- **In-Store Pickup API:** Pickup point management
-- **Reports API:** Generic async report generation
+- **Common API:** General utilities (ping, news, seller info), storage tariffs, user management, in-store pickup, communications
+- **Statistics API:** Extended financial/operational statistics and reports
+- **Promotion (Advert) API:** Marketing campaigns, auction bids, and advertising
+- **Reports API:** Async report generation, incomes/stocks/sales
 
 ### SDK Integration Strategy
 
@@ -733,38 +740,14 @@ The Supplies API complements the Common API tariffs endpoints by providing suppl
 - Error transformation maps status codes to typed errors
 - No external API client libraries required (Axios sufficient)
 
-### ⚠️ API Deprecation Notice (December 2024)
+### ⚠️ API Deprecation History — Type 8 Campaigns
 
-**Critical Update:** Wildberries announced deprecation of 4 Promotion API methods effective **February 2, 2026**.
+Wildberries deprecated its type 8 (standard bid) campaign methods in favor of type 9 (custom/standard bid) campaigns. The SDK tracked this across releases:
 
-**Deprecated Methods (Type 8 Campaigns):**
+- **v2.4** — The type 8 methods (`getAutoGetnmtoadd`, `createAutoUpdatenm`, `getAutoStatWords`, `createAutoSetExcluded`) were marked `@deprecated`, with migration guidance in `docs/guides/migration-v2.4-promotion-deprecation.md` and `docs/guides/migration-type8-to-type9.md`.
+- **v4.0.0 (2026-07-11)** — As a **BREAKING major**, the SDK removed all WB-dead/sunset deprecated surface, including these 7 promotion methods. Each removed symbol is now a compile error pointing at its type 9 replacement. See `docs/guides/migration-v4.md`.
 
-1. **`GET /adv/v1/auto/getnmtoadd`** - `getAutoGetnmtoadd()`
-   - **Purpose:** List of product cards for standard bid campaigns
-   - **Migration:** Use `getAuctionAdverts()` for type 9 campaigns
-
-2. **`POST /adv/v1/auto/updatenm`** - `createAutoUpdatenm()`
-   - **Purpose:** Update product cards in standard bid campaigns
-   - **Migration:** Use `updateAuctionNm()` for type 9 campaigns
-
-3. **`GET /adv/v2/auto/stat-words`** - `getAutoStatWords()`
-   - **Purpose:** Statistics by phrase clusters for standard bid campaigns
-   - **Migration:** Use universal `getAdvFullstats()` method (supports all campaign types)
-
-4. **`POST /adv/v1/auto/set-excluded`** - `createAutoSetExcluded()`
-   - **Purpose:** Set/remove minus-phrases for standard bid campaigns
-   - **Migration:** Use type 9 campaign management methods
-   - **Note:** Deprecation date moved from January 15 to February 2, 2026
-
-**Reason:** Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (custom/standard bid) campaigns for improved flexibility and control.
-
-**SDK Implementation:**
-- All 4 methods marked with `@deprecated` JSDoc tags
-- IDE support: Methods show strikethrough in autocomplete
-- Swagger documentation updated with deprecation warnings
-- Comprehensive migration guide: `docs/guides/migration-v2.4-promotion-deprecation.md`
-
-**Developer Action Required:** Migrate to type 9 alternatives before February 2, 2026 to avoid service disruption.
+**Reason:** Wildberries transitioned from type 8 (standard bid) campaigns to type 9 campaigns for improved flexibility and control.
 
 **Reference:** [Wildberries Release Notes #429](https://dev.wildberries.ru/en/release-notes?id=429)
 
@@ -826,25 +809,35 @@ wb-api-sdk/
 ├── src/                        # TypeScript source
 │   ├── index.ts                # Main SDK export
 │   ├── client/                 # Core infrastructure
-│   │   ├── base-client.ts
-│   │   ├── rate-limiter.ts
-│   │   ├── retry-handler.ts
-│   │   └── auth-manager.ts
-│   ├── modules/                # 11 API modules (GENERATED)
+│   │   ├── base-client.ts      # HTTP + auth + typed errors
+│   │   ├── rate-limiter.ts     # Token bucket + token multipliers
+│   │   └── retry-handler.ts    # Exponential backoff
+│   ├── modules/                # 14 public API modules + supplemental 1_0_0
 │   │   ├── general/
 │   │   ├── products/
 │   │   ├── orders-fbs/
-│   │   └── [module]/
+│   │   ├── orders-fbw/
+│   │   ├── orders-dbs/
+│   │   ├── finances/
+│   │   ├── analytics/
+│   │   ├── communications/
+│   │   ├── reports/
+│   │   ├── promotion/
+│   │   ├── tariffs/
+│   │   ├── in-store-pickup/
+│   │   ├── user-management/
+│   │   ├── returns/            # Aggregator module
+│   │   └── 1_0_0/              # Legacy supplemental methods
 │   ├── types/                  # Type definitions (GENERATED)
 │   │   ├── general.types.ts
 │   │   ├── products.types.ts
 │   │   └── [module].types.ts
-│   ├── errors/                 # Error hierarchy
+│   ├── errors/                 # ~16 typed error classes + parse helpers
 │   │   ├── base-error.ts
 │   │   ├── auth-error.ts
 │   │   └── [error].ts
-│   ├── config/                 # Configuration
-│   └── utils/                  # Utilities
+│   ├── config/                 # Configuration + per-module rate-limit files
+│   └── utils/                  # Shared utility helpers
 ├── tools/                      # Code generation
 │   ├── generate-sdk.ts
 │   └── generators/
@@ -890,7 +883,7 @@ wb-api-sdk/
 
 **Workflow:**
 1. Developer pushes code → CI pipeline runs (test, lint, build)
-2. Developer creates git tag (v1.0.0) → Release pipeline triggers
+2. Developer creates git tag (e.g. v4.1.0) → Release pipeline triggers
 3. Release pipeline: Build → Publish to npm → Deploy docs to GitHub Pages → Create GitHub Release
 
 ### CI Pipeline
@@ -904,7 +897,7 @@ wb-api-sdk/
 - Generate coverage report
 - Build SDK
 - Bundle size check
-- Matrix test: Node.js 18.x, 20.x, 22.x
+- Matrix test: Node.js ≥ 20 (per `engines`)
 
 **Performance Target:** <5 minutes execution
 
@@ -913,11 +906,10 @@ wb-api-sdk/
 **Triggers:** Git tag push (v*)
 **Jobs:**
 - Run full CI pipeline
-- Generate SDK from Swagger
-- Build production bundle
-- Validate bundle size (<100KB)
+- Build production bundle (dual ESM/CJS via Vite + `vite-plugin-dts`)
 - Publish to npm
-- Generate and deploy TypeDoc
+- Generate TypeDoc API reference and build the VitePress docs site
+- Deploy docs to GitHub Pages
 - Create GitHub Release
 
 ### Environments
@@ -959,7 +951,14 @@ Error (native)
         ├── AuthenticationError (401, 403)
         ├── RateLimitError (429)
         ├── ValidationError (400, 422)
-        └── NetworkError (timeouts, 5xx)
+        ├── NetworkError (timeouts, 5xx)
+        ├── CampaignNotFoundError, InvalidBidError,
+        │   BudgetExceededError, InvalidCampaignStateError,
+        │   BidOutOfRangeError            (promotion)
+        ├── PickupOrderNotFoundError, InvalidOrderStateError,
+        │   CustomerVerificationError, MetadataValidationError (orders/pickup)
+        ├── MetaValidationFailError       (FBS marking codes)
+        └── WarehouseStocksUpdateBlockError (406, retryable)
 ```
 
 **Error Propagation:** Fail-fast with typed exceptions
@@ -1040,7 +1039,7 @@ try {
 **Languages:** TypeScript 5.3.3 with strict mode
 **Linting:** ESLint 8.56.0 with @typescript-eslint
 **Formatting:** Prettier 3.2.4
-**Testing:** Vitest 1.2.2
+**Testing:** Vitest 4.x
 
 ### Naming Conventions
 
@@ -1075,9 +1074,11 @@ try {
 
 **Approach:** TDD for core infrastructure, test-after for generated modules
 
-**Coverage Goals:**
+**Current state:** The default Vitest config runs **~2,376 tests across 80 test files** (core + modules + integration). TDD red-phase tests live under `tests/tdd/` and are excluded from the default run; execute them separately via `npm run test:tdd` (~39 files). Integration tests use MSW 2 under a jsdom environment.
+
+**Coverage Goals (enforced as thresholds in `vitest.config.ts`):**
 - ≥90% for `src/client/` (core infrastructure)
-- ≥80% for `src/modules/` (API modules)
+- ≥80% for `src/modules/` (API modules, statements/branches)
 - 100% for critical paths (auth, retry, rate limiting)
 
 **Test Pyramid:**
@@ -1152,14 +1153,14 @@ if (!data.brandName || data.brandName.trim() === '') {
 **Auth Method:** Bearer Token (API Key) via HTTP header
 
 **Implementation:**
-- API key validated on SDK initialization
-- AuthManager provides `Authorization: Bearer {key}` header
-- API key injected on every request
+- API key validated on SDK initialization (`WildberriesSDK` constructor throws `AuthenticationError` if missing/blank)
+- `BaseClient` injects the `Authorization: Bearer {key}` header on every request
+- `tokenType` (`personal` | `service` | `basic` | `test`) selects rate-limit multipliers; `basic`/`test` warn about reduced limits at construction
 
 **Security:**
 - Never log or expose API key
-- Fail fast on invalid format
-- Minimum 32 characters validation
+- Fail fast on missing/blank key
+- PII-sanitized logging (keys, tokens, and PII are stripped from debug output)
 
 ### Secrets Management
 
@@ -1231,7 +1232,7 @@ npm audit --audit-level=high --production
 - [ ] Validate all user inputs
 - [ ] Never log API keys, tokens, or PII
 - [ ] Use HTTPS for all requests
-- [ ] Inject auth via AuthManager
+- [ ] Inject auth via BaseClient
 - [ ] Sanitize error messages
 - [ ] Use TypeScript strict mode
 - [ ] Validate file uploads
@@ -1242,42 +1243,17 @@ npm audit --audit-level=high --production
 
 ---
 
-## Next Steps
+## Status
 
-This architecture document is ready for implementation by development agents.
-
-**Recommended Workflow:**
-
-1. **Initialize Project Structure**
-   - Create repository with folder structure from Source Tree section
-   - Configure TypeScript, Vite, ESLint, Prettier
-   - Set up GitHub Actions CI/CD pipelines
-
-2. **Implement Core Infrastructure (Epic 1)**
-   - BaseClient, RateLimiter, RetryHandler, AuthManager
-   - Error hierarchy
-   - TDD approach with unit tests
-
-3. **Build Code Generator**
-   - Type generator from OpenAPI schemas
-   - Module generator from OpenAPI paths
-   - Rate limit parser
-
-4. **Generate and Implement Modules (Epics 2-4)**
-   - Run code generator on all 11 Swagger files
-   - Validate generated code
-   - Add integration tests
-
-5. **Documentation and Release**
-   - Generate TypeDoc
-   - Write examples
-   - Publish v1.0 to npm
+This architecture is **implemented and shipped** as v4.1.0. The core infrastructure (`BaseClient`, `RateLimiter`, `RetryHandler`), the typed error hierarchy, the code generator, all 14 public modules, and the supplemental `1_0_0` module are live, with ~2,376 tests across 80 files. Backlog.md tracking is complete (223 tasks Done). This document is maintained alongside the code; when the SDK changes, update the facts here rather than treating it as a frozen spec.
 
 **Reference Documents:**
-- PRD: `docs/prd.md` - Complete requirements
-- OpenAPI Specs: `wildberries_api_doc/*.yaml` - API contracts
+- PRD: `docs/prd.md` - Product requirements
+- OpenAPI Specs: `wildberries_api_doc/*.yaml` - API contracts (DO NOT MODIFY)
+- CHANGELOG: `CHANGELOG.md` - Version history (source of truth for releases)
+- Migration guides: `docs/guides/migration-v4.md`, `docs/guides/migration-v2.4-promotion-deprecation.md`, `docs/guides/migration-type8-to-type9.md`
 - CLAUDE.md: `.claude/CLAUDE.md` - Development guidelines
 
 ---
 
-**Architecture Status:** ✅ Complete | Ready for Implementation
+**Architecture Status:** ✅ Implemented & Maintained (v4.1.0)

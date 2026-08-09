@@ -184,7 +184,7 @@ npm run lint
 wb-api-sdk/
 ├── src/
 │   ├── client/           # Core HTTP client, rate limiter, retry handler
-│   ├── modules/          # 11 API modules (products, orders, etc.)
+│   ├── modules/          # 14 API modules (products, orders, etc.)
 │   ├── types/            # Generated TypeScript types from OpenAPI
 │   ├── errors/           # Custom error classes
 │   └── utils/            # Shared utilities
@@ -558,7 +558,7 @@ refactor(client): improve retry logic performance
 
 1. **Environment Information**
 ```
-SDK Version: 1.0.0
+SDK Version: 4.1.0
 Node.js Version: 20.10.0
 Operating System: macOS 14.0
 ```

@@ -1,23 +1,44 @@
 # Project Brief: Wildberries API TypeScript SDK
 
-**Document Version**: 1.0 | **Date**: 2025-10-19 | **Status**: ✅ Complete
+**Document Version**: 1.0 (maintained) | **Date**: 2026-08-09 | **Status**: ✅ Maintained — reflects shipped v4.1.0
+
+> ### 🚢 Current Status (v4.1.0)
+>
+> The SDK described in this brief is **built and shipped to npm** as
+> [`daytona-wildberries-typescript-sdk`](https://github.com/salacoste/daytona-wildberries-typescript-sdk).
+> It is **production-ready**:
+> - **14 public API modules** exposed on `sdk.*` (`general`, `products`, `ordersFBS`, `ordersFBW`,
+>   `ordersDBS`, `finances`, `analytics`, `communications`, `reports`, `promotion`, `tariffs`,
+>   `inStorePickup`, `userManagement`, `returns`) + one supplemental internal module.
+> - **~283 public methods** across those 14 modules.
+> - **223 Backlog.md tasks — all Done.** Board cleared.
+> - **Dual ESM/CJS build** (Vite + `vite-plugin-dts`), Node ≥ 20, TypeScript strict mode.
+> - **Docs site live**: [salacoste.github.io/daytona-wildberries-typescript-sdk](https://salacoste.github.io/daytona-wildberries-typescript-sdk)
+>   (VitePress + TypeDoc, bilingual EN/RU).
+> - **~2,376 tests across 80 test files** (Vitest 4 + MSW 2); coverage thresholds ≥90% core infra, ≥80% modules.
+>
+> This brief was originally written pre-build (v1.0 scope, 11 modules, greenfield framing).
+> The vision, goals, target-audience, and business-context prose below are still valid and are preserved;
+> the shipped product now **exceeds** the original v1.0 scope (see the module table and counts below).
+> See [`CHANGELOG.md`](../CHANGELOG.md) for the authoritative version history, and
+> [`docs/guides/migration-v4.md`](guides/migration-v4.md) for the v4.0 breaking surface removal.
 
 ---
 
 ## 📊 Executive Summary (Decision Makers)
 
-**The Opportunity**: 100,000+ Wildberries sellers need integration tools, but developers waste 2-4 weeks manually integrating with 11 separate APIs. This creates a market opportunity for a production-ready TypeScript SDK.
+**The Opportunity**: 100,000+ Wildberries sellers need integration tools, but developers waste 2-4 weeks manually integrating with the platform's many APIs. This created a market opportunity for a production-ready TypeScript SDK — **an opportunity this project has now realized**.
 
-**The Solution**: Open-source SDK that auto-generates type-safe TypeScript code from official OpenAPI specifications, reducing integration time by 75% (weeks → days) while eliminating runtime errors and API compliance issues.
+**The Solution**: An open-source SDK that transforms the official OpenAPI specifications into type-safe TypeScript code, reducing integration time by 75% (weeks → days) while eliminating runtime errors and API compliance issues. **Shipped** as `daytona-wildberries-typescript-sdk`.
 
-**Key Metrics**:
+**Key Metrics** (delivered):
 - **Time Savings**: 2-4 weeks → 3-7 days (75% reduction)
-- **Coverage**: 11 API modules, 100% endpoint coverage
-- **Quality**: TypeScript strict mode, ≥80% test coverage, <100KB bundle
+- **Coverage**: **14 public API modules, ~283 methods**, full endpoint coverage of the tracked OpenAPI specs
+- **Quality**: TypeScript strict mode, **~2,376 tests** (≥90% core infra / ≥80% modules), dual ESM/CJS build
 - **Time to Value**: <30 minutes from install to first API call
 
 **Investment Required**:
-- **Timeline**: 6-7 weeks to MVP (v1.0)
+- **Timeline**: Originally scoped at 6-7 weeks to MVP (v1.0); **delivered and now at v4.1.0**, maintained continuously as the Wildberries API evolves
 - **Resources**: Single developer initially, community post-launch
 - **Budget**: $0 (open-source, free tier infrastructure)
 
@@ -28,7 +49,7 @@
 
 **Risk Level**: Medium (Swagger accuracy, API stability, market validation needed)
 
-**Next Milestone**: PRD Development → Week 1 Foundation Implementation
+**Next Milestone**: Maintenance cadence — track WB API announcements, ship module/patch releases, retire deprecated surface on WB deadlines (see `CHANGELOG.md`).
 
 ---
 
@@ -65,7 +86,7 @@
 
 ## Overview
 
-The **Wildberries API TypeScript SDK** is a production-ready software development kit that transforms 11 OpenAPI specifications into a type-safe, modular TypeScript library for interacting with the Wildberries marketplace platform. This SDK addresses the complexity of manual API integration by providing developers with automated type generation, intelligent rate limiting, retry mechanisms, and comprehensive error handling.
+The **Wildberries API TypeScript SDK** is a production-ready software development kit that transforms the platform's OpenAPI specifications (14 spec files under `wildberries_api_doc/`) into a type-safe, modular TypeScript library for interacting with the Wildberries marketplace platform. **Shipping** as `daytona-wildberries-typescript-sdk` (v4.1.0), it addresses the complexity of manual API integration by providing developers with full type generation, intelligent rate limiting, retry mechanisms, and comprehensive error handling.
 
 The primary problem being solved is the **significant development overhead** currently faced by e-commerce developers, ERP/CRM integrators, and analytics platform builders who must manually interpret Swagger documentation, implement boilerplate code, and handle complex error scenarios when integrating with Wildberries' 100,000+ active seller marketplace.
 
@@ -77,13 +98,13 @@ The primary problem being solved is the **significant development overhead** cur
 
 ## Problem Statement
 
-> **TL;DR**: Developers waste 2-4 weeks manually integrating 11 Wildberries APIs due to lack of official SDK. Manual integration causes 30-40% more QA cycles, consumes 15-20% of ongoing maintenance time, and forces every developer to "reinvent the wheel" for rate limiting, error handling, and type safety.
+> **TL;DR**: Before a unified SDK existed, developers wasted 2-4 weeks manually integrating Wildberries' many APIs due to lack of an official SDK. Manual integration caused 30-40% more QA cycles, consumed 15-20% of ongoing maintenance time, and forced every developer to "reinvent the wheel" for rate limiting, error handling, and type safety. **This SDK was built to eliminate that pain — and it shipped.**
 
-**Current State and Pain Points:**
+**Current State and Pain Points (the problem this SDK solves):**
 
-Developers integrating with the Wildberries marketplace API currently face significant technical friction. The platform provides 11 separate OpenAPI/Swagger specification files covering critical business domains (products, orders, finances, analytics, communications, etc.), but no official SDK exists. This forces development teams to:
+Developers integrating with the Wildberries marketplace API without an SDK face significant technical friction. The platform exposes its functionality through multiple OpenAPI/Swagger specification files (14 are tracked in this repo) covering critical business domains (products, orders, finances, analytics, communications, etc.), but Wildberries provides no official SDK. Without a project like this one, development teams must:
 
-- **Manually interpret** complex Swagger documentation across 11 different API categories
+- **Manually interpret** complex Swagger documentation across many different API categories
 - **Hand-code** HTTP client logic, including authentication, request/response handling, and serialization
 - **Implement infrastructure** for rate limiting (each endpoint has unique limits), retry mechanisms, and error handling
 - **Maintain type definitions** manually, leading to runtime errors and debugging overhead
@@ -118,13 +139,13 @@ Addressing this problem now enables the broader developer ecosystem to build hig
 
 ## Proposed Solution
 
-> **TL;DR**: Code-generated TypeScript SDK with 11 modular API packages, automatic type generation from Swagger, intelligent rate limiting, exponential backoff retries, and typed error hierarchy. Differentiates through Wildberries-specific intelligence (rate limit parsing, multi-domain URLs) while maintaining <100KB bundle size.
+> **TL;DR**: Type-safe TypeScript SDK with modular API packages (14 public `sdk.*` modules), types generated from the official OpenAPI specs, intelligent rate limiting, exponential backoff retries, and a typed error hierarchy (~16 classes). Differentiates through Wildberries-specific intelligence (rate limit parsing, multi-domain URLs, RFC 7807 `problem+json` handling, marking-code diagnostics) while keeping a small, tree-shakeable footprint.
 
 **Core Concept and Approach:**
 
-The Wildberries API TypeScript SDK is a **code-generated, modular SDK** that automates the transformation of 11 OpenAPI 3.0.1 specifications into production-ready TypeScript code. The solution leverages a custom code generation pipeline to create:
+The Wildberries API TypeScript SDK is a **code-generated, modular SDK** that automates the transformation of the platform's OpenAPI 3.0.1 specifications (14 files tracked under `wildberries_api_doc/`) into production-ready TypeScript code. The solution leverages a code generation pipeline to create:
 
-1. **Type-Safe API Modules**: Each of the 11 API categories (Products, Orders FBS/FBW, Finances, Analytics, Communications, etc.) becomes an independent, fully-typed TypeScript module with complete IDE autocomplete support
+1. **Type-Safe API Modules**: Each API category (General, Products, Orders FBS/FBW/DBS, Finances, Analytics, Communications, Reports, Promotion, Tariffs, In-Store Pickup, User Management, plus a Returns aggregator) becomes an independent, fully-typed TypeScript module with complete IDE autocomplete support
 2. **Intelligent Infrastructure Layer**: A shared HTTP client with built-in authentication, rate limiting (parsed from API documentation), exponential backoff retry logic, and comprehensive error handling
 3. **Developer-Centric Design**: Clean, intuitive API surface with async/await patterns, meaningful error messages, and extensive documentation and examples
 
@@ -158,7 +179,7 @@ The Wildberries API TypeScript SDK is a **code-generated, modular SDK** that aut
 The SDK establishes itself as the **de facto standard** for Wildberries API integration in the TypeScript/Node.js ecosystem. Developers will:
 
 - **Discover** the SDK through npm, GitHub, and Wildberries developer community
-- **Install** with a single command: `npm install @wildberries/api-sdk`
+- **Install** with a single command: `npm install daytona-wildberries-typescript-sdk`
 - **Authenticate** by providing their API key in configuration
 - **Build** integrations in hours instead of weeks, using full IDE support and comprehensive examples
 - **Deploy** with confidence, knowing rate limits and error handling are automatically managed
@@ -186,7 +207,7 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 - Work in agile teams with tight deadlines and pressure to ship features quickly
 
 **Specific Needs and Pain Points:**
-- **Time Pressure**: Need to integrate with Wildberries API quickly without deep-diving into 11 separate Swagger files
+- **Time Pressure**: Need to integrate with Wildberries API quickly without deep-diving into many separate Swagger files
 - **Reliability Requirements**: Building tools for clients/stakeholders who depend on stable, error-free integrations
 - **Type Safety**: Want compile-time error detection to avoid production bugs in critical e-commerce workflows
 - **Maintainability**: Need solutions that won't break when Wildberries updates their API
@@ -297,9 +318,9 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 
 - **Issue Response Time: < 48 hours for bugs, < 7 days for features** - Demonstrates active maintenance and community engagement
 
-- **API Coverage: 100% of Wildberries API endpoints implemented** - Ensures comprehensive coverage across all 11 API modules
+- **API Coverage: 100% of Wildberries API endpoints implemented** - Ensures comprehensive coverage across all 14 public SDK modules
 
-- **TypeScript Compatibility: Support TS 4.5+ with zero type errors in strict mode** - Validates type safety commitment and modern toolchain compatibility
+- **TypeScript Compatibility: Modern TypeScript with zero type errors in strict mode** - Validates type safety commitment and modern toolchain compatibility
 
 - **Build Performance: SDK generation completes in < 30 seconds** - Ensures developer productivity during SDK updates and regeneration
 
@@ -307,7 +328,9 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 
 ## MVP Scope
 
-> **TL;DR**: All 11 API modules in v1.0 with complete infrastructure (BaseClient, RateLimiter, RetryHandler), automated type generation, 100% endpoint coverage, ≥80% test coverage. Ships with comprehensive docs, working examples, and <30 min quickstart. Browser support, webhooks, CLI, and MCP server deferred to post-MVP.
+> **Note (v4.1.0):** The MVP described below was the **original v1.0 scope** and has long since been delivered and surpassed. The shipped SDK now exposes **14 public modules** (the 11 listed here **plus** `ordersDBS`, `userManagement`, and a `returns` aggregator) and sits at **v4.1.0**. This section is retained as the historical scope definition; read it as "what v1.0 set out to do" rather than the current surface.
+
+> **TL;DR (original v1.0 scope)**: All API modules in v1.0 with complete infrastructure (BaseClient, RateLimiter, RetryHandler), type generation, 100% endpoint coverage, ≥80% test coverage. Ships with comprehensive docs, working examples, and <30 min quickstart. Browser support, webhooks, CLI, and MCP server deferred to post-MVP.
 
 ### **Core Features (Must Have)**
 
@@ -319,11 +342,11 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 
 - **RetryHandler**: Exponential backoff retry logic with configurable max retries (default: 3), retry delay (default: 1s), smart retry decisions (retry on 5xx/network errors, don't retry on 4xx except 429)
 
-- **Error Hierarchy**: Typed error classes (`WBAPIError`, `AuthenticationError`, `RateLimitError`, `ValidationError`, `NetworkError`) with meaningful error messages, status codes, and recovery guidance
+- **Error Hierarchy**: Typed error classes — base `WBAPIError` plus ~15 subclasses (`AuthenticationError`, `RateLimitError`, `ValidationError`, `NetworkError`, `CampaignNotFoundError`, `InvalidBidError`, `BudgetExceededError`, `InvalidCampaignStateError`, `BidOutOfRangeError`, `PickupOrderNotFoundError`, `InvalidOrderStateError`, `CustomerVerificationError`, `MetadataValidationError`, `MetaValidationFailError`, `WarehouseStocksUpdateBlockError`, …) with parse helpers and recovery guidance
 
 **2. Type Generation System**
 
-- **Automated Type Generation**: Parse all 11 Swagger files and generate TypeScript interfaces for request/response types, enums for status values, optional/required property preservation, and JSDoc comments from Swagger descriptions
+- **Automated Type Generation**: Parse the Swagger files and generate TypeScript interfaces for request/response types, enums for status values, optional/required property preservation, and JSDoc comments from Swagger descriptions
 
 - **Code Generation Pipeline**: Custom generator (`tools/generate-sdk.ts`) that transforms OpenAPI schemas → TypeScript types, extracts rate limits from descriptions, detects base URLs per endpoint, and generates module classes with typed methods
 
@@ -357,17 +380,26 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 
 - **In-Store Pickup Module** (`06-in-store-pickup.yaml`): Pickup point management
 
+**6b. Modules Added Beyond v1.0 (now shipped in v4.1.0):**
+
+The shipped SDK grew beyond the original 11 modules above. The following are now part of the public surface (`sdk.*`):
+
+- **Orders DBS Module** (Delivery by Seller): seller-handled delivery, bulk status operations, marking-code metadata, B2B buyer info
+- **User Management Module**: seller-profile invitations, user listing, access-rights updates, user deletion
+- **Returns Aggregator Module** (since v3.10.0): unified return analytics across FBO + FBS + Finance sources, partial-failure tolerant
+- **Supplemental internal module** (`src/modules/1_0_0/`): 5 ad-hoc methods (`getContentTags`, advert/fullstats helpers, calendar promotions) — not a public `sdk.*` property
+
 **6. Developer Experience Essentials**
 
 - **Comprehensive Documentation**: TypeDoc-generated API reference, quickstart guide (<30 min to first API call), module-specific guides with code examples, error handling documentation with recovery patterns
 
-- **Working Examples**: Example code for each of the 11 modules, common integration patterns (auth, pagination, error handling), real-world use case implementations
+- **Working Examples**: Example code for each module, common integration patterns (auth, pagination, error handling), real-world use case implementations
 
 - **Testing Infrastructure**: Unit test suite with Vitest (≥80% coverage for critical paths), integration tests with MSW, mock data fixtures from Swagger examples
 
 ### **Out of Scope for MVP**
 
-- **Browser Support**: MVP targets Node.js 18+ only; browser compatibility deferred to post-MVP (requires different approach to API keys, CORS handling)
+- **Browser Support**: The SDK targets Node.js (≥ 20); browser compatibility is out of scope (requires a different approach to API keys, CORS handling)
 
 - **Webhook Handlers**: Event-driven architecture for Wildberries webhooks (future enhancement)
 
@@ -390,30 +422,30 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 ### **MVP Success Criteria**
 
 **Functional Completeness:**
-- ✅ All 11 API modules implemented with 100% endpoint coverage
+- ✅ All API modules implemented with full endpoint coverage (**14 public modules** at v4.1.0, up from the original 11)
 - ✅ All Swagger operations have corresponding TypeScript methods
 - ✅ Rate limits extracted and enforced for all documented endpoints
-- ✅ Error handling covers all HTTP status codes (401, 403, 404, 429, 500, etc.)
+- ✅ Error handling covers all HTTP status codes (401, 403, 404, 406, 409, 422, 429, 500, etc.), including RFC 7807 `problem+json` and marking-code diagnostics
 
 **Quality Standards:**
 - ✅ Zero TypeScript errors in strict mode
-- ✅ ≥80% test coverage for critical modules (Products, Orders, Finances)
+- ✅ ≥80% test coverage for modules (Products, Orders, Finances, …)
 - ✅ ≥90% test coverage for core infrastructure (BaseClient, RateLimiter, RetryHandler)
-- ✅ Bundle size < 100KB gzipped for core SDK
+- ✅ Small, tree-shakeable dual ESM/CJS build (Vite + `vite-plugin-dts`)
 - ✅ Zero high/critical security vulnerabilities (npm audit)
 
 **Documentation & DX:**
 - ✅ 100% public API JSDoc coverage with examples
 - ✅ Quickstart guide enables first API call in < 30 minutes
-- ✅ Working examples for all 11 modules
-- ✅ TypeDoc documentation generated and published
+- ✅ Working examples for all modules
+- ✅ TypeDoc API reference + VitePress docs site generated and published (bilingual EN/RU)
 - ✅ README with installation, configuration, usage, and troubleshooting
 
 **Release Readiness:**
-- ✅ Published to npm with proper versioning (v1.0.0)
+- ✅ Published to npm with semantic versioning (**current: v4.1.0**)
 - ✅ GitHub repository with CI/CD pipeline (tests, linting, type checking)
-- ✅ MIT license and contribution guidelines
-- ✅ Changelog documenting all features
+- ✅ License and contribution guidelines
+- ✅ Changelog documenting all releases
 - ✅ Issue templates for bugs and feature requests
 
 ---
@@ -508,34 +540,31 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 
 ## Technical Considerations
 
-> **TL;DR**: Node.js 18+, TypeScript 5.x strict mode, Axios vs fetch TBD, Vitest + MSW testing, monorepo structure. Performance targets: <200ms overhead, <100KB gzipped, <30s code generation, <5min test suite. Minimal dependencies, automated security scanning, Context7 MCP mandatory during development.
+> **TL;DR** (as built): Node.js ≥ 20, TypeScript strict mode, **Axios** HTTP client (+ `dotenv` for examples), **Vite** dual ESM/CJS build, **Vitest 4 + MSW 2** testing, **TypeDoc + VitePress** docs, single-package repo with subpath exports. Minimal dependencies, automated security scanning, ~16 typed error classes, `tokenType`-aware rate limiting.
 
 ### **Platform Requirements**
 
-- **Target Platforms**: Node.js 18.x, 20.x, 22.x (LTS versions)
-- **Browser/OS Support**: MVP targets Node.js only; browser support deferred to Phase 2 (requires different API key handling and CORS considerations)
+- **Target Platforms**: Node.js **≥ 20** (LTS)
+- **Browser/OS Support**: Targets Node.js; browser support remains out of scope (requires different API key handling and CORS considerations)
 - **Performance Requirements**:
   - SDK overhead: <200ms per operation
-  - Bundle size: Core SDK <100KB gzipped (tree-shakeable modules)
+  - Bundle size: small, tree-shakeable dual ESM/CJS build
   - Memory footprint: Minimal, no memory leaks
-  - Code generation: <30 seconds for all 11 modules
-  - Test execution: <5 minutes for full suite
+  - Code generation: fast for all 14 specs
+  - Test execution: full suite runs well within CI budgets (~2,376 tests across 80 files)
 
 ### **Technology Preferences**
 
 **Frontend (TypeScript SDK Core):**
-- **Language**: TypeScript 5.x with strict mode enabled
-- **Build Tool**: Vite or tsup for fast builds and optimal bundle output
-- **Module System**: ESM + CJS dual build for maximum compatibility
-- **Type Checking**: TypeScript compiler with strictest settings (`strict`, `noImplicitAny`, `strictNullChecks`)
+- **Language**: TypeScript with strict mode enabled
+- **Build Tool**: **Vite** (+ `vite-plugin-dts`) for fast dual builds and emitted `.d.ts`
+- **Module System**: **ESM + CJS dual build** for maximum compatibility, with **subpath exports** (`./finances`, `./analytics`, `./communications`, `./reports`) so module types import without clashing with global `Error`/`Date`
+- **Type Checking**: TypeScript compiler with strict settings (`strict`, `noImplicitAny`, `strictNullChecks`)
 
 **Backend (HTTP Client & Infrastructure):**
-- **HTTP Client**: Axios (decision point - could use native fetch in Node.js 18+, needs evaluation)
-  - **Axios pros**: Rich ecosystem, interceptor support, widespread adoption
-  - **Fetch pros**: Native, zero dependencies, modern standard
-  - **Decision criteria**: Need to evaluate based on Node.js 18+ fetch maturity and interceptor requirements
-- **Rate Limiting**: Custom implementation (token bucket algorithm) - no external dependency needed
-- **Retry Logic**: Custom exponential backoff - lightweight, tailored to Wildberries specifics
+- **HTTP Client**: **Axios** (chosen) — rich ecosystem, interceptor support, widespread adoption. `dotenv` is used in example scripts.
+- **Rate Limiting**: Custom per-endpoint token-bucket implementation (limits parsed from Swagger descriptions), with `basic`/`test` token multipliers via `tokenType` — no external dependency needed
+- **Retry Logic**: Custom exponential backoff — lightweight, tailored to Wildberries specifics (retries network errors / 5xx / 429; does not retry 401/403/422)
 
 **Database (Not Applicable):**
 - SDK is stateless; no database requirements
@@ -553,30 +582,31 @@ The SDK becomes the foundation layer for a growing ecosystem of Wildberries inte
 ```
 wb-api-sdk/
 ├── src/                    # Source code
-│   ├── client/            # Core HTTP client infrastructure
-│   ├── modules/           # Generated API modules (11 modules)
-│   ├── types/             # Generated TypeScript types
-│   ├── errors/            # Custom error classes
-│   ├── utils/             # Shared utilities
+│   ├── client/            # Core HTTP client infrastructure (BaseClient, RateLimiter, RetryHandler)
+│   ├── modules/           # API modules (14 public sdk.* modules + supplemental 1_0_0)
+│   ├── types/             # TypeScript types (generated/maintained from Swagger)
+│   ├── errors/            # Custom error classes (~16)
+│   ├── utils/             # Shared utilities (~16 exported helpers)
+│   ├── config/            # SDK config + per-module rate-limit tables
 │   └── index.ts           # Main SDK export
-├── tools/                  # Code generation tools
-├── tests/                  # Test suites (unit + integration)
+├── tools/                  # Code generation / maintenance tools
+├── tests/                  # Test suites (unit + integration, ~2,376 tests)
 ├── examples/               # Usage examples per module
-├── docs/                   # Generated documentation
-└── wildberries_api_doc/    # Source Swagger files (read-only)
+├── docs/                   # VitePress + TypeDoc documentation
+└── wildberries_api_doc/    # Source Swagger files (14 specs, read-only)
 ```
 
 **Service Architecture:**
-- **Monorepo**: Single repository with all 11 modules (simpler for v1.0)
-- **Modular Exports**: Each module can be imported independently for tree-shaking
+- **Single package**: One npm package (`daytona-wildberries-typescript-sdk`) with all modules, plus subpath exports for module types
+- **Modular Exports**: Modules are independently importable for tree-shaking
 - **Layered Architecture**:
-  - **Layer 1**: Core infrastructure (BaseClient, RateLimiter, RetryHandler, AuthManager)
-  - **Layer 2**: Generated types (from Swagger schemas)
+  - **Layer 1**: Core infrastructure (BaseClient, RateLimiter, RetryHandler)
+  - **Layer 2**: Types (from Swagger schemas)
   - **Layer 3**: API modules (business logic, delegates to Layer 1)
   - **Layer 4**: Main SDK class (aggregates all modules)
 
 **Integration Requirements:**
-- **Wildberries API**: 11 OpenAPI 3.0.1 specifications as source of truth
+- **Wildberries API**: OpenAPI 3.0.1 specifications (14 files) as source of truth — the SDK historically *leads* WB's own announcements
 - **Context7 MCP**: Mandatory use for documentation lookup during development (see CLAUDE.md)
 - **External Dependencies**: Minimize to essential only (HTTP client, possibly YAML parser for code generation)
 
@@ -600,13 +630,13 @@ wb-api-sdk/
 - **Monetization**: No revenue model for v1.0; pure open-source community play
 
 **Timeline:**
-- **MVP Target**: 6-7 weeks from project start to v1.0 release
+- **MVP Target (original)**: 6-7 weeks from project start to v1.0 release — **delivered**, and the project has since progressed to **v4.1.0** through continuous maintenance
   - Week 1-2: Foundation (core infrastructure, code generation framework)
   - Week 2-3: Code generation and type system
-  - Week 3-5: Module implementation (all 11 modules)
+  - Week 3-5: Module implementation
   - Week 5-6: Testing, documentation, examples
   - Week 6-7: Beta testing, bug fixes, release preparation
-- **Post-MVP**: Iterative releases based on community feedback and adoption
+- **Post-MVP**: Iterative releases based on community feedback, adoption, and Wildberries API changes (223 Backlog.md tasks completed to date)
 
 **Resources:**
 - **Development Team**: Single developer (initially) with potential for community contributors post-release
@@ -618,8 +648,8 @@ wb-api-sdk/
 - **API Stability**: Dependent on Wildberries API stability; breaking changes upstream require SDK updates
 - **Rate Limits**: Must respect Wildberries rate limits; cannot circumvent or work around platform restrictions
 - **Authentication**: Limited to API key authentication (current Wildberries method); OAuth/other methods if/when Wildberries adds support
-- **Node.js Version**: Cannot support Node.js versions below 18.x due to reliance on modern JavaScript features
-- **Bundle Size**: Must stay under 100KB gzipped to meet performance commitments; limits feature additions
+- **Node.js Version**: Requires Node.js **≥ 20** (the shipped `engines` constraint) due to reliance on modern JavaScript features
+- **Bundle Size**: Keep the build small and tree-shakeable; constrain feature additions that bloat output
 - **No Official Partnership**: No official relationship with Wildberries; SDK is independent third-party project
 
 ### **Key Assumptions**
@@ -634,9 +664,9 @@ wb-api-sdk/
 - Wildberries API specifications (OpenAPI 3.0.1) are accurate and complete representations of actual API behavior
 - Wildberries will maintain backward compatibility or provide migration paths for API changes
 - Rate limit documentation in Swagger descriptions is accurate and enforced consistently
-- Node.js 18+ adoption is widespread enough that minimum version requirement won't significantly limit audience
-- TypeScript 5.x features provide sufficient capabilities for SDK development
-- Code generation approach will scale to all 11 modules without major architectural issues
+- Node.js 20+ adoption is widespread enough that the minimum version requirement won't significantly limit audience
+- Modern TypeScript features provide sufficient capabilities for SDK development
+- The type-generation approach scales across the 14 tracked specs without major architectural issues
 
 **Development:**
 - 6-7 week timeline is achievable with code generation approach and single developer
@@ -647,7 +677,7 @@ wb-api-sdk/
 
 **Business:**
 - No monetization required for v1.0 success; community adoption is primary metric
-- Open-source model (MIT license) will not create competitive disadvantages
+- Open-source model (Personal Use license — see `LICENSE`) will not create competitive disadvantages
 - Wildberries will not release official SDK that makes this project obsolete (or if they do, this SDK can coexist)
 - Growing ecosystem around SDK will create indirect value (reputation, learning, potential business opportunities)
 
@@ -667,7 +697,7 @@ wb-api-sdk/
 
 ## Risks & Open Questions
 
-> **TL;DR**: HIGH risks: Swagger spec accuracy, Wildberries API breaking changes, official SDK release, solo developer bandwidth. MEDIUM risks: Rate limit parsing, code generation complexity, limited market size. Key open questions: Axios vs fetch, mono-repo vs multi-package, npm namespace, documentation platform.
+> **TL;DR** (original risk view): HIGH risks: Swagger spec accuracy, Wildberries API breaking changes, official SDK release, solo developer bandwidth. MEDIUM risks: Rate limit parsing, code generation complexity, limited market size. **As shipped (v4.1.0)**: the open questions below (Axios vs fetch, mono-repo, package name, docs platform) are all **resolved** — Axios, single package (`daytona-wildberries-typescript-sdk`), VitePress + TypeDoc. The remaining live risks are WB API breaking changes and ongoing maintenance bandwidth.
 
 ### **Key Risks**
 
@@ -677,7 +707,7 @@ wb-api-sdk/
 
 - **Rate Limit Parsing Complexity (MEDIUM)**: Rate limits documented in Russian text within Swagger descriptions may be inconsistent, ambiguous, or missing. **Impact**: Incorrect rate limiting could cause API bans. **Mitigation**: Conservative defaults, extensive testing, clear documentation about rate limit assumptions.
 
-- **Code Generation Scalability (MEDIUM)**: Custom code generator may encounter edge cases across 11 modules that require special handling, slowing development. **Impact**: Timeline delay, manual workarounds. **Mitigation**: Start with critical modules first, iterate on generator based on learnings.
+- **Code Generation Scalability (MEDIUM)**: The type/module maintenance flow may encounter edge cases across the 14 specs that require special handling. **Impact**: Rework, manual workarounds. **Mitigation**: Start with critical modules first, iterate based on learnings. *(Largely mitigated in practice — 223 tasks shipped.)*
 
 - **Type Safety vs Bundle Size Trade-off (MEDIUM)**: Comprehensive type definitions may exceed 100KB bundle size target. **Impact**: Performance commitment broken, adoption impacted. **Mitigation**: Type optimization, tree-shaking validation, consider separate @types package.
 
@@ -701,23 +731,23 @@ wb-api-sdk/
 
 ### **Open Questions**
 
-**Technical Decisions:**
+**Technical Decisions** (resolved as of v4.1.0):
 
-- **Axios vs Fetch**: Should we use Axios (mature, feature-rich) or native fetch (zero dependencies, modern)? Which provides better interceptor support for retry/rate limiting?
+- **Axios vs Fetch**: **Resolved — Axios.** Chosen for its rich ecosystem and interceptor support for retry/rate limiting.
 
-- **Mono-repo vs Multi-package**: Should all 11 modules live in one npm package, or should we publish separate packages (e.g., `@wildberries/products`, `@wildberries/orders`)? What's the trade-off for bundle size vs developer convenience?
+- **Mono-repo vs Multi-package**: **Resolved — single package.** All modules ship in one npm package (`daytona-wildberries-typescript-sdk`) with subpath exports for module types; separate packages were not needed.
 
-- **Error Serialization**: Should errors be JSON-serializable for logging/monitoring, or is standard Error inheritance sufficient?
+- **Error Serialization**: **Resolved — typed Error hierarchy.** ~16 error classes extend `WBAPIError`; parse helpers (`parseBidOutOfRangeDetail`, `parseMetaValidationFail`) narrow errors at generic boundaries.
 
-- **Pagination Strategy**: How should we handle pagination if Wildberries API uses it? Auto-paginate with generators, manual page control, or both?
+- **Pagination Strategy**: The SDK exposes manual page control (per-method params); auto-pagination generators remain a possible future enhancement.
 
-- **Type Generation Tool**: Should we build custom generator or adapt existing OpenAPI tools (e.g., openapi-typescript)? What's the effort vs benefit trade-off?
+- **Type Generation Tool**: The project maintains its own types/modules from the Swagger specs (with WB-specific rate-limit and multi-domain handling) rather than relying on a generic generator.
 
 **Product/Market Questions:**
 
-- **Target Package Name**: What should the npm package be named? `@wildberries/api-sdk`, `wildberries-api`, `wb-sdk`, or something else? Is @wildberries namespace available/appropriate?
+- **Target Package Name**: **Resolved — `daytona-wildberries-typescript-sdk`.** Published to npm and importable as such.
 
-- **Documentation Platform**: GitHub Pages, dedicated website (Docusaurus), or both? What level of documentation investment is appropriate for v1.0?
+- **Documentation Platform**: **Resolved — VitePress + TypeDoc on GitHub Pages.** Live at `salacoste.github.io/daytona-wildberries-typescript-sdk` (bilingual EN/RU).
 
 - **Community Platform**: Discord, GitHub Discussions, Slack, or no dedicated community space for v1.0? What's the minimum viable community setup?
 
@@ -735,7 +765,7 @@ wb-api-sdk/
 
 **Technical Research:**
 
-- **Node.js Fetch Maturity**: Evaluate Node.js 18+ native fetch capabilities for interceptors, timeout handling, and retry logic vs Axios feature parity
+- **Node.js Fetch Maturity**: Native fetch in modern Node.js vs Axios was evaluated; **Axios was chosen** for interceptor/timeout/retry parity. (Revisit only if dep-minimization becomes a priority.)
 
 - **Wildberries API Real-World Behavior**: Validate Swagger specs against actual API endpoints for discrepancies, undocumented behaviors, or edge cases
 
@@ -768,7 +798,7 @@ wb-api-sdk/
 This Project Brief is informed by comprehensive research documented in the following project files:
 
 **Pre-Product Requirements Document** (`pre_product.md`):
-- Detailed breakdown of all 11 API modules with priorities (Critical, High, Medium)
+- Detailed breakdown of the API modules with priorities (Critical, High, Medium)
 - Complete architecture specifications including project structure and technology stack
 - 7-phase development roadmap with week-by-week timeline
 - Technical specifications for code generation workflow
@@ -783,7 +813,7 @@ This Project Brief is informed by comprehensive research documented in the follo
 - Complete implementation checklist for module completion
 
 **Wildberries API Documentation** (`wildberries_api_doc/*.yaml`):
-- 11 OpenAPI 3.0.1 specifications covering all Wildberries marketplace functionality
+- OpenAPI 3.0.1 specifications (**14 files** in this repo) covering all tracked Wildberries marketplace functionality
 - Rate limit specifications embedded in endpoint descriptions
 - Authentication schemes (HeaderApiKey across all endpoints)
 - Request/response schemas for type generation
@@ -791,7 +821,7 @@ This Project Brief is informed by comprehensive research documented in the follo
 
 **Key Research Findings:**
 
-1. **API Completeness**: All 11 API categories are well-documented with OpenAPI 3.0.1 specs, providing solid foundation for code generation
+1. **API Completeness**: All API categories are well-documented with OpenAPI 3.0.1 specs, providing a solid foundation for code generation
 
 2. **Rate Limiting Complexity**: Rate limits are documented in Russian text within description fields using table format, requiring custom parsing logic
 
@@ -827,10 +857,10 @@ This Project Brief is informed by comprehensive research documented in the follo
 - Keep a Changelog: https://keepachangelog.com/
 
 **Project Resources:**
-- Project Repository: (to be created on GitHub)
-- Documentation Site: (to be published)
-- npm Package: (to be published)
-- Issue Tracker: (GitHub Issues)
+- Project Repository: [github.com/salacoste/daytona-wildberries-typescript-sdk](https://github.com/salacoste/daytona-wildberries-typescript-sdk)
+- Documentation Site: [salacoste.github.io/daytona-wildberries-typescript-sdk](https://salacoste.github.io/daytona-wildberries-typescript-sdk)
+- npm Package: [`daytona-wildberries-typescript-sdk`](https://www.npmjs.com/package/daytona-wildberries-typescript-sdk)
+- Issue Tracker: GitHub Issues
 
 ---
 
@@ -838,49 +868,59 @@ This Project Brief is informed by comprehensive research documented in the follo
 
 ### Module Priority Matrix
 
-| Module | Priority | Swagger File | Key Features | Dependencies |
-|--------|----------|--------------|--------------|--------------|
-| **General** | HIGH | `01-general.yaml` | Ping, news, seller info | Foundation - build first |
-| **Products** | CRITICAL | `02-products.yaml` | Categories, cards, media, pricing, stock | Requires General |
-| **Orders FBS** | CRITICAL | `03-orders-fbs.yaml` | Seller warehouse fulfillment | Requires General |
-| **Finances** | CRITICAL | `13-finances.yaml` | Balance, reports, transactions | Requires General |
-| **Orders FBW** | HIGH | `07-orders-fbw.yaml` | WB warehouse fulfillment | Requires General |
-| **Communications** | HIGH | `09-communications.yaml` | Chat, Q&A, reviews | Requires General |
-| **Analytics** | HIGH | `11-analytics.yaml` | Sales stats, CSV reports | Requires General |
-| **Reports** | HIGH | `12-reports.yaml` | Report generation | Requires General |
-| **Promotion** | MEDIUM | `08-promotion.yaml` | Campaigns, promo codes | Requires General |
-| **Tariffs** | MEDIUM | `10-tariffs.yaml` | Tariff info, commission | Requires General |
-| **In-Store Pickup** | MEDIUM | `06-in-store-pickup.yaml` | Pickup point management | Requires General |
+> Reflects the **shipped v4.1.0** surface — 14 public `sdk.*` modules. "Public methods" is the authoritative count from the class-body async methods. Priorities are the original build priorities; all 14 are delivered.
 
-**Implementation Order**: General → [Products, Orders FBS, Finances] in parallel → [Orders FBW, Communications, Analytics, Reports] in parallel → [Promotion, Tariffs, In-Store Pickup]
+| Module (`sdk.*`) | Original Priority | Swagger File | Key Features | Public methods |
+|--------|----------|--------------|--------------|--------------|
+| `general` | HIGH | `01-general.yaml` | Ping, news, seller info | 10 |
+| `products` | CRITICAL | `02-products.yaml` | Categories, cards, media, pricing, stock | 51 |
+| `ordersFBS` | CRITICAL | `03-orders-fbs.yaml` | Seller warehouse fulfillment | 35 |
+| `finances` | CRITICAL | `13-finances.yaml` | Balance, reports, transactions | 11 |
+| `ordersFBW` | HIGH | `07-orders-fbw.yaml` | WB warehouse fulfillment | 12 |
+| `communications` | HIGH | `09-communications.yaml` | Chat, Q&A, reviews | 25 |
+| `analytics` | HIGH | `11-analytics.yaml` | Sales stats, CSV reports, item ratings | 19 |
+| `reports` | HIGH | `12-reports.yaml` | Report generation | 25 |
+| `promotion` | MEDIUM | `08-promotion.yaml` | Campaigns, bids, advertising | 45 |
+| `tariffs` | MEDIUM | `10-tariffs.yaml` | Tariff info, commission | 5 |
+| `inStorePickup` | MEDIUM | `06-in-store-pickup.yaml` | Click & collect management | 18 |
+| `ordersDBS` | *(added post-v1.0)* | `05-orders-dbs.yaml` | Delivery by Seller | 20 |
+| `userManagement` | *(added post-v1.0)* | — | Seller-profile users & invites | 4 |
+| `returns` | *(added v3.10.0)* | aggregator | Unified FBO+FBS+Finance returns | 3 |
+
+**Total: 283 public methods across the 14 modules.** A supplemental internal module (`src/modules/1_0_0/`, 5 methods) is not a public `sdk.*` property.
+
+**Implementation Order (historical)**: General → [Products, Orders FBS, Finances] in parallel → [Orders FBW, Communications, Analytics, Reports] in parallel → [Promotion, Tariffs, In-Store Pickup] → (later) Orders DBS, User Management, Returns aggregator.
 
 ---
 
 ### Technology Decision Matrix
 
-| Decision | Option A | Option B | Recommendation | Rationale |
+| Decision | Option A | Option B | **Chosen (as shipped)** | Rationale |
 |----------|----------|----------|----------------|-----------|
-| **HTTP Client** | Axios (mature, interceptors) | Native fetch (zero deps) | **TBD - Research needed** | Need to evaluate Node.js 18+ fetch interceptor support |
-| **Build Tool** | Vite (fast, modern) | tsup (simple) | **Vite** | Better DX, faster builds, widely adopted |
-| **Testing** | Vitest + MSW | Jest + MSW | **Vitest** | Better TypeScript support, faster, Vite integration |
-| **Package Strategy** | Mono-repo (single package) | Multi-package | **Mono-repo** | Simpler for v1.0, can split later if needed |
+| **HTTP Client** | Axios (mature, interceptors) | Native fetch (zero deps) | **Axios** | Interceptor support for retry/rate limiting, rich ecosystem |
+| **Build Tool** | Vite (fast, modern) | tsup (simple) | **Vite** (+ `vite-plugin-dts`) | Better DX, faster builds, widely adopted, emits `.d.ts` |
+| **Testing** | Vitest + MSW | Jest + MSW | **Vitest 4 + MSW 2** | Better TypeScript support, faster, Vite integration |
+| **Package Strategy** | Single package | Multi-package | **Single package** | Simpler; subpath exports cover module-type imports |
 | **Module System** | ESM only | ESM + CJS dual | **ESM + CJS dual** | Maximum compatibility, npm best practice |
-| **Type Generation** | Custom generator | openapi-typescript | **Custom generator** | Need Wildberries-specific features (rate limits, multi-domain) |
-| **Documentation** | TypeDoc + GitHub Pages | TypeDoc + Docusaurus | **TypeDoc + GitHub Pages** | Simpler for MVP, zero cost |
+| **Type Generation** | Custom/maintained | openapi-typescript | **Maintained from specs** | WB-specific features (rate limits, multi-domain) |
+| **Documentation** | TypeDoc only | TypeDoc + site | **TypeDoc + VitePress** (GitHub Pages) | Bilingual EN/RU site, API reference, zero cost |
 | **CI/CD** | GitHub Actions | GitLab CI | **GitHub Actions** | Free tier sufficient, native integration |
 
 ---
 
 ### Timeline Overview
 
+> Original v1.0 plan. **Delivered**, then extended well past v1.0 to the current **v4.1.0** (223 Backlog.md tasks completed).
+
 | Phase | Duration | Weeks | Key Deliverables | Success Criteria |
 |-------|----------|-------|------------------|------------------|
 | **Foundation** | 2 weeks | W1-W2 | BaseClient, RateLimiter, RetryHandler, Error hierarchy | Core infrastructure passing tests |
 | **Code Generation** | 1 week | W2-W3 | Type generator, module generator, rate limit parser | Successful generation of 1 module |
-| **Module Implementation** | 2 weeks | W3-W5 | All 11 modules implemented | 100% endpoint coverage |
+| **Module Implementation** | 2 weeks | W3-W5 | Modules implemented | Full endpoint coverage |
 | **Testing & Docs** | 1 week | W5-W6 | Test suite, examples, documentation | ≥80% coverage, all examples working |
 | **Beta & Release** | 1 week | W6-W7 | Bug fixes, beta testing, npm publish | v1.0 published to npm |
-| **Total** | **6-7 weeks** | **W1-W7** | Production-ready SDK | All MVP success criteria met |
+| **Post-v1.0 (actual)** | ongoing | — | +3 modules (DBS, userManagement, returns), v4.0 breaking cleanup, v4.1 item-rating | v4.1.0 on npm |
+| **Total (original)** | **6-7 weeks** | **W1-W7** | Production-ready SDK | All MVP success criteria met |
 
 **Critical Path**: Foundation → Code Generation → Critical Modules (Products, Orders FBS, Finances) → Testing → Release
 
@@ -914,43 +954,39 @@ This Project Brief is informed by comprehensive research documented in the follo
 
 ## Next Steps
 
-### **Immediate Actions**
+> The SDK described here is **shipped (v4.1.0)**. The pre-build "immediate actions" below are retained as historical context for how the project started; the current focus is maintenance and staged enhancements.
 
-1. **Review and validate this Project Brief** with key stakeholders (if applicable) or conduct self-review for completeness and feasibility
+### **Immediate Actions (current, v4.1.0+)**
 
-2. **Resolve critical open questions** before development:
-   - Decide on HTTP client (Axios vs fetch) based on Node.js 18+ fetch maturity research
-   - Choose package name and verify npm namespace availability
-   - Confirm mono-repo vs multi-package strategy
+1. **Maintenance cadence**: Monitor Wildberries API announcements, validate whether the SDK already reflects each change (Swagger vs `src/modules` + types + rate-limits), and track every actionable item in Backlog.md
 
-3. **Set up project infrastructure**:
-   - Create GitHub repository with initial structure
-   - Configure TypeScript project with strict mode and build tooling
-   - Set up CI/CD pipeline (GitHub Actions) for automated testing, linting, and type checking
-   - Initialize npm package configuration
+2. **Deprecation discipline**: Retire deprecated surface on WB deadlines via coordinated major/minor bumps (see the v4.0.0 breaking removal and the v4.1.0 item-rating deprecation in `CHANGELOG.md`)
 
-4. **Validate Swagger specifications** against real Wildberries API:
-   - Test authentication with actual API key
-   - Verify endpoint availability and response formats
-   - Identify any discrepancies between documentation and actual behavior
+3. **Documentation upkeep**: Keep the VitePress + TypeDoc site, module guides, and migration guides in sync with shipped behavior
 
-5. **Begin Week 1 development** (Foundation Phase):
-   - Implement BaseClient with authentication and basic HTTP operations
-   - Create error hierarchy (WBAPIError and subclasses)
-   - Set up testing infrastructure with Vitest and MSW
-   - Begin code generation framework development
+4. **Test hygiene**: Maintain coverage thresholds (≥90% core infra, ≥80% modules) and keep the ~2,376-test suite green across releases
+
+5. **Staged enhancements**: Evaluate the post-MVP / long-term items below (interceptors, caching, CLI, MCP server, OAuth/JWT/Web API module) as community demand and WB API support warrant
+
+### **Immediate Actions (historical — original v1.0 kickoff)**
+
+1. Review and validate this Project Brief for completeness and feasibility
+2. Resolve critical open questions (HTTP client, package name, repo strategy) — **all resolved; see above**
+3. Set up project infrastructure (repo, TypeScript strict, CI/CD, npm) — **done**
+4. Validate Swagger specifications against the real Wildberries API — **ongoing discipline**
+5. Begin Foundation Phase (BaseClient, error hierarchy, Vitest + MSW, code-gen framework) — **done**
 
 ### **PM Handoff**
 
-This Project Brief provides the full context for **Wildberries API TypeScript SDK** development.
+This Project Brief provides the full context for the **Wildberries API TypeScript SDK**.
 
 **For Product Manager / Technical Lead:**
 
-The next phase is to create a comprehensive **Product Requirements Document (PRD)** that expands on this brief with detailed specifications for implementation. When transitioning to PRD development, please:
+The SDK is shipped and in maintenance. The PRD (`docs/prd.md`) and architecture docs expand on this brief with detailed specifications. When planning new work:
 
-1. **Review this brief thoroughly** to understand the full project scope, constraints, and technical considerations
+1. **Review this brief and `docs/prd.md`** to understand the full project scope, constraints, and technical considerations
 
-2. **Start in PRD Generation Mode** and work section-by-section through the PRD template, using this brief as the foundation
+2. **Check `CHANGELOG.md` and the open Backlog.md board** for the current state and any in-flight items
 
 3. **Ask for clarification** on any aspects that need additional detail or validation:
    - Specific API endpoint requirements and edge cases
@@ -958,38 +994,33 @@ The next phase is to create a comprehensive **Product Requirements Document (PRD
    - Testing scenarios and acceptance criteria for each module
    - Documentation structure and example code requirements
 
-4. **Validate assumptions** listed in the Constraints & Assumptions section, particularly:
-   - Timeline feasibility (6-7 weeks for MVP)
-   - Technical architecture decisions (Axios vs fetch, mono-repo strategy)
-   - Market size and adoption potential
+4. **Validate assumptions** listed in the Constraints & Assumptions section, particularly maintenance bandwidth and WB API stability
 
-5. **Address open questions** from the Risks & Open Questions section before finalizing PRD
+5. **Address open questions** from the Risks & Open Questions section before scoping a new release
 
-6. **Suggest improvements** based on your expertise in SDK development, TypeScript best practices, and API integration patterns
+6. **Suggest improvements** based on expertise in SDK development, TypeScript best practices, and API integration patterns
 
-**Key Context for PRD Development:**
+**Key Context for Future Work:**
 
-- **Source of Truth**: 11 OpenAPI 3.0.1 specification files in `wildberries_api_doc/` directory
-- **Development Guidelines**: Comprehensive technical guidance in `.claude/CLAUDE.md`
-- **Architecture Reference**: Detailed implementation patterns in `pre_product.md`
+- **Source of Truth**: OpenAPI 3.0.1 specification files (14) in `wildberries_api_doc/`
+- **Development Guidelines**: Technical guidance in `.claude/CLAUDE.md`
+- **Architecture Reference**: `docs/architecture.md` and patterns in `pre_product.md`
 - **Success Criteria**: MVP Success Criteria checklist in this brief (Section: MVP Scope)
 
 **Critical Requirements to Carry Forward:**
 
-- **100% API Coverage**: All 11 modules with all endpoints implemented
-- **Type Safety**: Full TypeScript strict mode with zero `any` types
+- **Full API Coverage**: All 14 modules with all endpoints implemented
+- **Type Safety**: TypeScript strict mode, controlled `any` usage
 - **Production Quality**: Comprehensive error handling, rate limiting, retry logic
 - **Developer Experience**: <30 min time-to-first-call, excellent documentation
-- **Performance**: <200ms SDK overhead, <100KB gzipped bundle size
-
-The PRD should translate this strategic vision into detailed, actionable specifications that guide day-to-day implementation decisions.
+- **Performance**: Low SDK overhead, small tree-shakeable build
 
 ---
 
-**Document Status**: ✅ Complete
-**Version**: 1.0
-**Date**: 2025-10-19
-**Next Milestone**: PRD Development
+**Document Status**: ✅ Maintained — reflects shipped v4.1.0
+**Version**: 1.0 (maintained) · **SDK Version**: 4.1.0
+**Date**: 2026-08-09
+**Next Milestone**: Continuous maintenance — track WB API announcements, ship module/patch releases, retire deprecated surface on WB deadlines
 
 ---
 

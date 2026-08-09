@@ -333,20 +333,23 @@ Error (native)
 ---
 
 ### Modules
-API endpoint groups organized by functionality. SDK includes 11 modules corresponding to Wildberries API domains.
+API endpoint groups organized by functionality. SDK includes 14 modules corresponding to Wildberries API domains.
 
 **Available Modules:**
 - `general` - Utilities (ping, news, seller info)
 - `products` - Product catalog management
 - `ordersFBS` - Seller fulfillment orders
 - `ordersFBW` - Wildberries fulfillment orders
+- `ordersDBS` - Delivery by Seller orders
 - `finances` - Account balance and transactions
 - `analytics` - Sales performance metrics
 - `reports` - Async report generation
 - `communications` - Customer interactions (chat, Q&A, reviews)
 - `promotion` - Marketing campaigns
 - `tariffs` - Commission and fee information
-- `inStorePickup` - Pickup point management
+- `inStorePickup` - Click & collect pickup orders
+- `userManagement` - Seller profile user & access management
+- `returns` - Unified FBO + FBS + finance returns aggregator
 
 **Location:** `src/modules/[module]/`
 
@@ -407,7 +410,7 @@ TypeScript interfaces auto-generated from OpenAPI schemas. Provides full type sa
 ---
 
 ### WildberriesSDK
-Main SDK class serving as entry point and module aggregator. Exposes all 11 API modules as properties.
+Main SDK class serving as entry point and module aggregator. Exposes all 14 API modules as properties.
 
 **Usage:**
 ```typescript
@@ -671,7 +674,7 @@ JavaScript feature for organizing code into reusable modules. SDK supports both 
 ---
 
 ### Node.js
-JavaScript runtime for server-side development. SDK requires Node.js 18.x, 20.x, or 22.x LTS.
+JavaScript runtime for server-side development. SDK requires Node.js 20.x or 22.x LTS (engines: >=20.0.0).
 
 **Website:** [nodejs.org](https://nodejs.org)
 
@@ -685,7 +688,7 @@ Package manager for JavaScript. SDK distributed via npm registry.
 ---
 
 ### OpenAPI (Swagger)
-Specification format for describing RESTful APIs. Wildberries provides 11 OpenAPI YAML files.
+Specification format for describing RESTful APIs. Wildberries provides 14 OpenAPI YAML files.
 
 **Related:** [API Specification](architecture.md#external-apis)
 
@@ -767,4 +770,4 @@ Typed superset of JavaScript adding static type checking. SDK written in TypeScr
 ---
 
 **Last Updated:** 2026-02-07
-**SDK Version:** 3.0.0
+**SDK Version:** 4.1.0

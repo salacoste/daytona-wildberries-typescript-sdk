@@ -1,6 +1,33 @@
 # Wildberries API TypeScript SDK Product Requirements Document (PRD)
 
-**Document Version**: 0.1 | **Date**: 2025-10-19 | **Status**: Draft
+**Document Version**: 4.1.0 | **Date**: 2026-08-09 | **Status**: Maintained — reflects shipped v4.1.0
+
+> This is a **living PRD**: it states the product requirements that govern the SDK and is kept aligned
+> with the shipped product. Where a requirement describes a capability that has already been delivered,
+> it is written in the present tense ("provides", "implements"). Only genuinely not-yet-built items
+> remain in the future tense. See the _Current Status_ callout below and the [CHANGELOG](../CHANGELOG.md)
+> for the version history (source of truth for history).
+
+### Current Status (v4.1.0)
+
+The SDK described by this PRD is **production-ready and shipped**. As of v4.1.0 (2026-07-20):
+
+- **14 public SDK modules** exposed as `sdk.*` properties (general, products, ordersFBS, ordersFBW,
+  ordersDBS, finances, analytics, communications, reports, promotion, tariffs, inStorePickup,
+  userManagement, returns) — **283 public methods** in total. (A supplemental internal
+  `1_0_0` module holds 5 additional methods but is not a public `sdk.*` property.)
+- **All 223 Backlog.md tasks are Done** — the delivery board is cleared.
+- **Dual ESM + CommonJS** build (Vite + `vite-plugin-dts`); Node **≥20**.
+- **Docs site live** at `salacoste.github.io/daytona-wildberries-typescript-sdk` (VitePress + TypeDoc,
+  bilingual EN/RU, GitHub Pages).
+- The original "11 modules / v1.0.0 / Phase 1 MVP" framing in this document has been **delivered and
+  superseded**: the scope grew to 14 modules, the shipped version is 4.1.0, and the v4.0.0 major release
+  (2026-07-11) removed deprecated API surface that Wildberries had already disabled.
+- Test suite: **~2,376 tests across 80 test files** (Vitest 4 + `@vitest/coverage-v8`; MSW 2 for
+  integration), with coverage thresholds of ≥90% core infrastructure and ≥80% modules.
+
+The _Goals_, _Functional/Non-Functional Requirements_, and epic requirements below remain the governing
+product specification; the prose has been updated to reflect that those requirements are met.
 
 ---
 
@@ -17,19 +44,20 @@
 - Maintain integration error rate < 5%
 - Achieve 100% public API documentation coverage
 - Ensure zero critical security vulnerabilities
-- Support all 11 Wildberries API modules with 100% endpoint coverage
+- Support all Wildberries API modules with full endpoint coverage (shipped: 14 public SDK modules)
 
 ### Background Context
 
-The Wildberries API TypeScript SDK addresses a critical gap in the e-commerce development ecosystem. With over 100,000 active Wildberries sellers, developers currently waste 2-4 weeks manually integrating 11 separate APIs due to the lack of an official SDK. This manual integration process leads to 30-40% more QA cycles, consumes 15-20% of ongoing maintenance time, and forces every developer to "reinvent the wheel" for rate limiting, error handling, and type safety.
+The Wildberries API TypeScript SDK addresses a critical gap in the e-commerce development ecosystem. With over 100,000 active Wildberries sellers, developers historically wasted 2-4 weeks manually integrating 11 separate APIs due to the lack of an official SDK. This manual integration process led to 30-40% more QA cycles, consumed 15-20% of ongoing maintenance time, and forced every developer to "reinvent the wheel" for rate limiting, error handling, and type safety.
 
-The SDK will transform 11 OpenAPI 3.0.1 specifications into a production-ready TypeScript library with automated type generation, intelligent rate limiting, retry mechanisms, and comprehensive error handling. By providing full type safety, automatic API compliance, and production-grade reliability, the SDK enables developers to focus on business logic rather than API infrastructure, reducing integration time from weeks to hours.
+The SDK transforms the Wildberries OpenAPI 3.0.1 specifications into a production-ready TypeScript library with automated type generation, intelligent rate limiting, retry mechanisms, and comprehensive error handling. By providing full type safety, automatic API compliance, and production-grade reliability, the SDK enables developers to focus on business logic rather than API infrastructure, reducing integration time from weeks to hours. (The original source set comprised 11 Swagger files; the SDK now covers **14 OpenAPI files** and exposes **14 public SDK modules**.)
 
 ### Change Log
 
 | Date | Version | Description | Author |
 |------|---------|-------------|--------|
 | 2025-10-19 | 0.1 | Initial PRD draft from Project Brief | PM Agent |
+| 2026-08-09 | 4.1.0 | Maintained revision — aligned with shipped v4.1.0 (14 modules, 283 methods, dual ESM/CJS, docs site live); requirements reframed as delivered where applicable | PM Agent |
 
 ---
 
@@ -37,29 +65,31 @@ The SDK will transform 11 OpenAPI 3.0.1 specifications into a production-ready T
 
 ### Functional Requirements
 
-**FR1**: Parse all 11 Wildberries OpenAPI 3.0.1 specification files and automatically generate TypeScript interfaces for all request/response types, preserving optional/required properties and enum values.
+**FR1**: Parse the Wildberries OpenAPI 3.0.1 specification files and generate TypeScript interfaces for all request/response types, preserving optional/required properties and enum values. (Shipped: source specs live in `wildberries_api_doc/*.yaml` — **14 OpenAPI files**; the SDK has historically *led* Wildberries' own announcements.)
 
-**FR2**: Generate a dedicated API module for each of the 11 Wildberries API categories (General, Products, Orders FBS, Orders FBW, Promotion, In-Store Pickup, Communications, Tariffs, Analytics, Reports, Finances) with typed methods for all documented endpoints.
+**FR2**: Provide a dedicated API module for each Wildberries API category with typed methods for all documented endpoints. (Shipped: **14 public SDK modules** — general, products, ordersFBS, ordersFBW, ordersDBS, finances, analytics, communications, reports, promotion, tariffs, inStorePickup, userManagement, returns — totaling **283 public methods**. The original 11 categories are fully covered; ordersDBS, userManagement, and the returns aggregator were added as the catalog grew.)
 
-**FR3**: Implement BaseClient HTTP infrastructure supporting GET, POST, PUT, PATCH, DELETE methods with configurable timeout (default 30s), request/response transformation, and automatic error handling.
+**FR3**: Implement BaseClient HTTP infrastructure supporting GET, POST, PUT, PATCH, DELETE methods with configurable timeout (default 30s), request/response transformation, and automatic error handling. (Shipped: axios-based BaseClient with typed error transformation, including RFC 7807 `problem+json`, `BidOutOfRange`, and 406 `WarehouseStocksUpdateBlock` handling; PII-sanitized debug logging.)
 
-**FR4**: Extract and enforce per-endpoint rate limits from Swagger description fields using token bucket algorithm, with automatic request queuing to prevent API limit violations.
+**FR4**: Extract and enforce per-endpoint rate limits from Swagger description fields using a token-bucket algorithm, with automatic request queuing to prevent API limit violations. (Shipped: per-endpoint token-bucket `RateLimiter`; limits sourced from per-module `src/config/*-rate-limits.ts` files; multipliers applied for `basic`/`test` token types per Wildberries news/281.)
 
-**FR5**: Implement RetryHandler with configurable exponential backoff (default: 3 retries, 1s initial delay) that retries on transient errors (5xx, network failures, 429) but not on permanent failures (4xx except 429).
+**FR5**: Implement RetryHandler with configurable exponential backoff (default: 3 retries, 1s initial delay) that retries on transient errors (5xx, network failures, 429) but not on permanent failures (4xx except 429). (Shipped; additionally does **not** retry 401/403/422.)
 
-**FR6**: Support multi-domain base URL configuration with automatic endpoint-to-domain mapping based on Swagger servers configuration (common-api, content-api, marketplace-api, seller-analytics-api, finance-api, statistics-api).
+**FR6**: Support multi-domain base URL configuration with automatic endpoint-to-domain mapping based on Swagger servers configuration. (Shipped: domains covered include common-api, content-api, marketplace-api, finance-api, statistics-api, seller-analytics-api, and advert-api.)
 
-**FR7**: Implement typed error hierarchy (WBAPIError base class with AuthenticationError, RateLimitError, ValidationError, NetworkError subclasses) providing meaningful error messages, HTTP status codes, and recovery guidance.
+**FR7**: Implement a typed error hierarchy (`WBAPIError` base class with `AuthenticationError`, `RateLimitError`, `ValidationError`, `NetworkError` subclasses) providing meaningful error messages, HTTP status codes, and recovery guidance. (Shipped and **extended** to ~16 exported error classes / parse helpers — including `BidOutOfRangeError` (+`parseBidOutOfRangeDetail`), `MetaValidationFailError` (+`parseMetaValidationFail`), `WarehouseStocksUpdateBlockError`, and domain-specific errors such as `CampaignNotFoundError`, `PickupOrderNotFoundError`, and `CustomerVerificationError`.)
 
-**FR8**: Support API key authentication via configuration object or environment variable, with automatic header injection (`Authorization: Bearer <key>`) on all requests.
+**FR8**: Support API key authentication via configuration object or environment variable, with automatic header injection (`Authorization: Bearer <key>`) on all requests. (Shipped.)
 
-**FR9**: Provide main WildberriesSDK class that aggregates all 11 module instances and exposes them as properties (e.g., `sdk.products`, `sdk.ordersFBS`, `sdk.finances`).
+**FR9**: Provide a main `WildberriesSDK` class that aggregates all module instances and exposes them as properties (e.g., `sdk.products`, `sdk.ordersFBS`, `sdk.finances`). (Shipped: **14** `sdk.*` properties; a shared `BaseClient` is dependency-injected into every module.)
 
-**FR10**: Support tree-shakeable module imports allowing developers to import only required modules to minimize bundle size.
+**FR10**: Support tree-shakeable module imports allowing developers to import only required modules to minimize bundle size. (Shipped: dual ESM/CJS build via Vite; subpath exports — `./finances`, `./analytics`, `./communications`, `./reports` — let consumers import module types without clashing with global `Error`/`Date`. Subpaths for the remaining modules are tracked as backlog item WL-4.)
 
-**FR11**: Generate comprehensive JSDoc comments for all public methods, including parameter descriptions, return types, error conditions, and usage examples extracted from Swagger documentation.
+**FR11**: Generate comprehensive JSDoc comments for all public methods, including parameter descriptions, return types, error conditions, and usage examples extracted from Swagger documentation. (Shipped; JSDoc is maintained alongside modules, not machine-regenerated.)
 
-**FR12**: Provide TypeScript declaration files (.d.ts) for full IDE autocomplete support and compile-time type checking in consuming applications.
+**FR12**: Provide TypeScript declaration files (.d.ts) for full IDE autocomplete support and compile-time type checking in consuming applications. (Shipped: declarations emitted via `vite-plugin-dts`.)
+
+**FR13** _(added, reflecting shipped behavior)_: Honor Wildberries token-type tiers (`tokenType?: 'personal' | 'service' | 'basic' | 'test'`, default `'personal'`). `basic` and `test` tokens receive reduced rate-limit allowances via token-type multipliers, with a one-time init warning. Enforced since 2026-03-30 (see Wildberries news/281).
 
 ### Non-Functional Requirements
 
@@ -71,11 +101,11 @@ The SDK will transform 11 OpenAPI 3.0.1 specifications into a production-ready T
 
 **NFR4**: Zero usage of `any` type except in controlled error handling scenarios, enforced through ESLint rules and code review.
 
-**NFR5**: Achieve ≥80% test coverage for critical modules (Products, Orders FBS, Orders FBW, Finances) and ≥90% coverage for core infrastructure (BaseClient, RateLimiter, RetryHandler).
+**NFR5**: Achieve ≥80% test coverage for critical modules (Products, Orders FBS, Orders FBW, Finances) and ≥90% coverage for core infrastructure (BaseClient, RateLimiter, RetryHandler). (Shipped as enforced coverage thresholds; the suite is ~2,376 tests across 80 files.)
 
-**NFR6**: Support Node.js LTS versions 18.x, 20.x, and 22.x, validated through CI/CD matrix testing.
+**NFR6**: Support Node.js LTS versions, validated through CI/CD matrix testing. (Shipped: Node **≥20** is the supported floor, matching the package `engines` field.)
 
-**NFR7**: Complete code generation for all 11 modules must execute in <30 seconds, enabling rapid SDK updates when Swagger specs change.
+**NFR7**: Keep the SDK aligned with Wildberries spec changes rapidly. (Shipped: modules are maintained alongside the source specs; the historical "code generation for all modules in <30 seconds" target is no longer the operative workflow — the SDK tracks spec deltas by hand and has led Wildberries' own announcements.)
 
 **NFR8**: Full test suite (unit + integration) must execute in <5 minutes to enable fast feedback loops during development.
 
@@ -91,7 +121,7 @@ The SDK will transform 11 OpenAPI 3.0.1 specifications into a production-ready T
 
 **NFR14**: Error messages must be developer-friendly with actionable recovery guidance (e.g., "Rate limit exceeded. Retry after 5000ms" instead of generic HTTP 429).
 
-**NFR15**: SDK must support dual ESM + CommonJS builds for maximum compatibility with different Node.js project configurations.
+**NFR15**: SDK must support dual ESM + CommonJS builds for maximum compatibility with different Node.js project configurations. (Shipped: Vite dual ESM/CJS build; the package is `"type": "module"` with CJS output for consumers.)
 
 ---
 
@@ -99,16 +129,16 @@ The SDK will transform 11 OpenAPI 3.0.1 specifications into a production-ready T
 
 ### Repository Structure: **Monorepo**
 
-Single npm package (`daytona-wildberries-typescript-sdk`) containing all 11 API modules with tree-shakeable exports.
+Single npm package (`daytona-wildberries-typescript-sdk`) containing all API modules (shipped: 14 public SDK modules) with tree-shakeable exports.
 
 **Rationale**: Monorepo approach reduces initial complexity, simplifies dependency management, and enables atomic releases. Tree-shaking ensures consumers only bundle modules they use.
 
 ### Service Architecture: **TypeScript Library/SDK**
 
 Layered architecture with:
-- **Core Infrastructure Layer**: BaseClient, RateLimiter, RetryHandler, AuthManager
-- **Generated Type Layer**: TypeScript interfaces auto-generated from OpenAPI schemas
-- **API Module Layer**: 11 independent modules delegating to core infrastructure
+- **Core Infrastructure Layer**: BaseClient, RateLimiter, RetryHandler (auth is handled directly by BaseClient, which injects the API key)
+- **Type Layer**: TypeScript interfaces maintained against the OpenAPI schemas
+- **API Module Layer**: independent modules delegating to core infrastructure (shipped: 14 public SDK modules + a supplemental internal `1_0_0` module)
 - **SDK Aggregator**: Main `WildberriesSDK` class exposing all modules as properties
 
 ### Testing Requirements: **Unit + Integration Testing**
@@ -121,9 +151,9 @@ Layered architecture with:
 
 **Languages & Frameworks**:
 - **TypeScript 5.x** with strict mode
-- **Node.js**: LTS versions 18.x, 20.x, 22.x
+- **Node.js**: ≥20 (the supported floor; declared in the package `engines` field)
 - **Build Tool**: Vite for fast builds and optimal bundle output
-- **Module System**: ESM + CommonJS dual build
+- **Module System**: ESM + CommonJS dual build (package is `"type": "module"`)
 
 **HTTP Client**: **Axios**
 - Mature ecosystem with rich interceptor support
@@ -149,9 +179,9 @@ Layered architecture with:
 
 **Infrastructure**:
 - **Package Registry**: npm
-- **Documentation Hosting**: GitHub Pages
+- **Documentation Hosting**: GitHub Pages (live at `salacoste.github.io/daytona-wildberries-typescript-sdk`)
 - **Repository**: GitHub (public, open-source)
-- **License**: MIT
+- **License**: Personal Use (`SEE LICENSE IN LICENSE`)
 
 **Context7 MCP Integration** (Development-Time):
 - MANDATORY for library documentation lookups (TypeScript, Axios, Vitest, MSW patterns)
@@ -164,6 +194,13 @@ Layered architecture with:
 ---
 
 ## Epic List
+
+> **Delivery status:** Epics 1–4 are **delivered** (the production-ready SDK shipped at v4.1.0,
+> covering 14 public modules and 283 methods — a superset of the original "11 modules" scope).
+> Epic 5 (MCP server integration) remains a **future-direction** item and is not part of the shipped
+> product. Individual stories below were the planned unit of work; the actual implementation was
+> tracked through 223 Backlog.md tasks (all Done). Story acceptance criteria are preserved as the
+> requirements record, not as a live build checklist.
 
 **Epic 1: Foundation & Code Generation Infrastructure**
 *Establish project foundation with core HTTP client, error handling, and automated code generation framework that transforms OpenAPI specs into TypeScript.*
@@ -776,7 +813,7 @@ Layered architecture with:
 
 ## Epic 4: Extended Marketplace Features & Production Release
 
-**Epic Goal**: Complete the remaining marketplace modules (Promotion, Tariffs, In-Store Pickup), finalize production-ready SDK with comprehensive documentation, examples for all 11 modules, and publish v1.0 to npm. By the end of this epic, the SDK provides 100% Wildberries API coverage and is ready for public adoption.
+**Epic Goal**: Complete the remaining marketplace modules (Promotion, Tariffs, In-Store Pickup), finalize production-ready SDK with comprehensive documentation and examples for all modules, and publish to npm. By the end of this epic, the SDK provides 100% Wildberries API coverage and is ready for public adoption. _(Delivered and exceeded: the shipped SDK covers 14 public modules and the published version is 4.1.0, not 1.0.0; the v4.0.0 major release removed deprecated surface Wildberries had disabled.)_
 
 ### Story 4.1: Promotion Module - Campaign and Promo Code Management
 
@@ -861,23 +898,23 @@ Layered architecture with:
 10. Integration tests validate pickup workflow
 11. Example code in `examples/pickup-management.ts` demonstrates pickup point operations
 
-### Story 4.5: Final SDK Integration - All 11 Modules
+### Story 4.5: Final SDK Integration - All Modules
 
 **As a** SDK user,
-**I want** all 11 Wildberries API modules accessible from main SDK class,
+**I want** all Wildberries API modules accessible from main SDK class,
 **so that** I have complete API coverage from a single import.
 
 **Acceptance Criteria**:
 
-1. `WildberriesSDK` class updated with `promotion`, `tariffs`, `inStorePickup` properties
-2. All 11 modules initialized and accessible: general, products, ordersFBS, ordersFBW, promotion, inStorePickup, communications, tariffs, analytics, reports, finances
-3. TypeScript exports include all module types from main index
+1. `WildberriesSDK` class exposes `promotion`, `tariffs`, `inStorePickup` properties
+2. All modules initialized and accessible (shipped: 14 public `sdk.*` properties — general, products, ordersFBS, ordersFBW, ordersDBS, finances, analytics, communications, reports, promotion, tariffs, inStorePickup, userManagement, returns)
+3. TypeScript exports include module types from main index (and via subpath exports for finances/analytics/communications/reports)
 4. Tree-shaking validated: importing individual modules produces minimal bundle
-5. Full SDK import (all 11 modules) validated against <100KB gzipped target
-6. All modules share same BaseClient, RateLimiter, and configuration
-7. TypeDoc documentation complete for all 11 modules
+5. Full SDK import validated against the <100KB gzipped target
+6. All modules share the same BaseClient, RateLimiter, and configuration
+7. TypeDoc documentation complete for all modules
 8. README includes complete API reference with all modules listed
-9. Integration test validates all 11 modules working together
+9. Integration tests validate all modules working together
 10. Bundle analysis report generated showing per-module size breakdown
 
 ### Story 4.6: Comprehensive Example Suite
@@ -888,7 +925,7 @@ Layered architecture with:
 
 **Acceptance Criteria**:
 
-1. Example code exists for all 11 modules in `examples/` directory
+1. Example code exists for all modules in the `examples/` directory
 2. `examples/README.md` provides index of all examples with descriptions
 3. `examples/quickstart.ts` demonstrates basic SDK setup and first API call
 4. `examples/complete-integration.ts` demonstrates multi-module workflow (product creation → order fulfillment → financial reporting)
@@ -908,7 +945,7 @@ Layered architecture with:
 
 **Acceptance Criteria**:
 
-1. README.md includes: installation, quickstart (<30 min to first call), all 11 modules overview, configuration options, error handling, rate limiting, contributing guidelines
+1. README.md includes: installation, quickstart (<30 min to first call), all modules overview, configuration options, error handling, rate limiting, contributing guidelines
 2. TypeDoc generated and published to GitHub Pages with all public APIs documented
 3. API reference includes: method signatures, parameter descriptions, return types, error conditions, usage examples for every public method
 4. Migration guide created for users of manual integrations
@@ -929,7 +966,7 @@ Layered architecture with:
 **Acceptance Criteria**:
 
 1. Unit test coverage ≥90% for core infrastructure (BaseClient, RateLimiter, RetryHandler, AuthManager, Error classes)
-2. Unit test coverage ≥80% for all 11 API modules
+2. Unit test coverage ≥80% for all API modules
 3. Integration tests cover happy paths and error scenarios for all modules
 4. Performance benchmarks validate: SDK overhead <200ms per operation
 5. Bundle size validation: Full SDK <100KB gzipped, per-module tree-shaking produces minimal bundles
@@ -944,9 +981,9 @@ Layered architecture with:
 
 **As a** SDK maintainer,
 **I want** real-world validation through beta testing,
-**so that** edge cases and usability issues are identified before v1.0 release.
+**so that** edge cases and usability issues are identified before a stable release.
 
-**Acceptance Criteria**:
+**Acceptance Criteria**: _(The stable-release gate has long since passed; the shipped product is v4.1.0. The criteria below are preserved as the release-quality record.)_
 
 1. Beta release published to npm with `@beta` tag
 2. Beta testing documentation created with: installation instructions, testing guidelines, feedback channels
@@ -958,27 +995,27 @@ Layered architecture with:
 8. Beta testing report created summarizing: issues found, fixes applied, outstanding issues
 9. Performance validated under real-world usage patterns
 10. Documentation updated based on beta tester feedback
-11. Decision made on v1.0 readiness based on beta results
+11. Decision made on stable-release readiness based on beta results
 
-### Story 4.10: v1.0 Release and Publication
+### Story 4.10: Stable Release and Publication
 
 **As a** SDK maintainer and user,
-**I want** the SDK published to npm as v1.0,
+**I want** the SDK published to npm,
 **so that** it's available for public use and adoption.
 
-**Acceptance Criteria**:
+**Acceptance Criteria**: _(Delivered — the package is published to npm and the current version is 4.1.0. The v1.0 release occurred early; the SDK has since shipped through v4.0.0 (a breaking major removing deprecated Wildberries surface) and v4.1.0.)_
 
-1. Version bumped to 1.0.0 in package.json following semantic versioning
-2. CHANGELOG.md finalized with complete v1.0 release notes
-3. Git tag `v1.0.0` created and pushed
-4. Package published to npm registry (remove `@beta` tag)
-5. GitHub release created with release notes and asset links
-6. Documentation site updated with v1.0 badge
+1. Version set in package.json following semantic versioning (shipped: 4.1.0)
+2. CHANGELOG.md maintained with release notes per version (source of truth: `CHANGELOG.md`)
+3. Git tags created and pushed for each release
+4. Package published to the npm registry
+5. GitHub releases created with release notes
+6. Documentation site kept current (live on GitHub Pages)
 7. README badges added: npm version, downloads, license, build status, coverage
 8. Announcement prepared for: GitHub discussions, dev.to, Reddit (r/typescript, r/node), Twitter/X
 9. Post-release monitoring plan: GitHub issues triaged within 48 hours, critical bugs fixed within 1 week
 10. Success metrics baseline established: npm downloads, GitHub stars, issue response time
-11. v1.0 marked complete in project tracking, v1.1 roadmap outlined
+11. Release marked complete in project tracking; subsequent roadmap tracked in Backlog.md
 
 ---
 
@@ -1014,12 +1051,12 @@ Layered architecture with:
 ### Story 5.2: Comprehensive Tool Suite & Resource Management
 
 **As a** AI agent developer,
-**I want** comprehensive MCP tools covering all 11 SDK modules with resource-based documentation,
+**I want** comprehensive MCP tools covering all SDK modules with resource-based documentation,
 **so that** I can perform any Wildberries API operation and discover available functionality through the MCP protocol.
 
 **Acceptance Criteria**:
 
-1. Tools implemented for all 11 SDK modules: General, Products, OrdersFBS, OrdersFBW, Finances, Analytics, Reports, Communications, Promotion, Tariffs, InStorePickup
+1. Tools implemented for all SDK modules (the shipped SDK exposes 14 public `sdk.*` modules: General, Products, OrdersFBS, OrdersFBW, OrdersDBS, Finances, Analytics, Reports, Communications, Promotion, Tariffs, InStorePickup, UserManagement, Returns)
 2. Minimum 3 high-priority tools per module covering critical operations (create, read, update where applicable)
 3. Total of 30+ tools available across all modules
 4. Tool naming convention follows pattern: `{module}_{operation}` (e.g., `products_create`, `orders_fbs_get_status`)
@@ -1046,7 +1083,7 @@ Layered architecture with:
 25. Unit tests validate parameter mapping for complex types
 26. Integration tests cover at least 2 tools per module (22 minimum)
 27. Configuration system tested with various filter combinations
-28. Resource generation tested with all 11 modules
+28. Resource generation tested with all modules
 29. Tool schema validation ensures all required fields present
 30. Performance validated: Tool listing <50ms, resource retrieval <100ms
 
@@ -1104,13 +1141,13 @@ _Not applicable - this is a TypeScript SDK library project with no UI/UX compone
 
 **You are now entering Architecture Design Mode.**
 
-**Context**: Review the complete PRD for the Wildberries API TypeScript SDK at `docs/prd.md`. This document defines requirements, technical assumptions, and 4 epics with 40 user stories for building a production-ready SDK that transforms 11 OpenAPI specifications into type-safe TypeScript code.
+**Context**: Review the complete PRD for the Wildberries API TypeScript SDK at `docs/prd.md`. This document defines requirements, technical assumptions, and 5 epics with user stories for building a production-ready SDK that transforms the Wildberries OpenAPI specifications (14 source files) into type-safe TypeScript code. Epics 1–4 are delivered (shipped v4.1.0, 14 public modules, 283 methods); Epic 5 (MCP) is future-direction.
 
 **Your Task**: Create a comprehensive technical architecture document that specifies:
 
-1. **Detailed Module Architecture**: Class diagrams, interfaces, and implementation patterns for all 11 API modules
-2. **Code Generation System**: Architecture for tools/generate-sdk.ts including type mapping, method generation, and rate limit parsing
-3. **Infrastructure Components**: Detailed specifications for BaseClient, RateLimiter, RetryHandler, AuthManager, and Error hierarchy
+1. **Detailed Module Architecture**: Class diagrams, interfaces, and implementation patterns for all API modules (14 public SDK modules)
+2. **Code Generation System**: Architecture for keeping modules aligned with the OpenAPI specs (type mapping, method generation, and rate-limit parsing)
+3. **Infrastructure Components**: Detailed specifications for BaseClient, RateLimiter, RetryHandler, and the Error hierarchy (~16 exported error classes)
 4. **Type System Design**: TypeScript type generation strategy, generics usage, and type safety patterns
 5. **Testing Architecture**: Unit and integration testing structure with MSW setup
 6. **Build & Distribution**: Vite configuration for dual ESM/CJS builds, tree-shaking strategy, bundle optimization
@@ -1128,4 +1165,4 @@ _Not applicable - this is a TypeScript SDK library project with no UI/UX compone
 
 ---
 
-**PRD Status**: ✅ Draft Complete | Ready for Checklist Validation
+**PRD Status**: ✅ Maintained — reflects shipped v4.1.0 (Epics 1–4 delivered; Epic 5 MCP remains future-direction)
