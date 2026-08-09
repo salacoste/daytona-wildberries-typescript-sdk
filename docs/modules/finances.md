@@ -1,6 +1,6 @@
 # Finances Module
 
-The **Finances** module provides access to seller account balance, detailed sales and acquiring reports (both legacy v5 and new v1 endpoints), and document management (categories, listings, and downloads).
+The **Finances** module provides access to seller account balance, detailed sales and acquiring reports (v1 endpoints), and document management (categories, listings, and downloads). The legacy v5 sales report was removed in v4.0.0; use the v1 methods instead.
 
 ---
 
@@ -12,7 +12,7 @@ The **Finances** module provides access to seller account balance, detailed sale
 | **SDK Namespace** | `sdk.finances.*` |
 | **Base URLs** | `https://finance-api.wildberries.ru`, `https://statistics-api.wildberries.ru`, `https://documents-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/13-finances/` |
-| **Methods** | 12 (11 active + 1 deprecated) |
+| **Methods** | 11 (all active) |
 | **Authentication** | API Key (Header) |
 
 ### What's New
@@ -76,9 +76,9 @@ const docs = await sdk.finances.getDocumentsList();
 
 ## v5 vs v1 API Differences
 
-The new v1 endpoints replace the deprecated v5 `getSupplierReportDetailByPeriod()`. Key differences:
+The v1 endpoints replaced the v5 `getSupplierReportDetailByPeriod()`, which was **removed in v4.0.0** (WB disabled the endpoint on 2026-07-15). This field-by-field mapping is retained as a migration reference:
 
-| Aspect | v5 (deprecated) | v1 (new) |
+| Aspect | v5 (removed) | v1 (current) |
 |--------|-----------------|----------|
 | **HTTP method** | GET | POST |
 | **Domain** | `statistics-api.wildberries.ru` | `finance-api.wildberries.ru` |
@@ -86,7 +86,7 @@ The new v1 endpoints replace the deprecated v5 `getSupplierReportDetailByPeriod(
 | **Money amounts** | `number` | `string` (use `parseMoneyAmount()`) |
 | **Field selection** | Not available | `fields[]` parameter for selective loading |
 | **Token types** | All | Personal and Service only |
-| **Method** | `getSupplierReportDetailByPeriod()` | `getSalesReportsDetailed()` |
+| **Method** | `getSupplierReportDetailByPeriod()` (removed) | `getSalesReportsDetailed()` |
 
 For a complete field-by-field mapping, see the [Migration Guide: Finance Reports v5 to v1](/guides/migration-finance-reports-v5-to-v1).
 
@@ -156,15 +156,9 @@ Acquiring report methods are available **only to Russian sellers**. Requires Per
 | `getDocumentsDownload(options)` | GET | `/api/v1/documents/download` | Download single document |
 | `createDownloadAll(data?)` | POST | `/api/v1/documents/download/all` | Download multiple documents |
 
-### Deprecated (1 method)
+### v5 Sales Report (removed)
 
-| Method | Status | Replacement | Deadline |
-|--------|--------|-------------|----------|
-| `getSupplierReportDetailByPeriod(options)` | **Deprecated** | `getSalesReportsDetailed()` | 2026-07-15 |
-
-::: danger Migration Required
-`getSupplierReportDetailByPeriod()` will be **disabled by Wildberries on 2026-07-15**. A runtime deprecation warning is emitted once per process on first call. Migrate to `getSalesReportsDetailed()` before that date. See the [migration guide](/guides/migration-finance-reports-v5-to-v1).
-:::
+> **Removed in v4.0.0** — `getSupplierReportDetailByPeriod()` (the legacy v5 finance report) was deleted; WB disabled the endpoint on 2026-07-15. Use the v1 sales-reports methods (`getSalesReportsList`, `getSalesReportsDetailed`, `getSalesReportsDetailedByReportId`) instead. See `docs/guides/migration-v4.md` and the [v5→v1 finance-reports migration guide](/guides/migration-finance-reports-v5-to-v1).
 
 ---
 
@@ -173,7 +167,6 @@ Acquiring report methods are available **only to Russian sellers**. Requires Per
 | Operation | Limit | Interval | Burst |
 |-----------|-------|----------|-------|
 | Account balance | 1 req/min | 60s | 1 |
-| Sales report v5 (deprecated) | 1 req/min | 60s | 1 |
 | v1 Sales Reports (list/detailed/byId) | 1 req/min | 60s | 1 |
 | v1 Acquiring Reports (list/detailed/byId) | 1 req/min | 60s | 1 |
 | Document categories / list / download | 6 req/10s | 10s | 5 |
@@ -324,21 +317,9 @@ const rows = await sdk.finances.getAcquiringReportsDetailedByReportId(
 );
 ```
 
-### getSupplierReportDetailByPeriod() (DEPRECATED)
+### getSupplierReportDetailByPeriod() — removed
 
-::: danger Deprecated - Migrate Before 2026-07-15
-This method uses the legacy v5 endpoint which will be disabled by Wildberries. Use `getSalesReportsDetailed()` instead. See the [migration guide](/guides/migration-finance-reports-v5-to-v1).
-:::
-
-```typescript
-// DEPRECATED — migrate to getSalesReportsDetailed() before 2026-07-15
-const result = await sdk.finances.getSupplierReportDetailByPeriod({
-  dateFrom: '2024-01-01',
-  dateTo: '2024-01-31',
-  period: 'weekly',
-});
-// Returns DetailReportItem[] with snake_case fields and numeric money amounts
-```
+> **Removed in v4.0.0** — `getSupplierReportDetailByPeriod()` (legacy v5 finance report) was deleted; WB disabled the endpoint on 2026-07-15. Use `getSalesReportsDetailed()` (POST `/api/finance/v1/sales-reports/detailed`) for the same data with camelCase fields and `string` money amounts (via `parseMoneyAmount()`). See `docs/guides/migration-v4.md`.
 
 ### Documents
 
@@ -388,11 +369,9 @@ const batch = await sdk.finances.createDownloadAll({
 | `GetDoc` | Single document response (base64 encoded) |
 | `GetDocs` | Multiple documents response (base64 encoded) |
 
-### v5 Sales Report (deprecated)
+### v5 Sales Report (removed in v4.0.0)
 
-| Type | Description |
-|------|-------------|
-| `DetailReportItem` | **Deprecated.** Response item from v5 `getSupplierReportDetailByPeriod()`. Uses `snake_case` field names and `number` money amounts. 4 new fields added in v3.6.0: `article_substitution`, `sale_price_affiliated_discount_prc`, `agency_vat`, `sale_price_wholesale_discount_prc` |
+> `DetailReportItem` (the v5 `getSupplierReportDetailByPeriod()` response type) was deleted. Use `SalesReportDetailedItem` (camelCase fields, `string` money amounts via `parseMoneyAmount()`) instead. See `docs/guides/migration-v4.md`.
 
 ### v1 Sales Reports (v3.7.0)
 

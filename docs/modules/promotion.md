@@ -13,13 +13,13 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
 | **Swagger Endpoints** | 50+ (34 active + 16 deprecated) |
-| **Implemented Methods** | 46 (40 active + 6 deprecated) |
+| **Implemented Methods** | 45 (all active) |
 | **Total Types** | 101+ TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
 
 ### What's New (v3.8.0)
 
-- **Deprecation warnings now use `warnOnce()`**: The 4 deprecated methods `createAutoSetExcluded()`, `createAutoUpdatenm()`, `getPromotionAdverts()`, and `getAuctionAdverts()` now emit their deprecation warning only **once per process** instead of on every call. This uses the shared `warnOnce()` utility exported from the SDK. Use `resetDeprecationWarnings()` to re-enable warnings (useful in tests).
+- **`warnOnce()` for deprecation warnings**: Introduced the shared `warnOnce()` utility (exported from the SDK) so deprecation warnings fire once per process. (Note: the v0/v1 advert methods that used this in v3.8.0 — `createAutoSetExcluded()`, `createAutoUpdatenm()`, `getPromotionAdverts()`, `getAuctionAdverts()` — were **removed in v4.0.0**. `warnOnce()`/`resetDeprecationWarnings()` remain available for other deprecation paths and tests.)
 
 ### What's New (v3.4.0 - March 2026)
 
@@ -35,8 +35,8 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 - **Minus Phrases API**: New `getMinusPhrases()` and `setMinusPhrases()` methods with clear naming
 - **Search Cluster Statistics**: New `getSearchClusterStats()` method for CPM campaign analytics
 - **Campaign Creation & Lifecycle**: Methods for campaign creation, product selection, and state control
-- **V2 API Replacements**: New methods replacing deprecated v0/v1 endpoints with improved functionality
-- **Deprecated Methods**: Legacy endpoints marked for removal February 2, 2026
+- **V2 API Replacements**: Methods replacing the deprecated v0/v1 endpoints with improved functionality
+- **Deprecated v0/v1 methods removed**: The legacy endpoints were removed in v4.0.0 (WB disabled them February 2, 2026). See `docs/guides/migration-v4.md`.
 - **Migration Guide**: See [Type 8 to Type 9 Migration Guide](/guides/migration-type8-to-type9) for detailed migration instructions
 
 ---
@@ -117,14 +117,15 @@ Both methods use the same endpoint. `updateCampaignProducts()` provides a cleane
 - Only works with Type 9 campaigns
 :::
 
-### Bidding (4 methods)
+### Bidding (3 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
 | `updateBids()` | PATCH | `/api/advert/v1/bids` | Change bids in kopecks (recommended) | Active |
 | `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | Alias for updateBids() | Active |
 | `getBidsRecommendations()` | GET | `/api/advert/v0/bids/recommendations` | **NEW**: Get recommended bids per search cluster (CPM only) | Active |
-| `updateAuctionBid()` | PATCH | `/adv/v0/auction/bids` | Change bids for type 9 campaigns | Deprecated |
+
+> **Removed in v4.0.0** — `updateAuctionBid()` (`PATCH /adv/v0/auction/bids`) was deleted (WB disabled the v0 auction API 2026-02-02). Use `updateBids()` (kopeck-based) for type 9 campaign bids. See `docs/guides/migration-v4.md`.
 
 ::: tip Bid Units
 The new `updateBids()` method uses **kopecks** (100 kopecks = 1 RUB) for bid values via `bid_kopecks` field.
@@ -178,17 +179,9 @@ Data is synchronized with the database every 3 minutes. Campaign statuses update
 | `getAdvUpd()` | GET | `/adv/v1/upd` | Get actual campaign spending history |
 | `getAdvPayments()` | GET | `/adv/v1/payments` | Get account replenishment history |
 
-### Unified Bid Methods (2 methods - Deprecated)
+### Unified Bid Methods (removed)
 
-| Method | HTTP | Endpoint | Description | Status |
-|--------|------|----------|-------------|--------|
-| `createAutoSetExcluded()` | POST | `/adv/v1/auto/set-excluded` | Set/remove minus-phrases (unified bid) | Deprecated |
-| `createAutoUpdatenm()` | POST | `/adv/v1/auto/updatenm` | Change product cards (unified bid) | Deprecated |
-
-::: warning Deprecated Methods
-The unified bid methods `createAutoSetExcluded()` and `createAutoUpdatenm()` are deprecated and will be removed on February 2, 2026.
-Use `setNormqueryMinus()` and `updateAuctionNm()` instead.
-:::
+> **Removed in v4.0.0** — `createAutoSetExcluded()` (`POST /adv/v1/auto/set-excluded`) and `createAutoUpdatenm()` (`POST /adv/v1/auto/updatenm`) were deleted (WB disabled the v0/v1 advert API 2026-02-02). Use `setMinusPhrases()` / `setNormqueryMinus()` (minus phrases) and `updateCampaignProducts()` / `updateAuctionNm()` (product cards) instead. See `docs/guides/migration-v4.md`.
 
 ### Media Campaigns (3 methods)
 
@@ -198,13 +191,14 @@ Use `setNormqueryMinus()` and `updateAuctionNm()` instead.
 | `getAdvAdverts()` | GET | `/adv/v1/adverts` | Get all media campaigns |
 | `getAdvAdvert()` | GET | `/adv/v1/advert` | Get WB Media campaign info |
 
-### Statistics (3 methods)
+### Statistics (2 methods)
 
 | Method | HTTP | Endpoint | Description | Status |
 |--------|------|----------|-------------|--------|
 | `getAdvFullstats()` | GET | `/adv/v3/fullstats` | Get full statistics for all campaign types | Active |
-| `getStatsKeywords()` | GET | `/adv/v0/stats/keywords` | Get keyword stats for all campaign types | Deprecated |
 | `createAdvStat()` | POST | `/adv/v1/stats` | Get WB Media campaign statistics | Active |
+
+> **Removed in v4.0.0** — `getStatsKeywords()` (`GET /adv/v0/stats/keywords`) was deleted (WB disabled the v0 advert API 2026-02-02). Use `getAdvFullstats()` for keyword/campaign statistics. See `docs/guides/migration-v4.md`.
 
 ### Calendar Promotions (4 methods)
 
@@ -232,22 +226,18 @@ Use `setNormqueryMinus()` and `updateAuctionNm()` instead.
 
 ---
 
-## Deprecated Methods (Implemented)
+## Removed Methods (v4.0.0)
 
-The following 6 methods are deprecated but still available in the SDK with deprecation warnings.
+The following 6 legacy advert methods were **removed in v4.0.0** (WB disabled the v0/v1 advert API on 2026-02-02). They are no longer in the SDK — each is now a compile error pointing at its replacement. See `docs/guides/migration-v4.md`.
 
-| Deprecated Method | Replacement | Scheduled Removal |
-|------------------|-------------|-------------------|
-| `getPromotionAdverts()` | `getAdvertsV2()` | February 2, 2026 |
-| `getAuctionAdverts()` | `getAdvertsV2()` | February 2, 2026 |
-| `updateAuctionBid()` | `updateBids()` / `updateBidsV2()` | TBD |
-| `getStatsKeywords()` | `getAdvFullstats()` | TBD |
-| `createAutoSetExcluded()` | `setMinusPhrases()` / `setNormqueryMinus()` | February 2, 2026 |
-| `createAutoUpdatenm()` | `updateCampaignProducts()` / `updateAuctionNm()` | February 2, 2026 |
-
-::: info Warn-Once Behavior (v3.8.0)
-Since v3.8.0, `createAutoSetExcluded()`, `createAutoUpdatenm()`, `getPromotionAdverts()`, and `getAuctionAdverts()` use `warnOnce()` to emit their deprecation warning **only once per process**. Previous versions emitted a warning on every call. Call `resetDeprecationWarnings()` from the SDK to re-enable warnings (e.g., in test suites).
-:::
+| Removed Method | Replacement |
+|----------------|-------------|
+| `getPromotionAdverts()` | `getAdvertsV2()` |
+| `getAuctionAdverts()` | `getAdvertsV2()` |
+| `updateAuctionBid()` | `updateBids()` (kopeck-based) |
+| `getStatsKeywords()` | `getAdvFullstats()` |
+| `createAutoSetExcluded()` | `setMinusPhrases()` / `setNormqueryMinus()` |
+| `createAutoUpdatenm()` | `updateCampaignProducts()` / `updateAuctionNm()` |
 
 ---
 
@@ -268,7 +258,7 @@ These endpoints are deprecated in the Swagger spec and intentionally not impleme
 - `/adv/v1/search/set-excluded` (POST) - Use `setNormqueryMinus()` instead
 - `/adv/v2/fullstats` (POST) - Use `getAdvFullstats()` instead
 - `/adv/v2/auto/stat-words` (GET) - Use `getAdvFullstats()` instead
-- `/adv/v1/stat/words` (GET) - Use `getStatsKeywords()` instead
+- `/adv/v1/stat/words` (GET) - Use `getAdvFullstats()` instead
 
 ---
 

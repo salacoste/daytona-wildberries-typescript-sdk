@@ -10,7 +10,7 @@ The General module provides essential utility endpoints for API connectivity tes
 | **SDK Namespace** | `sdk.general.*` |
 | **Base URLs** | `https://common-api.wildberries.ru`, `https://user-management-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/01-general.yaml` |
-| **Methods** | 10 (including 1 deprecated) |
+| **Methods** | 10 (all active) |
 | **Swagger Endpoints** | 9 (all implemented) |
 | **Authentication** | API Key (Header) — see [Token Types](#token-types) for details |
 
@@ -101,7 +101,7 @@ const general = new GeneralModule(client);
 | [`sellerInfo()`](#sellerinfo) | GET | `/api/v1/seller-info` | Get authenticated seller information | 1 req/min |
 | [`getJamSubscription()`](#getjamsubscription) | GET | `/api/common/v1/subscriptions` | Get Jam subscription details | 1 req/min |
 | [`getSellerRating()`](#getsellerrating) | GET | `/api/common/v1/rating` | Get seller rating and review count | 1 req/min |
-| [`getJamSubscriptionStatus(params)`](#getjamsubscriptionstatus-deprecated) | POST | `/api/v2/search-report/...` | **Deprecated.** Detect Jam tier via probe | Shared with Analytics |
+| [`getJamSubscriptionStatus(params)`](#getjamsubscriptionstatus-removed) | ~~POST~~ | ~~`/api/v2/search-report/...`~~ | **Removed in v4.0.0** — see note | — |
 
 ---
 
@@ -399,72 +399,9 @@ console.log(`Rating: ${rating.valuation} (${rating.feedbackCount} reviews)`);
 
 ---
 
-### `getJamSubscriptionStatus()` (Deprecated)
+### `getJamSubscriptionStatus()` (Removed)
 
-> **Deprecated since v3.5.0.** Use [`getJamSubscription()`](#getjamsubscription) instead. The direct API endpoint does not require `nmIds` and does not consume analytics quota. This probe method is retained as a fallback for cases where a Service token is not available.
-
-Detect the seller's Jam subscription tier by probing the analytics search-texts endpoint.
-
-Since Wildberries did not originally provide a direct API for checking Jam status, this method uses a probe strategy -- sending requests with specific `limit` values and interpreting the responses.
-
-**Signature:**
-```typescript
-getJamSubscriptionStatus(params: GetJamSubscriptionStatusParams): Promise<JamSubscriptionStatus>
-```
-
-**Parameters:**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `params.nmIds` | `number[]` | Yes | One or more WB article IDs (must belong to the seller) |
-
-**Returns:** `Promise<JamSubscriptionStatus>`
-
-```typescript
-type JamSubscriptionTier = 'none' | 'standard' | 'advanced';
-
-interface JamSubscriptionStatus {
-  /** Detected subscription tier */
-  tier: JamSubscriptionTier;
-  /** ISO 8601 timestamp when the check was performed */
-  checkedAt: string;
-  /** Number of probe API calls made (1 for advanced, 2 for standard/none) */
-  probeCallsMade: number;
-}
-```
-
-**Probe Strategy:**
-
-| Step | Request | 200 Response | 400 Response |
-|------|---------|-------------|-------------|
-| 1 | `limit: 31` | Advanced tier detected | Continue to step 2 |
-| 2 | `limit: 1` | Standard tier detected | No Jam subscription |
-
-**Rate Limit:** Shares quota with `analytics.createProductSearchText` (3 req/min, 20s interval, burst 3)
-
-> **Tip:** Cache the result -- subscription tier changes infrequently. See the [Jam Subscription Guide](/guides/jam-subscription) for caching patterns.
-
-**Example:**
-```typescript
-// Prefer getJamSubscription() for new code. Use this only as fallback.
-const status = await sdk.general.getJamSubscriptionStatus({
-  nmIds: [12345678]
-});
-
-switch (status.tier) {
-  case 'advanced':
-    console.log('Advanced Jam — limit up to 50');
-    break;
-  case 'standard':
-    console.log('Standard Jam — limit up to 30');
-    break;
-  case 'none':
-    console.log('No Jam subscription');
-    break;
-}
-```
-
-**See Also:** [Jam Subscription Detection Guide](/guides/jam-subscription) | [Analytics Module](/modules/analytics)
+> **Removed in v4.0.0** — `getJamSubscriptionStatus()` (the analytics-probe Jam-tier detection method) was deleted. Use [`getJamSubscription()`](#getjamsubscription) (direct `GET /api/common/v1/subscriptions`) instead — it does not require `nmIds` and does not consume analytics quota. See `docs/guides/migration-v4.md`.
 
 ---
 
@@ -480,10 +417,7 @@ import type {
   NewsTag,
   NewsRequestParams,
   SellerInfoResponse,
-  JamSubscriptionTier,
-  JamSubscriptionStatus,
   JamSubscriptionDetails,
-  GetJamSubscriptionStatusParams,
   SellerRatingResponse,
   // User Management types
   AccessCode,
@@ -575,28 +509,9 @@ export interface SellerInfoResponse {
 
 ### Jam Subscription Types
 
+> The probe-based types `JamSubscriptionTier`, `JamSubscriptionStatus`, and `GetJamSubscriptionStatusParams` were **removed in v4.0.0** along with `getJamSubscriptionStatus()`. Use `JamSubscriptionDetails` (from `getJamSubscription()`) instead.
+
 ```typescript
-/**
- * Jam subscription tier (used by the deprecated probe method)
- */
-export type JamSubscriptionTier = 'none' | 'standard' | 'advanced';
-
-/**
- * Result of a Jam subscription status probe (deprecated)
- */
-export interface JamSubscriptionStatus {
-  tier: JamSubscriptionTier;
-  checkedAt: string;
-  probeCallsMade: number;
-}
-
-/**
- * Parameters for the Jam subscription status probe (deprecated)
- */
-export interface GetJamSubscriptionStatusParams {
-  nmIds: number[];
-}
-
 /**
  * Detailed Jam subscription information from GET /api/common/v1/subscriptions
  * Added in v3.5.0
@@ -715,7 +630,6 @@ const result = await sdk.general.ping();
 | `sellerInfo()` | 1 | 60 seconds | 10 |
 | `getJamSubscription()` | 1 | 60 seconds | 10 |
 | `getSellerRating()` | 1 | 60 seconds | 1 |
-| `getJamSubscriptionStatus()` | 3 (shared) | 20 seconds | 3 |
 | `createInvite()` | 60 | 1 second | 5 |
 | `getUsers()` | 60 | 1 second | 5 |
 | `updateUserAccess()` | 60 | 1 second | 5 |
