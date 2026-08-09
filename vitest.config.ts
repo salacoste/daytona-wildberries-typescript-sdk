@@ -34,6 +34,10 @@ export default defineConfig({
       // TDD test files - excluded from default runs (red-phase tests expected to fail)
       // Run separately via: npm run test:tdd
       'tests/tdd/**',
+      // Live network smoke test (real axios + .env WB_API_KEY) — env/token-dependent
+      // and therefore non-deterministic. Kept out of the default suite; run manually:
+      //   npx vitest run tests/integration/api.test.ts
+      'tests/integration/api.test.ts',
     ],
 
     // Coverage configuration

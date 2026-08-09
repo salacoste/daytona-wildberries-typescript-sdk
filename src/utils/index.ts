@@ -56,3 +56,11 @@ export { validateBid, clampBid, extractBidRange, type BidRange } from './bid-val
 
 // ROAS computation over fullstats (rolling window, exclude freshest day) (since 4.0.0)
 export { computeROAS, type ROASResult, type ComputeROASOptions } from './roas';
+
+// FBO acceptance reconciliation: declared vs accepted qty per nmId (since 4.1.0)
+export {
+  reconcileAcceptanceDelta,
+  type AcceptanceDeltaItem,
+  type ReconcileAcceptanceDeltaInput,
+  type ReconcileAcceptanceDeltaResult,
+} from './reconcileAcceptanceDelta';

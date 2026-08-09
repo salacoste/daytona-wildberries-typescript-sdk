@@ -374,6 +374,12 @@ Strategy:
   grouped per `nmID`.
 - **Delta** = declared − accepted (positive = under-accepted / discrepancy).
 
+> **SDK helper (v4.2.0):** the per-`nmId` diff ships as `reconcileAcceptanceDelta()` — pass it
+> `{ declared: Map<nmId, qty>, accepted: AcceptanceReportDownloadItem[] }` and it returns
+> `{ items: [{ nmId, declared, accepted, delta, hasDiscrepancy }], totalDeclared, totalAccepted,
+> totalDelta, discrepancyCount }`. The recipe below shows the fetch orchestration; you can hand its
+> `declaredByNm` / `acceptedByNm` maps straight to the helper instead of diffing by hand.
+
 ```ts
 import type { Supply } from 'daytona-wildberries-typescript-sdk';
 
