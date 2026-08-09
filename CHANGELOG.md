@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.2.0] - 2026-08-09
+
+### Added
+
+- **ordersFBS**: `getSupplies(params)` — thin alias for `supplies()` (GET `/api/v3/supplies`; same
+  endpoint + `rateLimitKey`), for naming consistency with `getSupply()` and easier discovery.
+- **utils**: `reconcileAcceptanceDelta({ declared, accepted })` — pure helper that diffs
+  seller-declared quantities against accepted rows from `reports.downloadAcceptanceReport()`,
+  returning per-`nmId` `{ declared, accepted, delta, hasDiscrepancy }` + totals + `discrepancyCount`.
+  WB exposes no dedicated act-of-acceptance/discrepancy endpoint, so reconciliation is client-side.
+  Exported from the main index (+ `AcceptanceDeltaItem`, `ReconcileAcceptanceDeltaInput`,
+  `ReconcileAcceptanceDeltaResult` types).
+- **docs**: `docs/guides/fbo-supply-lifecycle.md` — comprehensive ordersFBS FBO supply lifecycle
+  guide (cursor pagination + client-side status filtering, method reference, done-based status
+  model, marking-validation gates, acceptance-reconciliation recipe).
+
+### Fixed
+
+- **tests**: excluded the live network smoke test `tests/integration/api.test.ts` from the default
+  `npm test` suite (env/token-dependent, non-deterministic). Run manually via
+  `npx vitest run tests/integration/api.test.ts`. Default suite is now fully green.
+
 ## [4.1.0] - 2026-07-20
 
 ### Added
