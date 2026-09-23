@@ -552,8 +552,33 @@ describe('PromotionModule', () => {
       expect(result.nmId).toBe(148190095);
       expect(result.base?.competitiveBid?.bidKopecks).toBe(50000);
       expect(result.normQueries).toHaveLength(1);
-      expect(result.normQueries[0].normQuery).toBe('жидкость для дым машины');
-      expect(result.normQueries[0].reachMax.bidKopecks).toBe(89000);
+      expect(result.normQueries?.[0]?.normQuery).toBe('жидкость для дым машины');
+      expect(result.normQueries?.[0]?.reachMax.bidKopecks).toBe(89000);
+    });
+
+    it('getBidsRecommendations - should return CPC variant with levels (task-200)', async () => {
+      const mockResponse = {
+        advertId: 29081652,
+        nmId: 148190095,
+        paymentType: 'cpc',
+        levels: [
+          {
+            range1To2: { bidKopecks: 1500 },
+            range3To10: { bidKopecks: 1200 },
+            range11To34: { bidKopecks: 900 },
+          },
+        ],
+      } satisfies import('../../../src/types/promotion.types').BidsRecommendationsResponse;
+
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await module.getBidsRecommendations({ advertId: 29081652, nmId: 148190095 });
+
+      expect(result.paymentType).toBe('cpc');
+      expect(result.levels).toHaveLength(1);
+      expect(result.levels?.[0]?.range1To2.bidKopecks).toBe(1500);
+      expect(result.levels?.[0]?.range11To34.bidKopecks).toBe(900);
+      expect(result.normQueries).toBeUndefined();
     });
 
     it('getBidsRecommendations - should call correct URL with query params', async () => {

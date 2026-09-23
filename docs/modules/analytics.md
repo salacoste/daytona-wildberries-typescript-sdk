@@ -108,10 +108,12 @@ All three Sales Funnel v3 responses now include an optional `currency` field (e.
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `createProductsGroup()` | POST | `/api/v2/stocks-report/products/groups` | Get stock data by product groups |
-| `createProductsProduct()` | POST | `/api/v2/stocks-report/products/products` | Get stock data by products |
-| `createProductsSize()` | POST | `/api/v2/stocks-report/products/sizes` | Get stock data by product sizes |
-| `createStocksReportOffice()` | POST | `/api/v2/stocks-report/offices` | Get stock data by warehouses |
+| `createProductsGroup()` | POST | `/api/v2/stocks-report/products/groups` | Get stock data by product groups. ⚠️ Since 2026-09-17 data refreshes once per 2 hours |
+| `createProductsProduct()` | POST | `/api/v2/stocks-report/products/products` | Get stock data by products. ⚠️ Since 2026-09-17 data refreshes once per 2 hours |
+| `createProductsSize()` | POST | `/api/v2/stocks-report/products/sizes` | Get stock data by product sizes. ⚠️ Since 2026-09-17 data refreshes once per 2 hours |
+| `createStocksReportOffice()` | POST | `/api/v2/stocks-report/offices` | Get stock data by warehouses. ⚠️ Since 2026-09-17 data refreshes once per 2 hours |
+
+> ⚠️ **Data freshness (WB news 2026-09-17)**: all four stocks-history report groups above refresh **once per 2 hours**; the `STOCK_HISTORY_REPORT_CSV` / `STOCK_HISTORY_DAILY_CSV` report types via `createNmReportDownload()` share the same cadence. For current stocks without the update delay use `getWbWarehousesStock()` or `getSellerWarehousesStock()` (refreshes every 30 minutes).
 
 ### WB Warehouse Inventory (1 method) - NEW in v3.4.0
 

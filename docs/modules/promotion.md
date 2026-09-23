@@ -24,7 +24,7 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 ### What's New (v3.4.0 - March 2026)
 
 - **`getAdvertsV2()` return type changed**: Now returns `GetAdvertsV2Response` (was `GetAdverts`). Includes `bid_type` (auto/manual), `bids_kopecks` per product, and data sync timing notes.
-- **NEW `getBidsRecommendations()`**: Get recommended bids for product cards and search clusters (CPM only). Returns `reachMin`/`reachMedium`/`reachMax` per norm query plus optional `base` card-level bids.
+- **NEW `getBidsRecommendations()`**: Get recommended bids for product cards and search clusters. CPM: `reachMin`/`reachMedium`/`reachMax` per norm query plus optional `base` card-level bids. Since WB news 2026-09 also returns CPC recommendations — `levels` with bids per listing position range (1-2 / 3-10 / 11-34), discriminated by `paymentType`.
 - **NormQuery/stats CPC support**: `getSearchClusterStats()` and `getNormqueryStats()` now support CPC campaigns. For CPC campaigns, `views`, `ctr`, and `cpm` fields are absent from the response.
 - **6 new types**: `GetBidsRecommendationsParams`, `ReachBid`, `NormQueryBidRecommendation`, `BaseBidRecommendation`, `BidsRecommendationsResponse`, `GetAdvertsV2Response`
 
@@ -123,7 +123,7 @@ Both methods use the same endpoint. `updateCampaignProducts()` provides a cleane
 |--------|------|----------|-------------|--------|
 | `updateBids()` | PATCH | `/api/advert/v1/bids` | Change bids in kopecks (recommended) | Active |
 | `updateBidsV2()` | PATCH | `/api/advert/v1/bids` | Alias for updateBids() | Active |
-| `getBidsRecommendations()` | GET | `/api/advert/v0/bids/recommendations` | **NEW**: Get recommended bids per search cluster (CPM only) | Active |
+| `getBidsRecommendations()` | GET | `/api/advert/v0/bids/recommendations` | **NEW**: Get recommended bids per search cluster. CPM (`base`+`normQueries`) and since 2026-09 CPC (`levels` per position range) — discriminated by `paymentType` | Active |
 
 > **Removed in v4.0.0** — `updateAuctionBid()` (`PATCH /adv/v0/auction/bids`) was deleted (WB disabled the v0 auction API 2026-02-02). Use `updateBids()` (kopeck-based) for type 9 campaign bids. See `docs/guides/migration-v4.md`.
 
