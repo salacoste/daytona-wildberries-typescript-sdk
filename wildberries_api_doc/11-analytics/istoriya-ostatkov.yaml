@@ -237,6 +237,83 @@ paths:
                 $ref: _schemas.yaml#/components/schemas/ErrorObject403
         '429':
           $ref: _schemas.yaml#/components/responses/429
+  /api/analytics/v1/stocks-report/seller-warehouses:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      x-token-types:
+        - personal
+        - service
+      operationId: postAnalyticsV1StocksReportSellerWarehouses
+      summary: Seller Warehouses Inventory
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method returns current seller warehouses inventory.
+        <br><br>
+        The data is updated once every 30 minutes.
+        <br><br>
+        1 response row means data on 1 item size in 1 seller warehouse.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 3 requests | 20 s | 1 request |
+        </div>
+      tags:
+        - История остатков
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/InventoryRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/InventorySellerResponse
+                required:
+                - data
+        '204':
+          description: Нет данных
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+            application/problem+json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/Response4XX
+              examples:
+                Response403TokenCategory:
+                  $ref: _schemas.yaml#/components/examples/Response403TokenCategory
+                Response403TokenType:
+                  $ref: _schemas.yaml#/components/examples/Response403TokenType
+        '429':
+          $ref: _schemas.yaml#/components/responses/429
 components:
   securitySchemes:
     HeaderApiKey:

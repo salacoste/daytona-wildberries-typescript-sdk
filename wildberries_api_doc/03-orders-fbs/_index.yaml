@@ -31,11 +31,11 @@ _shards:
     description: FBS Metadata
   - file: postavki-fbs.yaml
     domain: Поставки FBS
-    endpoints: 12
+    endpoints: 18
     description: FBS Supplies
   - file: propuska-fbs.yaml
     domain: Пропуска FBS
     endpoints: 5
     description: FBS Passes
 _shared_schemas: _schemas.yaml
-_total_endpoints: 34
+_total_endpoints: 40

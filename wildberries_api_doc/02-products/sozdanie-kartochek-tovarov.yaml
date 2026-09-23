@@ -301,6 +301,22 @@ paths:
                                   Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                   <br>
                                   Допустимое количество значений отображено в поле `maxCount` того же метода
+                        documents:
+                          type: object
+                          description: Documents
+                          properties:
+                            items:
+                              type: array
+                              description: Document list
+                              items:
+                                $ref: '#/components/schemas/documentsRequest'
+                            excludeDocuments:
+                              type: boolean
+                              default: false
+                              description: |
+                                Whether to check the documents:
+                                  - `true` — yes, do not check the documents when validating the listing. When `true`, all values passed to `documents` will be replaced with empty values
+                                  - `false` — no, check the documents when validating the listing
             examples:
               creatingOneCard:
                 $ref: "#/components/examples/creatingOneCard"
@@ -512,6 +528,22 @@ paths:
                                 Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                 <br>
                                 Допустимое количество значений отображено в поле `maxCount` того же метода
+                      documents:
+                        type: object
+                        description: Documents
+                        properties:
+                          items:
+                            type: array
+                            description: Document list
+                            items:
+                              $ref: '#/components/schemas/documentsRequest'
+                          excludeDocuments:
+                            type: boolean
+                            default: false
+                            description: |
+                              Whether to check the documents:
+                                - `true` — yes, do not check the documents when validating the listing. When `true`, all values passed to `documents` will be replaced with empty values
+                                - `false` — no, check the documents when validating the listing
             example:
               imtID: 987654321
               cardsToAdd:

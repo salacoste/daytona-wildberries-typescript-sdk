@@ -803,3 +803,438 @@ paths:
           $ref: "#/components/responses/NotFound"
         "429":
           $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/dictionaries/countries/oksm:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Get the OKSM Country List
+      description: |
+        The method returns a list of OKSM — All-Russian Classifier of World Countries — countries with their full names and codes.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountriesOKSMList"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/{supplyId}/spot:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    put:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Add SPOT Data to Supply
+      description: |
+        The method adds SPOT data to a supply.
+
+        SPOT can only be added to a [supply](./orders-fbs#tag/fbsSupplies/operation/getV3SuppliesSupplyId) with the `"spotAvailable":true` flag.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      parameters:
+        - $ref: "#/components/parameters/Supply"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - carrierTaxNumber
+                - carrierName
+                - carrierCountryCode
+                - vehicleRegistrationNumber
+              properties:
+                carrierName:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+                  example: ООО СПОТ
+                  description: Carrier name
+                carrierTaxNumber:
+                  type: string
+                  minLength: 1
+                  maxLength: 50
+                  example: "7588179007"
+                  description: Carrier tax number
+                carrierCountryCode:
+                  type: string
+                  minLength: 3
+                  maxLength: 3
+                  example: "112"
+                  description: Carrier [OKSM](./orders-fbs#tag/fbsSupplies/operation/getV3FbsDictionariesCountriesOksm) country code
+                vehicleRegistrationNumber:
+                  type: string
+                  minLength: 1
+                  maxLength: 30
+                  example: А123АА100
+                  description: Vehicle registration number
+                trailerRegistrationNumber:
+                  type: string
+                  minLength: 1
+                  maxLength: 30
+                  example: АА000100
+                  description: Trailer registration number
+      responses:
+        "204":
+          description: Добавлено
+        "400":
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorV3"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/ApiError400V3"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          description: Не найдено
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorV3"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/ApiError404V3"
+        "409":
+          description: Ошибка при добавлении данных SPOT
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorV3"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/SpotApiError409V3"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/spot/list:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Get SPOT Data for Supply List
+      description: |
+        The method returns SPOT data for a list of supplies.
+
+        You can get SPOT data only if all of the following conditions are met:
+        - the supply is in the delivery stage
+        - the seller is registered in any EAEU country other than the Russian Federation
+        - the destination warehouse is located in the Russian Federation
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - supplyIds
+              properties:
+                supplyIds:
+                  type: array
+                  minLength: 1
+                  maxLength: 100
+                  description: Supply IDs list
+                  items:
+                    type: string
+                    example: WB-GI-123456789
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplySpotDataResponse"
+              examples:
+                SupplySpotDataResponse:
+                  $ref: "#/components/examples/SupplySpotDataResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorV3"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/ApiError400V3"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/{supplyId}/stickers/spot:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Get the Supply SPOT QR Code
+      description: |
+        The method returns the generated SPOT QR code for the supply in PNG format, base64 encoded.
+
+        You can get the QR code when the flag `"status":"completed"` is returned in the method for getting [SPOT data](./orders-fbs#tag/fbsSupplies/operation/postV3FbsSuppliesSpotList).
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      parameters:
+        - $ref: "#/components/parameters/Supply"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplySpotQRCode"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorV3"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/ApiError400V3"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          description: Не найдено
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorV3"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/ApiError404V3"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/shipping-points:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Get Supply Shipping Points
+      description: |
+        The method returns available supply shipping points with filters:
+          - by Russian localities
+          - by the type of items a shipping point can accept
+
+        Use the data from this method to set [supply shipping methods](./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesShippingMethod).
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      parameters:
+        - name: city
+          in: query
+          description: Locality for shipping the supply, Cyrillic
+          required: true
+          example: Москва
+          schema:
+            type: string
+        - name: cargoType
+          in: query
+          description: |
+            The type of items a shipping point can accept:
+              - `1` — small-sized items
+              - `2` — over dimensional cargo (ODC)
+              - `3` — dimensional cargo+ (CD+)
+          required: true
+          example: 1
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShippingPointsResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/shipping-method:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Set Supply Shipping Method
+      description: |
+        The method sets shipping method, shipping date, and shipping point for the supplies. <br><br>
+
+        For shipping by a transport company `"shippingType":"transportCompany"`, specify the ID of the electronic waybill using the method for setting [supply waybill ID](./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesWaybill).<br><br>
+
+        <div class="description_important">
+          The waybill ID added to a supply is reset if the shipping type is changed from <code>"shippingType":"transportCompany"</code> to <code>selfShipping</code>. If you want to change the shipping type back to <code>transportCompany</code>, <a href='./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesWaybill'>re-add the waybill ID</a>.
+        </div>
+
+        You can update the shipping method until the supply and its boxes are scanned at the shipping point. Once the supply has been scanned, this method will start returning a `409` error.<br><br>
+
+        You can specify a maximum of 100 supplies per request. The processing result is returned for each supply separately.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateSuppliesShippingMethodRequest"
+                - description: Supply shipping method
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSuppliesResponse"
+              examples:
+                UpdatedSuppliesShippingMethod:
+                  $ref: "#/components/examples/UpdatedSuppliesShippingMethod"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                AccessDenied:
+                  $ref: "#/components/examples/AccessDenied"
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Response4XX"
+              examples:
+                Response403TokenCategory:
+                  $ref: "#/components/examples/Response403TokenCategory"
+        "409":
+          description: Конфликт
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v3.APIError"
+              examples:
+                WaybillUUIDConflict:
+                  $ref: "#/components/examples/WaybillUUIDConflict"
+        "429":
+          $ref: "#/components/responses/429"

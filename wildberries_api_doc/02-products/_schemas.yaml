@@ -1094,6 +1094,75 @@ components:
           description: Список остатков товаров
           items:
             $ref: '#/components/schemas/api.StockItem'
+    documentsRequest:
+      type: object
+      properties:
+        type:
+          type: integer
+          description: |
+            Document type:
+              - `1` — Certificate of Conformity
+              - `2` — The Correspondence Declaration
+              - `3` — Certificate of Registration of SGR
+              - `4` — Registration Certificate
+              - `5` — Certificate of Registration of the Republic of Belarus
+              - `7` — Registration of a Pesticide
+              - `8` — Registration of an Agrochemical
+              - `9` — Medicine Registration Certificate
+        number:
+          type: string
+          description: Document number
+        productNumber:
+          type: string
+          description: Additional document number
+        tradeName:
+          type: string
+          description: Trade name
+        applicant:
+          type: string
+          description: Representative of the medical device manufacturer
+        startDate:
+          type: string
+          format: date-time
+          description: Document start date and time
+        endDate:
+          type: string
+          format: date-time
+          description: Document end date and time
+        isEndless:
+          type: boolean
+          description: |
+            Is the document valid indefinitely:
+              - `true` — yes, the document is indefinite
+              - `false` — no, the document has an expiration date
+    reasonDocument:
+      type: string
+      nullable: true
+      description: |
+        Validation error, returns for `status: 2`. <br>
+        Possible values:
+          - `document_missing` — No document uploaded
+          - `document_not_found` — The document not found in the register
+          - `document_inactive` — The document has no legal effect
+          - `document_expired` — The document expired
+          - `applicant_mismatch` — Applicant details in the document and the listing don't match
+          - `trade_name_mismatch` — Trade name in the document and the listing don't match
+          - `unknown` — Validation failed
+          - `document_type_mismatch` — The document number does not match the specified document type
+          - `document_dates_mismatch` — Incorrect registration or expiration date of the document
+    reasonListing:
+      type: string
+      nullable: true
+      description: |
+        Validation error, returns for `status: 2`. <br>
+        Possible values:
+          - `tnved_missing` — HS code not specified
+          - `supplier_inn_missing` — Taxpayer identification number not specified
+          - `supplier_not_registered` — Seller not found in the register
+          - `supplier_inactive` — Seller status error. Please check it in the register
+          - `product_group_not_registered` — You haven't added the required item type in the labeling system
+          - `kiz_required` — Labeling code [Chestny ZNAK](https://chestnyznak.ru/en) is required to sell this item in Russia
+          - `kiz_certificate_missing` — Confirmation is required that the labeling has been applied to the item
   parameters:
     Warehouse:
       name: warehouseId

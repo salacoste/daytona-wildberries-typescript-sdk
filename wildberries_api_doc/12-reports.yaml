@@ -2775,6 +2775,16 @@ components:
                     type: number
                     description: Сумма штрафа
                     example: 449.83
+                  dateStart:
+                    type: string
+                    format: date-time
+                    example: '2025-05-09T13:35:57Z'
+                    description: Warehouse multipier start date and time
+                  dateEnd:
+                    type: string
+                    format: date-time
+                    example: '2025-05-29T13:35:57Z'
+                    description: Warehouse multipier end date and time
             total:
               type: integer
               description: Количество удержаний в отчёте. Без учёта `limit` и `offset`

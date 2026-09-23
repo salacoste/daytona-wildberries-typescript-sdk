@@ -23,7 +23,7 @@ _shards:
     description: Search Queries for Your Products
   - file: istoriya-ostatkov.yaml
     domain: История остатков
-    endpoints: 4
+    endpoints: 5
     description: Stock History
   - file: analitika-prodavtsa-csv.yaml
     domain: Аналитика продавца CSV
@@ -34,6 +34,6 @@ _shards:
     endpoints: 2
     description: Item Rating v2 and deprecated v1
 _shared_schemas: _schemas.yaml
-_total_endpoints: 18
+_total_endpoints: 19
 _base_urls:
   - https://seller-analytics-api.wildberries.ru

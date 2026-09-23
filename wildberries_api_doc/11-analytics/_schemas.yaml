@@ -3807,6 +3807,118 @@ components:
       - detail
       - requestId
       - origin
+    InventoryRequest:
+      description: Request parameters for current WB warehouses inventory
+      type: object
+      properties:
+        nmIds:
+          type: array
+          description: WB item numbers
+          minItems: 0
+          maxItems: 1000
+          example:
+            - 111222333
+            - 47254354
+          items:
+            type: integer
+            format: int64
+        chrtIds:
+          type: array
+          description: Size IDs. It is used only for the item numbers specified in the `nmIds` array
+          example:
+            - 111222333
+            - 91663228
+          items:
+            type: integer
+            format: uint64
+        limit:
+          example: 250000
+          description: Number of rows in the response
+          type: integer
+          format: uint32
+          maximum: 250000
+          default: 250000
+        offset:
+          example: 500000
+          description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+          type: integer
+          format: uint32
+          default: 0
+    InventorySellerResponse:
+      description: Current seller warehouses inventory
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          description: Seller warehouses inventory by size
+          type: array
+          items:
+            type: object
+            properties:
+              nmId:
+                type: integer
+                description: WB item number
+                example: 47254354
+                format: int64
+              chrtId:
+                type: integer
+                description: Size ID
+                example: 91663228
+                format: uint64
+              warehouseId:
+                type: integer
+                description: Warehouse ID
+                example: 123456
+                format: int64
+              warehouseName:
+                type: string
+                description: Warehouse name
+                example: склад продавца Иркутск
+              regionName:
+                type: string
+                description: Shipping region
+                example: Дальневосточный и Сибирский
+              quantity:
+                type: integer
+                description: Warehouse inventory available to clients to add to cart
+                example: 43
+                format: uint64
+            required:
+              - nmId
+              - chrtId
+              - warehouseId
+              - warehouseName
+              - regionName
+              - quantity
+    Response4XX:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        status:
+          type: number
+          description: HTTP status code
+        statusText:
+          type: string
+          description: Text of the HTTP status code
+        timestamp:
+          type: string
+          format: date-time
+          description: Request date and time
   responses:
     '401':
       description: Не авторизован
@@ -4704,6 +4816,27 @@ components:
             Является ли товар скрытым из каталога:
               - `true` — товар скрыт из каталога
               - `false` — товар не скрыт из каталога
+    Response403TokenCategory:
+      value:
+        status: 403
+        statusText: Forbidden
+        title: Forbidden
+        detail: scope is not allowed for this resource
+        requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+        origin: ag-marketplace
+        timestamp: '2026-09-03T13:55:15Z'
+      description: Invalid token category
+    Response403TokenType:
+      value:
+        title: forbidden
+        detail: base token is not allowed
+        code: base token is not allowed for this path
+        requestId: 722199b2e15bbca48cc1d488a7989976
+        origin: ag-marketplace
+        status: 403
+        statusText: Forbidden
+        timestamp: '2026-05-25T02:47:09Z'
+      description: Invalid token type
   securitySchemes:
     HeaderApiKey:
       type: apiKey

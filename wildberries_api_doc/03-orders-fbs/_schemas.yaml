@@ -339,6 +339,13 @@ components:
           nullable: true
           description: ID склада назначения поставки. Если `null`, склад назначения не указан
           example: 123
+        spotAvailable:
+          type: boolean
+          example: true
+          description: |
+            Whether SPOT is available for this supply:
+              - `true` — yes. Use the method for [getting SPOT data](./orders-fbs#tag/fbsSupplies/operation/postV3FbsSuppliesSpotList)
+              - `false` — no
     OrderNew:
       type: object
       properties:
@@ -789,6 +796,309 @@ components:
         data:
           type: object
           description: Дополнительные данные ошибки
+    CountriesOKSMList:
+      type: object
+      required:
+        - countries
+      properties:
+        countries:
+          description: OKSM countries list
+          type: array
+          items:
+            type: object
+            required:
+              - code
+              - name
+            properties:
+              code:
+                description: Country code
+                type: string
+                example: "036"
+              name:
+                description: Country name
+                type: string
+                example: Австралия
+    SupplySpotDataResponse:
+      type: object
+      required:
+        - supplies
+      properties:
+        supplies:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                description: Supply ID
+                type: string
+              spot:
+                allOf:
+                  - description: SPOT data
+                  - $ref: "#/components/schemas/SupplySpotData"
+              error:
+                allOf:
+                  - $ref: "#/components/schemas/ApiErrorV3"
+                  - example:
+                      value:
+                        detail: Incorrect required body
+                        title: IncorrectRequestBody
+    SupplySpotData:
+      type: object
+      required:
+        - status
+        - carrierTaxNumber
+        - carrierName
+        - carrierCountryCode
+        - vehicleRegistrationNumber
+      properties:
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+          description: |
+            SPOT status:
+              - `pending` — waiting for the result of DOPP — Declaration of Upcoming Supply — formation
+              - `completed` — DOPP successfully formed. You can [get the QR code](./orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdStickersSpot)
+              - `failed` — DOPP formation error. See the `errorCode` field for details
+        carrierName:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: Carrier name
+        carrierTaxNumber:
+          type: string
+          description: Carrier tax number
+        carrierCountryCode:
+          type: string
+          description: Carrier [OKSM](./orders-fbs#tag/fbsSupplies/operation/getV3FbsDictionariesCountriesOksm) country code
+        vehicleRegistrationNumber:
+          type: string
+          description: Vehicle registration number
+        trailerRegistrationNumber:
+          type: string
+          description: Trailer registration number
+        errorCode:
+          type: string
+          enum:
+            - doppFailed
+          description: |
+            Error code from the DOPP — Declaration of Upcoming Supply — formation service. Returned when `"status": "failed"`. To fix the error, check the SPOT data and [add it to the supply](./orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdSpot) again.
+    SupplySpotQRCode:
+      type: object
+      required:
+        - qrCode
+      properties:
+        qrCode:
+          description: Supply QR code in base64 encoding
+          example: U3dhZ2dlciByb2Nrcw==
+          format: base64
+          type: string
+    ShippingPoint:
+      description: Shipping point data
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - city
+        - officeType
+        - cargoTypes
+        - latitude
+        - longitude
+        - fulfillment
+      properties:
+        id:
+          format: int64
+          type: integer
+          example: 100
+          description: Shipping point ID
+        name:
+          type: string
+          description: Name
+          example: Москва Морской
+        address:
+          type: string
+          description: Address
+          example: г Москва, Морской Проспект 54
+        city:
+          type: string
+          example: Москва
+          description: Locality
+        officeType:
+          description: |
+            Shipping point type:
+              - `sc` — sorting center
+              - `sw` — warehouse
+              - `pp` — pickup point
+          type: string
+          example: pp
+          enum:
+            - sc
+            - sw
+            - pp
+        cargoTypes:
+          description: |
+            Types of items a shipping point can accept:
+              - `1` — small-sized items
+              - `2` — over dimensional cargo (ODC)
+              - `3` — dimensional cargo+ (CD+)
+          type: array
+          items:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+          example:
+            - 1
+            - 3
+        latitude:
+          type: number
+          description: Latitude
+          example: 37.588898
+        longitude:
+          type: number
+          description: Longitude
+          example: 55.386871
+        fulfillment:
+          type: boolean
+          description: |
+            Service **Fulfillment in SC** for FBS supplies:
+              - `true` — available
+              - `false` — unavailable
+          example: true
+    ShippingPointsResponse:
+      type: object
+      required:
+        - shippingPoints
+      properties:
+        shippingPoints:
+          description: Shipping points list
+          type: array
+          items:
+            $ref: "#/components/schemas/ShippingPoint"
+    UpdateSuppliesShippingMethodRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/UpdateSupplyShippingMethod"
+    UpdateSuppliesResponse:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/UpdatedSupplies"
+    UpdateSupplyShippingMethod:
+      type: object
+      required:
+        - shippingDt
+        - shippingPointId
+        - shippingType
+        - supplyId
+      properties:
+        shippingDt:
+          description: Planned supply shipping date, format `YYYY-MM-DD`
+          type: string
+          example: 2026-08-31
+        shippingPointId:
+          description: Shipping point ID. You can get it using a [separate method](./orders-fbs#tag/fbsSupplies/operation/getV3FbsShippingPoints)
+          type: integer
+          example: 100
+        shippingType:
+          description: |
+            Type of shipping to the shipping point:
+              - `selfShipping` — shipping at the seller's expense
+              - `transportCompany` — delivery via a transport company. For this shipping type, specify the [electronic waybill ID](./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesWaybill) in the `waybillUuid` field
+          type: string
+          example: transportCompany
+          enum:
+            - selfShipping
+            - transportCompany
+        supplyId:
+          example: WB-GI-100
+          type: string
+          description: Supply ID
+    UpdatedSupplies:
+      description: Результат обработки запроса для одной поставки
+      type: object
+      required:
+        - supplyId
+      properties:
+        error:
+          $ref: "#/components/schemas/ReplyBatchError"
+        success:
+          type: boolean
+          description: Whether the request was processed successfully for this supply. Can only be `true`
+        supplyId:
+          type: string
+          description: Supply ID
+    ReplyBatchError:
+      description: Error details
+      type: object
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          type: integer
+          description: Error code
+        detail:
+          type: string
+          description: |
+            Additional error data
+    ApiErrorV3:
+      required:
+        - title
+        - detail
+      properties:
+        detail:
+          description: Error details
+          type: string
+        title:
+          description: Error title
+          type: string
+      type: object
+    Response4XX:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        status:
+          type: number
+          description: HTTP status code
+        statusText:
+          type: string
+          description: Text of the HTTP status code
+        timestamp:
+          type: string
+          format: date-time
+          description: Request date and time
   responses:
     "401":
       description: Не авторизован
@@ -890,6 +1200,95 @@ components:
           example:
             code: AccessDenied
             message: Доступ запрещён
+  examples:
+    ApiError400V3:
+      value:
+        detail: Not Found
+        title: NotFound
+    ApiError404V3:
+      value:
+        detail: Incorrect required body
+        title: IncorrectRequestBody
+    SpotApiError409V3:
+      value:
+        detail: SPOT actions aren't available for this shipment
+        title: SpotActionNotAllowed
+    SupplySpotDataResponse:
+      value:
+        supplies:
+          - id: WB-GI-0000001
+            spot:
+              carrierTaxNumber: "7588179007"
+              carrierName: ООО СПОТ
+              carrierCountryCode: "112"
+              vehicleRegistrationNumber: А123АА100
+              trailerRegistrationNumber: АА000100
+              status: completed
+          - id: WB-GI-0000002
+            spot:
+              carrierTaxNumber: "7588179007"
+              carrierName: ООО СПОТ
+              carrierCountryCode: "112"
+              vehicleRegistrationNumber: А123АА100
+              trailerRegistrationNumber: АА000100
+              status: failed
+              errorCode: doppFailed
+          - id: WB-GI-0000003
+            error:
+              title: NotFound
+              detail: Not Found
+          - id: WB-GI-0000004
+            error:
+              title: SpotActionNotAllowed
+              detail: Spot Action Not Allowed
+    UpdatedSuppliesShippingMethod:
+      value:
+        results:
+          - supplyId: WB-GI-100
+            success: true
+          - supplyId: ax12
+            success: false
+            error:
+              code: 400
+              detail: IncorrectRequestBody
+          - supplyId: WB-GI-300
+            success: false
+            error:
+              code: 409
+              detail: InvalidShippingDt
+          - supplyId: WB-GI-99999999
+            success: false
+            error:
+              code: 404
+              detail: NotFound
+          - supplyId: WB-GI-500
+            success: false
+            error:
+              code: 400
+              detail: FulfillmentRequired
+          - supplyId: WB-GI-600
+            success: false
+            error:
+              code: 409
+              detail: SupplyAlreadyScanned
+    AccessDenied:
+      value:
+        code: AccessDenied
+        message: ""
+    Response403TokenCategory:
+      value:
+        status: 403
+        statusText: Forbidden
+        title: Forbidden
+        detail: scope is not allowed for this resource
+        requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+        origin: ag-marketplace
+        timestamp: "2026-09-03T13:55:15Z"
+      description: Invalid token category
+    WaybillUUIDConflict:
+      value:
+        code: WaybillUUIDConflict
+        message: Waybill UUID is already used
   parameters:
     Supply:
       name: supplyId
