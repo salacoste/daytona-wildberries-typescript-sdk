@@ -1836,6 +1836,23 @@ export interface V2GetConfigResponse {
    * — для CPC-кампаний (за клики).
    */
   cpcStep: number;
+  /**
+   * Минимальная сумма пополнения бюджета кампании в минорных единицах валюты —
+   * 0.01 базовой единицы валюты [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * Например, при `minTopUp: 10000` и `currency: 'UZS'` минимальное пополнение — 100 сум.
+   *
+   * @since task-186
+   */
+  minTopUp: number;
+  /**
+   * Минимально допустимая сумма дневного лимита независимо от ставок кампании,
+   * в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * Используется методом PUT /api/advert/v0/daily-limits ({@link V0PutDailyLimitsRequest}).
+   *
+   * @since task-186
+   */
+  minDailyLimit: number;
 }
 
 /**
@@ -2297,4 +2314,144 @@ export interface V2BudgetAdvert {
 export interface V2BudgetResponse {
   /** Данные кампаний; элементы могут быть `null` */
   adverts: (V2BudgetAdvert | null)[];
+}
+
+// ============================================================================
+// V0 Daily Limits Types (task-186)
+// ============================================================================
+// Source: WB Promotion API — GET/PUT /api/advert/v0/daily-limits
+// Schema captured 2026-09-23 from .omc/artifacts/wb-specs/promotion.json
+// (official OpenAPI, operationIds getV0DailyLimits / putV0DailyLimits).
+
+/**
+ * Элемент ответа метода GET /api/advert/v0/daily-limits — настройки
+ * дневного лимита одной CPC-кампании.
+ *
+ * @since task-186
+ */
+export interface V0DailyLimitAdvert {
+  /** ID кампании */
+  advertId: number;
+  /**
+   * Включён ли дневной лимит:
+   * - `true` — включён
+   * - `false` — выключен
+   */
+  enabled: boolean;
+  /**
+   * Сумма дневного лимита в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   */
+  dailyLimit: number;
+  /**
+   * Потрачено сегодня в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   */
+  spentToday: number;
+  /** Код валюты (ISO 4217, напр. 'RUB') */
+  currency: string;
+  /**
+   * Перенос остатка дневного лимита на следующий день. Если лимит не израсходован
+   * за сутки, остаток добавляется к лимиту следующего дня; расходы на продвижение
+   * при этом не увеличиваются:
+   * - `true` — перенос включён
+   * - `false` — перенос выключен
+   */
+  carryOverEnabled: boolean;
+  /**
+   * Достаточен ли текущий дневной лимит для ставок кампании:
+   * - `true` — да
+   * - `false` — нет, рекомендуется повысить лимит, иначе бюджет кампании
+   *   может расходоваться неравномерно
+   */
+  valid: boolean;
+  /**
+   * Рекомендуемый минимальный дневной лимит по текущим ставкам кампании,
+   * в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   */
+  requiredLimit: number;
+}
+
+/**
+ * Ответ метода GET /api/advert/v0/daily-limits — текущие настройки дневных
+ * лимитов CPC-кампаний.
+ *
+ * @since task-186
+ */
+export interface V0GetDailyLimitsResponse {
+  /** Настройки дневных лимитов по запрошенным кампаниям */
+  adverts: V0DailyLimitAdvert[];
+}
+
+/**
+ * Запрос метода PUT /api/advert/v0/daily-limits — включение, обновление
+ * или отключение дневного лимита бюджета CPC-кампаний.
+ *
+ * Поля `dailyLimit` и `carryOverEnabled` обязательны при `enabled: true`.
+ *
+ * @since task-186
+ */
+export interface V0PutDailyLimitsRequest {
+  /** ID кампаний. От 1 до 100 элементов, каждый >= 1 */
+  advertIds: number[];
+  /**
+   * Включить лимит:
+   * - `true` — да
+   * - `false` — нет (выключить)
+   */
+  enabled: boolean;
+  /**
+   * Сумма дневного лимита в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * Обязателен при `enabled: true`. Минимально допустимая сумма возвращается
+   * полем `minDailyLimit` метода {@link V2GetConfigResponse}
+   * (GET /api/advert/v1/config).
+   */
+  dailyLimit?: number;
+  /**
+   * Переносить неиспользованный остаток лимита на следующий день:
+   * - `true` — да
+   * - `false` — нет
+   *
+   * Обязателен при `enabled: true`.
+   */
+  carryOverEnabled?: boolean;
+}
+
+/**
+ * Элемент ответа метода PUT /api/advert/v0/daily-limits — результат
+ * установки дневного лимита одной кампании.
+ *
+ * @since task-186
+ */
+export interface V0PutDailyLimitsAdvertResult {
+  /** ID кампании */
+  advertId: number;
+  /**
+   * Установленный дневной лимит ниже рекомендованного минимума по текущим
+   * ставкам (`requiredLimit`):
+   * - `true` — да
+   * - `false` — нет
+   */
+  belowMinLimit: boolean;
+  /**
+   * Рекомендуемый минимальный дневной лимит по текущим ставкам кампании,
+   * в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * При меньшем лимите бюджет может расходоваться неравномерно и возможны
+   * ошибки в кампании.
+   */
+  requiredLimit: number;
+}
+
+/**
+ * Ответ метода PUT /api/advert/v0/daily-limits — результаты установки
+ * дневных лимитов кампаний.
+ *
+ * @since task-186
+ */
+export interface V0PutDailyLimitsResponse {
+  /** Результаты по каждой запрошенной кампании */
+  adverts: V0PutDailyLimitsAdvertResult[];
 }
