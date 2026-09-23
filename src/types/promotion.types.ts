@@ -2182,17 +2182,51 @@ export interface BaseBidRecommendation {
   top2?: ReachBid;
 }
 
+/**
+ * Recommended CPC bids per listing position range.
+ *
+ * @since task-200 (WB news 2026-09 — CPC recommendations)
+ */
+export interface CpcBidRecommendationLevel {
+  /** Recommended bid for positions 1-2 */
+  range1To2: ReachBid;
+  /** Recommended bid for positions 3-10 */
+  range3To10: ReachBid;
+  /** Recommended bid for positions 11-34 */
+  range11To34: ReachBid;
+}
+
 /** Response from GET /api/advert/v0/bids/recommendations
- * @since 3.4.0 */
+ *
+ * The response shape depends on the campaign payment type (discriminated by
+ * `paymentType`, WB news 2026-09):
+ * - `cpm` (pay per impression): `base` + `normQueries` are populated;
+ * - `cpc` (pay per click): `levels` is populated (recommended bids per
+ *   listing position range) — `base`/`normQueries` are absent.
+ *
+ * @since 3.4.0; CPC variant since task-200 (WB news 2026-09)
+ */
 export interface BidsRecommendationsResponse {
   /** Campaign ID */
   advertId: number;
   /** WB article ID */
   nmId: number;
-  /** Recommended base bids for the product card */
+  /**
+   * Payment type: `cpm` — for impressions; `cpc` — for clicks.
+   *
+   * @since task-200 (WB news 2026-09)
+   */
+  paymentType?: 'cpm' | 'cpc';
+  /** Recommended base bids for the product card (CPM campaigns) */
   base?: BaseBidRecommendation;
-  /** Recommended bids per search cluster */
-  normQueries: NormQueryBidRecommendation[];
+  /** Recommended bids per search cluster (CPM campaigns) */
+  normQueries?: NormQueryBidRecommendation[];
+  /**
+   * Recommended bids per listing position range (CPC campaigns).
+   *
+   * @since task-200 (WB news 2026-09)
+   */
+  levels?: CpcBidRecommendationLevel[];
 }
 
 // ============================================================================

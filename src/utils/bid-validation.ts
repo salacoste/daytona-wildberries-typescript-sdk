@@ -42,7 +42,7 @@ export interface BidRange {
  */
 export function extractBidRange(recommendations: BidsRecommendationsResponse): BidRange | null {
   const clusters = recommendations.normQueries;
-  if (clusters.length === 0) return null;
+  if (!clusters || clusters.length === 0) return null;
 
   let min = Infinity;
   let max = -Infinity;

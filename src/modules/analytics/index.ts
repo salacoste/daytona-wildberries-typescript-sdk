@@ -103,6 +103,10 @@ export class AnalyticsModule {
    * @example
    * const result = await sdk.analytics.createNmReportDownload({});
    * console.log(result);
+   *
+   * ⚠️ Для типов отчётов STOCK_HISTORY_REPORT_CSV и STOCK_HISTORY_DAILY_CSV с 17.09.2026
+   * данные обновляются 1 раз в 2 часа (новость WB от 2026-09). Для остатков без задержки —
+   * {@link AnalyticsModule.getSellerWarehousesStock} / {@link AnalyticsModule.getWbWarehousesStock} (task-190).
    */
   async createNmReportDownload(
     data?:
@@ -341,6 +345,10 @@ export class AnalyticsModule {
    * @example
    * const result = await sdk.analytics.createProductsGroup({});
    * console.log(result);
+   *
+   * ⚠️ С 17.09.2026 данные истории остатков обновляются 1 раз в 2 часа (новость WB от 2026-09).
+   * Для остатков без задержки используйте {@link AnalyticsModule.getSellerWarehousesStock}
+   * или {@link AnalyticsModule.getWbWarehousesStock} (task-190).
    */
   async createProductsGroup(data: TableGroupRequestSt): Promise<{ data: TableGroupResponseSt }> {
     return this.client.post<{ data: TableGroupResponseSt }>(
@@ -368,6 +376,10 @@ export class AnalyticsModule {
    * @example
    * const result = await sdk.analytics.createProductsProduct({});
    * console.log(result);
+   *
+   * ⚠️ С 17.09.2026 данные истории остатков обновляются 1 раз в 2 часа (новость WB от 2026-09).
+   * Для остатков без задержки используйте {@link AnalyticsModule.getSellerWarehousesStock}
+   * или {@link AnalyticsModule.getWbWarehousesStock} (task-190).
    */
   async createProductsProduct(data: TableProductRequest): Promise<{ data: TableProductResponse }> {
     return this.client.post<{ data: TableProductResponse }>(
@@ -396,6 +408,10 @@ export class AnalyticsModule {
    * @example
    * const result = await sdk.analytics.createProductsSize({});
    * console.log(result);
+   *
+   * ⚠️ С 17.09.2026 данные истории остатков обновляются 1 раз в 2 часа (новость WB от 2026-09).
+   * Для остатков без задержки используйте {@link AnalyticsModule.getSellerWarehousesStock}
+   * или {@link AnalyticsModule.getWbWarehousesStock} (task-190).
    */
   async createProductsSize(data: TableSizeRequest): Promise<{ data: TableSizeResponse }> {
     return this.client.post<{ data: TableSizeResponse }>(
@@ -423,6 +439,10 @@ export class AnalyticsModule {
    * @example
    * const result = await sdk.analytics.createStocksReportOffice({});
    * console.log(result);
+   *
+   * ⚠️ С 17.09.2026 данные истории остатков обновляются 1 раз в 2 часа (новость WB от 2026-09).
+   * Для остатков без задержки используйте {@link AnalyticsModule.getSellerWarehousesStock}
+   * или {@link AnalyticsModule.getWbWarehousesStock} (task-190).
    */
   async createStocksReportOffice(
     data: TableShippingOfficeRequest

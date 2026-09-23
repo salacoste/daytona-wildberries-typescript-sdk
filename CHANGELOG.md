@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **promotion**: `getBidsRecommendations` now returns CPC recommendations
+  too (WB news 2026-09) — `BidsRecommendationsResponse` gained
+  `paymentType: 'cpm' | 'cpc'` and `levels` (bids per listing position
+  range 1-2 / 3-10 / 11-34); `normQueries` became optional (CPM-only
+  field). Task: task-200.
+- **analytics**: JSDoc + docs now flag the 2-hour stocks-history refresh
+  cadence (WB news, effective 2026-09-17) on the four v2 stocks reports
+  and the STOCK_HISTORY CSV downloads, pointing to
+  `getWbWarehousesStock`/`getSellerWarehousesStock` as the no-delay
+  sources. Task: task-190.
+
+### Added
+
+
 - **ordersFBS**: customs-declaration (ДТ) behavior docs + typed 409 mapping
   (WB news 2026-08-18) — new error class `CustomsDeclarationIsRequiredError`
   (extends `WBAPIError`, statusCode 409, exposes the WB `code` and the raw

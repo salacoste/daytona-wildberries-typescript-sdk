@@ -1220,7 +1220,10 @@ export class PromotionModule {
    * @param params - Campaign ID and WB article ID
    * @param params.advertId - Campaign ID
    * @param params.nmId - WB article ID (must belong to the campaign)
-   * @returns Recommended bids: base (card-level) and normQueries (per search cluster)
+   * @returns Recommended bids. For CPM campaigns (pay per impression): `base` (card-level)
+   * and `normQueries` (per search cluster). For CPC campaigns (pay per click, supported
+   * since WB news 2026-09): `levels` — recommended bids per listing position range
+   * (1-2 / 3-10 / 11-34). The variant is discriminated by `paymentType`.
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When nmId does not belong to campaign or params invalid (400)
@@ -1233,8 +1236,14 @@ export class PromotionModule {
    *   advertId: 29081652,
    *   nmId: 148190095,
    * });
-   * for (const nq of reco.normQueries) {
-   *   console.log(`${nq.normQuery}: min=${nq.reachMin.bidKopecks} med=${nq.reachMedium.bidKopecks} max=${nq.reachMax.bidKopecks}`);
+   * if (reco.paymentType === 'cpc') {
+   *   for (const level of reco.levels ?? []) {
+   *     console.log(`1-2: ${level.range1To2.bidKopecks}, 3-10: ${level.range3To10.bidKopecks}, 11-34: ${level.range11To34.bidKopecks}`);
+   *   }
+   * } else {
+   *   for (const nq of reco.normQueries ?? []) {
+   *     console.log(`${nq.normQuery}: min=${nq.reachMin.bidKopecks} med=${nq.reachMedium.bidKopecks} max=${nq.reachMax.bidKopecks}`);
+   *   }
    * }
    * ```
    */
