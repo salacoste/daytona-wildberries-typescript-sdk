@@ -61,6 +61,42 @@ export const ordersFbwRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 1,
   },
+  // Supply drafts (task-193 — WB news 2026-09): POST /api/supplies/v1/drafts — create empty draft
+  'orders-fbw.draftCreate': {
+    requestsPerMinute: 30,
+    intervalSeconds: 2,
+    burstLimit: 10,
+  },
+  // Supply drafts: GET /api/supplies/v1/drafts — list drafts
+  'orders-fbw.draftsList': {
+    requestsPerMinute: 30,
+    intervalSeconds: 2,
+    burstLimit: 10,
+  },
+  // Supply drafts: DELETE /api/supplies/v1/drafts/{draftId} — delete draft
+  'orders-fbw.draftDelete': {
+    requestsPerMinute: 30,
+    intervalSeconds: 2,
+    burstLimit: 10,
+  },
+  // Supply drafts: POST /api/supplies/v1/drafts/{draftId}/items — add items (atomic)
+  'orders-fbw.draftItemsAdd': {
+    requestsPerMinute: 30,
+    intervalSeconds: 2,
+    burstLimit: 10,
+  },
+  // Supply drafts: GET /api/supplies/v1/drafts/{draftId}/items — list draft items
+  'orders-fbw.draftItemsList': {
+    requestsPerMinute: 30,
+    intervalSeconds: 2,
+    burstLimit: 10,
+  },
+  // Supply drafts: DELETE /api/supplies/v1/drafts/{draftId}/items — delete items (no SKU validation)
+  'orders-fbw.draftItemsDelete': {
+    requestsPerMinute: 30,
+    intervalSeconds: 2,
+    burstLimit: 10,
+  },
   // POST /api/marketplace/v3/dbw/orders/client — buyer info for DBW orders
   // Note: 409 response counts as 10 requests (penaltyMultiplier)
   'orders-fbw.getClientInfo': {

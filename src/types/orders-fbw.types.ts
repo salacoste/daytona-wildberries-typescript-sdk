@@ -599,3 +599,163 @@ export interface DBWCheckMetaValidationResponse {
   /** Per-order validation status entries. */
   metaDetails: MetaValidationDetail[];
 }
+
+// ============================================================================
+// Supply Drafts Types (task-193 — WB news 2026-09)
+// ============================================================================
+
+/**
+ * Товар в запросе добавления в черновик поставки (spec: `models.Item`).
+ * @since task-193
+ */
+export interface ModelsItem {
+  /** Количество товара (1–999999) */
+  quantity: number;
+  /** SKU (баркод) из карточки товара */
+  sku: string;
+}
+
+/**
+ * Ответ на создание черновика поставки.
+ * @since task-193
+ */
+export interface ModelsDraftCreateResponse {
+  /** Идентификатор черновика (UUID) */
+  draftId: string;
+}
+
+/**
+ * Черновик поставки — элемент списка `listDrafts()`.
+ * @since task-193
+ */
+export interface ModelsDraftItem {
+  /** Идентификатор черновика (UUID) */
+  draftId: string;
+  /** Телефон пользователя, создавшего черновик */
+  phone: string;
+  /** Дата и время создания черновика (ISO 8601) */
+  createdAt: string;
+  /** Дата и время обновления черновика (ISO 8601) */
+  updatedAt: string;
+  /** Количество SKU в черновике */
+  skuQuantity: number;
+  /** Количество товаров в черновике */
+  itemQuantity: number;
+}
+
+/**
+ * Ответ на получение списка черновиков поставок.
+ * @since task-193
+ */
+export interface ModelsListDraftsResponse {
+  /** Общее количество черновиков */
+  total: number;
+  /** Список черновиков */
+  drafts: ModelsDraftItem[];
+}
+
+/**
+ * Товар в черновике поставки — элемент списка `getDraftItems()`.
+ * @since task-193
+ */
+export interface ModelsDraftItemItem {
+  /** SKU (баркод) товара */
+  sku: string;
+  /** Цвет товара */
+  color: string;
+  /** Количество товара */
+  quantity: number;
+  /** Бренд */
+  brandName: string;
+  /** Ссылка на изображение товара */
+  imgSrc: string;
+  /** Артикул WB */
+  nmId: number;
+  /** Предмет (подкатегория) */
+  subjectName: string;
+  /** Размер товара */
+  techSize: string;
+  /** Наименование товара */
+  title: string;
+  /** Артикул продавца */
+  vendorCode: string;
+}
+
+/**
+ * Ответ на получение списка товаров в черновике поставки.
+ * @since task-193
+ */
+export interface ModelsListDraftItemsResponse {
+  /** Количество SKU в черновике */
+  skuQuantity: number;
+  /** Количество товаров в черновике */
+  itemQuantity: number;
+  /** Список товаров */
+  items: ModelsDraftItemItem[];
+}
+
+/**
+ * Тело запроса `addDraftItems()` — добавление товаров в черновик поставки.
+ * Максимум 1000 элементов в массиве `items`.
+ * @since task-193
+ */
+export interface ModelsDraftAdditemsRequest {
+  /** Список товаров (максимум 1000) */
+  items: ModelsItem[];
+}
+
+/**
+ * Ошибка валидации SKU при добавлении товаров в черновик.
+ * @since task-193
+ */
+export interface ModelsDraftAddItemsResultError {
+  /** Детали ошибки */
+  detail: string;
+  /** Заголовок ошибки */
+  title: string;
+}
+
+/**
+ * Элемент результата добавления товаров — невалидный SKU с описанием ошибки.
+ * @since task-193
+ */
+export interface ModelsDraftAddItemsResultItem {
+  /** Детали ошибки валидации */
+  error: ModelsDraftAddItemsResultError;
+  /** Невалидный SKU */
+  sku: string;
+}
+
+/**
+ * Ответ на добавление товаров в черновик поставки.
+ *
+ * **Атомарность:** пустой `results` (`[]`) означает, что все SKU прошли
+ * валидацию и товары добавлены в черновик. Непустой `results` содержит список
+ * невалидных SKU — в этом случае **ни один** товар не добавлен.
+ * @since task-193
+ */
+export interface ModelsDraftAddItemsErrorResponse {
+  /** Список невалидных SKU с ошибками. `[]` — все товары добавлены */
+  results: ModelsDraftAddItemsResultItem[];
+}
+
+/**
+ * Тело запроса `deleteDraftItems()` — удаление товаров из черновика поставки.
+ * @since task-193
+ */
+export interface ModelsDraftDeleteitemsRequest {
+  /** Список SKU для удаления (минимум 1) */
+  skus: string[];
+}
+
+/**
+ * Ответ на удаление товаров из черновика поставки.
+ *
+ * SKU **не валидируются**: неверные SKU молча игнорируются,
+ * корректные — удаляются из черновика.
+ * @since task-193
+ */
+export interface ModelsDraftDeleteItemsErrorResponse {
+  /** Результат операции */
+  results: unknown[];
+}
