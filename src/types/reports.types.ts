@@ -293,6 +293,18 @@ export interface Penalty {
   reversalAmount?: number;
   /** Сумма штрафа */
   penaltyAmount?: number;
+  /**
+   * Дата и время начала действия коэффициента (повышающего множителя) на складе.
+   *
+   * @since task-195 (WB news 2026-09)
+   */
+  dateStart?: string;
+  /**
+   * Дата и время окончания действия коэффициента (повышающего множителя) на складе.
+   *
+   * @since task-195 (WB news 2026-09)
+   */
+  dateEnd?: string;
 }
 
 /**

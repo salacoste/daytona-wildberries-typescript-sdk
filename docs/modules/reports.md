@@ -67,7 +67,7 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getMeasurementPenalties()` | GET | `/api/analytics/v1/measurement-penalties` | Get dimension penalties report |
+| `getMeasurementPenalties()` | GET | `/api/analytics/v1/measurement-penalties` | Get dimension penalties report. Since WB news 2026-09 each report item carries `dateStart`/`dateEnd` — the validity period of the warehouse coefficient |
 | `getWarehouseMeasurementsV2()` | GET | `/api/analytics/v1/warehouse-measurements` | Get warehouse measurements (V2) |
 | `getAnalyticsAntifraudDetails()` | GET | `/api/v1/analytics/antifraud-details` | Get self-purchase penalties report |
 | `getAnalyticsGoodsLabeling()` | GET | `/api/v1/analytics/goods-labeling` | Get marking violations penalties |

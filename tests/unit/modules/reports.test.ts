@@ -103,6 +103,26 @@ describe('ReportsModule', () => {
         );
       });
 
+      it('getMeasurementPenalties returns coefficient validity dates (task-195)', async () => {
+        const report = {
+          nmId: 123456789,
+          subjectName: 'Костюмы спортивные',
+          penaltyAmount: 449.83,
+          dateStart: '2025-05-09T13:35:57Z',
+          dateEnd: '2025-05-29T13:35:57Z',
+        } satisfies import('../../../src/types/reports.types').Penalty;
+
+        mockClient.get.mockResolvedValue({ data: { reports: [report], total: 1 } });
+
+        const result = await module.getMeasurementPenalties({
+          dateTo: '2026-02-06',
+          limit: 100,
+        });
+
+        expect(result.data?.reports?.[0]?.dateStart).toBe('2025-05-09T13:35:57Z');
+        expect(result.data?.reports?.[0]?.dateEnd).toBe('2025-05-29T13:35:57Z');
+      });
+
       it('getWarehouseMeasurementsV2 calls correct URL with params', async () => {
         mockClient.get.mockResolvedValue({ data: { reports: [] } });
 
