@@ -50,6 +50,11 @@ import type {
   BarcodeResponse,
   ArchiveOrdersParams,
   ArchiveOrdersResponse,
+  SpotCountriesResponse,
+  SupplySpotRequest,
+  SuppliesSpotListRequest,
+  SuppliesSpotListResponse,
+  SupplySpotStickerResponse,
 } from '../../types/orders-fbs.types';
 
 export class OrdersFbsModule {
@@ -1119,6 +1124,162 @@ export class OrdersFbsModule {
     return this.client.get<ArchiveOrdersResponse>(
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/orders/archive',
       { params, rateLimitKey: 'orders-fbs.ordersArchive' }
+    );
+  }
+
+  // ============================================================================
+  // SPOT (EAEU road-import declarations)
+  // ============================================================================
+
+  /**
+   * Get the OKSM country list
+   *
+   * Returns the list of OKSM (All-Russian Classifier of World Countries) countries
+   * with their full names and 3-digit codes. Use these codes as `carrierCountryCode`
+   * when adding SPOT data via `updateSupplySpot()`.
+   *
+   * **Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+   * WB plans to extend it to all EAEU countries except the Russian Federation.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response counts as 10 requests.
+   *
+   * @returns Promise resolving to the OKSM countries list
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsDictionariesCountriesOksm}
+   *
+   * @example
+   * ```typescript
+   * const { countries } = await sdk.ordersFBS.getSpotCountries();
+   * const byName = countries.find(c => c.name === 'Киргизия');
+   * ```
+   */
+  async getSpotCountries(): Promise<SpotCountriesResponse> {
+    return this.client.get<SpotCountriesResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/dictionaries/countries/oksm',
+      { rateLimitKey: 'orders-fbs.getSpotCountries' }
+    );
+  }
+
+  /**
+   * Add SPOT data to a supply
+   *
+   * Adds SPOT (EAEU road-import declaration) data to a supply. SPOT can only be added
+   * to a supply carrying the `"spotAvailable": true` flag — check it via `getSupply()`
+   * or `supplies()` first.
+   *
+   * `carrierCountryCode` must be a 3-digit OKSM code from `getSpotCountries()`.
+   *
+   * **Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+   * WB plans to extend it to all EAEU countries except the Russian Federation.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response (including the 409 below) counts as 10 requests.
+   *
+   * @param supplyId - ID of the supply
+   * @param data - SPOT data (carrier and vehicle details)
+   * @returns Promise resolving to void on success (204)
+   * @throws {WBAPIError} 409 — error while adding SPOT data (e.g. `SpotActionNotAllowed` when SPOT is not available for this supply)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/putV3FbsSuppliesSupplyIdSpot}
+   *
+   * @example
+   * ```typescript
+   * await sdk.ordersFBS.updateSupplySpot('WB-GI-123456789', {
+   *   carrierName: 'ООО СПОТ',
+   *   carrierTaxNumber: '7588179007',
+   *   carrierCountryCode: '112',
+   *   vehicleRegistrationNumber: 'А123АА100',
+   *   trailerRegistrationNumber: 'АА000100',
+   * });
+   * ```
+   */
+  async updateSupplySpot(supplyId: string, data: SupplySpotRequest): Promise<void> {
+    return this.client.put(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/${supplyId}/spot`,
+      data,
+      { rateLimitKey: 'orders-fbs.putSupplySpot' }
+    );
+  }
+
+  /**
+   * Get SPOT data for a list of supplies
+   *
+   * Returns SPOT data for up to 100 supplies per request. SPOT data is returned only
+   * when **all** of the following conditions are met:
+   * - the supply is in the delivery stage
+   * - the seller is registered in any EAEU country other than the Russian Federation
+   * - the destination warehouse is located in the Russian Federation
+   *
+   * **Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+   * WB plans to extend it to all EAEU countries except the Russian Federation.
+   *
+   * Each entry carries either `spot` (echo of the submitted SPOT data plus the DOPP
+   * formation `status`) or `error` (e.g. `NotFound`, `SpotActionNotAllowed`).
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response counts as 10 requests.
+   *
+   * @param data - Request body containing supply IDs (1-100)
+   * @returns Promise resolving to SPOT data per requested supply
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/postV3FbsSuppliesSpotList}
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.getSuppliesSpotList({
+   *   supplyIds: ['WB-GI-123456789'],
+   * });
+   * const readyForQr = result.supplies.filter(s => s.spot?.status === 'completed');
+   * ```
+   */
+  async getSuppliesSpotList(data: SuppliesSpotListRequest): Promise<SuppliesSpotListResponse> {
+    return this.client.post<SuppliesSpotListResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/spot/list',
+      data,
+      { rateLimitKey: 'orders-fbs.postSuppliesSpotList' }
+    );
+  }
+
+  /**
+   * Get the supply SPOT QR code
+   *
+   * Returns the generated SPOT QR code for the supply in PNG format, base64 encoded.
+   * Available only when `getSuppliesSpotList()` reports `"status": "completed"` for
+   * the supply (DOPP formed successfully).
+   *
+   * **Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+   * WB plans to extend it to all EAEU countries except the Russian Federation.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response counts as 10 requests.
+   *
+   * @param supplyId - ID of the supply
+   * @returns Promise resolving to the base64-encoded PNG QR code
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdStickersSpot}
+   *
+   * @example
+   * ```typescript
+   * const { qrCode } = await sdk.ordersFBS.getSupplySpotStickers('WB-GI-123456789');
+   * fs.writeFileSync('spot-qr.png', Buffer.from(qrCode, 'base64'));
+   * ```
+   */
+  async getSupplySpotStickers(supplyId: string): Promise<SupplySpotStickerResponse> {
+    return this.client.get<SupplySpotStickerResponse>(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/${supplyId}/stickers/spot`,
+      { rateLimitKey: 'orders-fbs.getSupplySpotStickers' }
     );
   }
 }

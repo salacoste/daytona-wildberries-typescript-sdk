@@ -558,6 +558,8 @@ export interface Supply {
   isPickupPointShipmentAllowed?: boolean;
   /** ID of the recommended warehouse for acceptance of the supply for Moscow and Moscow region; 0 if not determined */
   recommendedWhId?: number;
+  /** Whether SPOT is available for this supply: `true` — SPOT data can be added via `updateSupplySpot()` and read via `getSuppliesSpotList()`; `false` — no */
+  spotAvailable?: boolean;
 }
 
 /**
@@ -960,4 +962,126 @@ export interface ArchiveOrdersParams {
   limit: number;
   /** Index signature for compatibility with Record<string, unknown> */
   [key: string]: unknown;
+}
+
+// ============================================================================
+// SPOT (EAEU road-import declarations)
+// ============================================================================
+
+/**
+ * SPOT status — stage of the DOPP (Declaration of Upcoming Supply) formation.
+ * Maps to swagger schema: SupplySpotData.status
+ */
+export type SpotStatus = 'pending' | 'completed' | 'failed';
+
+/** OKSM (All-Russian Classifier of World Countries) country entry */
+export interface SpotCountry {
+  /** Country code in the OKSM classifier (3 digits) */
+  code: string;
+  /** Country full name */
+  name: string;
+}
+
+/**
+ * Response for GET /api/marketplace/v3/fbs/dictionaries/countries/oksm
+ * Maps to swagger schema: CountriesOKSMList
+ */
+export interface SpotCountriesResponse {
+  /** OKSM countries list */
+  countries: SpotCountry[];
+}
+
+/**
+ * Request body for adding SPOT data to a supply.
+ * Maps to the inline request body of PUT /api/marketplace/v3/fbs/supplies/{supplyId}/spot
+ */
+export interface SupplySpotRequest {
+  /** Carrier name (1-1000 chars) */
+  carrierName: string;
+  /** Carrier tax number (1-50 chars) */
+  carrierTaxNumber: string;
+  /** Carrier country code in the OKSM classifier (exactly 3 digits) — see `getSpotCountries()` */
+  carrierCountryCode: string;
+  /** Vehicle registration number (1-30 chars) */
+  vehicleRegistrationNumber: string;
+  /** Trailer registration number (1-30 chars) */
+  trailerRegistrationNumber?: string;
+}
+
+/**
+ * Request body for getting SPOT data for a list of supplies.
+ * Maps to the inline request body of POST /api/marketplace/v3/fbs/supplies/spot/list
+ */
+export interface SuppliesSpotListRequest {
+  /** Supply IDs list (1-100 items) */
+  supplyIds: string[];
+}
+
+/**
+ * Per-supply error entry returned when SPOT data cannot be provided.
+ * Maps to swagger schema: ApiErrorV3
+ */
+export interface SupplySpotError {
+  /** Error title (e.g. 'NotFound', 'SpotActionNotAllowed') */
+  title: string;
+  /** Error details */
+  detail: string;
+}
+
+/**
+ * SPOT data for a single supply — echo of the data submitted via
+ * `updateSupplySpot()` plus the DOPP formation status.
+ * Maps to swagger schema: SupplySpotData
+ */
+export interface SupplySpotData {
+  /**
+   * DOPP formation status:
+   * - `pending` — waiting for the DOPP (Declaration of Upcoming Supply) formation result
+   * - `completed` — DOPP formed successfully; the QR code can be fetched via `getSupplySpotStickers()`
+   * - `failed` — DOPP formation error; see `errorCode`
+   */
+  status: SpotStatus;
+  /** Carrier name */
+  carrierName: string;
+  /** Carrier tax number */
+  carrierTaxNumber: string;
+  /** Carrier country code in the OKSM classifier */
+  carrierCountryCode: string;
+  /** Vehicle registration number */
+  vehicleRegistrationNumber: string;
+  /** Trailer registration number */
+  trailerRegistrationNumber?: string;
+  /** DOPP formation service error code; present when `status` is `failed`. Fix the SPOT data and re-submit via `updateSupplySpot()` */
+  errorCode?: 'doppFailed';
+}
+
+/**
+ * Per-supply entry in the SPOT data list response.
+ * Maps to swagger schema: SupplySpotDataResponse.supplies items
+ */
+export interface SupplySpotItem {
+  /** Supply ID */
+  id: string;
+  /** SPOT data; absent when the request failed for this supply (see `error`) */
+  spot?: SupplySpotData;
+  /** Error details when SPOT data could not be returned for this supply */
+  error?: SupplySpotError;
+}
+
+/**
+ * Response for POST /api/marketplace/v3/fbs/supplies/spot/list
+ * Maps to swagger schema: SupplySpotDataResponse
+ */
+export interface SuppliesSpotListResponse {
+  /** SPOT data per requested supply */
+  supplies: SupplySpotItem[];
+}
+
+/**
+ * Response for GET /api/marketplace/v3/fbs/supplies/{supplyId}/stickers/spot
+ * Maps to swagger schema: SupplySpotQRCode
+ */
+export interface SupplySpotStickerResponse {
+  /** Supply SPOT QR code in PNG format, base64 encoded */
+  qrCode: string;
 }
