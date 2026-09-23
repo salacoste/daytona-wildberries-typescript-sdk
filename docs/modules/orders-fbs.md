@@ -9,7 +9,7 @@ The **Orders FBS (Fulfillment by Seller)** module provides comprehensive order m
 **Module Name**: `ordersFBS`
 **Source**: Generated from `wildberries_api_doc/03-orders-fbs.yaml`
 **Base URL**: `https://marketplace-api.wildberries.ru`
-**Total Methods**: 40 methods across 8 functional areas
+**Total Methods**: 42 methods across 9 functional areas
 
 ### FBS vs FBW
 
@@ -129,6 +129,13 @@ Ensure your API key has the following permissions enabled:
 | `updateSupplySpot(supplyId, data)` | Add SPOT data to a supply (`spotAvailable: true` only) | 300 req/min |
 | `getSuppliesSpotList(data)` | Get SPOT data + DOPP status for up to 100 supplies | 300 req/min |
 | `getSupplySpotStickers(supplyId)` | Get the supply SPOT QR code (PNG, base64) | 300 req/min |
+
+### Shipping (2 methods)
+
+| Method | Description | Rate Limit |
+|--------|-------------|------------|
+| `getShippingPoints(params)` | List supply shipping points by city + cargo type (RF sellers) | 300 req/min |
+| `updateShippingMethod(data)` | Set shipping type/date/point for up to 100 supplies (mandatory from 2026-10-01) | 300 req/min |
 
 ---
 
@@ -263,6 +270,80 @@ if (spot?.status === 'completed') {
 **Rate limit penalty**: all four SPOT methods are on the standard FBS tier
 (300 req/min, 200 ms interval, burst 20), and **one request with a 4XX response counts
 as 10 requests** — validate `spotAvailable` before writing.
+
+---
+
+## Shipping (Supply Shipping Parameters)
+
+Since **2026-09-01**, sellers registered in the **Russian Federation** can set supply
+shipping parameters: the shipping type, the planned shipping date, and the shipping
+point (sorting center, warehouse or pickup point) the supply is shipped to.
+
+> **⚠️ MANDATORY FROM 2026-10-01 — deliver returns 409.** From October 1, 2026 supply
+> shipping parameters are **required**: `updateSuppliesDeliver()`
+> (PATCH `/api/v3/supplies/{supplyId}/deliver`) returns a **409 error** for supplies
+> handed over for delivery **without** shipping parameters — and without an electronic
+> waybill ID (ETrN) for transport-company deliveries. Set the shipping method *before*
+> calling deliver.
+
+### How it works
+
+1. **Pick a shipping point** — `getShippingPoints({ city, cargoType })` returns the
+   points available in the locality (Cyrillic name) that accept your cargo type
+   (`1` small-sized, `2` ODC, `3` CD+). Each point reports `officeType`
+   (`sc`/`sw`/`pp`) and whether the **Fulfillment in SC** service is available.
+2. **Set the shipping method** — `updateShippingMethod({ data: [...] })` sets
+   `shippingType` (`selfShipping` or `transportCompany`), `shippingDt` (`YYYY-MM-DD`)
+   and `shippingPointId` for up to **100 supplies per request**; the result is returned
+   per supply (`results[]` with `success` or `error`, e.g. `NotFound`,
+   `InvalidShippingDt`, `FulfillmentRequired`, `SupplyAlreadyScanned`).
+3. **Deliver** — call `updateSuppliesDeliver()` as usual; from 2026-10-01 it fails
+   with 409 if the shipping parameters are missing.
+
+The shipping method can be updated only **until the supply and its boxes are scanned**
+at the shipping point — after scanning, `updateShippingMethod()` itself returns 409.
+
+### Waybill (ETrN) — pending WB release
+
+For `"shippingType": "transportCompany"` deliveries, an electronic waybill ID (ETrN)
+must be attached to the supply via `PATCH /api/marketplace/v3/fbs/supplies/waybill`.
+**WB is still developing this method — it is intentionally NOT implemented in the SDK
+yet** (tracked in backlog; will be added when WB releases it). Note that the waybill ID
+is **reset** when the shipping type changes from `transportCompany` to `selfShipping`;
+switching back to `transportCompany` requires re-adding it.
+
+### Example
+
+```typescript
+// 1. Find a shipping point in Москва accepting small-sized cargo (type 1)
+const { shippingPoints } = await sdk.ordersFBS.getShippingPoints({
+  city: 'Москва',
+  cargoType: 1,
+});
+const point = shippingPoints.find(p => p.fulfillment) ?? shippingPoints[0];
+
+// 2. Set the shipping method (before deliver — mandatory from 2026-10-01)
+const result = await sdk.ordersFBS.updateShippingMethod({
+  data: [
+    {
+      supplyId: 'WB-GI-123456789',
+      shippingDt: '2026-10-05',
+      shippingPointId: point.id,
+      shippingType: 'selfShipping',
+    },
+  ],
+});
+const failed = result.results.filter(r => !r.success);
+if (failed.length) console.warn('Shipping method not set:', failed);
+
+// 3. Deliver as usual (409 from 2026-10-01 without shipping parameters)
+await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-123456789');
+```
+
+**Rate limit penalty**: both shipping methods are on the standard FBS tier
+(300 req/min, 200 ms interval, burst 20), and **one request with a 4XX response counts
+as 10 requests** — the per-supply 409 `SupplyAlreadyScanned` results already burn that
+budget via the batch call.
 
 ---
 

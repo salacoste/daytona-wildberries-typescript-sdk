@@ -1085,3 +1085,142 @@ export interface SupplySpotStickerResponse {
   /** Supply SPOT QR code in PNG format, base64 encoded */
   qrCode: string;
 }
+
+// ============================================================================
+// SHIPPING (supply shipping parameters)
+// ============================================================================
+
+/**
+ * Type of items a shipping point can accept:
+ * - `1` — small-sized items
+ * - `2` — over dimensional cargo (ODC)
+ * - `3` — dimensional cargo+ (CD+)
+ * Maps to swagger schema: ShippingPoint.cargoTypes items
+ */
+export type ShippingPointCargoType = 1 | 2 | 3;
+
+/**
+ * Shipping point type:
+ * - `sc` — sorting center
+ * - `sw` — warehouse
+ * - `pp` — pickup point
+ * Maps to swagger schema: ShippingPoint.officeType
+ */
+export type ShippingPointOfficeType = 'sc' | 'sw' | 'pp';
+
+/**
+ * Supply shipping point — the point the supply is shipped to.
+ * Maps to swagger schema: ShippingPoint
+ */
+export interface ShippingPoint {
+  /** Shipping point ID — use as `shippingPointId` in `updateShippingMethod()` */
+  id: number;
+  /** Name (e.g. 'Москва Морской') */
+  name: string;
+  /** Address (e.g. 'г Москва, Морской Проспект 54') */
+  address: string;
+  /** Locality */
+  city: string;
+  /** Shipping point type (sorting center / warehouse / pickup point) */
+  officeType: ShippingPointOfficeType;
+  /** Types of items this shipping point can accept */
+  cargoTypes: ShippingPointCargoType[];
+  /** Latitude */
+  latitude: number;
+  /** Longitude */
+  longitude: number;
+  /**
+   * Whether the **Fulfillment in SC** service for FBS supplies is available
+   * at this shipping point
+   */
+  fulfillment: boolean;
+}
+
+/**
+ * Query parameters for GET /api/marketplace/v3/fbs/shipping-points
+ * Maps to the inline parameters of the shipping-points operation
+ */
+export interface ShippingPointsParams {
+  /** Locality for shipping the supply, Cyrillic (e.g. 'Москва') */
+  city: string;
+  /** Type of items the shipping point must accept: 1 small-sized, 2 ODC, 3 CD+ */
+  cargoType: ShippingPointCargoType;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}
+
+/**
+ * Response for GET /api/marketplace/v3/fbs/shipping-points
+ * Maps to swagger schema: ShippingPointsResponse
+ */
+export interface ShippingPointsResponse {
+  /** Shipping points list */
+  shippingPoints: ShippingPoint[];
+}
+
+/**
+ * Type of shipping to the shipping point:
+ * - `selfShipping` — shipping at the seller's expense
+ * - `transportCompany` — delivery via a transport company. For this shipping type the
+ *   electronic waybill ID (ETrN) must also be attached to the supply — WB is still
+ *   developing the corresponding waybill method (`PATCH /api/marketplace/v3/fbs/supplies/waybill`)
+ * Maps to swagger schema: UpdateSupplyShippingMethod.shippingType
+ */
+export type SupplyShippingType = 'selfShipping' | 'transportCompany';
+
+/**
+ * Per-supply shipping parameters entry.
+ * Maps to swagger schema: UpdateSupplyShippingMethod
+ */
+export interface UpdateSupplyShippingMethod {
+  /** Supply ID */
+  supplyId: string;
+  /** Planned supply shipping date, format `YYYY-MM-DD` */
+  shippingDt: string;
+  /** Shipping point ID — get it via `getShippingPoints()` */
+  shippingPointId: number;
+  /** Type of shipping to the shipping point */
+  shippingType: SupplyShippingType;
+}
+
+/**
+ * Request body for PATCH /api/marketplace/v3/fbs/supplies/shipping-method
+ * Maps to swagger schema: UpdateSuppliesShippingMethodRequest
+ */
+export interface UpdateSuppliesShippingMethodRequest {
+  /** Supply shipping parameters (1-100 items); the result is returned per supply */
+  data: UpdateSupplyShippingMethod[];
+}
+
+/**
+ * Per-supply error entry in the shipping-method response.
+ * Maps to swagger schema: ReplyBatchError
+ */
+export interface SupplyShippingMethodError {
+  /** Error code (e.g. 400, 404, 409) */
+  code: number;
+  /** Additional error data (e.g. 'NotFound', 'SupplyAlreadyScanned', 'InvalidShippingDt') */
+  detail: string;
+}
+
+/**
+ * Per-supply processing result.
+ * Maps to swagger schema: UpdatedSupplies
+ */
+export interface UpdatedSupplies {
+  /** Supply ID */
+  supplyId: string;
+  /** Whether the request was processed successfully for this supply. Can only be `true` */
+  success?: boolean;
+  /** Error details when the request failed for this supply */
+  error?: SupplyShippingMethodError;
+}
+
+/**
+ * Response for PATCH /api/marketplace/v3/fbs/supplies/shipping-method
+ * Maps to swagger schema: UpdateSuppliesResponse
+ */
+export interface UpdateSuppliesResponse {
+  /** Processing result for each requested supply */
+  results: UpdatedSupplies[];
+}

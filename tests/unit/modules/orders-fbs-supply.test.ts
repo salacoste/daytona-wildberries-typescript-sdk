@@ -551,4 +551,99 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
       expect(result).toEqual(mockQr);
     });
   });
+
+  // ============================================================================
+  // SHIPPING (supply shipping parameters)
+  // ============================================================================
+
+  describe('Shipping methods', () => {
+    it('getShippingPoints should fetch shipping points filtered by city + cargoType', async () => {
+      const mockShippingPoints = {
+        shippingPoints: [
+          {
+            id: 100,
+            name: 'Москва Морской',
+            address: 'г Москва, Морской Проспект 54',
+            city: 'Москва',
+            officeType: 'pp' as const,
+            cargoTypes: [1, 3] as const,
+            latitude: 37.588898,
+            longitude: 55.386871,
+            fulfillment: true,
+          },
+          {
+            id: 101,
+            name: 'Москва Коломенская',
+            address: 'г Москва, Проспект Андропова 26',
+            city: 'Москва',
+            officeType: 'sw' as const,
+            cargoTypes: [1] as const,
+            latitude: 37.653453,
+            longitude: 55.687129,
+            fulfillment: false,
+          },
+        ],
+      };
+
+      mockClient.get.mockResolvedValue(mockShippingPoints);
+
+      const result = await ordersFbs.getShippingPoints({ city: 'Москва', cargoType: 1 });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/shipping-points',
+        expect.objectContaining({
+          params: { city: 'Москва', cargoType: 1 },
+          rateLimitKey: 'orders-fbs.getShippingPoints',
+        })
+      );
+      expect(result).toEqual(mockShippingPoints);
+      expect(result.shippingPoints).toHaveLength(2);
+      expect(result.shippingPoints[0].officeType).toBe('pp');
+      expect(result.shippingPoints[0].fulfillment).toBe(true);
+    });
+
+    it('updateShippingMethod should PATCH shipping parameters for a list of supplies', async () => {
+      const mockResults = {
+        results: [
+          { supplyId: 'WB-GI-100', success: true },
+          {
+            supplyId: 'WB-GI-300',
+            success: false,
+            error: { code: 409, detail: 'SupplyAlreadyScanned' },
+          },
+        ],
+      };
+
+      mockClient.patch.mockResolvedValue(mockResults);
+
+      const request = {
+        data: [
+          {
+            supplyId: 'WB-GI-100',
+            shippingDt: '2026-09-05',
+            shippingPointId: 100,
+            shippingType: 'selfShipping' as const,
+          },
+          {
+            supplyId: 'WB-GI-300',
+            shippingDt: '2026-09-05',
+            shippingPointId: 100,
+            shippingType: 'transportCompany' as const,
+          },
+        ],
+      };
+
+      const result = await ordersFbs.updateShippingMethod(request);
+
+      expect(mockClient.patch).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/shipping-method',
+        request,
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.patchSuppliesShippingMethod' })
+      );
+      expect(result).toEqual(mockResults);
+      expect(result.results).toHaveLength(2);
+      expect(result.results[0].success).toBe(true);
+      expect(result.results[1].error?.detail).toBe('SupplyAlreadyScanned');
+    });
+  });
 });
