@@ -284,4 +284,20 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+
+  // === SHIPPING (supply shipping parameters) — 300 req/min, 200ms interval, burst 20 (4XX = 10 requests) ===
+  /** GET /api/marketplace/v3/fbs/shipping-points — List supply shipping points */
+  'orders-fbs.getShippingPoints': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
+  /** PATCH /api/marketplace/v3/fbs/supplies/shipping-method — Set supply shipping method */
+  'orders-fbs.patchSuppliesShippingMethod': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

@@ -55,6 +55,10 @@ import type {
   SuppliesSpotListRequest,
   SuppliesSpotListResponse,
   SupplySpotStickerResponse,
+  ShippingPointsParams,
+  ShippingPointsResponse,
+  UpdateSuppliesShippingMethodRequest,
+  UpdateSuppliesResponse,
 } from '../../types/orders-fbs.types';
 
 export class OrdersFbsModule {
@@ -1280,6 +1284,124 @@ export class OrdersFbsModule {
     return this.client.get<SupplySpotStickerResponse>(
       `https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/${supplyId}/stickers/spot`,
       { rateLimitKey: 'orders-fbs.getSupplySpotStickers' }
+    );
+  }
+
+  // ============================================================================
+  // SHIPPING (supply shipping parameters)
+  // ============================================================================
+
+  /**
+   * Get supply shipping points
+   *
+   * Returns the supply shipping points available to the seller, filtered by
+   * Russian locality (`city`, Cyrillic) and by the type of items the point can
+   * accept (`cargoType`: 1 — small-sized, 2 — ODC, 3 — CD+). Each point reports
+   * whether the **Fulfillment in SC** service is available (`fulfillment`).
+   *
+   * Use the returned `id` values as `shippingPointId` when setting the supply
+   * shipping method via `updateShippingMethod()`.
+   *
+   * **Availability**: for sellers registered in the Russian Federation only,
+   * since 2026-09-01.
+   *
+   * **Important**: from **2026-10-01** supply shipping parameters are mandatory —
+   * `updateSuppliesDeliver()` (PATCH `/api/v3/supplies/{supplyId}/deliver`)
+   * returns a **409** error for supplies delivered without them. For
+   * `"shippingType":"transportCompany"` deliveries an electronic waybill ID
+   * (ETrN) is required as well — see the waybill note in `updateShippingMethod()`.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response counts as 10 requests.
+   *
+   * @param params - Filters: locality (Cyrillic) and cargo type
+   * @returns Promise resolving to the available shipping points
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsShippingPoints}
+   * @since task-198
+   *
+   * @example
+   * ```typescript
+   * const { shippingPoints } = await sdk.ordersFBS.getShippingPoints({
+   *   city: 'Москва',
+   *   cargoType: 1,
+   * });
+   * const withFulfillment = shippingPoints.filter(p => p.fulfillment);
+   * ```
+   */
+  async getShippingPoints(params: ShippingPointsParams): Promise<ShippingPointsResponse> {
+    return this.client.get<ShippingPointsResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/shipping-points',
+      { params, rateLimitKey: 'orders-fbs.getShippingPoints' }
+    );
+  }
+
+  /**
+   * Set the supply shipping method
+   *
+   * Sets the shipping type, shipping date and shipping point for up to 100
+   * supplies per request; the processing result is returned for each supply
+   * separately (`results[]` with `success` or `error`, e.g. `NotFound`,
+   * `InvalidShippingDt`, `FulfillmentRequired`).
+   *
+   * Get `shippingPointId` from `getShippingPoints()`. The shipping method can be
+   * updated only until the supply and its boxes are scanned at the shipping
+   * point — after that this method returns a 409 error.
+   *
+   * For `"shippingType":"transportCompany"` the electronic waybill ID (ETrN)
+   * must be attached to the supply as well. **Note**: the waybill method
+   * (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) exists in the WB spec but
+   * is still in development — it is intentionally NOT implemented in this SDK
+   * yet. The waybill ID added to a supply is reset when the shipping type
+   * changes from `transportCompany` to `selfShipping`; changing it back to
+   * `transportCompany` requires re-adding the waybill ID.
+   *
+   * **Availability**: for sellers registered in the Russian Federation only,
+   * since 2026-09-01.
+   *
+   * **Important**: from **2026-10-01** supply shipping parameters are mandatory —
+   * `updateSuppliesDeliver()` (PATCH `/api/v3/supplies/{supplyId}/deliver`)
+   * returns a **409** error for supplies delivered without them (and without an
+   * ETrN id for transport-company deliveries).
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response (including the 409s below) counts as 10 requests.
+   *
+   * @param data - Shipping parameters per supply (1-100 items)
+   * @returns Promise resolving to the per-supply processing results
+   * @throws {WBAPIError} 409 — supply already scanned at the shipping point, or the waybill UUID is already used (`WaybillUUIDConflict`)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesShippingMethod}
+   * @since task-198
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.updateShippingMethod({
+   *   data: [
+   *     {
+   *       supplyId: 'WB-GI-100',
+   *       shippingDt: '2026-09-05',
+   *       shippingPointId: 100,
+   *       shippingType: 'selfShipping',
+   *     },
+   *   ],
+   * });
+   * const failed = result.results.filter(r => !r.success);
+   * ```
+   */
+  async updateShippingMethod(
+    data: UpdateSuppliesShippingMethodRequest
+  ): Promise<UpdateSuppliesResponse> {
+    return this.client.patch<UpdateSuppliesResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/shipping-method',
+      data,
+      { rateLimitKey: 'orders-fbs.patchSuppliesShippingMethod' }
     );
   }
 }

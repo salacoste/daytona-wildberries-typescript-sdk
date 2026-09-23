@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **ordersFBS**: supply shipping parameters for RF sellers (available since 2026-09-01,
+  WB news 2026-09) — two new methods: `getShippingPoints(params)` (GET
+  `/api/marketplace/v3/fbs/shipping-points`; shipping points filtered by Cyrillic `city`
+  + `cargoType` 1/2/3, with `officeType` `sc`/`sw`/`pp` and the Fulfillment-in-SC
+  `fulfillment` flag) and `updateShippingMethod(data)` (PATCH
+  `/api/marketplace/v3/fbs/supplies/shipping-method`; sets `shippingType`
+  `selfShipping`/`transportCompany` + `shippingDt` + `shippingPointId` for up to 100
+  supplies per request, per-supply `results[]` with `success`/`error`). **From
+  2026-10-01 shipping parameters (+ ETrN id for transport-company deliveries) are
+  mandatory: `updateSuppliesDeliver()` returns 409 without them.** The waybill method
+  (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) exists in the WB spec but is still
+  in development — intentionally not implemented yet (tracked in backlog). Both
+  rate-limit keys registered (300/min, 200 ms interval, burst 20, 4XX = 10 requests).
 - **ordersFBS**: SPOT support (EAEU road-import declarations, WB news 2026-09) — four new methods:
   `getSpotCountries()` (GET `/api/marketplace/v3/fbs/dictionaries/countries/oksm` — OKSM country
   list for carrier codes), `updateSupplySpot(supplyId, data)` (PUT
