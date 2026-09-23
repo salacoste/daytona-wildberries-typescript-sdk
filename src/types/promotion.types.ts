@@ -2244,3 +2244,57 @@ export interface ListRecommendationsResponse {
   /** Additional error details (structure not documented in samples; `null` when absent). */
   additionalErrors: unknown;
 }
+
+// ============================================================================
+// V2 Budget Types (task-191)
+// ============================================================================
+// Source: WB Promotion API — POST /api/advert/v2/budget
+// Schema captured 2026-09-23 from .omc/artifacts/wb-specs/promotion.json
+// (official OpenAPI, operationId postV2Budget).
+
+/**
+ * Запрос метода POST /api/advert/v2/budget — бюджеты нескольких кампаний.
+ *
+ * @since task-191
+ */
+export interface V2BudgetRequest {
+  /**
+   * ID кампаний. От 1 до 50 элементов.
+   */
+  advertIds: number[];
+}
+
+/**
+ * Элемент ответа метода POST /api/advert/v2/budget — бюджет одной кампании.
+ *
+ * @since task-191
+ */
+export interface V2BudgetAdvert {
+  /** ID кампании */
+  advertId: number;
+  /**
+   * Валюта [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) (ISO 4217, напр. 'RUB').
+   */
+  currency: string;
+  /**
+   * Бюджет кампании в БАЗОВЫХ единицах валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) —
+   * НЕ в минорных (не в копейках).
+   */
+  total: number;
+}
+
+/**
+ * Ответ метода POST /api/advert/v2/budget — бюджеты кампаний.
+ *
+ * Бюджет возвращается только для кампаний в статусах `4` (готова к запуску),
+ * `9` (активна) и `11` (на паузе). Если по запрошенной кампании нет данных
+ * (не тот статус или кампания не принадлежит продавцу), соответствующий
+ * элемент массива — `null`.
+ *
+ * @since task-191
+ */
+export interface V2BudgetResponse {
+  /** Данные кампаний; элементы могут быть `null` */
+  adverts: (V2BudgetAdvert | null)[];
+}

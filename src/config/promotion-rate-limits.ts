@@ -399,4 +399,15 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.6,
     burstLimit: 10,
   },
+
+  // ============================================================================
+  // V2 Budget Rate Limits - NEW in task-191
+  // ============================================================================
+
+  /** POST /api/advert/v2/budget - Campaign budget balances (replaces GET /adv/v1/budget, WB disables it 2026-11-16) */
+  'promotion.v2Budget': {
+    requestsPerMinute: 20,
+    intervalSeconds: 3,
+    burstLimit: 4,
+  },
 };
