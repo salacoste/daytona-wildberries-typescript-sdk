@@ -448,6 +448,67 @@ interface CardCharacteristicOutput {
 }
 ```
 
+### Card Documents (v4.3.0)
+
+Product cards support a dedicated `documents` object (WB news 2026-09) in
+`createCardsUpload()` (per variant), `createUploadAdd()` (per card to add),
+`createCardsUpdate()`, and in `getCardsList()` responses (with validation verdicts).
+
+**Document types** (note: value `6` does not exist):
+
+| Type | Document |
+|------|----------|
+| `1` | Certificate of Conformity |
+| `2` | Correspondence (Conformity) Declaration |
+| `3` | Certificate of Registration of SGR |
+| `4` | Registration Certificate |
+| `5` | Certificate of Registration of the Republic of Belarus |
+| `7` | Registration of a Pesticide |
+| `8` | Registration of an Agrochemical |
+| `9` | Medicine Registration Certificate |
+
+```typescript
+// Request side — createCardsUpload() / createUploadAdd()
+interface CardDocumentsRequest {
+  items?: CardDocumentInput[];   // { type, number, productNumber?, tradeName?,
+                                 //   applicant?, startDate?, endDate?, isEndless? }
+  excludeDocuments?: boolean;    // true = skip document checks during listing validation
+                                 // (all passed values are replaced with empty values)
+}
+
+// Request side — createCardsUpdate() (update overwrites the card: pass ALL documents,
+// including unchanged ones — reuse their `id` from getCardsList())
+interface CardUpdateDocumentsRequest {
+  items?: CardUpdateDocumentInput[];  // CardDocumentInput + { id?: string }
+  excludeDocuments?: boolean;
+}
+
+// Response side — getCardsList() → cards[].documents
+interface CardDocumentsResponse {
+  items?: CardDocument[];               // includes verdict: { verified, status, reason, ... }
+  overallVerdict?: CardDocumentsOverallVerdict;
+  excludeDocuments?: boolean;
+}
+```
+
+> ⚠️ **Pass documents via the `documents` object only.** Passing documents through the
+> `characteristics` array is now restricted: it works only if the `documents` object was
+> never used for the card AND the "Documents" block in the new WB seller cabinet was never
+> filled — otherwise characteristics-based documents may be processed incorrectly.
+
+> ⚠️ **Card update overwrites the card.** When calling `createCardsUpdate()`, pass ALL
+> documents, including unchanged ones (reuse their `id`), or the omitted documents are dropped.
+
+Validation reasons (`verdict.reason` / `overallVerdict.reason` for `status: 2`):
+documents return `CardDocumentReason` (`document_missing`, `document_not_found`,
+`document_inactive`, `document_expired`, `applicant_mismatch`, `trade_name_mismatch`,
+`unknown`, `document_type_mismatch`, `document_dates_mismatch`); listings return
+`CardListingValidationReason` (`tnved_missing`, `supplier_inn_missing`,
+`supplier_not_registered`, `supplier_inactive`, `product_group_not_registered`,
+`kiz_required`, `kiz_certificate_missing`).
+
+See the [Working with Product Cards](../guides/working-with-product-cards.md#documents) guide for a full walkthrough.
+
 ### Product Card Types
 
 ```typescript

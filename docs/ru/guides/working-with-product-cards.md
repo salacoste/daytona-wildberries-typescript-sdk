@@ -22,6 +22,7 @@ layout: doc
 - [Решение проблем](#решение-проблем)
 - [Лучшие практики](#лучшие-практики)
 - [Структура ответа](#структура-ответа)
+- [Документы](#документы)
 
 ---
 
@@ -871,6 +872,134 @@ const nikeCards = allCards.filter(c => c.brand === 'Nike');
   }
 }
 ```
+
+---
+
+## Документы
+
+> **Начиная с v4.3.0 / новость WB 2026-09.** Карточки товаров поддерживают отдельный
+> объект `documents` в `createCardsUpload()` (на каждый вариант), `createUploadAdd()`
+> (на каждую добавляемую карточку), `createCardsUpdate()` и в ответах `getCardsList()`
+> (с результатами валидации).
+
+### Типы документов
+
+| Тип | Документ |
+|-----|----------|
+| `1` | Сертификат соответствия |
+| `2` | Декларация о соответствии |
+| `3` | Свидетельство о госрегистрации (СГР) |
+| `4` | Регистрационное удостоверение |
+| `5` | Свидетельство о регистрации Республики Беларусь |
+| `7` | Регистрация пестицида |
+| `8` | Регистрация агрохимиката |
+| `9` | Регистрационное удостоверение лекарственного средства |
+
+Примечание: тип `6` в спецификации WB отсутствует.
+
+### Передача документов при создании
+
+```typescript
+const result = await sdk.products.createCardsUpload([
+  {
+    subjectID: 105,
+    variants: [
+      {
+        vendorCode: 'ART-001',
+        brand: 'MyBrand',
+        title: 'Наименование товара',
+        sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+        characteristics: [{ id: 1, value: 'Blue' }],
+        documents: {
+          items: [
+            {
+              type: 1, // Сертификат соответствия
+              number: 'RU D-RU.АГ01.В.12345',
+              tradeName: 'Наименование товара',
+              startDate: '2025-01-15T00:00:00Z',
+              endDate: '2028-01-14T23:59:59Z',
+              isEndless: false,
+            },
+          ],
+          excludeDocuments: false,
+        },
+      },
+    ],
+  },
+]);
+```
+
+`excludeDocuments: true` отключает проверку документов при валидации листинга — при этом
+все переданные в `documents` значения заменяются пустыми. Оставляйте `false`, если не
+хотите сознательно отключить валидацию.
+
+### ⚠️ Не передавайте документы через характеристики
+
+Передача документов через массив `characteristics` теперь **ограничена**: она работает
+только если объект `documents` никогда не использовался для карточки И блок «Документы»
+в новом кабинете WB никогда не заполнялся. В противном случае документы в
+`characteristics` **могут быть обработаны некорректно**. WB рекомендует использовать
+только объект `documents`.
+
+### ⚠️ Обновление перезаписывает карточку — передавайте ВСЕ документы
+
+`createCardsUpdate()` полностью перезаписывает карточку. Передавайте **ВСЕ** документы,
+включая неизменённые, иначе пропущенные документы будут удалены. Чтобы сохранить
+существующий документ, переиспользуйте его `id` (из `getCardsList()` →
+`cards[].documents.items[].id`):
+
+```typescript
+// 1. Получаем текущие документы
+const list = await sdk.products.getCardsList({
+  settings: { cursor: { limit: 100 }, filter: { nmID: 12345678 } },
+});
+const docs = list.cards[0].documents?.items ?? [];
+
+// 2. Обновляем карточку, передавая все документы (неизменённые — со своими id)
+await sdk.products.createCardsUpdate([
+  {
+    nmID: 12345678,
+    vendorCode: 'ART-001',
+    sizes: [{ chrtID: 111, techSize: '42', wbSize: '42', skus: ['1234567890123'] }],
+    documents: {
+      items: [
+        ...docs.map(({ verdict: _verdict, createdAt: _createdAt, ...doc }) => doc),
+        { type: 3, number: 'RU.77.99.88.001.E.002000.01.20', isEndless: true }, // новый документ
+      ],
+      excludeDocuments: false,
+    },
+  },
+]);
+```
+
+### Чтение результатов валидации
+
+`getCardsList()` возвращает каждый документ с `verdict` (после завершения валидации),
+а также `overallVerdict` для всего листинга. `status: 1` — проверка пройдена,
+`status: 2` — отклонено; при отклонении доступна машиночитаемая причина `reason`
+(`CardDocumentReason` для документов, `CardListingValidationReason` для листинга):
+
+```typescript
+const list = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
+
+for (const card of list.cards ?? []) {
+  for (const doc of card.documents?.items ?? []) {
+    if (doc.verdict?.status === 2) {
+      console.error(
+        `Карточка ${card.nmID}: документ ${doc.number} отклонён — ${doc.verdict.reason}`
+      );
+      // напр. 'document_expired', 'document_not_found', 'applicant_mismatch', ...
+    }
+  }
+  if (card.documents?.overallVerdict?.status === 2) {
+    console.error(`Карточка ${card.nmID}: листинг отклонён — ${card.documents.overallVerdict.reason}`);
+    // напр. 'tnved_missing', 'kiz_required', ...
+  }
+}
+```
+
+Документы, ранее переданные только через `characteristics`, WB автоматически
+дублирует в объект `documents`, поэтому в ответе всегда виден полный набор документов.
 
 ---
 

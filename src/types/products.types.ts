@@ -1068,6 +1068,247 @@ export interface CardCharacteristicOutput {
 }
 
 // ============================================================================
+// Card Documents (v4.3.0 — WB news 2026-09: dedicated documents object)
+// ============================================================================
+
+/**
+ * Product card document type (WB register document kinds).
+ *
+ * Note: value `6` does not exist in the WB spec.
+ *
+ * - `1` — Certificate of Conformity
+ * - `2` — Correspondence (Conformity) Declaration
+ * - `3` — Certificate of Registration of SGR (state registration certificate)
+ * - `4` — Registration Certificate
+ * - `5` — Certificate of Registration of the Republic of Belarus
+ * - `7` — Registration of a Pesticide
+ * - `8` — Registration of an Agrochemical
+ * - `9` — Medicine Registration Certificate
+ *
+ * @since 4.3.0
+ */
+export type CardDocumentType = 1 | 2 | 3 | 4 | 5 | 7 | 8 | 9;
+
+/**
+ * A single product card document in create requests.
+ * Used in `createCardsUpload()` (per variant), `createUploadAdd()` (per card to add).
+ *
+ * ⚠️ **WB recommends passing documents ONLY through this `documents` object.**
+ * Passing documents via the `characteristics` array is now restricted: it keeps working
+ * only if the `documents` object was never used for the card AND the "Documents" block
+ * in the new WB seller cabinet was never filled — otherwise characteristics-based
+ * documents may be processed incorrectly.
+ *
+ * @since 4.3.0
+ * @example
+ * ```typescript
+ * const documents: CardDocumentsRequest = {
+ *   items: [
+ *     {
+ *       type: 1, // Certificate of Conformity
+ *       number: 'RU D-RU.АГ01.В.12345',
+ *       tradeName: 'Product Trade Name',
+ *       startDate: '2025-01-15T00:00:00Z',
+ *       endDate: '2028-01-14T23:59:59Z',
+ *       isEndless: false,
+ *     },
+ *   ],
+ * };
+ * ```
+ */
+export interface CardDocumentInput {
+  /** Document type. See {@link CardDocumentType} for the full list of kinds. */
+  type?: CardDocumentType;
+  /** Document number */
+  number?: string;
+  /** Additional document number */
+  productNumber?: string;
+  /** Trade name */
+  tradeName?: string;
+  /** Representative of the medical device manufacturer */
+  applicant?: string;
+  /** Document start date and time (ISO 8601, e.g. `2025-01-15T00:00:00Z`) */
+  startDate?: string;
+  /** Document end date and time (ISO 8601). Omit when `isEndless: true` */
+  endDate?: string;
+  /** Is the document valid indefinitely: `true` — indefinite, `false` — has an expiration date */
+  isEndless?: boolean;
+}
+
+/**
+ * Documents block of a product card in create requests
+ * (`createCardsUpload()`, `createUploadAdd()`).
+ *
+ * @since 4.3.0
+ */
+export interface CardDocumentsRequest {
+  /** Document list */
+  items?: CardDocumentInput[];
+  /**
+   * Whether to exclude the documents from listing validation.
+   *
+   * - `true` — do NOT check the documents when validating the listing.
+   *   When `true`, all values passed to `documents` are replaced with empty values.
+   * - `false` (default) — check the documents when validating the listing.
+   */
+  excludeDocuments?: boolean;
+}
+
+/**
+ * A single product card document in update requests (`createCardsUpdate()`).
+ *
+ * ⚠️ **Card update OVERWRITES the card** — pass ALL documents, including the
+ * unchanged ones, or the omitted documents are dropped. Reuse the `id` of an
+ * existing document (from `getCardsList()` → `documents.items[].id`) to keep it.
+ *
+ * @since 4.3.0
+ */
+export interface CardUpdateDocumentInput extends CardDocumentInput {
+  /** Document ID (from `getCardsList()` response). Identifies an already-attached document */
+  id?: string;
+}
+
+/**
+ * Documents block of a product card in update requests (`createCardsUpdate()`).
+ *
+ * Card update overwrites the card: pass the full document list, including
+ * unchanged documents.
+ *
+ * @since 4.3.0
+ */
+export interface CardUpdateDocumentsRequest {
+  /** Document list. Include ALL documents (update overwrites the card) */
+  items?: CardUpdateDocumentInput[];
+  /**
+   * Whether to exclude the documents from listing validation.
+   *
+   * - `true` — do NOT check the documents when validating the listing.
+   *   When `true`, all values passed to `documents` are replaced with empty values.
+   * - `false` (default) — check the documents when validating the listing.
+   */
+  excludeDocuments?: boolean;
+}
+
+/**
+ * Reason a card document failed validation.
+ * Returned for `verdict.status: 2` (validation rejected) in `getCardsList()` responses.
+ *
+ * @since 4.3.0
+ */
+export type CardDocumentReason =
+  | 'document_missing'
+  | 'document_not_found'
+  | 'document_inactive'
+  | 'document_expired'
+  | 'applicant_mismatch'
+  | 'trade_name_mismatch'
+  | 'unknown'
+  | 'document_type_mismatch'
+  | 'document_dates_mismatch';
+
+/**
+ * Reason a card listing failed validation.
+ * Returned for `overallVerdict.status: 2` (validation rejected) in `getCardsList()` responses.
+ *
+ * @since 4.3.0
+ */
+export type CardListingValidationReason =
+  | 'tnved_missing'
+  | 'supplier_inn_missing'
+  | 'supplier_not_registered'
+  | 'supplier_inactive'
+  | 'product_group_not_registered'
+  | 'kiz_required'
+  | 'kiz_certificate_missing';
+
+/**
+ * Validation verdict of a single card document.
+ * Returned in `getCardsList()` responses when the document validation is completed.
+ *
+ * @since 4.3.0
+ */
+export interface CardDocumentVerdict {
+  /** `true` — the document is validated, `false` — not validated */
+  verified?: boolean;
+  /** Document validation result: `1` — validation passed, `2` — validation rejected */
+  status?: number;
+  /** Validation error, returned for `status: 2`. See {@link CardDocumentReason} */
+  reason?: CardDocumentReason | null;
+  /** Additional data */
+  additionalData?: Record<string, unknown> | null;
+  /** Listing validation date (ISO 8601) */
+  createdAt?: string;
+}
+
+/**
+ * Overall validation verdict of the card listing documents.
+ * Returned in `getCardsList()` responses when the validation is completed.
+ *
+ * @since 4.3.0
+ */
+export interface CardDocumentsOverallVerdict {
+  /** `true` — the listing is validated, `false` — not validated */
+  isFullyChecked?: boolean;
+  /** Listing validation result: `1` — validation passed, `2` — validation rejected */
+  status?: number;
+  /** Validation error, returned for `status: 2`. See {@link CardListingValidationReason} */
+  reason?: CardListingValidationReason | null;
+  /** Listing validation date and time (ISO 8601) */
+  createdAt?: string;
+}
+
+/**
+ * A single product card document as returned by `getCardsList()`.
+ *
+ * Documents previously passed only via the `characteristics` array are
+ * auto-duplicated into this `documents` object by WB.
+ *
+ * @since 4.3.0
+ */
+export interface CardDocument {
+  /** Document ID */
+  id?: string;
+  /** Document type. See {@link CardDocumentType} for the full list of kinds. */
+  type?: CardDocumentType;
+  /** Document number */
+  number?: string;
+  /** Additional document number */
+  productNumber?: string;
+  /** Trade name */
+  tradeName?: string;
+  /** Representative of the medical device manufacturer */
+  applicant?: string;
+  /** Document start date and time (ISO 8601) */
+  startDate?: string;
+  /** Document end date and time (ISO 8601) */
+  endDate?: string;
+  /** Is the document valid indefinitely: `true` — indefinite, `false` — has an expiration date */
+  isEndless?: boolean;
+  /** Document validation result (present once validation is completed) */
+  verdict?: CardDocumentVerdict;
+  /** Date the document was added (ISO 8601) */
+  createdAt?: string;
+}
+
+/**
+ * Documents block of a product card in `getCardsList()` responses.
+ *
+ * @since 4.3.0
+ */
+export interface CardDocumentsResponse {
+  /** Document list */
+  items?: CardDocument[];
+  /** Listing validation result (present once validation is completed) */
+  overallVerdict?: CardDocumentsOverallVerdict;
+  /**
+   * Whether the documents are excluded from the listing validation:
+   * `true` — documents are not validated when checking the listing,
+   * `false` — documents are checked when validating the listing.
+   */
+  excludeDocuments?: boolean;
+}
+
+// ============================================================================
 // Stock Management Types (v3.12.0 — sku → chrtId migration)
 // ============================================================================
 

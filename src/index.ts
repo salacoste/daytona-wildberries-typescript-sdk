@@ -762,6 +762,21 @@ export type {
   DeleteCardsFromTrashResponse,
 } from './types/products.types';
 
+// Products card documents types (v4.3.0 — WB news 2026-09: dedicated documents object)
+export type {
+  CardDocumentType,
+  CardDocumentInput,
+  CardDocumentsRequest,
+  CardUpdateDocumentInput,
+  CardUpdateDocumentsRequest,
+  CardDocumentReason,
+  CardListingValidationReason,
+  CardDocumentVerdict,
+  CardDocumentsOverallVerdict,
+  CardDocument,
+  CardDocumentsResponse,
+} from './types/products.types';
+
 // User Management types (no name conflicts with global types)
 export type {
   AccessCode,

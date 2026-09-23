@@ -22,6 +22,7 @@ Complete guide to fetching, filtering, and paginating product cards using the `g
 - [Troubleshooting](#troubleshooting)
 - [Best Practices](#best-practices)
 - [Response Structure](#response-structure)
+- [Documents](#documents)
 
 ---
 
@@ -871,6 +872,131 @@ const nikeCards = allCards.filter(c => c.brand === 'Nike');
   }
 }
 ```
+
+---
+
+## Documents
+
+> **Since v4.3.0 / WB news 2026-09.** Product cards support a dedicated `documents`
+> object in `createCardsUpload()` (per variant), `createUploadAdd()` (per card to add),
+> `createCardsUpdate()`, and in `getCardsList()` responses (with validation verdicts).
+
+### Document Types
+
+| Type | Document |
+|------|----------|
+| `1` | Certificate of Conformity |
+| `2` | Correspondence (Conformity) Declaration |
+| `3` | Certificate of Registration of SGR |
+| `4` | Registration Certificate |
+| `5` | Certificate of Registration of the Republic of Belarus |
+| `7` | Registration of a Pesticide |
+| `8` | Registration of an Agrochemical |
+| `9` | Medicine Registration Certificate |
+
+Note: type `6` does not exist in the WB spec.
+
+### Passing Documents on Create
+
+```typescript
+const result = await sdk.products.createCardsUpload([
+  {
+    subjectID: 105,
+    variants: [
+      {
+        vendorCode: 'ART-001',
+        brand: 'MyBrand',
+        title: 'Product Name',
+        sizes: [{ techSize: '42', skus: ['1234567890123'] }],
+        characteristics: [{ id: 1, value: 'Blue' }],
+        documents: {
+          items: [
+            {
+              type: 1, // Certificate of Conformity
+              number: 'RU D-RU.АГ01.В.12345',
+              tradeName: 'Product Name',
+              startDate: '2025-01-15T00:00:00Z',
+              endDate: '2028-01-14T23:59:59Z',
+              isEndless: false,
+            },
+          ],
+          excludeDocuments: false,
+        },
+      },
+    ],
+  },
+]);
+```
+
+`excludeDocuments: true` skips document checks during listing validation — but all
+values passed to `documents` are then replaced with empty values. Leave it `false`
+unless you deliberately want to opt out of validation.
+
+### ⚠️ Do Not Pass Documents via Characteristics
+
+Passing documents through the `characteristics` array is now **restricted**: it keeps
+working only if the `documents` object was never used for the card AND the "Documents"
+block in the new WB seller cabinet was never filled. Otherwise characteristics-based
+documents **may be processed incorrectly**. WB recommends using the `documents` object only.
+
+### ⚠️ Update Overwrites the Card — Resend ALL Documents
+
+`createCardsUpdate()` fully overwrites the card. Pass **ALL** documents, including the
+unchanged ones, or the omitted documents are dropped. Reuse the `id` of an existing
+document (from `getCardsList()` → `cards[].documents.items[].id`) to keep it:
+
+```typescript
+// 1. Fetch current documents
+const list = await sdk.products.getCardsList({
+  settings: { cursor: { limit: 100 }, filter: { nmID: 12345678 } },
+});
+const docs = list.cards[0].documents?.items ?? [];
+
+// 2. Update the card resending every document (unchanged ones keep their id)
+await sdk.products.createCardsUpdate([
+  {
+    nmID: 12345678,
+    vendorCode: 'ART-001',
+    sizes: [{ chrtID: 111, techSize: '42', wbSize: '42', skus: ['1234567890123'] }],
+    documents: {
+      items: [
+        ...docs.map(({ verdict: _verdict, createdAt: _createdAt, ...doc }) => doc),
+        { type: 3, number: 'RU.77.99.88.001.E.002000.01.20', isEndless: true }, // new document
+      ],
+      excludeDocuments: false,
+    },
+  },
+]);
+```
+
+### Reading Validation Verdicts
+
+`getCardsList()` returns each document with a `verdict` (once validation completes),
+plus an `overallVerdict` for the whole listing. `status: 1` = passed, `status: 2` =
+rejected — rejected verdicts carry a machine-readable `reason`
+(`CardDocumentReason` for documents, `CardListingValidationReason` for the listing):
+
+```typescript
+const list = await sdk.products.getCardsList({ settings: { cursor: { limit: 100 } } });
+
+for (const card of list.cards ?? []) {
+  for (const doc of card.documents?.items ?? []) {
+    if (doc.verdict?.status === 2) {
+      console.error(
+        `Card ${card.nmID}: document ${doc.number} rejected — ${doc.verdict.reason}`
+      );
+      // e.g. 'document_expired', 'document_not_found', 'applicant_mismatch', ...
+    }
+  }
+  if (card.documents?.overallVerdict?.status === 2) {
+    console.error(`Card ${card.nmID}: listing rejected — ${card.documents.overallVerdict.reason}`);
+    // e.g. 'tnved_missing', 'kiz_required', ...
+  }
+}
+```
+
+Documents previously passed only via `characteristics` are auto-duplicated into the
+`documents` object by WB, so the response always shows the full document set.
 
 ---
 
