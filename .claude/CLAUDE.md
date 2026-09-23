@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Wildberries API TypeScript SDK** — Production-ready, full-featured SDK providing type-safe access to all Wildberries marketplace API methods.
 
 - **Package**: `daytona-wildberries-typescript-sdk`
-- **Version**: **4.1.0** (production-ready; 223 Backlog.md tasks completed, board cleared)
+- **Version**: **4.1.0** (production-ready; Sept 2026 WB API sync landed — daily limits, budget v2 + v1 deprecation, supply discrepancies/drafts, SPOT, shipping, card documents, seller-warehouses stocks, DT typed error)
 - **Module**: ESM (`"type": "module"`), Node **≥20**, dual ESM/CJS build via Vite
 - **License**: Personal Use (`SEE LICENSE IN LICENSE`)
 - **Repo**: `github.com/salacoste/daytona-wildberries-typescript-sdk`
@@ -145,20 +145,20 @@ The SDK exposes **14 public modules** on the `WildberriesSDK` instance (`sdk.*`)
 |---|---|---|---|---|---|
 | 1 | `sdk.general` | `GeneralModule` | common-api | 10 | Ping, server time, news, seller info, auth utilities |
 | 2 | `sdk.products` | `ProductsModule` | content-api | 51 | Categories, product cards, characteristics, media, pricing, warehouse, stock |
-| 3 | `sdk.ordersFBS` | `OrdersFbsModule` | marketplace-api | 35 | Seller-warehouse (FBS) fulfillment, order status, shipping, marking codes |
-| 4 | `sdk.ordersFBW` | `OrdersFbwModule` | marketplace-api | 12 | WB-warehouse (FBO/FBW) supply, acceptance coefficients, transit tariffs |
+| 3 | `sdk.ordersFBS` | `OrdersFbsModule` | marketplace-api | 42 | Seller-warehouse (FBS) fulfillment, order status, shipping, marking codes |
+| 4 | `sdk.ordersFBW` | `OrdersFbwModule` | marketplace-api | 19 | WB-warehouse (FBO/FBW) supply, acceptance coefficients, transit tariffs |
 | 5 | `sdk.ordersDBS` | `OrdersDbsModule` | marketplace-api | 20 | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata |
 | 6 | `sdk.finances` | `FinancesModule` | finance-api / statistics-api | 11 | Balance, realization reports, documents (list/download) |
-| 7 | `sdk.analytics` | `AnalyticsModule` | seller-analytics-api | 19 | Sales funnel v3, search queries, stock history, CSV reports, item rating v2 |
+| 7 | `sdk.analytics` | `AnalyticsModule` | seller-analytics-api | 20 | Sales funnel v3, search queries, stock history, CSV reports, item rating v2 |
 | 8 | `sdk.communications` | `CommunicationsModule` | common-api | 25 | Customer chat, product Q&A, reviews, pinned reviews |
 | 9 | `sdk.reports` | `ReportsModule` | statistics-api | 25 | Incomes, stocks, sales/returns, excise, async warehouse-remains reports |
-| 10 | `sdk.promotion` | `PromotionModule` | advert-api | 45 | Campaigns, auction/manual bids, budgets, statistics |
+| 10 | `sdk.promotion` | `PromotionModule` | advert-api | 48 | Campaigns, auction/manual bids, budgets, statistics |
 | 11 | `sdk.tariffs` | `TariffsModule` | — | 5 | Commission rates, box/pallet storage, return tariffs, acceptance coefficients |
 | 12 | `sdk.inStorePickup` | `InStorePickupModule` | — (click & collect) | 18 | Pickup order lifecycle, customer verification, SGTIN/UIN/IMEI/GTIN metadata |
 | 13 | `sdk.userManagement` | `UserManagementModule` | common-api | 4 | Invitations, user listing, access rights, deletion |
 | 14 | `sdk.returns` | `ReturnsModule` | aggregator (since v3.10.0) | 3 | Unified FBO+FBS+Finance return analytics, partial-failure tolerant |
 
-**Total: 283 public methods across the 14 modules.**
+**Total: 300 public methods across the 14 modules.**
 
 **Supplemental module (NOT a public `sdk.*` property):** `src/modules/1_0_0/` — 5 legacy methods (`getContentTags`, `getAdvAdvert`, `createAdvFullstat`, `getAdvFullstats`, `getCalendarPromotions`) retained for backward compatibility.
 
@@ -1055,7 +1055,7 @@ Before marking any module complete:
 
 ---
 
-**Last Updated**: 2026-08-09
+**Last Updated**: 2026-09-24
 **SDK Version**: 4.1.0
 **OpenAPI Version**: 3.0.1
-**Status**: Production-ready · 14 public modules · 223 Backlog.md tasks done
+**Status**: Production-ready · 14 public modules · 235 Backlog.md tasks done (Sept 2026 WB API sync: +17 methods, tasks 186–201)
