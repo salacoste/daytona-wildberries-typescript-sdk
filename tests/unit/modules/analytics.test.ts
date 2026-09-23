@@ -453,6 +453,9 @@ describe('AnalyticsModule', () => {
       // v1 WB Warehouses Inventory (1)
       expect(typeof module.getWbWarehousesStock).toBe('function');
 
+      // v1 Seller Warehouses Inventory (1) — task-199
+      expect(typeof module.getSellerWarehousesStock).toBe('function');
+
       // Item Rating (v2 current + v1 deprecated)
       expect(typeof module.getItemRatingV2).toBe('function');
       expect(typeof module.getItemRating).toBe('function');
@@ -535,6 +538,87 @@ describe('AnalyticsModule', () => {
       mockClient.post.mockResolvedValue({ data: { items: [] } });
 
       const result = await module.getWbWarehousesStock({ nmIds: [999999] });
+
+      expect(result.data.items).toEqual([]);
+    });
+  });
+
+  // ============================================================================
+  // getSellerWarehousesStock (v1 Seller Warehouses Inventory) — task-199
+  // ============================================================================
+
+  describe('getSellerWarehousesStock()', () => {
+    const SELLER_WAREHOUSES_URL = `${BASE_URL}/api/analytics/v1/stocks-report/seller-warehouses`;
+
+    it('should return inventory items with warehouse and region data', async () => {
+      const mockResponse = {
+        data: {
+          items: [
+            {
+              nmId: 47254354,
+              chrtId: 91663228,
+              warehouseId: 123456,
+              warehouseName: 'склад продавца Иркутск',
+              regionName: 'Дальневосточный и Сибирский',
+              quantity: 43,
+            },
+          ],
+        },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getSellerWarehousesStock({ nmIds: [47254354] });
+
+      expect(result.data.items).toHaveLength(1);
+      expect(result.data.items[0].warehouseId).toBe(123456);
+      expect(result.data.items[0].warehouseName).toBe('склад продавца Иркутск');
+      expect(result.data.items[0].regionName).toBe('Дальневосточный и Сибирский');
+      expect(result.data.items[0].quantity).toBe(43);
+    });
+
+    it('should call correct URL and rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ data: { items: [] } });
+
+      await module.getSellerWarehousesStock({ nmIds: [123], limit: 100, offset: 50 });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        SELLER_WAREHOUSES_URL,
+        { nmIds: [123], limit: 100, offset: 50 },
+        { rateLimitKey: 'analytics.postStocksReportSellerWarehouses' }
+      );
+      expect(analyticsRateLimits['analytics.postStocksReportSellerWarehouses']).toEqual({
+        requestsPerMinute: 3,
+        intervalSeconds: 20,
+        burstLimit: 1,
+      });
+    });
+
+    it('should send empty object when no params provided', async () => {
+      mockClient.post.mockResolvedValue({ data: { items: [] } });
+
+      await module.getSellerWarehousesStock();
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        SELLER_WAREHOUSES_URL,
+        {},
+        { rateLimitKey: 'analytics.postStocksReportSellerWarehouses' }
+      );
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+      await expect(module.getSellerWarehousesStock()).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 5000));
+      await expect(module.getSellerWarehousesStock()).rejects.toThrow(RateLimitError);
+    });
+
+    it('should handle empty items array', async () => {
+      mockClient.post.mockResolvedValue({ data: { items: [] } });
+
+      const result = await module.getSellerWarehousesStock({ nmIds: [999999] });
 
       expect(result.data.items).toEqual([]);
     });

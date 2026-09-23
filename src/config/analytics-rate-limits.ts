@@ -85,6 +85,12 @@ export const analyticsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 20,
     burstLimit: 1,
   },
+  // v1 Seller Warehouses Inventory (task-199; replaces per-warehouse POST /api/v3/stocks/{warehouseId} usage)
+  'analytics.postStocksReportSellerWarehouses': {
+    requestsPerMinute: 3,
+    intervalSeconds: 20,
+    burstLimit: 1,
+  },
   // v3 Sales Funnel endpoints
   'analytics.postSalesFunnelProducts': {
     requestsPerMinute: 3,

@@ -44,6 +44,8 @@ import type {
   TableSizeResponse,
   WbWarehousesStockRequest,
   WbWarehousesStockResponse,
+  SellerWarehousesStockRequest,
+  SellerWarehousesStockResponse,
   ItemRatingRequest,
   ItemRatingResponseWrapper,
   ItemRatingV2Request,
@@ -586,6 +588,62 @@ export class AnalyticsModule {
   }
 
   /**
+   * Текущие остатки на складах продавца
+   *
+   * Возвращает актуальные остатки товаров на складах продавца (FBS) сразу по
+   * ВСЕМ складам — в запросе не нужно передавать ID складов и размеры товаров
+   * (фильтры nmIds/chrtIds опциональны).
+   *
+   * Данные обновляются раз в 30 минут. Одна строка ответа = один размер
+   * товара на одном складе продавца.
+   *
+   * Доступен только для токенов типа Personal и Service.
+   *
+   * **Заменяет использование** `POST /api/v3/stocks/{warehouseId}`
+   * (`sdk.products.getStocks`) — WB recommends this report instead
+   * of fetching stocks warehouse-by-warehouse.
+   *
+   * Rate limit: 3 requests per minute, 20-second interval, burst 1 (strict)
+   *
+   * @param data - Filter and pagination parameters (all optional)
+   * @param data.nmIds - WB articles to filter (0-1000, empty = all)
+   * @param data.chrtIds - Size IDs (only for articles in nmIds)
+   * @param data.limit - Rows in response (max 250000, default 250000)
+   * @param data.offset - Skip N results for pagination (default 0)
+   * @returns Current seller-warehouse inventory with warehouse IDs, region names, quantities
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-199
+   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/stocksReport/operation/postAnalyticsV1StocksReportSellerWarehouses}
+   * @example
+   * ```typescript
+   * // Get inventory across ALL seller warehouses — no warehouse/size IDs needed
+   * const stock = await sdk.analytics.getSellerWarehousesStock();
+   * for (const item of stock.data.items) {
+   *   console.log(`${item.warehouseName} (${item.regionName}): ${item.quantity} шт.`);
+   * }
+   *
+   * // With filters and pagination
+   * const page = await sdk.analytics.getSellerWarehousesStock({
+   *   nmIds: [395996251],
+   *   limit: 100,
+   *   offset: 0,
+   * });
+   * ```
+   */
+  async getSellerWarehousesStock(
+    data?: SellerWarehousesStockRequest
+  ): Promise<SellerWarehousesStockResponse> {
+    return this.client.post<SellerWarehousesStockResponse>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/stocks-report/seller-warehouses',
+      data ?? {},
+      { rateLimitKey: 'analytics.postStocksReportSellerWarehouses' }
+    );
+  }
+
+  /**
    * Get the v2 item-rating report, including catalog visibility.
    *
    * Use `onlyShadowedNms: true` to replace the deprecated
@@ -786,6 +844,9 @@ export type {
   WbWarehousesStockRequest,
   WbWarehouseStockItem,
   WbWarehousesStockResponse,
+  SellerWarehousesStockRequest,
+  SellerWarehouseStockItem,
+  SellerWarehousesStockResponse,
   ItemRatingRequest,
   ItemRatingResponse,
   ItemRatingResponseWrapper,

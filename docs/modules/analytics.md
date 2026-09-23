@@ -12,8 +12,13 @@ The **Analytics** module provides access to sales funnel analytics, search query
 | **SDK Namespace** | `sdk.analytics.*` |
 | **Base URL** | `https://seller-analytics-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/11-analytics/` |
-| **Methods** | 19 |
+| **Methods** | 20 |
 | **Authentication** | API Key (Header) |
+
+### What's New (Unreleased)
+
+- **NEW `getSellerWarehousesStock()`** (WB news 2026-09): current inventory across ALL seller warehouses — no warehouse/size IDs required in the request. Replaces per-warehouse `POST /api/v3/stocks/{warehouseId}` usage. Data refreshes once every 30 minutes.
+- **3 new types**: `SellerWarehousesStockRequest`, `SellerWarehouseStockItem`, `SellerWarehousesStockResponse`
 
 ### What's New (v3.4.0 - March 2026)
 
@@ -114,6 +119,12 @@ All three Sales Funnel v3 responses now include an optional `currency` field (e.
 |--------|------|----------|-------------|
 | `getWbWarehousesStock()` | POST | `/api/analytics/v1/stocks-report/wb-warehouses` | Get current inventory on WB warehouses |
 
+### Seller Warehouse Inventory (1 method) - NEW (WB news 2026-09)
+
+| Method | HTTP | Endpoint | Description |
+|--------|------|----------|-------------|
+| `getSellerWarehousesStock()` | POST | `/api/analytics/v1/stocks-report/seller-warehouses` | Get current inventory across ALL seller warehouses — no warehouse/size IDs needed |
+
 ### Item Rating
 
 | Method | HTTP | Endpoint | Description |
@@ -144,6 +155,7 @@ All methods share the same rate limit tier:
 |-----------|-------|----------|-------|
 | All analytics endpoints | 3 req/min | 20s | 3 |
 | `getWbWarehousesStock()` | 3 req/min | 20s | 1 |
+| `getSellerWarehousesStock()` | 3 req/min | 20s | 1 |
 
 ---
 
@@ -209,6 +221,68 @@ const sized = await sdk.analytics.getWbWarehousesStock({
   nmIds: [395996251],
   chrtIds: [123456789],
 });
+```
+
+---
+
+### getSellerWarehousesStock() - Seller Warehouse Inventory (NEW, WB news 2026-09)
+
+Returns current inventory quantities across **all seller warehouses** in a single request —
+no warehouse or size IDs are required (filters are optional). Data is updated once every
+30 minutes. Each row represents one item size in one seller warehouse.
+
+**Endpoint:** `POST /api/analytics/v1/stocks-report/seller-warehouses`
+
+**Request parameters (`SellerWarehousesStockRequest`):**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| nmIds | number[] | No | WB article IDs to filter (0-1000 items, empty = all products) |
+| chrtIds | number[] | No | Size IDs (only used for articles specified in nmIds) |
+| limit | number | No | Rows in response (max 250000, default 250000) |
+| offset | number | No | Number of results to skip for pagination (default 0) |
+
+**Response fields (`SellerWarehouseStockItem`):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `nmId` | number | WB article ID |
+| `chrtId` | number | Size ID |
+| `warehouseId` | number | Seller warehouse ID |
+| `warehouseName` | string | Seller warehouse name |
+| `regionName` | string | Region name |
+| `quantity` | number | Current quantity in warehouse |
+
+Unlike the WB-warehouses report, no `inWayToClient`/`inWayFromClient` in-transit counts are returned.
+
+**Rate Limit:** 3 requests/minute, 20-second interval, burst 1 (strict)
+
+**Token types:** Only available for Personal and Service tokens.
+
+::: tip Replaces Per-Warehouse Stocks Calls
+WB recommends this report instead of `sdk.products.getStocks()`
+(`POST /api/v3/stocks/{warehouseId}`), which requires a warehouse ID and size IDs per call.
+The products method is **not deprecated** — but for read-only stock visibility across all
+seller warehouses, prefer `getSellerWarehousesStock()`.
+:::
+
+```typescript
+// Get inventory across ALL seller warehouses — no warehouse/size IDs needed
+const stock = await sdk.analytics.getSellerWarehousesStock();
+for (const item of stock.data.items) {
+  console.log(
+    `nmId=${item.nmId} chrtId=${item.chrtId} ` +
+    `${item.warehouseName} (${item.regionName}): ${item.quantity}`
+  );
+}
+
+// Filter by specific articles with pagination
+const page = await sdk.analytics.getSellerWarehousesStock({
+  nmIds: [47254354, 268913787],
+  limit: 100,
+  offset: 0,
+});
+console.log(`Found ${page.data.items.length} inventory rows`);
 ```
 
 ---
