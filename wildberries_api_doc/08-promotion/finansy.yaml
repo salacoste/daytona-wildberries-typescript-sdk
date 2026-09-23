@@ -98,6 +98,67 @@ paths:
           $ref: "#/components/responses/401"
         "429":
           $ref: "#/components/responses/429"
+  /api/advert/v2/budget:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: advert
+      operationId: postV2Budget
+      security:
+        - HeaderApiKey: []
+      summary: Campaign Budget Balances
+      description: |
+        The method returns information about [campaign](./promotion#tag/campaigns/operation/getV2Adverts) budget balances.
+        For campaigns in [statuses](./promotion#tag/campaigns/operation/getV1PromotionCount):
+          - `4` — ready to be launched
+          - `9` — active
+          - `11` — paused
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 20 requests | 3 s | 4 requests |
+        | Service | 1 min | 20 requests | 3 s | 4 requests |
+        | Base with secret | 1 min | 20 requests | 3 s | 4 requests |
+        | Base | 1 h | 4 requests | 15 min | 1 request |
+        </div>
+      tags:
+        - Финансы
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V2BudgetRequest"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V2BudgetResponse"
+              examples:
+                V1BudgetResponse:
+                  $ref: "#/components/examples/V2BudgetResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                CampaignNotBelongSeller:
+                  $ref: "#/components/examples/CampaignNotBelongSeller"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "429":
+          $ref: "#/components/responses/429"
   /adv/v1/budget:
     servers:
       - url: https://advert-api.wildberries.ru
@@ -107,7 +168,11 @@ paths:
       security:
         - HeaderApiKey: []
       summary: Бюджет кампании
+      deprecated: true
       description: >
+        The deprecated method will be disabled on [16 November 2026](https://dev.wildberries.ru/en/release-notes?id=582). Use `POST /api/advert/v2/budget`.
+
+
         Метод возвращает информацию о бюджете
         [кампании](/openapi/promotion#tag/Kampanii/paths/~1api~1advert~1v2~1adverts/get) — максимальной сумме затрат на
         кампанию. Бюджет кампании можно
