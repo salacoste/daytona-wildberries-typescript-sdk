@@ -1,0 +1,498 @@
+openapi: 3.0.1
+info:
+  title: Поставки FBW — Черновики поставок
+  version: ordersfbw
+  description: "Shard for tag: Черновики поставок"
+  x-file-name: orders-fbw
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Черновики поставок
+    description: ""
+paths:
+  /api/supplies/v1/drafts:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-token-types:
+        - personal
+        - service
+      x-category: supplies
+      operationId: getV1Drafts
+      security:
+        - HeaderApiKey: []
+      summary: Drafts List
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method returns a list of supply drafts
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 10 requests |
+        </div>
+      tags:
+        - Черновики поставок
+      parameters:
+        - name: limit
+          in: query
+          description: Number of drafts in the response
+          schema:
+            type: integer
+            default: 1000
+            minimum: 0
+            maximum: 1000
+        - name: offset
+          in: query
+          description: How many results to skip. For example, for the value 10, the response will start with the 11 element
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum:
+              - createDt
+              - updateDt
+            default: createDt
+          description: |
+            Sorting:
+              - `createdDt` — by the draft creation date
+              - `updatedDt` — by the draft update date
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+          description: |
+            Data order:
+              - `desc` — descending
+              - `asc` — ascending
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ListDraftsResponse
+              example:
+                drafts:
+                  - draftId: b5aed067-69d4-47b8-a5d0-591c615288f9
+                    phone: +7 123 *** 23 23
+                    skuQuantity: 5
+                    itemQuantity: 1
+                    createdAt: "2025-06-17T08:11:57.767Z"
+                    updatedAt: "2025-06-17T08:11:57.767Z"
+                total: 1
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              examples:
+                BadLimitFormat:
+                  $ref: _schemas.yaml#/components/examples/BadLimitFormat
+                BadOffsetFormat:
+                  $ref: _schemas.yaml#/components/examples/BadOffsetFormat
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          $ref: _schemas.yaml#/components/responses/403
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+    post:
+      x-readonly-method: false
+      x-token-types:
+        - personal
+        - service
+      x-category: supplies
+      operationId: postV1Drafts
+      security:
+        - HeaderApiKey: []
+      summary: Create Draft
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method creates empty supply draft.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 10 requests |
+        </div>
+      tags:
+        - Черновики поставок
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.DraftCreateResponse
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          $ref: _schemas.yaml#/components/responses/403
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+  /api/supplies/v1/drafts/{draftId}:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    delete:
+      x-readonly-method: false
+      x-token-types:
+        - personal
+        - service
+      x-category: supplies
+      operationId: deleteV1DraftsDraftId
+      security:
+        - HeaderApiKey: []
+      summary: Delete Draft
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        Removes a supply draft by ID.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 10 requests |
+        </div>
+      tags:
+        - Черновики поставок
+      parameters:
+        - name: draftId
+          in: path
+          description: Draft ID
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        "204":
+          description: Успешно
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              example:
+                status: 400
+                title: bad request
+                detail: Неверный формат draftId
+                requestId: a6bdc2a4d2fde51c2036fa8af2483886
+                origin: supply-api
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          $ref: _schemas.yaml#/components/responses/403
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              example:
+                status: 404
+                title: not found
+                detail: Черновик не найден
+                requestId: a6bdc2a4d2fde51c2036fa8af2483886
+                origin: supply-api
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+  /api/supplies/v1/drafts/{draftId}/items:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-token-types:
+        - personal
+        - service
+      x-category: supplies
+      operationId: getV1DraftsDraftIdItems
+      security:
+        - HeaderApiKey: []
+      summary: Items List in Draft
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method returns the list of items added to the supply draft.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 10 requests |
+        </div>
+      tags:
+        - Черновики поставок
+      parameters:
+        - name: draftId
+          in: path
+          description: Draft ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ListDraftItemsResponse
+              example:
+                items:
+                  - sku: "2039395667350"
+                    quantity: 1000
+                    nmId: 123456789
+                    brandName: Brand
+                    subjectName: Комбинезоны для животных
+                    imgSrc: https://basket-13.wbbasket.ru/vol123/part3456/123456789/images/tm/1.webp
+                    title: комбенизон для собак
+                    techSize: "48"
+                    vendorCode: "1111"
+                    color: красный бархат
+                skuQuantity: 1
+                itemQuantity: 1
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              examples:
+                BadDraftIdFormat:
+                  $ref: _schemas.yaml#/components/examples/BadDraftIdFormat
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          $ref: _schemas.yaml#/components/responses/403
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              example:
+                status: 404
+                title: not found
+                detail: Черновик не найден
+                requestId: a6bdc2a4d2fde51c2036fa8af2483886
+                origin: supply-api
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+    post:
+      x-readonly-method: false
+      x-category: supplies
+      operationId: postV1DraftsDraftIdItems
+      x-token-types:
+        - personal
+        - service
+      security:
+        - HeaderApiKey: []
+      summary: Add Items to Draft
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        Adds items to the specified supply draft.
+
+        <div class="description_important">
+
+        The method works on the principle of atomicity:
+          - if all skus are successfully validated, all items will be added to the draft. The response will return <code>{"results":[]}</code>
+          - if at least one sku is not validated, no items will be added to the draft. The response will return a list of invalid skus
+
+        </div>
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 10 requests |
+        </div>
+      tags:
+        - Черновики поставок
+      parameters:
+        - name: draftId
+          in: path
+          description: Draft ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/models.DraftAdditemsRequest
+            example:
+              items:
+                - quantity: 1
+                  sku: "1234567"
+                - quantity: 1
+                  sku: "2000000512907"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.DraftAddItemsErrorResponse
+              examples:
+                invalidSku:
+                  $ref: _schemas.yaml#/components/examples/InvalidSku
+                SuccessResponse:
+                  $ref: _schemas.yaml#/components/examples/SuccessResponse
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              examples:
+                BadDraftIdFormat:
+                  $ref: _schemas.yaml#/components/examples/BadDraftIdFormat
+                ItemsArrayLimitExceeded:
+                  $ref: _schemas.yaml#/components/examples/ItemsArrayLimitExceeded
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          $ref: _schemas.yaml#/components/responses/403
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              example:
+                status: 404
+                title: not found
+                detail: Черновик не найден
+                requestId: a6bdc2a4d2fde51c2036fa8af2483886
+                origin: supply-api
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
+    delete:
+      x-readonly-method: false
+      x-category: supplies
+      operationId: deleteV1DraftsDraftIdItems
+      x-token-types:
+        - personal
+        - service
+      security:
+        - HeaderApiKey: []
+      summary: Delete Items from Draft
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method removes items from the draft.
+
+        <div class="description_important">
+        Skus are not validated. If you submit an incorrect sku in the request, you will not receive an error. However, the correct skus will be removed from the draft.
+        </div>
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 30 requests | 2 s | 10 requests |
+        </div>
+      tags:
+        - Черновики поставок
+      parameters:
+        - name: draftId
+          in: path
+          description: Draft ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/models.DraftDeleteitemsRequest
+            example:
+              skus:
+                - "123456789"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.DraftDeleteItemsErrorResponse
+              examples:
+                SuccessResponse:
+                  $ref: _schemas.yaml#/components/examples/SuccessResponse1
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              examples:
+                EmptyParameter:
+                  $ref: _schemas.yaml#/components/examples/BadRequestDraftItems0
+                WrongParameter:
+                  $ref: _schemas.yaml#/components/examples/BadRequestDraftItems1
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          $ref: _schemas.yaml#/components/responses/403
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/errors.DraftError
+              example:
+                status: 404
+                title: not found
+                detail: Черновик не найден
+                requestId: a6bdc2a4d2fde51c2036fa8af2483886
+                origin: supply-api
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
