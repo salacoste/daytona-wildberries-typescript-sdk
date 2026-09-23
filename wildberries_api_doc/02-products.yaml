@@ -1653,6 +1653,113 @@ paths:
                                 - `true` — не выявлена. `"isValid":true` не гарантирует, что размеры указаны корректно. В отдельных случаях (например, при создании новой категории товаров) `"isValid":true` будет возвращаться при любых значениях, кроме нулевых.
 
                                 - `false` — указанные габариты значительно отличаются от средних по категории (предмету). Рекомендуется перепроверить, правильно ли указаны размеры товара в упаковке в `сантиметрах`. Функциональность карточки товара, в том числе начисление логистики и хранения, при этом ограничена не будет. Логистика и хранение продолжают начисляться — по текущим габаритам. Также `"isValid":false` возвращается при отсутствии значений или нулевом значении любой стороны.
+                        documents:
+                          type: object
+                          description: Documents
+                          properties:
+                            items:
+                              type: array
+                              description: Document list
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    description: Document ID
+                                  type:
+                                    type: integer
+                                    description: |
+                                      Document type:
+                                        - `1` — Certificate of Conformity
+                                        - `2` — The Correspondence Declaration
+                                        - `3` — Certificate of Registration of SGR
+                                        - `4` — Registration Certificate
+                                        - `5` — Certificate of Registration of the Republic of Belarus
+                                        - `7` — Registration of a Pesticide
+                                        - `8` — Registration of an Agrochemical
+                                        - `9` — Medicine Registration Certificate
+                                  number:
+                                    type: string
+                                    description: Document number
+                                  productNumber:
+                                    type: string
+                                    description: Additional document number
+                                  tradeName:
+                                    type: string
+                                    description: Trade name
+                                  applicant:
+                                    type: string
+                                    description: Representative of the medical device manufacturer
+                                  startDate:
+                                    type: string
+                                    format: date-time
+                                    description: Document start date and time
+                                  endDate:
+                                    type: string
+                                    format: date-time
+                                    description: Document end date and time
+                                  isEndless:
+                                    type: boolean
+                                    description: |
+                                      Is the document valid indefinitely:
+                                        - `true` — yes, the document is indefinite
+                                        - `false` — no, the document has an expiration date
+                                  verdict:
+                                    description: Document validation result. Returns when the validation is completed
+                                    type: object
+                                    properties:
+                                      verified:
+                                        type: boolean
+                                        description: |
+                                          - `true` — the document is validated
+                                          - `false` — the document is not validated
+                                      status:
+                                        type: integer
+                                        description: |
+                                          Document validation result:
+                                            - `1` — validation passed
+                                            - `2` — validation rejected
+                                      reason:
+                                        $ref: '#/components/schemas/reasonDocument'
+                                      additionalData:
+                                        type: object
+                                        nullable: true
+                                        description: Additional data
+                                      createdAt:
+                                        type: string
+                                        format: date-time
+                                        description: Listing validation date
+                                  createdAt:
+                                    type: string
+                                    format: date-time
+                                    description: Date the document was added
+                            overallVerdict:
+                              type: object
+                              description: Listing validation result. Returns when the validation is completed
+                              properties:
+                                isFullyChecked:
+                                  type: boolean
+                                  description: |
+                                    - `true` — the listing is validated
+                                    - `false` — the listing is not validated
+                                status:
+                                  type: integer
+                                  description: |
+                                    Listing validation result:
+                                      - `1` — validation passed
+                                      - `2` — validation rejected
+                                reason:
+                                  $ref: '#/components/schemas/reasonListing'
+                                createdAt:
+                                  type: string
+                                  format: date-time
+                                  description: Listing validation date and time
+                            excludeDocuments:
+                              type: boolean
+                              description: |
+                                Whether the documents are excluded from the listing validation:
+                                  - `true` —  yes, documents are not validated when checking the listing
+                                  - `false` — no, documents are checked when validating the listing
                         characteristics:
                           type: array
                           description: Характеристики
@@ -2035,6 +2142,28 @@ paths:
                       weightBrutto:
                         type: number
                         description: Вес, кг<br>Количество знаков после запятой <=3
+                  documents:
+                    type: object
+                    description: Documents
+                    properties:
+                      items:
+                        type: array
+                        description: Document list
+                        items:
+                          allOf:
+                            - type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: Document ID
+                            - $ref: '#/components/schemas/documentsRequest'
+                      excludeDocuments:
+                        type: boolean
+                        default: false
+                        description: |
+                          Whether to check the documents:
+                            - `true` — yes, do not check the documents when validating the listing. When `true`, all values passed to `documents` will be replaced with empty values
+                            - `false` — no, check the documents when validating the listing
                   characteristics:
                     type: array
                     description: |
@@ -3076,6 +3205,22 @@ paths:
                                   Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                   <br>
                                   Допустимое количество значений отображено в поле `maxCount` того же метода
+                        documents:
+                          type: object
+                          description: Documents
+                          properties:
+                            items:
+                              type: array
+                              description: Document list
+                              items:
+                                $ref: '#/components/schemas/documentsRequest'
+                            excludeDocuments:
+                              type: boolean
+                              default: false
+                              description: |
+                                Whether to check the documents:
+                                  - `true` — yes, do not check the documents when validating the listing. When `true`, all values passed to `documents` will be replaced with empty values
+                                  - `false` — no, check the documents when validating the listing
             examples:
               creatingOneCard:
                 $ref: '#/components/examples/creatingOneCard'
@@ -3287,6 +3432,22 @@ paths:
                                 Тип данных — массив строк или число — зависит от типа характеристики, см. описание поля `charcType` в методе [Характеристики предмета](./work-with-products#tag/Kategorii-predmety-i-harakteristiki/paths/~1content~1v2~1object~1charcs~1%7BsubjectId%7D/get).
                                 <br>
                                 Допустимое количество значений отображено в поле `maxCount` того же метода
+                      documents:
+                        type: object
+                        description: Documents
+                        properties:
+                          items:
+                            type: array
+                            description: Document list
+                            items:
+                              $ref: '#/components/schemas/documentsRequest'
+                          excludeDocuments:
+                            type: boolean
+                            default: false
+                            description: |
+                              Whether to check the documents:
+                                - `true` — yes, do not check the documents when validating the listing. When `true`, all values passed to `documents` will be replaced with empty values
+                                - `false` — no, check the documents when validating the listing
             example:
               imtID: 987654321
               cardsToAdd:
@@ -5977,6 +6138,75 @@ components:
           description: Список остатков товаров
           items:
             $ref: '#/components/schemas/api.StockItem'
+    documentsRequest:
+      type: object
+      properties:
+        type:
+          type: integer
+          description: |
+            Document type:
+              - `1` — Certificate of Conformity
+              - `2` — The Correspondence Declaration
+              - `3` — Certificate of Registration of SGR
+              - `4` — Registration Certificate
+              - `5` — Certificate of Registration of the Republic of Belarus
+              - `7` — Registration of a Pesticide
+              - `8` — Registration of an Agrochemical
+              - `9` — Medicine Registration Certificate
+        number:
+          type: string
+          description: Document number
+        productNumber:
+          type: string
+          description: Additional document number
+        tradeName:
+          type: string
+          description: Trade name
+        applicant:
+          type: string
+          description: Representative of the medical device manufacturer
+        startDate:
+          type: string
+          format: date-time
+          description: Document start date and time
+        endDate:
+          type: string
+          format: date-time
+          description: Document end date and time
+        isEndless:
+          type: boolean
+          description: |
+            Is the document valid indefinitely:
+              - `true` — yes, the document is indefinite
+              - `false` — no, the document has an expiration date
+    reasonDocument:
+      type: string
+      nullable: true
+      description: |
+        Validation error, returns for `status: 2`. <br>
+        Possible values:
+          - `document_missing` — No document uploaded
+          - `document_not_found` — The document not found in the register
+          - `document_inactive` — The document has no legal effect
+          - `document_expired` — The document expired
+          - `applicant_mismatch` — Applicant details in the document and the listing don't match
+          - `trade_name_mismatch` — Trade name in the document and the listing don't match
+          - `unknown` — Validation failed
+          - `document_type_mismatch` — The document number does not match the specified document type
+          - `document_dates_mismatch` — Incorrect registration or expiration date of the document
+    reasonListing:
+      type: string
+      nullable: true
+      description: |
+        Validation error, returns for `status: 2`. <br>
+        Possible values:
+          - `tnved_missing` — HS code not specified
+          - `supplier_inn_missing` — Taxpayer identification number not specified
+          - `supplier_not_registered` — Seller not found in the register
+          - `supplier_inactive` — Seller status error. Please check it in the register
+          - `product_group_not_registered` — You haven't added the required item type in the labeling system
+          - `kiz_required` — Labeling code [Chestny ZNAK](https://chestnyznak.ru/en) is required to sell this item in Russia
+          - `kiz_certificate_missing` — Confirmation is required that the labeling has been applied to the item
   parameters:
     Warehouse:
       name: warehouseId

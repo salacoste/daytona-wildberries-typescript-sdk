@@ -248,6 +248,28 @@ paths:
                       weightBrutto:
                         type: number
                         description: Вес, кг<br>Количество знаков после запятой <=3
+                  documents:
+                    type: object
+                    description: Documents
+                    properties:
+                      items:
+                        type: array
+                        description: Document list
+                        items:
+                          allOf:
+                            - type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: Document ID
+                            - $ref: '#/components/schemas/documentsRequest'
+                      excludeDocuments:
+                        type: boolean
+                        default: false
+                        description: |
+                          Whether to check the documents:
+                            - `true` — yes, do not check the documents when validating the listing. When `true`, all values passed to `documents` will be replaced with empty values
+                            - `false` — no, check the documents when validating the listing
                   characteristics:
                     type: array
                     description: |

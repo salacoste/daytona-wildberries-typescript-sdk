@@ -1321,6 +1321,83 @@ paths:
                 $ref: '#/components/schemas/ErrorObject403'
         '429':
           $ref: '#/components/responses/429'
+  /api/analytics/v1/stocks-report/seller-warehouses:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      x-token-types:
+        - personal
+        - service
+      operationId: postAnalyticsV1StocksReportSellerWarehouses
+      summary: Seller Warehouses Inventory
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method returns current seller warehouses inventory.
+        <br><br>
+        The data is updated once every 30 minutes.
+        <br><br>
+        1 response row means data on 1 item size in 1 seller warehouse.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 3 requests | 20 s | 1 request |
+        </div>
+      tags:
+        - История остатков
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/InventorySellerResponse'
+                required:
+                  - data
+        '204':
+          description: Нет данных
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject403'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Response4XX'
+              examples:
+                Response403TokenCategory:
+                  $ref: '#/components/examples/Response403TokenCategory'
+                Response403TokenType:
+                  $ref: '#/components/examples/Response403TokenType'
+        '429':
+          $ref: '#/components/responses/429'
   /api/analytics/v2/item-rating:
     servers:
       - url: https://seller-analytics-api.wildberries.ru
@@ -5267,6 +5344,118 @@ components:
         - detail
         - requestId
         - origin
+    InventoryRequest:
+      description: Request parameters for current WB warehouses inventory
+      type: object
+      properties:
+        nmIds:
+          type: array
+          description: WB item numbers
+          minItems: 0
+          maxItems: 1000
+          example:
+            - 111222333
+            - 47254354
+          items:
+            type: integer
+            format: int64
+        chrtIds:
+          type: array
+          description: Size IDs. It is used only for the item numbers specified in the `nmIds` array
+          example:
+            - 111222333
+            - 91663228
+          items:
+            type: integer
+            format: uint64
+        limit:
+          example: 250000
+          description: Number of rows in the response
+          type: integer
+          format: uint32
+          maximum: 250000
+          default: 250000
+        offset:
+          example: 500000
+          description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+          type: integer
+          format: uint32
+          default: 0
+    InventorySellerResponse:
+      description: Current seller warehouses inventory
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          description: Seller warehouses inventory by size
+          type: array
+          items:
+            type: object
+            properties:
+              nmId:
+                type: integer
+                description: WB item number
+                example: 47254354
+                format: int64
+              chrtId:
+                type: integer
+                description: Size ID
+                example: 91663228
+                format: uint64
+              warehouseId:
+                type: integer
+                description: Warehouse ID
+                example: 123456
+                format: int64
+              warehouseName:
+                type: string
+                description: Warehouse name
+                example: склад продавца Иркутск
+              regionName:
+                type: string
+                description: Shipping region
+                example: Дальневосточный и Сибирский
+              quantity:
+                type: integer
+                description: Warehouse inventory available to clients to add to cart
+                example: 43
+                format: uint64
+            required:
+              - nmId
+              - chrtId
+              - warehouseId
+              - warehouseName
+              - regionName
+              - quantity
+    Response4XX:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        status:
+          type: number
+          description: HTTP status code
+        statusText:
+          type: string
+          description: Text of the HTTP status code
+        timestamp:
+          type: string
+          format: date-time
+          description: Request date and time
   examples:
     SalesFunnelProductRes:
       description: ''
@@ -5316,6 +5505,27 @@ components:
         059509746730,Pure Quartz Speaker,6780550382946145952,Термокомплекты,Next Step Living,60-62,984574321,South,Office3,balanced,3214,3214000,789,789000,30,0.30,40,40000,1,11,555,666,66484,-3,0.03,0.08,0.71,0.48,,,47297.22,55308.71,6463.43,48664.95,0.00,0.00,74502.72
         058266400986,Modular Stainless Monitor,3475827302459171321,Термокомплекты,TagniFi,65-67,926554321,East,Office4,nonActual,312,312000,123,123000,40,0.71,50,50000,13,-2,666,888,53254,-3,0.96,0.01,0.97,0.92,,67227.50,4608.98,90300.06,15890.52,0.00,0.00,41891.11,0.00
         070198970053,Microwave Quick Eco-Friendly,4734922922328623947,Термокомплекты,Boston Consulting Group,46-48,983234321,West,Office5,nonLiquid,343,343000,456,456000,50,0.92,60,60000,17,-2,777,101010,43823,-1,0.84,0.14,0.26,0.75,30463.57,8073.43,26678.35,0.00,339.99,56237.24,2172.75,74665.30,14296.76
+    Response403TokenCategory:
+      value:
+        status: 403
+        statusText: Forbidden
+        title: Forbidden
+        detail: scope is not allowed for this resource
+        requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+        origin: ag-marketplace
+        timestamp: '2026-09-03T13:55:15Z'
+      description: Invalid token category
+    Response403TokenType:
+      value:
+        title: forbidden
+        detail: base token is not allowed
+        code: base token is not allowed for this path
+        requestId: 722199b2e15bbca48cc1d488a7989976
+        origin: ag-marketplace
+        status: 403
+        statusText: Forbidden
+        timestamp: '2026-05-25T02:47:09Z'
+      description: Invalid token type
   responses:
     '401':
       description: Не авторизован
