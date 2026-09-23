@@ -1777,6 +1777,50 @@ export interface WbWarehousesStockResponse {
 }
 
 // ============================================================================
+// Seller Warehouses Inventory Types (v1) — task-199
+// ============================================================================
+
+/** Request for seller warehouses current inventory.
+ * No warehouse or size IDs are required — the report covers all seller warehouses.
+ * @since task-199 */
+export interface SellerWarehousesStockRequest {
+  /** WB articles (0-1000 items). Empty = all products */
+  nmIds?: number[];
+  /** Size IDs. Only used for articles specified in nmIds */
+  chrtIds?: number[];
+  /** Number of rows in response (max 250000, default 250000) */
+  limit?: number;
+  /** How many results to skip (default 0) */
+  offset?: number;
+}
+
+/** Single inventory item — 1 size in 1 seller warehouse.
+ * Unlike the WB-warehouses report, no in-transit quantities are returned.
+ * @since task-199 */
+export interface SellerWarehouseStockItem {
+  /** WB article ID */
+  nmId: number;
+  /** Size ID */
+  chrtId: number;
+  /** Seller warehouse ID */
+  warehouseId: number;
+  /** Seller warehouse name */
+  warehouseName: string;
+  /** Region name */
+  regionName: string;
+  /** Current quantity in warehouse */
+  quantity: number;
+}
+
+/** Response from POST /api/analytics/v1/stocks-report/seller-warehouses
+ * @since task-199 */
+export interface SellerWarehousesStockResponse {
+  data: {
+    items: SellerWarehouseStockItem[];
+  };
+}
+
+// ============================================================================
 // Item Rating (POST /api/analytics/v1/item-rating) — task-151
 // @since 3.16.0
 // ============================================================================

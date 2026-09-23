@@ -49,6 +49,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   on `Supply` (backing both `GET /api/v3/supplies` and `GET /api/v3/supplies/{supplyId}`).
   Kyrgyzstan sellers only today; WB roadmap: all EAEU except the Russian Federation.
   All four rate-limit keys registered (300/min, 200 ms interval, burst 20, 4XX = 10 requests).
+- **analytics**: seller-warehouses stocks report (WB news 2026-09) — new method
+  `getSellerWarehousesStock(data?)` (POST
+  `/api/analytics/v1/stocks-report/seller-warehouses`) returning current inventory across ALL
+  seller warehouses with no warehouse/size IDs in the request (optional `nmIds`/`chrtIds`
+  filters + `limit`/`offset` pagination). One row = 1 item size in 1 seller warehouse;
+  data refreshes once every 30 minutes; Personal + Service tokens. WB recommends it over
+  per-warehouse `POST /api/v3/stocks/{warehouseId}` — `sdk.products.getStocks()` carries a
+  deprecation-pointer NOTE (the method itself is NOT deprecated). New types:
+  `SellerWarehousesStockRequest`, `SellerWarehouseStockItem`, `SellerWarehousesStockResponse`
+  (no in-transit counts, unlike the WB-warehouses report). Rate limit 3 req/min, 20 s
+  interval, burst 1 (strict).
 
 ## [4.2.0] - 2026-08-09
 

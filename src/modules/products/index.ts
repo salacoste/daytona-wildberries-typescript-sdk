@@ -1886,6 +1886,12 @@ export class ProductsModule {
    *
    * Rate limit: 300 req/min, 200ms interval, burst 20
    *
+   * NOTE (not deprecated, WB news 2026-09): WB recommends the seller-warehouses
+   * stocks report instead — `sdk.analytics.getSellerWarehousesStock()`
+   * (POST /api/analytics/v1/stocks-report/seller-warehouses) returns stock data
+   * for ALL seller warehouses without passing warehouse/size IDs, with a single
+   * request per 30-minute data window.
+   *
    * @param warehouseId - ID склада продавца
    * @param data - Request body — see {@link StocksRequest}. Pass `chrtIds` (size IDs).
    * @returns Stock amounts. See {@link GetStocksResponse}.
