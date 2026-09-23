@@ -15,6 +15,9 @@ import { NetworkError } from '../../../src/errors/network-error';
 import type {
   RequestPublicViewerPublicErrorsTableListV2,
   RequestMoveNmsImtConn,
+  CardDocumentsRequest,
+  CardDocumentsResponse,
+  CardUpdateDocumentsRequest,
 } from '../../../src/types/products.types';
 
 describe('ProductsModule - Cards & Media', () => {
@@ -55,6 +58,34 @@ describe('ProductsModule - Cards & Media', () => {
           brand: 'TestBrand',
           title: 'Test Product',
           sizes: [{ chrtID: 111, techSize: 'M', wbSize: 'M', skus: ['SKU001'] }],
+          documents: {
+            items: [
+              {
+                id: 'doc-001',
+                type: 1,
+                number: 'RU D-RU.АГ01.В.12345',
+                tradeName: 'Test Product',
+                startDate: '2025-01-15T00:00:00Z',
+                endDate: '2028-01-14T23:59:59Z',
+                isEndless: false,
+                verdict: {
+                  verified: false,
+                  status: 2,
+                  reason: 'document_expired',
+                  additionalData: null,
+                  createdAt: '2026-09-01T08:00:00Z',
+                },
+                createdAt: '2026-08-01T08:00:00Z',
+              },
+            ],
+            overallVerdict: {
+              isFullyChecked: false,
+              status: 2,
+              reason: 'kiz_certificate_missing',
+              createdAt: '2026-09-01T08:00:00Z',
+            },
+            excludeDocuments: false,
+          } satisfies CardDocumentsResponse,
           createdAt: '2024-01-15T10:00:00Z',
           updatedAt: '2024-06-20T12:30:00Z',
         },
@@ -101,6 +132,26 @@ describe('ProductsModule - Cards & Media', () => {
       expect(result.cards).toHaveLength(1);
       expect(result.cards![0].nmID).toBe(12345);
       expect(result.cursor).toEqual(expect.objectContaining({ total: 1 }));
+    });
+
+    it('should return card documents with validation verdicts from response', async () => {
+      mockClient.post.mockResolvedValue(mockCardsResponse);
+
+      const result = await productsModule.getCardsList({});
+
+      const documents = result.cards![0].documents;
+      expect(documents).toBeDefined();
+      expect(documents!.items).toHaveLength(1);
+      expect(documents!.items![0]).toEqual(
+        expect.objectContaining({ id: 'doc-001', type: 1, number: 'RU D-RU.АГ01.В.12345' })
+      );
+      expect(documents!.items![0].verdict).toEqual(
+        expect.objectContaining({ status: 2, reason: 'document_expired' })
+      );
+      expect(documents!.overallVerdict).toEqual(
+        expect.objectContaining({ status: 2, reason: 'kiz_certificate_missing' })
+      );
+      expect(documents!.excludeDocuments).toBe(false);
     });
 
     it('should throw when cursor limit exceeds 100', async () => {
@@ -272,6 +323,21 @@ describe('ProductsModule - Cards & Media', () => {
         dimensions: { length: 10, width: 5, height: 3, weightBrutto: 0.5 },
         characteristics: [{ id: 1, value: 'red' }],
         sizes: [{ chrtID: 111, techSize: 'L', wbSize: 'L', skus: ['SKU002'] }],
+        // Update overwrites the card — pass ALL documents, including unchanged ones
+        documents: {
+          items: [
+            {
+              id: 'doc-001', // reuse id from getCardsList() to keep the document
+              type: 1,
+              number: 'RU D-RU.АГ01.В.12345',
+              tradeName: 'Updated Product',
+              startDate: '2025-01-15T00:00:00Z',
+              endDate: '2028-01-14T23:59:59Z',
+              isEndless: false,
+            },
+          ],
+          excludeDocuments: false,
+        } satisfies CardUpdateDocumentsRequest,
       },
     ];
 
@@ -645,6 +711,19 @@ describe('ProductsModule - Cards & Media', () => {
             dimensions: { length: 15, width: 10, height: 5, weightBrutto: 0.3 },
             sizes: [{ techSize: 'M', wbSize: 'M', price: 1500, skus: ['SKU-NEW-001'] }],
             characteristics: [{ id: 10, value: 'blue' }],
+            documents: {
+              items: [
+                {
+                  type: 3, // SGR registration certificate
+                  number: 'RU.77.99.88.001.E.002000.01.20',
+                  tradeName: 'New Product',
+                  applicant: 'Manufacturer LLC',
+                  startDate: '2025-02-01T00:00:00Z',
+                  isEndless: true,
+                },
+              ],
+              excludeDocuments: false,
+            } satisfies CardDocumentsRequest,
           },
         ],
       },
@@ -705,6 +784,10 @@ describe('ProductsModule - Cards & Media', () => {
           title: 'Added Variant',
           sizes: [{ techSize: 'XL', wbSize: 'XL', price: 2000, skus: ['SKU-ADD-001'] }],
           characteristics: [{ id: 5, value: 'green' }],
+          documents: {
+            items: [{ type: 9, number: 'ЛП-001234', isEndless: true }],
+            excludeDocuments: false,
+          } satisfies CardDocumentsRequest,
         },
       ],
     };

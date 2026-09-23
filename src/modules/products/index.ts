@@ -38,6 +38,9 @@ import type {
   SubjectCharacteristic,
   CardCharacteristicInput,
   CardCharacteristicOutput,
+  CardDocumentsRequest,
+  CardDocumentsResponse,
+  CardUpdateDocumentsRequest,
   StocksRequest,
   UpdateStockRequest,
   GetStocksResponse,
@@ -703,6 +706,13 @@ export class ProductsModule {
       characteristics?: CardCharacteristicOutput[];
       sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
       tags?: { id?: number; name?: string; color?: string }[];
+      /**
+       * Card documents with validation verdicts (WB news 2026-09).
+       * Documents passed earlier via `characteristics` are auto-duplicated here by WB.
+       *
+       * @since 4.3.0
+       */
+      documents?: CardDocumentsResponse;
       createdAt?: string;
       updatedAt?: string;
     }[];
@@ -780,6 +790,13 @@ export class ProductsModule {
         characteristics?: CardCharacteristicOutput[];
         sizes?: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
         tags?: { id?: number; name?: string; color?: string }[];
+        /**
+         * Card documents with validation verdicts (WB news 2026-09).
+         * Documents passed earlier via `characteristics` are auto-duplicated here by WB.
+         *
+         * @since 4.3.0
+         */
+        documents?: CardDocumentsResponse;
         createdAt?: string;
         updatedAt?: string;
       }[];
@@ -834,6 +851,10 @@ export class ProductsModule {
    * Cannot edit barcodes, photos, video, or tags. Max 3000 cards per request, 10 MB max.
    * Dimensions in cm, weight in kg.
    *
+   * ⚠️ Documents: card update overwrites the card — pass ALL documents (including
+   * unchanged ones, reusing their `id` from `getCardsList()`) in `documents`, or the
+   * omitted documents are dropped.
+   *
    * Rate limit: 10 req/min, 6s interval, burst 5
    *
    * @param [data] - Array of product cards to update
@@ -867,6 +888,13 @@ export class ProductsModule {
       sizes: { chrtID?: number; techSize?: string; wbSize?: string; skus?: string[] }[];
       /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
       kizMarked?: boolean;
+      /**
+       * Card documents (WB news 2026-09). Update overwrites the card — pass ALL
+       * documents, including unchanged ones (reuse their `id` from `getCardsList()`).
+       *
+       * @since 4.3.0
+       */
+      documents?: CardUpdateDocumentsRequest;
     }[]
   ): Promise<ResponseCardCreate> {
     return this.client.post<ResponseCardCreate>(
@@ -1273,6 +1301,13 @@ export class ProductsModule {
         characteristics?: CardCharacteristicInput[];
         /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
         kizMarked?: boolean;
+        /**
+         * Card documents (WB news 2026-09). Prefer this over passing documents via
+         * `characteristics` — see {@link CardDocumentsRequest}.
+         *
+         * @since 4.3.0
+         */
+        documents?: CardDocumentsRequest;
       }[];
     }[]
   ): Promise<ResponseCardCreate> {
@@ -1324,6 +1359,13 @@ export class ProductsModule {
       characteristics?: CardCharacteristicInput[];
       /** Confirmed mandatory marking code (Честный ЗНАК) applied to product. Default: false. @since v3.6.2 */
       kizMarked?: boolean;
+      /**
+       * Card documents (WB news 2026-09). Prefer this over passing documents via
+       * `characteristics` — see {@link CardDocumentsRequest}.
+       *
+       * @since 4.3.0
+       */
+      documents?: CardDocumentsRequest;
     }[];
   }): Promise<ResponseCardCreate> {
     return this.client.post<ResponseCardCreate>(
@@ -2136,4 +2178,15 @@ export type {
   SubjectCharacteristic,
   CardCharacteristicInput,
   CardCharacteristicOutput,
+  CardDocumentType,
+  CardDocumentInput,
+  CardDocumentsRequest,
+  CardUpdateDocumentInput,
+  CardUpdateDocumentsRequest,
+  CardDocumentReason,
+  CardListingValidationReason,
+  CardDocumentVerdict,
+  CardDocumentsOverallVerdict,
+  CardDocument,
+  CardDocumentsResponse,
 } from '../../types/products.types';

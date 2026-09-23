@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **products**: card `documents` object (WB news 2026-09) — new types in
+  `products.types` (all re-exported from the root and the products module):
+  `CardDocumentType` (`1|2|3|4|5|7|8|9`, no `6`), `CardDocumentInput` +
+  `CardDocumentsRequest` (create requests), `CardUpdateDocumentInput` +
+  `CardUpdateDocumentsRequest` (update requests, items carry an optional `id`),
+  `CardDocument`/`CardDocumentVerdict`/`CardDocumentReason` +
+  `CardDocumentsOverallVerdict`/`CardListingValidationReason` +
+  `CardDocumentsResponse` (cards/list responses with validation verdicts). The optional
+  `documents` field is wired into `createCardsUpload()` (per variant),
+  `createUploadAdd()` (per card to add), `createCardsUpdate()`, and the
+  `getCardsList()` card type. JSDoc documents the 8 register document types and warns
+  that passing documents via `characteristics` is now restricted (only if the
+  `documents` object was never used AND the new-cabinet Documents block was never
+  filled; may be processed incorrectly — WB recommends the `documents` object only)
+  and that card update overwrites the card, so ALL documents incl. unchanged ones
+  (reusing their `id`) must be passed. Docs: new Documents section in
+  `docs/modules/products.md` and `docs/guides/working-with-product-cards.md` (+ RU mirror).
 - **ordersFBS**: supply shipping parameters for RF sellers (available since 2026-09-01,
   WB news 2026-09) — two new methods: `getShippingPoints(params)` (GET
   `/api/marketplace/v3/fbs/shipping-points`; shipping points filtered by Cyrillic `city`

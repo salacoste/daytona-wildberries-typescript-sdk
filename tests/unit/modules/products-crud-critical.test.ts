@@ -24,6 +24,7 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import type { CardUpdateDocumentsRequest } from '../../../src/types/products.types';
 
 describe('ProductsModule - Critical CRUD Operations', () => {
   let mockClient: {
@@ -302,6 +303,35 @@ describe('ProductsModule - Critical CRUD Operations', () => {
       );
       expect(result).toEqual(mockUpdateResponse);
       expect(result.error).toBe(false);
+    });
+
+    it('should pass documents through to the update payload (full list incl. unchanged)', async () => {
+      // Arrange — update overwrites the card, so ALL documents must be sent
+      mockClient.post.mockResolvedValue(mockUpdateResponse);
+      const updateData = [
+        {
+          nmID: 12345,
+          vendorCode: 'VENDOR-001',
+          sizes: [],
+          documents: {
+            items: [
+              { id: 'doc-001', type: 1, number: 'RU D-RU.АГ01.В.12345' }, // unchanged, kept via id
+              { type: 3, number: 'RU.77.99.88.001.E.002000.01.20', isEndless: true }, // new
+            ],
+            excludeDocuments: false,
+          } satisfies CardUpdateDocumentsRequest,
+        },
+      ];
+
+      // Act
+      await productsModule.createCardsUpdate(updateData);
+
+      // Assert
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://content-api.wildberries.ru/content/v2/cards/update',
+        updateData,
+        { rateLimitKey: 'products.postContentCardsUpdate' }
+      );
     });
 
     it('should update product dimensions', async () => {
