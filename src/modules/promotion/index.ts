@@ -38,6 +38,7 @@ import type {
   UpdateBidsResponse,
   UpdateCampaignProductsRequest,
   UpdateCampaignProductsResponse,
+  V0GetDailyLimitsResponse,
   V0GetNormQueryBidsRequest,
   V0GetNormQueryBidsResponse,
   V0GetNormQueryListRequest,
@@ -46,6 +47,8 @@ import type {
   V0GetNormQueryMinusResponse,
   V0GetNormQueryStatsRequest,
   V0GetNormQueryStatsResponse,
+  V0PutDailyLimitsRequest,
+  V0PutDailyLimitsResponse,
   V0SetMinusNormQueryRequest,
   V0SetNormQueryBidsRequest,
   V1GetNormQueryStatsRequest,
@@ -1754,6 +1757,106 @@ export class PromotionModule {
       'https://content-api.wildberries.ru/api/content/v1/recommendations/set',
       data,
       { rateLimitKey: 'promotion.setRecommendations' }
+    );
+  }
+
+  // ============================================================================
+  // V0 Daily Limits - NEW in task-186
+  // ============================================================================
+
+  /**
+   * Настройки дневных лимитов CPC-кампаний (V0)
+   *
+   * Метод возвращает текущие настройки дневных лимитов CPC-кампаний —
+   * максимальных сумм, которые кампании могут потратить на продвижение за день.
+   *
+   * **Единицы**: `dailyLimit`, `spentToday` и `requiredLimit` указываются
+   * в минорных единицах валюты — 0.01 базовой единицы валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   *
+   * Доступен по токенам **Personal** и **Service** (Продвижение).
+   *
+   * Rate limit: 5 requests per minute, 12s interval, burst 5 (Personal/Service tokens)
+   *
+   * @param advertIds - ID кампаний (макс. 100); массив объединяется в строку
+   *   через запятую, можно передать и готовую строку (`'12346567,987654321'`)
+   * @returns Текущие настройки дневных лимитов запрошенных кампаний
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-186
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/campaignManagement/operation/getV0DailyLimits}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.getV0DailyLimits([12346, 987654321]);
+   * for (const advert of result.adverts) {
+   *   console.log(advert.advertId, advert.enabled, advert.dailyLimit, advert.valid);
+   * }
+   * ```
+   */
+  async getV0DailyLimits(advertIds: number[] | string): Promise<V0GetDailyLimitsResponse> {
+    const ids = Array.isArray(advertIds) ? advertIds.join(',') : advertIds;
+    return this.client.get<V0GetDailyLimitsResponse>(
+      'https://advert-api.wildberries.ru/api/advert/v0/daily-limits',
+      {
+        params: { advertIds: ids },
+        rateLimitKey: 'promotion.getV0DailyLimits',
+      }
+    );
+  }
+
+  /**
+   * Установка дневных лимитов CPC-кампаний (V0)
+   *
+   * Метод включает, обновляет или отключает дневной лимит бюджета кампаний.
+   *
+   * **Write-метод**: изменяет лимиты реальных кампаний — не вызывать
+   * в live-кабинете без явного одобрения пользователя.
+   *
+   * **Единицы**: `dailyLimit` указывается в минорных единицах валюты —
+   * 0.01 базовой единицы валюты [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances).
+   * Минимально допустимая сумма возвращается полем `minDailyLimit` метода
+   * {@link PromotionModule.getV1Config}.
+   *
+   * При `enabled: true` поля `dailyLimit` и `carryOverEnabled` обязательны.
+   * Если установленный лимит ниже рекомендованного минимума (`requiredLimit`
+   * в ответе), бюджет может расходоваться неравномерно и возможны ошибки
+   * в кампании.
+   *
+   * Доступен по токенам **Personal** и **Service** (Продвижение).
+   *
+   * Rate limit: 5 requests per minute, 12s interval, burst 5 (Personal/Service tokens)
+   *
+   * @param data - ID кампаний (1–100) и новые настройки лимита
+   * @returns Результат по каждой кампании: `belowMinLimit` и рекомендованный
+   *   минимум `requiredLimit` (в минорных единицах валюты)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-186
+   * @see {@link https://dev.wildberries.ru/openapi/promotion#tag/campaignManagement/operation/putV0DailyLimits}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.putV0DailyLimits({
+   *   advertIds: [1234, 5603],
+   *   enabled: true,
+   *   dailyLimit: 100000,
+   *   carryOverEnabled: true
+   * });
+   * for (const advert of result.adverts) {
+   *   if (advert.belowMinLimit) {
+   *     console.warn(`Лимит кампании ${advert.advertId} ниже минимума:`, advert.requiredLimit);
+   *   }
+   * }
+   * ```
+   */
+  async putV0DailyLimits(data: V0PutDailyLimitsRequest): Promise<V0PutDailyLimitsResponse> {
+    return this.client.put<V0PutDailyLimitsResponse>(
+      'https://advert-api.wildberries.ru/api/advert/v0/daily-limits',
+      data,
+      { rateLimitKey: 'promotion.putV0DailyLimits' }
     );
   }
 }

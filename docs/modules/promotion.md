@@ -13,7 +13,7 @@ The **Promotion** module manages advertising campaigns, bid management, budget o
 | **Base URLs** | `https://advert-api.wildberries.ru`, `https://advert-media-api.wildberries.ru`, `https://dp-calendar-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/08-promotion/` |
 | **Swagger Endpoints** | 50+ (34 active + 16 deprecated) |
-| **Implemented Methods** | 45 (all active) |
+| **Implemented Methods** | 47 (all active) |
 | **Total Types** | 101+ TypeScript interfaces/types |
 | **Authentication** | API Key (Header) |
 
@@ -190,6 +190,38 @@ Migrate to `postV2Budget()` before that date — it returns budgets for multiple
   entries for other campaigns come back as `null`.
 - Calling `getAdvBudget()` now emits a one-time deprecation warning; the method is
   scheduled for removal in v5.
+:::
+
+### CPC Campaign Daily Limits (2 methods)
+
+| Method | HTTP | Endpoint | Description | Rate Limit |
+|--------|------|----------|-------------|------------|
+| `getV0DailyLimits(advertIds)` | GET | `/api/advert/v0/daily-limits` | Get current daily limit settings for CPC campaigns (up to 100 IDs in one request) | 5 req/min |
+| `putV0DailyLimits(data)` | PUT | `/api/advert/v0/daily-limits` | Enable, update, or disable the daily budget limit (1–100 campaign IDs) | 5 req/min |
+
+::: warning putV0DailyLimits() is a WRITE method
+It changes the real campaign daily limits and can affect live campaign spend —
+never invoke it against a production cabinet without explicit user approval.
+:::
+
+::: info Daily limit amounts are in MINOR currency units
+`dailyLimit`, `spentToday`, and `requiredLimit` are in minor units — 0.01 of the
+base currency of the seller account (e.g. kopecks for RUB) — **not** in base units.
+The minimum allowed `dailyLimit` regardless of bids comes from `getV1Config()`
+(see the `minDailyLimit` field below). When `enabled: true`, both `dailyLimit`
+and `carryOverEnabled` are required. If the limit you set is below the
+per-campaign recommended minimum (`requiredLimit` in the PUT response, flagged by
+`belowMinLimit: true`), the budget may be spent unevenly and campaign errors are
+possible.
+:::
+
+::: info getV1Config() response extended (task-186)
+`GET /api/advert/v1/config` now also returns two required fields:
+
+- **`minDailyLimit`** — minimum allowed daily limit amount regardless of campaign
+  bids (minor currency units)
+- **`minTopUp`** — minimum campaign budget top-up amount (minor currency units;
+  e.g. `minTopUp: 10000` with `currency: 'UZS'` means 100 Uzbek sums)
 :::
 
 ### Unified Bid Methods (removed)
@@ -701,6 +733,36 @@ await sdk.promotion.createBudgetDeposit(
   { sum: 5000, type: 1 },
   { id: 12345 }
 );
+```
+
+### CPC Campaign Daily Limits
+
+```typescript
+// Read current daily limit settings (amounts in MINOR currency units, e.g. kopecks)
+const limits = await sdk.promotion.getV0DailyLimits([12345, 67890]);
+for (const advert of limits.adverts) {
+  console.log(`Campaign ${advert.advertId}: limit ${advert.dailyLimit}, spent today ${advert.spentToday} ${advert.currency}`);
+  if (!advert.valid) {
+    console.warn(`  Limit below recommended minimum: ${advert.requiredLimit}`);
+  }
+}
+
+// Minimum allowed daily limit comes from getV1Config()
+const config = await sdk.promotion.getV1Config();
+console.log(`minDailyLimit: ${config.minDailyLimit}, minTopUp: ${config.minTopUp}`);
+
+// WRITE method — changes real campaign limits, use with care
+const result = await sdk.promotion.putV0DailyLimits({
+  advertIds: [12345, 67890],
+  enabled: true,
+  dailyLimit: 100000,
+  carryOverEnabled: true
+});
+for (const advert of result.adverts) {
+  if (advert.belowMinLimit) {
+    console.warn(`Campaign ${advert.advertId} limit below minimum: ${advert.requiredLimit}`);
+  }
+}
 ```
 
 ### Calendar Promotions

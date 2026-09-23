@@ -410,4 +410,22 @@ export const promotionRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 3,
     burstLimit: 4,
   },
+
+  // ============================================================================
+  // V0 Daily Limits Rate Limits - NEW in task-186
+  // ============================================================================
+
+  /** GET /api/advert/v0/daily-limits - CPC campaign daily limit settings */
+  'promotion.getV0DailyLimits': {
+    requestsPerMinute: 5,
+    intervalSeconds: 12,
+    burstLimit: 5,
+  },
+
+  /** PUT /api/advert/v0/daily-limits - Set CPC campaign daily limits */
+  'promotion.putV0DailyLimits': {
+    requestsPerMinute: 5,
+    intervalSeconds: 12,
+    burstLimit: 5,
+  },
 };

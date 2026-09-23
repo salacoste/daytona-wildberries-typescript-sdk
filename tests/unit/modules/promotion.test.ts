@@ -396,6 +396,8 @@ describe('PromotionModule', () => {
         cpmStep: 100000,
         currency: 'UZS',
         currencyCode: 860,
+        minDailyLimit: 100000,
+        minTopUp: 10000,
       };
       mockClient.get.mockResolvedValue(mockResponse);
 
@@ -410,6 +412,8 @@ describe('PromotionModule', () => {
       expect(result.currencyCode).toBe(860);
       expect(result.cpmStep).toBe(100000);
       expect(result.cpcStep).toBe(500);
+      expect(result.minDailyLimit).toBe(100000);
+      expect(result.minTopUp).toBe(10000);
     });
 
     it('postV1NormqueryBids - should set search-cluster bids in account currency', async () => {
@@ -899,6 +903,93 @@ describe('PromotionModule', () => {
       } finally {
         warnSpy.mockRestore();
       }
+    });
+  });
+
+  describe('V0 Daily Limits (task-186)', () => {
+    it('getV0DailyLimits - should join advert IDs array with commas and return daily limit settings', async () => {
+      const adverts = [
+        {
+          advertId: 12346,
+          enabled: true,
+          dailyLimit: 100000,
+          spentToday: 35000,
+          currency: 'RUB',
+          carryOverEnabled: true,
+          valid: true,
+          requiredLimit: 3001,
+        },
+      ];
+      mockClient.get.mockResolvedValue({ adverts });
+
+      const result = await module.getV0DailyLimits([12346, 987654321]);
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v0/daily-limits',
+        expect.objectContaining({
+          params: { advertIds: '12346,987654321' },
+          rateLimitKey: 'promotion.getV0DailyLimits',
+        })
+      );
+      expect(result).toEqual({ adverts });
+      expect(result.adverts[0].dailyLimit).toBe(100000);
+      expect(result.adverts[0].spentToday).toBe(35000);
+      expect(result.adverts[0].requiredLimit).toBe(3001);
+    });
+
+    it('getV0DailyLimits - should pass a pre-joined advert IDs string through unchanged', async () => {
+      mockClient.get.mockResolvedValue({ adverts: [] });
+
+      await module.getV0DailyLimits('12346567,987654321');
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v0/daily-limits',
+        expect.objectContaining({
+          params: { advertIds: '12346567,987654321' },
+          rateLimitKey: 'promotion.getV0DailyLimits',
+        })
+      );
+    });
+
+    it('putV0DailyLimits - should PUT the daily limit settings and return per-campaign results', async () => {
+      const adverts = [
+        { advertId: 1234, belowMinLimit: false, requiredLimit: 0 },
+        { advertId: 5603, belowMinLimit: true, requiredLimit: 3001 },
+      ];
+      mockClient.put.mockResolvedValue({ adverts });
+
+      const result = await module.putV0DailyLimits({
+        advertIds: [1234, 5603],
+        enabled: true,
+        dailyLimit: 1000,
+        carryOverEnabled: true,
+      });
+
+      expect(mockClient.put).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v0/daily-limits',
+        {
+          advertIds: [1234, 5603],
+          enabled: true,
+          dailyLimit: 1000,
+          carryOverEnabled: true,
+        },
+        expect.objectContaining({ rateLimitKey: 'promotion.putV0DailyLimits' })
+      );
+      expect(result).toEqual({ adverts });
+      expect(result.adverts[1].belowMinLimit).toBe(true);
+      expect(result.adverts[1].requiredLimit).toBe(3001);
+    });
+
+    it('putV0DailyLimits - should allow disabling the limit without dailyLimit/carryOverEnabled', async () => {
+      mockClient.put.mockResolvedValue({ adverts: [] });
+
+      await module.putV0DailyLimits({ advertIds: [1234], enabled: false });
+
+      expect(mockClient.put).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v0/daily-limits',
+        { advertIds: [1234], enabled: false },
+        expect.objectContaining({ rateLimitKey: 'promotion.putV0DailyLimits' })
+      );
     });
   });
 });
