@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **reports**: `Penalty` type (measurement-penalties report) now includes
+  `dateStart`/`dateEnd` — the validity period of the warehouse coefficient
+  (WB news 2026-09). Task: task-195.
+
+### Added
+
+
 - **products**: card `documents` object (WB news 2026-09) — new types in
   `products.types` (all re-exported from the root and the products module):
   `CardDocumentType` (`1|2|3|4|5|7|8|9`, no `6`), `CardDocumentInput` +
