@@ -22,7 +22,8 @@
  *         ├── InvalidOrderStateError (400)
  *         ├── CustomerVerificationError (400)
  *         ├── MetadataValidationError (422)
- *         └── MetaValidationFailError (409 — FBS marking-code validation)
+ *         ├── MetaValidationFailError (409 — FBS marking-code validation)
+ *         └── CustomsDeclarationIsRequiredError (409 — FBS customs declaration ДТ required)
  * ```
  *
  * ## Usage Patterns
@@ -137,6 +138,9 @@ export {
 
 // FBS marking-code validation error (since 3.15.0)
 export { MetaValidationFailError } from './meta-validation-fail-error';
+
+// FBS customs declaration (DT) required error (409 CustomsDeclarationIsRequired — since 4.3.0)
+export { CustomsDeclarationIsRequiredError } from './customs-declaration-is-required-error';
 
 // WB warehouse maintenance error (406 WarehouseStocksUpdateBlock — stocks PUT retryable)
 export { WarehouseStocksUpdateBlockError } from './warehouse-stocks-update-block-error';

@@ -815,6 +815,9 @@ export {
 // FBS marking-code validation error (since 3.15.0)
 export { MetaValidationFailError } from './errors/meta-validation-fail-error';
 
+// FBS customs declaration (DT) required error (409 CustomsDeclarationIsRequired — since 4.3.0)
+export { CustomsDeclarationIsRequiredError } from './errors/customs-declaration-is-required-error';
+
 // WB warehouse maintenance error (406 WarehouseStocksUpdateBlock — stocks PUT retryable)
 export { WarehouseStocksUpdateBlockError } from './errors/warehouse-stocks-update-block-error';
 

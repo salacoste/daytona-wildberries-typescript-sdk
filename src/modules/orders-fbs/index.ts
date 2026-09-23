@@ -207,6 +207,12 @@ export class OrdersFbsModule {
    *
    * Returns a list of all new assembly tasks available for the seller at the time of request.
    *
+   * **`requiredMeta` field:** each order lists the label identifiers (metadata) that MUST be
+   * attached before its supply can be transferred to delivery — e.g. `['uin', 'sgtin']`,
+   * `['customsDeclaration']`. Check it before attaching a customs-declaration (ДТ) number:
+   * if `customsDeclaration` is present, the order needs a ДТ (via {@link setCustomsDeclaration},
+   * `confirm` status only) or stickers will fail with 409 `CustomsDeclarationIsRequired`.
+   *
    * @returns Promise resolving to new orders response
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -315,9 +321,17 @@ export class OrdersFbsModule {
    * Returns stickers for assembly tasks in SVG, ZPLV, ZPLH, or PNG format.
    * Maximum 100 stickers per request. Only available for tasks with status `confirm`.
    *
+   * **⚠️ 409 `CustomsDeclarationIsRequired` (since 2026-08-18).** If at least one assembly
+   * order in `data.orders` lacks a required customs-declaration (ДТ) number, WB returns
+   * HTTP 409 and **stickers cannot be obtained** for the batch. Attach the missing ДТ via
+   * {@link setCustomsDeclaration} (order must be in `confirm` status) and retry.
+   * Check `requiredMeta` in {@link getOrdersNew} to see whether an order requires a ДТ.
+   * Thrown as a typed `CustomsDeclarationIsRequiredError`.
+   *
    * @param options - Sticker format and size options
    * @param data - Request body containing order IDs
    * @returns Promise resolving to stickers response
+   * @throws {CustomsDeclarationIsRequiredError} 409 — at least one order lacks a required customs declaration (ДТ); stickers cannot be obtained until it is attached
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
@@ -516,7 +530,14 @@ export class OrdersFbsModule {
    *
    * Updates the customs declaration number in the assembly task metadata.
    * Each task can have only one customs declaration number. Check if the task supports it
-   * by verifying `customsDeclaration` is in the `requiredMeta` field of new orders.
+   * by verifying `customsDeclaration` is in the `requiredMeta` field of new orders
+   * ({@link getOrdersNew}) and in the label identifiers returned by {@link getOrdersMetaBulk}.
+   *
+   * **⚠️ `confirm` status only (since 2026-08-18).** A customs-declaration (ДТ) number can
+   * be attached **only to assembly orders in `confirm` status**.
+   *
+   * **⚠️ Armenia sellers.** A ДТ **must** be specified for items produced **outside the EAEU**
+   * when an order from Armenia is delivered to the Russian Federation.
    *
    * @param orderId - ID of the assembly task
    * @param data - Request body containing the customs declaration number
@@ -773,6 +794,9 @@ export class OrdersFbsModule {
    * - UIN validation (enforced since April 7, 2026)
    * - Marking code for B2B orders (enforced since April 9, 2026)
    * - Marking code for B2C orders via Честный Знак (enforced from June 3, 2026)
+   * - Missing customs declaration (ДТ) — 409 `MetaValidationFail` with a `customsDeclaration`
+   *   entry whose `decision` is `'required'` (since 2026-08-18). Attach it via
+   *   `setCustomsDeclaration()` (order must be in `confirm` status), then retry.
    *
    * Check `metaDetails` via `getOrdersMetaBulk()` before calling deliver.
    * Each metaDetail has `key`, `value`, and `decision` (filled/optional/required/invalid).
@@ -783,7 +807,8 @@ export class OrdersFbsModule {
    * @param supplyId - ID of the supply to deliver
    * @returns Promise resolving to void on success
    * @throws {MetaValidationFailError} 409 — Metadata validation failed (thrown as MetaValidationFailError exposes
-   *   `metaDetails[]` with per-code diagnostics). Falls back to {@link WBAPIError} for 409s
+   *   `metaDetails[]` with per-code diagnostics), including `decision: 'required'` on the
+   *   `customsDeclaration` key when a required ДТ is missing. Falls back to {@link WBAPIError} for 409s
    *   without `metaDetails` (e.g. supply has zero orders).
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
@@ -1016,6 +1041,12 @@ export class OrdersFbsModule {
    * Get metadata for multiple assembly tasks
    *
    * Returns metadata for multiple assembly tasks (up to 100).
+   *
+   * **`decision` field semantics:** each `metaDetails[]` entry carries a `decision` —
+   * `'filled'` and `'optional'` mean the order is **OK to deliver**; `'required'` (value
+   * missing) **blocks delivery** (409 on `updateSuppliesDeliver`); `'invalid'` means the
+   * submitted value failed validation. For the `customsDeclaration` key, `'required'`
+   * means a ДТ must be attached via {@link setCustomsDeclaration} before deliver/stickers.
    *
    * @param data - Request body containing order IDs (max 100)
    * @returns Promise resolving to metadata for the requested orders

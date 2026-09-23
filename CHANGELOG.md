@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **ordersFBS**: customs-declaration (ДТ) behavior docs + typed 409 mapping
+  (WB news 2026-08-18) — new error class `CustomsDeclarationIsRequiredError`
+  (extends `WBAPIError`, statusCode 409, exposes the WB `code` and the raw
+  response body), exported from the root. `BaseClient` now maps HTTP 409
+  responses whose body `code` is exactly `'CustomsDeclarationIsRequired'`
+  (returned by `createOrdersSticker()` when at least one assembly order lacks
+  a required ДТ) to the new typed error; all other 409s map exactly as before.
+  JSDoc behavioral notes added to `createOrdersSticker()` (409 — stickers
+  cannot be obtained), `updateSuppliesDeliver()` (409 `MetaValidationFail`
+  with `customsDeclaration` `decision: 'required'`), `getOrdersNew()`
+  (`requiredMeta` lists mandatory meta), `getOrdersMetaBulk()` (`decision`
+  semantics: `filled`/`optional` deliverable, `required` blocks delivery),
+  and `setCustomsDeclaration()` (ДТ attachable only in `confirm` status;
+  Armenia sellers must attach a ДТ for non-EAEU-made goods shipped to the RF).
+  New "Customs Declaration (ДТ)" section in `docs/modules/orders-fbs.md`.
+  Task: task-201.
 - **reports**: `Penalty` type (measurement-penalties report) now includes
   `dateStart`/`dateEnd` — the validity period of the warehouse coefficient
   (WB news 2026-09). Task: task-195.

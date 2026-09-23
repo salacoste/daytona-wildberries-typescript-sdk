@@ -20,6 +20,7 @@ import {
   parseBidOutOfRangeDetail,
 } from '../errors';
 import { MetaValidationFailError } from '../errors/meta-validation-fail-error';
+import { CustomsDeclarationIsRequiredError } from '../errors/customs-declaration-is-required-error';
 import { RateLimiter } from './rate-limiter';
 import { RetryHandler } from './retry-handler';
 import { ALL_RATE_LIMITS, applyBasicTokenMultipliers } from '../config/rate-limits';
@@ -449,6 +450,8 @@ export class BaseClient {
    * - 400/422 → ValidationError
    * - 5xx → NetworkError
    * - Network failures → NetworkError
+   * - 409 with body `code: 'CustomsDeclarationIsRequired'` → `CustomsDeclarationIsRequiredError`
+   * - 409 with a `metaDetails` array → `MetaValidationFailError`
    * - All other 4xx (including **409**) → generic `WBAPIError` fallback
    *
    * **IMPORTANT — application-level error codes inside 200 OK bodies (since v3.10.2):**
@@ -557,6 +560,29 @@ export class BaseClient {
     }
 
     if (status === 409) {
+      // WB FBS customs-declaration (ДТ) required — POST /api/v3/orders/stickers returns this
+      // when at least one assembly order lacks a required DT number. Detected by an exact
+      // match on the WB error code, so unrelated 409s (e.g. SupplyHasZeroOrders) fall through.
+      if (
+        responseData != null &&
+        typeof responseData === 'object' &&
+        (responseData as Record<string, unknown>).code === 'CustomsDeclarationIsRequired'
+      ) {
+        const body = responseData as Record<string, unknown>;
+        const msg =
+          typeof body.message === 'string'
+            ? body.message
+            : pf.detail ?? pf.title ?? 'Customs declaration is required';
+        throw new CustomsDeclarationIsRequiredError(
+          msg,
+          'CustomsDeclarationIsRequired',
+          responseData,
+          pf.requestId,
+          pf.origin,
+          pf.timestamp
+        );
+      }
+
       // Check for marking-code validation failure: body must have a metaDetails array
       if (
         responseData != null &&
