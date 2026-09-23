@@ -16,8 +16,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbwModule } from '../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../src/client/base-client';
 import type {
+  ModelsDraftAdditemsRequest,
   ModelsGood,
   ModelsItemDiscrepancyResponse,
+  ModelsListDraftItemsResponse,
+  ModelsListDraftsResponse,
   ModelsSuppliesFiltersRequest,
 } from '../../../src/types/orders-fbw.types';
 import { AuthenticationError } from '../../../src/errors/auth-error';
@@ -26,13 +29,18 @@ import { ValidationError } from '../../../src/errors/validation-error';
 import { WBAPIError } from '../../../src/errors/base-error';
 
 describe('OrdersFbwModule', () => {
-  let mockClient: { get: ReturnType<typeof vi.fn>; post: ReturnType<typeof vi.fn> };
+  let mockClient: {
+    get: ReturnType<typeof vi.fn>;
+    post: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
   let ordersFbw: OrdersFbwModule;
 
   beforeEach(() => {
     mockClient = {
       get: vi.fn(),
       post: vi.fn(),
+      delete: vi.fn(),
     };
 
     ordersFbw = new OrdersFbwModule(mockClient as unknown as BaseClient);
@@ -454,6 +462,225 @@ describe('OrdersFbwModule', () => {
         { rateLimitKey: 'orders-fbw.supplyDiscrepancies' }
       );
       expect(result).toEqual([]);
+    });
+  });
+
+  // ============================================================================
+  // Supply Drafts (task-193 — WB news 2026-09)
+  // ============================================================================
+
+  describe('createDraft', () => {
+    it('should create an empty draft without a request body', async () => {
+      const mockResponse = { draftId: 'cd20d135-f13f-47a0-903c-3bd268b92047' };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.createDraft();
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts',
+        {},
+        { rateLimitKey: 'orders-fbw.draftCreate' }
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.draftId).toBe('cd20d135-f13f-47a0-903c-3bd268b92047');
+    });
+  });
+
+  describe('listDrafts', () => {
+    const mockResponse: ModelsListDraftsResponse = {
+      total: 1,
+      drafts: [
+        {
+          draftId: 'b5aed067-69d4-47b8-a5d0-591c615288f9',
+          phone: '+7 123 *** 23 23',
+          skuQuantity: 5,
+          itemQuantity: 1,
+          createdAt: '2025-06-17T08:11:57.767Z',
+          updatedAt: '2025-06-17T08:11:57.767Z',
+        },
+      ],
+    };
+
+    it('should list drafts with default parameters', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.listDrafts();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts',
+        { params: undefined, rateLimitKey: 'orders-fbw.draftsList' }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should pass pagination and sorting parameters', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      await ordersFbw.listDrafts({ limit: 100, offset: 10, sort: 'updateDt', order: 'asc' });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts',
+        {
+          params: { limit: 100, offset: 10, sort: 'updateDt', order: 'asc' },
+          rateLimitKey: 'orders-fbw.draftsList',
+        }
+      );
+    });
+  });
+
+  describe('deleteDraft', () => {
+    it('should delete a draft by UUID (204 No Content)', async () => {
+      mockClient.delete.mockResolvedValue(undefined);
+
+      await ordersFbw.deleteDraft('b5aed067-69d4-47b8-a5d0-591c615288f9');
+
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts/b5aed067-69d4-47b8-a5d0-591c615288f9',
+        {},
+        { rateLimitKey: 'orders-fbw.draftDelete' }
+      );
+    });
+  });
+
+  describe('getDraftItems', () => {
+    const mockResponse: ModelsListDraftItemsResponse = {
+      skuQuantity: 1,
+      itemQuantity: 1,
+      items: [
+        {
+          sku: '2039395667350',
+          quantity: 1000,
+          nmId: 123456789,
+          brandName: 'Brand',
+          subjectName: 'Комбинезоны для животных',
+          imgSrc: 'https://basket-13.wbbasket.ru/vol123/part3456/123456789/images/tm/1.webp',
+          title: 'комбенизон для собак',
+          techSize: '48',
+          vendorCode: '1111',
+          color: 'красный бархат',
+        },
+      ],
+    };
+
+    it('should fetch draft items by draft UUID', async () => {
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.getDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9');
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts/b5aed067-69d4-47b8-a5d0-591c615288f9/items',
+        { rateLimitKey: 'orders-fbw.draftItemsList' }
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.items[0].vendorCode).toBe('1111');
+      expect(result.skuQuantity).toBe(1);
+    });
+  });
+
+  describe('addDraftItems', () => {
+    const request: ModelsDraftAdditemsRequest = {
+      items: [
+        { quantity: 1, sku: '1234567' },
+        { quantity: 1, sku: '2000000512907' },
+      ],
+    };
+
+    it('should add items and return empty results on full success', async () => {
+      const mockResponse = { results: [] };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.addDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts/b5aed067-69d4-47b8-a5d0-591c615288f9/items',
+        request,
+        { rateLimitKey: 'orders-fbw.draftItemsAdd' }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should return invalid SKUs without adding anything (atomicity)', async () => {
+      // WB spec (InvalidSku example): if at least one sku fails validation,
+      // NO items are added — the response lists the invalid skus.
+      const mockResponse = {
+        results: [
+          {
+            sku: '1234567',
+            error: {
+              title: 'Invalid sku',
+              detail: 'Создайте карточку товара с этим баркодом',
+            },
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.addDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', request);
+
+      // The SDK surfaces the HTTP 200 response as-is: the caller must inspect
+      // results.length — non-empty means the whole batch was rejected.
+      expect(result.results).toHaveLength(1);
+      expect(result.results[0].sku).toBe('1234567');
+      expect(result.results[0].error.title).toBe('Invalid sku');
+    });
+
+    it('should throw ValidationError when items array is empty', async () => {
+      await expect(
+        ordersFbw.addDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', { items: [] })
+      ).rejects.toThrow(ValidationError);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+
+    it('should throw ValidationError when items exceed 1000', async () => {
+      const oversized = { items: Array.from({ length: 1001 }, () => ({ quantity: 1, sku: '1' })) };
+
+      await expect(
+        ordersFbw.addDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', oversized)
+      ).rejects.toThrow(ValidationError);
+      expect(mockClient.post).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteDraftItems', () => {
+    it('should delete items by SKU list', async () => {
+      const mockResponse = { results: [] };
+      mockClient.delete.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.deleteDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', {
+        skus: ['123456789'],
+      });
+
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts/b5aed067-69d4-47b8-a5d0-591c615288f9/items',
+        { skus: ['123456789'] },
+        { rateLimitKey: 'orders-fbw.draftItemsDelete' }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should pass through the response when skus are not validated by WB', async () => {
+      // WB spec: skus are NOT validated on delete — an unknown sku is silently
+      // ignored (no error), valid skus are removed. The SDK does not pre-filter.
+      const mockResponse = { results: [] };
+      mockClient.delete.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbw.deleteDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', {
+        skus: ['unknown-sku', '2000000512907'],
+      });
+
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/drafts/b5aed067-69d4-47b8-a5d0-591c615288f9/items',
+        { skus: ['unknown-sku', '2000000512907'] },
+        { rateLimitKey: 'orders-fbw.draftItemsDelete' }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should throw ValidationError when skus array is empty', async () => {
+      await expect(
+        ordersFbw.deleteDraftItems('b5aed067-69d4-47b8-a5d0-591c615288f9', { skus: [] })
+      ).rejects.toThrow(ValidationError);
+      expect(mockClient.delete).not.toHaveBeenCalled();
     });
   });
 

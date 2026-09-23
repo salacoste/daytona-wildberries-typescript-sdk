@@ -13,7 +13,7 @@ The **Orders FBW (Fulfillment by Wildberries)** module manages supply creation a
 | **Base URL** | `https://supplies-api.wildberries.ru` (most methods) |
 | **Alt Base URL** | `https://marketplace-api.wildberries.ru` (`getClientInfo` only) |
 | **Source Swagger** | `wildberries_api_doc/07-orders-fbw.yaml` |
-| **Methods** | 13 |
+| **Methods** | 19 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -110,6 +110,56 @@ this method.
 The supply details response (`getSupply()`) now also includes an optional
 `discrepancies` field (integer) — the discrepancy count, present only when
 `statusID: 5` (Accepted). Use `getSupplyDiscrepancies()` for the per-item breakdown.
+
+### Supply Drafts (6 methods) - NEW
+
+Full CRUD for supply drafts — prepare the item list of a future supply before
+creating it. Added 2026-09 (WB news, category Supplies, Personal + Service tokens).
+`draftId` is a **string UUID**, not a number.
+
+| Method | HTTP | Endpoint | Description |
+|--------|------|----------|-------------|
+| `createDraft()` | POST | `/api/supplies/v1/drafts` | Create an **empty** draft (no request body) |
+| `listDrafts(options?)` | GET | `/api/supplies/v1/drafts` | List drafts (`limit`, `offset`, `sort: createDt/updateDt`, `order: asc/desc`) |
+| `deleteDraft(draftId)` | DELETE | `/api/supplies/v1/drafts/{draftId}` | Delete a draft (204 No Content on success) |
+| `getDraftItems(draftId)` | GET | `/api/supplies/v1/drafts/{draftId}/items` | List items in a draft with product-card info |
+| `addDraftItems(draftId, data)` | POST | `/api/supplies/v1/drafts/{draftId}/items` | Add items (`{ quantity, sku }[]`, max 1000) — **atomic** |
+| `deleteDraftItems(draftId, data)` | DELETE | `/api/supplies/v1/drafts/{draftId}/items` | Remove items by SKU list (min 1) |
+
+```typescript
+// Draft lifecycle
+const { draftId } = await sdk.ordersFBW.createDraft();
+
+const { results } = await sdk.ordersFBW.addDraftItems(draftId, {
+  items: [
+    { quantity: 10, sku: '2000000512907' },
+    { quantity: 5, sku: '2039395667350' },
+  ],
+});
+if (results.length > 0) {
+  // Nothing was added — fix the SKUs and resend the whole batch
+  for (const { sku, error } of results) {
+    console.error(`${sku}: ${error.title} — ${error.detail}`);
+  }
+}
+
+const { skuQuantity, items } = await sdk.ordersFBW.getDraftItems(draftId);
+console.log(`${skuQuantity} SKUs, first: ${items[0]?.vendorCode}`);
+
+await sdk.ordersFBW.deleteDraftItems(draftId, { skus: ['2039395667350'] });
+await sdk.ordersFBW.deleteDraft(draftId);
+```
+
+::: warning addDraftItems is all-or-nothing
+If **at least one** SKU fails validation, **no items are added** — the response
+`results[]` lists the invalid SKUs with `error.title`/`error.detail`.
+An empty `results[]` means the whole batch was added.
+:::
+
+::: warning deleteDraftItems does not validate SKUs
+Unknown SKUs are **silently ignored** (no error is returned); only the valid
+SKUs are removed from the draft.
+:::
 
 ### DBW Orders (1 method)
 
@@ -403,6 +453,41 @@ interface ModelsItemScans {
   actualSku: string;
 }
 
+// Supply draft (since 2026-09, task-193) — list item
+interface ModelsDraftItem {
+  draftId: string;                         // UUID
+  phone: string;                           // creator phone
+  createdAt: string;                       // ISO 8601
+  updatedAt: string;                       // ISO 8601
+  skuQuantity: number;
+  itemQuantity: number;
+}
+
+// Supply draft item — product-card enriched
+interface ModelsDraftItemItem {
+  sku: string;
+  color: string;
+  quantity: number;
+  brandName: string;
+  imgSrc: string;
+  nmId: number;
+  subjectName: string;
+  techSize: string;
+  title: string;
+  vendorCode: string;
+}
+
+// Item to add to a draft ({ quantity, sku }, max 1000 per request)
+interface ModelsItem {
+  quantity: number;                        // 1-999999
+  sku: string;
+}
+
+// addDraftItems() response: results[] lists INVALID skus; [] = all added
+interface ModelsDraftAddItemsErrorResponse {
+  results: { sku: string; error: { title: string; detail: string } }[];
+}
+
 // Acceptance options result (with canBoxOnPallet)
 interface ModelsOptionsResultModel {
   result?: {
@@ -517,6 +602,12 @@ interface ModelsErrorModel {
 | `orders-fbw.suppliesGoods` | Get supply goods | 30 req/min | 2s | 10 | -- |
 | `orders-fbw.suppliesPackage` | Get supply packaging | 30 req/min | 2s | 10 | -- |
 | `orders-fbw.supplyDiscrepancies` | Get supply acceptance discrepancies | 1 req/min | 60s | 1 | -- |
+| `orders-fbw.draftCreate` | Create supply draft | 30 req/min | 2s | 10 | -- |
+| `orders-fbw.draftsList` | List supply drafts | 30 req/min | 2s | 10 | -- |
+| `orders-fbw.draftDelete` | Delete supply draft | 30 req/min | 2s | 10 | -- |
+| `orders-fbw.draftItemsAdd` | Add items to supply draft | 30 req/min | 2s | 10 | -- |
+| `orders-fbw.draftItemsList` | List supply draft items | 30 req/min | 2s | 10 | -- |
+| `orders-fbw.draftItemsDelete` | Delete supply draft items | 30 req/min | 2s | 10 | -- |
 | `orders-fbw.getClientInfo` | Get DBW buyer info | 300 req/min | 200ms | 20 | 10x on 409 |
 
 > **409 Penalty**: A single 409 response from `getClientInfo()` counts as **10 requests** against the rate limit quota due to `penaltyMultiplier: 10`.
@@ -556,6 +647,7 @@ try {
 
 | Version | Date | Changes |
 |---------|------|---------|
+| Unreleased | 2026-09 | Added six supply-drafts methods (`createDraft`, `listDrafts`, `deleteDraft`, `getDraftItems`, `addDraftItems`, `deleteDraftItems`) on `/api/supplies/v1/drafts` (30 req/min each); added `ModelsDraft*`/`ModelsItem` types; method count 13 -> 19 |
 | Unreleased | 2026-09 | Added `getSupplyDiscrepancies()` (GET `/api/supplies/v1/discrepancies/{supplyId}`, 1 req/min); added optional `discrepancies` to `ModelsSupplyDetails` (only when statusID=5); added `ModelsItemDiscrepancyResponse`, `ModelsDiscrepancyResponseItem`, `ModelsItemScans` types |
 | 3.5.0 | 2026-03 | Added `isBoxOnPallet` and `boxTypeID` to `ModelsSupply` and `ModelsSupplyDetails`; added `canBoxOnPallet` to warehouse options |
 | 3.4.0 | 2026-03 | Added `getClientInfo()` method (DBW buyer info, 300 req/min, marketplace-api domain); added `DBWClientInfo` and `GetDBWClientInfoResponse` types; method count 8 -> 9 active |

@@ -21,9 +21,16 @@ import type {
   DBWSetSgtinBulkRequest,
   GetDBWClientInfoResponse,
   ModelsBox,
+  ModelsDraftAddItemsErrorResponse,
+  ModelsDraftAdditemsRequest,
+  ModelsDraftDeleteItemsErrorResponse,
+  ModelsDraftDeleteitemsRequest,
+  ModelsDraftCreateResponse,
   ModelsGood,
   ModelsGoodInSupply,
   ModelsItemDiscrepancyResponse,
+  ModelsListDraftItemsResponse,
+  ModelsListDraftsResponse,
   ModelsOptionsResultModel,
   ModelsSuppliesFiltersRequest,
   ModelsSupply,
@@ -255,6 +262,250 @@ export class OrdersFbwModule {
     return this.client.get<ModelsItemDiscrepancyResponse[]>(
       `https://supplies-api.wildberries.ru/api/supplies/v1/discrepancies/${supplyId}`,
       { rateLimitKey: 'orders-fbw.supplyDiscrepancies' }
+    );
+  }
+
+  /**
+   * Создать черновик поставки
+   *
+   * Метод создаёт **пустой** черновик поставки — без тела запроса.
+   * Товары добавляются отдельно через `addDraftItems()`.
+   *
+   * Токены: **Personal**, **Service** (категория Supplies).
+   *
+   * Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+   *
+   * @returns Идентификатор созданного черновика (`draftId`, UUID)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-193
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/postV1Drafts}
+   * @example
+   * ```typescript
+   * const { draftId } = await sdk.ordersFBW.createDraft();
+   * console.log(`Создан черновик: ${draftId}`);
+   * ```
+   */
+  async createDraft(): Promise<ModelsDraftCreateResponse> {
+    return this.client.post<ModelsDraftCreateResponse>(
+      'https://supplies-api.wildberries.ru/api/supplies/v1/drafts',
+      {},
+      { rateLimitKey: 'orders-fbw.draftCreate' }
+    );
+  }
+
+  /**
+   * Список черновиков поставок
+   *
+   * Метод возвращает список черновиков поставок с постраничной навигацией
+   * и сортировкой. По умолчанию — последние 1000 черновиков, отсортированные
+   * по дате создания по убыванию.
+   *
+   * Токены: **Personal**, **Service** (категория Supplies).
+   *
+   * Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+   *
+   * @param [options] - Параметры запроса:
+   *   - `limit` — количество черновиков в ответе (0–1000, по умолчанию 1000)
+   *   - `offset` — сколько элементов пропустить (по умолчанию 0)
+   *   - `sort` — поле сортировки: `createDt` (по умолчанию) или `updateDt`
+   *   - `order` — порядок: `desc` (по умолчанию) или `asc`
+   * @returns Общее количество черновиков и их список
+   * @throws {ValidationError} When query parameters are invalid (400)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-193
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/getV1Drafts}
+   * @example
+   * ```typescript
+   * const { total, drafts } = await sdk.ordersFBW.listDrafts({ limit: 100, sort: 'updateDt' });
+   * console.log(`Черновиков: ${total}`);
+   * for (const draft of drafts) {
+   *   console.log(`${draft.draftId}: ${draft.skuQuantity} SKU, обновлён ${draft.updatedAt}`);
+   * }
+   * ```
+   */
+  async listDrafts(options?: {
+    limit?: number;
+    offset?: number;
+    sort?: 'createDt' | 'updateDt';
+    order?: 'asc' | 'desc';
+  }): Promise<ModelsListDraftsResponse> {
+    return this.client.get<ModelsListDraftsResponse>(
+      'https://supplies-api.wildberries.ru/api/supplies/v1/drafts',
+      { params: options, rateLimitKey: 'orders-fbw.draftsList' }
+    );
+  }
+
+  /**
+   * Удалить черновик поставки
+   *
+   * Метод удаляет черновик поставки по идентификатору.
+   * Успешный ответ — **204 No Content** (без тела).
+   *
+   * Токены: **Personal**, **Service** (категория Supplies).
+   *
+   * Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+   *
+   * @param draftId - Идентификатор черновика (UUID)
+   * @throws {ValidationError} When draftId format is invalid (400)
+   * @throws {WBAPIError} 404 — черновик не найден
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-193
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/deleteV1DraftsDraftId}
+   * @example
+   * ```typescript
+   * await sdk.ordersFBW.deleteDraft('b5aed067-69d4-47b8-a5d0-591c615288f9');
+   * console.log('Черновик удалён');
+   * ```
+   */
+  async deleteDraft(draftId: string): Promise<void> {
+    await this.client.delete<undefined>(
+      `https://supplies-api.wildberries.ru/api/supplies/v1/drafts/${draftId}`,
+      {},
+      { rateLimitKey: 'orders-fbw.draftDelete' }
+    );
+  }
+
+  /**
+   * Товары в черновике поставки
+   *
+   * Метод возвращает список товаров, добавленных в черновик поставки,
+   * с карточкой товара (бренд, предмет, размер, изображение и т.д.).
+   *
+   * Токены: **Personal**, **Service** (категория Supplies).
+   *
+   * Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+   *
+   * @param draftId - Идентификатор черновика (UUID)
+   * @returns Количество SKU/товаров и список товаров
+   * @throws {ValidationError} When draftId format is invalid (400)
+   * @throws {WBAPIError} 404 — черновик не найден
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-193
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/getV1DraftsDraftIdItems}
+   * @example
+   * ```typescript
+   * const { skuQuantity, items } = await sdk.ordersFBW.getDraftItems(draftId);
+   * console.log(`SKU в черновике: ${skuQuantity}`);
+   * for (const item of items) {
+   *   console.log(`${item.vendorCode} (${item.sku}): ${item.quantity} шт`);
+   * }
+   * ```
+   */
+  async getDraftItems(draftId: string): Promise<ModelsListDraftItemsResponse> {
+    return this.client.get<ModelsListDraftItemsResponse>(
+      `https://supplies-api.wildberries.ru/api/supplies/v1/drafts/${draftId}/items`,
+      { rateLimitKey: 'orders-fbw.draftItemsList' }
+    );
+  }
+
+  /**
+   * Добавить товары в черновик поставки
+   *
+   * Метод добавляет товары в черновик поставки (до 1000 позиций за запрос).
+   *
+   * **Атомарность:** операция выполняется по принципу «всё или ничего»:
+   * - если все SKU успешно прошли валидацию — все товары добавляются
+   *   в черновик, ответ содержит `{"results": []}`;
+   * - если хотя бы один SKU не прошёл валидацию — **ни один** товар
+   *   не добавляется, ответ содержит список невалидных SKU с описанием ошибки.
+   *
+   * Токены: **Personal**, **Service** (категория Supplies).
+   *
+   * Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+   *
+   * @param draftId - Идентификатор черновика (UUID)
+   * @param data - Список товаров `{ quantity, sku }` (1–1000 позиций)
+   * @returns `results` — список невалидных SKU; пустой массив означает,
+   *   что все товары добавлены
+   * @throws {ValidationError} When items array is empty or exceeds 1000 items
+   * @throws {ValidationError} When draftId format or items array is invalid (400)
+   * @throws {WBAPIError} 404 — черновик не найден
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-193
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/postV1DraftsDraftIdItems}
+   * @example
+   * ```typescript
+   * const { results } = await sdk.ordersFBW.addDraftItems(draftId, {
+   *   items: [
+   *     { quantity: 10, sku: '2000000512907' },
+   *     { quantity: 5, sku: '2039395667350' },
+   *   ],
+   * });
+   * if (results.length > 0) {
+   *   // Ничего не добавлено — исправьте SKU и повторите запрос целиком
+   *   for (const { sku, error } of results) {
+   *     console.error(`${sku}: ${error.title} — ${error.detail}`);
+   *   }
+   * }
+   * ```
+   */
+  async addDraftItems(
+    draftId: string,
+    data: ModelsDraftAdditemsRequest
+  ): Promise<ModelsDraftAddItemsErrorResponse> {
+    if (data.items.length === 0) {
+      throw new ValidationError('items array cannot be empty');
+    }
+    if (data.items.length > 1000) {
+      throw new ValidationError('items array cannot exceed 1000 items');
+    }
+    return this.client.post<ModelsDraftAddItemsErrorResponse>(
+      `https://supplies-api.wildberries.ru/api/supplies/v1/drafts/${draftId}/items`,
+      data,
+      { rateLimitKey: 'orders-fbw.draftItemsAdd' }
+    );
+  }
+
+  /**
+   * Удалить товары из черновика поставки
+   *
+   * Метод удаляет товары из черновика поставки по списку SKU.
+   *
+   * **Валидация SKU не выполняется:** при передаче несуществующего SKU
+   * ошибка не возвращается — он молча игнорируется, а корректные SKU
+   * удаляются из черновика.
+   *
+   * Токены: **Personal**, **Service** (категория Supplies).
+   *
+   * Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+   *
+   * @param draftId - Идентификатор черновика (UUID)
+   * @param data - Список SKU для удаления (минимум 1)
+   * @returns `results` — результат операции
+   * @throws {ValidationError} When skus array is empty
+   * @throws {ValidationError} When request parameters are invalid (400)
+   * @throws {WBAPIError} 404 — черновик не найден
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-193
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/deleteV1DraftsDraftIdItems}
+   * @example
+   * ```typescript
+   * await sdk.ordersFBW.deleteDraftItems(draftId, { skus: ['2000000512907'] });
+   * ```
+   */
+  async deleteDraftItems(
+    draftId: string,
+    data: ModelsDraftDeleteitemsRequest
+  ): Promise<ModelsDraftDeleteItemsErrorResponse> {
+    if (data.skus.length === 0) {
+      throw new ValidationError('skus array cannot be empty');
+    }
+    return this.client.delete<ModelsDraftDeleteItemsErrorResponse>(
+      `https://supplies-api.wildberries.ru/api/supplies/v1/drafts/${draftId}/items`,
+      data,
+      { rateLimitKey: 'orders-fbw.draftItemsDelete' }
     );
   }
 
