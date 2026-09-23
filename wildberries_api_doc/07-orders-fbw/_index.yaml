@@ -7,10 +7,13 @@ _shards:
     _endpoints: 4
   - _file: informatsiya-o-postavkakh.yaml
     _tag: Информация о поставках
-    _endpoints: 4
+    _endpoints: 5
+  - _file: chernoviki-postavok.yaml
+    _tag: Черновики поставок
+    _endpoints: 6
   - _file: sborochnye-zadaniya-dbw.yaml
     _tag: Сборочные задания DBW
     _endpoints: 5
 _shared_schemas: _schemas.yaml
-_total_endpoints: 13
+_total_endpoints: 20
 _deprecated_endpoints: 1

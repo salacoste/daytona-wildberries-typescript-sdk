@@ -407,6 +407,12 @@ components:
           type: integer
           nullable: true
           description: Количество обезличенного товара, шт
+        discrepancies:
+          type: integer
+          description: |
+            Discrepancies between the declared and actual quantity of the item in the supply.
+            <br>
+            Only when `"statusID":5`
       example:
         phone: +7 903 *** 98 62
         statusID: 5
@@ -432,6 +438,7 @@ components:
         acceptedQuantity: 10
         unloadingQuantity: 10
         depersonalizedQuantity: 0
+        discrepancies: 0
     models.GoodInSupply:
       type: object
       properties:
@@ -791,6 +798,394 @@ components:
           type: string
           description: Описание ошибки
           example: not found
+    models.ItemDiscrepancyResponse:
+      required:
+        - packageCode
+        - videoUrl
+        - videoStartsAt
+        - videoUnavailable
+        - items
+      type: object
+      properties:
+        packageCode:
+          description: Package ID
+          type: string
+        videoUrl:
+          description: Video of discrepancies during acceptance
+          type: string
+        videoStartsAt:
+          description: Date and time of video recording of discrepancies during acceptance
+          type: string
+          format: date-time
+        videoUnavailable:
+          description: |
+            Is the video available:
+              - `false` — yes
+              - `true` — no
+          type: boolean
+        items:
+          description: Supply items
+          type: array
+          items:
+            $ref: "#/components/schemas/models.DiscrepancyResponseItem"
+    models.DiscrepancyResponseItem:
+      type: object
+      required:
+        - actualAmount
+        - actualSku
+        - declaredAmount
+        - discrepancyQuantity
+        - discrepancyType
+        - declaredSku
+        - skuScans
+      properties:
+        declaredSku:
+          nullable: false
+          description: SKU declared when creating the supply
+          type: string
+        discrepancyType:
+          nullable: false
+          type: string
+          description: |
+            Overall discrepancy type for the box:
+              - `surplus` — more items delivered than declared
+              - `shortage` — fewer items delivered than declared
+              - `re-sorting` — the SKU of the accepted item does not match the one declared when creating the supply
+          enum:
+            - surplus
+            - shortage
+            - re-sorting
+        declaredAmount:
+          nullable: false
+          description: Item quantity declared when creating the supply
+          type: integer
+        actualAmount:
+          nullable: false
+          description: Actual item quantity
+          type: integer
+        discrepancyQuantity:
+          nullable: false
+          description: Difference between declared and actual item quantity
+          type: integer
+        actualSku:
+          nullable: false
+          description: Actual SKU
+          type: string
+        skuScans:
+          description: Item scan results
+          nullable: true
+          type: array
+          items:
+            $ref: "#/components/schemas/models.ItemScans"
+    models.ItemScans:
+      required:
+        - scanId
+        - declaredSku
+        - scanTime
+        - discrepancyLabel
+        - actualSku
+      type: object
+      properties:
+        scanId:
+          nullable: false
+          description: Scan ID
+          type: integer
+        declaredSku:
+          nullable: false
+          description: SKU declared when creating the supply
+          type: string
+        scanTime:
+          nullable: false
+          description: Scan date and time
+          format: date-time
+          type: string
+        discrepancyLabel:
+          nullable: false
+          type: string
+          description: |
+            Discrepancy type:
+              - `surplus` — more items delivered than declared
+              - `shortage` — fewer items delivered than declared
+              - `re-sorting` — the SKU of the accepted item does not match the one declared when creating the supply
+          enum:
+            - surplus
+            - shortage
+            - re-sorting
+        actualSku:
+          nullable: false
+          description: Actual SKU
+          type: string
+    errors.DraftError:
+      required:
+        - status
+        - title
+        - requestId
+        - origin
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        requestId:
+          type: string
+          description: Unique request ID
+        origin:
+          type: string
+          description: Service name
+    models.DraftAdditemsRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/models.Item"
+          description: Items list
+          maxItems: 1000
+    models.DraftAddItemsErrorResponse:
+      required:
+        - results
+      properties:
+        results:
+          description: List of invalid SKUs with errors
+          items:
+            $ref: "#/components/schemas/models.DraftAddItemsResultItem"
+          type: array
+      type: object
+    models.DraftDeleteItemsErrorResponse:
+      required:
+        - results
+      properties:
+        results:
+          type: array
+      type: object
+    models.DraftAddItemsResultItem:
+      required:
+        - error
+        - sku
+      properties:
+        error:
+          allOf:
+            - $ref: "#/components/schemas/models.DraftAddItemsResultError"
+          description: Error detail
+        sku:
+          description: SKU
+          type: string
+      type: object
+    models.DraftAddItemsResultError:
+      required:
+        - detail
+        - title
+      properties:
+        detail:
+          description: Error details
+          example: Создайте карточку товара с этим баркодом
+          type: string
+        title:
+          description: Error title
+          example: Invalid sku
+          type: string
+      type: object
+    models.DraftCreateResponse:
+      required:
+        - draftId
+      type: object
+      properties:
+        draftId:
+          type: string
+          description: Draft ID
+          example: cd20d135-f13f-47a0-903c-3bd268b92047
+    models.DraftDeleteitemsRequest:
+      type: object
+      required:
+        - skus
+      properties:
+        skus:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: SKUs list
+    models.DraftItemItem:
+      required:
+        - sku
+        - color
+        - quantity
+        - brandName
+        - imgSrc
+        - nmId
+        - subjectName
+        - techSize
+        - title
+        - vendorCode
+      type: object
+      properties:
+        sku:
+          type: string
+          description: SKU
+        color:
+          type: string
+          description: Item color
+        quantity:
+          type: integer
+          description: Item quantity
+        brandName:
+          type: string
+          description: Brand
+        imgSrc:
+          type: string
+          description: Link to item image
+        nmId:
+          type: integer
+          description: WB item number
+        subjectName:
+          type: string
+          description: Subcategory
+        techSize:
+          type: string
+          description: Item size
+        title:
+          type: string
+          description: Item title
+        vendorCode:
+          type: string
+          description: Seller item number
+    models.DraftItem:
+      required:
+        - draftId
+        - phone
+        - createdAt
+        - updatedAt
+        - skuQuantity
+        - itemQuantity
+      type: object
+      properties:
+        draftId:
+          type: string
+          description: Draft ID
+        phone:
+          type: string
+          description: Phone number of the user that created the draft
+        createdAt:
+          type: string
+          description: Date and time the draft was created
+          format: ISO 8601
+        updatedAt:
+          type: string
+          description: Date and time the draft was updated
+          format: ISO 8601
+        skuQuantity:
+          type: integer
+          description: SKU quantity
+        itemQuantity:
+          type: integer
+          description: Item quantity
+    models.ListDraftItemsResponse:
+      required:
+        - skuQuantity
+        - itemQuantity
+        - items
+      type: object
+      properties:
+        skuQuantity:
+          type: integer
+          description: SKU quantity
+        itemQuantity:
+          type: integer
+          description: Item quantity
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/models.DraftItemItem"
+          description: Items list
+    models.ListDraftsResponse:
+      required:
+        - total
+        - drafts
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total number of drafts
+        drafts:
+          type: array
+          items:
+            $ref: "#/components/schemas/models.DraftItem"
+          description: Drafts list
+    models.Item:
+      type: object
+      required:
+        - quantity
+        - sku
+      properties:
+        quantity:
+          type: integer
+          description: |
+            Item quantity
+          minimum: 1
+          maximum: 999999
+        sku:
+          type: string
+          description: SKU specified in the listing
+    models.SupplyAcceptedMoreThanYearAgo:
+      type: object
+      required:
+        - status
+        - title
+        - detail
+        - requestId
+        - origin
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        title:
+          type: string
+          description: Short error description
+        detail:
+          type: string
+          description: Detailed error description
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: Service where the error occurred
+    Response4XX:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        status:
+          type: number
+          description: HTTP status code
+        statusText:
+          type: string
+          description: Text of the HTTP status code
+        timestamp:
+          type: string
+          format: date-time
+          description: Request date and time
   examples:
     ResponseCoefficients:
       value:
@@ -972,6 +1367,100 @@ components:
         requestId: a6bdc2a4d2fde51c2036fa8af2483886
         origin: supply-api
       description: Не найдена указанная поставка
+    SupplyAcceptedMoreThanYearAgo:
+      summary: Поставка принята больше года назад
+      value:
+        status: 403
+        title: forbidden
+        detail: поставка принята больше года назад
+        requestId: 36c00cfacde02214ca39c0c7486746f1
+        origin: supply-api
+    BadDraftIdFormat:
+      description: The value of the `draftId` parameter is incorrect
+      value:
+        status: 400
+        title: bad request
+        detail: Неверный формат draftId
+        requestId: f02ddbea3875b553cab3ed899b7abd33
+        origin: supply-api
+    ItemsArrayLimitExceeded:
+      description: Maximum `items` array size exceeded. Maximum allowed is 1000
+      value:
+        status: 400
+        title: bad request
+        detail: Превышен максимальный размер массива items. Максимум 1000
+        requestId: test-request-id-1
+        origin: supply-api
+    BadRequestDraftItems0:
+      description: |
+        The parameter value is not specified
+      value:
+        status: 400
+        title: bad request
+        detail: Укажите значение параметра 'skus'
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+    BadRequestDraftItems1:
+      description: |
+        The parameter is not specified
+      value:
+        status: 400
+        title: bad request
+        detail: Укажите параметр 'skus'
+        requestId: a6bdc2a4d2fde51c2036fa8af2483886
+        origin: supply-api
+    InvalidSku:
+      description: |
+        Invalid SKUs provided.
+        No SKUs have been added to the draft
+      value:
+        results:
+          - sku: "1234567"
+            error:
+              title: Invalid sku
+              detail: Создайте карточку товара с этим баркодом
+    SuccessResponse:
+      description: All SKUs successfully added to the draft
+      value:
+        results: []
+    SuccessResponse1:
+      description: Success
+      value:
+        results: []
+    ItemDiscrepancyResponse:
+      value:
+        - packageCode: WB_2282893992
+          videoUrl: ""
+          videoStartsAt: "2026-07-11T10:02:42Z"
+          videoUnavailable: false
+          items:
+            - declaredSku: "1234567890"
+              discrepancyType: surplus
+              declaredAmount: 1
+              actualAmount: 2
+              discrepancyQuantity: 2
+              actualSku: "1234567890"
+              skuScans:
+                - scanId: 1
+                  declaredSku: "1234567890"
+                  scanTime: "2025-01-18T21:11:54+03:00"
+                  discrepancyLabel: surplus
+                  actualSku: "1234567890"
+                - scanId: 2
+                  declaredSku: "1234567890"
+                  scanTime: "2025-01-18T21:11:54+03:00"
+                  discrepancyLabel: surplus
+                  actualSku: "1234567890"
+    Response403TokenCategory:
+      value:
+        status: 403
+        statusText: Forbidden
+        title: Forbidden
+        detail: scope is not allowed for this resource
+        requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+        origin: ag-marketplace
+        timestamp: "2026-09-03T13:55:15Z"
+      description: Invalid token category
   responses:
     "401":
       description: Не авторизован
@@ -1014,6 +1503,49 @@ components:
             status: 401
             statusText: Unauthorized
             timestamp: "2024-09-30T06:52:38Z"
+    "403":
+      description: Доступ запрещён
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          examples:
+            Response403TokenCategory:
+              value:
+                status: 403
+                statusText: Forbidden
+                title: Forbidden
+                detail: scope is not allowed for this resource
+                requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+                origin: ag-marketplace
+                timestamp: "2026-09-03T13:55:15Z"
+              description: Invalid token category
     "429":
       description: Слишком много запросов
       content:

@@ -316,3 +316,116 @@ paths:
           $ref: _schemas.yaml#/components/responses/401
         "429":
           $ref: _schemas.yaml#/components/responses/429
+  /api/supplies/v1/discrepancies/{supplyId}:
+    servers:
+      - url: https://supplies-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: supplies
+      x-token-types:
+        - personal
+        - service
+      operationId: getV1SuppliesSupplyIdDiscrepanciesQuantity
+      security:
+        - HeaderApiKey: []
+      summary: Supply Discrepancies
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method returns information about discrepancies between the declared and actual item quantity in the supply.
+        <br>
+        Available for supplies accepted no more than one year ago.
+        <br><br>
+        **Discrepancy types:**
+        <br><br>
+        Discrepancy upwards:<br><br>
+        1. Excess of items with the declared SKU:
+          - `"discrepancyType": "surplus"`
+          - `"discrepancyLabel": "surplus"`
+        2. Excess of items with a SKU that does not match the declared one:
+          - `"discrepancyType": "surplus"`
+          - `"discrepancyLabel": "re-sorting"`
+
+        Discrepancy downwards:<br><br>
+        1. Missing items:
+          - `"discrepancyType": "shortage"`
+          - `"discrepancyLabel": "shortage"`
+        2. Some SKUs do not match the declared ones:
+          - `"discrepancyType": "shortage"`
+          - `"discrepancyLabel": "re-sorting"`
+
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 1 request | 1 min | 1 request |
+        </div>
+      tags:
+        - Информация о поставках
+      parameters:
+        - name: supplyId
+          in: path
+          description: Supply ID
+          required: true
+          schema:
+            type: string
+            format: integer
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: _schemas.yaml#/components/schemas/models.ItemDiscrepancyResponse
+              examples:
+                ItemDiscrepancyResponse:
+                  $ref: _schemas.yaml#/components/examples/ItemDiscrepancyResponse
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                BadPathParamFormat:
+                  $ref: _schemas.yaml#/components/examples/BadPathParamFormat
+                BadSupplyIDPackage:
+                  $ref: _schemas.yaml#/components/examples/BadSupplyIDPackage
+                BadID:
+                  $ref: _schemas.yaml#/components/examples/BadID
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.SupplyAcceptedMoreThanYearAgo
+              examples:
+                SupplyAcceptedMoreThanYearAgo:
+                  $ref: _schemas.yaml#/components/examples/SupplyAcceptedMoreThanYearAgo
+            application/problem+json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/Response4XX
+              examples:
+                Response403TokenCategory:
+                  $ref: _schemas.yaml#/components/examples/Response403TokenCategory
+        "404":
+          description: Не найдено
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/models.ErrorModel
+              examples:
+                SupplyNotFound:
+                  $ref: _schemas.yaml#/components/examples/SupplyNotFound
+        "429":
+          $ref: _schemas.yaml#/components/responses/429
