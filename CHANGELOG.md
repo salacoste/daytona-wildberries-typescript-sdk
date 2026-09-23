@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **ordersFBS**: SPOT support (EAEU road-import declarations, WB news 2026-09) — four new methods:
+  `getSpotCountries()` (GET `/api/marketplace/v3/fbs/dictionaries/countries/oksm` — OKSM country
+  list for carrier codes), `updateSupplySpot(supplyId, data)` (PUT
+  `/api/marketplace/v3/fbs/supplies/{supplyId}/spot`; 409 = error while adding SPOT data),
+  `getSuppliesSpotList(data)` (POST `.../supplies/spot/list`; per-supply SPOT echo + DOPP
+  `status`/`errorCode` or `error`), and `getSupplySpotStickers(supplyId)` (GET
+  `.../supplies/{supplyId}/stickers/spot`; PNG QR code, base64). Plus `spotAvailable?: boolean`
+  on `Supply` (backing both `GET /api/v3/supplies` and `GET /api/v3/supplies/{supplyId}`).
+  Kyrgyzstan sellers only today; WB roadmap: all EAEU except the Russian Federation.
+  All four rate-limit keys registered (300/min, 200 ms interval, burst 20, 4XX = 10 requests).
+
 ## [4.2.0] - 2026-08-09
 
 ### Added

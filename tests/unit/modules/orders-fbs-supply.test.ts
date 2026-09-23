@@ -6,6 +6,7 @@
  * - TRBX (boxes) operations (list, create, delete, stickers)
  * - Specialized/cross-border (status history, client info)
  * - Reshipment orders
+ * - SPOT (EAEU road-import declarations): OKSM countries, supply SPOT data, QR code
  *
  * @module tests/unit/modules/orders-fbs-supply.test
  */
@@ -81,6 +82,22 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
 
       expect(result.recommendedWhId).toBe(123569);
       expect(result.isPickupPointShipmentAllowed).toBe(true);
+    });
+
+    it('should pass through spotAvailable field (SPOT availability flag)', async () => {
+      const mockSupply = {
+        id: 'WB-GI-1234567',
+        done: false,
+        name: 'SPOT-eligible supply',
+        cargoType: 1,
+        spotAvailable: true,
+      };
+
+      mockClient.get.mockResolvedValue(mockSupply);
+
+      const result = await ordersFbs.getSupply('WB-GI-1234567');
+
+      expect(result.spotAvailable).toBe(true);
     });
   });
 
@@ -418,6 +435,120 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
       );
       expect(result).toEqual(mockReshipment);
       expect(result.orders).toHaveLength(3);
+    });
+  });
+
+  // ============================================================================
+  // SPOT (EAEU road-import declarations)
+  // ============================================================================
+
+  describe('SPOT methods', () => {
+    it('getSpotCountries should fetch the OKSM country list', async () => {
+      const mockCountries = {
+        countries: [
+          { code: '036', name: 'Австралия' },
+          { code: '112', name: 'Беларусь' },
+          { code: '417', name: 'Киргизия' },
+        ],
+      };
+
+      mockClient.get.mockResolvedValue(mockCountries);
+
+      const result = await ordersFbs.getSpotCountries();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/dictionaries/countries/oksm',
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.getSpotCountries' })
+      );
+      expect(result).toEqual(mockCountries);
+      expect(result.countries).toHaveLength(3);
+    });
+
+    it('updateSupplySpot should PUT SPOT data with the supplyId in the URL', async () => {
+      mockClient.put.mockResolvedValue(undefined);
+
+      const spotData = {
+        carrierName: 'ООО СПОТ',
+        carrierTaxNumber: '7588179007',
+        carrierCountryCode: '112',
+        vehicleRegistrationNumber: 'А123АА100',
+        trailerRegistrationNumber: 'АА000100',
+      };
+
+      await ordersFbs.updateSupplySpot('WB-GI-123456789', spotData);
+
+      expect(mockClient.put).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/WB-GI-123456789/spot',
+        spotData,
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.putSupplySpot' })
+      );
+      expect(mockClient.put).toHaveBeenCalledTimes(1);
+    });
+
+    it('getSuppliesSpotList should POST supply IDs and return per-supply SPOT data', async () => {
+      const mockSpotList = {
+        supplies: [
+          {
+            id: 'WB-GI-0000001',
+            spot: {
+              carrierTaxNumber: '7588179007',
+              carrierName: 'ООО СПОТ',
+              carrierCountryCode: '112',
+              vehicleRegistrationNumber: 'А123АА100',
+              trailerRegistrationNumber: 'АА000100',
+              status: 'completed' as const,
+            },
+          },
+          {
+            id: 'WB-GI-0000002',
+            spot: {
+              carrierTaxNumber: '7588179007',
+              carrierName: 'ООО СПОТ',
+              carrierCountryCode: '112',
+              vehicleRegistrationNumber: 'А123АА100',
+              status: 'failed' as const,
+              errorCode: 'doppFailed' as const,
+            },
+          },
+          {
+            id: 'WB-GI-0000003',
+            error: { title: 'NotFound', detail: 'Not Found' },
+          },
+          {
+            id: 'WB-GI-0000004',
+            error: { title: 'SpotActionNotAllowed', detail: 'Spot Action Not Allowed' },
+          },
+        ],
+      };
+
+      mockClient.post.mockResolvedValue(mockSpotList);
+
+      const result = await ordersFbs.getSuppliesSpotList({ supplyIds: ['WB-GI-0000001'] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/spot/list',
+        { supplyIds: ['WB-GI-0000001'] },
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.postSuppliesSpotList' })
+      );
+      expect(result).toEqual(mockSpotList);
+      expect(result.supplies).toHaveLength(4);
+      expect(result.supplies[0].spot?.status).toBe('completed');
+      expect(result.supplies[1].spot?.errorCode).toBe('doppFailed');
+      expect(result.supplies[2].error?.title).toBe('NotFound');
+    });
+
+    it('getSupplySpotStickers should fetch the base64 SPOT QR code', async () => {
+      const mockQr = { qrCode: 'U3dhZ2dlciByb2Nrcw==' };
+
+      mockClient.get.mockResolvedValue(mockQr);
+
+      const result = await ordersFbs.getSupplySpotStickers('WB-GI-123456789');
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/WB-GI-123456789/stickers/spot',
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.getSupplySpotStickers' })
+      );
+      expect(result).toEqual(mockQr);
     });
   });
 });

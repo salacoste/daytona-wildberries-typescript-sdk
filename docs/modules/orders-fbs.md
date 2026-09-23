@@ -9,7 +9,7 @@ The **Orders FBS (Fulfillment by Seller)** module provides comprehensive order m
 **Module Name**: `ordersFBS`
 **Source**: Generated from `wildberries_api_doc/03-orders-fbs.yaml`
 **Base URL**: `https://marketplace-api.wildberries.ru`
-**Total Methods**: 36 methods across 7 functional areas
+**Total Methods**: 40 methods across 8 functional areas
 
 ### FBS vs FBW
 
@@ -121,6 +121,15 @@ Ensure your API key has the following permissions enabled:
 | `deleteSuppliesTrbx(supplyId, data?)` | Delete boxes from a supply | 300 req/min |
 | `createTrbxSticker(supplyId, options?, data?)` | Get box stickers | 300 req/min |
 
+### SPOT - EAEU Road Imports (4 methods)
+
+| Method | Description | Rate Limit |
+|--------|-------------|------------|
+| `getSpotCountries()` | Get the OKSM country list for SPOT carrier codes | 300 req/min |
+| `updateSupplySpot(supplyId, data)` | Add SPOT data to a supply (`spotAvailable: true` only) | 300 req/min |
+| `getSuppliesSpotList(data)` | Get SPOT data + DOPP status for up to 100 supplies | 300 req/min |
+| `getSupplySpotStickers(supplyId)` | Get the supply SPOT QR code (PNG, base64) | 300 req/min |
+
 ---
 
 ## What's New (v3.5.0)
@@ -191,6 +200,69 @@ interface CrossBorderStickerItem {
 ```
 
 When `status` is `'awaitingTrackNumber'`, poll the endpoint until it transitions to `'ready'`.
+
+---
+
+## SPOT (EAEU Road Imports)
+
+**SPOT** is Wildberries' system for EAEU road-import declarations (DOPP — Declaration of
+Upcoming Supply), mandatory for supplies shipped by road from an EAEU country into the
+Russian Federation.
+
+**Availability:** SPOT currently works for sellers registered in **Kyrgyzstan** only.
+WB's roadmap is to extend it to **all EAEU countries except the Russian Federation**.
+
+### How it works
+
+1. **Check eligibility** — supplies that accept SPOT carry `spotAvailable: true` in
+   `supplies()` / `getSupply()` responses.
+2. **Pick the carrier country** — fetch OKSM codes via `getSpotCountries()` and use the
+   3-digit code as `carrierCountryCode`.
+3. **Submit SPOT data** — `updateSupplySpot()` (PUT; 409 = error while adding, e.g.
+   `SpotActionNotAllowed` when the supply has `spotAvailable: false`).
+4. **Poll the DOPP status** — `getSuppliesSpotList()` returns the echoed SPOT data plus a
+   `status` per supply: `pending` (DOPP forming), `completed` (DOPP formed), `failed`
+   (see `errorCode`, e.g. `doppFailed`).
+
+   SPOT data is returned only when **all** of the following hold:
+   - the supply is in the delivery stage;
+   - the seller is registered in any EAEU country other than the Russian Federation;
+   - the destination warehouse is located in the Russian Federation.
+5. **Print the QR code** — once `status` is `'completed'`, `getSupplySpotStickers()`
+   returns the SPOT QR code in PNG format, base64 encoded.
+
+### Example
+
+```typescript
+// 1. Check eligibility
+const supply = await sdk.ordersFBS.getSupply('WB-GI-123456789');
+if (!supply.spotAvailable) throw new Error('SPOT not available for this supply');
+
+// 2-3. Submit SPOT data (carrierCountryCode comes from getSpotCountries())
+await sdk.ordersFBS.updateSupplySpot('WB-GI-123456789', {
+  carrierName: 'ООО СПОТ',
+  carrierTaxNumber: '7588179007',
+  carrierCountryCode: '417',
+  vehicleRegistrationNumber: 'А123АА100',
+  trailerRegistrationNumber: 'АА000100',
+});
+
+// 4. Poll the DOPP formation status
+const { supplies } = await sdk.ordersFBS.getSuppliesSpotList({
+  supplyIds: ['WB-GI-123456789'],
+});
+const spot = supplies[0].spot; // { status: 'completed' | 'pending' | 'failed', ... }
+
+// 5. Print the QR once completed
+if (spot?.status === 'completed') {
+  const { qrCode } = await sdk.ordersFBS.getSupplySpotStickers('WB-GI-123456789');
+  fs.writeFileSync('spot-qr.png', Buffer.from(qrCode, 'base64'));
+}
+```
+
+**Rate limit penalty**: all four SPOT methods are on the standard FBS tier
+(300 req/min, 200 ms interval, burst 20), and **one request with a 4XX response counts
+as 10 requests** — validate `spotAvailable` before writing.
 
 ---
 

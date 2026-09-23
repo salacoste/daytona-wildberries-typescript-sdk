@@ -254,4 +254,34 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+
+  // === SPOT (EAEU road imports) — 300 req/min, 200ms interval, burst 20 (4XX = 10 requests) ===
+  /** GET /api/marketplace/v3/fbs/dictionaries/countries/oksm — OKSM country list for SPOT */
+  'orders-fbs.getSpotCountries': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
+  /** PUT /api/marketplace/v3/fbs/supplies/{supplyId}/spot — Add SPOT data to supply */
+  'orders-fbs.putSupplySpot': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
+  /** POST /api/marketplace/v3/fbs/supplies/spot/list — Get SPOT data for supply list */
+  'orders-fbs.postSuppliesSpotList': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
+  /** GET /api/marketplace/v3/fbs/supplies/{supplyId}/stickers/spot — Get supply SPOT QR code */
+  'orders-fbs.getSupplySpotStickers': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };
