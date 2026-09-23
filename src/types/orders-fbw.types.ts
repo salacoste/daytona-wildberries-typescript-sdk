@@ -151,7 +151,8 @@ export interface ModelsDateFilterRequest {
   "readyForSaleQuantity": 0,
   "acceptedQuantity": 10,
   "unloadingQuantity": 10,
-  "depersonalizedQuantity": 0
+  "depersonalizedQuantity": 0,
+  "discrepancies": 0
 }
 ```
  */
@@ -220,6 +221,99 @@ export interface ModelsSupplyDetails {
   unloadingQuantity?: number;
   /** Количество обезличенного товара, шт */
   depersonalizedQuantity?: number;
+  /**
+   * Расхождения между заявленным и фактическим количеством товара в поставке, шт.
+   * Присутствует только при `"statusID":5` (Принято).
+   *
+   * Расшифровку расхождений (излишки/недостача/пересорт) см. в методе
+   * `getSupplyDiscrepancies()` модуля orders-fbw.
+   */
+  discrepancies?: number;
+}
+
+/**
+ * @example
+```json
+[
+  {
+    "packageCode": "WB_2282893992",
+    "videoUrl": "",
+    "videoStartsAt": "2026-07-11T10:02:42Z",
+    "videoUnavailable": false,
+    "items": [
+      {
+        "declaredSku": "1234567890",
+        "discrepancyType": "surplus",
+        "declaredAmount": 1,
+        "actualAmount": 2,
+        "discrepancyQuantity": 2,
+        "actualSku": "1234567890",
+        "skuScans": [
+          {
+            "scanId": 1,
+            "declaredSku": "1234567890",
+            "scanTime": "2025-01-18T21:11:54+03:00",
+            "discrepancyLabel": "surplus",
+            "actualSku": "1234567890"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+ */
+export interface ModelsItemDiscrepancyResponse {
+  /** Идентификатор упаковки */
+  packageCode: string;
+  /** Видео расхождений при приёмке */
+  videoUrl: string;
+  /** Дата и время записи видео расхождений при приёмке */
+  videoStartsAt: string;
+  /** Доступно ли видео: - `false` — да - `true` — нет */
+  videoUnavailable: boolean;
+  /** Товары поставки */
+  items: ModelsDiscrepancyResponseItem[];
+}
+
+export interface ModelsDiscrepancyResponseItem {
+  /** Артикул WB, заявленный при создании поставки */
+  declaredSku: string;
+  /**
+   * Общий тип расхождения для короба:
+   * - `surplus` — фактически доставлено больше товара, чем заявлено
+   * - `shortage` — фактически доставлено меньше товара, чем заявлено
+   * - `re-sorting` — артикул принятого товара не совпадает с заявленным при создании поставки
+   */
+  discrepancyType: 'surplus' | 'shortage' | 're-sorting';
+  /** Количество товара, заявленное при создании поставки, шт */
+  declaredAmount: number;
+  /** Фактическое количество товара, шт */
+  actualAmount: number;
+  /** Разница между заявленным и фактическим количеством товара, шт */
+  discrepancyQuantity: number;
+  /** Фактический артикул WB */
+  actualSku: string;
+  /** Результаты сканирования товара. `null`, если сканов нет */
+  skuScans: ModelsItemScans[] | null;
+}
+
+export interface ModelsItemScans {
+  /** Идентификатор скана */
+  scanId: number;
+  /** Артикул WB, заявленный при создании поставки */
+  declaredSku: string;
+  /** Дата и время сканирования */
+  scanTime: string;
+  /**
+   * Тип расхождения:
+   * - `surplus` — фактически доставлено больше товара, чем заявлено
+   * - `shortage` — фактически доставлено меньше товара, чем заявлено
+   * - `re-sorting` — артикул принятого товара не совпадает с заявленным при создании поставки
+   */
+  discrepancyLabel: 'surplus' | 'shortage' | 're-sorting';
+  /** Фактический артикул WB */
+  actualSku: string;
 }
 
 export type ModelsHandySupplyStatus = 1 | 2 | 3 | 4 | 5 | 6;

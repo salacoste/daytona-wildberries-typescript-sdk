@@ -23,6 +23,7 @@ import type {
   ModelsBox,
   ModelsGood,
   ModelsGoodInSupply,
+  ModelsItemDiscrepancyResponse,
   ModelsOptionsResultModel,
   ModelsSuppliesFiltersRequest,
   ModelsSupply,
@@ -198,6 +199,62 @@ export class OrdersFbwModule {
     return this.client.get<ModelsBox[]>(
       `https://supplies-api.wildberries.ru/api/v1/supplies/${ID}/package`,
       { rateLimitKey: 'orders-fbw.suppliesPackage' }
+    );
+  }
+
+  /**
+   * Расхождения при приёмке поставки
+   *
+   * Возвращает информацию о расхождениях между заявленным и фактическим
+   * количеством товара в поставке — по данным скан-приёмки на складе WB,
+   * вместе со ссылкой на видео расхождений.
+   *
+   * **Доступен только для поставок, принятых не более одного года назад** —
+   * для более старых поставок метод вернёт 404.
+   *
+   * Типы расхождений:
+   * - Расхождение вверх:
+   *   1. Излишек товара с заявленным артикулом —
+   *      `"discrepancyType": "surplus"` + `"discrepancyLabel": "surplus"`
+   *   2. Излишек товара с артикулом, не совпадающим с заявленным, —
+   *      `"discrepancyType": "surplus"` + `"discrepancyLabel": "re-sorting"`
+   * - Расхождение вниз:
+   *   1. Недостача товара —
+   *      `"discrepancyType": "shortage"` + `"discrepancyLabel": "shortage"`
+   *   2. Часть артикулов не совпадает с заявленными —
+   *      `"discrepancyType": "shortage"` + `"discrepancyLabel": "re-sorting"`
+   *
+   * Каждая упаковка содержит `videoUnavailable` (видео доступно при `false`)
+   * и `items[]` с построчным расхождением и результатами сканирования
+   * (`skuScans[]`, может быть `null`).
+   *
+   * Rate limit: **1 запрос в минуту** (интервал 1 минута, всплеск 1) —
+   * не запрашивайте методом пачки поставок подряд.
+   *
+   * @param supplyId - ID поставки
+   * @returns Успешно — массив упаковок с расхождениями
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {WBAPIError} 404 — поставка не найдена, без расхождений или принята более года назад
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-188
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/suppliesInformation/operation/getV1SuppliesSupplyIdDiscrepanciesQuantity}
+   * @example
+   * ```typescript
+   * const discrepancies = await sdk.ordersFBW.getSupplyDiscrepancies(12345);
+   * for (const pkg of discrepancies) {
+   *   console.log(`Поставка ${pkg.packageCode}: видео ${pkg.videoUnavailable ? 'недоступно' : pkg.videoUrl}`);
+   *   for (const item of pkg.items) {
+   *     console.log(`  ${item.declaredSku}: заявлено ${item.declaredAmount}, факт ${item.actualAmount} (${item.discrepancyType})`);
+   *   }
+   * }
+   * ```
+   */
+  async getSupplyDiscrepancies(supplyId: number): Promise<ModelsItemDiscrepancyResponse[]> {
+    return this.client.get<ModelsItemDiscrepancyResponse[]>(
+      `https://supplies-api.wildberries.ru/api/supplies/v1/discrepancies/${supplyId}`,
+      { rateLimitKey: 'orders-fbw.supplyDiscrepancies' }
     );
   }
 

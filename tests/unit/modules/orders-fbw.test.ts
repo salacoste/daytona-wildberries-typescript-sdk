@@ -15,7 +15,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbwModule } from '../../../src/modules/orders-fbw';
 import type { BaseClient } from '../../../src/client/base-client';
-import type { ModelsGood, ModelsSuppliesFiltersRequest } from '../../../src/types/orders-fbw.types';
+import type {
+  ModelsGood,
+  ModelsItemDiscrepancyResponse,
+  ModelsSuppliesFiltersRequest,
+} from '../../../src/types/orders-fbw.types';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { ValidationError } from '../../../src/errors/validation-error';
@@ -234,6 +238,9 @@ describe('OrdersFbwModule', () => {
         quantity: 100,
         acceptedQuantity: 95,
         readyForSaleQuantity: 90,
+        unloadingQuantity: 100,
+        depersonalizedQuantity: 0,
+        discrepancies: 5,
         acceptanceCost: 1500.5,
         storageCoefficient: 1.2,
         deliveryCoefficient: 1.0,
@@ -358,6 +365,95 @@ describe('OrdersFbwModule', () => {
         { rateLimitKey: 'orders-fbw.suppliesPackage' }
       );
       expect(result).toEqual(mockBoxes);
+    });
+  });
+
+  // ============================================================================
+  // getSupplyDiscrepancies()
+  // ============================================================================
+
+  describe('getSupplyDiscrepancies', () => {
+    const mockDiscrepancies: ModelsItemDiscrepancyResponse[] = [
+      {
+        packageCode: 'WB_2282893992',
+        videoUrl: '',
+        videoStartsAt: '2026-07-11T10:02:42Z',
+        videoUnavailable: false,
+        items: [
+          {
+            declaredSku: '1234567890',
+            discrepancyType: 'surplus',
+            declaredAmount: 1,
+            actualAmount: 2,
+            discrepancyQuantity: 2,
+            actualSku: '1234567890',
+            skuScans: [
+              {
+                scanId: 1,
+                declaredSku: '1234567890',
+                scanTime: '2025-01-18T21:11:54+03:00',
+                discrepancyLabel: 'surplus',
+                actualSku: '1234567890',
+              },
+              {
+                scanId: 2,
+                declaredSku: '1234567890',
+                scanTime: '2025-01-18T21:11:54+03:00',
+                discrepancyLabel: 're-sorting',
+                actualSku: '9876543210',
+              },
+            ],
+          },
+          {
+            declaredSku: '9876543210',
+            discrepancyType: 'shortage',
+            declaredAmount: 5,
+            actualAmount: 3,
+            discrepancyQuantity: 2,
+            actualSku: '9876543210',
+            skuScans: null,
+          },
+        ],
+      },
+    ];
+
+    it('should fetch supply discrepancies by supply ID', async () => {
+      mockClient.get.mockResolvedValue(mockDiscrepancies);
+
+      const result = await ordersFbw.getSupplyDiscrepancies(2282893992);
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/discrepancies/2282893992',
+        { rateLimitKey: 'orders-fbw.supplyDiscrepancies' }
+      );
+      expect(result).toEqual(mockDiscrepancies);
+    });
+
+    it('should return a top-level array of packages with nested items and skuScans', async () => {
+      mockClient.get.mockResolvedValue(mockDiscrepancies);
+
+      const result = await ordersFbw.getSupplyDiscrepancies(2282893992);
+
+      expect(Array.isArray(result)).toBe(true);
+      expect(result[0].packageCode).toBe('WB_2282893992');
+      expect(result[0].videoUnavailable).toBe(false);
+      expect(result[0].items).toHaveLength(2);
+      expect(result[0].items[0].discrepancyType).toBe('surplus');
+      expect(result[0].items[0].skuScans?.[0]?.discrepancyLabel).toBe('surplus');
+      expect(result[0].items[1].discrepancyType).toBe('shortage');
+      expect(result[0].items[1].skuScans).toBeNull();
+    });
+
+    it('should return an empty array when WB responds with no packages', async () => {
+      mockClient.get.mockResolvedValue([]);
+
+      const result = await ordersFbw.getSupplyDiscrepancies(12345);
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://supplies-api.wildberries.ru/api/supplies/v1/discrepancies/12345',
+        { rateLimitKey: 'orders-fbw.supplyDiscrepancies' }
+      );
+      expect(result).toEqual([]);
     });
   });
 
