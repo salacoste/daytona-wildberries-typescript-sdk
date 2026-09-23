@@ -54,6 +54,13 @@ export const ordersFbwRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 2,
     burstLimit: 10,
   },
+  // GET /api/supplies/v1/discrepancies/{supplyId} — supply acceptance discrepancies.
+  // Strictest limit in the module: 1 request per 1 min interval, no burst — never batch.
+  'orders-fbw.supplyDiscrepancies': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
   // POST /api/marketplace/v3/dbw/orders/client — buyer info for DBW orders
   // Note: 409 response counts as 10 requests (penaltyMultiplier)
   'orders-fbw.getClientInfo': {

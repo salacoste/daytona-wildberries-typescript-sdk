@@ -48,9 +48,13 @@ export interface ReconcileAcceptanceDeltaResult {
 /**
  * Reconciles declared vs accepted quantity per nmId for FBO acceptance.
  *
- * WB exposes no dedicated "act-of-acceptance discrepancy" API. Sellers reconcile
- * client-side: declared quantity (from their own supply/order data) vs accepted
- * quantity (from the acceptance report). This helper is the pure diff — no
+ * Since 2026-09 WB exposes a dedicated server-side API for this:
+ * `sdk.ordersFBW.getSupplyDiscrepancies(supplyId)` (GET
+ * /api/supplies/v1/discrepancies/{supplyId} — supplies accepted within the last
+ * year, includes the acceptance video and per-scan detail). This helper remains
+ * useful for client-side reconciliation from acceptance reports: declared
+ * quantity (from their own supply/order data) vs accepted quantity (from the
+ * acceptance report). This helper is the pure diff — no
  * network calls, no WB ID-mapping assumptions.
  *
  * Behaviour:

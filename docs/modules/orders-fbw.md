@@ -13,7 +13,7 @@ The **Orders FBW (Fulfillment by Wildberries)** module manages supply creation a
 | **Base URL** | `https://supplies-api.wildberries.ru` (most methods) |
 | **Alt Base URL** | `https://marketplace-api.wildberries.ru` (`getClientInfo` only) |
 | **Source Swagger** | `wildberries_api_doc/07-orders-fbw.yaml` |
-| **Methods** | 12 |
+| **Methods** | 13 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -55,7 +55,7 @@ const clientInfo = await sdk.ordersFBW.getClientInfo([987654321]);
 | `warehouses()` | GET | `/api/v1/warehouses` | List all WB warehouses |
 | `transitTariffs()` | GET | `/api/v1/transit-tariffs` | Get available transit directions |
 
-### Supply Management (4 methods)
+### Supply Management (5 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
@@ -63,6 +63,53 @@ const clientInfo = await sdk.ordersFBW.getClientInfo([987654321]);
 | `getSupply(ID)` | GET | `/api/v1/supplies/{ID}` | Get supply details by ID |
 | `getSuppliesGood(ID)` | GET | `/api/v1/supplies/{ID}/goods` | Get goods in a supply |
 | `getSuppliesPackage(ID)` | GET | `/api/v1/supplies/{ID}/package` | Get supply packaging info |
+| `getSupplyDiscrepancies(supplyId)` | GET | `/api/supplies/v1/discrepancies/{supplyId}` | Get acceptance discrepancies (surplus/shortage/re-sorting) with acceptance video |
+
+### Supply Acceptance Discrepancies (1 method) - NEW
+
+`getSupplyDiscrepancies(supplyId)` returns the discrepancies between the declared
+and the actual item quantity found at supply acceptance, per package, together
+with the acceptance-discrepancy video link and per-scan detail (`skuScans[]`).
+
+**Availability window:** only for supplies **accepted no more than one year ago**.
+A 404 response means the supply was not found, has no discrepancies, or was
+accepted more than a year ago.
+
+**Discrepancy semantics:**
+
+| Direction | Type combination | Meaning |
+|-----------|------------------|---------|
+| Upwards | `discrepancyType: "surplus"` + `discrepancyLabel: "surplus"` | Excess of items with the declared SKU |
+| Upwards | `discrepancyType: "surplus"` + `discrepancyLabel: "re-sorting"` | Excess of items with a non-matching SKU |
+| Downwards | `discrepancyType: "shortage"` + `discrepancyLabel: "shortage"` | Missing items |
+| Downwards | `discrepancyType: "shortage"` + `discrepancyLabel: "re-sorting"` | Some SKUs do not match the declared ones |
+
+```typescript
+const discrepancies = await sdk.ordersFBW.getSupplyDiscrepancies(2282893992);
+for (const pkg of discrepancies) {
+  if (!pkg.videoUnavailable) {
+    console.log(`Acceptance video: ${pkg.videoUrl} (from ${pkg.videoStartsAt})`);
+  }
+  for (const item of pkg.items) {
+    console.log(
+      `${item.declaredSku}: declared ${item.declaredAmount}, actual ${item.actualAmount} (${item.discrepancyType})`
+    );
+    for (const scan of item.skuScans ?? []) {
+      console.log(`  scan ${scan.scanId}: ${scan.discrepancyLabel} -> ${scan.actualSku}`);
+    }
+  }
+}
+```
+
+::: warning Rate limit: 1 request per minute
+`getSupplyDiscrepancies()` has the strictest limit in the module — 1 request per
+minute, 1-minute interval, no burst. Do not loop over batches of supplies with
+this method.
+:::
+
+The supply details response (`getSupply()`) now also includes an optional
+`discrepancies` field (integer) — the discrepancy count, present only when
+`statusID: 5` (Accepted). Use `getSupplyDiscrepancies()` for the per-item breakdown.
 
 ### DBW Orders (1 method)
 
@@ -324,6 +371,36 @@ interface ModelsSupplyDetails {
   acceptedQuantity?: number;
   unloadingQuantity?: number;
   depersonalizedQuantity?: number;
+  discrepancies?: number;        // discrepancy count — only when statusID=5 (Accepted)
+}
+
+// Supply acceptance discrepancy package (since 2026-09)
+interface ModelsItemDiscrepancyResponse {
+  packageCode: string;                     // package ID
+  videoUrl: string;                        // acceptance discrepancy video
+  videoStartsAt: string;                   // video recording start (date-time)
+  videoUnavailable: boolean;               // false means the video IS available
+  items: ModelsDiscrepancyResponseItem[];
+}
+
+// Per-item discrepancy row
+interface ModelsDiscrepancyResponseItem {
+  declaredSku: string;                     // SKU declared when creating the supply
+  discrepancyType: 'surplus' | 'shortage' | 're-sorting';  // overall box-level type
+  declaredAmount: number;                  // declared quantity
+  actualAmount: number;                    // actual quantity
+  discrepancyQuantity: number;             // difference
+  actualSku: string;                       // actual SKU
+  skuScans: ModelsItemScans[] | null;      // scan results, null when none
+}
+
+// Single acceptance scan
+interface ModelsItemScans {
+  scanId: number;
+  declaredSku: string;
+  scanTime: string;                        // date-time
+  discrepancyLabel: 'surplus' | 'shortage' | 're-sorting';
+  actualSku: string;
 }
 
 // Acceptance options result (with canBoxOnPallet)
@@ -439,6 +516,7 @@ interface ModelsErrorModel {
 | `orders-fbw.supplies` | Get supply details | 30 req/min | 2s | 10 | -- |
 | `orders-fbw.suppliesGoods` | Get supply goods | 30 req/min | 2s | 10 | -- |
 | `orders-fbw.suppliesPackage` | Get supply packaging | 30 req/min | 2s | 10 | -- |
+| `orders-fbw.supplyDiscrepancies` | Get supply acceptance discrepancies | 1 req/min | 60s | 1 | -- |
 | `orders-fbw.getClientInfo` | Get DBW buyer info | 300 req/min | 200ms | 20 | 10x on 409 |
 
 > **409 Penalty**: A single 409 response from `getClientInfo()` counts as **10 requests** against the rate limit quota due to `penaltyMultiplier: 10`.
@@ -478,6 +556,7 @@ try {
 
 | Version | Date | Changes |
 |---------|------|---------|
+| Unreleased | 2026-09 | Added `getSupplyDiscrepancies()` (GET `/api/supplies/v1/discrepancies/{supplyId}`, 1 req/min); added optional `discrepancies` to `ModelsSupplyDetails` (only when statusID=5); added `ModelsItemDiscrepancyResponse`, `ModelsDiscrepancyResponseItem`, `ModelsItemScans` types |
 | 3.5.0 | 2026-03 | Added `isBoxOnPallet` and `boxTypeID` to `ModelsSupply` and `ModelsSupplyDetails`; added `canBoxOnPallet` to warehouse options |
 | 3.4.0 | 2026-03 | Added `getClientInfo()` method (DBW buyer info, 300 req/min, marketplace-api domain); added `DBWClientInfo` and `GetDBWClientInfoResponse` types; method count 8 -> 9 active |
 | 3.0.0 | 2026-02 | Renamed `createSupply` to `listSupplies`; deprecated `getAcceptanceCoefficients` |
