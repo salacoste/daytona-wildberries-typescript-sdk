@@ -1838,6 +1838,261 @@ components:
         - request_id
         - origin
         - status
+    V0GetDailyLimitsResponse:
+      type: object
+      required:
+        - adverts
+      properties:
+        adverts:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0DailyLimitAdvert"
+    V0DailyLimitAdvert:
+      type: object
+      required:
+        - advertId
+        - enabled
+        - dailyLimit
+        - spentToday
+        - currency
+        - carryOverEnabled
+        - valid
+        - requiredLimit
+      properties:
+        advertId:
+          type: integer
+          format: int64
+          description: Campaign ID
+          example: 12346
+        enabled:
+          type: boolean
+          description: |
+            - `true` — daily limit is enabled
+            - `false` — daily limit is disabled
+          example: true
+        dailyLimit:
+          type: integer
+          format: int64
+          description: Daily limit amount in minor currency units — 0.01 of the base currency of the [seller account](https://cmp.wildberries.ru/campaigns/finances)
+          example: 100000
+        spentToday:
+          type: integer
+          format: int64
+          description: Amount spent today in minor currency units — 0.01 of the base currency of the [seller account](https://cmp.wildberries.ru/campaigns/finances)
+          example: 35000
+        currency:
+          type: string
+          description: Currency code
+          format: ISO 4217
+          example: RUB
+        carryOverEnabled:
+          type: boolean
+          description: |
+            Carry-over of the remaining daily limit to the next day.
+            If the limit is not fully spent within 24 hours, the remaining amount will be added to the next day's limit. Promotion spend will not increase.
+              - `true` — carry-over is enabled
+              - `false` — carry-over is disabled
+          example: true
+        valid:
+          type: boolean
+          description: |
+            Whether the current daily limit is sufficient for the campaign bids:
+              - `true` — yes
+              - `false` — no, we recommend to increase the limit, otherwise the campaign budget may be spent unevenly
+          example: true
+        requiredLimit:
+          type: integer
+          format: int64
+          description: |
+            Recommended minimum daily limit based on the campaign’s current bids. Specified in minor currency units — 0.01 of the base currency of the [seller account](https://cmp.wildberries.ru/campaigns/finances)
+          example: 3001
+    V0PutDailyLimitsRequest:
+      type: object
+      required:
+        - advertIds
+        - enabled
+      properties:
+        advertIds:
+          type: array
+          minItems: 1
+          maxItems: 100
+          description: Campaign IDs
+          items:
+            type: integer
+            format: int64
+            minimum: 1
+          example:
+            - 987654321
+            - 123456789
+        enabled:
+          type: boolean
+          description: |
+            Enable the limit:
+              - `true` — yes
+              - `false` — no
+          example: true
+        dailyLimit:
+          type: integer
+          format: int64
+          minimum: 1000
+          description: |
+            Daily limit amount. Required when `"enabled": true`.
+            The minimum allowed amount is specified in the `minDailyLimit` field of the [GET /api/advert/v1/config]() method
+          example: 1000
+        carryOverEnabled:
+          type: boolean
+          description: |
+            Carry over the unused remaining limit to the next day:
+              - `true` — yes
+              - `false` — no
+
+            Required when `"enabled": true`
+          example: true
+    V0PutDailyLimitsAdvertResult:
+      type: object
+      required:
+        - advertId
+        - belowMinLimit
+        - requiredLimit
+      properties:
+        advertId:
+          type: integer
+          format: int64
+          description: Campaign ID
+          example: 1234
+        belowMinLimit:
+          type: boolean
+          description: |
+            Whether the set daily limit is lower than the recommended minimum relative to the current bids (`requiredLimit`):
+              - `true` — yes
+              - `false` — no
+          example: false
+        requiredLimit:
+          type: integer
+          format: int64
+          description: |
+            Recommended minimum daily limit based on the campaign’s current bids. Specified in minor currency units — 0.01 of the base currency of the [seller account](https://cmp.wildberries.ru/campaigns/finances).
+            With a lower limit, the budget may be spent unevenly and errors may occur in the campaign
+          example: 3001
+    V0PutDailyLimitsResponse:
+      type: object
+      required:
+        - adverts
+      properties:
+        adverts:
+          type: array
+          items:
+            $ref: "#/components/schemas/V0PutDailyLimitsAdvertResult"
+    V2BudgetRequest:
+      type: object
+      required:
+        - advertIds
+      properties:
+        advertIds:
+          type: array
+          minItems: 1
+          maxItems: 50
+          description: Campaign IDs
+          items:
+            type: integer
+          example:
+            - 1234567
+            - 63453471
+    V2BudgetResponse:
+      type: object
+      required:
+        - adverts
+      properties:
+        adverts:
+          type: array
+          nullable: true
+          description: Campaigns data
+          items:
+            $ref: "#/components/schemas/V1BudgetAdvert"
+    V1BudgetAdvert:
+      type: object
+      required:
+        - advertId
+        - currency
+        - total
+      properties:
+        advertId:
+          type: integer
+          description: Campaign ID
+          example: 1234567
+        currency:
+          type: string
+          description: '[Seller account](https://cmp.wildberries.ru/campaigns/finances) currency'
+          format: ISO 4217
+          example: RUB
+        total:
+          description: Campaign budget in the base units of the [seller account](https://cmp.wildberries.ru/campaigns/finances) currency
+          type: integer
+          example: 3000
+    V2GetConfigResponse:
+      type: object
+      required:
+        - currency
+        - currencyCode
+        - cpmStep
+        - cpcStep
+        - minTopUp
+        - minDailyLimit
+      properties:
+        currency:
+          type: string
+          description: Currency of the [seller account](https://cmp.wildberries.ru/campaigns/finances)
+          format: ISO 4217
+        currencyCode:
+          type: integer
+          description: Currency code of the [seller account](https://cmp.wildberries.ru/campaigns/finances)
+        cpmStep:
+          type: integer
+          format: int64
+          description: Bid step in minor currency units — 0.01 of the base unit of the [seller account](https://cmp.wildberries.ru/campaigns/finances) currency for CPM campaigns
+        cpcStep:
+          type: integer
+          format: int64
+          description: Bid step in minor currency units — 0.01 of the base unit of the [seller account](https://cmp.wildberries.ru/campaigns/finances) currency for CPC campaigns
+        minTopUp:
+          type: integer
+          format: int64
+          description: |
+            Minimum amount of replenishment of the campaign budget in minor currency units — 0.01 of the base unit of the [seller account](https://cmp.wildberries.ru/campaigns/finances) currency.
+            For example, the minimum budget top-up amount with `"minTopUp": 10000` and `"currency": "UZS"` — 100 Uzbek sums
+        minDailyLimit:
+          type: integer
+          format: int64
+          description: |
+            Minimum allowed daily limit amount, regardless of the campaign bids. Specified in minor currency units — 0.01 of the base currency of the [seller account](https://cmp.wildberries.ru/campaigns/finances)
+    Response4XX:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        status:
+          type: number
+          description: HTTP status code
+        statusText:
+          type: string
+          description: Text of the HTTP status code
+        timestamp:
+          type: string
+          format: date-time
+          description: Request date and time
   parameters:
     inAction:
       in: query
@@ -2053,6 +2308,49 @@ components:
             status: 429
             statusText: Too Many Requests
             timestamp: "2024-09-30T06:52:38Z"
+    "403":
+      description: Доступ запрещён
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: Error details
+              code:
+                type: string
+                description: Internal error code
+              requestId:
+                type: string
+                description: Request ID
+              origin:
+                type: string
+                description: WB internal service ID
+              status:
+                type: number
+                description: HTTP status code
+              statusText:
+                type: string
+                description: Text of the HTTP status code
+              timestamp:
+                type: string
+                format: date-time
+                description: Request date and time
+          examples:
+            Response403TokenCategory:
+              value:
+                status: 403
+                statusText: Forbidden
+                title: Forbidden
+                detail: scope is not allowed for this resource
+                requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+                origin: ag-marketplace
+                timestamp: "2026-09-03T13:55:15Z"
+              description: Invalid token category
     AccessDenied:
       description: Доступ запрещён
       content:
@@ -2924,6 +3222,49 @@ components:
       description: Доступно только для кампаний с единой ставкой
       value:
         error: доступно только для кампаний с единой ставкой
+    AdvertIdsCountInvalid:
+      summary: Некорректное количество ID кампаний
+      value:
+        detail: advertIds must contain from 1 to 100 items
+        origin: camp-api-public-cache
+        request_id: f9cad0e8449a8f45caa9db75ef7018e6
+        status: 400
+        title: bad request
+    DailyLimitTooLow:
+      summary: Сумма дневного лимита меньше минимально допустимой
+      value:
+        detail: dailyLimit must be at least 100000
+        origin: camp-api-public-cache
+        request_id: c9ba33416d616c4efb60407251ca8cdc
+        status: 400
+        title: bad request
+    V2BudgetResponse:
+      value:
+        adverts:
+          - advertId: 123456789
+            currency: RUB
+            total: 6000
+    Response403TokenCategory:
+      value:
+        status: 403
+        statusText: Forbidden
+        title: Forbidden
+        detail: scope is not allowed for this resource
+        requestId: 2dbf6fc9-bad8-4ef9-a058-c938a8553ba5
+        origin: ag-marketplace
+        timestamp: "2026-09-03T13:55:15Z"
+      description: Invalid token category
+    Response403TokenType:
+      value:
+        title: forbidden
+        detail: base token is not allowed
+        code: base token is not allowed for this path
+        requestId: 722199b2e15bbca48cc1d488a7989976
+        origin: ag-marketplace
+        status: 403
+        statusText: Forbidden
+        timestamp: "2026-05-25T02:47:09Z"
+      description: Invalid token type
   securitySchemes:
     HeaderApiKey:
       type: apiKey

@@ -819,6 +819,201 @@ paths:
           $ref: "#/components/responses/401"
         "429":
           $ref: "#/components/responses/429"
+  /api/advert/v0/daily-limits:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: advert
+      x-token-types:
+        - personal
+        - service
+      operationId: getV0DailyLimits
+      security:
+        - HeaderApiKey: []
+      summary: Get Campaign Daily Limits Settings
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method returns the current daily limit settings for CPC campaigns — the maximum amounts that campaigns can spend on promotion during a day.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 5 requests | 12 s | 5 requests |
+        | Service | 1 min | 5 requests | 12 s | 5 requests |
+        </div>
+      tags:
+        - Управление кампаниями
+      parameters:
+        - name: advertIds
+          in: query
+          required: true
+          description: Campaign IDs, maximum 100. Specify values separated by commas
+          schema:
+            type: string
+            example: 12346567,987654321
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V0GetDailyLimitsResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "429":
+          $ref: "#/components/responses/429"
+    put:
+      x-readonly-method: false
+      x-category: advert
+      x-token-types:
+        - personal
+        - service
+      operationId: putV0DailyLimits
+      security:
+        - HeaderApiKey: []
+      summary: Set Campaign Daily Limits
+      description: |
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        The method allows you to enable, update or disable the daily budget limit.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 5 requests | 12 s | 5 requests |
+        | Service | 1 min | 5 requests | 12 s | 5 requests |
+        </div>
+      tags:
+        - Управление кампаниями
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/V0PutDailyLimitsRequest"
+            example:
+              advertIds:
+                - 1234
+                - 5603
+              enabled: true
+              dailyLimit: 1000
+              carryOverEnabled: true
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V0PutDailyLimitsResponse"
+              example:
+                adverts:
+                  - advertId: 1234
+                    belowMinLimit: false
+                    requiredLimit: 0
+                  - advertId: 5603
+                    belowMinLimit: true
+                    requiredLimit: 3001
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response400"
+              examples:
+                AdvertIdsCountInvalid:
+                  $ref: "#/components/examples/AdvertIdsCountInvalid"
+                DailyLimitTooLow:
+                  $ref: "#/components/examples/DailyLimitTooLow"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/advert/v1/config:
+    servers:
+      - url: https://advert-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: advert
+      x-token-types:
+        - personal
+        - service
+      operationId: getV1Config
+      security:
+        - HeaderApiKey: []
+      summary: Promotion Configuration Values
+      description: |
+        The method returns the currency, currency codes of the [seller account](https://cmp.wildberries.ru/campaigns/finances) and the allowed bid increments for the method [POST /api/advert/v1/normquery/bids](./promotion#tag/searchClusters/operation/postV1NormqueryBids).
+
+        <div class="description_token">
+            Method is <a href="./api-information#tag/authorization/Rules-for-using-API-access-tokens">available</a> by
+                <strong>Personal</strong> token,
+                <strong>Service</strong> token
+        </div>
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 1 request | 1 min | 10 requests |
+        </div>
+      tags:
+        - Управление кампаниями
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/V2GetConfigResponse"
+              example:
+                cpcStep: 500
+                cpmStep: 100000
+                currency: UZS
+                currencyCode: 860
+                minDailyLimit: 100000
+                minTopUp: 10000
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Response4XX"
+              examples:
+                Response403TokenCategory:
+                  $ref: "#/components/examples/Response403TokenCategory"
+                Response403TokenType:
+                  $ref: "#/components/examples/Response403TokenType"
+        "429":
+          $ref: "#/components/responses/429"
 
 # ==============================================================================
 # IMPORTANT MIGRATION NOTES FOR SDK DEVELOPERS

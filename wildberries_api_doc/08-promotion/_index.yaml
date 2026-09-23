@@ -14,8 +14,8 @@ _shards:
     description: Campaign creation and bid minimums
   - file: upravlenie-kampaniyami.yaml
     domain: Управление кампаниями
-    endpoints: 9
-    description: Campaign management (start/stop/delete/rename/bids)
+    endpoints: 11
+    description: Campaign management (start/stop/delete/rename/bids, daily limits, config)
   - file: parametry-kampaniy.yaml
     domain: Параметры кампаний
     endpoints: 7
@@ -26,8 +26,8 @@ _shards:
     description: Search cluster stats, bids, minus phrases (NEW in Feb 2026)
   - file: finansy.yaml
     domain: Финансы
-    endpoints: 5
-    description: Balance, budget, deposit, spending history, payments
+    endpoints: 6
+    description: Balance, budget (v1 deprecated + v2), deposit, spending history, payments
   - file: media.yaml
     domain: Медиа
     endpoints: 3
@@ -41,8 +41,8 @@ _shards:
     endpoints: 4
     description: Promotions calendar (list, details, nomenclatures, upload)
 _shared_schemas: _schemas.yaml
-_total_endpoints: 50
-_deprecated_endpoints: 16
+_total_endpoints: 53
+_deprecated_endpoints: 17
 _new_endpoints_feb_2026: 9
 _base_urls:
   - https://advert-api.wildberries.ru
