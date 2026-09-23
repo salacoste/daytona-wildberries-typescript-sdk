@@ -2,16 +2,18 @@
  * Tests for BaseClient 409 error mapping logic.
  *
  * Verifies that HTTP 409 responses are correctly mapped to:
+ * - CustomsDeclarationIsRequiredError when the body code is 'CustomsDeclarationIsRequired'
  * - MetaValidationFailError when the body contains a metaDetails array
  * - WBAPIError (base) for 409s without metaDetails (e.g. SupplyHasZeroOrders)
  *
- * Both cases must still satisfy instanceof WBAPIError.
+ * All cases must still satisfy instanceof WBAPIError.
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import { BaseClient } from '../../../src/client/base-client';
 import { MetaValidationFailError } from '../../../src/errors/meta-validation-fail-error';
+import { CustomsDeclarationIsRequiredError } from '../../../src/errors/customs-declaration-is-required-error';
 import { WBAPIError } from '../../../src/errors/base-error';
 import { BidOutOfRangeError } from '../../../src/errors/bid-out-of-range-error';
 import { ValidationError } from '../../../src/errors/validation-error';
@@ -304,6 +306,118 @@ describe('BaseClient — 409 error mapping', () => {
     it('should still throw WBAPIError for 418 (unchanged behavior)', async () => {
       mockAxios.onGet(testUrl).reply(418, { error: "I'm a teapot" });
       await expect(client.get(testUrl)).rejects.toThrow(WBAPIError);
+    });
+  });
+
+  describe("409 with code 'CustomsDeclarationIsRequired' → CustomsDeclarationIsRequiredError", () => {
+    const stickersUrl = 'https://marketplace-api.wildberries.ru/api/v3/orders/stickers';
+
+    it('should throw CustomsDeclarationIsRequiredError when body code matches exactly', async () => {
+      const body = {
+        code: 'CustomsDeclarationIsRequired',
+        message: 'Customs declaration is required',
+      };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.toThrow(
+        CustomsDeclarationIsRequiredError
+      );
+    });
+
+    it('should expose code, message, statusCode and raw response on the thrown error', async () => {
+      const body = {
+        code: 'CustomsDeclarationIsRequired',
+        message: 'Customs declaration is required',
+        data: { orderIds: [123456, 789012] },
+      };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      try {
+        await client.post(stickersUrl, { orders: [123456, 789012] });
+        expect.fail('Should have thrown CustomsDeclarationIsRequiredError');
+      } catch (error) {
+        expect(error).toBeInstanceOf(CustomsDeclarationIsRequiredError);
+        const cdire = error as CustomsDeclarationIsRequiredError;
+        expect(cdire.code).toBe('CustomsDeclarationIsRequired');
+        expect(cdire.message).toBe('Customs declaration is required');
+        expect(cdire.statusCode).toBe(409);
+        expect(cdire.response).toEqual(body);
+      }
+    });
+
+    it('should satisfy instanceof WBAPIError for CustomsDeclarationIsRequiredError', async () => {
+      const body = {
+        code: 'CustomsDeclarationIsRequired',
+        message: 'Customs declaration is required',
+      };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.toBeInstanceOf(
+        WBAPIError
+      );
+    });
+
+    it('should use a default message when body.message is missing', async () => {
+      const body = { code: 'CustomsDeclarationIsRequired' };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      try {
+        await client.post(stickersUrl, { orders: [123456] });
+        expect.fail('Should have thrown CustomsDeclarationIsRequiredError');
+      } catch (error) {
+        expect(error).toBeInstanceOf(CustomsDeclarationIsRequiredError);
+        expect((error as CustomsDeclarationIsRequiredError).message).toBe(
+          'Customs declaration is required'
+        );
+      }
+    });
+
+    it('should NOT match other 409 codes (surgical detection)', async () => {
+      // Any other 409 code must keep falling through to the plain WBAPIError fallback
+      const body = { code: 'SupplyHasZeroOrders', message: 'Supply has zero orders' };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.not.toBeInstanceOf(
+        CustomsDeclarationIsRequiredError
+      );
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.toBeInstanceOf(
+        WBAPIError
+      );
+    });
+
+    it('should NOT match when code is missing entirely', async () => {
+      const body = { message: 'Conflict' };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.not.toBeInstanceOf(
+        CustomsDeclarationIsRequiredError
+      );
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.toBeInstanceOf(
+        WBAPIError
+      );
+    });
+
+    it('should NOT match a code that merely contains the marker as a substring', async () => {
+      // Exact-match guarantee: a hypothetical longer/different code sharing the prefix must not map
+      const body = { code: 'CustomsDeclarationIsRequiredExtended', message: 'Other conflict' };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.not.toBeInstanceOf(
+        CustomsDeclarationIsRequiredError
+      );
+    });
+
+    it('metaDetails 409 detection still wins over generic fallback (order preserved)', async () => {
+      const body = {
+        code: 'MetaValidationFail',
+        message: 'Marking codes are invalid',
+        metaDetails: [{ key: 'sgtin', value: '', decision: 'invalid' }],
+      };
+      mockAxios.onPost(stickersUrl).reply(409, body);
+
+      await expect(client.post(stickersUrl, { orders: [123456] })).rejects.toBeInstanceOf(
+        MetaValidationFailError
+      );
     });
   });
 

@@ -347,6 +347,69 @@ budget via the batch call.
 
 ---
 
+## Customs Declaration (ДТ)
+
+Since **2026-08-18** (WB news), a customs-declaration (ДТ) number attached to an FBS
+assembly order follows these rules:
+
+| Rule | Detail |
+|------|--------|
+| **`confirm` status only** | A ДТ can be attached **only to assembly orders in `confirm` status** (`setCustomsDeclaration()`). |
+| **Armenia sellers** | A ДТ **must** be specified for items produced **outside the EAEU** when an order from Armenia is delivered to the Russian Federation. |
+| **`requiredMeta`** | `getOrdersNew()` (GET `/api/v3/orders/new`) lists, per order, the metadata identifiers that must be attached before its supply can be delivered — check for `customsDeclaration` there before attaching a ДТ. |
+| **`decision` semantics** | In `getOrdersMetaBulk()` (POST `/api/marketplace/v3/orders/meta`) each `metaDetails[]` entry carries a `decision`: `filled`/`optional` — OK to deliver; `required` — **blocks delivery** (409 on deliver); `invalid` — submitted value failed validation. |
+| **One ДТ per order** | An assembly order can have only one customs-declaration number (`setCustomsDeclaration()` overwrites it). |
+
+### The 409 pair
+
+| Endpoint | Behavior when a required ДТ is missing |
+|----------|----------------------------------------|
+| `createOrdersSticker()` (POST `/api/v3/orders/stickers`) | **409 `CustomsDeclarationIsRequired`** if at least one assembly order in the batch lacks a required ДТ — stickers **cannot be obtained**. Typed as `CustomsDeclarationIsRequiredError`. |
+| `updateSuppliesDeliver()` (PATCH `/api/v3/supplies/{supplyId}/deliver`) | **409 `MetaValidationFail`** with a `customsDeclaration` `metaDetails[]` entry whose `decision` is `'required'`. Typed as `MetaValidationFailError`. |
+
+### Example
+
+```typescript
+import {
+  CustomsDeclarationIsRequiredError,
+  MetaValidationFailError,
+} from 'daytona-wildberries-typescript-sdk';
+
+// 1. Check which orders need a ДТ before printing stickers
+const { orders } = await sdk.ordersFBS.getOrdersNew();
+const needDt = orders.filter(o => o.requiredMeta?.includes('customsDeclaration'));
+
+// 2. Attach the ДТ (order must be in "confirm" status)
+for (const order of needDt) {
+  await sdk.ordersFBS.setCustomsDeclaration(order.id, {
+    customsDeclaration: '10129050/010120/0001234',
+  });
+}
+
+// 3. Print stickers — typed 409 if any order is still missing a required ДТ
+try {
+  const stickers = await sdk.ordersFBS.createOrdersSticker(
+    { type: 'png' },
+    { orders: needDt.map(o => o.id) },
+  );
+} catch (error) {
+  if (error instanceof CustomsDeclarationIsRequiredError) {
+    // Stickers cannot be obtained — attach the missing ДТ and retry
+    console.log(error.getUserMessage());
+  } else if (error instanceof MetaValidationFailError) {
+    // deliver-path 409: look for decision === 'required' on customsDeclaration
+    console.log(error.metaDetails.filter(d => d.key === 'customsDeclaration'));
+  } else {
+    throw error;
+  }
+}
+```
+
+> **Armenia sellers:** goods produced outside the EAEU shipped from Armenia to the RF
+> require a ДТ — expect `requiredMeta` to include `customsDeclaration` for such orders.
+
+---
+
 ## Usage Examples
 
 ### Getting New Orders and Checking Status
@@ -822,7 +885,7 @@ interface OrderMetaItem {
 | 400 | `ValidationError` | Invalid request parameters | Check parameter values and constraints |
 | 401/403 | `AuthenticationError` | Invalid or missing API key | Verify API key and permissions |
 | 404 | `NotFoundError` | Resource not found | Verify order/supply ID exists |
-| 409 | `ConflictError` | Operation conflict | Check status requirements (see below) |
+| 409 | `CustomsDeclarationIsRequiredError` / `MetaValidationFailError` / `WBAPIError` | Operation conflict: missing required customs declaration (ДТ), metadata validation failure, or other status conflict | Check status requirements (see below) |
 | 429 | `RateLimitError` | Rate limit exceeded | Wait and retry (see rate limits) |
 
 ### 409 Conflict Scenarios
@@ -836,6 +899,8 @@ interface OrderMetaItem {
 | IMEI not filled | Delivering supply with missing IMEI (since March 31, 2026) | Attach IMEI via `updateMetaImei()` |
 | UIN not filled | Delivering supply with missing UIN (since April 7, 2026) | Attach UIN via `updateMetaUin()` |
 | Marking code missing (B2B) | Delivering B2B supply without marking codes (since April 9, 2026) | Attach marking codes via `updateMetaSgtin()` |
+| DT missing (stickers) | `createOrdersSticker()` batch includes an order lacking a required customs declaration (since 2026-08-18) → typed `CustomsDeclarationIsRequiredError` | Attach the ДТ via `setCustomsDeclaration()` (`confirm` status only) and retry |
+| DT missing (deliver) | Delivering a supply containing an order that requires a customs declaration → `MetaValidationFail` with `customsDeclaration` `decision: 'required'` | Attach the ДТ via `setCustomsDeclaration()` (`confirm` status only) and retry |
 | Invalid status transition | Canceling a completed order | Check order status before operation |
 | Supply not delivered | Requesting QR code before delivery | Call `updateSuppliesDeliver()` first |
 
