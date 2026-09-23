@@ -169,15 +169,28 @@ These methods replace deprecated endpoints with improved functionality.
 Data is synchronized with the database every 3 minutes. Campaign statuses update every minute. Campaign bids update every 30 seconds.
 :::
 
-### Budget & Finance (5 methods)
+### Budget & Finance (6 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getAdvBalance()` | GET | `/adv/v1/balance` | Get account balance and bonus accruals |
-| `getAdvBudget()` | GET | `/adv/v1/budget` | Get campaign budget info |
+| `getAdvBudget()` | GET | `/adv/v1/budget` | Get campaign budget info. **Deprecated** — WB disables this endpoint on **2026-11-16**; use `postV2Budget()` |
+| `postV2Budget()` | POST | `/api/advert/v2/budget` | Get budget balances for multiple campaigns (1–50 IDs) in one request. `total` is in **base** currency units |
 | `createBudgetDeposit()` | POST | `/adv/v1/budget/deposit` | Replenish campaign budget |
 | `getAdvUpd()` | GET | `/adv/v1/upd` | Get actual campaign spending history |
 | `getAdvPayments()` | GET | `/adv/v1/payments` | Get account replenishment history |
+
+::: warning getAdvBudget() disabled on 2026-11-16
+WB disables `GET /adv/v1/budget` on **16 November 2026** ([release note](https://dev.wildberries.ru/en/release-notes?id=582)).
+Migrate to `postV2Budget()` before that date — it returns budgets for multiple campaigns
+(1–50 IDs) in a single request. Notes:
+
+- `total` is in **base** units of the seller account currency (e.g. rubles, **not** kopecks).
+- Balances are returned only for campaigns in statuses `4` (ready), `9` (active), `11` (paused);
+  entries for other campaigns come back as `null`.
+- Calling `getAdvBudget()` now emits a one-time deprecation warning; the method is
+  scheduled for removal in v5.
+:::
 
 ### Unified Bid Methods (removed)
 
@@ -675,9 +688,13 @@ console.log(`Account: ${balance.balance} RUB`);
 console.log(`Net balance: ${balance.net} RUB`);
 console.log(`Bonus: ${balance.bonus} RUB`);
 
-// Check campaign budget
-const budget = await sdk.promotion.getAdvBudget({ id: 12345 });
-console.log(`Total budget: ${budget.total} RUB`);
+// Check campaign budgets (V2 — up to 50 campaigns in one request)
+const budgets = await sdk.promotion.postV2Budget({ advertIds: [12345, 67890] });
+for (const advert of budgets.adverts) {
+  if (advert) console.log(`Campaign ${advert.advertId}: ${advert.total} ${advert.currency}`);
+}
+
+// getAdvBudget() is deprecated (WB disables it 2026-11-16) — use postV2Budget() instead.
 
 // Deposit to campaign budget
 await sdk.promotion.createBudgetDeposit(

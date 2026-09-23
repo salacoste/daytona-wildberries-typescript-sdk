@@ -84,3 +84,12 @@ await sdk.products.updateStock(warehouseId, { stocks: [{ chrtId: 12345678, amoun
 const cards = await sdk.products.getCardsList({ ... });
 const chrtId = cards.cards[0].sizes[0].chrtID; // → use in stocks calls
 ```
+
+## Looking ahead: v5
+
+- **promotion `getAdvBudget()`** — WB disables `GET /adv/v1/budget` on
+  **2026-11-16** ([release note](https://dev.wildberries.ru/en/release-notes?id=582)).
+  The method is now `@deprecated` and emits a one-time runtime warning; it will be
+  **removed in v5**. Migrate to `postV2Budget()` (`POST /api/advert/v2/budget`), which
+  returns budget balances for 1–50 campaigns per request (`total` in base currency units,
+  balances only for campaign statuses 4/9/11).

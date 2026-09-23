@@ -16,6 +16,9 @@ import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
+
+/* eslint-disable @typescript-eslint/no-deprecated -- intentionally testing deprecated methods */
 
 describe('PromotionModule', () => {
   let mockClient: {
@@ -105,12 +108,45 @@ describe('PromotionModule', () => {
     });
 
     it('getAdvBudget - should get campaign budget', async () => {
-      mockClient.get.mockResolvedValue({ cash: 500, netting: 200, total: 700 });
-      await module.getAdvBudget({ id: 123 });
-      expect(mockClient.get).toHaveBeenCalledWith(
-        'https://advert-api.wildberries.ru/adv/v1/budget',
-        expect.objectContaining({ params: { id: 123 }, rateLimitKey: 'promotion.advBudget' })
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      try {
+        mockClient.get.mockResolvedValue({ cash: 500, netting: 200, total: 700 });
+        await module.getAdvBudget({ id: 123 });
+        expect(mockClient.get).toHaveBeenCalledWith(
+          'https://advert-api.wildberries.ru/adv/v1/budget',
+          expect.objectContaining({ params: { id: 123 }, rateLimitKey: 'promotion.advBudget' })
+        );
+      } finally {
+        warnSpy.mockRestore();
+      }
+    });
+
+    it('postV2Budget - should post campaign IDs and return budget balances', async () => {
+      const adverts = [
+        { advertId: 1234567, currency: 'RUB', total: 6000 },
+        { advertId: 63453471, currency: 'RUB', total: 1500 },
+      ];
+      mockClient.post.mockResolvedValue({ adverts });
+
+      const result = await module.postV2Budget({ advertIds: [1234567, 63453471] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        'https://advert-api.wildberries.ru/api/advert/v2/budget',
+        { advertIds: [1234567, 63453471] },
+        expect.objectContaining({ rateLimitKey: 'promotion.v2Budget' })
       );
+      expect(result).toEqual({ adverts });
+    });
+
+    it('postV2Budget - should keep null entries for campaigns without budget data', async () => {
+      mockClient.post.mockResolvedValue({
+        adverts: [{ advertId: 1234567, currency: 'RUB', total: 6000 }, null],
+      });
+
+      const result = await module.postV2Budget({ advertIds: [1234567, 999] });
+
+      expect(result.adverts).toHaveLength(2);
+      expect(result.adverts[1]).toBeNull();
     });
 
     it('createBudgetDeposit - should deposit to budget', async () => {
@@ -832,6 +868,37 @@ describe('PromotionModule', () => {
       expect(result.data).toBeNull();
       expect(result.errors).toHaveLength(1);
       expect(result.errors[0]).toEqual({ nmID: 12345678, error: 'Товар не найден' });
+    });
+  });
+
+  describe('getAdvBudget deprecation (task-191)', () => {
+    beforeEach(() => {
+      resetDeprecationWarnings();
+    });
+
+    it('warns once with the 2026-11-16 shutdown notice and points to postV2Budget', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      try {
+        await module.getAdvBudget({ id: 123 });
+        await module.getAdvBudget({ id: 456 });
+
+        expect(warnSpy).toHaveBeenCalledTimes(1);
+        expect(warnSpy.mock.calls[0][0]).toContain('2026-11-16');
+        expect(warnSpy.mock.calls[0][0]).toContain('postV2Budget');
+      } finally {
+        warnSpy.mockRestore();
+      }
+    });
+
+    it('postV2Budget does not emit a deprecation warning', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      try {
+        await module.postV2Budget({ advertIds: [1234567] });
+
+        expect(warnSpy).not.toHaveBeenCalled();
+      } finally {
+        warnSpy.mockRestore();
+      }
     });
   });
 });

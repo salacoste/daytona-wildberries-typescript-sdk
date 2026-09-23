@@ -5,6 +5,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { warnOnce } from '../../utils/deprecation';
 import type {
   BidsRecommendationsResponse,
   CampaignProductsUpdate,
@@ -51,6 +52,8 @@ import type {
   V1GetNormQueryStatsResponse,
   V1SetNormQueryBidsRequest,
   V1SetNormQueryBidsResponse,
+  V2BudgetRequest,
+  V2BudgetResponse,
   V2GetConfigResponse,
 } from '../../types/promotion.types';
 
@@ -177,9 +180,15 @@ export class PromotionModule {
   }
 
   /**
-   * Бюджет кампании
+   * Бюджет кампании (устарело)
    *
-   * Метод возвращает информацию о бюджете [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) — максимальной сумме затрат на кампанию. Бюджет кампании можно [пополнить](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post). <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
+   * Метод возвращает информацию о бюджете [кампании](/openapi/promotion#tag/Kampanii/paths/~1adv~1v1~1promotion~1adverts/post) — максимальной сумме затрат на кампанию. Бюджет кампании можно [пополнить](/openapi/promotion#tag/Finansy/paths/~1adv~1v1~1budget~1deposit/post).
+   *
+   * **WB отключает этот метод 16 ноября 2026 года** ([релиз-нот](https://dev.wildberries.ru/en/release-notes?id=582)).
+   * Используйте {@link PromotionModule.postV2Budget} — он возвращает бюджеты
+   * сразу нескольких кампаний за один запрос.
+   *
+   * <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 секунда | 4 запроса | 250 миллисекунд | 4 запроса | </div>
    *
    * @param [options] - Query parameters
    * @returns Успешно
@@ -187,6 +196,8 @@ export class PromotionModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @deprecated WB отключает GET /adv/v1/budget 16 ноября 2026 года. Используйте
+   * {@link PromotionModule.postV2Budget}. Метод будет удалён в v5.
    * @example
   const result = await sdk.promotion.getAdvBudget({});
   console.log(result);
@@ -194,9 +205,63 @@ export class PromotionModule {
   async getAdvBudget(options?: {
     id: number;
   }): Promise<{ cash?: number; netting?: number; total?: number; currency?: string }> {
+    warnOnce(
+      'promotion.getAdvBudget:deprecated',
+      'promotion.getAdvBudget (GET /adv/v1/budget) is deprecated — WB disables the endpoint ' +
+        'on 2026-11-16. Use sdk.promotion.postV2Budget({ advertIds: [...] }) instead. ' +
+        'See docs/guides/migration-v4.md (Looking ahead: v5).'
+    );
     return this.client.get<{ cash?: number; netting?: number; total?: number; currency?: string }>(
       'https://advert-api.wildberries.ru/adv/v1/budget',
       { params: options, rateLimitKey: 'promotion.advBudget' }
+    );
+  }
+
+  /**
+   * Бюджеты кампаний (V2)
+   *
+   * Метод возвращает информацию о бюджетах сразу нескольких
+   * [кампаний](https://dev.wildberries.ru/openapi/promotion#tag/Kampanii/operation/getV2Adverts) —
+   * максимальной сумме затрат на кампанию.
+   *
+   * Бюджет возвращается только для кампаний в статусах:
+   * - `4` — готова к запуску
+   * - `9` — активна
+   * - `11` — на паузе
+   *
+   * Поле `total` указывается в БАЗОВЫХ единицах валюты
+   * [кабинета продавца](https://cmp.wildberries.ru/campaigns/finances) —
+   * НЕ в минорных (не в копейках). Если по кампании нет данных,
+   * соответствующий элемент `adverts` — `null`.
+   *
+   * Заменяет метод {@link PromotionModule.getAdvBudget} (GET /adv/v1/budget),
+   * который WB отключит 16 ноября 2026 года.
+   *
+   * Rate limit: 20 requests per minute, 3s interval, burst 4 (Personal/Service tokens)
+   *
+   * @param data - ID кампаний (от 1 до 50 элементов)
+   * @returns Бюджеты запрошенных кампаний
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-191
+   * @see {@link https://dev.wildberries.ru/docs/openapi/promotion#tag/finances/operation/postV2Budget}
+   * @example
+   * ```typescript
+   * const result = await sdk.promotion.postV2Budget({
+   *   advertIds: [1234567, 63453471]
+   * });
+   * for (const advert of result.adverts) {
+   *   if (advert) console.log(advert.advertId, advert.total, advert.currency);
+   * }
+   * ```
+   */
+  async postV2Budget(data: V2BudgetRequest): Promise<V2BudgetResponse> {
+    return this.client.post<V2BudgetResponse>(
+      'https://advert-api.wildberries.ru/api/advert/v2/budget',
+      data,
+      { rateLimitKey: 'promotion.v2Budget' }
     );
   }
 
