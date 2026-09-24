@@ -425,7 +425,7 @@ describe('AnalyticsModule', () => {
   // ==========================================================================
 
   describe('All module methods exist', () => {
-    it('should expose all 19 current methods, including item-rating v1 and v2', () => {
+    it('should expose all 21 current methods, including item-rating v1/v2 and order feed', () => {
       // CSV Export (4)
       expect(typeof module.getNmReportDownloads).toBe('function');
       expect(typeof module.createNmReportDownload).toBe('function');
@@ -455,6 +455,9 @@ describe('AnalyticsModule', () => {
 
       // v1 Seller Warehouses Inventory (1) — task-199
       expect(typeof module.getSellerWarehousesStock).toBe('function');
+
+      // v1 Order Feed (1) — task-204
+      expect(typeof module.getOrderFeed).toBe('function');
 
       // Item Rating (v2 current + v1 deprecated)
       expect(typeof module.getItemRatingV2).toBe('function');
@@ -621,6 +624,134 @@ describe('AnalyticsModule', () => {
       const result = await module.getSellerWarehousesStock({ nmIds: [999999] });
 
       expect(result.data.items).toEqual([]);
+    });
+  });
+
+  // ============================================================================
+  // getOrderFeed (v1 Order Feed — real-time orders + buyouts) — task-204
+  // ============================================================================
+
+  describe('getOrderFeed()', () => {
+    const ORDER_FEED_URL = `${BASE_URL}/api/analytics/v1/order-feed`;
+
+    it('should return orders with statuses, cancelType and B2B flag', async () => {
+      const mockResponse = {
+        data: {
+          snapshotTime: '2026-09-24T10:00:00Z',
+          currency: 'RUB',
+          orders: [
+            {
+              nmId: 47254354,
+              chrtId: 91663228,
+              srid: '7513432034713632943.1.0',
+              createdAt: '2026-09-20T12:57:26+03:00',
+              updatedAt: '2026-09-22T19:19:38+03:00',
+              status: 'cancel',
+              cancelType: 'app',
+              warehouseName: 'Склад WB',
+              warehouseRegion: '',
+              isMp: false,
+              destinationCity: 'Санкт-Петербург',
+              destinationDistrict: 'Северо-Западный',
+              sellerPrice: 4328,
+              isB2b: false,
+            },
+            {
+              nmId: 162579635,
+              chrtId: 572682891,
+              srid: '7513432034713632944.1.0',
+              createdAt: '2026-09-21T09:00:00+03:00',
+              updatedAt: '2026-09-23T10:00:00+03:00',
+              status: 'buyout',
+              warehouseName: 'склад продавца Иркутск',
+              warehouseRegion: 'Дальневосточный и Сибирский',
+              isMp: true,
+              destinationCity: 'Москва',
+              destinationDistrict: 'Центральный',
+              sellerPrice: 1200.5,
+              isB2b: true,
+            },
+          ],
+        },
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+
+      const result = await module.getOrderFeed({
+        selectedPeriod: { start: '2026-09-01T00:00:00Z', end: '2026-09-24T00:00:00Z' },
+      });
+
+      expect(result.data.snapshotTime).toBe('2026-09-24T10:00:00Z');
+      expect(result.data.currency).toBe('RUB');
+      expect(result.data.orders).toHaveLength(2);
+      // Cancelled order carries cancelType
+      expect(result.data.orders[0].status).toBe('cancel');
+      expect(result.data.orders[0].cancelType).toBe('app');
+      // B2B buyout order has no cancelType and isB2b=true
+      expect(result.data.orders[1].status).toBe('buyout');
+      expect(result.data.orders[1].cancelType).toBeUndefined();
+      expect(result.data.orders[1].isB2b).toBe(true);
+    });
+
+    it('should call correct URL, pass body incl. pagination cursor, and use the right rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({
+        data: { snapshotTime: '2026-09-24T10:00:00Z', currency: 'RUB', orders: [] },
+      });
+
+      const request = {
+        selectedPeriod: { start: '2026-09-01T00:00:00Z', end: '2026-09-24T00:00:00Z' },
+        nmIds: [162579635],
+        subjectIds: [232],
+        brandNames: ['Abikas'],
+        tagIds: [3],
+        pagination: { snapshotTime: '2026-09-24T10:00:00Z', offset: 1000, limit: 1000 },
+      };
+
+      await module.getOrderFeed(request);
+
+      expect(mockClient.post).toHaveBeenCalledWith(ORDER_FEED_URL, request, {
+        rateLimitKey: 'analytics.postV1OrderFeed',
+      });
+      // Filter arrays and pagination fields pass through untouched
+      expect(mockClient.post.mock.calls[0][1].pagination).toEqual({
+        snapshotTime: '2026-09-24T10:00:00Z',
+        offset: 1000,
+        limit: 1000,
+      });
+    });
+
+    it('should register the order-feed rate limit (1 req/min, 60s, burst 1)', () => {
+      expect(analyticsRateLimits['analytics.postV1OrderFeed']).toEqual({
+        requestsPerMinute: 1,
+        intervalSeconds: 60,
+        burstLimit: 1,
+      });
+    });
+
+    it('should propagate AuthenticationError', async () => {
+      mockClient.post.mockRejectedValue(new AuthenticationError('Invalid API key'));
+      await expect(
+        module.getOrderFeed({ selectedPeriod: { start: '2026-09-01T00:00:00Z' } })
+      ).rejects.toThrow(AuthenticationError);
+    });
+
+    it('should propagate RateLimitError', async () => {
+      mockClient.post.mockRejectedValue(new RateLimitError('Rate limit exceeded', 60000));
+      await expect(
+        module.getOrderFeed({ selectedPeriod: { start: '2026-09-01T00:00:00Z' } })
+      ).rejects.toThrow(RateLimitError);
+    });
+
+    it('should handle empty orders array', async () => {
+      mockClient.post.mockResolvedValue({
+        data: { snapshotTime: '2026-09-24T10:00:00Z', currency: 'RUB', orders: [] },
+      });
+
+      const result = await module.getOrderFeed({
+        selectedPeriod: { start: '2026-09-01T00:00:00Z' },
+        nmIds: [999999999],
+      });
+
+      expect(result.data.orders).toEqual([]);
     });
   });
 

@@ -63,6 +63,13 @@ export class ReportsModule {
    *
    * Метод возвращает информацию обо всех заказах.<br>Данные обновляются раз в 30 минут.<br><br> 1 строка = 1 заказ = 1 cборочное задание = 1 единица товара.<br>Для определения заказа рекомендуем использовать поле `srid`.<br><br> Информация о заказе хранится 90 дней с момента оформления.<br><br> Для одного ответа на запрос с `flag=0` или без `flag` в системе установлено условное ограничение 80000 строк. Поэтому, чтобы получить все заказы, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom` используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все заказы уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
    *
+   * NOTE (not deprecated, WB news 2026-09): WB recommends the real-time Order Feed
+   * report instead — `sdk.analytics.getOrderFeed()`
+   * (POST /api/analytics/v1/order-feed) returns orders and buyouts in one method
+   * with statuses, cancel reasons and a B2B flag, updated in real time.
+   * GET /api/v1/supplier/orders will be disabled in the future
+   * (no date announced yet).
+   *
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -84,6 +91,13 @@ export class ReportsModule {
    * Продажи
    *
    * Метод возвращает информацию о продажах и возвратах.<br>Данные обновляются раз в 30 минут.<br><br> 1 строка = 1 заказ = 1 cборочное задание = 1 единица товара.<br>Для определения заказа рекомендуем использовать поле `srid`.<br><br> Информация о заказе хранится 90 дней с момента оформления.<br><br> Для одного ответа на запрос с `flag=0` или без `flag` в системе установлено условное ограничение 80000 строк. Поэтому, чтобы получить все продажи и возвраты, может потребоваться более, чем один запрос. Во втором и далее запросе в параметре `dateFrom `используйте полное значение поля `lastChangeDate` из последней строки ответа на предыдущий запрос.<br> Если в ответе отдаётся пустой массив `[]`, все продажи и возвраты уже выгружены. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 1 запрос | </div>
+   *
+   * NOTE (not deprecated, WB news 2026-09): WB recommends the real-time Order Feed
+   * report instead — `sdk.analytics.getOrderFeed()`
+   * (POST /api/analytics/v1/order-feed) returns orders and buyouts in one method
+   * with statuses, cancel reasons and a B2B flag, updated in real time.
+   * GET /api/v1/supplier/sales will be disabled in the future
+   * (no date announced yet).
    *
    * @param [options] - Query parameters
    * @returns Успешно

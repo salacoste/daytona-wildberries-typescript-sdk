@@ -13,6 +13,8 @@ import type {
   NmReportGetReportsResponse,
   NmReportRetryReportRequest,
   NmReportRetryReportResponse,
+  OrderFeedRequest,
+  OrderFeedResponseWrapper,
   ProductOrdersRequest,
   ProductOrdersResponse,
   ProductSearchTextsRequest,
@@ -664,6 +666,91 @@ export class AnalyticsModule {
   }
 
   /**
+   * Лента заказов — заказы и продажи в одном отчёте (реальном времени)
+   *
+   * Метод формирует датасет по заказам и продажам продавца. Данные отчёта
+   * обновляются **в реальном времени**. 1 заказ = 1 сборочное задание =
+   * 1 единица товара.
+   *
+   * В отличие от устаревших отчётов `GET /api/v1/supplier/orders` и
+   * `GET /api/v1/supplier/sales`, заказы и выкупы возвращаются **одним
+   * методом**: статус заказа меняется в той же строке (`created` → `buyout`
+   * / `cancel` / `return` / `returnDefective`), отдельные строки для выкупа
+   * не создаются. При отмене (`status: "cancel"`) дополнительно возвращается
+   * причина `cancelType` (`app` — отказ до получения, `receipt` — отказ в
+   * пункте выдачи, `expire` — истёк срок хранения, `other` — техническая
+   * отмена). Поле `isB2b` разделяет B2B/B2C-продажи.
+   *
+   * **Статусы — единственные изменяемые поля**: чтобы отслеживать переходы
+   * заказа между статусами, повторно запрашивайте тот же период — строка
+   * обновится на месте. Период выбирается **по дате текущего статуса**
+   * заказа, максимум 31 день назад.
+   *
+   * Фильтры `nmIds`, `subjectIds`, `brandNames`, `tagIds` можно передавать
+   * пустыми массивами `[]` — тогда вернутся все заказы продавца. Несколько
+   * фильтров объединяются по И (AND); если ни один заказ не подошёл,
+   * вернётся пустой массив `[]`.
+   *
+   * Пагинация выполняется по `offset` **в пределах одного снимка данных**:
+   * данные обновляются асинхронно, поэтому все запросы одной выборки должны
+   * использовать один и тот же курсор `snapshotTime` (из ответа на первый
+   * запрос с `offset: 0`). При смене периода или фильтров начинайте выборку
+   * заново с `offset: 0` и без `snapshotTime`.
+   *
+   * **Заменяет** `GET /api/v1/supplier/orders` и `GET /api/v1/supplier/sales`
+   * (`sdk.reports.getSupplierOrders` / `sdk.reports.getSupplierSales`) —
+   * оба ещё работают, но WB анонсировала их будущее отключение (дата не
+   * объявлена).
+   *
+   * Rate limit: 1 запрос в минуту, интервал 1 минута, burst 1.
+   * Базовый токен без секрет: 1 запрос в 3 часа.
+   *
+   * Доступен для любого типа токена, категория Analytics.
+   *
+   * @param data - Период, фильтры и параметры пагинации
+   * @param data.selectedPeriod - Период по дате текущего статуса заказа (обязательно, максимум 31 день назад)
+   * @param data.nmIds - Артикулы WB для фильтрации (0-1000, пустой = все)
+   * @param data.subjectIds - ID подкатегорий для фильтрации (0-50)
+   * @param data.brandNames - Бренды для фильтрации (0-50)
+   * @param data.tagIds - ID меток для фильтрации (0-50)
+   * @param data.pagination - Пагинация в пределах одного `snapshotTime` (offset/limit + курсор)
+   * @returns Снимок данных с курсором `snapshotTime`, валютой и списком заказов
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400/422)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-204
+   * @see {@link https://dev.wildberries.ru/docs/openapi/analytics#tag/orderFeed/operation/postV1OrderFeed}
+   * @example
+   * ```typescript
+   * // Первая страница — offset: 0, без snapshotTime
+   * const first = await sdk.analytics.getOrderFeed({
+   *   selectedPeriod: { start: '2026-08-24T00:00:00Z', end: '2026-09-23T00:00:00Z' },
+   *   pagination: { offset: 0, limit: 1000 },
+   * });
+   *
+   * // Следующие страницы — тот же курсор snapshotTime из первого ответа
+   * let snapshot = first.data.snapshotTime;
+   * let offset = first.data.orders.length;
+   * while (offset < 5000) { // пока не собрано всё (лимит запроса — 1 в минуту)
+   *   const page = await sdk.analytics.getOrderFeed({
+   *     selectedPeriod: { start: '2026-08-24T00:00:00Z', end: '2026-09-23T00:00:00Z' },
+   *     pagination: { snapshotTime: snapshot, offset, limit: 1000 },
+   *   });
+   *   if (page.data.orders.length === 0) break;
+   *   offset += page.data.orders.length;
+   * }
+   * ```
+   */
+  async getOrderFeed(data: OrderFeedRequest): Promise<OrderFeedResponseWrapper> {
+    return this.client.post<OrderFeedResponseWrapper>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/order-feed',
+      data,
+      { rateLimitKey: 'analytics.postV1OrderFeed' }
+    );
+  }
+
+  /**
    * Get the v2 item-rating report, including catalog visibility.
    *
    * Use `onlyShadowedNms: true` to replace the deprecated
@@ -888,4 +975,10 @@ export type {
   DistributionTableIndicators,
   DistributionTableIndicator,
   DistributionFeedbackRating,
+  OrderFeedSelectedPeriod,
+  OrderFeedPagination,
+  OrderFeedRequest,
+  OrderFeedOrder,
+  OrderFeedResponse,
+  OrderFeedResponseWrapper,
 } from '../../types/analytics.types';
