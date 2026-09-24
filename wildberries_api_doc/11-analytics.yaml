@@ -5821,6 +5821,8 @@ components:
         timestamp: '2026-05-25T02:47:09Z'
       description: Invalid token type
   responses:
+    '402':
+      description: Необходима оплата
     '401':
       description: Не авторизован
       content:
