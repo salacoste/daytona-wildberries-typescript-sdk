@@ -12,11 +12,13 @@ The **Analytics** module provides access to sales funnel analytics, search query
 | **SDK Namespace** | `sdk.analytics.*` |
 | **Base URL** | `https://seller-analytics-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/11-analytics/` |
-| **Methods** | 20 |
+| **Methods** | 21 |
 | **Authentication** | API Key (Header) |
 
 ### What's New (Unreleased)
 
+- **NEW `getOrderFeed()`** (WB news 2026-09): real-time **Order Feed** report — orders and buyouts unified in one method, with statuses (`created`/`buyout`/`cancel`/`return`/`returnDefective`), cancel reasons (`cancelType`), a B2B flag, and `snapshotTime`-cursor offset pagination. Replaces `sdk.reports.getSupplierOrders()` and `sdk.reports.getSupplierSales()` (both still work; WB announced a future shutdown without a date).
+- **6 new types**: `OrderFeedSelectedPeriod`, `OrderFeedPagination`, `OrderFeedRequest`, `OrderFeedOrder`, `OrderFeedResponse`, `OrderFeedResponseWrapper`
 - **NEW `getSellerWarehousesStock()`** (WB news 2026-09): current inventory across ALL seller warehouses — no warehouse/size IDs required in the request. Replaces per-warehouse `POST /api/v3/stocks/{warehouseId}` usage. Data refreshes once every 30 minutes.
 - **3 new types**: `SellerWarehousesStockRequest`, `SellerWarehouseStockItem`, `SellerWarehousesStockResponse`
 
@@ -127,6 +129,12 @@ All three Sales Funnel v3 responses now include an optional `currency` field (e.
 |--------|------|----------|-------------|
 | `getSellerWarehousesStock()` | POST | `/api/analytics/v1/stocks-report/seller-warehouses` | Get current inventory across ALL seller warehouses — no warehouse/size IDs needed |
 
+### Order Feed (1 method) - NEW (WB news 2026-09)
+
+| Method | HTTP | Endpoint | Description |
+|--------|------|----------|-------------|
+| `getOrderFeed()` | POST | `/api/analytics/v1/order-feed` | Real-time orders + buyouts in one report, with statuses, cancel reasons and B2B flag |
+
 ### Item Rating
 
 | Method | HTTP | Endpoint | Description |
@@ -158,6 +166,7 @@ All methods share the same rate limit tier:
 | All analytics endpoints | 3 req/min | 20s | 3 |
 | `getWbWarehousesStock()` | 3 req/min | 20s | 1 |
 | `getSellerWarehousesStock()` | 3 req/min | 20s | 1 |
+| `getOrderFeed()` | 1 req/min | 1 min | 1 (Base token without secret: 1 req per 3 h) |
 
 ---
 
@@ -285,6 +294,83 @@ const page = await sdk.analytics.getSellerWarehousesStock({
   offset: 0,
 });
 console.log(`Found ${page.data.items.length} inventory rows`);
+```
+
+---
+
+### getOrderFeed() - Order Feed (NEW, WB news 2026-09)
+
+Real-time report that unifies **orders and buyouts in one method**. 1 order = 1 assembly
+order = 1 item. Unlike the legacy `supplier/orders` + `supplier/sales` reports, a buyout
+does not create a second row — the same order row transitions between statuses
+(`created` → `buyout`/`cancel`/`return`/`returnDefective`). **Statuses are the only
+mutating fields**: re-request the same period to track an order's status transitions.
+Cancelled orders additionally carry `cancelType` (`app`/`receipt`/`expire`/`other`), and
+`isB2b` splits B2B from B2C sales.
+
+**Endpoint:** `POST /api/analytics/v1/order-feed`
+
+**Request parameters (`OrderFeedRequest`):**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| selectedPeriod.start | string (date-time) | Yes | Period start — by date of the **current** order status; max 31 days back |
+| selectedPeriod.end | string (date-time) | No | Period end |
+| nmIds | number[] | No | WB article IDs to filter (max 1000, empty = all orders) |
+| subjectIds | number[] | No | Subcategory IDs to filter (max 50) |
+| brandNames | string[] | No | Brands to filter (max 50) |
+| tagIds | number[] | No | Label IDs to filter (max 50) |
+| pagination.snapshotTime | string (date-time) | No | Snapshot cursor — reuse across pages of one selection |
+| pagination.offset | number | No | Results to skip (default 0) |
+| pagination.limit | number | No | Orders per response (max 10000, default 50) |
+
+Multiple filters combine with AND; empty filter arrays return all seller orders.
+
+**Response fields (`OrderFeedOrder` highlights):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | `'created' \| 'buyout' \| 'cancel' \| 'return' \| 'returnDefective'` | Current order status |
+| `cancelType` | `'app' \| 'receipt' \| 'expire' \| 'other'`? | Present only when `status = "cancel"` |
+| `isMp` | boolean | `true` — seller warehouse, `false` — WB warehouse |
+| `sellerPrice` | number | Seller price with seller discount (excl. WB Club discount and B2B wholesale) |
+| `isB2b` | boolean | `true` — B2B, `false` — B2C |
+| `data.snapshotTime` | string | Cursor — date of the last data update; drives consistent pagination |
+
+**Rate Limit:** 1 request/minute, 1-minute interval, burst 1. Base token without a
+secret: 1 request per 3 hours. Available for any token type (Analytics category).
+
+::: warning Replaces supplier/orders + supplier/sales
+WB recommends this report instead of `sdk.reports.getSupplierOrders()`
+(`GET /api/v1/supplier/orders`) and `sdk.reports.getSupplierSales()`
+(`GET /api/v1/supplier/sales`). Both legacy endpoints still work, but WB announced
+they **will be disabled in the future — no date announced yet**.
+:::
+
+**Cursor pagination:** the report data updates asynchronously. To avoid skipping or
+duplicating orders, all requests of one selection must share the same `snapshotTime`:
+omit it on the first request (`offset: 0`), then pass the `data.snapshotTime` value from
+that first response on every subsequent page. When changing the period or filters,
+start over with `offset: 0` and no `snapshotTime`.
+
+```typescript
+// First page — offset 0, no snapshotTime
+const first = await sdk.analytics.getOrderFeed({
+  selectedPeriod: { start: '2026-08-24T00:00:00Z', end: '2026-09-23T00:00:00Z' },
+  nmIds: [47254354],
+  pagination: { offset: 0, limit: 1000 },
+});
+console.log(first.data.snapshotTime, first.data.currency);
+
+// Subsequent pages — SAME snapshotTime cursor (mind the 1 req/min limit)
+if (first.data.orders.length === 1000) {
+  const page2 = await sdk.analytics.getOrderFeed({
+    selectedPeriod: { start: '2026-08-24T00:00:00Z', end: '2026-09-23T00:00:00Z' },
+    nmIds: [47254354],
+    pagination: { snapshotTime: first.data.snapshotTime, offset: 1000, limit: 1000 },
+  });
+  console.log(`Page 2: ${page2.data.orders.length} orders`);
+}
 ```
 
 ---

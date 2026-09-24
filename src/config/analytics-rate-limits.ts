@@ -91,6 +91,13 @@ export const analyticsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 20,
     burstLimit: 1,
   },
+  // v1 Order Feed (task-204; real-time orders+buyouts replacing supplier/orders + supplier/sales).
+  // Base token without secret: 1 request per 3 hours (not representable in this config — enforced by WB).
+  'analytics.postV1OrderFeed': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 1,
+  },
   // v3 Sales Funnel endpoints
   'analytics.postSalesFunnelProducts': {
     requestsPerMinute: 3,

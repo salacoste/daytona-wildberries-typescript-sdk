@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **analytics**: real-time Order Feed report via new `getOrderFeed(data)`
+  (POST `/api/analytics/v1/order-feed`, WB news 2026-09) — orders and buyouts
+  unified in one method: statuses `created`/`buyout`/`cancel`/`return`/
+  `returnDefective` are the only mutating fields (re-request the same period
+  to track transitions), cancelled orders carry `cancelType`
+  (`app`/`receipt`/`expire`/`other`), `isB2b` splits B2B/B2C, `sellerPrice`
+  includes the seller discount but excludes WB Club and B2B wholesale
+  discounts. Period is selected by current-status date (max 31 days back);
+  filter arrays (`nmIds`/`subjectIds`/`brandNames`/`tagIds`) combine with
+  AND, empty = all orders. Pagination runs by `offset` within a stable
+  `snapshotTime` cursor returned by the first response. Replaces
+  `GET /api/v1/supplier/orders` and `GET /api/v1/supplier/sales`
+  (`sdk.reports.getSupplierOrders`/`getSupplierSales` — both still work;
+  future shutdown announced without a date, deprecation-pointer JSDoc added
+  there). Rate limit 1 req/min, 60 s, burst 1 (Base token without secret:
+  1 req per 3 h); any token type, Analytics category. Task: task-204.
+
 - **ordersDBS / inStorePickup**: final-price methods (WB news 2026-09) — twin
   `getOrdersFinalPrice({ orders })` on both modules: DBS
   (POST `/api/marketplace/v3/dbs/orders/final-price`) and In-Store Pickup

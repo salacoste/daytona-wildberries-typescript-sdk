@@ -2116,3 +2116,123 @@ export interface ItemRatingV2ResponseWrapper {
   /** Response data. */
   data: ItemRatingV2Response;
 }
+
+// ============================================================================
+// Order Feed (POST /api/analytics/v1/order-feed) — task-204
+// Real-time orders + buyouts report replacing supplier/orders + supplier/sales
+// ============================================================================
+
+/** Requested period for the Order Feed report — by date of the current order status. */
+export interface OrderFeedSelectedPeriod {
+  /**
+   * Start date and time of the period (date-time).
+   * No later than `end`. No earlier than 31 days from today.
+   */
+  start: string;
+  /** End date and time of the period (date-time). */
+  end?: string;
+}
+
+/** Pagination within a single Order Feed data snapshot. */
+export interface OrderFeedPagination {
+  /**
+   * Data snapshot timestamp within which pagination is performed (cursor).
+   * The report data is updated asynchronously — to avoid skipping or
+   * duplicating orders, requests for the same data selection must share the
+   * same `snapshotTime`. Omit on the first request (`offset: 0`); for every
+   * subsequent request (`offset` > 0) pass the `snapshotTime` value from the
+   * first response. When changing the period or filters, start again with
+   * `offset: 0` and without `snapshotTime`.
+   */
+  snapshotTime?: string;
+  /** How many results to skip (e.g. `10` starts the response at the 11th element). Default 0. */
+  offset?: number;
+  /** Number of orders in the response (max 10000, default 50). */
+  limit?: number;
+}
+
+/** Request body for POST /api/analytics/v1/order-feed. */
+export interface OrderFeedRequest {
+  /** Requested period — by date of the current order status (max 31 days back). */
+  selectedPeriod: OrderFeedSelectedPeriod;
+  /** List of WB item numbers for filtering (max 1000, empty = all seller orders). */
+  nmIds?: number[];
+  /** List of subcategory IDs for filtering (max 50). */
+  subjectIds?: number[];
+  /** List of brands for filtering (max 50). */
+  brandNames?: string[];
+  /** List of label IDs for filtering (max 50). */
+  tagIds?: number[];
+  /** Pagination within a single `snapshotTime` data snapshot. */
+  pagination?: OrderFeedPagination;
+}
+
+/** A single order row in the Order Feed report (1 order = 1 assembly order = 1 item). */
+export interface OrderFeedOrder {
+  /** WB item number. */
+  nmId: number;
+  /** Size ID. */
+  chrtId: number;
+  /** Order ID. */
+  srid: string;
+  /** Order date and time. */
+  createdAt: string;
+  /**
+   * Current status date and time.
+   * When `status` is `"created"`, the value of `createdAt` is returned.
+   */
+  updatedAt: string;
+  /**
+   * Order status:
+   * - `created` — placed
+   * - `buyout` — purchased
+   * - `cancel` — canceled
+   * - `return` — returned
+   * - `returnDefective` — returned due to defect
+   */
+  status: 'created' | 'buyout' | 'cancel' | 'return' | 'returnDefective';
+  /**
+   * Cancellation type (only present when `status` is `"cancel"`):
+   * - `app` — refused prior to receipt
+   * - `receipt` — refused at pickup
+   * - `expire` — pickup period ended
+   * - `other` — technical cancellation
+   */
+  cancelType?: 'app' | 'receipt' | 'expire' | 'other';
+  /** Warehouse name (`Склад WB` for WB warehouses). */
+  warehouseName: string;
+  /**
+   * The federal district where the warehouse is located; if the warehouse is
+   * not in Russia, the country is returned (`""` for WB warehouses).
+   */
+  warehouseRegion: string;
+  /** Warehouse type: `true` — seller warehouse, `false` — WB warehouse. */
+  isMp: boolean;
+  /** Delivery location (city). */
+  destinationCity: string;
+  /** The federal district to which the order is delivered (country if not in Russia). */
+  destinationDistrict: string;
+  /**
+   * Seller price with the seller discount applied — excluding the WB Club
+   * discount and the B2B wholesale discount.
+   */
+  sellerPrice: number;
+  /** Sale type: `true` — B2B, `false` — B2C. */
+  isB2b: boolean;
+}
+
+/** Response payload (the `data` object) for POST /api/analytics/v1/order-feed. */
+export interface OrderFeedResponse {
+  /** Cursor — date and time of the last update of the data. */
+  snapshotTime: string;
+  /** Report currency (e.g. `"RUB"`). */
+  currency: string;
+  /** Orders matching the request filters. */
+  orders: OrderFeedOrder[];
+}
+
+/** Top-level response wrapper for POST /api/analytics/v1/order-feed. */
+export interface OrderFeedResponseWrapper {
+  /** Response data. */
+  data: OrderFeedResponse;
+}
