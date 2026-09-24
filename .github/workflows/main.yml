@@ -110,6 +110,12 @@ jobs:
     needs: ci  # Wait for CI to complete successfully
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    # Serialize gh-pages pushes (shared group with docs.yml) — prevents
+    # non-fast-forward rejections when main.yml and docs.yml race on
+    # back-to-back pushes. Newest deploy wins.
+    concurrency:
+      group: gh-pages-deploy
+      cancel-in-progress: true
 
     steps:
       # 1. Checkout code

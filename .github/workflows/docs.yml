@@ -15,6 +15,13 @@ on:
 permissions:
   contents: write
 
+# Serialize gh-pages pushes (shared group with main.yml deploy job) — prevents
+# non-fast-forward rejections when both workflows race on back-to-back pushes.
+# Newest deploy wins.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy-docs:
     name: Build and Deploy Documentation
