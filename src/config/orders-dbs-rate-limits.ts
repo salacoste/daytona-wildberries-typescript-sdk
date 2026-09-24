@@ -287,4 +287,12 @@ export const ordersDbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+
+  /** POST /api/marketplace/v3/dbs/orders/final-price - seller prices + buyer-payable sums (task-203) */
+  'orders-dbs.getOrdersFinalPrice': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

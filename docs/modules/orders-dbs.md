@@ -12,7 +12,7 @@ The **Orders DBS (Delivery by Seller)** module manages orders where the seller h
 | **SDK Namespace** | `sdk.ordersDBS.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/04-orders-dbs/` |
-| **Methods** | 20 |
+| **Methods** | 21 |
 | **Authentication** | API Key (Header) |
 | **409 Penalty** | 10x rate limit multiplier |
 
@@ -53,12 +53,13 @@ await sdk.ordersDBS.setImeiBulk({
 | `getClientInfo(orderIds)` | POST | `/api/v3/dbs/orders/client` | Get customer contact info |
 | `getB2BInfo(orderIds)` | POST | `/api/marketplace/v3/dbs/orders/b2b/info` | Get B2B buyer info |
 
-### Info Endpoints (2 methods)
+### Info Endpoints (3 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getGroupsInfo(data)` | POST | `/api/v3/dbs/groups/info` | Get paid delivery group info |
 | `getDeliveryDates(data)` | POST | `/api/v3/dbs/orders/delivery-date` | Get delivery dates for orders |
+| `getOrdersFinalPrice(data)` | POST | `/api/marketplace/v3/dbs/orders/final-price` | Get seller prices and buyer-payable sums |
 
 ### Bulk Status Operations (6 methods)
 
@@ -102,6 +103,23 @@ await sdk.ordersDBS.setImeiBulk({
 | `receive(orderId, code)` | `receiveBulk()` |
 | `reject(orderId, code)` | `rejectBulk()` |
 | `cancel(orderId)` | `cancelBulk()` |
+
+---
+
+## Final-Price Guidance (WB news 2026-09)
+
+`getOrdersFinalPrice()` returns seller prices excluding discounts
+(`originalPrice`/`convertedOriginalPrice`) and buyer-payable sums including all
+discounts and cashback (`originalFinalPrice`/`convertedOriginalFinalPrice`).
+All amounts are multiplied by 100.
+
+- **Use `originalFinalPrice`/`convertedOriginalFinalPrice` for calculations.**
+- Fall back to `finalPrice`/`convertedFinalPrice` from `getNewOrders()`/
+  `getOrders()` only when this method returns `"data": null` for those order IDs.
+- `"data": {}` (empty object) means the data is still being generated — retry
+  later (max ~1 minute).
+- Per-order errors: `404` NotFound, `400` StatusMismatch, `422`
+  PriceNotCalculated (orders created before 23.07.2026).
 
 ---
 

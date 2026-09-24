@@ -132,4 +132,17 @@ export const inStorePickupRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 500,
     penaltyMultiplier: 10,
   },
+
+  // ============================================================================
+  // Final price (task-203, WB news 2026-09)
+  // POST /api/marketplace/v3/click-collect/orders/final-price — twin of the DBS
+  // final-price endpoint. Sandbox: max 1 rps for all Marketplace methods.
+  // ============================================================================
+
+  'in-store-pickup.getOrdersFinalPrice': {
+    requestsPerMinute: 150,
+    intervalSeconds: 0.4,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

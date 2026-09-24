@@ -42,6 +42,8 @@ import type {
   StickerParams,
   StickerRequest,
   StickerResponse,
+  OrdersFinalPriceRequest,
+  OrdersFinalPriceResponse,
 } from '../../types/orders-dbs.types';
 
 /** Base URL for DBS API endpoints */
@@ -865,6 +867,57 @@ export class OrdersDbsModule {
       `${BASE_URL}/api/marketplace/v3/dbs/orders/stickers`,
       data,
       { params: options, rateLimitKey: 'orders-dbs.createOrdersStickers' }
+    );
+  }
+
+  /**
+   * Get seller prices and buyer-payable sums for assembly orders (task-203)
+   *
+   * Returns, per assembly order ID:
+   * - seller prices excluding discounts (`originalPrice`/`convertedOriginalPrice`)
+   * - sums charged to the buyer including ALL discounts and cashback
+   *   (`originalFinalPrice`/`convertedOriginalFinalPrice`)
+   *
+   * **Calculation guidance (WB news 2026-09):** use `originalFinalPrice`/
+   * `convertedOriginalFinalPrice` for calculations. Fall back to
+   * `finalPrice`/`convertedFinalPrice` from `getNewOrders()`/`getOrders()`
+   * responses ONLY when this method returns `"data": null` for those order IDs.
+   *
+   * - `"data": {}` (empty object) — data is still being generated, retry later
+   *   (maximum generation time is approximately 1 minute).
+   * - per-order `errors[]`: `404` NotFound, `400` StatusMismatch,
+   *   `422` PriceNotCalculated (orders created before 23.07.2026).
+   *
+   * Rate limit: 150 req/min, 400ms interval, burst 20; a request with a 4XX
+   * response code is counted as 10 requests.
+   *
+   * @param request - Request with assembly order IDs
+   * @returns Promise resolving to per-order prices and sums
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-203
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-dbs#tag/dbsAssemblyOrders/operation/postV3DbsOrdersFinalPrice}
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersDBS.getOrdersFinalPrice({ orders: [1234567890] });
+   * for (const item of result.results) {
+   *   if (item.isError) {
+   *     console.log(`Order ${item.orderId}: ${item.errors?.[0]?.detail}`);
+   *   } else if (item.data && Object.keys(item.data).length > 0) {
+   *     // use for calculations per WB guidance
+   *     console.log(`Order ${item.orderId}: buyer pays ${item.data.originalFinalPrice! / 100}`);
+   *   } else {
+   *     // data is null — fall back to finalPrice from getNewOrders()/getOrders()
+   *   }
+   * }
+   * ```
+   */
+  async getOrdersFinalPrice(request: OrdersFinalPriceRequest): Promise<OrdersFinalPriceResponse> {
+    return this.client.post<OrdersFinalPriceResponse>(
+      `${BASE_URL}/api/marketplace/v3/dbs/orders/final-price`,
+      request,
+      { rateLimitKey: 'orders-dbs.getOrdersFinalPrice' }
     );
   }
 }
