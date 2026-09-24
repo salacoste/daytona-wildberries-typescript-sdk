@@ -10,11 +10,11 @@ _base_url: N/A
 _shards:
   - file: sborochnye-zadaniya-dbs.yaml
     domain: Сборочные задания DBS
-    endpoints: 18
+    endpoints: 19
     description: DBS Assembly Tasks
   - file: metadannye-dbs.yaml
     domain: Метаданные DBS
     endpoints: 13
     description: DBS Metadata
 _shared_schemas: _schemas.yaml
-_total_endpoints: 31
+_total_endpoints: 32

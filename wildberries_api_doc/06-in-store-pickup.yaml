@@ -916,6 +916,74 @@ paths:
                   $ref: '#/components/examples/FailedToUpdateMeta'
         '429':
           $ref: '#/components/responses/429'
+  /api/marketplace/v3/click-collect/orders/final-price:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - Сборочные задания Самовывоз
+      summary: Get seller prices and amounts charged to the buyer
+      description: |
+        The method returns:
+          - seller prices excluding discounts
+          - sums charged to the buyer including all discounts and cashback
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for all methods for <strong>getting and deleting In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 150 requests | 400 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests.
+
+        <hr>
+
+        In <a href='/en/sandbox'>Sandbox</a> — maximum of 1 request per second for all <strong>Marketplace</strong> methods in total.
+
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.OrdersRequest'
+        required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.OrdersFinalPriceResponse'
+              examples:
+                GetFinalPriceSuccess:
+                  $ref: '#/components/examples/GetFinalPriceSuccess'
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                IncorrectRequestBody:
+                  $ref: '#/components/examples/IncorrectRequestBody'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.BatchError'
+              example:
+                detail: {}
+                origin: market-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        '429':
+          $ref: '#/components/responses/429'
 components:
   securitySchemes:
     HeaderApiKey:
@@ -978,6 +1046,19 @@ components:
       value:
         code: IncorrectRequest
         message: Переданы некорректные данные
+    GetFinalPriceSuccess:
+      value:
+        requestId: f1787bd2d1fdc35d6f537316514y4a05
+        results:
+          - orderId: 1234567890
+            data:
+              originalPrice: 29000
+              convertedOriginalPrice: 29000
+              originalFinalPrice: 27000
+              convertedOriginalFinalPrice: 27000
+              currencyCode: 643
+              convertedCurrencyCode: 643
+            isError: false
   schemas:
     api.CheckedIdentity:
       type: object
@@ -1424,6 +1505,122 @@ components:
               type: string
               example: '123456789012345'
           description: УИН
+    api.BatchError:
+      type: object
+      required:
+        - origin
+        - requestId
+        - title
+      properties:
+        detail:
+          type: object
+          nullable: true
+          description: Error details
+          example: {}
+        origin:
+          type: string
+          description: WB internal service ID
+          example: market-public-api
+        requestId:
+          type: string
+          description: Unique request ID
+          example: f1787bd2d1fdс35d6f537316514у4a05
+        title:
+          type: string
+          description: Error title
+          example: IncorrectRequest
+    api.OrdersFinalPriceResponse:
+      type: object
+      required:
+        - requestId
+        - results
+      properties:
+        requestId:
+          type: string
+          description: Unique request ID
+        results:
+          type: array
+          description: Response data
+          items:
+            $ref: '#/components/schemas/api.OrderFinalPriceResult'
+    api.OrderFinalPriceResult:
+      type: object
+      required:
+        - orderId
+      properties:
+        orderId:
+          description: Assembly order ID
+          type: integer
+          nullable: false
+        data:
+          description: |
+            Assembly order data.
+            <br><br>
+            If `{}`, the data is being generated. Please try again later. Maximum data generation time is approximately 1 minute.
+            <br><br>
+            If `data` absent, assembly order data is not provided. Use the data from the responses of the methods:
+             - [Get New Assembly Orders List](/en/docs/openapi/in-store-pickup#tag/inStorePickupAssemblyOrders/operation/getV3ClickCollectOrdersNew)
+             - [Get Information on Completed Orders](/en/docs/openapi/in-store-pickup#tag/inStorePickupAssemblyOrders/operation/getV3ClickCollectOrders)
+          type: object
+          nullable: false
+          properties:
+            originalPrice:
+              description: Seller price in the currency of sale, excluding discounts, multiplied by 100
+              type: integer
+              nullable: false
+            convertedOriginalPrice:
+              description: Seller price in the currency of the seller country, excluding discounts, multiplied by 100
+              type: integer
+              nullable: false
+            originalFinalPrice:
+              description: The sum charged to the buyer in the currency of sale including all discounts and cashback, multiplied by 100. You can find a currency code in the `currencyCode` field. Provided for informational purposes only
+              type: integer
+              nullable: false
+            convertedOriginalFinalPrice:
+              description: The sum charged to the buyer in the currency of the seller country including all discounts and cashback, multiplied by 100. Provided for informational purposes only
+              type: integer
+              nullable: false
+            currencyCode:
+              type: integer
+              nullable: false
+              format: ISO 4217
+              description: Sale currency code
+            convertedCurrencyCode:
+              type: integer
+              nullable: false
+              format: ISO 4217
+              description: Currency code of the seller country
+        errors:
+          description: Error detail
+          nullable: false
+          type: array
+          items:
+            $ref: '#/components/schemas/api.BatchErrorFinalPriceResponse'
+        isError:
+          type: boolean
+          description: Are there any errors
+          nullable: false
+    api.BatchErrorFinalPriceResponse:
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          type: integer
+          description: |
+            Error code:
+              - `404` — `NotFound`
+              - `400` — `StatusMismatch`
+              - `422` — `PriceNotCalculated`
+          example: 404
+        detail:
+          type: string
+          description: |
+            - `NotFound` — the assembly order is not found (`404`)
+            - `StatusMismatch` — operation is not possible for this assembly order status (`400`)
+            - `PriceNotCalculated` — operation is not available for assembly orders created before 23.07.2026 (`422`)
+          example: NotFound
+      type: object
   responses:
     '401':
       description: Не авторизован

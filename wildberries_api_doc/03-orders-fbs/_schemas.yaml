@@ -1099,6 +1099,354 @@ components:
           type: string
           format: date-time
           description: Request date and time
+    v3.ArchiveOrders:
+      type: object
+      description: List of archived assembly orders
+      required:
+        - orders
+        - next
+      properties:
+        next:
+          description: Pagination parameter. Sets the value from which to get the next batch
+          type: integer
+          format: int64
+          nullable: true
+        orders:
+          description: Archived assembly orders
+          type: array
+          items:
+            $ref: '#/components/schemas/v3.ArchiveOrder'
+    v3.ArchiveOrder:
+      type: object
+      description: Archived assembly order
+      required:
+        - cargoType
+        - colorCode
+        - createdAt
+        - crossBorder
+        - crossBorderType
+        - id
+        - isZeroOrder
+        - metaDetails
+        - options
+        - orderUid
+        - priceInfo
+        - product
+        - rid
+        - scanPrice
+        - status
+        - stickerId
+        - supplyId
+        - warehouseId
+      properties:
+        cargoType:
+          description: |
+            Type of cargo:
+              - `mgt` — small-sized items
+              - `sgt` — over dimensional cargo (ODC)
+              - `kgtPlus` — dimensional cargo+ (CD+)
+          type: string
+          example: mgt
+        colorCode:
+          description: Color code for tinted items
+          type: string
+          example: RAL 3017
+          nullable: true
+        createdAt:
+          description: Date when the order was created
+          type: string
+          example: '2022-05-04'
+        crossBorder:
+          description: Cross-border order information
+          type: object
+          nullable: true
+          properties:
+            parcel:
+              description: Parcel ID
+              type: string
+              example: 1Z999AA10123456784
+        crossBorderType:
+          description: |
+            Assembly order type:
+              - `local` — Non-Cross-Border
+              - `crossBorder` — Cross-Border
+          type: string
+          example: crossBorder
+        id:
+          description: Assembly order ID
+          type: integer
+          example: 1234567890
+        isZeroOrder:
+          description: |
+            Indicator of an order for an item with zero inventory:
+              - `false` — the order is made for an item with a non-zero inventory
+              - `true` — the order is made for an item with zero inventory
+          type: boolean
+          example: false
+        metaDetails:
+          allOf:
+            - $ref: '#/components/schemas/MetaDetails'
+            - description: Assembly order label identifiers
+        options:
+          description: Order options
+          type: object
+          properties:
+            isB2B:
+              description: |
+                Indicator of a B2B sale:
+                  - `false` — not B2B sale
+                  - `true` — B2B sale
+              type: boolean
+              example: false
+        orderUid:
+          description: Transaction ID for order grouping. Orders in the same buyer's cart will have the same `orderUid`
+          type: string
+          example: 165918930_629fbc924b984618a44354475ca58675
+        priceInfo:
+          description: Order price data
+          type: object
+          required:
+            - convertedCurrencyCode
+            - convertedPrice
+            - currencyCode
+            - price
+          properties:
+            convertedCurrencyCode:
+              description: Currency code of the seller country
+              type: integer
+              example: 643
+            convertedPrice:
+              description: The sum charged to the buyer in the currency of the seller country including all discounts, multiplied by 100
+              type: integer
+              example: 1020
+            currencyCode:
+              description: Sale currency code
+              type: integer
+              example: 643
+            price:
+              description: The price in the currency of sale including all discounts, except WB Wallet discount, multiplied by 100
+              type: integer
+              example: 1020
+        product:
+          description: Item information
+          type: object
+          required:
+            - article
+            - chrtId
+            - nmId
+            - skus
+          properties:
+            article:
+              description: Seller item number
+              type: string
+              example: wv1702fyjh
+            chrtId:
+              description: Item size ID in WB systems
+              type: integer
+              format: uint64
+              example: 12345678
+            nmId:
+              description: WB item number
+              type: integer
+              example: 370870300
+            skus:
+              description: List of SKUs
+              items:
+                type: string
+              type: array
+              example:
+                - 12345Ejf5
+                - 12345Ejf6
+                - 12345Ejf7
+        rid:
+          description: |
+            Unique order ID. <br>
+            Note: `rid` corresponds to `srid` in the responses of the methods:
+              - [Buyers Return Applications](./customer-communication#tag/buyersReturns/operation/getV1Claims)
+              - [Order Feed](./analytics#tag/orderFeed/operation/postV1OrderFeed)
+              - [Orders](./reports#tag/mainReports/operation/getV1SupplierOrders)
+              - [Sales](./reports#tag/mainReports/operation/getV1SupplierSales)
+              - [Returns and Item Movement Report](./reports#tag/returnsAndItemMovementReport)
+              - [Details for the Sales Reports by Report ID](./documents-and-accounting#tag/financialReports/operation/postV1SalesReportsDetailedReportId)
+              - [Details for the Sales Reports by Period](./documents-and-accounting#tag/financialReports/operation/postV1SalesReportsDetailed)
+              - [Details for the Acquiring Expenses Reports by Report ID](./documents-and-accounting#tag/financialReports/operation/postV1AcquiringDetailedReportId)
+              - [Details for the Acquiring Expenses Reports by Period](./documents-and-accounting#tag/financialReports/operation/postV1AcquiringDetailed)
+          type: string
+          example: f884001e44e511edb8780242ac120002
+        scanPrice:
+          description: Acceptance price in kopecks
+          type: integer
+          nullable: true
+          example: 5200
+        status:
+          description: The latest assembly order statuses
+          required:
+            - supplierStatus
+            - wbStatus
+          properties:
+            supplierStatus:
+              description: Assembly order status set by the seller
+              example: complete
+              type: string
+            wbStatus:
+              description: Assembly order status set by WB system
+              example: sent_to_carrier
+              type: string
+          type: object
+        stickerId:
+          description: Sticker ID
+          example: 33811984302
+          type: integer
+        supplyId:
+          description: Supply ID
+          example: WB-GI-1234588
+          type: string
+          nullable: true
+        warehouseId:
+          description: ID of the seller warehouse from which the item was shipped
+          example: 55684681
+          type: integer
+    MetaDetails:
+      type: array
+      description: Assembly order label identifiers
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+            example: uin
+            description: Label identifier
+          value:
+            nullable: true
+            type: string
+            example: null
+            description: Label identifier value
+          decision:
+            type: string
+            example: uinMaySell
+            description: |
+              Validation statuses.<br><br>
+              `imei` validation statuses with which the supply can be transferred to delivery:
+                - `filled` — Label identifier is added to the assembly order, validation is not required
+                - `deadlineExceeded` — Label identifier validation is not completed and will continue. The validation can pass or fail
+                - `optional` — Label identifier is not required. Validation passed
+                - `imeiMaySell` — The item is approved for sale. Validation passed
+                - `imeiSoldB2B` — The item was sold to a B2B buyer and approved for sale again. Validation passed
+
+              <br><br>
+              `imei` validation statuses with which the supply can not be transferred to delivery:
+                - `pending` — Label identifier validation continues. Wait for the validation status to change
+                - `required` — Required label identifier is not added to the assembly order. Validation failed
+                - `imeiInvalidFormat` — Invalid format. Validation failed
+                - `imeiAlreadySold` — The item with this IMEI has already been sold. Validation failed
+
+              <br><br>
+              `uin` validation statuses with which the supply can be transferred to delivery:
+                - `filled` — Label identifier is added to the assembly order, validation is not required
+                - `deadlineExceeded` —  Label identifier validation is not completed and will continue. The validation can pass or fail
+                - `optional` — Label identifier is not required. Validation passed
+                - `uinMaySell` — The item is approved for sale. Validation passed
+
+              <br><br>
+              `uin` validation statuses with which the supply can not be transferred to delivery:
+                - `pending` — Label identifier validation continues. Wait for the validation status to change
+                - `required` — Required label identifier is not added to the assembly order. Validation failed
+                - `uinInvalidFormat` — Invalid format. Validation failed
+                - `uinBadStatus` — Invalid batch status. Validation failed
+                - `uinBadProcess` — Invalid processing stage. Validation failed
+                - `uinBadStatusAndBadProcess` — Invalid batch status. Invalid processing stage. Validation failed
+                - `uinNotFound` — Not found in GIIS DMDK. Validation failed.
+                  The status may mean that the UIN:
+                    - is not specified in the uploaded Delivery Contract Specification
+                    - is not registered in GIIS DMDK
+                    - is specified incorrectly and is read from the tag with errors
+                    - is not in circulation
+
+              <br><br>
+              `sgtin` validation statuses with which the supply can be transferred to delivery:
+                - `filled` — Label identifier is added to the assembly order, validation is not required
+                - `deadlineExceeded` —  Label identifier validation is not completed and will continue. The validation can pass or fail
+                - `optional` — Label identifier is not required. Validation passed
+                - `sgtinIntroduced` — The item is approved for sale. Validation passed
+                - `sgtinSoldB2B` — The item was sold to a B2B buyer and approved for sale again. Validation passed
+
+              <br><br>
+              `sgtin` validation statuses with which the supply can not be transferred to delivery:
+                - `pending` — Label identifier validation continues. Wait for the validation status to change
+                - `required` — Required label identifier is not added to the assembly order. Validation failed
+                - `sgtinInvalidFormat` — Invalid format. Validation failed
+                - `sgtinNoGS` — Label identifier does not contain the GS separator `\u001d`. Validation failed
+                - `sgtinHasInvalidSymbols` — Label identifier contains incorrect characters or spaces. Validation failed
+                - `sgtinHasNonLatinSymbols` — Label identifier contains non-special or Latin characters. Validation failed
+                - `sgtinInvalidPattern` — Label identifier structure is incorrect. Validation failed
+                - `sgtinNotFound` — Label identifier not found in [Chestny ZNAK](https://chestnyznak.ru/en/). Validation failed
+                - `sgtinEmitted` — Label identifier has been issued. Validation failed
+                - `sgtinApplied` — Putting into circulation not completed. Validation failed
+                - `sgtinWrittenOff` — Written off. Validation failed
+                - `sgtinRetired` — Retired. Validation failed
+                - `sgtinWithdrawn` — Withdrawn. Validation failed
+                - `sgtinDisaggregation` — Disaggregation. Validation failed
+                - `sgtinDisaggregated` — Disaggregated. Validation failed
+                - `sgtinAppliedNotPaid` — Not paid. Validation failed
+
+              <br><br>
+              `gtin` validation statuses with which the supply can be transferred to delivery:
+                - `filled` — Label identifier is added to the assembly order, validation is not required
+                - `optional` — Label identifier is not required. Validation passed
+                - `required` — Required label identifier is not added to the assembly order. Validation failed
+
+              <br><br>
+              `expiration` validation statuses with which the supply can be transferred to delivery:
+                - `filled` — Label identifier is added to the assembly order, validation is not required
+                - `optional` — Label identifier is not required. Validation passed
+                - `required` — Required label identifier is not added to the assembly order. Validation failed
+
+              <br><br>
+              `customsDeclaration` validation statuses with which the supply can not be transferred to delivery:
+                - `required` — Required label identifier is not added to the assembly order. Validation failed
+
+              <br><br>
+              `customsDeclaration` validation statuses with which the supply can be transferred to delivery:
+                - `filled` — Label identifier is added to the assembly order, validation is not required
+                - `optional` — Label identifier is not required. Validation passed
+    ArhiveOrderError400:
+      required:
+        - title
+        - detail
+      properties:
+        code:
+          description: Error code
+          type: string
+        detail:
+          description: Error details
+          type: string
+        errors:
+          description: Error data
+          items:
+            properties:
+              location:
+                description: Parameter where the error occurred
+                type: string
+              message:
+                description: Error text
+                type: string
+              value:
+                description: Value of the parameter where the error occurred
+            type: object
+          type: array
+        origin:
+          description: WB internal service ID
+          type: string
+        requestId:
+          description: Unique request ID
+          type: string
+        status:
+          description: HTTP status code
+          type: integer
+        title:
+          description: Error title
+          type: string
+      type: object
   responses:
     "401":
       description: Не авторизован
@@ -1141,6 +1489,22 @@ components:
             status: 401
             statusText: Unauthorized
             timestamp: "2024-09-30T06:52:38Z"
+    "402":
+      description: Необходима оплата
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error title
+              detail:
+                type: string
+                description: 'Error details. The error is only returned to services from the [Solutions for business Catalog](/business-solutions)'
+          example:
+            title: payment required
+            detail: wb solution for business has insufficient funds on its balance. please top up the balance in the company's personal account https://dev.wildberries.ru/company
     "429":
       description: Слишком много запросов
       content:
@@ -1289,6 +1653,30 @@ components:
       value:
         code: WaybillUUIDConflict
         message: Waybill UUID is already used
+    ArhiveOrderError400:
+      value:
+        code: BadRequest
+        detail: Incorrect parameter
+        errors:
+          - location: query.next
+            message: expected integer
+            value: '1w'
+        origin: marketplace-public-api
+        requestId: a0b5907c-2978-4db6-9a59-00666e8b8d54
+        status: 400
+        title: IncorrectParameter
+    APIError403V2:
+      value:
+        code: AccessDenied
+        detail: ''
+        errors:
+          - location: ''
+            message: ''
+            value: 0
+        origin: marketplace-public-api
+        requestId: a0b5907c-2978-4db6-9a59-00666e8b8d54
+        status: 403
+        title: AccessDenied
   parameters:
     Supply:
       name: supplyId

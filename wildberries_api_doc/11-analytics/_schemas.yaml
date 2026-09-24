@@ -3919,6 +3919,220 @@ components:
           type: string
           format: date-time
           description: Request date and time
+    Currency:
+      type: string
+      example: RUB
+      description: Report currency
+    Order:
+      type: object
+      description: Заказ
+      required:
+        - nmId
+        - chrtId
+        - srid
+        - createdAt
+        - updatedAt
+        - status
+        - warehouseName
+        - warehouseRegion
+        - isMp
+        - destinationCity
+        - destinationDistrict
+        - sellerPrice
+        - isB2b
+      properties:
+        nmId:
+          type: integer
+          description: WB item number
+          example: 47254354
+          format: int64
+        chrtId:
+          type: integer
+          description: Size ID
+          example: 91663228
+          format: uint64
+        srid:
+          type: string
+          description: Order ID
+          example: 7513432034713632943.1.0
+        createdAt:
+          type: string
+          format: date-time
+          description: Order date and time
+          example: '2026-06-24T12:57:26+03:00'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Current status date and time. When `"status":"created"`, the value of the `createdAt` field is returned
+          example: '2026-06-26T19:19:38+03:00'
+        status:
+          type: string
+          description: |
+            Order status:
+              - `created` — placed
+              - `buyout` — purchased
+              - `cancel` — canceled
+              - `return` — returned
+              - `returnDefective` — returned due to defect
+          enum:
+            - created
+            - buyout
+            - cancel
+            - return
+            - returnDefective
+          example: cancel
+        cancelType:
+          type: string
+          description: |
+            Cancellation type (when `"status":"cancel"`):
+              - `app` — refuse prior to receipt
+              - `receipt` — refuse at pickup
+              - `expire` — pickup period ended
+              - `other` — technical cancellation
+          enum:
+            - app
+            - receipt
+            - expire
+            - other
+          example: app
+        warehouseName:
+          type: string
+          description: Warehouse name. [At the moment](https://dev.wildberries.ru/en/release-notes?id=570), there can only be `Склад WB`, for WB warehouses
+          example: Склад WB
+        warehouseRegion:
+          type: string
+          description: The federal district where the warehouse is located. If the warehouse is not in Russia, the country is returned. [At the moment](https://dev.wildberries.ru/en/release-notes?id=570), there can only be `""`, for WB warehouses
+          example: ""
+        isMp:
+          type: boolean
+          description: |
+            Warehouse type:
+              - `true` — seller warehouse
+              - `false` — WB warehouse
+          example: true
+        destinationCity:
+          type: string
+          description: Delivery location
+          example: Санкт-Петербург
+        destinationDistrict:
+          type: string
+          description: The federal district to which the order is delivered. If the delivery is not in Russia, the country is returned
+          example: Северо-Западный
+        sellerPrice:
+          type: number
+          format: float64
+          description: Seller price with seller discount (excluding WB Club discount and wholesale discount for B2B)
+          example: 4328
+        isB2b:
+          type: boolean
+          description: |
+            Sale type
+              - `true` — B2B
+              - `false` — B2C
+          example: false
+    OrderFeedRequest:
+      type: object
+      required:
+        - selectedPeriod
+      properties:
+        selectedPeriod:
+          type: object
+          required:
+            - start
+          description: Requested period. By date of the current order status
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Start date and time of the period. No later than `end`. No earlier than 31 days from today
+              example: '2026-07-23T00:00:00.00000+03:00'
+            end:
+              type: string
+              format: date-time
+              description: End date and time of the period. No earlier than 31 days from today
+              example: '2026-07-31T00:00:00.00000+03:00'
+        nmIds:
+          example:
+            - 162579635
+            - 166699779
+          type: array
+          maxItems: 1000
+          items:
+            type: integer
+            format: uint64
+          description: List of WB item numbers for filtering
+        subjectIds:
+          example:
+            - 232
+            - 1364
+          type: array
+          maxItems: 50
+          items:
+            type: integer
+            format: uint64
+          description: List of subcategory IDs for filtering
+        brandNames:
+          example:
+            - Abikas
+            - Tike
+          type: array
+          maxItems: 50
+          items:
+            type: string
+          description: List of brands for filtering
+        tagIds:
+          example:
+            - 3
+            - 5
+            - 6
+          type: array
+          maxItems: 50
+          items:
+            type: integer
+            format: uint64
+          description: List of label IDs for filtering
+        pagination:
+          type: object
+          description: Pagination
+          properties:
+            snapshotTime:
+              type: string
+              format: date-time
+              description: Data snapshot timestamp within which pagination is performed.<br>The report data is updated asynchronously. In order not to skip or duplicate orders, requests for the same data selection must have the same `snapshotTime`.<br>In the first data selection request (`"offset":0`) the parameter is not specified. In every subsequent request (`offset`>`0`), specify the value of the `snapshotTime` field from the response to the first request.<br>When changing the values of the period and filters, start selecting again with `"offset":0` and without `snapshotTime`
+              example: '2026-07-28T15:04:05Z'
+            offset:
+              type: integer
+              format: int32
+              description: How many results to skip. For example, with value `10`, the response will start with the 11 element
+              default: 0
+              example: 211
+            limit:
+              type: integer
+              format: int32
+              description: Number of orders in the response
+              maximum: 10000
+              default: 50
+              example: 4030
+    OrderFeedResponse:
+      type: object
+      required:
+        - snapshotTime
+        - orders
+        - currency
+      description: Response data
+      properties:
+        snapshotTime:
+          type: string
+          format: date-time
+          description: Cursor.<br>Date and time of the last update of the data
+          example: '2026-07-03T15:04:05Z'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        orders:
+          type: array
+          description: Orders
+          items:
+            $ref: '#/components/schemas/Order'
   responses:
     '401':
       description: Не авторизован
