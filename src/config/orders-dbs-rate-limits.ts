@@ -15,7 +15,7 @@
  * | T3   | Meta Read/Delete | 150/min | 400ms    | 20    | 2       |
  * | T4   | Meta Set         | 500/min | 120ms    | 20    | 1       |
  *
- * Total entries: 19
+ * Total entries: 30
  *
  * @see {@link ../../src/client/rate-limiter!RateLimiter RateLimiter Documentation}
  * @module config/orders-dbs-rate-limits
