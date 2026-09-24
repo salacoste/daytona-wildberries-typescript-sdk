@@ -18,6 +18,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ReportsModule } from '../../../src/modules/reports';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 import type { BaseClient } from '../../../src/client/base-client';
 
 const STATISTICS_URL = 'https://statistics-api.wildberries.ru';
@@ -347,6 +348,119 @@ describe('ReportsModule', () => {
           `${ANALYTICS_URL}/api/v1/analytics/goods-return`,
           expect.objectContaining({ rateLimitKey: 'reports.analyticsGoodsReturn' })
         );
+      });
+    });
+
+    // ==========================================================================
+    // Goods-return report v1 (analytics) — task-212, WB news 2026-09-24 (#16)
+    // ==========================================================================
+
+    describe('Goods-return report v1 (task-212)', () => {
+      beforeEach(() => {
+        resetDeprecationWarnings();
+      });
+
+      describe('getAnalyticsV1GoodsReturn (new endpoint)', () => {
+        it('calls the new item-returns path with all required params and rateLimitKey', async () => {
+          mockClient.get.mockResolvedValue({ count: 0, report: [] });
+          await module.getAnalyticsV1GoodsReturn({
+            dateFrom: '2026-09-01',
+            dateTo: '2026-09-24',
+            status: 'active',
+            limit: 1000,
+            offset: 0,
+          });
+
+          expect(mockClient.get).toHaveBeenCalledWith(
+            `${ANALYTICS_URL}/api/analytics/v1/item-returns`,
+            {
+              params: {
+                dateFrom: '2026-09-01',
+                dateTo: '2026-09-24',
+                status: 'active',
+                limit: 1000,
+                offset: 0,
+              },
+              rateLimitKey: 'reports.analyticsGoodsReturnV1',
+            }
+          );
+        });
+
+        it('returns the typed count + report response', async () => {
+          const response = {
+            count: 2,
+            report: [
+              {
+                sku: '1680063403480',
+                brand: 'dub',
+                completedDt: null,
+                dstOfficeAddress: 'Жуковский Улица Маяковского 19',
+                dstOfficeId: 310105,
+                expiredDt: null,
+                kiz: null,
+                nmId: 12862181,
+                orderDt: '2026-09-20',
+                orderId: 2034240826,
+                readyToReturnDt: null,
+                returnType: 'Возврат заблокированного товара',
+                shkId: 23411783472,
+                srid: 'mp.123130940efa4d67af77f901594c7d2c.r',
+                returnStatus: 'В пути в пвз',
+                stickerId: '33811984302',
+                subjectName: 'Багажные бирки',
+                techSize: '0',
+              },
+            ],
+          };
+          mockClient.get.mockResolvedValue(response);
+
+          const result = await module.getAnalyticsV1GoodsReturn({
+            dateFrom: '2026-09-01',
+            dateTo: '2026-09-24',
+            status: 'active',
+            limit: 1000,
+            offset: 0,
+          });
+
+          expect(result).toEqual(response);
+          expect(result.count).toBe(2);
+          expect(result.report[0].returnStatus).toBe('В пути в пвз');
+        });
+
+        it('does not emit a deprecation warning', async () => {
+          const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+          try {
+            mockClient.get.mockResolvedValue({ count: 0, report: [] });
+            await module.getAnalyticsV1GoodsReturn({
+              dateFrom: '2026-09-01',
+              dateTo: '2026-09-24',
+              status: 'archive',
+              limit: 100,
+              offset: 100,
+            });
+
+            expect(warnSpy).not.toHaveBeenCalled();
+          } finally {
+            warnSpy.mockRestore();
+          }
+        });
+      });
+
+      describe('getAnalyticsGoodsReturn (deprecated 2026-10-26)', () => {
+        it('warns once with the 2026-10-26 shutdown notice and points to getAnalyticsV1GoodsReturn', async () => {
+          const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+          try {
+            mockClient.get.mockResolvedValue({ report: [] });
+            await module.getAnalyticsGoodsReturn({ dateFrom: '2026-01-01', dateTo: '2026-01-31' });
+            await module.getAnalyticsGoodsReturn({ dateFrom: '2026-02-01', dateTo: '2026-02-28' });
+
+            expect(warnSpy).toHaveBeenCalledTimes(1);
+            expect(warnSpy.mock.calls[0][0]).toContain('2026-10-26');
+            expect(warnSpy.mock.calls[0][0]).toContain('getAnalyticsV1GoodsReturn');
+          } finally {
+            warnSpy.mockRestore();
+          }
+        });
       });
     });
 

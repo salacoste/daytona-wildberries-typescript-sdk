@@ -1,6 +1,6 @@
 # WB API Changes — September 2026 Sync
 
-> Covers SDK **v4.3.0** and **v4.4.0**: fifteen Wildberries API news items
+> Covers SDK **v4.3.0** – **v4.6.0**: sixteen Wildberries API news items
 > implemented between 2026-09-17 and 2026-09-24. This guide summarizes what
 > changed, which methods to migrate to, and the deadlines that affect you.
 
@@ -11,6 +11,7 @@
 | Date | What happens | Action |
 |------|--------------|--------|
 | **2026-10-01** | FBS shipping parameters (+ ETrN for transport-company deliveries) become **mandatory** — `updateSuppliesDeliver()` returns **409** without them | Set `updateShippingMethod()` for RF supplies and attach `updateSuppliesWaybill()` (ETrN) for transport-company deliveries; WB may still 404 on waybill until it is enabled on your account |
+| **2026-10-26** | WB **disables** `GET /api/v1/analytics/goods-return` | Migrate `reports.getAnalyticsGoodsReturn()` → `getAnalyticsV1GoodsReturn()` (deprecated since v4.6.0, removal in v5) |
 | **2026-11-16** | WB **disables** `GET /adv/v1/budget` | Migrate `getAdvBudget()` → `postV2Budget()` (deprecated since v4.3.0, removal in v5) |
 | *(date TBA)* | WB will disable `GET /api/v1/supplier/orders` and `/sales` | Migrate to the real-time Order Feed — `sdk.analytics.getOrderFeed()` |
 
@@ -94,6 +95,22 @@
   warehouses without warehouse/size IDs (30-minute refresh).
 - Measurement-penalties report items gained `dateStart`/`dateEnd` (coefficient
   validity period).
+
+### Goods-return report v1 (v4.6.0)
+
+- **`sdk.reports.getAnalyticsV1GoodsReturn(params)`** — new version of the
+  «Возврат и перемещение товаров» report. All five params are required
+  (`dateFrom`, `dateTo`, `status`, `limit`, `offset`); the `status` filter
+  (`active` / `archive`) replaces the old `isStatusActive` field, and the
+  response adds a `count` total for the whole period. Window is limited to
+  **31 days**; an empty result returns HTTP 204. Note the path segment order —
+  `/api/analytics/v1/item-returns` — the operation the WB news text called
+  "goods-return" is mounted at `item-returns` in the official spec.
+- Field renames vs the old report: `barcode`→`sku`, `status`→`returnStatus`,
+  `reason`→`returnReason` (only for unidentified-item returns); new fields
+  `kiz` (Chestny ZNAK marking), `subjectName`, `techSize`.
+- **`getAnalyticsGoodsReturn()` is deprecated** (WB disables the endpoint on
+  **2026-10-26**, removal in v5) — it now emits a one-time deprecation warning.
 
 ## Data-freshness notes
 

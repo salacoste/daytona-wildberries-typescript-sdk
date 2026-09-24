@@ -12,7 +12,7 @@ The **Reports** module provides access to supplier reports, warehouse stock repo
 | **SDK Namespace** | `sdk.reports.*` |
 | **Base URLs** | `https://statistics-api.wildberries.ru`, `https://seller-analytics-api.wildberries.ru`, `https://api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/12-reports/` |
-| **Methods** | 25 |
+| **Methods** | 26 |
 | **Authentication** | API Key (Header) |
 
 ---
@@ -100,13 +100,14 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 | `getBrandShareParentSubjects()` | GET | `/api/v1/analytics/brand-share/parent-subjects` | Get brand parent categories |
 | `getAnalyticsBrandShare()` | GET | `/api/v1/analytics/brand-share` | Get brand share in sales |
 
-### Blocked Products & Returns (3 methods)
+### Blocked Products & Returns (4 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
 | `getBannedProductsBlocked()` | GET | `/api/v1/analytics/banned-products/blocked` | Get blocked products list |
 | `getBannedProductsShadowed()` | GET | `/api/v1/analytics/banned-products/shadowed` | **Deprecated:** WB removal on 2026-07-30; use `analytics.getItemRatingV2({ onlyShadowedNms: true, ... })` |
-| `getAnalyticsGoodsReturn()` | GET | `/api/v1/analytics/goods-return` | Get goods returns report |
+| `getAnalyticsGoodsReturn()` | GET | `/api/v1/analytics/goods-return` | **Deprecated:** WB disables on 2026-10-26; use `getAnalyticsV1GoodsReturn()` |
+| `getAnalyticsV1GoodsReturn()` | GET | `/api/analytics/v1/item-returns` | Goods-return report v1 (task-212): `status=active\|archive` filter, `limit`/`offset` pagination, `count` total. Window ≤ 31 days |
 
 ---
 

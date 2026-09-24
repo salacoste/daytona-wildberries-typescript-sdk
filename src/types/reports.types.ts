@@ -793,6 +793,95 @@ export interface GoodsReturnResponse {
   report?: GoodsReturnItem[];
 }
 
+/**
+ * Return status filter for the goods-return report (v1, analytics)
+ * @see task-212 - WB news 2026-09-24 (#16)
+ */
+export type GoodsReturnStatus = 'active' | 'archive';
+
+/**
+ * Query parameters for getAnalyticsV1GoodsReturn
+ * @see task-212 - WB news 2026-09-24 (#16): new version of the goods-return report
+ */
+export interface GetAnalyticsV1GoodsReturnParams {
+  /** Index signature for Record<string, unknown> compatibility */
+  [key: string]: string | number | undefined;
+  /** Beginning date of the reporting period (YYYY-MM-DD); the dateFrom→dateTo window must be ≤ 31 days */
+  dateFrom: string;
+  /** End date of the reporting period (YYYY-MM-DD); must be greater than dateFrom */
+  dateTo: string;
+  /** Return status filter: `active` or `archive` (replaces the old `isStatusActive` field) */
+  status: GoodsReturnStatus;
+  /** Number of returns in the response (0–1000) */
+  limit: number;
+  /** How many results to skip (pagination offset) */
+  offset: number;
+}
+
+/**
+ * Item of the goods-return report (v1, analytics)
+ *
+ * Field renames vs the old report: `barcode`→`sku`, `status`→`returnStatus`,
+ * `reason`→`returnReason` (now returned only for unidentified-item returns);
+ * `isStatusActive` is replaced by the `status` query parameter.
+ *
+ * @see task-212 - WB news 2026-09-24 (#16)
+ */
+export interface GoodsReturnV1Item {
+  /** SKU */
+  sku: string;
+  /** Brand */
+  brand: string;
+  /** Date and time the seller received the return (null until received) */
+  completedDt: string | null;
+  /** Address of the pick-up point where the seller receives returns */
+  dstOfficeAddress: string;
+  /** ID of the pick-up point where the seller receives returns */
+  dstOfficeId: number;
+  /** Expiration date and time of the storage period (nullable) */
+  expiredDt: string | null;
+  /** Labeling code (Chestny ZNAK), nullable */
+  kiz: string | null;
+  /** WB item number (nmID) */
+  nmId: number;
+  /** Date of the return order (YYYY-MM-DD) */
+  orderDt: string;
+  /** Assembly order ID */
+  orderId: number;
+  /** Date and time when the return is ready for pickup (nullable) */
+  readyToReturnDt: string | null;
+  /**
+   * Reason for the return.
+   * Returned only when `returnType` is `"Возврат неопознанного товара"`.
+   */
+  returnReason?: string;
+  /** Return type (e.g. `"Возврат заблокированного товара"`) */
+  returnType: string;
+  /** Item unit number (ШК) */
+  shkId: number;
+  /** Return order ID (srid) */
+  srid: string;
+  /** Return status (e.g. `"В пути в пвз"`) */
+  returnStatus: string;
+  /** Sticker of the return order */
+  stickerId: string;
+  /** Subcategory (subject) */
+  subjectName: string;
+  /** Size */
+  techSize: string;
+}
+
+/**
+ * Response for getAnalyticsV1GoodsReturn
+ * @see task-212 - WB news 2026-09-24 (#16)
+ */
+export interface GoodsReturnV1Response {
+  /** Total number of returns for the requested period (across all pages) */
+  count: number;
+  /** Report items (one page, `limit` items max) */
+  report: GoodsReturnV1Item[];
+}
+
 // ============================================================================
 // Request parameter types for new endpoints - EPIC 44 preparation
 // ============================================================================

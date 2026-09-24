@@ -5,6 +5,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { warnOnce } from '../../utils/deprecation';
 import type {
   AcceptanceReportDownloadItem,
   AntifraudDetailsResponse,
@@ -18,9 +19,11 @@ import type {
   DeductionsResponse,
   ExciseReportRequest,
   ExciseReportResponse,
+  GetAnalyticsV1GoodsReturnParams,
   GetTasksResponse,
   GoodsLabelingResponse,
   GoodsReturnResponse,
+  GoodsReturnV1Response,
   MeasurementPenaltiesParams,
   MeasurementPenaltiesResponse,
   OrdersItem,
@@ -549,12 +552,19 @@ export class ReportsModule {
    *
    * Метод возвращает отчёт о [возвратах товаров продавцу](https://seller.wildberries.ru/analytics-reports/goods-return). <br><br> Можно получить отчёт максимум за 31 день. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
    *
+   * **WB отключает этот метод 26 октября 2026 года** ([релиз-нот](https://dev.wildberries.ru/en/release-notes?id=577)).
+   * Используйте {@link ReportsModule.getAnalyticsV1GoodsReturn} — новая версия
+   * умеет фильтровать по статусу (`active`/`archive`), поддерживает пагинацию
+   * и возвращает общий счётчик `count` за период.
+   *
    * @param [options] - Query parameters
    * @returns Успешно
    * @throws {AuthenticationError} When API key is invalid (401/403)
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400/422)
    * @throws {NetworkError} When network request fails or times out
+   * @deprecated WB отключает GET /api/v1/analytics/goods-return 26 октября 2026 года.
+   * Используйте {@link ReportsModule.getAnalyticsV1GoodsReturn}. Метод будет удалён в v5.
    * @example
    * const result = await sdk.reports.getAnalyticsGoodsReturn({});
    * console.log(result);
@@ -563,9 +573,82 @@ export class ReportsModule {
     dateFrom: string;
     dateTo: string;
   }): Promise<GoodsReturnResponse> {
+    warnOnce(
+      'reports.getAnalyticsGoodsReturn:deprecated',
+      'reports.getAnalyticsGoodsReturn (GET /api/v1/analytics/goods-return) is deprecated — ' +
+        'WB disables the endpoint on 2026-10-26. Use sdk.reports.getAnalyticsV1GoodsReturn() ' +
+        'instead (status filter + pagination). See docs/guides/migration-v4.md (Looking ahead: v5).'
+    );
     return this.client.get<GoodsReturnResponse>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-return',
       { params: options, rateLimitKey: 'reports.analyticsGoodsReturn' }
+    );
+  }
+
+  /**
+   * Получить отчёт (v1, аналитика) — Возврат и перемещение товаров
+   *
+   * Новая версия отчёта о [возвратах товаров продавцу](https://seller.wildberries.ru/return-transfer-reports).
+   * Заменяет {@link ReportsModule.getAnalyticsGoodsReturn}, который WB отключит
+   * 26 октября 2026 года.
+   *
+   * Отличия от старой версии:
+   * - параметр `status` — раздельное получение активных (`active`) и архивных
+   *   (`archive`) возвратов (заменяет поле `isStatusActive`);
+   * - пагинация `limit` + `offset` (старая версия возвращала всё сразу);
+   * - поле `count` — общее число возвратов за период (по всем страницам);
+   * - переименования полей: `barcode`→`sku`, `status`→`returnStatus`,
+   *   `reason`→`returnReason` (только для «Возврат неопознанного товара»);
+   *   добавлены `kiz` (Честный знак), `subjectName`, `techSize`.
+   *
+   * Окно отчёта: максимум 31 день (`dateTo` > `dateFrom`), иначе 400
+   * `DateRangeExceeded`. Пустой результат — HTTP 204.
+   *
+   * Доступен по токену любого типа, категория «Аналитика».
+   *
+   * Rate limit: WB не публикует отдельный лимит; в SDK зеркалирует старую
+   * версию отчёта — 1 req/min, 1 min interval, burst 10
+   *
+   * @param params - Query parameters (all required)
+   * @param params.dateFrom - Начало периода (YYYY-MM-DD)
+   * @param params.dateTo - Конец периода (YYYY-MM-DD, строго больше dateFrom)
+   * @param params.status - Статус возвратов: `active` или `archive`
+   * @param params.limit - Количество возвратов в ответе (0–1000)
+   * @param params.offset - Сколько записей пропустить (пагинация)
+   * @returns `{ count, report }` — счётчик за период + страница отчёта
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400) — в т.ч. окно > 31 дня
+   * @throws {NetworkError} When network request fails or times out
+   * @since task-212
+   * @see {@link https://dev.wildberries.ru/docs/openapi/reports#tag/returnsAndItemMovementReport/operation/getAnalyticsV1GoodsReturn}
+   * @example
+   * ```typescript
+   * // Active returns, first page
+   * const page1 = await sdk.reports.getAnalyticsV1GoodsReturn({
+   *   dateFrom: '2026-09-01',
+   *   dateTo: '2026-09-24',
+   *   status: 'active',
+   *   limit: 1000,
+   *   offset: 0
+   * });
+   * console.log(`Total: ${page1.count}`);
+   * // Archive returns, second page
+   * const page2 = await sdk.reports.getAnalyticsV1GoodsReturn({
+   *   dateFrom: '2026-09-01',
+   *   dateTo: '2026-09-24',
+   *   status: 'archive',
+   *   limit: 1000,
+   *   offset: 1000
+   * });
+   * ```
+   */
+  async getAnalyticsV1GoodsReturn(
+    params: GetAnalyticsV1GoodsReturnParams
+  ): Promise<GoodsReturnV1Response> {
+    return this.client.get<GoodsReturnV1Response>(
+      'https://seller-analytics-api.wildberries.ru/api/analytics/v1/item-returns',
+      { params, rateLimitKey: 'reports.analyticsGoodsReturnV1' }
     );
   }
 

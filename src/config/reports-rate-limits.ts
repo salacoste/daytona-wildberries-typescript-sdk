@@ -139,6 +139,14 @@ export const reportsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 10,
   },
+  // New goods-return report v1 (analytics) — task-212.
+  // WB does not publish a dedicated limit for this endpoint; mirrors the
+  // legacy goods-return report (same report family) until WB documents one.
+  'reports.analyticsGoodsReturnV1': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
+  },
   // EPIC 44: New endpoints
   'reports.measurementPenalties': {
     requestsPerMinute: 1,
