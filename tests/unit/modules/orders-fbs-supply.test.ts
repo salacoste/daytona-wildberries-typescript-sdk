@@ -645,5 +645,77 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
       expect(result.results[0].success).toBe(true);
       expect(result.results[1].error?.detail).toBe('SupplyAlreadyScanned');
     });
+
+    it('updateSuppliesWaybill should PATCH electronic waybill (ETrN) IDs for a list of supplies', async () => {
+      const mockResults = {
+        results: [
+          { supplyId: 'WB-GI-100', success: true },
+          {
+            supplyId: 'WB-GI-400',
+            success: false,
+            error: { code: 409, detail: 'UnsuitableShippingType' },
+          },
+        ],
+      };
+
+      mockClient.patch.mockResolvedValue(mockResults);
+
+      const request = {
+        data: [
+          { supplyId: 'WB-GI-100', waybillUuid: '550e8400-e29b-41d4-a716-445676543567' },
+          { supplyId: 'WB-GI-400', waybillUuid: '660e8400-e29b-41d4-a716-445676543567' },
+        ],
+      };
+
+      const result = await ordersFbs.updateSuppliesWaybill(request);
+
+      expect(mockClient.patch).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/waybill',
+        request,
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.patchSuppliesWaybill' })
+      );
+      expect(result).toEqual(mockResults);
+      expect(result.results).toHaveLength(2);
+      expect(result.results[0].success).toBe(true);
+      expect(result.results[1].error?.detail).toBe('UnsuitableShippingType');
+    });
+
+    it('updateSuppliesWaybill should surface waybill-specific 409 codes per supply', async () => {
+      const mockResults = {
+        results: [
+          {
+            supplyId: 'WB-GI-300',
+            success: false,
+            error: { code: 409, detail: 'SupplyShippingRequired' },
+          },
+          {
+            supplyId: 'WB-GI-500',
+            success: false,
+            error: { code: 409, detail: 'WaybillUUIDIsProcessing' },
+          },
+          {
+            supplyId: 'WB-GI-600',
+            success: false,
+            error: { code: 409, detail: 'SupplyAlreadyScanned' },
+          },
+          { supplyId: 'WB-GI-99999999', success: false, error: { code: 404, detail: 'NotFound' } },
+        ],
+      };
+
+      mockClient.patch.mockResolvedValue(mockResults);
+
+      const result = await ordersFbs.updateSuppliesWaybill({
+        data: [{ supplyId: 'WB-GI-300', waybillUuid: '550e8400-e29b-41d4-a716-445676543567' }],
+      });
+
+      const failed = result.results.filter((r) => !r.success);
+      expect(failed).toHaveLength(4);
+      expect(failed.map((r) => r.error?.detail)).toEqual([
+        'SupplyShippingRequired',
+        'WaybillUUIDIsProcessing',
+        'SupplyAlreadyScanned',
+        'NotFound',
+      ]);
+    });
   });
 });

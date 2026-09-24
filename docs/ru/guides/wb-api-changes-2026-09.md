@@ -10,7 +10,7 @@
 
 | Дата | Что происходит | Действие |
 |------|----------------|----------|
-| **2026-10-01** | Параметры отгрузки FBS (+ ЭТрН для доставки транспортной компанией) становятся **обязательными** — `updateSuppliesDeliver()` вернёт **409** без них | Вызывайте `updateShippingMethod()` для поставок РФ; метод waybill (ЭТрН) ожидает релиза WB |
+| **2026-10-01** | Параметры отгрузки FBS (+ ЭТрН для доставки транспортной компанией) становятся **обязательными** — `updateSuppliesDeliver()` вернёт **409** без них | Вызывайте `updateShippingMethod()` для поставок РФ и добавляйте `updateSuppliesWaybill()` (ЭТрН) для доставки ТК; до включения метода WB на вашем аккаунте waybill может отвечать 404 |
 | **2026-11-16** | WB **отключает** `GET /adv/v1/budget` | Мигрируйте `getAdvBudget()` → `postV2Budget()` (deprecated с v4.3.0, удаление в v5) |
 | *(дата будет объявлена)* | WB отключит `GET /api/v1/supplier/orders` и `/sales` | Мигрируйте на Ленту заказов — `sdk.analytics.getOrderFeed()` |
 
@@ -67,7 +67,8 @@
   `getSpotCountries()`, `updateSupplySpot()`, `getSuppliesSpotList()`,
   `getSupplySpotStickers()`; у поставок появилось поле `spotAvailable`.
 - **Параметры отгрузки (продавцы РФ)**: `getShippingPoints()` +
-  `updateShippingMethod()` — см. дедлайн 2026-10-01 выше.
+  `updateShippingMethod()` + `updateSuppliesWaybill()` (ЭТрН для доставки ТК; до
+  включения метода WB на аккаунте возможен 404) — см. дедлайн 2026-10-01 выше.
 - **Окно 3 месяца у `orders()`** (вступило в ночь на 2026-08-06): более старые
   сборочные задания — **только** через `getOrdersArchive({ year, month, next, limit })`.
 - **Типизированная 409 `CustomsDeclarationIsRequiredError`** — бросается

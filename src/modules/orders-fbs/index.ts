@@ -59,6 +59,7 @@ import type {
   ShippingPointsResponse,
   UpdateSuppliesShippingMethodRequest,
   UpdateSuppliesResponse,
+  UpdateSuppliesWaybillRequest,
 } from '../../types/orders-fbs.types';
 
 export class OrdersFbsModule {
@@ -1384,10 +1385,8 @@ export class OrdersFbsModule {
    * point — after that this method returns a 409 error.
    *
    * For `"shippingType":"transportCompany"` the electronic waybill ID (ETrN)
-   * must be attached to the supply as well. **Note**: the waybill method
-   * (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) exists in the WB spec but
-   * is still in development — it is intentionally NOT implemented in this SDK
-   * yet. The waybill ID added to a supply is reset when the shipping type
+   * must be attached to the supply as well — see `updateSuppliesWaybill()`.
+   * The waybill ID added to a supply is reset when the shipping type
    * changes from `transportCompany` to `selfShipping`; changing it back to
    * `transportCompany` requires re-adding the waybill ID.
    *
@@ -1434,6 +1433,70 @@ export class OrdersFbsModule {
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/shipping-method',
       data,
       { rateLimitKey: 'orders-fbs.patchSuppliesShippingMethod' }
+    );
+  }
+
+  /**
+   * Set the supply electronic waybill ID (ETrN)
+   *
+   * Attaches an electronic waybill (ЭТрН) ID to up to 100 supplies per
+   * request; the processing result is returned for each supply separately
+   * (`results[]` with `success` or `error`).
+   *
+   * Prerequisites:
+   * - the supply shipping method must be set to `"shippingType":"transportCompany"`
+   *   via `updateShippingMethod()` — otherwise the method returns a `409`
+   *   `SupplyShippingRequired` (no shipping parameters) or `UnsuitableShippingType`
+   *   (different shipping type);
+   * - the supply must not be scanned at the shipping point yet — the waybill ID
+   *   can be updated only until the supply and its boxes are scanned; after
+   *   scanning the method returns a `409` `SupplyAlreadyScanned`.
+   *
+   * While a previously submitted waybill UUID is still being processed, a new
+   * request for the same supply returns a `409` `WaybillUUIDIsProcessing`.
+   * The waybill ID is reset when the shipping type changes from
+   * `transportCompany` to `selfShipping`; changing it back requires re-adding
+   * the waybill ID.
+   *
+   * **Availability**: for sellers registered in the Russian Federation only.
+   * From **2026-10-01** an ETrN ID is mandatory for transport-company
+   * deliveries — `updateSuppliesDeliver()` returns a **409** without it.
+   *
+   * **Status**: WB published this method spec with availability announced
+   * separately (initially "in development") — until the backend is enabled on
+   * the seller account the method may respond with 404. Follow the WB news.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+   * response (including the 409s above) counts as 10 requests.
+   *
+   * @param data - Electronic waybill data per supply (1-100 items)
+   * @returns Promise resolving to the per-supply processing results
+   * @throws {WBAPIError} 409 — supply already scanned (`SupplyAlreadyScanned`), shipping parameters missing (`SupplyShippingRequired`), shipping type is not `transportCompany` (`UnsuitableShippingType`), or the previous waybill UUID is still processing (`WaybillUUIDIsProcessing`)
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesWaybill}
+   * @since task-208
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.updateSuppliesWaybill({
+   *   data: [
+   *     {
+   *       supplyId: 'WB-GI-100',
+   *       waybillUuid: '550e8400-e29b-41d4-a716-445676543567',
+   *     },
+   *   ],
+   * });
+   * const failed = result.results.filter(r => !r.success);
+   * ```
+   */
+  async updateSuppliesWaybill(data: UpdateSuppliesWaybillRequest): Promise<UpdateSuppliesResponse> {
+    return this.client.patch<UpdateSuppliesResponse>(
+      'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/waybill',
+      data,
+      { rateLimitKey: 'orders-fbs.patchSuppliesWaybill' }
     );
   }
 }
