@@ -1162,8 +1162,8 @@ export interface ShippingPointsResponse {
  * Type of shipping to the shipping point:
  * - `selfShipping` — shipping at the seller's expense
  * - `transportCompany` — delivery via a transport company. For this shipping type the
- *   electronic waybill ID (ETrN) must also be attached to the supply — WB is still
- *   developing the corresponding waybill method (`PATCH /api/marketplace/v3/fbs/supplies/waybill`)
+ *   electronic waybill ID (ETrN) must also be attached to the supply —
+ *   see `updateSuppliesWaybill()`
  * Maps to swagger schema: UpdateSupplyShippingMethod.shippingType
  */
 export type SupplyShippingType = 'selfShipping' | 'transportCompany';
@@ -1223,4 +1223,24 @@ export interface UpdatedSupplies {
 export interface UpdateSuppliesResponse {
   /** Processing result for each requested supply */
   results: UpdatedSupplies[];
+}
+
+/**
+ * Per-supply electronic waybill (ETrN) entry.
+ * Maps to swagger schema: UpdateSupplyWaybill
+ */
+export interface UpdateSupplyWaybill {
+  /** Supply ID */
+  supplyId: string;
+  /** Electronic waybill (ETrN) ID, UUID format */
+  waybillUuid: string;
+}
+
+/**
+ * Request body for PATCH /api/marketplace/v3/fbs/supplies/waybill
+ * Maps to swagger schema: UpdateSuppliesWaybill
+ */
+export interface UpdateSuppliesWaybillRequest {
+  /** Electronic waybill (ETrN) data (1-100 items); the result is returned per supply */
+  data: UpdateSupplyWaybill[];
 }

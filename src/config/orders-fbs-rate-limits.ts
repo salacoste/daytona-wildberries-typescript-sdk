@@ -300,4 +300,11 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+  /** PATCH /api/marketplace/v3/fbs/supplies/waybill — Set supply electronic waybill ID (ETrN) */
+  'orders-fbs.patchSuppliesWaybill': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
 };

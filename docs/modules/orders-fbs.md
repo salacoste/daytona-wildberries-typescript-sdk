@@ -9,7 +9,7 @@ The **Orders FBS (Fulfillment by Seller)** module provides comprehensive order m
 **Module Name**: `ordersFBS`
 **Source**: Generated from `wildberries_api_doc/03-orders-fbs.yaml`
 **Base URL**: `https://marketplace-api.wildberries.ru`
-**Total Methods**: 43 methods across 9 functional areas
+**Total Methods**: 44 methods across 9 functional areas
 
 ### FBS vs FBW
 
@@ -133,12 +133,13 @@ Ensure your API key has the following permissions enabled:
 | `getSuppliesSpotList(data)` | Get SPOT data + DOPP status for up to 100 supplies | 300 req/min |
 | `getSupplySpotStickers(supplyId)` | Get the supply SPOT QR code (PNG, base64) | 300 req/min |
 
-### Shipping (2 methods)
+### Shipping (3 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
 | `getShippingPoints(params)` | List supply shipping points by city + cargo type (RF sellers) | 300 req/min |
 | `updateShippingMethod(data)` | Set shipping type/date/point for up to 100 supplies (mandatory from 2026-10-01) | 300 req/min |
+| `updateSuppliesWaybill(data)` | Attach electronic waybill (ETrN) IDs for up to 100 transport-company supplies (mandatory from 2026-10-01; WB may still 404 until it enables the method) | 300 req/min |
 
 ---
 
@@ -306,14 +307,30 @@ point (sorting center, warehouse or pickup point) the supply is shipped to.
 The shipping method can be updated only **until the supply and its boxes are scanned**
 at the shipping point — after scanning, `updateShippingMethod()` itself returns 409.
 
-### Waybill (ETrN) — pending WB release
+### Waybill (ETrN)
 
 For `"shippingType": "transportCompany"` deliveries, an electronic waybill ID (ETrN)
-must be attached to the supply via `PATCH /api/marketplace/v3/fbs/supplies/waybill`.
-**WB is still developing this method — it is intentionally NOT implemented in the SDK
-yet** (tracked in backlog; will be added when WB releases it). Note that the waybill ID
-is **reset** when the shipping type changes from `transportCompany` to `selfShipping`;
-switching back to `transportCompany` requires re-adding it.
+must be attached to the supply via **`updateSuppliesWaybill({ data: [...] })`**
+(PATCH `/api/marketplace/v3/fbs/supplies/waybill`, up to **100 supplies per request**,
+result returned per supply).
+
+Prerequisites and lifecycle:
+
+- the shipping method must already be set to `transportCompany` via
+  `updateShippingMethod()` — otherwise you get `SupplyShippingRequired` (no shipping
+  parameters) or `UnsuitableShippingType`;
+- the waybill can be updated only **until the supply and its boxes are scanned** at
+  the shipping point — after that `SupplyAlreadyScanned` (409);
+- while a previously submitted waybill UUID is still processing, a repeat request for
+  the same supply returns `WaybillUUIDIsProcessing` (409);
+- the waybill ID is **reset** when the shipping type changes from `transportCompany`
+  to `selfShipping`; switching back to `transportCompany` requires re-adding it.
+
+> **⚠️ Rollout status.** WB published this method spec with availability announced
+> separately (initially "in development"). Until the backend is enabled on your seller
+> account the endpoint may respond 404 — follow the WB news. From **2026-10-01** an
+> ETrN ID is **mandatory** for transport-company deliveries: `updateSuppliesDeliver()`
+> returns 409 without it.
 
 ### Example
 
@@ -332,18 +349,23 @@ const result = await sdk.ordersFBS.updateShippingMethod({
       supplyId: 'WB-GI-123456789',
       shippingDt: '2026-10-05',
       shippingPointId: point.id,
-      shippingType: 'selfShipping',
+      shippingType: 'transportCompany',
     },
   ],
 });
 const failed = result.results.filter(r => !r.success);
 if (failed.length) console.warn('Shipping method not set:', failed);
 
-// 3. Deliver as usual (409 from 2026-10-01 without shipping parameters)
+// 2a. Transport-company deliveries: attach the electronic waybill (ETrN) ID
+await sdk.ordersFBS.updateSuppliesWaybill({
+  data: [{ supplyId: 'WB-GI-123456789', waybillUuid: '550e8400-e29b-41d4-a716-445676543567' }],
+});
+
+// 3. Deliver as usual (409 from 2026-10-01 without shipping parameters + ETrN)
 await sdk.ordersFBS.updateSuppliesDeliver('WB-GI-123456789');
 ```
 
-**Rate limit penalty**: both shipping methods are on the standard FBS tier
+**Rate limit penalty**: all three methods are on the standard FBS tier
 (300 req/min, 200 ms interval, burst 20), and **one request with a 4XX response counts
 as 10 requests** — the per-supply 409 `SupplyAlreadyScanned` results already burn that
 budget via the batch call.

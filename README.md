@@ -51,7 +51,7 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - 🆕 **CPC daily limits**, **supply discrepancies + drafts CRUD** (FBW), **SPOT** (EAEU imports), **shipping methods** (mandatory from **2026-10-01** — deliver 409 without them), **card `documents` object** (8 register types + validation verdicts), **seller-warehouses stocks report**, **CPC bid recommendations**, typed **409 `CustomsDeclarationIsRequiredError`**.
 - ℹ️ **3-month window** on `orders()` (effective 2026-08-06) — older FBS orders only via `getOrdersArchive()`.
 
-📖 Full guide: **[WB API Changes — September 2026](./docs/guides/wb-api-changes-2026-09.md)** · 304 public methods · 2,456 tests.
+📖 Full guide: **[WB API Changes — September 2026](./docs/guides/wb-api-changes-2026-09.md)** · 305 public methods · 2,458 tests.
 
 v4.2.0: `getSupplies()` alias + `reconcileAcceptanceDelta()` helper.
 
@@ -262,7 +262,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 | Metric | Value |
 |--------|-------|
 | **API Modules** | 14 (100%) |
-| **API Methods** | 304 implemented |
+| **API Methods** | 305 implemented |
 | **Test Suite** | 2,456 tests passing |
 | **Documentation** | 45+ guides, 22 examples |
 | **Bundle Size** | ~110KB gzipped (ESM full) |
@@ -374,7 +374,7 @@ This is an unofficial SDK. It is not affiliated with, officially maintained by, 
 - 🆕 **Дневные лимиты CPC**, **расхождения и черновики поставок** (FBW), **СПОТ** (импорт из ЕАЭС), **параметры отгрузки** (обязательны с **01.10.2026** — deliver вернёт 409), **объект `documents` в карточках** (8 типов + вердикты валидации), **отчёт остатков по складам продавца**, **CPC-рекомендации ставок**, типизированная **409 `CustomsDeclarationIsRequiredError`**.
 - ℹ️ **Окно 3 месяца** у `orders()` (вступило 06.08.2026) — более старые заказы FBS только через `getOrdersArchive()`.
 
-📖 Полный гид: **[Изменения WB API — сентябрь 2026](./docs/guides/wb-api-changes-2026-09.md)** · 304 публичных метода · 2 456 тестов.
+📖 Полный гид: **[Изменения WB API — сентябрь 2026](./docs/guides/wb-api-changes-2026-09.md)** · 305 публичных метода · 2 458 тестов.
 
 v4.2.0: алиас `getSupplies()` + хелпер `reconcileAcceptanceDelta()`.
 
@@ -585,7 +585,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 | Метрика | Значение |
 |---------|----------|
 | **API модули** | 14 (100%) |
-| **API методы** | 304 реализовано |
+| **API методы** | 305 реализовано |
 | **Тесты** | 2 456 тестов проходят |
 | **Документация** | 45+ руководств, 22 примера |
 | **Размер бандла** | ~110KB gzipped (ESM полностью) |

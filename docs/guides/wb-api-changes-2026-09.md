@@ -10,7 +10,7 @@
 
 | Date | What happens | Action |
 |------|--------------|--------|
-| **2026-10-01** | FBS shipping parameters (+ ETrN for transport-company deliveries) become **mandatory** — `updateSuppliesDeliver()` returns **409** without them | Set `updateShippingMethod()` for RF supplies; the waybill (ETrN) method is pending WB release |
+| **2026-10-01** | FBS shipping parameters (+ ETrN for transport-company deliveries) become **mandatory** — `updateSuppliesDeliver()` returns **409** without them | Set `updateShippingMethod()` for RF supplies and attach `updateSuppliesWaybill()` (ETrN) for transport-company deliveries; WB may still 404 on waybill until it is enabled on your account |
 | **2026-11-16** | WB **disables** `GET /adv/v1/budget` | Migrate `getAdvBudget()` → `postV2Budget()` (deprecated since v4.3.0, removal in v5) |
 | *(date TBA)* | WB will disable `GET /api/v1/supplier/orders` and `/sales` | Migrate to the real-time Order Feed — `sdk.analytics.getOrderFeed()` |
 
@@ -65,8 +65,9 @@
 - **SPOT** (EAEU road imports; Kyrgyzstan sellers today): `getSpotCountries()`,
   `updateSupplySpot()`, `getSuppliesSpotList()`, `getSupplySpotStickers()`; supplies
   expose `spotAvailable`.
-- **Shipping (RF sellers)**: `getShippingPoints()` + `updateShippingMethod()` —
-  see the 2026-10-01 deadline above.
+- **Shipping (RF sellers)**: `getShippingPoints()` + `updateShippingMethod()` +
+  `updateSuppliesWaybill()` (ETrN for transport-company deliveries; WB may still 404
+  until it enables the method on your account) — see the 2026-10-01 deadline above.
 - **3-month window on `orders()`** (effective 2026-08-06): older assembly orders are
   available **only** via `getOrdersArchive({ year, month, next, limit })`.
 - **Typed 409 `CustomsDeclarationIsRequiredError`** — thrown by `createOrdersSticker()`

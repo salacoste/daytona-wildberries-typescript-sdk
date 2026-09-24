@@ -158,7 +158,7 @@ The SDK exposes **14 public modules** on the `WildberriesSDK` instance (`sdk.*`)
 | 13 | `sdk.userManagement` | `UserManagementModule` | common-api | 4 | Invitations, user listing, access rights, deletion |
 | 14 | `sdk.returns` | `ReturnsModule` | aggregator (since v3.10.0) | 3 | Unified FBO+FBS+Finance return analytics, partial-failure tolerant |
 
-**Total: 304 public methods across the 14 modules.**
+**Total: 305 public methods across the 14 modules.**
 
 **Supplemental module (NOT a public `sdk.*` property):** `src/modules/1_0_0/` — 5 legacy methods (`getContentTags`, `getAdvAdvert`, `createAdvFullstat`, `getAdvFullstats`, `getCalendarPromotions`) retained for backward compatibility.
 
