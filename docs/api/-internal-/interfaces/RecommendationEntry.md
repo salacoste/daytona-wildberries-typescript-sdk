@@ -2,7 +2,7 @@
 
 # Interface: RecommendationEntry
 
-Defined in: [types/promotion.types.ts:2210](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2210)
+Defined in: [types/promotion.types.ts:2261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2261)
 
 One product's current recommendation assignments (`/list` response entry).
 
@@ -10,5 +10,5 @@ One product's current recommendation assignments (`/list` response entry).
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmID` | `number` | WB item number (product). | [types/promotion.types.ts:2212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2212) |
-| <a id="tagsids"></a> `tagsIDs` | `number`[] | WB item numbers currently set as recommendations for this product. | [types/promotion.types.ts:2214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2214) |
+| <a id="nmid"></a> `nmID` | `number` | WB item number (product). | [types/promotion.types.ts:2263](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2263) |
+| <a id="tagsids"></a> `tagsIDs` | `number`[] | WB item numbers currently set as recommendations for this product. | [types/promotion.types.ts:2265](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2265) |

@@ -92,6 +92,9 @@
 | [WbWarehousesStockRequest](interfaces/WbWarehousesStockRequest.md) | Request for WB warehouses current inventory |
 | [WbWarehouseStockItem](interfaces/WbWarehouseStockItem.md) | Single inventory item — 1 size in 1 WB warehouse |
 | [WbWarehousesStockResponse](interfaces/WbWarehousesStockResponse.md) | Response from POST /api/analytics/v1/stocks-report/wb-warehouses |
+| [SellerWarehousesStockRequest](interfaces/SellerWarehousesStockRequest.md) | Request for seller warehouses current inventory. No warehouse or size IDs are required — the report covers all seller warehouses. |
+| [SellerWarehouseStockItem](interfaces/SellerWarehouseStockItem.md) | Single inventory item — 1 size in 1 seller warehouse. Unlike the WB-warehouses report, no in-transit quantities are returned. |
+| [SellerWarehousesStockResponse](interfaces/SellerWarehousesStockResponse.md) | Response from POST /api/analytics/v1/stocks-report/seller-warehouses |
 | [PeriodItemRating](interfaces/PeriodItemRating.md) | Current period for item rating. Dates use `YYYY-MM-DD` format. `start` must not be later than `end`, and neither may be earlier than 364 days before yesterday. |
 | [PastPeriodItemRating](interfaces/PastPeriodItemRating.md) | Previous period for comparison. Day count must be less than or equal to `currentPeriod`. |
 | [OrderByItemRating](interfaces/OrderByItemRating.md) | Sorting parameters for item rating. |
@@ -106,6 +109,17 @@
 | [DistributionTableItem](interfaces/DistributionTableItem.md) | Single item row in the item-rating response: base fields merged with indicator breakdown. |
 | [ItemRatingResponse](interfaces/ItemRatingResponse.md) | Response body for POST /api/analytics/v1/item-rating (the `data` payload). |
 | [ItemRatingResponseWrapper](interfaces/ItemRatingResponseWrapper.md) | Top-level response wrapper for POST /api/analytics/v1/item-rating. |
+| [ItemRatingV2Request](interfaces/ItemRatingV2Request.md) | Request parameters for the v2 item-rating report. |
+| [DistributionFeedbackRatingV2](interfaces/DistributionFeedbackRatingV2.md) | Feedback rating returned for a v2 item row. |
+| [DistributionTableItemV2](interfaces/DistributionTableItemV2.md) | A product row returned by the v2 item-rating report. |
+| [ItemRatingV2Response](interfaces/ItemRatingV2Response.md) | Response payload for POST /api/analytics/v2/item-rating. |
+| [ItemRatingV2ResponseWrapper](interfaces/ItemRatingV2ResponseWrapper.md) | Top-level response wrapper for POST /api/analytics/v2/item-rating. |
+| [OrderFeedSelectedPeriod](interfaces/OrderFeedSelectedPeriod.md) | Requested period for the Order Feed report — by date of the current order status. |
+| [OrderFeedPagination](interfaces/OrderFeedPagination.md) | Pagination within a single Order Feed data snapshot. |
+| [OrderFeedRequest](interfaces/OrderFeedRequest.md) | Request body for POST /api/analytics/v1/order-feed. |
+| [OrderFeedOrder](interfaces/OrderFeedOrder.md) | A single order row in the Order Feed report (1 order = 1 assembly order = 1 item). |
+| [OrderFeedResponse](interfaces/OrderFeedResponse.md) | Response payload (the `data` object) for POST /api/analytics/v1/order-feed. |
+| [OrderFeedResponseWrapper](interfaces/OrderFeedResponseWrapper.md) | Top-level response wrapper for POST /api/analytics/v1/order-feed. |
 | [PinnedReviewError](interfaces/PinnedReviewError.md) | Error details for pinned reviews operations |
 | [PinReviewItem](interfaces/PinReviewItem.md) | Request item for pinning a review |
 | [PinReviewItemResultData](interfaces/PinReviewItemResultData.md) | Result item from pin operation |
@@ -201,6 +215,11 @@
 | [SetImeiBulkRequest](interfaces/SetImeiBulkRequest.md) | Request body for [InStorePickupModule.setImeiBulk](../classes/InStorePickupModule.md#setimeibulk). |
 | [SetGtinBulkRequest](interfaces/SetGtinBulkRequest.md) | Request body for [InStorePickupModule.setGtinBulk](../classes/InStorePickupModule.md#setgtinbulk). |
 | [SetMetaBulkResponse](interfaces/SetMetaBulkResponse.md) | Response from batch meta-set operations (sgtin/uin/imei/gtin). |
+| [OrdersFinalPriceRequest](interfaces/OrdersFinalPriceRequest.md) | Request body for [InStorePickupModule.getOrdersFinalPrice](../classes/InStorePickupModule.md#getordersfinalprice). |
+| [FinalPriceData](interfaces/FinalPriceData.md) | Seller prices and buyer-payable sums for one assembly order. |
+| [FinalPriceError](interfaces/FinalPriceError.md) | Per-order error from [InStorePickupModule.getOrdersFinalPrice](../classes/InStorePickupModule.md#getordersfinalprice). Known values: `404`/`NotFound`, `400`/`StatusMismatch`, `422`/`PriceNotCalculated` (orders created before 23.07.2026). |
+| [OrderFinalPriceResult](interfaces/OrderFinalPriceResult.md) | Per-order result in the final-price response. |
+| [OrdersFinalPriceResponse](interfaces/OrdersFinalPriceResponse.md) | Response from [InStorePickupModule.getOrdersFinalPrice](../classes/InStorePickupModule.md#getordersfinalprice). |
 | [DBSAddress](interfaces/DBSAddress.md) | Address information for DBS delivery Contains full address and GPS coordinates for delivery routing |
 | [DBSOrderNew](interfaces/DBSOrderNew.md) | New DBS order (assembly task) awaiting processing Contains delivery window, customer address, and required metadata |
 | [DBSOrder](interfaces/DBSOrder.md) | Completed DBS order information Returned by getOrders for completed/cancelled orders |
@@ -238,6 +257,11 @@
 | [StickerRequest](interfaces/StickerRequest.md) | Request body for retrieving DBS order stickers (max 100 order IDs). |
 | [StickerItem](interfaces/StickerItem.md) | Individual DBS sticker data item. |
 | [StickerResponse](interfaces/StickerResponse.md) | Response containing DBS order stickers. |
+| [OrdersFinalPriceRequest](interfaces/OrdersFinalPriceRequest-1.md) | Request body for [OrdersDbsModule.getOrdersFinalPrice](../classes/OrdersDbsModule.md#getordersfinalprice). |
+| [FinalPriceData](interfaces/FinalPriceData-1.md) | Seller prices and buyer-payable sums for one assembly order. |
+| [FinalPriceError](interfaces/FinalPriceError-1.md) | Per-order error from [OrdersDbsModule.getOrdersFinalPrice](../classes/OrdersDbsModule.md#getordersfinalprice). Known values: `404`/`NotFound`, `400`/`StatusMismatch`, `422`/`PriceNotCalculated` (orders created before 23.07.2026). |
+| [OrderFinalPriceResult](interfaces/OrderFinalPriceResult-1.md) | Per-order result in the final-price response. |
+| [OrdersFinalPriceResponse](interfaces/OrdersFinalPriceResponse-1.md) | Response from [OrdersDbsModule.getOrdersFinalPrice](../classes/OrdersDbsModule.md#getordersfinalprice). |
 | [GetOrdersParams](interfaces/GetOrdersParams-1.md) | Parameters for paginated order listing |
 | [StickerRequest](interfaces/StickerRequest-1.md) | Request body for retrieving order stickers |
 | [StickerParams](interfaces/StickerParams-1.md) | Query parameters for sticker format and dimensions |
@@ -295,6 +319,23 @@
 | [ArchiveOrder](interfaces/ArchiveOrder.md) | A single archived FBS assembly order Maps to swagger schema: v3.ArchiveOrder |
 | [ArchiveOrdersResponse](interfaces/ArchiveOrdersResponse.md) | Response for GET /api/marketplace/v3/fbs/orders/archive Maps to swagger schema: v3.ArchiveOrdersResponse |
 | [ArchiveOrdersParams](interfaces/ArchiveOrdersParams.md) | Query parameters for GET /api/marketplace/v3/fbs/orders/archive Maps to swagger schema: v3.ArchiveOrdersParams |
+| [SpotCountry](interfaces/SpotCountry.md) | OKSM (All-Russian Classifier of World Countries) country entry |
+| [SpotCountriesResponse](interfaces/SpotCountriesResponse.md) | Response for GET /api/marketplace/v3/fbs/dictionaries/countries/oksm Maps to swagger schema: CountriesOKSMList |
+| [SupplySpotRequest](interfaces/SupplySpotRequest.md) | Request body for adding SPOT data to a supply. Maps to the inline request body of PUT /api/marketplace/v3/fbs/supplies/{supplyId}/spot |
+| [SuppliesSpotListRequest](interfaces/SuppliesSpotListRequest.md) | Request body for getting SPOT data for a list of supplies. Maps to the inline request body of POST /api/marketplace/v3/fbs/supplies/spot/list |
+| [SupplySpotError](interfaces/SupplySpotError.md) | Per-supply error entry returned when SPOT data cannot be provided. Maps to swagger schema: ApiErrorV3 |
+| [SupplySpotData](interfaces/SupplySpotData.md) | SPOT data for a single supply — echo of the data submitted via `updateSupplySpot()` plus the DOPP formation status. Maps to swagger schema: SupplySpotData |
+| [SupplySpotItem](interfaces/SupplySpotItem.md) | Per-supply entry in the SPOT data list response. Maps to swagger schema: SupplySpotDataResponse.supplies items |
+| [SuppliesSpotListResponse](interfaces/SuppliesSpotListResponse.md) | Response for POST /api/marketplace/v3/fbs/supplies/spot/list Maps to swagger schema: SupplySpotDataResponse |
+| [SupplySpotStickerResponse](interfaces/SupplySpotStickerResponse.md) | Response for GET /api/marketplace/v3/fbs/supplies/{supplyId}/stickers/spot Maps to swagger schema: SupplySpotQRCode |
+| [ShippingPoint](interfaces/ShippingPoint.md) | Supply shipping point — the point the supply is shipped to. Maps to swagger schema: ShippingPoint |
+| [ShippingPointsParams](interfaces/ShippingPointsParams.md) | Query parameters for GET /api/marketplace/v3/fbs/shipping-points Maps to the inline parameters of the shipping-points operation |
+| [ShippingPointsResponse](interfaces/ShippingPointsResponse.md) | Response for GET /api/marketplace/v3/fbs/shipping-points Maps to swagger schema: ShippingPointsResponse |
+| [UpdateSupplyShippingMethod](interfaces/UpdateSupplyShippingMethod.md) | Per-supply shipping parameters entry. Maps to swagger schema: UpdateSupplyShippingMethod |
+| [UpdateSuppliesShippingMethodRequest](interfaces/UpdateSuppliesShippingMethodRequest.md) | Request body for PATCH /api/marketplace/v3/fbs/supplies/shipping-method Maps to swagger schema: UpdateSuppliesShippingMethodRequest |
+| [SupplyShippingMethodError](interfaces/SupplyShippingMethodError.md) | Per-supply error entry in the shipping-method response. Maps to swagger schema: ReplyBatchError |
+| [UpdatedSupplies](interfaces/UpdatedSupplies.md) | Per-supply processing result. Maps to swagger schema: UpdatedSupplies |
+| [UpdateSuppliesResponse](interfaces/UpdateSuppliesResponse.md) | Response for PATCH /api/marketplace/v3/fbs/supplies/shipping-method Maps to swagger schema: UpdateSuppliesResponse |
 | [ModelsTransitTariff](interfaces/ModelsTransitTariff.md) | Auto-generated TypeScript types for orders-fbw module Generated from: wildberries_api_doc/07-orders-fbw.yaml |
 | [ModelsVolumeTariff](interfaces/ModelsVolumeTariff.md) | - |
 | [ModelsBox](interfaces/ModelsBox.md) | - |
@@ -303,6 +344,9 @@
 | [ModelsGoodInSupply](interfaces/ModelsGoodInSupply.md) | - |
 | [ModelsDateFilterRequest](interfaces/ModelsDateFilterRequest.md) | - |
 | [ModelsSupplyDetails](interfaces/ModelsSupplyDetails.md) | - |
+| [ModelsItemDiscrepancyResponse](interfaces/ModelsItemDiscrepancyResponse.md) | - |
+| [ModelsDiscrepancyResponseItem](interfaces/ModelsDiscrepancyResponseItem.md) | - |
+| [ModelsItemScans](interfaces/ModelsItemScans.md) | - |
 | [ModelsSupply](interfaces/ModelsSupply.md) | - |
 | [ModelsAcceptanceCoefficient](interfaces/ModelsAcceptanceCoefficient.md) | - |
 | [ModelsWarehousesResultItems](interfaces/ModelsWarehousesResultItems.md) | - |
@@ -310,6 +354,18 @@
 | [ModelsOptionsResultModel](interfaces/ModelsOptionsResultModel.md) | - |
 | [DBWClientInfo](interfaces/DBWClientInfo.md) | Buyer information for a DBW order |
 | [GetDBWClientInfoResponse](interfaces/GetDBWClientInfoResponse.md) | Response from POST /api/marketplace/v3/dbw/orders/client |
+| [ModelsItem](interfaces/ModelsItem.md) | Товар в запросе добавления в черновик поставки (spec: `models.Item`). |
+| [ModelsDraftCreateResponse](interfaces/ModelsDraftCreateResponse.md) | Ответ на создание черновика поставки. |
+| [ModelsDraftItem](interfaces/ModelsDraftItem.md) | Черновик поставки — элемент списка `listDrafts()`. |
+| [ModelsListDraftsResponse](interfaces/ModelsListDraftsResponse.md) | Ответ на получение списка черновиков поставок. |
+| [ModelsDraftItemItem](interfaces/ModelsDraftItemItem.md) | Товар в черновике поставки — элемент списка `getDraftItems()`. |
+| [ModelsListDraftItemsResponse](interfaces/ModelsListDraftItemsResponse.md) | Ответ на получение списка товаров в черновике поставки. |
+| [ModelsDraftAdditemsRequest](interfaces/ModelsDraftAdditemsRequest.md) | Тело запроса `addDraftItems()` — добавление товаров в черновик поставки. Максимум 1000 элементов в массиве `items`. |
+| [ModelsDraftAddItemsResultError](interfaces/ModelsDraftAddItemsResultError.md) | Ошибка валидации SKU при добавлении товаров в черновик. |
+| [ModelsDraftAddItemsResultItem](interfaces/ModelsDraftAddItemsResultItem.md) | Элемент результата добавления товаров — невалидный SKU с описанием ошибки. |
+| [ModelsDraftAddItemsErrorResponse](interfaces/ModelsDraftAddItemsErrorResponse.md) | Ответ на добавление товаров в черновик поставки. |
+| [ModelsDraftDeleteitemsRequest](interfaces/ModelsDraftDeleteitemsRequest.md) | Тело запроса `deleteDraftItems()` — удаление товаров из черновика поставки. |
+| [ModelsDraftDeleteItemsErrorResponse](interfaces/ModelsDraftDeleteItemsErrorResponse.md) | Ответ на удаление товаров из черновика поставки. |
 | [StoreContactRequestBody](interfaces/StoreContactRequestBody.md) | Контакты склада продавца |
 | [ResponseCardCreate](interfaces/ResponseCardCreate.md) | - |
 | [RequestMoveNmsImtConn](interfaces/RequestMoveNmsImtConn.md) | - |
@@ -448,6 +504,7 @@
 | [ReachBid](interfaces/ReachBid.md) | Bid value in kopecks |
 | [NormQueryBidRecommendation](interfaces/NormQueryBidRecommendation.md) | Recommended bids for a search cluster (norm query) |
 | [BaseBidRecommendation](interfaces/BaseBidRecommendation.md) | Recommended base bids for the product card |
+| [CpcBidRecommendationLevel](interfaces/CpcBidRecommendationLevel.md) | Recommended CPC bids per listing position range. |
 | [BidsRecommendationsResponse](interfaces/BidsRecommendationsResponse.md) | Response from GET /api/advert/v0/bids/recommendations |
 | [RecommendationError](interfaces/RecommendationError.md) | Per-item error returned in the `errors` array on partial success (HTTP 200). |
 | [RecommendationsSetItem](interfaces/RecommendationsSetItem.md) | A recommended-items assignment for one product card (`/set` request item). |
@@ -455,6 +512,14 @@
 | [SetRecommendationsResponse](interfaces/SetRecommendationsResponse.md) | Response for POST /api/content/v1/recommendations/set. `data` is `null`. On PARTIAL success WB still returns HTTP 200 — inspect `errors`. |
 | [ListRecommendationsRequest](interfaces/ListRecommendationsRequest.md) | Request filter for POST /api/content/v1/recommendations/list. INFERRED shape — verify the exact filter fields against the live spec (AC#9). |
 | [ListRecommendationsResponse](interfaces/ListRecommendationsResponse.md) | Response for POST /api/content/v1/recommendations/list — entries in `data`. |
+| [V2BudgetRequest](interfaces/V2BudgetRequest.md) | Запрос метода POST /api/advert/v2/budget — бюджеты нескольких кампаний. |
+| [V2BudgetAdvert](interfaces/V2BudgetAdvert.md) | Элемент ответа метода POST /api/advert/v2/budget — бюджет одной кампании. |
+| [V2BudgetResponse](interfaces/V2BudgetResponse.md) | Ответ метода POST /api/advert/v2/budget — бюджеты кампаний. |
+| [V0DailyLimitAdvert](interfaces/V0DailyLimitAdvert.md) | Элемент ответа метода GET /api/advert/v0/daily-limits — настройки дневного лимита одной CPC-кампании. |
+| [V0GetDailyLimitsResponse](interfaces/V0GetDailyLimitsResponse.md) | Ответ метода GET /api/advert/v0/daily-limits — текущие настройки дневных лимитов CPC-кампаний. |
+| [V0PutDailyLimitsRequest](interfaces/V0PutDailyLimitsRequest.md) | Запрос метода PUT /api/advert/v0/daily-limits — включение, обновление или отключение дневного лимита бюджета CPC-кампаний. |
+| [V0PutDailyLimitsAdvertResult](interfaces/V0PutDailyLimitsAdvertResult.md) | Элемент ответа метода PUT /api/advert/v0/daily-limits — результат установки дневного лимита одной кампании. |
+| [V0PutDailyLimitsResponse](interfaces/V0PutDailyLimitsResponse.md) | Ответ метода PUT /api/advert/v0/daily-limits — результаты установки дневных лимитов кампаний. |
 | [StocksItem](interfaces/StocksItem.md) | - |
 | [OrdersItem](interfaces/OrdersItem.md) | - |
 | [SalesItem](interfaces/SalesItem.md) | - |
@@ -550,6 +615,10 @@
 | [OrderWbStatus](type-aliases/OrderWbStatus.md) | Wildberries system order status |
 | [CargoType](type-aliases/CargoType.md) | Cargo type: 1 = small, 2 = oversized, 3 = large |
 | [StickerType](type-aliases/StickerType-1.md) | Sticker output format |
+| [SpotStatus](type-aliases/SpotStatus.md) | SPOT status — stage of the DOPP (Declaration of Upcoming Supply) formation. Maps to swagger schema: SupplySpotData.status |
+| [ShippingPointCargoType](type-aliases/ShippingPointCargoType.md) | Type of items a shipping point can accept: - `1` — small-sized items - `2` — over dimensional cargo (ODC) - `3` — dimensional cargo+ (CD+) Maps to swagger schema: ShippingPoint.cargoTypes items |
+| [ShippingPointOfficeType](type-aliases/ShippingPointOfficeType.md) | Shipping point type: - `sc` — sorting center - `sw` — warehouse - `pp` — pickup point Maps to swagger schema: ShippingPoint.officeType |
+| [SupplyShippingType](type-aliases/SupplyShippingType.md) | Type of shipping to the shipping point: - `selfShipping` — shipping at the seller's expense - `transportCompany` — delivery via a transport company. For this shipping type the electronic waybill ID (ETrN) must also be attached to the supply — WB is still developing the corresponding waybill method (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) Maps to swagger schema: UpdateSupplyShippingMethod.shippingType |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |
 | [SizeGoodsBody](type-aliases/SizeGoodsBody.md) | Размеры и цены для них. Максимум 1 000 размеров. |

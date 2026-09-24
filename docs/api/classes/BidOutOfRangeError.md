@@ -2,7 +2,7 @@
 
 # Class: BidOutOfRangeError
 
-Defined in: [errors/bid-out-of-range-error.ts:137](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L137)
+Defined in: [errors/bid-out-of-range-error.ts:137](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L137)
 
 Error thrown when WB rejects a bid for being out of the accepted range.
 
@@ -73,7 +73,7 @@ new BidOutOfRangeError(
    requestId?: string): BidOutOfRangeError;
 ```
 
-Defined in: [errors/bid-out-of-range-error.ts:155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L155)
+Defined in: [errors/bid-out-of-range-error.ts:155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L155)
 
 Creates a BidOutOfRangeError.
 
@@ -102,15 +102,15 @@ Creates a BidOutOfRangeError.
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`ValidationError`](ValidationError.md).[`statusCode`](ValidationError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`ValidationError`](ValidationError.md).[`response`](ValidationError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`ValidationError`](ValidationError.md).[`requestId`](ValidationError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L35) |
-| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`ValidationError`](ValidationError.md).[`origin`](ValidationError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L43) |
-| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`ValidationError`](ValidationError.md).[`timestamp`](ValidationError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/base-error.ts#L51) |
-| <a id="received"></a> `received?` | `readonly` | `number` | The bid value WB rejected (the "wrong bid value"). | - | [errors/bid-out-of-range-error.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L139) |
-| <a id="min"></a> `min?` | `readonly` | `number` | The minimum accepted bid (the floor). | - | [errors/bid-out-of-range-error.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L142) |
-| <a id="max"></a> `max?` | `readonly` | `number` | The maximum accepted bid (the ceiling), only when WB reports one. | - | [errors/bid-out-of-range-error.ts:145](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L145) |
-| <a id="fielderrors"></a> `fieldErrors?` | `readonly` | `Record`\<`string`, `string`\> | Map of field names to their validation error messages | [`ValidationError`](ValidationError.md).[`fieldErrors`](ValidationError.md#fielderrors) | [errors/validation-error.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/validation-error.ts#L39) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`ValidationError`](ValidationError.md).[`statusCode`](ValidationError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`ValidationError`](ValidationError.md).[`response`](ValidationError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`ValidationError`](ValidationError.md).[`requestId`](ValidationError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/base-error.ts#L35) |
+| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`ValidationError`](ValidationError.md).[`origin`](ValidationError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/base-error.ts#L43) |
+| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`ValidationError`](ValidationError.md).[`timestamp`](ValidationError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/base-error.ts#L51) |
+| <a id="received"></a> `received?` | `readonly` | `number` | The bid value WB rejected (the "wrong bid value"). | - | [errors/bid-out-of-range-error.ts:139](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L139) |
+| <a id="min"></a> `min?` | `readonly` | `number` | The minimum accepted bid (the floor). | - | [errors/bid-out-of-range-error.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L142) |
+| <a id="max"></a> `max?` | `readonly` | `number` | The maximum accepted bid (the ceiling), only when WB reports one. | - | [errors/bid-out-of-range-error.ts:145](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L145) |
+| <a id="fielderrors"></a> `fieldErrors?` | `readonly` | `Record`\<`string`, `string`\> | Map of field names to their validation error messages | [`ValidationError`](ValidationError.md).[`fieldErrors`](ValidationError.md#fielderrors) | [errors/validation-error.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/validation-error.ts#L39) |
 
 ## Methods
 
@@ -120,7 +120,7 @@ Creates a BidOutOfRangeError.
 getUserMessage(): string;
 ```
 
-Defined in: [errors/bid-out-of-range-error.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L180)
+Defined in: [errors/bid-out-of-range-error.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L180)
 
 Returns a user-friendly error message with the accepted bid range.
 
@@ -152,7 +152,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/bid-out-of-range-error.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L215)
+Defined in: [errors/bid-out-of-range-error.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L215)
 
 Custom JSON serialization to preserve bid-range fields.
 
@@ -176,15 +176,15 @@ Object representation including received/min/max
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/bid-out-of-range-error.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L216) |
-| `message` | `string` | [errors/bid-out-of-range-error.ts:217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L217) |
-| `statusCode` | `number` | [errors/bid-out-of-range-error.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L218) |
-| `fieldErrors?` | `Record`\<`string`, `string`\> | [errors/bid-out-of-range-error.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L219) |
-| `received?` | `number` | [errors/bid-out-of-range-error.ts:220](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L220) |
-| `min?` | `number` | [errors/bid-out-of-range-error.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L221) |
-| `max?` | `number` | [errors/bid-out-of-range-error.ts:222](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L222) |
-| `response?` | `unknown` | [errors/bid-out-of-range-error.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L223) |
-| `requestId?` | `string` | [errors/bid-out-of-range-error.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/errors/bid-out-of-range-error.ts#L224) |
+| `name` | `string` | [errors/bid-out-of-range-error.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L216) |
+| `message` | `string` | [errors/bid-out-of-range-error.ts:217](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L217) |
+| `statusCode` | `number` | [errors/bid-out-of-range-error.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L218) |
+| `fieldErrors?` | `Record`\<`string`, `string`\> | [errors/bid-out-of-range-error.ts:219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L219) |
+| `received?` | `number` | [errors/bid-out-of-range-error.ts:220](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L220) |
+| `min?` | `number` | [errors/bid-out-of-range-error.ts:221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L221) |
+| `max?` | `number` | [errors/bid-out-of-range-error.ts:222](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L222) |
+| `response?` | `unknown` | [errors/bid-out-of-range-error.ts:223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L223) |
+| `requestId?` | `string` | [errors/bid-out-of-range-error.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/errors/bid-out-of-range-error.ts#L224) |
 
 #### Overrides
 

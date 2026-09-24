@@ -2,7 +2,7 @@
 
 # Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:34](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L34)
+Defined in: [modules/orders-fbw/index.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L42)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:34](https://github.com/salacoste/dayton
 new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L35)
+Defined in: [modules/orders-fbw/index.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L43)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ createAcceptanceOption(data: ModelsGood[], options?: {
 }): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:53](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L53)
+Defined in: [modules/orders-fbw/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L61)
 
 Опции приёмки
 
@@ -85,7 +85,7 @@ console.log(result);
 warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L78)
+Defined in: [modules/orders-fbw/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L86)
 
 Список складов
 
@@ -128,7 +128,7 @@ console.log(result);
 transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L99)
+Defined in: [modules/orders-fbw/index.ts:107](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L107)
 
 Транзитные направления
 
@@ -174,7 +174,7 @@ listSupplies(data: ModelsSuppliesFiltersRequest, options?: {
 }): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:122](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L122)
+Defined in: [modules/orders-fbw/index.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L130)
 
 Список поставок
 
@@ -228,7 +228,7 @@ getSupply(ID: number, options?: {
 }): Promise<ModelsSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:149](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L149)
+Defined in: [modules/orders-fbw/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L157)
 
 Детали поставки
 
@@ -283,7 +283,7 @@ getSuppliesGood(ID: number, options?: {
 }): Promise<ModelsGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:172](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L172)
+Defined in: [modules/orders-fbw/index.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L180)
 
 Товары поставки
 
@@ -336,7 +336,7 @@ console.log(result);
 getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L197)
+Defined in: [modules/orders-fbw/index.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L205)
 
 Упаковка поставки
 
@@ -379,13 +379,523 @@ console.log(result);
 
 ***
 
+### getSupplyDiscrepancies()
+
+```ts
+getSupplyDiscrepancies(supplyId: number): Promise<ModelsItemDiscrepancyResponse[]>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L261)
+
+Расхождения при приёмке поставки
+
+Возвращает информацию о расхождениях между заявленным и фактическим
+количеством товара в поставке — по данным скан-приёмки на складе WB,
+вместе со ссылкой на видео расхождений.
+
+**Доступен только для поставок, принятых не более одного года назад** —
+для более старых поставок метод вернёт 404.
+
+Типы расхождений:
+- Расхождение вверх:
+  1. Излишек товара с заявленным артикулом —
+     `"discrepancyType": "surplus"` + `"discrepancyLabel": "surplus"`
+  2. Излишек товара с артикулом, не совпадающим с заявленным, —
+     `"discrepancyType": "surplus"` + `"discrepancyLabel": "re-sorting"`
+- Расхождение вниз:
+  1. Недостача товара —
+     `"discrepancyType": "shortage"` + `"discrepancyLabel": "shortage"`
+  2. Часть артикулов не совпадает с заявленными —
+     `"discrepancyType": "shortage"` + `"discrepancyLabel": "re-sorting"`
+
+Каждая упаковка содержит `videoUnavailable` (видео доступно при `false`)
+и `items[]` с построчным расхождением и результатами сканирования
+(`skuScans[]`, может быть `null`).
+
+Rate limit: **1 запрос в минуту** (интервал 1 минута, всплеск 1) —
+не запрашивайте методом пачки поставок подряд.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `supplyId` | `number` | ID поставки |
+
+#### Returns
+
+`Promise`\<[`ModelsItemDiscrepancyResponse`](../-internal-/interfaces/ModelsItemDiscrepancyResponse.md)[]\>
+
+Успешно — массив упаковок с расхождениями
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+404 — поставка не найдена, без расхождений или принята более года назад
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-188
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/suppliesInformation/operation/getV1SuppliesSupplyIdDiscrepanciesQuantity](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/suppliesInformation/operation/getV1SuppliesSupplyIdDiscrepanciesQuantity)
+
+#### Example
+
+```typescript
+const discrepancies = await sdk.ordersFBW.getSupplyDiscrepancies(12345);
+for (const pkg of discrepancies) {
+  console.log(`Поставка ${pkg.packageCode}: видео ${pkg.videoUnavailable ? 'недоступно' : pkg.videoUrl}`);
+  for (const item of pkg.items) {
+    console.log(`  ${item.declaredSku}: заявлено ${item.declaredAmount}, факт ${item.actualAmount} (${item.discrepancyType})`);
+  }
+}
+```
+
+***
+
+### createDraft()
+
+```ts
+createDraft(): Promise<ModelsDraftCreateResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:290](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L290)
+
+Создать черновик поставки
+
+Метод создаёт **пустой** черновик поставки — без тела запроса.
+Товары добавляются отдельно через `addDraftItems()`.
+
+Токены: **Personal**, **Service** (категория Supplies).
+
+Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+
+#### Returns
+
+`Promise`\<[`ModelsDraftCreateResponse`](../-internal-/interfaces/ModelsDraftCreateResponse.md)\>
+
+Идентификатор созданного черновика (`draftId`, UUID)
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-193
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/postV1Drafts](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/postV1Drafts)
+
+#### Example
+
+```typescript
+const { draftId } = await sdk.ordersFBW.createDraft();
+console.log(`Создан черновик: ${draftId}`);
+```
+
+***
+
+### listDrafts()
+
+```ts
+listDrafts(options?: {
+  limit?: number;
+  offset?: number;
+  sort?: "createDt" | "updateDt";
+  order?: "asc" | "desc";
+}): Promise<ModelsListDraftsResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L330)
+
+Список черновиков поставок
+
+Метод возвращает список черновиков поставок с постраничной навигацией
+и сортировкой. По умолчанию — последние 1000 черновиков, отсортированные
+по дате создания по убыванию.
+
+Токены: **Personal**, **Service** (категория Supplies).
+
+Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | \{ `limit?`: `number`; `offset?`: `number`; `sort?`: `"createDt"` \| `"updateDt"`; `order?`: `"asc"` \| `"desc"`; \} | Параметры запроса: - `limit` — количество черновиков в ответе (0–1000, по умолчанию 1000) - `offset` — сколько элементов пропустить (по умолчанию 0) - `sort` — поле сортировки: `createDt` (по умолчанию) или `updateDt` - `order` — порядок: `desc` (по умолчанию) или `asc` |
+| `options.limit?` | `number` | - |
+| `options.offset?` | `number` | - |
+| `options.sort?` | `"createDt"` \| `"updateDt"` | - |
+| `options.order?` | `"asc"` \| `"desc"` | - |
+
+#### Returns
+
+`Promise`\<[`ModelsListDraftsResponse`](../-internal-/interfaces/ModelsListDraftsResponse.md)\>
+
+Общее количество черновиков и их список
+
+#### Throws
+
+When query parameters are invalid (400)
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-193
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/getV1Drafts](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/getV1Drafts)
+
+#### Example
+
+```typescript
+const { total, drafts } = await sdk.ordersFBW.listDrafts({ limit: 100, sort: 'updateDt' });
+console.log(`Черновиков: ${total}`);
+for (const draft of drafts) {
+  console.log(`${draft.draftId}: ${draft.skuQuantity} SKU, обновлён ${draft.updatedAt}`);
+}
+```
+
+***
+
+### deleteDraft()
+
+```ts
+deleteDraft(draftId: string): Promise<void>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L366)
+
+Удалить черновик поставки
+
+Метод удаляет черновик поставки по идентификатору.
+Успешный ответ — **204 No Content** (без тела).
+
+Токены: **Personal**, **Service** (категория Supplies).
+
+Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `draftId` | `string` | Идентификатор черновика (UUID) |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Throws
+
+When draftId format is invalid (400)
+
+#### Throws
+
+404 — черновик не найден
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-193
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/deleteV1DraftsDraftId](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/deleteV1DraftsDraftId)
+
+#### Example
+
+```typescript
+await sdk.ordersFBW.deleteDraft('b5aed067-69d4-47b8-a5d0-591c615288f9');
+console.log('Черновик удалён');
+```
+
+***
+
+### getDraftItems()
+
+```ts
+getDraftItems(draftId: string): Promise<ModelsListDraftItemsResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L402)
+
+Товары в черновике поставки
+
+Метод возвращает список товаров, добавленных в черновик поставки,
+с карточкой товара (бренд, предмет, размер, изображение и т.д.).
+
+Токены: **Personal**, **Service** (категория Supplies).
+
+Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `draftId` | `string` | Идентификатор черновика (UUID) |
+
+#### Returns
+
+`Promise`\<[`ModelsListDraftItemsResponse`](../-internal-/interfaces/ModelsListDraftItemsResponse.md)\>
+
+Количество SKU/товаров и список товаров
+
+#### Throws
+
+When draftId format is invalid (400)
+
+#### Throws
+
+404 — черновик не найден
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-193
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/getV1DraftsDraftIdItems](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/getV1DraftsDraftIdItems)
+
+#### Example
+
+```typescript
+const { skuQuantity, items } = await sdk.ordersFBW.getDraftItems(draftId);
+console.log(`SKU в черновике: ${skuQuantity}`);
+for (const item of items) {
+  console.log(`${item.vendorCode} (${item.sku}): ${item.quantity} шт`);
+}
+```
+
+***
+
+### addDraftItems()
+
+```ts
+addDraftItems(draftId: string, data: ModelsDraftAdditemsRequest): Promise<ModelsDraftAddItemsErrorResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:452](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L452)
+
+Добавить товары в черновик поставки
+
+Метод добавляет товары в черновик поставки (до 1000 позиций за запрос).
+
+**Атомарность:** операция выполняется по принципу «всё или ничего»:
+- если все SKU успешно прошли валидацию — все товары добавляются
+  в черновик, ответ содержит `{"results": []}`;
+- если хотя бы один SKU не прошёл валидацию — **ни один** товар
+  не добавляется, ответ содержит список невалидных SKU с описанием ошибки.
+
+Токены: **Personal**, **Service** (категория Supplies).
+
+Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `draftId` | `string` | Идентификатор черновика (UUID) |
+| `data` | [`ModelsDraftAdditemsRequest`](../-internal-/interfaces/ModelsDraftAdditemsRequest.md) | Список товаров `{ quantity, sku }` (1–1000 позиций) |
+
+#### Returns
+
+`Promise`\<[`ModelsDraftAddItemsErrorResponse`](../-internal-/interfaces/ModelsDraftAddItemsErrorResponse.md)\>
+
+`results` — список невалидных SKU; пустой массив означает,
+  что все товары добавлены
+
+#### Throws
+
+When items array is empty or exceeds 1000 items
+
+#### Throws
+
+When draftId format or items array is invalid (400)
+
+#### Throws
+
+404 — черновик не найден
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-193
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/postV1DraftsDraftIdItems](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/postV1DraftsDraftIdItems)
+
+#### Example
+
+```typescript
+const { results } = await sdk.ordersFBW.addDraftItems(draftId, {
+  items: [
+    { quantity: 10, sku: '2000000512907' },
+    { quantity: 5, sku: '2039395667350' },
+  ],
+});
+if (results.length > 0) {
+  // Ничего не добавлено — исправьте SKU и повторите запрос целиком
+  for (const { sku, error } of results) {
+    console.error(`${sku}: ${error.title} — ${error.detail}`);
+  }
+}
+```
+
+***
+
+### deleteDraftItems()
+
+```ts
+deleteDraftItems(draftId: string, data: ModelsDraftDeleteitemsRequest): Promise<ModelsDraftDeleteItemsErrorResponse>;
+```
+
+Defined in: [modules/orders-fbw/index.ts:498](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L498)
+
+Удалить товары из черновика поставки
+
+Метод удаляет товары из черновика поставки по списку SKU.
+
+**Валидация SKU не выполняется:** при передаче несуществующего SKU
+ошибка не возвращается — он молча игнорируется, а корректные SKU
+удаляются из черновика.
+
+Токены: **Personal**, **Service** (категория Supplies).
+
+Rate limit: 30 запросов в минуту (интервал 2 секунды, всплеск 10).
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `draftId` | `string` | Идентификатор черновика (UUID) |
+| `data` | [`ModelsDraftDeleteitemsRequest`](../-internal-/interfaces/ModelsDraftDeleteitemsRequest.md) | Список SKU для удаления (минимум 1) |
+
+#### Returns
+
+`Promise`\<[`ModelsDraftDeleteItemsErrorResponse`](../-internal-/interfaces/ModelsDraftDeleteItemsErrorResponse.md)\>
+
+`results` — результат операции
+
+#### Throws
+
+When skus array is empty
+
+#### Throws
+
+When request parameters are invalid (400)
+
+#### Throws
+
+404 — черновик не найден
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### Since
+
+task-193
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/deleteV1DraftsDraftIdItems](https://dev.wildberries.ru/docs/openapi/orders-fbw#tag/supplyDrafts/operation/deleteV1DraftsDraftIdItems)
+
+#### Example
+
+```typescript
+await sdk.ordersFBW.deleteDraftItems(draftId, { skus: ['2000000512907'] });
+```
+
+***
+
 ### getClientInfo()
 
 ```ts
 getClientInfo(orderIds: number[]): Promise<GetDBWClientInfoResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L231)
+Defined in: [modules/orders-fbw/index.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L539)
 
 Получение информации о покупателе для заказов DBW
 
@@ -450,7 +960,7 @@ for (const order of result.orders ?? []) {
 deleteMetaBulk(request: DBWDeleteMetaBulkRequest): Promise<DBWDeleteMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L269)
+Defined in: [modules/orders-fbw/index.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L577)
 
 Удалить идентификаторы маркировки у нескольких заказов DBW (массовая операция).
 
@@ -518,7 +1028,7 @@ for (const order of result.orders) {
 setSgtinBulk(request: DBWSetSgtinBulkRequest): Promise<DBWSetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L310)
+Defined in: [modules/orders-fbw/index.ts:618](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L618)
 
 Задать SGTIN-коды для нескольких заказов DBW (массовая операция).
 
@@ -588,7 +1098,7 @@ if (result.errors?.length) {
 deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L366)
+Defined in: [modules/orders-fbw/index.ts:674](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L674)
 
 Передать несколько заказов DBW в доставку (массовая операция).
 
@@ -673,7 +1183,7 @@ for (const order of result.results ?? []) {
 checkMetaValidation(request: DBWCheckMetaValidationRequest): Promise<DBWCheckMetaValidationResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:430](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbw/index.ts#L430)
+Defined in: [modules/orders-fbw/index.ts:738](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbw/index.ts#L738)
 
 Проверить идентификаторы маркировки DBW-заказов перед передачей в доставку (предварительная валидация).
 

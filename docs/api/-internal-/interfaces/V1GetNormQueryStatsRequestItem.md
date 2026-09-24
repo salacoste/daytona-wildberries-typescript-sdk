@@ -2,7 +2,7 @@
 
 # Interface: V1GetNormQueryStatsRequestItem
 
-Defined in: [types/promotion.types.ts:1029](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1029)
+Defined in: [types/promotion.types.ts:1029](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L1029)
 
 Элемент запроса ежедневной статистики по поисковым кластерам
 
@@ -10,5 +10,5 @@ Defined in: [types/promotion.types.ts:1029](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advertid"></a> `advertId` | `number` | ID кампании | [types/promotion.types.ts:1031](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1031) |
-| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/promotion.types.ts:1033](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L1033) |
+| <a id="advertid"></a> `advertId` | `number` | ID кампании | [types/promotion.types.ts:1031](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L1031) |
+| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/promotion.types.ts:1033](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L1033) |

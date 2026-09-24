@@ -2,7 +2,7 @@
 
 # Class: OrdersFbsModule
 
-Defined in: [modules/orders-fbs/index.ts:55](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L55)
+Defined in: [modules/orders-fbs/index.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L64)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbs/index.ts:55](https://github.com/salacoste/dayton
 new OrdersFbsModule(client: BaseClient): OrdersFbsModule;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:56](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L56)
+Defined in: [modules/orders-fbs/index.ts:65](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L65)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/orders-fbs/index.ts:56](https://github.com/salacoste/dayton
 getPassesOffices(): Promise<PassOffice[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L77)
+Defined in: [modules/orders-fbs/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L86)
 
 Get list of warehouses that require a pass
 
@@ -80,7 +80,7 @@ console.log(offices);
 passes(): Promise<Pass[]>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:102](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L102)
+Defined in: [modules/orders-fbs/index.ts:111](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L111)
 
 Get list of seller passes
 
@@ -127,7 +127,7 @@ console.log(passes);
 createPass(data: PassCreateRequest): Promise<PassCreateResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:133](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L133)
+Defined in: [modules/orders-fbs/index.ts:142](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L142)
 
 Create a seller pass
 
@@ -186,7 +186,7 @@ console.log(result.id);
 updatePass(passId: number, data: PassCreateRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:166](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L166)
+Defined in: [modules/orders-fbs/index.ts:175](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L175)
 
 Update a seller pass
 
@@ -245,7 +245,7 @@ await sdk.ordersFBS.updatePass(12345, {
 deletePass(passId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:190](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L190)
+Defined in: [modules/orders-fbs/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L199)
 
 Delete a seller pass
 
@@ -297,11 +297,17 @@ await sdk.ordersFBS.deletePass(12345);
 getOrdersNew(): Promise<OrdersNewResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L214)
+Defined in: [modules/orders-fbs/index.ts:229](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L229)
 
 Get list of new assembly tasks
 
 Returns a list of all new assembly tasks available for the seller at the time of request.
+
+**`requiredMeta` field:** each order lists the label identifiers (metadata) that MUST be
+attached before its supply can be transferred to delivery — e.g. `['uin', 'sgtin']`,
+`['customsDeclaration']`. Check it before attaching a customs-declaration (ДТ) number:
+if `customsDeclaration` is present, the order needs a ДТ (via [setCustomsDeclaration](#setcustomsdeclaration),
+`confirm` status only) or stickers will fail with 409 `CustomsDeclarationIsRequired`.
 
 #### Returns
 
@@ -344,14 +350,15 @@ console.log(result.orders);
 orders(options?: GetOrdersParams): Promise<OrdersResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L244)
+Defined in: [modules/orders-fbs/index.ts:260](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L260)
 
 Get assembly tasks information
 
 Returns assembly task information without their current status.
 Data can be retrieved for a given period, up to 30 calendar days per request.
 
-**3-month window:** From 2026-07-21, returns only assembly orders created LESS than
+**3-month window:** effective since the night of 2026-08-05→06 (date moved from the
+originally announced 2026-07-21), returns only assembly orders created LESS than
 3 months ago. For older orders, use `getOrdersArchive()` (`GET /api/marketplace/v3/fbs/orders/archive`).
 
 #### Parameters
@@ -401,7 +408,7 @@ console.log(result.orders);
 getOrdersReshipment(): Promise<ReshipmentResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L270)
+Defined in: [modules/orders-fbs/index.ts:286](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L286)
 
 Get all assembly tasks requiring reshipment
 
@@ -449,7 +456,7 @@ console.log(result);
 updateOrdersCancel(orderId: number): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:295](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L295)
+Defined in: [modules/orders-fbs/index.ts:311](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L311)
 
 Cancel an assembly task
 
@@ -501,12 +508,19 @@ await sdk.ordersFBS.updateOrdersCancel(123456);
 createOrdersSticker(options?: StickerParams, data?: StickerRequest): Promise<StickerResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L327)
+Defined in: [modules/orders-fbs/index.ts:351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L351)
 
 Get assembly task stickers
 
 Returns stickers for assembly tasks in SVG, ZPLV, ZPLH, or PNG format.
 Maximum 100 stickers per request. Only available for tasks with status `confirm`.
+
+**⚠️ 409 `CustomsDeclarationIsRequired` (since 2026-08-18).** If at least one assembly
+order in `data.orders` lacks a required customs-declaration (ДТ) number, WB returns
+HTTP 409 and **stickers cannot be obtained** for the batch. Attach the missing ДТ via
+[setCustomsDeclaration](#setcustomsdeclaration) (order must be in `confirm` status) and retry.
+Check `requiredMeta` in [getOrdersNew](#getordersnew) to see whether an order requires a ДТ.
+Thrown as a typed `CustomsDeclarationIsRequiredError`.
 
 #### Parameters
 
@@ -520,6 +534,10 @@ Maximum 100 stickers per request. Only available for tasks with status `confirm`
 `Promise`\<[`StickerResponse`](../-internal-/interfaces/StickerResponse-1.md)\>
 
 Promise resolving to stickers response
+
+#### Throws
+
+409 — at least one order lacks a required customs declaration (ДТ); stickers cannot be obtained until it is attached
 
 #### Throws
 
@@ -559,7 +577,7 @@ console.log(result.stickers);
 deleteOrdersMeta(orderId: number, options?: DeleteMetaParams): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:358](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L358)
+Defined in: [modules/orders-fbs/index.ts:382](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L382)
 
 Delete assembly task metadata
 
@@ -613,7 +631,7 @@ await sdk.ordersFBS.deleteOrdersMeta(123456, { key: 'imei' });
 updateMetaSgtin(orderId: number, data?: MetaSgtinRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:385](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L385)
+Defined in: [modules/orders-fbs/index.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L409)
 
 Attach marking codes (SGTIN) to an assembly task
 
@@ -667,7 +685,7 @@ await sdk.ordersFBS.updateMetaSgtin(123456, { sgtins: ['01046009544741002'] });
 updateMetaUin(orderId: number, data?: MetaUinRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:413](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L413)
+Defined in: [modules/orders-fbs/index.ts:437](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L437)
 
 Attach UIN to an assembly task
 
@@ -721,7 +739,7 @@ await sdk.ordersFBS.updateMetaUin(123456, { uin: 'UIN123456789' });
 updateMetaImei(orderId: number, data?: MetaImeiRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:441](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L441)
+Defined in: [modules/orders-fbs/index.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L465)
 
 Attach IMEI to an assembly task
 
@@ -775,7 +793,7 @@ await sdk.ordersFBS.updateMetaImei(123456, { imei: '354567890123456' });
 updateMetaGtin(orderId: number, data?: MetaGtinRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L469)
+Defined in: [modules/orders-fbs/index.ts:493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L493)
 
 Attach GTIN to an assembly task
 
@@ -829,7 +847,7 @@ await sdk.ordersFBS.updateMetaGtin(123456, { gtin: '4600000000001' });
 updateMetaExpiration(orderId: number, data?: MetaExpirationRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:497](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L497)
+Defined in: [modules/orders-fbs/index.ts:521](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L521)
 
 Attach expiration date to an assembly task
 
@@ -883,13 +901,20 @@ await sdk.ordersFBS.updateMetaExpiration(123456, { expiration: '2025-12-31' });
 setCustomsDeclaration(orderId: number, data: MetaCustomsDeclarationRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:528](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L528)
+Defined in: [modules/orders-fbs/index.ts:559](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L559)
 
 Attach customs declaration number to an assembly task
 
 Updates the customs declaration number in the assembly task metadata.
 Each task can have only one customs declaration number. Check if the task supports it
-by verifying `customsDeclaration` is in the `requiredMeta` field of new orders.
+by verifying `customsDeclaration` is in the `requiredMeta` field of new orders
+([getOrdersNew](#getordersnew)) and in the label identifiers returned by [getOrdersMetaBulk](#getordersmetabulk).
+
+**⚠️ `confirm` status only (since 2026-08-18).** A customs-declaration (ДТ) number can
+be attached **only to assembly orders in `confirm` status**.
+
+**⚠️ Armenia sellers.** A ДТ **must** be specified for items produced **outside the EAEU**
+when an order from Armenia is delivered to the Russian Federation.
 
 #### Parameters
 
@@ -940,7 +965,7 @@ await sdk.ordersFBS.setCustomsDeclaration(123456, {
 createStickersCrossBorder(data?: CrossBorderStickerRequest): Promise<CrossBorderStickerResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:556](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L556)
+Defined in: [modules/orders-fbs/index.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L587)
 
 Get cross-border assembly task stickers
 
@@ -994,7 +1019,7 @@ console.log(result.stickers);
 createStatusHistory(data?: StatusHistoryRequest): Promise<StatusHistoryResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:585](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L585)
+Defined in: [modules/orders-fbs/index.ts:616](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L616)
 
 Get cross-border assembly task status history
 
@@ -1047,7 +1072,7 @@ console.log(result.orders);
 createOrdersClient(data: OrdersRequestAPI): Promise<CrossborderTurkeyClientInfoResp>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:612](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L612)
+Defined in: [modules/orders-fbs/index.ts:643](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L643)
 
 Get orders with client information (Turkey cross-border)
 
@@ -1100,7 +1125,7 @@ console.log(result);
 supplies(options?: GetSuppliesParams): Promise<SuppliesResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:639](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L639)
+Defined in: [modules/orders-fbs/index.ts:670](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L670)
 
 Get list of supplies
 
@@ -1147,13 +1172,67 @@ console.log(result.supplies);
 
 ***
 
+### getSupplies()
+
+```ts
+getSupplies(options?: GetSuppliesParams): Promise<SuppliesResponse>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:697](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L697)
+
+List FBO supplies (alias for `supplies()`)
+
+Thin alias kept for naming consistency with `getSupply()`, so the
+`getSupply` / `getSupplies` pair reads naturally and is easier to discover.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options?` | [`GetSuppliesParams`](../-internal-/interfaces/GetSuppliesParams.md) | Query parameters for pagination |
+
+#### Returns
+
+`Promise`\<[`SuppliesResponse`](../-internal-/interfaces/SuppliesResponse.md)\>
+
+Promise resolving to supplies list with pagination cursor
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400/422)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies/get](https://openapi.wildberries.ru/#tag/Postavki-FBS/paths/~1api~1v3~1supplies/get)
+
+#### Example
+
+```typescript
+const result = await sdk.ordersFBS.getSupplies({ limit: 100, next: 0 });
+console.log(result.supplies);
+```
+
+***
+
 ### createSupply()
 
 ```ts
 createSupply(data: SupplyCreateRequest): Promise<SupplyCreateResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:666](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L666)
+Defined in: [modules/orders-fbs/index.ts:721](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L721)
 
 Create a new supply
 
@@ -1207,7 +1286,7 @@ console.log(result.id);
 getSupply(supplyId: string): Promise<Supply>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:693](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L693)
+Defined in: [modules/orders-fbs/index.ts:748](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L748)
 
 Get supply information
 
@@ -1260,7 +1339,7 @@ console.log(supply);
 deleteSupply(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:718](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L718)
+Defined in: [modules/orders-fbs/index.ts:773](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L773)
 
 Delete a supply
 
@@ -1312,7 +1391,7 @@ await sdk.ordersFBS.deleteSupply('WB-GI-1234');
 updateSuppliesDeliver(supplyId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:792](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L792)
+Defined in: [modules/orders-fbs/index.ts:851](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L851)
 
 Transfer supply to delivery
 
@@ -1329,6 +1408,9 @@ separators (ASCII 0x1D) and crypto-tail (код проверки подлинн�
 - UIN validation (enforced since April 7, 2026)
 - Marking code for B2B orders (enforced since April 9, 2026)
 - Marking code for B2C orders via Честный Знак (enforced from June 3, 2026)
+- Missing customs declaration (ДТ) — 409 `MetaValidationFail` with a `customsDeclaration`
+  entry whose `decision` is `'required'` (since 2026-08-18). Attach it via
+  `setCustomsDeclaration()` (order must be in `confirm` status), then retry.
 
 Check `metaDetails` via `getOrdersMetaBulk()` before calling deliver.
 Each metaDetail has `key`, `value`, and `decision` (filled/optional/required/invalid).
@@ -1351,7 +1433,8 @@ Promise resolving to void on success
 #### Throws
 
 409 — Metadata validation failed (thrown as MetaValidationFailError exposes
-  `metaDetails[]` with per-code diagnostics). Falls back to [WBAPIError](WBAPIError.md) for 409s
+  `metaDetails[]` with per-code diagnostics), including `decision: 'required'` on the
+  `customsDeclaration` key when a required ДТ is missing. Falls back to [WBAPIError](WBAPIError.md) for 409s
   without `metaDetails` (e.g. supply has zero orders).
 
 #### Throws
@@ -1413,7 +1496,7 @@ try {
 getSuppliesBarcode(supplyId: string, options?: BarcodeParams): Promise<BarcodeResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:821](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L821)
+Defined in: [modules/orders-fbs/index.ts:880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L880)
 
 Get supply QR code
 
@@ -1468,7 +1551,7 @@ console.log(result.barcode);
 getSuppliesTrbx(supplyId: string): Promise<TrbxListResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:847](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L847)
+Defined in: [modules/orders-fbs/index.ts:906](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L906)
 
 Get list of supply boxes (trbx)
 
@@ -1521,7 +1604,7 @@ console.log(result.trbxes);
 createSuppliesTrbx(supplyId: string, data?: TrbxCreateRequest): Promise<TrbxCreateResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:875](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L875)
+Defined in: [modules/orders-fbs/index.ts:934](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L934)
 
 Add boxes to a supply
 
@@ -1576,7 +1659,7 @@ console.log(result.trbxIds);
 deleteSuppliesTrbx(supplyId: string, data?: TrbxDeleteRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:905](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L905)
+Defined in: [modules/orders-fbs/index.ts:964](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L964)
 
 Delete boxes from a supply
 
@@ -1634,7 +1717,7 @@ createTrbxSticker(
 }>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:938](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L938)
+Defined in: [modules/orders-fbs/index.ts:997](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L997)
 
 Get supply box stickers
 
@@ -1697,7 +1780,7 @@ getOrderStatuses(data: {
 }): Promise<OrderStatusResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:974](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L974)
+Defined in: [modules/orders-fbs/index.ts:1033](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1033)
 
 Get assembly task statuses
 
@@ -1752,11 +1835,17 @@ console.log(result);
 getOrdersMetaBulk(data: GetMetaMultiRequest): Promise<OrdersMetaResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:1001](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L1001)
+Defined in: [modules/orders-fbs/index.ts:1066](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1066)
 
 Get metadata for multiple assembly tasks
 
 Returns metadata for multiple assembly tasks (up to 100).
+
+**`decision` field semantics:** each `metaDetails[]` entry carries a `decision` —
+`'filled'` and `'optional'` mean the order is **OK to deliver**; `'required'` (value
+missing) **blocks delivery** (409 on `updateSuppliesDeliver`); `'invalid'` means the
+submitted value failed validation. For the `customsDeclaration` key, `'required'`
+means a ДТ must be attached via [setCustomsDeclaration](#setcustomsdeclaration) before deliver/stickers.
 
 #### Parameters
 
@@ -1805,7 +1894,7 @@ console.log(result);
 addOrdersToSupply(supplyId: string, data: AddOrdersToSupplyRequest): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:1028](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L1028)
+Defined in: [modules/orders-fbs/index.ts:1093](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1093)
 
 Add multiple assembly tasks to a supply (bulk)
 
@@ -1858,7 +1947,7 @@ await sdk.ordersFBS.addOrdersToSupply('WB-GI-1234', { orders: [123, 456] });
 getSupplyOrderIds(supplyId: string): Promise<SupplyOrderIdsResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:1055](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L1055)
+Defined in: [modules/orders-fbs/index.ts:1120](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1120)
 
 Get assembly task IDs in a supply
 
@@ -1911,7 +2000,7 @@ console.log(result);
 getOrdersArchive(params: ArchiveOrdersParams): Promise<ArchiveOrdersResponse>;
 ```
 
-Defined in: [modules/orders-fbs/index.ts:1094](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/modules/orders-fbs/index.ts#L1094)
+Defined in: [modules/orders-fbs/index.ts:1159](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1159)
 
 Get archived FBS assembly orders
 
@@ -1967,4 +2056,431 @@ if (result.next !== null) {
     year: 2025, month: 6, next: result.next, limit: 100,
   });
 }
+```
+
+***
+
+### getSpotCountries()
+
+```ts
+getSpotCountries(): Promise<SpotCountriesResponse>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:1195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1195)
+
+Get the OKSM country list
+
+Returns the list of OKSM (All-Russian Classifier of World Countries) countries
+with their full names and 3-digit codes. Use these codes as `carrierCountryCode`
+when adding SPOT data via `updateSupplySpot()`.
+
+**Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+WB plans to extend it to all EAEU countries except the Russian Federation.
+
+**Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+response counts as 10 requests.
+
+#### Returns
+
+`Promise`\<[`SpotCountriesResponse`](../-internal-/interfaces/SpotCountriesResponse.md)\>
+
+Promise resolving to the OKSM countries list
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsDictionariesCountriesOksm](https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsDictionariesCountriesOksm)
+
+#### Example
+
+```typescript
+const { countries } = await sdk.ordersFBS.getSpotCountries();
+const byName = countries.find(c => c.name === 'Киргизия');
+```
+
+***
+
+### updateSupplySpot()
+
+```ts
+updateSupplySpot(supplyId: string, data: SupplySpotRequest): Promise<void>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:1238](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1238)
+
+Add SPOT data to a supply
+
+Adds SPOT (EAEU road-import declaration) data to a supply. SPOT can only be added
+to a supply carrying the `"spotAvailable": true` flag — check it via `getSupply()`
+or `supplies()` first.
+
+`carrierCountryCode` must be a 3-digit OKSM code from `getSpotCountries()`.
+
+**Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+WB plans to extend it to all EAEU countries except the Russian Federation.
+
+**Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+response (including the 409 below) counts as 10 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `supplyId` | `string` | ID of the supply |
+| `data` | [`SupplySpotRequest`](../-internal-/interfaces/SupplySpotRequest.md) | SPOT data (carrier and vehicle details) |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+Promise resolving to void on success (204)
+
+#### Throws
+
+409 — error while adding SPOT data (e.g. `SpotActionNotAllowed` when SPOT is not available for this supply)
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/putV3FbsSuppliesSupplyIdSpot](https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/putV3FbsSuppliesSupplyIdSpot)
+
+#### Example
+
+```typescript
+await sdk.ordersFBS.updateSupplySpot('WB-GI-123456789', {
+  carrierName: 'ООО СПОТ',
+  carrierTaxNumber: '7588179007',
+  carrierCountryCode: '112',
+  vehicleRegistrationNumber: 'А123АА100',
+  trailerRegistrationNumber: 'АА000100',
+});
+```
+
+***
+
+### getSuppliesSpotList()
+
+```ts
+getSuppliesSpotList(data: SuppliesSpotListRequest): Promise<SuppliesSpotListResponse>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:1280](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1280)
+
+Get SPOT data for a list of supplies
+
+Returns SPOT data for up to 100 supplies per request. SPOT data is returned only
+when **all** of the following conditions are met:
+- the supply is in the delivery stage
+- the seller is registered in any EAEU country other than the Russian Federation
+- the destination warehouse is located in the Russian Federation
+
+**Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+WB plans to extend it to all EAEU countries except the Russian Federation.
+
+Each entry carries either `spot` (echo of the submitted SPOT data plus the DOPP
+formation `status`) or `error` (e.g. `NotFound`, `SpotActionNotAllowed`).
+
+**Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+response counts as 10 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`SuppliesSpotListRequest`](../-internal-/interfaces/SuppliesSpotListRequest.md) | Request body containing supply IDs (1-100) |
+
+#### Returns
+
+`Promise`\<[`SuppliesSpotListResponse`](../-internal-/interfaces/SuppliesSpotListResponse.md)\>
+
+Promise resolving to SPOT data per requested supply
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/postV3FbsSuppliesSpotList](https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/postV3FbsSuppliesSpotList)
+
+#### Example
+
+```typescript
+const result = await sdk.ordersFBS.getSuppliesSpotList({
+  supplyIds: ['WB-GI-123456789'],
+});
+const readyForQr = result.supplies.filter(s => s.spot?.status === 'completed');
+```
+
+***
+
+### getSupplySpotStickers()
+
+```ts
+getSupplySpotStickers(supplyId: string): Promise<SupplySpotStickerResponse>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:1315](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1315)
+
+Get the supply SPOT QR code
+
+Returns the generated SPOT QR code for the supply in PNG format, base64 encoded.
+Available only when `getSuppliesSpotList()` reports `"status": "completed"` for
+the supply (DOPP formed successfully).
+
+**Availability**: SPOT currently works for sellers registered in Kyrgyzstan only;
+WB plans to extend it to all EAEU countries except the Russian Federation.
+
+**Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+response counts as 10 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `supplyId` | `string` | ID of the supply |
+
+#### Returns
+
+`Promise`\<[`SupplySpotStickerResponse`](../-internal-/interfaces/SupplySpotStickerResponse.md)\>
+
+Promise resolving to the base64-encoded PNG QR code
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdStickersSpot](https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdStickersSpot)
+
+#### Example
+
+```typescript
+const { qrCode } = await sdk.ordersFBS.getSupplySpotStickers('WB-GI-123456789');
+fs.writeFileSync('spot-qr.png', Buffer.from(qrCode, 'base64'));
+```
+
+***
+
+### getShippingPoints()
+
+```ts
+getShippingPoints(params: ShippingPointsParams): Promise<ShippingPointsResponse>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:1367](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1367)
+
+Get supply shipping points
+
+Returns the supply shipping points available to the seller, filtered by
+Russian locality (`city`, Cyrillic) and by the type of items the point can
+accept (`cargoType`: 1 — small-sized, 2 — ODC, 3 — CD+). Each point reports
+whether the **Fulfillment in SC** service is available (`fulfillment`).
+
+Use the returned `id` values as `shippingPointId` when setting the supply
+shipping method via `updateShippingMethod()`.
+
+**Availability**: for sellers registered in the Russian Federation only,
+since 2026-09-01.
+
+**Important**: from **2026-10-01** supply shipping parameters are mandatory —
+`updateSuppliesDeliver()` (PATCH `/api/v3/supplies/{supplyId}/deliver`)
+returns a **409** error for supplies delivered without them. For
+`"shippingType":"transportCompany"` deliveries an electronic waybill ID
+(ETrN) is required as well — see the waybill note in `updateShippingMethod()`.
+
+**Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+response counts as 10 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params` | [`ShippingPointsParams`](../-internal-/interfaces/ShippingPointsParams.md) | Filters: locality (Cyrillic) and cargo type |
+
+#### Returns
+
+`Promise`\<[`ShippingPointsResponse`](../-internal-/interfaces/ShippingPointsResponse.md)\>
+
+Promise resolving to the available shipping points
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsShippingPoints](https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsShippingPoints)
+
+#### Since
+
+task-198
+
+#### Example
+
+```typescript
+const { shippingPoints } = await sdk.ordersFBS.getShippingPoints({
+  city: 'Москва',
+  cargoType: 1,
+});
+const withFulfillment = shippingPoints.filter(p => p.fulfillment);
+```
+
+***
+
+### updateShippingMethod()
+
+```ts
+updateShippingMethod(data: UpdateSuppliesShippingMethodRequest): Promise<UpdateSuppliesResponse>;
+```
+
+Defined in: [modules/orders-fbs/index.ts:1430](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-fbs/index.ts#L1430)
+
+Set the supply shipping method
+
+Sets the shipping type, shipping date and shipping point for up to 100
+supplies per request; the processing result is returned for each supply
+separately (`results[]` with `success` or `error`, e.g. `NotFound`,
+`InvalidShippingDt`, `FulfillmentRequired`).
+
+Get `shippingPointId` from `getShippingPoints()`. The shipping method can be
+updated only until the supply and its boxes are scanned at the shipping
+point — after that this method returns a 409 error.
+
+For `"shippingType":"transportCompany"` the electronic waybill ID (ETrN)
+must be attached to the supply as well. **Note**: the waybill method
+(`PATCH /api/marketplace/v3/fbs/supplies/waybill`) exists in the WB spec but
+is still in development — it is intentionally NOT implemented in this SDK
+yet. The waybill ID added to a supply is reset when the shipping type
+changes from `transportCompany` to `selfShipping`; changing it back to
+`transportCompany` requires re-adding the waybill ID.
+
+**Availability**: for sellers registered in the Russian Federation only,
+since 2026-09-01.
+
+**Important**: from **2026-10-01** supply shipping parameters are mandatory —
+`updateSuppliesDeliver()` (PATCH `/api/v3/supplies/{supplyId}/deliver`)
+returns a **409** error for supplies delivered without them (and without an
+ETrN id for transport-company deliveries).
+
+**Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a 4XX
+response (including the 409s below) counts as 10 requests.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | [`UpdateSuppliesShippingMethodRequest`](../-internal-/interfaces/UpdateSuppliesShippingMethodRequest.md) | Shipping parameters per supply (1-100 items) |
+
+#### Returns
+
+`Promise`\<[`UpdateSuppliesResponse`](../-internal-/interfaces/UpdateSuppliesResponse.md)\>
+
+Promise resolving to the per-supply processing results
+
+#### Throws
+
+409 — supply already scanned at the shipping point, or the waybill UUID is already used (`WaybillUUIDConflict`)
+
+#### Throws
+
+When API key is invalid (401/403)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesShippingMethod](https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesShippingMethod)
+
+#### Since
+
+task-198
+
+#### Example
+
+```typescript
+const result = await sdk.ordersFBS.updateShippingMethod({
+  data: [
+    {
+      supplyId: 'WB-GI-100',
+      shippingDt: '2026-09-05',
+      shippingPointId: 100,
+      shippingType: 'selfShipping',
+    },
+  ],
+});
+const failed = result.results.filter(r => !r.success);
 ```

@@ -2,7 +2,7 @@
 
 # Interface: OrderGroupsResponse
 
-Defined in: [types/orders-dbs.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-dbs.types.ts#L414)
+Defined in: [types/orders-dbs.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L414)
 
 Response from getGroupsInfo
 
@@ -10,4 +10,4 @@ Response from getGroupsInfo
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="groups"></a> `groups` | [`OrderGroup`](OrderGroup.md)[] | List of order groups | [types/orders-dbs.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/orders-dbs.types.ts#L416) |
+| <a id="groups"></a> `groups` | [`OrderGroup`](OrderGroup.md)[] | List of order groups | [types/orders-dbs.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L416) |

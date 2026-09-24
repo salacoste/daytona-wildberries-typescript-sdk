@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v4.0.0
+# Wildberries API TypeScript SDK v4.3.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -17,6 +17,7 @@ Main entry point
 | [AuthenticationError](classes/AuthenticationError.md) | Authentication error thrown when API key is invalid or lacks permissions. |
 | [WBAPIError](classes/WBAPIError.md) | Base error class for all Wildberries SDK errors. |
 | [BidOutOfRangeError](classes/BidOutOfRangeError.md) | Error thrown when WB rejects a bid for being out of the accepted range. |
+| [CustomsDeclarationIsRequiredError](classes/CustomsDeclarationIsRequiredError.md) | Error thrown when WB returns HTTP 409 with body `code: 'CustomsDeclarationIsRequired'` — at least one assembly order in the request lacks a required customs-declaration (ДТ, декларация на товары) number. |
 | [PickupOrderNotFoundError](classes/PickupOrderNotFoundError.md) | Error thrown when a pickup order is not found |
 | [InvalidOrderStateError](classes/InvalidOrderStateError.md) | Error thrown when an order state transition is invalid |
 | [CustomerVerificationError](classes/CustomerVerificationError.md) | Error thrown when customer identity verification fails |
@@ -60,6 +61,7 @@ Main entry point
 | [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
 | [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
 | [MetaDetail](interfaces/MetaDetail.md) | Metadata detail item with validation status Replaces the deprecated `meta` object. Use with `/api/marketplace/v3/orders/meta` endpoint. |
+| [APIError](interfaces/APIError.md) | API error response (v3 schema) Maps to swagger schema: v3.APIError |
 | [APIErrorV2](interfaces/APIErrorV2.md) | WB v3 APIErrorV2 envelope -- the newer V2 error shape returned by some v3 endpoints (e.g. 400/403 responses). Maps to swagger schema: v3.APIErrorV2. |
 | [DBWDeleteMetaBulkRequest](interfaces/DBWDeleteMetaBulkRequest.md) | Request body for bulk deletion of marking metadata from DBW orders. Mirrors DBS `DeleteMetaBulkRequest`. |
 | [DBWDeleteMetaBulkResponse](interfaces/DBWDeleteMetaBulkResponse.md) | Response from bulk metadata deletion for DBW orders. Mirrors DBS `DeleteMetaBulkResponse`. |
@@ -67,6 +69,14 @@ Main entry point
 | [DBWSetMetaBulkResponse](interfaces/DBWSetMetaBulkResponse.md) | Response from bulk metadata set operations for DBW orders. Mirrors DBS `SetMetaBulkResponse`. |
 | [DBWCheckMetaValidationRequest](interfaces/DBWCheckMetaValidationRequest.md) | Request body for [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). |
 | [DBWCheckMetaValidationResponse](interfaces/DBWCheckMetaValidationResponse.md) | Response from [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). Each item in `metaDetails[]` reports the validation status of a single order's marking metadata. Use this *before* calling deliverBulk() to detect orders that would fail with 409 MetaValidationFail. |
+| [CardDocumentInput](interfaces/CardDocumentInput.md) | A single product card document in create requests. Used in `createCardsUpload()` (per variant), `createUploadAdd()` (per card to add). |
+| [CardDocumentsRequest](interfaces/CardDocumentsRequest.md) | Documents block of a product card in create requests (`createCardsUpload()`, `createUploadAdd()`). |
+| [CardUpdateDocumentInput](interfaces/CardUpdateDocumentInput.md) | A single product card document in update requests (`createCardsUpdate()`). |
+| [CardUpdateDocumentsRequest](interfaces/CardUpdateDocumentsRequest.md) | Documents block of a product card in update requests (`createCardsUpdate()`). |
+| [CardDocumentVerdict](interfaces/CardDocumentVerdict.md) | Validation verdict of a single card document. Returned in `getCardsList()` responses when the document validation is completed. |
+| [CardDocumentsOverallVerdict](interfaces/CardDocumentsOverallVerdict.md) | Overall validation verdict of the card listing documents. Returned in `getCardsList()` responses when the validation is completed. |
+| [CardDocument](interfaces/CardDocument.md) | A single product card document as returned by `getCardsList()`. |
+| [CardDocumentsResponse](interfaces/CardDocumentsResponse.md) | Documents block of a product card in `getCardsList()` responses. |
 | [StockItem](interfaces/StockItem.md) | A single stock record on a seller warehouse. |
 | [StocksRequest](interfaces/StocksRequest.md) | Request body for [ProductsModule.getStocks](classes/ProductsModule.md#getstocks) and [ProductsModule.deleteStock](classes/ProductsModule.md#deletestock). |
 | [UpdateStockRequest](interfaces/UpdateStockRequest.md) | Request body for [ProductsModule.updateStock](classes/ProductsModule.md#updatestock). |
@@ -103,6 +113,9 @@ Main entry point
 | [WbReturn](interfaces/WbReturn.md) | Unified return record across FBO and FBS sources. |
 | [FbsReturnInput](interfaces/FbsReturnInput.md) | Minimal FBS return shape — what consumers should pass for FBS returns. The actual FBS return data comes from order status history; consumers shape it into this minimal record before calling enrichReturnsWithType(). |
 | [MetaValidationFailPayload](interfaces/MetaValidationFailPayload.md) | Parsed payload extracted from a MetaValidationFailError or a compatible plain object. |
+| [AcceptanceDeltaItem](interfaces/AcceptanceDeltaItem.md) | Per-nmId acceptance delta (declared vs accepted). |
+| [ReconcileAcceptanceDeltaInput](interfaces/ReconcileAcceptanceDeltaInput.md) | Input for [reconcileAcceptanceDelta](functions/reconcileAcceptanceDelta.md). |
+| [ReconcileAcceptanceDeltaResult](interfaces/ReconcileAcceptanceDeltaResult.md) | Aggregated acceptance reconciliation result. |
 | [BuyoutInput](interfaces/BuyoutInput.md) | Buyout record input — minimal shape derived from sdk.analytics getStocksReportProducts() output. Consumers shape their data into this before calling reconcileBuyoutsAndReturns(). |
 | [ReconciliationAnomaly](interfaces/ReconciliationAnomaly.md) | Anomaly detected during reconciliation. |
 | [ReconciliationResult](interfaces/ReconciliationResult.md) | Per-nmId reconciliation summary. |
@@ -120,6 +133,9 @@ Main entry point
 | [DBWBulkStatusChangeResponse](type-aliases/DBWBulkStatusChangeResponse.md) | Response shape for DBW bulk status-change operations (alias for [BulkStatusChangeResponse](-internal-/interfaces/BulkStatusChangeResponse-1.md)). Maintained as a DBW-prefixed alias to preserve API symmetry with DBW request types. |
 | [DBWStatusSetResponse](type-aliases/DBWStatusSetResponse.md) | Per-order result item in a DBW bulk status-change response (alias for [StatusSetResponse](-internal-/interfaces/StatusSetResponse-1.md)). |
 | [DBWMetaValidationDetail](type-aliases/DBWMetaValidationDetail.md) | Per-order metadata validation detail (alias for [MetaValidationDetail](interfaces/MetaValidationDetail.md)). |
+| [CardDocumentType](type-aliases/CardDocumentType.md) | Product card document type (WB register document kinds). |
+| [CardDocumentReason](type-aliases/CardDocumentReason.md) | Reason a card document failed validation. Returned for `verdict.status: 2` (validation rejected) in `getCardsList()` responses. |
+| [CardListingValidationReason](type-aliases/CardListingValidationReason.md) | Reason a card listing failed validation. Returned for `overallVerdict.status: 2` (validation rejected) in `getCardsList()` responses. |
 | [ReturnStatus](type-aliases/ReturnStatus.md) | Current state of a return. |
 | [ReturnCategory](type-aliases/ReturnCategory.md) | Categorized return type, derived from order fulfillment path and status history. |
 | [AccessCode](type-aliases/AccessCode.md) | Код раздела профиля продавца, к которому пользователь получит доступ. |
@@ -173,6 +189,7 @@ Main entry point
 | [enrichReturnsWithType](functions/enrichReturnsWithType.md) | Builds a unified WbReturn[] from FBO returns (sdk.reports.getAnalyticsGoodsReturn) and optional FBS returns (derived from sdk.ordersFBS status history). |
 | [parseMetaValidationFail](functions/parseMetaValidationFail.md) | Extracts marking-code validation failure details from an unknown caught value. |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
+| [reconcileAcceptanceDelta](functions/reconcileAcceptanceDelta.md) | Reconciles declared vs accepted quantity per nmId for FBO acceptance. |
 | [reconcileBuyoutsAndReturns](functions/reconcileBuyoutsAndReturns.md) | Reconciles buyouts and returns per nmId for unified analytics. |
 | [computeROAS](functions/computeROAS.md) | Compute ROAS (Return on Ad Spend) from WB fullstats per-day data. |
 | [validateMergedCardVariants](functions/validateMergedCardVariants.md) | Client-side validator for merged product card variants. |

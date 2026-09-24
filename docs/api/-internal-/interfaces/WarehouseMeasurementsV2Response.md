@@ -2,7 +2,7 @@
 
 # Interface: WarehouseMeasurementsV2Response
 
-Defined in: [types/reports.types.ts:907](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L907)
+Defined in: [types/reports.types.ts:920](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L920)
 
 Response for getWarehouseMeasurementsV2
 Uses the Measurement interface for report items
@@ -15,6 +15,6 @@ EPIC 44 - Response type for getWarehouseMeasurementsV2
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `reports?`: [`Measurement`](Measurement.md)[]; `total?`: `number`; \} | [types/reports.types.ts:908](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L908) |
-| `data.reports?` | [`Measurement`](Measurement.md)[] | [types/reports.types.ts:909](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L909) |
-| `data.total?` | `number` | [types/reports.types.ts:910](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L910) |
+| <a id="data"></a> `data?` | \{ `reports?`: [`Measurement`](Measurement.md)[]; `total?`: `number`; \} | [types/reports.types.ts:921](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L921) |
+| `data.reports?` | [`Measurement`](Measurement.md)[] | [types/reports.types.ts:922](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L922) |
+| `data.total?` | `number` | [types/reports.types.ts:923](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L923) |

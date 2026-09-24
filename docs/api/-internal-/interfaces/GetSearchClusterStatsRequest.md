@@ -2,7 +2,7 @@
 
 # Interface: GetSearchClusterStatsRequest
 
-Defined in: [types/promotion.types.ts:2050](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2050)
+Defined in: [types/promotion.types.ts:2067](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2067)
 
 Request to get search cluster statistics
 
@@ -10,6 +10,6 @@ Request to get search cluster statistics
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="from"></a> `from` | `string` | Start date in YYYY-MM-DD format | [types/promotion.types.ts:2052](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2052) |
-| <a id="to"></a> `to` | `string` | End date in YYYY-MM-DD format | [types/promotion.types.ts:2054](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2054) |
-| <a id="items"></a> `items` | [`GetSearchClusterStatsRequestItem`](GetSearchClusterStatsRequestItem.md)[] | Array of campaign/product items (max 100) | [types/promotion.types.ts:2056](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/promotion.types.ts#L2056) |
+| <a id="from"></a> `from` | `string` | Start date in YYYY-MM-DD format | [types/promotion.types.ts:2069](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2069) |
+| <a id="to"></a> `to` | `string` | End date in YYYY-MM-DD format | [types/promotion.types.ts:2071](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2071) |
+| <a id="items"></a> `items` | [`GetSearchClusterStatsRequestItem`](GetSearchClusterStatsRequestItem.md)[] | Array of campaign/product items (max 100) | [types/promotion.types.ts:2073](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2073) |

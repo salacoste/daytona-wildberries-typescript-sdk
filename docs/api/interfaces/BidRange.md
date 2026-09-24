@@ -2,7 +2,7 @@
 
 # Interface: BidRange
 
-Defined in: [utils/bid-validation.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/utils/bid-validation.ts#L14)
+Defined in: [utils/bid-validation.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/utils/bid-validation.ts#L14)
 
 Effective accepted bid range for an article, in kopecks.
 
@@ -17,5 +17,5 @@ Derived from a [BidsRecommendationsResponse](../-internal-/interfaces/BidsRecomm
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="min"></a> `min` | `number` | Minimum accepted bid in kopecks (the WB 400 floor). | [utils/bid-validation.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/utils/bid-validation.ts#L16) |
-| <a id="max"></a> `max` | `number` | Maximum recommended bid in kopecks (advisory reachMax ceiling). | [utils/bid-validation.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/utils/bid-validation.ts#L18) |
+| <a id="min"></a> `min` | `number` | Minimum accepted bid in kopecks (the WB 400 floor). | [utils/bid-validation.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/utils/bid-validation.ts#L16) |
+| <a id="max"></a> `max` | `number` | Maximum recommended bid in kopecks (advisory reachMax ceiling). | [utils/bid-validation.ts:18](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/utils/bid-validation.ts#L18) |

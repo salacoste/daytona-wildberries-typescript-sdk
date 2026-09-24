@@ -2,21 +2,18 @@
 
 # Interface: BrandShareBrandsResponse
 
-Defined in: [types/reports.types.ts:574](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L574)
+Defined in: [types/reports.types.ts:587](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L587)
 
 Response for getBrandShareBrands
 
 ## See
 
 EPIC 43 - Response type for getBrandShareBrands
-
-## Spec
-
-SuccessBrandsResponse (12-reports.yaml) — `data` is an array of bare
+OpenAPI schema: `SuccessBrandsResponse` in `12-reports.yaml`; `data` is an array of bare
 brand-name strings (e.g. ["H&M", "WOW"]).
 
 ## Properties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | `string`[] | [types/reports.types.ts:575](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L575) |
+| <a id="data"></a> `data?` | `string`[] | [types/reports.types.ts:588](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L588) |

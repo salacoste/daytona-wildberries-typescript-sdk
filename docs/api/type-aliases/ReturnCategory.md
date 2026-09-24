@@ -10,7 +10,7 @@ type ReturnCategory =
   | "unknown";
 ```
 
-Defined in: [types/returns.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/returns.types.ts#L24)
+Defined in: [types/returns.types.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/returns.types.ts#L24)
 
 Categorized return type, derived from order fulfillment path and status history.
 

@@ -2,7 +2,7 @@
 
 # Interface: FeedbacksIncreaseItem
 
-Defined in: [types/analytics.types.ts:1877](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1877)
+Defined in: [types/analytics.types.ts:1921](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1921)
 
 Feedback increase summary: total plus per-star breakdown (1-5).
 
@@ -10,11 +10,11 @@ Feedback increase summary: total plus per-star breakdown (1-5).
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="current"></a> `current` | `number` | Feedback increase for the period. | [types/analytics.types.ts:1879](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1879) |
-| <a id="total"></a> `total` | `number` | Total ratings. | [types/analytics.types.ts:1881](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1881) |
-| <a id="dynamics"></a> `dynamics` | `number` | Dynamics compared to the previous period (%). | [types/analytics.types.ts:1883](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1883) |
-| <a id="fivestar"></a> `fiveStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 5 star reviews. | [types/analytics.types.ts:1885](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1885) |
-| <a id="fourstar"></a> `fourStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 4 star reviews. | [types/analytics.types.ts:1887](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1887) |
-| <a id="threestar"></a> `threeStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 3 star reviews. | [types/analytics.types.ts:1889](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1889) |
-| <a id="twostar"></a> `twoStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 2 star reviews. | [types/analytics.types.ts:1891](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1891) |
-| <a id="onestar"></a> `oneStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 1 star reviews. | [types/analytics.types.ts:1893](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/analytics.types.ts#L1893) |
+| <a id="current"></a> `current` | `number` | Feedback increase for the period. | [types/analytics.types.ts:1923](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1923) |
+| <a id="total"></a> `total` | `number` | Total ratings. | [types/analytics.types.ts:1925](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1925) |
+| <a id="dynamics"></a> `dynamics` | `number` | Dynamics compared to the previous period (%). | [types/analytics.types.ts:1927](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1927) |
+| <a id="fivestar"></a> `fiveStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 5 star reviews. | [types/analytics.types.ts:1929](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1929) |
+| <a id="fourstar"></a> `fourStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 4 star reviews. | [types/analytics.types.ts:1931](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1931) |
+| <a id="threestar"></a> `threeStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 3 star reviews. | [types/analytics.types.ts:1933](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1933) |
+| <a id="twostar"></a> `twoStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 2 star reviews. | [types/analytics.types.ts:1935](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1935) |
+| <a id="onestar"></a> `oneStar` | [`ItemRatingStarMetric`](ItemRatingStarMetric.md) | 1 star reviews. | [types/analytics.types.ts:1937](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1937) |

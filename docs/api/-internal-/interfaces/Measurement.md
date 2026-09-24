@@ -2,7 +2,7 @@
 
 # Interface: Measurement
 
-Defined in: [types/reports.types.ts:304](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L304)
+Defined in: [types/reports.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L316)
 
 Warehouse-measurement report item (one element of `data.reports[]` in the
 `WHM` response schema).
@@ -16,12 +16,12 @@ Response is single-wrapped by [WarehouseMeasurementsV2Response](WarehouseMeasure
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:306](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L306) |
-| <a id="subjectname"></a> `subjectName?` | `string` | Предмет | [types/reports.types.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L308) |
-| <a id="dimid"></a> `dimId?` | `number` | ID замера | [types/reports.types.ts:310](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L310) |
-| <a id="volume"></a> `volume?` | `number` | Объём, л (фактические габариты) | [types/reports.types.ts:312](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L312) |
-| <a id="width"></a> `width?` | `number` | Ширина, см (фактические габариты) | [types/reports.types.ts:314](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L314) |
-| <a id="length"></a> `length?` | `number` | Длина, см (фактические габариты) | [types/reports.types.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L316) |
-| <a id="height"></a> `height?` | `number` | Высота, см (фактические габариты) | [types/reports.types.ts:318](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L318) |
-| <a id="photourls"></a> `photoUrls?` | `string`[] | Фото замеров | [types/reports.types.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L320) |
-| <a id="dt"></a> `dt?` | `string` | Дата и время замера | [types/reports.types.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/765aad3493124d05d0e92ab41ba52b7d01191ca1/src/types/reports.types.ts#L322) |
+| <a id="nmid"></a> `nmId?` | `number` | Артикул WB | [types/reports.types.ts:318](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L318) |
+| <a id="subjectname"></a> `subjectName?` | `string` | Предмет | [types/reports.types.ts:320](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L320) |
+| <a id="dimid"></a> `dimId?` | `number` | ID замера | [types/reports.types.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L322) |
+| <a id="volume"></a> `volume?` | `number` | Объём, л (фактические габариты) | [types/reports.types.ts:324](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L324) |
+| <a id="width"></a> `width?` | `number` | Ширина, см (фактические габариты) | [types/reports.types.ts:326](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L326) |
+| <a id="length"></a> `length?` | `number` | Длина, см (фактические габариты) | [types/reports.types.ts:328](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L328) |
+| <a id="height"></a> `height?` | `number` | Высота, см (фактические габариты) | [types/reports.types.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L330) |
+| <a id="photourls"></a> `photoUrls?` | `string`[] | Фото замеров | [types/reports.types.ts:332](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L332) |
+| <a id="dt"></a> `dt?` | `string` | Дата и время замера | [types/reports.types.ts:334](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/reports.types.ts#L334) |
