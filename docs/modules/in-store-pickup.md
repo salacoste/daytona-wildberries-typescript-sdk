@@ -42,7 +42,7 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 
 ## Methods Reference
 
-### Assembly Tasks (6 methods)
+### Assembly Tasks (12 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
@@ -52,6 +52,12 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 | `updateOrdersReceive(orderId)` | PATCH | `/api/v3/click-collect/orders/{id}/receive` | Mark as received by customer |
 | `updateOrdersReject(orderId)` | PATCH | `/api/v3/click-collect/orders/{id}/reject` | Reject order |
 | `updateOrdersCancel(orderId)` | PATCH | `/api/v3/click-collect/orders/{id}/cancel` | Cancel order |
+| `confirmBulk(orderIds)` | POST | `/api/marketplace/v3/click-collect/orders/status/confirm` | Confirm orders (bulk) |
+| `prepareBulk(orderIds)` | POST | `/api/marketplace/v3/click-collect/orders/status/prepare` | Mark orders prepared (bulk) |
+| `receiveBulk(orderIds)` | POST | `/api/marketplace/v3/click-collect/orders/status/receive` | Mark orders received (bulk) |
+| `rejectBulk(orderIds)` | POST | `/api/marketplace/v3/click-collect/orders/status/reject` | Reject orders (bulk) |
+| `cancelBulk(orderIds)` | POST | `/api/marketplace/v3/click-collect/orders/status/cancel` | Cancel orders (bulk) |
+| `getStatusesBulk(orderIds)` | POST | `/api/marketplace/v3/click-collect/orders/status/info` | Get statuses for orders (bulk) |
 
 ### Order Queries (2 methods)
 
@@ -67,7 +73,7 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 | `createOrdersClient(data)` | POST | `/api/v3/click-collect/orders/client` | Get customer info for order |
 | `createClientIdentity(data)` | POST | `/api/v3/click-collect/orders/client/identity` | Verify customer identity |
 
-### Metadata Operations (6 methods)
+### Metadata Operations (14 methods)
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
@@ -77,6 +83,14 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 | `updateMetaUin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/uin` | Set UIN code |
 | `updateMetaImei(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/imei` | Set IMEI code |
 | `updateMetaGtin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/gtin` | Set GTIN code |
+| `getMetaBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/details` | Get metadata for orders (bulk) |
+| `deleteMetaBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/delete` | Delete metadata (bulk) |
+| `checkMetaValidation(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/details` | Check metadata validation decisions (bulk) |
+| `setSgtinBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/sgtin` | Set SGTIN codes (bulk) |
+| `setUinBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/uin` | Set UIN codes (bulk) |
+| `setImeiBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/imei` | Set IMEI codes (bulk) |
+| `setGtinBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/gtin` | Set GTIN codes (bulk) |
+| `setCustomsDeclarationBulk(data)` | POST | `/api/marketplace/v3/click-collect/orders/meta/customs-declaration` | Set customs declaration numbers (bulk) |
 
 ### Pricing (1 method)
 
