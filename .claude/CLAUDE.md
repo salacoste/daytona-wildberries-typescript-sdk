@@ -147,18 +147,18 @@ The SDK exposes **14 public modules** on the `WildberriesSDK` instance (`sdk.*`)
 | 2 | `sdk.products` | `ProductsModule` | content-api | 51 | Categories, product cards, characteristics, media, pricing, warehouse, stock |
 | 3 | `sdk.ordersFBS` | `OrdersFbsModule` | marketplace-api | 42 | Seller-warehouse (FBS) fulfillment, order status, shipping, marking codes |
 | 4 | `sdk.ordersFBW` | `OrdersFbwModule` | marketplace-api | 19 | WB-warehouse (FBO/FBW) supply, acceptance coefficients, transit tariffs |
-| 5 | `sdk.ordersDBS` | `OrdersDbsModule` | marketplace-api | 20 | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata |
+| 5 | `sdk.ordersDBS` | `OrdersDbsModule` | marketplace-api | 21 | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata, final prices |
 | 6 | `sdk.finances` | `FinancesModule` | finance-api / statistics-api | 11 | Balance, realization reports, documents (list/download) |
 | 7 | `sdk.analytics` | `AnalyticsModule` | seller-analytics-api | 20 | Sales funnel v3, search queries, stock history, CSV reports, item rating v2 |
 | 8 | `sdk.communications` | `CommunicationsModule` | common-api | 25 | Customer chat, product Q&A, reviews, pinned reviews |
 | 9 | `sdk.reports` | `ReportsModule` | statistics-api | 25 | Incomes, stocks, sales/returns, excise, async warehouse-remains reports |
 | 10 | `sdk.promotion` | `PromotionModule` | advert-api | 48 | Campaigns, auction/manual bids, budgets, statistics |
 | 11 | `sdk.tariffs` | `TariffsModule` | — | 5 | Commission rates, box/pallet storage, return tariffs, acceptance coefficients |
-| 12 | `sdk.inStorePickup` | `InStorePickupModule` | — (click & collect) | 18 | Pickup order lifecycle, customer verification, SGTIN/UIN/IMEI/GTIN metadata |
+| 12 | `sdk.inStorePickup` | `InStorePickupModule` | — (click & collect) | 19 | Pickup order lifecycle, customer verification, SGTIN/UIN/IMEI/GTIN metadata, final prices |
 | 13 | `sdk.userManagement` | `UserManagementModule` | common-api | 4 | Invitations, user listing, access rights, deletion |
 | 14 | `sdk.returns` | `ReturnsModule` | aggregator (since v3.10.0) | 3 | Unified FBO+FBS+Finance return analytics, partial-failure tolerant |
 
-**Total: 300 public methods across the 14 modules.**
+**Total: 302 public methods across the 14 modules.**
 
 **Supplemental module (NOT a public `sdk.*` property):** `src/modules/1_0_0/` — 5 legacy methods (`getContentTags`, `getAdvAdvert`, `createAdvFullstat`, `getAdvFullstats`, `getCalendarPromotions`) retained for backward compatibility.
 

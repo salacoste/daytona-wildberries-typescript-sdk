@@ -394,3 +394,82 @@ export interface SetMetaBulkResponse {
   /** Per-order results. */
   results: StatusSetResponse[];
 }
+
+// ============================================================================
+// Final price (task-203, WB news 2026-09)
+// POST /api/marketplace/v3/click-collect/orders/final-price — twin of the
+// DBS final-price method (server-identical response shape).
+// ============================================================================
+
+/** Request body for {@link InStorePickupModule.getOrdersFinalPrice}. */
+export interface OrdersFinalPriceRequest {
+  /** Assembly order IDs to get prices for. */
+  orders?: number[];
+}
+
+/**
+ * Seller prices and buyer-payable sums for one assembly order.
+ *
+ * All amounts are multiplied by 100 (kopecks etc.). For calculations use
+ * `originalFinalPrice` / `convertedOriginalFinalPrice` — the seller prices
+ * (`originalPrice` / `convertedOriginalPrice`) exclude discounts, while the
+ * final prices include ALL discounts and cashback.
+ *
+ * @since task-203
+ */
+export interface FinalPriceData {
+  /** Seller price in the currency of sale, excluding discounts, multiplied by 100. */
+  originalPrice?: number;
+  /** Seller price in the currency of the seller country, excluding discounts, multiplied by 100. */
+  convertedOriginalPrice?: number;
+  /** Sum charged to the buyer in the currency of sale including all discounts and cashback, multiplied by 100. Informational. */
+  originalFinalPrice?: number;
+  /** Sum charged to the buyer in the currency of the seller country including all discounts and cashback, multiplied by 100. Informational. */
+  convertedOriginalFinalPrice?: number;
+  /** Sale currency code (ISO 4217 numeric, e.g. `643` for RUB). */
+  currencyCode?: number;
+  /** Currency code of the seller country (ISO 4217 numeric). */
+  convertedCurrencyCode?: number;
+}
+
+/**
+ * Per-order error from {@link InStorePickupModule.getOrdersFinalPrice}.
+ * Known values: `404`/`NotFound`, `400`/`StatusMismatch`,
+ * `422`/`PriceNotCalculated` (orders created before 23.07.2026).
+ *
+ * @since task-203
+ */
+export interface FinalPriceError {
+  /** Error code: `404` (NotFound), `400` (StatusMismatch), `422` (PriceNotCalculated). */
+  code: number;
+  /** Error description: `NotFound`, `StatusMismatch`, or `PriceNotCalculated`. */
+  detail: string;
+}
+
+/**
+ * Per-order result in the final-price response.
+ *
+ * - `data` is `{}` → data is still being generated, retry later (max ~1 minute).
+ * - `data` is absent (`null`) → fall back to `finalPrice`/`convertedFinalPrice`
+ *   from `getOrdersNew()`/`getClickCollectOrders()` responses for those order IDs.
+ *
+ * @since task-203
+ */
+export interface OrderFinalPriceResult {
+  /** Assembly order ID. */
+  orderId: number;
+  /** Seller prices and buyer-payable sums (see {@link FinalPriceData}). */
+  data?: FinalPriceData;
+  /** Error details (present when the order failed). */
+  errors?: FinalPriceError[];
+  /** Whether any errors occurred for this order. */
+  isError?: boolean;
+}
+
+/** Response from {@link InStorePickupModule.getOrdersFinalPrice}. @since task-203 */
+export interface OrdersFinalPriceResponse {
+  /** Unique request ID. */
+  requestId: string;
+  /** Results for each requested order. */
+  results: OrderFinalPriceResult[];
+}

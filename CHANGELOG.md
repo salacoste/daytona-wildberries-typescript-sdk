@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **ordersDBS / inStorePickup**: final-price methods (WB news 2026-09) — twin
+  `getOrdersFinalPrice({ orders })` on both modules: DBS
+  (POST `/api/marketplace/v3/dbs/orders/final-price`) and In-Store Pickup
+  (POST `/api/marketplace/v3/click-collect/orders/final-price`). Returns, per
+  assembly order ID, seller prices excluding discounts
+  (`originalPrice`/`convertedOriginalPrice`) and buyer-payable sums including
+  all discounts and cashback
+  (`originalFinalPrice`/`convertedOriginalFinalPrice`, all amounts x100,
+  ISO 4217 numeric currency codes). JSDoc + docs carry the WB guidance: use
+  `originalFinalPrice`/`convertedOriginalFinalPrice` for calculations and fall
+  back to `finalPrice`/`convertedFinalPrice` from order-listing methods only
+  when `"data": null` is returned for those order IDs; `"data": {}` means data
+  is still being generated — retry later (max ~1 minute). Per-order errors:
+  404 `NotFound`, 400 `StatusMismatch`, 422 `PriceNotCalculated` (orders
+  created before 23.07.2026). Rate limits 150 req/min, 400 ms, burst 20,
+  4XX x10 penalty (both keys); pickup additionally notes the sandbox 1 rps
+  cap for all Marketplace methods. Task: task-203.
+
 ## [4.3.0] - 2026-09-24
 
 ### Added

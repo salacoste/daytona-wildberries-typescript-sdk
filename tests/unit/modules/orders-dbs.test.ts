@@ -18,6 +18,7 @@ import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
 import { NetworkError } from '../../../src/errors/network-error';
 import { ValidationError } from '../../../src/errors/validation-error';
+import type { OrdersFinalPriceResponse } from '../../../src/types/orders-dbs.types';
 
 const BASE_URL = 'https://marketplace-api.wildberries.ru';
 
@@ -927,6 +928,108 @@ describe('OrdersDbsModule', () => {
           { orders: big }
         )
       ).rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('getOrdersFinalPrice() (task-203)', () => {
+    it('should call POST dbs/orders/final-price with body + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'req-1', results: [] });
+
+      await ordersDbsModule.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BASE_URL}/api/marketplace/v3/dbs/orders/final-price`,
+        { orders: [1234567890] },
+        expect.objectContaining({ rateLimitKey: 'orders-dbs.getOrdersFinalPrice' })
+      );
+    });
+
+    it('should use HTTP POST (not GET) for the read', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'req-2', results: [] });
+
+      await ordersDbsModule.getOrdersFinalPrice({ orders: [123456] });
+
+      expect(mockClient.post).toHaveBeenCalledTimes(1);
+      expect(mockClient.get).not.toHaveBeenCalled();
+    });
+
+    it('should pass through the spec-shaped success response', async () => {
+      const resp: OrdersFinalPriceResponse = {
+        requestId: 'f1787bd2d1fdc35d6f537316514y4a05',
+        results: [
+          {
+            orderId: 1234567890,
+            data: {
+              originalPrice: 29000,
+              convertedOriginalPrice: 29000,
+              originalFinalPrice: 27000,
+              convertedOriginalFinalPrice: 27000,
+              currencyCode: 643,
+              convertedCurrencyCode: 643,
+            },
+            isError: false,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await ordersDbsModule.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(result).toEqual(resp);
+      expect(result.results[0].data?.originalFinalPrice).toBe(27000);
+      expect(result.results[0].data?.convertedOriginalFinalPrice).toBe(27000);
+      expect(result.results[0].data?.currencyCode).toBe(643);
+    });
+
+    it('should pass through isError results with errors[] (spec error codes)', async () => {
+      const resp: OrdersFinalPriceResponse = {
+        requestId: 'req-err',
+        results: [
+          {
+            orderId: 987654321,
+            errors: [{ code: 404, detail: 'NotFound' }],
+            isError: true,
+          },
+          {
+            orderId: 111222333,
+            errors: [{ code: 422, detail: 'PriceNotCalculated' }],
+            isError: true,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await ordersDbsModule.getOrdersFinalPrice({
+        orders: [987654321, 111222333],
+      });
+
+      expect(result.results[0].isError).toBe(true);
+      expect(result.results[0].errors?.[0]).toEqual({ code: 404, detail: 'NotFound' });
+      expect(result.results[1].errors?.[0]).toEqual({ code: 422, detail: 'PriceNotCalculated' });
+    });
+
+    it('should pass through "data": {} (generation in progress — retry later)', async () => {
+      const resp: OrdersFinalPriceResponse = {
+        requestId: 'req-empty',
+        results: [{ orderId: 1234567890, data: {}, isError: false }],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await ordersDbsModule.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(result.results[0].data).toEqual({});
+    });
+
+    it('should pass through absent data (fall back to order-listing finalPrice)', async () => {
+      const resp: OrdersFinalPriceResponse = {
+        requestId: 'req-null',
+        results: [{ orderId: 1234567890, isError: false }],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await ordersDbsModule.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(result.results[0].data).toBeUndefined();
     });
   });
 });

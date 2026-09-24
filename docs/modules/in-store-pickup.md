@@ -12,7 +12,7 @@ The **In-Store Pickup** module manages click-and-collect orders where customers 
 | **SDK Namespace** | `sdk.inStorePickup.*` |
 | **Base URL** | `https://marketplace-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/06-in-store-pickup.yaml` |
-| **Methods** | 18 |
+| **Methods** | 19 |
 | **Authentication** | API Key (Header) |
 | **409 Penalty** | 10x rate limit multiplier |
 
@@ -77,6 +77,33 @@ const identity = await sdk.inStorePickup.createClientIdentity({ orderId, code: '
 | `updateMetaUin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/uin` | Set UIN code |
 | `updateMetaImei(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/imei` | Set IMEI code |
 | `updateMetaGtin(orderId, data)` | PUT | `/api/v3/click-collect/orders/{id}/meta/gtin` | Set GTIN code |
+
+### Pricing (1 method)
+
+| Method | HTTP | Endpoint | Description |
+|--------|------|----------|-------------|
+| `getOrdersFinalPrice(data)` | POST | `/api/marketplace/v3/click-collect/orders/final-price` | Get seller prices and buyer-payable sums |
+
+---
+
+## Final-Price Guidance (WB news 2026-09)
+
+`getOrdersFinalPrice()` (twin of the DBS method) returns seller prices
+excluding discounts (`originalPrice`/`convertedOriginalPrice`) and
+buyer-payable sums including all discounts and cashback
+(`originalFinalPrice`/`convertedOriginalFinalPrice`). All amounts are
+multiplied by 100.
+
+- **Use `originalFinalPrice`/`convertedOriginalFinalPrice` for calculations.**
+- Fall back to `finalPrice`/`convertedFinalPrice` from `getOrdersNew()`/
+  `getClickCollectOrders()` only when this method returns `"data": null` for
+  those order IDs.
+- `"data": {}` (empty object) means the data is still being generated — retry
+  later (max ~1 minute).
+- Per-order errors: `404` NotFound, `400` StatusMismatch, `422`
+  PriceNotCalculated (orders created before 23.07.2026).
+- In the Sandbox — maximum of 1 request per second for all Marketplace methods
+  in total.
 
 ---
 

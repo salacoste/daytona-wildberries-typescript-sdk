@@ -78,6 +78,9 @@ describe('InStorePickupModule', () => {
       expect(typeof module.setUinBulk).toBe('function');
       expect(typeof module.setImeiBulk).toBe('function');
       expect(typeof module.setGtinBulk).toBe('function');
+      expect(typeof module.checkMetaValidation).toBe('function');
+      expect(typeof module.setCustomsDeclarationBulk).toBe('function');
+      expect(typeof module.getOrdersFinalPrice).toBe('function');
     });
   });
 
@@ -357,6 +360,110 @@ describe('InStorePickupModule', () => {
         },
         expect.objectContaining({ rateLimitKey: 'in-store-pickup.setCustomsDeclarationBulk' })
       );
+    });
+  });
+
+  // ==========================================================================
+  // Final price (task-203)
+  // ==========================================================================
+
+  describe('getOrdersFinalPrice (task-203)', () => {
+    it('should POST to orders/final-price with { orders } + rateLimitKey', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r1', results: [] });
+
+      await module.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(mockClient.post).toHaveBeenCalledWith(
+        `${BATCH}/orders/final-price`,
+        { orders: [1234567890] },
+        expect.objectContaining({ rateLimitKey: 'in-store-pickup.getOrdersFinalPrice' })
+      );
+    });
+
+    it('should use POST (not GET) for the read', async () => {
+      mockClient.post.mockResolvedValue({ requestId: 'r2', results: [] });
+
+      await module.getOrdersFinalPrice({ orders: [123456] });
+
+      expect(mockClient.post).toHaveBeenCalledTimes(1);
+      expect(mockClient.get).not.toHaveBeenCalled();
+    });
+
+    it('should pass through the spec-shaped success response', async () => {
+      const resp = {
+        requestId: 'f1787bd2d1fdc35d6f537316514y4a05',
+        results: [
+          {
+            orderId: 1234567890,
+            data: {
+              originalPrice: 29000,
+              convertedOriginalPrice: 29000,
+              originalFinalPrice: 27000,
+              convertedOriginalFinalPrice: 27000,
+              currencyCode: 643,
+              convertedCurrencyCode: 643,
+            },
+            isError: false,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await module.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(result).toEqual(resp);
+      expect(result.results[0].data?.originalFinalPrice).toBe(27000);
+      expect(result.results[0].data?.convertedOriginalFinalPrice).toBe(27000);
+      expect(result.results[0].data?.currencyCode).toBe(643);
+    });
+
+    it('should pass through isError results with errors[] (spec error codes)', async () => {
+      const resp = {
+        requestId: 'req-err',
+        results: [
+          {
+            orderId: 987654321,
+            errors: [{ code: 404, detail: 'NotFound' }],
+            isError: true,
+          },
+          {
+            orderId: 222333444,
+            errors: [{ code: 400, detail: 'StatusMismatch' }],
+            isError: true,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await module.getOrdersFinalPrice({ orders: [987654321, 222333444] });
+
+      expect(result.results[0].isError).toBe(true);
+      expect(result.results[0].errors?.[0]).toEqual({ code: 404, detail: 'NotFound' });
+      expect(result.results[1].errors?.[0]).toEqual({ code: 400, detail: 'StatusMismatch' });
+    });
+
+    it('should pass through "data": {} (generation in progress — retry later)', async () => {
+      const resp = {
+        requestId: 'req-empty',
+        results: [{ orderId: 1234567890, data: {}, isError: false }],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await module.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(result.results[0].data).toEqual({});
+    });
+
+    it('should pass through absent data (fall back to order-listing finalPrice)', async () => {
+      const resp = {
+        requestId: 'req-null',
+        results: [{ orderId: 1234567890, isError: false }],
+      };
+      mockClient.post.mockResolvedValue(resp);
+
+      const result = await module.getOrdersFinalPrice({ orders: [1234567890] });
+
+      expect(result.results[0].data).toBeUndefined();
     });
   });
 
