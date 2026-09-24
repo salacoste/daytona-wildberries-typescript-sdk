@@ -105,4 +105,10 @@ regexes = [
   '''AKIAIOSFODNN7EXAMPLE''',
   '''wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY''',
   '''\+79991234567''',
+  # SDK test fixtures with fake API keys (verified 2026-09-24 audit; files since
+  # removed, kept in history). ctx7sk-5d755f9d... is deliberately NOT here — the
+  # real leaked Context7 key must stay visible in scans until rotated (task-211).
+  '''test-api-key-cross-module-examples''',
+  '''test-api-key-for-analytics-integration-tests''',
+  '''your_real_wildberries_api_key_here''',
 ]
