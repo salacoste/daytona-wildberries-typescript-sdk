@@ -5,10 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.3.0] - 2026-09-24
 
 ### Added
 
+- **promotion**: multi-campaign budgets via new `postV2Budget(data)` (POST
+  `/api/advert/v2/budget`, WB news 2026-09) — up to 50 `advertIds` in one request;
+  response `adverts[]` with `advertId`/`currency`/`total` (total in BASE currency
+  units — not minor) for campaigns in statuses 4/9/11. Rate limit 20 req/min, 3 s,
+  burst 4. **`getAdvBudget` is deprecated** (see Deprecated below) — WB disables
+  GET `/adv/v1/budget` on 2026-11-16 (release-notes id 582). Migration notes in
+  `docs/modules/promotion.md` and `docs/guides/migration-v4.md` ("Looking ahead: v5").
+  Task: task-191.
+- **promotion**: CPC campaign daily limits (WB news 2026-09) — `getV0DailyLimits(advertIds)`
+  (GET `/api/advert/v0/daily-limits`; comma-joined IDs, max 100; returns per-campaign
+  `enabled`/`dailyLimit`/`spentToday`/`currency`/`carryOverEnabled`/`valid`/`requiredLimit`,
+  amounts in minor currency units) and `putV0DailyLimits(data)` (PUT; `dailyLimit` >= 1000
+  and `carryOverEnabled` required when `enabled: true`; response flags `belowMinLimit`).
+  `getV1Config()` response extended with `minDailyLimit` (news) and `minTopUp` (found
+  during docs capture — not in the news), both required. Rate limits 5 req/min, 12 s,
+  burst 5 (both keys). Task: task-186.
+- **ordersFBW**: supply acceptance discrepancies (WB news 2026-09) —
+  `getSupplyDiscrepancies(supplyId)` (GET `/api/supplies/v1/discrepancies/{supplyId}`)
+  returns per-package declared-vs-actual discrepancies with the acceptance video refs
+  and per-scan detail (`discrepancyType`/`discrepancyLabel` enums
+  `surplus`/`shortage`/`re-sorting`). Available for supplies accepted within the last
+  year; 404 = not found/no discrepancies/older than a year. `getSupply()` response gains
+  optional `discrepancies` (only when `statusID: 5`). Strict rate limit: 1 req/min, burst 1.
+  `reconcileAcceptanceDelta()` doc comment updated — WB now exposes a dedicated API.
+  Task: task-188.
+- **ordersFBW**: supply drafts CRUD (WB news 2026-09) — six methods on
+  `/api/supplies/v1/drafts`: `createDraft()` (empty draft; delete returns 204),
+  `listDrafts({ limit, offset, sort, order })`, `getDraftItems(draftId)`,
+  `addDraftItems(draftId, { items })` (ATOMIC: if any SKU fails validation nothing is
+  added; non-empty `results[]` lists the invalid SKUs), `deleteDraftItems(draftId, { skus })`
+  (no SKU validation — invalid SKUs silently ignored), `deleteDraft(draftId)`. `draftId`
+  is a UUID string. Rate limits 30 req/min, 2 s, burst 10 (six keys). Task: task-193.
 - **promotion**: `getBidsRecommendations` now returns CPC recommendations
   too (WB news 2026-09) — `BidsRecommendationsResponse` gained
   `paymentType: 'cpm' | 'cpc'` and `levels` (bids per listing position
@@ -19,10 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and the STOCK_HISTORY CSV downloads, pointing to
   `getWbWarehousesStock`/`getSellerWarehousesStock` as the no-delay
   sources. Task: task-190.
-
-### Added
-
-
 - **ordersFBS**: customs-declaration (ДТ) behavior docs + typed 409 mapping
   (WB news 2026-08-18) — new error class `CustomsDeclarationIsRequiredError`
   (extends `WBAPIError`, statusCode 409, exposes the WB `code` and the raw
@@ -42,10 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **reports**: `Penalty` type (measurement-penalties report) now includes
   `dateStart`/`dateEnd` — the validity period of the warehouse coefficient
   (WB news 2026-09). Task: task-195.
-
-### Added
-
-
 - **products**: card `documents` object (WB news 2026-09) — new types in
   `products.types` (all re-exported from the root and the products module):
   `CardDocumentType` (`1|2|3|4|5|7|8|9`, no `6`), `CardDocumentInput` +
@@ -97,6 +121,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `SellerWarehousesStockRequest`, `SellerWarehouseStockItem`, `SellerWarehousesStockResponse`
   (no in-transit counts, unlike the WB-warehouses report). Rate limit 3 req/min, 20 s
   interval, burst 1 (strict).
+
+### Deprecated
+
+- **promotion**: `getAdvBudget()` (GET `/adv/v1/budget`) — WB disables the endpoint on
+  **2026-11-16**; use `postV2Budget()`. Emits a one-time runtime deprecation warning;
+  scheduled for removal in v5. Task: task-191.
 
 ## [4.2.0] - 2026-08-09
 
@@ -1777,7 +1807,7 @@ Storage fees API verified working after fixes:
 
 ---
 
-## [Unreleased]
+## [Historical] — pre-release development log (Epics)
 
 ### Added
 
