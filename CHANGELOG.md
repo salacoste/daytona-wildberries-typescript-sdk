@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.0] - 2026-09-24
+
+### Added
+
+- **ordersFBS**: electronic waybill (ETrN) method `updateSuppliesWaybill(data)`
+  (PATCH `/api/marketplace/v3/fbs/supplies/waybill`, WB news 2026-09) — attaches
+  the electronic waybill ID (`waybillUuid`, UUID format) for transport-company
+  deliveries, up to 100 supplies per request with per-supply results. Requires
+  the shipping method to be set to `"shippingType":"transportCompany"` via
+  `updateShippingMethod()` first (`SupplyShippingRequired` /
+  `UnsuitableShippingType` otherwise); the waybill can be updated only until
+  the supply and its boxes are scanned at the shipping point
+  (`SupplyAlreadyScanned`); a repeat request while the previous UUID is still
+  processing returns `WaybillUUIDIsProcessing`. From **2026-10-01** an ETrN ID
+  is **mandatory** for transport-company deliveries — `updateSuppliesDeliver()`
+  returns a 409 without it. Rollout note: WB initially announced the method as
+  "in development" — until the backend is enabled on the seller account the
+  endpoint may respond 404 (tracked; the schema will be patched in a follow-up
+  release if WB changes it at launch). New types `UpdateSupplyWaybill` /
+  `UpdateSuppliesWaybillRequest`; the response reuses `UpdateSuppliesResponse`.
+  Rate limit: 300 req/min, 200 ms, burst 20 (FBS supplies group). Module page:
+  new Waybill section + transportCompany example. Task: task-208.
+  SDK totals: 305 public methods, 2,458 tests.
+
 ## [4.4.0] - 2026-09-24
 
 ### Added
@@ -15,9 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the originally announced date); older orders are available only via the
   archive endpoint. Method itself existed previously; docs + JSDoc date
   corrected (task-206).
-
-### Added
-
 
 - **analytics**: real-time Order Feed report via new `getOrderFeed(data)`
   (POST `/api/analytics/v1/order-feed`, WB news 2026-09) — orders and buyouts
