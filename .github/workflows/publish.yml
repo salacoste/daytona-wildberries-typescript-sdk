@@ -1,0 +1,36 @@
+name: Publish to npm
+
+# OIDC Trusted Publishing — no npm token required.
+# Requires the matching Trusted Publisher entry on npmjs.com:
+#   GitHub Actions / salacoste / daytona-wildberries-typescript-sdk / publish.yml
+# Triggered by publishing a GitHub Release (creates the tag automatically).
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # required for OIDC
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: 'https://registry.npmjs.org'
+
+      # Node 22 bundles npm 10.x; OIDC trusted publishing needs npm >= 11.5.1
+      - name: Upgrade npm for OIDC support
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      # prepublishOnly runs `npm run build` automatically
+      - name: Publish
+        run: npm publish --provenance --access public
