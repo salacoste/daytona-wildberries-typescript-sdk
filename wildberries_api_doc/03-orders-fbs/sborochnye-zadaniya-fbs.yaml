@@ -797,3 +797,99 @@ paths:
           $ref: "#/components/responses/NotFound"
         "429":
           $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/orders/archive:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Сборочные задания FBS
+      summary: Get the List of Archived Assembly Orders
+      description: |
+        The method returns assembly orders created more than 3 months ago.<br>
+        Some assembly orders are archived later than 3 months after creation, as the supply is archived only after all orders in it are completed.
+        For example, this happens if the seller did not deliver one of the orders in the supply and the order was canceled automatically after a few days.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      parameters:
+        - name: year
+          in: query
+          description: Year the order was created
+          example: 2023
+          required: true
+          schema:
+            type: integer
+        - name: month
+          in: query
+          description: Month the order was created
+          example: 2
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+        - name: next
+          in: query
+          description: Pagination parameter. Sets the value from which to retrieve the next batch. It should start at 0 to get the full list of data. For the subsequent requests, you must take the value from the `next` field in the response.
+          required: true
+          example: 0
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          description: Number of assembly orders in the response
+          required: true
+          example: 150
+          schema:
+            type: integer
+            format: int32
+            minimum: 100
+            maximum: 1000
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v3.ArchiveOrders"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ArhiveOrderError400"
+              examples:
+                BadRequest:
+                  $ref: "#/components/examples/ArhiveOrderError400"
+        "401":
+          $ref: "#/components/responses/401"
+        "402":
+          $ref: "#/components/responses/402"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ArhiveOrderError400"
+                  - $ref: "#/components/schemas/Response4XX"
+              examples:
+                AccessDenied:
+                  $ref: "#/components/examples/APIError403V2"
+                Response403TokenCategory:
+                  $ref: "#/components/examples/Response403TokenCategory"
+        "429":
+          $ref: "#/components/responses/429"

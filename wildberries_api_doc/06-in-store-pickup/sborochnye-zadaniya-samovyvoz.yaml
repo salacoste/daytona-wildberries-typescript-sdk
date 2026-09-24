@@ -575,3 +575,71 @@ paths:
                   $ref: _schemas.yaml#/components/examples/StatusMismatch
         "429":
           $ref: _schemas.yaml#/components/responses/429
+  /api/marketplace/v3/click-collect/orders/final-price:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: marketplace
+      tags:
+        - Сборочные задания Самовывоз
+      summary: Get seller prices and amounts charged to the buyer
+      description: |
+        The method returns:
+          - seller prices excluding discounts
+          - sums charged to the buyer including all discounts and cashback
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for all methods for <strong>getting and deleting In-Store Pickup label identifiers</strong>:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 150 requests | 400 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests.
+
+        <hr>
+
+        In <a href='/en/sandbox'>Sandbox</a> — maximum of 1 request per second for all <strong>Marketplace</strong> methods in total.
+
+        </div>
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/api.OrdersRequest
+        required: true
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/api.OrdersFinalPriceResponse
+              examples:
+                GetFinalPriceSuccess:
+                  $ref: _schemas.yaml#/components/examples/GetFinalPriceSuccess
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/Error
+              examples:
+                IncorrectRequestBody:
+                  $ref: _schemas.yaml#/components/examples/IncorrectRequestBody
+        "401":
+          $ref: _schemas.yaml#/components/responses/401
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/api.BatchError
+              example:
+                detail: {}
+                origin: market-public-api
+                requestId: f1787bd2d1fdс35d6f537316514у4a05
+                title: AccessDenied
+        "429":
+          $ref: _schemas.yaml#/components/responses/429

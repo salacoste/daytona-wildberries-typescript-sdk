@@ -1,0 +1,89 @@
+openapi: 3.0.1
+info:
+  title: Аналитика и данные — Лента заказов
+  version: analytics
+  description: "Shard for tag: Лента заказов"
+  x-file-name: analytics
+security:
+  - HeaderApiKey: []
+tags:
+  - name: Лента заказов
+    description: ""
+paths:
+  /api/analytics/v1/order-feed:
+    servers:
+      - url: https://seller-analytics-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: contentanalytics
+      operationId: postV1OrderFeed
+      summary: Get Report
+      description: |
+        The method forms a dataset for orders and sales.
+        <br><br>
+        The report data is updated in real time.
+        <br><br>
+        > 1 order means 1 assembly order and means 1 item
+
+        The `brandNames`, `subjectIds`, `tagIds`, and `nmIds` parameters can be empty `[]`, in which case the response will return all of the seller orders.<br>
+        If you specify multiple parameters, the response will include orders that match all of these parameters simultaneously. If no orders match the request parameters, an empty array `[]` will be returned.
+        <br><br>
+        You can get a report for a maximum of the last 31 days.
+        <br><br>
+        Orders are sorted by current status time, from the newest to the earliest.
+        <br><br>
+        Pagination can be used.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account:
+
+
+        | Type | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- | --- |
+        | Personal | 1 min | 1 request | 1 min | 1 request |
+        | Service | 1 min | 1 request | 1 min | 1 request |
+        | Base with secret | 1 min | 1 request | 1 min | 1 request |
+        | Base | 3 h | 1 request | 3 h | 1 request |
+        </div>
+      tags:
+        - Лента заказов
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: _schemas.yaml#/components/schemas/OrderFeedRequest
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: _schemas.yaml#/components/schemas/OrderFeedResponse
+                required:
+                  - data
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject400
+        '401':
+          $ref: _schemas.yaml#/components/responses/401
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/ErrorObject403
+            application/problem+json:
+              schema:
+                $ref: _schemas.yaml#/components/schemas/Response4XX
+              examples:
+                Response403TokenCategory:
+                  $ref: _schemas.yaml#/components/examples/Response403TokenCategory
+        '429':
+          $ref: _schemas.yaml#/components/responses/429

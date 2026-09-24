@@ -23,7 +23,7 @@ _base_url: N/A
 _shards:
   - file: sborochnye-zadaniya-fbs.yaml
     domain: Сборочные задания FBS
-    endpoints: 9
+    endpoints: 10
     description: FBS Assembly Tasks
   - file: metadannye-fbs.yaml
     domain: Метаданные FBS
@@ -38,4 +38,4 @@ _shards:
     endpoints: 5
     description: FBS Passes
 _shared_schemas: _schemas.yaml
-_total_endpoints: 40
+_total_endpoints: 41
