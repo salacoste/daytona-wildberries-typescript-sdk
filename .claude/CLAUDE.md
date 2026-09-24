@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Wildberries API TypeScript SDK** — Production-ready, full-featured SDK providing type-safe access to all Wildberries marketplace API methods.
 
 - **Package**: `daytona-wildberries-typescript-sdk`
-- **Version**: **4.1.0** (production-ready; Sept 2026 WB API sync landed — daily limits, budget v2 + v1 deprecation, supply discrepancies/drafts, SPOT, shipping, card documents, seller-warehouses stocks, DT typed error)
+- **Version**: **4.3.0** (production-ready; Sept 2026 WB API sync landed — daily limits, budget v2 + v1 deprecation, supply discrepancies/drafts, SPOT, shipping, card documents, seller-warehouses stocks, DT typed error)
 - **Module**: ESM (`"type": "module"`), Node **≥20**, dual ESM/CJS build via Vite
 - **License**: Personal Use (`SEE LICENSE IN LICENSE`)
 - **Repo**: `github.com/salacoste/daytona-wildberries-typescript-sdk`
@@ -1056,6 +1056,6 @@ Before marking any module complete:
 ---
 
 **Last Updated**: 2026-09-24
-**SDK Version**: 4.1.0
+**SDK Version**: 4.3.0
 **OpenAPI Version**: 3.0.1
-**Status**: Production-ready · 14 public modules · 235 Backlog.md tasks done (Sept 2026 WB API sync: +17 methods, tasks 186–201)
+**Status**: Production-ready · 14 public modules · 242 Backlog.md tasks done (Sept 2026 WB API sync: +17 methods, tasks 186–202)
