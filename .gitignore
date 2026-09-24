@@ -72,3 +72,4 @@ _bmad/_memory/
 .agents/
 .codex/
 AGENTS.md
+.mcp.json.bak*
