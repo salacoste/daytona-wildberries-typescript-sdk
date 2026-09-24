@@ -3,6 +3,7 @@
  * TC1–TC9 per story 13.2 acceptance criteria.
  */
 /* eslint-disable @typescript-eslint/unbound-method -- vi.mocked() + expect().toHaveBeenCalled* patterns require method references */
+/* eslint-disable @typescript-eslint/no-deprecated -- intentionally testing getReturns(), which still wraps the deprecated getAnalyticsGoodsReturn (migration tracked in task-215) */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ReturnsModule } from '../../../src/modules/returns';
 import type { ReportsModule } from '../../../src/modules/reports';

@@ -316,7 +316,8 @@ export class ReturnsModule {
     // req/min but eliminates serial latency in the happy path.
     const [fboResult, financeResult] = await Promise.allSettled([
       fetchFbo
-        ? this.reports.getAnalyticsGoodsReturn({
+        ? // eslint-disable-next-line @typescript-eslint/no-deprecated -- legacy goods-return endpoint; migrating getReturns() to getAnalyticsV1GoodsReturn (active+archive, pagination) is tracked in task-215, deadline 2026-10-26
+          this.reports.getAnalyticsGoodsReturn({
             dateFrom: params.dateFrom,
             dateTo: params.dateTo,
           })
