@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.0] - 2026-09-24
+
+### Added
+
+- **reports**: new goods-return report version `getAnalyticsV1GoodsReturn(params)`
+  (GET `/api/analytics/v1/item-returns`, WB news 2026-09-24 #16) — active AND
+  archive returns for any period. All five params required: `dateFrom`,
+  `dateTo`, `status` (`active`|`archive` — replaces the old `isStatusActive`
+  response field), `limit` (0–1000), `offset`. Response: `{ count, report[] }`
+  with a total counter for the whole period; item fields renamed vs the old
+  report (`barcode`→`sku`, `status`→`returnStatus`, `reason`→`returnReason`,
+  the latter only for unidentified-item returns) plus new `kiz` (Chestny ZNAK
+  marking), `subjectName`, `techSize`. Window is limited to 31 days (400
+  `DateRangeExceeded`), empty result returns HTTP 204. Note the path: the WB
+  news text quotes `/api/analytics/v1/goods-return`, but the official spec
+  mounts the operation at `/api/analytics/v1/item-returns` (operationId
+  `getAnalyticsV1GoodsReturn`) — the SDK follows the spec; a patch release
+  will swap the URL if WB re-mounts it. Rate limit: WB publishes none for
+  this endpoint — mirrors the legacy report (1 req/min, 60 s, burst 10).
+  New types: `GoodsReturnStatus`, `GetAnalyticsV1GoodsReturnParams`,
+  `GoodsReturnV1Item`, `GoodsReturnV1Response`. Swagger shard
+  `12-reports.yaml` synced (new path + schemas + shutdown notice on the old
+  path). Task: task-212.
+
+### Deprecated
+
+- **reports**: `getAnalyticsGoodsReturn()` — WB disables
+  `GET /api/v1/analytics/goods-return` on **2026-10-26**
+  ([release note](https://dev.wildberries.ru/en/release-notes?id=577)). The
+  method emits a one-time runtime deprecation warning pointing to
+  `getAnalyticsV1GoodsReturn()`; physical removal targeted at v5 (task-214,
+  bundled with the `getAdvBudget` removal).
+
+SDK totals: 306 public methods, 2,462 tests.
+
 ## [4.5.0] - 2026-09-24
 
 ### Added
