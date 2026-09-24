@@ -9,7 +9,7 @@ The **Orders FBS (Fulfillment by Seller)** module provides comprehensive order m
 **Module Name**: `ordersFBS`
 **Source**: Generated from `wildberries_api_doc/03-orders-fbs.yaml`
 **Base URL**: `https://marketplace-api.wildberries.ru`
-**Total Methods**: 42 methods across 9 functional areas
+**Total Methods**: 43 methods across 9 functional areas
 
 ### FBS vs FBW
 
@@ -52,15 +52,18 @@ Ensure your API key has the following permissions enabled:
 
 ## Methods Reference
 
-### Orders (5 methods)
+### Orders (6 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
 | `getOrdersNew()` | Get all new orders awaiting processing | 300 req/min |
-| `orders(options?)` | Get orders with pagination and date filters | 300 req/min |
+| `orders(options?)` | Get orders with pagination and date filters. ⚠️ 3-month window (effective 2026-08-06): only orders created less than 3 months ago | 300 req/min |
 | `getOrderStatuses(data)` | Get statuses for multiple orders (bulk) | 300 req/min |
 | `updateOrdersCancel(orderId)` | Cancel an order | 100 req/min |
 | `getOrdersReshipment()` | Get orders requiring reshipment | 300 req/min |
+| `getOrdersArchive(params)` | Archived FBS assembly orders (year/month period, `next`-cursor pagination) — the ONLY source for orders created more than 3 months ago | 300 req/min |
+
+> ⚠️ **3-month window (WB news, effective the night of 2026-08-05→06):** `orders()` returns only assembly orders created less than 3 months ago. For older orders use `getOrdersArchive({ year, month, next, limit })` — paginate until `next` is `null`.
 
 ### Supplies (8 methods)
 
